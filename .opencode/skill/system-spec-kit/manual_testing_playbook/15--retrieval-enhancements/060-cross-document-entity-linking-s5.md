@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `060` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [15--retrieval-enhancements/06-cross-document-entity-linking.md](../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `060` and confirm the ex
 
 - Group: Retrieval Enhancements
 - Playbook ID: 060
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `15--retrieval-enhancements/060-cross-document-entity-linking-s5.md`

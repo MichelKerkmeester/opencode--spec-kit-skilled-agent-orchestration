@@ -46,4 +46,4 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 
 - Group: Graph signal activation
 - Source feature title: Graph momentum scoring
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

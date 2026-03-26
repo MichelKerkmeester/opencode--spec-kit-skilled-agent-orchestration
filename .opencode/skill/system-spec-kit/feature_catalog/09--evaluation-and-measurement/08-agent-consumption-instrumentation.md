@@ -41,7 +41,7 @@ Calls remain fail-safe so instrumentation errors never break the handlers, while
 
 - Group: Evaluation and measurement
 - Source feature title: Agent consumption instrumentation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

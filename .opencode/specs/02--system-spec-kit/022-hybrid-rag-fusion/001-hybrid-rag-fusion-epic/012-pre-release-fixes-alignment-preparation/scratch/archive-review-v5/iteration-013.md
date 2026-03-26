@@ -10,16 +10,16 @@ reasoning summaries: none
 session id: 019d23db-0d4d-79f0-aaac-b5b15f534996
 --------
 user
-You are a documentation alignment agent. Verify feature_catalog_in_simple_terms.md against the master feature_catalog.md.
+You are a documentation alignment agent. Verify FEATURE_CATALOG_IN_SIMPLE_TERMS.md against the master FEATURE_CATALOG.md.
 
 CONTEXT: There are two catalog files:
-- feature_catalog.md (~395KB, technical, detailed)
-- feature_catalog_in_simple_terms.md (~103KB, simplified, user-facing)
+- FEATURE_CATALOG.md (~395KB, technical, detailed)
+- FEATURE_CATALOG_IN_SIMPLE_TERMS.md (~103KB, simplified, user-facing)
 They must be aligned — same features, same categories, same statuses.
 
 TASKS:
-1. Read .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
-2. Read .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md (sample sections)
+1. Read .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
+2. Read .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md (sample sections)
 3. Check:
    a. Same number of categories?
    b. Same features listed per category?
@@ -108,7 +108,7 @@ Orchestrates mandatory spec folder creation for all conversations involving file
 
 A **spec folder** is a numbered directory (e.g., `specs/007-auth-feature/`) that contains all documentation for a single feature or task:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Verify feature_catalog_in_simple_terms.md against the master feature_catalog.md for category, feature, status, and description alignment" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.52s:
+/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Verify FEATURE_CATALOG_IN_SIMPLE_TERMS.md against the master FEATURE_CATALOG.md for category, feature, status, and description alignment" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.52s:
 2026-03-25 08:17:53.616 xcodebuild[80503:13839886]  DVTFilePathFSEvents: Failed to start fs event stream.
 2026-03-25 08:17:53.735 xcodebuild[80503:13839885] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
 python3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
@@ -119,7 +119,7 @@ python3: error: couldn't create cache file '/tmp/xcrun_db-Z3vpShC7' (errno=Opera
 codex
 I’ve loaded the review baseline and the spec-kit context. The skill advisor command hit a sandbox cache/temp limitation, so I’m proceeding with the clearly relevant skills directly: `sk-code--review` for findings-first review behavior, and `system-spec-kit` only as local context for this catalog area.
 exec
-/bin/zsh -lc "rg -n '"'^## '"' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "rg -n '"'^## '"' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 12:## TABLE OF CONTENTS
 38:## 1. OVERVIEW
 59:## 2. RETRIEVAL
@@ -141,9 +141,9 @@ exec
 893:## 18. GOVERNANCE
 913:## 19. UX HOOKS
 exec
-/bin/zsh -lc "sed -n '1,260p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "rg -n '"'^## '"' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "sed -n '1,220p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '1,260p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n '"'^## '"' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 12:## TABLE OF CONTENTS
 38:## 1. OVERVIEW
 67:## 2. RETRIEVAL
@@ -211,7 +211,7 @@ I’ve confirmed both catalogs use the same top-level section list. Next I’m p
 codex
 The sandbox blocks here-doc temp files, so I’m switching to inline one-shot scripts for the structural comparison. That won’t affect the review itself; it just changes how I extract the catalog data.
 exec
-/bin/zsh -lc "python3 -c 'from pathlib import Path; import re, json; base=Path(\".opencode/skill/system-spec-kit/feature_catalog\"); files={\"master\": base/\"feature_catalog.md\", \"simple\": base/\"feature_catalog_in_simple_terms.md\"};
+/bin/zsh -lc "python3 -c 'from pathlib import Path; import re, json; base=Path(\".opencode/skill/system-spec-kit/feature_catalog\"); files={\"master\": base/\"FEATURE_CATALOG.md\", \"simple\": base/\"FEATURE_CATALOG_IN_SIMPLE_TERMS.md\"};
 
 def parse(path):
     text=path.read_text(); lines=text.splitlines(); cats=[]; current=None; feat=None; buf=[]
@@ -251,7 +251,7 @@ FILE simple
 JSON_COMPARE_START
 []
 exec
-/bin/zsh -lc "node -e 'const fs=require(\"fs\"); const path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); const files={master:path.join(base,\"feature_catalog.md\"),simple:path.join(base,\"feature_catalog_in_simple_terms.md\")}; function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null, buf=[]; const flush=()=>{ if(feat"'!==null){ current.features.push({name:feat, body:buf.join("'"\\n\").trim()}); feat=null; buf=[]; } }; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ flush(); const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); const name=(m?m[1]:line.slice(3)).trim(); current={name, features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ flush(); feat=line.slice(4).trim(); } else if(feat!==null){ buf.push(line); } } flush(); return cats; } const parsed={master:parse(files.master), simple:parse(files.simple)}; console.log("CATEGORY_COUNTS", JSON.stringify({master:parsed.master.length,simple:parsed.simple.length})); for(const which of ["master","simple"]){ console.log("FILE", which); for(const c of parsed[which]) console.log(`${c.name}'"\\t"'${c.features.length}`); } const rows=parsed.master.map(c=>{ const simple=(parsed.simple.find(x=>x.name===c.name)||{features:[]}).features.map(f=>f.name); const master=c.features.map(f=>f.name); return {category:c.name, master_count:master.length, simple_count:simple.length, missing_in_simple:master.filter(x=>!simple.includes(x)), extra_in_simple:simple.filter(x=>!master.includes(x))}; }); console.log("JSON_COMPARE_START"); console.log(JSON.stringify(rows,null,2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "node -e 'const fs=require(\"fs\"); const path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); const files={master:path.join(base,\"FEATURE_CATALOG.md\"),simple:path.join(base,\"FEATURE_CATALOG_IN_SIMPLE_TERMS.md\")}; function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null, buf=[]; const flush=()=>{ if(feat"'!==null){ current.features.push({name:feat, body:buf.join("'"\\n\").trim()}); feat=null; buf=[]; } }; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ flush(); const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); const name=(m?m[1]:line.slice(3)).trim(); current={name, features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ flush(); feat=line.slice(4).trim(); } else if(feat!==null){ buf.push(line); } } flush(); return cats; } const parsed={master:parse(files.master), simple:parse(files.simple)}; console.log("CATEGORY_COUNTS", JSON.stringify({master:parsed.master.length,simple:parsed.simple.length})); for(const which of ["master","simple"]){ console.log("FILE", which); for(const c of parsed[which]) console.log(`${c.name}'"\\t"'${c.features.length}`); } const rows=parsed.master.map(c=>{ const simple=(parsed.simple.find(x=>x.name===c.name)||{features:[]}).features.map(f=>f.name); const master=c.features.map(f=>f.name); return {category:c.name, master_count:master.length, simple_count:simple.length, missing_in_simple:master.filter(x=>!simple.includes(x)), extra_in_simple:simple.filter(x=>!master.includes(x))}; }); console.log("JSON_COMPARE_START"); console.log(JSON.stringify(rows,null,2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 CATEGORY_COUNTS {"master":21,"simple":21}
 FILE master
 OVERVIEW	2
@@ -273,7 +273,7 @@ RETRIEVAL ENHANCEMENTS	9
 TOOLING AND SCRIPTS	17
 GOVERNANCE	4
 exec
-/bin/zsh -lc "node -e 'const fs=require(\"fs\"), path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); const files={master:path.join(base,\"feature_catalog.md\"),simple:path.join(base,\"feature_catalog_in_simple_terms.md\")}; function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null, buf=[]; const flush=()=>{ if(feat"'!==null){ const body=buf.join("'"\\n\").trim(); const lower=body.toLowerCase(); const planned = lower.includes(\"roadmap only\") || lower.includes(\"planned feature\") || lower.includes(\"planned but not yet implemented\") || lower.includes(\"not built yet\") || lower.includes(\"not yet implemented\") || lower.includes(\"still deferred\") || lower.includes(\"is still deferred\") || lower.includes(\"planned but\") || lower.includes(\"remains deferred until\") || lower.includes(\"future enhancement\") || lower.includes(\"would let you\"); current.features.push({name:feat,status:planned?\"planned\":\"implemented\",body}); feat=null; buf=[]; } }; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ flush(); const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); current={name:(m?m[1]:line.slice(3)).trim(),features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ flush(); feat=line.slice(4).trim(); } else if(feat!==null){ buf.push(line); } } flush(); return cats; } const parsed={master:parse(files.master), simple:parse(files.simple)}; const mismatches=[]; for(const mc of parsed.master){ const sc=parsed.simple.find(x=>x.name===mc.name); for(const mf of mc.features){ const sf=(sc?.features||[]).find(x=> x.name===mf.name || x.name===mf.name.replace("via /memory:continue","(/memory:continue)") || mf.name===x.name.replace("(/memory:continue)","via /memory:continue")); if(!sf){ mismatches.push({category:mc.name,feature:mf.name,master:mf.status,simple:"missing"}); } else if(sf.status!==mf.status){ mismatches.push({category:mc.name,feature:mf.name,master:mf.status,simple:sf.status}); } } } console.log(JSON.stringify(mismatches,null,2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "node -e 'const fs=require(\"fs\"), path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); const files={master:path.join(base,\"FEATURE_CATALOG.md\"),simple:path.join(base,\"FEATURE_CATALOG_IN_SIMPLE_TERMS.md\")}; function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null, buf=[]; const flush=()=>{ if(feat"'!==null){ const body=buf.join("'"\\n\").trim(); const lower=body.toLowerCase(); const planned = lower.includes(\"roadmap only\") || lower.includes(\"planned feature\") || lower.includes(\"planned but not yet implemented\") || lower.includes(\"not built yet\") || lower.includes(\"not yet implemented\") || lower.includes(\"still deferred\") || lower.includes(\"is still deferred\") || lower.includes(\"planned but\") || lower.includes(\"remains deferred until\") || lower.includes(\"future enhancement\") || lower.includes(\"would let you\"); current.features.push({name:feat,status:planned?\"planned\":\"implemented\",body}); feat=null; buf=[]; } }; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ flush(); const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); current={name:(m?m[1]:line.slice(3)).trim(),features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ flush(); feat=line.slice(4).trim(); } else if(feat!==null){ buf.push(line); } } flush(); return cats; } const parsed={master:parse(files.master), simple:parse(files.simple)}; const mismatches=[]; for(const mc of parsed.master){ const sc=parsed.simple.find(x=>x.name===mc.name); for(const mf of mc.features){ const sf=(sc?.features||[]).find(x=> x.name===mf.name || x.name===mf.name.replace("via /memory:continue","(/memory:continue)") || mf.name===x.name.replace("(/memory:continue)","via /memory:continue")); if(!sf){ mismatches.push({category:mc.name,feature:mf.name,master:mf.status,simple:"missing"}); } else if(sf.status!==mf.status){ mismatches.push({category:mc.name,feature:mf.name,master:mf.status,simple:sf.status}); } } } console.log(JSON.stringify(mismatches,null,2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 [
   {
     "category": "OVERVIEW",
@@ -289,7 +289,7 @@ exec
   }
 ]
 exec
-/bin/zsh -lc "sed -n '240,340p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '240,340p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 Before starting a task, this tool records how much you know, how uncertain you are and how complete your context is. It is like taking a "before" photo at the start of a home renovation. Later, you can compare against the "after" to measure how much progress you made and what you learned along the way.
 
@@ -311,14 +311,14 @@ This tool tests how important each part of the search system is by turning off o
 
 ### Reporting dashboard (eval_reporting_dashboard)
 exec
-/bin/zsh -lc 'rg -n "''^### Namespace management CRUD tools '"\\(shared-memory lifecycle\\)|"'^### Audit Phase Coverage Notes '"\\(020-022\\)|"'^### Session recovery" .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:103:### Session recovery (/memory:continue)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:141:### Namespace management CRUD tools (shared-memory lifecycle)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:42:### Audit Phase Coverage Notes (020-022)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:284:### Session recovery via /memory:continue
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:468:### Namespace management CRUD tools (shared-memory lifecycle)
+/bin/zsh -lc 'rg -n "''^### Namespace management CRUD tools '"\\(shared-memory lifecycle\\)|"'^### Audit Phase Coverage Notes '"\\(020-022\\)|"'^### Session recovery" .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:103:### Session recovery (/memory:continue)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:141:### Namespace management CRUD tools (shared-memory lifecycle)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:42:### Audit Phase Coverage Notes (020-022)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:284:### Session recovery via /memory:continue
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:468:### Namespace management CRUD tools (shared-memory lifecycle)
 exec
-/bin/zsh -lc "sed -n '300,380p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '300,380p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 After recovery, the command routes to `/spec_kit:resume` for structured spec-folder work or `/memory:analyze history` for broader historical analysis, depending on user intent.
 
 #### Source Files
@@ -340,7 +340,7 @@ This section documents 10 mutation features.
 #### Description
 
 exec
-/bin/zsh -lc "sed -n '120,170p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '120,170p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
 
@@ -362,7 +362,7 @@ After a search result is shown to you, you can tell the system whether it was he
 
 Every time the system saves or changes your data, it wraps the operation in a safety net. If anything goes wrong mid-save, all changes roll back so you never end up with half-written or corrupted information. This is like a bank transfer that either completes fully or does not happen at all.
 exec
-/bin/zsh -lc "sed -n '455,495p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '455,495p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 Every time the system saves or changes your data, it wraps the operation in a safety net. If anything goes wrong mid-save, all changes roll back so you never end up with half-written or corrupted information. This is like a bank transfer that either completes fully or does not happen at all.
 
@@ -384,21 +384,21 @@ Shared-memory spaces let multiple users or agents access the same pool of knowle
 
 #### Current Reality
 exec
-/bin/zsh -lc 'rg -n "ROADMAP ONLY|not yet implemented|still deferred|remains deferred|planned but|planned feature|No source files yet|deferred until|future enhancement" .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:93:This planned feature would let you pull out a single section from a large document by its heading, like opening a book directly to the chapter you need instead of flipping through the whole thing. It is not built yet because current documents are small enough that fetching the whole file works fine.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:143:Shared-memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools live under `/memory:shared`: `shared_space_upsert` creates or updates a space with tenant and actor identity, `shared_space_membership_set` controls who gets access using a deny-by-default model (nobody gets in unless explicitly granted `owner`, `editor`, or `viewer` access), `shared_memory_status` reports what is enabled and who has access, and `shared_memory_enable` turns on the subsystem for the first time. The first create auto-grants the acting caller owner access so the space is not locked out from the start. Think of it like a shared office with a keycard lock: you must first turn on the lock system, then add names to the access list. The original plan for full workspace management (list/create/switch/delete) is still deferred since the shared-memory tools cover the current need.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:413:Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:749:Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:234:This planned feature would let you pull out a single section from a large document by its heading, like opening a book directly to the chapter you need instead of flipping through the whole thing. It is not built yet because current documents are small enough that fetching the whole file works fine.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:238:**ROADMAP ONLY.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is still deferred until spec docs routinely exceed ~1000 lines. Existing anchor-aware thinning remains the current approach, so this is not part of the current runtime surface.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:242:No source files yet. This feature is planned but not yet implemented.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:483:The original full namespace CRUD (`list/create/switch/delete`) for complete multi-tenant isolation remains deferred. Current scoping relies on logical `specFolder` filtering augmented by the shared-memory tools above.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:1665:Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3226:Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
+/bin/zsh -lc 'rg -n "ROADMAP ONLY|not yet implemented|still deferred|remains deferred|planned but|planned feature|No source files yet|deferred until|future enhancement" .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:93:This planned feature would let you pull out a single section from a large document by its heading, like opening a book directly to the chapter you need instead of flipping through the whole thing. It is not built yet because current documents are small enough that fetching the whole file works fine.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:143:Shared-memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools live under `/memory:shared`: `shared_space_upsert` creates or updates a space with tenant and actor identity, `shared_space_membership_set` controls who gets access using a deny-by-default model (nobody gets in unless explicitly granted `owner`, `editor`, or `viewer` access), `shared_memory_status` reports what is enabled and who has access, and `shared_memory_enable` turns on the subsystem for the first time. The first create auto-grants the acting caller owner access so the space is not locked out from the start. Think of it like a shared office with a keycard lock: you must first turn on the lock system, then add names to the access list. The original plan for full workspace management (list/create/switch/delete) is still deferred since the shared-memory tools cover the current need.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:413:Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:749:Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:234:This planned feature would let you pull out a single section from a large document by its heading, like opening a book directly to the chapter you need instead of flipping through the whole thing. It is not built yet because current documents are small enough that fetching the whole file works fine.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:238:**ROADMAP ONLY.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is still deferred until spec docs routinely exceed ~1000 lines. Existing anchor-aware thinning remains the current approach, so this is not part of the current runtime surface.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:242:No source files yet. This feature is planned but not yet implemented.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:483:The original full namespace CRUD (`list/create/switch/delete`) for complete multi-tenant isolation remains deferred. Current scoping relies on logical `specFolder` filtering augmented by the shared-memory tools above.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:1665:Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3226:Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
 codex
 The structural diff is mostly clean: both files have 21 top-level categories, and every category after `OVERVIEW` matches feature-for-feature. I’m now validating the only real drift point and doing a few spot checks where status wording could be easy to oversimplify.
 exec
-/bin/zsh -lc "sed -n '65,110p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '65,110p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 ### Semantic and lexical search (memory_search)
 
 This is the main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (not just keywords), so searching for "login problems" can find a document titled "authentication troubleshooting." Without it, you would have no way to find relevant information in the knowledge base.
@@ -420,17 +420,17 @@ When you search for something, the system looks in several places at once, like 
 ### 4-stage pipeline architecture
 
 exec
-/bin/zsh -lc 'rg -n "''^### (Unified context retrieval '"\\(memory_context\\)|AST-level section retrieval tool|Namespace management CRUD tools \\(shared-memory lifecycle\\)|Persistent MCP server|Feature flag sunset audit)\" .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:61:### Unified context retrieval (memory_context)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:91:### AST-level section retrieval tool
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:141:### Namespace management CRUD tools (shared-memory lifecycle)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:899:### Feature flag sunset audit
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:69:### Unified context retrieval (memory_context)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:230:### AST-level section retrieval tool
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:468:### Namespace management CRUD tools (shared-memory lifecycle)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3911:### Feature flag sunset audit
+/bin/zsh -lc 'rg -n "''^### (Unified context retrieval '"\\(memory_context\\)|AST-level section retrieval tool|Namespace management CRUD tools \\(shared-memory lifecycle\\)|Persistent MCP server|Feature flag sunset audit)\" .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:61:### Unified context retrieval (memory_context)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:91:### AST-level section retrieval tool
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:141:### Namespace management CRUD tools (shared-memory lifecycle)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:899:### Feature flag sunset audit
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:69:### Unified context retrieval (memory_context)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:230:### AST-level section retrieval tool
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:468:### Namespace management CRUD tools (shared-memory lifecycle)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3911:### Feature flag sunset audit
 exec
-/bin/zsh -lc "sed -n '3205,3255p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '3205,3255p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 ### Dynamic server instructions at MCP initialization
 
@@ -452,7 +452,7 @@ See [`14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initializa
 
 #### Description
 exec
-/bin/zsh -lc "sed -n '735,770p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '735,770p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 ### DB_PATH extraction and import standardization
 
 Multiple parts of the system were figuring out where the database lives in their own way, each with its own hardcoded path. This fix created one shared place that knows the database location, and everyone else just asks it. It is like giving the whole team the same address book instead of each person keeping their own copy that might go out of date.
@@ -474,7 +474,7 @@ Right now, the memory server starts fresh every time it is called and shuts down
 The system is still backed by the same database, but the search storage layer now connects through a standardized adapter instead of being hard-wired directly. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. You still use the same power source today, but the coupling point is cleaner and easier to replace later if scale ever demands it. Note that only the search storage uses this adapter. The connection graph and document storage still talk directly to the database, so those boundaries remain tightly coupled until a real need appears to swap them out.
 
 exec
-/bin/zsh -lc "sed -n '60,115p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '60,115p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
 | `/memory:shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
 
@@ -496,7 +496,7 @@ You send a query or prompt. The system figures out what you need. That is the co
 
 Intent detection classifies your input into one of seven types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and maps it to a retrieval mode. Five modes are available: auto (default, intent-detected routing), quick (trigger matching for fast lookups), deep (comprehensive semantic search across the full corpus), focused (intent-optimized with tighter filtering) and resume (session recovery targeting state, next-steps, summary and blocker anchors with full content included).
 exec
-/bin/zsh -lc "sed -n '1608,1688p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '1608,1688p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 See [`10--graph-signal-activation/06-causal-depth-signal.md`](10--graph-signal-activation/06-causal-depth-signal.md) for full implementation and test file listings.
 
@@ -518,15 +518,15 @@ Community assignments are stored in the `community_assignments` table with a UNI
 
 The `applyCommunityBoost()` function in the pipeline injects up to 3 community co-members into the result set at 0.3x the source memory's score, using whatever assignments already exist in `community_assignments`. Community injection runs in Stage 2 at position 2b (between causal boost and graph signals) so that injected rows also receive N2a+N2b momentum and depth adjustments. Runs behind the `SPECKIT_COMMUNITY_DETECTION` flag (default ON).
 exec
-/bin/zsh -lc 'rg -n "''^### Anchor-level graph edges|''^### Warm server / daemon mode|''^### Dynamic server instructions at MCP initialization|''^### Fast delegated search '"\\(memory_quick_search\\)\" .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:71:### Fast delegated search (memory_quick_search)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:743:### Dynamic server instructions at MCP initialization
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md:747:### Warm server / daemon mode
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:119:### Fast delegated search (memory_quick_search)
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3206:### Dynamic server instructions at MCP initialization
-.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3222:### Warm server / daemon mode
+/bin/zsh -lc 'rg -n "''^### Anchor-level graph edges|''^### Warm server / daemon mode|''^### Dynamic server instructions at MCP initialization|''^### Fast delegated search '"\\(memory_quick_search\\)\" .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:71:### Fast delegated search (memory_quick_search)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:743:### Dynamic server instructions at MCP initialization
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md:747:### Warm server / daemon mode
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:119:### Fast delegated search (memory_quick_search)
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3206:### Dynamic server instructions at MCP initialization
+.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3222:### Warm server / daemon mode
 exec
-/bin/zsh -lc "sed -n '402,420p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '402,420p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 
 ### Community detection
 
@@ -547,7 +547,7 @@ When a search result scores highly, this feature follows its cause-and-effect li
 ### Temporal contiguity layer
 
 exec
-/bin/zsh -lc "sed -n '150,190p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '150,190p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 Where this tool gets interesting is the cognitive pipeline. When you provide a session ID with `include_cognitive=true`, the system applies FSRS-based attention decay (scores degrade each turn via `0.98^(turn-1)` exponential decay), memory activation (matched memories get their attention score set to 1.0), co-activation spreading (each activated memory spreads activation to related memories through the co-occurrence graph), tier classification (maps effective retrievability to HOT, WARM, COLD, DORMANT or ARCHIVED) and tiered content injection.
 
 Tiered content injection is the most visible effect. HOT memories return their full file content read from disk. WARM memories return the first 150 characters as a summary. COLD memories and below return no content at all. This tiering means recently active and highly relevant memories arrive with full context while dormant ones arrive as lightweight pointers.
@@ -569,7 +569,7 @@ When you search for something, the system looks in several places at once, like 
 #### Current Reality
 
 exec
-/bin/zsh -lc "node -e 'const fs=require(\"fs\"), path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); current={name:(m?m[1]:line.slice(3)).trim(), features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ current.features.push(line.slice(4).trim()); } } return cats; } const m=parse(path.join(base,"feature_catalog.md")); const s=parse(path.join(base,"feature_catalog_in_simple_terms.md")); const normalized=x=>x.replace("via /memory:continue","(/memory:continue)"); const rows=m.map(mc=>{ const sc=s.find(x=>x.name===mc.name)||{features:[]}; const mm=mc.features.map(normalized), sm=sc.features.map(normalized); const same=mm.length===sm.length && mm.every((f,i)=>sm.includes(f)); return {category:mc.name, master:mm.length, simple:sm.length, match:same}; }); const totals={master_categories:m.length,simple_categories:s.length,master_features:m.reduce((a,c)=>a+c.features.length,0),simple_features:s.reduce((a,c)=>a+c.features.length,0),fully_aligned:rows.filter(r=>r.match).length,drifted:rows.filter(r=>!r.match).length}; console.log(JSON.stringify({rows, totals}, null, 2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "node -e 'const fs=require(\"fs\"), path=require(\"path\"); const base=path.join(\".opencode\",\"skill\",\"system-spec-kit\",\"feature_catalog\"); function parse(file){ const lines=fs.readFileSync(file,\"utf8\").split(/\\r?\\n/); const cats=[]; let current=null, feat=null; for(const line of lines){ if(/"'^## (?!TABLE OF CONTENTS)('"\\d+\\.|\\d+ )/.test(line)){ const m=line.match(/"'^##'"\\s+\\d+\\.\\s+(.*)"'$/); current={name:(m?m[1]:line.slice(3)).trim(), features:[]}; cats.push(current); } else if(current && line.startsWith("### ")){ current.features.push(line.slice(4).trim()); } } return cats; } const m=parse(path.join(base,"FEATURE_CATALOG.md")); const s=parse(path.join(base,"FEATURE_CATALOG_IN_SIMPLE_TERMS.md")); const normalized=x=>x.replace("via /memory:continue","(/memory:continue)"); const rows=m.map(mc=>{ const sc=s.find(x=>x.name===mc.name)||{features:[]}; const mm=mc.features.map(normalized), sm=sc.features.map(normalized); const same=mm.length===sm.length && mm.every((f,i)=>sm.includes(f)); return {category:mc.name, master:mm.length, simple:sm.length, match:same}; }); const totals={master_categories:m.length,simple_categories:s.length,master_features:m.reduce((a,c)=>a+c.features.length,0),simple_features:s.reduce((a,c)=>a+c.features.length,0),fully_aligned:rows.filter(r=>r.match).length,drifted:rows.filter(r=>!r.match).length}; console.log(JSON.stringify({rows, totals}, null, 2));'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 {
   "rows": [
     {
@@ -591,7 +591,7 @@ exec
       "match": true
     },
 exec
-/bin/zsh -lc "sed -n '119,145p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '119,145p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 ### Fast delegated search (memory_quick_search)
 
 #### Description
@@ -613,8 +613,8 @@ This is the lightweight search entry point for callers that want the main semant
 
 ### Trigger phrase matching (memory_match_triggers)
 exec
-/bin/zsh -lc "sed -n '3911,3935p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "sed -n '899,909p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '3911,3935p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '899,909p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 ### Feature flag sunset audit
 
 #### Description
@@ -648,7 +648,7 @@ This feature controls who can save and read memories and keeps a record of every
 
 Shared memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools handle the lifecycle under `/memory:shared`: `shared_memory_enable` turns on the subsystem, `shared_space_upsert` creates or updates spaces, `shared_space_membership_set` controls who gets in, and `shared_memory_status` reports the current state. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via `/memory:shared enable`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership with a role (`owner`, `editor`, or `viewer`). An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency. Shared members can now see each other's shared memories without needing an exact actor or session match, and partial space updates no longer erase saved cohort or metadata fields.
 exec
-/bin/zsh -lc "sed -n '38,58p' .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "sed -n '38,58p' .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 ## 1. OVERVIEW
 
 Use this simplified catalog as the plain-language companion to the full feature catalog. The numbered sections below keep the same capability grouping as the canonical reference, but explain the system in operator-friendly terms so readers can understand what each part does before diving into implementation details.
@@ -674,8 +674,8 @@ codex
 ## Agent: codex / gpt-5.4 / high
 ## Dimension: traceability
 ## Files Reviewed
-- [feature_catalog.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-- [feature_catalog_in_simple_terms.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+- [FEATURE_CATALOG.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
+- [FEATURE_CATALOG_IN_SIMPLE_TERMS.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
 
 ## Alignment Check
 ### Category Counts
@@ -727,15 +727,15 @@ codex
   - `Session recovery via /memory:continue` vs `Session recovery (/memory:continue)`
 
 ### Content Accuracy Spot-Checks
-- `Unified context retrieval (memory_context)` is a faithful simplification: the simple doc preserves the intent-routing behavior and operator framing while dropping token-budget and rollout-flag internals. See [feature_catalog.md#L69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L69) and [feature_catalog_in_simple_terms.md#L61](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L61).
-- `Fast delegated search (memory_quick_search)` is accurate: the simple doc correctly describes it as a narrow wrapper/preset over `memory_search` without overstating capability. See [feature_catalog.md#L119](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L119) and [feature_catalog_in_simple_terms.md#L71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L71).
-- `AST-level section retrieval tool` keeps the roadmap-only status intact and accurately says it is not built yet. See [feature_catalog.md#L230](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L230) and [feature_catalog_in_simple_terms.md#L91](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L91).
-- `Namespace management CRUD tools (shared-memory lifecycle)` is accurately simplified: the simple doc correctly says the four `/memory:shared` tools are shipped, while only the broader full namespace CRUD idea remains deferred. See [feature_catalog.md#L468](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L468) and [feature_catalog_in_simple_terms.md#L141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L141).
-- `Warm server / daemon mode` is accurately marked as planned/deferred in simple terms and does not imply it already ships. See [feature_catalog.md#L3222](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L3222) and [feature_catalog_in_simple_terms.md#L747](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L747).
+- `Unified context retrieval (memory_context)` is a faithful simplification: the simple doc preserves the intent-routing behavior and operator framing while dropping token-budget and rollout-flag internals. See [FEATURE_CATALOG.md#L69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L69) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L61](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L61).
+- `Fast delegated search (memory_quick_search)` is accurate: the simple doc correctly describes it as a narrow wrapper/preset over `memory_search` without overstating capability. See [FEATURE_CATALOG.md#L119](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L119) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L71).
+- `AST-level section retrieval tool` keeps the roadmap-only status intact and accurately says it is not built yet. See [FEATURE_CATALOG.md#L230](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L230) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L91](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L91).
+- `Namespace management CRUD tools (shared-memory lifecycle)` is accurately simplified: the simple doc correctly says the four `/memory:shared` tools are shipped, while only the broader full namespace CRUD idea remains deferred. See [FEATURE_CATALOG.md#L468](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L468) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L141).
+- `Warm server / daemon mode` is accurately marked as planned/deferred in simple terms and does not imply it already ships. See [FEATURE_CATALOG.md#L3222](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L3222) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L747](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L747).
 
 ## Findings
 ### P2-001: `OVERVIEW` is missing the master’s audit-coverage subsection
-The master catalog includes `### Audit Phase Coverage Notes (020-022)` in [feature_catalog.md#L42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L42), but the simple catalog’s `OVERVIEW` only contains `### Command-Surface Contract` in [feature_catalog_in_simple_terms.md#L38](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L38). That leaves the simple catalog one subsection short overall, so the docs are not strictly one-to-one traceable even though the rest of the catalog is aligned.
+The master catalog includes `### Audit Phase Coverage Notes (020-022)` in [FEATURE_CATALOG.md#L42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L42), but the simple catalog’s `OVERVIEW` only contains `### Command-Surface Contract` in [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L38](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L38). That leaves the simple catalog one subsection short overall, so the docs are not strictly one-to-one traceable even though the rest of the catalog is aligned.
 
 ## Summary
 - Categories compared: 21
@@ -747,8 +747,8 @@ tokens used
 ## Agent: codex / gpt-5.4 / high
 ## Dimension: traceability
 ## Files Reviewed
-- [feature_catalog.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-- [feature_catalog_in_simple_terms.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+- [FEATURE_CATALOG.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
+- [FEATURE_CATALOG_IN_SIMPLE_TERMS.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
 
 ## Alignment Check
 ### Category Counts
@@ -800,15 +800,15 @@ tokens used
   - `Session recovery via /memory:continue` vs `Session recovery (/memory:continue)`
 
 ### Content Accuracy Spot-Checks
-- `Unified context retrieval (memory_context)` is a faithful simplification: the simple doc preserves the intent-routing behavior and operator framing while dropping token-budget and rollout-flag internals. See [feature_catalog.md#L69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L69) and [feature_catalog_in_simple_terms.md#L61](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L61).
-- `Fast delegated search (memory_quick_search)` is accurate: the simple doc correctly describes it as a narrow wrapper/preset over `memory_search` without overstating capability. See [feature_catalog.md#L119](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L119) and [feature_catalog_in_simple_terms.md#L71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L71).
-- `AST-level section retrieval tool` keeps the roadmap-only status intact and accurately says it is not built yet. See [feature_catalog.md#L230](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L230) and [feature_catalog_in_simple_terms.md#L91](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L91).
-- `Namespace management CRUD tools (shared-memory lifecycle)` is accurately simplified: the simple doc correctly says the four `/memory:shared` tools are shipped, while only the broader full namespace CRUD idea remains deferred. See [feature_catalog.md#L468](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L468) and [feature_catalog_in_simple_terms.md#L141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L141).
-- `Warm server / daemon mode` is accurately marked as planned/deferred in simple terms and does not imply it already ships. See [feature_catalog.md#L3222](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L3222) and [feature_catalog_in_simple_terms.md#L747](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L747).
+- `Unified context retrieval (memory_context)` is a faithful simplification: the simple doc preserves the intent-routing behavior and operator framing while dropping token-budget and rollout-flag internals. See [FEATURE_CATALOG.md#L69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L69) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L61](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L61).
+- `Fast delegated search (memory_quick_search)` is accurate: the simple doc correctly describes it as a narrow wrapper/preset over `memory_search` without overstating capability. See [FEATURE_CATALOG.md#L119](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L119) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L71).
+- `AST-level section retrieval tool` keeps the roadmap-only status intact and accurately says it is not built yet. See [FEATURE_CATALOG.md#L230](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L230) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L91](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L91).
+- `Namespace management CRUD tools (shared-memory lifecycle)` is accurately simplified: the simple doc correctly says the four `/memory:shared` tools are shipped, while only the broader full namespace CRUD idea remains deferred. See [FEATURE_CATALOG.md#L468](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L468) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L141).
+- `Warm server / daemon mode` is accurately marked as planned/deferred in simple terms and does not imply it already ships. See [FEATURE_CATALOG.md#L3222](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L3222) and [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L747](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L747).
 
 ## Findings
 ### P2-001: `OVERVIEW` is missing the master’s audit-coverage subsection
-The master catalog includes `### Audit Phase Coverage Notes (020-022)` in [feature_catalog.md#L42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L42), but the simple catalog’s `OVERVIEW` only contains `### Command-Surface Contract` in [feature_catalog_in_simple_terms.md#L38](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md#L38). That leaves the simple catalog one subsection short overall, so the docs are not strictly one-to-one traceable even though the rest of the catalog is aligned.
+The master catalog includes `### Audit Phase Coverage Notes (020-022)` in [FEATURE_CATALOG.md#L42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L42), but the simple catalog’s `OVERVIEW` only contains `### Command-Surface Contract` in [FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L38](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md#L38). That leaves the simple catalog one subsection short overall, so the docs are not strictly one-to-one traceable even though the rest of the catalog is aligned.
 
 ## Summary
 - Categories compared: 21

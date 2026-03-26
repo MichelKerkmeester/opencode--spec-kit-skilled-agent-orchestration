@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `163` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/query-surrogates.ts`
 
@@ -42,5 +42,5 @@ Operators run the exact prompt and command sequence for `163` and confirm the ex
 
 - Group: Query Intelligence
 - Playbook ID: 163
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md`

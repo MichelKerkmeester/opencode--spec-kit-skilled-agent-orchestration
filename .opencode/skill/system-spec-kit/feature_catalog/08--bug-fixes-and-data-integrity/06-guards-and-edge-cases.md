@@ -53,4 +53,4 @@ Six guard/edge-case issues were fixed:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Guards and edge cases
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

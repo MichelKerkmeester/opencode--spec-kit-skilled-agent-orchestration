@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `109` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [01--retrieval/08-quality-aware-3-tier-search-fallback.md](../../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `109` and confirm the ex
 
 - Group: Retrieval
 - Playbook ID: 109
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `01--retrieval/109-quality-aware-3-tier-search-fallback.md`

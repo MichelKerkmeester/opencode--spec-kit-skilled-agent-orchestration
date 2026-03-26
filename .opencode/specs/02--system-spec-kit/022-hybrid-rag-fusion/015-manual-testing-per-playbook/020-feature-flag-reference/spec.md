@@ -129,7 +129,7 @@ No P1 items are defined for this phase; all three flag-reference audit scenarios
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
 | Dependency | [`../../007-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md`](../../007-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md) | Supplies audit findings context including the F05 PARTIAL verdict and 22-flag graduation event | Keep every test row linked to its mapped audit finding |
 | Dependency | Commit `09acbe8ce` graduation event | PB-020-02 depends on verifying flags graduated in this specific commit | Pin verification to this SHA; if flags have changed since, document delta |
 | Risk | Flag inventory count may differ between environment_variables.md and code due to documentation lag | Medium | Accept 5% tolerance and document exact delta for follow-up |

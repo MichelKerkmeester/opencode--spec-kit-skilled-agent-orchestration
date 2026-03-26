@@ -79,8 +79,8 @@ description: "Task breakdown for complete rewrite of the MCP server README cover
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Feature Catalog**: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
-- **Simple Terms Catalog**: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md`
+- **Feature Catalog**: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
+- **Simple Terms Catalog**: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md`
 - **Tool Schemas**: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
 - **Shared Memory Guide**: `.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md`
 <!-- /ANCHOR:cross-refs -->

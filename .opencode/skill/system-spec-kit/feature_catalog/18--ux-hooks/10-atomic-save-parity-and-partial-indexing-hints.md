@@ -195,4 +195,4 @@ Failure semantics are tighter on the primary governed-save path too. After a new
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Atomic-save parity and partial-indexing hints
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

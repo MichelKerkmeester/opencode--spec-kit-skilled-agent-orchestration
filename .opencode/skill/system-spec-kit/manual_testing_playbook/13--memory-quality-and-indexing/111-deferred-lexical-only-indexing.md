@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `111` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `111` and confirm the ex
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 111
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `13--memory-quality-and-indexing/111-deferred-lexical-only-indexing.md`

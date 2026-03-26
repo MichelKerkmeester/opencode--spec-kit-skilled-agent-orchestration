@@ -55,4 +55,4 @@ Constitutional memories are excluded from degree boosting because they already r
 
 - Group: Graph signal activation
 - Source feature title: Typed-weighted degree channel
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

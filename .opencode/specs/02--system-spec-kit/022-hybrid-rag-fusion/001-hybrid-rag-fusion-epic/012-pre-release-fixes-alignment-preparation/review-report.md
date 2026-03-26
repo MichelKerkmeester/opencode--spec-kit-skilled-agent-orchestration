@@ -77,7 +77,7 @@ The system is **not release-ready** due to 16 active P1 findings across correctn
 | 14 | P1-014-1 | 012 packet claims 119 spec directories but live count is 123 | traceability | `012-pre-release-fixes-alignment-preparation/spec.md:27` | Metadata row states 119 but `find` shows 123 numbered directories. |
 | 15 | P1-018-1 | 133 broken predecessor/successor references in spec tree | traceability | Concentrated in `009-perfect-session-capturing/` and `015-manual-testing-per-playbook/` | Predecessor/successor metadata fields reference sibling names that resolve to the current directory, not the actual sibling path. |
 | 16 | P1-018-2 | 6 broken links to non-existent research path | traceability | `../011-research-based-refinement/` subtree | Historical links pointed to a removed deep-research path; the packet now redirects to the Phase 11 parent packet instead. |
-| 17 | TRC-006-002 | eval_run_ablation dual-mode implementation not reflected in catalog | traceability | `feature_catalog.md:951-955`, `mcp_server/handlers/eval-reporting.ts:167` | Master catalog describes ablation-only behavior but code supports `mode: 'k_sensitivity'` branch that bypasses the ablation flag gate. |
+| 17 | TRC-006-002 | eval_run_ablation dual-mode implementation not reflected in catalog | traceability | `FEATURE_CATALOG.md:951-955`, `mcp_server/handlers/eval-reporting.ts:167` | Master catalog describes ablation-only behavior but code supports `mode: 'k_sensitivity'` branch that bypasses the ablation flag gate. |
 
 ### P2 Findings (14)
 

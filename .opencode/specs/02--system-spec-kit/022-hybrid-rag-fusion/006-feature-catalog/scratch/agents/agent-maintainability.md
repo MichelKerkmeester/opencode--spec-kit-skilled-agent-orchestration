@@ -20,8 +20,8 @@ I’m sampling representative catalog entries and the master index now, then I�
   │ <<'EOF'…
   └ 7 lines...
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:260 (190 lines read)
 
 ● Search (glob)
@@ -91,7 +91,7 @@ I’ve sampled six files, and the per-file template is not actually uniform: som
 
 ● Search (grep)
   │ "^##\s+20\.|^##\s+21\.|^##\s+9\.|^##\s+19\.|^##\s+Comprehensive remediation"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 4 lines found
 
 ✗ Read 01-enriched-read-results.md
@@ -129,7 +129,7 @@ I’ve confirmed there are `224` markdown files in the catalog tree, but only `2
   │ "10-fast-delegated-search-memory-quick-search|18-template-compliance-contract-enforcement|08-aud
   │ it-phase-020-mapping-note|20--remediation-revalidation/01-category-stub|21--implement-and-remove
   │ -deprecated-features/01-category-stub"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
 ● Read 08-audit-phase-020-mapping-note.md
@@ -149,22 +149,22 @@ I’ve confirmed there are `224` markdown files in the catalog tree, but only `2
 
 ● Search (grep)
   │ "^###\s+Comprehensive remediation|^###\s+Audit Phase Coverage Notes"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 3 lines found
 
 ● Search (grep)
   │ "Comprehensive remediation \(Sprint 8\)|Comprehensive remediation"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 3 lines found
 
 ● Search (grep)
   │ "^###+\s+Comprehensive remediation \(Sprint 8\)|^###+\s+Comprehensive remediation"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
-FINDING | P1 | `feature_catalog.md` is not a complete master index. The catalog tree contains `224` markdown files total (`222` category docs plus `feature_catalog.md` and `feature_catalog_in_simple_terms.md`), but the master index links only `217` category docs. Missing from the index: `01--retrieval/10-fast-delegated-search-memory-quick-search.md`, `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`, `19--feature-flag-reference/08-audit-phase-020-mapping-note.md`, `20--remediation-revalidation/01-category-stub.md`, and `21--implement-and-remove-deprecated-features/01-category-stub.md`.
+FINDING | P1 | `FEATURE_CATALOG.md` is not a complete master index. The catalog tree contains `224` markdown files total (`222` category docs plus `FEATURE_CATALOG.md` and `FEATURE_CATALOG_IN_SIMPLE_TERMS.md`), but the master index links only `217` category docs. Missing from the index: `01--retrieval/10-fast-delegated-search-memory-quick-search.md`, `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`, `19--feature-flag-reference/08-audit-phase-020-mapping-note.md`, `20--remediation-revalidation/01-category-stub.md`, and `21--implement-and-remove-deprecated-features/01-category-stub.md`.
 
-FINDING | P1 | Master-index internal navigation is broken. The top-level TOC links use `#N--slug` anchors, but headings such as `## 2. RETRIEVAL` resolve to `#2-retrieval`, not `#2--retrieval`; this affects all `21` top-level TOC entries. There is also an inline link to `#comprehensive-remediation-sprint-8` with no matching heading in `feature_catalog.md`.
+FINDING | P1 | Master-index internal navigation is broken. The top-level TOC links use `#N--slug` anchors, but headings such as `## 2. RETRIEVAL` resolve to `#2-retrieval`, not `#2--retrieval`; this affects all `21` top-level TOC entries. There is also an inline link to `#comprehensive-remediation-sprint-8` with no matching heading in `FEATURE_CATALOG.md`.
 
 FINDING | P2 | The file template is not structurally uniform. The dominant pattern (`1. OVERVIEW / 2. CURRENT REALITY / 3. SOURCE FILES / 4. SOURCE METADATA`) appears in `176/222` category docs, leaving `46` structural outliers. Sampled examples: `16--tooling-and-scripts/11-feature-catalog-code-references.md` adds `5. PLAYBOOK COVERAGE`, `19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` adds a local `TABLE OF CONTENTS`, and `16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` swaps in `FEATURE BREAKDOWN` and `VERIFICATION SOURCES`.
 

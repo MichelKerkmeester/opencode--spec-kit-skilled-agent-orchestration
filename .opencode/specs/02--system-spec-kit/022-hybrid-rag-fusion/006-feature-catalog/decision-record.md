@@ -195,7 +195,7 @@ The prior scan recommended creating new categories (Server Operations, Save Path
 ### Constraints
 
 - Restructuring would invalidate all existing `## Source Metadata` references
-- The monolithic `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` uses category-based section ordering
+- The monolithic `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` uses category-based section ordering
 - Other tooling (generate-source-files.mjs, replace-monolith-source-files.mjs) depends on category directory names
 
 ---

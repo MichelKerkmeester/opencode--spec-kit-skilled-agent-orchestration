@@ -152,7 +152,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md)
 
 ---
@@ -161,5 +161,5 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Group: Tooling and Scripts
 - Playbook ID: M-007
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/007-session-capturing-pipeline-quality.md`

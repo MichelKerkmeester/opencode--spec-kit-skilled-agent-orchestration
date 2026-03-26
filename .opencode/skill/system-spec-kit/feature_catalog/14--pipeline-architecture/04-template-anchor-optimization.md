@@ -50,4 +50,4 @@ This is a pure annotation step wired into Stage 2 as step 8. It never modifies a
 
 - Group: Pipeline architecture
 - Source feature title: Template anchor optimization
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

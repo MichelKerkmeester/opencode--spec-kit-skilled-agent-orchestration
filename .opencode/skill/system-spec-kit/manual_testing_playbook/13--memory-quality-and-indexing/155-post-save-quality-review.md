@@ -38,7 +38,7 @@ Operators invoke `generate-context.js --json` with controlled payloads and inspe
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [13--memory-quality-and-indexing/19-post-save-quality-review.md](../../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md)
 - Related entry: [16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md](../16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md)
 - Workflow hook: `scripts/core/post-save-review.ts`
@@ -51,5 +51,5 @@ Operators invoke `generate-context.js --json` with controlled payloads and inspe
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 155
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `13--memory-quality-and-indexing/155-post-save-quality-review.md`

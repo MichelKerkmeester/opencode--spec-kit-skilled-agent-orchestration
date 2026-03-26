@@ -70,4 +70,4 @@ The boost applied before FSRS decay and capped the composite score at 0.95 to pr
 
 - Group: Scoring and calibration
 - Source feature title: Cold-start novelty boost
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

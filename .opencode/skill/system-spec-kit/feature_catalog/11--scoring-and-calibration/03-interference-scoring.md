@@ -44,4 +44,4 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 
 - Group: Scoring and calibration
 - Source feature title: Interference scoring
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

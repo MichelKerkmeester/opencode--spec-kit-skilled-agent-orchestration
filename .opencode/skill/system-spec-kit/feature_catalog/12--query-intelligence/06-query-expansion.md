@@ -105,4 +105,4 @@ When R15 classifies a query as "simple", the embedding-based expansion path is s
 
 - Group: Query intelligence
 - Source feature title: Query expansion
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

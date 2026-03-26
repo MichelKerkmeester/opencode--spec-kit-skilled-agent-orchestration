@@ -115,21 +115,21 @@ FILE:.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation
 9:## Source Files
 39:- Group: Graph signal activation
 40:- Source feature title: Typed-weighted degree channel
-41:- Current reality source: feature_catalog.md
+41:- Current reality source: FEATURE_CATALOG.md
 
 FILE:.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md
 3:## Current Reality
 9:## Source Files
 25:- Group: Graph signal activation
 26:- Source feature title: Co-activation boost strength increase
-27:- Current reality source: feature_catalog.md
+27:- Current reality source: FEATURE_CATALOG.md
 
 FILE:.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md
 3:## Current Reality
 7:## Source Files
 23:- Group: Graph signal activation
 24:- Source feature title: Edge density measurement
-25:- Current reality source: feature_catalog.md
+25:- Current reality source: FEATURE_CATALOG.md
 codex
 I’ve got the five target files and the relevant skill guidance loaded. Next I’m pulling the full `Current Reality` and `Source Files` sections, then I’ll open each referenced implementation file and look for unlisted code paths that materially participate in the feature.
 exec

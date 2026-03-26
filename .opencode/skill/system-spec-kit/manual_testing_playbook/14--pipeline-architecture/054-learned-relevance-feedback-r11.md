@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `054` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [14--pipeline-architecture/06-learned-relevance-feedback.md](../../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `054` and confirm the ex
 
 - Group: Pipeline Architecture
 - Playbook ID: 054
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `14--pipeline-architecture/054-learned-relevance-feedback-r11.md`

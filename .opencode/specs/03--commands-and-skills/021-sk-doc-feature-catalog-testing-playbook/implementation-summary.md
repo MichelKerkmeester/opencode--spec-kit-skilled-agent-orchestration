@@ -38,7 +38,7 @@ The repo now has one coherent documentation contract for feature catalogs and ma
 ### Delivered Changes
 
 - `system-spec-kit/manual_testing_playbook/` was converted into an integrated root-playbook package with numbered root-level category folders, richer orchestrator-led per-feature files, and root-owned review/orchestration guidance instead of separate canonical sidecar docs.
-- `system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` were aligned to the final feature-catalog header/frontmatter conventions, and per-feature files were updated to carry frontmatter like the root docs.
+- `system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md` were aligned to the final feature-catalog header/frontmatter conventions, and per-feature files were updated to carry frontmatter like the root docs.
 - `mcp-coco-index/manual_testing_playbook/` was aligned to the same integrated root-playbook contract and its obsolete sidecar docs were removed.
 - `.claude/skills/system-spec-kit/manual_testing_playbook/` was reshaped to mirror the 19-folder feature-catalog taxonomy.
 - `sk-doc` now ships dedicated template bundles under `assets/documentation/testing_playbook/` and `assets/documentation/feature_catalog/`.

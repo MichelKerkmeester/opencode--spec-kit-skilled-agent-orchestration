@@ -135,8 +135,8 @@ No P1 items defined for this phase; all 10 query-intelligence scenarios are mand
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass criteria | Treat the playbook as source of truth; update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/12--query-intelligence/`](../../feature_catalog/12--query-intelligence/) | Supplies feature context for each query-intelligence scenario | Keep every test row linked to its mapped query-intelligence feature file |
 | Dependency | MCP runtime plus retrieval sandbox corpus | Required to execute `memory_search` scenarios safely | Run stateful tests in an isolated sandbox; preserve restart/checkpoint instructions in the plan |
 | Risk | 033 and 037 require disabling feature flags to test fallback paths; flag changes can affect other concurrent test runs | Medium | Isolate flag-toggle tests to a dedicated runtime instance; restore default flag values before the next scenario |

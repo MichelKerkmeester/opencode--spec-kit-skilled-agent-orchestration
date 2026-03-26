@@ -31,7 +31,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 
 ---
 
@@ -39,5 +39,5 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Group: Retrieval
 - Playbook ID: M-002
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `01--retrieval/002-targeted-memory-lookup.md`

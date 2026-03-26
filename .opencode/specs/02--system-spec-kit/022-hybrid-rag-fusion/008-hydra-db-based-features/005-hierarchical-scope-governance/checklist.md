@@ -71,7 +71,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-520 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-521 [P1] Manual governance procedures added to the playbook [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
+- [x] CHK-521 [P1] Manual governance procedures added to the playbook [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md]
 - [x] CHK-522 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
 - [x] CHK-523 [P1] Maintainer sign-off recorded in phase docs [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md (L3+: SIGN-OFF)]
 <!-- /ANCHOR:docs -->

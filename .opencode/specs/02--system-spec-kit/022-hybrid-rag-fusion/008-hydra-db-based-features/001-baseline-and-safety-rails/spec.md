@@ -105,7 +105,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Modify | Add schema compatibility validation surface |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts` | Create/Modify | Add targeted Phase 1 verification |
 | `.opencode/skill/system-spec-kit/feature_catalog/**` | Modify/Create | Document delivered baseline features and flags |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add baseline validation playbook entries |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Add baseline validation playbook entries |
 
 <!-- /ANCHOR:scope -->
 

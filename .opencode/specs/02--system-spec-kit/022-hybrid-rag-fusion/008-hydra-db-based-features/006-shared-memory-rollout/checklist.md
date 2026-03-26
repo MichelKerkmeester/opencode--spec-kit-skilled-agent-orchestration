@@ -71,7 +71,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-620 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-621 [P1] Playbook updated for collaboration rollout [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
+- [x] CHK-621 [P1] Playbook updated for collaboration rollout [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md]
 - [x] CHK-622 [P1] Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
 - [x] CHK-623 [P1] Maintainer sign-off recorded in phase docs [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/checklist.md (L3+: SIGN-OFF)]
 <!-- /ANCHOR:docs -->

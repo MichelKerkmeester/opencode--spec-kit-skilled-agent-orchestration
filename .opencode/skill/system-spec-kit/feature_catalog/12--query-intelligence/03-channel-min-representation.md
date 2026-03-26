@@ -45,4 +45,4 @@ The architecture is two-layered: `channel-representation.ts` performs the core a
 
 - Group: Query intelligence
 - Source feature title: Channel min-representation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

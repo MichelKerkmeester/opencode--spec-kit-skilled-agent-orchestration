@@ -28,7 +28,7 @@ Reviewed the root coordination packet (`spec.md`, `plan.md`, `tasks.md`, `checkl
 - `004-ux-hooks-automation` does have NEW-103+ scenario coverage in the central manual playbook; the defect is the root umbrella status for phase `015`, not the existence of UX-hooks playbook scenarios.
 
 ## Ruled Out
-- Missing NEW-103+ coverage in the central playbook: not an issue after checking `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`.
+- Missing NEW-103+ coverage in the central playbook: not an issue after checking `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`.
 - Missing sibling navigation in the reviewed `002`, `003`, and `004` phase specs: not observed in this pass.
 - Missing root phase entries for the reviewed phases: not observed.
 

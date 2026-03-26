@@ -125,4 +125,4 @@ All modified files were reviewed against sk-code--opencode standards. At HEAD, t
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Code standards alignment
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

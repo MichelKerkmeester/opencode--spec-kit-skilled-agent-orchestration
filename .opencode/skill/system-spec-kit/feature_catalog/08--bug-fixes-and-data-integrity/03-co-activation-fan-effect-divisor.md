@@ -44,4 +44,4 @@ A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activatio
 
 - Group: Bug fixes and data integrity
 - Source feature title: Co-activation fan-effect divisor
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

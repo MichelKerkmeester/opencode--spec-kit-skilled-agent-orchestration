@@ -38,7 +38,7 @@ This plan converts the eleven UX-hooks scenarios in the manual testing playbook 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Exact prompts, command sequences, and pass criteria are loaded from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
+- [ ] Exact prompts, command sequences, and pass criteria are loaded from [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md).
 - [ ] Feature mappings for all 11 UX-hooks tests are confirmed against the cross-reference index and UX-hooks feature files.
 - [ ] Verdict rules from the playbook review protocol are loaded for PASS/PARTIAL/FAIL handling.
 - [ ] vitest test files confirmed to exist: `tests/hooks-ux-feedback.vitest.ts`, `tests/memory-save-ux-regressions.vitest.ts`, `tests/context-server.vitest.ts`, `tests/handler-checkpoints.vitest.ts`, `tests/tool-input-schema.vitest.ts`, `tests/mcp-input-validation.vitest.ts`.
@@ -133,7 +133,7 @@ Manual UX-hooks test execution pipeline with review-gated evidence collection.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
+| [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
 | Playbook review protocol | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/18--ux-hooks/`](../../feature_catalog/18--ux-hooks/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | vitest + compiled test suite (6 files) | Internal | Yellow | 103, 104, 105, 107 cannot be executed |

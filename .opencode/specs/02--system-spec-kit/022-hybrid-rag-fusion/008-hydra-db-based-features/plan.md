@@ -63,7 +63,7 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 - **Phase packs**: `001-` through `006-`, each normalized to active Level 3+ structure
 - **Runtime fixes**: `shared-spaces.ts`, `scope-governance.ts`, `vector-index-mutations.ts`
 - **Regression tests**: Hydra truth-sync, shared-space, and retention-governance suites
-- **Operator docs**: `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` and `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
+- **Operator docs**: `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` and `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 
 ### Data Flow
 1. Reproduce validation and review failures.

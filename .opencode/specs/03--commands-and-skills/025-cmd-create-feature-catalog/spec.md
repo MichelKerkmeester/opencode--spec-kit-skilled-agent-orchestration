@@ -70,7 +70,7 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
   - `.opencode/skill/sk-doc/references/specific/feature_catalog_creation.md`
   - `.opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md`
   - `.opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_snippet_template.md`
-- Define output contract for `<skill-root>/feature_catalog/feature_catalog.md` plus numbered root-level category folders and per-feature files.
+- Define output contract for `<skill-root>/feature_catalog/FEATURE_CATALOG.md` plus numbered root-level category folders and per-feature files.
 - Scope the implementation to existing create-command patterns, runtime mirrors, and command-advertising docs that list live create commands.
 
 ### Out of Scope

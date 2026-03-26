@@ -98,7 +98,7 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 | `.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/` | Create/Modify | Add adaptive-ranking policy helpers |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts` | Modify | Run bounded background learning or evaluation jobs |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add shadow-mode, rollback, and regression coverage |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add adaptive-learning validation procedures |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Add adaptive-learning validation procedures |
 
 <!-- /ANCHOR:scope -->
 

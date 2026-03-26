@@ -100,7 +100,7 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | Modify | Emit append-first version transitions |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/` | Create/Modify | Add lineage-state helpers and integrity validators |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add lineage, temporal-query, migration, and rollback coverage |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add lineage and temporal-query validation procedures |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Add lineage and temporal-query validation procedures |
 
 <!-- /ANCHOR:scope -->
 

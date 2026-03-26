@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-017` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [05--lifecycle/03-checkpoint-restore-checkpointrestore.md](../../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-017` and confirm the
 
 - Group: Lifecycle
 - Playbook ID: EX-017
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/017-checkpoint-restore-checkpoint-restore.md`

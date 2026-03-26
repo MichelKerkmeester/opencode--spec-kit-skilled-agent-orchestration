@@ -61,7 +61,7 @@ The current catalog contract is:
 
 ```text
 feature_catalog/
-├── feature_catalog.md
+├── FEATURE_CATALOG.md
 ├── 01--category-name/
 │   ├── 01-feature-name.md
 │   └── 02-feature-name.md
@@ -70,7 +70,7 @@ feature_catalog/
 ```
 
 **Invariants**:
-- root file is always `feature_catalog.md`
+- root file is always `FEATURE_CATALOG.md`
 - category directories use `NN--category-name`
 - per-feature files use `NN-feature-name.md`
 - one root entry maps to one per-feature file
@@ -138,7 +138,7 @@ Required structure:
 Recommended workflow:
 
 1. Decide the category taxonomy.
-2. Create `feature_catalog/feature_catalog.md`.
+2. Create `feature_catalog/FEATURE_CATALOG.md`.
 3. Create numbered category folders.
 4. Create one per-feature file for each root entry.
 5. Write concise root summaries and link each feature file.

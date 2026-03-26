@@ -168,7 +168,7 @@ I’ve filtered out the false positives from literal command names and generic f
   └ 1 file found
 
 ● Search (glob)
-  │ ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md"
+  │ ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md"
   └ 1 file found
 
 ● Search (glob)
@@ -298,7 +298,7 @@ Categories `20--remediation-revalidation` and `21--implement-and-remove-deprecat
 - Claims checked: `11`
 - Accurate: `8`, Inaccurate: `3`
 
-Accurate checks included tool/command counts, validation-rule count, manual playbook category count, and key file references such as `SKILL.md`, `ARCHITECTURE.md`, `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `mcp_server/context-server.ts`, `feature_catalog/feature_catalog.md`, and `references/memory/memory_system.md`.
+Accurate checks included tool/command counts, validation-rule count, manual playbook category count, and key file references such as `SKILL.md`, `ARCHITECTURE.md`, `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `mcp_server/context-server.ts`, `feature_catalog/FEATURE_CATALOG.md`, and `references/memory/memory_system.md`.
 
 ## Findings
 

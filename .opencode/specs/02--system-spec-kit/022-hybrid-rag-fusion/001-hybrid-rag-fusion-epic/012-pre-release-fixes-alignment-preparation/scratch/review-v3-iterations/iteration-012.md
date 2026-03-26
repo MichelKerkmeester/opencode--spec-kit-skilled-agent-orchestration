@@ -10,7 +10,7 @@ Dimensions: `D4 Completeness` + `D7 Documentation Quality`
 
 - Files:
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/spec.md:2-4,24-26,40-43,52-54,79-100`
-  - `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:14-33,145-150,157-173`
+  - `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:14-33,145-150,157-173`
 - Evidence: The umbrella spec marks the parent packet `Complete`, says the playbook contains `233 scenario files (265 exact IDs)` across `19 phase folders`, and hardcodes per-phase counts in the phase map.
 - Evidence: The canonical playbook root now says release coverage should be measured against `231 scenario files (270 exact IDs)` and includes a deterministic count check that fails unless the playbook tree contains exactly `231` files.
 - Evidence: The working tree under `015-manual-testing-per-playbook/` now contains `22` numbered child folders (`001` through `022`), not the umbrella's `19`, so the parent packet no longer matches either the canonical playbook totals or the on-disk child inventory.

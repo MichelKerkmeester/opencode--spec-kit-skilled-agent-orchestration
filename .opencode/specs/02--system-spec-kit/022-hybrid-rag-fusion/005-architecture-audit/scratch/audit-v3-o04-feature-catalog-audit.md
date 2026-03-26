@@ -27,8 +27,8 @@ The feature catalog (006) and code audit (007) phases represent a substantial bo
 ### O4-001: 14 Snippet Files Not Referenced in Monolith Index
 - **Severity**: CRITICAL
 - **Category**: completeness
-- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
-- **Description**: 14 individual snippet files exist on disk but have no corresponding H3 entry or file reference in the monolith index (`feature_catalog.md`). This means the catalog's single-source-of-truth index is incomplete.
+- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
+- **Description**: 14 individual snippet files exist on disk but have no corresponding H3 entry or file reference in the monolith index (`FEATURE_CATALOG.md`). This means the catalog's single-source-of-truth index is incomplete.
 - **Evidence**: The following 14 files exist as snippets but are NOT linked from the index:
   - `01--retrieval/07-ast-level-section-retrieval-tool.md`
   - `13--memory-quality-and-indexing/19-post-save-quality-review.md`
@@ -47,7 +47,7 @@ The feature catalog (006) and code audit (007) phases represent a substantial bo
 ### O4-002: Section 20 (PHASE SYSTEM) Has No Snippet Files
 - **Severity**: HIGH
 - **Category**: completeness
-- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (section 20)
+- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` (section 20)
 - **Description**: The monolith index has a full section "20. PHASE SYSTEM" with 4 H3 feature entries (Phase detection and scoring, Phase folder creation, Recursive phase validation, Phase link validation), but there are no corresponding individual snippet files in any folder. All other sections (2-19, 21) have matching folders and individual files.
 - **Evidence**: No folder named `20--phase-system` exists. The 4 Phase System features exist only as inline content in the monolith index. All other 190 features have individual snippet files.
 - **Impact**: Inconsistent catalog structure. The Phase System features cannot be individually managed, updated, or referenced by snippet path. The gap between "197 H3 entries in index" and "194 snippet files" is explained by these 4 missing snippets plus the 1 OVERVIEW section header (197 - 194 = 3 features without files, but OVERVIEW is structural, not a feature).
@@ -129,7 +129,7 @@ The feature catalog (006) and code audit (007) phases represent a substantial bo
 - **Location**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md` (Normalization Addendum)
 - **Description**: The 2026-03-21 Normalization Addendum claims "200 scenario files" but the actual playbook contains 201 files. The extra file (`13--memory-quality-and-indexing/155-post-save-quality-review.md`) was added after the spec count was recorded.
 - **Evidence**:
-  - `find manual_testing_playbook -name "*.md" -not -name "manual_testing_playbook.md" | wc -l` returns 201
+  - `find manual_testing_playbook -name "*.md" -not -name "MANUAL_TESTING_PLAYBOOK.md" | wc -l` returns 201
   - Spec claims 200
   - Newest files: `16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` and `13--memory-quality-and-indexing/155-post-save-quality-review.md`
 - **Impact**: Minor documentation drift. Count claims in the spec are stale by 1.
@@ -179,7 +179,7 @@ The feature catalog (006) and code audit (007) phases represent a substantial bo
 ### O4-012: Index-to-Folder Category Numbering Mismatch
 - **Severity**: MEDIUM
 - **Category**: alignment
-- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
+- **Location**: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
 - **Description**: The monolith index uses sections 2-21 (20 numbered sections), but the folder structure uses `01--` through `19--` (19 numbered folders). The offset is because the index starts at "2. RETRIEVAL" (section 1 is OVERVIEW) while folders start at `01--retrieval`. Additionally, sections 20 (PHASE SYSTEM) and 21 (FEATURE FLAG REFERENCE) map to folder `19--feature-flag-reference` only -- no `20--phase-system` folder exists.
 - **Evidence**:
   - Index: sections 2-21 (20 content sections)

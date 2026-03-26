@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [07--evaluation/01-ablation-studies-evalrunablation.md](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 
 - Group: Evaluation
 - Playbook ID: EX-026
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `07--evaluation/026-ablation-studies-eval-run-ablation.md`

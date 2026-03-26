@@ -36,7 +36,7 @@ contextType: "implementation"
 
 - [x] T001 Verify playbook files accessible at `../../manual_testing_playbook/02--mutation/`
 - [x] T002 Confirm feature catalog accessible at `../../feature_catalog/02--mutation/`
-- [x] T003 Load review protocol from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [x] T003 Load review protocol from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [x] T004 Verify MCP runtime healthy — all mutation tools and checkpoint tools respond
 - [x] T005 [P] Prepare disposable sandbox spec folder with fixture memories for EX-008, EX-009, and 110
 - [x] T006 [P] Confirm no active checkpoints conflict with planned names (pre-ex008-delete, pre-ex009-bulk-delete)

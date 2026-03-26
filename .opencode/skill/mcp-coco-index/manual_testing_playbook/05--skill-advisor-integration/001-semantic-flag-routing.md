@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `ADV-001` and confirm th
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 
 
 ---
@@ -44,5 +44,5 @@ Operators run the exact prompt and command sequence for `ADV-001` and confirm th
 
 - Group: Skill Advisor Integration
 - Playbook ID: ADV-001
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--skill-advisor-integration/001-semantic-flag-routing.md`

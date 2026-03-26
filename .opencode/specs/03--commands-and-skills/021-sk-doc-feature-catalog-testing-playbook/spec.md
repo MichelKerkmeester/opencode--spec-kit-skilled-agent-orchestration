@@ -50,7 +50,7 @@ Document the final contract so future maintenance reflects what actually shipped
 
 ### In Scope
 - Reformat `system-spec-kit` and `mcp-coco-index` manual testing playbooks into feature-catalog-style packages with one root playbook plus numbered root-level category folders of per-feature files.
-- Align `system-spec-kit/feature_catalog/`, including `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md`, to the final header/frontmatter contract, including unnumbered `TABLE OF CONTENTS`, numbered all-caps H2 sections, and feature-catalog-style snippet framing.
+- Align `system-spec-kit/feature_catalog/`, including `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md`, to the final header/frontmatter contract, including unnumbered `TABLE OF CONTENTS`, numbered all-caps H2 sections, and feature-catalog-style snippet framing.
 - Integrate former playbook sidecar guidance into the root playbook and remove the old review-protocol and subagent-utilization-ledger sidecar model from the shipped contract.
 - Add frontmatter to feature-catalog and manual-testing per-feature files, align divider usage between numbered sections, and mirror the feature-catalog category structure into the `.claude` manual-testing-playbook tree.
 - Expand `sk-doc` with template bundles for both feature catalogs and testing playbooks, then add standards/workflow references for both families plus the missing agent-creation reference.
@@ -88,7 +88,7 @@ Document the final contract so future maintenance reflects what actually shipped
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Manual testing playbooks use the integrated root-playbook contract | The root playbook document, such as `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, owns review/orchestration policy, while numbered category folders hold the per-feature execution truth. |
+| REQ-001 | Manual testing playbooks use the integrated root-playbook contract | The root playbook document, such as `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`, owns review/orchestration policy, while numbered category folders hold the per-feature execution truth. |
 | REQ-002 | Feature catalogs use the final feature-catalog header and snippet contract | Root catalogs and per-feature files use aligned frontmatter, intro flow, unnumbered TOC, and numbered all-caps sections. |
 | REQ-003 | `sk-doc` authoring guidance matches the shipped structure | Template bundles, creation references, grouped reference paths, and runtime-facing docs all point to the same current contract. |
 | REQ-004 | Downstream runtime consumers resolve the new paths | Create-command assets and other routing docs reference real `sk-doc` files after the template/reference reorganization. |

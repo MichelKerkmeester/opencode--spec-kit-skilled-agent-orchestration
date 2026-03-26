@@ -10,7 +10,7 @@ This document combines the operator-facing manual testing contract for the `sk-d
 ---
 
 Canonical package artifacts:
-- `manual_testing_playbook.md`
+- `MANUAL_TESTING_PLAYBOOK.md`
 - `01--entry-points-and-modes/`
 - `02--initialization-and-state-setup/`
 - `03--iteration-execution-and-state-discipline/`
@@ -92,7 +92,7 @@ Coverage note for 2026-03-24: no `feature_catalog/` package exists under `.openc
 
 ### INPUTS REQUIRED
 
-1. `manual_testing_playbook.md`
+1. `MANUAL_TESTING_PLAYBOOK.md`
 2. All 41 referenced per-feature files in the numbered category folders
 3. Command transcripts or inspection output for each executed scenario
 4. Notes for any scenario that required interpretation because behavior is documentation-defined rather than fully executable

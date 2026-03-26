@@ -110,7 +110,7 @@ These manual tests should mimic real user behavior, not just isolated command ex
 
 ### Inputs Required
 
-1. `manual_testing_playbook.md`
+1. `MANUAL_TESTING_PLAYBOOK.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence (logs, tool outputs, artifacts)
 4. Feature-to-scenario coverage map
@@ -201,7 +201,7 @@ Rule: keep global verdict logic in the root playbook. Put feature-specific accep
 
 This section records coordinator/worker utilization guidance for assembling or reviewing playbook bundles. It is not a runtime support matrix and does not, by itself, prove Hydra feature parity for Codex, Gemini, or any other CLI.
 
-The wave plans here apply to the split playbook package: the root `manual_testing_playbook.md` acts as the directory, review surface, and orchestration guide, while the detailed scenario contracts live in the numbered category folders at the playbook root.
+The wave plans here apply to the split playbook package: the root `MANUAL_TESTING_PLAYBOOK.md` acts as the directory, review surface, and orchestration guide, while the detailed scenario contracts live in the numbered category folders at the playbook root.
 
 ### Run A: Codex 5.3 xhigh (Observed)
 
@@ -2638,9 +2638,9 @@ Each feature grep returns at least 2 hits spanning handlers and lib layers; all 
 Verify all annotation names cross-reference against catalog H3 headings with 0 invalid.
 
 #### Current Reality
-Prompt: `Validate all Feature catalog annotation names against catalog. Capture the evidence needed to prove sort -u 2) Extract all H3 headings from feature_catalog/feature_catalog.md: grep "^### " feature_catalog.md 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate all Feature catalog annotation names against catalog. Capture the evidence needed to prove sort -u 2) Extract all H3 headings from feature_catalog/FEATURE_CATALOG.md: grep "^### " FEATURE_CATALOG.md 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches. Return a concise user-facing pass/fail verdict with the main reason.`
 
-sort -u` 2) Extract all H3 headings from `feature_catalog/feature_catalog.md`: `grep "^### " feature_catalog.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches
+sort -u` 2) Extract all H3 headings from `feature_catalog/FEATURE_CATALOG.md`: `grep "^### " FEATURE_CATALOG.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches
 
 #### Test Execution
 > **Feature File:** [136](16--tooling-and-scripts/136-feature-catalog-annotation-name-validity.md)
@@ -3653,8 +3653,8 @@ This split playbook keeps automated coverage references in three places:
 | M-009 | Dedicated Memory/Spec-Kit Scenarios | Runtime Family Count Census | [M-009](16--tooling-and-scripts/182-runtime-family-count-census.md) | *(test-only, no catalog entry)* |
 | M-010 | Dedicated Memory/Spec-Kit Scenarios | Runtime Lineage Naming Parity | [M-010](16--tooling-and-scripts/183-runtime-lineage-naming-parity.md) | *(test-only, no catalog entry)* |
 | M-011 | Dedicated Memory/Spec-Kit Scenarios | Gemini Runtime Path Resolution | [M-011](16--tooling-and-scripts/184-gemini-runtime-path-resolution.md) | *(test-only, no catalog entry)* |
-| 185 | Features | /memory:analyze command routing | [185](01--retrieval/185-memory-analyze-command-routing.md) | [feature_catalog.md#command-surface-contract](../feature_catalog/feature_catalog.md#command-surface-contract) |
-| 186 | Features | /memory:manage command routing | [186](16--tooling-and-scripts/186-memory-manage-command-routing.md) | [feature_catalog.md#command-surface-contract](../feature_catalog/feature_catalog.md#command-surface-contract) |
+| 185 | Features | /memory:analyze command routing | [185](01--retrieval/185-memory-analyze-command-routing.md) | [FEATURE_CATALOG.md#command-surface-contract](../feature_catalog/FEATURE_CATALOG.md#command-surface-contract) |
+| 186 | Features | /memory:manage command routing | [186](16--tooling-and-scripts/186-memory-manage-command-routing.md) | [FEATURE_CATALOG.md#command-surface-contract](../feature_catalog/FEATURE_CATALOG.md#command-surface-contract) |
 | 187 | Features | Quick search (memory_quick_search) | [187](01--retrieval/187-quick-search-memory-quick-search.md) | [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) |
 | 156 | Features | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |

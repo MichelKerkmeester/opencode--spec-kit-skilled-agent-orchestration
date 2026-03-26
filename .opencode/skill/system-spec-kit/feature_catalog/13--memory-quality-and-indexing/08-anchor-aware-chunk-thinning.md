@@ -42,4 +42,4 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 
 - Group: Memory quality and indexing
 - Source feature title: Anchor-aware chunk thinning
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `091` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [10--graph-signal-activation/07-community-detection.md](../../feature_catalog/10--graph-signal-activation/07-community-detection.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `091` and confirm the ex
 
 - Group: Graph Signal Activation
 - Playbook ID: 091
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `10--graph-signal-activation/091-implemented-graph-centrality-and-community-detection-n2.md`

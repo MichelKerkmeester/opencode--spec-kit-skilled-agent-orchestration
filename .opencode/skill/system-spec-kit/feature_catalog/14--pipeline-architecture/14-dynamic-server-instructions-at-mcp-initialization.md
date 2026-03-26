@@ -400,4 +400,4 @@ When the memory server starts up, it now tells the calling AI how many memories 
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Dynamic server instructions at MCP initialization
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

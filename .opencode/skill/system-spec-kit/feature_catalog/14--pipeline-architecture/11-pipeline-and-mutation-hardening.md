@@ -86,4 +86,4 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Pipeline and mutation hardening
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -240,7 +240,7 @@ Minor description corrections.
 Create new snippet files using gap investigation draft descriptions.
 
 ### Phase 7: Monolith Sync
-Run `replace-monolith-source-files.mjs` to update `feature_catalog.md`.
+Run `replace-monolith-source-files.mjs` to update `FEATURE_CATALOG.md`.
 
 ---
 

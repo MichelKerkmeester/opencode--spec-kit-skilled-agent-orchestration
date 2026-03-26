@@ -51,7 +51,7 @@
 ### 3) Feature catalog entries that reference missing code files
 - **Total:** 1553
 - **Top concentration:**
-  - `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`: 282
+  - `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`: 282
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/scratch/investigation-X10.md`: 102
   - `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`: 93
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/undocumented-features-scan.md`: 59

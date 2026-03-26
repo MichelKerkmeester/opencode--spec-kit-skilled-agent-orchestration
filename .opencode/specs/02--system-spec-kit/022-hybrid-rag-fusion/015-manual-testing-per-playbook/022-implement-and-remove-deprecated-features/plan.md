@@ -103,7 +103,7 @@ Load target inventory -> inspect current state -> run the representative workflo
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
 | `../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md` | Internal | Green | The implement/remove target list is unavailable |
 | Upstream implementation state for REMOVE targets | Internal | Yellow | PB-022-02 and PB-022-03 may only be partially executable |
 | Reliable test and grep commands | Internal | Yellow | Safe-removal and cleanup evidence cannot be verified honestly |

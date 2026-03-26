@@ -98,7 +98,7 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/` | Create/Modify | Add graph-fusion helpers and deterministic tie-break logic |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/` | Modify | Capture graph-health and score-trace telemetry |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add regression, explainability, and determinism coverage |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add graph retrieval validation procedures |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Add graph retrieval validation procedures |
 
 <!-- /ANCHOR:scope -->
 

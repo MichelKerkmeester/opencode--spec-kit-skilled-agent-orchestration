@@ -55,4 +55,4 @@ Thirteen performance improvements were applied:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Performance improvements
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -15,7 +15,7 @@ Dimensions: `D4 Completeness` + `D7 Documentation Quality`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/spec.md:32-58`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/spec.md:32-58`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md:36-57`
-  - `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:14-33`
+  - `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:14-33`
 - Evidence: Each of `020`, `021`, and `022` contains only `spec.md` and `description.json`; they do not include the expected Level 2 execution artifacts (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) that the executed phase packets around them already carry.
 - Evidence: Their scenario rows are not mapped to canonical playbook files under `manual_testing_playbook/20--*`, `21--*`, or `22--*`. Instead, the packets point at `../../007-code-audit-per-feature-catalog/...` and define custom `PB-020-*`, `PB-021-*`, and `PB-022-*` IDs derived from audit/meta-work, not from the manual-testing playbook.
 - Evidence: The canonical playbook root still enumerates only `01--retrieval/` through `19--feature-flag-reference/` as source artifacts. There is no canonical `20`, `21`, or `22` playbook category in the source-of-truth list.

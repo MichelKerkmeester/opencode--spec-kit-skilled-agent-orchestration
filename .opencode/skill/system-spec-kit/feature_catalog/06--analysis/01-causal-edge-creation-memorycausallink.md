@@ -146,4 +146,4 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 
 - Group: Analysis
 - Source feature title: Causal edge creation (memory_causal_link)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

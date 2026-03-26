@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `082` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `082` and confirm the ex
 
 - Group: Evaluation and Measurement
 - Playbook ID: 082
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/082-evaluation-and-housekeeping-fixes.md`

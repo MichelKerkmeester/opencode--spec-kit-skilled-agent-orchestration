@@ -62,4 +62,4 @@ The gate still supports its existing warn-only rollout behavior for threshold tu
 
 - Group: Memory quality and indexing
 - Source feature title: Pre-storage quality gate
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

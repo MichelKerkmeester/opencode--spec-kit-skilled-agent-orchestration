@@ -141,7 +141,7 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §03--discovery | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` §03--discovery | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
 | Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §03--discovery | Feature context for each scenario | Read before execution for background |
 | Dependency | MCP runtime with indexed memory corpus | Required for all three tool invocations | Verify MCP server is running before starting |
 | Risk | EX-013 `autoRepair: true` can mutate index state | Medium | Never pass `autoRepair: true` or `confirmed: true` during verification runs |

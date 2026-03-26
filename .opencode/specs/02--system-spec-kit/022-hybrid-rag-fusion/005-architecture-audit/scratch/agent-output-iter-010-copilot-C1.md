@@ -543,8 +543,8 @@ I’ve got the lower-half candidates now. The last meaningful one is the test-bl
   │ dmap-capability-flags.md
   └ L24:31 (8 lines read)
 
-● Read manual_testing_playbook.md
-  │ .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md
+● Read MANUAL_TESTING_PLAYBOOK.md
+  │ .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
   └ L2476:2484 (9 lines read)
 
 I found the real cause of the failing docs test: it points at the wrong playbook path, not just a wording mismatch. I’m doing one last source-only sweep for `node-llama-cpp`/`onnxruntime-common` so the package recommendations are crisp and don’t conflate “unused” with “documented but future-facing.”

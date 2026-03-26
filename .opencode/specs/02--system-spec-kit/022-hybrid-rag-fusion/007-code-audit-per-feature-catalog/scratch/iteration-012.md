@@ -38,7 +38,7 @@ I’ve loaded the review rubric. Next I’m mapping the exact spec folders and s
   └ 68 files found
 
 ● Search (glob)
-  │ "**/feature_catalog.md"
+  │ "**/FEATURE_CATALOG.md"
   └ 1 file found
 
 ● Read spec.md
@@ -58,8 +58,8 @@ I’ve loaded the review rubric. Next I’m mapping the exact spec folders and s
   │ -remediation-revalidation/spec.md
   └ L1:320 (319 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:260 (190 lines read)
 
 I’ve confirmed the two cross-cutting specs and the top-level catalog. Now I’m drilling into the exact mismatch claims and the source/module state so I can test whether the remediation summary is internally consistent.
@@ -218,7 +218,7 @@ Two big inconsistencies are already surfacing: the cross-cutting specs say depre
   └ 100 lines found
 
 ● Search (grep)
-  │ "^### " (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^### " (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 80 lines found
 
 ● Read copilot-tool-output-1774387323820-qucgjd.txt
@@ -235,7 +235,7 @@ I’ve confirmed the “deprecated” story is overstated: both so-called dead g
   │ "Shadow evaluation system for feedback learning|Adaptive shadow ranking, bounded proposals, and
   │ rollback|Assistive reconsolidation|Temporal contiguity layer|Graph calibration profiles and
   │ community thresholds|Feature catalog code references"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 7 lines found
 
 ● Read search-flags.ts
@@ -265,8 +265,8 @@ I’ve confirmed the “deprecated” story is overstated: both so-called dead g
   │ references.md
   └ L16:24 (9 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3858:3876 (19 lines read)
 
 ● Read copilot-tool-output-1774387323820-qucgjd.txt
@@ -283,8 +283,8 @@ I’ve confirmed the “deprecated” story is overstated: both so-called dead g
   │ oldout-evaluation.md
   └ L1:240 (47 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L2926:2958 (33 lines read)
 
 ● Read spec.md
@@ -324,7 +324,7 @@ I’ve confirmed the “deprecated” story is overstated: both so-called dead g
 
 ● Search (grep)
   │ "Default OFF|auto-merge|Default ON|automatically merged"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 31 lines found
 
 ● Read stage1-candidate-gen.ts
@@ -343,12 +343,12 @@ I’ve confirmed the “deprecated” story is overstated: both so-called dead g
   │ .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts
   └ L368:378 (11 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1786:1806 (21 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1698:1716 (19 lines read)
 
 # 1. Summary
@@ -371,12 +371,12 @@ Dimension coverage: correctness and traceability deep pass; maintainability cros
 - Fix recommendation: reclassify both as active features in 019/021 and remove the “dead/no imports found” assertions unless the runtime wiring is first removed.
 
 ### CR-002 [P1] Revalidation meta-phase still certifies `0 MISMATCH` while a live catalog contradiction remains untracked
-- Evidence: `.opencode/specs/.../021-remediation-revalidation/spec.md:20,99,105-112,186-193`; `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2930-2934`; `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md:8,14,21,29`; `.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:363-377`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:479-484`; `.opencode/specs/.../013-memory-quality-and-indexing/spec.md:212-214`.
+- Evidence: `.opencode/specs/.../021-remediation-revalidation/spec.md:20,99,105-112,186-193`; `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:2930-2934`; `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md:8,14,21,29`; `.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:363-377`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:479-484`; `.opencode/specs/.../013-memory-quality-and-indexing/spec.md:212-214`.
 - Impact: 021 understates remediation scope. The top-level catalog says assistive reconsolidation is “auto-merge” and default OFF, but the dedicated feature file and source show shadow-archive behavior and default ON. That contradiction is not in the remediation matrix.
 - Fix recommendation: refresh 021 against the current top-level catalog and per-feature files, add F21 to the backlog, and recalculate MATCH/PARTIAL/MISMATCH totals.
 
 ### CR-003 [P1] `016/F11` was marked MATCH even though the catalog’s primary traceability narrative contradicts its own measured coverage
-- Evidence: `.opencode/specs/.../016-tooling-and-scripts/spec.md:162`; `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3862-3866`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`.
+- Evidence: `.opencode/specs/.../016-tooling-and-scripts/spec.md:162`; `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3862-3866`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`.
 - Impact: the audit certifies traceability as complete when the source docs explicitly say the convention is only “approximately 74%” and “not yet universal.” That makes the remediation status for catalog references unreliable.
 - Fix recommendation: downgrade F11 from MATCH, then align the top-level catalog wording with the measured-coverage statement in the dedicated feature file.
 
@@ -389,7 +389,7 @@ Dimension coverage: correctness and traceability deep pass; maintainability cros
 
 - `019-decisions-and-deferrals` ↔ `010-graph-signal-activation` audit claims ↔ `feature_catalog` entries ↔ live pipeline wiring in `stage1-candidate-gen.ts` and `stage2-fusion.ts`
 - `021-remediation-revalidation` ↔ `013-memory-quality-and-indexing` ↔ assistive reconsolidation feature file ↔ `reconsolidation-bridge.ts` and `search-flags.ts`
-- `021-remediation-revalidation` ↔ `016-tooling-and-scripts` ↔ top-level `feature_catalog.md` ↔ dedicated `11-feature-catalog-code-references.md`
+- `021-remediation-revalidation` ↔ `016-tooling-and-scripts` ↔ top-level `FEATURE_CATALOG.md` ↔ dedicated `11-feature-catalog-code-references.md`
 - Shadow terminology sanity check: `12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md` is retired, while `11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md` is still live
 
 # 4. Dimension-specific notes

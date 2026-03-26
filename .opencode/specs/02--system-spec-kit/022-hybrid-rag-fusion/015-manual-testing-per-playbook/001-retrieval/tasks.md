@@ -36,7 +36,7 @@ contextType: "implementation"
 
 - [x] T001 Verify playbook files accessible at `../../manual_testing_playbook/01--retrieval/` — All 13 files confirmed readable
 - [x] T002 Confirm feature catalog accessible at `../../feature_catalog/01--retrieval/` — All catalog files confirmed readable
-- [x] T003 Load review protocol from `../../manual_testing_playbook/manual_testing_playbook.md` — Protocol understood; verdict rules applied
+- [x] T003 Load review protocol from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` — Protocol understood; verdict rules applied
 - [x] T004 Verify MCP runtime healthy — Source files confirm all three handlers exist and compile (handlers/memory-context.ts, memory-search.ts, memory-triggers.ts)
 - [x] T005 [P] Sandbox strategy for 086: trigger re-index gate verified at source level (no live sandbox required for code-level verdict). 143: rollout flag verified via search-flags.ts and graph-flags.ts; no live restart required for code-level verdict.
 <!-- /ANCHOR:phase-1 -->

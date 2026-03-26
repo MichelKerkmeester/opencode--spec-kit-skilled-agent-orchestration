@@ -128,7 +128,7 @@ No P1 items are defined for this phase; all three deprecated-feature scenarios a
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
 | Dependency | [`../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`](../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md) | Supplies the 6-feature scope (3 implement, 3 remove) and delegation plan | Keep every test row linked to its mapped catalog scope |
 | Dependency | Catalog phase 022 implementation must be complete before PB-022-02 and PB-022-03 can fully execute | PB-022-02 tests the removal result; if removal has not happened, mark as BLOCKED | Check catalog phase 022 status before executing; run PB-022-01 (identification) regardless |
 | Risk | REMOVE targets may already be deleted by the time this phase executes | Low | PB-022-01 checks current state; if already removed, PB-022-03 still validates no references remain |

@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-035` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [04--maintenance/02-startup-runtime-compatibility-guards.md](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-035` and confirm the
 
 - Group: Maintenance
 - Playbook ID: EX-035
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `04--maintenance/035-startup-runtime-compatibility-guards.md`

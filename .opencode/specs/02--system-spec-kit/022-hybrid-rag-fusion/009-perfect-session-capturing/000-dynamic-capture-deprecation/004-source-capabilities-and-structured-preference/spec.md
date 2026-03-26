@@ -66,7 +66,7 @@ Make source-aware policy capability-driven and make structured input the explici
 | `.opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts` | Modify | Use capabilities instead of a source-name special case |
 | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Make structured modes the preferred documented path |
 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Modify | Publish the authoritative runtime contract |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Publish the updated M-007 scenario boundary |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Publish the updated M-007 scenario boundary |
 <!-- /ANCHOR:scope -->
 
 ---

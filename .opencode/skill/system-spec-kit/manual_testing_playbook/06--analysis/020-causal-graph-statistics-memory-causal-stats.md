@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-020` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [06--analysis/02-causal-graph-statistics-memorycausalstats.md](../../feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-020` and confirm the
 
 - Group: Analysis
 - Playbook ID: EX-020
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `06--analysis/020-causal-graph-statistics-memory-causal-stats.md`

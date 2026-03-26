@@ -23,10 +23,10 @@ trigger_phrases:
 
 - [1. OVERVIEW](#1-overview)
 - [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. FEATURES](#4-features)
-  - [4.1 How the Memory System Works](#41-how-the-memory-system-works)
-  - [4.2 Tool Reference](#42-tool-reference)
+- [3. FEATURES](#3-features)
+  - [3.1 HOW THE MEMORY SYSTEM WORKS](#31-how-the-memory-system-works)
+  - [3.2 TOOL REFERENCE](#32-tool-reference)
+- [4. STRUCTURE](#4-structure)
 - [5. CONFIGURATION](#5-configuration)
 - [6. USAGE EXAMPLES](#6-usage-examples)
 - [7. TROUBLESHOOTING](#7-troubleshooting)
@@ -185,85 +185,18 @@ The system reads your question, figures out you are looking for a past decision 
 
 ---
 
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
-mcp_server/
-├── context-server.ts          # Server entry point, registers all 33 tools
-├── dist/                      # Compiled JavaScript build output
-├── cli.ts                     # CLI entry point
-├── tool-schemas.ts            # Single source of truth for all tool definitions
-├── api/                       # Public API surface (search, indexing)
-├── core/                      # Core runtime logic (lifecycle, orchestration)
-├── configs/                   # Runtime configuration modules
-├── formatters/                # Output formatting (markdown, structured)
-├── schemas/                   # Zod validation schemas
-├── handlers/                  # Per-tool request handlers
-│   ├── memory-save.ts         # Save handler with pre-flight quality gate
-│   ├── memory-search.ts       # Core search handler
-│   ├── memory-context.ts      # Unified context entry point
-│   └── ...                    # One handler file per tool or tool group
-├── lib/
-│   ├── search/                # 4-stage hybrid search pipeline
-│   │   ├── README.md          # Per-stage module mapping
-│   │   └── pipeline/          # Stage modules (stage1 through stage4)
-│   ├── cognitive/             # Memory states and FSRS decay
-│   ├── graph/                 # Causal graph operations
-│   ├── governance/            # Scope, tenant and shared-space enforcement
-│   └── ...                    # 27 additional runtime subdirectories
-├── hooks/                     # Post-mutation lifecycle hooks
-├── tools/                     # Tool dispatch layer (5 domain dispatchers)
-├── shared-spaces/             # Shared memory space management
-├── database/                  # SQLite database files
-├── tests/                     # Vitest test suites
-├── INSTALL_GUIDE.md           # Full installation walkthrough
-└── README.md                  # This file
-```
-
-### Key Files
-
-| File | What It Does |
-|------|-------------|
-| `context-server.ts` | Starts the MCP listener and registers all 33 tools. This is the entry point. |
-| `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
-| `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks for duplicates, generates embeddings, stores the result. |
-| `lib/search/README.md` | Maps each search pipeline stage to its source module. |
-| `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
-
-### 7-Layer Tool Architecture
-
-Tools are organized into layers based on what they do. Lower layers handle everyday operations. Higher layers handle specialized tasks.
-
-| Layer | Name | Tools | Token Budget | Purpose |
-|-------|------|-------|-------------|---------|
-| L1 | Orchestration | 1 | 2,000 | Smart entry point that figures out what you need |
-| L2 | Core | 4 | 1,500 | The main search and save operations |
-| L3 | Discovery | 3 | 800 | Browse what is stored, check system health |
-| L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
-| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/disable |
-| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
-| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
-| | **Total** | **33** | **7,600** | |
-
-Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
-
-<!-- /ANCHOR:structure -->
-
----
-
 <!-- ANCHOR:features -->
-## 4. FEATURES
+## 3. FEATURES
 
-### 4.1 How the Memory System Works
+### 3.1 HOW THE MEMORY SYSTEM WORKS
 
-This section explains the main ideas behind the memory system in plain language. For the full tool reference with parameters, skip to [4.2 Tool Reference](#42-tool-reference).
+This section explains the main ideas behind the memory system in plain language. For the full tool reference with parameters, skip to [3.2 Tool Reference](#32-tool-reference).
 
 ---
 
-#### 4.1.1 Hybrid Search
+#### 3.1.1 HYBRID SEARCH
 
-When you search for something, the system does not just look in one place. It checks several sources at once, like a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
+When you search for something, the system checks several sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
 
 **Five search channels** work together:
 
@@ -297,7 +230,7 @@ When you search for something, the system does not just look in one place. It ch
 
 ---
 
-#### 4.1.2 Search Pipeline
+#### 3.1.2 SEARCH PIPELINE
 
 Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
 
@@ -324,7 +257,7 @@ All channel scores are normalized to 0-1 before fusion so no single channel wins
 
 ---
 
-#### 4.1.3 Query Intelligence
+#### 3.1.3 QUERY INTELLIGENCE
 
 Before any search runs, the system figures out what kind of help you need. Think of it like a triage nurse who reads your symptoms and routes you to the right specialist.
 
@@ -353,7 +286,7 @@ For low-confidence deep searches, the system has two additional fallback strateg
 
 ---
 
-#### 4.1.4 Memory Lifecycle and Scoring
+#### 3.1.4 MEMORY LIFECYCLE AND SCORING
 
 Not all memories are equally useful forever. The system tracks how fresh each memory is using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
 
@@ -371,7 +304,7 @@ A critical decision never fades. A temporary debugging note fades within days.
 
 **Cold-start novelty boost** -- fresh memories (under 48 hours) get an exponential boost of `0.15 * exp(-elapsed_hours / 12)` with a 12-hour half-life, capped at 0.95. This counteracts FSRS's natural tendency to underrank brand-new content.
 
-**Interference penalty** -- prevents similar memories from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, not just the ranking level.
+**Interference penalty** -- prevents similar memories from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, beyond ranking alone.
 
 **Auto-promotion** -- memories earn their way up. After 5 positive validation marks, a normal memory promotes to important. After 10, important promotes to critical. Rate-limited to prevent bulk promotion during busy sessions.
 
@@ -385,7 +318,7 @@ When you search, HOT memories get full content in results. WARM memories appear 
 
 ---
 
-#### 4.1.5 Causal Graph
+#### 3.1.5 CAUSAL GRAPH
 
 The system tracks how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
 
@@ -422,9 +355,9 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 ---
 
-#### 4.1.6 Save Intelligence
+#### 3.1.6 SAVE INTELLIGENCE
 
-When you save new knowledge, the system does not just append it to the pile. It runs a sophisticated arbitration process to decide what to do with incoming content.
+When you save new knowledge, the system runs an arbitration process before storing anything. It runs a sophisticated arbitration process to decide what to do with incoming content.
 
 **Prediction Error gating** compares new content against existing memories and picks one of four outcomes:
 
@@ -432,12 +365,12 @@ When you save new knowledge, the system does not just append it to the pile. It 
 |---------|------|-------------|
 | **CREATE** | No similar memory exists | Stored as new knowledge |
 | **REINFORCE** | Similar exists, new one adds value | Both kept, old one gets a confidence boost |
-| **UPDATE** | Similar exists, new one is clearly better | Old version replaced in place |
+| **UPDATE** | Similar exists, new one is better | Old version replaced in place |
 | **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted to deprecated |
 
 This is session-scoped to prevent cross-session interference.
 
-**Reconsolidation-on-save** -- handles near-duplicates intelligently. Nearly identical content gets merged. Contradictions retire the old version. Clearly different content keeps both. Like a filing clerk who reads the new document, checks the cabinet and makes an informed decision instead of just stuffing it in.
+**Reconsolidation-on-save** -- handles near-duplicates intelligently. Nearly identical content gets merged. Contradictions retire the old version. Different content keeps both. Like a filing clerk who reads the new document, checks the cabinet and makes an informed decision instead of just stuffing it in.
 
 **Semantic sufficiency gating** -- rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
 
@@ -455,7 +388,7 @@ This is session-scoped to prevent cross-session interference.
 
 ---
 
-#### 4.1.7 Session Awareness
+#### 3.1.7 SESSION AWARENESS
 
 The system keeps track of what happened during your current conversation so it does not repeat itself or lose context mid-session.
 
@@ -467,7 +400,7 @@ The system keeps track of what happened during your current conversation so it d
 
 ---
 
-#### 4.1.8 Shared Memory
+#### 3.1.8 SHARED MEMORY
 
 By default, every memory is private to the user or agent that created it. Shared memory adds controlled access so multiple people or agents can read and write to a common knowledge pool.
 
@@ -482,7 +415,7 @@ For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMO
 
 ---
 
-#### 4.1.9 Quality Gates and Learning
+#### 3.1.9 QUALITY GATES AND LEARNING
 
 Not everything deserves to be stored. Before a new memory enters the system, it goes through three layered checks:
 
@@ -506,7 +439,7 @@ The system also learns from how you use search results:
 
 ---
 
-#### 4.1.10 Retrieval Enhancements
+#### 3.1.10 RETRIEVAL ENHANCEMENTS
 
 Beyond the core search pipeline, several enhancements make retrieval smarter at finding what you actually need.
 
@@ -528,7 +461,7 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 ---
 
-#### 4.1.11 Indexing and Infrastructure
+#### 3.1.11 INDEXING AND INFRASTRUCTURE
 
 The system keeps the index accurate and performant as your project evolves.
 
@@ -546,7 +479,7 @@ The system keeps the index accurate and performant as your project evolves.
 
 ---
 
-#### 4.1.12 Evaluation Infrastructure
+#### 3.1.12 EVALUATION INFRASTRUCTURE
 
 Research-grade infrastructure for measuring and improving search quality over time.
 
@@ -564,7 +497,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 ---
 
-### 4.2 Tool Reference
+### 3.2 TOOL REFERENCE
 
 All 33 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
@@ -614,7 +547,7 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `memory_search`
 
-The main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning, not just keywords, so searching for "login problems" can find a document titled "authentication troubleshooting."
+The main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (beyond keywords), so searching for "login problems" can find a document titled "authentication troubleshooting."
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -650,7 +583,7 @@ The main search tool. You type what you are looking for in plain language and th
 
 ##### `memory_quick_search`
 
-The lightweight search option. Works like a preset: you provide a query and optional scope boundaries, and it forwards to the full search tool with sensible defaults. Use this when you want fast results without setting lots of parameters.
+The lightweight search option. Works like a preset: you provide a query and optional scope boundaries and it forwards to the full search tool with sensible defaults. Use this when you want fast results without setting lots of parameters.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1101,6 +1034,73 @@ Cancel a running import job. The current file finishes processing before the job
 
 ---
 
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
+```
+mcp_server/
+├── context-server.ts          # Server entry point, registers all 33 tools
+├── dist/                      # Compiled JavaScript build output
+├── cli.ts                     # CLI entry point
+├── tool-schemas.ts            # Single source of truth for all tool definitions
+├── api/                       # Public API surface (search, indexing)
+├── core/                      # Core runtime logic (lifecycle, orchestration)
+├── configs/                   # Runtime configuration modules
+├── formatters/                # Output formatting (markdown, structured)
+├── schemas/                   # Zod validation schemas
+├── handlers/                  # Per-tool request handlers
+│   ├── memory-save.ts         # Save handler with pre-flight quality gate
+│   ├── memory-search.ts       # Core search handler
+│   ├── memory-context.ts      # Unified context entry point
+│   └── ...                    # One handler file per tool or tool group
+├── lib/
+│   ├── search/                # 4-stage hybrid search pipeline
+│   │   ├── README.md          # Per-stage module mapping
+│   │   └── pipeline/          # Stage modules (stage1 through stage4)
+│   ├── cognitive/             # Memory states and FSRS decay
+│   ├── graph/                 # Causal graph operations
+│   ├── governance/            # Scope, tenant and shared-space enforcement
+│   └── ...                    # 27 additional runtime subdirectories
+├── hooks/                     # Post-mutation lifecycle hooks
+├── tools/                     # Tool dispatch layer (5 domain dispatchers)
+├── shared-spaces/             # Shared memory space management
+├── database/                  # SQLite database files
+├── tests/                     # Vitest test suites
+├── INSTALL_GUIDE.md           # Full installation walkthrough
+└── README.md                  # This file
+```
+
+### Key Files
+
+| File | What It Does |
+|------|-------------|
+| `context-server.ts` | Starts the MCP listener and registers all 33 tools. This is the entry point. |
+| `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
+| `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks for duplicates, generates embeddings, stores the result. |
+| `lib/search/README.md` | Maps each search pipeline stage to its source module. |
+| `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
+
+### 7-Layer Tool Architecture
+
+Tools are organized into layers based on what they do. Lower layers handle everyday operations. Higher layers handle specialized tasks.
+
+| Layer | Name | Tools | Token Budget | Purpose |
+|-------|------|-------|-------------|---------|
+| L1 | Orchestration | 1 | 2,000 | Smart entry point that figures out what you need |
+| L2 | Core | 4 | 1,500 | The main search and save operations |
+| L3 | Discovery | 3 | 800 | Browse what is stored, check system health |
+| L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
+| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/disable |
+| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
+| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
+| | **Total** | **33** | **7,600** | |
+
+Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
+
+<!-- /ANCHOR:structure -->
+
+---
+
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
 
@@ -1437,7 +1437,7 @@ For the feature flag rollback procedure, see `../references/workflows/rollback_r
 
 **What you see**: Irrelevant or low-scoring results from `memory_search` or `memory_context`.
 
-**Common causes**: Stale BM25 index, divergent aliases in FTS5, or memories with low quality scores surfacing.
+**Common causes**: Stale BM25 index, divergent aliases in FTS5 or memories with low quality scores surfacing.
 
 **Fix**: Run a health check with auto-repair, then retry with a higher quality floor:
 
@@ -1455,7 +1455,7 @@ For the feature flag rollback procedure, see `../references/workflows/rollback_r
 
 **What you see**: Error like `PREFLIGHT_FAILED`, `INSUFFICIENT_CONTEXT_ABORT` or `Template contract validation failed`.
 
-**Common causes**: Too little real content, missing required structure (headings, metadata), or semantic duplicate.
+**Common causes**: Too little real content, missing required structure (headings, metadata) or semantic duplicate.
 
 **Fix**: Preview what would happen with a dry run:
 
@@ -1566,7 +1566,7 @@ Nothing. Memories live in the local SQLite database, not inside any AI's context
 
 **Q: How is this different from plain RAG with a vector database?**
 
-Three main differences. First, this system uses 5 search channels combined with rank fusion, not just vector similarity. Second, it applies FSRS decay so recently accessed memories rank higher without manual curation. Third, the causal graph lets you answer "why was this decision made?" which no vector database supports natively.
+Three main differences. First, this system uses 5 search channels combined with rank fusion, beyond vector similarity. Second, it applies FSRS decay so recently accessed memories rank higher without manual curation. Third, the causal graph lets you answer "why was this decision made?" which no vector database supports natively.
 
 ---
 
@@ -1627,7 +1627,7 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
-| [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md) | Complete feature inventory: 21 categories, 222 features with code references |
+| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 21 categories, 222 features with code references |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
 

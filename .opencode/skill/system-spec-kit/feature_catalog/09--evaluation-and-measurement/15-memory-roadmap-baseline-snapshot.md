@@ -45,7 +45,7 @@ The baseline path now initializes the eval database beside the context database 
 
 - Group: Evaluation and measurement
 - Source feature title: Memory roadmap baseline snapshot
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

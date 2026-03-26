@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `101` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: *(memory_delete confirm schema — covered by `02--mutation/03`)*
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `101` and confirm the ex
 
 - Group: Mutation
 - Playbook ID: 101
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `02--mutation/101-memory-delete-confirm-schema-tightening.md`

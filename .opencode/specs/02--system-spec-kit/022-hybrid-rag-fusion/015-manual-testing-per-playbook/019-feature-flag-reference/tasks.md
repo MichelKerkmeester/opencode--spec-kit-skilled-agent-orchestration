@@ -33,7 +33,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [x] T002 Load review protocol from playbook §4
 - [x] T003 Confirm feature catalog links for all 8 scenarios: `../../feature_catalog/19--feature-flag-reference/`
 - [x] T004 Confirm MCP runtime access for `memory_search` and `memory_context` — not applicable; execution performed via direct code analysis + dist invocation (see T006)

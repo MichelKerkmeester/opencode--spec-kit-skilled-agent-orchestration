@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-011` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [03--discovery/01-memory-browser-memorylist.md](../../feature_catalog/03--discovery/01-memory-browser-memorylist.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-011` and confirm the
 
 - Group: Discovery
 - Playbook ID: EX-011
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `03--discovery/011-memory-browser-memory-list.md`

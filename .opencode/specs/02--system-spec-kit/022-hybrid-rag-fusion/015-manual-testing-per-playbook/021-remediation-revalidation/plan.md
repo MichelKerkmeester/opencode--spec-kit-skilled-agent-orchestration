@@ -103,7 +103,7 @@ Load remediation matrix -> pick target findings -> verify current state -> compa
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
 | `../../007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md` | Internal | Green | The remediation matrix and target findings are unavailable |
 | Current code and catalog state | Internal | Yellow | PB-021-02 and PB-021-03 cannot be revalidated honestly |
 <!-- /ANCHOR:dependencies -->

@@ -402,4 +402,4 @@ After-tool callbacks now receive a `structuredClone(result)` snapshot of the res
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Context-server success-path hint append
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

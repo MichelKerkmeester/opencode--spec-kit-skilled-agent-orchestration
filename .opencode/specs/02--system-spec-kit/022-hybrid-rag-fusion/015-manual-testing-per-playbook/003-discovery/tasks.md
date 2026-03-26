@@ -33,7 +33,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read playbook context for 03--discovery (`.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §03--discovery)
+- [x] T001 Read playbook context for 03--discovery (`.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` §03--discovery)
 - [x] T002 Read feature catalog context for 03--discovery (`../scratch/context-feature-catalog.md` §03--discovery)
 - [x] T003 Verify MCP server is running and accepting tool calls
 - [x] T004 Confirm at least one memory is indexed (quick sanity check)
@@ -93,5 +93,5 @@ contextType: "general"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Playbook**: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §03--discovery
+- **Playbook**: `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` §03--discovery
 <!-- /ANCHOR:cross-refs -->

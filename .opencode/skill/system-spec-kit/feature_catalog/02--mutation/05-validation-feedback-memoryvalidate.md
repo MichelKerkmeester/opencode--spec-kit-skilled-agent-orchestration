@@ -63,4 +63,4 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 
 - Group: Mutation
 - Source feature title: Validation feedback (memory_validate)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

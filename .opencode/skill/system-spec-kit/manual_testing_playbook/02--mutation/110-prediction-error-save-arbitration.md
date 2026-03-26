@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `110` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [02--mutation/08-prediction-error-save-arbitration.md](../../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `110` and confirm the ex
 
 - Group: Mutation
 - Playbook ID: 110
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `02--mutation/110-prediction-error-save-arbitration.md`

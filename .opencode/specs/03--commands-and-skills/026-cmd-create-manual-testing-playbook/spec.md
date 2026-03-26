@@ -70,7 +70,7 @@ Add `/create:testing-playbook` so authors can create or update a standards-align
   - `.opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md`
   - `.opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md`
   - `.opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md`
-- Define output contract for `<skill-root>/manual_testing_playbook/manual_testing_playbook.md` plus numbered root-level category folders and per-feature files.
+- Define output contract for `<skill-root>/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` plus numbered root-level category folders and per-feature files.
 - Require the output to follow the integrated root-guidance model and explicitly forbid canonical sidecar playbook files.
 - Scope the implementation to existing create-command patterns, runtime mirrors, and command-advertising docs that list live create commands.
 

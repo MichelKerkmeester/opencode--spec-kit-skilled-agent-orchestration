@@ -8,7 +8,7 @@
 
 ● Run skill advisor (shell)
   │ python3 .opencode/skill/scripts/skill_advisor.py "Cross-verify snippet files against the MASTER
-  │ feature_catalog.md for categories 01-10 and report consistency mismatches." --threshold 0.8
+  │ FEATURE_CATALOG.md for categories 01-10 and report consistency mismatches." --threshold 0.8
   └ 2 lines...
 
 I’ve got the catalog tree. Next I’m sampling the master and snippet formats so I can compare names, statuses, and feature coverage systematically instead of doing a brittle filename-only check.
@@ -53,8 +53,8 @@ I’ve got the catalog tree. Next I’m sampling the master and snippet formats 
   │ "10--graph-signal-activation/*.md" in .opencode/skill/system-spec-kit/feature_catalog
   └ No matches found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:240 (190 lines read)
 
 ✗ Read RET-001-memory_context-unified-entry-point.md
@@ -160,7 +160,7 @@ Coverage looks clean so far: no missing snippet files and no extra snippet files
   │ dashboard \(eval_reporting_dashboard\)|^### Agent consumption instrumentation|^### ANCHOR tags
   │ as graph nodes|^### Typed traversal|^### Graph lifecycle refresh|^### Async LLM graph
   │ backfill|^### Graph calibration profiles and community thresholds"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 12 lines found
 
 ● Read 11-session-recovery-memory-continue.md
@@ -193,28 +193,28 @@ Coverage looks clean so far: no missing snippet files and no extra snippet files
   │ aph-nodes.md
   └ L1:140 (55 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L284:330 (47 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L119:170 (52 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L468:510 (42 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L921:980 (59 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1315:1338 (23 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1661:1805 (145 lines read)
 
 ● Read 14-llm-graph-backfill.md
@@ -277,30 +277,30 @@ I’m narrowing the final report to true traceability problems, not harmless ela
   │ ingdashboard.md
   └ L1:80 (63 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1492:1546 (54 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1265:1330 (65 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L236:284 (49 lines read)
 
 ● Search (grep)
   │ "^### Tool-result extraction to working memory|^### Co-activation fan-effect divisor|^###
   │ Session-manager transaction gap fixes"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 3 lines found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1096:1170 (74 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1019:1044 (25 lines read)
 
 # Iteration 011: Snippet vs Master Catalog Consistency (Categories 01-10)
@@ -311,7 +311,7 @@ I’m narrowing the final report to true traceability problems, not harmless ela
 
 ## Files Reviewed
 
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
 - `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/*.md` (11)
 - `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/*.md` (10)
 - `.opencode/skill/system-spec-kit/feature_catalog/03--discovery/*.md` (3)
@@ -382,14 +382,14 @@ I’m narrowing the final report to true traceability problems, not harmless ela
 ## Findings
 
 ### P1-001: Contradictory fan-effect implementation state
-`feature_catalog.md` says the fan-effect divisor exists in `co-activation.ts` but Stage 2 hot-path boosting still applies spread scores directly, with guard logic only in the helper path.
+`FEATURE_CATALOG.md` says the fan-effect divisor exists in `co-activation.ts` but Stage 2 hot-path boosting still applies spread scores directly, with guard logic only in the helper path.
 
 `08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md` says the same divisor is now also applied in `stage2-fusion.ts`.
 
 These cannot both be true and should be reconciled.
 
 ### P1-002: Session-manager fix scope disagrees between master and snippet
-`feature_catalog.md` says **two** `enforceEntryLimit()` instances were moved inside transactions.
+`FEATURE_CATALOG.md` says **two** `enforceEntryLimit()` instances were moved inside transactions.
 
 `08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md` says **three** call sites now run inside transactional boundaries.
 

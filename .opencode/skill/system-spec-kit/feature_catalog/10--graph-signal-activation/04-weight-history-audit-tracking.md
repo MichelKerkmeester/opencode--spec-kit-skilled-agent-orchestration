@@ -53,4 +53,4 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 
 - Group: Graph signal activation
 - Source feature title: Weight history audit tracking
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

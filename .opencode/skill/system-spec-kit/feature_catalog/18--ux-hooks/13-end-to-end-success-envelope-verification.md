@@ -43,4 +43,4 @@ Phase 014 verification includes end-to-end success-envelope assertions in `tests
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: End-to-end success-envelope verification
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

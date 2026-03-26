@@ -280,8 +280,8 @@ The command surface also has drift: the `spec_kit` commands exist, but the memor
   │ .opencode/command/memory/learn.md
   └ L1:160 (160 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:80 (80 lines read)
 
 ● Search (grep)
@@ -295,7 +295,7 @@ The command surface also has drift: the `spec_kit` commands exist, but the memor
   └ 5 lines found
 
 ● Search (grep)
-  │ "Feature Entries|feature_catalog/feature_catalog.md|191 entries|189 entries"
+  │ "Feature Entries|feature_catalog/FEATURE_CATALOG.md|191 entries|189 entries"
   │ (.opencode/skill/system-spec-kit/feature_catalog)
   └ 1 line found
 

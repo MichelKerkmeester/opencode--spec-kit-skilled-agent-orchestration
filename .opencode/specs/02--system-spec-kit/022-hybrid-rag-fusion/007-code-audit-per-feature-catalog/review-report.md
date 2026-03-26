@@ -108,7 +108,7 @@ The code audit of the Spec Kit Memory MCP server's 220+ features is **fundamenta
 | Copilot-1-flag | P1 | `session-state.ts` header says "default OFF" but runtime is ON | 018/020 | `session-state.ts` header vs `search-flags.ts` gate |
 | Copilot-2-remediation | P1 | Remediation meta-phase still claims zero MISMATCHes | 021 | `021-remediation-revalidation/spec.md` vs re-audit findings |
 | AG8-012-F02 | P1 (downgraded from MISMATCH) | RSF removed but audit + cross-refs still describe live shadow | 012 | `012/spec.md:192`, deleted `rsf-fusion.ts` |
-| AG8-013-F21-DOC | P1 (classified P2 by agent, upgraded for impact) | F21 catalog/audit disagree: "auto-merge" vs shadow-archive, "default OFF" vs ON | 013 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2931`, `search-flags.ts:480` |
+| AG8-013-F21-DOC | P1 (classified P2 by agent, upgraded for impact) | F21 catalog/audit disagree: "auto-merge" vs shadow-archive, "default OFF" vs ON | 013 | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:2931`, `search-flags.ts:480` |
 
 ### Advisory Items (P2 — selected highlights, 35 total)
 
@@ -260,7 +260,7 @@ The code audit of the Spec Kit Memory MCP server's 220+ features is **fundamenta
 ### Sources Reviewed
 
 - 22 child spec folders (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md)
-- Feature catalog: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (19 categories) + 21 split category folders
+- Feature catalog: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` (19 categories) + 21 split category folders
 - MCP server: 251 code files, 317 test files in `.opencode/skill/system-spec-kit/mcp_server/`
 - Architecture reference: `.opencode/skill/system-spec-kit/ARCHITECTURE.md`, `.opencode/skill/system-spec-kit/references/config/environment_variables.md`
 - Code standards: `sk-code--opencode`, `tsconfig.json`, `package.json`

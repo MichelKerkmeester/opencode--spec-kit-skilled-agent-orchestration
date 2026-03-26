@@ -18,7 +18,7 @@ Three `lib/cognitive/` modules and the mutation-feedback hook have zero mentions
 
 **Severity: HIGH.** These are not dead code -- they are imported by core handlers (memory-search, memory-save, memory-context). A per-category audit that does not mention them cannot have verified their behavior.
 
-[SOURCE: grep -rl across mcp_server/ source tree; grep -ci across feature_catalog.md]
+[SOURCE: grep -rl across mcp_server/ source tree; grep -ci across FEATURE_CATALOG.md]
 
 ### Finding 2: The Hooks System Is a Structural Blind Spot Despite Being Imported by 17 Files
 
@@ -35,7 +35,7 @@ Import analysis shows 17 files across the codebase import from `hooks/`. The fea
 
 The audit organized by categories (retrieval, mutation, etc.) would check each handler in its category but would NOT verify the hooks layer that sits BETWEEN handlers and the response pipeline. A change in `mutation-feedback.ts` affects `memory-save`, `memory-crud-update`, `memory-crud-delete`, `memory-bulk-delete` simultaneously -- spanning at least 2 audit categories (002-mutation, 008-bug-fixes).
 
-[SOURCE: ls hooks/ directory; grep -rl "mutation-feedback" across mcp_server/; grep -ci "mutation-hooks" feature_catalog.md]
+[SOURCE: ls hooks/ directory; grep -rl "mutation-feedback" across mcp_server/; grep -ci "mutation-hooks" FEATURE_CATALOG.md]
 
 ### Finding 3: The Session Manager Is a 41KB Monolith Imported by 4 Core Files But Minimally Cataloged
 
@@ -69,7 +69,7 @@ The `lib/cognitive/` directory contains 12 TypeScript files totaling ~196KB of s
 
 Three files (attention-decay, pressure-monitor, tier-classifier) totaling ~30KB have ZERO catalog mentions. These serve cross-cutting concerns: attention-decay affects fusion scoring; tier-classifier drives memory importance tiers; pressure-monitor gates memory-context behavior. The per-category structure audited the features that USE these modules but never audited the modules themselves.
 
-[SOURCE: ls -la lib/cognitive/; grep -ci per module name against feature_catalog.md]
+[SOURCE: ls -la lib/cognitive/; grep -ci per module name against FEATURE_CATALOG.md]
 
 ### Finding 5: The lib/response/envelope Module Is the Most Cross-Cutting Active Module
 
@@ -77,7 +77,7 @@ Three files (attention-decay, pressure-monitor, tier-classifier) totaling ~30KB 
 
 Similarly, `lib/search/vector-index` (21 importers, 5 catalog mentions) and `lib/providers/embeddings` (11 importers, 23 catalog mentions) are heavily cross-cutting but were audited per-consumer, not as independent units.
 
-[SOURCE: import frequency counts via grep across mcp_server/; catalog mention counts via grep against feature_catalog.md]
+[SOURCE: import frequency counts via grep across mcp_server/; catalog mention counts via grep against FEATURE_CATALOG.md]
 
 ### Finding 6: The MATCH/PARTIAL Boundary Has a Structural Consistency Problem
 
@@ -108,7 +108,7 @@ The audit's per-category structure effectively covers the bottom tier (low impor
 
 ## Sources Consulted
 - `mcp_server/` source tree: import frequency analysis via grep
-- `feature_catalog/feature_catalog.md`: catalog mention counts via grep
+- `feature_catalog/FEATURE_CATALOG.md`: catalog mention counts via grep
 - `mcp_server/hooks/`: directory listing and import tracing
 - `mcp_server/lib/cognitive/`: directory listing and import tracing
 - `mcp_server/lib/session/`: file size and import tracing

@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `002` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `002` and confirm the ex
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 002
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/002-chunk-collapse-deduplication-g3.md`

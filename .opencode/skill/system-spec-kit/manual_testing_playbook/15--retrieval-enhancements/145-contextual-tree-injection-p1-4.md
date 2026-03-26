@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `145` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [15--retrieval-enhancements/09-contextual-tree-injection.md](../../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `145` and confirm the ex
 
 - Group: Retrieval Enhancements
 - Playbook ID: 145
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md`

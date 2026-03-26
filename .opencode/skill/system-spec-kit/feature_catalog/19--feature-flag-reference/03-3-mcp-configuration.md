@@ -37,4 +37,4 @@ Source file references are included in the flag table above.
 
 - Group: Feature Flag Reference
 - Source feature title: 3. MCP Configuration
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

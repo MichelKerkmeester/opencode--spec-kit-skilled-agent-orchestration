@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `103` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [18--ux-hooks/05-dedicated-ux-hook-modules.md](../../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `103` and confirm the ex
 
 - Group: UX Hooks
 - Playbook ID: 103
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/103-ux-hook-module-coverage-mutation-feedback-response-hints.md`

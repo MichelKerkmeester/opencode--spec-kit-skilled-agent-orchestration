@@ -27,7 +27,7 @@ Canonical layout:
 
 ```text
 feature_catalog/
-├── feature_catalog.md                 # Root inventory and summary catalog
+├── FEATURE_CATALOG.md                 # Root inventory and summary catalog
 ├── 01--category-name/                 # Required per-feature files for category 1
 │   ├── 01-feature-name.md
 │   └── 02-feature-name.md
@@ -81,7 +81,7 @@ Per-feature file shape:
 
 ## 4. ROOT CATALOG SCAFFOLD
 
-Copy this scaffold to create `{SKILL_PATH}/feature_catalog/feature_catalog.md`:
+Copy this scaffold to create `{SKILL_PATH}/feature_catalog/FEATURE_CATALOG.md`:
 
 ```markdown
 ---
@@ -210,7 +210,7 @@ description: "{OVERVIEW_ONE_LINE}"
 ## 4. SOURCE METADATA
 
 - Group: {CATEGORY_NAME}
-- Canonical catalog source: `feature_catalog.md`
+- Canonical catalog source: `FEATURE_CATALOG.md`
 - Feature file path: `{CATEGORY_DIR}/{NN}-{feature-name}.md`
 ```
 
@@ -232,7 +232,7 @@ Before publishing a feature catalog, verify:
 
 ```markdown
 Structure:
-- [ ] `feature_catalog.md` exists with frontmatter and H1 intro paragraph
+- [ ] `FEATURE_CATALOG.md` exists with frontmatter and H1 intro paragraph
 - [ ] Root catalog has `## TABLE OF CONTENTS`
 - [ ] Root catalog uses numbered all-caps H2 section headers after the TOC
 - [ ] Category directories use `NN--category-name`

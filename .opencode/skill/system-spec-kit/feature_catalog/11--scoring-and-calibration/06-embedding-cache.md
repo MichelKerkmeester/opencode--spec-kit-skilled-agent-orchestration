@@ -43,4 +43,4 @@ The cache has no feature flag because cache misses fall through to normal embedd
 
 - Group: Scoring and calibration
 - Source feature title: Embedding cache
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

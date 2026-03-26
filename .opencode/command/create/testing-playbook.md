@@ -257,11 +257,11 @@ Behavior summary:
 
 | Operation | Purpose | Target Must Exist | Output Scope |
 | --- | --- | --- | --- |
-| `create` | Create a new rooted testing playbook package | No (warn if it already exists) | `manual_testing_playbook.md` + category folders + per-feature files |
+| `create` | Create a new rooted testing playbook package | No (warn if it already exists) | `MANUAL_TESTING_PLAYBOOK.md` + category folders + per-feature files |
 | `update` | Update an existing rooted testing playbook package | Yes | existing root playbook + existing/new per-feature files |
 
 The command must always scaffold or preserve:
-- `manual_testing_playbook/manual_testing_playbook.md`
+- `manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - numbered root-level category folders
 - per-feature files using the playbook snippet template
 - frontmatter on root and per-feature files
@@ -295,7 +295,7 @@ Routing rule:
 
 The generated playbook must match the current shipped `sk-doc` contract:
 
-- Root file: `manual_testing_playbook/manual_testing_playbook.md`
+- Root file: `manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - Category directories: `NN--category-name`
 - Per-feature files: stable numeric file IDs such as `001-feature-name.md`
 - Root structure:
@@ -345,7 +345,7 @@ Hard gates:
 - H4: root document validates and link checks pass
 
 Required validation pipeline:
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py <manual_testing_playbook.md>`
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py <MANUAL_TESTING_PLAYBOOK.md>`
 - local link/path checks for per-feature file references
 - feature ID count verification between root index and per-feature files
 - scan for forbidden sidecar files and forbidden `snippets/` subtree

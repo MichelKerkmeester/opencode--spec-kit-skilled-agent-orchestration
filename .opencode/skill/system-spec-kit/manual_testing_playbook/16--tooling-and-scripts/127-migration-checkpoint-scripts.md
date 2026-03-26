@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `127` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `127` and confirm the ex
 
 - Group: Tooling and Scripts
 - Playbook ID: 127
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/127-migration-checkpoint-scripts.md`

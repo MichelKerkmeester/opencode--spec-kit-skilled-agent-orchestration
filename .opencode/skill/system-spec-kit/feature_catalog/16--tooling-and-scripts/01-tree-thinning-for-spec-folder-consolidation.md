@@ -44,4 +44,4 @@ Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered fi
 
 - Group: Tooling and scripts
 - Source feature title: Tree thinning for spec folder consolidation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

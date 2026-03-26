@@ -135,7 +135,7 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §04--maintenance | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` §04--maintenance | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
 | Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §04--maintenance | Feature context for each scenario | Read before execution |
 | Dependency | MCP runtime with indexed memory corpus | Required for EX-014 tool invocation | Verify MCP server is running before starting |
 | Risk | EX-014 `force: true` re-indexes all files and may be slow on large corpora | Low | Use incremental (default) mode unless the playbook explicitly requires force mode |

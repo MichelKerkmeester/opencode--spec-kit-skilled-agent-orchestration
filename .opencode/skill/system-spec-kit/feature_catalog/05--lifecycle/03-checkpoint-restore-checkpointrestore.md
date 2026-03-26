@@ -147,4 +147,4 @@ After restore, vectors are restored from the checkpoint snapshot when vector pay
 
 - Group: Lifecycle
 - Source feature title: Checkpoint restore (checkpoint_restore)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

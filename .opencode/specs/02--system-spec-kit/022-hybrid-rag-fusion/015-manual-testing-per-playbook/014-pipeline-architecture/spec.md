@@ -149,8 +149,8 @@ Execute all 18 playbook scenarios for the pipeline architecture category and rec
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Playbook scenario files in scratch/playbook/ | Cannot execute without scenario steps | Locate files before starting |
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
 | Dependency | `../../feature_catalog/14--pipeline-architecture/` | Feature context per scenario | Link every scenario to its feature file |
 | Risk | Cross-process rebinding (112) requires multiple processes | May be hard to reproduce locally | Document environment setup steps; use code inspection if live run not possible |
 | Risk | Transaction atomicity (115) requires simulated rename failure | Edge case needs controlled failure injection | Use transaction-manager test hooks in isolated fixture |

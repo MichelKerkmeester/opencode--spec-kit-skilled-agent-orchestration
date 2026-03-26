@@ -47,7 +47,7 @@ Both scripts now expose testable helpers (`parseArgs`, `main`, `runCreateCheckpo
 
 - Group: Tooling and scripts
 - Source feature title: Migration checkpoint scripts
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

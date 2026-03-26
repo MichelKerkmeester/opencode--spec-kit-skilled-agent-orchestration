@@ -7,7 +7,7 @@ I’m loading the review context and setting up a small audit plan first, then I
 
 ✗ Run skill advisor (shell)
   │ python3 .opencode/skill/scripts/skill_advisor.py "Deep audit of Spec Kit Memory MCP server
-  │ feature catalog traceability. Verify feature_catalog.md sections 2-21 source file references
+  │ feature catalog traceability. Verify FEATURE_CATALOG.md sections 2-21 source file references
   │ against .opencode/skill/system-spec-kit/mcp_server code and child spec.md audit findings, check
   │ orphaned source files and 32 unreferenced files." --threshold 0.8
   └ Permission denied and could not request permission from user
@@ -32,8 +32,8 @@ I’m loading the review context and setting up a small audit plan first, then I
   │ .agents/skills/sk-code--review/references/security_checklist.md
   └ L1:220 (206 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:320 (190 lines read)
 
 ● Search (grep)
@@ -54,7 +54,7 @@ I’ve loaded the review rubric and the catalog. Next I’m mapping the catalog�
 
 ● Search (grep)
   │ "^## (2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)\."
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 20 lines found
 
 ● Search (glob)
@@ -445,8 +445,8 @@ The exploration result overreached and contradicted direct source reads, so I’
   │ e.md
   └ L18:28 (11 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3858:3869 (11 lines read)
 
 ● Search (grep)
@@ -498,13 +498,13 @@ The exploration result overreached and contradicted direct source reads, so I’
 
 ### P1-001 [P1] Section 16 overstates universal `Feature catalog:` coverage and cites a verifier that does not enforce it
 
-- **Evidence:** `feature_catalog/feature_catalog.md:3862-3866` says “every source file” carries `// Feature catalog:` comments. The child spec downgrades this to **~74%** coverage: `feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`. The cited verifier only checks `MODULE:` headers, not feature annotations: `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py:266-274`. A representative script file has a `MODULE:` header but no `Feature catalog:` tag: `scripts/utils/workspace-identity.ts:1-4`.
+- **Evidence:** `feature_catalog/FEATURE_CATALOG.md:3862-3866` says “every source file” carries `// Feature catalog:` comments. The child spec downgrades this to **~74%** coverage: `feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`. The cited verifier only checks `MODULE:` headers, not feature annotations: `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py:266-274`. A representative script file has a `MODULE:` header but no `Feature catalog:` tag: `scripts/utils/workspace-identity.ts:1-4`.
 - **Impact:** operators and auditors cannot rely on grep-based feature tracing as a complete inventory; the catalog currently presents partial coverage as universal coverage.
 - **Fix recommendation:** change the main catalog wording to match the measured partial-coverage claim, or add enforcement for `// Feature catalog:` annotations if universal coverage is intended.
 
 ### P1-002 [P1] Section 21 still misdescribes `SESSION_MAX_ENTRIES` behavior
 
-- **Evidence:** `feature_catalog/feature_catalog.md:4511` says entries beyond the cap “are not tracked.” The child flag reference says the opposite: `feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md:24` documents **LRU eviction**. Code confirms eviction of oldest rows via `DELETE ... ORDER BY sent_at ASC LIMIT ?`: `mcp_server/lib/session/session-manager.ts:610-628`.
+- **Evidence:** `feature_catalog/FEATURE_CATALOG.md:4511` says entries beyond the cap “are not tracked.” The child flag reference says the opposite: `feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md:24` documents **LRU eviction**. Code confirms eviction of oldest rows via `DELETE ... ORDER BY sent_at ASC LIMIT ?`: `mcp_server/lib/session/session-manager.ts:610-628`.
 - **Impact:** debugging session dedup behavior from the top-level catalog will be wrong; readers may expect silent overflow dropping instead of eviction churn.
 - **Fix recommendation:** align the top-level feature-flag row with the child spec and code: oldest tracked entries are evicted when the cap is exceeded.
 

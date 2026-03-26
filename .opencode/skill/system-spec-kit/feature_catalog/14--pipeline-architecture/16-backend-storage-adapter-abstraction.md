@@ -43,4 +43,4 @@ The system is still SQLite-backed, but it is no longer hard-wired directly at ev
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Backend storage adapter abstraction
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

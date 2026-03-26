@@ -36,7 +36,7 @@ contextType: "implementation"
 
 - [x] T001 Verify playbook files accessible at `../../manual_testing_playbook/13--memory-quality-and-indexing/` -- 27 files confirmed
 - [x] T002 Confirm feature catalog accessible at `../../feature_catalog/13--memory-quality-and-indexing/` -- 24 files confirmed
-- [x] T003 Load review protocol from `../../manual_testing_playbook/manual_testing_playbook.md` -- loaded
+- [x] T003 Load review protocol from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` -- loaded
 - [x] T004 Verify MCP runtime healthy (`memory_save`, `memory_index_scan`, quality gate pipeline) -- code analysis mode (source verified)
 - [x] T005 [P] Record baseline feature flag values -- all flags verified in search-flags.ts and respective modules
 - [x] T006 [P] Prepare sandbox data and named checkpoint for destructive scenarios -- code analysis mode (no runtime mutation)

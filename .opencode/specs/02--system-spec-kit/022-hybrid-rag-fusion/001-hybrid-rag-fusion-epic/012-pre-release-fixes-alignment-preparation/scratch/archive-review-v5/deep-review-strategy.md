@@ -33,13 +33,13 @@ track
 - **008** (copilot): feature_catalog_code protocol — catalog claims vs code
 
 ### Wave 3: Feature Catalog Deep Verification (iterations 009-012)
-- **009** (codex): feature_catalog.md categories 01-10 vs live code
-- **010** (codex): feature_catalog.md categories 11-21 vs live code
+- **009** (codex): FEATURE_CATALOG.md categories 01-10 vs live code
+- **010** (codex): FEATURE_CATALOG.md categories 11-21 vs live code
 - **011** (copilot): Snippet files 01-10 vs master catalog + code
 - **012** (copilot): Snippet files 11-21 vs master catalog + code
 
 ### Wave 4: Simple Terms + Maintainability (iterations 013-016)
-- **013** (codex): feature_catalog_in_simple_terms.md vs feature_catalog.md alignment
+- **013** (codex): FEATURE_CATALOG_IN_SIMPLE_TERMS.md vs FEATURE_CATALOG.md alignment
 - **014** (codex): Code maintainability patterns review
 - **015** (copilot): Playbook capability + sprint status verification
 - **016** (copilot): Spec tree structure + directory count verification

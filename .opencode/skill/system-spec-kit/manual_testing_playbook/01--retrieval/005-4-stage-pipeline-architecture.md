@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-005` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [01--retrieval/05-4-stage-pipeline-architecture.md](../../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-005` and confirm the
 
 - Group: Retrieval
 - Playbook ID: EX-005
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `01--retrieval/005-4-stage-pipeline-architecture.md`

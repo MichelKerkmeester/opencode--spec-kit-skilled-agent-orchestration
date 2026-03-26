@@ -59,4 +59,4 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 - Group: Memory quality and indexing
 - Source feature title: Auto entity extraction
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

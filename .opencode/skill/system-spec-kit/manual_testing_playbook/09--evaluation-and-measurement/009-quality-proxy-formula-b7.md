@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `009` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [09--evaluation-and-measurement/05-quality-proxy-formula.md](../../feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `009` and confirm the ex
 
 - Group: Evaluation and Measurement
 - Playbook ID: 009
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/009-quality-proxy-formula-b7.md`

@@ -43,7 +43,7 @@ Operators run the exact prompt and command sequence for `MCP-005` and confirm th
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 
 
 ---
@@ -52,5 +52,5 @@ Operators run the exact prompt and command sequence for `MCP-005` and confirm th
 
 - Group: MCP Search Tool
 - Playbook ID: MCP-005
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `02--mcp-search-tool/005-combined-filters.md`

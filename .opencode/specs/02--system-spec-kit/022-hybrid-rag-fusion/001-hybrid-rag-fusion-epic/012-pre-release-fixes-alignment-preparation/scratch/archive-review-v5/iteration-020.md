@@ -38,8 +38,8 @@ I’m pulling the core spec packet and review rubric together first, then I’ll
   │ ease-fixes-alignment-preparation/spec.md
   └ 205 lines read
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:500 (190 lines read)
 
 ● Create session plan file (shell)
@@ -134,7 +134,7 @@ One more pass: the epic packet is internally inconsistent on its own child count
 ● Search (grep)
   │ "Command-Surface Contract|33 tools|6 slash commands|/memory:analyze|/memory:continue|/memory:lea
   │ rn|/memory:manage|/memory:save|/memory:shared"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 19 lines found
 
 ● List root numbered phase folders (shell)
@@ -151,7 +151,7 @@ I’ve got enough to judge the packet tree now; I’m just spot-checking whether
 ● Search (grep)
   │ "Feature Catalog Count|feature files|Command-Surface Contract|Unified context retrieval|Semantic
   │ and lexical search|Fast delegated search|Trigger phrase matching|Hybrid search pipeline"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 7 lines found
 
 ● Count feature catalog markdown files (shell)
@@ -180,8 +180,8 @@ I’ve got the live counts I needed. The remaining question is whether the relea
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
   └ L32:42 (10 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L50:63 (14 lines read)
 
 I have the core contradictions. I’m pulling one last citation on the control packet’s own “pending re-verification” wording so the final verdict cleanly distinguishes code health from release-certification health.
@@ -202,7 +202,7 @@ I have the core contradictions. I’m pulling one last citation on the control p
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md`
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md`
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (lines 1-500)
+- `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` (lines 1-500)
 - `.opencode/command/memory/{analyze,continue,learn,manage,save,shared}.md`
 - Live tree spot-checks for 022/001 directory counts
 

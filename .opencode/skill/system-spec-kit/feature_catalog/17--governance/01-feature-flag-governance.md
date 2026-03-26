@@ -35,4 +35,4 @@ No dedicated source files. This describes governance process controls.
 
 - Group: Governance
 - Source feature title: Feature flag governance
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

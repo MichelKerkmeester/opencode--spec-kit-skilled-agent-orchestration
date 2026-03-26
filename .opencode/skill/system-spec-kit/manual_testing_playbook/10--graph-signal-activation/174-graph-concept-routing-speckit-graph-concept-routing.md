@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `174` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/entity-linker.ts`
 
@@ -42,5 +42,5 @@ Operators run the exact prompt and command sequence for `174` and confirm the ex
 
 - Group: Graph signal activation
 - Playbook ID: 174
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md`

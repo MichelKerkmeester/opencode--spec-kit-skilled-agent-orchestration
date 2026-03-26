@@ -71,4 +71,4 @@ The no-double-weighting behavior is validated by `mcp_server/tests/intent-weight
 
 - Group: Scoring and calibration
 - Source feature title: Double intent weighting investigation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

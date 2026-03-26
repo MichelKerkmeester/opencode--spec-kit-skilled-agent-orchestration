@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `035` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [12--query-intelligence/03-channel-min-representation.md](../../feature_catalog/12--query-intelligence/03-channel-min-representation.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `035` and confirm the ex
 
 - Group: Query Intelligence
 - Playbook ID: 035
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `12--query-intelligence/035-channel-min-representation-r2.md`

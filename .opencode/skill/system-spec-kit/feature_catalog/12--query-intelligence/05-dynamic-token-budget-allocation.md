@@ -47,4 +47,4 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 
 - Group: Query intelligence
 - Source feature title: Dynamic token budget allocation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

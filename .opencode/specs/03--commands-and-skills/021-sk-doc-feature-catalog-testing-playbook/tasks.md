@@ -48,7 +48,7 @@ Task log for the broader documentation-alignment effort that followed the initia
 
 - [x] T010 Refactor `system-spec-kit/manual_testing_playbook/` into the integrated root-playbook contract
 - [x] T011 [P] Align all `system-spec-kit` playbook per-feature files with frontmatter, divider, and orchestrator-led prompt expectations
-- [x] T012 Align `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` to the final header/frontmatter conventions
+- [x] T012 Align `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` and `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md` to the final header/frontmatter conventions
 - [x] T013 [P] Add frontmatter to feature-catalog and manual-testing per-feature files in the aligned trees
 - [x] T014 Remove obsolete canonical playbook sidecar docs and fold their guidance into the root playbook
 - [x] T015 Normalize `mcp-coco-index/manual_testing_playbook/` to the same integrated root-playbook contract

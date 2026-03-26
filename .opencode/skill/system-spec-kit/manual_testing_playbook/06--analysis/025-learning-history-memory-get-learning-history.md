@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-025` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [06--analysis/07-learning-history-memorygetlearninghistory.md](../../feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-025` and confirm the
 
 - Group: Analysis
 - Playbook ID: EX-025
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `06--analysis/025-learning-history-memory-get-learning-history.md`

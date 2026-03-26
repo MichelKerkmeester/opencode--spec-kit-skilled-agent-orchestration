@@ -39,4 +39,4 @@ AI assistants sometimes invent parameters that do not exist when calling tools. 
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Strict Zod schema validation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

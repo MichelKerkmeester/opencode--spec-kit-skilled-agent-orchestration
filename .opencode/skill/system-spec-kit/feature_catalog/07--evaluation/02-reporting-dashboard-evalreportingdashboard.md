@@ -60,4 +60,4 @@ Runtime behavior is read-only after initialization. The dashboard path queries t
 
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

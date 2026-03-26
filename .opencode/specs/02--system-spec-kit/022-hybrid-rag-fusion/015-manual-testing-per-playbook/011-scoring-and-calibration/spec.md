@@ -156,9 +156,9 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Phase 011 cannot stay accurate if source prompts or pass/fail text drift | Treat the playbook as single source of truth; refresh this phase doc after playbook edits |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Phase 011 cannot stay accurate if source prompts or pass/fail text drift | Treat the playbook as single source of truth; refresh this phase doc after playbook edits |
 | Dependency | `../../feature_catalog/11--scoring-and-calibration/` | Missing or moved feature files would break traceability from scenario to feature | Keep relative links aligned with the catalog; re-run link audit after renames |
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Verdicts could be inconsistent if reviewers do not apply the same PASS/PARTIAL/FAIL rules | Use the review protocol as the final verdict rubric for every executed scenario |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Verdicts could be inconsistent if reviewers do not apply the same PASS/PARTIAL/FAIL rules | Use the review protocol as the final verdict rubric for every executed scenario |
 | Dependency | MCP runtime, flags, and sandbox fixture data | Several tests depend on trace output, toggled flags, or state-mutating validation flows | Run destructive scenarios in an isolated sandbox and reset state between tests |
 | Dependency | `SPECKIT_LEARNED_STAGE2_COMBINER` feature flag | Required for 159; controls shadow scoring output alongside the live combiner | Confirm flag support in the runtime before running 159; default OFF preserves existing combiner behavior |
 | Dependency | `SPECKIT_SHADOW_FEEDBACK` feature flag | Required for 160; controls the holdout evaluation pipeline | Confirm flag support and holdout percentage configuration before running 160; default OFF disables holdout |

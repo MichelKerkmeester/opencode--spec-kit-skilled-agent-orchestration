@@ -877,7 +877,7 @@ Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Final token metadata recomputation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 exec
 /bin/zsh -lc "rg -n \"context-server\\.vitest|response-hints|context-server\\.ts|appendAutoSurfaceHints\" .opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 53ms:
 5:The context-server success path now appends UX hints through `appendAutoSurfaceHints` while preserving the existing `autoSurfacedContext` payload. This adds guidance without changing the established context auto-surface contract. The finalized implementation runs that append step before token-budget enforcement and recomputes final token metadata from the completed envelope.

@@ -23,7 +23,7 @@ This feature works like a label on a warehouse box — instead of tracking items
 
 ## 2. CURRENT REALITY
 
-Measured audit coverage at HEAD is approximately 69%: `192` of `280` non-test TypeScript files under `mcp_server/` and `shared/` carry one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/feature_catalog.md`. Files implementing multiple catalog features list all applicable entries. Some pure utility, type, and barrel-export files are treated as exempt, and the convention is still only partial rather than universal across the live tree.
+Measured audit coverage at HEAD is approximately 69%: `192` of `280` non-test TypeScript files under `mcp_server/` and `shared/` carry one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/FEATURE_CATALOG.md`. Files implementing multiple catalog features list all applicable entries. Some pure utility, type, and barrel-export files are treated as exempt, and the convention is still only partial rather than universal across the live tree.
 
 The `// MODULE: Name` header convention provides a standardized 3-line block at the top of every `.ts` file (separator → module name → separator) using box-drawing characters (`───`) in `mcp_server/` and dashes (`---`) in `shared/` and `scripts/`.
 
@@ -55,7 +55,7 @@ Stale references to "Sprint N", "Phase NNN", or "spec NNN" in non-test comments 
 
 - Group: Tooling and scripts
 - Source feature title: Feature catalog code references
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

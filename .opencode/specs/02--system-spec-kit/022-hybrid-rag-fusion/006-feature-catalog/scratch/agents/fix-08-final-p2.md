@@ -2,8 +2,8 @@
 
 I’m gathering the target docs plus the backing source references so I can make tight, evidence-based edits in one pass. After that I’ll patch the files, validate them, and show the diffs.
 
-● Read feature_catalog_in_simple_terms.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+● Read FEATURE_CATALOG_IN_SIMPLE_TERMS.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   └ 1 line read
 
 ● Read 06-cross-document-entity-linking.md
@@ -52,7 +52,7 @@ I’m gathering the target docs plus the backing source references so I can make
   │ python3 .opencode/skill/scripts/skill_advisor.py "Documentation remediation for system-spec-kit
   │ feature catalog files: trim over-broad source file lists, fix unverifiable claims and drift, add
   │ minimal H2 scaffold to category stubs and mapping note, strengthen links in
-  │ feature_catalog_in_simple_terms.md" --threshold 0.8
+  │ FEATURE_CATALOG_IN_SIMPLE_TERMS.md" --threshold 0.8
   └ 43 lines...
 
 ● skill(system-spec-kit)
@@ -62,8 +62,8 @@ I found the target snippets and the likely source drift points. Next I’m check
 ● Edit
   └ Create ~/.copilot/session-state/b145fbc5-10f9-4324-ad29-bc2f90a4ec49/plan.md
 
-● Read feature_catalog_in_simple_terms.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+● Read FEATURE_CATALOG_IN_SIMPLE_TERMS.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   └ L40:60 (21 lines read)
 
 ● Search (grep)
@@ -219,7 +219,7 @@ I’ve got enough evidence to patch cleanly now. I’m keeping the edits narrow:
   │ .opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md
   │ Edit .opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-feature
   │ s/01-category-stub.md
-  └ Edit .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+  └ Edit .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
 
 The patches are in. I’m doing a final verification pass now: checking the rendered markdown structure with the doc validator, then I’ll pull focused diffs so you can see exactly what changed.
 
@@ -496,7 +496,7 @@ The patches are in. I’m doing a final verification pass now: checking the rend
   └ .opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-
     category-stub.md
 
-● Show diff feature_catalog_in_simple_terms.md
+● Show diff FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   │
   │ 45
   │ 46     | Audit phase | Where to find it |
@@ -518,7 +518,7 @@ The patches are in. I’m doing a final verification pass now: checking the rend
   │ 51
   │ 52     ### Command-Surface Contract
   │
-  └ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+  └ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
 
 Done. I remediated all 9 requested docs in `.opencode/skill/system-spec-kit/feature_catalog/`:
 
@@ -526,7 +526,7 @@ Done. I remediated all 9 requested docs in `.opencode/skill/system-spec-kit/feat
 - Removed the unverifiable `18+ files` / `7027 -> 7003` claims while keeping the specific fix notes.
 - Corrected the cross-AI drift to `handlers/memory-search.ts` and `parent.parent_id IS NULL`.
 - Added minimal numbered H2 scaffolds to the three orphan docs.
-- Added direct links from `feature_catalog_in_simple_terms.md` to the audit-phase stub docs.
+- Added direct links from `FEATURE_CATALOG_IN_SIMPLE_TERMS.md` to the audit-phase stub docs.
 
 I also showed the diffs above. Validation ran, but the doc validator reports pre-existing TOC/anchor-policy issues in these catalog files.
 

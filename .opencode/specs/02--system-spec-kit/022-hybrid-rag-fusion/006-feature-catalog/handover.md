@@ -147,7 +147,7 @@ Phase F is defined in `tasks.md` (remaining open work is T100-T171; T128-T129 ad
 ### Feature Catalog (Target of Remediation)
 ```
 .opencode/skill/system-spec-kit/feature_catalog/
-  feature_catalog.md               # Monolithic catalog (sync after snippets)
+  FEATURE_CATALOG.md               # Monolithic catalog (sync after snippets)
   01--retrieval/                   # 9 snippet files
   02--mutation/                    # 10 snippet files
   ... (live tree currently 189 snippet files; historical audit baseline was 180)

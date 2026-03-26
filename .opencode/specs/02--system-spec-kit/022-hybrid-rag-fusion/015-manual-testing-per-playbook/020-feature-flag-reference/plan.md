@@ -106,7 +106,7 @@ Open packet context -> run the exact playbook sequence -> capture raw evidence -
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Green | Exact prompts and pass criteria cannot be recovered |
 | `../../007-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Internal | Green | Audit context and scope mapping are lost |
 | Commit `09acbe8ce` graduation event | Historical | Yellow | PB-020-02 cannot verify the intended flag cohort |
 | A reversible graduated flag target | Internal | Yellow | PB-020-03 cannot run honestly |

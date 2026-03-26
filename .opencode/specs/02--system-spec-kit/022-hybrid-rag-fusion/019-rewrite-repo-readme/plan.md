@@ -37,7 +37,7 @@ Complete rewrite of the root README as the top-level entry point to the OpenCode
 - [x] Dependencies identified (agent defs, skill dir, CLAUDE.md)
 
 ### Definition of Done
-- [ ] All 16 skills and 11 agents listed
+- [ ] All 18 skills and 12 agents listed
 - [ ] DQI >= 75 verified
 - [ ] No banned HVR words
 - [ ] Role-based navigation paths work
@@ -53,8 +53,8 @@ Complete rewrite of the root README as the top-level entry point to the OpenCode
 Documentation rewrite — top-level overview linking to component documentation.
 
 ### Key Components
-- **Agent definitions**: 11 agents across `.claude/agents/` and `.opencode/agent/`
-- **Skill directory**: 16 skills in `.opencode/skill/`
+- **Agent definitions**: 12 agents (2 built-in + 10 custom) across `.opencode/agent/`, `.claude/agents/`, `.opencode/agent/chatgpt/`, `.gemini/agents/`
+- **Skill directory**: 18 skills in `.opencode/skill/`
 - **Command directory**: Commands in `.opencode/command/`
 - **CLAUDE.md**: Gate system, configuration, operational mandates
 - **Component READMEs**: MCP README (D1), Spec Kit README (D3)
@@ -71,8 +71,8 @@ agent defs + skill dir + CLAUDE.md + commands → research brief → draft → r
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Research
-- [ ] Enumerate all 11 agents with roles and capabilities
-- [ ] Enumerate all 16 skills with descriptions
+- [x] Enumerate all 12 agents with roles and capabilities
+- [x] Enumerate all 18 skills with descriptions
 - [ ] Extract gate system summary from CLAUDE.md
 - [ ] Inventory command architecture
 - [ ] Catalog code mode MCP configuration
@@ -113,7 +113,7 @@ agent defs + skill dir + CLAUDE.md + commands → research brief → draft → r
 |-----------|-------|-------|
 | Quality | DQI score >= 75 | `validate_document.py` |
 | Compliance | No banned HVR words | grep / sk-doc rules |
-| Accuracy | All 16 skills, 11 agents | Compare against live directories |
+| Accuracy | All 18 skills, 12 agents, 42 MCP tools | Compare against live directories |
 | Structure | Section headers match template | Manual comparison |
 | Links | Cross-references resolve | Path existence check |
 | Dedup | No content duplicated from D1/D3 | Manual review |

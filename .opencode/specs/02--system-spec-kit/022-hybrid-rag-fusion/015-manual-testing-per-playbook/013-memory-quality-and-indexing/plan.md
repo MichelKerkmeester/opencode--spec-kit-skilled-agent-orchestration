@@ -42,7 +42,7 @@ This plan converts the 27 memory-quality-and-indexing scenario files (34 exact I
 
 - [ ] Playbook files for 13--memory-quality-and-indexing are accessible at `../../manual_testing_playbook/13--memory-quality-and-indexing/`
 - [ ] Feature catalog files for 13--memory-quality-and-indexing are accessible at `../../feature_catalog/13--memory-quality-and-indexing/`
-- [ ] Review protocol is loaded from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] Review protocol is loaded from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [ ] MCP runtime is healthy and `memory_save`, `memory_index_scan`, quality gate pipeline respond
 - [ ] Sandbox data and checkpoint strategy identified for destructive scenarios (M-005, M-006, 044)
 - [ ] Feature flags documented for scenarios 164, 165, 176, 177, 178
@@ -196,7 +196,7 @@ Manual memory quality test execution pipeline with review-gated evidence collect
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Playbook `../../manual_testing_playbook/13--memory-quality-and-indexing/` | Internal | Unknown | Scenario steps unavailable |
-| Review protocol `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdicts cannot be applied consistently |
+| Review protocol `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Verdicts cannot be applied consistently |
 | Feature catalog `../../feature_catalog/13--memory-quality-and-indexing/` | Internal | Unknown | Cross-reference cannot be verified |
 | MCP runtime (`memory_save`, `memory_index_scan`, quality gate) | Internal | Unknown | Memory quality scenarios cannot be executed |
 | Disposable sandbox corpus and rollback checkpoint | Internal | Unknown | Destructive tests M-005, M-006, 044 cannot run safely |

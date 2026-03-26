@@ -65,4 +65,4 @@ Results from the `ablation` path can be stored in `eval_metric_snapshots` with n
 
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

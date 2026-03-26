@@ -59,4 +59,4 @@ Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Session-manager transaction gap fixes
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

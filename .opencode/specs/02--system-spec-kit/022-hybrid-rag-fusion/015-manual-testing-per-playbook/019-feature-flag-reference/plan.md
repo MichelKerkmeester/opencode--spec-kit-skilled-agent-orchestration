@@ -38,9 +38,9 @@ This plan converts the eight feature-flag-reference scenarios in the manual test
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Exact prompts, command sequences, and pass criteria are loaded from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
+- [ ] Exact prompts, command sequences, and pass criteria are loaded from [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md).
 - [ ] Feature mappings for all 8 feature-flag-reference tests are confirmed against the cross-reference index and feature-flag-reference catalog files.
-- [ ] Verdict rules from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) are loaded for PASS/PARTIAL/FAIL handling.
+- [ ] Verdict rules from [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) are loaded for PASS/PARTIAL/FAIL handling.
 - [ ] 125 dist build requirement and env-var isolation expectations are identified.
 - [ ] MCP runtime access confirmed for `memory_search` and `memory_context`.
 
@@ -128,8 +128,8 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
+| [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
+| [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/19--feature-flag-reference/`](../../feature_catalog/19--feature-flag-reference/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | MCP runtime for `memory_search` and `memory_context` | Internal | Yellow | EX-028 through EX-034 cannot be executed |
 | Indexed flag documentation corpus | Internal | Yellow | EX-028 through EX-034 return 0 results; triage via feature catalog if absent |

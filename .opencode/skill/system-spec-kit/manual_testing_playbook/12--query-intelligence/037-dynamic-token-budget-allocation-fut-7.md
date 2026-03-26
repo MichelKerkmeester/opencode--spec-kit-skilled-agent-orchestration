@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `037` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [12--query-intelligence/05-dynamic-token-budget-allocation.md](../../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `037` and confirm the ex
 
 - Group: Query Intelligence
 - Playbook ID: 037
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md`

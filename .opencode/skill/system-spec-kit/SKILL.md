@@ -169,7 +169,7 @@ RESOURCE_MAP = {
     "DEBUG": [
         "references/debugging/troubleshooting.md",
         "references/workflows/quick_reference.md",
-        "manual_testing_playbook/manual_testing_playbook.md",
+        "manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
     ],
     "COMPLETE": [
         "references/validation/validation_rules.md",
@@ -194,7 +194,7 @@ RESOURCE_MAP = {
     "EVALUATION": [
         "references/memory/epistemic_vectors.md",
         "references/config/environment_variables.md",
-        "manual_testing_playbook/manual_testing_playbook.md",
+        "manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
     ],
     "SCORING_CALIBRATION": [
         "references/config/environment_variables.md",

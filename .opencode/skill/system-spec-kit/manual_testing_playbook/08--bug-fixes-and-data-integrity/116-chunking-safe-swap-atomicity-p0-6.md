@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `116` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `116` and confirm the ex
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 116
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/116-chunking-safe-swap-atomicity-p0-6.md`

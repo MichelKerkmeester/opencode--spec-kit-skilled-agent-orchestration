@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `029` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `029` and confirm the ex
 
 - Group: Scoring and Calibration
 - Playbook ID: 029
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `11--scoring-and-calibration/029-double-intent-weighting-investigation-g2.md`

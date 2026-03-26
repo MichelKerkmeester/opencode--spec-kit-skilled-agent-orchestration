@@ -61,4 +61,4 @@ Successful metadata updates now invalidate the search cache as part of the same 
 
 - Group: Mutation
 - Source feature title: Memory metadata update (memory_update)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

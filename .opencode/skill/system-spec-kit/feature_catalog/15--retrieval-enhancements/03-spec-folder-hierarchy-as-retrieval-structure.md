@@ -44,4 +44,4 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 
 - Group: Retrieval enhancements
 - Source feature title: Spec folder hierarchy as retrieval structure
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

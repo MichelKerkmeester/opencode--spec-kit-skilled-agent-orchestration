@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `158` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/graph-calibration.ts`
 
@@ -42,5 +42,5 @@ Operators run the exact prompt and command sequence for `158` and confirm the ex
 
 - Group: Graph Signal Activation
 - Playbook ID: 158
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md`

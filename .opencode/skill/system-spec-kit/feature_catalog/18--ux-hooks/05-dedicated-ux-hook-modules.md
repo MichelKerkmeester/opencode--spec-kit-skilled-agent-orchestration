@@ -107,4 +107,4 @@ Phase 014 introduced dedicated UX hook modules for mutation feedback and respons
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Dedicated UX hook modules
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

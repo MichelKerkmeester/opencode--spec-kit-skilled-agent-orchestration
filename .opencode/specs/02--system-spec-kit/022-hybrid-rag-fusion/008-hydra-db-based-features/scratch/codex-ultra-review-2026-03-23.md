@@ -115,7 +115,7 @@ sk-code--opencode states CommonJS for MCP server code. Rated as standards non-co
 Three different counts: spec.md says 227/266, checklist.md says 226/264, implementation-summary.md says 225/264.
 
 ### M-9: Root Playbook Index Stale (Agent 2)
-**File:** manual_testing_playbook.md
+**File:** MANUAL_TESTING_PLAYBOOK.md
 
 Embeds older "227 scenario files" release-readiness gate, but folder now has 233 files. Hardcoded coverage check invalid.
 

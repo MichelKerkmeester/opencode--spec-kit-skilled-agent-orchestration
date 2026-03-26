@@ -259,8 +259,8 @@ The playbook references are definitely wired into the feature catalog; the remai
   │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423323463-sgxxyz.txt
   └ L1:240 (161 lines read)
 
-● Read manual_testing_playbook.md
-  │ .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md
+● Read MANUAL_TESTING_PLAYBOOK.md
+  │ .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
   └ L1:260 (260 lines read)
 
 I have the playbook inventory now. Most referenced IDs clearly exist as dedicated scenario files; I’m scanning the tail of the inventory for the remaining IDs like `072`, `082`, `088`, `126+`, and the `M-00x` references.

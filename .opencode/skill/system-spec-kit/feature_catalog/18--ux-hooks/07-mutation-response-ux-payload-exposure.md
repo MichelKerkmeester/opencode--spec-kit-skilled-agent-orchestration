@@ -47,4 +47,4 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation response UX payload exposure
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

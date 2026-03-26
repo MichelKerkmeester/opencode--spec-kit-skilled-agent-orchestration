@@ -51,7 +51,7 @@ Four test quality issues were addressed:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Test quality improvements
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

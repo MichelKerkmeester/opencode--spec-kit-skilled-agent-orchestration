@@ -212,7 +212,7 @@
 
 ### P2-17: Stale Playbook Reference to Deleted Test File
 - **Agent**: 8 (Regression Check)
-- **File**: `manual_testing_playbook/manual_testing_playbook.md#L3330`
+- **File**: `manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md#L3330`
 - **Issue**: Commit `dace1f87` removed `index-refresh.vitest.ts` but playbook still cites it as active coverage.
 
 ### P2-15: Architecture Components Gap (41 documented vs 51 in code)

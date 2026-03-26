@@ -43,4 +43,4 @@ Edge cases are handled. NaN and Infinity scores are filtered, and all-equal scor
 
 - Group: Query intelligence
 - Source feature title: Confidence-based result truncation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

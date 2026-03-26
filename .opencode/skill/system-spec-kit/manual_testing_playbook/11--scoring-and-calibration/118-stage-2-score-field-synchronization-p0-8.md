@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `118` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `118` and confirm the ex
 
 - Group: Scoring and Calibration
 - Playbook ID: 118
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `11--scoring-and-calibration/118-stage-2-score-field-synchronization-p0-8.md`

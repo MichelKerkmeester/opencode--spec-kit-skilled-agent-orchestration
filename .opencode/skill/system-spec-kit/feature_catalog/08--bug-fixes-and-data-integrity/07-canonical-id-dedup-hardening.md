@@ -40,4 +40,4 @@ Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybri
 
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Canonical ID dedup hardening
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

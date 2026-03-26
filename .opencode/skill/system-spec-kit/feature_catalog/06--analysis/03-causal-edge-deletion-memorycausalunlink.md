@@ -141,4 +141,4 @@ A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing
 
 - Group: Analysis
 - Source feature title: Causal edge deletion (memory_causal_unlink)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

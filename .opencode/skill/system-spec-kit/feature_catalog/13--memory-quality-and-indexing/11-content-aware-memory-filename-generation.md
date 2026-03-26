@@ -44,4 +44,4 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 
 - Group: Memory quality and indexing
 - Source feature title: Content-aware memory filename generation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

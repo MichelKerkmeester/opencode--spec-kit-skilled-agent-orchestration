@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `160` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/feedback/shadow-scoring.ts`
 
@@ -42,5 +42,5 @@ Operators run the exact prompt and command sequence for `160` and confirm the ex
 
 - Group: Scoring and Calibration
 - Playbook ID: 160
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `11--scoring-and-calibration/160-shadow-feedback-speckit-shadow-feedback.md`

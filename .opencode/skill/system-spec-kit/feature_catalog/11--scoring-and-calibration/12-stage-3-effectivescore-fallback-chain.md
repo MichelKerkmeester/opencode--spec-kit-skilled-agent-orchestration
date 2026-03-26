@@ -130,4 +130,4 @@ A search result can carry several different scores from different stages of proc
 
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Stage 3 effectiveScore fallback chain
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

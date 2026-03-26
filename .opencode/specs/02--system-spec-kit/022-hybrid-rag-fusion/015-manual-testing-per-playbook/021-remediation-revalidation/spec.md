@@ -129,7 +129,7 @@ No P1 items are defined for this phase; all three remediation-revalidation scena
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
 | Dependency | [`../../007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md`](../../007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md) | Supplies the remediation priority matrix and cross-phase synthesis findings | Keep every test row linked to its mapped remediation finding |
 | Dependency | All 20 prior audit phase specs must be complete | PB-021-01 cannot verify tracking completeness without the full finding set | Verify all 20 specs exist and have audit findings sections before executing |
 | Risk | Some P0 items may not yet be remediated when testing begins | Medium | Mark unremediated items as OPEN in PB-021-02 evidence; do not mark FAIL for items still in progress |

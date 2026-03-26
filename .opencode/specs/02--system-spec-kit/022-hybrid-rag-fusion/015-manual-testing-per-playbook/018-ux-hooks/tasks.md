@@ -33,7 +33,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [x] T002 Load review protocol from playbook §4
 - [x] T003 Confirm feature catalog links for all 11 UX-hooks scenarios: `../../feature_catalog/18--ux-hooks/`
 - [x] T004 Confirm vitest test files exist: `hooks-ux-feedback.vitest.ts`, `memory-save-ux-regressions.vitest.ts`, `context-server.vitest.ts`, `handler-checkpoints.vitest.ts`, `tool-input-schema.vitest.ts`, `mcp-input-validation.vitest.ts` — all 6 confirmed present in `mcp_server/tests/`

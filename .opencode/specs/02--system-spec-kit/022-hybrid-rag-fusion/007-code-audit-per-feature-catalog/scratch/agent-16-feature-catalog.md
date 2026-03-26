@@ -1,7 +1,7 @@
 ## Agent 16a - retrieval/query doc split
 
 - Scope completed: retrieval/query-related feature-catalog docs only.
-- Updated `feature_catalog/feature_catalog.md` summary lines for `memory_context`, RSF shadow mode, and local GGUF reranker behavior.
+- Updated `feature_catalog/FEATURE_CATALOG.md` summary lines for `memory_context`, RSF shadow mode, and local GGUF reranker behavior.
 - Corrected `memory_context` session semantics to reflect caller-scoped reuse: cross-turn dedup and resume context require a caller-supplied `sessionId`; anonymous calls receive an ephemeral UUID for that invocation only.
 - Corrected RSF status to reflect current runtime reality: RSF module/tests remain, but the live hybrid-search branch and `isRsfEnabled()` guard were removed; `SPECKIT_RSF_FUSION` is inert for production ranking.
 - Corrected local reranker activation details to match current gate logic: strict `RERANKER_LOCAL=true`, rollout-gated enablement, readable model file, and total-memory thresholds of 8GB default / 2GB with custom model path.

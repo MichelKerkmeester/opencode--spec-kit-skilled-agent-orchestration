@@ -149,4 +149,4 @@ When contradictions are found, the response includes warning hints. Two memories
 
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

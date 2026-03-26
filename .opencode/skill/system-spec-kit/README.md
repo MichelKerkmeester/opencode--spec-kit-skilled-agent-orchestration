@@ -1,6 +1,6 @@
 ---
 title: "System Spec Kit"
-description: "Unified documentation and context preservation skill: spec folder workflows (Levels 1-3+), CORE + ADDENDUM v2.2 templates, validation scripts, and Spec Kit Memory MCP with hybrid multi-channel retrieval."
+description: "Unified documentation and context preservation skill: spec folder workflows (Levels 1-3+), CORE + ADDENDUM v2.2 templates, validation scripts and Spec Kit Memory MCP with hybrid multi-channel retrieval."
 trigger_phrases:
   - "spec kit"
   - "spec folder"
@@ -23,13 +23,13 @@ trigger_phrases:
 
 - [1. OVERVIEW](#1-overview)
 - [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. FEATURES](#4-features)
-  - [4.1 Spec Folder Workflows](#41-spec-folder-workflows)
-  - [4.2 Memory System](#42-memory-system)
-  - [4.3 Commands](#43-commands)
-  - [4.4 Templates](#44-templates)
-  - [4.5 Scripts and Validation](#45-scripts-and-validation)
+- [3. FEATURES](#3-features)
+  - [3.1 SPEC FOLDER WORKFLOWS](#31-spec-folder-workflows)
+  - [3.2 MEMORY SYSTEM](#32-memory-system)
+  - [3.3 COMMANDS](#33-commands)
+  - [3.4 TEMPLATES](#34-templates)
+  - [3.5 SCRIPTS AND VALIDATION](#35-scripts-and-validation)
+- [4. STRUCTURE](#4-structure)
 - [5. CONFIGURATION](#5-configuration)
 - [6. USAGE EXAMPLES](#6-usage-examples)
 - [7. TROUBLESHOOTING](#7-troubleshooting)
@@ -47,11 +47,11 @@ trigger_phrases:
 
 System Spec Kit solves two problems that every AI-assisted project runs into.
 
-First, AI conversations that modify files leave no paper trail. A feature gets built, the session ends, and the reasoning behind every decision vanishes. Spec Kit fixes this by creating a **spec folder** for every file-modifying conversation -- a numbered directory with a specification, plan, task list and implementation summary that documents what changed and why.
+First, AI conversations that modify files leave no paper trail. A feature gets built, the session ends and the reasoning behind every decision vanishes. Spec Kit fixes this by creating a **spec folder** for every file-modifying conversation -- a numbered directory with a specification, plan, task list and implementation summary that documents what changed and why.
 
 Second, AI assistants have amnesia. Every conversation starts from a blank slate. You explain your architecture on Monday and by Wednesday the assistant has forgotten everything. Spec Kit fixes this with a **persistent memory system** -- an MCP server that stores decisions, context and project history in a local SQLite database so the next session can pick up where the last one left off, regardless of which AI model or tool you use.
 
-Together, these two halves form a documentation-and-memory loop: spec folders capture what happened, the memory system makes it searchable, and the next session benefits from everything that came before.
+Together, these two halves form a documentation-and-memory loop: spec folders capture what happened, the memory system makes it searchable and the next session benefits from everything that came before.
 
 ### Key Statistics
 
@@ -190,105 +190,10 @@ The response should return `status: "ok"` and database table counts. If it retur
 
 ---
 
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
-.opencode/skill/system-spec-kit/
-├── SKILL.md                    # AI workflow instructions (when to use, gates, rules)
-├── README.md                   # This file (what it does, how to use it)
-├── ARCHITECTURE.md             # Boundary contract: scripts/ vs mcp_server/
-├── SHARED_MEMORY_DATABASE.md   # Shared memory guide
-├── templates/                  # Template system (CORE + ADDENDUM v2.2)
-│   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
-│   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
-│   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
-│   ├── context_template.md     # Memory context template (~26K)
-│   ├── research.md             # Deep research template (~20K)
-│   ├── handover.md             # Session continuity template
-│   └── debug-delegation.md     # Debug delegation template
-├── scripts/                    # CLI tools (TypeScript source + Bash)
-│   ├── spec/                   # Spec folder management (12 scripts)
-│   ├── memory/                 # Memory system scripts (10 scripts)
-│   ├── templates/              # Template composition (compose.sh)
-│   ├── core/                   # Core library (17 modules)
-│   ├── extractors/             # Session data extractors (12 extractors)
-│   ├── utils/                  # Utility modules (20 utilities)
-│   └── dist/                   # Compiled JavaScript output
-├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
-│   ├── context-server.ts       # MCP server entry (~1073 lines, 33 tools)
-│   ├── handlers/               # Tool handlers (31 .ts files + 13 in handlers/save/)
-│   ├── lib/                    # Search pipeline, cognitive engine, graph, governance
-│   ├── tests/                  # MCP test suite
-│   ├── INSTALL_GUIDE.md        # Full installation walkthrough
-│   └── README.md               # MCP server reference (tool API, pipeline, configuration)
-├── shared/                     # Shared workspace (@spec-kit/shared)
-│   ├── algorithms/             # Fusion, reranking, and lab algorithms
-│   ├── contracts/              # Typed trace/envelope contracts
-│   ├── embeddings/             # Provider implementations
-│   └── ...                     # Chunker, scoring, parsing, utilities
-├── references/                 # Reference documentation (26 files)
-├── assets/                     # Decision matrices, YAML configs
-├── constitutional/             # Always-surface rules (never decay)
-├── feature_catalog/            # Feature documentation (21 categories, 222 features)
-└── manual_testing_playbook/    # Manual validation scenarios (19 categories)
-```
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| [`SKILL.md`](./SKILL.md) | AI agent instructions: routing rules, gates, validation procedures, template application |
-| [`README.md`](./README.md) | This file -- what Spec Kit does, how to use it, where to find things |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
-| [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles and kill switch |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 33-tool API reference, search pipeline, cognitive memory, configuration |
-| [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment |
-| [`templates/core/`](./templates/core/) | Four foundation templates used at all documentation levels |
-| [`scripts/spec/create.sh`](./scripts/spec/create.sh) | Create spec folders with level-appropriate template files |
-| [`scripts/spec/validate.sh`](./scripts/spec/validate.sh) | Run 20-rule validation on any spec folder |
-| `scripts/dist/memory/generate-context.js` | Primary workflow for saving session context to memory |
-| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 222 implemented features across 21 categories |
-
-### How the Pieces Connect
-
-Think of Spec Kit as a filing system with a librarian attached.
-
-The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
-
-The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it so the next session can find it. When a new session starts, `memory_context` or `memory_match_triggers` retrieves the relevant context and hands it to the AI before work begins.
-
-The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/memory:continue` recovers a previous session.
-
-```text
-Session starts
-  └─► Gate 3 asks: "Which spec folder?"
-       ├─► Option A: Use existing folder
-       ├─► Option B: Create new folder (create.sh)
-       └─► Option D: Skip documentation
-            │
-            ▼
-  AI modifies files, tracks tasks in tasks.md
-            │
-            ▼
-  Session ends
-  └─► generate-context.js writes memory file
-       └─► MCP indexes it (vector + BM25 + graph)
-            │
-            ▼
-  Next session starts
-  └─► memory_match_triggers() surfaces relevant context
-       └─► AI resumes with full prior context
-```
-
-<!-- /ANCHOR:structure -->
-
----
-
 <!-- ANCHOR:features -->
-## 4. FEATURES
+## 3. FEATURES
 
-### 4.1 Spec Folder Workflows
+### 3.1 SPEC FOLDER WORKFLOWS
 
 #### What Spec Folders Are
 
@@ -375,7 +280,7 @@ Run with `--verbose` to see the details behind each rule, or `--recursive` to va
 
 <!-- divider:4.2 -->
 
-### 4.2 Memory System
+### 3.2 MEMORY SYSTEM
 
 The memory system lives in an MCP server that gives AI assistants persistent memory across sessions, models and tools. It stores context in a local SQLite database and retrieves exactly what is relevant when a new session starts.
 
@@ -422,7 +327,7 @@ Not all memories are equally useful forever. The system uses FSRS (Free Spaced R
 | Tier | Description | Decay Behavior |
 |------|-------------|---------------|
 | **Constitutional** | Always-surface rules (3.0x boost) | Never decays |
-| **Critical** | High-importance decisions | Never or very slow decay |
+| **Critical** | High-importance decisions | Never decays or decays at 2x slower rate |
 | **Important** | Significant patterns | 1.5x slower than normal |
 | **Normal** | Standard session context | Standard FSRS decay |
 | **Temporary** | Quick scratch notes | Fast decay |
@@ -440,13 +345,13 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 
 #### Save Intelligence
 
-When you save new content, the system does not just append it to the pile. Prediction Error gating compares incoming content against existing memories and picks one of four outcomes:
+When you save new content, the system runs an arbitration process before storing anything. Prediction Error gating compares incoming content against existing memories and picks one of four outcomes:
 
 | Outcome | When | What Happens |
 |---------|------|-------------|
 | **CREATE** | Nothing similar exists | Stored as new knowledge |
 | **REINFORCE** | Similar exists, new one adds value | Both kept, existing gets a confidence boost |
-| **UPDATE** | Similar exists, new one is clearly better | Old version replaced in place |
+| **UPDATE** | Similar exists, new one is better | Old version replaced in place |
 | **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted |
 
 Three quality gates run before storage: structure check (required format and metadata), semantic sufficiency check (enough real content to be useful), and duplicate detection.
@@ -476,7 +381,7 @@ The memory system includes built-in tools for measuring search quality:
 
 <!-- divider:4.3 -->
 
-### 4.3 Commands
+### 3.3 COMMANDS
 
 Spec Kit exposes 14 commands: 8 for spec folder workflows and 6 for memory operations. Each command opens access to a specific set of tools. Think of commands as doors into the system -- each door opens only the tools it needs.
 
@@ -523,7 +428,7 @@ Some commands own their tools (they are the primary home) while others borrow to
 
 <!-- divider:4.4 -->
 
-### 4.4 Templates
+### 3.4 TEMPLATES
 
 #### CORE + ADDENDUM Architecture (v2.2)
 
@@ -585,7 +490,7 @@ Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section 
 
 <!-- divider:4.5 -->
 
-### 4.5 Scripts and Validation
+### 3.5 SCRIPTS AND VALIDATION
 
 #### Spec Management Scripts
 
@@ -629,6 +534,101 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 Run `scripts/templates/compose.sh` after editing any core or addendum template to regenerate the pre-merged `level_N/` directories.
 
 <!-- /ANCHOR:features -->
+
+---
+
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
+```
+.opencode/skill/system-spec-kit/
+├── SKILL.md                    # AI workflow instructions (when to use, gates, rules)
+├── README.md                   # This file (what it does, how to use it)
+├── ARCHITECTURE.md             # Boundary contract: scripts/ vs mcp_server/
+├── SHARED_MEMORY_DATABASE.md   # Shared memory guide
+├── templates/                  # Template system (CORE + ADDENDUM v2.2)
+│   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
+│   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
+│   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
+│   ├── context_template.md     # Memory context template (~26K)
+│   ├── research.md             # Deep research template (~20K)
+│   ├── handover.md             # Session continuity template
+│   └── debug-delegation.md     # Debug delegation template
+├── scripts/                    # CLI tools (TypeScript source + Bash)
+│   ├── spec/                   # Spec folder management (12 scripts)
+│   ├── memory/                 # Memory system scripts (10 scripts)
+│   ├── templates/              # Template composition (compose.sh)
+│   ├── core/                   # Core library (17 modules)
+│   ├── extractors/             # Session data extractors (12 extractors)
+│   ├── utils/                  # Utility modules (20 utilities)
+│   └── dist/                   # Compiled JavaScript output
+├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
+│   ├── context-server.ts       # MCP server entry (~1073 lines, 33 tools)
+│   ├── handlers/               # Tool handlers (31 .ts files + 13 in handlers/save/)
+│   ├── lib/                    # Search pipeline, cognitive engine, graph, governance
+│   ├── tests/                  # MCP test suite
+│   ├── INSTALL_GUIDE.md        # Full installation walkthrough
+│   └── README.md               # MCP server reference (tool API, pipeline, configuration)
+├── shared/                     # Shared workspace (@spec-kit/shared)
+│   ├── algorithms/             # Fusion, reranking, and lab algorithms
+│   ├── contracts/              # Typed trace/envelope contracts
+│   ├── embeddings/             # Provider implementations
+│   └── ...                     # Chunker, scoring, parsing, utilities
+├── references/                 # Reference documentation (26 files)
+├── assets/                     # Decision matrices, YAML configs
+├── constitutional/             # Always-surface rules (never decay)
+├── feature_catalog/            # Feature documentation (21 categories, 222 features)
+└── manual_testing_playbook/    # Manual validation scenarios (19 categories)
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| [`SKILL.md`](./SKILL.md) | AI agent instructions: routing rules, gates, validation procedures, template application |
+| [`README.md`](./README.md) | This file -- what Spec Kit does, how to use it, where to find things |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
+| [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles and kill switch |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 33-tool API reference, search pipeline, cognitive memory, configuration |
+| [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment |
+| [`templates/core/`](./templates/core/) | Four foundation templates used at all documentation levels |
+| [`scripts/spec/create.sh`](./scripts/spec/create.sh) | Create spec folders with level-appropriate template files |
+| [`scripts/spec/validate.sh`](./scripts/spec/validate.sh) | Run 20-rule validation on any spec folder |
+| `scripts/dist/memory/generate-context.js` | Primary workflow for saving session context to memory |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 222 implemented features across 21 categories |
+
+### How the Pieces Connect
+
+Think of Spec Kit as a filing system with a librarian attached.
+
+The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
+
+The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it so the next session can find it. When a new session starts, `memory_context` or `memory_match_triggers` retrieves the relevant context and hands it to the AI before work begins.
+
+The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/memory:continue` recovers a previous session.
+
+```text
+Session starts
+  └─► Gate 3 asks: "Which spec folder?"
+       ├─► Option A: Use existing folder
+       ├─► Option B: Create new folder (create.sh)
+       └─► Option D: Skip documentation
+            │
+            ▼
+  AI modifies files, tracks tasks in tasks.md
+            │
+            ▼
+  Session ends
+  └─► generate-context.js writes memory file
+       └─► MCP indexes it (vector + BM25 + graph)
+            │
+            ▼
+  Next session starts
+  └─► memory_match_triggers() surfaces relevant context
+       └─► AI resumes with full prior context
+```
+
+<!-- /ANCHOR:structure -->
 
 ---
 
@@ -867,7 +867,7 @@ node scripts/dist/memory/generate-context.js \
 
 **What you see**: `validate.sh` reports missing files like `spec.md` or `plan.md`.
 
-**Common causes**: The spec folder was created manually without `create.sh`, or the wrong level templates were applied.
+**Common causes**: The spec folder was created manually without `create.sh`, or wrong level templates were applied.
 
 **Fix**:
 ```bash
@@ -966,7 +966,7 @@ A: Spec folders capture what happened in structured documentation. The memory sy
 
 **Q: Can I use memory without spec folders?**
 
-A: The memory system can index any markdown file, not just spec folder contents. But the spec folder workflow is the primary way context gets saved (via `generate-context.js`), so in practice they work together. You can save standalone memories using `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
+A: The memory system can index any markdown file, beyond spec folder contents. But the spec folder workflow is the primary way context gets saved (via `generate-context.js`), so in practice they work together. You can save standalone memories using `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
 
 ---
 
@@ -1025,7 +1025,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | [`references/templates/template_guide.md`](./references/templates/template_guide.md) | Template usage and composition rules |
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md) | Full environment variable reference |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
-| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 222 features across 21 categories |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 222 features across 21 categories |
 
 ### Cross-Skill Alignment
 

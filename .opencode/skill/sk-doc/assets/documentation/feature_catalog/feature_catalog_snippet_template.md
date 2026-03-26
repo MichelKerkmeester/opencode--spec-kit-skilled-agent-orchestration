@@ -11,7 +11,7 @@ Per-feature reference files for split feature catalogs. Use this template for th
 
 ## 1. OVERVIEW
 
-Each feature file is the canonical home for detailed current-reality reference material. The root `feature_catalog.md` stays readable by summarizing the feature and linking here, while the per-feature file carries the fuller behavior description, structured source-file references, validation anchors, and concise metadata.
+Each feature file is the canonical home for detailed current-reality reference material. The root `FEATURE_CATALOG.md` stays readable by summarizing the feature and linking here, while the per-feature file carries the fuller behavior description, structured source-file references, validation anchors, and concise metadata.
 
 **Required uses**:
 - One file per catalog feature
@@ -74,7 +74,7 @@ description: "{OVERVIEW_ONE_LINE}"
 ## 4. SOURCE METADATA
 
 - Group: {CATEGORY_NAME}
-- Canonical catalog source: `feature_catalog.md`
+- Canonical catalog source: `FEATURE_CATALOG.md`
 - Feature file path: `{CATEGORY_DIR}/{NN}-{feature-name}.md`
 ```
 

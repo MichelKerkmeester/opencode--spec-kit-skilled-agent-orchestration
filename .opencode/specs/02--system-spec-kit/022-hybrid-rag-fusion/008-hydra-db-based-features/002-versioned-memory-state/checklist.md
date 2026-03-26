@@ -80,7 +80,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-220 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-221 [P1] Playbook updated for lineage operations [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
+- [x] CHK-221 [P1] Playbook updated for lineage operations [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md]
 - [x] CHK-222 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md]
 - [x] CHK-223 [P1] Maintainer sign-off status is explicitly documented [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/checklist.md (L3+: SIGN-OFF)]
 

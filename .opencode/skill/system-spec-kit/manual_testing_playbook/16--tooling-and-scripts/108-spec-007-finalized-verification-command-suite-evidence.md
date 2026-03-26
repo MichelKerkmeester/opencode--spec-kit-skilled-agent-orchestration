@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `108` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: *(Spec 007 verification suite — no dedicated catalog entry)*
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `108` and confirm the ex
 
 - Group: Tooling and Scripts
 - Playbook ID: 108
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/108-spec-007-finalized-verification-command-suite-evidence.md`

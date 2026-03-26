@@ -52,4 +52,4 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 
 - Group: Bug fixes and data integrity
 - Source feature title: Graph channel ID fix
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

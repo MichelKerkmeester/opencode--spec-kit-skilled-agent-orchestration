@@ -43,7 +43,7 @@ The function is exported in both snake_case and camelCase form from `vector-inde
 
 - Group: Tooling and scripts
 - Source feature title: Schema compatibility validation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 
 ---
 

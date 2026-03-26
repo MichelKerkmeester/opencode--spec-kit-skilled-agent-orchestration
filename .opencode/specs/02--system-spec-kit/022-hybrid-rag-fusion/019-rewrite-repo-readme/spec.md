@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress (tasks tracker pending completion evidence) |
+| **Status** | Complete (2026-03-25) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 019) |
@@ -38,11 +38,11 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The root README (`README.md`, ~1040 lines) tries to cover every aspect of the OpenCode system in a single document with no clear navigation path for different user types. At ~35K words, it overwhelms newcomers and frustrates power users looking for specific component references. It predates the current 18-skill, 12-agent, 40-MCP-tool system and does not reflect the gate system, code mode, or phase decomposition capabilities.
+The root README (`README.md`, ~822 lines) was previously rewritten but uses flat technical prose without the two-tier voice (narrative analogies + reference tables) established in the MCP server README (016) and Spec Kit README (018). It undercounts MCP tools (40 vs actual 42), lacks power-feature highlights from the 222-entry feature catalog, and does not match the formatting patterns (numbered subsections, dividers, comparison tables) of its sibling READMEs.
 
 ### Purpose
 
-Produce a complete rewrite that serves as the top-level entry point to the OpenCode system with role-based navigation, accurate component counts, and links to component READMEs for depth. DQI >= 75.
+Produce a complete rewrite that serves as the top-level entry point to the OpenCode system with two-tier voice (narrative analogies for newcomers, reference tables for power users), accurate component counts (12 agents, 18 skills, 22 commands, 42 MCP tools), and links to component READMEs for depth. Style-aligned with sibling READMEs from 016 and 018.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -83,9 +83,9 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All skills are listed (legacy `RR-001`) | Every skill in `.opencode/skill/` appears with name and brief description |
-| REQ-002 | All agents are documented (legacy `RR-002`) | Every agent definition appears with name, role, and capabilities summary |
-| REQ-003 | DQI is at least 75 (legacy `RR-003`) | `validate_document.py` scores at 75 or above |
+| REQ-001 | All 18 skills are listed (legacy `RR-001`) | Every skill in `.opencode/skill/` appears with name and brief description |
+| REQ-002 | All 12 agents are documented (legacy `RR-002`) | Every agent definition appears with name, role, and capabilities summary |
+| REQ-003 | All 42 MCP tools are counted (legacy `RR-003`) | 33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 
 ### P1 - Required
 
@@ -142,7 +142,7 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 
 <!--
 SPEC: 019-rewrite-repo-readme
-Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
+Level 1 — Complete (2026-03-25)
 Target: Complete rewrite of root README as system overview
 -->
 

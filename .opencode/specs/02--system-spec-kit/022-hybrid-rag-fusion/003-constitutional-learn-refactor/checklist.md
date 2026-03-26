@@ -112,6 +112,6 @@ updated: 2026-03-14
 - [x] system-spec-kit README.md updated [EVIDENCE: line 542: constitutional memory manager description]
 - [x] No stale references remain in active command/workspace/agent docs [EVIDENCE: grep on active files returns no matches for "Capture learnings and corrections", "Explicit learning", "Save explicit correction or preference", "learning from mistakes", or "correct subcommand"]
 - [x] Examples show constitutional memory creation [EVIDENCE: Section 13: Examples 1-3]
-- [x] Feature catalog documentation added for this command refactor [EVIDENCE: `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` and `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` section "Constitutional memory manager command"]
-- [x] Manual testing coverage added for this command refactor [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` includes NEW-147 and cross-reference mapping to feature catalog]
+- [x] Feature catalog documentation added for this command refactor [EVIDENCE: `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` and `../../../../skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` section "Constitutional memory manager command"]
+- [x] Manual testing coverage added for this command refactor [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` includes NEW-147 and cross-reference mapping to feature catalog]
 - [x] Verification command evidence captured [EVIDENCE: `npm run typecheck` PASS in `.opencode/skill/system-spec-kit`; vitest doc regression PASS 2/2; targeted MCP suite PASS 581/581]

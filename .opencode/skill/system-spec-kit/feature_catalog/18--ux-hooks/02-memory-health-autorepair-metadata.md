@@ -58,4 +58,4 @@ Repair metadata semantics for mixed outcomes:
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Memory health autoRepair metadata
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

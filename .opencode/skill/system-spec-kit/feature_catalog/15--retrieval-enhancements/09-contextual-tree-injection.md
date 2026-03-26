@@ -49,4 +49,4 @@ When search results come back, each piece of information now carries a short lab
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Contextual tree injection
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

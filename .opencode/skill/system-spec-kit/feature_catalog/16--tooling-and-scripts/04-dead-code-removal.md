@@ -137,4 +137,4 @@ Cross-cutting evidence is distributed across:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

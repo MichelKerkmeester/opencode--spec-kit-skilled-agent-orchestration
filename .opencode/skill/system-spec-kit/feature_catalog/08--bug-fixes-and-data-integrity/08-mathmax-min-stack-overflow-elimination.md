@@ -75,4 +75,4 @@ Two residual production spread sites still remain outside that converted set: `m
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Math.max/min stack overflow hardening
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

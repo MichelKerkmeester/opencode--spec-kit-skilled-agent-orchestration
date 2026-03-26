@@ -52,4 +52,4 @@ Anchor markers are labels placed inside memories to highlight important sections
 
 - Group: Extra features (Sprint 019)
 - Source feature title: ANCHOR tags as graph nodes
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

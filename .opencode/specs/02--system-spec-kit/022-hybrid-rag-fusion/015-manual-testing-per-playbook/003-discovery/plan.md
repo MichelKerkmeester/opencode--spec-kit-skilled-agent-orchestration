@@ -39,7 +39,7 @@ Execute the three Phase 003 discovery scenarios against a live MCP runtime with 
 ### Definition of Ready
 - [ ] MCP server is running and reachable
 - [ ] Memory corpus has at least one indexed memory (for EX-011/EX-012 to produce output)
-- [ ] Playbook context file read: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §03--discovery
+- [ ] Playbook context file read: `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` §03--discovery
 - [ ] Feature catalog context file read: `../scratch/context-feature-catalog.md` §03--discovery
 
 ### Definition of Done
@@ -61,7 +61,7 @@ Sequential manual execution — each scenario is an isolated MCP tool call seque
 ### Key Components
 - **MCP runtime**: Hosts memory_list, memory_stats, memory_health tools
 - **Indexed corpus**: The memory database against which scenarios run
-- **Playbook context**: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` — source of truth for prompts and pass criteria
+- **Playbook context**: `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` — source of truth for prompts and pass criteria
 - **This spec folder**: Records tasks, checklist, and results
 
 ### Data Flow
@@ -74,7 +74,7 @@ Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Read `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` section 03--discovery for all three scenario definitions
+- [ ] Read `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` section 03--discovery for all three scenario definitions
 - [ ] Read `../scratch/context-feature-catalog.md` section 03--discovery for feature background
 - [ ] Verify MCP server is running and accepting tool calls
 - [ ] Confirm at least one memory is indexed (run a quick `memory_list` sanity check)
@@ -167,7 +167,7 @@ Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool
 |------------|------|--------|-------------------|
 | MCP server runtime | Internal | Verify before start | Cannot execute any scenario |
 | Indexed memory corpus | Internal | Verify before start | EX-011/EX-012 may produce empty output |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Internal | Available | Cannot confirm pass criteria without it |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Available | Cannot confirm pass criteria without it |
 <!-- /ANCHOR:dependencies -->
 
 ---

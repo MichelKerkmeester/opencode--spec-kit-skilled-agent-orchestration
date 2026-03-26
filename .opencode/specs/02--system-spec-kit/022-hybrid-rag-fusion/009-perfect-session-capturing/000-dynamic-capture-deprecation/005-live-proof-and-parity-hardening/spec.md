@@ -63,7 +63,7 @@ Track the remaining retained live-proof and parity-hardening work explicitly so 
 |-----------|-------------|-------------|
 | `.opencode/specs/.../000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening/*` | Modify | Track the remaining live-proof work |
 | `.opencode/specs/.../research/live-cli-proof-2026-03-17.json` | Modify/Create | Refresh retained proof artifacts when rerun-backed |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Keep the proof claim boundary honest |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Keep the proof claim boundary honest |
 <!-- /ANCHOR:scope -->
 
 ---

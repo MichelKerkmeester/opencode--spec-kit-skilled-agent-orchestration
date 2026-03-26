@@ -163,7 +163,7 @@ Quick update: I’ve confirmed the actual capture/save entry points and fallback
 
 ● Search (grep)
   │ "M-007|live proof|parity|retained|artifact|protocol|proof"
-  │ (.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md)
+  │ (.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
   └ 43 lines found
 
 ● Search (grep)

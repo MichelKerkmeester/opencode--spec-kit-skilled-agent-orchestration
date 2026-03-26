@@ -45,4 +45,4 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 
 - Group: Graph signal activation
 - Source feature title: Community detection
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

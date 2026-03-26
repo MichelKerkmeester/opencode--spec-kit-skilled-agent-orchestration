@@ -141,4 +141,4 @@ Checkpoint deletion now requires a matching `confirmName` safety parameter befor
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Checkpoint delete confirmName safety
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

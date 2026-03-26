@@ -47,4 +47,4 @@ All weight modifications are logged to the `weight_history` table. The runtime h
 
 - Group: Retrieval enhancements
 - Source feature title: Lightweight consolidation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -40,7 +40,7 @@ This plan sequences the execution of all 18 pipeline architecture scenarios assi
 ### Definition of Ready
 - [ ] Playbook scenario files for IDs 049, 050, 051, 052, 053, 054, 067, 071, 076, 078, 080, 087, 095, 112, 115, 129, 130, and 146 are accessible
 - [ ] Feature catalog entries in `../../feature_catalog/14--pipeline-architecture/` are accessible
-- [ ] Review protocol loaded: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] Review protocol loaded: `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [ ] MCP runtime available for MCP-tagged scenarios
 - [ ] Disposable sandbox or checkpoint-backed environment available for scenarios 080, 112, 115, and 130
 
@@ -146,8 +146,8 @@ Preconditions confirmed → execute exact scenario prompt and commands → colle
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
 | `../../feature_catalog/14--pipeline-architecture/` | Internal | Unknown | Feature context and review triage lose canonical reference |
 | MCP runtime with Spec Kit Memory tools | Runtime | Unknown | MCP-tagged scenarios cannot be executed |
 | Shell access for Vitest suites and env toggles | Runtime | Unknown | Vitest-based scenarios (129, 130) cannot be executed |

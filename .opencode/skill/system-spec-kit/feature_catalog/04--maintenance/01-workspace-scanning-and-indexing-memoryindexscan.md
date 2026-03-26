@@ -225,4 +225,4 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 
 - Group: Maintenance
 - Source feature title: Workspace scanning and indexing (memory_index_scan)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

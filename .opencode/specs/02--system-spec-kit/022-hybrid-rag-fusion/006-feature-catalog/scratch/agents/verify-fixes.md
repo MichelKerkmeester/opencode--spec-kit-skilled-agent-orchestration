@@ -38,10 +38,10 @@ I’m checking each file directly and focusing on the exact lines/sections tied 
 
 ● Search (grep)
   │ "comprehensive-remediation-sprint-8|Comprehensive Remediation Sprint 8|\]\(#.*remediation.*\)"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
-I found the exact updated lines in five of the six files. The remaining one is the big `feature_catalog.md`, so I’m reading both the TOC area and the section around the previously broken Sprint 8 link to confirm it lines up end to end.
+I found the exact updated lines in five of the six files. The remaining one is the big `FEATURE_CATALOG.md`, so I’m reading both the TOC area and the section around the previously broken Sprint 8 link to confirm it lines up end to end.
 
 ● Read 17-json-primary-deprecation-posture.md
   │ .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecat
@@ -67,44 +67,44 @@ I found the exact updated lines in five of the six files. The remaining one is t
   │ md
   └ L14:22 (9 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:220 (175 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3918:3934 (17 lines read)
 
 ● Search (grep)
-  │ "remediation" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "remediation" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● Search (grep)
   │ "Comprehensive remediation|comprehensive-remediation|\]\(#comprehensive"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 1 line found
 
 ● Search (grep)
   │ "^### .*Sprint 8|^## .*Sprint 8|^### .*Comprehensive|^## .*Comprehensive"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3926:3946 (21 lines read)
 
-I’ve narrowed the `feature_catalog.md` question: the old `#comprehensive-remediation-sprint-8` link is no longer present at the cited spot. I’m doing one last pass on the catalog headings so I can say whether the TOC links still match the actual heading style, not just that one reference.
+I’ve narrowed the `FEATURE_CATALOG.md` question: the old `#comprehensive-remediation-sprint-8` link is no longer present at the cited spot. I’m doing one last pass on the catalog headings so I can say whether the TOC links still match the actual heading style, not just that one reference.
 
 ● Search (grep)
-  │ "^## " (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^## " (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 22 lines found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1480:1510 (31 lines read)
 
 ● Search (grep)
-  │ "\]\(#" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "\]\(#" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 21 lines found
 
 `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md | VERIFIED YES | States `--json`/`--stdin` are preferred while positional JSON file input remains functional; explicitly says removal applies to runtime-derived capture, not file-backed JSON input (lines 19, 29-31, 40-41).`
@@ -115,7 +115,7 @@ I’ve narrowed the `feature_catalog.md` question: the old `#comprehensive-remed
 
 `.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md | VERIFIED YES | Says the active helper inventory is **53 exported `is*` functions**, not 46 (line 20).`
 
-`.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md | VERIFIED YES | TOC anchors match the actual H2 format (`#1-overview` … `#21-feature-flag-reference`). Near line 3940, the broken `#comprehensive-remediation-sprint-8` link is gone; it now uses plain text instead of a bad anchor link.`
+`.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md | VERIFIED YES | TOC anchors match the actual H2 format (`#1-overview` … `#21-feature-flag-reference`). Near line 3940, the broken `#comprehensive-remediation-sprint-8` link is gone; it now uses plain text instead of a bad anchor link.`
 
 `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md | VERIFIED YES | Actor identity fields are described as **optional corroboration hints**, not required authority fields (lines 18 and 20).`
 

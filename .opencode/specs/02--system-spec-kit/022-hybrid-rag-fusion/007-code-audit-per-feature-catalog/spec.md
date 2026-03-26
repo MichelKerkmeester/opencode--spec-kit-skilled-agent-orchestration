@@ -360,7 +360,7 @@ A post-audit deep research cycle (10 iterations, 11 questions answered) identifi
 
 ## RELATED DOCUMENTS
 
-- **Feature Catalog**: See `../feature_catalog/feature_catalog.md`
+- **Feature Catalog**: See `../feature_catalog/FEATURE_CATALOG.md`
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

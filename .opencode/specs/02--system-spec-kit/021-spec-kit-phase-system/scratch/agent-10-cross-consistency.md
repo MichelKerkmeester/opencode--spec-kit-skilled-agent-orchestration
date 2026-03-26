@@ -149,7 +149,7 @@ Both YAML files also include `--parent` variant invocations for adding phases to
 
 **Verdict: MISSING — No phase system feature entries**
 
-- **Search performed:** Grep for `phase` (case-insensitive) in `feature_catalog.md` returned 24 matches.
+- **Search performed:** Grep for `phase` (case-insensitive) in `FEATURE_CATALOG.md` returned 24 matches.
 - **Analysis of matches:** Every single match refers to existing MCP/search pipeline features that use the word "phase" in different contexts:
   - "Phase 017", "Phase 018", "Phase 014" — Historical sprint/phase labels for existing bug fix work
   - "two-phase retrieval" — Folder scoring retrieval strategy (unrelated to spec-kit phase system)
@@ -170,7 +170,7 @@ Both YAML files also include `--parent` variant invocations for adding phases to
 
 **Verdict: MISSING — No phase system test scenarios**
 
-- **Search performed:** Grep for `spec_kit:phase|--phase|--recursive|phase.*decomp|phase.*detect|phase.*creat|phase.*valid|recommend.*phase` in `manual_testing_playbook.md`.
+- **Search performed:** Grep for `spec_kit:phase|--phase|--recursive|phase.*decomp|phase.*detect|phase.*creat|phase.*valid|recommend.*phase` in `MANUAL_TESTING_PLAYBOOK.md`.
 - **Matches found:** 2 results, both unrelated:
   - Line 158: `NEW-079 | Scoring and fusion corrections | Confirm phase-017 correction bundle` — This is about search pipeline scoring corrections from sprint "phase 017", not the phase decomposition system.
   - Line 187: Omitted long line — also unrelated.
@@ -226,5 +226,5 @@ Both YAML files also include `--parent` variant invocations for adding phases to
 | spec.md | `.opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/spec.md` | 404 |
 | spec_kit_phase_auto.yaml | `.opencode/command/spec_kit/assets/spec_kit_phase_auto.yaml` | 325 |
 | spec_kit_phase_confirm.yaml | `.opencode/command/spec_kit/assets/spec_kit_phase_confirm.yaml` | 401 |
-| feature_catalog.md | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | (searched, not fully read — too large) |
-| manual_testing_playbook.md | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | (searched, first 100 lines read + full grep) |
+| FEATURE_CATALOG.md | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` | (searched, not fully read — too large) |
+| MANUAL_TESTING_PLAYBOOK.md | `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | (searched, first 100 lines read + full grep) |

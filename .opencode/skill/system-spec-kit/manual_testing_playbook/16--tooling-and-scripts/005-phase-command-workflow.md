@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `PHASE-005` and confirm 
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 
 ---
 
@@ -40,5 +40,5 @@ Operators run the exact prompt and command sequence for `PHASE-005` and confirm 
 
 - Group: Tooling and Scripts
 - Playbook ID: PHASE-005
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/005-phase-command-workflow.md`

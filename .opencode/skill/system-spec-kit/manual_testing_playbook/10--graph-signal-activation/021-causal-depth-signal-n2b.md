@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `021` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [10--graph-signal-activation/06-causal-depth-signal.md](../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `021` and confirm the ex
 
 - Group: Graph Signal Activation
 - Playbook ID: 021
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `10--graph-signal-activation/021-causal-depth-signal-n2b.md`

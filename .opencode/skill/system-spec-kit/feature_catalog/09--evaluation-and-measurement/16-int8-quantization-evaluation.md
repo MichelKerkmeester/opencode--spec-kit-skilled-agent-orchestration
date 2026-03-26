@@ -33,4 +33,4 @@ No dedicated source files. This is a decision record.
 
 - Group: Evaluation and measurement
 - Source feature title: INT8 quantization evaluation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -251,7 +251,7 @@ Comprehensive 5-agent parallel review of Phase 016 (JSON Mode Hybrid Enrichment)
 | `.opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (input-normalizer.ts).  Merged from .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts : Modified input normalizer |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)` | Tree-thinning merged 1 small files (embedding-retry-stats.vitest.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/tests/embedding-retry-stats.vitest.ts : Modified embedding retry stats.vitest |
 | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/(merged-small-files)` | Tree-thinning merged 1 small files (01-1-search-pipeline-features-speckit.md).  Merged from .opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md : Modified 01 1 search pipeline features speckit |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/(merged-small-files)` | Tree-thinning merged 1 small files (manual_testing_playbook.md).  Merged from .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md : Modified manual testing playbook |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/(merged-small-files)` | Tree-thinning merged 1 small files (MANUAL_TESTING_PLAYBOOK.md).  Merged from .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md : Modified manual testing playbook |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/(merged-small-files)` | Tree-thinning merged 1 small files (spec.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md : Modified spec |
 
 <!-- /ANCHOR:summary -->
@@ -695,7 +695,7 @@ key_files:
   - ".opencode/skill/system-spec-kit/scripts/tests/project-phase-e2e.vitest.ts"
   - ".opencode/skill/system-spec-kit/mcp_server/tests/embedding-retry-stats.vitest.ts"
   - ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md"
-  - ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md"
 
 # Relationships

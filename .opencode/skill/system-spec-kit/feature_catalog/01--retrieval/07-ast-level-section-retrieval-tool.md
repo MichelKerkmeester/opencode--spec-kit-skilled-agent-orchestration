@@ -29,4 +29,4 @@ No source files yet. This feature is planned but not yet implemented.
 
 - Group: Extra features (Sprint 019)
 - Source feature title: AST-level section retrieval tool
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

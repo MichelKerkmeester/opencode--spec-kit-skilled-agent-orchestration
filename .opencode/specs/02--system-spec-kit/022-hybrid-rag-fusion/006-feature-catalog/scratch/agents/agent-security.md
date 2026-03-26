@@ -280,8 +280,8 @@ The first concrete discrepancy I’m checking is around shared-memory kill-switc
   │ .opencode/skill/system-spec-kit/mcp_server/handlers/mutation-hooks.ts
   └ L1:260 (106 lines read)
 
-✗ Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/mcp_server/feature_catalog.md
+✗ Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/mcp_server/FEATURE_CATALOG.md
   └ Path does not exist
 
 ● Search (grep)

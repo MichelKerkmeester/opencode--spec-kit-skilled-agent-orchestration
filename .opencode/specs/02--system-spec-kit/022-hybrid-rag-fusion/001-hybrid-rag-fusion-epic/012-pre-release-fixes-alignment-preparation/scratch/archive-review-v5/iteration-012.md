@@ -7,7 +7,7 @@
 
 ● Run skill advisor (shell)
   │ python3 .opencode/skill/scripts/skill_advisor.py "Cross-verify snippet files against the MASTER
-  │ feature_catalog.md for categories 11-21. Compare master section vs per-category snippet files
+  │ FEATURE_CATALOG.md for categories 11-21. Compare master section vs per-category snippet files
   │ for feature name, status, description, and missing/extra snippets. Produce a traceability
   │ consistency report." --threshold 0.8
   └ 2 lines...
@@ -16,7 +16,7 @@ I’m mapping the catalog structure first so I can compare the same slices on bo
 
 ● Search (grep)
   │ "^##\s+1[1-9]--|^##\s+20--|^##\s+21--"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
 ● Search (grep)
@@ -33,7 +33,7 @@ I’m mapping the catalog structure first so I can compare the same slices on bo
 
 ● Search (grep)
   │ "11--|12--|13--|14--|15--|16--|17--|18--|19--|20--|21--"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● List catalog entries (shell)
@@ -54,7 +54,7 @@ I’ve confirmed the per-category directories exist. Next I’m pulling the exac
   │ "11--scoring-and-calibration|12--query-intelligence|13--memory-quality-and-indexing|14--pipeline
   │ -architecture|15--retrieval-enhancements|16--tooling-and-scripts|17--governance|18--ux-hooks|19-
   │ -feature-flag-reference|20--remediation-revalidation|21--implement-and-remove-deprecated-feature
-  │ s" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ s" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● List snippet markdown files (shell)
@@ -67,8 +67,8 @@ I’ve confirmed the per-category directories exist. Next I’m pulling the exac
 
 I found one structural clue already: the master table of contents numbers don’t line up cleanly with the snippet folder names starting at this range, so I’m checking the actual section bodies next to separate a TOC numbering issue from real content drift.
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1768:1868 (100 lines read)
 
 ● Read 01-score-normalization.md
@@ -86,11 +86,11 @@ I found one structural clue already: the master table of contents numbers don’
   └ L1:120 (10 lines read)
 
 ● Search (grep)
-  │ "^##\s+\d+\." (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^##\s+\d+\." (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 21 lines found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:60 (60 lines read)
 
 ● Read copilot-tool-output-1774423101620-lnv8dz.txt
@@ -112,8 +112,8 @@ I’ve narrowed this to a structural alignment problem, not just text drift: the
   │ (.opencode/skill/system-spec-kit/feature_catalog)
   └ 16 lines found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L4298:4660 (133 lines read)
 
 ● Read 01-1-search-pipeline-features-speckit.md
@@ -129,7 +129,7 @@ I’ve narrowed this to a structural alignment problem, not just text drift: the
 ● Search (grep)
   │ "19--feature-flag-reference/08-audit-phase-020-mapping-note.md|20--remediation-revalidation/01-c
   │ ategory-stub.md|21--implement-and-remove-deprecated-features/01-category-stub.md"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ No matches found
 
 ● Compare master refs and snippets (shell)
@@ -197,7 +197,7 @@ I’ve got the full comparison matrix now. I’m spot-checking a few flagged mis
 ● Search (grep)
   │ "Outsourced agent memory capture|Stateless enrichment and alignment guards|JSON-primary
   │ deprecation posture|Session capturing pipeline quality"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● Read 12-session-capturing-pipeline-quality.md
@@ -226,7 +226,7 @@ I’ve got the full comparison matrix now. I’m spot-checking a few flagged mis
 
 ## Files Reviewed
 
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
 - `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/*.md` (22)
 - `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/*.md` (11)
 - `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/*.md` (24)

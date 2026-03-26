@@ -221,4 +221,4 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 
 - Group: Retrieval
 - Source feature title: 4-stage pipeline architecture
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

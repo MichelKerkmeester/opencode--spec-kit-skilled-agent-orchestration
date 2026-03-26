@@ -42,7 +42,7 @@ This plan converts the 9 mutation scenarios in the manual testing playbook into 
 
 - [ ] Playbook files for 02--mutation are accessible at `../../manual_testing_playbook/02--mutation/`
 - [ ] Feature catalog files for 02--mutation are accessible at `../../feature_catalog/02--mutation/`
-- [ ] Review protocol is loaded from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] Review protocol is loaded from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [ ] MCP runtime is healthy and all mutation tools respond
 - [ ] Disposable sandbox spec folder and named checkpoints prepared for EX-008 and EX-009
 - [ ] Sandbox fixtures for 110 similarity-band saves are in place
@@ -141,7 +141,7 @@ Manual mutation test execution pipeline with checkpoint-gated destructive scenar
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Playbook `../../manual_testing_playbook/02--mutation/` | Internal | Unknown | Scenario steps unavailable |
-| Review protocol `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdicts cannot be applied consistently |
+| Review protocol `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Verdicts cannot be applied consistently |
 | Feature catalog `../../feature_catalog/02--mutation/` | Internal | Unknown | Cross-reference cannot be verified |
 | MCP runtime (all mutation tools and checkpoint tools) | Internal | Unknown | Mutation scenarios cannot be executed |
 | Disposable sandbox spec folder with fixture memories | Internal | Unknown | Destructive and PE tests cannot run safely |

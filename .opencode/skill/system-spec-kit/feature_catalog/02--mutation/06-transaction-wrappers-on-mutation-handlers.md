@@ -47,4 +47,4 @@ Every time the system saves or changes your data, it wraps the operation in a sa
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Transaction wrappers on mutation handlers
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

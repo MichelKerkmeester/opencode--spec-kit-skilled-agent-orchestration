@@ -1,7 +1,7 @@
 **Findings**
-1. Blocking documentation mismatch: [manual_testing_playbook.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L143) says readiness depends on `231` per-scenario files and shows a category-folder-only count, but the repo currently has `230` category scenario files. The requested `find` reaches `231` only because it also counts the root playbook file. That makes the documented readiness check stale.
+1. Blocking documentation mismatch: [MANUAL_TESTING_PLAYBOOK.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md#L143) says readiness depends on `231` per-scenario files and shows a category-folder-only count, but the repo currently has `230` category scenario files. The requested `find` reaches `231` only because it also counts the root playbook file. That makes the documented readiness check stale.
 2. Feature coverage is incomplete: using explicit playbook `Feature catalog:` backlinks as the alignment source, `165/219` category catalog snippets are covered (`75.3%`). If you include the extra root catalog file counted by the requested command, coverage is `165/220` (`75.0%`).
-3. Category naming is aligned for all visible numbered folders: `19/19` match. The main exceptions are catalog-side extras, not renamed categories: hidden `.github/`, root [feature_catalog_in_simple_terms.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md), and a root TOC section for phase workflows in [feature_catalog.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L12).
+3. Category naming is aligned for all visible numbered folders: `19/19` match. The main exceptions are catalog-side extras, not renamed categories: hidden `.github/`, root [FEATURE_CATALOG_IN_SIMPLE_TERMS.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md), and a root TOC section for phase workflows in [FEATURE_CATALOG.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md#L12).
 4. There are `31` orphan playbook scenarios with no feature-catalog backlink. Most look intentional (`M-*`, `PHASE-*`, runtime/operator overlays), but some feature-like scenarios still appear unlinked, such as [166-result-explain-v1-speckit-result-explain-v1.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/18--ux-hooks/166-result-explain-v1-speckit-result-explain-v1.md#L33).
 
 **Counts**
@@ -20,7 +20,7 @@
 - `14--pipeline-architecture` (5): `15-warm-server-daemon-mode.md`, `16-backend-storage-adapter-abstraction.md`, `18-atomic-write-then-index-api.md`, `19-embedding-retry-orchestrator.md`, `20-7-layer-tool-architecture-metadata.md`
 - `16--tooling-and-scripts` (3): `02-architecture-boundary-enforcement.md`, `08-watcher-delete-rename-cleanup.md`, `18-template-compliance-contract-enforcement.md`
 - `18--ux-hooks` (14): `01-shared-post-mutation-hook-wiring.md`, `02-memory-health-autorepair-metadata.md`, `04-schema-and-type-contract-synchronization.md`, `06-mutation-hook-result-contract-expansion.md`, `07-mutation-response-ux-payload-exposure.md`, `10-atomic-save-parity-and-partial-indexing-hints.md`, `11-final-token-metadata-recomputation.md`, `13-end-to-end-success-envelope-verification.md`, `14-result-explainability.md`, `15-mode-aware-response-profiles.md`, `16-progressive-disclosure.md`, `17-retrieval-session-state.md`, `18-empty-result-recovery.md`, `19-result-confidence.md`
-- Extra unmatched root catalog doc: `feature_catalog_in_simple_terms.md`
+- Extra unmatched root catalog doc: `FEATURE_CATALOG_IN_SIMPLE_TERMS.md`
 
 **ORPHAN scenarios**
 - `01--retrieval` (4): `001-context-recovery-and-continuation.md`, `002-targeted-memory-lookup.md`, `185-memory-analyze-command-routing.md`, `187-quick-search-memory-quick-search.md`
@@ -35,7 +35,7 @@
 
 **CATEGORY MISMATCHES**
 - Visible numbered category folders: none, `19/19` exact name matches
-- Catalog-only extras: hidden `.github/`, root `feature_catalog_in_simple_terms.md`
+- Catalog-only extras: hidden `.github/`, root `FEATURE_CATALOG_IN_SIMPLE_TERMS.md`
 - Structural mismatch in docs: playbook readiness text assumes `231` category scenarios, but filesystem has `230` category scenarios
 
 **Quality sample**

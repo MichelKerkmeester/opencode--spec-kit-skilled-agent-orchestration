@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `063` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [17--governance/01-feature-flag-governance.md](../../feature_catalog/17--governance/01-feature-flag-governance.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `063` and confirm the ex
 
 - Group: Governance
 - Playbook ID: 063
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `17--governance/063-feature-flag-governance.md`

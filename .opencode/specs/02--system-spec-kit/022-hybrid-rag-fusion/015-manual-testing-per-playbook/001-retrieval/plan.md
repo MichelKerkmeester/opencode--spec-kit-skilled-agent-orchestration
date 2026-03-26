@@ -42,7 +42,7 @@ This plan converts the 13 retrieval scenarios in the manual testing playbook int
 
 - [ ] Playbook files for 01--retrieval are accessible at `../../manual_testing_playbook/01--retrieval/`
 - [ ] Feature catalog files for 01--retrieval are accessible at `../../feature_catalog/01--retrieval/`
-- [ ] Review protocol is loaded from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] Review protocol is loaded from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [ ] MCP runtime is healthy and `memory_context`, `memory_search`, `memory_match_triggers` respond
 - [ ] Sandbox data and checkpoint strategy identified for stateful scenarios 086 and 143
 
@@ -148,7 +148,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Playbook `../../manual_testing_playbook/01--retrieval/` | Internal | Unknown | Scenario steps unavailable |
-| Review protocol `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdicts cannot be applied consistently |
+| Review protocol `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Verdicts cannot be applied consistently |
 | Feature catalog `../../feature_catalog/01--retrieval/` | Internal | Unknown | Cross-reference cannot be verified |
 | MCP runtime (`memory_context`, `memory_search`, `memory_match_triggers`) | Internal | Unknown | Retrieval scenarios cannot be executed |
 | Disposable sandbox corpus and rollback checkpoint | Internal | Unknown | Stateful tests 086 and 143 cannot run safely |

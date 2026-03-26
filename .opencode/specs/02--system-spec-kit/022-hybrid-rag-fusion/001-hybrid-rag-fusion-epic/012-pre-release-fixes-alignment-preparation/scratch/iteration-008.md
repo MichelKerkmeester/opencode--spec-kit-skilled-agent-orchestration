@@ -2,20 +2,20 @@
 
 ## Findings
 
-- **F1 (Traceability drift):** The master catalog section numbering no longer aligns with folder numbering. In current `feature_catalog.md`, section **16** is "Retrieval Enhancements" and section **21** is "Feature Flag Reference"; category folders `20--...` and `21--...` are stubs instead of per-feature snippets. This creates section↔folder mismatch for strict 15-21 mapping.
+- **F1 (Traceability drift):** The master catalog section numbering no longer aligns with folder numbering. In current `FEATURE_CATALOG.md`, section **16** is "Retrieval Enhancements" and section **21** is "Feature Flag Reference"; category folders `20--...` and `21--...` are stubs instead of per-feature snippets. This creates section↔folder mismatch for strict 15-21 mapping.
 
-  - Evidence: `feature_catalog.md:3366` (`## 16. RETRIEVAL ENHANCEMENTS`), `feature_catalog.md:4368` (`## 21. FEATURE FLAG REFERENCE`), `20--remediation-revalidation/01-category-stub.md`, `21--implement-and-remove-deprecated-features/01-category-stub.md`.
+  - Evidence: `FEATURE_CATALOG.md:3366` (`## 16. RETRIEVAL ENHANCEMENTS`), `FEATURE_CATALOG.md:4368` (`## 21. FEATURE FLAG REFERENCE`), `20--remediation-revalidation/01-category-stub.md`, `21--implement-and-remove-deprecated-features/01-category-stub.md`.
 
 - **F2 (Missing snippet links for claimed features):** 4 claimed features in master section 20 have no snippet link entry in the master section body (they use direct shell-script references only), so check (1) and strict check (2) fail for those claims.
 
-  - `Phase detection and scoring (recommend-level.sh --recommend-phases)` (`feature_catalog.md:4304`)
-  - `Phase folder creation (create.sh --phase)` (`feature_catalog.md:4320`)
-  - `Recursive phase validation (validate.sh --recursive)` (`feature_catalog.md:4336`)
-  - `Phase link validation (check-phase-links.sh)` (`feature_catalog.md:4352`)
+  - `Phase detection and scoring (recommend-level.sh --recommend-phases)` (`FEATURE_CATALOG.md:4304`)
+  - `Phase folder creation (create.sh --phase)` (`FEATURE_CATALOG.md:4320`)
+  - `Recursive phase validation (validate.sh --recursive)` (`FEATURE_CATALOG.md:4336`)
+  - `Phase link validation (check-phase-links.sh)` (`FEATURE_CATALOG.md:4352`)
 
 - **F3 (Title mismatch):** 1 linked feature has a title mismatch between master and snippet heading.
 
-  - Master: `### 1. Search Pipeline Features (SPECKIT_*)` (`feature_catalog.md:4376`)
+  - Master: `### 1. Search Pipeline Features (SPECKIT_*)` (`FEATURE_CATALOG.md:4376`)
 
   - Snippet: `# Search Pipeline Features (SPECKIT_*)` (`19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:6`)
 

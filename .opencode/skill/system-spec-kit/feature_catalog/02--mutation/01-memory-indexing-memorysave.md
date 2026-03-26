@@ -84,5 +84,5 @@ Document type affects importance weighting automatically: constitutional files g
 
 - Group: Mutation
 - Source feature title: Memory indexing (memory_save)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 - Source list updated 2026-03-25 per deep review

@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `097` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [05--lifecycle/05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `097` and confirm the ex
 
 - Group: Lifecycle
 - Playbook ID: 097
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md`

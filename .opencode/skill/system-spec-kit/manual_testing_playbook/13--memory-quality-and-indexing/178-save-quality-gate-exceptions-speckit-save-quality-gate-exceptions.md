@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `178` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/validation/save-quality-gate.ts`
 
@@ -42,5 +42,5 @@ Operators run the exact prompt and command sequence for `178` and confirm the ex
 
 - Group: Memory quality and indexing
 - Playbook ID: 178
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md`

@@ -33,8 +33,8 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Load playbook rows for all 11 retrieval enhancement scenario IDs from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Load review protocol verdict rules from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [x] T001 Load playbook rows for all 11 retrieval enhancement scenario IDs from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
+- [x] T002 Load review protocol verdict rules from `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [x] T003 [P] Confirm feature catalog links for all 11 scenarios in `../../feature_catalog/15--retrieval-enhancements/`
 - [x] T004 Record baseline env var state — all flags default-ON; env-var overrides documented per scenario
 - [x] T005 Capture corpus size logic — `checkScaleGate` in `lib/search/memory-summaries.ts:210-226` counts `embedding_status='success'` rows and returns true when >5000

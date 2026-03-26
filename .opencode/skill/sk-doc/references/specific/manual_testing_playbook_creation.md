@@ -23,7 +23,7 @@ Manual testing playbooks are operator-facing validation packages for skills with
 - `.opencode/skill/mcp-coco-index/manual_testing_playbook/`
 
 **Current Reality Highlights**:
-- The canonical package is a root `manual_testing_playbook.md` plus numbered category folders at the playbook root.
+- The canonical package is a root `MANUAL_TESTING_PLAYBOOK.md` plus numbered category folders at the playbook root.
 - Integrated review and orchestration guidance lives in the root playbook.
 - Separate canonical `review_protocol.md` and `subagent_utilization_ledger.md` files are no longer part of the contract.
 - Per-feature files should read like feature-catalog-style entries with frontmatter, numbered sections, and divider lines.
@@ -63,7 +63,7 @@ The current playbook contract is:
 
 ```text
 manual_testing_playbook/
-├── manual_testing_playbook.md
+├── MANUAL_TESTING_PLAYBOOK.md
 ├── 01--category-name/
 │   ├── 001-feature-name.md
 │   └── 002-feature-name.md
@@ -72,7 +72,7 @@ manual_testing_playbook/
 ```
 
 **Invariants**:
-- root file is always `manual_testing_playbook.md`
+- root file is always `MANUAL_TESTING_PLAYBOOK.md`
 - per-feature files live in numbered root-level category folders
 - category directories use `NN--category-name`
 - per-feature files use stable numeric slugs such as `001-feature-name.md`

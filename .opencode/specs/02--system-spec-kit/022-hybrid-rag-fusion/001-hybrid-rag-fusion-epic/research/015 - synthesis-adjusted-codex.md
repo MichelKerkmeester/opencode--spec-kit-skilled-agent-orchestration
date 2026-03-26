@@ -4,7 +4,7 @@
 
 This update keeps the original synthesis scope (the same 16 recommendations across Tier 1/2/3), then cross-references each recommendation against:
 
-1. `feature_catalog.md` (system-of-record for implemented capabilities and deferrals)
+1. `FEATURE_CATALOG.md` (system-of-record for implemented capabilities and deferrals)
 2. `summary_of_new_features.md` (023 implementation delta log)
 
 Status labels used:

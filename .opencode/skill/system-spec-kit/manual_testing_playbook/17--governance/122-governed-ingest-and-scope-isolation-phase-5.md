@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `122` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `122` and confirm the ex
 
 - Group: Governance
 - Playbook ID: 122
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `17--governance/122-governed-ingest-and-scope-isolation-phase-5.md`

@@ -26,7 +26,7 @@ contextType: "general"
 | **Runtime** | MCP server (`spec_kit_memory`) |
 | **Tools** | `memory_search`, `memory_validate`, `checkpoint_create`, `checkpoint_restore` |
 | **Sandbox** | Isolated SQLite copy or MCP checkpoint for destructive tests |
-| **Review Protocol** | `../../manual_testing_playbook/manual_testing_playbook.md` |
+| **Review Protocol** | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` |
 
 ### Overview
 Phase 011 covers 22 scoring-and-calibration playbook rows drawn from the Spec Kit Memory playbook. Twenty-one rows remain active MCP-server-backed scenarios. Non-destructive scenarios (023, 024, 027, 029, 030, 066, 074, 079, 098, 102, 118) are run directly against the live index. Destructive/stateful scenarios (025, 026, 028, 031, 032, 121) require a checkpoint snapshot before execution and restore after. Active feature-flag scenarios (159, 160, 171, 172) require explicit flag ON and flag OFF passes, while historical row 170 requires a retirement-status code audit instead of active execution.
@@ -172,8 +172,8 @@ For active scenarios: run with flag ON, capture trace; run with flag OFF, confir
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Confirm before start | Cannot execute without exact playbook prompts |
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Confirm before start | Cannot assign verdicts without protocol rules |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Confirm before start | Cannot execute without exact playbook prompts |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Confirm before start | Cannot assign verdicts without protocol rules |
 | `../../feature_catalog/11--scoring-and-calibration/` | Internal | Confirm before start | Traceability links break if files are missing or renamed |
 | MCP runtime + `memory_search` | Runtime | Confirm | All scenarios blocked if MCP is unavailable |
 | `checkpoint_create` / `checkpoint_restore` | Runtime | Confirm | Destructive scenarios blocked if checkpoint tools unavailable |

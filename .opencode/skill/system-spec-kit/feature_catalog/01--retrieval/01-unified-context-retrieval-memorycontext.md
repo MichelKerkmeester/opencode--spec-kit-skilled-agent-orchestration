@@ -288,4 +288,4 @@ Extended telemetry now records transition diagnostics alongside mode selection a
 
 - Group: Retrieval
 - Source feature title: Unified context retrieval (memory_context)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

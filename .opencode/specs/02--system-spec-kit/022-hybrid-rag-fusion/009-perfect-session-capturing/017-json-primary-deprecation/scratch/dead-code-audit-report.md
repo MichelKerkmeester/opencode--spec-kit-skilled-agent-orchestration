@@ -282,8 +282,8 @@ No live code path treats stateless mode as the primary path. The `--recovery` ga
 | `references/structure/folder_routing.md` | 609 | Footer says "Stateless CLI-First" — contradicts its own "Structured-first" wording |
 | `references/templates/template_guide.md` | 917 | "stateless - no marker file" should be "explicit CLI target / structured-first" |
 | `feature_catalog/.../18-stateless-enrichment-and-alignment-guards.md` | 2-29 | Never says "recovery-mode" |
-| `feature_catalog/feature_catalog.md` | 2533-2554 | "stateless saves" should be qualified as recovery-mode |
-| `feature_catalog/feature_catalog_in_simple_terms.md` | 578-580 | Same omission |
+| `feature_catalog/FEATURE_CATALOG.md` | 2533-2554 | "stateless saves" should be qualified as recovery-mode |
+| `feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md` | 578-580 | Same omission |
 | `manual_testing_playbook/.../007-session-capturing-pipeline-quality.md` | 22 | Should say "recovery-mode stateless enrichment" |
 | `manual_testing_playbook/.../139-session-capturing-pipeline-quality.md` | 20-21, 30 | Same omission |
 | `extractors/spec-folder-extractor.ts` | 8 | Comment says "stateless enrichment" without recovery-only qualifier |

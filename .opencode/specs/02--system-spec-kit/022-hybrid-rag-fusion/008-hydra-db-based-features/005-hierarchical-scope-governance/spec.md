@@ -99,7 +99,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 | `.opencode/skill/system-spec-kit/mcp_server/lib/governance/` | Create | Central policy, retention, audit, and deletion modules |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts` | Modify | Execute retention and deletion jobs safely |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add isolation, deletion, and audit verification coverage |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add governance and deletion validation procedures |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Add governance and deletion validation procedures |
 <!-- /ANCHOR:scope -->
 
 ---

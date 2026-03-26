@@ -99,8 +99,8 @@ Is this a project root?
 |---------|---------|-------|---------|-----------|-------------|
 | 1. Overview | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ✅ Required |
 | 2. Quick Start | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
-| 3. Structure | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional | ✅ Required |
-| 4. Features | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 3. Features | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 4. Structure | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional | ✅ Required |
 | 5. Configuration | ⚠️ Optional | ⚠️ Optional | ✅ Required | ⚠️ Optional | ❌ Skip |
 | 6. Usage Examples | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
 | 7. Troubleshooting | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
@@ -125,8 +125,8 @@ Every README follows a 9-section structure. Use what's needed, remove what's not
 |---|---------|---------|-------------|
 | 1 | **Overview** | Establish context | What is this, statistics, features, requirements |
 | 2 | **Quick Start** | Enable fast success | 30-second setup, verification, first use |
-| 3 | **Structure** | Aid navigation | Directory tree, key files table |
-| 4 | **Features** | Document capabilities | Feature groups, options, comparisons |
+| 3 | **Features** | Document capabilities | Feature groups, options, comparisons |
+| 4 | **Structure** | Aid navigation | Directory tree, key files table |
 | 5 | **Configuration** | Reference settings | Config files, options, env vars |
 | 6 | **Usage Examples** | Show patterns | 3+ examples, common patterns table |
 | 7 | **Troubleshooting** | Enable self-service | Common issues, quick fixes, diagnostics |
@@ -220,7 +220,32 @@ These patterns appear in mature project READMEs:
 - Assume nothing is installed (or state prerequisites clearly)
 - "30-Second Setup" is aspirational. Aim for it.
 
-### Structure Section (3)
+### Features Section (3)
+
+**Purpose**: Comprehensive feature documentation. For complex systems, split into a narrative tier and a reference tier.
+
+**Must include**:
+- Numbered subsections (3.1, 3.2, etc.) separated by `---` dividers for scannable navigation
+- Feature groupings by category
+- Usage examples for key features
+- Options/flags tables where applicable
+
+**Two-Tier Structure** (recommended for complex systems):
+- **Narrative subsection** (e.g., `### 3.1 HOW IT WORKS`): Plain-language explanations with analogies. Explain the "why" before the "how." No parameter tables here.
+- **Reference subsection** (e.g., `### 3.2 API REFERENCE`): Precise parameter tables, configuration options, technical specifics. Terse and scannable.
+
+Newcomers read the narrative. Power users jump to the reference. Both tiers live in the same Features section.
+
+**Subsection Numbering**: Use `#### 3.1.1 TOPIC NAME` (ALL CAPS) for sub-subsections within a Feature subsection. Add `---` horizontal rules between subsections for visual separation. All numbered headings (H3 and H4) use ALL CAPS to match H2 section headings.
+
+**Writing Tips**:
+- Each subsection should open with 1-2 sentences explaining what this capability does in plain language
+- Bold key term names on first use (e.g., **Reciprocal Rank Fusion**)
+- Use tables for structured data (parameters, comparisons, options)
+- Show before/after or input/output examples
+- Include comparison tables when multiple options exist
+
+### Structure Section (4)
 
 **Purpose**: Help users navigate the project/component.
 
@@ -233,31 +258,6 @@ These patterns appear in mature project READMEs:
 - Only show relevant structure (not every file)
 - Annotate with `# Purpose` comments in tree
 - 2-3 levels deep is usually sufficient
-
-### Features Section (4)
-
-**Purpose**: Comprehensive feature documentation. For complex systems, split into a narrative tier and a reference tier.
-
-**Must include**:
-- Numbered subsections (4.1, 4.2, etc.) separated by `---` dividers for scannable navigation
-- Feature groupings by category
-- Usage examples for key features
-- Options/flags tables where applicable
-
-**Two-Tier Structure** (recommended for complex systems):
-- **Narrative subsection** (e.g., "4.1 How It Works"): Plain-language explanations with analogies. Explain the "why" before the "how." No parameter tables here.
-- **Reference subsection** (e.g., "4.2 API Reference"): Precise parameter tables, configuration options, technical specifics. Terse and scannable.
-
-Newcomers read the narrative. Power users jump to the reference. Both tiers live in the same Features section.
-
-**Subsection Numbering**: Use `#### 4.1.1 Topic Name` for sub-subsections within a Feature subsection. Add `---` horizontal rules between subsections for visual separation.
-
-**Writing Tips**:
-- Each subsection should open with 1-2 sentences explaining what this capability does in plain language
-- Bold key term names on first use (e.g., **Reciprocal Rank Fusion**)
-- Use tables for structured data (parameters, comparisons, options)
-- Show before/after or input/output examples
-- Include comparison tables when multiple options exist
 
 ### Configuration Section (5)
 
@@ -429,8 +429,10 @@ For optional content:
 |---------|------|---------|
 | H1 | Plain title | `# Project Name` |
 | H2 | Numbered, ALL CAPS | `## 1. OVERVIEW` |
-| H3 | Title case | `### Configuration` |
-| H4+ | Title case | `#### Options` |
+| H3 (numbered) | Numbered, ALL CAPS | `### 3.1 SPEC KIT DOCUMENTATION` |
+| H3 (unnumbered) | Title case | `### Configuration` |
+| H4 (numbered) | Numbered, ALL CAPS | `#### 3.1.1 HYBRID SEARCH` |
+| H4 (unnumbered) | Title case | `#### Options` |
 
 **Standard Section Names**:
 - OVERVIEW
@@ -510,6 +512,8 @@ Before finalizing a README, verify all applicable items:
 
 ### Style
 - [ ] H2 headings use numbered ALL CAPS format
+- [ ] Numbered H3/H4 subsections use ALL CAPS format (e.g. `### 3.1 HYBRID SEARCH`)
+- [ ] Unnumbered H3/H4 use title case (e.g. `### Configuration`)
 - [ ] TOC links match section headers exactly
 - [ ] File paths in backticks
 - [ ] Commands in fenced code blocks
@@ -848,8 +852,8 @@ description: "[Brief description]"
 
 - [1. OVERVIEW](#1--overview)
 - [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
+- [3. FEATURES](#3--features)
+- [4. STRUCTURE](#4--structure)
 - [5. CONFIGURATION](#5--configuration)
 - [6. USAGE EXAMPLES](#6--usage-examples)
 - [7. TROUBLESHOOTING](#7--troubleshooting)
@@ -934,38 +938,16 @@ description: "[Brief description]"
 <!-- /ANCHOR:quick-start -->
 ---
 
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
-[root-directory]/
-├── [dir-or-file-1]/          # [Purpose]
-│   ├── [subitem-1]           # [Purpose]
-│   └── [subitem-2]           # [Purpose]
-├── [dir-or-file-2]/          # [Purpose]
-└── [dir-or-file-3]           # [Purpose]
-```
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `[filename-1]` | [What it does] |
-| `[filename-2]` | [What it does] |
-
-<!-- /ANCHOR:structure -->
----
-
 <!-- ANCHOR:features -->
-## 4. FEATURES
+## 3. FEATURES
 
-### 4.1 [Narrative Subsection: How It Works]
+### 3.1 [NARRATIVE SUBSECTION: HOW IT WORKS]
 
 [1-2 paragraphs in plain language explaining what this system does and why it matters. Use an analogy if it helps.]
 
 ---
 
-#### 4.1.1 [Topic Name]
+#### 3.1.1 [TOPIC NAME]
 
 [Plain-language explanation of this capability. Lead with what it does for the user.]
 
@@ -977,13 +959,13 @@ description: "[Brief description]"
 
 ---
 
-#### 4.1.2 [Topic Name]
+#### 3.1.2 [TOPIC NAME]
 
 [Next capability explained in simple terms.]
 
 ---
 
-### 4.2 [Reference Subsection: Technical Reference]
+### 3.2 [REFERENCE SUBSECTION: TECHNICAL REFERENCE]
 
 [Brief intro: what this section covers, who it is for.]
 
@@ -1003,6 +985,28 @@ description: "[Brief description]"
 ```
 
 <!-- /ANCHOR:features -->
+---
+
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
+```
+[root-directory]/
+├── [dir-or-file-1]/          # [Purpose]
+│   ├── [subitem-1]           # [Purpose]
+│   └── [subitem-2]           # [Purpose]
+├── [dir-or-file-2]/          # [Purpose]
+└── [dir-or-file-3]           # [Purpose]
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `[filename-1]` | [What it does] |
+| `[filename-2]` | [What it does] |
+
+<!-- /ANCHOR:structure -->
 ---
 
 <!-- ANCHOR:configuration -->
@@ -1186,7 +1190,7 @@ A: [Answer with code if applicable.]
 - Project READMEs in `/specs/` folders
 - Skill READMEs in `.opencode/skill/` folders
 - [Spec Kit Memory MCP Server README](../../system-spec-kit/mcp_server/README.md) - Reference implementation of two-tier voice, numbered Feature subsections, comparison tables and analogy patterns
-- [Feature Catalog in Simple Terms](../../system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md) - Voice and tone calibration reference for plain-language technical writing
+- [Feature Catalog in Simple Terms](../../system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md) - Voice and tone calibration reference for plain-language technical writing
 
 ### Skill Reference
 - [sk-doc SKILL.md](../../SKILL.md) - Parent skill documentation

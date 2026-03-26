@@ -57,4 +57,4 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 
 - Group: Memory quality and indexing
 - Source feature title: Smarter memory content generation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

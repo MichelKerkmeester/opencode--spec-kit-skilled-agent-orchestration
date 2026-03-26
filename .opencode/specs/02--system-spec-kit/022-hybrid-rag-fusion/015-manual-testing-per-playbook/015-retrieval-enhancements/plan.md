@@ -40,7 +40,7 @@ This plan sequences the execution of all 11 retrieval enhancement scenarios assi
 ### Definition of Ready
 - [ ] Playbook scenario files for IDs 055, 056, 057, 058, 059, 060, 077, 093, 094, 096, and 145 are accessible
 - [ ] Feature catalog entries in `../../feature_catalog/15--retrieval-enhancements/` are accessible
-- [ ] Review protocol loaded: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] Review protocol loaded: `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [ ] MCP runtime available for MCP-tagged scenarios
 - [ ] Baseline env var state recorded (SPECKIT_RESPONSE_TRACE, SPECKIT_CONTEXT_HEADERS, SPECKIT_CONSOLIDATION, SPECKIT_ENTITY_LINKING, SPECKIT_MEMORY_SUMMARIES)
 - [ ] Corpus size count captured to determine whether 059 summary channel threshold is satisfied
@@ -138,8 +138,8 @@ Preconditions confirmed → execute exact scenario prompt and commands → colle
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
 | `../../feature_catalog/15--retrieval-enhancements/` | Internal | Unknown | Feature context and review triage lose canonical reference |
 | MCP runtime for `memory_search` and `memory_context` | Runtime | Unknown | Retrieval and provenance scenarios cannot be executed |
 | Disposable sandbox corpus and rollback checkpoint for 058 and 060 | Operational | Unknown | Stateful consolidation and entity linking tests cannot run safely |

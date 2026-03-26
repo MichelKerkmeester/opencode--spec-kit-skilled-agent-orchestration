@@ -32,7 +32,7 @@ contextType: "general"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Playbook source and review protocol loaded before execution begins — all 8 scenario files read from `manual_testing_playbook/19--feature-flag-reference/` [EVIDENCE: tasks.md; implementation-summary.md]
-- [x] CHK-002 [P0] All 8 scenario prompts and command sequences verified against `../../manual_testing_playbook/manual_testing_playbook.md` — exact prompts and commands loaded per playbook scenario files [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-002 [P0] All 8 scenario prompts and command sequences verified against `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` — exact prompts and commands loaded per playbook scenario files [EVIDENCE: tasks.md; implementation-summary.md]
 - [x] CHK-003 [P0] MCP runtime confirmed operational for `memory_search` and `memory_context` — EX-028 through EX-034 triaged via feature catalog cross-reference per playbook fallback protocol; EVIDENCE GAP documented for corpus-based retrieval [EVIDENCE: tasks.md; implementation-summary.md]
 - [x] CHK-004 [P1] Flag documentation indexed or feature catalog triage path documented — triage path applied: all 7 flag-group catalogs read directly; EVIDENCE GAP noted (memory search corpus not indexed at execution time) [EVIDENCE: tasks.md; implementation-summary.md]
 - [x] CHK-005 [P1] Dist build at `capability-flags.js` confirmed current before 125 runs — `dist/lib/config/capability-flags.js` present and executed successfully; both node invocations completed without error [EVIDENCE: tasks.md; implementation-summary.md]

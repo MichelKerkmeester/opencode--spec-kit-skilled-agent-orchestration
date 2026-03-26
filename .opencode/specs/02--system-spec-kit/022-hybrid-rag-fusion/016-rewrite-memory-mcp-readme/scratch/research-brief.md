@@ -79,7 +79,7 @@ All 32 tools extracted from `mcp_server/tool-schemas.ts` (TOOL_DEFINITIONS array
 
 ## 2. FEATURE CATEGORY MAP
 
-All 22 categories from `feature_catalog/feature_catalog.md` (TOC, lines 12-33) mapped to recommended README sections.
+All 22 categories from `feature_catalog/FEATURE_CATALOG.md` (TOC, lines 12-33) mapped to recommended README sections.
 
 | # | Feature Catalog Category | Features (count) | README Section Mapping |
 |---|--------------------------|------------------|----------------------|
@@ -112,7 +112,7 @@ All 22 categories from `feature_catalog/feature_catalog.md` (TOC, lines 12-33) m
 
 ### 3.1 Hybrid Search Pipeline (BM25 + Vector Fusion)
 
-[SOURCE: mcp_server/README.md:361-443, feature_catalog/feature_catalog.md lines 329-347]
+[SOURCE: mcp_server/README.md:361-443, feature_catalog/FEATURE_CATALOG.md lines 329-347]
 
 **5-channel retrieval pipeline:**
 
@@ -185,7 +185,7 @@ Formula: `R(t, S) = (1 + (19/81) * t/S)^(-0.5)` where `R(S,S) = 0.9`
 
 ### 3.5 Feature Flags
 
-[SOURCE: feature_catalog/feature_catalog.md:4014-4105, mcp_server/README.md:768-869]
+[SOURCE: feature_catalog/FEATURE_CATALOG.md:4014-4105, mcp_server/README.md:768-869]
 
 **Flag evaluation:** `isFeatureEnabled()` treats absent/empty/'true' as enabled, 'false'/'0' as disabled.
 
@@ -328,7 +328,7 @@ From `readme_template.md` section 8 (README Checklist):
 
 | Document | Relative Path | Purpose |
 |----------|--------------|---------|
-| Feature Catalog | `../feature_catalog/feature_catalog.md` | Complete feature inventory with 22 categories. The README should reference this as the authoritative deep-dive for every feature. |
+| Feature Catalog | `../feature_catalog/FEATURE_CATALOG.md` | Complete feature inventory with 22 categories. The README should reference this as the authoritative deep-dive for every feature. |
 | Install Guide | `INSTALL_GUIDE.md` | Detailed installation steps. README Quick Start should link here for advanced setup. |
 | Skill README | `../README.md` | Parent skill documentation. |
 | SKILL.md | `../SKILL.md` | AI agent workflow instructions. |
@@ -364,4 +364,4 @@ The MCP server README is referenced from:
 
 ---
 
-*Research brief compiled from tool-schemas.ts, feature_catalog.md, mcp_server/README.md and readme_template.md. All citations verified via Read tool.*
+*Research brief compiled from tool-schemas.ts, FEATURE_CATALOG.md, mcp_server/README.md and readme_template.md. All citations verified via Read tool.*

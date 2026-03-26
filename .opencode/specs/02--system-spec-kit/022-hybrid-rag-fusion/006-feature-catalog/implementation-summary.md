@@ -128,7 +128,7 @@ Cross-validation: 124 unique annotation names in code, 0 invalid (all match cata
 ### Documentation
 
 - Created `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` catalog snippet
-- Added H3 entry "Feature catalog code references" in main `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` under Tooling section
+- Added H3 entry "Feature catalog code references" in main `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` under Tooling section
 - Added Code Conventions section (MODULE: header + Feature catalog annotation) to `.opencode/skill/system-spec-kit/mcp_server/README.md`
 - Added traceability mention to `.opencode/skill/system-spec-kit/README.md` component description
 - Added playbook scenarios 135 (grep traceability), 136 (name validity), 137 (multi-feature coverage), 138 (MODULE: compliance)
@@ -156,8 +156,8 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Removed 14 `[NEW-NNN]` playbook references, added entries for features 16/17 |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modified | Removed ~458 `NEW-` prefixes, renamed section 8, added entries 153/154 with cross-reference rows |
+| `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` | Modified | Removed 14 `[NEW-NNN]` playbook references, added entries for features 16/17 |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modified | Removed ~458 `NEW-` prefixes, renamed section 8, added entries 153/154 with cross-reference rows |
 | feature\_catalog 01--\* through 17--\* | Modified | Removed `NEW-NNN` from playbook cross-references (31 files modified) |
 | manual\_testing\_playbook 01--\* through 19--\* | Modified | Removed `NEW-NNN` from titles, frontmatter, headings, table rows, metadata (~75 files modified) |
 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` | Created | Phase 016 feature catalog entry |
@@ -171,7 +171,7 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 |-------|--------|
 | Feature catalog `NEW-NNN` grep (excl G-NEW-) | PASS (0 matches across 194 files) |
 | Playbook `NEW-NNN` grep (excl G-NEW-) | PASS (0 matches across 200 files) |
-| New catalog entries indexed in feature_catalog.md | PASS (lines 3370 and 3388) |
+| New catalog entries indexed in FEATURE_CATALOG.md | PASS (lines 3370 and 3388) |
 | New playbook entries in section body + cross-ref table | PASS (lines 2802/2816 + 3244/3245) |
 | G-NEW-* proper nouns preserved | PASS (25 occurrences intact) |
 | Spot-check of previously-marked files | PASS (all sampled files clean) |

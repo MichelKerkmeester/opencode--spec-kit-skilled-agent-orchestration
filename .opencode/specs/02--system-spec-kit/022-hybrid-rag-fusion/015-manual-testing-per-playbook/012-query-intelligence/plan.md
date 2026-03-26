@@ -26,7 +26,7 @@ contextType: "general"
 | **Runtime** | MCP server (`spec_kit_memory`) |
 | **Tools** | `memory_search`, `memory_save` (for 163 surrogate test) |
 | **Sandbox** | Disposable test memory record for 163; standard live index for all others |
-| **Review Protocol** | `../../manual_testing_playbook/manual_testing_playbook.md` |
+| **Review Protocol** | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` |
 
 ### Overview
 Phase 012 executes 10 query-intelligence manual test scenarios drawn from the Spec Kit Memory playbook. Core scenarios (033–038) are all non-destructive and run directly against the live index using `includeTrace: true`. Feature-flag scenarios (161, 162, 163, 173) require explicit flag ON and flag OFF passes. Scenario 163 (Query Surrogates) is the only scenario that writes to the index and requires a disposable test record.
@@ -141,8 +141,8 @@ For each scenario: run with flag ON, capture trace; run with flag OFF, confirm n
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Confirm before start | Cannot execute without exact playbook prompts |
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Confirm before start | Cannot assign verdicts without protocol rules |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Confirm before start | Cannot execute without exact playbook prompts |
+| `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Internal | Confirm before start | Cannot assign verdicts without protocol rules |
 | `../../feature_catalog/12--query-intelligence/` | Internal | Confirm before start | Traceability links break if files are missing or renamed |
 | MCP runtime + `memory_search` | Runtime | Confirm | All scenarios blocked if MCP is unavailable |
 | `SPECKIT_LLM_REFORMULATION` | Feature flag | Confirm | 161 blocked if flag absent from runtime |

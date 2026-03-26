@@ -427,9 +427,9 @@ contextType: "general"
   - **Verification:** `rg -n "\"description\"|\"keywords\"" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/description.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/description.json`
 
 - [x] **T94** Raise playbook coverage above the current 75% and clean orphan scenarios.
-  - **Files:** `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/`
+  - **Files:** `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`, `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/`
   - **What to change:** Add scenarios/backlinks for the 54 uncovered features, remove or reconcile the 31 orphan scenarios, and fix the off-by-one root playbook count contract.
-  - **Verification:** `rg -n "75%|75\\.3|54|31 orphan|231|230" .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook`
+  - **Verification:** `rg -n "75%|75\\.3|54|31 orphan|231|230" .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook`
 
 - [x] **T95** Resolve dormant code modules instead of leaving them half-supported.
   - **Files:** `.opencode/skill/system-spec-kit/mcp_server/lib/search/rsf-fusion.ts`, `.opencode/skill/system-spec-kit/mcp_server/lib/governance/retention.ts`

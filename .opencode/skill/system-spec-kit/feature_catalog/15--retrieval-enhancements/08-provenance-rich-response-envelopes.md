@@ -46,4 +46,4 @@ When you search for something, the system normally just gives you the answer. Wi
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Provenance-rich response envelopes
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

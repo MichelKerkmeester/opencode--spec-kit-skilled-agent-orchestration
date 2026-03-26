@@ -121,8 +121,8 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/17--governance/`](../../feature_catalog/17--governance/) | Supplies feature context for each governance scenario | Keep every test row linked to its mapped governance feature file |
 | Dependency | MCP runtime plus governance sandbox corpus | Required to execute `memory_save`, `shared_memory_status`, `shared_memory_enable`, `shared_space_upsert`, and `shared_space_membership_set` scenarios safely | Run stateful tests in an isolated sandbox and preserve restart/checkpoint instructions in the plan |
 | Risk | 122 writes scoped memory records that could leak across test runs if sandbox isolation fails | High | Restrict provenance/scope saves to disposable sandbox tenant IDs and document rollback steps before execution |

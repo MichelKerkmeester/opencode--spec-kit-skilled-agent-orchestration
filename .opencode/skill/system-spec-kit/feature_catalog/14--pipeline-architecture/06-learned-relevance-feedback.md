@@ -58,4 +58,4 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 
 - Group: Pipeline architecture
 - Source feature title: Learned relevance feedback
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

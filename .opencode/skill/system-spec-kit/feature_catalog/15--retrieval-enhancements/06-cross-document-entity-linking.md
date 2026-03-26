@@ -51,4 +51,4 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 - Group: Retrieval enhancements
 - Source feature title: Cross-document entity linking
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

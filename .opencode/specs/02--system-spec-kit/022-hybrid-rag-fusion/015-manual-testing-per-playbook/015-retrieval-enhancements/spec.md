@@ -135,8 +135,8 @@ Execute all 11 playbook scenarios for the retrieval enhancements category and re
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Playbook scenario files for IDs 055–060, 077, 093, 094, 096, 145 | Cannot execute without scenario steps | Locate files before starting |
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
+| Dependency | `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
 | Dependency | `../../feature_catalog/15--retrieval-enhancements/` | Feature context per scenario | Link every scenario to its feature file |
 | Risk | Scenario 058 triggers N3-lite consolidation — mutates edge weights in graph DB | Medium | Run only against sandbox/disposable corpus; record baseline before triggering |
 | Risk | Scenario 059 requires corpus exceeding 5,000 memories to activate summary channel | Medium | Capture corpus size before execution; document threshold outcome encountered |

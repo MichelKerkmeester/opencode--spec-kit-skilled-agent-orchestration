@@ -43,4 +43,4 @@ Right now, the memory server starts fresh every time it is called and shuts down
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Warm server / daemon mode
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

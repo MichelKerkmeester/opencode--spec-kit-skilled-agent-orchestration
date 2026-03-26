@@ -42,7 +42,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 
 - Group: Evaluation and measurement
 - Source feature title: Evaluation database and schema
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 - Source list updated 2026-03-25 per deep review
 
 ---

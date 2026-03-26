@@ -50,4 +50,4 @@ The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This kee
 
 - Group: Graph signal activation
 - Source feature title: Causal depth signal
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

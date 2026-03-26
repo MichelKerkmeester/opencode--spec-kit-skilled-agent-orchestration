@@ -57,7 +57,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md)
 
 ---
@@ -66,5 +66,5 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Group: Memory Quality and Indexing
 - Playbook ID: M-006
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md`

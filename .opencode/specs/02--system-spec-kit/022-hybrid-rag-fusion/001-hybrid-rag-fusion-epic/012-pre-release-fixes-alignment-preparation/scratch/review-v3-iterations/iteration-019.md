@@ -53,7 +53,7 @@ I could not find the exact `41 documented features` claim in the current canonic
 | 5 | Root 022 | Direct child count `009=20` | `spec.md:39`; root impl summary `implementation-summary.md:31-35` | `009-perfect-session-capturing` currently has **20** direct numbered children (`000`..`019`) | PASS |
 | 6 | Root 022 | Direct child count `011=1` | `spec.md:39` | `011-skill-alignment` currently has **1** direct numbered child (`001-post-session-capturing-alignment`) | PASS |
 | 7 | Root 022 | Direct child count `015=19` | `spec.md:39` | `015-manual-testing-per-playbook` currently has **22** direct numbered children (`001`..`022`, including both `019` and `020`) | FAIL |
-| 8 | Root 022 | Feature catalog count `222` | `spec.md:40` | `feature_catalog/` has **220 snippet files** (excluding `feature_catalog.md`) and **221 total markdown files** | FAIL |
+| 8 | Root 022 | Feature catalog count `222` | `spec.md:40` | `feature_catalog/` has **220 snippet files** (excluding `FEATURE_CATALOG.md`) and **221 total markdown files** | FAIL |
 | 9 | 001 epic | `11 live sprint folders` | `001.../spec.md:3,20,41,54,64,115,188,212,232` | Phase map and live folder names confirm **11 sprint-labeled children** (`001`..`011`); note there is also an extra non-sprint direct child `012-pre-release-fixes-alignment-preparation` | PASS with nuance |
 | 10 | 001 epic | Parent records the `live 10-sprint subtree` | `001.../implementation-summary.md:31` | Contradicted by 001 spec + live directory state showing **11** sprint children | FAIL |
 | 11 | 006 feature catalog | Live filesystem count is `222` feature catalog snippet files | `006.../spec.md:45-49` | Current live count is **220 snippet files** / **221 markdown files** | FAIL |

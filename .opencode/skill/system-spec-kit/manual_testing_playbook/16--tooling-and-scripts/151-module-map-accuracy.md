@@ -40,7 +40,7 @@ Operators spot-check 5 representative modules from MODULE_MAP.md and verify thei
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/15-module-boundary-map.md](../../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
 
 ---
@@ -49,5 +49,5 @@ Operators spot-check 5 representative modules from MODULE_MAP.md and verify thei
 
 - Group: Tooling and Scripts
 - Playbook ID: 151
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/151-module-map-accuracy.md`

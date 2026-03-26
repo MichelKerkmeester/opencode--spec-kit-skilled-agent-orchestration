@@ -11,8 +11,8 @@ I’m gathering the audit targets and maintainability signals first, then I’ll
   │ 013/F21, 016/F11 and TypeScript/test/documentation alignment" --threshold 0.8
   └ Permission denied and could not request permission from user
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ 1 line read
 
 ● Search (grep)
@@ -92,7 +92,7 @@ I found the server config surface; next I’m tracing the child specs and the ex
 ● Search (grep)
   │ "shadow scoring|graph calibration|fusion policy shadow|assistive reconsolidation|feature catalog
   │ code references|F11|F15|F21|F23"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ✗ search graph calibration stage 2 pipeline deprecated but implemented not wired feature in Spec Ki…
@@ -348,20 +348,20 @@ I’ve got enough evidence now to distinguish “stale audit claim” from “re
   │ t-mitigation.md
   └ 53 lines read
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1238:1260 (23 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L2210:2235 (25 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L2926:2942 (17 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L4386:4396 (11 lines read)
 
 ● Read stage2-fusion.ts
@@ -409,12 +409,12 @@ I’ve got enough evidence now to distinguish “stale audit claim” from “re
   │ .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts
   └ L20:70 (51 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3858:3868 (11 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L3742:3754 (13 lines read)
 
 ● Read graph-calibration.vitest.ts
@@ -465,8 +465,8 @@ I’ve got enough evidence now to distinguish “stale audit claim” from “re
   │ -evaluation-and-measurement/spec.md
   └ L179:215 (37 lines read)
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L372:395 (23 lines read)
 
 ● Read README.md
@@ -520,13 +520,13 @@ This pass found several **audit inaccuracies and documentation drifts**, but no 
 
 ### `R5-M3` — `P1` — 013/F21 missed an internal catalog contradiction on assistive reconsolidation defaults
 
-- Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/spec.md:212`; `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2934,4391`; `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md:20-30`; `.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:69-75`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:479-485`; `.opencode/skill/system-spec-kit/mcp_server/tests/assistive-reconsolidation.vitest.ts:22-25`
+- Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/spec.md:212`; `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:2934,4391`; `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md:20-30`; `.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:69-75`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:479-485`; `.opencode/skill/system-spec-kit/mcp_server/tests/assistive-reconsolidation.vitest.ts:22-25`
 - Impact: The child audit marked F21 as `MATCH`, but the main catalog says “Default OFF” while the flag table, leaf page, runtime accessor, and tests all say default-on/graduated. That is a real catalog inconsistency with operational consequences.
 - Fix recommendation: Make the monolithic catalog and child page agree on the implemented default (`ON`), then re-audit 013/F21 against the corrected source of truth.
 
 ### `R5-M4` — `P2` — 016/F11 overstates feature-catalog traceability coverage as universal
 
-- Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/spec.md:162`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`; `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3862-3866`
+- Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/spec.md:162`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`; `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3862-3866`
 - Impact: The audit says the convention is “verified across files,” but the feature page explicitly says coverage is only about `191/257` non-test TS files and “not yet universal.” This over-certifies traceability compliance and hides remaining annotation gaps.
 - Fix recommendation: Downgrade 016/F11 to `PARTIAL`, or narrow the claim to `MODULE:` headers only.
 
@@ -538,7 +538,7 @@ This pass found several **audit inaccuracies and documentation drifts**, but no 
 
 ### `R5-M6` — `P2` — The monolithic module-boundary-map entry is stale on module count
 
-- Evidence: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3746-3750`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md:17-18,27-33`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md:21-24,179,337`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md` has 28 top-level `### \`...\`` entries
+- Evidence: `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3746-3750`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md:17-18,27-33`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md:21-24,179,337`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md` has 28 top-level `### \`...\`` entries
 - Impact: The main catalog says `26` lib subdirectories, while the leaf page and the actual module map say `28` including `feedback/` and `spec/`. This is architecture-document drift and should have blocked a `MATCH`.
 - Fix recommendation: Update the monolithic catalog to `28` and re-check any audit notes that cite the older count.
 

@@ -25,8 +25,8 @@ Scope note: `iteration-012.md`, `iteration-013.md`, `iteration-017.md`, and `ite
 | RR-017 | P1 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts:287-322` | `memory_match_triggers` fails open on scope-filter errors | 005 (`SEC-003`, High) | Active |
 | RR-018 | P2 | `.opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts:185-199` | Shared-memory handlers expose raw internal errors to callers | 005 (`SEC-004`, Medium) | Active |
 | RR-019 | P2 | `.opencode/skill/system-spec-kit/scripts/dist/core/file-writer.js:123-155` | Duplicate-content check performs unbounded read+hash work | 005 (`SEC-005`, Medium) | Active |
-| RR-020 | P2 | `feature_catalog/feature_catalog.md:119-134` | Master catalog omits snippet linkage for `memory_quick_search` | 006 (`TRC-006-001`, Medium) | Active |
-| RR-021 | P1 | `feature_catalog/feature_catalog.md:951-955` | `eval_run_ablation` master status/gating is outdated vs code (`k_sensitivity`) | 006 (`TRC-006-002`, High) | Active |
+| RR-020 | P2 | `feature_catalog/FEATURE_CATALOG.md:119-134` | Master catalog omits snippet linkage for `memory_quick_search` | 006 (`TRC-006-001`, Medium) | Active |
+| RR-021 | P1 | `feature_catalog/FEATURE_CATALOG.md:951-955` | `eval_run_ablation` master status/gating is outdated vs code (`k_sensitivity`) | 006 (`TRC-006-002`, High) | Active |
 
 **Unique active findings (deduped):**
 - P0: **0**

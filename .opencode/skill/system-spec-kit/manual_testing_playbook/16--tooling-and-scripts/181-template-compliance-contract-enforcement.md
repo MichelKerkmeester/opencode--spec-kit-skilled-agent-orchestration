@@ -32,7 +32,7 @@ Operators create a Level 2 spec folder via the @speckit agent and verify that al
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/](../../feature_catalog/16--tooling-and-scripts/)
 
 ---
@@ -41,5 +41,5 @@ Operators create a Level 2 spec folder via the @speckit agent and verify that al
 
 - Group: Tooling and Scripts
 - Playbook ID: 181
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/181-template-compliance-contract-enforcement.md`

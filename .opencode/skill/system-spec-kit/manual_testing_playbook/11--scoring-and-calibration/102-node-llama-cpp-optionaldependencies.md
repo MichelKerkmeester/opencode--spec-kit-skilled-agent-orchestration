@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `102` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)*
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `102` and confirm the ex
 
 - Group: Scoring and Calibration
 - Playbook ID: 102
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `11--scoring-and-calibration/102-node-llama-cpp-optionaldependencies.md`

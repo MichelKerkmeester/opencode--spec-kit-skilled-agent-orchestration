@@ -33,7 +33,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [x] T001 Open and verify playbook source: `../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 - [x] T002 Load review protocol from playbook §4
 - [x] T003 Confirm feature catalog links for all 5 governance scenarios: `../../feature_catalog/17--governance/`
 - [x] T004 Verify MCP runtime access for `memory_save`, `memory_search`, `shared_memory_status`, `shared_memory_enable`, `shared_space_upsert`, `shared_space_membership_set` — all handlers present in `mcp_server/handlers/`

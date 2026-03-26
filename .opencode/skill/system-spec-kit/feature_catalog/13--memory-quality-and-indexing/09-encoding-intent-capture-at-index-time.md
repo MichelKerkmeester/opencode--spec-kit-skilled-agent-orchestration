@@ -41,4 +41,4 @@ The classification is stored as read-only metadata on the `encoding_intent` colu
 
 - Group: Memory quality and indexing
 - Source feature title: Encoding-intent capture at index time
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

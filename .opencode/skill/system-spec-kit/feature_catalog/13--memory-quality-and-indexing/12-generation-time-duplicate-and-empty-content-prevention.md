@@ -144,4 +144,4 @@ Both gates run inside `writeFilesAtomically()` before the atomic write operation
 
 - Group: Memory quality and indexing
 - Source feature title: Generation-time duplicate and empty content prevention
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

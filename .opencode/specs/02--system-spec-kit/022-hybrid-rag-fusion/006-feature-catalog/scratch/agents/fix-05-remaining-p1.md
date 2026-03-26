@@ -2,12 +2,12 @@
 
 I’m verifying the current docs against the live implementation first, then I’ll patch only the stale statements and broken anchors.
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:260 (175 lines read)
 
-● Read feature_catalog_in_simple_terms.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+● Read FEATURE_CATALOG_IN_SIMPLE_TERMS.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   └ L1:260 (225 lines read)
 
 ● Read 07-namespace-management-crud-tools.md
@@ -47,17 +47,17 @@ I’ve confirmed the broken TOCs. Now I’m checking the live shared-memory, cor
   └ L1:260 (260 lines read)
 
 ● Search (grep)
-  │ "^##\s+[0-9]+\.\s+" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^##\s+[0-9]+\.\s+" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 21 lines found
 
 ● Search (grep)
   │ "^##\s+[0-9]+\.\s+"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
   └ 21 lines found
 
 ● Search (grep)
   │ "\[[^\]]+\]\(([^)#]+)\)"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
   └ No matches found
 
 ● Search (grep)
@@ -137,7 +137,7 @@ I’ve got the key mismatch on shared-memory actors. Next I’m narrowing the re
 
 ● Search (grep)
   │ "\]\([^)]*--[^)]*\.md\)"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
   └ No matches found
 
 I’ve pinned down the last behavior mismatch: `/memory:continue` exposes `memory_stats`, but the live recovery chain is `memory_context` → `CONTINUE_SESSION.md` → anchored `memory_search` → `memory_list`. I’m patching the docs to say that plainly.
@@ -172,14 +172,14 @@ I’ve pinned down the last behavior mismatch: `/memory:continue` exposes `memor
 
 ● Search (grep)
   │ "\[[^\]]+\]\([^)]*\.md\)"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)
   └ No matches found
 
 I’ve got the exact text changes lined up now. I’m doing a single surgical patch across the five requested files, then I’ll run focused checks and show the diffs file by file.
 
 ● Edit
-  │ Edit .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  │ Edit .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+  │ Edit .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
+  │ Edit .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   │ Edit .opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-t
   │ ools.md
   │ Edit
@@ -212,7 +212,7 @@ The patch is in. I’m running a couple of narrow checks now: TOC-to-heading val
 
 Validation passed. I’m surfacing the diffs for the five requested files so you can review each remediation directly.
 
-● Show diff feature_catalog_in_simple_terms.md
+● Show diff FEATURE_CATALOG_IN_SIMPLE_TERMS.md
   │
   │ 11
   │ 12     ## TABLE OF CONTENTS
@@ -262,9 +262,9 @@ Validation passed. I’m surfacing the diffs for the five requested files so you
   │ 35
   │ 36     ---
   │
-  └ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md
+  └ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md
 
-● Show diff feature_catalog.md
+● Show diff FEATURE_CATALOG.md
   │
   │   11
   │   12     ## TABLE OF CONTENTS
@@ -498,7 +498,7 @@ Validation passed. I’m surfacing the diffs for the five requested files so you
   │ 4608
   │ 4609     #### Source Files
   │
-  └ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+  └ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
 
 ● Show diff 07-namespace-management-crud-tools.md
   │
@@ -631,8 +631,8 @@ Validation passed. I’m surfacing the diffs for the five requested files so you
 
 Done.
 
-- `feature_catalog.md`: fixed all 21 TOC anchors from `#N--slug` to `#N-slug`.
-- `feature_catalog_in_simple_terms.md`: applied the same 21 TOC fixes; checked category-doc links and found no broken markdown links to patch.
+- `FEATURE_CATALOG.md`: fixed all 21 TOC anchors from `#N--slug` to `#N-slug`.
+- `FEATURE_CATALOG_IN_SIMPLE_TERMS.md`: applied the same 21 TOC fixes; checked category-doc links and found no broken markdown links to patch.
 - `02--mutation/07-namespace-management-crud-tools.md`: corrected actor wording to match code. The server-configured shared-memory admin is authoritative; `actorUserId`/`actorAgentId` are optional corroboration hints.
 - `02--mutation/09-correction-tracking-with-undo.md`: clarified the corrections module exists and is tested, but is not wired to any MCP tool/handler path.
 - `01--retrieval/11-session-recovery-memory-continue.md`: aligned resume-mode wording with live `mcp_server` behavior and noted `memory_stats` is exposed, not part of the primary recovery chain.

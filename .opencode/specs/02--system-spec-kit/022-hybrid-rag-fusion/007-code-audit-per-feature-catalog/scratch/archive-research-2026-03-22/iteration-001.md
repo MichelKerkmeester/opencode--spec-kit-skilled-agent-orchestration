@@ -113,7 +113,7 @@ Source files with NO catalog reference: estimated ~25-35 (primarily api/, format
 - mcp_server/tool-schemas.ts:579-620 (complete tool registry)
 - mcp_server/ directory listing (full source tree, excluding dist/ and tests/)
 - feature_catalog/ directory listing (all 19 category subdirectories)
-- feature_catalog/feature_catalog.md:1-120 (table of contents and structure)
+- feature_catalog/FEATURE_CATALOG.md:1-120 (table of contents and structure)
 - mcp_server/tools/index.ts (dispatcher architecture)
 
 ## Assessment

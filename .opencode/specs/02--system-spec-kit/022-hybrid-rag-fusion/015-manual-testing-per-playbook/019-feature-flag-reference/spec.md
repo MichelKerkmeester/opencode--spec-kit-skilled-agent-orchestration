@@ -127,8 +127,8 @@ No P1 items are defined for this phase; all eight feature-flag-reference scenari
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`](../../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/19--feature-flag-reference/`](../../feature_catalog/19--feature-flag-reference/) | Supplies feature context for each flag-reference scenario | Keep every test row linked to its mapped feature-flag-reference file |
 | Dependency | MCP runtime and `dist` build of `capability-flags.js` | Required to execute `memory_search`, `memory_context`, and 125 node-based snapshot scenarios | Verify the dist build is current before executing 125 and confirm `memory_search` is available |
 | Risk | 125 requires a freshly compiled dist build; stale builds produce incorrect snapshot results | High | Run `npm run build` inside the mcp_server directory before executing 125 and inspect `capability-flags.ts` if snapshots diverge from expectations |

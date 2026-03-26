@@ -45,8 +45,8 @@ I found the feature-catalog category stub and the core server/security files. Ne
 ● List directory .opencode/specs
   └ 7 files found
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:120 (119 lines read)
 
 ● Read 01-category-stub.md
@@ -393,7 +393,7 @@ I’ve got enough structure to start validating the claimed mismatches directly.
 ● Search (grep)
   │ "graph-calibration\.ts|temporal-contiguity\.ts|consumption-logger\.ts|channel-attribution\.ts|fu
   │ sion-lab\.ts|eval-ceiling\.ts|fusion-lab"
-  │ (.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md)
+  │ (.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
   └ No matches found
 
 ● Search (grep)
@@ -531,7 +531,7 @@ Make `tool-schemas.ts` express true one-of semantics, or derive the published JS
 **Evidence**
 
 - `015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md:30-31` points its “Catalog Phase” link at `../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`.
-- `feature_catalog/feature_catalog.md:42-48` claims audit phase `022-implement-and-remove-deprecated-features` is already covered by `16--tooling-and-scripts/04` and `17--governance/02`.
+- `feature_catalog/FEATURE_CATALOG.md:42-48` claims audit phase `022-implement-and-remove-deprecated-features` is already covered by `16--tooling-and-scripts/04` and `17--governance/02`.
 - `feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md:8-10` says the category is still a “documentation stub only” with no standalone entries.
 
 **Impact**
@@ -548,7 +548,7 @@ Pick one canonical 022 source of truth. Either create the missing audit/spec tar
 - `context-server.ts` ↔ `handlers/shared-memory.ts`
 - `scope-governance.ts` ↔ `lib/search/pipeline/stage1-candidate-gen.ts`
 - `shared/utils/path-security.ts` ↔ `handlers/memory-save.ts` ↔ `handlers/memory-ingest.ts`
-- `feature_catalog/feature_catalog.md` ↔ `feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` ↔ `015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md`
+- `feature_catalog/FEATURE_CATALOG.md` ↔ `feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` ↔ `015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md`
 
 ## 4. Dimension-specific notes
 

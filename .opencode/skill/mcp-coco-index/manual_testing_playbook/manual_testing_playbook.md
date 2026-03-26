@@ -12,7 +12,7 @@ This document combines the full manual-validation contract for the `mcp-coco-ind
 This playbook package adopts the Feature Catalog split-document pattern for the `mcp-coco-index` skill. The root document acts as the directory, review surface, and orchestration guide, while per-feature execution detail lives in the numbered category folders at the playbook root.
 
 Canonical package artifacts:
-- `manual_testing_playbook.md`
+- `MANUAL_TESTING_PLAYBOOK.md`
 - `01--core-cli-commands/`
 - `02--mcp-search-tool/`
 - `03--configuration/`
@@ -98,7 +98,7 @@ Coverage note (2026-03-18): scenarios validate the upstream doc overhaul and ski
 
 ### Inputs Required
 
-1. `manual_testing_playbook.md`
+1. `MANUAL_TESTING_PLAYBOOK.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence (logs, tool outputs, artifacts)
 4. Feature-to-scenario coverage map

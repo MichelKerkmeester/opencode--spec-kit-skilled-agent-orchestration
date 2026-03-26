@@ -6,7 +6,7 @@ Reviewed the `006-feature-catalog` phase spec against the live feature catalog i
 ## Findings
 ### P1-004: Spec claims 222 snippet files but live catalog has 219
 - Dimension: D4
-- Evidence: [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md:47] claims "222 feature catalog snippet files". Live `find` of category-scoped .md files returns 219 (221 total including 2 top-level files: feature_catalog.md and README.md).
+- Evidence: [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md:47] claims "222 feature catalog snippet files". Live `find` of category-scoped .md files returns 219 (221 total including 2 top-level files: FEATURE_CATALOG.md and README.md).
 - Impact: The spec overstates the catalog by 3 files. This makes the feature coverage math unreliable for release-readiness claims. The root 022 packet also references "222 feature files" at multiple locations.
 - Final severity: P1
 

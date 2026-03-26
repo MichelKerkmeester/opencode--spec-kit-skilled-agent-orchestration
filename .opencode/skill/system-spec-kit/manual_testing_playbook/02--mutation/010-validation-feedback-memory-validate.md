@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-010` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [02--mutation/05-validation-feedback-memoryvalidate.md](../../feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-010` and confirm the
 
 - Group: Mutation
 - Playbook ID: EX-010
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `02--mutation/010-validation-feedback-memory-validate.md`

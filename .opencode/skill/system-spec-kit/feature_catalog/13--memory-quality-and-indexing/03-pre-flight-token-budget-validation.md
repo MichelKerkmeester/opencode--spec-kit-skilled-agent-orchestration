@@ -43,4 +43,4 @@ This validation runs in `memory_save` pre-flight before any embedding generation
 
 - Group: Memory quality and indexing
 - Source feature title: Pre-flight token budget validation
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

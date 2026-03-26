@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `EX-031` and confirm the
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [19--feature-flag-reference/04-4-memory-and-storage.md](../../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `EX-031` and confirm the
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-031
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `19--feature-flag-reference/031-4-memory-and-storage.md`

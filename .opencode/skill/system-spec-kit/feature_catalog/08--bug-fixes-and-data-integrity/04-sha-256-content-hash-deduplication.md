@@ -66,4 +66,4 @@ An O(1) SHA-256 hash lookup in the `memory_index` table now catches exact duplic
 
 - Group: Bug fixes and data integrity
 - Source feature title: SHA-256 content-hash deduplication
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

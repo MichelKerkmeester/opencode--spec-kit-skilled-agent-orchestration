@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `129` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `129` and confirm the ex
 
 - Group: Pipeline Architecture
 - Playbook ID: 129
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `14--pipeline-architecture/129-lineage-state-active-projection-and-asof-resolution.md`

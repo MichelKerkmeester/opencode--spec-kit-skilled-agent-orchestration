@@ -40,7 +40,7 @@ Operators run the alignment script and confirm zero violations. The script scans
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 
 ---
@@ -49,5 +49,5 @@ Operators run the alignment script and confirm zero violations. The script scans
 
 - Group: Tooling and Scripts
 - Playbook ID: 150
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/150-source-dist-alignment-validation.md`

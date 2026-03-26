@@ -145,4 +145,4 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 
 - Group: Analysis
 - Source feature title: Causal graph statistics (memory_causal_stats)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

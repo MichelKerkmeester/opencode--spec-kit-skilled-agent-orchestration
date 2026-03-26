@@ -61,5 +61,5 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 
 - Group: Memory quality and indexing
 - Source feature title: Verify-fix-verify memory quality loop
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 - Source list updated 2026-03-25 per deep review

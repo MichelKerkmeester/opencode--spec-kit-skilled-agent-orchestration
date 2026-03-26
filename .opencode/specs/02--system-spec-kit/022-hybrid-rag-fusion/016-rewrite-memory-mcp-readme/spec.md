@@ -57,7 +57,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 |----------|-------|
 | **Full rewrite** | `.opencode/skill/system-spec-kit/mcp_server/README.md` |
 | **Section structure** | Overview, Quick Start, Architecture, MCP Tools (all 33), Search System, Configuration, Usage Examples, Troubleshooting, FAQ, Related Resources |
-| **Content grounding** | Feature catalog (feature_catalog.md) as authoritative source |
+| **Content grounding** | Feature catalog (FEATURE_CATALOG.md) as authoritative source |
 | **Quality gates** | DQI >= 75, no banned HVR words, template alignment with the README template |
 
 ### Out of Scope
@@ -143,7 +143,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 SPEC: 016-rewrite-memory-mcp-readme
 Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
 Target: Complete rewrite of MCP README covering all 33 tools
-Source: feature_catalog.md + tool-schemas.ts
+Source: FEATURE_CATALOG.md + tool-schemas.ts
 -->
 
 ---

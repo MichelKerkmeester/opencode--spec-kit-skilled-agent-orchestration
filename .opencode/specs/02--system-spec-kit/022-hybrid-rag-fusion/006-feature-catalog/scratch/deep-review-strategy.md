@@ -35,7 +35,7 @@ Feature catalog alignment review: `.opencode/skill/system-spec-kit/feature_catal
 Key context:
 - Catalog started at 180 files (2026-03-08 audit), grew to 189 (2026-03-16), then 194 (2026-03-21), now 224 (2026-03-23)
 - 022-hybrid-rag-fusion has 19 phases covering: epic coordination, indexing normalization, constitutional learn refactor, UX hooks automation, architecture audit, feature catalog audit, code audit, hydra DB features, session capturing, template compliance, skill/command/agent alignment, manual testing, documentation rewrites
-- Feature catalog master index (feature_catalog.md) is 4655 lines
+- Feature catalog master index (FEATURE_CATALOG.md) is 4655 lines
 
 ---
 
@@ -158,8 +158,8 @@ Category assignment plan for parallel agents:
 
 | File/Category | Dimensions Reviewed | Last Iteration | Findings | Status |
 |---------------|-------------------|----------------|----------|--------|
-| feature_catalog.md (master index) | - | - | - | pending |
-| feature_catalog_in_simple_terms.md | - | - | - | pending |
+| FEATURE_CATALOG.md (master index) | - | - | - | pending |
+| FEATURE_CATALOG_IN_SIMPLE_TERMS.md | - | - | - | pending |
 | 01--retrieval (11 files) | - | - | - | pending |
 | 02--mutation (10 files) | - | - | - | pending |
 | 03--discovery (3 files) | - | - | - | pending |

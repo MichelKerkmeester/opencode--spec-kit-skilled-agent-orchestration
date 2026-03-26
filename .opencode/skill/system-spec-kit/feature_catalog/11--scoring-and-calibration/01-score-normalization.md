@@ -74,4 +74,4 @@ Normalization is batch-relative (the same memory can score differently across di
 
 - Group: Scoring and calibration
 - Source feature title: Score normalization
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

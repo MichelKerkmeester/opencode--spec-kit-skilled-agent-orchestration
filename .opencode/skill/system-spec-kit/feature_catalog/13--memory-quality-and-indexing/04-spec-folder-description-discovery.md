@@ -98,4 +98,4 @@ continues to derive a folder-name fallback label from the path when needed.
 
 - Group: Memory quality and indexing
 - Source feature title: Spec folder description discovery
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

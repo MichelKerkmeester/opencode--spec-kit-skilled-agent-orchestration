@@ -172,4 +172,4 @@ The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_S
 
 - Group: Retrieval
 - Source feature title: Hybrid search pipeline
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

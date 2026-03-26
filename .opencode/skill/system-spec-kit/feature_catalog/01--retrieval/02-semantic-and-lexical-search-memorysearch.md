@@ -259,4 +259,4 @@ Recent vector-query hardening closed three correctness gaps in the retrieval pat
 
 - Group: Retrieval
 - Source feature title: Semantic and lexical search (memory_search)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

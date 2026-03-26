@@ -223,4 +223,4 @@ Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual
 
 - Group: Pipeline architecture
 - Source feature title: 4-stage pipeline refactor
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

@@ -41,4 +41,4 @@ The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.
 
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Activation window persistence
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

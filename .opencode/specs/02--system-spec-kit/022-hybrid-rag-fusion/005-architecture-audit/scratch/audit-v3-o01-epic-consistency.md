@@ -297,10 +297,10 @@
 - **Severity**: LOW
 - **Category**: alignment
 - **Location**: `022-hybrid-rag-fusion/spec.md` line 192
-- **Description**: The epic claims the feature catalog is "4,262 lines". The actual `feature_catalog.md` on disk is 4,123 lines.
+- **Description**: The epic claims the feature catalog is "4,262 lines". The actual `FEATURE_CATALOG.md` on disk is 4,123 lines.
 - **Evidence**:
   - Epic: "4,262 lines, 189 feature files"
-  - `wc -l feature_catalog.md` -> 4,123
+  - `wc -l FEATURE_CATALOG.md` -> 4,123
 - **Impact**: Minor cosmetic inaccuracy. Line counts change frequently and are not critical for navigation.
 - **Recommended Fix**: Update to the actual line count, or remove the specific line count claim and reference the file directly.
 

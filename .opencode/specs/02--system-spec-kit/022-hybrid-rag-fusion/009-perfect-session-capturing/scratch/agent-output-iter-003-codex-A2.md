@@ -127,7 +127,7 @@ exec
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:58:- Reopening the completed 018/019 runtime code unless retained proof shows a real gap.
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:64:| `.opencode/specs/.../020-live-proof-and-parity-hardening/*` | Modify | Track the remaining live-proof work |
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:65:| `.opencode/specs/.../research/live-cli-proof-2026-03-17.json` | Modify/Create | Refresh retained proof artifacts when rerun-backed |
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:66:| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Keep the proof claim boundary honest |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:66:| `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Modify | Keep the proof claim boundary honest |
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:78:| REQ-001 | Retained live artifacts must exist for the current contract | One retained artifact exists per supported CLI and supported save mode |
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:79:| REQ-002 | Universal parity claims must stay gated on retained evidence | Docs do not claim flawless multi-CLI parity without refreshed artifacts |
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:85:| REQ-003 | Automated and live proof surfaces must stay aligned | The playbook and retained artifacts target the same contract that automated tests prove |
@@ -301,7 +301,7 @@ contextType: "general"
 ## Metadata
 
 exec
-/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && rg -n \"(M-007|manual testing playbook|direct|stateless|--stdin|--json|mode|claude|codex|copilot|gemini|opencode|live-cli-proof|2026-03-17|retained artifact)\" .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/**/*.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/**/*.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && rg -n \"(M-007|manual testing playbook|direct|stateless|--stdin|--json|mode|claude|codex|copilot|gemini|opencode|live-cli-proof|2026-03-17|retained artifact)\" .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/**/*.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/**/*.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/README.md:28:    └── stateless-research/             52 individual agent output files
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/README.md:37:| Wave 1: Analysis | X01–X05 | 5 | GPT-5.4 | cli-copilot (high reasoning) |
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/README.md:38:| Wave 2: Audits | C01–C20 | 20 | GPT-5.4 | cli-copilot (high reasoning) |
@@ -323,7 +323,7 @@ exec
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/agent-outputs/stateless-research/R06-quality-scoring-gap.md:103:**How many lines does stateless output produce?**
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/agent-outputs/stateless-research/R06-quality-scoring-gap.md:105:- Even sparse stateless runs still render **well over 100 lines**; in practice they are usually **several hundred lines**.
 exec
-/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && rg -n \"M-007|supported CLI|save mode|direct|stateless|--stdin|--json|retained|artifact|proof|matrix|claude|codex|copilot|gemini|opencode\" .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && rg -n \"M-007|supported CLI|save mode|direct|stateless|--stdin|--json|retained|artifact|proof|matrix|claude|codex|copilot|gemini|opencode\" .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 3:description: "Operator-facing reference combining the manual testing directory, integrated review/orchestration guidance, execution expectations, and per-feature validation files for the Spec Kit Memory MCP server."
 8:This document combines the full manual-validation contract for the Spec Kit Memory MCP server into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide: it explains how realistic user-driven tests should be run, how evidence should be captured, how results should be graded, and where each per-feature validation file lives. The per-feature files provide the deeper execution contract for each scenario, including the user request, orchestrator prompt, execution process, source anchors, and validation criteria.
 12:This playbook package adopts the Feature Catalog split-document pattern for canonical Spec Kit operator validation. The root document acts as the directory, review surface, and orchestration guide, while per-feature execution detail now lives in the numbered category folders at the playbook root.
@@ -347,7 +347,7 @@ exec
 codex
 I found strong anchors in the playbook around `M-007` that define the exact required mode set and proof boundary. I’m now reading the dedicated `M-007` feature file to tie the matrix requirements to concrete retained artifacts that actually exist on disk.
 exec
-/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && sed -n '2968,3025p' .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && sed -n '2968,3025p' .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
 > **Feature File:** [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md)
 
 ### M-006 | Stateless Enrichment and Alignment Guardrails
@@ -494,7 +494,7 @@ exec
     19	## 1. METADATA
     20	
 exec
-/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-runtime-contract-and-indexability/spec.md | sed -n '1,180p' && echo '-----' && nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-source-capabilities-and-structured-preference/spec.md | sed -n '1,180p' && echo '-----' && nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md | sed -n '2984,3010p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-runtime-contract-and-indexability/spec.md | sed -n '1,180p' && echo '-----' && nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-source-capabilities-and-structured-preference/spec.md | sed -n '1,180p' && echo '-----' && nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md | sed -n '2984,3010p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
      1	---
      2	title: "Feature Specification: Runtime Contract And Indexability [template:level_1/spec.md]"
      3	description: "Implement explicit validation-rule metadata and write/index dispositions for the session-capturing pipeline."
@@ -758,7 +758,7 @@ exec
     50	- [ ] T004 Update universal parity claims only if the retained evidence is current.
     51	<!-- /ANCHOR:phase-3 -->
 exec
-/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md | sed -n '2672,2688p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md | sed -n '2672,2688p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
   2672	### NEW-139 | Session capturing pipeline quality
   2673	
   2674	#### Description
@@ -820,7 +820,7 @@ Sources:
 - [019 spec (created 2026-03-18)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-source-capabilities-and-structured-preference/spec.md:26)  
 - [020 spec (retained artifacts required per CLI+mode)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:78)  
 - [020 plan/tasks (capture still pending)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/tasks.md:41)  
-- [M-007 boundary and required modes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2989)  
+- [M-007 boundary and required modes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:2989)  
 - [M-007 feature file: current artifact is pre-2026-03-18 baseline, needs refresh for future live claims](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/007-session-capturing-pipeline-quality.md:58)  
 - [Example pre-contract mixed manual outcomes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/memory/15-03-26_12-22__pass-automated-validation-is-strong-all-listed.md:692)  
 - [CLI-session-linked memory file found but tied to spec 025, not 010 matrix](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-multi-cli-parity/memory/18-03-26_13-49__claude-code-p1-result-captured-tool-used-mcp.md:57)
@@ -869,7 +869,7 @@ Sources:
 - [019 spec (created 2026-03-18)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-source-capabilities-and-structured-preference/spec.md:26)  
 - [020 spec (retained artifacts required per CLI+mode)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/spec.md:78)  
 - [020 plan/tasks (capture still pending)](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/020-live-proof-and-parity-hardening/tasks.md:41)  
-- [M-007 boundary and required modes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2989)  
+- [M-007 boundary and required modes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:2989)  
 - [M-007 feature file: current artifact is pre-2026-03-18 baseline, needs refresh for future live claims](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/007-session-capturing-pipeline-quality.md:58)  
 - [Example pre-contract mixed manual outcomes](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/memory/15-03-26_12-22__pass-automated-validation-is-strong-all-listed.md:692)  
 - [CLI-session-linked memory file found but tied to spec 025, not 010 matrix](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-multi-cli-parity/memory/18-03-26_13-49__claude-code-p1-result-captured-tool-used-mcp.md:57)

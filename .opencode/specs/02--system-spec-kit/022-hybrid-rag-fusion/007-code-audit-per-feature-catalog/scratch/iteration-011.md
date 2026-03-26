@@ -4,7 +4,7 @@ I’m gathering the audit surface first: the two child specs, the UX/flag source
 
 ● Search (grep)
   │ "018-ux-hooks|020-feature-flag-reference|F11|F21|F23|F15"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 1 line found
 
 ● Search (glob)
@@ -34,8 +34,8 @@ I’m gathering the audit surface first: the two child specs, the UX/flag source
   │ -feature-flag-reference/spec.md
   └ 205 lines read
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:140 (140 lines read)
 
 ● Read memory-context.ts
@@ -235,7 +235,7 @@ I’ve got a clean contradiction now: `session-state.ts` still advertises “def
 
 ● Search (grep)
   │ "SPECKIT_PROGRESSIVE_DISCLOSURE_V1|SPECKIT_SESSION_RETRIEVAL_STATE_V1|SPECKIT_ROLLOUT_PERCENT"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 48 lines found
 
 ● Search (grep)
@@ -340,7 +340,7 @@ I found another potential traceability/correctness gap: the session-state surfac
 
 ● Search (grep)
   │ "open questions|openQuestions"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 11 lines found
 
 ● Search (grep)
@@ -479,7 +479,7 @@ Route progressive-disclosure gating through `search-flags.ts` only, or make the 
 
 **Evidence**
 
-- `feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:102,114` and `feature_catalog/feature_catalog.md:4470` describe `SPECKIT_ROLLOUT_PERCENT` as a global gate whose calls without identity fail closed.
+- `feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:102,114` and `feature_catalog/FEATURE_CATALOG.md:4470` describe `SPECKIT_ROLLOUT_PERCENT` as a global gate whose calls without identity fail closed.
 - `mcp_server/lib/cognitive/rollout-policy.ts:64-70` implements that fail-closed rule.
 - `mcp_server/lib/session/session-manager.ts:315-319` mints `crypto.randomUUID()` when the caller omits `sessionId`.
 - `mcp_server/handlers/memory-context.ts:999-1003` gates `SPECKIT_PRESSURE_POLICY` and `SPECKIT_AUTO_RESUME` with `isIdentityInRollout(effectiveSessionId)`.
@@ -496,7 +496,7 @@ Use caller-supplied/trusted identity for rollout gating, or explicitly document 
 
 **Evidence**
 
-- `feature_catalog/18--ux-hooks/17-retrieval-session-state.md:18-29`, `feature_catalog/feature_catalog.md:4297`, and `feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:123` all describe `openQuestions` as tracked state.
+- `feature_catalog/18--ux-hooks/17-retrieval-session-state.md:18-29`, `feature_catalog/FEATURE_CATALOG.md:4297`, and `feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:123` all describe `openQuestions` as tracked state.
 - `mcp_server/lib/search/session-state.ts:144-147` implements `addQuestion()`.
 - `mcp_server/handlers/memory-search.ts:314-321` exposes `openQuestions` in the response payload.
 - But the live handler only updates goal/anchors/seen IDs at `mcp_server/handlers/memory-search.ts:675-689,925-931`.

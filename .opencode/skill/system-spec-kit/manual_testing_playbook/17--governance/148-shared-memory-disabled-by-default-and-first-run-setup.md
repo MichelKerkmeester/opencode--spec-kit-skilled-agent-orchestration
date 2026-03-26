@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `148` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `148` and confirm the ex
 
 - Group: Governance
 - Playbook ID: 148
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md`

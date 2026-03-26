@@ -55,4 +55,4 @@ Four scoring-layer bugs were fixed:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Scoring and ranking corrections
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

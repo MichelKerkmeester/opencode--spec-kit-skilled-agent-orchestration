@@ -70,8 +70,8 @@
 | P1-05 | SPECKIT_CONSUMPTION_LOG: doc says inert, code is active default-ON | 19-flags | `06-6-debug-and-telemetry.md` | `consumption-logger.ts:10,82-85` | Remove "inert" claim |
 | P1-06 | Incomplete flag inventory: missing SPECKIT_TEMPORAL_CONTIGUITY, SPECKIT_HYDE_ACTIVE | 19-flags | `01-1-search-pipeline-features-speckit.md` | `search-flags.ts:229-234`, `hyde.ts:22-25` | Add missing flags |
 | P1-07 | Graph concept routing understated | 19-flags | `01-1-search-pipeline-features-speckit.md:75` | `search-flags.ts:313-319`, `stage1-candidate-gen.ts:317-320` expose `graphActivated` | Correct claim |
-| P1-08 | Broken internal link | master | `feature_catalog.md:3925` | `#comprehensive-remediation-sprint-8` target doesn't exist | Fix or remove link |
-| P1-09 | Repeated drifted rows in section 21 | master | `feature_catalog.md:4538-4591` | MCP_MAX_MEMORY_TOKENS, EMBEDDING_DIM, RERANKER_LOCAL rows drift from code | Update rows |
+| P1-08 | Broken internal link | master | `FEATURE_CATALOG.md:3925` | `#comprehensive-remediation-sprint-8` target doesn't exist | Fix or remove link |
+| P1-09 | Repeated drifted rows in section 21 | master | `FEATURE_CATALOG.md:4538-4591` | MCP_MAX_MEMORY_TOKENS, EMBEDDING_DIM, RERANKER_LOCAL rows drift from code | Update rows |
 | P1-10 | Stale RSF references: claim "fully removed" but stale refs remain | 12-query-intel | `02-relative-score-fusion-in-shadow-mode.md` | Tests and Stage 2 comments still reference RSF | Soften claim or clean up refs |
 | P1-11 | Typed traversal spec-ahead-of-implementation | 10-graph-signals | `16-typed-traversal.md` | `sparse-first-graph.vitest.ts` is entirely skipped | Mark as "planned" or implement |
 | P1-12 | Stale AI-intent comment count | 16-tooling | `05-code-standards-alignment.md` | No AI-WHY/AI-TRACE/AI-GUARD matches in current mcp_server | Update or remove "26 conversions" claim |
@@ -85,15 +85,15 @@
 | P1-20 | Quality proxy correlation claim unverifiable | 09-eval | `05-quality-proxy-formula.md` | No source evidence for manual ground-truth correlation testing | Remove or substantiate claim |
 | P1-21 | Memory quality source files massively over-broad | 13-memory-quality | `06-reconsolidation-on-save.md` + others | Source Files sections include unrelated modules | Trim to actual surface |
 | P1-22 | Math.max/min elimination overstated | 08-bugfixes | `08-mathmax-min-stack-overflow-elimination.md` | Residual spread sites remain in k-value-analysis.ts, graph-lifecycle.ts | Correct "elimination" claim |
-| P1-23 | Master index missing 5 files | master | `feature_catalog.md` | Only 217 of 222 category docs linked. Missing: `01/10-fast-delegated-search`, `16/18-template-compliance`, `19/08-audit-phase-020`, `20/01-category-stub`, `21/01-category-stub` | Add missing entries |
-| P1-24 | Master index TOC anchors broken | master | `feature_catalog.md` | TOC uses `#N--slug` but headings resolve to `#N-slug` (single dash). All 21 entries affected | Fix anchor format |
+| P1-23 | Master index missing 5 files | master | `FEATURE_CATALOG.md` | Only 217 of 222 category docs linked. Missing: `01/10-fast-delegated-search`, `16/18-template-compliance`, `19/08-audit-phase-020`, `20/01-category-stub`, `21/01-category-stub` | Add missing entries |
+| P1-24 | Master index TOC anchors broken | master | `FEATURE_CATALOG.md` | TOC uses `#N--slug` but headings resolve to `#N-slug` (single dash). All 21 entries affected | Fix anchor format |
 
 ### P2 — Advisories (25 items)
 
 Common P2 patterns:
 - **Over-broad source file lists** (13 instances): Catalog entries list many unrelated modules in their Source Files/Tests sections. Most common in categories 13, 15.
 - **Minor parameter mismatches** (5 instances): e.g., `DEFAULT_MAX_TYPED_DEGREE` vs documented `MAX_TYPED_DEGREE`; `excludePatterns` using substring matching not regex.
-- **Weak cross-reference links** (3 instances): `feature_catalog_in_simple_terms.md` audit-phase notes are prose-only, not direct links.
+- **Weak cross-reference links** (3 instances): `FEATURE_CATALOG_IN_SIMPLE_TERMS.md` audit-phase notes are prose-only, not direct links.
 - **Pagination claim** (1 instance): Checkpoint listing describes pagination but only `limit` is exposed.
 - **Template compliance scope** (1 instance): `check-source-dist-alignment.ts` scans broader than documented.
 - **Stale helper count** (1 instance): Feature flag sunset audit helper count.
@@ -107,7 +107,7 @@ Common P2 patterns:
 
 ### WS-1: Fix False Deprecation Claim (P0) — Immediate
 
-Fix `16--tooling-and-scripts/17-json-primary-deprecation-posture.md` to reflect that positional JSON file input remains functional. Update both the individual file and the corresponding section in `feature_catalog.md`.
+Fix `16--tooling-and-scripts/17-json-primary-deprecation-posture.md` to reflect that positional JSON file input remains functional. Update both the individual file and the corresponding section in `FEATURE_CATALOG.md`.
 
 ### WS-2: Update Stale Numeric Claims and Flag Inventories (P1) — High Priority
 

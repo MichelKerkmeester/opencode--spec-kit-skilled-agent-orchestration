@@ -142,4 +142,4 @@ The handler also supports re-correction runs. It accepts both "preflight" and al
 
 - Group: Analysis
 - Source feature title: Post-task learning measurement (task_postflight)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

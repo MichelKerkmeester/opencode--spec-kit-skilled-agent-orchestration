@@ -48,5 +48,5 @@ The standalone RSF implementation and dedicated RSF test files have been deleted
 
 - Group: Query intelligence
 - Source feature title: Relative score fusion in shadow mode
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md
 - Retirement note updated 2026-03-25 per deep review

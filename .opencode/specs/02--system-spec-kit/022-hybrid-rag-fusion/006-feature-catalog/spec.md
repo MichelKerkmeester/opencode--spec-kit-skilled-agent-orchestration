@@ -92,7 +92,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 - Actual remediation edits to snippet files (separate follow-up phase)
 - Restructuring the 21-category taxonomy
 - Changes to MCP server source code
-- Updating the monolithic `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (done after snippet remediation)
+- Updating the monolithic `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` (done after snippet remediation)
 
 ### Files to Change
 
@@ -327,7 +327,7 @@ All feature catalog references in code MUST use the feature name only, never fol
 - All TypeScript source files under `mcp_server/` (handlers, lib, shared, scripts)
 - All inline comments referencing spec folders, sprints, phases or ticket numbers
 - Adding feature catalog name references to key functions, modules and exports
-- The feature catalog at `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and its individual files as the source of truth for feature names
+- The feature catalog at `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` and its individual files as the source of truth for feature names
 
 ### Out of Scope
 - Test files (`.vitest.ts`) are excluded from comment modifications

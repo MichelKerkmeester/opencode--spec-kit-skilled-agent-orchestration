@@ -124,4 +124,4 @@ The shared cross-encoder path now keys its reranker cache by provider, document 
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Local GGUF reranker via node-llama-cpp
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

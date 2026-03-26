@@ -88,7 +88,7 @@ Twenty audit agents reviewed the entire system-spec-kit codebase and specificati
 
 ### CR-06: 14 snippet files not referenced in feature catalog monolith index
 - **Source**: O04-001
-- **Location**: `feature_catalog/feature_catalog.md`
+- **Location**: `feature_catalog/FEATURE_CATALOG.md`
 - **Description**: 14 individual snippet files exist on disk but have no corresponding entry or file reference in the monolith index. The index has 184 file references but 194 snippet files exist.
 - **Impact**: Developers navigating the monolith index will miss 14 features. Automated tooling that parses the index will undercount.
 - **Recommended Fix**: Add proper references for all 14 orphaned snippets in the monolith index.

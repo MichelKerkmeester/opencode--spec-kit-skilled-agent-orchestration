@@ -3,7 +3,7 @@
 I’m mapping the catalog structure first, then I’ll cross-check sampled features and tool names against the MCP server so the final report is evidence-backed.
 
 ● Search (grep)
-  │ "^#|^##|^###" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^#|^##|^###" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● Read review_core.md
@@ -25,7 +25,7 @@ I’ve got the review rubric loaded. Next I’m indexing the catalog categories 
   └ 5 files found
 
 ● Search (grep)
-  │ "^#{1,6} .*" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
+  │ "^#{1,6} .*" (.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)
   └ 5 lines found
 
 ● Search (grep)
@@ -67,8 +67,8 @@ I’ve confirmed the MCP server registers tools through `tool-schemas.ts`. Now I
   │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')…
   └ 23 lines...
 
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+● Read FEATURE_CATALOG.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md
   └ L1:260 (190 lines read)
 
 ● Find category headings in catalog (shell)
@@ -76,7 +76,7 @@ I’ve confirmed the MCP server registers tools through `tool-schemas.ts`. Now I
   │ from pathlib import Path
   │ import re
   │ master = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md')…
+  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md')…
   └ 7 lines...
 
 ● Summarize category files (shell)
@@ -96,7 +96,7 @@ I’ve confirmed the MCP server registers tools through `tool-schemas.ts`. Now I
   │ from pathlib import Path
   │ import re
   │ master = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md')…
+  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md')…
   └ 28 lines...
 
 ● List feature headings from master (shell)
@@ -104,7 +104,7 @@ I’ve confirmed the MCP server registers tools through `tool-schemas.ts`. Now I
   │ from pathlib import Path
   │ import re
   │ master = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md')…
+  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md')…
   └ 230 lines...
 
 The master catalog structure is clear now: 21 top-level sections with feature headings inside each. I’m switching from structure mapping to evidence collection so each category gets 2–3 code-backed spot checks.
@@ -175,7 +175,7 @@ I have the category list and a sampling plan. I’m now doing two parallel check
   │ from pathlib import Path
   │ import re
   │ catalog = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md').read_text()…
+  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md').read_text()…
   └ 17 lines...
 
 ● Read manage.md

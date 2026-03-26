@@ -32,7 +32,7 @@ This feature is fully removed from the codebase. The RSF module (`rsf-fusion.ts`
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md)
 
 ---
@@ -41,5 +41,5 @@ This feature is fully removed from the codebase. The RSF module (`rsf-fusion.ts`
 
 - Group: Query Intelligence
 - Playbook ID: 034
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md`

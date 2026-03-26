@@ -36,7 +36,7 @@ track
 - **006** (codex GPT-5.3): Feature catalog categories 01-07 vs live code (correctness + traceability)
 - **007** (codex GPT-5.3): Feature catalog categories 08-14 vs live code (correctness + traceability)
 - **008** (codex GPT-5.3): Feature catalog categories 15-21 vs live code (correctness + traceability)
-- **009** (codex GPT-5.3): feature_catalog_in_simple_terms.md vs feature_catalog.md alignment (section-by-section)
+- **009** (codex GPT-5.3): FEATURE_CATALOG_IN_SIMPLE_TERMS.md vs FEATURE_CATALOG.md alignment (section-by-section)
 - **010** (codex GPT-5.3): Snippet files categories 01-10 internal consistency + code cross-reference
 
 ### Wave 2: Traceability + Maintainability + Verdict (iterations 011-020)

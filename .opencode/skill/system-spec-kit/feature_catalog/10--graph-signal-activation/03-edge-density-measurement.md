@@ -39,4 +39,4 @@ The current density metric used by runtime guards is global edge density: `total
 
 - Group: Graph signal activation
 - Source feature title: Edge density measurement
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

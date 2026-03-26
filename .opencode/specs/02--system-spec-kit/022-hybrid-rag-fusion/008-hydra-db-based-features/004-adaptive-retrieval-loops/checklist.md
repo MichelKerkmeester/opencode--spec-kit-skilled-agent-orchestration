@@ -80,7 +80,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-420 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-421 [P1] Playbook updated for adaptive validation [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
+- [x] CHK-421 [P1] Playbook updated for adaptive validation [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md]
 - [x] CHK-422 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md]
 - [x] CHK-423 [P1] Maintainer sign-off recorded in phase docs [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/checklist.md (L3+: SIGN-OFF)]
 

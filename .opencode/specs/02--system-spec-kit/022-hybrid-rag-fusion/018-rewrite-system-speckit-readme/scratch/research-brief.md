@@ -409,7 +409,7 @@ Each `templates/level_N/` directory contains fully composed templates ready for 
 
 The feature catalog documents all implemented features of the Spec Kit Memory MCP server organized into 19 content categories (plus 3 meta sections).
 
-**Source file:** `feature_catalog/feature_catalog.md` (344+ KB)
+**Source file:** `feature_catalog/FEATURE_CATALOG.md` (344+ KB)
 
 ### Categories and Feature Counts
 
@@ -438,7 +438,7 @@ The feature catalog documents all implemented features of the Spec Kit Memory MC
 
 **Total feature entries across all categories: ~187**
 
-[SOURCE: feature_catalog/feature_catalog.md TOC and directory counts verified]
+[SOURCE: feature_catalog/FEATURE_CATALOG.md TOC and directory counts verified]
 
 ---
 
@@ -506,7 +506,7 @@ Shared-memory tools (`shared_space_upsert`, `shared_space_membership_set`, `shar
    - Present and accurate. No changes needed.
 
 5. **Feature Catalog:**
-   - Not referenced in the current README except in the Components section pointing to `feature_catalog.md`. Could benefit from a summary or count.
+   - Not referenced in the current README except in the Components section pointing to `FEATURE_CATALOG.md`. Could benefit from a summary or count.
 
 6. **Section headings:**
    - Current README uses 12 numbered sections. The sk-doc template prescribes 9 sections (OVERVIEW, QUICK START, STRUCTURE, FEATURES, CONFIGURATION, USAGE EXAMPLES, TROUBLESHOOTING, FAQ, RELATED DOCUMENTS). Alignment decision needed.
@@ -581,7 +581,7 @@ Based on the `sk-doc` README template (`readme_template.md`), the target structu
 | Validation Rules | `./references/validation/validation_rules.md` | All 13 validation rules and fixes |
 | Five Checks | `./references/validation/five_checks.md` | Five Checks evaluation framework |
 | Rollback Runbook | `./references/workflows/rollback_runbook.md` | Feature-flag rollback and smoke-test |
-| Feature Catalog | `./feature_catalog/feature_catalog.md` | Complete feature inventory (187+ features) |
+| Feature Catalog | `./feature_catalog/FEATURE_CATALOG.md` | Complete feature inventory (187+ features) |
 | ARCHITECTURE.md | `./ARCHITECTURE.md` | Boundary contract between scripts/ and mcp_server/ |
 | sk-code--opencode | `../sk-code--opencode/SKILL.md` | Mandatory code alignment standard |
 | sk-doc | `../sk-doc/SKILL.md` | Mandatory documentation alignment standard |

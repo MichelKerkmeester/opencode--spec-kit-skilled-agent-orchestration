@@ -70,4 +70,4 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Scoring and fusion corrections
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

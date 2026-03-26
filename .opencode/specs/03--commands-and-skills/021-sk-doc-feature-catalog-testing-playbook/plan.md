@@ -58,8 +58,8 @@ The work started by reshaping manual testing playbooks into feature-catalog-styl
 Documentation-contract alignment across paired root-doc plus per-feature-file package families.
 
 ### Key Components
-- **Feature catalogs**: Root catalog documents such as `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` plus numbered category folders of per-feature files.
-- **Manual testing playbooks**: Root playbook documents such as `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` plus numbered category folders of per-feature files.
+- **Feature catalogs**: Root catalog documents such as `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` plus numbered category folders of per-feature files.
+- **Manual testing playbooks**: Root playbook documents such as `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` plus numbered category folders of per-feature files.
 - **`sk-doc` template bundles**: Dedicated `assets/documentation/feature_catalog/` and `assets/documentation/testing_playbook/` bundles.
 - **`sk-doc` reference groups**: `references/global/` for cross-cutting docs and `references/specific/` for creation workflow guides.
 - **Runtime consumers**: Create commands and agent docs that load the regrouped references.
@@ -80,7 +80,7 @@ Audit shipped contracts -> normalize feature catalogs and playbooks -> align tem
 
 ### Phase 2: Package Alignment
 - [x] Refactor `system-spec-kit/manual_testing_playbook/` into the integrated root-playbook contract and align prompts, frontmatter, and per-feature-file structure.
-- [x] Align `system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` to the final header/frontmatter conventions.
+- [x] Align `system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md` to the final header/frontmatter conventions.
 - [x] Normalize `mcp-coco-index/manual_testing_playbook/` to the integrated root-playbook contract.
 - [x] Mirror the feature-catalog folder taxonomy into `.claude/skills/system-spec-kit/manual_testing_playbook/`.
 

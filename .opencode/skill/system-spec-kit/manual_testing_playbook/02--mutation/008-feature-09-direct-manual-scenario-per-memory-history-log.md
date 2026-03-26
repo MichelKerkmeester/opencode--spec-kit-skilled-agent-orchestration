@@ -33,7 +33,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [02--mutation/10-per-memory-history-log.md](../../feature_catalog/02--mutation/10-per-memory-history-log.md)
 
 ---
@@ -42,5 +42,5 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Group: Mutation
 - Playbook ID: M-008
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md`

@@ -43,4 +43,4 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Real-time filesystem watching with chokidar
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

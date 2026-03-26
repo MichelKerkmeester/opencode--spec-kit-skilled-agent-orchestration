@@ -32,7 +32,7 @@ Operators run the exact prompt and command sequence for `047` and confirm the ex
 
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../../feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md)
 
 ---
@@ -41,5 +41,5 @@ Operators run the exact prompt and command sequence for `047` and confirm the ex
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 047
-- Canonical root source: `manual_testing_playbook.md`
+- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `13--memory-quality-and-indexing/047-encoding-intent-capture-at-index-time-r16.md`

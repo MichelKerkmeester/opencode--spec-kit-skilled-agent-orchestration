@@ -23,7 +23,7 @@ description: "Implementation plan for a complete rewrite of the MCP server READM
 
 ### Overview
 
-Complete rewrite of the MCP server README in **simple-terms voice** modeled after `feature_catalog_in_simple_terms.md`. Two-tier architecture: narrative explanations use analogies and plain language, tool parameter tables stay technical. Research extracts all 33 tools, architecture details, and feature categories from the catalog. Shared memory logic references `SHARED_MEMORY_DATABASE.md`. Drafting follows the readme template 9-section structure. Review validates DQI, HVR, and accuracy.
+Complete rewrite of the MCP server README in **simple-terms voice** modeled after `FEATURE_CATALOG_IN_SIMPLE_TERMS.md`. Two-tier architecture: narrative explanations use analogies and plain language, tool parameter tables stay technical. Research extracts all 33 tools, architecture details, and feature categories from the catalog. Shared memory logic references `SHARED_MEMORY_DATABASE.md`. Drafting follows the readme template 9-section structure. Review validates DQI, HVR, and accuracy.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -54,7 +54,7 @@ Documentation rewrite — single output file grounded in multiple source files.
 
 ### Key Components
 - **Feature catalog**: Authoritative feature inventory (21 categories, 222 features)
-- **Simple-terms catalog**: Voice and tone reference (`feature_catalog_in_simple_terms.md`)
+- **Simple-terms catalog**: Voice and tone reference (`FEATURE_CATALOG_IN_SIMPLE_TERMS.md`)
 - **Tool schemas**: Canonical tool definitions (33 tools, L1-L7 layers)
 - **Shared memory guide**: `SHARED_MEMORY_DATABASE.md` for shared-space documentation
 - **README template**: 9-section structure and ordering guide
@@ -62,7 +62,7 @@ Documentation rewrite — single output file grounded in multiple source files.
 
 ### Data Flow
 ```
-feature_catalog.md + tool-schemas.ts → research brief → draft → review → final README.md
+FEATURE_CATALOG.md + tool-schemas.ts → research brief → draft → review → final README.md
 ```
 <!-- /ANCHOR:architecture -->
 

@@ -157,4 +157,4 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

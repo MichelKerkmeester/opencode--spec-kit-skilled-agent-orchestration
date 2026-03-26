@@ -172,4 +172,4 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 
 - Group: Retrieval
 - Source feature title: Trigger phrase matching (memory_match_triggers)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

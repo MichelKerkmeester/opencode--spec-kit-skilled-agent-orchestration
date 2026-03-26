@@ -141,4 +141,4 @@ Returns a limit-based list of available checkpoints with metadata: name, creatio
 
 - Group: Lifecycle
 - Source feature title: Checkpoint listing (checkpoint_list)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

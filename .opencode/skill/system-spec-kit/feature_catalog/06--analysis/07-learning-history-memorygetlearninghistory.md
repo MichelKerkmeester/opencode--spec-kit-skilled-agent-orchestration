@@ -142,4 +142,4 @@ The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance
 
 - Group: Analysis
 - Source feature title: Learning history (memory_get_learning_history)
-- Current reality source: feature_catalog.md
+- Current reality source: FEATURE_CATALOG.md

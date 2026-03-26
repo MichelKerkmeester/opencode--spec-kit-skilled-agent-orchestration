@@ -44,7 +44,7 @@ Final regression sweep across all dimensions.
 - Evidence:
   - 012 claims recursive validation exits `0` or `1` with no error-level issues (`spec.md:162`).
   - The current validator exits `2` and reports `RESULT: FAILED`.
-  - Hard errors remain in spec integrity: missing markdown references from `review-report.md` to `021-remediation/spec.md`, `feature_catalog.md`, `ARCHITECTURE.md`, and `environment_variables.md`.
+  - Hard errors remain in spec integrity: missing markdown references from `review-report.md` to `021-remediation/spec.md`, `FEATURE_CATALOG.md`, `ARCHITECTURE.md`, and `environment_variables.md`.
   - Successor-link warnings remain across `015-manual-testing-per-playbook`, for example `001-retrieval/spec.md:30` has a successor row but the validator still reports successor-reference failures through phases `001` to `021`, plus `019-feature-flag-reference/spec.md:30` has no successor row at all.
 - Recommendation: Re-run the validator only after cleaning the broken review-report references and the missing successor chain in the 015 packet family.
 
