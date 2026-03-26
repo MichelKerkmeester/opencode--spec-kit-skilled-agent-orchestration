@@ -42,7 +42,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007g` Codex fallback
   - `M-007h` Copilot fallback
   - `M-007i` Gemini fallback
-  - `M-007j` Final `NO_DATA_AVAILABLE` hard-fail
+  - `M-007j` Final `NO_DATA_FILE` hard-fail
   - `M-007k` V10-only captured-session save warns and proceeds
   - `M-007l` V8/V9 captured-session contamination still aborts
   - `M-007m` `--stdin` structured JSON with explicit CLI target precedence
@@ -93,7 +93,7 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `M-007g` Codex fallback: temporarily force OpenCode and Claude empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=codex`, then verify a matching Codex transcript is selected when `session_meta.payload.cwd` resolves to the same workspace identity. For an aligned tool-rich transcript, verify the run no longer false-fails `V7` and may validate/index if it is otherwise sufficient.
     - `M-007h` Copilot fallback: temporarily force OpenCode, Claude, and Codex empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=copilot`, then verify a matching Copilot workspace/session is selected when `cwd` or `git_root` resolves to the same workspace identity. The save must then follow the normal later gates: thin sessions fail `INSUFFICIENT_CONTEXT_ABORT`, while sufficiently rich aligned sessions may validate/index.
     - `M-007i` Gemini fallback: temporarily force all earlier native backends empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=gemini`, then verify a matching Gemini session is selected when `.project_root` resolves to the same workspace identity. The save must then follow the normal later gates: thin sessions fail `INSUFFICIENT_CONTEXT_ABORT`, while sufficiently rich aligned sessions may validate/index.
-    - `M-007j` Full hard-fail: ensure no usable JSON input or native backend is available and verify the loader returns explicit `NO_DATA_AVAILABLE` rather than partial or contaminated output.
+    - `M-007j` Full hard-fail: ensure no usable JSON input or native backend is available and verify the loader returns explicit `NO_DATA_FILE` rather than partial or contaminated output.
     - `M-007k` V10-only captured-session quality warning: verify a captured-session save whose only failed validation rule is V10 now continues with `QUALITY_GATE_WARN` and can still complete the save path.
     - `M-007l` V8/V9 hard-block retention: verify a captured-session save with foreign-spec contamination still aborts with `QUALITY_GATE_ABORT`.
     - `M-007m` `--stdin` structured input: pipe valid structured JSON into `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin <target-spec-folder>` and confirm the explicit CLI target wins over any payload `specFolder`, while `toolCalls` and `exchanges` survive into the generated output.
@@ -138,7 +138,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007d` also proves ANCHOR preservation, rendered-memory contract compliance, and frontmatter trigger-phrase quality.
   - `M-007e` proves OpenCode precedence does not override the later save-path gates.
   - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
-  - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
+  - `M-007j` proves final `NO_DATA_FILE` behavior.
   - `M-007k` through `M-007q` prove the Phase 017 captured-session soft-warning vs hard-block split, structured-input authority, shipped `toolCalls` / `exchanges` support, file-backed JSON authority, Claude-only contamination downgrade, and the Phase 018 output-quality hardening.
 - Fail triage:
   - Check `data-loader.ts` fallback ordering.

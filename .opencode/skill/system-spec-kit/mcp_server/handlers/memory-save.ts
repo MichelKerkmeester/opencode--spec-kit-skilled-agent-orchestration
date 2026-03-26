@@ -407,6 +407,7 @@ async function processPreparedMemory(
           content: parsed.content,
           specFolder: parsed.specFolder,
           triggerPhrases: parsed.triggerPhrases,
+          contextType: parsed.contextType,
           embedding: embedding,
           findSimilar: embedding ? (emb, gateOptions) => {
             return findSimilarMemories(emb as Float32Array, {

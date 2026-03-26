@@ -769,6 +769,7 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
     content: params.content,
     specFolder: params.specFolder,
     contextType: params.contextType,
+    anchor: params.anchors?.[0] ?? null,
   });
   allReasons.push(...structural.reasons);
 

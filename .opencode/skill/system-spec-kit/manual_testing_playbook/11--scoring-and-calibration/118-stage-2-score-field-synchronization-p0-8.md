@@ -18,7 +18,7 @@ Operators run the exact prompt and command sequence for `118` and confirm the ex
 - Objective: Verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting
 - Prompt: `Run a non-hybrid search with intent weighting and verify score fields stay synchronized. Capture the evidence needed to prove intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value
-- Pass/fail: PASS if intentAdjustedScore is synchronized with score via Math.max and resolveEffectiveScore returns the correct final value
+- Pass/fail: PASS if intentAdjustedScore is synchronized with score via bounded clamping (equality sync with Math.max/Math.min bounds) and resolveEffectiveScore returns the correct final value
 
 ---
 

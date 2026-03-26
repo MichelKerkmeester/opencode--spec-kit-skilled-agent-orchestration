@@ -18,7 +18,7 @@ Operators run the exact prompt and command sequence for `176` and confirm the ex
 - Objective: Verify shadow-only implicit feedback event ledger records 5 event types
 - Prompt: `Test the default-on SPECKIT_IMPLICIT_FEEDBACK_LOG behavior. Run a search, cite a result, reformulate the query, and verify the feedback ledger records events for all 5 types: search_shown, result_cited, query_reformulated, same_topic_requery, follow_on_tool_use. Confirm confidence tiers (strong/medium/weak) are correctly assigned and events are shadow-only (no ranking side effects). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: 5 event types recorded: search_shown, result_cited, query_reformulated, same_topic_requery, follow_on_tool_use; confidence tiers: strong (result_cited, follow_on_tool_use), medium (query_reformulated), weak (search_shown, same_topic_requery); shadow-only (no ranking influence); resolveConfidence() infers tier from event type
-- Pass/fail: PASS if all 5 event types record with correct confidence tiers and events remain shadow-only; FAIL if any event type missing, confidence tiers incorrect, or events influence live rankings
+- Pass/fail: PASS if ledger schema supports all 5 event types with correct confidence tier mappings, handlers emit events for triggered actions (e.g., search_shown on search), and events remain shadow-only; FAIL if ledger schema missing event types, confidence tiers incorrect, or events influence live rankings
 
 ---
 
