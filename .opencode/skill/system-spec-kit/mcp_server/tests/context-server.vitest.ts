@@ -1824,7 +1824,7 @@ describe('Context Server', () => {
       )
       // After confirmName validation, deleteCheckpoint is called
       const confirmCheck = handlerFile.indexOf('confirmName must exactly match name')
-      const deleteCall = handlerFile.indexOf('deleteCheckpoint(name)')
+      const deleteCall = handlerFile.indexOf('deleteCheckpoint(name')
       expect(confirmCheck).toBeGreaterThan(-1)
       expect(deleteCall).toBeGreaterThan(-1)
       expect(deleteCall).toBeGreaterThan(confirmCheck)

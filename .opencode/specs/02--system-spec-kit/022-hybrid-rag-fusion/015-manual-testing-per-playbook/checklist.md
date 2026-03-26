@@ -117,8 +117,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:traceability -->
-## Traceability Remediation (Deep Review 2026-03-26)
+### Traceability Remediation (Deep Review 2026-03-26)
 
 Deep review verdict: CONDITIONAL. See [`review-report.md`](review-report.md).
 
@@ -157,7 +156,6 @@ Deep review verdict: CONDITIONAL. See [`review-report.md`](review-report.md).
 - [ ] CHK-143 [P0] All 22 spec phases have Scenario Registry tables
 - [ ] CHK-144 [P1] Parent spec.md counts updated to reflect new totals
 - [ ] CHK-145 [P1] `validate.sh --recursive` passes on updated tree
-<!-- /ANCHOR:traceability -->
 
 ---
 

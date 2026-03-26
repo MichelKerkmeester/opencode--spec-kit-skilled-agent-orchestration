@@ -358,14 +358,14 @@ describe('shared-memory admin actor schema', () => {
     }).not.toThrow();
   });
 
-  it('runtime rejects shared_space_upsert when actor identity is missing', () => {
+  it('runtime accepts shared_space_upsert when actor hints are omitted', () => {
     expect(() => {
       validateToolArgs('shared_space_upsert', {
         spaceId: 'space-1',
         tenantId: 'tenant-a',
         name: 'Alpha',
       });
-    }).toThrow(/Exactly one of "actorUserId" or "actorAgentId" is required/);
+    }).not.toThrow();
   });
 
   it('runtime rejects shared_space_membership_set when both actor identities are provided', () => {

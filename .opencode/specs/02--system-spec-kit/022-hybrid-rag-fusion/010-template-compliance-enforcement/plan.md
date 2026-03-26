@@ -83,7 +83,7 @@ Agent receives task -> Reads inline contract (Layer 1: headers + anchors per doc
 
 ### Phase B: Contract Injection (~40 min)
 - [x] B1: In `.claude/agents/speckit.md`, replace the old scaffold with the compact contract covering all 5 L2 doc types + L3 decision-record structure support
-- [x] B2: Replicate B1 changes to `.opencode/agent/speckit.md` and `.opencode/agent/chatgpt/speckit.md`
+- [x] B2: Replicate B1 changes to `.opencode/agent/speckit.md` and .opencode/agent/chatgpt/speckit.md
 - [x] B3: Replicate B1 changes to `.codex/agents/speckit.toml` (TOML multi-line string format)
 
 ### Phase C: Directive Consolidation (~30 min)

@@ -9,7 +9,7 @@
 // T2:  enforcement does not apply when flag is disabled
 // T3:  topK parameter limits the inspection window
 // T4:  promoted results are appended and metadata is correct
-// T5:  results remain sorted by score after enforcement
+// T5:  promoted raw scores are normalized into the fused range before sorting
 //
 // T003c — Precision verification (R2 guarantee)
 // T6:  all channels represented → top-3 unchanged (precision preserved)
@@ -186,17 +186,18 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
     expect((promoted as Record<string, unknown>)?.title).toBe('BM25 Doc');
   });
 
-  // ---- T5: Results remain sorted by score after enforcement ----
-  it('T5: results are sorted by score descending after enforcement', () => {
+  // ---- T5: Promoted raw scores are normalized into the fused range ----
+  it('T5: promoted raw scores are normalized into the fused range before sorting', () => {
     const fused: FusedResult[] = [
       makeFused('a1', 0.9, 'vector'),
       makeFused('b1', 0.7, 'bm25'),
     ];
-    // The graph promotion has a score of 0.85 — should be inserted between a1 and b1.
+    // The graph promotion uses a raw lexical-style score that would previously
+    // dominate the normalized fused ranking.
     const channels = new Map<string, ChannelResult[]>([
       ['vector', [makeChannel('a1', 0.9)]],
       ['bm25',   [makeChannel('b1', 0.7)]],
-      ['graph',  [makeChannel('g1', 0.85)]],
+      ['graph',  [makeChannel('g1', 10)]],
     ]);
 
     const result = enforceChannelRepresentation(fused, channels);
@@ -207,10 +208,17 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
     for (let i = 0; i < scores.length - 1; i++) {
       expect(scores[i]).toBeGreaterThanOrEqual(scores[i + 1]);
     }
-    // G1 (0.85) should be between a1 (0.9) and b1 (0.7)
+
+    const promoted = result.results.find(r => r.id === 'g1') as Record<string, unknown> | undefined;
+    expect(promoted).toBeDefined();
+    expect(promoted?.promotedRawScore).toBe(10);
+    expect(typeof promoted?.score).toBe('number');
+    expect((promoted?.score as number)).toBeGreaterThanOrEqual(0.7);
+    expect((promoted?.score as number)).toBeLessThanOrEqual(0.9);
+
+    // The normalized promotion must no longer outrank the highest fused item.
     expect(result.results[0].id).toBe('a1');
-    expect(result.results[1].id).toBe('g1');
-    expect(result.results[2].id).toBe('b1');
+    expect(result.results[2].id).toBe('g1');
   });
 
   // ========== T003c: PRECISION VERIFICATION TESTS =======================

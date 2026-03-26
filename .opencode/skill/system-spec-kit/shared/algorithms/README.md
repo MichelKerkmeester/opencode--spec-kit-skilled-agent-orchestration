@@ -49,7 +49,7 @@ The barrel file (`index.ts`) re-exports all public APIs from the three modules.
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE
 
-```
+```text
 algorithms/
 ├── README.md              # This file
 ├── index.ts               # Barrel re-exports for all algorithm modules

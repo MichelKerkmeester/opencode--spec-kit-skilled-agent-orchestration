@@ -79,8 +79,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Traceability Remediation (from deep review 2026-03-26)
+### Phase 4: Traceability Remediation (from deep review 2026-03-26)
 
 Deep review verdict: CONDITIONAL. See [`review-report.md`](review-report.md) for full findings.
 
@@ -155,7 +154,6 @@ Deep review verdict: CONDITIONAL. See [`review-report.md`](review-report.md) for
 | T162 | Verify all playbook scenarios have `Feature catalog:` back-ref | [B] |
 | T163 | Verify all 22 spec phases have Scenario Registry tables | [B] |
 | T164 | Update parent spec.md counts to reflect new totals | [B] |
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

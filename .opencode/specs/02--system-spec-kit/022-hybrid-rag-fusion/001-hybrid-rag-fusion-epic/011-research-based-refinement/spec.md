@@ -28,7 +28,7 @@ contextType: "decision"
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 11 of 12 |
 | **Predecessor** | `../010-sprint-9-extra-features/spec.md` |
-| **Successor** | `../012-pre-release-fixes-alignment-preparation/spec.md` |
+| **Successor** | `../012-pre-release-remediation/spec.md` |
 | **Children** | 5 sub-phase folders |
 <!-- /ANCHOR:metadata -->
 

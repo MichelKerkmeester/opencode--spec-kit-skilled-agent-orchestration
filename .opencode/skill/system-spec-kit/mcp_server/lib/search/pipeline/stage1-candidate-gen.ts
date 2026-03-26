@@ -168,6 +168,167 @@ function resolveRowContextType(row: PipelineRow): string | undefined {
   return undefined;
 }
 
+function mergeStringLists(...values: unknown[]): string[] {
+  const merged = new Set<string>();
+  for (const value of values) {
+    if (!Array.isArray(value)) {
+      continue;
+    }
+    for (const entry of value) {
+      if (typeof entry === 'string' && entry.length > 0) {
+        merged.add(entry);
+      }
+    }
+  }
+  return Array.from(merged);
+}
+
+function readFiniteScoreMap(value: unknown): Record<string, number> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {};
+  }
+
+  const normalized: Record<string, number> = {};
+  for (const [key, score] of Object.entries(value as Record<string, unknown>)) {
+    if (typeof score === 'number' && Number.isFinite(score)) {
+      normalized[key] = score;
+    }
+  }
+  return normalized;
+}
+
+function mergeScoreMaps(...maps: Array<Record<string, number>>): Record<string, number> {
+  const merged: Record<string, number> = {};
+  for (const map of maps) {
+    for (const [key, score] of Object.entries(map)) {
+      if (!(key in merged) || score > merged[key]!) {
+        merged[key] = score;
+      }
+    }
+  }
+  return merged;
+}
+
+function getCandidateSources(row: PipelineRow): string[] {
+  const explicitSources = mergeStringLists(row.sources);
+  if (explicitSources.length > 0) {
+    return explicitSources;
+  }
+  return typeof row.source === 'string' && row.source.length > 0 ? [row.source] : [];
+}
+
+function getCandidateSourceScores(row: PipelineRow): Record<string, number> {
+  const sourceScores = readFiniteScoreMap(row.sourceScores);
+  if (Object.keys(sourceScores).length > 0) {
+    return sourceScores;
+  }
+
+  const resolvedScore = resolveEffectiveScore(row);
+  if (resolvedScore <= 0) {
+    return {};
+  }
+
+  const fallbackScores: Record<string, number> = {};
+  for (const source of getCandidateSources(row)) {
+    fallbackScores[source] = resolvedScore;
+  }
+  return fallbackScores;
+}
+
+function annotateBranchScore(row: PipelineRow, branchLabel: string): Record<string, number> {
+  const existingBranchScores = readFiniteScoreMap(row.stage1BranchScores);
+  const effectiveScore = resolveEffectiveScore(row);
+  if (branchLabel.length === 0 || !Number.isFinite(effectiveScore)) {
+    return existingBranchScores;
+  }
+  return mergeScoreMaps(existingBranchScores, { [branchLabel]: effectiveScore });
+}
+
+function mergeCandidateRows(
+  existing: PipelineRow | undefined,
+  incoming: PipelineRow,
+  branchLabel: string,
+): PipelineRow {
+  const incomingBranchScores = annotateBranchScore(incoming, branchLabel);
+  if (!existing) {
+    const sources = getCandidateSources(incoming);
+    const channelAttribution = mergeStringLists(incoming.channelAttribution, sources);
+    return {
+      ...incoming,
+      sources: sources.length > 0 ? sources : incoming.sources,
+      channelAttribution: channelAttribution.length > 0 ? channelAttribution : incoming.channelAttribution,
+      sourceScores: Object.keys(getCandidateSourceScores(incoming)).length > 0
+        ? getCandidateSourceScores(incoming)
+        : incoming.sourceScores,
+      stage1BranchScores: Object.keys(incomingBranchScores).length > 0 ? incomingBranchScores : undefined,
+      stage1BranchCount: Object.keys(incomingBranchScores).length || incoming.stage1BranchCount,
+      channelCount: sources.length > 0 ? sources.length : incoming.channelCount,
+    };
+  }
+
+  const existingScore = resolveEffectiveScore(existing);
+  const incomingScore = resolveEffectiveScore(incoming);
+  const primary = incomingScore > existingScore ? incoming : existing;
+  const secondary = primary === incoming ? existing : incoming;
+
+  const mergedSources = mergeStringLists(getCandidateSources(existing), getCandidateSources(incoming));
+  const mergedChannelAttribution = mergeStringLists(
+    existing.channelAttribution,
+    incoming.channelAttribution,
+    mergedSources,
+  );
+  const mergedSourceScores = mergeScoreMaps(
+    getCandidateSourceScores(existing),
+    getCandidateSourceScores(incoming),
+  );
+  const mergedBranchScores = mergeScoreMaps(
+    readFiniteScoreMap(existing.stage1BranchScores),
+    incomingBranchScores,
+  );
+
+  return {
+    ...secondary,
+    ...primary,
+    sources: mergedSources.length > 0 ? mergedSources : primary.sources,
+    source: typeof primary.source === 'string' && primary.source.length > 0
+      ? primary.source
+      : (mergedSources[0] ?? primary.source),
+    channelAttribution: mergedChannelAttribution.length > 0
+      ? mergedChannelAttribution
+      : primary.channelAttribution,
+    sourceScores: Object.keys(mergedSourceScores).length > 0
+      ? mergedSourceScores
+      : primary.sourceScores,
+    stage1BranchScores: Object.keys(mergedBranchScores).length > 0
+      ? mergedBranchScores
+      : primary.stage1BranchScores,
+    stage1BranchCount: Object.keys(mergedBranchScores).length || primary.stage1BranchCount,
+    channelCount: mergedSources.length > 0 ? mergedSources.length : primary.channelCount,
+  };
+}
+
+function mergeCandidateBatches(
+  batches: Array<{ label: string; rows: PipelineRow[] }>,
+  options: { seedCandidates?: PipelineRow[]; seedLabel?: string } = {},
+): PipelineRow[] {
+  const merged = new Map<string, PipelineRow>();
+  const seedLabel = options.seedLabel ?? '';
+
+  for (const row of options.seedCandidates ?? []) {
+    const key = String(row.id);
+    merged.set(key, mergeCandidateRows(merged.get(key), row, seedLabel));
+  }
+
+  for (const batch of batches) {
+    for (const row of batch.rows) {
+      const key = String(row.id);
+      merged.set(key, mergeCandidateRows(merged.get(key), row, batch.label));
+    }
+  }
+
+  return Array.from(merged.values());
+}
+
 /**
  * Build deep-mode query variants using rule-based synonym expansion.
  *
@@ -521,17 +682,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           channelCount = queryVariants.length;
 
           // Merge variant results, deduplicate by id, preserve first-occurrence order
-          const seenIds = new Set<number>();
-          const merged: PipelineRow[] = [];
-          for (const variantResults of variantResultSets) {
-            for (const row of variantResults) {
-              if (!seenIds.has(row.id)) {
-                seenIds.add(row.id);
-                merged.push(row);
-              }
-            }
-          }
-          candidates = merged;
+          candidates = mergeCandidateBatches(
+            variantResultSets.map((rows, index) => ({
+              label: queryVariants[index] ?? `deep-variant-${index}`,
+              rows,
+            })),
+          );
         } catch (expandErr: unknown) {
           const expandMsg =
             expandErr instanceof Error ? expandErr.message : String(expandErr);
@@ -610,15 +766,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
             // Merge both result sets, deduplicate by id, baseline-first ordering
             // So baseline scores dominate when the same memory appears in both.
-            const seenIds = new Set<number>();
-            const merged: PipelineRow[] = [];
-            for (const row of [...(baselineResults as PipelineRow[]), ...(expansionResults as PipelineRow[])]) {
-              if (!seenIds.has(row.id)) {
-                seenIds.add(row.id);
-                merged.push(row);
-              }
-            }
-            candidates = merged;
+            candidates = mergeCandidateBatches([
+              { label: query, rows: baselineResults as PipelineRow[] },
+              { label: expanded.combinedQuery, rows: expansionResults as PipelineRow[] },
+            ]);
 
             if (trace) {
               addTraceEntry(trace, 'candidate', channelCount, candidates.length, 0, {
@@ -884,33 +1035,31 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           });
 
           if (reformResultSets.length > 0) {
-            const seenIds = new Set(candidates.map((r) => r.id));
-            const reformMerged: PipelineRow[] = [];
-            for (const resultSet of reformResultSets) {
-              const scopeFilteredResultSet = shouldApplyScopeFiltering
+            const filteredReformSets = reformResultSets.map((resultSet, index) => {
+              let rows = shouldApplyScopeFiltering
                 ? filterRowsByScope(resultSet, scopeFilter, allowedSharedSpaceIds)
                 : resultSet;
-              for (const row of scopeFilteredResultSet) {
-                if (!seenIds.has(row.id)) {
-                  seenIds.add(row.id);
-                  reformMerged.push(row);
-                }
+              if (contextType) {
+                rows = rows.filter((r) => resolveRowContextType(r) === contextType);
               }
-            }
-            // H11 FIX: Apply the same tier/context/quality filters as main candidates
-            let filteredReformMerged = reformMerged;
-            if (contextType) {
-              filteredReformMerged = filteredReformMerged.filter((r) => resolveRowContextType(r) === contextType);
-            }
-            if (tier) {
-              filteredReformMerged = applyTierFilter(filteredReformMerged, tier);
-            }
-            filteredReformMerged = filterByMinQualityScore(filteredReformMerged, qualityThreshold);
-            candidates = [...candidates, ...filteredReformMerged];
+              if (tier) {
+                rows = applyTierFilter(rows, tier);
+              }
+              rows = filterByMinQualityScore(rows, qualityThreshold);
+              return {
+                label: allQueries[index] ?? `d2-reform-${index}`,
+                rows,
+              };
+            });
+            const reformMergedCount = filteredReformSets.reduce((sum, batch) => sum + batch.rows.length, 0);
+            candidates = mergeCandidateBatches(filteredReformSets, {
+              seedCandidates: candidates,
+              seedLabel: query,
+            });
             channelCount += allQueries.length - 1; // discount original (already counted)
 
             if (trace) {
-              addTraceEntry(trace, 'candidate', allQueries.length - 1, reformMerged.length, 0, {
+              addTraceEntry(trace, 'candidate', allQueries.length - 1, reformMergedCount, 0, {
                 channel: 'd2-llm-reformulation',
                 abstract: reform.abstract,
                 variantCount: reform.variants.length,
@@ -945,8 +1094,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         ? filterRowsByScope(rawHydeCandidates, scopeFilter, allowedSharedSpaceIds)
         : rawHydeCandidates;
       if (hydeCandidates.length > 0) {
-        const seenIds = new Set(candidates.map((r) => r.id));
-        let newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
+        let newHydeCandidates = hydeCandidates;
         // H11 FIX: Apply the same tier/context/quality filters as main candidates
         if (contextType) {
           newHydeCandidates = newHydeCandidates.filter((r) => resolveRowContextType(r) === contextType);
@@ -955,7 +1103,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           newHydeCandidates = applyTierFilter(newHydeCandidates, tier);
         }
         newHydeCandidates = filterByMinQualityScore(newHydeCandidates, qualityThreshold);
-        candidates = [...candidates, ...newHydeCandidates];
+        candidates = mergeCandidateBatches([
+          { label: 'hyde', rows: newHydeCandidates },
+        ], {
+          seedCandidates: candidates,
+          seedLabel: query,
+        });
         channelCount++;
 
         if (trace) {

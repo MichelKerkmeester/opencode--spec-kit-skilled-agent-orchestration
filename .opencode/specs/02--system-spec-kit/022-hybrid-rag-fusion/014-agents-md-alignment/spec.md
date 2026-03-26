@@ -146,7 +146,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+### 7. NON-FUNCTIONAL REQUIREMENTS
 
 - **NF-001**: Barter READ-ONLY git policy must remain intact after table edits (REQ-005)
 - **NF-002**: FS-Enterprises stack-detection guidance must remain intact (REQ-005)
@@ -156,7 +156,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+### 8. EDGE CASES
 
 - Variant-specific rows (Go/Angular/Swift verification in FS, Git analysis in Barter) must not be accidentally removed when inserting new rows into the Quick Reference table.
 - CLAUDE.md Gate 3 ordering must match AGENTS.md ordering after refinement pass.
@@ -165,7 +165,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+### 9. COMPLEXITY ASSESSMENT
 
 | Factor | Score | Notes |
 |--------|-------|-------|
@@ -185,7 +185,6 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 
 ---
 
-<!-- ANCHOR:phase-navigation -->
 ### Phase Navigation
 
 | Field | Value |
@@ -193,4 +192,3 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 | **Parent Spec** | ../spec.md |
 | **Previous Phase** | ../013-agents-alignment/spec.md |
 | **Next Phase** | ../015-manual-testing-per-playbook/spec.md |
-<!-- /ANCHOR:phase-navigation -->

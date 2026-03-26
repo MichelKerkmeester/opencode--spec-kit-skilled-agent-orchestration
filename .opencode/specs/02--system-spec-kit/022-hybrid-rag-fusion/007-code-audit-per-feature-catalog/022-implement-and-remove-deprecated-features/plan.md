@@ -20,7 +20,7 @@ This packet now acts as a release-control phase record rather than an active mul
 ## 2. QUALITY GATES
 
 - Packet-level spec validation passes without structural errors.
-- Cross-packet links to `../021-remediation-revalidation/spec.md` and `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` resolve cleanly.
+- Cross-packet links to `../021-remediation-revalidation/spec.md` and ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md resolve cleanly.
 - Documentation normalization does not claim code completion that has not been re-verified.
 <!-- /ANCHOR:quality-gates -->
 
@@ -77,7 +77,7 @@ This phase sits at the boundary between the `007` audit chain and the `012` pre-
 | Dependency | Why It Matters |
 |------------|----------------|
 | `../021-remediation-revalidation/spec.md` | Supplies predecessor context and remediation handoff |
-| `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` | Owns final release-control verification |
+| ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md | Owns final release-control verification |
 | System Spec Kit validator | Enforces packet structure and link integrity |
 <!-- /ANCHOR:dependencies -->
 

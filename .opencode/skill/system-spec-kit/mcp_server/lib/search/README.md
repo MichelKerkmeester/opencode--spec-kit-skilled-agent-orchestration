@@ -48,7 +48,7 @@ The search subsystem provides production-grade hybrid search capabilities with m
 - **Schema Management**: sqlite-vec schema v15 (current) with document-type fields, event-based decay and phase-aware columns
 
 **Architecture Pattern:**
-```
+```text
 Query Input
     |
 Intent Classifier -> Task-specific weights
@@ -71,14 +71,14 @@ Final Results
 ```
 
 **Architecture Note:**
-`vector-index.ts` is a typed facade that delegates operations to `vector-index-impl.ts` (the full implementation). Both files are TypeScript. See [Module Structure](#3-module-structure) for details.
+`vector-index.ts` is the primary typed export surface for the vector index and re-exports the split schema, query, mutation, store and alias modules. `vector-index-impl.ts` is now a 14-line backward-compatibility shim that simply re-exports `vector-index.ts` for older import paths.
 
 <a id="4-stage-pipeline-architecture"></a>
 ### 4-Stage Pipeline Architecture
 
 The search pipeline (R6) decomposes retrieval into four bounded stages with strict responsibilities. Each stage has clear input/output contracts defined in `pipeline/types.ts`.
 
-```
+```text
 Stage 1                Stage 2                 Stage 3              Stage 4
 CANDIDATE GEN    -->   FUSION + SIGNALS   -->  RERANK + AGGREGATE  -->  FILTER + ANNOTATE
 (no score changes)     (single scoring point)  (score changes: YES)    (score changes: NO)
@@ -89,7 +89,7 @@ Executes 5 search channels in parallel and collects raw candidates with no scori
 
 | Channel | Source | Description |
 |---------|--------|-------------|
-| Vector | `vector-index-impl.ts` | Semantic similarity via sqlite-vec |
+| Vector | `vector-index.ts` | Semantic similarity via sqlite-vec through the split vector-index modules |
 | BM25 | `bm25-index.ts` | Pure TypeScript keyword matching |
 | FTS5 | `sqlite-fts.ts` | SQLite FTS5 BM25 weighted scoring |
 | Graph | `graph-search-fn.ts` | Causal edge traversal + typed-weighted degree (R4) |
@@ -152,7 +152,7 @@ Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memo
 ### BM25 (Best Matching 25)
 
 **Formula**:
-```
+```text
 score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/avgdl))
 ```
 
@@ -223,7 +223,7 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 | Status               | Files                                                                                        |
 | -------------------- | -------------------------------------------------------------------------------------------- |
 | **TypeScript**       | `hybrid-search.ts`, `cross-encoder.ts`, `intent-classifier.ts`, `bm25-index.ts`             |
-| **TypeScript**       | `vector-index.ts` (typed facade) -> `vector-index-impl.ts` (full implementation)             |
+| **TypeScript**       | `vector-index.ts` (typed export surface) + `vector-index-impl.ts` (14-line compatibility shim) |
 | **TypeScript**       | `reranker.ts` (local reranking utility); `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` relocated to `shared/algorithms/` |
 | **TypeScript**       | `query-classifier.ts`, `query-router.ts`, `query-expander.ts` (query pipeline)               |
 | **TypeScript**       | `channel-representation.ts`, `channel-enforcement.ts`, `confidence-truncation.ts` (quality)   |
@@ -231,32 +231,35 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 
 ### Facade Pattern: vector-index
 
-```
+```text
 Consumers
     |
     v
-vector-index.ts          (700 LOC)
-  - TypeScript types & interfaces
-  - Typed function signatures
-  - Thin wrappers that delegate calls to:
+vector-index.ts          (166 LOC)
+  - Primary typed export surface
+  - Re-exports the split implementation modules:
+    - vector-index-types.ts
+    - vector-index-schema.ts
+    - vector-index-mutations.ts
+    - vector-index-queries.ts
+    - vector-index-store.ts
+    - vector-index-aliases.ts
     |
     v
-vector-index-impl.ts     (3333 LOC)
-  - Full TypeScript implementation
-  - Schema creation & migrations (includes v13 document-type migration)
-  - All database operations (CRUD, search, caching)
-  - Uses import syntax (ESM)
-  - References SERVER_DIR for config paths
+vector-index-impl.ts     (14 LOC)
+  - Backward-compatibility shim
+  - Re-exports from './vector-index'
+  - Keeps legacy import paths working
 ```
 
-**NOTE**: `vector-index.ts` is a typed facade. Modifying it without updating `vector-index-impl.ts` may not have the expected runtime effect, since most logic lives in the impl file.
+**NOTE**: Most vector-index logic now lives in the split `vector-index-*` modules. `vector-index-impl.ts` is only a compatibility adapter, so runtime changes should be made in `vector-index.ts` or the underlying split modules.
 
 ### Module Listing
 
 | File                       | LOC    | Language   | Purpose                                             |
 | -------------------------- | ------ | ---------- | --------------------------------------------------- |
-| `vector-index.ts`          | ~700   | TypeScript | Typed facade: interfaces, type exports, delegation  |
-| `vector-index-impl.ts`     | ~3333  | TypeScript | Full implementation: schema, CRUD, search, caching  |
+| `vector-index.ts`          | 166    | TypeScript | Typed export surface re-exporting the split vector-index modules |
+| `vector-index-impl.ts`     | 14     | TypeScript | Backward-compatibility shim that re-exports `vector-index.ts` |
 | `vector-index-types.ts`    | -      | TypeScript | Shared type definitions for vector index modules    |
 | `vector-index-schema.ts`   | -      | TypeScript | Schema creation and migration logic                 |
 | `vector-index-mutations.ts`| -      | TypeScript | Insert, update, and delete operations for vector index |
@@ -329,7 +332,7 @@ vector-index-impl.ts     (3333 LOC)
 
 ### Data Flow
 
-```
+```text
 1. QUERY PREPROCESSING
    hybrid-search.ts -> Expand acronyms + fix typos (inline)
    intent-classifier.ts -> Detect task intent
@@ -338,7 +341,7 @@ vector-index-impl.ts     (3333 LOC)
          v
 
 2. PARALLEL RETRIEVAL (5 channels)
-   vector-index.ts (-> vector-index-impl.ts) -> Vector search (semantic)
+   vector-index.ts -> Vector search (semantic)
    bm25-index.ts -> BM25 search (keyword)
    graph (via ../cognitive/co-activation.ts) -> Relationship search
    graph-search-fn.ts (graph structure) -> Structural graph search
@@ -874,7 +877,7 @@ Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
 | `../utils/`      | Format helpers, path security     |
 | `@spec-kit/shared/embeddings` | Embeddings provider abstraction   |
 | `../errors/`     | Recovery hints for error handling |
-| Search weights configuration | Loaded via SERVER_DIR in vector-index-impl.ts |
+| Search weights configuration | Loaded via SERVER_DIR in the split vector-index modules (compat imports still route through `vector-index-impl.ts`) |
 
 ### External Dependencies
 
@@ -927,7 +930,7 @@ Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
 
 **Migration Status**:
 - TypeScript migration is **complete**: all 62 root + 9 pipeline code files are TypeScript (0 `.js` source files)
-- `vector-index.ts` is a typed facade. `vector-index-impl.ts` is the full implementation. 6 additional vector-index split modules handle types, schema, mutations, queries, aliases, and store
+- `vector-index.ts` is the primary typed export surface. `vector-index-impl.ts` is a 14-line compatibility shim, and the core implementation lives in the split vector-index modules for types, schema, mutations, queries, aliases, and store
 - `rrf-fusion.ts`, `adaptive-fusion.ts`, and `mmr-reranker.ts` relocated to `shared/algorithms/`
 - Query pipeline additions: query complexity routing, channel representation, confidence truncation, dynamic token budgets, folder discovery
 - Implemented: TF-IDF memory summaries (R8), cross-document entity linking (S5), graph signals (N2a/N2b/N2c), 4-stage pipeline (R6)

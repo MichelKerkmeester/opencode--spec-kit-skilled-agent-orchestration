@@ -172,7 +172,7 @@ Adaptive fusion replaces hardcoded channel weights with intent-aware profiles. T
 
 Five operational stages run between fusion and delivery. Stage A (query complexity routing, `SPECKIT_COMPLEXITY_ROUTER`) restricts active channels for simple queries to just vector and FTS, moderate queries add BM25 and complex queries get all five. Stage B (`SPECKIT_RSF_FUSION`) is a retired shadow-only placeholder. The dead runtime RSF branch was removed, so live ranking never executes RSF; remaining references exist only for compatibility, isolated testing and shadow/eval documentation. Stage C (channel enforcement, `SPECKIT_CHANNEL_MIN_REP`) ensures every contributing channel has at least one result in top-k with a 0.005 quality floor. Stage D (confidence truncation, `SPECKIT_CONFIDENCE_TRUNCATION`) trims the irrelevant tail using a 2x-median gap elbow heuristic. Stage E (dynamic token budget, `SPECKIT_DYNAMIC_TOKEN_BUDGET`) computes tier-aware token limits (simple 1,500, moderate 2,500, complex 4,000).
 
-After these stages, Maximal Marginal Relevance reranking promotes result diversity using intent-specific lambda values (from `INTENT_LAMBDA_MAP`, default 0.7). Co-activation spreading takes the top 5 results, traverses the co-activation graph and applies a 0.25x boost to returned activation scores. Those boosts now synchronize all live score aliases (`score`, `rrfScore`, `intentAdjustedScore`) before the reranked list is resorted, so downstream consumers see the same boosted number. Session boost likewise preserves the original working-memory `attentionScore` signal and records the boosted ranking value separately in `sessionBoostScore`. A fan-effect divisor helper exists in `co-activation.ts`, but the Stage 2 hot path currently applies the spread score directly.
+After these stages, Maximal Marginal Relevance reranking promotes result diversity using intent-specific lambda values (from `INTENT_LAMBDA_MAP`, default 0.7). Co-activation spreading takes the top 5 results, traverses the co-activation graph for up to 2 hops and uses the returned activation scores in Stage 2. Stage 2 then applies the configured `SPECKIT_COACTIVATION_STRENGTH` multiplier and the same `1 / sqrt(max(1, relatedCount))` fan-effect divisor used by the helper path before synchronizing all live score aliases (`score`, `rrfScore`, `intentAdjustedScore`) and resorting the result set. Session boost likewise preserves the original working-memory `attentionScore` signal and records the boosted ranking value separately in `sessionBoostScore`.
 
 The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_SEARCH_FALLBACK` is enabled, the default path is a three-tier degradation flow: Tier 1 primary retrieval (default minimum similarity 0.3), Tier 2 widened retrieval at 0.1 with all channels forced on and Tier 3 structural SQL search as last resort. Tier 3 now excludes archived rows unless `includeArchived=true`, closing the fallback-only leak that could reintroduce archived memories after earlier stages had filtered them. When `SPECKIT_SEARCH_FALLBACK` is disabled, the legacy two-pass path is used (0.3 then 0.17). The system is designed to avoid empty returns except on hard failures.
 
@@ -1025,7 +1025,7 @@ Some highly connected memories kept showing up in every search result regardless
 
 Hub memories with many connections dominated co-activation results no matter what you searched for. If a memory had 40 causal edges, it showed up everywhere.
 
-A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts`, but Stage 2 hot-path boosting currently applies spread-activation scores directly via the configured co-activation strength multiplier. The guard logic remains in the helper path with bounded division behavior.
+A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts`, and Stage 2 now applies the same `sqrt(max(1, relatedCount))` dampening when spread-activation boosts are written back into the reranked result set. In practice, co-activation traversal produces candidate activation scores, then Stage 2 multiplies by `SPECKIT_COACTIVATION_STRENGTH`, divides by the fan-effect term and syncs the result across `score`, `rrfScore` and `intentAdjustedScore`. This keeps hub memories from overwhelming the top-N results even when they have many related neighbors.
 
 #### Source Files
 
@@ -3141,7 +3141,7 @@ See [`14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`](14--pipeline-
 
 #### Description
 
-Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
+Ten small but important fixes were applied to make the system more resilient. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
 
 #### Current Reality
 
@@ -4316,7 +4316,7 @@ See [`18--ux-hooks/17-retrieval-session-state.md`](18--ux-hooks/17-retrieval-ses
 
 ---
 
-## 20. SPEC KIT PHASE WORKFLOWS
+## 20--remediation-revalidation
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -4382,7 +4382,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## 21. FEATURE FLAG REFERENCE
+## 21--implement-and-remove-deprecated-features
 
 The tables below catalogue the documented environment-variable surface that is still read by code or intentionally retained as a live compatibility shim. The "Default" column reflects the value in effect when the variable is absent from the environment.
 

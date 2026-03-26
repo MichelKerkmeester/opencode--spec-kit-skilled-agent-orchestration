@@ -31,6 +31,8 @@ Canonical source artifacts:
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/17--governance/`
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/18--ux-hooks/`
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/`
 
 ---
 
@@ -48,7 +50,6 @@ Canonical source artifacts:
 - [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
 - [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
 - [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
-- [13. GEMINI OVERLAY SCENARIO PACKS](#13--gemini-overlay-scenario-packs)
 
 ---
 
@@ -147,7 +148,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 230 scenario files while the feature catalog contains 220 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 290 scenario files while the feature catalog contains 255 feature files.
 5. No unresolved blocking triage item remains.
 6. Orphan scenario count is zero (every scenario file is linked in Section 12).
 
@@ -168,8 +169,8 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 230 ]; then
-  echo "Expected 230 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 290 ]; then
+  echo "Expected 290 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
@@ -3691,37 +3692,9 @@ This split playbook keeps automated coverage references in three places:
 | M-003 | Dedicated Memory/Spec-Kit Scenarios | Context Save + Index Update | [M-003](13--memory-quality-and-indexing/003-context-save-index-update.md) | *(test-only, no catalog entry)* |
 | M-004 | Dedicated Memory/Spec-Kit Scenarios | Main-Agent Review and Verdict Handoff | [M-004](16--tooling-and-scripts/004-main-agent-review-and-verdict-handoff.md) | *(test-only, no catalog entry)* |
 | M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md) | [13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md](../feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md) |
-| M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) | *(test-only, no catalog entry)* |
+| M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) | [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) |
 | M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
 | M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) | [02--mutation/10-per-memory-history-log.md](../feature_catalog/02--mutation/10-per-memory-history-log.md) |
-| Catalog only | Features | AST-level section retrieval tool | No dedicated scenario - covered by parent category tests | [01--retrieval/07-ast-level-section-retrieval-tool.md](../feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md) |
-| Catalog only | Features | Tool-result extraction to working memory | No dedicated scenario - covered by parent category tests | [01--retrieval/09-tool-result-extraction-to-working-memory.md](../feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md) |
-| Catalog only | Features | Namespace management CRUD tools | No dedicated scenario - covered by parent category tests | [02--mutation/07-namespace-management-crud-tools.md](../feature_catalog/02--mutation/07-namespace-management-crud-tools.md) |
-| Catalog only | Features | Correction tracking with undo | No dedicated scenario - covered by parent category tests | [02--mutation/09-correction-tracking-with-undo.md](../feature_catalog/02--mutation/09-correction-tracking-with-undo.md) |
-| Catalog only | Features | ANCHOR tags as graph nodes | No dedicated scenario - covered by parent category tests | [10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md](../feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) |
-| Catalog only | Features | Causal neighbor boost and injection | No dedicated scenario - covered by parent category tests | [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) |
-| Catalog only | Features | Temporal contiguity layer | No dedicated scenario - covered by parent category tests | [10--graph-signal-activation/11-temporal-contiguity-layer.md](../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md) |
-| Catalog only | Features | Tool-level TTL cache | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md) |
-| Catalog only | Features | Access-driven popularity scoring | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/16-access-driven-popularity-scoring.md](../feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md) |
-| Catalog only | Features | Temporal-structural coherence scoring | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md](../feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) |
-| Catalog only | Features | Content-aware memory filename generation | No dedicated scenario - covered by scenario 045 plus parent category tests | [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) |
-| Catalog only | Features | Generation-time duplicate and empty content prevention | No dedicated scenario - covered by parent category tests | [13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md](../feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) |
-| Catalog only | Features | Session enrichment and alignment guards | No dedicated scenario - covered by parent category tests | [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) |
-| Catalog only | Features | Warm server / daemon mode | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/15-warm-server-daemon-mode.md](../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md) |
-| Catalog only | Features | Backend storage adapter abstraction | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/16-backend-storage-adapter-abstraction.md](../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md) |
-| Catalog only | Features | Atomic write-then-index API | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/18-atomic-write-then-index-api.md](../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md) |
-| Catalog only | Features | Embedding retry orchestrator | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/19-embedding-retry-orchestrator.md](../feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md) |
-| Catalog only | Features | 7-layer tool architecture metadata | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md](../feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md) |
-| Catalog only | Features | Architecture boundary enforcement | No dedicated scenario - covered by parent category tests | [16--tooling-and-scripts/02-architecture-boundary-enforcement.md](../feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md) |
-| Catalog only | Features | Watcher delete/rename cleanup | No dedicated scenario - covered by parent category tests | [16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md](../feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md) |
-| Catalog only | Features | Shared post-mutation hook wiring | No dedicated scenario - covered by parent category tests | [18--ux-hooks/01-shared-post-mutation-hook-wiring.md](../feature_catalog/18--ux-hooks/01-shared-post-mutation-hook-wiring.md) |
-| Catalog only | Features | Memory health autoRepair metadata | No dedicated scenario - covered by parent category tests | [18--ux-hooks/02-memory-health-autorepair-metadata.md](../feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md) |
-| Catalog only | Features | Schema and type contract synchronization | No dedicated scenario - covered by parent category tests | [18--ux-hooks/04-schema-and-type-contract-synchronization.md](../feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md) |
-| Catalog only | Features | Mutation hook result contract expansion | No dedicated scenario - covered by parent category tests | [18--ux-hooks/06-mutation-hook-result-contract-expansion.md](../feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md) |
-| Catalog only | Features | Mutation response UX payload exposure | No dedicated scenario - covered by parent category tests | [18--ux-hooks/07-mutation-response-ux-payload-exposure.md](../feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md) |
-| Catalog only | Features | Atomic-save parity and partial-indexing hints | No dedicated scenario - covered by parent save-path tests for parity envelopes, partial-indexing hints, and orphan-row cleanup on governance failure | [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) |
-| Catalog only | Features | Final token metadata recomputation | No dedicated scenario - covered by parent context-response tests for final token sync and post-resume budget enforcement | [18--ux-hooks/11-final-token-metadata-recomputation.md](../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) |
-| Catalog only | Features | End-to-end success-envelope verification | No dedicated scenario - covered by parent category tests | [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) |
 | 190 | Features | Session recovery via /memory:continue | [190](01--retrieval/190-session-recovery-memory-continue.md) | [01--retrieval/11-session-recovery-memory-continue.md](../feature_catalog/01--retrieval/11-session-recovery-memory-continue.md) |
 | 125-map | Features | Audit phase mapping note (020) | — | [19--feature-flag-reference/08-audit-phase-020-mapping-note.md](../feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md) |
 | 020-stub | Features | Remediation and revalidation (stub) | — | [20--remediation-revalidation/01-category-stub.md](../feature_catalog/20--remediation-revalidation/01-category-stub.md) |
@@ -3756,4 +3729,3 @@ This split playbook keeps automated coverage references in three places:
 | 216 | Features | End-to-end success-envelope verification | [216](18--ux-hooks/216-end-to-end-success-envelope-verification.md) | [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) |
 
 ---
-

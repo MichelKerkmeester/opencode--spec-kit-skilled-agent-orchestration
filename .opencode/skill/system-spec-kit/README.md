@@ -60,7 +60,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **MCP Tools** | 33 | Across 7 layers (L1-L7), 7,600 total token budget |
 | **Commands** | 14 | 8 spec_kit + 6 memory |
 | **Documentation Levels** | 4 | Levels 1, 2, 3, 3+ |
-| **Feature Catalog Entries** | 222 | Across 21 categories |
+| **Feature Catalog Entries** | 255 | Across 21 categories |
 | **Search Channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
 | **Pipeline Stages** | 4 | Gather, Score, Rerank, Filter |
 | **Importance Tiers** | 6 | constitutional through deprecated |
@@ -577,7 +577,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 ├── references/                 # Reference documentation (26 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-├── feature_catalog/            # Feature documentation (21 categories, 222 features)
+├── feature_catalog/            # Feature documentation (21 categories, 255 features)
 └── manual_testing_playbook/    # Manual validation scenarios (19 categories)
 ```
 
@@ -595,7 +595,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh) | Create spec folders with level-appropriate template files |
 | [`scripts/spec/validate.sh`](./scripts/spec/validate.sh) | Run 20-rule validation on any spec folder |
 | `scripts/dist/memory/generate-context.js` | Primary workflow for saving session context to memory |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 222 implemented features across 21 categories |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 255 implemented features across 21 categories |
 
 ### How the Pieces Connect
 
@@ -1025,7 +1025,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | [`references/templates/template_guide.md`](./references/templates/template_guide.md) | Template usage and composition rules |
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md) | Full environment variable reference |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 222 features across 21 categories |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 255 features across 21 categories |
 
 ### Cross-Skill Alignment
 

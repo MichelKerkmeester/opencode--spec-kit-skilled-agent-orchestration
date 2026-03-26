@@ -23,8 +23,9 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Implemented (documentation-only handoff; remaining follow-on tracked in later phases) |
 | **Created** | 2026-03-01 |
+| **Updated** | 2026-03-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 9 of 11 |
@@ -112,8 +113,8 @@ Define a contained implementation phase for deferred work, with explicit depende
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which deferred items remain priority P1 at sprint entry versus candidate deferral to post-140 work?
-- Which deferred items require separate performance guardrails before activation?
+- No active open questions remain for this packet.
+- Deferred runtime follow-on moved into `010-sprint-9-extra-features` and `011-research-based-refinement`; remaining release truth-sync is tracked in `012-pre-release-fixes-alignment-preparation`.
 <!-- /ANCHOR:questions -->
 
 ---

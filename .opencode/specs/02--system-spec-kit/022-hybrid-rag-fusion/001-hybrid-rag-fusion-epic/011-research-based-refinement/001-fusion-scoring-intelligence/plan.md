@@ -70,7 +70,7 @@ Pipeline Extension -- modifications to existing 4-stage retrieval pipeline with 
 ### Key Components
 
 - **rrf-fusion.ts**: Core fusion algorithm -- receives calibrated overlap bonus (Phase A), parameterized K (Phase A), fusion policy type system (Phase B)
-- **fusion-lab.ts** (historical - fusion-lab.js deleted in commit 56c67030f): Shadow comparison infrastructure -- runs multiple fusion policies in parallel, captures telemetry, returns active policy result only
+- **Shadow fusion lab** (verified-retired historical design): `fusion-lab.js` was deleted in commit 56c67030f; no active shadow-comparison module remains
 - **k-value-analysis.ts**: Existing K analysis module -- extended with judged relevance evaluation and per-intent segmentation
 - **hybrid-search.ts**: Search orchestrator -- receives query-aware graph weight gating (Phase C)
 - **adaptive-fusion.ts**: Fusion configuration -- receives QPP feature extraction and fusion policy router (Phase C)
@@ -133,14 +133,14 @@ Stage 4 (Filtering) — unchanged
 
 ### Phase B: Shadow Infrastructure (REQ-D1-002)
 
-**Goal**: Build safe experimentation infrastructure for comparing fusion policies without affecting live results.
+**Goal**: Preserve the historical experimentation design for comparing fusion policies without implying an active shadow-lab module.
 
 **Prerequisites**: Phase A eval data (baseline metrics needed for comparison)
 **Wave**: 3 (after Wave 1 foundations)
 
 - [ ] Design `FusionPolicy` type system and policy registry
-- [ ] Implement minmax_linear score normalizer in `fusion-lab.ts` (historical - fusion-lab.js deleted in commit 56c67030f)
-- [ ] Implement zscore_linear score normalizer in `fusion-lab.ts` (historical - fusion-lab.js deleted in commit 56c67030f)
+- [ ] Record `minmax_linear` as a historical shadow-fusion policy variant; no active shadow-lab module remains
+- [ ] Record `zscore_linear` as a historical shadow-fusion policy variant; no active shadow-lab module remains
 - [ ] Build shadow comparison runner (parallel execution, telemetry capture)
 - [ ] Add `SPECKIT_FUSION_POLICY_SHADOW_V2` feature flag
 - [ ] Write integration tests for shadow lab (3 policies, telemetry recording)

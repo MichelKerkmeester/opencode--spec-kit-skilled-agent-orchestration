@@ -90,8 +90,7 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 
 ---
 
-<!-- ANCHOR:pass2 -->
-## Pass 2: Content Alignment Remediation (2026-03-25)
+### Pass 2: Content Alignment Remediation (2026-03-25)
 
 Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15 files changed) for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high) + cross-agent grep analysis. Verdict: CONDITIONAL → 6 of 7 P1 remediated (1 deferred).
 
@@ -130,6 +129,5 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15
 - `scratch/archive-pass2/review-report.md` — 9-section review report
 - `scratch/archive-pass2/iteration-001.md` through `scratch/archive-pass2/iteration-004.md` — per-wave findings
 - `memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md` — indexed memory
-<!-- /ANCHOR:pass2 -->
 
 ---

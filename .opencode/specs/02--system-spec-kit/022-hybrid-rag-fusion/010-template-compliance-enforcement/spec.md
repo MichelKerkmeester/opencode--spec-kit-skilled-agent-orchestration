@@ -71,7 +71,7 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 | .opencode/skill/system-spec-kit/references/template-compliance-contract.md | Create | Canonical 140-line shared reference file with full L1-L3 contracts |
 | `.claude/agents/speckit.md` | Modify | Replace 12-line spec.md-only scaffold with 49-line full contract |
 | `.opencode/agent/speckit.md` | Modify | Replicate contract injection for Copilot/OpenCode |
-| `.opencode/agent/chatgpt/speckit.md` | Modify | Replicate contract injection for ChatGPT |
+| .opencode/agent/chatgpt/speckit.md | Modify | Replicate contract injection for ChatGPT |
 | `.codex/agents/speckit.toml` | Modify | Replicate contract injection in TOML format for Codex |
 <!-- /ANCHOR:scope -->
 
@@ -86,7 +86,7 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 |----|-------------|---------------------|
 | REQ-001 | Create shared compliance contract reference file | File exists at references/template-compliance-contract.md with correct L1-L3 contracts matching `template-structure.js` output |
 | REQ-002 | Inject full compact contract into `.claude/agents/speckit.md` | 49-line contract block replaces the 12-line spec.md-only scaffold; covers all 5 L2 doc types + L3 decision-record.md |
-| REQ-003 | Replicate contract injection to 3 remaining CLI agent definitions | `.opencode/agent/speckit.md`, `.opencode/agent/chatgpt/speckit.md`, and `.codex/agents/speckit.toml` all contain the full contract |
+| REQ-003 | Replicate contract injection to 3 remaining CLI agent definitions | `.opencode/agent/speckit.md`, .opencode/agent/chatgpt/speckit.md, and `.codex/agents/speckit.toml` all contain the full contract |
 | REQ-004 | Collapse 3 conflicting timing directives into 1 | Only one validation timing directive exists per agent def: "validate after EACH file write" |
 | REQ-005 | Add post-write validation protocol section | All 4 agent defs include exit code parsing, fix loop (max 3 attempts), proceed/stop logic |
 

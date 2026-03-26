@@ -21,7 +21,7 @@ title: "Checklist: Implement and Remove Deprecated Features"
 ## Pre-Implementation
 
 ### P0
-- [x] [P0] Predecessor packet reviewed and release-packet handoff identified [EVIDENCE: `../021-remediation-revalidation/spec.md` and `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` were re-read during the 2026-03-25 normalization pass.]
+- [x] [P0] Predecessor packet reviewed and release-packet handoff identified [EVIDENCE: `../021-remediation-revalidation/spec.md` and ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md were re-read during the 2026-03-25 normalization pass.]
 - [x] [P0] Packet scope limited to this child phase folder [EVIDENCE: Only packet-local markdown files were edited in `022-implement-and-remove-deprecated-features`.]
 <!-- /ANCHOR:pre-impl -->
 

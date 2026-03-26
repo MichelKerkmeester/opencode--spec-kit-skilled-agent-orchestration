@@ -1627,7 +1627,7 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
-| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 21 categories, 222 features with code references |
+| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 21 categories, 255 features with code references |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
 

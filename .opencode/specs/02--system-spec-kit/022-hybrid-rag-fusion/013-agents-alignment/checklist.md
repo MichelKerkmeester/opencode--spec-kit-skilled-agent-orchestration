@@ -82,8 +82,7 @@ description: "Verification Date: 2026-03-25"
 
 ---
 
-<!-- ANCHOR:content-alignment -->
-## Content Alignment (Pass 2 — 2026-03-25)
+### Content Alignment (Pass 2 — 2026-03-25)
 
 - [x] CHK-060 [P0] @explore removed from all orchestrate LEAF lists and NDP examples (5 runtimes) [EVIDENCE: grep confirms 0 matches for @explore across all agent dirs]
 - [x] CHK-061 [P0] @deep-review added to orchestrate LEAF lists (5 runtimes) [EVIDENCE: grep confirms @deep-review present in all 5 orchestrate files]
@@ -94,7 +93,6 @@ description: "Verification Date: 2026-03-25"
 - [x] CHK-066 [P0] Canonical claim-adjudication packet ported to all 5 deep-review agents [EVIDENCE: copilot verified 0 matches for stale claimId/skepticCheck/refereeDecision across all 5 files]
 - [x] CHK-067 [P0] Canonical review JSONL schema ported to all 5 deep-review agents [EVIDENCE: copilot verified findingsSummary/findingsNew/findingsRefined present, old severityCounts absent]
 - [x] CHK-068 [P1] Codex deep-review 5-dimension scorecard replaced with 4-dimension canonical taxonomy [EVIDENCE: copilot replaced Correctness/Security/Patterns/Maintainability/Performance with correctness/security/traceability/maintainability]
-<!-- /ANCHOR:content-alignment -->
 
 ---
 

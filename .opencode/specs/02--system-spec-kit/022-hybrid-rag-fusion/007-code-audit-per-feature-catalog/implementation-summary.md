@@ -279,8 +279,8 @@ Phase 5 addressed all gaps identified by the 12-agent deep research campaign. 25
 | T044 | `scripts/evals/run-ablation.ts` | 182 | 007-evaluation | Eval script |
 | T045 | `config/config.jsonc` | 159 | 020-feature-flag | Config reference |
 | T046 | `config/filters.jsonc` | 53 | 020-feature-flag | Config reference |
-| T047 | `constitutional/gate-enforcement.md` | 107 | 017-governance | Constitutional memory |
-| T048 | `nodes/phase-system.md` | 108 | 016-tooling | Knowledge node |
+| T047 | `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` | 107 | 017-governance | Constitutional memory |
+| T048 | `.opencode/skill/system-spec-kit/nodes/phase-system.md` | 108 | 016-tooling | Knowledge node |
 | T049 | `mcp_server/api/storage.ts` | 10 | Skip | Not dead code — intentional facade |
 
 Key finding: All 5 `mcp_server/api/*.ts` modules are ARCH-1 stable re-export surfaces. They do not need separate catalog entries — they are architectural facades that prevent consumers from importing directly from `lib/` internals.

@@ -64,21 +64,21 @@ const sharedSpacesReadmePath = path.resolve(__dirname, '../../shared-spaces/READ
 describe('shared-memory admin handlers', () => {
   beforeEach(() => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
-    process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN = 'true';
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'user-owner';
     dbHolder.current = new Database(':memory:');
     mockRequireDb.mockClear();
   });
 
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
-    delete process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN;
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
     vi.restoreAllMocks();
     dbHolder.current?.close();
     dbHolder.current = null;
   });
 
-  it('rejects self-asserted admin mutations when the explicit local-only override is disabled', async () => {
-    delete process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN;
+  it('rejects shared-space admin mutations when no configured admin identity exists', async () => {
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
 
     const response = await handleSharedSpaceUpsert({
       spaceId: 'space-locked',
@@ -89,7 +89,7 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details?.reason).toBe('self_asserted_admin_disabled');
+    expect(envelope.data.details?.reason).toBe('shared_memory_admin_unconfigured');
   });
 
   it('auto-bootstraps the creator as owner when creating a shared space', async () => {
@@ -165,19 +165,28 @@ describe('shared-memory admin handlers', () => {
     `).get('space-rollback')).toEqual({ count: 0 });
   });
 
-  it('rejects updates from non-owners', async () => {
+  it('rejects updates when the configured admin is not an owner of the shared space', async () => {
     await handleSharedSpaceUpsert({
       spaceId: 'space-1',
       tenantId: 'tenant-a',
       name: 'Alpha',
       actorUserId: 'user-owner',
     });
+    getDb().prepare(`
+      UPDATE shared_space_members
+      SET subject_id = ?, role = ?
+      WHERE space_id = ? AND subject_type = ? AND subject_id = ?
+    `).run('user-external-owner', 'owner', 'space-1', 'user', 'user-owner');
+    getDb().prepare(`
+      INSERT INTO shared_space_members (space_id, subject_type, subject_id, role)
+      VALUES (?, ?, ?, ?)
+    `).run('space-1', 'user', 'user-owner', 'editor');
 
     const response = await handleSharedSpaceUpsert({
       spaceId: 'space-1',
       tenantId: 'tenant-a',
       name: 'Hijack',
-      actorUserId: 'user-intruder',
+      actorUserId: 'user-owner',
     });
 
     const envelope = parseEnvelope(response);
@@ -213,18 +222,27 @@ describe('shared-memory admin handlers', () => {
     `).get('space-1', 'agent', 'agent-1')).toEqual({ role: 'editor' });
   });
 
-  it('rejects membership changes from non-owners', async () => {
+  it('rejects membership changes when the configured admin is not an owner', async () => {
     await handleSharedSpaceUpsert({
       spaceId: 'space-1',
       tenantId: 'tenant-a',
       name: 'Alpha',
       actorUserId: 'user-owner',
     });
+    getDb().prepare(`
+      UPDATE shared_space_members
+      SET subject_id = ?, role = ?
+      WHERE space_id = ? AND subject_type = ? AND subject_id = ?
+    `).run('user-external-owner', 'owner', 'space-1', 'user', 'user-owner');
+    getDb().prepare(`
+      INSERT INTO shared_space_members (space_id, subject_type, subject_id, role)
+      VALUES (?, ?, ?, ?)
+    `).run('space-1', 'user', 'user-owner', 'editor');
 
     const response = await handleSharedSpaceMembershipSet({
       spaceId: 'space-1',
       tenantId: 'tenant-a',
-      actorUserId: 'user-intruder',
+      actorUserId: 'user-owner',
       subjectType: 'agent',
       subjectId: 'agent-1',
       role: 'viewer',
@@ -235,7 +253,7 @@ describe('shared-memory admin handlers', () => {
     expect(envelope.data.details?.reason).toBe('shared_space_owner_required');
   });
 
-  it('rejects missing actor identity', async () => {
+  it('accepts missing actor hints and resolves the configured admin identity', async () => {
     const response = await handleSharedSpaceUpsert({
       spaceId: 'space-1',
       tenantId: 'tenant-a',
@@ -243,8 +261,10 @@ describe('shared-memory admin handlers', () => {
     });
 
     const envelope = parseEnvelope(response);
-    expect(response.isError).toBe(true);
-    expect(envelope.data.details?.reason).toBe('actor_identity_required');
+    expect(response.isError).toBe(false);
+    expect(envelope.data.created).toBe(true);
+    expect(envelope.data.actorSubjectType).toBe('user');
+    expect(envelope.data.actorSubjectId).toBe('user-owner');
   });
 
   it('rejects ambiguous actor identity', async () => {
@@ -261,17 +281,23 @@ describe('shared-memory admin handlers', () => {
     expect(envelope.data.details?.reason).toBe('actor_identity_ambiguous');
   });
 
-  it('rejects empty and whitespace-only admin actor identifiers and enforces exactly one actor', () => {
+  it('treats empty actor hints as omitted while still rejecting ambiguous hints', () => {
     const emptyActor = resolveAdminActor('shared_space_upsert', '', undefined);
-    expect(emptyActor.ok).toBe(false);
-    if (!emptyActor.ok) {
-      expect(parseEnvelope(emptyActor.response).data.details?.reason).toBe('actor_identity_required');
+    expect(emptyActor.ok).toBe(true);
+    if (emptyActor.ok) {
+      expect(emptyActor.actor).toEqual({
+        subjectType: 'user',
+        subjectId: 'user-owner',
+      });
     }
 
     const whitespaceActor = resolveAdminActor('shared_space_membership_set', '   ', ' \n\t ');
-    expect(whitespaceActor.ok).toBe(false);
-    if (!whitespaceActor.ok) {
-      expect(parseEnvelope(whitespaceActor.response).data.details?.reason).toBe('actor_identity_required');
+    expect(whitespaceActor.ok).toBe(true);
+    if (whitespaceActor.ok) {
+      expect(whitespaceActor.actor).toEqual({
+        subjectType: 'user',
+        subjectId: 'user-owner',
+      });
     }
 
     const ambiguousActor = resolveAdminActor('shared_space_upsert', 'user-1', 'agent-1');
@@ -365,10 +391,20 @@ describe('shared-memory admin handlers', () => {
       role: 'editor',
     });
 
+    getDb().prepare(`
+      UPDATE shared_space_members
+      SET subject_id = ?, role = ?
+      WHERE space_id = ? AND subject_type = ? AND subject_id = ?
+    `).run('user-external-owner', 'owner', 'space-owner-only', 'user', 'user-owner');
+    getDb().prepare(`
+      INSERT INTO shared_space_members (space_id, subject_type, subject_id, role)
+      VALUES (?, ?, ?, ?)
+    `).run('space-owner-only', 'user', 'user-owner', 'editor');
+
     const response = await handleSharedSpaceMembershipSet({
       spaceId: 'space-owner-only',
       tenantId: 'tenant-a',
-      actorUserId: 'user-editor',
+      actorUserId: 'user-owner',
       subjectType: 'agent',
       subjectId: 'agent-1',
       role: 'viewer',
@@ -398,13 +434,13 @@ describe('shared-memory admin handlers', () => {
     expect(auditRow.decision).toBe('deny');
     expect(auditRow.reason).toBe('shared_space_owner_required');
     expect(auditRow.tenant_id).toBe('tenant-a');
-    expect(auditRow.user_id).toBe('user-editor');
+    expect(auditRow.user_id).toBe('user-owner');
     expect(auditRow.shared_space_id).toBe('space-owner-only');
     expect(JSON.parse(auditRow.metadata)).toMatchObject({
       operation: 'membership_set',
       operationType: 'membership_update',
       actorSubjectType: 'user',
-      actorSubjectId: 'user-editor',
+      actorSubjectId: 'user-owner',
       subjectType: 'agent',
       subjectId: 'agent-1',
       role: 'viewer',

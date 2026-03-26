@@ -112,7 +112,7 @@ Document runtime-facing paths first, then note storage details only where they m
 | `.codex/agents/*.toml` | Available | Codex downstream verification |
 | `.gemini/agents/*.md` and `.agents/agents/*.md` | Available | Gemini runtime/storage verification |
 | `.gemini/workflows/delegate_agent.md` | Available | Scoped delegation-path closeout |
-| `.claude/agents/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, `.gemini/agents/write.md` | Available | Scoped writer-surface closeout |
+| `.claude/agents/write.md`, .opencode/agent/chatgpt/write.md, `.codex/agents/write.toml`, `.gemini/agents/write.md` | Available | Scoped writer-surface closeout |
 <!-- /ANCHOR:dependencies -->
 
 ---

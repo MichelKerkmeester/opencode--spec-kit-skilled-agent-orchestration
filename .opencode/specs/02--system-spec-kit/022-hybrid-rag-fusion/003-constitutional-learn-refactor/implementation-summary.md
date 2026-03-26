@@ -55,7 +55,7 @@ During final verification, active documentation drift was identified outside the
   - `README.md`
   - `.opencode/README.md`
   - `.opencode/agent/speckit.md`
-  - `.opencode/agent/chatgpt/speckit.md`
+  - .opencode/agent/chatgpt/speckit.md
 - Fixed command-contract drift in `.opencode/command/memory/learn.md`:
   - Removed contradictory qualification text.
   - Removed dead "save as critical instead" branch.

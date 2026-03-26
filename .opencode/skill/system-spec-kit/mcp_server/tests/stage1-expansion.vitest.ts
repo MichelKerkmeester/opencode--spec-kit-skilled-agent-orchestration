@@ -92,8 +92,9 @@ vi.mock('../lib/search/embedding-expansion', () => ({
 }));
 
 // Mock query-expander
+const mockExpandQuery = vi.fn((q: string) => [q]);
 vi.mock('../lib/search/query-expander', () => ({
-  expandQuery: vi.fn((q: string) => [q]),
+  expandQuery: (q: string) => mockExpandQuery(q),
 }));
 
 const mockCheapSeedRetrieve = vi.fn(() => []);
@@ -227,6 +228,8 @@ describe('Stage-1: Expansion & Dedup', () => {
     mockIsMemorySummariesEnabled.mockReturnValue(false);
     mockIsHyDEEnabled.mockReturnValue(false);
     mockIsLlmReformulationEnabled.mockReturnValue(false);
+    mockIsExpansionActive.mockReset().mockReturnValue(true);
+    mockExpandQuery.mockReset().mockImplementation((q: string) => [q]);
     mockCheckScaleGate.mockReset().mockReturnValue(false);
     mockQuerySummaryEmbeddings.mockReset().mockReturnValue([]);
     mockRequireDb.mockReset().mockReturnValue({});
@@ -298,6 +301,11 @@ describe('Stage-1: Expansion & Dedup', () => {
     expect(id1Rows).toHaveLength(1);
     expect(id1Rows[0]!.score).toBe(0.9);
     expect(id1Rows[0]!.title).toBe('baseline-version');
+    expect(id1Rows[0]!.stage1BranchScores).toEqual({
+      'test query': 0.9,
+      'test query extra': 0.6,
+    });
+    expect(id1Rows[0]!.stage1BranchCount).toBe(2);
 
     // Total should be 3 unique (1, 3, 4)
     expect(result.candidates).toHaveLength(3);
@@ -579,6 +587,7 @@ describe('Stage-1: Expansion & Dedup', () => {
         { id: 2, title: 'reform blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
       ])
       .mockResolvedValueOnce([
+        { id: 1, title: 'reform duplicate', score: 0.77, tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
         { id: 3, title: 'reform allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
       ]);
 
@@ -592,6 +601,12 @@ describe('Stage-1: Expansion & Dedup', () => {
 
     expect(result.candidates.map((row) => row.id)).toEqual([1, 3]);
     expect(result.candidates.find((row) => row.id === 2)).toBeUndefined();
+    const baseline = result.candidates.find((row) => row.id === 1);
+    expect(baseline?.stage1BranchScores).toMatchObject({
+      'test query': 0,
+      'llm variant': 0.77,
+    });
+    expect(baseline?.stage1BranchCount).toBe(2);
   });
 
   it('T12: deep-mode HyDE results are scope-filtered before merge', async () => {
@@ -604,6 +619,7 @@ describe('Stage-1: Expansion & Dedup', () => {
       { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
     ]);
     mockRunHyDE.mockResolvedValue([
+      { id: 1, title: 'hyde duplicate', score: 0.94, tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
       { id: 2, title: 'hyde allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
       { id: 3, title: 'hyde blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
     ]);
@@ -618,5 +634,40 @@ describe('Stage-1: Expansion & Dedup', () => {
 
     expect(result.candidates.map((row) => row.id)).toEqual([1, 2]);
     expect(result.candidates.find((row) => row.id === 3)).toBeUndefined();
+    const baseline = result.candidates.find((row) => row.id === 1);
+    expect(baseline?.stage1BranchScores).toMatchObject({
+      'test query': 0,
+      hyde: 0.94,
+    });
+    expect(baseline?.stage1BranchCount).toBe(2);
+  });
+
+  it('T13: deep-mode multi-query merges duplicate ids and keeps later branch evidence', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsMultiQueryEnabled.mockReturnValue(true);
+    mockExpandQuery.mockReturnValue(['test query', 'test query variant']);
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch
+      .mockResolvedValueOnce([
+        { id: 1, score: 0.42, title: 'baseline variant' },
+      ])
+      .mockResolvedValueOnce([
+        { id: 1, score: 0.87, title: 'better duplicate' },
+      ]);
+
+    const result = await executeStage1({
+      config: makeConfig({ mode: 'deep' }),
+    });
+
+    expect(result.candidates.map((row) => row.id)).toEqual([1]);
+    const merged = result.candidates.find((row) => row.id === 1);
+    expect(merged?.score).toBe(0.87);
+    expect(merged?.title).toBe('better duplicate');
+    expect(merged?.stage1BranchScores).toEqual({
+      'test query': 0.42,
+      'test query variant': 0.87,
+    });
+    expect(merged?.stage1BranchCount).toBe(2);
   });
 });

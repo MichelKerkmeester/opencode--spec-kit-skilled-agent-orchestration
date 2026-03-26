@@ -188,22 +188,22 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 
 | File | Category | Size |
 |------|----------|------|
-| `09--evaluation-and-measurement/217-evaluation-api-surface.md` | Evaluation | 4.3KB |
-| `14--pipeline-architecture/218-mcp-server-public-api-barrel.md` | Pipeline | 4.4KB |
-| `14--pipeline-architecture/219-embeddings-and-retry-api.md` | Pipeline | 5.3KB |
-| `17--governance/220-constitutional-gate-enforcement-rule-pack.md` | Governance | 5.1KB |
-| `17--governance/221-shared-memory-admin-identity-governance.md` | Governance | 4.8KB |
-| `17--governance/222-governance-audit-review-and-rollout-metrics.md` | Governance | 5.1KB |
-| `19--feature-flag-reference/223-runtime-config-contract.md` | Feature Flags | 5.0KB |
-| `19--feature-flag-reference/224-filter-config-contract.md` | Feature Flags | 4.7KB |
-| `20--remediation-revalidation/225-remediation-runtime-surface.md` | Remediation | 4.8KB |
-| `20--remediation-revalidation/226-memory-health-auto-repair.md` | Remediation | 4.5KB |
-| `20--remediation-revalidation/227-feedback-driven-revalidation.md` | Remediation | 4.8KB |
-| `21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md` | Deprecated | 4.4KB |
-| `21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md` | Deprecated | 3.9KB |
-| `21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md` | Deprecated | 3.8KB |
-| `21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md` | Deprecated | 4.1KB |
-| `21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md` | Deprecated | 3.9KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md` | Evaluation | 4.3KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md` | Pipeline | 4.4KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md` | Pipeline | 5.3KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md` | Governance | 5.1KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md` | Governance | 4.8KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md` | Governance | 5.1KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md` | Feature Flags | 5.0KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md` | Feature Flags | 4.7KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md` | Remediation | 4.8KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/02-memory-health-auto-repair.md` | Remediation | 4.5KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md` | Remediation | 4.8KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` | Deprecated | 4.4KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md` | Deprecated | 3.9KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md` | Deprecated | 3.8KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md` | Deprecated | 4.1KB |
+| `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md` | Deprecated | 3.9KB |
 
 ### Phase H Playbook Verification
 

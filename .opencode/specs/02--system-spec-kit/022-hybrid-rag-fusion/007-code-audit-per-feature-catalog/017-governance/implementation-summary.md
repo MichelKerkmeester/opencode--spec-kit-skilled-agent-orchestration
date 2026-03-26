@@ -102,7 +102,7 @@ None. All governance features verified as MATCH after remediation pass (2026-03-
 
 | Field | Value |
 |-------|-------|
-| **Source File** | `constitutional/gate-enforcement.md` (107 lines) |
+| **Source File** | `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` (107 lines) |
 | **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
 | **Verdict** | Documented as constitutional memory |
 

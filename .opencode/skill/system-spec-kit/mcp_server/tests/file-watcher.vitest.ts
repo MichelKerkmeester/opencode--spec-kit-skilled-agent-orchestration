@@ -454,18 +454,19 @@ describe('file-watcher runtime behavior', () => {
     try {
       await waitForWatcherReady(watcher);
       await fs.rename(oldPath, newPath);
+      const resolvedNewPath = await fs.realpath(newPath);
       emit('unlink', oldPath);
       emit('add', newPath);
 
       await waitFor(
         () =>
           removeFn.mock.calls.some((call) => call[0] === oldPath) &&
-          reindexFn.mock.calls.some((call) => call[0] === newPath),
+          reindexFn.mock.calls.some((call) => call[0] === resolvedNewPath),
         { timeoutMs: 5000 }
       );
 
       expect(indexedPaths.has(oldPath)).toBe(false);
-      expect(indexedPaths.has(newPath)).toBe(true);
+      expect(indexedPaths.has(resolvedNewPath)).toBe(true);
     } finally {
       await closeTrackedWatcher(watcher);
     }
@@ -538,9 +539,10 @@ describe('file-watcher runtime behavior', () => {
       }
 
       const finalPath = currentPath;
-      await waitFor(() => reindexFn.mock.calls.some((call) => call[0] === finalPath), { timeoutMs: 5000 });
+      const resolvedFinalPath = await fs.realpath(finalPath);
+      await waitFor(() => reindexFn.mock.calls.some((call) => call[0] === resolvedFinalPath), { timeoutMs: 5000 });
 
-      expect(indexedPaths.has(finalPath)).toBe(true);
+      expect(indexedPaths.has(resolvedFinalPath)).toBe(true);
       for (const stalePath of paths.slice(0, -1)) {
         expect(indexedPaths.has(stalePath)).toBe(false);
       }
@@ -581,22 +583,56 @@ describe('file-watcher runtime behavior', () => {
 
       await Promise.all(originals.slice(0, 2).map((oldPath, index) => fs.rename(oldPath, renamed[index])));
       await fs.rename(originals[2], renamed[2]);
+      const resolvedRenamed = await Promise.all(renamed.map(async (filePath) => fs.realpath(filePath)));
       originals.forEach((oldPath) => emit('unlink', oldPath));
       renamed.forEach((newPath) => emit('add', newPath));
 
       await waitFor(
         () =>
           originals.every((oldPath) => removeFn.mock.calls.some((call) => call[0] === oldPath)) &&
-          renamed.every((newPath) => reindexFn.mock.calls.some((call) => call[0] === newPath)),
+          resolvedRenamed.every((newPath) => reindexFn.mock.calls.some((call) => call[0] === newPath)),
         { timeoutMs: 7000 }
       );
 
       for (const oldPath of originals) {
         expect(indexedPaths.has(oldPath)).toBe(false);
       }
-      for (const newPath of renamed) {
+      for (const newPath of resolvedRenamed) {
         expect(indexedPaths.has(newPath)).toBe(true);
       }
+    } finally {
+      await closeTrackedWatcher(watcher);
+    }
+  });
+
+  it('reindexes symlinked files via their resolved path and deduplicates unchanged aliases', async () => {
+    const { emit, watchFactory } = createWatchFactoryHarness();
+    const tempDir = await createTempDir();
+    const realPath = path.join(tempDir, 'real.md');
+    const symlinkPath = path.join(tempDir, 'alias.md');
+    await fs.writeFile(realPath, 'shared-target', 'utf8');
+    await fs.symlink(realPath, symlinkPath);
+
+    const reindexFn = vi.fn(async () => undefined);
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      watchFactory,
+      reindexFn,
+      debounceMs: 50,
+    });
+    trackWatcher(watcher);
+
+    try {
+      await waitForWatcherReady(watcher);
+
+      const resolvedRealPath = await fs.realpath(realPath);
+      emit('change', symlinkPath);
+      await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 4000 });
+      expect(reindexFn).toHaveBeenCalledWith(resolvedRealPath);
+
+      emit('change', realPath);
+      await advanceOrDelay(250);
+      expect(reindexFn).toHaveBeenCalledTimes(1);
     } finally {
       await closeTrackedWatcher(watcher);
     }

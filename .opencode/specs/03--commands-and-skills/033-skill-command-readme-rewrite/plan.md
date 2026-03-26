@@ -45,11 +45,11 @@ Rewrite 23 READMEs from scratch in 5 batches. Each README is sourced from its SK
 
 ### Definition of Done
 
-- [ ] All 23 READMEs rewritten
-- [ ] 0 HVR hard blocker violations
-- [ ] All .txt command READMEs converted to .md
-- [ ] Old .txt files removed
-- [ ] Every README has blockquote tagline, TOC, numbered sections, anchors
+- [x] All 23 READMEs rewritten
+- [x] 0 HVR hard blocker violations
+- [x] All .txt command READMEs converted to .md
+- [x] Old .txt files removed
+- [x] Every README has blockquote tagline, TOC, numbered sections, anchors
 <!-- /ANCHOR:quality-gates -->
 
 ---

@@ -60,8 +60,7 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Content Alignment Review & Remediation (2026-03-25)
+### Phase 4: Content Alignment Review & Remediation (2026-03-25)
 <!-- alias: Deep review of agent content vs 022-hybrid-rag-fusion changes -->
 
 - [x] T015 Deep review of 10 agents × 5 runtimes via cli-copilot (GPT-5.4 high + GPT-5.3-Codex xhigh) — review-report.md in scratch/
@@ -75,7 +74,6 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 - [x] T023 Port canonical review JSONL schema into all 5 deep-review agents (via copilot Wave A+B)
 - [x] T024 Replace 5-dimension scorecard with 4-dimension canonical taxonomy in codex deep-review
 - [x] T025 Update spec folder docs to reflect content alignment pass
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

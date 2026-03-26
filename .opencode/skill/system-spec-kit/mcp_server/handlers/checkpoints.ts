@@ -189,11 +189,20 @@ function mergeCheckpointScopeMetadata(
 
 function checkpointMatchesScope(rawMetadata: unknown, scope: CheckpointScopeArgs): boolean {
   const metadata = parseCheckpointMetadata(rawMetadata);
+  const matchesScopeField = (field: keyof CheckpointScopeArgs): boolean => {
+    const expected = scope[field];
+    if (expected === undefined) {
+      return true;
+    }
+    const actual = metadata[field];
+    return actual === undefined || actual === expected;
+  };
+
   return (
-    (scope.tenantId === undefined || metadata.tenantId === scope.tenantId) &&
-    (scope.userId === undefined || metadata.userId === scope.userId) &&
-    (scope.agentId === undefined || metadata.agentId === scope.agentId) &&
-    (scope.sharedSpaceId === undefined || metadata.sharedSpaceId === scope.sharedSpaceId)
+    matchesScopeField('tenantId') &&
+    matchesScopeField('userId') &&
+    matchesScopeField('agentId') &&
+    matchesScopeField('sharedSpaceId')
   );
 }
 

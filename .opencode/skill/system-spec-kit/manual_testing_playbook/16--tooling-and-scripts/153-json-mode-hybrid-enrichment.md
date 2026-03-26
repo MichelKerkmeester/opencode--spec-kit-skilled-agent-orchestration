@@ -57,7 +57,7 @@ Operators verify that structured JSON inputs produce correct memory output and t
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md)
-- Source spec: [016-json-mode-hybrid-enrichment/spec.md](../../../specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md)
+- Source spec: [016-json-mode-hybrid-enrichment/spec.md](../../../../../specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md)
 
 ---
 

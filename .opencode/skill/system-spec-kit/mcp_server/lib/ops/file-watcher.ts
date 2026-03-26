@@ -168,6 +168,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const watchRoots = config.paths.map((watchPath) => path.resolve(watchPath));
   const debounceTimers = new Map<string, NodeJS.Timeout>();
   const contentHashes = new Map<string, string>();
+  const canonicalPaths = new Map<string, string>();
   const inFlightReindex = new Set<Promise<void>>();
   let isClosing = false;
 
@@ -279,6 +280,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         }
 
         if (controller.signal.aborted) return;
+        activeAbortControllers.set(resolvedPath, controller);
+        canonicalPaths.set(filePath, resolvedPath);
+        canonicalPaths.set(resolvedPath, resolvedPath);
 
         const containmentRoots = await Promise.all(config.paths.map(async (root) => {
           const normalizedRoot = path.resolve(root);
@@ -305,7 +309,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         // Created then deleted before the debounce timer fires.
         let nextHash: string;
         try {
-          nextHash = await hashFileContent(filePath);
+          nextHash = await hashFileContent(resolvedPath);
         } catch (hashErr: unknown) {
           const code = hashErr instanceof Error && 'code' in hashErr && typeof hashErr.code === 'string'
             ? hashErr.code
@@ -317,7 +321,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         if (controller.signal.aborted) return;
 
         if (!forceReindex) {
-          const previousHash = contentHashes.get(filePath);
+          const previousHash = contentHashes.get(resolvedPath);
           if (previousHash && previousHash === nextHash) {
             return;
           }
@@ -330,19 +334,25 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
           const reindexStart = Date.now();
           await withBusyRetry(async () => {
-            await config.reindexFn(filePath);
+            await config.reindexFn(resolvedPath);
           });
           const reindexElapsed = Date.now() - reindexStart;
           filesReindexed++;
           totalReindexTimeMs += reindexElapsed;
-          console.error(`[file-watcher] Reindexed ${path.basename(filePath)} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
+          console.error(`[file-watcher] Reindexed ${path.basename(resolvedPath)} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
 
-          contentHashes.set(filePath, nextHash);
+          contentHashes.set(resolvedPath, nextHash);
         } finally {
           releaseReindexSlot();
         }
       } finally {
-        activeAbortControllers.delete(filePath);
+        if (activeAbortControllers.get(filePath) === controller) {
+          activeAbortControllers.delete(filePath);
+        }
+        const resolvedPath = canonicalPaths.get(filePath);
+        if (resolvedPath && activeAbortControllers.get(resolvedPath) === controller) {
+          activeAbortControllers.delete(resolvedPath);
+        }
       }
     });
   };
@@ -355,7 +365,13 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         return;
       }
 
+      const canonicalPath = canonicalPaths.get(filePath) ?? filePath;
+      contentHashes.delete(canonicalPath);
       contentHashes.delete(filePath);
+      canonicalPaths.delete(filePath);
+      if (canonicalPath !== filePath) {
+        canonicalPaths.delete(canonicalPath);
+      }
       if (!config.removeFn) {
         return;
       }

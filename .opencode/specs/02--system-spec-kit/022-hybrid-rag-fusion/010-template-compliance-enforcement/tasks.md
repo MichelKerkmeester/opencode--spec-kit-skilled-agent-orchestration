@@ -46,7 +46,7 @@ Phase A: High-Impact, Low-Risk -- create foundational artifacts.
 Phase B: Contract Injection -- embed compact structural contract in all agent definitions.
 
 - [ ] T004 Replace 12-line spec.md-only scaffold with full 49-line compact contract in `.claude/agents/speckit.md` (Section 8 "Inline Scaffold Contract"). Contract covers all 5 L2 doc types + L3 decision-record.md.
-- [ ] T005 [P] Replicate T004 contract injection to `.opencode/agent/speckit.md` and `.opencode/agent/chatgpt/speckit.md`
+- [ ] T005 [P] Replicate T004 contract injection to `.opencode/agent/speckit.md` and .opencode/agent/chatgpt/speckit.md
 - [ ] T006 [P] Replicate T004 contract injection to `.codex/agents/speckit.toml` (TOML multi-line string format with triple-quoted literals)
 
 Phase C: Directive Consolidation -- eliminate conflicting validation timing instructions.

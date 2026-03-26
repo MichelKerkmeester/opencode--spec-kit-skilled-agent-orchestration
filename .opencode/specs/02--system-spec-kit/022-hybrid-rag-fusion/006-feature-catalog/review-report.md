@@ -57,43 +57,43 @@
 
 | ID | Title | Category | File | Evidence | Impact | Fix |
 |----|-------|----------|------|----------|--------|-----|
-| P0-01 | False deprecation claim: positional JSON saves still work | 16-tooling | `17-json-primary-deprecation-posture.md` | `scripts/memory/generate-context.ts` and `scripts/loaders/data-loader.ts` still accept positional JSON file input | Catalog falsely claims positional saves are removed; users may avoid a working feature | Update catalog to reflect that `--json`/`--stdin` are preferred but positional file input remains functional |
+| P0-01 | False deprecation claim: positional JSON saves still work | 16-tooling | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` | `scripts/memory/generate-context.ts` and `scripts/loaders/data-loader.ts` still accept positional JSON file input | Catalog falsely claims positional saves are removed; users may avoid a working feature | Update catalog to reflect that `--json`/`--stdin` are preferred but positional file input remains functional |
 
 ### P1 — Required Fixes
 
 | ID | Title | Category | File | Evidence | Fix |
 |----|-------|----------|------|----------|-----|
-| P1-01 | Stale flag count: doc says 46, code has 53 | 17-governance | `02-feature-flag-sunset-audit.md` | `mcp_server/lib/search/search-flags.ts` exports 53 `is*` helpers | Update count to 53 |
-| P1-02 | Warn-vs-fail drift: MCP_MAX_MEMORY_TOKENS | 19-flags | `03-3-mcp-configuration.md` | Code hard-fails with `PF020` at `preflight.ts:505-513` | Change "warns" to "hard-fails" |
-| P1-03 | EMBEDDING_DIM: doc says only '768' shortcut | 19-flags | `05-5-embedding-and-api.md` | Code honors any positive explicit dimension at `factory.ts:167-172` | Correct the description |
-| P1-04 | RERANKER_LOCAL fallback: doc says RRF, code says original ordering | 19-flags | `05-5-embedding-and-api.md` | `local-reranker.ts:236-255` falls back to original order | Correct fallback description |
-| P1-05 | SPECKIT_CONSUMPTION_LOG: doc says inert, code is active default-ON | 19-flags | `06-6-debug-and-telemetry.md` | `consumption-logger.ts:10,82-85` | Remove "inert" claim |
-| P1-06 | Incomplete flag inventory: missing SPECKIT_TEMPORAL_CONTIGUITY, SPECKIT_HYDE_ACTIVE | 19-flags | `01-1-search-pipeline-features-speckit.md` | `search-flags.ts:229-234`, `hyde.ts:22-25` | Add missing flags |
-| P1-07 | Graph concept routing understated | 19-flags | `01-1-search-pipeline-features-speckit.md:75` | `search-flags.ts:313-319`, `stage1-candidate-gen.ts:317-320` expose `graphActivated` | Correct claim |
-| P1-08 | Broken internal link | master | `FEATURE_CATALOG.md:3925` | `#comprehensive-remediation-sprint-8` target doesn't exist | Fix or remove link |
-| P1-09 | Repeated drifted rows in section 21 | master | `FEATURE_CATALOG.md:4538-4591` | MCP_MAX_MEMORY_TOKENS, EMBEDDING_DIM, RERANKER_LOCAL rows drift from code | Update rows |
-| P1-10 | Stale RSF references: claim "fully removed" but stale refs remain | 12-query-intel | `02-relative-score-fusion-in-shadow-mode.md` | Tests and Stage 2 comments still reference RSF | Soften claim or clean up refs |
-| P1-11 | Typed traversal spec-ahead-of-implementation | 10-graph-signals | `16-typed-traversal.md` | `sparse-first-graph.vitest.ts` is entirely skipped | Mark as "planned" or implement |
-| P1-12 | Stale AI-intent comment count | 16-tooling | `05-code-standards-alignment.md` | No AI-WHY/AI-TRACE/AI-GUARD matches in current mcp_server | Update or remove "26 conversions" claim |
-| P1-13 | Feature-catalog comment coverage overstated | 16-tooling | `11-feature-catalog-code-references.md` | 192/280 files have comments, not universal | Correct coverage claim |
-| P1-14 | Session-capturing save-path posture overstated | 16-tooling | `12-session-capturing-pipeline-quality.md` | `generate-context.ts` still accepts positional file input | Align with P0-01 fix |
-| P1-15 | Template compliance fix-loop not implemented | 16-tooling | `18-template-compliance-contract-enforcement.md` | "up to 3 attempts" not found in agent definitions | Remove or implement claim |
-| P1-16 | Stale RSF fusion function names | 11-scoring | `13-scoring-and-fusion-corrections.md` | `fuseResultsRsfMulti()`/`fuseResultsRsfCrossVariant()` removed; exports are `fuseResultsMulti`, `fuseResultsCrossVariant` | Update function names |
+| P1-01 | Stale flag count: doc says 46, code has 53 | 17-governance | `.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md` | `mcp_server/lib/search/search-flags.ts` exports 53 `is*` helpers | Update count to 53 |
+| P1-02 | Warn-vs-fail drift: MCP_MAX_MEMORY_TOKENS | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md` | Code hard-fails with `PF020` at `preflight.ts:505-513` | Change "warns" to "hard-fails" |
+| P1-03 | EMBEDDING_DIM: doc says only '768' shortcut | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md` | Code honors any positive explicit dimension at `factory.ts:167-172` | Correct the description |
+| P1-04 | RERANKER_LOCAL fallback: doc says RRF, code says original ordering | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md` | `local-reranker.ts:236-255` falls back to original order | Correct fallback description |
+| P1-05 | SPECKIT_CONSUMPTION_LOG: doc says inert, code is active default-ON | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md` | `consumption-logger.ts:10,82-85` | Remove "inert" claim |
+| P1-06 | Incomplete flag inventory: missing SPECKIT_TEMPORAL_CONTIGUITY, SPECKIT_HYDE_ACTIVE | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | `search-flags.ts:229-234`, `hyde.ts:22-25` | Add missing flags |
+| P1-07 | Graph concept routing understated | 19-flags | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:75` | `search-flags.ts:313-319`, `stage1-candidate-gen.ts:317-320` expose `graphActivated` | Correct claim |
+| P1-08 | Broken internal link | master | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:3925` | `#comprehensive-remediation-sprint-8` target doesn't exist | Fix or remove link |
+| P1-09 | Repeated drifted rows in section 21 | master | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md:4538-4591` | MCP_MAX_MEMORY_TOKENS, EMBEDDING_DIM, RERANKER_LOCAL rows drift from code | Update rows |
+| P1-10 | Stale RSF references: claim "fully removed" but stale refs remain | 12-query-intel | `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md` | Tests and Stage 2 comments still reference RSF | Soften claim or clean up refs |
+| P1-11 | Typed traversal spec-ahead-of-implementation | 10-graph-signals | `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/16-typed-traversal.md` | `sparse-first-graph.vitest.ts` is entirely skipped | Mark as "planned" or implement |
+| P1-12 | Stale AI-intent comment count | 16-tooling | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md` | No AI-WHY/AI-TRACE/AI-GUARD matches in current mcp_server | Update or remove "26 conversions" claim |
+| P1-13 | Feature-catalog comment coverage overstated | 16-tooling | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` | 192/280 files have comments, not universal | Correct coverage claim |
+| P1-14 | Session-capturing save-path posture overstated | 16-tooling | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | `generate-context.ts` still accepts positional file input | Align with P0-01 fix |
+| P1-15 | Template compliance fix-loop not implemented | 16-tooling | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` | "up to 3 attempts" not found in agent definitions | Remove or implement claim |
+| P1-16 | Stale RSF fusion function names | 11-scoring | `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` | `fuseResultsRsfMulti()`/`fuseResultsRsfCrossVariant()` removed; exports are `fuseResultsMulti`, `fuseResultsCrossVariant` | Update function names |
 | P1-17 | Scoring calibration weight drift | 11-scoring | other scoring files | Various weight/threshold docs vs code drift | Verify and update each |
-| P1-18 | Checkpoint restore atomicity overstated | 05-lifecycle | `03-checkpoint-restore-checkpointrestore.md` | Merge mode can partially restore with warnings | Clarify merge vs clearExisting behavior |
+| P1-18 | Checkpoint restore atomicity overstated | 05-lifecycle | `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md` | Merge mode can partially restore with warnings | Clarify merge vs clearExisting behavior |
 | P1-19 | Retrieval enhancement source files over-inclusive | 15-retrieval | multiple files | Source Files sections list many unrelated modules | Trim to actual implementation files |
-| P1-20 | Quality proxy correlation claim unverifiable | 09-eval | `05-quality-proxy-formula.md` | No source evidence for manual ground-truth correlation testing | Remove or substantiate claim |
-| P1-21 | Memory quality source files massively over-broad | 13-memory-quality | `06-reconsolidation-on-save.md` + others | Source Files sections include unrelated modules | Trim to actual surface |
-| P1-22 | Math.max/min elimination overstated | 08-bugfixes | `08-mathmax-min-stack-overflow-elimination.md` | Residual spread sites remain in k-value-analysis.ts, graph-lifecycle.ts | Correct "elimination" claim |
-| P1-23 | Master index missing 5 files | master | `FEATURE_CATALOG.md` | Only 217 of 222 category docs linked. Missing: `01/10-fast-delegated-search`, `16/18-template-compliance`, `19/08-audit-phase-020`, `20/01-category-stub`, `21/01-category-stub` | Add missing entries |
-| P1-24 | Master index TOC anchors broken | master | `FEATURE_CATALOG.md` | TOC uses `#N--slug` but headings resolve to `#N-slug` (single dash). All 21 entries affected | Fix anchor format |
+| P1-20 | Quality proxy correlation claim unverifiable | 09-eval | `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md` | No source evidence for manual ground-truth correlation testing | Remove or substantiate claim |
+| P1-21 | Memory quality source files massively over-broad | 13-memory-quality | `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md` + others | Source Files sections include unrelated modules | Trim to actual surface |
+| P1-22 | Math.max/min elimination overstated | 08-bugfixes | `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md` | Residual spread sites remain in k-value-analysis.ts, graph-lifecycle.ts | Correct "elimination" claim |
+| P1-23 | Master index missing 5 files | master | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` | Only 217 of 222 category docs linked. Missing: `01/10-fast-delegated-search`, `16/18-template-compliance`, `19/08-audit-phase-020`, `20/01-category-stub`, `21/01-category-stub` | Add missing entries |
+| P1-24 | Master index TOC anchors broken | master | `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` | TOC uses `#N--slug` but headings resolve to `#N-slug` (single dash). All 21 entries affected | Fix anchor format |
 
 ### P2 — Advisories (25 items)
 
 Common P2 patterns:
 - **Over-broad source file lists** (13 instances): Catalog entries list many unrelated modules in their Source Files/Tests sections. Most common in categories 13, 15.
 - **Minor parameter mismatches** (5 instances): e.g., `DEFAULT_MAX_TYPED_DEGREE` vs documented `MAX_TYPED_DEGREE`; `excludePatterns` using substring matching not regex.
-- **Weak cross-reference links** (3 instances): `FEATURE_CATALOG_IN_SIMPLE_TERMS.md` audit-phase notes are prose-only, not direct links.
+- **Weak cross-reference links** (3 instances): `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md` audit-phase notes are prose-only, not direct links.
 - **Pagination claim** (1 instance): Checkpoint listing describes pagination but only `limit` is exposed.
 - **Template compliance scope** (1 instance): `check-source-dist-alignment.ts` scans broader than documented.
 - **Stale helper count** (1 instance): Feature flag sunset audit helper count.
@@ -107,17 +107,17 @@ Common P2 patterns:
 
 ### WS-1: Fix False Deprecation Claim (P0) — Immediate
 
-Fix `16--tooling-and-scripts/17-json-primary-deprecation-posture.md` to reflect that positional JSON file input remains functional. Update both the individual file and the corresponding section in `FEATURE_CATALOG.md`.
+Fix `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` to reflect that positional JSON file input remains functional. Update both the individual file and the corresponding section in `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`.
 
 ### WS-2: Update Stale Numeric Claims and Flag Inventories (P1) — High Priority
 
 | File | Current Claim | Correct Value |
 |------|--------------|---------------|
-| `17-governance/02-feature-flag-sunset-audit.md` | 46 helpers | 53 helpers |
-| `19-flags/01-1-search-pipeline-features.md` | Missing flags | Add SPECKIT_TEMPORAL_CONTIGUITY, SPECKIT_HYDE_ACTIVE |
-| `16-tooling/05-code-standards-alignment.md` | 26 AI-intent conversions | 0 (removed) |
-| `16-tooling/11-feature-catalog-code-references.md` | Universal coverage | 192/280 files |
-| `11-scoring/13-scoring-and-fusion-corrections.md` | RSF function names | Updated RRF names |
+| `.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md` | 46 helpers | 53 helpers |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Missing flags | Add SPECKIT_TEMPORAL_CONTIGUITY, SPECKIT_HYDE_ACTIVE |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md` | 26 AI-intent conversions | 0 (removed) |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` | Universal coverage | 192/280 files |
+| `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` | RSF function names | Updated RRF names |
 
 ### WS-3: Correct Behavior Descriptions (P1) — High Priority
 
@@ -126,8 +126,8 @@ Fix warn-vs-fail, fallback descriptions, inert-vs-active claims in feature flag 
 ### WS-4: Fix Category 01-02 Drift (P1) — Medium Priority (RESOLVED via Iteration 2)
 
 Re-review with corrected `mcp_server/` scope completed. Results:
-- **Category 01 (retrieval)**: 9/11 aligned, 1 partial, 1 misaligned. P1: `11-session-recovery-memory-continue.md` has stale resume-mode description. P2: `07-ast-level-section-retrieval-tool.md` understates existing AST groundwork.
-- **Category 02 (mutation)**: 5/10 aligned, 4 partial, 1 misaligned. P1s: `07-namespace-management-crud-tools.md` wrong actor identity model (doc says required, code makes optional); `09-correction-tracking-with-undo.md` corrections module exists but has no handler/tool wiring; other partials for over-broad source file lists and minor description drift.
+- **Category 01 (retrieval)**: 9/11 aligned, 1 partial, 1 misaligned. P1: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` has stale resume-mode description. P2: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` understates existing AST groundwork.
+- **Category 02 (mutation)**: 5/10 aligned, 4 partial, 1 misaligned. P1s: `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md` wrong actor identity model (doc says required, code makes optional); `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md` corrections module exists but has no handler/tool wiring; other partials for over-broad source file lists and minor description drift.
 
 ### WS-5: Trim Over-Broad Source File Lists (P2) — Low Priority
 
@@ -137,9 +137,9 @@ Re-review with corrected `mcp_server/` scope completed. Results:
 
 ## 5. Spec Seed
 
-- Update `006-feature-catalog/spec.md` with findings count and remediation scope
+- Update `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md` with findings count and remediation scope
 - Create remediation tasks tracking P0-01 fix and WS-2/WS-3 updates
-- Update file count in parent `022-hybrid-rag-fusion/spec.md` (currently says 222, filesystem has 224)
+- Update file count in parent `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md` (currently says 222, filesystem has 224)
 
 ---
 

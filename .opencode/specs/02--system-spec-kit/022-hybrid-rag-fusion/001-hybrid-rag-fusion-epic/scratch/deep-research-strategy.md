@@ -64,6 +64,7 @@ Comprehensive hybrid-rag-fusion system analysis: pipeline architecture, scoring 
 - [iter-14] Grep-first verification approach was extremely efficient -- each claim confirmed/falsified with 1-2 targeted searches. rrf-fusion.ts full read was highest-ROI (answered claims 1, 4, and partially 2 in one read)
 - [iter-16] Pure synthesis iteration: reading 6 prior iteration files gave complete evidence base. Categorization framework (6 categories) and effort/impact matrix emerged naturally from grouping ~60 scattered findings into 20 prioritized items
 - [iter-17] Strategy.md answered-question summaries served as high-ROI index into which iterations had Q5-relevant findings. 4-category misalignment framework (spec-vs-code, code-vs-standards, dead code, naming) with severity ratings gave comprehensive Q5 closure
+- [iter-21] Comparing the live packet `description.json` to active `spec.md` and `plan.md` contract sections surfaced the renamed-folder drift immediately; checking the research state log against the missing file confirmed the canonical research artifact gap without a broad tree reread
 
 ## What Failed
 - [iter-1] Dispatch context had wrong path prefix (shared/ instead of mcp_server/); required Glob discovery step (1 extra tool call)
@@ -88,12 +89,13 @@ Comprehensive hybrid-rag-fusion system analysis: pipeline architecture, scoring 
 - [iter-20] No failures -- gap analysis iteration used directory listing + cross-referencing, no external research targets
 - [iter-19] Three prior synthesis iterations (16, 17, 18) served as pre-digested evidence: iter-16 for effort/impact, iter-17 for misalignment taxonomy, iter-18 for cross-validation verdicts. Unified these into P0/P1/P2 x S/M/L x 1-5 impact scoring with sprint-level roadmap. Adding test coverage gaps (Category G) as separate from the bugs they validate was an important structural decision
 - [iter-20] Directory listing with LOC counts gave complete 28-subdirectory coverage map in one bash command. Cross-referencing against strategy.md iteration log made gap analysis systematic. Quantified the 42% investigated / 58% uninvestigated split that was invisible during the campaign
+- [iter-21] The requested root review scope had no initialized deep-review state files, and the epic packet had only deep-research state plus `deep-research-strategy.md`; review continuation had to fall back to those artifacts as the nearest available state source
 
 ## Exhausted Approaches (do not retry)
 [None yet]
 
 ## Next Focus
-RESEARCH COMPLETE. 20/20 iterations executed. 18/18 questions answered. 25 recommendations produced across 7 categories (A-G) with sprint-level roadmap. 15 research debt items cataloged for the next campaign. Next campaign should start with RD-01 (storage/ deep dive, 7,148 LOC) and RD-02 (handlers/ audit, 14,280 LOC).
+DEEP REVIEW FOLLOW-UP: fix the renamed-packet slug drift inside `012-pre-release-remediation/spec.md` and `plan.md`, then resolve whether `research.md` should be restored or all canonical references should move to the `research/` directory bundle. After those two traceability fixes, re-run validator-facing integrity review on the parent and root packet surfaces.
 
 ## Known Context
 Prior research exists in research.md (consolidated from 002-hybrid-rag-fusion and 006-hybrid-rag-fusion-logic-improvements). The epic is 78.9% complete (S0-S3 done, S4-S9 pending). The system has 4 search channels (vector, BM25, FTS5, graph), 15+ scoring signals, and 32 MCP tools. Prior analysis campaign (w1-w7 files) exists in scratch/ from a different methodology.

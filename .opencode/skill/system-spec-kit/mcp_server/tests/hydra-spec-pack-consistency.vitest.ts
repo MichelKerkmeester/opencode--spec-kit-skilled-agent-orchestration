@@ -102,7 +102,7 @@ describe('Hydra spec-pack truth sync', () => {
       }
     }
 
-    expect(tasksContent).toContain('.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md');
+    expect(tasksContent).toContain('.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md');
     expect(tasksContent).toContain('.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md');
     expect(tasksContent).toContain('Fix retention sweeps so deletion uses the passed database handle');
     expect(checklistContent).toMatch(/\*\*Verification Date\*\*: \d{4}-\d{2}-\d{2}/);

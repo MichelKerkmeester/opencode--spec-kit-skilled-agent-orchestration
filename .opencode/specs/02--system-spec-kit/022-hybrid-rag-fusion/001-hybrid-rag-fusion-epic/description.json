@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
-  "description": "Feature Specification: 001-hybrid-rag-fusion-epic — 12-child epic subtree for Hybrid RAG Fusion implementation (11 sprint packets plus phase 012 release control)",
+  "description": "Feature Specification: 001-hybrid-rag-fusion-epic — 12-child epic subtree for Hybrid RAG Fusion implementation (11 sprint packets plus `012-pre-release-remediation`)",
   "keywords": [
     "hybrid-rag-fusion",
     "epic",
@@ -10,7 +10,7 @@
   ],
   "status": "In Progress",
   "importance_tier": "critical",
-  "lastUpdated": "2026-03-25T00:00:00.000Z",
+  "lastUpdated": "2026-03-26T00:00:00.000Z",
   "specId": "001",
   "folderSlug": "hybrid-rag-fusion-epic",
   "parentChain": [

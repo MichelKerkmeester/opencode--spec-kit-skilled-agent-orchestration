@@ -664,7 +664,11 @@ function resolveSessionLifecycle(
   void db;
 
   // Security: session scope derived from server context, not caller input
-  const trustedSession = sessionManager.resolveTrustedSession(args.sessionId ?? null);
+  const trustedSession = sessionManager.resolveTrustedSession(args.sessionId ?? null, {
+    tenantId: args.tenantId,
+    userId: args.userId,
+    agentId: args.agentId,
+  });
   if (trustedSession.error) {
     return {
       requestedSessionId: trustedSession.requestedSessionId,

@@ -89,13 +89,22 @@ interface SessionState {
   lastAction: string | null;
   contextSummary: string | null;
   pendingWork: string | null;
+  tenantId: string | null;
+  userId: string | null;
+  agentId: string | null;
   data: Record<string, unknown> | null;
   createdAt: string;
   updatedAt: string;
   _recovered: boolean;
 }
 
-interface SessionStateInput {
+interface SessionIdentityScope {
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
+}
+
+interface SessionStateInput extends SessionIdentityScope {
   specFolder?: string | null;
   currentTask?: string | null;
   lastAction?: string | null;
@@ -147,6 +156,9 @@ interface ContinueSessionInput {
   lastAction?: string | null;
   contextSummary?: string | null;
   pendingWork?: string | null;
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
   data?: Record<string, unknown> | null;
 }
 
@@ -307,7 +319,67 @@ function isTrackedSession(sessionId: string): boolean {
     || hasSentMemoryRecord(normalizedSessionId);
 }
 
-function resolveTrustedSession(requestedSessionId: string | null = null): TrustedSessionResolution {
+function normalizeIdentityValue(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const normalizedValue = value.trim();
+  return normalizedValue.length > 0 ? normalizedValue : null;
+}
+
+function getSessionIdentityRecord(sessionId: string): {
+  tenantId: string | null;
+  userId: string | null;
+  agentId: string | null;
+} | null {
+  if (!db || !hasTable('session_state')) {
+    return null;
+  }
+
+  const row = db.prepare(`
+    SELECT tenant_id, user_id, agent_id
+    FROM session_state
+    WHERE session_id = ?
+    LIMIT 1
+  `).get(sessionId) as Record<string, unknown> | undefined;
+
+  if (!row) {
+    return null;
+  }
+
+  return {
+    tenantId: normalizeIdentityValue(row.tenant_id),
+    userId: normalizeIdentityValue(row.user_id),
+    agentId: normalizeIdentityValue(row.agent_id),
+  };
+}
+
+function getIdentityMismatch(
+  storedIdentity: { tenantId: string | null; userId: string | null; agentId: string | null },
+  scope: SessionIdentityScope = {},
+): string | null {
+  const requestedTenantId = normalizeIdentityValue(scope.tenantId);
+  if (storedIdentity.tenantId && requestedTenantId && storedIdentity.tenantId !== requestedTenantId) {
+    return 'tenantId';
+  }
+
+  const requestedUserId = normalizeIdentityValue(scope.userId);
+  if (storedIdentity.userId && requestedUserId && storedIdentity.userId !== requestedUserId) {
+    return 'userId';
+  }
+
+  const requestedAgentId = normalizeIdentityValue(scope.agentId);
+  if (storedIdentity.agentId && requestedAgentId && storedIdentity.agentId !== requestedAgentId) {
+    return 'agentId';
+  }
+
+  return null;
+}
+
+function resolveTrustedSession(
+  requestedSessionId: string | null = null,
+  scope: SessionIdentityScope = {},
+): TrustedSessionResolution {
   const normalizedSessionId = typeof requestedSessionId === 'string' && requestedSessionId.trim().length > 0
     ? requestedSessionId.trim()
     : null;
@@ -326,6 +398,17 @@ function resolveTrustedSession(requestedSessionId: string | null = null): Truste
       effectiveSessionId: '',
       trusted: false,
       error: `sessionId "${normalizedSessionId}" does not match a server-managed session. Omit sessionId to start a new server-generated session and reuse the effectiveSessionId returned by the server.`,
+    };
+  }
+
+  const storedIdentity = getSessionIdentityRecord(normalizedSessionId);
+  const mismatch = storedIdentity ? getIdentityMismatch(storedIdentity, scope) : null;
+  if (mismatch) {
+    return {
+      requestedSessionId: normalizedSessionId,
+      effectiveSessionId: '',
+      trusted: false,
+      error: `sessionId "${normalizedSessionId}" is bound to a different ${mismatch}. Omit sessionId to start a new server-generated session and reuse the effectiveSessionId returned by the server.`,
     };
   }
 
@@ -875,13 +958,39 @@ const SESSION_STATE_SCHEMA_SQL = `
 const SESSION_STATE_INDEX_SQL: string[] = [
   'CREATE INDEX IF NOT EXISTS idx_session_state_status ON session_state(status);',
   'CREATE INDEX IF NOT EXISTS idx_session_state_updated ON session_state(updated_at);',
+  'CREATE INDEX IF NOT EXISTS idx_session_state_identity_scope ON session_state(tenant_id, user_id, agent_id);',
 ];
+
+const SESSION_STATE_MIGRATIONS: Array<{ column: string; sql: string }> = [
+  { column: 'tenant_id', sql: 'ALTER TABLE session_state ADD COLUMN tenant_id TEXT;' },
+  { column: 'user_id', sql: 'ALTER TABLE session_state ADD COLUMN user_id TEXT;' },
+  { column: 'agent_id', sql: 'ALTER TABLE session_state ADD COLUMN agent_id TEXT;' },
+];
+
+function getTableColumns(tableName: string): Set<string> {
+  if (!db) {
+    return new Set();
+  }
+
+  const rows = db.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name?: string }>;
+  return new Set(
+    rows
+      .map((row) => row.name)
+      .filter((name): name is string => typeof name === 'string' && name.length > 0),
+  );
+}
 
 function ensureSessionStateSchema(): InitResult {
   if (!db) return { success: false, error: 'Database not initialized. Server may still be starting up.' };
 
   try {
     db.exec(SESSION_STATE_SCHEMA_SQL);
+    const existingColumns = getTableColumns('session_state');
+    for (const migration of SESSION_STATE_MIGRATIONS) {
+      if (!existingColumns.has(migration.column)) {
+        db.exec(migration.sql);
+      }
+    }
     for (const indexSql of SESSION_STATE_INDEX_SQL) {
       db.exec(indexSql);
     }
@@ -903,13 +1012,18 @@ function saveSessionState(sessionId: string, state: SessionStateInput = {}): Ini
     ensureSessionStateSchema();
     const now = new Date().toISOString();
     const stateData = state.data ? JSON.stringify(state.data) : null;
+    const tenantId = normalizeIdentityValue(state.tenantId);
+    const userId = normalizeIdentityValue(state.userId);
+    const agentId = normalizeIdentityValue(state.agentId);
 
     const stmt = db.prepare(`
       INSERT INTO session_state (
         session_id, status, spec_folder, current_task, last_action,
-        context_summary, pending_work, state_data, created_at, updated_at
+        context_summary, pending_work, state_data,
+        tenant_id, user_id, agent_id,
+        created_at, updated_at
       )
-      VALUES (?, 'active', ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, 'active', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(session_id) DO UPDATE SET
         status = 'active',
         spec_folder = COALESCE(excluded.spec_folder, session_state.spec_folder),
@@ -918,6 +1032,9 @@ function saveSessionState(sessionId: string, state: SessionStateInput = {}): Ini
         context_summary = COALESCE(excluded.context_summary, session_state.context_summary),
         pending_work = COALESCE(excluded.pending_work, session_state.pending_work),
         state_data = COALESCE(excluded.state_data, session_state.state_data),
+        tenant_id = COALESCE(excluded.tenant_id, session_state.tenant_id),
+        user_id = COALESCE(excluded.user_id, session_state.user_id),
+        agent_id = COALESCE(excluded.agent_id, session_state.agent_id),
         updated_at = excluded.updated_at
     `);
 
@@ -929,6 +1046,9 @@ function saveSessionState(sessionId: string, state: SessionStateInput = {}): Ini
       state.contextSummary || null,
       state.pendingWork || null,
       stateData,
+      tenantId,
+      userId,
+      agentId,
       now,
       now
     );
@@ -988,7 +1108,7 @@ function resetInterruptedSessions(): ResetResult {
   }
 }
 
-function recoverState(sessionId: string): RecoverResult {
+function recoverState(sessionId: string, scope: SessionIdentityScope = {}): RecoverResult {
   if (!db) return { success: false, error: 'Database not initialized. Server may still be starting up.' };
   if (!sessionId || typeof sessionId !== 'string') {
     return { success: false, error: 'Valid sessionId is required' };
@@ -999,7 +1119,9 @@ function recoverState(sessionId: string): RecoverResult {
 
     const stmt = db.prepare(`
       SELECT session_id, status, spec_folder, current_task, last_action,
-             context_summary, pending_work, state_data, created_at, updated_at
+             context_summary, pending_work, state_data,
+             tenant_id, user_id, agent_id,
+             created_at, updated_at
       FROM session_state
       WHERE session_id = ?
     `);
@@ -1007,6 +1129,16 @@ function recoverState(sessionId: string): RecoverResult {
 
     if (!row) {
       return { success: true, state: null, _recovered: false };
+    }
+
+    const storedIdentity = {
+      tenantId: normalizeIdentityValue(row.tenant_id),
+      userId: normalizeIdentityValue(row.user_id),
+      agentId: normalizeIdentityValue(row.agent_id),
+    };
+    const mismatch = getIdentityMismatch(storedIdentity, scope);
+    if (mismatch) {
+      return { success: false, error: `sessionId "${sessionId}" is bound to a different ${mismatch}` };
     }
 
     const state: SessionState = {
@@ -1017,6 +1149,9 @@ function recoverState(sessionId: string): RecoverResult {
       lastAction: (row.last_action as string) || null,
       contextSummary: (row.context_summary as string) || null,
       pendingWork: (row.pending_work as string) || null,
+      tenantId: storedIdentity.tenantId,
+      userId: storedIdentity.userId,
+      agentId: storedIdentity.agentId,
       data: row.state_data ? JSON.parse(row.state_data as string) : null,
       createdAt: row.created_at as string,
       updatedAt: row.updated_at as string,
@@ -1040,23 +1175,32 @@ function recoverState(sessionId: string): RecoverResult {
   }
 }
 
-function getInterruptedSessions(): InterruptedSessionsResult {
+function getInterruptedSessions(scope: SessionIdentityScope = {}): InterruptedSessionsResult {
   if (!db) return { success: false, sessions: [], error: 'Database not initialized. Server may still be starting up.' };
 
   try {
     ensureSessionStateSchema();
     const stmt = db.prepare(`
       SELECT session_id, spec_folder, current_task, last_action,
-             context_summary, pending_work, updated_at
+             context_summary, pending_work, updated_at,
+             tenant_id, user_id, agent_id
       FROM session_state
       WHERE status = 'interrupted'
       ORDER BY updated_at DESC
     `);
     const rows = stmt.all() as Record<string, unknown>[];
+    const filteredRows = rows.filter((row) => {
+      const storedIdentity = {
+        tenantId: normalizeIdentityValue(row.tenant_id),
+        userId: normalizeIdentityValue(row.user_id),
+        agentId: normalizeIdentityValue(row.agent_id),
+      };
+      return getIdentityMismatch(storedIdentity, scope) === null;
+    });
 
     return {
       success: true,
-      sessions: rows.map((row) => ({
+      sessions: filteredRows.map((row) => ({
         sessionId: row.session_id as string,
         specFolder: (row.spec_folder as string) || null,
         currentTask: (row.current_task as string) || null,

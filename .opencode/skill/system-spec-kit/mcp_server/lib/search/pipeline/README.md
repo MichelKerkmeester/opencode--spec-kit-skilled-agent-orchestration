@@ -53,7 +53,7 @@ The public API is a single function: `executePipeline(config)` exported from `in
 
 ## 3. PIPELINE STAGES
 
-```
+```text
 Query + Config
       |
       v

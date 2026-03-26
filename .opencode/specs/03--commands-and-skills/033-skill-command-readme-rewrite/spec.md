@@ -22,7 +22,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-26 |
 | **Branch** | `main` |
 | **Predecessor** | `specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements` |

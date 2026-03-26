@@ -144,19 +144,19 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ### H1: P0 Critical — BOTH_MISSING Capabilities (13 items)
 
-- [x] T200 Create catalog entry: MCP Server Public API Barrel — `14--pipeline-architecture/22-mcp-server-public-api-barrel.md` (6.9KB, 16 source files)
-- [x] T201 Create catalog entry: Evaluation API Surface — `09--evaluation-and-measurement/15-evaluation-api-surface.md` (3.6KB)
-- [x] T202 Create catalog entry: Indexing Runtime Bootstrap API — `13--memory-quality-and-indexing/25-indexing-runtime-bootstrap-api.md` (4.8KB)
-- [x] T203 Create catalog entry: Search API Surface — `01--retrieval/12-search-api-surface.md` (4.4KB)
-- [x] T204 Create catalog entry: Embeddings and Retry API — `14--pipeline-architecture/23-embeddings-and-retry-api.md` (5.0KB)
-- [x] T205 Create catalog entry: Completion-verification workflow — `16--tooling-and-scripts/19-completion-verification-workflow.md` (3.6KB)
-- [x] T206 Create catalog entry: Ops self-healing runbooks — `16--tooling-and-scripts/20-ops-self-healing-runbooks.md` (5.6KB)
-- [x] T207 Create catalog entry: Eval runner CLI — `16--tooling-and-scripts/21-eval-runner-cli.md` (3.9KB)
-- [x] T208 Create catalog entry: Runtime config contract — `19--feature-flag-reference/09-runtime-config-contract.md` (4.6KB)
-- [x] T209 Create catalog entry: Filter config contract — `19--feature-flag-reference/10-filter-config-contract.md` (4.3KB)
-- [x] T210 Create catalog entry: Constitutional gate-enforcement rule pack — `17--governance/05-constitutional-gate-enforcement-rule-pack.md` (3.8KB)
-- [x] T211 Create catalog entry: Phase-system knowledge node — `16--tooling-and-scripts/22-phase-system-knowledge-node.md` (4.3KB)
-- [x] T212 Note `api/storage.ts` as DEAD_CODE — documented in `14--pipeline-architecture/22-mcp-server-public-api-barrel.md` SOURCE FILES table
+- [x] T200 Create catalog entry: MCP Server Public API Barrel — `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md` (6.9KB, 16 source files)
+- [x] T201 Create catalog entry: Evaluation API Surface — `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md` (3.6KB)
+- [x] T202 Create catalog entry: Indexing Runtime Bootstrap API — `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/25-indexing-runtime-bootstrap-api.md` (4.8KB)
+- [x] T203 Create catalog entry: Search API Surface — `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/12-search-api-surface.md` (4.4KB)
+- [x] T204 Create catalog entry: Embeddings and Retry API — `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md` (5.0KB)
+- [x] T205 Create catalog entry: Completion-verification workflow — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/19-completion-verification-workflow.md` (3.6KB)
+- [x] T206 Create catalog entry: Ops self-healing runbooks — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/20-ops-self-healing-runbooks.md` (5.6KB)
+- [x] T207 Create catalog entry: Eval runner CLI — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/21-eval-runner-cli.md` (3.9KB)
+- [x] T208 Create catalog entry: Runtime config contract — `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md` (4.6KB)
+- [x] T209 Create catalog entry: Filter config contract — `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md` (4.3KB)
+- [x] T210 Create catalog entry: Constitutional gate-enforcement rule pack — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md` (3.8KB)
+- [x] T211 Create catalog entry: Phase-system knowledge node — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/22-phase-system-knowledge-node.md` (4.3KB)
+- [x] T212 Note `api/storage.ts` as DEAD_CODE — documented in `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md` SOURCE FILES table
 
 ### H2: P0 Critical — Undocumented Feature Flags (28 flags)
 
@@ -167,14 +167,14 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ### H3: P0 Critical — Unified Subsystem Entries
 
-- [x] T217 Create unified catalog entry: Constitutional memory end-to-end lifecycle — `05--lifecycle/08-constitutional-memory-end-to-end-lifecycle.md` (10.2KB, 10 source files)
-- [x] T218 Create unified catalog entry: Shared memory end-to-end architecture — `02--mutation/11-shared-memory-end-to-end-architecture.md` (9.8KB, 9 source files)
+- [x] T217 Create unified catalog entry: Constitutional memory end-to-end lifecycle — `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/08-constitutional-memory-end-to-end-lifecycle.md` (10.2KB, 10 source files)
+- [x] T218 Create unified catalog entry: Shared memory end-to-end architecture — `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/11-shared-memory-end-to-end-architecture.md` (9.8KB, 9 source files)
 
 ### H4: P0 Critical — Fixes and Drift
 
 - [x] T219 Fix ARCHITECTURE.md:291 — removed nonexistent `searchMemories` reference
 - [x] T220 Fix ARCHITECTURE.md:326 — removed nonexistent `api/scoring` reference
-- [x] T221 Mark `read_spec_section` phantom tool as PLANNED/DEFERRED in `01/07` and `FEATURE_CATALOG.md`
+- [x] T221 Mark `read_spec_section` phantom tool as PLANNED/DEFERRED in `01/07` and `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`
 
 ### H5: P1 Required — Category Snippet Fixes
 
@@ -188,60 +188,60 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 ### H6: P1 Required — Replace Stubs
 
 - [x] T228 Replace cat 20/01 stub — replaced with real remediation content (7.7KB, 7 source files)
-- [x] T229 Create cat 20/02 — `20--remediation-revalidation/02-memory-health-auto-repair.md` (4.0KB)
-- [x] T230 Create cat 20/03 — `20--remediation-revalidation/03-feedback-driven-revalidation.md` (5.4KB)
+- [x] T229 Create cat 20/02 — `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/02-memory-health-auto-repair.md` (4.0KB)
+- [x] T230 Create cat 20/03 — `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md` (5.4KB)
 - [x] T231 Replace cat 21/01 stub — replaced with retired runtime shims content (4.3KB, 5 source files)
-- [x] T232 Create cat 21/02 — `21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md` (2.9KB)
-- [x] T233 Create cat 21/03 — `21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md` (2.6KB)
-- [x] T234 Create cat 21/05 — `21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md` (2.7KB)
+- [x] T232 Create cat 21/02 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md` (2.9KB)
+- [x] T233 Create cat 21/03 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md` (2.6KB)
+- [x] T234 Create cat 21/05 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md` (2.7KB)
 
 ### H7: P1 Required — Scripts Ecosystem (12 new entries)
 
-- [x] T235 Create cat 16 entry: Spec Lifecycle Automation — `16--tooling-and-scripts/23-spec-lifecycle-automation.md` (6.4KB)
-- [x] T236 Create cat 16 entry: Spec Validation Rule Engine — `16--tooling-and-scripts/24-spec-validation-rule-engine.md` (7.8KB)
-- [x] T237 Create cat 16 entry: Memory Maintenance and Migration CLIs — `16--tooling-and-scripts/25-memory-maintenance-and-migration-clis.md` (6.0KB)
-- [x] T238 Create cat 16 entry: Core Workflow Infrastructure — `16--tooling-and-scripts/26-core-workflow-infrastructure.md` (6.9KB)
-- [x] T239 Create cat 16 entry: Session Extraction and Enrichment — `16--tooling-and-scripts/27-session-extraction-and-enrichment.md` (5.7KB)
-- [x] T240 Create cat 16 entry: Spec-Folder Detection and Description — `16--tooling-and-scripts/28-spec-folder-detection-and-description.md` (6.8KB)
-- [x] T241 Create cat 16 entry: Ops Self-Healing Runbooks — `16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md` (5.7KB)
-- [x] T242 Create cat 16 entry: Setup, Native Module Health, MCP Installation — `16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md` (5.7KB)
-- [x] T243 Create cat 16 entry: Template Composition System — `16--tooling-and-scripts/30-template-composition-system.md` (5.9KB)
-- [x] T244 Create cat 16 entry: Evaluation, Benchmark, Import-Policy Tooling — `16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md` (5.9KB)
-- [x] T245 Create cat 16 entry: Shared Script Libraries and Utilities — `16--tooling-and-scripts/32-shared-script-libraries-and-utilities.md` (10.9KB)
-- [x] T246 Create cat 16 entry: Memory Quality KPI Reporting — `16--tooling-and-scripts/33-memory-quality-kpi-reporting.md` (4.1KB)
+- [x] T235 Create cat 16 entry: Spec Lifecycle Automation — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/23-spec-lifecycle-automation.md` (6.4KB)
+- [x] T236 Create cat 16 entry: Spec Validation Rule Engine — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/24-spec-validation-rule-engine.md` (7.8KB)
+- [x] T237 Create cat 16 entry: Memory Maintenance and Migration CLIs — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/25-memory-maintenance-and-migration-clis.md` (6.0KB)
+- [x] T238 Create cat 16 entry: Core Workflow Infrastructure — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/26-core-workflow-infrastructure.md` (6.9KB)
+- [x] T239 Create cat 16 entry: Session Extraction and Enrichment — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/27-session-extraction-and-enrichment.md` (5.7KB)
+- [x] T240 Create cat 16 entry: Spec-Folder Detection and Description — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/28-spec-folder-detection-and-description.md` (6.8KB)
+- [x] T241 Create cat 16 entry: Ops Self-Healing Runbooks — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md` (5.7KB)
+- [x] T242 Create cat 16 entry: Setup, Native Module Health, MCP Installation — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md` (5.7KB)
+- [x] T243 Create cat 16 entry: Template Composition System — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/30-template-composition-system.md` (5.9KB)
+- [x] T244 Create cat 16 entry: Evaluation, Benchmark, Import-Policy Tooling — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md` (5.9KB)
+- [x] T245 Create cat 16 entry: Shared Script Libraries and Utilities — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/32-shared-script-libraries-and-utilities.md` (10.9KB)
+- [x] T246 Create cat 16 entry: Memory Quality KPI Reporting — `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/33-memory-quality-kpi-reporting.md` (4.1KB)
 
 ### H8: P1 Required — Misc
 
-- [x] T247 Create cat 17/05 — `17--governance/06-shared-memory-admin-identity-governance.md` (5.1KB)
-- [x] T248 Create cat 17/06 — `17--governance/07-governance-audit-review-and-rollout-metrics.md` (4.6KB)
+- [x] T247 Create cat 17/05 — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md` (5.1KB)
+- [x] T248 Create cat 17/06 — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md` (4.6KB)
 - [x] T249 Add cross-link to cat 17/04 for admin-identity governance — added
 - [x] T250 Update shared-spaces README with implementation pointer note — added
 - [x] T251 Reclassify cat 19/08 as meta note — reclassified, excluded from feature-accuracy scoring
-- [x] T252 Create cat 21/04 — `21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md` (3.8KB)
+- [x] T252 Create cat 21/04 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md` (3.8KB)
 - [x] T253 Update umbrella spec feature count 218 → 222 — updated in spec.md, plan.md, checklist.md
 - [x] T254 Investigate constitutional cache invalidation mismatch — documented in `scratch/constitutional-cache-investigation.md` (2.6KB)
-- [x] T255 Document config.jsonc/filters.jsonc toggles — covered by T208 (09-runtime-config-contract.md) and T209 (10-filter-config-contract.md)
+- [x] T255 Document config.jsonc/filters.jsonc toggles — covered by T208 (.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md) and T209 (.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md)
 
 ### H9: Playbook Scenario Coverage (16 new scenarios)
 
 > Playbook counterparts for Phase H catalog entries that lacked test scenarios. Created via 4 parallel GPT-5.4 agents.
 
-- [x] T256 Create playbook 217 — `09--evaluation-and-measurement/217-evaluation-api-surface.md` (4.3KB)
-- [x] T257 Create playbook 218 — `14--pipeline-architecture/218-mcp-server-public-api-barrel.md` (4.4KB)
-- [x] T258 Create playbook 219 — `14--pipeline-architecture/219-embeddings-and-retry-api.md` (5.3KB)
-- [x] T259 Create playbook 220 — `17--governance/220-constitutional-gate-enforcement-rule-pack.md` (5.1KB)
-- [x] T260 Create playbook 221 — `17--governance/221-shared-memory-admin-identity-governance.md` (4.8KB)
-- [x] T261 Create playbook 222 — `17--governance/222-governance-audit-review-and-rollout-metrics.md` (5.1KB)
-- [x] T262 Create playbook 223 — `19--feature-flag-reference/223-runtime-config-contract.md` (5.0KB)
-- [x] T263 Create playbook 224 — `19--feature-flag-reference/224-filter-config-contract.md` (4.7KB)
-- [x] T264 Create playbook 225 — `20--remediation-revalidation/225-remediation-runtime-surface.md` (4.8KB)
-- [x] T265 Create playbook 226 — `20--remediation-revalidation/226-memory-health-auto-repair.md` (4.5KB)
-- [x] T266 Create playbook 227 — `20--remediation-revalidation/227-feedback-driven-revalidation.md` (4.8KB)
-- [x] T267 Create playbook 228 — `21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md` (4.4KB)
-- [x] T268 Create playbook 229 — `21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md` (3.9KB)
-- [x] T269 Create playbook 230 — `21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md` (3.8KB)
-- [x] T270 Create playbook 231 — `21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md` (4.1KB)
-- [x] T271 Create playbook 232 — `21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md` (3.9KB)
+- [x] T256 Create playbook 217 — `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md` (4.3KB)
+- [x] T257 Create playbook 218 — `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md` (4.4KB)
+- [x] T258 Create playbook 219 — `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md` (5.3KB)
+- [x] T259 Create playbook 220 — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md` (5.1KB)
+- [x] T260 Create playbook 221 — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md` (4.8KB)
+- [x] T261 Create playbook 222 — `.opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md` (5.1KB)
+- [x] T262 Create playbook 223 — `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md` (5.0KB)
+- [x] T263 Create playbook 224 — `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md` (4.7KB)
+- [x] T264 Create playbook 225 — `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md` (4.8KB)
+- [x] T265 Create playbook 226 — `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/02-memory-health-auto-repair.md` (4.5KB)
+- [x] T266 Create playbook 227 — `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md` (4.8KB)
+- [x] T267 Create playbook 228 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` (4.4KB)
+- [x] T268 Create playbook 229 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md` (3.9KB)
+- [x] T269 Create playbook 230 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md` (3.8KB)
+- [x] T270 Create playbook 231 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md` (4.1KB)
+- [x] T271 Create playbook 232 — `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md` (3.9KB)
 
 <!-- /ANCHOR:phase-2 -->
 

@@ -84,16 +84,13 @@ function normalizeStateValue(state: unknown): string | null {
   return normalizedState in STATE_PRIORITY ? normalizedState : null;
 }
 
-function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string): string {
+function resolveStateForFiltering(row: Stage4ReadonlyRow): string {
   const explicitState = normalizeStateValue(row.memoryState);
   if (explicitState) {
     return explicitState;
   }
 
-  // Missing memoryState is now treated as a safe fallback instead of
-  // Being dropped, because upstream candidates can omit this optional field.
-  // Using minState-derived fallback prevents false-negative empty results.
-  return fallbackState;
+  return 'UNKNOWN';
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -145,7 +142,6 @@ export function filterByMemoryState(
 ): FilterResult {
   const normalizedMinState = normalizeStateValue(minState);
   const minPriority = STATE_PRIORITY[normalizedMinState ?? ''] ?? UNKNOWN_STATE_PRIORITY;
-  const fallbackState = normalizedMinState ?? 'ARCHIVED';
 
   // -- 3a. Tally states before filtering --
   const statsBefore: StateStats = {};
@@ -156,7 +152,7 @@ export function filterByMemoryState(
 
   // -- 3b. State-priority filter --
   let passing = results.filter(row => {
-    const state = resolveStateForFiltering(row, fallbackState);
+    const state = resolveStateForFiltering(row);
     const priority = STATE_PRIORITY[state] ?? UNKNOWN_STATE_PRIORITY;
     return priority >= minPriority;
   });
@@ -167,7 +163,7 @@ export function filterByMemoryState(
     const limitPassing: Stage4ReadonlyRow[] = [];
 
     for (const row of passing) {
-      const state = resolveStateForFiltering(row, fallbackState);
+      const state = resolveStateForFiltering(row);
       const limit = STATE_LIMITS[state] ?? Infinity;
       const count = tierCounters[state] ?? 0;
 
@@ -184,7 +180,7 @@ export function filterByMemoryState(
   // -- 3d. Tally states after filtering --
   const statsAfter: StateStats = {};
   for (const row of passing) {
-    const state = resolveStateForFiltering(row, fallbackState);
+    const state = resolveStateForFiltering(row);
     statsAfter[state] = (statsAfter[state] ?? 0) + 1;
   }
 

@@ -103,9 +103,9 @@ Catalog entries for all 5 previously PARTIAL features and 1 MISMATCH were update
 
 | Field | Value |
 |-------|-------|
-| **Catalog Entry** | `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` |
+| **Catalog Entry** | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` |
 | **Verdict** | MATCH |
-| **Source Files** | `references/validation/template_compliance_contract.md`, `.claude/agents/speckit.md`, `.opencode/agent/speckit.md`, `.opencode/agent/chatgpt/speckit.md`, `.codex/agents/speckit.toml`, `.gemini/agents/speckit.md`, `scripts/utils/template-structure.js` |
+| **Source Files** | `.opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md`, `.claude/agents/speckit.md`, `.opencode/agent/speckit.md`, .opencode/agent/chatgpt/speckit.md, `.codex/agents/speckit.toml`, `.gemini/agents/speckit.md`, `scripts/utils/template-structure.js` |
 
 The catalog entry documents a 3-layer defense-in-depth system: (1) Agent knowledge with 49-line compact contracts in 5 CLI @speckit agent definitions, (2) Post-write `validate.sh --strict` validation with exit code parsing, (3) Content minimum rules with SECTION_COUNTS thresholds. All 7 referenced source files exist. The canonical structural contract reference and agent definitions contain the described embedded contracts.
 
@@ -143,7 +143,7 @@ Operational runbook for 4 self-healing failure classes: index-drift, session-amb
 
 | Field | Value |
 |-------|-------|
-| **Source File** | `nodes/phase-system.md` (108 lines) |
+| **Source File** | `.opencode/skill/system-spec-kit/nodes/phase-system.md` (108 lines) |
 | **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
 | **Verdict** | Documented as knowledge node |
 

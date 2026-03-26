@@ -27,6 +27,9 @@ interface SessionStateRow {
   spec_folder: string | null;
   current_task: string | null;
   last_action: string | null;
+  tenant_id: string | null;
+  user_id: string | null;
+  agent_id: string | null;
   state_data: string | null;
 }
 
@@ -277,6 +280,20 @@ describe('Session Manager Extended Tests', () => {
       expect(result.error).toBeUndefined();
     });
 
+    it('rejects scope mismatches for bound sessions', () => {
+      resetDb();
+      sm.saveSessionState('bound-session', {
+        currentTask: 'tracked by server',
+        tenantId: 'tenant-a',
+        userId: 'user-a',
+      });
+
+      const result = sm.resolveTrustedSession('bound-session', { tenantId: 'tenant-b', userId: 'user-a' });
+
+      expect(result.trusted).toBe(false);
+      expect(result.error).toContain('different tenantId');
+    });
+
     it('rejects untracked caller-supplied session IDs', () => {
       resetDb();
       const result = sm.resolveTrustedSession('invented-session');
@@ -351,6 +368,9 @@ describe('Session Manager Extended Tests', () => {
         lastAction: 'wrote file A',
         contextSummary: 'Working on feature X',
         pendingWork: 'Need to write tests',
+        tenantId: 'tenant-a',
+        userId: 'user-a',
+        agentId: 'agent-a',
         data: { step: 3, items: ['a', 'b'] },
       });
       expect(r.success).toBe(true);
@@ -360,6 +380,9 @@ describe('Session Manager Extended Tests', () => {
         expect(row!.status).toBe('active');
         expect(row!.spec_folder).toBe('specs/001-test');
         expect(row!.current_task).toBe('implement feature X');
+        expect(row!.tenant_id).toBe('tenant-a');
+        expect(row!.user_id).toBe('user-a');
+        expect(row!.agent_id).toBe('agent-a');
         const data = JSON.parse(row!.state_data! as string) as { step: number };
         expect(data.step).toBe(3);
     });
@@ -438,6 +461,7 @@ describe('Session Manager Extended Tests', () => {
       sm.saveSessionState('recover-1', {
         specFolder: 'specs/003',
         currentTask: 'doing stuff',
+        tenantId: 'tenant-a',
         data: { key: 'value' },
       });
       // Mark as interrupted first
@@ -453,6 +477,7 @@ describe('Session Manager Extended Tests', () => {
         expect(state.sessionId).toBe('recover-1');
         expect(state.specFolder).toBe('specs/003');
         expect(state.currentTask).toBe('doing stuff');
+        expect(state.tenantId).toBe('tenant-a');
         expect(r._recovered).toBe(true);
         expect(state.data).toEqual({ key: 'value' });
 
@@ -468,6 +493,20 @@ describe('Session Manager Extended Tests', () => {
       expect(r._recovered).toBe(false);
     });
 
+    it('rejects recovery when bound identity mismatches', () => {
+      resetDb();
+      sm.saveSessionState('recover-bound', {
+        currentTask: 'doing stuff',
+        tenantId: 'tenant-a',
+        userId: 'user-a',
+      });
+
+      const r = sm.recoverState('recover-bound', { tenantId: 'tenant-b', userId: 'user-a' });
+
+      expect(r.success).toBe(false);
+      expect(r.error).toContain('different tenantId');
+    });
+
     it('rejects empty sessionId', () => {
       const r = sm.recoverState('');
       expect(r.success).toBe(false);
@@ -480,8 +519,8 @@ describe('Session Manager Extended Tests', () => {
   describe('12. getInterruptedSessions', () => {
     it('lists only interrupted sessions', () => {
       resetDb();
-      sm.saveSessionState('int-1', { specFolder: 'specs/A', currentTask: 'task A' });
-      sm.saveSessionState('int-2', { specFolder: 'specs/B', currentTask: 'task B' });
+      sm.saveSessionState('int-1', { specFolder: 'specs/A', currentTask: 'task A', tenantId: 'tenant-a' });
+      sm.saveSessionState('int-2', { specFolder: 'specs/B', currentTask: 'task B', tenantId: 'tenant-a' });
       sm.saveSessionState('int-3', { specFolder: 'specs/C', currentTask: 'task C' });
       sm.completeSession('int-3'); // Won't be interrupted
       sm.resetInterruptedSessions(); // int-1, int-2 become interrupted
@@ -496,6 +535,21 @@ describe('Session Manager Extended Tests', () => {
         const s1 = r.sessions.find((s: InterruptedSession) => s.sessionId === 'int-1');
         expect(s1?.specFolder).toBe('specs/A');
         expect(s1?.currentTask).toBe('task A');
+    });
+
+    it('filters interrupted sessions by bound identity when caller scope is provided', () => {
+      resetDb();
+      sm.saveSessionState('int-scope-a', { currentTask: 'task A', tenantId: 'tenant-a', userId: 'user-a' });
+      sm.saveSessionState('int-scope-b', { currentTask: 'task B', tenantId: 'tenant-b', userId: 'user-b' });
+      sm.saveSessionState('int-unbound', { currentTask: 'task C' });
+      sm.resetInterruptedSessions();
+
+      const r = sm.getInterruptedSessions({ tenantId: 'tenant-a', userId: 'user-a' });
+      const ids = r.sessions.map((session: InterruptedSession) => session.sessionId);
+
+      expect(ids).toContain('int-scope-a');
+      expect(ids).toContain('int-unbound');
+      expect(ids).not.toContain('int-scope-b');
     });
 
     it('returns empty array when none', () => {

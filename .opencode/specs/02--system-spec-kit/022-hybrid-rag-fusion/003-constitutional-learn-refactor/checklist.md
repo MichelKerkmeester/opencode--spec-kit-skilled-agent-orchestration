@@ -103,7 +103,7 @@ updated: 2026-03-14
 - [x] Uses Write tool (not generate-context.js) for file creation [EVIDENCE: Section 11 Tool Signatures: Write("<path>")]
 - [x] Uses memory_save() for indexing [EVIDENCE: Section 11 Tool Signatures: memory_save({ filePath, force: true })]
 - [x] Token budget ~2000 referenced [EVIDENCE: Sections 4, 5 (Step 4), 6, 7, 10]
-- [x] Active stale `/memory:learn` references were remediated across command/workspace/agent surfaces [EVIDENCE: updated in `.opencode/command/README.txt`, `.opencode/command/spec_kit/debug.md`, `.opencode/command/spec_kit/complete.md`, `README.md`, `.opencode/README.md`, `.opencode/agent/speckit.md`, `.opencode/agent/chatgpt/speckit.md`]
+- [x] Active stale `/memory:learn` references were remediated across command/workspace/agent surfaces [EVIDENCE: updated in `.opencode/command/README.txt`, `.opencode/command/spec_kit/debug.md`, `.opencode/command/spec_kit/complete.md`, `README.md`, `.opencode/README.md`, `.opencode/agent/speckit.md`, .opencode/agent/chatgpt/speckit.md]
 - [x] Regression test added for command/doc alignment drift [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts` (2 tests)]
 
 ### P1 — Should Pass

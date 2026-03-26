@@ -80,7 +80,7 @@ updated: 2026-03-14
   - `README.md`
   - `.opencode/README.md`
   - `.opencode/agent/speckit.md`
-  - `.opencode/agent/chatgpt/speckit.md`
+  - .opencode/agent/chatgpt/speckit.md
 - [x] Resolve learn.md contract drift
   - Contradictory qualification text fixed to match branch behavior
   - Dead "save as critical instead" option removed and replaced with `/memory:save` path

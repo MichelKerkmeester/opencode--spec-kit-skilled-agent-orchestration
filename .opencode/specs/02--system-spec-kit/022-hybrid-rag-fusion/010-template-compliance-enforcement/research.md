@@ -124,7 +124,7 @@ The @speckit agent definition (speckit agent file, section 8) contains an "Inlin
 The @speckit agent is defined in 4 CLI-specific locations:
 - `.claude/agents/speckit.md` (Claude Code)
 - `.opencode/agent/speckit.md` (Copilot/OpenCode base)
-- `.opencode/agent/chatgpt/speckit.md` (ChatGPT)
+- .opencode/agent/chatgpt/speckit.md (ChatGPT)
 - `.codex/agents/speckit.toml` (Codex CLI)
 
 Any prompt injection strategy must either: (a) be applied to all 4 surfaces independently, or (b) use a shared resource (SKILL.md, a generated contract file, or constitutional memory) that all agents reference.
@@ -535,7 +535,7 @@ ln -sf ../../.opencode/skill/system-spec-kit/scripts/spec/pre-commit-spec-valida
 | Step | Action | Impact | Effort |
 |------|--------|--------|--------|
 | B1 | Replace spec.md-only scaffold with full 49-line contract in `.claude/agents/speckit.md` | Layer 1 for Claude Code | 20 min |
-| B2 | Replicate B1 to `.opencode/agent/speckit.md` and `.opencode/agent/chatgpt/speckit.md` | Layer 1 for Copilot + ChatGPT | 10 min |
+| B2 | Replicate B1 to `.opencode/agent/speckit.md` and .opencode/agent/chatgpt/speckit.md | Layer 1 for Copilot + ChatGPT | 10 min |
 | B3 | Replicate B1 to `.codex/agents/speckit.toml` (TOML-formatted) | Layer 1 for Codex | 10 min |
 
 **Phase C: Directive Consolidation (Day 2, ~30 min)**
@@ -575,7 +575,7 @@ The complete, copy-pasteable content for references/template-compliance-contract
 All @speckit agent definitions that need updating:
 - `.claude/agents/speckit.md` (Claude Code)
 - `.opencode/agent/speckit.md` (Copilot/OpenCode base)
-- `.opencode/agent/chatgpt/speckit.md` (ChatGPT profile)
+- .opencode/agent/chatgpt/speckit.md (ChatGPT profile)
 - `.codex/agents/speckit.toml` (Codex CLI)
 
 Note: `.gemini/agents/speckit.md` may also exist as a 5th surface and should be checked during implementation.

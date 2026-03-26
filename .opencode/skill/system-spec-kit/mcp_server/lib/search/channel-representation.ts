@@ -32,6 +32,7 @@ interface PromotedItem {
   score: number;
   source: string;
   promotedFrom: string;
+  promotedRawScore: number;
   [key: string]: unknown;
 }
 
@@ -156,6 +157,7 @@ export function analyzeChannelRepresentation(
       ...best,
       source: channelName,
       promotedFrom: channelName,
+      promotedRawScore: best.score,
     };
 
     promoted.push(promotedItem);

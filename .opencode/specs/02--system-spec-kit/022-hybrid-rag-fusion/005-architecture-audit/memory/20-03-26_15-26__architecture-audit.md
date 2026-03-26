@@ -114,6 +114,7 @@ quality_flags: []
 
 - **60 agent output files completed:** 20/20 native (A3), 20/20 Codex (A1), 20/20 Copilot (A2)
 
+<!-- ANCHOR:task-guide -->
 **Key Files:**
 
 | File | Role |
@@ -132,6 +133,7 @@ quality_flags: []
 
 ## 2. OVERVIEW
 
+<!-- ANCHOR:summary -->
 Deep Research implementation complete. All 7 verification criteria met (7/7 PASSED). 79 scratch files confirmed (20/20 native, 20/20 Codex, 20/20 Copilot — excess due to .log files and historical w1-w7 artifacts). research.md synthesized from 20 iterations with 25 prioritized recommendations across 7 categories. Full sprint roadmap defined.
 
 <!-- /ANCHOR:summary -->

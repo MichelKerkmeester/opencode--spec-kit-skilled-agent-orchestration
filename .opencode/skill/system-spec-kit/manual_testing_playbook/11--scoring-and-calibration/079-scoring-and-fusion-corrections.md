@@ -1,24 +1,24 @@
 ---
 title: "079 -- Scoring and fusion corrections"
-description: "This scenario validates Scoring and fusion corrections for `079`. It focuses on Confirm phase-017 correction bundle."
+description: "This scenario validates scoring and fusion corrections for `079` with executable source checks and a targeted Vitest regression bundle for the phase-017 fixes."
 ---
 
 # 079 -- Scoring and fusion corrections
 
 ## 1. OVERVIEW
 
-This scenario validates Scoring and fusion corrections for `079`. It focuses on Confirm phase-017 correction bundle.
+This scenario validates scoring and fusion corrections for `079`. It focuses on confirming the phase-017 correction bundle with executable source anchors and the regression tests that cover the corrected math, normalization, fusion, and score-resolution behavior.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `079` and confirm the expected signals without contradicting evidence.
+Operators verify that the implementing symbols are present in the expected source files, then rerun the targeted regression suite from the `@spec-kit/mcp-server` workspace.
 
-- Objective: Confirm phase-017 correction bundle
-- Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights
-- Pass/fail: PASS if scoring corrections produce mathematically correct results with proper normalization bounds
+- Objective: Confirm the phase-017 scoring and fusion correction bundle with executable source and regression checks.
+- Prompt: `Validate the phase-017 scoring and fusion correction bundle. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.`
+- Expected signals: `rg` finds the corrected scoring, normalization, fusion, BM25 scope, interference-threshold, and score-alias symbols; the targeted Vitest run exits 0 with all files passing; the current baseline summary is `Test Files 8 passed (8)` and `Tests 334 passed (334)`.
+- Pass/fail: PASS if all required source anchors are present and the targeted Vitest bundle exits 0 with no failed tests.
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `079` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 079 | Scoring and fusion corrections | Confirm phase-017 correction bundle | `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run correction-specific queries 2) inspect math/normalization 3) verify expected outputs | Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights | Query output with scoring trace + normalization range verification + fusion weight evidence | PASS if scoring corrections produce mathematically correct results with proper normalization bounds | Inspect scoring formula changes from phase-017; verify normalization min/max; check fusion weight configuration |
+| 079 | Scoring and fusion corrections | Confirm phase-017 correction bundle | `Validate the phase-017 scoring and fusion correction bundle. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.` | 1) `rg -n "calculateFiveFactorScore|normalizeCompositeScores|computeInterferenceScoresBatch|bm25Search|applyIntentWeights|resolveEffectiveScore|withSyncedScoreAliases|syncScoreAliasesInPlace" .opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/scoring/interference-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`<br>2) `rg -n "getAdaptiveWeights|canonicalRrfId|fuseResultsCrossVariant" .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts .opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts`<br>3) `cd .opencode/skill/system-spec-kit/mcp_server && node ./node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/score-normalization.vitest.ts tests/hybrid-search.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/adaptive-fusion.vitest.ts tests/score-resolution-consistency.vitest.ts tests/interference.vitest.ts tests/intent-weighting.vitest.ts` | Source grep returns matches for all expected symbols; Vitest reports all eight files passing and no `FAIL` lines; current baseline summary is `Test Files 8 passed (8)` and `Tests 334 passed (334)` | Saved `rg` output showing each symbol in the expected implementation files plus the final Vitest summary | PASS if both `rg` commands return all expected symbols and the Vitest command exits 0 with zero failed files/tests. FAIL if any symbol is missing, any target file fails, or Vitest exits non-zero. | If a symbol is missing, inspect the corresponding implementation file listed in step 1 or 2. If Vitest fails, use the first failing file to localize the regression: `composite-scoring.vitest.ts` / `score-normalization.vitest.ts` for normalization math, `hybrid-search.vitest.ts` for BM25 scope handling, `unit-rrf-fusion.vitest.ts` and `adaptive-fusion.vitest.ts` for fusion logic, `score-resolution-consistency.vitest.ts` for alias resolution, `interference.vitest.ts` for threshold wiring, and `intent-weighting.vitest.ts` for recency-aware intent weighting. |
 
 ---
 
@@ -34,6 +34,8 @@ Operators run the exact prompt and command sequence for `079` and confirm the ex
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
+- Source files: `mcp_server/lib/scoring/composite-scoring.ts`, `mcp_server/lib/scoring/interference-scoring.ts`, `mcp_server/lib/search/hybrid-search.ts`, `mcp_server/lib/search/intent-classifier.ts`, `mcp_server/lib/search/pipeline/types.ts`, `mcp_server/lib/search/pipeline/stage2-fusion.ts`, `shared/algorithms/adaptive-fusion.ts`, `shared/algorithms/rrf-fusion.ts`
+- Regression tests: `mcp_server/tests/composite-scoring.vitest.ts`, `mcp_server/tests/score-normalization.vitest.ts`, `mcp_server/tests/hybrid-search.vitest.ts`, `mcp_server/tests/unit-rrf-fusion.vitest.ts`, `mcp_server/tests/adaptive-fusion.vitest.ts`, `mcp_server/tests/score-resolution-consistency.vitest.ts`, `mcp_server/tests/interference.vitest.ts`, `mcp_server/tests/intent-weighting.vitest.ts`
 
 ---
 

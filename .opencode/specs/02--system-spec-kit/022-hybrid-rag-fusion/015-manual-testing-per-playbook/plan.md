@@ -129,35 +129,35 @@ Create one playbook scenario file per true-gap feature. Use `create:testing-play
 
 | # | Category | Feature Catalog Entry | Target Playbook Path |
 |---|----------|-----------------------|---------------------|
-| 1 | 01 | `07-ast-level-section-retrieval-tool.md` | `01--retrieval/` |
-| 2 | 01 | `09-tool-result-extraction-to-working-memory.md` | `01--retrieval/` |
-| 3 | 01 | `11-session-recovery-memory-continue.md` | `01--retrieval/` |
-| 4 | 02 | `07-namespace-management-crud-tools.md` | `02--mutation/` |
-| 5 | 02 | `09-correction-tracking-with-undo.md` | `02--mutation/` |
-| 6 | 10 | `09-anchor-tags-as-graph-nodes.md` | `10--graph-signal-activation/` |
-| 7 | 10 | `10-causal-neighbor-boost-and-injection.md` | `10--graph-signal-activation/` |
-| 8 | 10 | `11-temporal-contiguity-layer.md` | `10--graph-signal-activation/` |
-| 9 | 11 | `15-tool-level-ttl-cache.md` | `11--scoring-and-calibration/` |
-| 10 | 11 | `16-access-driven-popularity-scoring.md` | `11--scoring-and-calibration/` |
-| 11 | 11 | `17-temporal-structural-coherence-scoring.md` | `11--scoring-and-calibration/` |
-| 12 | 13 | `11-content-aware-memory-filename-generation.md` | `13--memory-quality-and-indexing/` |
-| 13 | 13 | `12-generation-time-duplicate-and-empty-content-prevention.md` | `13--memory-quality-and-indexing/` |
-| 14 | 14 | `15-warm-server-daemon-mode.md` | `14--pipeline-architecture/` |
-| 15 | 14 | `16-backend-storage-adapter-abstraction.md` | `14--pipeline-architecture/` |
-| 16 | 14 | `18-atomic-write-then-index-api.md` | `14--pipeline-architecture/` |
-| 17 | 14 | `19-embedding-retry-orchestrator.md` | `14--pipeline-architecture/` |
-| 18 | 14 | `20-7-layer-tool-architecture-metadata.md` | `14--pipeline-architecture/` |
-| 19 | 16 | `02-architecture-boundary-enforcement.md` | `16--tooling-and-scripts/` |
-| 20 | 16 | `08-watcher-delete-rename-cleanup.md` | `16--tooling-and-scripts/` |
-| 21 | 16 | `18-template-compliance-contract-enforcement.md` | `16--tooling-and-scripts/` |
-| 22 | 18 | `01-shared-post-mutation-hook-wiring.md` | `18--ux-hooks/` |
-| 23 | 18 | `02-memory-health-autorepair-metadata.md` | `18--ux-hooks/` |
-| 24 | 18 | `04-schema-and-type-contract-synchronization.md` | `18--ux-hooks/` |
-| 25 | 18 | `06-mutation-hook-result-contract-expansion.md` | `18--ux-hooks/` |
-| 26 | 18 | `07-mutation-response-ux-payload-exposure.md` | `18--ux-hooks/` |
-| 27 | 18 | `10-atomic-save-parity-and-partial-indexing-hints.md` | `18--ux-hooks/` |
-| 28 | 18 | `11-final-token-metadata-recomputation.md` | `18--ux-hooks/` |
-| 29 | 18 | `13-end-to-end-success-envelope-verification.md` | `18--ux-hooks/` |
+| 1 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` | `01--retrieval/` |
+| 2 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md` | `01--retrieval/` |
+| 3 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` | `01--retrieval/` |
+| 4 | 02 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md` | `02--mutation/` |
+| 5 | 02 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md` | `02--mutation/` |
+| 6 | 10 | `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | `10--graph-signal-activation/` |
+| 7 | 10 | `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md` | `10--graph-signal-activation/` |
+| 8 | 10 | `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md` | `10--graph-signal-activation/` |
+| 9 | 11 | `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md` | `11--scoring-and-calibration/` |
+| 10 | 11 | `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | `11--scoring-and-calibration/` |
+| 11 | 11 | `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md` | `11--scoring-and-calibration/` |
+| 12 | 13 | `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | `13--memory-quality-and-indexing/` |
+| 13 | 13 | `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md` | `13--memory-quality-and-indexing/` |
+| 14 | 14 | `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md` | `14--pipeline-architecture/` |
+| 15 | 14 | `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | `14--pipeline-architecture/` |
+| 16 | 14 | `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md` | `14--pipeline-architecture/` |
+| 17 | 14 | `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md` | `14--pipeline-architecture/` |
+| 18 | 14 | `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md` | `14--pipeline-architecture/` |
+| 19 | 16 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | `16--tooling-and-scripts/` |
+| 20 | 16 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | `16--tooling-and-scripts/` |
+| 21 | 16 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` | `16--tooling-and-scripts/` |
+| 22 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | `18--ux-hooks/` |
+| 23 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md` | `18--ux-hooks/` |
+| 24 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md` | `18--ux-hooks/` |
+| 25 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md` | `18--ux-hooks/` |
+| 26 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md` | `18--ux-hooks/` |
+| 27 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | `18--ux-hooks/` |
+| 28 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md` | `18--ux-hooks/` |
+| 29 | 18 | `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md` | `18--ux-hooks/` |
 
 #### WS-2 (P1): Add Feature Catalog Back-References to 65 Playbook Scenarios
 Add `- Feature catalog: [path](../../feature_catalog/path)` to Section 4 REFERENCES in:
@@ -165,7 +165,7 @@ Add `- Feature catalog: [path](../../feature_catalog/path)` to Section 4 REFEREN
 - 40 other orphan scenarios (M-001 through M-011, PHASE-001 through PHASE-005, IDs 182-187)
 
 #### WS-3 (P1): Complete Section 12 Cross-Reference Index
-Append rows to Section 12 table in `MANUAL_TESTING_PLAYBOOK.md`:
+Append rows to Section 12 table in `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`:
 - 4 existing catalog entries currently missing from Section 12
 - 29 new entries from WS-1 (after scenarios are created)
 

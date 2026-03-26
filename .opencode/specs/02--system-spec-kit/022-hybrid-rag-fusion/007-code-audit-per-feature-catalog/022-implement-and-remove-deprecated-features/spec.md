@@ -19,13 +19,13 @@ contextType: "general"
 
 ### Executive Summary
 
-This packet preserves the six remediation targets that closed the `007-code-audit-per-feature-catalog` phase chain: three previously deprecated capabilities that needed release-level verification and three obsolete evaluation/shadow artifacts targeted for retirement. During the 2026-03-25 release-alignment pass, the packet was normalized to reflect its actual role as a release-control tracker, while execution status remains coordinated with the parent release packet at `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`.
+This packet preserves the six remediation targets that closed the `007-code-audit-per-feature-catalog` phase chain: three previously deprecated capabilities that needed release-level verification and three obsolete evaluation/shadow artifacts targeted for retirement. During the 2026-03-25 release-alignment pass, the packet was normalized to reflect its actual role as a release-control tracker, while execution status remains coordinated with the parent release packet at ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md.
 
 **Outcome**: Packet normalized and cross-linked for release control; underlying runtime/remove work remains partially complete.
 
 **Key Decisions**: Keep this child packet focused on scoped remediation ownership, not fresh implementation work; use the parent `012` packet for end-to-end release verification.
 
-**Critical Dependencies**: `../021-remediation-revalidation/spec.md`, `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`, and the current repository state for the six targeted features.
+**Critical Dependencies**: `../021-remediation-revalidation/spec.md`, ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md, and the current repository state for the six targeted features.
 
 ---
 
@@ -83,7 +83,7 @@ Track the six deprecated-feature remediation targets, record their release-contr
 | `mcp_server/lib/eval/channel-attribution.ts` | Retirement candidate |
 | `mcp_server/lib/eval/eval-ceiling.ts` | Retirement candidate |
 | ~~`mcp_server/shared/algorithms/fusion-lab.ts`~~ Deleted | Retirement candidate (historical - fusion-lab.js deleted in commit 56c67030f) |
-| `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` | Parent release-control packet |
+| ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md | Parent release-control packet |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -196,7 +196,7 @@ Track the six deprecated-feature remediation targets, record their release-contr
 ### Related Documents
 
 - **Parent Audit Phase**: See `../021-remediation-revalidation/spec.md`
-- **Release-Control Packet**: See `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`
+- **Release-Control Packet**: See ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md
 - **Implementation Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
 

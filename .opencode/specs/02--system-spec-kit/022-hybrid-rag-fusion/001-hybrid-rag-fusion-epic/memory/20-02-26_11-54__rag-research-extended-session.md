@@ -92,6 +92,7 @@ quality_flags: []
 
 - **Research consolidated** from `research_2` through `research_final` folders into single `/research` folder (14 files, numbered and anchored).
 
+<!-- ANCHOR:task-guide -->
 **Key Files and Their Roles:**
 
 | File | Role |
@@ -110,6 +111,7 @@ quality_flags: []
 
 ## 2. OVERVIEW
 
+<!-- ANCHOR:summary -->
 Extended the hybrid RAG effort by consolidating deeper code-grounded findings, expanding Level 3+ spec documentation, and preparing handover context for continued work. Key breakthrough: prior research was largely theoretical — the actual `system-speckit` codebase already has FTS5, BM25-approximation, and cognitive modules built. The real gap is integration. All research files consolidated under `/research`, Level 3+ spec suite completed with strict ANCHOR compliance.
 
 **Key Outcomes:**

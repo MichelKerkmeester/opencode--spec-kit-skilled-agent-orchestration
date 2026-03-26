@@ -62,6 +62,6 @@ title: "Tasks: Implement and Remove Deprecated Features"
 ## Cross-References
 
 - Predecessor: `../021-remediation-revalidation/spec.md`
-- Release packet: `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`
+- Release packet: ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md
 - Verification checklist: `checklist.md`
 <!-- /ANCHOR:cross-refs -->

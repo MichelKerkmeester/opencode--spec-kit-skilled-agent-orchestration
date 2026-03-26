@@ -231,8 +231,7 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 ---
 
-<!-- ANCHOR:deep-review -->
-## DEEP REVIEW FINDINGS (2026-03-26)
+### DEEP REVIEW FINDINGS (2026-03-26)
 
 A 6-iteration deep review (12 GPT-5.4 agents via codex exec) audited feature catalog ↔ playbook ↔ spec phase traceability. **Verdict: CONDITIONAL.**
 
@@ -294,7 +293,6 @@ Full report: [`review-report.md`](review-report.md)
 | 27 | 18-UX Hooks | Atomic-save parity and partial-indexing hints |
 | 28 | 18-UX Hooks | Final token metadata recomputation |
 | 29 | 18-UX Hooks | End-to-end success-envelope verification |
-<!-- /ANCHOR:deep-review -->
 
 ---
 

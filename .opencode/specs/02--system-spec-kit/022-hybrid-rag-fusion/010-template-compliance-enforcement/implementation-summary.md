@@ -37,10 +37,10 @@ The 2-layer enforcement implementation is partially delivered. Shared contract i
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/references/template-compliance-contract.md` | Created | Canonical contract source for Levels 1-3 template structure and sync guidance |
+| `.opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md` | Created | Canonical contract source for Levels 1-3 template structure and sync guidance |
 | `.claude/agents/speckit.md` | Modified | Injected compact inline contract and explicit post-write validation protocol |
 | `.opencode/agent/speckit.md` | Modified | Mirrored compact inline contract and validation protocol for OpenCode/Copilot |
-| `.opencode/agent/chatgpt/speckit.md` | Modified | Mirrored compact inline contract and validation protocol for ChatGPT profile |
+| .opencode/agent/chatgpt/speckit.md | Modified | Mirrored compact inline contract and validation protocol for ChatGPT profile |
 | `.codex/agents/speckit.toml` | Modified | Mirrored compact inline contract and validation protocol in TOML agent format |
 <!-- /ANCHOR:what-built -->
 

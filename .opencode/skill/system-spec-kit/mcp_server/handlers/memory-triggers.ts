@@ -209,7 +209,11 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   // arbitrary sessions — only server-minted or previously tracked sessions.
   let sessionId: string | undefined = rawSessionId;
   if (rawSessionId) {
-    const trustedSession = sessionManager.resolveTrustedSession(rawSessionId);
+    const trustedSession = sessionManager.resolveTrustedSession(rawSessionId, {
+      tenantId: args.tenantId,
+      userId: args.userId,
+      agentId: args.agentId,
+    });
     if (trustedSession.error) {
       console.warn(`[memory_match_triggers] SECURITY: Rejected untrusted sessionId "${rawSessionId}" — ${trustedSession.error}`);
       return createMCPErrorResponse({

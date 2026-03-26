@@ -1,9 +1,9 @@
 ---
-title: "Adaptive-fusion flag drift"
-description: "Live hybrid search always applies adaptive fusion, while installation guidance still describes `SPECKIT_ADAPTIVE_FUSION` as a runtime disable switch."
+title: "Adaptive-fusion mode flag"
+description: "`SPECKIT_ADAPTIVE_FUSION` remains a live runtime flag that selects between fixed and adaptive fusion modes in hybrid search."
 ---
 
-# Adaptive-fusion flag drift
+# Adaptive-fusion mode flag
 
 ## TABLE OF CONTENTS
 
@@ -14,19 +14,19 @@ description: "Live hybrid search always applies adaptive fusion, while installat
 
 ## 1. OVERVIEW
 
-This entry records a documentation-to-runtime drift around the adaptive-fusion flag surface.
+This entry records the current runtime behavior of the adaptive-fusion flag surface.
 
-The requested sources show that adaptive fusion is still central to live hybrid ranking behavior, but the installation guide continues to describe `SPECKIT_ADAPTIVE_FUSION` as if it were an operator-controlled runtime toggle. That creates a compatibility/documentation surface that no longer matches the implementation.
+`SPECKIT_ADAPTIVE_FUSION` is still a live operator-controlled runtime flag. The hybrid search pipeline always routes semantic plus lexical fusion through `hybridAdaptiveFuse(...)`, and that helper decides whether to apply fixed or adaptive fusion based on the flag state and rollout policy.
 
 ---
 
 ## 2. CURRENT REALITY
 
-`mcp_server/lib/search/hybrid-search.ts` uses adaptive fusion unconditionally in the live fusion path. After channel collection, it determines intent, calls `hybridAdaptiveFuse(semanticResults, keywordResults, intent)`, applies the returned semantic, keyword, and optional graph weights back onto the channel lists, and then either short-circuits directly to adaptive results or falls back to `fuseResultsMulti(lists)` when extra channels still need the general fusion path. In the requested runtime source, there is no read of `SPECKIT_ADAPTIVE_FUSION` before this logic runs.
+`mcp_server/lib/search/hybrid-search.ts` always routes the semantic and lexical channel sets through `hybridAdaptiveFuse(semanticResults, keywordResults, intent)`. That means the fusion stage is always present in the live path, but the mode used inside that stage is delegated to the shared adaptive-fusion helper.
 
-`mcp_server/INSTALL_GUIDE.md` still documents the old mental model. It lists `SPECKIT_ADAPTIVE_FUSION` in the feature-flag table as a default-on control that can be set to `false` to disable intent-based fusion, repeats that guidance in example configuration blocks, and echoes the same claim in the feature summary and quick-reference sections.
+`shared/algorithms/adaptive-fusion.ts` still defines `FEATURE_FLAG = 'SPECKIT_ADAPTIVE_FUSION'`, exposes `isAdaptiveFusionEnabled()`, and checks the flag before choosing the fusion mode. When the flag is enabled, `hybridAdaptiveFuse(...)` computes intent-aware weights with `getAdaptiveWeights(intent, documentType)` and returns adaptive results. When the flag is disabled, it returns `standardFuse(...)` results with fixed weights instead. Partial rollout still applies through `SPECKIT_ROLLOUT_PERCENT`.
 
-The current shipped reality is therefore drift, not a live operator choice. Adaptive fusion remains part of the runtime search pipeline, but the install guide still advertises a disable switch that the requested implementation source does not honor. Based on these sources, setting `SPECKIT_ADAPTIVE_FUSION` should be treated as a compatibility/documentation residue rather than an active retrieval control.
+The current shipped reality is therefore a live runtime mode selector, not a deprecated or removed toggle. `SPECKIT_ADAPTIVE_FUSION` controls whether hybrid search uses fixed fusion or adaptive fusion, and the adaptive branch selects weights according to query intent such as `understand`, `fix_bug`, or `find_spec`.
 
 ---
 
@@ -36,13 +36,14 @@ The current shipped reality is therefore drift, not a live operator choice. Adap
 
 | File | Layer | Role |
 |---|---|---|
-| `mcp_server/lib/search/hybrid-search.ts` | Search | Applies adaptive fusion directly in the live hybrid-search path without consulting a runtime flag in the requested implementation |
-| `mcp_server/INSTALL_GUIDE.md` | Documentation | Still presents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing environment toggle and includes configuration examples that imply it is live |
+| `mcp_server/lib/search/hybrid-search.ts` | Search | Always routes semantic + lexical fusion through `hybridAdaptiveFuse(...)`, then applies the returned weights back onto the live channel lists |
+| `shared/algorithms/adaptive-fusion.ts` | Shared algorithm | Reads `SPECKIT_ADAPTIVE_FUSION`, computes intent-aware weights, and chooses between adaptive fusion and standard fixed fusion |
+| `mcp_server/tests/adaptive-fusion.vitest.ts` | Tests | Verifies that flag-off returns standard fusion and flag-on returns intent-aware adaptive weights, including rollout behavior |
 
 ---
 
 ## 4. SOURCE METADATA
 
 - Group: Implement and Remove Deprecated Features
-- Source feature title: Adaptive-fusion flag drift
+- Source feature title: Adaptive-fusion mode flag
 - Source spec: Deep research remediation 2026-03-26

@@ -41,7 +41,7 @@ System Spec Kit README rewritten to document the full skill surface: documentati
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Research cataloged all skill components from SKILL.md, feature catalog, command directories (8 spec_kit + 6 memory), template files (core + 4 addendum layers), and scripts (12 spec + 10 memory). Draft followed the 9-section readme template structure with simple-terms voice calibrated against the MCP server README. Memory system coverage uses summarize-and-link approach: 1-2 paragraph overviews per capability with links to `mcp_server/README.md` for the full 33-tool API reference. Final output: 1,043 lines across 9 sections with ANCHOR markers.
+Research cataloged all skill components from SKILL.md, feature catalog, command directories (8 spec_kit + 6 memory), template files (core + 4 addendum layers), and scripts (12 spec + 10 memory). Draft followed the 9-section readme template structure with simple-terms voice calibrated against the MCP server README. Memory system coverage uses summarize-and-link approach: 1-2 paragraph overviews per capability with links to `.opencode/skill/system-spec-kit/mcp_server/README.md` for the full 33-tool API reference. Final output: 1,043 lines across 9 sections with ANCHOR markers.
 <!-- /ANCHOR:how-delivered -->
 
 ---
