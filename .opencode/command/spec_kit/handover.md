@@ -27,7 +27,9 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
 Use `[runtime_agent_path]` based on the active runtime profile:
 
 - Default/Copilot: `.opencode/agent`
-- Claude: `.claude/agents/`
+- Codex: `.codex/agents`
+- Claude: `.claude/agents`
+- Gemini: `.gemini/agents`
 
 # SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION
 
