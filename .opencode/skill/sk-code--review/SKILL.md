@@ -394,7 +394,7 @@ After reporting findings, request explicit next action before any implementation
 <!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
-- Primary review baseline for `@review` agents in `.opencode/agent/review.md` and `.opencode/agent/chatgpt/review.md`.
+- Primary review baseline for `@review` agents in `.opencode/agent/review.md`.
 - Referenced by review-dispatch steps in `spec_kit` and `create` command YAML workflows.
 - Complements, but does not replace, stack-specific skills:
   - `sk-code--opencode`

@@ -152,7 +152,6 @@ function testTemplateCompliancePromptContracts() {
   const agentDocs = [
     path.join(REPO_ROOT, '.agents', 'agents', 'speckit.md'),
     path.join(REPO_ROOT, '.opencode', 'agent', 'speckit.md'),
-    path.join(REPO_ROOT, '.opencode', 'agent', 'chatgpt', 'speckit.md'),
     path.join(REPO_ROOT, '.claude', 'agents', 'speckit.md'),
     path.join(REPO_ROOT, '.gemini', 'agents', 'speckit.md'),
   ];

@@ -19,13 +19,13 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Audit runtime agent naming parity. Capture the evidence needed to prove base matches Claude and Gemini, ChatGPT matches Codex after extension normalization, deep-research is the active name, and stale research naming is absent. Return a concise pass/fail verdict with the main reason.`
+- Prompt: `Audit runtime agent naming parity. Capture the evidence needed to prove base (.opencode/agent/) matches Claude and Gemini, Codex traces lineage to base after extension normalization, deep-research is the active name, and stale research naming is absent. Return a concise pass/fail verdict with the main reason.`
 - Commands:
   ```bash
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .claude/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find -L .gemini/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)
-  diff -u <(find .opencode/agent/chatgpt -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .codex/agents -maxdepth 1 -type f -name '*.toml' -exec basename {} \; | sed 's/\.toml$/.md/' | sort)
-  rg -n 'research\.md' .opencode/agent .opencode/agent/chatgpt .claude/agents .codex/agents .gemini/agents
+  diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .codex/agents -maxdepth 1 -type f -name '*.toml' -exec basename {} \; | sed 's/\.toml$/.md/' | sort)
+  rg -n 'research\.md' .opencode/agent .claude/agents .codex/agents .gemini/agents
   ```
 - Expected: all diff commands produce no output; rg finds no active `research.md`.
 - Evidence: diff output (empty on pass) and rg output (empty on pass).

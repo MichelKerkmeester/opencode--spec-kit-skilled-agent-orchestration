@@ -1,5 +1,5 @@
 # Agent: handover
-# Converted from: .opencode/agent/chatgpt/handover.md
+# Converted from: .opencode/agent/handover.md
 name = "handover"
 profile = "handover"
 sandbox_mode = "workspace-write"

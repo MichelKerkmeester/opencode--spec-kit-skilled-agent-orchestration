@@ -77,7 +77,6 @@ development_philosophy:
 
 runtime_agent_path_resolution:
   default: .opencode/agent
-  chatgpt: .opencode/agent/chatgpt
   claude: .claude/agents
   codex: .codex/agents
   gemini: .gemini/agents

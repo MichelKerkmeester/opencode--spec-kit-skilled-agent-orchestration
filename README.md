@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentatio, 12 agents, 18 skills, 22 commands, 42 MCP tools -- built for OpenCode, Claude Code, ChatGPT and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentatio, 12 agents, 18 skills, 22 commands, 42 MCP tools -- built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 >
 > 99.999% of people won't try this system. Beat the odds?
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
@@ -65,7 +65,7 @@ The framework adds three layers on top of the base platform:
 | **Commands** | 22 | 8 spec_kit + 6 memory + 7 create + 1 utility |
 | **MCP Tools** | 42 | 33 memory + 7 code mode + 1 semantic code search + 1 sequential thinking |
 | **Gates** | 3 | Understanding, Skill Routing, Spec Folder |
-| **Runtimes** | 4 | OpenCode, Claude Code, ChatGPT, Gemini CLI |
+| **Runtimes** | 4 | OpenCode, Codex CLI, Claude Code, Gemini CLI |
 | **Templates** | 81 | CORE + ADDENDUM v2.2 |
 | **Feature Catalog** | 222 | Across 21 categories |
 
@@ -691,7 +691,7 @@ For the complete 33-tool API reference (7 layers, 7,600 total token budget) and 
 
 12 agents total: 2 built-in platform agents and 10 custom specialists. Think of them like a team where the project manager (you or the orchestrator) delegates to the right expert instead of one generalist doing everything. Each agent has a defined role, specific tool permissions and clear boundaries on what it can and cannot modify.
 
-Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), ChatGPT (`.opencode/agent/chatgpt/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
+Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
 
 #### All 12 Agents
 
@@ -716,7 +716,7 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 |---------|-----------|-------|-------|
 | OpenCode (default) | `.opencode/agent/` | 10 | Source of truth |
 | Claude Code | `.claude/agents/` | 10 | Runtime-adapted |
-| ChatGPT | `.opencode/agent/chatgpt/` | 10 | Runtime-adapted |
+| Codex CLI | `.codex/agents/` | 10 | Runtime-adapted |
 | Gemini CLI | `.gemini/agents/` | 10 | Runtime-adapted |
 
 ---
@@ -952,7 +952,7 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 ```
 opencode-spec-kit-framework/
 ├── .opencode/                    # OpenCode runtime (source of truth)
-│   ├── agent/                   # 10 custom agent definitions (+ ChatGPT adapters)
+│   ├── agent/                   # 10 custom agent definitions
 │   ├── command/                 # 22 command entry files across 4 namespaces
 │   │   ├── spec_kit/            # 8 spec workflow commands
 │   │   ├── memory/              # 6 memory commands
@@ -1270,7 +1270,7 @@ A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to
 
 **Q: Is this only for OpenCode, or does it work with other runtimes?**
 
-A: It works with OpenCode, Claude Code, ChatGPT and Gemini CLI. Agent definitions are mirrored across all four runtime directories. Each runtime has its own adapter files that translate the source-of-truth definitions into the format that runtime expects.
+A: It works with OpenCode, Codex CLI, Claude Code and Gemini CLI. Agent definitions are mirrored across all four runtime directories. Each runtime has its own adapter files that translate the source-of-truth definitions into the format that runtime expects.
 
 ---
 
@@ -1306,7 +1306,7 @@ A: The memory database is a SQLite file on your local machine. No session data, 
 
 **Q: How do I contribute a new agent definition?**
 
-A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.claude/agents/`, `.opencode/agent/chatgpt/` and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
+A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.claude/agents/`, `.codex/agents/` and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
 
 ---
 

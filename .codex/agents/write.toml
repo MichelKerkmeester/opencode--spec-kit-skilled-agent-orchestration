@@ -1,5 +1,5 @@
 # Agent: write
-# Converted from: .opencode/agent/chatgpt/write.md
+# Converted from: .opencode/agent/write.md
 name = "write"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"

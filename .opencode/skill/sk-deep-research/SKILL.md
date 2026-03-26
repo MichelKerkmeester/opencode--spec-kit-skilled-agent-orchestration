@@ -15,7 +15,6 @@ Iterative research protocol with fresh context per iteration, externalized state
 
 Runtime path resolution:
 - OpenCode/Copilot runtime: `.opencode/agent/*.md`
-- ChatGPT runtime: `.opencode/agent/chatgpt/*.md`
 - Claude runtime: `.claude/agents/*.md`
 - Codex runtime: `.codex/agents/*.toml`
 
@@ -325,7 +324,6 @@ These concepts remain documented for future design work, but they are not part o
 
 Agent runtime paths:
 - OpenCode/Copilot: `.opencode/agent/deep-review.md`
-- ChatGPT: `.opencode/agent/chatgpt/deep-review.md`
 - Claude: `.claude/agents/deep-review.md`
 - Codex: `.codex/agents/deep-review.toml`
 

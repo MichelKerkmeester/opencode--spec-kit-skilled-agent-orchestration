@@ -1,5 +1,5 @@
 # Agent: context
-# Converted from: .opencode/agent/chatgpt/context.md
+# Converted from: .opencode/agent/context.md
 name = "context"
 sandbox_mode = "read-only"
 model = "gpt-5.4"

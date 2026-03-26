@@ -25,7 +25,6 @@ Read-only code review specialist providing quality scoring, pattern validation, 
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
-**Model Convention (spec 015)**: Pinned to `github-copilot/gpt-5.4` for consistent review quality.
 
 **CRITICAL**: You have READ-ONLY file access. You CANNOT modify files - only analyze, score, and report. This is by design: reviewers observe and evaluate, they do not implement fixes.
 

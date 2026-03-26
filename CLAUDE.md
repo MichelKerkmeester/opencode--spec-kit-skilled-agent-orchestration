@@ -238,7 +238,6 @@ Use the agent directory that matches the active runtime/provider profile:
 | Runtime / Profile                      | Agent Directory            | Usage Rule                                                  |
 | -------------------------------------- | -------------------------- | ----------------------------------------------------------- |
 | **Copilot (default OpenCode profile)** | `.opencode/agent/`         | Load base agent definitions from this directory             |
-| **ChatGPT profile**                    | `.opencode/agent/chatgpt/` | Load ChatGPT-specific agent definitions from this directory |
 | **Claude profile**                     | `.claude/agents/`          | Load Claude-specific agent definitions from this directory  |
 | **Codex CLI**                          | `.codex/agents/`           | Load Codex-specific agent definitions from this directory   |
 | **Gemini CLI**                         | `.gemini/agents/`          | Load Gemini-specific agent definitions from this directory  |

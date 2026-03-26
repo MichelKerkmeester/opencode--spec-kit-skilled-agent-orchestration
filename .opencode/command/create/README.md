@@ -224,7 +224,7 @@ A: The command reads the most recent changelog entry in the target component fol
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.opencode/agent/chatgpt/`, `.claude/agents/`, `.codex/agents/`, or `.gemini/agents/`) |
+| Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.claude/agents/`, `.codex/agents/`, or `.gemini/agents/`) |
 | YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for operation and mode |
 | Skill not found for sk-skill operation | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
 | Catalog or playbook update target missing | `update` used before the package exists | Re-run with `create` or point to the correct skill root |

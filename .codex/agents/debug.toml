@@ -1,5 +1,5 @@
 # Agent: debug
-# Converted from: .opencode/agent/chatgpt/debug.md
+# Converted from: .opencode/agent/debug.md
 name = "debug"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"

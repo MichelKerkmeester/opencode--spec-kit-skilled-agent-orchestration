@@ -42,7 +42,6 @@ The supporting command indexes and operator-facing docs now consistently describ
 | `.opencode/README.md` | Workspace docs | High-level environment command summary |
 | `README.md` | Workspace docs | Root command inventory |
 | `.opencode/agent/speckit.md` | Agent docs | Speckit agent command summary |
-| `.opencode/agent/chatgpt/speckit.md` | Agent docs | ChatGPT-profile speckit agent command summary |
 | `scripts/tests/memory-learn-command-docs.vitest.ts` | Scripts test | Regression test for `/memory:learn` contract and active doc alignment |
 
 ### Verification

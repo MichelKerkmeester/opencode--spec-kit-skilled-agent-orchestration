@@ -1190,7 +1190,7 @@ The Agent System provides specialized AI personas with defined authorities, tool
 
 **Quick Verification:**
 ```bash
-ls .opencode/agent/*.md .opencode/agent/chatgpt/*.md 2>/dev/null && echo "✅ PASS" || echo "❌ FAIL"
+ls .opencode/agent/*.md 2>/dev/null && echo "✅ PASS" || echo "❌ FAIL"
 ```
 
 **Detailed Guide**: [SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)
@@ -1419,7 +1419,7 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 | `opencode.json`             | OpenCode MCP server config (4 native servers) |
 | `.utcp_config.json`         | Code Mode external tools config               |
 | `.opencode/skill/`          | Skill definitions (18 skills)                 |
-| `.opencode/agent/`          | Base and ChatGPT agent source definitions     |
+| `.opencode/agent/`          | Base agent source definitions                 |
 | `.opencode/install_guides/` | Installation documentation                    |
 | `~/.opencode-backup/`       | Configuration backups                         |
 | `AGENTS.md`                 | AI agent behavior configuration               |

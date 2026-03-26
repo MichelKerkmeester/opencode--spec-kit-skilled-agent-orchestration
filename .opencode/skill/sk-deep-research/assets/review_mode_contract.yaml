@@ -351,19 +351,6 @@ render:
         - quality-gates
         - cross-reference-protocols
         - outputs
-    - id: agent-chatgpt
-      path: .opencode/agent/chatgpt/deep-review.md
-      ownership: mixed
-      format: markdown
-      markers:
-        begin: "<!-- BEGIN GENERATED: review-mode-contract/agent-chatgpt -->"
-        end: "<!-- END GENERATED: review-mode-contract/agent-chatgpt -->"
-      sections:
-        - dimensions
-        - severities
-        - quality-gates
-        - cross-reference-protocols
-        - outputs
     - id: quick-reference-review-mode
       path: .opencode/skill/sk-deep-research/references/quick_reference.md
       ownership: mixed

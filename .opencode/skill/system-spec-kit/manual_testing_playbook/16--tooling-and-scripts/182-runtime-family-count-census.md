@@ -19,16 +19,15 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Audit runtime agent family counts. Capture the evidence needed to prove base, ChatGPT, Claude, Codex, and Gemini each expose exactly 9 runtime agent files. Return a concise pass/fail verdict with the main reason.`
+- Prompt: `Audit runtime agent family counts. Capture the evidence needed to prove OpenCode (base), Claude, Codex, and Gemini each expose exactly 9 runtime agent files. Return a concise pass/fail verdict with the main reason.`
 - Commands:
   ```bash
   find .opencode/agent -maxdepth 1 -type f -name '*.md' | wc -l
-  find .opencode/agent/chatgpt -maxdepth 1 -type f -name '*.md' | wc -l
   find .claude/agents -maxdepth 1 -type f -name '*.md' | wc -l
   find .codex/agents -maxdepth 1 -type f -name '*.toml' | wc -l
   find -L .gemini/agents -maxdepth 1 -type f -name '*.md' | wc -l
   ```
-- Expected: all five commands return `9`.
+- Expected: all four commands return `9`.
 - Evidence: command output showing each family count.
 - Pass: every family count is `9`.
 - Fail triage: any family missing files or has extras; collect counts and identify discrepancy.

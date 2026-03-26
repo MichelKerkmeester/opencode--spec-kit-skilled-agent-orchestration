@@ -228,7 +228,6 @@ review-report.md                       # Review mode: 9-section findings-first r
 | Runtime | Path |
 |---------|------|
 | OpenCode / Copilot | `.opencode/agent/deep-research.md` and `.opencode/agent/deep-review.md` |
-| ChatGPT | `.opencode/agent/chatgpt/deep-research.md` |
 | Claude | `.claude/agents/deep-research.md` and `.claude/agents/deep-review.md` |
 | Codex | `.codex/agents/deep-research.toml` |
 

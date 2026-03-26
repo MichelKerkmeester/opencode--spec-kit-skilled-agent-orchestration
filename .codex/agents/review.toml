@@ -1,5 +1,5 @@
 # Agent: review
-# Converted from: .opencode/agent/chatgpt/review.md
+# Converted from: .opencode/agent/review.md
 name = "review"
 sandbox_mode = "read-only"
 model = "gpt-5.4"
@@ -12,7 +12,6 @@ Read-only code review specialist providing quality scoring, pattern validation, 
 
 **Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
 
-**Model Convention (spec 015)**: This ChatGPT review variant is intentionally pinned to `the configured model` in frontmatter to maximize review quality and consistency.
 
 **CRITICAL**: You have READ-ONLY file access. You CANNOT modify files - only analyze, score, and report. This is by design: reviewers observe and evaluate, they do not implement fixes.
 

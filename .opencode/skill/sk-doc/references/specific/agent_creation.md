@@ -86,7 +86,6 @@ Examples:
 
 ```text
 .opencode/agent/my-agent.md
-.opencode/agent/chatgpt/my-agent.md
 .claude/agents/my-agent.md
 .codex/agents/my-agent.md
 .gemini/agents/my-agent.md
@@ -100,7 +99,6 @@ Examples:
 
 **Runtime placement rule**:
 - Copilot/default OpenCode profile -> `.opencode/agent/`
-- ChatGPT profile -> `.opencode/agent/chatgpt/`
 - Claude profile -> `.claude/agents/`
 - Codex CLI profile -> `.codex/agents/`
 - Gemini CLI profile -> `.gemini/agents/`

@@ -53,7 +53,7 @@ Together, these systems enable context-aware development with traceability, hard
 |---|---:|---|
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
 | MCP Tools | 40 | 33 memory + 7 code mode tools |
-| Agents | 9 | Base agent definitions in `.opencode/agent/*.md`; ChatGPT runtime sources in `.opencode/agent/chatgpt/*.md` |
+| Agents | 9 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 18 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 22 | Markdown command entry points in `.opencode/command/` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
@@ -96,7 +96,7 @@ Together, these systems enable context-aware development with traceability, hard
 
 The framework includes 9 specialized agents plus 2 built-in agents:
 
-This is an 11-agent / 5-runtime model (OpenCode, ChatGPT, Claude, Codex, Gemini) with aligned role definitions.
+This is an 11-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with aligned role definitions.
 
 | Agent | Description | When to Use |
 |-------|-------------|-------------|
@@ -323,11 +323,10 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 - **Research task:** `memory_match_triggers()`, `memory_context()`, Document findings
 - **Resume session:** `/memory:continue`, Review checklist, Continue work
 - **End session:** `/spec_kit:handover`, Save context, Continuation prompt
-- **Provider switch (agents):** `bash .opencode/agent/scripts/activate-provider.sh <copilot|chatgpt>` then `bash .opencode/agent/scripts/provider-status.sh`
 
 ### Further Reading
 
-- **Agents:** Runtime sources in `.opencode/agent/` and `.opencode/agent/chatgpt/`, with generated/runtime copies under `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`
+- **Agents:** Runtime sources in `.opencode/agent/`, with runtime copies under `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`
 - **Skills:** `SKILL.md` in each `.opencode/skill/[skill-name]/` directory
 - **Commands:** `.md` files in `.opencode/command/[domain]/[command-name].md`
 - **Setup:** `.opencode/install_guides/` for installation and configuration

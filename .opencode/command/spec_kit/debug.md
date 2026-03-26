@@ -31,7 +31,6 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, mcp__cocoindex_code__s
 Use `[runtime_agent_path]` based on the active runtime profile:
 
 - Default/Copilot: `.opencode/agent`
-- ChatGPT: `.opencode/agent/chatgpt`
 - Claude: `.claude/agents/`
 
 # SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION

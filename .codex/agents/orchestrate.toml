@@ -1,5 +1,5 @@
 # Agent: orchestrate
-# Converted from: .opencode/agent/chatgpt/orchestrate.md
+# Converted from: .opencode/agent/orchestrate.md
 name = "orchestrate"
 profile = "orchestrate"
 sandbox_mode = "read-only"

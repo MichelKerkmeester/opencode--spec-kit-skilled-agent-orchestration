@@ -31,7 +31,6 @@ describe('/memory:learn command docs', () => {
       'README.md',
       '.opencode/README.md',
       '.opencode/agent/speckit.md',
-      '.opencode/agent/chatgpt/speckit.md',
     ];
 
     const contents = docPaths.map((docPath) => ({

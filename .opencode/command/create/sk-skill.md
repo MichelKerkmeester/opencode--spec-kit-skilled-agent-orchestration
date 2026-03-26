@@ -382,7 +382,6 @@ Hard rule:
 
 Use `[runtime_agent_path]` based on active profile:
 - Default profile -> `.opencode/agent`
-- ChatGPT profile -> `.opencode/agent/chatgpt`
 - Claude profile -> `.claude/agents`
 
 ---
