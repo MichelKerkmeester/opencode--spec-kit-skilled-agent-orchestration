@@ -175,3 +175,41 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 | New playbook entries in section body + cross-ref table | PASS (lines 2802/2816 + 3244/3245) |
 | G-NEW-* proper nouns preserved | PASS (25 occurrences intact) |
 | Spot-check of previously-marked files | PASS (all sampled files clean) |
+
+---
+
+**Phase H: Deep Research Remediation — Playbook Scenarios (2026-03-26)**
+
+### What Was Done
+
+16 manual testing playbook scenario files (IDs 217-232) were created to provide test coverage for new feature catalog entries added during Phase H. New playbook category directories were created for categories 20 (Remediation & Revalidation) and 21 (Implement & Remove Deprecated Features). Each scenario was derived from its corresponding catalog entry, with operator-facing prompts, 9-column test execution tables, and correct cross-references.
+
+### Files Created
+
+| File | Category | Size |
+|------|----------|------|
+| `09--evaluation-and-measurement/217-evaluation-api-surface.md` | Evaluation | 4.3KB |
+| `14--pipeline-architecture/218-mcp-server-public-api-barrel.md` | Pipeline | 4.4KB |
+| `14--pipeline-architecture/219-embeddings-and-retry-api.md` | Pipeline | 5.3KB |
+| `17--governance/220-constitutional-gate-enforcement-rule-pack.md` | Governance | 5.1KB |
+| `17--governance/221-shared-memory-admin-identity-governance.md` | Governance | 4.8KB |
+| `17--governance/222-governance-audit-review-and-rollout-metrics.md` | Governance | 5.1KB |
+| `19--feature-flag-reference/223-runtime-config-contract.md` | Feature Flags | 5.0KB |
+| `19--feature-flag-reference/224-filter-config-contract.md` | Feature Flags | 4.7KB |
+| `20--remediation-revalidation/225-remediation-runtime-surface.md` | Remediation | 4.8KB |
+| `20--remediation-revalidation/226-memory-health-auto-repair.md` | Remediation | 4.5KB |
+| `20--remediation-revalidation/227-feedback-driven-revalidation.md` | Remediation | 4.8KB |
+| `21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md` | Deprecated | 4.4KB |
+| `21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md` | Deprecated | 3.9KB |
+| `21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md` | Deprecated | 3.8KB |
+| `21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md` | Deprecated | 4.1KB |
+| `21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md` | Deprecated | 3.9KB |
+
+### Phase H Playbook Verification
+
+| Check | Result |
+|-------|--------|
+| All 16 files created | PASS (IDs 217-232) |
+| Template compliance (5 sections, 9-column table) | PASS (spot-checked 217 + 232) |
+| Catalog cross-references valid | PASS (relative paths to `../../feature_catalog/`) |
+| Total playbook scenario count | 275 files |

@@ -45,7 +45,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 **Current-State Note (2026-03-23)**
 
 - Live filesystem count now reports **224** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
-- Live filesystem count now reports **233** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
+- Live filesystem count now reports **275** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
 - Treat the earlier addendum counts above as historical milestones, not the current denominator.
 
 **Deep Research Addendum (2026-03-26)**
@@ -53,7 +53,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 12-agent deep research (7 GPT-5.4 high + 2 GPT-5.4 xhigh round 1; 5 GPT-5.4 high round 2; ~3.3M tokens consumed) produced a comprehensive cross-system gap analysis. Key findings:
 
 - **MCP tool surface (33 tools):** Fully cataloged. 4 tools PARTIAL (grouped docs), 1 phantom tool (`read_spec_section` documented but not in live registry).
-- **Feature catalog (222 snippets):** ~72 source-level gaps across 21 categories. Worst: cat 19 (11 gaps, 28 undocumented SPECKIT_* flags), cat 20 (0/1 accurate stub), cat 21 (0/1 accurate stub), cat 17 (2/4 invalid paths).
+- **Feature catalog (255 snippets post-Phase H; was 222 pre-remediation):** ~72 source-level gaps identified, 34 new entries created. Worst (pre-remediation): cat 19 (11 gaps, 28 undocumented SPECKIT_* flags), cat 20 (0/1 accurate stub), cat 21 (0/1 accurate stub), cat 17 (2/4 invalid paths). All remediated in Phase H. **Manual testing playbook** extended to 275 scenarios (+16 for new Phase H catalog entries).
 - **13 BOTH_MISSING capabilities** (not in catalog AND not in code audit): entire `mcp_server/api/` public surface, ops/setup/kpi scripts, config contracts, constitutional gate-enforcement, phase-system node.
 - **Scripts ecosystem:** 223 files at 24.7% coverage (168 uncovered). 7 directories at 0%.
 - **137 total SPECKIT_* env vars** in source; 28 undocumented, 1 stale (`SPECKIT_RSF_FUSION`).

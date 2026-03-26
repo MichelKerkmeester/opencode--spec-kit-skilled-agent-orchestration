@@ -24,7 +24,7 @@ contextType: "general"
 |--------|-------|
 | **Language/Stack** | TypeScript (MCP server source), Markdown (catalog) |
 | **Framework** | Spec Kit Memory MCP server |
-| **Storage** | Historical snapshot: 180 snippets (2026-03-08); current tree: 222 snippets (2026-03-26) |
+| **Storage** | Historical snapshot: 180 snippets (2026-03-08); current tree: 255 catalog snippets + 275 playbook scenarios (2026-03-26, post-Phase H remediation) |
 | **Testing** | Agent-based verification, file-path validation |
 
 ### Overview
