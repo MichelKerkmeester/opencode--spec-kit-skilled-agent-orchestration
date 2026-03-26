@@ -9,11 +9,10 @@ This document captures the implemented behavior, source references, and remediat
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. BOOLEAN TOGGLE SURFACES](#3--boolean-toggle-surfaces)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -37,7 +36,7 @@ The shipped runtime contract is:
 
 This makes the present-day contract intentionally conservative: top-level workflow knobs are safe to override through `config.jsonc`, while deeper subsystem sections are reference documentation rather than a guaranteed control plane.
 
-## 3. BOOLEAN TOGGLE SURFACES
+### Boolean toggle surfaces
 
 Outside Section 1, `config/config.jsonc` currently declares the following boolean-valued toggle surfaces. These booleans are present in the editable JSONC file, but under the current loader contract they remain documentation-only reference metadata unless a consuming module reads them directly.
 
@@ -66,7 +65,7 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `constitutionalTier.alwaysSurface` | `true` | Documents always-surface behavior for the constitutional tier. |
 | `confidenceTracking.enabled` | `true` | Documents confidence tracking and promotion logic as enabled. |
 
-## 4. SOURCE FILES
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -76,7 +75,7 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Loader | Parses JSONC, merges defaults, validates `WorkflowConfig`, and exports frozen runtime constants |
 | `.opencode/skill/system-spec-kit/config/README.md` | Documentation | States that only Section 1 keys are used at runtime and distinguishes `filters.jsonc` from the core config loader |
 
-## 5. SOURCE METADATA
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: Runtime Config Contract

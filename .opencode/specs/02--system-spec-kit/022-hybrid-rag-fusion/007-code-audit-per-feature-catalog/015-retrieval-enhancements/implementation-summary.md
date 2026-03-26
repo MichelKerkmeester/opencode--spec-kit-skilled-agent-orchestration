@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Retrieval Enhancements"
-description: "9 features audited: 8 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "9 features audited: 9 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "retrieval enhancements"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 9 retrieval enhancement features were audited — dual-scope auto-surface, constitutional injection, hierarchy retrieval, lightweight consolidation, summary search channel, entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. Eight are perfectly documented; one has a bloated source list.
+All 9 retrieval enhancement features were audited — dual-scope auto-surface, constitutional injection, hierarchy retrieval, lightweight consolidation, summary search channel, entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. All 9 are now fully documented after catalog remediation on 2026-03-26.
 
 ### Audit Results
 
-9 features audited: 8 MATCH, 1 PARTIAL, 0 MISMATCH.
+9 features audited: 9 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -88,6 +88,12 @@ Each feature was verified by:
 
 1. **Feature 09 (contextual tree injection) implementation is in only 3-4 files but catalog lists ~60**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+Catalog entries for all 2 previously PARTIAL features were updated to achieve 100% MATCH across all 9 retrieval enhancement features. Bloated source list for contextual tree injection was corrected in the feature catalog. Re-audit confirmed 9/9 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

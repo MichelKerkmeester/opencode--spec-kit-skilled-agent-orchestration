@@ -32,18 +32,11 @@ Repair metadata semantics for mixed outcomes:
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/core/db-state.ts` | Core | Database state management |
-| `mcp_server/handlers/memory-crud-health.ts` | Handler | Health diagnostics handler |
-| `mcp_server/handlers/memory-crud-types.ts` | Handler | CRUD type definitions |
-| `mcp_server/handlers/types.ts` | Handler | Type definitions |
-| `mcp_server/lib/errors/core.ts` | Lib | Error type definitions |
-| `mcp_server/lib/errors/recovery-hints.ts` | Lib | Error recovery hints |
-| `mcp_server/lib/parsing/trigger-matcher.ts` | Lib | Trigger phrase matching |
-| `mcp_server/lib/response/envelope.ts` | Lib | Response envelope formatting |
-| `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade |
-| `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
-| `mcp_server/tests/memory-crud-extended.vitest.ts` | Test | Auto-repair metadata and partial-success scenarios |
-| `mcp_server/tests/handler-memory-health-edge.vitest.ts` | Test | Input validation and confirmation-only response coverage |
+| `mcp_server/handlers/memory-crud-health.ts` | Handler | Health diagnostics handler with autoRepair, confirmation-only, and partial-success logic |
+| `mcp_server/handlers/memory-crud-types.ts` | Handler | Repair metadata type definitions including `partialSuccess` and `repaired` fields |
+| `mcp_server/core/db-state.ts` | Core | Database state management for FTS rebuild and orphan cleanup |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage for orphan-edge cleanup actions |
+| `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade for orphan-vector cleanup actions |
 
 ### Tests
 

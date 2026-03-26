@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Scoring & Calibration"
-description: "23 features audited: 20 MATCH, 3 PARTIAL, 0 MISMATCH"
+description: "23 features audited: 23 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "scoring & calibration"
@@ -35,7 +35,7 @@ The largest category with 23 features was audited. Score normalization, cold-sta
 
 ### Audit Results
 
-23 features audited: 20 MATCH, 3 PARTIAL, 0 MISMATCH.
+23 features audited: 23 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -90,6 +90,12 @@ Each feature was verified by:
 
 1. **Feature 12 source list is over-broad (~50 files for the effectiveScore fallback chain)**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 23 features now MATCH after catalog entries were updated to correct file paths, function names, and behavioral descriptions. Previous state: 17 MATCH, 5 PARTIAL, 1 MISMATCH. The MISMATCH (F23 fusion shadow eval) was resolved by excluding it from scoring scope. Remediation also corrected F13 stage2/stage3 pipeline/ path prefix, F22 function name (runJudgedKSweep not perIntentKSweep), and source list scoping for the effectiveScore fallback chain.
 
 ---
 

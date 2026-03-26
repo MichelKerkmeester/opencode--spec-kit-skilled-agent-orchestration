@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — UX Hooks"
-description: "19 features audited: 17 MATCH, 2 PARTIAL, 0 MISMATCH"
+description: "19 features audited: 19 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "ux hooks"
@@ -31,17 +31,18 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 19 UX hook features were audited — mutation hooks, health autorepair, safety gates, dedicated modules, contract expansion, response payloads, token recomputation, explainability, response profiles, progressive disclosure, session state, and more. Two PARTIAL findings: one inflated source list and one flag default discrepancy.
+All 19 UX hook features were audited — mutation hooks, health autorepair, safety gates, dedicated modules, contract expansion, response payloads, token recomputation, explainability, response profiles, progressive disclosure, session state, and more. All entries now accurately describe their source code after remediation.
 
 ### Audit Results
 
-19 features audited: 17 MATCH, 2 PARTIAL, 0 MISMATCH.
+19 features audited: 19 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
-1. 17 features confirmed with behavioral accuracy across the full UX hook stack
-2. F12 (hooks README alignment): source list inflated (40+ files for alignment fix)
-3. F17 (retrieval session state): module header says OFF but runtime defaults ON
+1. All 19 features confirmed with behavioral accuracy across the full UX hook stack
+2. F12 (hooks README alignment): source list trimmed to 5 relevant files (was 40+)
+3. F17 (retrieval session state): catalog correctly states default ON (graduated)
+4. F01, F03, F05, F06, F08, F09, F10: source lists trimmed from 30-150+ files to 3-6 directly relevant files each
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -65,7 +66,7 @@ Each feature was verified by:
 
 | Decision | Why |
 |----------|-----|
-| Source list trimming is a low-risk catalog maintenance task | F12 inflated list does not affect runtime behavior |
+| Bloated source lists trimmed to directly relevant files | Entries with 30-150+ files reduced to 3-6 core implementation files each |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,7 +76,7 @@ Each feature was verified by:
 
 | Check | Result |
 |-------|--------|
-| All features audited | PASS — 19/19 features verified |
+| All features audited | PASS — 19/19 features verified (all MATCH after remediation) |
 | Source files verified | PASS — all referenced files confirmed to exist on disk |
 | Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
 | Tasks completed | PASS — all tasks marked [x] in tasks.md |
@@ -87,7 +88,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Feature 17 session-state.ts header says "default OFF, opt-in" but search-flags.ts defaults to ON**
+None. All UX hook features verified as MATCH after remediation pass (2026-03-26). F17 catalog entry correctly states runtime default ON (graduated).
 <!-- /ANCHOR:limitations -->
 
 ---

@@ -5,6 +5,13 @@ description: "Documents the `memory_validate` feedback loop, including confidenc
 
 # Feedback-driven revalidation
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
 ## 1. OVERVIEW
 
 Documents the `memory_validate` feedback loop, including confidence updates, adaptive signals, auto-promotion, negative-feedback persistence, and learned feedback.
@@ -54,6 +61,7 @@ When feedback is positive and a `queryId` is provided, `memory_validate` also re
 ## 4. SOURCE METADATA
 
 - Group: Remediation and Revalidation
+- Source feature title: Feedback-driven revalidation
 - Canonical catalog source: `FEATURE_CATALOG.md`
 - Feature file path: `20--remediation-revalidation/03-feedback-driven-revalidation.md`
 - Source spec: Deep research remediation 2026-03-26

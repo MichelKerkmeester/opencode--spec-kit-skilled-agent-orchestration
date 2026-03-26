@@ -29,8 +29,9 @@ Two cross-cutting normalization issues were resolved:
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/lib/search/entity-linker.ts` | Lib | Canonical `normalizeEntityName()` and `computeEdgeDensity()` implementations |
+| `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction; imports and re-exports `normalizeEntityName` and `computeEdgeDensity` from `entity-linker.ts` |
 | `mcp_server/lib/extraction/entity-denylist.ts` | Lib | Entity denylist |
-| `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction |
 
 ### Tests
 

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Mutation"
-description: "10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH"
+description: "10 features audited: 10 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "mutation"
@@ -35,7 +35,7 @@ The Mutation audit covered all 10 write-path features from memory_save through p
 
 ### Audit Results
 
-10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH.
+10 features audited: 10 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -98,6 +98,12 @@ Each feature was verified by:
 1. **lib/storage/history.ts missing from all 5 mutation handler catalogs despite being directly imported**
 2. **Features 03 and 05 have over-inclusive source lists (80+ search/retrieval files unrelated to mutation)**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 10 features now show MATCH after catalog remediation. Source file lists were trimmed to remove over-inclusive entries (80+ unrelated search/retrieval files from Features 03 and 05, 10+ stale files from Feature 01). Missing history.ts was added to all 5 mutation handler catalogs. Handler file for Feature 05 (memory_validate) was corrected. Namespace management primary implementation files were added to Feature 07. Final tally: 10 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

@@ -34,40 +34,24 @@ Two residual production spread sites still remain outside that converted set: `m
 
 ### Implementation
 
-| File | Layer | Role |
-|------|-------|------|
-| `mcp_server/lib/scoring/composite-scoring.ts` | Lib | Composite score computation |
-| `mcp_server/lib/scoring/folder-scoring.ts` | Lib | Folder scoring implementation |
-| `mcp_server/lib/scoring/importance-tiers.ts` | Lib | Importance tier definitions |
-| `mcp_server/lib/scoring/interference-scoring.ts` | Lib | Interference penalty scoring |
-| `mcp_server/lib/scoring/mpab-aggregation.ts` | Lib | MPAB chunk aggregation |
-| `mcp_server/lib/storage/access-tracker.ts` | Lib | Access pattern tracking |
-| `mcp_server/lib/telemetry/scoring-observability.ts` | Lib | Scoring observability |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/scoring/folder-scoring.ts` | Shared | Shared folder scoring |
-| `shared/types.ts` | Shared | Type definitions |
+| File | Role | Status |
+|------|------|--------|
+| `mcp_server/lib/search/causal-boost.ts` | Causal boost scoring | Fixed: spread replaced with reduce |
+| `mcp_server/lib/search/evidence-gap-detector.ts` | Evidence gap detection | Fixed: spread replaced with reduce |
+| `mcp_server/handlers/pe-gating.ts` | Prediction error gating | Fixed: 2 instances replaced with reduce |
+| `mcp_server/lib/telemetry/retrieval-telemetry.ts` | Retrieval telemetry | Fixed: spread replaced with reduce |
+| `mcp_server/lib/eval/reporting-dashboard.ts` | Reporting dashboard | Fixed: 2 instances replaced with reduce |
+| `mcp_server/lib/eval/k-value-analysis.ts` | RRF K-sensitivity analysis | Residual: still uses `Math.min(...avgScores)` and `Math.max(...avgScores)` |
+| `mcp_server/lib/search/graph-lifecycle.ts` | Graph lifecycle management | Residual: still uses `Math.max(...degreeRows.map(...))` |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/access-tracker-extended.vitest.ts` | Access tracker extended |
-| `mcp_server/tests/access-tracker.vitest.ts` | Access tracker tests |
-| `mcp_server/tests/composite-scoring.vitest.ts` | Composite scoring tests |
-| `mcp_server/tests/folder-scoring.vitest.ts` | Folder scoring tests |
-| `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
-| `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/mpab-aggregation.vitest.ts` | MPAB aggregation tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/scoring-observability.vitest.ts` | Scoring observability tests |
-| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests (covers fixed Math.max/min sites) |
+| `mcp_server/tests/k-value-optimization.vitest.ts` | K-value analysis tests (covers residual site) |
+| `mcp_server/tests/causal-boost.vitest.ts` | Causal boost tests (covers fixed site) |
+| `mcp_server/tests/prediction-error-gate.vitest.ts` | PE gate tests (covers fixed sites) |
 
 ---
 

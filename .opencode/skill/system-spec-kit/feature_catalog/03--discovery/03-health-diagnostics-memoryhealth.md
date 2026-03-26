@@ -35,7 +35,8 @@ All health validation failures return MCP error envelopes with `E_INVALID_INPUT`
 |------|------|
 | `mcp_server/handlers/memory-crud-health.ts` | Handler validation, diagnostics, alias triage, repair flow, and response shaping |
 | `mcp_server/handlers/memory-crud.ts` | Public CRUD exports and snake_case compatibility aliases |
-| `mcp_server/handlers/memory-index.ts` | Supplies alias-conflict summarization used by health diagnostics |
+| `mcp_server/handlers/memory-index-alias.ts` | Defines `summarizeAliasConflicts()` (line 153), the alias-conflict summarization logic |
+| `mcp_server/handlers/memory-index.ts` | Re-exports `summarizeAliasConflicts` from `memory-index-alias.ts` (line 34) |
 | `mcp_server/schemas/tool-input-schemas.ts` | Runtime Zod schema for public `memory_health` arguments, including `confirmed` |
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `memory_health` arguments |
 | `mcp_server/lib/response/envelope.ts` | MCP success/error envelope helpers |

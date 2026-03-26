@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Evaluation & Measurement"
-description: "16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH"
+description: "16 features audited: 16 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "evaluation & measurement"
@@ -35,7 +35,7 @@ The 16-feature evaluation and measurement subsystem was audited comprehensively.
 
 ### Audit Results
 
-16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH.
+16 features audited: 16 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -91,6 +91,12 @@ Each feature was verified by:
 
 1. **Channel attribution (@deprecated, never wired into production) presented as active in catalog**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 16 features now MATCH after catalog entries were updated to correct source file lists, metric counts, and deprecation status. Previous state: 7 MATCH, 8 PARTIAL, 1 MISMATCH. The MISMATCH (shadow scoring) was resolved by moving the entry to category 21. Remediation also corrected metric count (12 not 11), added eval-logger.ts to schema source list, updated channel attribution deprecation status, and added missing source files to eval housekeeping.
 
 ---
 

@@ -21,9 +21,9 @@ Training uses the closed-form solution `w = (X^T X + lambda * I)^{-1} X^T y` wit
 
 Validation uses Leave-One-Out Cross-Validation (`runLOOCV()`), and feature importance is computed via SHAP-style analysis (`computeSHAP()`): `importance_i = |weight_i| * std(feature_i)`. Exact linear SHAP values are also available via `computeExactLinearSHAP()`.
 
-Shadow scoring via `shadowScore()` returns both the learned and manual scores when the flag is ON, or `null` with zero overhead when OFF. Model persistence uses `saveModel()` / `loadModel()` with JSON serialization and strict field validation.
+Shadow scoring via `shadowScore()` returns both the learned and manual scores when a model is loaded and the flag is ON, or `null` with zero overhead when OFF or when no model is available. Model persistence uses `saveModel()` / `loadModel()` with JSON serialization and strict field validation.
 
-Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to disable.
+Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to disable the shadow scoring path entirely. However, producing shadow output at runtime requires two additional conditions: (1) `SPECKIT_SHADOW_LEARNING=true` must be set to enable model file loading (default OFF in `stage2-fusion.ts`), and (2) a trained model file must exist at the path resolved by `SPECKIT_LEARNED_STAGE2_MODEL` (defaults to `models/learned-stage2-combiner.json` relative to cwd). Without both, `shadowScore()` returns `null` and the feature is inert despite the flag being ON.
 
 ---
 

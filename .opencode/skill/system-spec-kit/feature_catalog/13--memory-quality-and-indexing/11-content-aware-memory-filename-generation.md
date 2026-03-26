@@ -27,7 +27,8 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 
 | File | Layer | Role |
 |------|-------|------|
-| `scripts/utils/slug-utils.ts` | Script | Content-aware slug generation |
+| `scripts/utils/slug-utils.ts` | Script | Content-aware slug generation (`generateContentSlug()`) |
+| `scripts/core/title-builder.ts` | Script | `slugToTitle()` derives H1 body heading from content slug |
 | `scripts/utils/task-enrichment.ts` | Script | Enriches generic task names from `spec.md` titles during slug generation |
 | `scripts/core/workflow.ts` | Script | Applies spec-title fallback and `preferredMemoryTask` selection before filename generation |
 

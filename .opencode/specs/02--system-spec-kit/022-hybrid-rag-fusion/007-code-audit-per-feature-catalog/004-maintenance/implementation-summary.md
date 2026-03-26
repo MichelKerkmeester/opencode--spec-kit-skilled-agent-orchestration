@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Maintenance"
-description: "2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "2 features audited: 2 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "maintenance"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Both Maintenance features — workspace scanning and startup compatibility guards — were audited. The startup guards are perfectly documented. The index scan feature has accurate behavioral descriptions but its source file list omits history.ts despite being a direct import.
+Both Maintenance features — workspace scanning and startup compatibility guards — were audited. All behavioral descriptions proved accurate against source code.
 
 ### Audit Results
 
-2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH.
+2 features audited: 2 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -102,6 +102,12 @@ Each feature was verified by:
 | **Verdict** | Documented as API surface |
 
 Public indexing runtime bootstrap and orchestration following ARCH-1 pattern. Exports: `initializeIndexingRuntime()` (initializes vector index, DB state, checkpoints, access tracker, hybrid search), `warmEmbeddingModel()`, `runMemoryIndexScan()` (with configurable `MemoryIndexScanArgs` interface), `closeIndexingRuntime()`. Provides minimal hooks for memory reindexing without widening the internal surface. No separate catalog entry needed — the exposed functions are already documented under their respective feature catalog categories (maintenance, indexing).
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 2 features now show MATCH after catalog remediation. The memory_index_scan source file list was trimmed from 131 over-inclusive entries to direct dependencies only, and the missing history.ts was added. BATCH_SIZE origin was clarified in the catalog. Final tally: 2 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

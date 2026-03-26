@@ -32,17 +32,23 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
-| `mcp_server/lib/eval/eval-logger.ts` | Lib | Evaluation event logger |
-| `mcp_server/lib/eval/reporting-dashboard.ts` | Lib | Reporting dashboard |
+| `mcp_server/lib/eval/ablation-framework.ts` | Lib | #33 Ablation `recallK` parameter replacing hardcoded 20 |
+| `mcp_server/lib/eval/eval-logger.ts` | Lib | #34 `_evalRunCounter` lazy-initializes from `MAX(eval_run_id)` in eval DB |
+| `mcp_server/handlers/session-learning.ts` | Handler | #35 Postflight SELECT matches `phase IN ('preflight', 'complete')` for re-correction |
+| `mcp_server/tools/types.ts` | Tool | #36 `parseArgs<T>()` returns `{} as T` for null/undefined/non-object input |
+| `mcp_server/lib/session/session-manager.ts` | Lib | #37 Session dedup hash extended from `.slice(0, 16)` to `.slice(0, 32)` (128-bit) |
+| `mcp_server/lib/storage/access-tracker.ts` | Lib | #38 `_exitFlushHandler` ref stored, `cleanupExitHandlers()` calls `process.removeListener()` |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/eval-db.vitest.ts` | Eval database operations |
-| `mcp_server/tests/eval-logger.vitest.ts` | Eval logger tests |
-| `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests |
+| `mcp_server/tests/ablation-framework.vitest.ts` | Ablation recallK parameter behavior |
+| `mcp_server/tests/eval-logger.vitest.ts` | evalRunId persistence across restarts |
+| `mcp_server/tests/learning-stats-filters.vitest.ts` | Postflight phase matching |
+| `mcp_server/tests/context-server.vitest.ts` | parseArgs guard coverage |
+| `mcp_server/tests/session-manager.vitest.ts` | Dedup hash length validation |
+| `mcp_server/tests/access-tracker-extended.vitest.ts` | Exit handler cleanup behavior |
 
 ---
 

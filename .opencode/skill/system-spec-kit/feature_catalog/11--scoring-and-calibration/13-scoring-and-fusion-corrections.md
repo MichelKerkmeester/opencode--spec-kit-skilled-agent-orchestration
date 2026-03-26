@@ -61,8 +61,9 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | #8 BM25 specFolder filter | `mcp_server/lib/search/hybrid-search.ts` (`bm25Search`) | `mcp_server/tests/hybrid-search.vitest.ts` |
 | #9 RRF convergence double-count | `shared/algorithms/rrf-fusion.ts` (`fuseResultsCrossVariant`) | `mcp_server/tests/unit-rrf-fusion.vitest.ts` |
 | #10 Adaptive fusion normalization | `shared/algorithms/adaptive-fusion.ts` (`getAdaptiveWeights`) | `mcp_server/tests/adaptive-fusion.vitest.ts` |
-| #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `stage2-fusion.ts` and `stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
+| #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `pipeline/stage2-fusion.ts` and `pipeline/stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
 | #12 Configurable interference threshold | `mcp_server/lib/scoring/interference-scoring.ts` (`computeInterferenceScoresBatch`) | `mcp_server/tests/interference.vitest.ts` |
+| #13 RRF ID canonicalization | `shared/algorithms/rrf-fusion.ts` (`canonicalRrfId`, `fuseResultsMulti`, `fuseResultsCrossVariant`) | `mcp_server/tests/unit-rrf-fusion.vitest.ts` |
 
 ---
 

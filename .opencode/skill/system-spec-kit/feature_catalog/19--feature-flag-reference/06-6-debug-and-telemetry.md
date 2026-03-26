@@ -33,9 +33,7 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Roadmap metadata now defaults this flag to off unless explicitly enabled with `true` or `1`, matching the live shared-spaces runtime gate. This keeps diagnostic snapshots from claiming shared memory is live before runtime rollout enables it. |
 | `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) **Default ON (graduated via rollout policy).** `isConsumptionLogEnabled()` delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`, so consumption logging stays active unless explicitly disabled or rollout policy gates it off. |
 
-## 3. ADDITIONAL UNDOCUMENTED MEDIUM-SEVERITY FLAGS
-
-These operational controls are implemented today but were previously missing from the debug and telemetry reference set.
+### Operational and validation controls
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
@@ -47,13 +45,10 @@ These operational controls are implemented today but were previously missing fro
 | `SPECKIT_STRICT` | `false` | boolean | `scripts/spec/validate.sh` | Enables strict validation mode, treating warnings as errors. Equivalent to passing `--strict`. |
 | `SPECKIT_VALIDATION` | `true` | boolean | `scripts/spec/validate.sh` | Master on/off switch for spec validation. When set to `false`, validation is disabled and the script exits successfully without running rules. |
 
-## 4. ADDITIONAL UNDOCUMENTED LOW-SEVERITY FLAGS
-
-These lower-severity diagnostics and output controls are implemented but were previously absent from this reference. `SPECKIT_HYDE_LOG` is repeated here because it belongs to the low-severity gap list as well as the main runtime table above.
+### Output and diagnostics controls
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
-| `SPECKIT_HYDE_LOG` | `false` | boolean | `mcp_server/lib/search/hyde.ts` | Logs HyDE shadow-run details, including pseudo-document length, for debugging. It has no retrieval effect. |
 | `SPECKIT_JSON` | `false` | boolean | `scripts/spec/validate.sh` | Enables JSON output mode for spec validation. Equivalent to passing `--json`. |
 | `SPECKIT_QUIET` | `false` | boolean | `scripts/spec/validate.sh` | Suppresses non-essential validator output and keeps results terse. Equivalent to passing `--quiet`. |
 | `SPECKIT_VALIDATE_LINKS` | `false` | boolean | `scripts/rules/check-links.sh` | Enables wikilink validation across skill markdown files during the `LINKS_VALID` rule. When unset or false, the rule reports a skipped pass. |
@@ -61,13 +56,13 @@ These lower-severity diagnostics and output controls are implemented but were pr
 
 ---
 
-## 5. SOURCE FILES
+## 3. SOURCE FILES
 
-Source file references are included in the flag table above.
+Source file references are included in the flag tables above.
 
 ---
 
-## 6. SOURCE METADATA
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: 6. Debug and Telemetry

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Pipeline Architecture"
-description: "22 features audited: 19 MATCH, 3 PARTIAL, 0 MISMATCH"
+description: "22 features audited: 22 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "pipeline architecture"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 22 pipeline architecture features were audited — from the 4-stage refactor and MPAB aggregation through dynamic server instructions to lineage state resolution. Behavioral descriptions are accurate throughout. Three PARTIAL findings involve bloated source lists and a .ts/.js path discrepancy.
+All 22 pipeline architecture features were audited — from the 4-stage refactor and MPAB aggregation through dynamic server instructions to lineage state resolution. All 22 are now fully documented after catalog remediation on 2026-03-26.
 
 ### Audit Results
 
-22 features audited: 19 MATCH, 3 PARTIAL, 0 MISMATCH.
+22 features audited: 22 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -90,6 +90,12 @@ Each feature was verified by:
 
 1. **Feature 14 (dynamic server instructions) lists ~200 files covering the entire codebase instead of the 3-4 relevant files**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+Catalog entries for all 5 previously PARTIAL features were updated to achieve 100% MATCH across all 22 pipeline architecture features. Bloated source lists (F07, F14) and .ts/.js path discrepancies (F12) were corrected in the feature catalog. Re-audit confirmed 22/22 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

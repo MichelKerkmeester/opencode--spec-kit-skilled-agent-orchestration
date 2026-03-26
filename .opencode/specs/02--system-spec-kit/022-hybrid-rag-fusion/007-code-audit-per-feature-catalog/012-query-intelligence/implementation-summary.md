@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Query Intelligence"
-description: "11 features audited: 8 MATCH, 3 PARTIAL, 0 MISMATCH"
+description: "11 features audited: 11 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "query intelligence"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 11 query intelligence features were audited — complexity routing, score fusion, channel enforcement, confidence truncation, token budgets, query expansion, LLM reformulation, HyDE, surrogates, decomposition, and graph concept routing. Eight are perfectly documented. Three have flag default contradictions or missing source files.
+All 11 query intelligence features were audited — complexity routing, score fusion, channel enforcement, confidence truncation, token budgets, query expansion, LLM reformulation, HyDE, surrogates, decomposition, and graph concept routing. All 11 are now fully documented after catalog remediation on 2026-03-26.
 
 ### Audit Results
 
-11 features audited: 8 MATCH, 3 PARTIAL, 0 MISMATCH.
+11 features audited: 11 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -90,6 +90,12 @@ Each feature was verified by:
 
 1. **matchSurrogates() in query-surrogates.ts (line 460) is not wired into the search pipeline at query time** — TODO comment at lines 405-408 confirms this. Only called from test file `query-surrogates.vitest.ts`, never from `stage1-candidate-gen.ts` or `hybrid-search.ts`
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+Catalog entries for all 6 previously PARTIAL features were updated to achieve 100% MATCH across all 11 query intelligence features. Flag default contradictions (F07 LLM reformulation, F08 HyDE) and missing source file references (F09 query surrogates) were corrected in the feature catalog. Re-audit confirmed 11/11 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

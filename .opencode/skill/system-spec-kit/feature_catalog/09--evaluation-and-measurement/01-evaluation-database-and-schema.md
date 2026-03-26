@@ -27,7 +27,8 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
+| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database schema, table creation, and query helpers |
+| `mcp_server/lib/eval/eval-logger.ts` | Lib | Fail-safe logging hooks that write query, per-channel, and final-result rows to the eval database |
 | `mcp_server/lib/telemetry/eval-channel-tracking.ts` | Lib | Collects per-channel attribution payloads and graph-walk diagnostics emitted into eval logging |
 
 ### Tests

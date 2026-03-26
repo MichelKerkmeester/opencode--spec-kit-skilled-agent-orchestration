@@ -35,23 +35,19 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
-| `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working memory integration |
-| `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction |
-| `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter |
-| `mcp_server/lib/extraction/redaction-gate.ts` | Lib | Redaction gate |
+| `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Five regex extraction rules, entity dedup, `memory_entities` storage |
+| `mcp_server/lib/extraction/entity-denylist.ts` | Lib | 64-word denylist filter (common nouns, tech stop words, generic modifiers) |
+| `mcp_server/lib/search/entity-linker.ts` | Lib | Canonical `normalizeEntityName()` (Unicode-aware) and `computeEdgeDensity()` |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter coordinating entity extraction at save time |
+| `mcp_server/lib/search/search-flags.ts` | Lib | `isAutoEntitiesEnabled()` flag accessor (`SPECKIT_AUTO_ENTITIES`) |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory |
-| `mcp_server/tests/entity-extractor.vitest.ts` | Entity extraction tests |
+| `mcp_server/tests/entity-extractor.vitest.ts` | Entity extraction rule coverage |
+| `mcp_server/tests/entity-linker.vitest.ts` | Entity linking and normalization tests |
 | `mcp_server/tests/extraction-adapter.vitest.ts` | Extraction adapter tests |
-| `mcp_server/tests/redaction-gate.vitest.ts` | Redaction gate tests |
-| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
-| `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
-| `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 
 ---
 

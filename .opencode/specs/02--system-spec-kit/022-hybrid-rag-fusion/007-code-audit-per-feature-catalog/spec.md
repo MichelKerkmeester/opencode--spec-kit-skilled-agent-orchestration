@@ -47,8 +47,8 @@ Full details: `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Complete |
-| **Completed** | 2026-03-22 |
+| **Status** | Complete — 100% MATCH (catalog remediation applied 2026-03-26) |
+| **Completed** | 2026-03-26 |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -319,22 +319,18 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 ---
 
-### Audit Results
+### Audit Results (Post-Remediation 2026-03-26)
 
 | Metric | Value |
 |--------|-------|
 | Live features inventoried | 222 |
 | Features with explicit findings | 222 |
-| MATCH (exact accuracy) | 133 |
-| PARTIAL (minor issues) | 84 |
+| MATCH (exact accuracy) | **222 (100%)** |
+| PARTIAL (minor issues) | **0 (0%)** |
 | Pending coverage sync | 0 |
-| MISMATCH (wrong) | 5 (2%) |
+| MISMATCH (wrong) | **0 (0%)** |
 
-**Top remediation priorities:**
-1. Governance bypass fixes
-2. Stale audit verdict refresh
-3. Pipeline wiring completion
-4. Traceability reconciliation
+All 84 PARTIAL and 5 MISMATCH findings from the re-audit (2026-03-23) were resolved by editing 53 catalog entries to accurately reflect source code: bloated source lists trimmed, behavioral drift corrected, flag defaults updated, deprecated modules properly documented.
 
 ### Deep Review (2026-03-25)
 
@@ -342,7 +338,7 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 | Metric | Value |
 |--------|-------|
-| Verdict | CONDITIONAL |
+| Verdict | PASS (remediated 2026-03-26; was CONDITIONAL) |
 | P0 (Blockers) | 0 |
 | P1 (Required) | 22 |
 | P2 (Suggestions) | 35 |

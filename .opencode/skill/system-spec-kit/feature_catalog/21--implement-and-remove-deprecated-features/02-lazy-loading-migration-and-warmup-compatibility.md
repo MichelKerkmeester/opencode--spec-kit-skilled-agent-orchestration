@@ -5,6 +5,13 @@ description: "Embedding startup now uses permanent lazy initialization, while th
 
 # Lazy-loading migration and warmup compatibility
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
 ## 1. OVERVIEW
 
 This entry captures the completed migration from optional startup warmup to permanent lazy embedding initialization.

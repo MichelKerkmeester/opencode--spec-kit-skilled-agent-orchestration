@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Governance"
-description: "4 features audited: 3 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "governance"
@@ -31,18 +31,21 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 4 governance features were audited — feature flag governance process, sunset audit, hierarchical scope governance, and shared memory rollout. The flag sunset audit claims 24 exported flags but actual count is 46.
+All 7 governance features were audited — feature flag governance process, sunset audit, hierarchical scope governance, shared memory rollout, constitutional gate-enforcement, admin identity governance, and audit review/rollout metrics. All entries accurately describe their source code.
 
 ### Audit Results
 
-4 features audited: 3 MATCH, 1 PARTIAL, 0 MISMATCH.
+7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
 1. Feature flag governance: process document, accurately describes B8 signal ceiling
-2. Sunset audit: claims 24 flags, actual count is 46 (`search-flags.ts`); flag count stale
-3. Hierarchical scope: all 4 source files exist, scope model confirmed
-4. Shared memory rollout: deny-by-default, kill switch, all 6 files confirmed
+2. Sunset audit: accurately documents sunset outcomes visible in live code without stale flag counts
+3. Hierarchical scope: all source files exist, scope model confirmed
+4. Shared memory rollout: deny-by-default, kill switch, all files confirmed
+5. Constitutional gate-enforcement: rule pack accurately describes gate cross-references and trigger phrases
+6. Admin identity governance: resolveAdminActor() behavior correctly documented
+7. Governance audit review and rollout metrics: reviewGovernanceAudit() and shared-space metrics confirmed
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -66,7 +69,7 @@ Each feature was verified by:
 
 | Decision | Why |
 |----------|-----|
-| Flag count maintenance is an ongoing catalog hygiene task | Flags are added frequently; the sunset audit needs regular refresh |
+| Sunset audit no longer claims specific flag counts | Remediation removed stale count references; entry now documents code-level sunset evidence only |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -76,7 +79,7 @@ Each feature was verified by:
 
 | Check | Result |
 |-------|--------|
-| All features audited | PASS — 4/4 features verified |
+| All features audited | PASS — 7/7 features verified |
 | Source files verified | PASS — all referenced files confirmed to exist on disk |
 | Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
 | Tasks completed | PASS — all tasks marked [x] in tasks.md |
@@ -88,7 +91,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Feature 02 flag count (24) is significantly stale** — actual count is 46
+None. All governance features verified as MATCH after remediation pass (2026-03-26).
 <!-- /ANCHOR:limitations -->
 
 ---

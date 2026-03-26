@@ -38,6 +38,8 @@ The `utils/` directory is the stable cross-script utility surface. `index.ts` is
 
 ## 3. SOURCE FILES
 
+### Implementation
+
 ### Inventory And Structure Docs
 
 | File | Layer | Role |

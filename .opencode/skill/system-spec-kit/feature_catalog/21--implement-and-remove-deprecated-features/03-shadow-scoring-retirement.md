@@ -5,6 +5,13 @@ description: "The shadow-scoring module now preserves read-only comparison helpe
 
 # Shadow-scoring retirement
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
 ## 1. OVERVIEW
 
 This entry documents the retirement posture of the legacy shadow-scoring runtime.

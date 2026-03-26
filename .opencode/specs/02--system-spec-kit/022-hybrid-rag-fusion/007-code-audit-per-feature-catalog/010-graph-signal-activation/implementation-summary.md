@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Graph Signal Activation"
-description: "16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH"
+description: "16 features audited: 16 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "graph signal activation"
@@ -35,7 +35,7 @@ All 16 graph signal features were audited — from typed degree channels through
 
 ### Audit Results
 
-16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH.
+16 features audited: 16 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -91,6 +91,12 @@ Each feature was verified by:
 
 1. **Temporal-contiguity and graph-calibration-profiles modules are CONFIRMED @deprecated in source code (F11: "Never wired into production pipeline. Superseded by FSRS v4 decay."; F15: "Fully implemented and tested but never wired into Stage 2 pipeline.") but catalog incorrectly describes them as active graduated features**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 16 features now MATCH after catalog entries were updated to correct deprecation status, default values, and behavioral descriptions. Previous state: 10 MATCH, 5 PARTIAL, 1 MISMATCH. The MISMATCH (graph calibration) was resolved by updating the catalog to reflect @deprecated status. Remediation also corrected temporal-contiguity deprecation status, graph-lifecycle default value documentation, and LLM backfill contradictory default messaging.
 
 ---
 

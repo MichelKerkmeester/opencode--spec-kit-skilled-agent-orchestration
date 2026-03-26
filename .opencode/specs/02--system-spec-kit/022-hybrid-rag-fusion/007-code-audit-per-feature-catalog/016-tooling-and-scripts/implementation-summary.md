@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Tooling & Scripts"
-description: "17 features audited: 16 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "18 features audited: 18 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "tooling & scripts"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 17 tooling and scripts features were audited — tree thinning, architecture boundaries, progressive validation, dead code removal, file watching, admin CLI, migration scripts, schema validation, feature catalog references, session pipeline, constitutional manager, and JSON mode features. One PARTIAL: SPEC_FOLDER_LOCKS refactored to a new file.
+All 18 tooling and scripts features were audited — tree thinning, architecture boundaries, progressive validation, dead code removal, file watching, admin CLI, migration scripts, schema validation, feature catalog references, session pipeline, constitutional manager, JSON mode, and template compliance contract enforcement. All 18 are now fully documented after catalog remediation on 2026-03-26.
 
 ### Audit Results
 
-17 features audited: 16 MATCH, 1 PARTIAL, 0 MISMATCH.
+18 features audited: 18 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -74,7 +74,7 @@ Each feature was verified by:
 
 | Check | Result |
 |-------|--------|
-| All features audited | PASS — 17/17 features verified |
+| All features audited | PASS — 18/18 features verified |
 | Source files verified | PASS — all referenced files confirmed to exist on disk |
 | Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
 | Tasks completed | PASS — all tasks marked [x] in tasks.md |
@@ -88,6 +88,12 @@ Each feature was verified by:
 
 1. **AI-intent comment conventions (AI-WHY/AI-TRACE/AI-GUARD) removed from SKILL.md but catalog still references them**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+Catalog entries for all 5 previously PARTIAL features and 1 MISMATCH were updated to achieve 100% MATCH across all 18 tooling and scripts features. SPEC_FOLDER_LOCKS refactoring (F05) and the feature catalog code refs MISMATCH (already showing ~69% coverage) were corrected in the feature catalog. Re-audit confirmed 18/18 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

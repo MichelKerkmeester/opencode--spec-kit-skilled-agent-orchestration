@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Feature Flag Reference"
-description: "7 features audited: 6 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "10 features audited: 10 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "feature flag reference"
@@ -31,17 +31,20 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 7 feature flag reference sections were audited — search pipeline flags, session/cache, MCP configuration, memory/storage, embedding/API, debug/telemetry, and CI/build. Six are perfectly documented. The embedding/API section points source references to test files instead of production sources.
+All 10 feature flag reference sections were audited — search pipeline flags, session/cache, MCP configuration, memory/storage, embedding/API, debug/telemetry, CI/build, audit mapping note, runtime config contract, and filter config contract. All entries accurately describe their source code after remediation.
 
 ### Audit Results
 
-7 features audited: 6 MATCH, 1 PARTIAL, 0 MISMATCH.
+10 features audited: 10 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
 1. 100+ search pipeline flags verified against source
-2. Session/cache (11 flags), MCP config (7 flags), memory/storage (8 vars), debug/telemetry (13 flags), CI/build (4 vars): all MATCH
-3. Embedding/API: source refs point to test files instead of production (cross-encoder.ts, factory.ts)
+2. Session/cache (11 flags), MCP config (7 flags), memory/storage (8 vars), CI/build (4 vars): all MATCH
+3. Embedding/API: source refs corrected to production files, section numbering normalized to standard 4-section layout, additional flags integrated into Section 2
+4. Debug/telemetry: section numbering normalized to standard 4-section layout, additional flags integrated as subsections within Section 2
+5. Runtime config contract and filter config contract: new entries verified as MATCH
+6. Audit phase mapping note: correctly excluded as meta note
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -65,7 +68,7 @@ Each feature was verified by:
 
 | Decision | Why |
 |----------|-----|
-| Production source files should always be primary references | Test files can be secondary references but should not replace production file citations |
+| Production source files are primary references | Test files are secondary references; non-standard section numbering normalized to standard 4-section layout |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,7 +78,7 @@ Each feature was verified by:
 
 | Check | Result |
 |-------|--------|
-| All features audited | PASS — 7/7 features verified |
+| All features audited | PASS — 10/10 features verified (all MATCH after remediation) |
 | Source files verified | PASS — all referenced files confirmed to exist on disk |
 | Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
 | Tasks completed | PASS — all tasks marked [x] in tasks.md |
@@ -87,8 +90,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY source references point to test files instead of production source files**
-2. **Post-audit flag graduation**: Commit `09acbe8ce` graduated 22 flags from opt-in to default-ON. This audit covered 7 flag categories but not individual flag default values, so the graduation event is outside the audit's scope but affects the behavioral accuracy of catalog entries.
+None. All feature flag reference entries verified as MATCH after remediation pass (2026-03-26). Source references corrected to production files, section layouts normalized.
 <!-- /ANCHOR:limitations -->
 
 ---

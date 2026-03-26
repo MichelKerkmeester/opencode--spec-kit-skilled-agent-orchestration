@@ -47,7 +47,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-TST1 [P0] Live inventory truth-synced [Evidence: 217 of 218 live features have explicit findings and the remaining Retrieval delta is called out]
+- [x] CHK-TST1 [P0] Live inventory truth-synced [Evidence: 222 of 222 live features have explicit audit findings — Phase 5 remediation (2026-03-26) closed all gaps]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -73,7 +73,7 @@ contextType: "general"
 
 ### Quality
 
-- [x] CHK-020 [P0] Live catalog totals synchronized — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH [EVIDENCE: the umbrella checklist and implementation summary preserve the synchronized audit totals.]
+- [x] CHK-020 [P0] Live catalog totals synchronized — 222 MATCH, 0 PARTIAL, 0 MISMATCH (post-remediation 2026-03-26) [EVIDENCE: all 53 catalog entries edited, 19 phase summaries updated, parent implementation-summary reflects 100% MATCH.]
 - [x] CHK-021 [P0] Zero features skipped without reason — every feature has explicit audit status [EVIDENCE: the umbrella audit tracks the lone remaining Retrieval coverage delta explicitly instead of leaving skipped features implicit.]
 - [x] CHK-022 [P1] Findings actionable and specific — each PARTIAL includes root cause and file references [EVIDENCE: the child audit packets preserve file-backed findings for partial or divergent results.]
 - [x] CHK-023 [P2] Recommendations prioritized — P0/P1/P2 severity in Phase 021

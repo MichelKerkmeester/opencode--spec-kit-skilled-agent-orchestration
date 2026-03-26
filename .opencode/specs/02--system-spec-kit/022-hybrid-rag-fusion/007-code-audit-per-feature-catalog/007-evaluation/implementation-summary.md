@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Evaluation"
-description: "2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "2 features audited: 2 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "evaluation"
@@ -35,7 +35,7 @@ Both evaluation MCP tools were audited. The reporting dashboard is perfectly doc
 
 ### Audit Results
 
-2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH.
+2 features audited: 2 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -102,6 +102,12 @@ Each feature was verified by:
 | **Verdict** | Documented as operational script |
 
 Runtime entry point for controlled ablation studies. Requires `SPECKIT_ABLATION=true` environment flag. Loads production database, initializes vector index and hybrid search, selectively disables search channels (vector, BM25, FTS5, graph, trigger) and measures Recall@20 delta against full-pipeline baseline. Supports `--channels` and `--verbose` flags. Outputs formatted markdown report to stdout and JSON to `/tmp/ablation-result.json`, stores results to `speckit-eval.db`. The eval API surface (`mcp_server/api/eval.ts`) re-exports the ablation framework used by this script.
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 2 features now MATCH after catalog entries were updated to correct source file lists. Previous state: 0 MATCH, 2 PARTIAL. Remediation addressed the bloated source list in eval_run_ablation (~90 files trimmed to ~15 relevant) and minor source list gaps in eval_reporting_dashboard.
 
 ---
 

@@ -5,6 +5,13 @@ description: "Shared-memory admin mutations are bound to a server-configured adm
 
 # Shared-memory admin-identity governance
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
 ## 1. OVERVIEW
 
 Shared-memory admin-identity governance binds shared-space mutations to a single server-configured admin identity, rejects ambiguous configuration, and exposes that contract through the shared-memory tool schemas.

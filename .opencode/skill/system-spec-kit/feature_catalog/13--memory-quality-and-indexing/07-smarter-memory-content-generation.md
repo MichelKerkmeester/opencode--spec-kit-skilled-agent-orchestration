@@ -29,27 +29,18 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/config/memory-types.ts` | Lib | Memory type definitions |
-| `mcp_server/lib/config/type-inference.ts` | Lib | Memory type inference |
-| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
-| `mcp_server/lib/parsing/memory-parser.ts` | Lib | Memory file parser |
-| `mcp_server/lib/scoring/importance-tiers.ts` | Lib | Importance tier definitions |
-| `mcp_server/lib/utils/canonical-path.ts` | Lib | Canonical path resolution |
-| `mcp_server/lib/utils/path-security.ts` | Lib | Path security validation |
-| `shared/parsing/quality-extractors.ts` | Shared | Quality signal extraction |
-| `shared/utils/path-security.ts` | Shared | Shared path security |
+| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Seven normalization primitives plus `normalizeContentForEmbedding()` and `normalizeContentForBM25()` entry points |
+| `mcp_server/lib/parsing/memory-parser.ts` | Lib | Memory file parser that feeds content into normalizer |
+| `mcp_server/lib/config/type-inference.ts` | Lib | Batch type inference with synthetic fallback keys for pathless drafts |
+| `mcp_server/handlers/memory-save.ts` | Handler | Save path that invokes content normalization before embedding generation |
+| `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 rebuild/index path calling `normalizeContentForBM25()` |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
-| `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
-| `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |
+| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization primitive and pipeline tests |
 | `mcp_server/tests/memory-parser.vitest.ts` | Memory parser tests |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/unit-path-security.vitest.ts` | Path security unit tests |
-| `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
 ---
 

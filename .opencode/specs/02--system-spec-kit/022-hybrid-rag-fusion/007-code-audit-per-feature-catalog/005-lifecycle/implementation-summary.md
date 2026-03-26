@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Lifecycle"
-description: "7 features audited: 4 MATCH, 3 PARTIAL, 0 MISMATCH"
+description: "7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "lifecycle"
@@ -35,7 +35,7 @@ The Lifecycle audit covered checkpoints (create, list, restore, delete), async i
 
 ### Audit Results
 
-7 features audited: 4 MATCH, 3 PARTIAL, 0 MISMATCH.
+7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -94,6 +94,12 @@ Each feature was verified by:
 1. **Feature 07 (archival): catalog says vector re-embedding deferred to next scan, but `rebuildVectorOnUnarchive()` (archival-manager.ts:455) performs immediate async re-embedding via fire-and-forget in `syncVectorOnUnarchive()` (line 510)**
 2. **4 checkpoint-specific test files exist but are missing from all 4 checkpoint catalogs**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 7 features now show MATCH after catalog remediation. Checkpoint source file lists were trimmed from byte-identical 48+43 bloated entries to feature-specific dependencies. The archival catalog entry was corrected to document immediate async vector re-embedding via `rebuildVectorOnUnarchive()` (replacing the incorrect "deferred to next scan" claim). Missing checkpoint test files were added to catalog entries. Pending-file recovery missing test file was added. Feature 01 snapshot scope was updated to reflect 20 tables. Final tally: 7 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

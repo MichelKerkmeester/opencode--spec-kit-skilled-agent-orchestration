@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Retrieval"
-description: "10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH"
+description: "11 features audited: 11 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "retrieval"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The Retrieval audit verified all 10 features powering the memory search pipeline — from unified context retrieval through the 4-stage pipeline architecture to fast delegated search. Every behavioral description in the feature catalog proved accurate against source code.
+The Retrieval audit verified all 11 features powering the memory search pipeline — from unified context retrieval through the 4-stage pipeline architecture to fast delegated search and session recovery. Every behavioral description in the feature catalog proved accurate against source code.
 
 ### Audit Results
 
-10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH.
+11 features audited: 11 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -83,7 +83,7 @@ Each feature was verified by:
 
 | Check | Result |
 |-------|--------|
-| All features audited | PASS — 10/10 features verified |
+| All features audited | PASS — 11/11 features verified |
 | Source files verified | PASS — all referenced files confirmed to exist on disk |
 | Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
 | Tasks completed | PASS — all tasks marked [x] in tasks.md |
@@ -122,6 +122,12 @@ The catalog entry documents `/memory:continue` as a session recovery command exp
 | **Verdict** | Documented as API surface |
 
 Stable re-export surface for search functionality following ARCH-1 architecture pattern. Exports: `initHybridSearch` (aliased as `init`), `hybridSearchEnhanced`, `fts5Bm25Search`, `isFts5Available`, `vectorIndex` namespace. Prevents direct coupling to `lib/search/` internals. No catalog entry needed — this is an architectural facade, not a user-facing feature.
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 11 features now show MATCH after catalog remediation. Source file lists were trimmed to remove over-inclusive entries (15+ stale files from Feature 02, incorrect stage4-filter.ts from Feature 08). Catalog entries were updated to accurately reflect current implementation, resolving all PARTIAL verdicts. The undocumented MENTION_BOOST_FACTOR in Feature 09 was added to the catalog. Final tally: 11 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

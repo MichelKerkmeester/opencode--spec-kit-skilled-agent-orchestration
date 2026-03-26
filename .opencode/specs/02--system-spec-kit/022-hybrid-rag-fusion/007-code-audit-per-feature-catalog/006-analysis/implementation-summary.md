@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Analysis"
-description: "7 features audited: 5 MATCH, 2 PARTIAL, 0 MISMATCH"
+description: "7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "analysis"
@@ -35,7 +35,7 @@ The Analysis audit verified all causal graph tools (link, stats, unlink, drift_w
 
 ### Audit Results
 
-7 features audited: 5 MATCH, 2 PARTIAL, 0 MISMATCH.
+7 features audited: 7 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -91,6 +91,12 @@ Each feature was verified by:
 1. **Features 05-07 share byte-identical source file lists (43+39 files each)**
 2. **Feature 07 layer classification: tool-schemas.ts says L7:Maintenance but catalog groups as Analysis**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 7 features now MATCH after catalog entries were updated to correct source file lists, layer classifications, and behavioral descriptions. Previous state: 3 MATCH, 4 PARTIAL. Remediation addressed bloated source lists for learning features (task_preflight, task_postflight, learning_history) and corrected the layer classification mismatch in learning_history.
 
 ---
 

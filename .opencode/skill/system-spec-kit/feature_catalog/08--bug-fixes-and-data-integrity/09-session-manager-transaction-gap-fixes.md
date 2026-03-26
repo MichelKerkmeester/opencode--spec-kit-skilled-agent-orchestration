@@ -15,7 +15,7 @@ When two requests arrived at the same time, they could both slip past a size lim
 
 ## 2. CURRENT REALITY
 
-Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside transactional boundaries. `markMemorySent()` and `markMemoriesSentBatch()` use `db.transaction()` wrappers, while the `shouldSendMemoriesBatch()` `markAsSent` path uses explicit `BEGIN IMMEDIATE` / `COMMIT` / `ROLLBACK` control. Concurrent MCP requests could otherwise both pass the limit check then both insert, exceeding the entry limit when check and insert were not atomic.
+Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside transactional boundaries (lines 496, 557, and 593). `markMemorySent()` (line 557) and `markMemoriesSentBatch()` (line 593) use `db.transaction()` wrappers, while the `shouldSendMemoriesBatch()` `markAsSent` path (line 496) uses explicit `BEGIN IMMEDIATE` / `COMMIT` / `ROLLBACK` control. Concurrent MCP requests could otherwise both pass the limit check then both insert, exceeding the entry limit when check and insert were not atomic.
 
 ---
 
@@ -23,35 +23,19 @@ Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside
 
 ### Implementation
 
-| File | Layer | Role |
-|------|-------|------|
-| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
-| `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working memory integration |
-| `mcp_server/lib/session/session-manager.ts` | Lib | Session lifecycle management |
-| `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction management |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/types.ts` | Shared | Type definitions |
+| File | Role |
+|------|------|
+| `mcp_server/lib/session/session-manager.ts` | Session lifecycle management: 3 `enforceEntryLimit()` call sites wrapped in transactions |
+| `mcp_server/lib/storage/transaction-manager.ts` | Transaction management utilities |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/session-manager-extended.vitest.ts` | Session manager extended |
-| `mcp_server/tests/session-manager.vitest.ts` | Session manager tests |
+| `mcp_server/tests/session-manager-extended.vitest.ts` | Session manager extended tests including `enforceEntryLimit` |
+| `mcp_server/tests/session-manager.vitest.ts` | Session manager core tests |
 | `mcp_server/tests/transaction-manager-extended.vitest.ts` | Transaction extended tests |
 | `mcp_server/tests/transaction-manager.vitest.ts` | Transaction manager tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
-| `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
-| `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 
 ---
 

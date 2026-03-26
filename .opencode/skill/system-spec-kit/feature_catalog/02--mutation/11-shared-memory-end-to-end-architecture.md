@@ -67,7 +67,9 @@ The exposed shared-memory control plane is currently four lifecycle tools:
 
 ## 3. SOURCE FILES
 
-| File | Layer | Role in the shared-memory flow |
+### Implementation
+
+| File | Layer | Role |
 |------|-------|------|
 | `mcp_server/handlers/shared-memory.ts` | Handler | Implements shared-memory enable, status, space upsert, membership set, admin identity resolution, and README bootstrap |
 | `mcp_server/lib/collab/shared-spaces.ts` | Collaboration Lib | Implements runtime enable checks, shared-space persistence, membership persistence, allowed-space enumeration, access enforcement, rollout metrics, and conflict strategy resolution |

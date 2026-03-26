@@ -5,6 +5,13 @@ description: "Documents the confirmed repair path behind `memory_health`, includ
 
 # Memory health auto-repair
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
 ## 1. OVERVIEW
 
 Documents the confirmed repair path behind `memory_health`, including FTS rebuilds, trigger-cache refreshes, and orphan cleanup for causal edges, vectors, and chunks.
@@ -48,6 +55,7 @@ Repair outcomes are returned in structured metadata rather than implied by the s
 ## 4. SOURCE METADATA
 
 - Group: Remediation and Revalidation
+- Source feature title: Memory health auto-repair
 - Canonical catalog source: `FEATURE_CATALOG.md`
 - Feature file path: `20--remediation-revalidation/02-memory-health-auto-repair.md`
 - Source spec: Deep research remediation 2026-03-26

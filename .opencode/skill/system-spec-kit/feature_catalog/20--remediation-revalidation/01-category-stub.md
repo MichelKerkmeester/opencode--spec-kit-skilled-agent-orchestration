@@ -7,24 +7,16 @@ description: "Maps the live runtime safety surface for remediation: preflight ch
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. SOURCE METADATA](#4-source-metadata)
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
 
 ## 1. OVERVIEW
 
-This category captures the runtime remediation surface that now exists across the MCP server rather than inside one isolated "repair" module.
+This category captures the runtime remediation surface that now exists across the MCP server rather than inside one isolated "repair" module. In practice, remediation happens in several layers: `memory_save` can preview failures in `dryRun`, reject hard validation problems before mutation, auto-fix some recoverable formatting issues, and stop or downgrade later indexing when stronger validation says the memory is unsafe. Save-time revalidation is split across `preflight.ts`, the V-rule bridge, the quality loop, and the pre-storage quality gate.
 
-In practice, remediation happens in several layers:
-
-- `memory_save` can preview failures in `dryRun`, reject hard validation problems before mutation, auto-fix some recoverable formatting issues, and stop or downgrade later indexing when stronger validation says the memory is unsafe.
-- Save-time revalidation is split across `preflight.ts`, the V-rule bridge, the quality loop, and the pre-storage quality gate.
-- Operator remediation lives in `memory_health`, which can diagnose inconsistencies and, with explicit confirmation, perform bounded repair actions.
-- Human-in-the-loop revalidation lives in `memory_validate`, which feeds confidence, promotion, negative feedback, and learned-feedback pipelines after results are used.
-- Checkpoints provide the rollback safety net around destructive or high-risk remediation work.
-
-This means audit phase `021-remediation-revalidation` is now a real runtime category: the system both blocks bad writes and exposes targeted repair and revalidation paths after data has already been indexed.
+Operator remediation lives in `memory_health`, which can diagnose inconsistencies and, with explicit confirmation, perform bounded repair actions. Human-in-the-loop revalidation lives in `memory_validate`, which feeds confidence, promotion, negative feedback, and learned-feedback pipelines after results are used, while checkpoints provide the rollback safety net around destructive or high-risk remediation work. This means audit phase `021-remediation-revalidation` is now a real runtime category: the system both blocks bad writes and exposes targeted repair and revalidation paths after data has already been indexed.
 
 ## 2. CURRENT REALITY
 
@@ -45,6 +37,8 @@ The remediation surface is distributed but coherent:
 
 ## 3. SOURCE FILES
 
+### Implementation
+
 | File | Layer | Role |
 |------|-------|------|
 | `.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts` | Validation lib | Early save-time preflight checks for anchors, duplicates, token budget, and content size, with structured dry-run reporting |
@@ -58,4 +52,5 @@ The remediation surface is distributed but coherent:
 ## 4. SOURCE METADATA
 
 - Group: Remediation and Revalidation
+- Source feature title: Runtime remediation, revalidation, and auto-repair workflows
 - Source spec: Deep research remediation 2026-03-26

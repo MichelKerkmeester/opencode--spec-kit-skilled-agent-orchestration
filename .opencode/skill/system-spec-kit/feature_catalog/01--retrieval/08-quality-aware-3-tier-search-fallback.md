@@ -25,12 +25,14 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration with tiered fallback |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration: `searchWithFallbackTiered()`, `checkDegradation()`, 3-tier fallback chain |
+| `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry (`SPECKIT_SEARCH_FALLBACK` gate) |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
+| `mcp_server/tests/search-fallback-tiered.vitest.ts` | Tiered fallback chain behavior |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/memory-search-quality-filter.vitest.ts` | Search quality filtering |

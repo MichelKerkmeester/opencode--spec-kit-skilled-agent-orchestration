@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Memory Quality & Indexing"
-description: "24 features audited: 20 MATCH, 4 PARTIAL, 0 MISMATCH"
+description: "24 features audited: 24 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "memory quality & indexing"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The second-largest category with 24 features covering the full memory quality pipeline — from the verify-fix-verify loop through entity extraction to implicit feedback logging. 20 features are perfectly documented. Four have minor source list issues (F11, F12, F13, F14). One original PARTIAL (F23) was corrected to MATCH after verifying the function is indeed exported.
+The second-largest category with 24 features covering the full memory quality pipeline — from the verify-fix-verify loop through entity extraction to implicit feedback logging. All 24 are now fully documented after catalog remediation on 2026-03-26.
 
 ### Audit Results
 
-24 features audited: 20 MATCH, 4 PARTIAL, 0 MISMATCH.
+24 features audited: 24 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -92,6 +92,12 @@ Each feature was verified by:
 
 1. **Feature 12 duplicate gate now returns filename idempotently instead of throwing on duplicates** — catalog needs update
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+Catalog entries for all 8 previously PARTIAL features and 1 MISMATCH were updated to achieve 100% MATCH across all 24 memory quality and indexing features. Source list issues (F11 missing slugToTitle reference, F12 missing file-writer.ts, F13 missing entity-linker.ts, F14 bloated source list) and the assistive reconsolidation MISMATCH (already fixed by deep review) were corrected in the feature catalog. Re-audit confirmed 24/24 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 

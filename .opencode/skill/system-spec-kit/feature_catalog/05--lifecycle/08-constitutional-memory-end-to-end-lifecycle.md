@@ -50,6 +50,8 @@ In practice, this is the highest-priority memory path in the system. Constitutio
 
 ## 3. SOURCE FILES
 
+### Implementation
+
 | File | Layer | Role |
 |------|-------|------|
 | `.opencode/command/memory/learn.md` | Command | Operator workflow for create/list/edit/remove/budget lifecycle actions |
@@ -68,4 +70,5 @@ In practice, this is the highest-priority memory path in the system. Constitutio
 ## 4. SOURCE METADATA
 
 - Group: Lifecycle
+- Source feature title: Constitutional Memory End-to-End Lifecycle
 - Source spec: Deep research remediation 2026-03-26

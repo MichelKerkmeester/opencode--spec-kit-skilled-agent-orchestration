@@ -30,6 +30,7 @@ Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. 
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/feedback/shadow-scoring.ts` | Lib | Rank comparison, Kendall tau, NDCG/MRR deltas, cycle aggregation, promotion gate |
+| `mcp_server/lib/feedback/shadow-evaluation-runtime.ts` | Lib | Production runtime scheduler that replays holdout queries weekly, wired into `context-server.ts` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isShadowFeedbackEnabled()` flag accessor |
 
 ### Tests
@@ -37,6 +38,7 @@ Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/shadow-scoring-holdout.vitest.ts` | Flag behavior, rank comparison, holdout selection, cycle evaluation, promotion gate logic |
+| `mcp_server/tests/shadow-evaluation-runtime.vitest.ts` | Runtime scheduler lifecycle, replay execution, weekly cycle detection |
 
 ---
 

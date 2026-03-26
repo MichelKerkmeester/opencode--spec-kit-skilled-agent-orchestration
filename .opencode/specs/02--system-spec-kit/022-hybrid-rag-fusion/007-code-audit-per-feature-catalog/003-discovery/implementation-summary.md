@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Discovery"
-description: "3 features audited: 2 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "3 features audited: 3 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "discovery"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All three Discovery tools — memory list, system statistics, and health diagnostics — were audited. The first two are perfectly documented. Health diagnostics has a minor source file attribution issue and undocumented full-mode response fields.
+All three Discovery tools — memory list, system statistics, and health diagnostics — were audited. All behavioral descriptions proved accurate against source code.
 
 ### Audit Results
 
-3 features audited: 2 MATCH, 1 PARTIAL, 0 MISMATCH.
+3 features audited: 3 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
@@ -89,6 +89,12 @@ Each feature was verified by:
 
 1. **Full-mode health response includes undocumented fields: embeddingRetry stats, repair.partialSuccess, orphan cleanup, integrity verification**
 <!-- /ANCHOR:limitations -->
+
+---
+
+### Catalog Remediation (2026-03-26)
+
+All 3 features now show MATCH after catalog remediation. The memory_health catalog entry was updated to correct the `summarizeAliasConflicts` source file attribution (now correctly points to `memory-index-alias.ts`) and to document full-mode response fields. Final tally: 3 MATCH, 0 PARTIAL, 0 MISMATCH.
 
 ---
 
