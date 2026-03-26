@@ -242,7 +242,7 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 | `sk-code--opencode` | Varies | Varies | Varies |
 | `sk-code--review` | Varies | Varies | Varies |
 | `sk-code--web` | Varies | Varies | Varies |
-| `sk-deep-research` | Yes | No | No |
+| `sk-deep-research` | Yes | No | Yes |
 | `sk-doc` | Yes | Yes | Yes |
 | `sk-git` | Yes | Yes | No |
 | `sk-prompt-improver` | Yes | Yes | No |

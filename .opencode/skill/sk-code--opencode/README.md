@@ -48,6 +48,7 @@ The skill also owns the alignment verifier contract. The script `scripts/verify_
 
 | Statistic | Value |
 | --- | --- |
+| Version | 1.2.0.0 |
 | Supported languages | 5 (JavaScript, TypeScript, Python, Shell, JSON/JSONC) |
 | Quality gate priority levels | 3 (P0 blocker, P1 required, P2 deferrable) |
 | P0 quality gates | 7 (file header, naming, no commented code, section headers, alignment verifier, filesystem safety, spec folder safety) |

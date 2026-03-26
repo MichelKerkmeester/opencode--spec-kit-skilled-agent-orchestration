@@ -32,9 +32,9 @@ trigger_phrases:
 - [8. TROUBLESHOOTING](#8--troubleshooting)
 - [9. RELATED DOCUMENTS](#9--related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -43,9 +43,9 @@ The `spec_kit` command group manages the full development lifecycle around spec 
 
 Each command loads a YAML workflow from `assets/` and executes it step by step. Most commands support `:auto` and `:confirm` execution modes.
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:commands -->
 ## 2. COMMANDS
@@ -74,9 +74,9 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `phase` | Nothing (creates parent and phase child spec folders) |
 | `complete` | Nothing (runs full lifecycle) |
 
----
-
 <!-- /ANCHOR:commands -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
@@ -112,9 +112,9 @@ spec_kit/
     └── spec_kit_resume_confirm.yaml
 ```
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:workflow-progression -->
 ## 4. WORKFLOW PROGRESSION
@@ -158,9 +158,9 @@ The `complete` command combines deep-research, plan, and implement into a single
 | phase | @speckit (folder creation), @general (script execution) |
 | complete | @deep-research, @speckit, @general as needed |
 
----
-
 <!-- /ANCHOR:workflow-progression -->
+
+---
 
 <!-- ANCHOR:execution-modes -->
 ## 5. EXECUTION MODES
@@ -182,9 +182,9 @@ Each mode maps to a YAML workflow file in `assets/`:
 - Confirm: `spec_kit_<command>_confirm.yaml`
 - Handover uses a single file: `spec_kit_handover_full.yaml`
 
----
-
 <!-- /ANCHOR:execution-modes -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
@@ -215,9 +215,9 @@ Each mode maps to a YAML workflow file in `assets/`:
 /spec_kit:complete "Add WebSocket support" :auto :with-research :auto-debug
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 7. FAQ
@@ -238,9 +238,9 @@ Yes. `/spec_kit:resume` loads memory context for the spec folder from the Spec K
 
 `/spec_kit:phase` creates a parent spec folder and one or more child phase folders under it (e.g., `specs/015-feature/001-phase/`, `specs/015-feature/002-phase/`). Each phase is a self-contained spec folder with its own plan.md, tasks.md, and checklist.md. The parent folder holds the top-level spec.md and coordinates the phases. Use `phase` for work that is too large for a single spec folder or that has clearly sequential milestones.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 8. TROUBLESHOOTING
@@ -255,9 +255,9 @@ Yes. `/spec_kit:resume` loads memory context for the spec folder from the Spec K
 | Phase creates wrong structure | Incorrect --phases or --phase-names | Verify parent spec folder exists, re-run with correct arguments |
 | Complete takes too long | Full lifecycle runs all phases | Use specific commands (plan, implement) for faster execution |
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS

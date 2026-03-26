@@ -70,7 +70,7 @@ The skill uses weighted intent scoring to select which reference files to load. 
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Findings-first output           | Findings are ordered before summaries in every review report             |
 | Severity contract               | P0/P1/P2 labels with file:line evidence and recommended fixes            |
-| Baseline-plus-overlay model     | Security minimums always enforced; overlay wins on style conflicts       |
+| Baseline-plus-overlay model     | Security minimums always enforced. Overlay wins on style conflicts       |
 | Weighted intent scoring         | Selects relevant reference files based on task signals                   |
 | Disambiguation checklist        | Prompts for scope, risk class, and stack when signals are ambiguous      |
 | Output contract                 | Structured report with assessment, overlay disclosure, and next step     |

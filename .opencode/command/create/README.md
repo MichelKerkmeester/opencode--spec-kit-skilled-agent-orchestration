@@ -34,9 +34,9 @@ trigger_phrases:
 - [9. TROUBLESHOOTING](#9--troubleshooting)
 - [10. RELATED DOCUMENTS](#10--related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -45,9 +45,9 @@ The `create` command group scaffolds OpenCode components, documentation packages
 
 Most shipped `create` commands run Phase 0 (@write agent self-verification). `/create:prompt` is the notable exception and uses an inline `@general` workflow instead of `@write` plus YAML assets.
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:purpose -->
 ## 2. PURPOSE
@@ -56,9 +56,9 @@ Use this index to understand which `/create:*` command owns a given scaffolding 
 
 This document is a routing and reference surface only. Run the command entrypoint itself for execution, setup prompting, and YAML workflow dispatch.
 
----
-
 <!-- /ANCHOR:purpose -->
+
+---
 
 <!-- ANCHOR:commands -->
 ## 3. COMMANDS
@@ -85,9 +85,9 @@ The `readme` operation in `/create:folder_readme` accepts a `--type` flag:
 | `feature` | Specific feature or system |
 | `skill` | AI skill supplementary documentation |
 
----
-
 <!-- /ANCHOR:commands -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 4. STRUCTURE
@@ -116,9 +116,9 @@ create/
     └── create_testing_playbook_confirm.yaml
 ```
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:instructions -->
 ## 5. INSTRUCTIONS
@@ -129,9 +129,9 @@ create/
 4. For rooted documentation packages, use the package-specific commands instead of composing the files manually.
 5. If the command performs file modifications, keep it attached to the active spec workflow.
 
----
-
 <!-- /ANCHOR:instructions -->
+
+---
 
 <!-- ANCHOR:execution-modes -->
 ## 6. EXECUTION MODES
@@ -153,9 +153,9 @@ The documentation-package commands preserve the live `sk-doc` contracts:
 - `/create:feature-catalog` produces `feature_catalog/feature_catalog.md` plus numbered category folders
 - `/create:testing-playbook` produces `manual_testing_playbook/manual_testing_playbook.md` plus numbered category folders and no sidecar review/ledger files
 
----
-
 <!-- /ANCHOR:execution-modes -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 7. USAGE EXAMPLES
@@ -192,9 +192,9 @@ The documentation-package commands preserve the live `sk-doc` contracts:
 /create:changelog sk-doc --bump minor :confirm
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 8. FAQ
@@ -215,9 +215,9 @@ A: The `--chained` flag signals that the command was dispatched from a parent wo
 
 A: The command reads the most recent changelog entry in the target component folder and auto-increments the BUILD segment. Supply `--bump major`, `--bump minor`, or `--bump patch` to override and bump a higher segment. In `:confirm` mode you can also select the version manually during execution.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
@@ -233,9 +233,9 @@ A: The command reads the most recent changelog entry in the target component fol
 | `changelog` wrong component | File path mapping mismatch | Use `--component` override or select manually in `:confirm` mode |
 | `changelog` version conflict | File already exists | Command auto-increments BUILD segment. Specify `--bump` to override |
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 10. RELATED DOCUMENTS

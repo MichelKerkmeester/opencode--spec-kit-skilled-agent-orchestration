@@ -18,7 +18,7 @@ trigger_phrases:
 ---
 
 <!-- ANCHOR:table-of-contents -->
-#### TABLE OF CONTENTS
+## TABLE OF CONTENTS
 
 1. [OVERVIEW](#1-overview)
 2. [QUICK START](#2-quick-start)

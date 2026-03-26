@@ -28,9 +28,9 @@ trigger_phrases:
 - [8. FAQ](#8-faq)
 - [9. RELATED DOCUMENTS](#9-related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -47,6 +47,7 @@ The skill covers four native tools exposed by the Code Mode MCP server: `call_to
 
 | Metric | Traditional | Code Mode | Improvement |
 |--------|-------------|-----------|-------------|
+| Version | 1.0.7.0 | | |
 | Context tokens (47 tools) | 141k | 1.6k | 98.7% reduction |
 | Execution time (4 tools) | ~2000ms | ~300ms | 60% faster |
 | API round trips | 15+ | 1 | 93% reduction |
@@ -73,9 +74,9 @@ The skill covers four native tools exposed by the Code Mode MCP server: `call_to
 | Parallel execution | Promise.all and Promise.allSettled supported natively |
 | Error isolation | try/catch prevents one failing tool from crashing the workflow |
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
@@ -127,9 +128,9 @@ call_tool_chain({
 });
 ```
 
----
-
 <!-- /ANCHOR:quick-start -->
+
+---
 
 <!-- ANCHOR:features -->
 ## 3. FEATURES
@@ -187,9 +188,9 @@ Environment variable handling has one non-obvious rule. Code Mode prefixes all e
 | `Promise.allSettled()` | Partial success acceptable | `const results = await Promise.allSettled([...])` |
 | Sequential with state | Each step depends on previous | Standard async/await chain |
 
----
-
 <!-- /ANCHOR:features -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 4. STRUCTURE
@@ -207,9 +208,9 @@ mcp-code-mode/
     architecture.md              # Token economics and system internals
 ```
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
@@ -267,9 +268,9 @@ Code Mode uses two separate configuration systems. Understanding the boundary be
 
 For full setup instructions including installing the MCP server package and validating configuration, see [INSTALL_GUIDE.md](INSTALL_GUIDE.md).
 
----
-
 <!-- /ANCHOR:configuration -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
@@ -345,9 +346,9 @@ call_tool_chain({
 });
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
@@ -390,9 +391,9 @@ Common causes: The `UTCP_CONFIG_FILE` environment variable in `opencode.json` po
 
 Fix: Use an absolute path in the `UTCP_CONFIG_FILE` value. Verify the file exists with `ls -la /absolute/path/to/.utcp_config.json` and validate it with `cat .utcp_config.json | python3 -m json.tool`.
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 8. FAQ
@@ -413,9 +414,9 @@ A: Yes. Use `register_manual` with the full UTCP call template to register a new
 
 A: Without error handling, an unhandled exception stops the entire `call_tool_chain` execution. Wrap critical sections in `try/catch` and return structured results with a `success` boolean. For workflows where partial success is acceptable, use `Promise.allSettled()` instead of `Promise.all()` so one failure does not cancel the rest.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS
@@ -432,7 +433,7 @@ A: Without error handling, an unhandled exception stops the entire `call_tool_ch
 | File | Purpose |
 |------|---------|
 | [references/naming_convention.md](references/naming_convention.md) | Complete naming pattern guide with troubleshooting |
-| [references/tool_reference.md](references/tool_reference.md) | Tool parameter reference |
+| [references/tool_catalog.md](references/tool_catalog.md) | Tool catalog with 250+ tools |
 | [references/configuration.md](references/configuration.md) | .utcp_config.json and .env setup |
 | [references/tool_catalog.md](references/tool_catalog.md) | 250+ tools across 8 configured servers |
 | [references/workflows.md](references/workflows.md) | Five end-to-end workflow examples |

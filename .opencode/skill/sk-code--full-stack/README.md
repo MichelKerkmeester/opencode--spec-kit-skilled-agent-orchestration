@@ -47,6 +47,7 @@ The Iron Law governs all three phases: no completion claim is valid without comm
 
 | Statistic | Value |
 | --- | --- |
+| Version | 1.1.0.0 |
 | Supported stacks | 5 (Go, Node.js, React/Next.js, React Native/Expo, Swift) |
 | Development phases | 3 (Implementation, Testing/Debugging, Verification) |
 | Stack verification command sets | 5, one per stack |
@@ -76,7 +77,7 @@ The Iron Law governs all three phases: no completion claim is valid without comm
 | Bundled stack knowledge | All references and checklists live inside the skill, no external lookups needed |
 | The Iron Law | Blocks completion claims without command evidence from the detected stack |
 | Unknown fallback checklist | Guides disambiguation when no stack is detected or intent is ambiguous |
-| Review delegation boundary | Owns stack-specific verification; delegates findings-first review to `sk-code--review` |
+| Review delegation boundary | Owns stack-specific verification. Delegates findings-first review to `sk-code--review` |
 
 <!-- /ANCHOR:overview -->
 

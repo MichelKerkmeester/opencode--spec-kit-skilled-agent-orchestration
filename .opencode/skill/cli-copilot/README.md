@@ -168,7 +168,7 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 | `low` | Fast responses, less reasoning | All GPT-5.x |
 | `medium` | Balanced (default for GPT-5.1) | All GPT-5.x |
 | `high` | Thorough reasoning (default for GPT-5.4) | All GPT-5.x |
-| `xhigh` | Maximum depth | GPT-5.4, GPT-5.3-Codex, GPT-5.1-Codex-Max |
+| `xhigh` | Maximum depth | GPT-5.4, GPT-5.3-Codex |
 
 Set via `~/.copilot/config.json` under `"reasoning_effort"`. No CLI flag exists.
 

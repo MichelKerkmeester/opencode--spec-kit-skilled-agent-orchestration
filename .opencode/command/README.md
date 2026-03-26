@@ -28,9 +28,9 @@ trigger_phrases:
 - [9. TROUBLESHOOTING](#9--troubleshooting)
 - [10. RELATED DOCUMENTS](#10--related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -47,9 +47,9 @@ Commands are organized into three groups:
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:purpose -->
 ## 2. PURPOSE
@@ -58,9 +58,9 @@ Use this document as the top-level routing reference for the OpenCode slash-comm
 
 This file is descriptive only. The executable contract for any workflow lives in the command entrypoint markdown file itself.
 
----
-
 <!-- /ANCHOR:purpose -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
@@ -96,9 +96,9 @@ command/
     └── assets/               # YAML workflow definitions (15 files)
 ```
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:command-groups -->
 ## 4. COMMAND GROUPS
@@ -145,9 +145,9 @@ Structured workflows for the spec folder development lifecycle.
 | Phase | `/spec_kit:phase <description> [--phases N]` | Parent/child phase decomposition for complex work |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
 
----
-
 <!-- /ANCHOR:command-groups -->
+
+---
 
 <!-- ANCHOR:instructions -->
 ## 5. INSTRUCTIONS
@@ -158,9 +158,9 @@ Structured workflows for the spec folder development lifecycle.
 4. When a command supports `:auto` and `:confirm`, pick the mode that matches how much checkpointing you want.
 5. Follow the family-specific index under `command/<group>/README.md` when you need detailed routing help.
 
----
-
 <!-- /ANCHOR:instructions -->
+
+---
 
 <!-- ANCHOR:usage -->
 ## 6. USAGE
@@ -199,9 +199,9 @@ Structured workflows for the spec folder development lifecycle.
 /agent_router "Build a new authentication system"
 ```
 
----
-
 <!-- /ANCHOR:usage -->
+
+---
 
 <!-- ANCHOR:execution-modes -->
 ## 7. EXECUTION MODES
@@ -221,9 +221,9 @@ The `spec_kit:complete` command supports two additional modes:
 - `:with-research` adds a research phase before planning
 - `:auto-debug` enables automatic debug delegation on failure
 
----
-
 <!-- /ANCHOR:execution-modes -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 8. FAQ
@@ -244,9 +244,9 @@ A: Use `/spec_kit:plan` when you want to produce a spec and plan document for re
 
 A: Run `/memory:continue`. This loads the most recent memory context for the active spec folder and reconstructs the task state so you can pick up where you left off.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
@@ -261,9 +261,9 @@ A: Run `/memory:continue`. This loads the most recent memory context for the act
 | Tool permission denied | Command lacks required tool | Check `allowed-tools` in command frontmatter |
 | Agent router has no request | Empty arguments passed | Provide an explicit request string |
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 10. RELATED DOCUMENTS
@@ -274,5 +274,7 @@ A: Run `/memory:continue`. This loads the most recent memory context for the act
 | [Create Commands](create/README.md) | Detailed index for all `/create:*` commands |
 | [sk-doc SKILL.md](../skill/sk-doc/SKILL.md) | Documentation standards and component creation |
 | [system-spec-kit SKILL.md](../skill/system-spec-kit/SKILL.md) | Spec folder workflow and memory system |
+| [Memory Commands](memory/README.md) | Memory save, continue, and management commands |
+| [Spec Kit Commands](spec_kit/README.md) | SpecKit plan, implement, complete, and phase workflows |
 
 <!-- /ANCHOR:related-documents -->

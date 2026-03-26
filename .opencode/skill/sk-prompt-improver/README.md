@@ -136,7 +136,7 @@ The transparency report at the end of every delivery is intentional. It shows th
 | 4-6 | Instructions | CIDI | 90% |
 | 5-7 | Creativity | CRISPE | 87% |
 | 6-8 | Precision | TIDD-EC | 93% |
-| 7-10 | Comprehensive | CRAFT | 91% |
+| 7-10 | Full-scope | CRAFT | 91% |
 
 #### CLEAR Scoring Dimensions
 

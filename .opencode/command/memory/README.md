@@ -30,9 +30,9 @@ trigger_phrases:
 - [8. TROUBLESHOOTING](#8--troubleshooting)
 - [9. RELATED DOCUMENTS](#9--related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -53,9 +53,9 @@ GATE -> TITLE -> §1 PURPOSE -> §2 CONTRACT -> §3 QUICK REFERENCE
 
 Everything above the `---` divider is for users. Appendices below are AI agent reference material.
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:commands -->
 ## 2. COMMANDS
@@ -116,9 +116,9 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 > **Note:** Shared memory is disabled by default. Run `/memory:shared` or `/memory:shared enable` to complete first-time setup before using other subcommands. Shared spaces stay deny-by-default after bootstrap: the first successful `create` auto-grants `owner` to the acting caller, and later access changes still require explicit membership updates.
 
----
-
 <!-- /ANCHOR:commands -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
@@ -136,9 +136,9 @@ memory/
 
 No `assets/` folder exists for memory commands. Workflows are defined inline within each command file.
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 4. USAGE EXAMPLES
@@ -223,9 +223,9 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 /memory:manage ingest cancel abc-123
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:manage-subcommands -->
 ## 5. MANAGE SUBCOMMANDS
@@ -246,9 +246,9 @@ The `/memory:manage` command accepts these subcommands:
 | `checkpoint` | `create\|list\|restore\|delete` | Manage named checkpoints of memory state |
 | `ingest` | `start\|status\|cancel` | Async bulk ingestion of specific files |
 
----
-
 <!-- /ANCHOR:manage-subcommands -->
+
+---
 
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
@@ -305,9 +305,9 @@ All 33 MCP tools mapped to their primary command home:
 
 > **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership. Each command file's `allowed-tools` shows the full operational set.
 
----
-
 <!-- /ANCHOR:tool-coverage -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 7. FAQ
@@ -328,9 +328,9 @@ Use `/memory:learn` to create constitutional memories: short, always-surface rul
 
 The scan re-indexes all memory files regardless of whether their content has changed. This is slower than incremental scanning but useful after bulk renames or moves. For routine maintenance, omit `--force` to skip files whose content hash is unchanged.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 8. TROUBLESHOOTING
@@ -347,9 +347,9 @@ The scan re-indexes all memory files regardless of whether their content has cha
 | Ingest job not found | Invalid or expired job ID | Start a new job with `/memory:manage ingest start` |
 | History returns empty | No PREFLIGHT/POSTFLIGHT records | Use `/memory:analyze preflight` before tasks, view with `/memory:analyze history` |
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS

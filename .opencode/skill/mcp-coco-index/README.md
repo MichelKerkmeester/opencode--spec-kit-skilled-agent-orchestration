@@ -30,9 +30,9 @@ trigger_phrases:
 - [8. FAQ](#8-faq)
 - [9. RELATED DOCUMENTS](#9-related-documents)
 
----
-
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -80,9 +80,9 @@ Indexing is incremental and daemon-backed. The first run scans and embeds all su
 | Two embedding models | Local (no API key) or cloud (higher quality) |
 | 28+ languages | Language-aware chunk splitting preserves function and class boundaries |
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
@@ -121,9 +121,9 @@ ccc search "error handling" --lang typescript
 ccc search "database migration" --path "src/**" --limit 5
 ```
 
----
-
 <!-- /ANCHOR:quick-start -->
+
+---
 
 <!-- ANCHOR:features -->
 ## 3. FEATURES
@@ -190,9 +190,9 @@ The CLI and MCP interfaces are complementary, not redundant. The CLI handles ind
 | 0.4 - 0.6 | Moderate match | Scan for usefulness |
 | 0.0 - 0.4 | Weak match | Usually skip |
 
----
-
 <!-- /ANCHOR:features -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 4. STRUCTURE
@@ -225,9 +225,9 @@ mcp-coco-index/
         ccc                        CLI binary (full path for PATH-less invocation)
 ```
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
@@ -311,9 +311,9 @@ ccc reset
 ccc index
 ```
 
----
-
 <!-- /ANCHOR:configuration -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
@@ -362,9 +362,9 @@ An AI agent calls the MCP `search` tool directly. Set `refresh_index` to `false`
 }
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
@@ -457,9 +457,9 @@ python3 --version
 bash .opencode/skill/mcp-coco-index/scripts/install.sh
 ```
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 8. FAQ
@@ -486,9 +486,9 @@ A: The daemon handles incremental updates automatically. Run `ccc index` manuall
 
 A: `doctor.sh` is read-only. It inspects the environment, reports what is working and what is not, and exits with a non-zero code if any check fails. It never modifies anything. `ensure_ready.sh` is idempotent and takes action: it installs the binary if missing, initializes the project if not yet initialized, and optionally refreshes the index. Use `doctor.sh` for diagnostics and CI gates. Use `ensure_ready.sh` to bring a machine to a ready state.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS
@@ -523,7 +523,5 @@ A: `doctor.sh` is read-only. It inspects the environment, reports what is workin
 | CocoIndex Code on PyPI | https://pypi.org/project/cocoindex-code/ |
 | all-MiniLM-L6-v2 on HuggingFace | https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2 |
 | sqlite-vec | https://github.com/asg017/sqlite-vec |
-
----
 
 <!-- /ANCHOR:related-documents -->

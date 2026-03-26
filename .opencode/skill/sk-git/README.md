@@ -46,7 +46,7 @@ Commit messages follow a deterministic Conventional Commits format with a first-
 
 | Metric | Value |
 |--------|-------|
-| Version | 1.1.0 |
+| Version | 1.1.0.0 |
 | Phases | 3 (Workspace Setup, Work and Commit, Complete and Integrate) |
 | Sub-skills | 3 (git-worktrees, git-commit, git-finish) |
 | Reference documents | 6 (worktree, commit, finish, shared patterns, quick reference, GitHub MCP) |

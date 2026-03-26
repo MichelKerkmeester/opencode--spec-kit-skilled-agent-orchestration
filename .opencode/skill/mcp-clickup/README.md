@@ -49,6 +49,7 @@ Routing is weighted and scored at invocation time. The skill reads keywords and 
 
 | Dimension | CLI (cu) | MCP (Code Mode) |
 |---|---|---|
+| Version | 1.0.0 | |
 | Commands / Tools | 30+ commands | 46 tools |
 | Authentication | API token + Team ID | API key + Team ID |
 | Output format | Markdown tables / JSON | JSON via Code Mode |
@@ -84,9 +85,9 @@ Routing is weighted and scored at invocation time. The skill reads keywords and 
 | Custom fields | CLI + MCP | MCP supports field definition CRUD |
 | Guests / Audit logs | MCP only | Enterprise plan required |
 
----
-
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
@@ -137,9 +138,9 @@ call_tool_chain({
 });
 ```
 
----
-
 <!-- /ANCHOR:quick-start -->
+
+---
 
 <!-- ANCHOR:features -->
 ## 3. FEATURES
@@ -207,9 +208,9 @@ The enterprise tier adds guest management (10 actions) and audit log access. The
 | Workspace discovery | CLI or MCP | Both work / MCP gives hierarchy |
 | Guests, audit logs | MCP only | Enterprise plan required |
 
----
-
 <!-- /ANCHOR:features -->
+
+---
 
 <!-- ANCHOR:structure -->
 ## 4. STRUCTURE
@@ -240,9 +241,9 @@ The enterprise tier adds guest management (10 actions) and audit log access. The
 | `references/workflows.md` | Workflow patterns for daily ops, bulk tasks, cross-tool integrations |
 | `assets/tool_categories.md` | Prioritized tool catalog for routing and capability discovery |
 
----
-
 <!-- /ANCHOR:structure -->
+
+---
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
@@ -320,9 +321,9 @@ CU_TEAM_ID=your_team_id_here
 | Team ID | Required | Required |
 | Enterprise plan | Not needed | Only for Guests / Audit Logs |
 
----
-
 <!-- /ANCHOR:configuration -->
+
+---
 
 <!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
@@ -379,9 +380,9 @@ call_tool_chain({
 });
 ```
 
----
-
 <!-- /ANCHOR:usage-examples -->
+
+---
 
 <!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
@@ -473,9 +474,9 @@ Common causes: Sprint views and standup summaries are CLI-only features with no 
 
 Fix: Install the CLI. `npm install -g @krodak/clickup-cli`, then `cu init`. Sprint and standup commands are only available through `cu`.
 
----
-
 <!-- /ANCHOR:troubleshooting -->
+
+---
 
 <!-- ANCHOR:faq -->
 ## 8. FAQ
@@ -500,9 +501,9 @@ A: Open ClickUp and go to Settings, then Workspaces. The Team ID appears in the 
 
 A: Yes. Both authenticate against the same ClickUp workspace with the same API token and Team ID. They use separate configuration sources: the CLI reads from `~/.config/cu/config.json` or environment variables, while MCP reads from `.env` with the `clickup_` prefix.
 
----
-
 <!-- /ANCHOR:faq -->
+
+---
 
 <!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS
