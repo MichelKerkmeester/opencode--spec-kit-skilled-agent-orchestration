@@ -20,18 +20,20 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. COMMANDS](#2-commands)
-- [3. STRUCTURE](#3-structure)
-- [4. USAGE EXAMPLES](#4-usage-examples)
-- [5. MANAGE SUBCOMMANDS](#5-manage-subcommands)
-- [6. TOOL COVERAGE MATRIX](#6-tool-coverage-matrix)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. RELATED DOCUMENTS](#8-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. COMMANDS](#2--commands)
+- [3. STRUCTURE](#3--structure)
+- [4. USAGE EXAMPLES](#4--usage-examples)
+- [5. MANAGE SUBCOMMANDS](#5--manage-subcommands)
+- [6. TOOL COVERAGE MATRIX](#6--tool-coverage-matrix)
+- [7. FAQ](#7--faq)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. RELATED DOCUMENTS](#9--related-documents)
 
 ---
 
 <!-- /ANCHOR:table-of-contents -->
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
@@ -44,9 +46,9 @@ All commands interact with the memory MCP server tools (`spec_kit_memory_*`). Th
 All 6 commands follow a consistent user-first section order:
 
 ```text
-GATE → TITLE → §1 PURPOSE → §2 CONTRACT → §3 QUICK REFERENCE
-→ §4 ARGUMENT ROUTING → [MODE/WORKFLOW HANDLERS] → ERROR HANDLING
-→ RELATED COMMANDS → APPENDIX A: MCP TOOL REFERENCE → [APPENDIX B+]
+GATE -> TITLE -> §1 PURPOSE -> §2 CONTRACT -> §3 QUICK REFERENCE
+-> §4 ARGUMENT ROUTING -> [MODE/WORKFLOW HANDLERS] -> ERROR HANDLING
+-> RELATED COMMANDS -> APPENDIX A: MCP TOOL REFERENCE -> [APPENDIX B+]
 ```
 
 Everything above the `---` divider is for users. Appendices below are AI agent reference material.
@@ -54,12 +56,13 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:commands -->
 ## 2. COMMANDS
 
 | Command | Invocation | Description |
 |---------|------------|-------------|
-| **analyze** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
+| **analyze** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | **continue** | `/memory:continue [recovery-mode:auto\|manual]` | Recover session from crash, compaction, or timeout |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
 | **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |
@@ -83,7 +86,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | Subcommand | Invocation | Description |
 |------------|------------|-------------|
 | (default) | `/memory:learn [rule]` | Create new constitutional memory (guided) |
-| list | `/memory:learn list` | Show all constitutional memories + budget |
+| list | `/memory:learn list` | Show all constitutional memories and budget |
 | edit | `/memory:learn edit <filename>` | Edit existing constitutional memory |
 | remove | `/memory:learn remove <filename>` | Remove constitutional memory |
 | budget | `/memory:learn budget` | Token budget status (~2000 max) |
@@ -107,7 +110,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | Subcommand | Invocation | Description |
 |------------|------------|-------------|
 | enable | `/memory:shared enable` | Enable shared memory (first-time setup, required) |
-| create | `/memory:shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create or update shared space; first create auto-grants owner access to the actor |
+| create | `/memory:shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create or update shared space. First create auto-grants owner access to the actor |
 | member | `/memory:shared member <spaceId> <tenantId> <type> <id> <role> (--actor-user <id> \| --actor-agent <id>)` | Set membership as an existing owner |
 | status | `/memory:shared status [--tenant <id>] [--user <id>] [--agent <id>]` | Inspect rollout status |
 
@@ -116,13 +119,14 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 ---
 
 <!-- /ANCHOR:commands -->
+
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
 
 ```text
 memory/
-├── README.txt      # This file — 6-command index and coverage matrix
-├── analyze.md    # /memory:analyze - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
+├── README.md       # This file -- 6-command index and coverage matrix
+├── analyze.md      # /memory:analyze - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 ├── continue.md     # /memory:continue - Session recovery
 ├── learn.md        # /memory:learn - Constitutional memory manager
 ├── manage.md       # /memory:manage - Database management, ingest
@@ -135,6 +139,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 ---
 
 <!-- /ANCHOR:structure -->
+
 <!-- ANCHOR:usage-examples -->
 ## 4. USAGE EXAMPLES
 
@@ -221,6 +226,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 ---
 
 <!-- /ANCHOR:usage-examples -->
+
 <!-- ANCHOR:manage-subcommands -->
 ## 5. MANAGE SUBCOMMANDS
 
@@ -243,6 +249,7 @@ The `/memory:manage` command accepts these subcommands:
 ---
 
 <!-- /ANCHOR:manage-subcommands -->
+
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
 
@@ -288,21 +295,45 @@ All 33 MCP tools mapped to their primary command home:
 
 | Command | Tools Owned | Helper Tools | Layers |
 |---------|-------------|--------------|--------|
-| `/memory:analyze` | 13 | — | L1, L2, L6, L7 |
+| `/memory:analyze` | 13 | (none) | L1, L2, L6, L7 |
 | `/memory:save` | 1 | 3 (index_scan, stats, update) | L2 |
 | `/memory:manage` | 15 | 1 (search) | L3, L4, L5, L7 |
-| `/memory:learn` | 0 | uses manage/save tools | — |
-| `/memory:continue` | 0 | uses context/manage tools | — |
-| `/memory:shared` | 4 | — | L5 |
+| `/memory:learn` | 0 | uses manage/save tools | (none) |
+| `/memory:continue` | 0 | uses context/manage tools | (none) |
+| `/memory:shared` | 4 | (none) | L5 |
 | **Total** | **33** | | **L1-L7** |
 
-> **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership; `allowed-tools` in each command file shows the full operational set.
+> **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership. Each command file's `allowed-tools` shows the full operational set.
 
 ---
 
 <!-- /ANCHOR:tool-coverage -->
+
+<!-- ANCHOR:faq -->
+## 7. FAQ
+
+**Q: What is the difference between `/memory:analyze` and `/memory:continue`?**
+
+`/memory:analyze` retrieves and searches existing memories using a query or subcommand. `/memory:continue` is specifically for session recovery: it reconstructs context from a prior session that ended due to crash, compaction, or timeout. Use `analyze` for knowledge lookup and `continue` after an interrupted session.
+
+**Q: Do I need to run `/memory:shared enable` before every shared-memory operation?**
+
+No. Run `enable` only once during first-time setup. After that, the shared-memory subsystem stays active and you can use `create`, `member`, and `status` directly. Re-running `enable` on an already-enabled system returns `alreadyEnabled: true` without making changes.
+
+**Q: When should I use `/memory:learn` vs `/memory:save`?**
+
+Use `/memory:learn` to create constitutional memories: short, always-surface rules that appear at the top of every search result (e.g., coding standards, project constraints). Use `/memory:save` to preserve session context, implementation decisions, and research findings tied to a specific spec folder. Constitutional memories apply globally. Saved context is scoped to a spec folder.
+
+**Q: What happens if I run `/memory:manage scan --force` on a large workspace?**
+
+The scan re-indexes all memory files regardless of whether their content has changed. This is slower than incremental scanning but useful after bulk renames or moves. For routine maintenance, omit `--force` to skip files whose content hash is unchanged.
+
+---
+
+<!-- /ANCHOR:faq -->
+
 <!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
+## 8. TROUBLESHOOTING
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -319,14 +350,16 @@ All 33 MCP tools mapped to their primary command home:
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:related-documents -->
-## 8. RELATED DOCUMENTS
+## 9. RELATED DOCUMENTS
 
 | Document | Purpose |
 |----------|---------|
-| [Parent: OpenCode Commands](../README.txt) | Overview of all command groups |
+| [Parent: OpenCode Commands](../README.md) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Memory system architecture and spec folder workflow |
 | [Spec Kit Memory MCP](../../skill/system-spec-kit/mcp_server/) | MCP server implementation for memory operations |
 | [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 33-tool inventory and property definitions |
 | [Tool Input Schemas](../../skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts) | Zod validation schemas and ALLOWED_PARAMETERS |
+
 <!-- /ANCHOR:related-documents -->

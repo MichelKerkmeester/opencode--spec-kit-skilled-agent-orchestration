@@ -1,6 +1,6 @@
 ---
 title: "ClickUp MCP"
-description: "ClickUp project management orchestrator with CLI (cu) and MCP (Code Mode) approaches for task management, sprints, documents, goals, and enterprise features."
+description: "ClickUp project management skill providing intelligent routing between CLI (cu) and MCP (Code Mode). CLI for speed and token efficiency, MCP for enterprise features like docs, goals, webhooks, and bulk operations."
 trigger_phrases:
   - "clickup"
   - "cu"
@@ -8,78 +8,81 @@ trigger_phrases:
   - "task management"
   - "sprint"
   - "standup"
+  - "project management clickup"
 ---
 
 # ClickUp MCP
 
-> Project management orchestrator providing **30+ CLI commands** and **46 MCP tools** for ClickUp task management, sprints, documents, goals, time tracking, and enterprise features. CLI prioritized for speed; MCP for advanced capabilities.
-
-> **Navigation**:
-> - New to ClickUp integration? Start with [Quick Start](#2--quick-start)
-> - Need tool overview? See [Features](#4--features)
-> - Configuration help? See [Configuration](#5--configuration)
-> - Troubleshooting? See [Troubleshooting](#8--troubleshooting)
-
-[![npm CLI](https://img.shields.io/npm/v/@krodak/clickup-cli.svg?label=CLI)](https://www.npmjs.com/package/@krodak/clickup-cli)
-[![npm MCP](https://img.shields.io/npm/v/@taazkareem/clickup-mcp-server.svg?label=MCP)](https://www.npmjs.com/package/@taazkareem/clickup-mcp-server)
-[![MCP](https://img.shields.io/badge/MCP-compatible-blue.svg)](https://modelcontextprotocol.io)
+> Two-tool ClickUp orchestrator: 30+ CLI commands for daily task operations and 46 MCP tools for enterprise features, routed automatically by intent.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. NAMING CONVENTION](#6--naming-convention)
-- [7. USAGE EXAMPLES](#7--usage-examples)
-- [8. TROUBLESHOOTING](#8--troubleshooting)
-- [9. FAQ](#9--faq)
-- [10. RELATED DOCUMENTS](#10--related-documents)
-
----
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What is ClickUp MCP?
+### What This Skill Does
 
-ClickUp MCP is a hybrid skill combining two complementary tools for ClickUp project management:
+The mcp-clickup skill connects AI agents to ClickUp through two complementary tools: the ClickUp CLI (`cu`) and the ClickUp MCP server accessed via Code Mode. These tools cover different capability tiers. The CLI handles the fast, high-frequency work, covering task creation, updates, search, sprint views, and standup summaries with Markdown output and minimal token cost. The MCP server covers the enterprise tier: documents, goals, webhooks, time tracking, chat channels, bulk operations, and guest management.
 
-- **CLI (`cu`)**: Agent-optimized command-line tool with 30+ commands, Markdown output, and native sprint/standup support
-- **MCP Server**: 46 specialized tools via Code Mode for enterprise features like docs, goals, webhooks, time tracking, and bulk operations
+The skill routes between the two tools based on intent signals in the request. Task CRUD, sprints, and daily operations go to the CLI when it is available. Requests for docs, goals, webhooks, time entries, or bulk task creation go to the MCP server via Code Mode. When the CLI is absent or a feature falls outside its scope, the skill falls back to MCP transparently. Both tools authenticate against the same ClickUp workspace using an API token and Team ID.
+
+Routing is weighted and scored at invocation time. The skill reads keywords and availability signals to select CLI, MCP, or both, then loads only the reference files relevant to the detected intent. This keeps token usage low on simple queries while giving full access to deep reference material when needed.
 
 ### Key Statistics
 
-| Category | CLI (cu) | MCP (Code Mode) |
-|----------|----------|-----------------|
-| Commands/Tools | 30+ | 46 |
-| Authentication | API Token + Team ID | API Key + Team ID |
-| Output Format | Markdown / JSON | JSON via Code Mode |
-| Best For | Daily task ops, sprints | Enterprise features, bulk ops |
+| Dimension | CLI (cu) | MCP (Code Mode) |
+|---|---|---|
+| Commands / Tools | 30+ commands | 46 tools |
+| Authentication | API token + Team ID | API key + Team ID |
+| Output format | Markdown tables / JSON | JSON via Code Mode |
+| Sprint support | Native (cu sprint, cu summary) | Not available |
+| Docs / Goals / Webhooks | Not available | Full support |
+| Time tracking | Not available | Full support (10+ actions) |
+| Bulk operations | Not available | create_bulk_tasks, update_bulk_tasks |
+| Token cost | Lowest | Medium |
 
-### Two Approaches
+### How This Compares
 
-| Approach | Tool | Type | Best For |
-|----------|------|------|----------|
-| **CLI** | `@krodak/clickup-cli` (cu) | CLI (npm) | Speed, sprints, daily ops |
-| **MCP** | `@taazkareem/clickup-mcp-server` | MCP (Code Mode) | Docs, goals, webhooks, bulk |
+| Approach | Package | Best For |
+|---|---|---|
+| CLI | `@krodak/clickup-cli` | Daily task ops, sprints, standups |
+| MCP | `@taazkareem/clickup-mcp-server` | Docs, goals, webhooks, bulk, enterprise |
+| Either | Both | Task CRUD when CLI unavailable |
 
-**Recommendation**: Install both. Use CLI for daily task operations and sprint management. Use MCP for enterprise features unavailable in CLI.
+### Key Features
 
-### Requirements
-
-| Requirement | CLI | MCP |
-|-------------|-----|-----|
-| Node.js | >= 22.0.0 | >= 18.0.0 |
-| Code Mode | Not needed | Required |
-| API Token | Required | Required |
-| Team ID | Required | Required |
+| Feature | Available In | Notes |
+|---|---|---|
+| Task CRUD | CLI + MCP | CLI preferred for speed |
+| Sprint view | CLI only | `cu sprint`, `cu sprints` |
+| Standup summary | CLI only | `cu summary` |
+| Search | CLI + MCP | MCP supports advanced filters |
+| Documents | MCP only | 7 tools, full page lifecycle |
+| Goals | MCP only | 8 actions including key results |
+| Webhooks | MCP only | 4 actions, event subscriptions |
+| Time tracking | MCP only | Start/stop timer, entries, tags |
+| Chat channels | MCP only | Channels, messages, threads |
+| Bulk task ops | MCP only | Create and update in one call |
+| Workspace discovery | CLI + MCP | CLI: `cu spaces` / MCP: full hierarchy |
+| Custom fields | CLI + MCP | MCP supports field definition CRUD |
+| Guests / Audit logs | MCP only | Enterprise plan required |
 
 ---
 
@@ -88,49 +91,47 @@ ClickUp MCP is a hybrid skill combining two complementary tools for ClickUp proj
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
 
-### CLI Quick Start
+**Step 1: Install the CLI and configure credentials.**
 
 ```bash
-# 1. Install
 npm install -g @krodak/clickup-cli
-
-# 2. Configure (interactive)
 cu init
-# Prompts for: API token, Team ID
-
-# 3. Verify
+# Interactive prompts: API token, Team ID
 cu auth
-cu tasks  # List your open tasks
+# Confirms the connection is working
 ```
 
-### MCP Quick Start
+**Step 2: Add MCP credentials to `.env` for enterprise features.**
 
 ```bash
-# 1. Already configured in .utcp_config.json (ClickUp entry exists)
-
-# 2. Add credentials to .env
-echo "clickup_CLICKUP_API_KEY=pk_your_token" >> .env
-echo "clickup_CLICKUP_TEAM_ID=your_team_id" >> .env
-
-# 3. Verify via Code Mode
-search_tools({ task_description: "clickup" });
+# Prefixed with the Code Mode manual name "clickup"
+clickup_CLICKUP_API_KEY=pk_your_token_here
+clickup_CLICKUP_TEAM_ID=your_team_id_here
 ```
 
-### First Use
+**Step 3: Run your first commands.**
 
 ```bash
-# CLI: View your tasks
+# View open tasks
 cu tasks
 
-# CLI: Sprint standup
+# Sprint standup summary
 cu summary
 
-# MCP: Get workspace structure
+# Search for a task
+cu search "login page"
+```
+
+**Step 4: Use MCP for features the CLI does not cover.**
+
+```typescript
+// Discover available ClickUp tools
+search_tools({ task_description: "clickup" });
+
+// Get workspace hierarchy
 call_tool_chain({
   code: `
-    const ws = await clickup.clickup_get_workspace({
-      include_hierarchy: true
-    });
+    const ws = await clickup.clickup_get_workspace({ include_hierarchy: true });
     return ws;
   `
 });
@@ -140,103 +141,133 @@ call_tool_chain({
 
 <!-- /ANCHOR:quick-start -->
 
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
-.opencode/skill/mcp-clickup/
-├── SKILL.md                    # AI agent instructions
-├── README.md                   # This file (user documentation)
-├── INSTALL_GUIDE.md            # Setup for CLI and MCP
-├── references/
-│   ├── tool_reference.md       # All 46 MCP tools documented
-│   ├── cli_reference.md        # 30+ CLI commands with flags
-│   └── workflows.md            # Common CLI+MCP workflow patterns
-└── assets/
-    └── tool_categories.md      # Tool priority categorization
-```
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | AI agent activation triggers and workflow guidance |
-| `references/tool_reference.md` | Complete MCP tool documentation (46 tools) |
-| `references/cli_reference.md` | CLI command reference (30+ commands) |
-| `references/workflows.md` | Workflow patterns combining CLI and MCP |
-| `assets/tool_categories.md` | HIGH/MEDIUM/LOW tool categorization |
-
----
-
-<!-- /ANCHOR:structure -->
-
 <!-- ANCHOR:features -->
-## 4. FEATURES
+## 3. FEATURES
 
-### CLI Features (cu)
+### 3.1 FEATURE HIGHLIGHTS
 
-| Category | Commands | Description |
-|----------|----------|-------------|
-| Task Read | `tasks`, `task`, `search`, `assigned`, `overdue` | View and find tasks |
-| Sprint | `sprint`, `sprints`, `summary` | Sprint management and standups |
-| Task Write | `create`, `update`, `delete`, `assign`, `move` | Modify tasks |
-| Comments | `comment`, `comments` | View and post comments |
+The CLI excels at everything a developer does in ClickUp every day. Running `cu tasks` shows your open work in a clean Markdown table. `cu sprint` filters that down to the current sprint. `cu summary` generates a standup-ready summary of sprint progress, completed items, and blockers. These commands run in milliseconds, output structured Markdown that AI agents can parse without additional token overhead, and accept `--json` when structured data is needed downstream.
+
+Task write operations match the same speed profile. Creating a task with `cu create -n "name" -l listId` adds it immediately. `cu update id --status done` closes it. `cu comment id -m "text"` posts a comment. `cu delete id --confirm` removes it with a required safety flag. The CLI also covers dependency management, tag operations, custom field assignment, and task moves between lists. For workspace navigation, `cu spaces` and `cu lists spaceId` map the hierarchy before any task operation.
+
+The MCP server opens a different tier of capability. Its 46 tools cover everything the CLI cannot. Documents live in ClickUp spaces as first-class objects, and the MCP server exposes the full lifecycle: create, read, update pages, create sub-pages, list documents by workspace or parent. Goals and key results are fully manageable through `manage_goals` with eight discrete actions. Webhooks can be registered, listed, updated, and deleted to push ClickUp events to external endpoints. Time tracking lets agents start and stop timers against tasks, log manual entries, and tag time by category.
+
+Bulk operations are one of the strongest MCP capabilities. `create_bulk_tasks` accepts an array of task definitions and creates all of them in a single call, which is far more efficient than looping through individual creates. `update_bulk_tasks` applies status, assignee, or priority changes across many tasks at once. For teams migrating data or setting up sprints programmatically, this changes the operational cost significantly.
+
+The enterprise tier adds guest management (10 actions) and audit log access. These require a ClickUp Enterprise plan and are gated accordingly. When a request touches these features without the correct plan, the skill surfaces the plan requirement rather than returning a cryptic API error.
+
+### 3.2 FEATURE REFERENCE
+
+**CLI Command Categories**
+
+| Category | Commands | What They Do |
+|---|---|---|
+| Daily view | `tasks`, `assigned`, `sprint`, `overdue`, `inbox` | See your work |
+| Sprint | `sprint`, `sprints`, `summary` | Sprint state and standup output |
+| Search | `search` | Full-text task search |
+| Task detail | `task`, `subtasks`, `comments`, `activity` | Inspect a task |
+| Task write | `create`, `update`, `delete`, `assign`, `move` | Modify tasks |
+| Comments | `comment`, `comments` | Post and view comments |
 | Fields | `field`, `tag` | Custom fields and tags |
-| Workspace | `spaces`, `lists`, `auth` | Navigation and config |
-| Utility | `inbox`, `activity`, `subtasks`, `open` | Additional features |
+| Dependencies | `depend` | Add task dependencies |
+| Workspace | `spaces`, `lists`, `auth` | Navigate and verify config |
+| Utility | `open`, `inbox` | Browser open, notifications |
 
-### MCP Features (Code Mode)
+**MCP Tool Categories (46 tools)**
 
-| Category | Tools | Description |
-|----------|-------|-------------|
-| Task Management | 20 | Full CRUD, bulk ops, dependencies, subtasks |
-| Documents | 7 | Create, read, update pages and sub-pages |
-| Chat | 2 | Channels, messages, reactions, threads |
-| Time Tracking | 1 | Timers, entries, tags (10+ actions) |
-| Goals | 1 | Goals, key results (8 actions) |
-| Views | 1 | 10 view types (6 actions) |
-| Webhooks | 1 | Event subscriptions (4 actions) |
-| Structure | 3 | Lists, spaces, folders management |
+| Category | Tool Count | Key Capabilities |
+|---|---|---|
+| Task Management | 20 | Full CRUD, bulk ops, dependencies, subtasks, templates |
+| Documents | 7 | Create/update docs, pages, sub-pages |
+| Chat | 2 | Channels, messages, threads, reactions |
+| Time Tracking | 1 | Start/stop timers, log entries, tags (10+ actions) |
+| Goals | 1 | Goals and key results (8 actions) |
+| Views | 1 | 10 view types, list/create/delete (6 actions) |
+| Webhooks | 1 | Create, list, update, delete subscriptions |
+| Lists / Spaces / Folders | 3 | Structure management |
 | Custom Fields | 1 | Field definitions and values (4 actions) |
-| Tags | 3 | Space tags, task tag assignment |
+| Tags | 3 | Space tags, add/remove from tasks |
 | Checklists | 1 | Checklist items on tasks (6 actions) |
-| Templates | 2 | Task template discovery and creation |
-| Attachments | 1 | Upload, list, get (with large file chunking) |
+| Attachments | 1 | Upload, list, get (with large-file chunking) |
 | Workspace | 1 | Hierarchy, members, plan details |
 | User Groups | 1 | Group management (4 actions) |
 | Guests | 1 | Guest management (Enterprise, 10 actions) |
 | Audit Logs | 1 | Activity logs (Enterprise) |
 | Feedback | 1 | Bug reports and feature requests |
 
-See [references/tool_reference.md](./references/tool_reference.md) for complete tool documentation.
+**Routing Decision Matrix**
+
+| Request Type | Route To | Reason |
+|---|---|---|
+| Task CRUD, search | CLI (first), MCP (fallback) | CLI is faster |
+| Sprint view, standup | CLI only | No MCP equivalent |
+| Documents, goals, webhooks | MCP only | Not in CLI |
+| Time tracking, chat | MCP only | Not in CLI |
+| Bulk create/update | MCP only | CLI has no bulk commands |
+| Workspace discovery | CLI or MCP | Both work / MCP gives hierarchy |
+| Guests, audit logs | MCP only | Enterprise plan required |
 
 ---
 
 <!-- /ANCHOR:features -->
+
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
+```
+.opencode/skill/mcp-clickup/
+  SKILL.md                    # AI agent triggers, routing logic, and rules
+  README.md                   # This file
+  INSTALL_GUIDE.md            # Step-by-step CLI and MCP installation
+  assets/
+    tool_categories.md        # HIGH/MEDIUM/LOW priority classification of all 46 MCP tools
+  references/
+    cli_reference.md          # All 30+ CLI commands with flags and output modes
+    tool_reference.md         # All 46 MCP tools with parameters and examples
+    workflows.md              # Common CLI+MCP combined workflow patterns
+  scripts/
+    install.sh                # Automated installation script
+```
+
+**Key Files**
+
+| File | Purpose |
+|---|---|
+| `SKILL.md` | AI agent instructions: activation triggers, smart routing pseudocode, decision matrix, rules |
+| `INSTALL_GUIDE.md` | Complete installation and configuration for both CLI and MCP |
+| `references/tool_reference.md` | Full documentation for all 46 MCP tools |
+| `references/cli_reference.md` | CLI command reference with all flags and output format details |
+| `references/workflows.md` | Workflow patterns for daily ops, bulk tasks, cross-tool integrations |
+| `assets/tool_categories.md` | Prioritized tool catalog for routing and capability discovery |
+
+---
+
+<!-- /ANCHOR:structure -->
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
 
 ### CLI Configuration
 
-```bash
-# Interactive setup
-cu init
+Run `cu init` for interactive setup. This writes to `~/.config/cu/config.json`.
 
-# Or manual config at ~/.config/cu/config.json
+```json
 {
   "apiToken": "pk_your_token",
   "teamId": "your_team_id"
 }
+```
 
-# Environment variable overrides
+Override with environment variables at any time:
+
+```bash
 export CU_API_TOKEN="pk_your_token"
 export CU_TEAM_ID="your_team_id"
 ```
 
-### MCP Configuration (Code Mode)
+### MCP Configuration
 
-Already configured in `.utcp_config.json`:
+The MCP server is registered in `.utcp_config.json` as a Code Mode manual:
 
 ```json
 {
@@ -260,99 +291,62 @@ Already configured in `.utcp_config.json`:
 
 ### Environment Variables
 
-Add to `.env`:
+Add to `.env`. Code Mode variables must be prefixed with the manual name (`clickup_`):
 
 ```bash
-# ClickUp credentials
-# Get API token from: ClickUp Settings > Apps > API Token
-# Get Team ID from: ClickUp Settings > Workspaces
-
-# For Code Mode (prefixed with manual name)
+# Code Mode (MCP server)
 clickup_CLICKUP_API_KEY=pk_your_token_here
 clickup_CLICKUP_TEAM_ID=your_team_id_here
 
-# For CLI (used by cu directly)
+# CLI (cu reads these directly)
 CU_API_TOKEN=pk_your_token_here
 CU_TEAM_ID=your_team_id_here
 ```
 
-### Getting Your API Token
+### Getting Your API Token and Team ID
 
-1. Open ClickUp Settings
-2. Go to **Apps** section
-3. Click **API Token**
-4. Copy the token (starts with `pk_`)
-5. Add to `.env` file and/or CLI config
+1. Open ClickUp and go to **Settings**.
+2. Select **Apps**, then click **API Token**.
+3. Copy the token (it starts with `pk_`).
+4. For Team ID, go to **Settings > Workspaces**. The ID appears in the URL and workspace settings panel.
+
+### Requirements
+
+| Requirement | CLI | MCP |
+|---|---|---|
+| Node.js | >= 22.0.0 | >= 18.0.0 |
+| Code Mode configured | Not needed | Required |
+| API token | Required | Required |
+| Team ID | Required | Required |
+| Enterprise plan | Not needed | Only for Guests / Audit Logs |
 
 ---
 
 <!-- /ANCHOR:configuration -->
 
-<!-- ANCHOR:naming-convention -->
-## 6. NAMING CONVENTION
-
-### MCP Tool Naming
-
-All MCP tool calls follow Code Mode's naming pattern:
-
-```
-clickup.clickup_{tool_name}
-```
-
-### Examples
-
-| Tool | Correct Call |
-|------|--------------|
-| create_task | `clickup.clickup_create_task({...})` |
-| get_task | `clickup.clickup_get_task({...})` |
-| manage_goals | `clickup.clickup_manage_goals({...})` |
-| manage_time_entries | `clickup.clickup_manage_time_entries({...})` |
-
-### Common Mistakes
-
-```typescript
-// WRONG - missing clickup_ prefix
-await clickup.create_task({ name: "..." });
-
-// WRONG - camelCase
-await clickup.clickup_createTask({ name: "..." });
-
-// CORRECT
-await clickup.clickup_create_task({ name: "..." });
-```
-
-### CLI Command Naming
-
-CLI uses `cu <command>` pattern with kebab-case flags:
-
-```bash
-cu create -n "Task name" -l <listId> --due-date 2026-04-01
-cu update <id> --status "in progress" --priority high
-```
-
----
-
-<!-- /ANCHOR:naming-convention -->
-
 <!-- ANCHOR:usage-examples -->
-## 7. USAGE EXAMPLES
+## 6. USAGE EXAMPLES
 
-### Example 1: Daily Standup (CLI)
+**Example 1: Daily standup using CLI**
 
 ```bash
-# Sprint summary for standup
+# Standup-ready sprint summary
 cu summary
 
-# Current sprint tasks
+# Current sprint task list
 cu sprint
 
-# Overdue tasks
+# Overdue tasks needing attention
 cu overdue
+
+# Your full task queue
+cu assigned
 ```
 
-### Example 2: Create Task (CLI)
+**Example 2: Create and update a task using CLI**
 
 ```bash
+# Create a task in a specific list
 cu create \
   -n "Implement login page" \
   -l abc123 \
@@ -362,9 +356,12 @@ cu create \
   --assignee me \
   --tags "frontend,auth" \
   --due-date 2026-04-15
+
+# Mark it done once complete
+cu update <task-id> --status "done"
 ```
 
-### Example 3: Bulk Create Tasks (MCP)
+**Example 3: Bulk create sprint tasks using MCP**
 
 ```typescript
 call_tool_chain({
@@ -382,179 +379,158 @@ call_tool_chain({
 });
 ```
 
-### Example 4: Document Creation (MCP)
-
-```typescript
-call_tool_chain({
-  code: `
-    const doc = await clickup.clickup_create_document({
-      parent: { id: "space_id", type: 4 },
-      name: "Sprint 12 Retrospective",
-      visibility: "PUBLIC",
-      content: "## What went well\\n- Shipped login feature on time\\n\\n## What to improve\\n- Better test coverage",
-      content_format: "text/md"
-    });
-    return doc;
-  `
-});
-```
-
-### Example 5: Time Tracking (MCP)
-
-```typescript
-call_tool_chain({
-  code: `
-    // Start timer on task
-    await clickup.clickup_manage_time_entries({
-      action: "start_timer",
-      task: "task-id-here"
-    });
-
-    // Later: stop timer
-    await clickup.clickup_manage_time_entries({
-      action: "stop_timer"
-    });
-  `
-});
-```
-
 ---
 
 <!-- /ANCHOR:usage-examples -->
 
 <!-- ANCHOR:troubleshooting -->
-## 8. TROUBLESHOOTING
+## 7. TROUBLESHOOTING
 
-### Common Issues
+**Wrong `cu` binary resolves**
 
-#### CLI: Wrong `cu` binary
+What you see: `cu (Taylor UUCP) 1.07` instead of a ClickUp CLI version string.
 
-**Symptom**: `cu (Taylor UUCP) 1.07` instead of ClickUp CLI version.
+Common causes: The system UUCP `cu` binary is earlier in PATH than the npm global bin directory.
 
-**Cause**: System UUCP `cu` binary found instead of ClickUp CLI.
-
-**Solution**:
+Fix:
 ```bash
-# Check which cu is being used
-which cu  # Should be in node_modules/.bin or npm global
+# Confirm the problem
+cu --version
 
-# Install ClickUp CLI
+# Reinstall CLI and fix PATH order
 npm install -g @krodak/clickup-cli
-
-# Ensure npm global bin is before /usr/bin in PATH
 echo 'export PATH="$(npm config get prefix)/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
+cu --version  # Should now show ClickUp CLI version
 ```
 
-#### CLI: Authentication Failed
+---
 
-**Symptom**: `Error: Invalid API token` or `Error: Team not found`.
+**CLI authentication fails**
 
-**Solution**:
+What you see: `Error: Invalid API token` or `Error: Team not found`.
+
+Common causes: Token expired, wrong Team ID, or `cu init` was never completed.
+
+Fix:
 ```bash
-# Re-configure
+# Re-run interactive setup
 cu init
 
-# Or set environment variables
+# Or set variables directly
 export CU_API_TOKEN="pk_your_token"
 export CU_TEAM_ID="your_team_id"
+
+# Verify
+cu auth
 ```
 
-#### MCP: Tool Not Found
+---
 
-**Symptom**: `clickup_create_task is not a function`.
+**MCP tool not found**
 
-**Solution**:
+What you see: `clickup_create_task is not a function` or similar.
+
+Common causes: Wrong tool name (missing prefix, camelCase instead of snake_case), or Code Mode not discovering the manual.
+
+Fix:
 ```typescript
 // Discover exact tool names
 search_tools({ task_description: "clickup create task" });
 
-// Use full naming convention
-await clickup.clickup_create_task({ ... });
+// Always use full naming convention
+await clickup.clickup_create_task({ listName: "...", name: "..." });
+
+// Not this (missing clickup_ prefix)
+// await clickup.create_task({ ... });
 ```
 
-#### MCP: Environment Variable Not Found
+---
 
-**Symptom**: `Variable 'CLICKUP_API_KEY' not found`.
+**MCP environment variable not found**
 
-**Solution**: Use prefixed variable names in `.env`:
+What you see: `Variable 'CLICKUP_API_KEY' not found`.
+
+Common causes: Variable added to `.env` without the `clickup_` prefix required by Code Mode.
+
+Fix:
 ```bash
-# WRONG
+# Wrong (unprefixed)
 CLICKUP_API_KEY=pk_...
 
-# CORRECT (prefixed with Code Mode manual name)
+# Correct (prefixed with manual name)
 clickup_CLICKUP_API_KEY=pk_...
-clickup_CLICKUP_TEAM_ID=...
+clickup_CLICKUP_TEAM_ID=your_id
 ```
 
-### Quick Fixes
+---
 
-| Problem | Quick Fix |
-|---------|-----------|
-| Wrong `cu` binary | Reinstall CLI, check PATH order |
-| Auth failed | `cu init` or check `.env` |
-| Tool not found | `search_tools("clickup")` |
-| Rate limited | Wait 60 seconds, retry |
-| Task not found | Use task ID instead of name |
+**Sprint features unavailable via MCP**
+
+What you see: No equivalent to `cu sprint` or `cu summary` in the MCP tool list.
+
+Common causes: Sprint views and standup summaries are CLI-only features with no MCP equivalent.
+
+Fix: Install the CLI. `npm install -g @krodak/clickup-cli`, then `cu init`. Sprint and standup commands are only available through `cu`.
 
 ---
 
 <!-- /ANCHOR:troubleshooting -->
 
 <!-- ANCHOR:faq -->
-## 9. FAQ
+## 8. FAQ
 
 **Q: When should I use CLI vs MCP?**
 
-A: Use CLI for daily task operations (create, update, search, sprint, standup). Use MCP for features CLI doesn't have: documents, goals, webhooks, time tracking, chat, bulk operations, and enterprise features.
+A: Use the CLI for everything you do daily: creating tasks, checking sprint status, running standups, searching, updating statuses, and commenting. Use MCP when you need something the CLI does not have: documents, goals, webhooks, time tracking, chat, bulk operations, or enterprise features. If both cover the same operation (like task creation), the CLI is faster.
 
 **Q: Do I need both tools installed?**
 
-A: No, but recommended. CLI alone covers most daily needs. MCP adds enterprise features. Either works independently.
+A: No. The CLI covers most daily task work on its own. MCP adds the enterprise tier. If your work involves only task management, sprints, and search, the CLI is sufficient. If you need to manage docs, goals, or run bulk operations, install both.
 
-**Q: What Node.js version do I need?**
+**Q: What Node.js version does the CLI require?**
 
-A: CLI requires Node >= 22.0.0. MCP works with Node 18-22. If you have Node < 22, you can still use MCP.
+A: The CLI requires Node.js 22.0.0 or higher. The MCP server works with Node 18 or higher. If your system has Node below 22, you can still use MCP while skipping the CLI.
 
-**Q: How do I find my Team ID?**
+**Q: How do I find my ClickUp Team ID?**
 
-A: Go to ClickUp Settings > Workspaces. The Team ID is displayed there. Or use `cu config get teamId` if CLI is configured.
+A: Open ClickUp and go to Settings, then Workspaces. The Team ID appears in the workspace settings panel. Once the CLI is configured, `cu config get teamId` also returns it.
 
-**Q: Can I use both CLI and MCP simultaneously?**
+**Q: Can CLI and MCP use the same credentials?**
 
-A: Yes. They use the same ClickUp API with separate authentication. CLI uses `cu init` config; MCP uses `.utcp_config.json` env vars.
+A: Yes. Both authenticate against the same ClickUp workspace with the same API token and Team ID. They use separate configuration sources: the CLI reads from `~/.config/cu/config.json` or environment variables, while MCP reads from `.env` with the `clickup_` prefix.
 
 ---
 
 <!-- /ANCHOR:faq -->
 
-<!-- ANCHOR:related -->
-## 10. RELATED DOCUMENTS
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
 
-### Internal Documentation
+**This skill**
 
 | Document | Purpose |
-|----------|---------|
-| [SKILL.md](./SKILL.md) | AI agent instructions and workflow guidance |
-| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Complete installation for CLI and MCP |
-| [references/tool_reference.md](./references/tool_reference.md) | All 46 MCP tools documented |
-| [references/cli_reference.md](./references/cli_reference.md) | 30+ CLI commands with flags |
-| [references/workflows.md](./references/workflows.md) | Common workflow patterns |
-| [assets/tool_categories.md](./assets/tool_categories.md) | Tool priority categorization |
+|---|---|
+| [SKILL.md](./SKILL.md) | AI agent instructions, routing logic, rules, and integration points |
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Complete installation for CLI and MCP server |
+| [references/tool_reference.md](./references/tool_reference.md) | Full documentation for all 46 MCP tools |
+| [references/cli_reference.md](./references/cli_reference.md) | All CLI commands with flags and output format details |
+| [references/workflows.md](./references/workflows.md) | Workflow patterns combining CLI and MCP |
+| [assets/tool_categories.md](./assets/tool_categories.md) | Priority categorization of all 46 MCP tools |
 
-### External Resources
-
-| Resource | Description |
-|----------|-------------|
-| [ClickUp CLI (npm)](https://www.npmjs.com/package/@krodak/clickup-cli) | CLI package |
-| [ClickUp MCP Server (npm)](https://www.npmjs.com/package/@taazkareem/clickup-mcp-server) | MCP server package |
-| [ClickUp API](https://clickup.com/api) | Official API reference |
-
-### Related Skills
+**Related skills**
 
 | Skill | Purpose |
-|-------|---------|
-| [mcp-code-mode](../mcp-code-mode/README.md) | Tool orchestration via Code Mode |
-| [mcp-figma](../mcp-figma/README.md) | Cross-tool workflow (Figma -> ClickUp) |
+|---|---|
+| [mcp-code-mode](../mcp-code-mode/README.md) | Code Mode tool orchestration (required for MCP approach) |
+| [mcp-figma](../mcp-figma/README.md) | Cross-tool workflow: Figma design to ClickUp task |
 
-<!-- /ANCHOR:related -->
+**External resources**
+
+| Resource | Description |
+|---|---|
+| [ClickUp CLI on npm](https://www.npmjs.com/package/@krodak/clickup-cli) | CLI package (`@krodak/clickup-cli`) |
+| [ClickUp MCP Server on npm](https://www.npmjs.com/package/@taazkareem/clickup-mcp-server) | MCP server package (`@taazkareem/clickup-mcp-server`) |
+| [ClickUp API Reference](https://clickup.com/api) | Official API documentation |
+
+<!-- /ANCHOR:related-documents -->

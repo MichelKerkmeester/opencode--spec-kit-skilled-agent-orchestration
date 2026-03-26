@@ -78,6 +78,31 @@ Provide a single UX-hooks-focused specification that maps all eleven Phase 018 t
 | `checklist.md` | Rewrite | Phase 018 verification checklist — all items unchecked |
 | `implementation-summary.md` | Rewrite | Blank template pending execution |
 | `description.json` | Rewrite | Reset to Draft, Not Started |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 103 | UX hook module coverage (`mutation-feedback`, `response-hints`) | 18--ux-hooks/05-dedicated-ux-hook-modules.md |
+| 2 | 104 | Mutation save-path UX parity and no-op hardening | 18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md |
+| 3 | 105 | Context-server success-envelope finalization | 18--ux-hooks/08-context-server-success-hint-append.md |
+| 4 | 106 | Hooks barrel + README synchronization | 18--ux-hooks/12-hooks-readme-and-export-alignment.md |
+| 5 | 107 | Checkpoint confirmName and schema enforcement | 18--ux-hooks/03-checkpoint-delete-confirmname-safety.md |
+| 6 | 166 | Result explain v1 (SPECKIT_RESULT_EXPLAIN_V1) | 18--ux-hooks/14-result-explainability.md |
+| 7 | 167 | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) | 18--ux-hooks/15-mode-aware-response-profiles.md |
+| 8 | 168 | Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) | 18--ux-hooks/16-progressive-disclosure.md |
+| 9 | 169 | Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) | 18--ux-hooks/17-retrieval-session-state.md |
+| 10 | 179 | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | 18--ux-hooks/18-empty-result-recovery.md |
+| 11 | 180 | Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) | 18--ux-hooks/19-result-confidence.md |
+| 12 | 209 | Shared post-mutation hook wiring | 18--ux-hooks/01-shared-post-mutation-hook-wiring.md |
+| 13 | 210 | Memory health autoRepair metadata | 18--ux-hooks/02-memory-health-autorepair-metadata.md |
+| 14 | 211 | Schema and type contract synchronization | 18--ux-hooks/04-schema-and-type-contract-synchronization.md |
+| 15 | 212 | Mutation hook result contract expansion | 18--ux-hooks/06-mutation-hook-result-contract-expansion.md |
+| 16 | 213 | Mutation response UX payload exposure | 18--ux-hooks/07-mutation-response-ux-payload-exposure.md |
+| 17 | 214 | Atomic-save parity and partial-indexing hints | 18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md |
+| 18 | 215 | Final token metadata recomputation | 18--ux-hooks/11-final-token-metadata-recomputation.md |
+| 19 | 216 | End-to-end success-envelope verification | 18--ux-hooks/13-end-to-end-success-envelope-verification.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

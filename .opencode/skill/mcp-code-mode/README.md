@@ -1,41 +1,32 @@
 ---
-title: "Code Mode MCP - TypeScript Tool Execution"
-description: "MCP orchestration via TypeScript execution for efficient multi-tool workflows with 98.7% context reduction and 60% faster execution."
+title: "MCP Code Mode"
+description: "MCP orchestration via TypeScript execution for efficient multi-tool workflows. Mandatory for all external MCP tool calls with 98.7% context reduction and 60% faster execution."
 trigger_phrases:
   - "code mode"
   - "call_tool_chain"
   - "utcp"
+  - "mcp tool call"
+  - "external mcp"
 ---
 
-# Code Mode MCP - TypeScript Tool Execution
+# MCP Code Mode
 
-> MCP orchestration via TypeScript execution for efficient multi-tool workflows. Provides **98.7% context reduction** and **60% faster execution** through progressive tool discovery and code-based tool chaining.
-
-> **Navigation**:
-> - New to Code Mode? Start with [Quick Start](#2--quick-start)
-> - Need tool guidance? See [Tool Selection Guide](#3--tool-selection-guide)
-> - Naming issues? See [Naming Convention](#5--naming-convention)
-> - Configuration help? See [Configuration](#6--configuration)
-
-[![MCP](https://img.shields.io/badge/MCP-Native-brightgreen.svg)](https://modelcontextprotocol.io)
+> Execute TypeScript code with access to 200+ external MCP tools through progressive disclosure, delivering 98.7% context reduction and 60% faster execution than direct tool calling.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. TOOL SELECTION GUIDE](#3--tool-selection-guide)
-- [4. MCP TOOLS (7 TOTAL)](#4--mcp-tools-7-total)
-- [5. NAMING CONVENTION](#5--naming-convention)
-- [6. CONFIGURATION](#6--configuration)
-- [7. ARCHITECTURE](#7--architecture)
-- [8. PERFORMANCE](#8--performance)
-- [9. USAGE PATTERNS](#9--usage-patterns)
-- [10. TROUBLESHOOTING](#10--troubleshooting)
-- [11. RESOURCES](#11--resources)
-- [12. QUICK REFERENCE CARD](#12--quick-reference-card)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
 
 ---
 
@@ -44,43 +35,43 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What It Does
+### What This Skill Does
 
-Code Mode transforms AI agents from clunky tool callers into efficient code executors. Instead of exposing hundreds of tools directly, it provides **ONE tool** (`call_tool_chain`) that executes TypeScript code with access to your entire toolkit.
+MCP Code Mode is the mandatory execution layer for all external MCP tool calls. Instead of exposing hundreds of tool schemas directly into the AI context window, Code Mode provides a single `call_tool_chain` tool that executes TypeScript code with full access to your entire toolkit. Tools are discovered on demand and called using a consistent naming pattern, so the AI context stays small regardless of how many tools are configured.
 
-### Why Code Mode?
+Code Mode applies to tools configured in `.utcp_config.json`: ClickUp, Figma, Webflow, Notion, Chrome DevTools, and any other external MCP servers. It does not apply to native MCP tools such as Spec Kit Memory, Sequential Thinking, or CocoIndex Code, which are called directly. This boundary is strict: using Code Mode for native tools wastes overhead, and bypassing Code Mode for external tools causes context exhaustion.
 
-Research from [Apple](https://machinelearning.apple.com/research/codeact), [Cloudflare](https://blog.cloudflare.com/code-mode/), [Anthropic](https://www.anthropic.com/engineering/code-execution-with-mcp) and others proves that LLMs excel at writing code but struggle with tool calls.
+The skill covers four native tools exposed by the Code Mode MCP server: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns all registered tool names, and `tool_info` returns the TypeScript interface for a specific tool. Together these four tools replace what would otherwise be 200+ individual tool definitions loaded upfront.
 
-### Key Capabilities
-
-| Feature | Description |
-|---------|-------------|
-| **98.7% Context Reduction** | 1.6k tokens vs 141k for 47 tools |
-| **60% Faster Execution** | Single execution vs 15+ API round trips |
-| **Progressive Discovery** | Tools loaded on-demand, zero upfront cost |
-| **State Persistence** | Data flows naturally between operations |
-| **Type Safety** | Full TypeScript support with autocomplete |
-| **Built-in Observability** | Console output captured automatically |
-
-### Performance Comparison
+### Key Statistics
 
 | Metric | Traditional | Code Mode | Improvement |
 |--------|-------------|-----------|-------------|
-| **API Round Trips** | 15+ | 1 | 93% reduction |
-| **Context Tokens** | 141k (47 tools) | 1.6k | 98.7% reduction |
-| **Simple Tasks** | 3 iterations | 1 execution | 67% faster |
-| **Complex Tasks** | 16 iterations | 1 execution | 88% faster |
+| Context tokens (47 tools) | 141k | 1.6k | 98.7% reduction |
+| Execution time (4 tools) | ~2000ms | ~300ms | 60% faster |
+| API round trips | 15+ | 1 | 93% reduction |
+| Simple workflows (2-3 tools) | 3 iterations | 1 execution | 67% faster |
+| Complex workflows (8+ tools) | 16 iterations | 1 execution | 88% faster |
 
-### Source Repository
+### How This Compares
 
-| Property | Value |
-|----------|-------|
-| **GitHub** | [universal-tool-calling-protocol/code-mode](https://github.com/universal-tool-calling-protocol/code-mode) |
-| **npm (MCP)** | `@utcp/code-mode-mcp` |
-| **npm (Library)** | `@utcp/code-mode` |
-| **Stars** | 1.2k+ |
-| **License** | MPL-2.0 |
+| Approach | Context Cost | Multi-tool State | Tool Discovery |
+|----------|-------------|-----------------|----------------|
+| Direct tool calling | High (all schemas loaded) | None (each call independent) | Manual |
+| Code Mode | Minimal (1.6k tokens) | Full (variables persist) | Progressive via search_tools |
+| Native MCP tools | Low (per-tool) | N/A (single tool calls) | Not applicable |
+
+### Key Features
+
+| Feature | Description |
+|---------|-------------|
+| Progressive discovery | Tools loaded on demand, zero upfront cost |
+| State persistence | Variables flow naturally between tool calls in a single execution |
+| Type safety | Full TypeScript support with autocomplete via tool_info |
+| Built-in observability | console.log output captured automatically and returned |
+| Configurable timeouts | 30s default, extendable to 120s+ for complex workflows |
+| Parallel execution | Promise.all and Promise.allSettled supported natively |
+| Error isolation | try/catch prevents one failing tool from crashing the workflow |
 
 ---
 
@@ -89,39 +80,50 @@ Research from [Apple](https://machinelearning.apple.com/research/codeact), [Clou
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
 
-### Prerequisites
-
-| Component | Purpose |
-|-----------|---------|
-| **Node.js 18+** | Runtime environment |
-| **MCP Client** | OpenCode, Claude Desktop or compatible client |
-| **API Keys** | For services you want to connect (optional) |
-
-### Two MCP Configuration Systems
-
-**IMPORTANT**: Code Mode only accesses tools in `.utcp_config.json`. Native MCP tools like Sequential Thinking, Spec Kit Memory and codex-specialized-subagents are NOT accessed through Code Mode.
-
-| System | Config File | Examples |
-|--------|-------------|----------|
-| **Native MCP** | `opencode.json` | Sequential Thinking, Spec Kit Memory |
-| **Code Mode MCP** | `.utcp_config.json` | Webflow, Figma, ClickUp, Chrome DevTools |
-
-### Basic Workflow
+**Step 1: Discover available tools.** Before calling any external tool, use `search_tools` to find what is registered and confirm the exact name. Never guess tool names.
 
 ```typescript
-// 1. Discover available tools
-search_tools({ task_description: "webflow site management", limit: 10 });
+search_tools({
+  task_description: "clickup task management",
+  limit: 10
+});
+```
 
-// 2. Get tool details
-tool_info({ tool_name: "webflow.webflow_sites_list" });
+**Step 2: Confirm the tool interface.** Use `tool_info` to get the TypeScript interface definition before executing code with parameters.
 
-// 3. Execute TypeScript code
+```typescript
+tool_info({ tool_name: "clickup.clickup_create_task" });
+```
+
+**Step 3: Execute via call_tool_chain.** All external MCP tool calls go inside `call_tool_chain`. The naming pattern is always `{manual_name}.{manual_name}_{tool_name}`.
+
+```typescript
 call_tool_chain({
   code: `
-    const sites = await webflow.webflow_sites_list({});
-    console.log('Found', sites.length, 'sites');
-    return sites;
+    const task = await clickup.clickup_create_task({
+      name: "New Feature",
+      listName: "Development Sprint",
+      description: "Implement user authentication"
+    });
+    console.log("Task created:", task.id);
+    return task;
   `
+});
+```
+
+**Step 4: Chain multiple tools in one execution.** Data from the first tool call is available to all subsequent calls within the same `code` block.
+
+```typescript
+call_tool_chain({
+  code: `
+    const design = await figma.figma_get_file({ fileKey: "abc123" });
+    const task = await clickup.clickup_create_task({
+      name: \`Implement: \${design.name}\`,
+      listName: "Frontend Sprint"
+    });
+    return { design: design.name, taskId: task.id };
+  `,
+  timeout: 60000
 });
 ```
 
@@ -129,307 +131,107 @@ call_tool_chain({
 
 <!-- /ANCHOR:quick-start -->
 
-<!-- ANCHOR:tool-selection -->
-## 3. TOOL SELECTION GUIDE
+<!-- ANCHOR:features -->
+## 3. FEATURES
 
-### Tools at a Glance
+### 3.1 FEATURE HIGHLIGHTS
 
-| Tool | Purpose | Speed | Use When |
-|------|---------|-------|----------|
-| `call_tool_chain` | Execute TypeScript | varies | Multi-tool workflows |
-| `search_tools` | Find tools by description | <100ms | Discovering available tools |
-| `list_tools` | List all tool names | <50ms | Getting complete tool list |
-| `tool_info` | Get tool TypeScript interface | <50ms | Need parameter details |
-| `register_manual` | Add tool provider at runtime | ~1s | Dynamic tool registration |
-| `deregister_manual` | Remove tool provider | <50ms | Cleanup |
-| `get_required_keys_for_tool` | Get required env vars | <50ms | Check configuration |
+Code Mode's most important property is that it treats the AI's context window as a resource to protect. When an AI client loads 47 tool definitions directly, it consumes roughly 141,000 tokens before any real work begins. Code Mode reduces that to 1,600 tokens regardless of how many tools are configured. The mechanism is simple: the AI receives only the four Code Mode meta-tools, then uses `search_tools` to discover what it needs at call time.
 
-### Tool Selection Flowchart
+Multi-tool workflows gain the most from Code Mode. A workflow that fetches a Figma design, creates a ClickUp task, and updates a Webflow CMS item would traditionally require three separate AI reasoning loops and three round trips. Inside a single `call_tool_chain` execution, all three calls share variables, run sequentially or in parallel as needed, and return a single structured result. The AI processes the outcome once rather than re-parsing context after each step.
 
-```text
-User Request
-     │
-     ▼
-┌────────────────────────────────────────┐
-│ What do you need to do?                │
-└───────────────┬────────────────────────┘
-                │
-    ┌───────────┼───────────┬───────────┬───────────┐
-    │           │           │           │           │
-    ▼           ▼           ▼           ▼           ▼
-┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐
-│ Find   │  │ Execute│  │ List   │  │ Add    │  │ Remove │
-│ tools  │  │ code   │  │ tools  │  │ server │  │ server │
-└───┬────┘  └───┬────┘  └───┬────┘  └───┬────┘  └───┬────┘
-    │           │           │           │           │
-    ▼           ▼           ▼           ▼           ▼
-search_tools  call_tool_   list_tools  register_   deregister_
-              chain                    manual      manual
-```
+The naming convention is the one area where Code Mode requires attention. Every external tool follows the pattern `{manual_name}.{manual_name}_{tool_name}`. The manual name comes from the `name` field in `.utcp_config.json` and acts as both the TypeScript namespace and the function prefix. Calling `webflow.sites_list({})` fails silently because the prefix is missing. The correct call is `webflow.webflow_sites_list({})`. Using `search_tools` and `tool_info` before writing execution code prevents this class of error entirely.
 
-### When to Use Code Mode
+Environment variable handling has one non-obvious rule. Code Mode prefixes all environment variables with the manual name from configuration. If the manual name is `clickup` and the config references `${CLICKUP_API_KEY}`, the `.env` file must declare `clickup_CLICKUP_API_KEY`. Using the unprefixed form causes an authentication error at runtime, not at startup. Checking required variables with `get_required_keys_for_tool` before running a workflow avoids this failure mode.
 
-**USE Code Mode for:**
-- All external MCP tool calls (Webflow, Figma, ClickUp, etc.)
-- Multi-tool workflows requiring state between calls
-- Browser automation via Chrome DevTools MCP
-- Any tools configured in `.utcp_config.json`
+### 3.2 FEATURE REFERENCE
 
-**DO NOT use Code Mode for:**
-- File operations (use Read, Write, Edit tools)
-- Text searching (use Grep tool)
-- File discovery (use Glob tool)
-- Bash commands (use Bash tool)
-- Native MCP tools (Sequential Thinking, Spec Kit Memory, codex-specialized-subagents)
+**Native Tools (4 total)**
 
----
+| Tool | Purpose | Typical Response Time |
+|------|---------|----------------------|
+| `call_tool_chain` | Execute TypeScript with full tool access | Varies by workflow |
+| `search_tools` | Find tools by natural language description | Under 100ms |
+| `list_tools` | Return all registered tool names | Under 50ms |
+| `tool_info` | Return TypeScript interface for a tool | Under 50ms |
 
-<!-- /ANCHOR:tool-selection -->
-
-<!-- ANCHOR:mcp-tools -->
-## 4. MCP TOOLS (7 TOTAL)
-
-### 4.1 call_tool_chain
-
-**Purpose**: Execute TypeScript code with full tool access.
-
-**Parameters**:
+**call_tool_chain Parameters**
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `code` | string | Yes | - | TypeScript code to execute |
-| `timeout` | number | No | 30000 | Execution timeout in ms |
-| `max_output_size` | number | No | 200000 | Max response size in chars |
+| `timeout` | number | No | 30000 | Execution timeout in milliseconds |
+| `max_output_size` | number | No | 200000 | Max response size in characters |
 
-**Example**:
-```typescript
-call_tool_chain({
-  code: `
-    // Note: Tool naming pattern is {manual_name}.{manual_name}_{tool_name}
-    const sites = await webflow.webflow_sites_list({});
-    const collections = await webflow.webflow_collections_list({
-      site_id: sites[0].id
-    });
-    return { sites, collections };
-  `,
-  timeout: 60000
-});
+**Tool Scope: Code Mode vs. Native MCP**
+
+| Tool Category | Examples | How to Call |
+|---------------|----------|-------------|
+| Code Mode tools | ClickUp, Figma, Webflow, Notion, Chrome DevTools | Via call_tool_chain |
+| Native MCP tools | Spec Kit Memory, Sequential Thinking, CocoIndex | Call directly, NOT via call_tool_chain |
+| File operations | Read, Write, Edit, Grep, Glob, Bash | Call directly |
+
+**Timeout Guidelines**
+
+| Workflow Type | Recommended Timeout |
+|---------------|---------------------|
+| Simple (1-2 tools) | 30s (default) |
+| Complex (3-5 tools) | 60s |
+| Very complex (6+ tools) | 120s+ |
+
+**Parallel Execution Patterns**
+
+| Pattern | Use When | Example |
+|---------|----------|---------|
+| `Promise.all()` | All operations must succeed | `const [a, b] = await Promise.all([fnA(), fnB()])` |
+| `Promise.allSettled()` | Partial success acceptable | `const results = await Promise.allSettled([...])` |
+| Sequential with state | Each step depends on previous | Standard async/await chain |
+
+---
+
+<!-- /ANCHOR:features -->
+
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
 ```
-
-**Context parameter guidance**: When a Code Mode tool exposes a `context` field, pass a brief 15-25 word description for analytics and debugging.
-```typescript
-await webflow.webflow_sites_list({
-  context: "Listing sites to identify collection structure for CMS update"
-});
-```
-
-**Returns**:
-```json
-{
-  "success": true,
-  "result": { "sites": [...], "collections": [...] },
-  "logs": ["console.log output captured here"]
-}
+mcp-code-mode/
+  SKILL.md                       # AI agent instructions and routing rules
+  README.md                      # This file
+  INSTALL_GUIDE.md               # Installation and setup walkthrough
+  references/
+    naming_convention.md         # Tool naming pattern with examples and fixes
+    configuration.md             # .utcp_config.json and .env setup guide
+    tool_catalog.md              # 250+ tools across 8 configured servers
+    workflows.md                 # Five end-to-end workflow examples
+    architecture.md              # Token economics and system internals
 ```
 
 ---
 
-### 4.2 search_tools
-
-**Purpose**: Find relevant tools using natural language queries.
-
-**Parameters**:
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `task_description` | string | Yes | - | What you want to do |
-| `limit` | number | No | 10 | Max results |
-
-**Example**:
-```typescript
-search_tools({
-  task_description: "create clickup task with description",
-  limit: 5
-});
-```
-
----
-
-### 4.3 list_tools
-
-**Purpose**: Get all registered tool names.
-
-**Example**:
-```typescript
-list_tools();
-// Returns: { tools: ["webflow.webflow_sites_list", "clickup.clickup_create_task", ...] }
-```
-
----
-
-### 4.4 tool_info
-
-**Purpose**: Get complete tool information with TypeScript interface.
-
-**Parameters**:
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `tool_name` | string | Yes | Full tool name |
-
-**Example**:
-```typescript
-tool_info({ tool_name: "webflow.webflow_sites_list" });
-// Returns TypeScript interface definition
-```
-
----
-
-### 4.5 register_manual
-
-**Purpose**: Register a new tool provider at runtime.
-
-**Parameters**:
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `manual_call_template` | object | Yes | UTCP call template configuration |
-
-**Example**:
-```typescript
-register_manual({
-  manual_call_template: {
-    name: "github",
-    call_template_type: "mcp",
-    config: {
-      mcpServers: {
-        github: {
-          command: "npx",
-          args: ["-y", "@modelcontextprotocol/server-github"],
-          env: { "GITHUB_TOKEN": "..." }
-        }
-      }
-    }
-  }
-});
-```
-
----
-
-### 4.6 deregister_manual
-
-**Purpose**: Remove a registered tool provider.
-
-**Parameters**:
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `manual_name` | string | Yes | Name of the manual to remove |
-
----
-
-### 4.7 get_required_keys_for_tool
-
-**Purpose**: Get required environment variables for a tool.
-
-**Parameters**:
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `tool_name` | string | Yes | Name of the tool |
-
----
-
-<!-- /ANCHOR:mcp-tools -->
-
-<!-- ANCHOR:naming-convention -->
-## 5. NAMING CONVENTION
-
-### Critical Pattern
-
-**The #1 most common error** when using Code Mode is wrong function names. All MCP tool calls MUST follow this pattern:
-
-```
-{manual_name}.{manual_name}_{tool_name}
-```
-
-### Examples
-
-| Manual | Tool | Correct Call |
-|--------|------|--------------|
-| webflow | sites_list | `webflow.webflow_sites_list({})` |
-| clickup | create_task | `clickup.clickup_create_task({})` |
-| figma | get_file | `figma.figma_get_file({})` |
-| chrome_devtools_1 | navigate_page | `chrome_devtools_1.chrome_devtools_1_navigate_page({})` |
-
-### Common Mistakes
-
-```typescript
-// WRONG - missing manual prefix
-await webflow.sites_list({});
-await clickup.create_task({});
-
-// CORRECT - includes manual prefix
-await webflow.webflow_sites_list({});
-await clickup.clickup_create_task({});
-```
-
-### Why This Pattern?
-
-1. The manual name (from `.utcp_config.json`) becomes the TypeScript namespace
-2. The tool name is prefixed with the manual name and joined with underscores
-3. This prevents naming collisions between different MCP servers
-
-### Discovery Methods
-
-```typescript
-// Use these to find exact tool names:
-search_tools({ task_description: "your task here" });
-list_tools();
-tool_info({ tool_name: "webflow.webflow_sites_list" });
-```
-
----
-
-<!-- /ANCHOR:naming-convention -->
+<!-- /ANCHOR:structure -->
 
 <!-- ANCHOR:configuration -->
-## 6. CONFIGURATION
+## 5. CONFIGURATION
 
-### Configuration Files
+Code Mode uses two separate configuration systems. Understanding the boundary between them prevents the most common setup errors.
 
-| File | Purpose | Location |
-|------|---------|----------|
-| `.utcp_config.json` | Code Mode tool definitions | Project root |
-| `.env` | API keys and tokens | Project root |
-
-### .utcp_config.json Structure
+**`.utcp_config.json`** (project root) defines all external MCP servers accessible through Code Mode. Each entry in `manual_call_templates` has a `name` field that becomes the TypeScript namespace and the environment variable prefix.
 
 ```json
 {
-  "load_variables_from": [
-    {
-      "variable_loader_type": "dotenv",
-      "env_file_path": ".env"
-    }
-  ],
-  "tool_repository": {
-    "tool_repository_type": "in_memory"
-  },
-  "tool_search_strategy": {
-    "tool_search_strategy_type": "tag_and_description_word_match"
-  },
   "manual_call_templates": [
     {
-      "name": "webflow",
+      "name": "clickup",
       "call_template_type": "mcp",
       "config": {
         "mcpServers": {
-          "webflow": {
+          "clickup": {
             "transport": "stdio",
             "command": "npx",
-            "args": ["mcp-remote", "https://mcp.webflow.com/sse"],
-            "env": {}
+            "args": ["mcp-clickup"],
+            "env": { "CLICKUP_API_KEY": "${clickup_CLICKUP_API_KEY}" },
+            "disabled": false
           }
         }
       }
@@ -438,16 +240,15 @@ tool_info({ tool_name: "webflow.webflow_sites_list" });
 }
 ```
 
-### Supported Call Template Types
+**`.env`** (project root) stores API keys using the prefixed naming convention. The prefix is the manual name from `.utcp_config.json`.
 
-| Type | Description | Example Use |
-|------|-------------|-------------|
-| `mcp` | Model Context Protocol servers | Webflow, Figma, ClickUp |
-| `http` | REST APIs with OpenAPI | Custom APIs |
-| `file` | Local JSON/YAML configurations | Custom tools |
-| `cli` | Command-line tool execution | Git, shell commands |
+| Manual Name | Config Reference | `.env` Variable |
+|-------------|-----------------|-----------------|
+| `clickup` | `${CLICKUP_API_KEY}` | `clickup_CLICKUP_API_KEY` |
+| `figma` | `${FIGMA_API_KEY}` | `figma_FIGMA_API_KEY` |
+| `notion` | `${NOTION_TOKEN}` | `notion_NOTION_TOKEN` |
 
-### opencode.json Entry
+**`opencode.json`** registers the Code Mode MCP server itself as a native tool. The `UTCP_CONFIG_FILE` environment variable points to the `.utcp_config.json` path.
 
 ```json
 {
@@ -456,7 +257,7 @@ tool_info({ tool_name: "webflow.webflow_sites_list" });
       "type": "local",
       "command": ["node", "/path/to/code-mode-mcp/dist/index.js"],
       "environment": {
-        "UTCP_CONFIG_FILE": "/path/to/.utcp_config.json"
+        "UTCP_CONFIG_FILE": "/absolute/path/to/.utcp_config.json"
       },
       "enabled": true
     }
@@ -464,342 +265,185 @@ tool_info({ tool_name: "webflow.webflow_sites_list" });
 }
 ```
 
+For full setup instructions including installing the MCP server package and validating configuration, see [INSTALL_GUIDE.md](INSTALL_GUIDE.md).
+
 ---
 
 <!-- /ANCHOR:configuration -->
 
-<!-- ANCHOR:architecture -->
-## 7. ARCHITECTURE
+<!-- ANCHOR:usage-examples -->
+## 6. USAGE EXAMPLES
 
-### System Overview
-
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│                    CLI AI Agents (OpenCode)                     │
-└─────────────────────────────────┬───────────────────────────────┘
-                              │ MCP Protocol (stdio)
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Code Mode MCP Server                         │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │              TypeScript Execution Sandbox                 │  │
-│  │  - V8 Isolate (secure)                                    │  │
-│  │  - Tool access via TypeScript API                         │  │
-│  │  - console.log() captured                                 │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │                UTCP Client Layer                          │  │
-│  │  - Progressive tool discovery                             │  │
-│  │  - TypeScript interface generation                        │  │
-│  │  - Tool registration management                           │  │
-│  └───────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-         ┌────────────────────┴────────────────────┐
-         │                                         │
-┌────────▼────────┐   ┌───────────▼───────────┐   ┌───────────────┐
-│     Webflow     │   │       ClickUp         │   │    Chrome     │
-│      MCP        │   │        MCP            │   │   DevTools    │
-└─────────────────┘   └───────────────────────┘   └───────────────┘
-```
-
-### Security Model
-
-| Security Feature | Description |
-|------------------|-------------|
-| **V8 Isolate Sandbox** | Isolated execution context |
-| **No Filesystem Access** | Tools only through registered servers |
-| **Timeout Protection** | Configurable execution limits |
-| **Zero Network Access** | No external dependencies exposed |
-
----
-
-<!-- /ANCHOR:architecture -->
-
-<!-- ANCHOR:performance -->
-## 8. PERFORMANCE
-
-### Benchmark Results
-
-Independent [Python benchmark study](https://github.com/imran31415/codemode_python_benchmark) validates **$9,536/year cost savings** at 1,000 scenarios/day:
-
-| Complexity | Traditional | Code Mode | Improvement |
-|------------|-------------|-----------|-------------|
-| **Simple (2-3 tools)** | 3 iterations | 1 execution | 67% faster |
-| **Medium (4-7 tools)** | 8 iterations | 1 execution | 75% faster |
-| **Complex (8+ tools)** | 16 iterations | 1 execution | 88% faster |
-
-### Why Code Mode is Faster
-
-| Factor | Traditional | Code Mode |
-|--------|-------------|-----------|
-| **Batching** | One tool per call | Multiple tools per execution |
-| **Context** | Full tool schemas loaded | On-demand discovery |
-| **Processing** | Re-process context each call | Single processing pass |
-| **State** | No state between calls | Variables persist in execution |
-
-### Timeout Guidelines
-
-| Workflow Type | Recommended Timeout |
-|---------------|---------------------|
-| Simple (1-2 tools) | 30s (default) |
-| Complex (3-5 tools) | 60s |
-| Very complex (6+ tools) | 120s+ |
-
----
-
-<!-- /ANCHOR:performance -->
-
-<!-- ANCHOR:usage-patterns -->
-## 9. USAGE PATTERNS
-
-### Pattern 1: Single Tool Call
+**Example 1: Single external tool call**
 
 ```typescript
 call_tool_chain({
   code: `
-    const sites = await webflow.webflow_sites_list({});
+    const sites = await webflow.webflow_sites_list({
+      context: "Listing sites to identify CMS collection structure"
+    });
+    console.log("Found", sites.length, "Webflow sites");
     return sites;
   `
 });
 ```
 
-### Pattern 2: Multi-Tool Workflow
-
-```typescript
-call_tool_chain({
-  code: `
-    // 1. Fetch data from Figma
-    const design = await figma.figma_get_file({ fileId: "abc123" });
-    
-    // 2. Create ClickUp task
-    const task = await clickup.clickup_create_task({
-      name: \`Implement: \${design.name}\`,
-      listName: "Development Sprint"
-    });
-    
-    // 3. Log progress
-    console.log('Task created:', task.id);
-    
-    return { design, task };
-  `,
-  timeout: 60000
-});
-```
-
-### Pattern 3: Error Handling
+**Example 2: Multi-tool workflow with error handling**
 
 ```typescript
 call_tool_chain({
   code: `
     try {
-      console.log('Starting workflow...');
-      const result = await webflow.webflow_sites_list({});
-      return { success: true, data: result };
+      const design = await figma.figma_get_file({ fileKey: "AbC123DeF45" });
+
+      const task = await clickup.clickup_create_task({
+        name: \`Implement: \${design.name}\`,
+        listName: "Frontend Sprint",
+        description: "Build from latest approved Figma file"
+      });
+
+      const cmsItem = await webflow.webflow_collections_items_create_item_live({
+        collection_id: "design-queue-id",
+        request: {
+          items: [{
+            fieldData: {
+              name: design.name,
+              taskUrl: task.url,
+              status: "In Queue"
+            }
+          }]
+        }
+      });
+
+      return { success: true, designName: design.name, taskId: task.id, cmsItemId: cmsItem.id };
     } catch (error) {
-      console.error('Failed:', error.message);
       return { success: false, error: error.message };
     }
-  `
+  `,
+  timeout: 60000
 });
 ```
 
-### Pattern 4: Progressive Discovery
+**Example 3: Parallel fetch across independent services**
 
 ```typescript
-// 1. First discover available tools
-search_tools({ task_description: "webflow collections" });
-
-// 2. Get specific tool info
-tool_info({ tool_name: "webflow.webflow_collections_list" });
-
-// 3. Then execute with confidence
 call_tool_chain({
   code: `
-    const collections = await webflow.webflow_collections_list({
-      site_id: "your-site-id"
-    });
-    return collections;
-  `
+    const [sites, tasks, figmaFile] = await Promise.all([
+      webflow.webflow_sites_list({}),
+      clickup.clickup_get_tasks({ listName: "Development" }),
+      figma.figma_get_file({ fileKey: "abc123" })
+    ]);
+
+    return {
+      siteCount: sites.length,
+      taskCount: tasks.length,
+      figmaName: figmaFile.name
+    };
+  `,
+  timeout: 60000
 });
 ```
 
 ---
 
-<!-- /ANCHOR:usage-patterns -->
+<!-- /ANCHOR:usage-examples -->
 
 <!-- ANCHOR:troubleshooting -->
-## 10. TROUBLESHOOTING
+## 7. TROUBLESHOOTING
 
-### Common Errors
+**"Tool is not a function" or "Cannot read properties of undefined"**
 
-#### "Tool is not a function" or "Cannot read properties of undefined"
+What you see: The execution fails immediately when calling an external tool, before any real work runs.
 
-**Cause**: Wrong tool naming pattern
+Common causes: The tool name is missing the manual prefix. Calling `webflow.sites_list({})` fails because the correct name is `webflow.webflow_sites_list({})`. The pattern is always `{manual_name}.{manual_name}_{tool_name}`.
 
-**Solution**: Use `{manual_name}.{manual_name}_{tool_name}` pattern
-```typescript
-// Wrong
-await webflow.sites_list({});
+Fix: Use `search_tools({ task_description: "webflow site list" })` to get the exact registered name, then call `tool_info` to confirm the interface. Never construct tool names from memory.
 
-// Correct
-await webflow.webflow_sites_list({});
-```
+---
 
-#### "UTCP config file not found"
+**"Variable 'clickup_CLICKUP_API_KEY' not found" or authentication errors**
 
-**Cause**: Code Mode cannot find `.utcp_config.json`
+What you see: The tool executes but returns an authentication failure or missing credentials error.
 
-**Solution**:
-1. Check `UTCP_CONFIG_FILE` env var points to correct absolute path
-2. Verify file exists: `ls -la /path/to/.utcp_config.json`
-3. Validate JSON: `cat .utcp_config.json | jq .`
+Common causes: The `.env` file uses the unprefixed key name (`CLICKUP_API_KEY`) instead of the prefixed form (`clickup_CLICKUP_API_KEY`). Code Mode applies the manual name as a prefix to all environment variables at load time.
 
-#### "Tool not found" or "Manual not registered"
+Fix: Check the manual name in `.utcp_config.json` and prepend it to the key name in `.env`. Run `get_required_keys_for_tool({ tool_name: "clickup.clickup_create_task" })` to see exactly which prefixed variable names are required.
 
-**Cause**: Tools not loading from configuration
+---
 
-**Solution**:
-1. Check MCP server command is correct and executable
-2. Verify environment variables are set in `.env`
-3. Try `list_tools()` to see what is registered
+**"Execution timeout" or workflow hangs**
 
-#### "Execution timeout"
+What you see: `call_tool_chain` returns a timeout error after the default 30 seconds.
 
-**Cause**: Code execution takes too long
+Common causes: The workflow calls more than two tools or one of the target MCP servers is slow to respond. The default 30s timeout is designed for simple one or two tool calls.
 
-**Solution**:
-1. Increase timeout: `call_tool_chain({ code: '...', timeout: 60000 })`
-2. Check if MCP servers are responding
-3. Optimize code to be more efficient
+Fix: Increase the timeout parameter. Use 60s for three to five tool workflows and 120s or more for six or more tools. If timeouts persist even with a generous limit, run `list_tools()` to confirm the target server is registered and responding.
 
-### Diagnostic Commands
+---
 
-```typescript
-// Check what tools are available
-list_tools();
+**"UTCP config file not found" on startup**
 
-// Search for specific capabilities
-search_tools({ task_description: "your task" });
+What you see: Code Mode fails to initialize and reports it cannot locate the configuration file.
 
-// Get tool details
-tool_info({ tool_name: "webflow.webflow_sites_list" });
-```
+Common causes: The `UTCP_CONFIG_FILE` environment variable in `opencode.json` points to a relative path instead of an absolute path, or the file does not exist at that location.
+
+Fix: Use an absolute path in the `UTCP_CONFIG_FILE` value. Verify the file exists with `ls -la /absolute/path/to/.utcp_config.json` and validate it with `cat .utcp_config.json | python3 -m json.tool`.
 
 ---
 
 <!-- /ANCHOR:troubleshooting -->
 
-<!-- ANCHOR:resources -->
-## 11. RESOURCES
+<!-- ANCHOR:faq -->
+## 8. FAQ
 
-### Bundled Files
+**Q: When should I NOT use call_tool_chain?**
 
-| File | Purpose |
-|------|---------|
-| [SKILL.md](./SKILL.md) | AI agent instructions for Code Mode |
-| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Installation and setup guide |
-| [references/naming_convention.md](references/naming_convention.md) | Tool naming patterns |
-| [references/configuration.md](references/configuration.md) | Configuration guide |
-| [references/tool_catalog.md](references/tool_catalog.md) | Available tools |
-| [references/workflows.md](references/workflows.md) | Workflow examples |
-| [references/architecture.md](references/architecture.md) | System internals |
-| [assets/config_template.md](assets/config_template.md) | Template configuration |
-| [assets/env_template.md](assets/env_template.md) | Template .env file |
-| [scripts/update-code-mode.sh](scripts/update-code-mode.sh) | Update helper for refreshing the local Code Mode install |
-| [scripts/validate_config.py](scripts/validate_config.py) | Configuration validator |
+A: Do not use `call_tool_chain` for file operations (Read, Write, Edit, Grep, Glob, Bash), for native MCP tools (Spec Kit Memory, Sequential Thinking, CocoIndex Code), or for any tool already exposed as a first-class tool in the AI client. Code Mode is exclusively for tools registered in `.utcp_config.json`. Using `call_tool_chain` for native tools adds unnecessary overhead and does not give you access to those tools anyway, since Code Mode only sees what is in `.utcp_config.json`.
 
-### External Resources
+**Q: Why does list_tools() not show Sequential Thinking or Spec Kit Memory?**
 
-- [UTCP Code Mode Repository](https://github.com/universal-tool-calling-protocol/code-mode) - Source code
-- [Cloudflare Code Mode Research](https://blog.cloudflare.com/code-mode/) - Original whitepaper
-- [Anthropic MCP Code Execution](https://www.anthropic.com/engineering/code-execution-with-mcp) - Research
-- [Python Benchmark Study](https://github.com/imran31415/codemode_python_benchmark) - Performance analysis
-- [UTCP Specification](https://utcp.io) - Protocol documentation
+A: Those tools are native MCP tools configured in `opencode.json`, not in `.utcp_config.json`. The four discovery tools (`list_tools`, `search_tools`, `tool_info`, `get_required_keys_for_tool`) only see Code Mode tools from `.utcp_config.json`. Native MCP tools are called directly by their full function name without going through Code Mode at all.
 
-### Related Skills
+**Q: Can I add a new MCP server without restarting the AI client?**
 
-| Skill | Purpose | MCP Type |
-|-------|---------|----------|
-| **[system-spec-kit](../system-spec-kit/README.md)** | Context preservation | Native MCP |
-| **[mcp-figma](../mcp-figma/README.md)** | Figma design file retrieval and export | Code Mode MCP |
-| **[mcp-chrome-devtools](../mcp-chrome-devtools/README.md)** | Browser automation with CLI-first fallback to MCP | Hybrid (CLI + Code Mode MCP) |
+A: Yes. Use `register_manual` with the full UTCP call template to register a new server at runtime. The server becomes available immediately inside `call_tool_chain`. To remove it, call `deregister_manual` with the manual name. For persistent registration across sessions, add the entry to `.utcp_config.json` and restart.
 
-### Cross-Skill Workflow
+**Q: What happens if one tool fails in a multi-step workflow?**
 
-```typescript
-// All Code Mode - single execution for multi-tool workflow
-call_tool_chain({
-  code: `
-    // 1. Create task in ClickUp
-    const task = await clickup.clickup_create_task({
-      name: "Implement feature",
-      description: "Feature implementation task"
-    });
-
-    // 2. Update Webflow CMS with task reference
-    const cmsItem = await webflow.webflow_collections_items_create_item_live({
-      collection_id: "tasks-collection-id",
-      request: {
-        items: [{
-          fieldData: {
-            name: task.name,
-            taskUrl: task.url,
-            status: "In Queue"
-          }
-        }]
-      }
-    });
-
-    return { task, cmsItem };
-  `
-});
-
-// 3. Save context for future sessions (Native MCP - call directly)
-// Use spec_kit_memory_memory_save() to preserve decisions
-```
+A: Without error handling, an unhandled exception stops the entire `call_tool_chain` execution. Wrap critical sections in `try/catch` and return structured results with a `success` boolean. For workflows where partial success is acceptable, use `Promise.allSettled()` instead of `Promise.all()` so one failure does not cancel the rest.
 
 ---
 
-<!-- /ANCHOR:resources -->
+<!-- /ANCHOR:faq -->
 
-<!-- ANCHOR:quick-reference -->
-## 12. QUICK REFERENCE CARD
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
 
-### Essential Commands
+**This skill**
 
-```typescript
-// 1. Discover tools
-search_tools({ task_description: "task description", limit: 10 });
+| File | Purpose |
+|------|---------|
+| [SKILL.md](./SKILL.md) | AI agent routing instructions, smart router pseudocode, rules |
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full installation and configuration walkthrough |
 
-// 2. Get tool info
-tool_info({ tool_name: "manual.manual_tool" });
+**References**
 
-// 3. List all tools
-list_tools();
+| File | Purpose |
+|------|---------|
+| [references/naming_convention.md](references/naming_convention.md) | Complete naming pattern guide with troubleshooting |
+| [references/tool_reference.md](references/tool_reference.md) | Tool parameter reference |
+| [references/configuration.md](references/configuration.md) | .utcp_config.json and .env setup |
+| [references/tool_catalog.md](references/tool_catalog.md) | 250+ tools across 8 configured servers |
+| [references/workflows.md](references/workflows.md) | Five end-to-end workflow examples |
+| [references/architecture.md](references/architecture.md) | Token economics and system internals |
 
-// 4. Execute code
-call_tool_chain({
-  code: `
-    const result = await manual.manual_tool({...});
-    return result;
-  `,
-  timeout: 30000
-});
-```
+**Related skills**
 
-### Naming Pattern
+| Skill | Relationship |
+|-------|-------------|
+| [mcp-figma](../mcp-figma/SKILL.md) | Figma design file access via Code Mode |
+| [mcp-chrome-devtools](../mcp-chrome-devtools/SKILL.md) | Browser automation via Code Mode |
+| [system-spec-kit](../system-spec-kit/README.md) | Context preservation (native MCP, not via Code Mode) |
 
-```
-{manual_name}.{manual_name}_{tool_name}
-```
-
-Examples:
-- `webflow.webflow_sites_list({})`
-- `clickup.clickup_create_task({})`
-- `figma.figma_get_file({})`
-
-**Remember**: Code Mode is for **external MCP tools** (Webflow, Figma, ClickUp, etc.). Native MCP tools like Sequential Thinking, Spec Kit Memory and codex-specialized-subagents should be called directly, NOT through `call_tool_chain()`.
-
-<!-- /ANCHOR:quick-reference -->
+<!-- /ANCHOR:related-documents -->

@@ -82,6 +82,22 @@ Provide a single query-intelligence-focused specification that maps all 10 Phase
 | `tasks.md` | Rewrite | Phase 012 task tracker — one task per scenario, all pending |
 | `checklist.md` | Rewrite | Phase 012 Level 2 verification checklist — all items unchecked |
 | `implementation-summary.md` | Rewrite | Blank template awaiting execution completion |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 033 | Query complexity router (R15) | 12--query-intelligence/01-query-complexity-router.md |
+| 2 | 034 | Relative score fusion in shadow mode (R14/N1) [retired] | 12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md |
+| 3 | 035 | Channel min-representation (R2) | 12--query-intelligence/03-channel-min-representation.md |
+| 4 | 036 | Confidence-based result truncation (R15-ext) | 12--query-intelligence/04-confidence-based-result-truncation.md |
+| 5 | 037 | Dynamic token budget allocation (FUT-7) | 12--query-intelligence/05-dynamic-token-budget-allocation.md |
+| 6 | 038 | Query expansion (R12) | 12--query-intelligence/06-query-expansion.md |
+| 7 | 161 | LLM reformulation (SPECKIT_LLM_REFORMULATION) | 12--query-intelligence/07-llm-query-reformulation.md |
+| 8 | 162 | HyDE (SPECKIT_HYDE) | 12--query-intelligence/08-hyde-hypothetical-document-embeddings.md |
+| 9 | 163 | Query surrogates (SPECKIT_QUERY_SURROGATES) | 12--query-intelligence/09-index-time-query-surrogates.md |
+| 10 | 173 | Query decomposition (SPECKIT_QUERY_DECOMPOSITION) | 12--query-intelligence/10-query-decomposition.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

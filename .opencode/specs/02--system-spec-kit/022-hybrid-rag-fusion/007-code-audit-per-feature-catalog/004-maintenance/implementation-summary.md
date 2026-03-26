@@ -91,6 +91,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T039: mcp_server/api/indexing.ts (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `mcp_server/api/indexing.ts` (63 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as API surface |
+
+Public indexing runtime bootstrap and orchestration following ARCH-1 pattern. Exports: `initializeIndexingRuntime()` (initializes vector index, DB state, checkpoints, access tracker, hybrid search), `warmEmbeddingModel()`, `runMemoryIndexScan()` (with configurable `MemoryIndexScanArgs` interface), `closeIndexingRuntime()`. Provides minimal hooks for memory reindexing without widening the internal surface. No separate catalog entry needed — the exposed functions are already documented under their respective feature catalog categories (maintenance, indexing).
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

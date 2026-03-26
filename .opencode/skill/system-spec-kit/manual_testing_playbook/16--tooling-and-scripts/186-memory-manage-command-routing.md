@@ -33,6 +33,7 @@ Operators run the exact prompt and command sequence for `186` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Feature catalog: [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md)
 - Command file: [.opencode/command/memory/manage.md](../../../../command/memory/manage.md)
 
 ---

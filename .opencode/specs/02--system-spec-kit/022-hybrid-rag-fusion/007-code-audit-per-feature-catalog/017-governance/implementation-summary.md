@@ -93,6 +93,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T047: constitutional/gate-enforcement.md (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `constitutional/gate-enforcement.md` (107 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as constitutional memory |
+
+Constitutional memory defining mandatory gate enforcement rules. Importance tier: `constitutional` (always surfaces at top of search results). Documents 3 gates: Gate 1 (SOFT — understanding + context surfacing), Gate 2 (REQUIRED — skill routing), Gate 3 (HARD BLOCK — spec folder question before file modification). Contains cross-reference anchors, continuation validation protocol, and quick-reference decision table with trigger phrases. This is a governance artifact — its content aligns with the gate system documented in CLAUDE.md.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

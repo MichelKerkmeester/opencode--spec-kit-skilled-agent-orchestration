@@ -77,6 +77,22 @@ Execute all ten Phase 005 lifecycle scenarios, record verdicts and evidence, and
 | `tasks.md` | Rewrite | One task per scenario, all pending |
 | `checklist.md` | Rewrite | P0/P1 items, all unchecked |
 | `implementation-summary.md` | Rewrite | Blank — to be filled after execution |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 015 | Checkpoint creation (checkpoint_create) | 05--lifecycle/01-checkpoint-creation-checkpointcreate.md |
+| 2 | 016 | Checkpoint listing (checkpoint_list) | 05--lifecycle/02-checkpoint-listing-checkpointlist.md |
+| 3 | 017 | Checkpoint restore (checkpoint_restore) | 05--lifecycle/03-checkpoint-restore-checkpointrestore.md |
+| 4 | 018 | Checkpoint deletion (checkpoint_delete) | 05--lifecycle/04-checkpoint-deletion-checkpointdelete.md |
+| 5 | 097 | Async ingestion job lifecycle (P0-3) | 05--lifecycle/05-async-ingestion-job-lifecycle.md |
+| 6 | 100 | Async shutdown with deadline (server lifecycle) | — |
+| 7 | 114 | Path traversal validation (P0-4) | 05--lifecycle/05-async-ingestion-job-lifecycle.md |
+| 8 | 124 | Automatic archival lifecycle coverage | 05--lifecycle/07-automatic-archival-subsystem.md |
+| 9 | 134 | Startup pending-file recovery lifecycle coverage | 05--lifecycle/06-startup-pending-file-recovery.md |
+| 10 | 144 | Advisory ingest lifecycle forecast | 05--lifecycle/05-async-ingestion-job-lifecycle.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

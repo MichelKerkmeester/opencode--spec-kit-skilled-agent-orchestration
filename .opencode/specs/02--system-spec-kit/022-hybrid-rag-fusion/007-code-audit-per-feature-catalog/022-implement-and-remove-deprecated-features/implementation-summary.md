@@ -91,6 +91,20 @@ The packet was rebuilt around the Level 2 Spec Kit structure:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T036: Category 21 Stub Review (Catalog 21/01)
+
+| Field | Value |
+|-------|-------|
+| **Catalog Entry** | `21--implement-and-remove-deprecated-features/01-category-stub.md` |
+| **Verdict** | MATCH |
+| **Source Files** | `shared/embeddings.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/eval/shadow-scoring.ts`, `mcp_server/lib/scoring/composite-scoring.ts`, `mcp_server/lib/search/hybrid-search.ts` |
+
+Despite the filename `01-category-stub.md`, this is a fully developed catalog entry titled "Retired runtime shims and inert compatibility flags." It documents 4 retired runtime controls: (1) Embedding warmup flags (`SPECKIT_EAGER_WARMUP`, `SPECKIT_LAZY_LOADING`) — `shouldEagerWarmup()` always returns `false`, (2) Shadow scoring — `runShadowScoring()` always returns `null`, (3) Novelty boost — `calculateNoveltyBoost()` always returns `0`, (4) Adaptive fusion — graduated to default, no longer a toggle. All 5 referenced source files exist and implement the described inert behavior.
+
+---
+
 <!--
 Post-implementation documentation for packet normalization.
 Written in active voice per HVR rules.

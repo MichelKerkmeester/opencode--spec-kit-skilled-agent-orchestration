@@ -22,10 +22,11 @@ Unified specialist providing: (1) Document quality pipeline with structure enfor
 
 Enforce markdown structure, optimize content for AI assistants, validate quality through script-assisted AI analysis.
 
-**README Creation** - Use `readme_template.md` when:
+**README Creation** - Use `readme_template.md` + `readme_creation.md` when:
 - Creating new README for any folder or project
-- User requests "create a README", "add documentation"
+- User requests "create a README", "add documentation", "write a README"
 - Folder needs comprehensive documentation
+- Workflow: [readme_creation.md](./references/specific/readme_creation.md) | Template: [readme_template.md](./assets/documentation/readme_template.md)
 
 **Frontmatter Validation** - Use `frontmatter_templates.md` when:
 - Validating YAML frontmatter in any document
@@ -185,6 +186,7 @@ INTENT_SIGNALS = {
     "HVR": {"weight": 4, "keywords": ["human voice", "hvr", "voice rules", "banned words", "writing style"]},
     "PLAYBOOK": {"weight": 4, "keywords": ["playbook", "manual testing", "test scenarios", "manual test", "testing playbook"]},
     "FEATURE_CATALOG": {"weight": 4, "keywords": ["feature catalog", "feature inventory", "capability inventory", "catalog snippet"]},
+    "README_CREATION": {"weight": 3, "keywords": ["create readme", "readme creation", "write readme", "add documentation", "folder readme"]},
 }
 
 RESOURCE_MAP = {
@@ -197,12 +199,13 @@ RESOURCE_MAP = {
     "HVR": ["references/global/hvr_rules.md"],
     "PLAYBOOK": ["references/specific/manual_testing_playbook_creation.md", "assets/documentation/testing_playbook/manual_testing_playbook_template.md"],
     "FEATURE_CATALOG": ["references/specific/feature_catalog_creation.md", "assets/documentation/feature_catalog/feature_catalog_template.md"],
+    "README_CREATION": ["references/specific/readme_creation.md", "assets/documentation/readme_template.md"],
 }
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
     "ON_DEMAND_KEYWORDS": ["full standards", "all templates", "deep dive"],
-    "ON_DEMAND": ["assets/documentation/readme_template.md", "assets/documentation/frontmatter_templates.md"],
+    "ON_DEMAND": ["assets/documentation/frontmatter_templates.md"],
 }
 
 def _task_text(task) -> str:

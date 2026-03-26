@@ -83,6 +83,23 @@ Execute all 11 playbook scenarios for the retrieval enhancements category and re
 | `tasks.md` | Rewrite | One task per scenario, all pending |
 | `checklist.md` | Rewrite | P0 checklist items per scenario, all unchecked |
 | `implementation-summary.md` | Rewrite | Blank template, Not Started |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 055 | Dual-scope memory auto-surface (TM-05) | 15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md |
+| 2 | 056 | Constitutional memory as expert knowledge injection (PI-A4) | 15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md |
+| 3 | 057 | Spec folder hierarchy as retrieval structure (S4) | 15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md |
+| 4 | 058 | Lightweight consolidation (N3-lite) | 15--retrieval-enhancements/04-lightweight-consolidation.md |
+| 5 | 059 | Memory summary search channel (R8) | 15--retrieval-enhancements/05-memory-summary-search-channel.md |
+| 6 | 060 | Cross-document entity linking (S5) | 15--retrieval-enhancements/06-cross-document-entity-linking.md |
+| 7 | 077 | Tier-2 fallback channel forcing | 15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md |
+| 8 | 093 | Implemented: memory summary generation (R8) | 15--retrieval-enhancements/05-memory-summary-search-channel.md |
+| 9 | 094 | Implemented: cross-document entity linking (S5) | 15--retrieval-enhancements/06-cross-document-entity-linking.md |
+| 10 | 096 | Provenance-rich response envelopes (P0-2) | 15--retrieval-enhancements/08-provenance-rich-response-envelopes.md |
+| 11 | 145 | Contextual tree injection (P1-4) | 15--retrieval-enhancements/09-contextual-tree-injection.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

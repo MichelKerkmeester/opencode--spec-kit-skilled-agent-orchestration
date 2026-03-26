@@ -3,7 +3,7 @@ title: "Feature Catalog Comprehensive Audit & Remediation"
 status: "In Progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-23"
+updated: "2026-03-26"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
 
@@ -47,6 +47,21 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - Live filesystem count now reports **224** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
 - Live filesystem count now reports **233** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
 - Treat the earlier addendum counts above as historical milestones, not the current denominator.
+
+**Deep Research Addendum (2026-03-26)**
+
+12-agent deep research (7 GPT-5.4 high + 2 GPT-5.4 xhigh round 1; 5 GPT-5.4 high round 2; ~3.3M tokens consumed) produced a comprehensive cross-system gap analysis. Key findings:
+
+- **MCP tool surface (33 tools):** Fully cataloged. 4 tools PARTIAL (grouped docs), 1 phantom tool (`read_spec_section` documented but not in live registry).
+- **Feature catalog (222 snippets):** ~72 source-level gaps across 21 categories. Worst: cat 19 (11 gaps, 28 undocumented SPECKIT_* flags), cat 20 (0/1 accurate stub), cat 21 (0/1 accurate stub), cat 17 (2/4 invalid paths).
+- **13 BOTH_MISSING capabilities** (not in catalog AND not in code audit): entire `mcp_server/api/` public surface, ops/setup/kpi scripts, config contracts, constitutional gate-enforcement, phase-system node.
+- **Scripts ecosystem:** 223 files at 24.7% coverage (168 uncovered). 7 directories at 0%.
+- **137 total SPECKIT_* env vars** in source; 28 undocumented, 1 stale (`SPECKIT_RSF_FUSION`).
+- **Constitutional memory:** Fragmented across 20+ entries; no unified end-to-end catalog entry. Potential cache invalidation bug found.
+- **Shared memory:** `mcp_server/shared/` is a symlink to generic utils, `mcp_server/shared-spaces/` is docs-only; real code in 9 handler/lib files.
+- **ARCHITECTURE.md drift:** References nonexistent `searchMemories` and `api/scoring`.
+
+Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full details in `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep-research-round2-2026-03-26.md`.
 
 ---
 

@@ -94,6 +94,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T038: mcp_server/api/eval.ts (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `mcp_server/api/eval.ts` (31 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as API surface |
+
+Stable re-export surface for the evaluation framework following ARCH-1 pattern. Exports: ablation framework (`runAblation`, `storeAblationResults`, `formatAblationReport`, `toHybridSearchFlags`, `isAblationEnabled`, `ALL_CHANNELS`, types), BM25 baseline (`runBM25Baseline`, `recordBaselineMetrics`, types), ground truth and database (`loadGroundTruth`, `initEvalDb`). Consumed by `scripts/evals/run-ablation.ts` and the `eval_run_ablation` MCP tool handler. No separate catalog entry needed — evaluation features are documented under their respective catalog categories.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

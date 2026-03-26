@@ -26,6 +26,8 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ### Flag Reference
 
+> **Non-existent flags:** `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist in codex exec. Use `-c model_reasoning_effort="high"` for reasoning effort. Use `-o file.txt` to capture the last message to a file.
+
 | Flag                           | Purpose                                                                             |
 | ------------------------------ | ----------------------------------------------------------------------------------- |
 | `--model gpt-5.4`              | GPT-5.4: frontier reasoning, complex analysis, architecture, security              |

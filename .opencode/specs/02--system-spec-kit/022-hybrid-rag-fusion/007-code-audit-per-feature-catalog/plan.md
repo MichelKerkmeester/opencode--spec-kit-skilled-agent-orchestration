@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Code Audit per Feature Catalog"
-description: "Master plan for auditing the 218-feature live catalog across 19 categories of the Spec Kit Memory MCP server"
+description: "Master plan for auditing the 222-feature live catalog across 19 categories of the Spec Kit Memory MCP server (updated from 218 on 2026-03-26)"
 trigger_phrases:
   - "audit plan"
   - "feature catalog"
@@ -28,7 +28,7 @@ contextType: "general"
 | **Testing** | Manual code audit + cross-reference |
 
 ### Overview
-Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 218 live features. Each category is audited in its own child folder (`001-022`): category audit packets, two meta-phases for synthesis/remediation, and a downstream follow-up child for deprecated-feature implementation/removal.
+Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 222 live features. Each category is audited in its own child folder (`001-022`): category audit packets, two meta-phases for synthesis/remediation, and a downstream follow-up child for deprecated-feature implementation/removal.
 
 ### AI Execution Protocol
 
@@ -55,7 +55,7 @@ Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 1
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Feature catalog current (19 categories, 218 live features)
+- [x] Feature catalog current (19 categories, 222 live features)
 - [x] Source code accessible
 - [x] All 22 child phase folders created with Level 3 specs
 
@@ -121,6 +121,27 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 - [x] Compile cross-phase findings — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH
 - [x] Generate master audit report — implementation-summary.md in all 23 spec folders
 
+### Phase 5: Deep Research Remediation (2026-03-26) — NEW
+
+12-agent deep research (~3.3M tokens GPT-5.4 via Codex CLI) identified audit coverage gaps requiring follow-up:
+
+- **5A: Stale metadata** — Update feature count from 218 to 222 across spec/plan/phase docs
+- **5B: 5 unaudited snippets** — Audit session recovery (001), template compliance (016), mapping note (019/020), 2 stubs (020/021)
+- **5C: 13 BOTH_MISSING capabilities** — Source capabilities with no catalog entry AND no audit coverage. Assign to existing or new audit phases: `mcp_server/api/` surface (5 modules), ops/setup/kpi scripts, config contracts, constitutional/nodes assets
+- **5D: 2 AUDIT_MISSING items** — `scripts/spec/create.sh` and `validate.sh` (in catalog but not audited)
+- **5E: Stale phase remediation** — Reclassify phases 019/021/022 as mapping/meta; refresh overcounted summaries in 009/011
+
+**Approach:** Assign BOTH_MISSING capabilities to the nearest existing audit phase where possible (e.g., api/eval.ts → phase 007/009, api/search.ts → phase 001/015). Only create new audit phases if no existing phase has a natural fit. Coordinate with 006-feature-catalog T200-T255 for catalog entry creation.
+
+```
+Phase 4 (Synthesis) ──► Phase 5 (Deep Research Remediation)
+                          ├── 5A: Metadata fixes
+                          ├── 5B: 5 unaudited snippets
+                          ├── 5C: 13 BOTH_MISSING audits
+                          ├── 5D: 2 AUDIT_MISSING
+                          └── 5E: Stale phase refresh
+```
+
 ### Traceability Contract
 
 Phases `012-022` remain owned by `007-code-audit-per-feature-catalog`. Each child packet consumes a live catalog slice or synthesized upstream findings and returns a phase-local output back to the umbrella packet.
@@ -171,7 +192,13 @@ Phases `012-022` remain owned by `007-code-audit-per-feature-catalog`. Each chil
 ## L3: DEPENDENCY GRAPH
 
 ```
-Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-cutting) ──► Phase 4 (Synthesis) ──► Phase 5 (022 follow-up)
+Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-cutting) ──► Phase 4 (Synthesis)
+                                                                                        │
+                                                                                        ▼
+                                                                                  Phase 5 (Deep Research Remediation)
+                                                                                    ├── 5A-5B: Metadata + unaudited snippets
+                                                                                    ├── 5C-5D: BOTH_MISSING + AUDIT_MISSING
+                                                                                    └── 5E: Stale phase refresh
 ```
 
 ---
@@ -181,6 +208,7 @@ Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-
 | Milestone | Description | Success Criteria |
 |-----------|-------------|------------------|
 | M1 | All 23 spec folders created | Level 3 docs in every parent/child folder |
-| M2 | All 19 category audits truth-synced | 218 live features inventoried; any gaps explicitly tracked |
+| M2 | All 19 category audits truth-synced | 222 live features inventoried; any gaps explicitly tracked |
 | M3 | Cross-cutting analysis done | Decisions and remediations documented |
 | M4 | Final synthesis delivered | Master audit report complete, with child 022 traceability recorded |
+| M5 | Deep research remediation complete | 13 BOTH_MISSING capabilities audited, 5 unaudited snippets resolved, stale metadata fixed |

@@ -267,6 +267,8 @@ All non-interactive Codex CLI calls use the `exec` subcommand:
 codex exec "prompt" --model gpt-5.3-codex 2>&1
 ```
 
+> **Common flag mistakes:** `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist. Use `-c model_reasoning_effort="high"` for reasoning effort (or set it in `config.toml`). There is no quiet flag. Use `-o file.txt` to capture the last message to a file.
+
 | Flag / Option | Purpose |
 |---------------|---------|
 | `--model <id>` | Model selection — `gpt-5.4` or `gpt-5.3-codex` |

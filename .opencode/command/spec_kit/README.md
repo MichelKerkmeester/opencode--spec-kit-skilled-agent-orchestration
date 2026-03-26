@@ -22,18 +22,20 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. COMMANDS](#2-commands)
-- [3. STRUCTURE](#3-structure)
-- [4. WORKFLOW PROGRESSION](#4-workflow-progression)
-- [5. EXECUTION MODES](#5-execution-modes)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. RELATED DOCUMENTS](#8-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. COMMANDS](#2--commands)
+- [3. STRUCTURE](#3--structure)
+- [4. WORKFLOW PROGRESSION](#4--workflow-progression)
+- [5. EXECUTION MODES](#5--execution-modes)
+- [6. USAGE EXAMPLES](#6--usage-examples)
+- [7. FAQ](#7--faq)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. RELATED DOCUMENTS](#9--related-documents)
 
 ---
 
 <!-- /ANCHOR:table-of-contents -->
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
@@ -44,6 +46,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:commands -->
 ## 2. COMMANDS
 
@@ -68,17 +71,19 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `debug` | Existing spec folder with failing task |
 | `handover` | Existing spec folder with work history |
 | `resume` | Existing spec folder with saved state |
-| `phase` | Nothing (creates parent + phase child spec folders) |
+| `phase` | Nothing (creates parent and phase child spec folders) |
 | `complete` | Nothing (runs full lifecycle) |
 
 ---
 
 <!-- /ANCHOR:commands -->
+
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
 
-```
+```text
 spec_kit/
+├── README.md         # This file -- 8-command index and workflow guide
 ├── complete.md       # /spec_kit:complete - Full end-to-end workflow
 ├── debug.md          # /spec_kit:debug - Debug delegation
 ├── handover.md       # /spec_kit:handover - Session handover
@@ -110,12 +115,13 @@ spec_kit/
 ---
 
 <!-- /ANCHOR:structure -->
+
 <!-- ANCHOR:workflow-progression -->
 ## 4. WORKFLOW PROGRESSION
 
 The typical development lifecycle follows this progression:
 
-```
+```text
 deep-research (optional)
     |
     v
@@ -155,6 +161,7 @@ The `complete` command combines deep-research, plan, and implement into a single
 ---
 
 <!-- /ANCHOR:workflow-progression -->
+
 <!-- ANCHOR:execution-modes -->
 ## 5. EXECUTION MODES
 
@@ -178,6 +185,7 @@ Each mode maps to a YAML workflow file in `assets/`:
 ---
 
 <!-- /ANCHOR:execution-modes -->
+
 <!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
 
@@ -210,8 +218,32 @@ Each mode maps to a YAML workflow file in `assets/`:
 ---
 
 <!-- /ANCHOR:usage-examples -->
+
+<!-- ANCHOR:faq -->
+## 7. FAQ
+
+**Q: What is the difference between `/spec_kit:plan` and `/spec_kit:complete`?**
+
+`/spec_kit:plan` creates the spec folder and plan.md, then stops. It does not implement anything. `/spec_kit:complete` runs the full lifecycle: optional research, planning, and implementation in a single command. Use `plan` when you want to review and adjust the plan before committing to implementation. Use `complete` when you want to run the whole workflow without interruption.
+
+**Q: When should I use `/spec_kit:debug` instead of just fixing the issue directly?**
+
+Use `/spec_kit:debug` after 3 or more failed fix attempts on the same task. The debug command delegates to a specialized sub-agent with a fresh context, which avoids compounding errors from the current session's assumptions. It is also the right choice when the root cause is unclear and you need a structured diagnosis rather than another patch attempt.
+
+**Q: Can I resume a spec folder that was never explicitly handed over?**
+
+Yes. `/spec_kit:resume` loads memory context for the spec folder from the Spec Kit Memory system regardless of whether a handover document exists. If no saved state is found, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session improves the quality of what `resume` can recover, but it is not required.
+
+**Q: How does `/spec_kit:phase` relate to the parent spec folder?**
+
+`/spec_kit:phase` creates a parent spec folder and one or more child phase folders under it (e.g., `specs/015-feature/001-phase/`, `specs/015-feature/002-phase/`). Each phase is a self-contained spec folder with its own plan.md, tasks.md, and checklist.md. The parent folder holds the top-level spec.md and coordinates the phases. Use `phase` for work that is too large for a single spec folder or that has clearly sequential milestones.
+
+---
+
+<!-- /ANCHOR:faq -->
+
 <!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
+## 8. TROUBLESHOOTING
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -226,13 +258,15 @@ Each mode maps to a YAML workflow file in `assets/`:
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:related-documents -->
-## 8. RELATED DOCUMENTS
+## 9. RELATED DOCUMENTS
 
 | Document | Purpose |
 |----------|---------|
-| [Parent: OpenCode Commands](../README.txt) | Overview of all command groups |
+| [Parent: OpenCode Commands](../README.md) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Spec folder workflow, documentation levels, memory system |
 | [AGENTS.md](../../../AGENTS.md) | Gate system, agent routing, spec folder requirements |
-| [Memory Commands](../memory/README.txt) | Memory operations used by spec kit workflows |
+| [Memory Commands](../memory/README.md) | Memory operations used by spec kit workflows |
+
 <!-- /ANCHOR:related-documents -->

@@ -102,6 +102,30 @@ Provide a single Phase 010 specification that maps every graph-signal-activation
 | `checklist.md` | Create | Phase 010 QA verification checklist |
 | `implementation-summary.md` | Create | Phase 010 post-execution summary (blank until execution completes) |
 | `description.json` | Create | Phase 010 folder metadata |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 016 | Typed-weighted degree channel (R4) | 10--graph-signal-activation/01-typed-weighted-degree-channel.md |
+| 2 | 017 | Co-activation boost strength increase (A7) | 10--graph-signal-activation/02-co-activation-boost-strength-increase.md |
+| 3 | 018 | Edge density measurement | 10--graph-signal-activation/03-edge-density-measurement.md |
+| 4 | 019 | Weight history audit tracking | 10--graph-signal-activation/04-weight-history-audit-tracking.md |
+| 5 | 020 | Graph momentum scoring (N2a) | 10--graph-signal-activation/05-graph-momentum-scoring.md |
+| 6 | 021 | Causal depth signal (N2b) | 10--graph-signal-activation/06-causal-depth-signal.md |
+| 7 | 022 | Community detection (N2c) | 10--graph-signal-activation/07-community-detection.md |
+| 8 | 081 | Graph and cognitive memory fixes | 10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md |
+| 9 | 091 | Implemented: graph centrality and community detection (N2) | 10--graph-signal-activation/07-community-detection.md |
+| 10 | 120 | Unified graph rollback and explainability (Phase 3) | 10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md |
+| 11 | 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | 10--graph-signal-activation/13-graph-lifecycle-refresh.md |
+| 12 | 157 | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | 10--graph-signal-activation/14-llm-graph-backfill.md |
+| 13 | 158 | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) | 10--graph-signal-activation/15-graph-calibration-profiles.md |
+| 14 | 174 | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | 12--query-intelligence/11-graph-concept-routing.md |
+| 15 | 175 | Typed traversal (SPECKIT_TYPED_TRAVERSAL) | 10--graph-signal-activation/16-typed-traversal.md |
+| 16 | 193 | ANCHOR tags as graph nodes | 10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md |
+| 17 | 194 | Causal neighbor boost and injection | 10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md |
+| 18 | 195 | Temporal contiguity layer | 10--graph-signal-activation/11-temporal-contiguity-layer.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

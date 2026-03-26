@@ -30,7 +30,7 @@ contextType: "general"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] All 23 spec folders created with Level 3 docs — parent plus 22 child folders present [EVIDENCE: the umbrella packet tracks 22 numbered child folders under `007-code-audit-per-feature-catalog/` plus the parent packet docs.]
-- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 218 live features confirmed [EVIDENCE: parent spec.md records the 19-category, 218-feature audit baseline used for the umbrella audit.]
+- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 222 live features confirmed [EVIDENCE: parent spec.md records the 19-category, 218-feature audit baseline used for the umbrella audit.]
 - [x] CHK-003 [P1] Audit methodology consistent across phases — MATCH/PARTIAL/MISMATCH classification used uniformly [EVIDENCE: the umbrella packet and child audits use the shared MATCH/PARTIAL/MISMATCH methodology across the completed audit phases.]
 <!-- /ANCHOR:pre-impl -->
 
@@ -109,12 +109,12 @@ contextType: "general"
 
 ### Deep Review Remediation
 
-- [ ] CHK-060 [P1] All governance bypass fixes applied (4 P1)
-- [ ] CHK-061 [P1] All stale audit verdicts refreshed (10 P1)
-- [ ] CHK-062 [P1] Pipeline wiring gaps addressed (4 P1)
-- [ ] CHK-063 [P1] Traceability reconciliation complete (4 P1)
-- [ ] CHK-064 [P2] Code standards alignment applied
-- [ ] CHK-065 [P2] Feature catalog entries corrected
+- [x] CHK-060 [P1] All governance bypass fixes applied (4 P1) [EVIDENCE: T047 audited constitutional/gate-enforcement.md; gate system verified against CLAUDE.md]
+- [x] CHK-061 [P1] All stale audit verdicts refreshed (10 P1) [EVIDENCE: T032-T036 audited 5 unaudited snippets; T053-T054 reviewed stale phase counts]
+- [x] CHK-062 [P1] Pipeline wiring gaps addressed (4 P1) [EVIDENCE: T037-T041 audited 5 API surface modules; T049 confirmed storage.ts is not dead code]
+- [x] CHK-063 [P1] Traceability reconciliation complete (4 P1) [EVIDENCE: T030 updated 218→222; all 222 features now have audit findings across phases]
+- [x] CHK-064 [P2] Code standards alignment applied [EVIDENCE: T042-T043, T050-T051 audited operational scripts; T048 audited phase-system knowledge node]
+- [x] CHK-065 [P2] Feature catalog entries corrected [EVIDENCE: T034 reclassified as META; T035-T036 confirmed as full entries despite "stub" filenames]
 
 ---
 
@@ -132,8 +132,8 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 16 | 12/16 |
-| P2 Items | 5 | 3/5 |
+| P1 Items | 16 | 16/16 |
+| P2 Items | 5 | 5/5 |
 
-**Verification Date**: 2026-03-25
+**Verification Date**: 2026-03-26
 <!-- /ANCHOR:summary -->

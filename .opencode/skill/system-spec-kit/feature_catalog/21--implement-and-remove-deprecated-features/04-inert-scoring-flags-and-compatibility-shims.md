@@ -1,0 +1,50 @@
+---
+title: "Inert scoring flags and compatibility shims"
+description: "Documents retired scoring-flag behavior and shim layers that remain in the codebase for compatibility, observability, and legacy imports."
+---
+
+# Inert scoring flags and compatibility shims
+
+## 1. OVERVIEW
+
+This entry documents scoring-era flag surfaces and shim modules that remain visible after remediation work simplified the live runtime.
+
+The requested source files show two related cleanup patterns. `mcp_server/lib/scoring/composite-scoring.ts` keeps compatibility exports and legacy scoring entry points while explicitly disabling novelty boost as a live scoring control. `mcp_server/lib/search/graph-flags.ts` keeps older graph-flag imports working by forwarding them into newer rollout resolution logic instead of preserving a separate legacy implementation.
+
+---
+
+## 2. CURRENT REALITY
+
+`mcp_server/lib/scoring/composite-scoring.ts` explicitly marks novelty boost as a compatibility-only surface. The `NOVELTY_BOOST_*` constants are retained as test-only exports, `calculateNoveltyBoost()` always returns `0`, and the file states that `SPECKIT_NOVELTY_BOOST` is inert. Post-processing telemetry reinforces that retirement posture by always logging `noveltyBoostApplied: false` and `noveltyBoostValue: 0`, so the production scoring path no longer has a novelty branch to re-enable through configuration.
+
+The same scoring module also preserves older composite-scoring APIs for backward compatibility. `DEFAULT_WEIGHTS`, `calculateCompositeScore()`, `applyCompositeScoring()`, and `getScoreBreakdown()` still expose the `6-factor-legacy` model, while the newer five-factor path is available through the parallel APIs and the `use_five_factor_model` option. In practice, this file now carries both a current scoring model and a compatibility model, but only the novelty flag surface is explicitly retired as inert.
+
+`mcp_server/lib/search/graph-flags.ts` is a shim layer rather than an independent feature-flag implementation. The file labels itself as a legacy compatibility shim retained for test/runtime imports. `getGraphWalkRolloutState()` forwards directly to `resolveGraphWalkRolloutState()`, and the trace/runtime helpers derive their answers from that forwarded state instead of consulting separate legacy flags. That leaves `isGraphUnifiedEnabled()` as the only direct graph flag gate in this module, while the graph-walk helpers mainly preserve older import paths and naming.
+
+Taken together, these files show the post-remediation pattern for deprecated controls: keep names, exports, and forwarding helpers where compatibility still matters, but remove or centralize the behavior so legacy flags and wrapper modules no longer define an alternate live path.
+
+---
+
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `mcp_server/lib/scoring/composite-scoring.ts` | Scoring pipeline | Retains backward-compatible scoring exports and legacy six-factor entry points while making novelty boost permanently inert |
+| `mcp_server/lib/search/graph-flags.ts` | Search rollout compatibility | Preserves legacy graph-flag imports by forwarding graph-walk state and helper checks into newer rollout logic |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `Deep research remediation 2026-03-26` | Source spec | Research packet identifying inert scoring flag behavior and compatibility-shim surfaces that should be represented in the catalog |
+
+---
+
+## 4. SOURCE METADATA
+
+- Group: Implement and Remove Deprecated Features
+- Canonical catalog source: `FEATURE_CATALOG.md`
+- Feature file path: `21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md`
+- Source spec: Deep research remediation 2026-03-26

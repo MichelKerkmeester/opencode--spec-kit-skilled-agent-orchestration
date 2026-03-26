@@ -72,6 +72,26 @@ Execute all 16 playbook scenarios, record pass/fail for each with evidence, and 
 | `checklist.md` | Modify | Mark items as each scenario completes |
 | `tasks.md` | Modify | Mark tasks complete as scenarios pass |
 | `implementation-summary.md` | Modify | Fill in after all scenarios executed |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 005 | Evaluation database and schema (R13-S1) | 09--evaluation-and-measurement/01-evaluation-database-and-schema.md |
+| 2 | 006 | Core metric computation (R13-S1) | 09--evaluation-and-measurement/02-core-metric-computation.md |
+| 3 | 007 | Observer effect mitigation (D4) | 09--evaluation-and-measurement/03-observer-effect-mitigation.md |
+| 4 | 009 | Quality proxy formula (B7) | 09--evaluation-and-measurement/05-quality-proxy-formula.md |
+| 5 | 010 | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | 09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md |
+| 6 | 011 | BM25-only baseline (G-NEW-1) | 09--evaluation-and-measurement/07-bm25-only-baseline.md |
+| 7 | 012 | Agent consumption instrumentation (G-NEW-2) | 09--evaluation-and-measurement/08-agent-consumption-instrumentation.md |
+| 8 | 013 | Scoring observability (T010) | 09--evaluation-and-measurement/09-scoring-observability.md |
+| 9 | 014 | Full reporting and ablation study framework (R13-S3) | 09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md |
+| 10 | 072 | Test quality improvements | 09--evaluation-and-measurement/12-test-quality-improvements.md |
+| 11 | 082 | Evaluation and housekeeping fixes | 09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md |
+| 12 | 088 | Cross-AI validation fixes (Tier 4) | 09--evaluation-and-measurement/14-cross-ai-validation-fixes.md |
+| 13 | 090 | INT8 quantization evaluation (R5) | 09--evaluation-and-measurement/16-int8-quantization-evaluation.md |
+| 14 | 126 | Memory roadmap baseline snapshot | 09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

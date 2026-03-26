@@ -33,6 +33,7 @@ Operators run the exact prompt and command sequence for `176` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Feature catalog: [13--memory-quality-and-indexing/22-implicit-feedback-log.md](../../feature_catalog/13--memory-quality-and-indexing/22-implicit-feedback-log.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/feedback/feedback-ledger.ts`
 

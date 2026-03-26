@@ -182,11 +182,11 @@ Private and shared memories live in the same database. The `memory_index` table 
 
 ```text
 ┌─────────────────────────────────────────────────────┐
-│                  context-index.sqlite                │
+│                  context-index.sqlite               │
 │                                                     │
 │  ┌──────────────┐    ┌────────────────────────────┐ │
-│  │  memory_index │    │  shared_spaces             │ │
-│  │              │    │  shared_space_members       │ │
+│  │ memory_index │    │  shared_spaces             │ │
+│  │              │    │  shared_space_members      │ │
 │  │  (private +  │◄───│  shared_space_conflicts     │ │
 │  │   shared)    │    │                            │ │
 │  └──────────────┘    └────────────────────────────┘ │

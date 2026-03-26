@@ -90,6 +90,35 @@ Execute all 18 playbook scenarios for the pipeline architecture category and rec
 | `tasks.md` | Rewrite | One task per scenario, all pending |
 | `checklist.md` | Rewrite | P0 checklist items per scenario, all unchecked |
 | `implementation-summary.md` | Rewrite | Blank template, Not Started |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 049 | 4-stage pipeline refactor (R6) | 14--pipeline-architecture/01-4-stage-pipeline-refactor.md |
+| 2 | 050 | MPAB chunk-to-memory aggregation (R1) | 14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md |
+| 3 | 051 | Chunk ordering preservation (B2) | 14--pipeline-architecture/03-chunk-ordering-preservation.md |
+| 4 | 052 | Template anchor optimization (S2) | 14--pipeline-architecture/04-template-anchor-optimization.md |
+| 5 | 053 | Validation signals as retrieval metadata (S3) | 14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md |
+| 6 | 054 | Learned relevance feedback (R11) | 14--pipeline-architecture/06-learned-relevance-feedback.md |
+| 7 | 067 | Search pipeline safety | 14--pipeline-architecture/07-search-pipeline-safety.md |
+| 8 | 071 | Performance improvements | 14--pipeline-architecture/08-performance-improvements.md |
+| 9 | 076 | Activation window persistence | 14--pipeline-architecture/09-activation-window-persistence.md |
+| 10 | 078 | Legacy V1 pipeline removal | 14--pipeline-architecture/10-legacy-v1-pipeline-removal.md |
+| 11 | 080 | Pipeline and mutation hardening | 14--pipeline-architecture/11-pipeline-and-mutation-hardening.md |
+| 12 | 087 | DB_PATH extraction and import standardization | 14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md |
+| 13 | 095 | Strict Zod schema validation (P0-1) | 14--pipeline-architecture/13-strict-zod-schema-validation.md |
+| 14 | 112 | Cross-process DB hot rebinding | 14--pipeline-architecture/17-cross-process-db-hot-rebinding.md |
+| 15 | 115 | Transaction atomicity on rename failure (P0-5) | 14--pipeline-architecture/21-atomic-pending-file-recovery.md |
+| 16 | 129 | Lineage state active projection and asOf resolution | 14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md |
+| 17 | 130 | Lineage backfill rollback drill | 14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md |
+| 18 | 146 | Dynamic server instructions (P1-6) | 14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md |
+| 19 | 201 | Warm server / daemon mode | 14--pipeline-architecture/15-warm-server-daemon-mode.md |
+| 20 | 202 | Backend storage adapter abstraction | 14--pipeline-architecture/16-backend-storage-adapter-abstraction.md |
+| 21 | 203 | Atomic write-then-index API | 14--pipeline-architecture/18-atomic-write-then-index-api.md |
+| 22 | 204 | Embedding retry orchestrator | 14--pipeline-architecture/19-embedding-retry-orchestrator.md |
+| 23 | 205 | 7-layer tool architecture metadata | 14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

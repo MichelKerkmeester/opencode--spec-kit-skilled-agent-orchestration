@@ -101,6 +101,30 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T032: Session Recovery via /memory:continue (Catalog 01/11)
+
+| Field | Value |
+|-------|-------|
+| **Catalog Entry** | `01--retrieval/11-session-recovery-memory-continue.md` |
+| **Verdict** | MATCH |
+| **Source Files** | `command/memory/continue.md`, `mcp_server/handlers/memory-context.ts`, `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-crud-list.ts`, `mcp_server/lib/session/session-manager.ts` |
+
+The catalog entry documents `/memory:continue` as a session recovery command exposing 4 shared MCP tools (`memory_context` in resume mode, `memory_search`, `memory_list`, `memory_stats`) with auto/manual recovery modes and a 5-priority fallback chain. All referenced source files exist and implement the described behavior. The resume mode in `memory-context.ts` uses anchors `["state", "next-steps", "summary", "blockers"]`, `limit=5`, 1200-token budget, `minState=WARM` as documented.
+
+#### T040: mcp_server/api/search.ts (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `mcp_server/api/search.ts` (21 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as API surface |
+
+Stable re-export surface for search functionality following ARCH-1 architecture pattern. Exports: `initHybridSearch` (aliased as `init`), `hybridSearchEnhanced`, `fts5Bm25Search`, `isFts5Available`, `vectorIndex` namespace. Prevents direct coupling to `lib/search/` internals. No catalog entry needed — this is an architectural facade, not a user-facing feature.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

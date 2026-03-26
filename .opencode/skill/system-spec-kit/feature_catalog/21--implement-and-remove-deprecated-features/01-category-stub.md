@@ -1,19 +1,55 @@
 ---
-title: "Implement and remove deprecated features (audit phase mapping)"
-description: "Audit phase 022-implement-and-remove-deprecated-features mapping — features are covered by implementation/deprecation closure records in other categories."
+title: "Retired runtime shims and inert compatibility flags"
+description: "Current-state reference for compatibility flags and runtime shims that remain visible in code but no longer change live behavior."
 ---
 
-# Implement and remove deprecated features (audit phase mapping)
+# Retired runtime shims and inert compatibility flags
 
 ## 1. OVERVIEW
 
-This folder maps audit phase `022-implement-and-remove-deprecated-features`. No standalone feature entries are needed here because implementation and deprecation features are covered by closure records:
+This entry documents a narrow compatibility surface that still exists in the codebase after remediation work retired older runtime toggles.
 
-- [16--tooling-and-scripts/04-dead-code-removal.md](../16--tooling-and-scripts/04-dead-code-removal.md)
-- [17--governance/02-feature-flag-sunset-audit.md](../17--governance/02-feature-flag-sunset-audit.md)
+The current system keeps these names around for operator messaging, documentation continuity, test compatibility, or pure analysis helpers, but they no longer enable alternate live behavior. The result is a cleaner runtime: old flags may still be mentioned, logged, or exported, yet the production path now hard-selects the post-remediation behavior.
 
 ---
 
 ## 2. CURRENT REALITY
 
-See the master catalog's **Audit Phase Coverage Notes** table for the full mapping.
+The embedding warmup compatibility flags are inert. In `shared/embeddings.ts`, `shouldEagerWarmup()` always returns `false`, so `SPECKIT_EAGER_WARMUP` and `SPECKIT_LAZY_LOADING` no longer influence provider initialization. `context-server.ts` still carries the startup branch and emits a deprecation warning naming both flags, but the live startup path is the lazy-loading branch because the warmup predicate never flips.
+
+Shadow scoring is retired as a runtime path, not as a type or analysis vocabulary. In `mcp_server/lib/eval/shadow-scoring.ts`, `runShadowScoring()` always returns `null` and `logShadowComparison()` always returns `false`, explicitly treating `SPECKIT_SHADOW_SCORING` as a compatibility-only flag. Pure helpers such as comparison and stats access remain available so historical data or offline analysis can still be described without reopening the write path.
+
+Novelty boost is also permanently disabled. `mcp_server/lib/scoring/composite-scoring.ts` preserves exported novelty constants for compatibility and observability tests, but `calculateNoveltyBoost()` always returns `0`, and downstream telemetry records novelty as not applied. This means `SPECKIT_NOVELTY_BOOST` survives only as inert documentation baggage rather than a live ranking control.
+
+Adaptive fusion has graduated from a toggle to the default implementation path. In `mcp_server/lib/search/hybrid-search.ts`, the search pipeline always calls `hybridAdaptiveFuse()` when constructing vector-plus-keyword fusion, then optionally short-circuits to those results when the active channel set matches the modeled sources. The old `SPECKIT_ADAPTIVE_FUSION` switch is no longer consulted, so adaptive fusion is no longer a rollout flag; it is simply the live fusion logic.
+
+Taken together, these shims show the post-remediation pattern for deprecated runtime controls: preserve names only where compatibility, operator visibility, or test stability still matters, but remove their ability to steer production behavior.
+
+---
+
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `shared/embeddings.ts` | Shared runtime | Hard-disables eager warmup by making `shouldEagerWarmup()` always return `false` and treating warmup flags as inert. |
+| `mcp_server/context-server.ts` | MCP startup orchestration | Logs `SPECKIT_EAGER_WARMUP` and `SPECKIT_LAZY_LOADING` as deprecated compatibility flags while following the lazy-loading path. |
+| `mcp_server/lib/eval/shadow-scoring.ts` | Evaluation runtime | Retires `SPECKIT_SHADOW_SCORING` by returning `null`/`false` from the public runtime and persistence entry points. |
+| `mcp_server/lib/scoring/composite-scoring.ts` | Scoring pipeline | Keeps novelty exports for compatibility, but makes `SPECKIT_NOVELTY_BOOST` inert by always returning `0`. |
+| `mcp_server/lib/search/hybrid-search.ts` | Retrieval pipeline | Always invokes `hybridAdaptiveFuse()` without consulting `SPECKIT_ADAPTIVE_FUSION`, making adaptive fusion part of the default live path. |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `Deep research remediation 2026-03-26` | Source spec | Research packet identifying retired runtime shims and inert compatibility flags that should be reflected in the catalog. |
+
+---
+
+## 4. SOURCE METADATA
+
+- Group: Implement and Remove Deprecated Features
+- Canonical catalog source: `FEATURE_CATALOG.md`
+- Feature file path: `21--implement-and-remove-deprecated-features/01-category-stub.md`
+- Source spec: `Deep research remediation 2026-03-26`

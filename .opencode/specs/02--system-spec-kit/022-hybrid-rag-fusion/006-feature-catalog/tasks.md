@@ -137,6 +137,91 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] T189 Verification: E2 — playbook file-to-index consistency (200 files, 0 NEW- markers)
 - [x] T190 Verification: E3 — spot-check targeted files for marker remnants (all clean)
 
+**Phase H: Deep Research Remediation (2026-03-26) — NEW**
+
+> Source: 12-agent deep research (7 round 1 + 5 round 2, ~3.3M tokens GPT-5.4 via Codex CLI).
+> Full findings: `scratch/deep-research-gap-report-2026-03-26.md`, `scratch/deep-research-round2-2026-03-26.md`.
+
+### H1: P0 Critical — BOTH_MISSING Capabilities (13 items)
+
+- [ ] T200 [P] Create catalog entry: MCP Server Public API Barrel (`mcp_server/api/index.ts`) — 20+ exports, 8+ callers
+- [ ] T201 [P] Create catalog entry: Evaluation API Surface (`mcp_server/api/eval.ts`) — ablation, BM25, ground-truth
+- [ ] T202 [P] Create catalog entry: Indexing Runtime Bootstrap API (`mcp_server/api/indexing.ts`) — warmup, scan
+- [ ] T203 [P] Create catalog entry: Search API Surface (`mcp_server/api/search.ts`) — hybrid-search, FTS5, vector-index
+- [ ] T204 [P] Create catalog entry: Embeddings and Retry API (`mcp_server/api/providers.ts`) — embedding gen, retry-manager
+- [ ] T205 [P] Create catalog entry: Completion-verification workflow (`scripts/spec/check-completion.sh`)
+- [ ] T206 [P] Create catalog entry: Ops self-healing runbooks (`scripts/ops/runbook.sh` + 4 heal scripts)
+- [ ] T207 [P] Create catalog entry: Eval runner CLI (`scripts/evals/run-ablation.ts`)
+- [ ] T208 [P] Create catalog entry: Runtime config contract (`config/config.jsonc` — 11 toggles)
+- [ ] T209 [P] Create catalog entry: Filter config contract (`config/filters.jsonc` — 4 toggles)
+- [ ] T210 [P] Create catalog entry: Constitutional gate-enforcement rule pack (`constitutional/gate-enforcement.md`)
+- [ ] T211 [P] Create catalog entry: Phase-system knowledge node (`nodes/phase-system.md`)
+- [ ] T212 Note or remove `api/storage.ts` (DEAD_CODE — only used internally by api/indexing.ts)
+
+### H2: P0 Critical — Undocumented Feature Flags (28 flags)
+
+- [ ] T213 Add 5 HIGH-severity SPECKIT_* flags to cat 19: `SPECKIT_ADAPTIVE_FUSION`, `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID`, `SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID`, `SPECKIT_SKIP_VALIDATION`, `SPECKIT_VALIDATION`
+- [ ] T214 Add 18 MEDIUM-severity SPECKIT_* flags to cat 19 (graph calibration, adaptive mode, search params, script controls)
+- [ ] T215 Add 5 LOW-severity SPECKIT_* flags to cat 19 (`HYDE_LOG`, `JSON`, `RESULT_EXPLAIN_DEBUG`, `VALIDATE_LINKS`, `VERBOSE`)
+- [ ] T216 Remove stale `SPECKIT_RSF_FUSION` from cat 19/01
+
+### H3: P0 Critical — Unified Subsystem Entries
+
+- [ ] T217 Create unified catalog entry: Constitutional memory end-to-end lifecycle (10 source files: learn.md → memory-save.ts → memory-parser.ts → create-record.ts → memory-surface.ts → stage1-candidate-gen.ts → vector-index-queries.ts → retrieval-directives.ts → vector-index-store.ts → vector-index-schema.ts)
+- [ ] T218 Create unified catalog entry: Shared memory end-to-end architecture and source map (9 source files: handlers/shared-memory.ts → lib/collab/shared-spaces.ts → vector-index-schema.ts → memory-save.ts → scope-governance.ts → memory-search.ts → stage1-candidate-gen.ts → lifecycle-tools.ts → tool-input-schemas.ts)
+
+### H4: P0 Critical — Fixes and Drift
+
+- [ ] T219 Fix ARCHITECTURE.md:291 (references nonexistent `searchMemories`)
+- [ ] T220 Fix ARCHITECTURE.md:326 (references nonexistent `api/scoring`)
+- [ ] T221 Mark `read_spec_section` phantom tool as planned/deferred in `01/07` and `FEATURE_CATALOG.md`
+
+### H5: P1 Required — Category Snippet Fixes
+
+- [ ] T222 Fix cat 17/01: add `rollout-policy.ts`, `capability-flags.ts` source paths
+- [ ] T223 Replace or relocate cat 17/02: stale sunset audit → move to cat 21 or rewrite citing live source
+- [ ] T224 Fix cat 17/03: replace deleted `retention.ts` with `scope-governance.ts` + 5 other correct paths
+- [ ] T225 Fix cat 19/01: add `SPECKIT_MEMORY_ADAPTIVE_MODE` row + `SPECKIT_ADAPTIVE_FUSION` drift note
+- [ ] T226 Fix cat 19/05: add `SPECKIT_RERANKER_MODEL` + `SPECKIT_RERANKER_TIMEOUT_MS` rows
+- [ ] T227 Fix cat 19/06: add `SPECKIT_RESULT_EXPLAIN_DEBUG` + `SPECKIT_HYDE_LOG` rows
+
+### H6: P1 Required — Replace Stubs
+
+- [ ] T228 Replace cat 20/01 stub with real remediation content (preflight.ts, v-rule-bridge.ts, quality-loop.ts, save-quality-gate.ts, memory-save.ts, checkpoints.ts, memory-crud-health.ts)
+- [ ] T229 Create cat 20/02: memory-health-auto-repair (FTS rebuild, trigger-cache refresh, orphan cleanup)
+- [ ] T230 Create cat 20/03: feedback-driven-revalidation (memory_validate feedback, adaptive signals, auto-promotion)
+- [ ] T231 Replace cat 21/01 stub with retired runtime shims (embeddings.ts, context-server.ts, shadow-scoring.ts, composite-scoring.ts, hybrid-search.ts)
+- [ ] T232 Create cat 21/02: lazy-loading-migration (embeddings.ts, context-server.ts, cli.ts)
+- [ ] T233 Create cat 21/03: shadow-scoring-retirement (shadow-scoring.ts, tests)
+- [ ] T234 Create cat 21/05: adaptive-fusion-drift (hybrid-search.ts, INSTALL_GUIDE.md, integration tests)
+
+### H7: P1 Required — Scripts Ecosystem (12 new entries)
+
+- [ ] T235 [P] Create cat 16 entry: Spec Lifecycle Automation (10 scripts in spec/)
+- [ ] T236 [P] Create cat 16 entry: Spec Validation Rule Engine (validate.sh + 19 rules/*.sh)
+- [ ] T237 [P] Create cat 16 entry: Memory Maintenance and Migration CLIs (7 scripts in memory/)
+- [ ] T238 [P] Create cat 16 entry: Core Workflow Infrastructure (13 scripts in core/)
+- [ ] T239 [P] Create cat 16 entry: Session Extraction and Enrichment (4 scripts in extractors/)
+- [ ] T240 [P] Create cat 16 entry: Spec-Folder Detection and Description (5 scripts in spec-folder/)
+- [ ] T241 [P] Create cat 16 entry: Ops Self-Healing Runbooks (6 scripts in ops/)
+- [ ] T242 [P] Create cat 16 entry: Setup, Native Module Health, MCP Installation (5 scripts in setup/)
+- [ ] T243 [P] Create cat 16 entry: Template Composition System (compose.sh + template-utils.sh)
+- [ ] T244 [P] Create cat 16 entry: Evaluation, Benchmark, Import-Policy Tooling (12 scripts in evals/)
+- [ ] T245 [P] Create cat 16 entry: Shared Script Libraries and Utilities (lib/, utils/, config/ barrels)
+- [ ] T246 [P] Create cat 16 entry: Memory Quality KPI Reporting (quality-kpi.sh)
+
+### H8: P1 Required — Misc
+
+- [ ] T247 Create cat 17/05: shared-memory-admin-identity-governance (shared-memory.ts, tool-schemas.ts, tool-input-schemas.ts)
+- [ ] T248 Create cat 17/06: governance-audit-review-and-rollout-metrics (scope-governance.ts, shared-spaces.ts, api/index.ts)
+- [ ] T249 Add cross-link to cat 17/04 for admin-identity governance
+- [ ] T250 Update shared-spaces README with "Implementation lives in handler/lib files, not this directory"
+- [ ] T251 Reclassify cat 19/08 as meta note (exclude from feature-accuracy scoring)
+- [ ] T252 Create cat 21/04: inert-scoring-flags (composite-scoring.ts, graph-flags.ts) [P2]
+- [ ] T253 Update umbrella spec feature count 218 → 222
+- [ ] T254 Investigate constitutional cache invalidation mismatch (vector-index-store.ts folder-specific clears vs folder:arch|noarch cache keys) [P2]
+- [ ] T255 Document config.jsonc 11 toggles and filters.jsonc 4 toggles in cat 19 or new entry
+
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -205,6 +290,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] Phase E addendum completed for 14 omitted current snippets
 - [x] No `[B]` blocked tasks remaining
 - [ ] Phase F remediation executed (separate workflow)
+- [ ] Phase H deep research remediation tasks addressed (T200-T255)
 <!-- /ANCHOR:completion -->
 
 ---

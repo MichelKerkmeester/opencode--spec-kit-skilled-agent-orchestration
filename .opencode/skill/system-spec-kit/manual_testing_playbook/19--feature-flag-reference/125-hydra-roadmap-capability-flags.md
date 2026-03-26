@@ -51,6 +51,8 @@ Operators run the exact prompt and command sequence for `125` and confirm the ex
 
 ## 4. SOURCE FILES
 
+- Feature catalog: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
+
 ### Playbook Sources
 
 | File | Role |

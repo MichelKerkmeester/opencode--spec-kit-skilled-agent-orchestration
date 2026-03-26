@@ -80,6 +80,15 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 | `tasks.md` | Rewrite | One task per scenario, all pending |
 | `checklist.md` | Rewrite | P0/P1 items, all unchecked |
 | `implementation-summary.md` | Rewrite | Blank — to be filled after execution |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 011 | Memory browser (memory_list) | 03--discovery/01-memory-browser-memorylist.md |
+| 2 | 012 | System statistics (memory_stats) | 03--discovery/02-system-statistics-memorystats.md |
+| 3 | 013 | Health diagnostics (memory_health) | 03--discovery/03-health-diagnostics-memoryhealth.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

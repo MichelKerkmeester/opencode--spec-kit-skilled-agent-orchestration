@@ -19,9 +19,21 @@ AI-generated text carries tells: em dashes everywhere, three-item lists, hedging
 Apply to all AI-generated documentation: READMEs, implementation summaries, decision records, install guides and spec folder docs.
 
 - Read the voice directives (Section 2) to understand the target voice
-- Use word lists (Sections 5-7) as reference during writing
-- Run the pre-publish checklist (Section 8) before finalizing
+- Use word lists (Sections 6-8) as reference during writing
+- Run the pre-publish checklist (Section 9) before finalizing
 - **Scoring:** Hard blockers cost -5 points. Soft deductions cost -2 or -1. Clean document starts at 100.
+
+### Scoring Weights
+
+| Category | Weight | Sections |
+|----------|--------|----------|
+| **Punctuation** | 15% | Section 3 |
+| **Structure** | 25% | Section 4 (structural patterns, copula avoidance, synonym cycling) |
+| **Content** | 25% | Section 4 (metaphors, generalisations, significance inflation, conclusions) |
+| **Words** | 20% | Sections 6, 7 |
+| **Voice** | 15% | Section 2 |
+
+A document starts at 100 points. Hard blockers (-5 each) and soft deductions (-2 or -1 each) reduce the score. Below 70 is a failing grade. Below 85 needs revision before publishing.
 
 ---
 
@@ -94,6 +106,8 @@ voice_directives:
 | **Oxford Comma Ban** | , and | NEVER use | Drop the comma before "and"/"or" |
 | **Asterisk Emphasis** | * | NEVER in output | Natural word weight (OK in Markdown source) |
 | **Ellipsis** | ... | Max 1 per piece | Trailing thought only, never dramatic pauses |
+| **Quotation Marks** | " " | Straight quotes only | Never curly quotes (" ") |
+| **Emoji** | 🎯 | Max 1 per piece | Must add clarity or tone, not decoration |
 
 **Examples:**
 ```
@@ -126,6 +140,10 @@ RIGHT: "A complete platform."
 
 AI defaults to exactly three items. Use 2, 4 or 5 instead. If you naturally have 3, cut one or add a fourth.
 
+### Triple-Header Pattern Fix
+
+AI tends to use exactly three H3 subsections under each H2 section. Vary the count. Use 2, 4 or 5 subsections based on actual content needs. If you genuinely have three subsections, verify each one carries its weight.
+
 ### Setup Language Removal
 
 Cut these filler phrases that signal what's coming instead of stating it:
@@ -139,6 +157,18 @@ Cut these filler phrases that signal what's coming instead of stating it:
 - "As we all know" / "It goes without saying"
 - "First and foremost" / "Last but not least"
 - "With that in mind" / "On that note" / "That said"
+- "In simple terms" / "Simply put" / "Put simply"
+
+### Analogy Overuse Fix
+
+Analogies help readers grasp technical concepts. Overusing them is an AI tell.
+
+| Rule | Limit | Example |
+|------|-------|---------|
+| **One analogy per concept** | 1 max | Do not stack "like a librarian" and "like a filing cabinet" for the same feature |
+| **"Think of it as/like"** | 2 per document max | Third occurrence signals AI pattern |
+| **Placement** | After the technical statement | State the fact first, then the analogy. Never lead with the analogy. |
+| **Drop when unnecessary** | If plain language is clear | "The script validates inputs" needs no analogy |
 
 ### Banned Metaphors
 
@@ -182,17 +212,136 @@ Replace vague claims with specifics:
 
 ### Unnecessary Modifiers
 
-Cut these words. They add no meaning: very, really, truly, absolutely, incredibly, extremely, quite, rather, somewhat, fairly, just, actually, basically, literally, simply, obviously, clearly, certainly, definitely, essentially.
+Cut these words. They add no meaning: very, really, truly, absolutely, incredibly, extremely, quite, rather, somewhat, fairly, just, actually, basically, literally, simply, obviously, clearly, certainly, definitely, undoubtedly, essentially.
+
+### Copula Avoidance Ban
+
+When "is" or "are" works, use it. Do not substitute elaborate constructions.
+
+| Banned Substitute | Use Instead |
+|-------------------|-------------|
+| "serves as" | "is" |
+| "stands as" | "is" |
+| "functions as" | "is" |
+| "acts as" | "is" (when not literal acting) |
+| "boasts" | "has" |
+| "features" | "has" or "includes" |
+| "offers" | "has" or "provides" (when describing attributes) |
+
+Acceptable when they add genuine meaning (e.g., "The firewall acts as a barrier").
+
+### Synonym Cycling Fix
+
+When referring to the same thing, use the same word. AI cycles through synonyms because of repetition penalties. If you write "the server" in one sentence, do not switch to "the system" and then "the platform" in the next two. Natural variation (e.g., a name and "she") is fine. The signal is 3+ different words for the same entity in one piece.
+
+### False Ranges
+
+Remove "from X to Y" constructions where the endpoints are not on a meaningful scale.
+
+```
+WRONG: "From startups to enterprises, everyone benefits."
+RIGHT: "Startups and enterprises both benefit."
+
+OK: "Temperatures range from -10C to 40C." (genuine measurable range)
+```
+
+### Generic Positive Conclusions
+
+End with specifics, not sentiments. Never use these closers:
+
+- "The future looks bright"
+- "Exciting times lie ahead"
+- "This represents a major step forward"
+- "The possibilities are endless"
+- "We look forward to what's next"
+- "This is just the beginning"
+- "The best is yet to come"
+
+### Fragmented Headers
+
+Remove generic sentences that restate the heading. Jump straight to substance.
+
+```
+WRONG:
+### Error Handling
+Error handling is an important part of any application.
+[actual content follows]
+
+RIGHT:
+### Error Handling
+The API returns structured JSON errors with HTTP status codes and machine-readable error types.
+```
+
+### Significance Inflation
+
+State what happened without editorialising its importance. If something genuinely is a turning point, provide evidence instead of declaring it.
+
+Banned phrases:
+- "marks a pivotal moment in"
+- "setting the stage for"
+- "indelible mark"
+- "is a testament to"
+- "underscores the importance of"
+- "reflects broader trends in"
+- "represents a shift in"
+- "shaping the future of"
 
 ### Output Warnings
 
-Never include meta-commentary about the writing process. No disclaimers about tone. No references to these rules in output. No "I've kept this concise" or "I avoided jargon."
+Never include meta-commentary about the writing process. No disclaimers about tone. No references to these rules in output. No "I've kept this concise" or "I avoided jargon." No knowledge-cutoff disclaimers ("as of my last update", "based on available information"). No training-data hedging ("Up to my last training update").
 
 ---
 
 <!-- /ANCHOR:ai-structural-patterns -->
+<!-- ANCHOR:voice-personality -->
+## 5. VOICE PERSONALITY
+
+Avoiding AI patterns is only half the job. Sterile, voiceless writing that follows every rule can still read as AI-generated. Clean writing needs personality.
+
+### Have Opinions
+
+React to facts. Do not just report them neutrally.
+
+```
+FLAT:   "The results were mixed."
+VOICED: "The results surprised us. Half the metrics improved while the others dropped."
+```
+
+### Acknowledge Complexity
+
+Express mixed feelings. Real people do not sort everything into neat categories. When something has trade-offs, say so instead of presenting a clean conclusion.
+
+### Controlled Imperfection
+
+Perfect structure feels algorithmic. Allow occasional tangents and asides when they add authenticity. This does not override conciseness or clarity. It means choosing natural flow over mechanical symmetry.
+
+### Emotional Specificity
+
+Name specific feelings and images, not abstract labels.
+
+```
+ABSTRACT: "The results were disappointing."
+SPECIFIC: "We expected at least a 10% lift. We got 2%."
+```
+
+### Rule Precedence
+
+When a word or phrase appears in multiple categories, apply exactly one penalty using first-match-wins:
+
+1. Phrase hard blocker (-5, Section 7)
+2. Hard word blocker (-5, Section 6)
+3. Context-dependent blocker (-5 metaphorical, 0 literal)
+4. Soft deduction -2 (Section 8)
+5. Soft deduction -1 (Section 8)
+6. Context flag (0, advisory)
+
+A term listed in both hard blocker and soft deduction is evaluated only as hard blocker. Context-dependent terms cleared as literal get no lower-tier penalty. Structural removal directives (cut_always modifiers in Section 4) are not scored penalties and apply independently.
+
+---
+
+<!-- /ANCHOR:voice-personality -->
 <!-- ANCHOR:hard-blockers -->
-## 5. HARD BLOCKER WORDS (-5 POINTS EACH)
+## 6. HARD BLOCKER WORDS (-5 POINTS EACH)
 
 Never use these. Each occurrence is automatic failure.
 
@@ -209,7 +358,7 @@ Never use these. Each occurrence is automatic failure.
 
 <!-- /ANCHOR:hard-blockers -->
 <!-- ANCHOR:phrase-hard-blockers -->
-## 6. PHRASE HARD BLOCKERS (-5 POINTS EACH)
+## 7. PHRASE HARD BLOCKERS (-5 POINTS EACH)
 
 Never use any of these:
 
@@ -223,12 +372,14 @@ Never use any of these:
 - "Let me be clear" / "The reality is"
 - "Here's the thing" / "In a world where"
 - "You're not alone"
+- "The real question is" / "The truth is"
+- "Here's what you need to know" / "What most people don't realise is"
 
 ---
 
 <!-- /ANCHOR:phrase-hard-blockers -->
 <!-- ANCHOR:soft-deductions -->
-## 7. SOFT DEDUCTIONS
+## 8. SOFT DEDUCTIONS
 
 ### -2 Points Each
 
@@ -248,6 +399,7 @@ Never use any of these:
 | remains to be seen | Use "we don't know yet" |
 | glimpse into | Use "look at" or "overview of" |
 | you're not alone | AI comfort phrase. State the specific commonality. |
+| discover | When hype. OK in factual discovery contexts. |
 
 ### -1 Point Each
 
@@ -259,9 +411,9 @@ Never use any of these:
 
 **Weak adjectives:** "nice", "good", "great", "amazing", "awesome", "incredible", "fantastic", "wonderful", "stark" (use "clear"), "powerful" (when filler)
 
-**Vague verbs:** "get" (use specific: obtain, receive), "do" (use: complete, execute), "make" (use: build, create), "opened up" (use: created, enabled)
+**Vague verbs:** "get" (use specific: obtain, receive), "do" (use: complete, execute), "make" (use: build, create), "put" (use: place, position), "take" (use: accept, adopt, require), "opened up" (use: created, enabled)
 
-**AI phrases:** "I'd be happy to", "Great question", "That's a great point", "I appreciate you sharing", "imagine" (as setup), "exciting" (as AI enthusiasm)
+**AI phrases:** "I'd be happy to", "Great question", "That's a great point", "I appreciate you sharing", "Let me help you with that", "imagine" (as setup), "exciting" (as AI enthusiasm)
 
 **Buzzwords:** "synergise", "operationalise", "incentivise", "circle back", "move the needle", "low-hanging fruit", "boost" (as hype filler), "inquiries" (use "questions")
 
@@ -277,7 +429,23 @@ Never use any of these:
 
 <!-- /ANCHOR:soft-deductions -->
 <!-- ANCHOR:pre-publish-checklist -->
-## 8. PRE-PUBLISH CHECKLIST
+## 9. PRE-PUBLISH CHECKLIST
+
+### Scoring
+
+A clean document starts at 100 points. Apply the category weights below when evaluating overall quality.
+
+| Category | Weight | What It Covers |
+|----------|--------|----------------|
+| **Punctuation** | 15% | Em dashes, semicolons, Oxford commas, ellipsis |
+| **Structure** | 25% | Heading hierarchy, TOC format, section dividers, two-tier voice, subsection numbering |
+| **Content** | 25% | Banned metaphors, generalisations, unnecessary modifiers, meta-commentary |
+| **Words** | 20% | Hard blocker words, phrase hard blockers, context-dependent words |
+| **Voice** | 15% | Active voice, direct address, sentence rhythm, hedging, certainty |
+
+**Pass threshold:** 85+ (publish-ready). 70-84 (needs revision). Below 70 (failing, must rewrite).
+
+### Checklist
 
 ```yaml
 pre_publish_checklist:
@@ -286,18 +454,33 @@ pre_publish_checklist:
     - "No asterisks for emphasis. Max 1 ellipsis."
 
   structure:
+    - "H2 sections numbered ALL CAPS with anchors"
+    - "Numbered H3/H4 subsections use ALL CAPS"
+    - "Unnumbered H3/H4 use Title Case"
+    - "TOC entries match H2 headings with correct anchors"
+    - "--- dividers between H2 sections"
+    - "Blockquote tagline after H1 (if applicable)"
     - "No 'not just X, but also Y' patterns"
-    - "No exactly 3-item enumerations"
+    - "No exactly 3-item inline enumerations"
+    - "No exactly 3 H3 subsections under every H2"
     - "No setup language (Section 4)"
+    - "No copula avoidance ('serves as', 'stands as' -- use 'is')"
+    - "No synonym cycling (same entity = same word)"
+    - "No false ranges ('from X to Y' without meaningful scale)"
+    - "No fragmented headers (generic sentence restating heading)"
+    - "Max 2 'Think of it as/like' per document"
+    - "Max 1 analogy per concept, placed after technical statement"
 
   content:
     - "No banned metaphors or vague generalisations"
     - "No unnecessary modifiers"
-    - "No meta-commentary about writing process"
+    - "No meta-commentary, knowledge-cutoff disclaimers or training-data hedging"
+    - "No significance inflation ('marks a pivotal moment', 'setting the stage')"
+    - "No generic positive conclusions ('The future looks bright', 'Exciting times')"
 
   words:
-    - "No hard blocker words (Section 5)"
-    - "No phrase hard blockers (Section 6)"
+    - "No hard blocker words (Section 6)"
+    - "No phrase hard blockers (Section 7)"
     - "Context-dependent words checked"
 
   voice:
@@ -307,13 +490,15 @@ pre_publish_checklist:
     - "No hedging when certainty is possible"
     - "Claims backed by data or examples"
     - "Pronouns have clear antecedents"
+    - "Writing has personality, not just correctness (Section 5)"
+    - "Complexity acknowledged, not flattened into neat categories"
 ```
 
 ---
 
 <!-- /ANCHOR:pre-publish-checklist -->
 <!-- ANCHOR:related-resources -->
-## 9. RELATED RESOURCES
+## 10. RELATED RESOURCES
 
 ### Templates That Apply HVR
 
@@ -327,5 +512,9 @@ pre_publish_checklist:
 ### Standards
 - [core_standards.md](./core_standards.md) - Document formatting standards
 - [sk-doc SKILL.md](../../SKILL.md) - Parent skill with HVR enforcement rules
+
+### Creation Guides
+- [readme_creation.md](../specific/readme_creation.md) - README creation workflow and standards
+- [install_guide_creation.md](../specific/install_guide_creation.md) - Install guide creation workflow
 
 <!-- /ANCHOR:related-resources -->

@@ -370,6 +370,23 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 
 The memory engine uses a 222-feature pipeline developed across a 19-phase refinement program. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
+#### 33 Tools Across 7 Layers
+
+The MCP tools are organized into a layered architecture. Each layer has a token budget that controls how much context it consumes:
+
+| Layer | Name | Tools | Token Budget | Purpose |
+|-------|------|-------|-------------|---------|
+| **L1** | Orchestration | 1 | 2,000 | `memory_context` -- unified entry point for all retrieval |
+| **L2** | Core | 4 | 1,500 | Search, quick search, trigger matching, save |
+| **L3** | Discovery | 3 | 800 | List, stats, health checks |
+| **L4** | Mutation | 4 | 500 | Delete, update, validate, bulk delete |
+| **L5** | Lifecycle | 8 | 600 | Checkpoints, shared spaces, enable/status |
+| **L6** | Analysis | 8 | 1,200 | Causal graph, epistemic baselines, ablation, dashboard |
+| **L7** | Maintenance | 5 | 1,000 | Index scan, learning history, async ingestion (start/status/cancel) |
+| | **Total** | **33** | **7,600** | |
+
+Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
+
 ---
 
 #### 3.2.1 HYBRID SEARCH
@@ -453,6 +470,15 @@ For low-confidence deep searches, two fallback strategies kick in:
 
 - **LLM query reformulation** -- asks the LLM to rephrase the query more abstractly, grounding in actual knowledge base content
 - **HyDE (Hypothetical Document Embeddings)** -- writes a hypothetical answer to your question, then searches for real documents matching that imaginary answer
+
+**Mode-aware response profiles** format results differently depending on what you are doing:
+
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| `quick` | Returns top answer only, minimal context | Fast lookups, single-topic questions |
+| `focused` | Returns targeted results for one topic | Standard development queries |
+| `deep` | Returns full results with evidence trails | Research, architecture decisions |
+| `resume` | Returns state summary + next-steps | Session recovery after crash or compaction |
 
 ---
 
@@ -547,6 +573,10 @@ This is session-scoped to prevent cross-session interference.
 **Auto-entity extraction** spots tool names, project names and concept names when you save and adds them to a shared catalog. Connects memories mentioning the same things even when surrounding text differs.
 
 **SHA-256 content-hash deduplication** recognizes unchanged files instantly and skips expensive reprocessing.
+
+**Signal vocabulary expansion** recognizes correction signals ("actually", "wait") and preference signals ("prefer", "want") in conversation context, using them to adjust quality scoring during save.
+
+**Correction tracking** maintains a paper trail of how knowledge evolved when newer memories replace older ones. When a save triggers an UPDATE or SUPERSEDE outcome, the system records the relationship between old and new versions.
 
 ---
 
@@ -988,6 +1018,36 @@ The memory server reads configuration from environment variables:
 Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
 
 If no API key is set, the memory engine auto-detects HuggingFace Local embeddings (free, no setup required).
+
+### Memory Feature Flags
+
+The memory server supports 26+ feature flags organized by category. These control which search channels, scoring signals and infrastructure components are active. All flags default to sensible values and most users never need to change them.
+
+| Category | Key Flags | Default |
+|----------|-----------|---------|
+| **Search Pipeline** | BM25, Graph channel, Reranker, MMR, Co-Activation, FSRS decay, Interference penalty | All enabled |
+| **Session/Cache** | Working memory, TTL cache, Session deduplication | All enabled |
+| **Memory/Storage** | Auto-promotion, Negative feedback, Content normalization | All enabled |
+| **Embedding/API** | Voyage AI, OpenAI, HuggingFace Local (auto-detected) | Provider-dependent |
+| **Debug** | Trace mode, Scoring observability, Shadow evaluation | All disabled |
+
+For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
+
+### Database Schema
+
+The memory system uses a SQLite database with 25 tables:
+
+| Table Group | Tables | Purpose |
+|-------------|--------|---------|
+| **Core** | memories, embeddings, memory_sections | Content storage and vector index |
+| **Search** | fts_memories, bm25_index, search_cache | Full-text and keyword search |
+| **Graph** | causal_edges, communities, co_activations | Causal relationships and clustering |
+| **Lifecycle** | memory_states, validation_feedback, promotions | State machine and quality tracking |
+| **Session** | working_memory, session_events | Current session context |
+| **Shared** | shared_spaces, memberships, kill_switches | Multi-user access control |
+| **Evaluation** | eval_runs, ablation_results, ground_truth | Quality measurement |
+
+Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
 
 ### opencode.json Structure
 

@@ -1,306 +1,365 @@
 ---
-title: "cli-codex"
-description: "Codex CLI orchestrator for cross-AI task delegation via OpenAI's Codex CLI."
+title: "Codex CLI Orchestrator"
+description: "Cross-AI task delegation to OpenAI's Codex CLI for code generation, web research, code review, and parallel task processing."
 trigger_phrases:
   - "codex cli"
-  - "cli-codex"
-  - "codex"
+  - "codex exec"
+  - "delegate to codex"
+  - "web search codex"
+  - "gpt-5"
 ---
 
-# cli-codex
+# Codex CLI Orchestrator
 
-> Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing.
-
-> **Navigation**:
-> - New to Codex CLI? Start with [Quick Start](#2--quick-start)
-> - Need command reference? See [Features](#4--features)
-> - Troubleshooting? See [Troubleshooting](#7--troubleshooting)
+> Delegate tasks from any AI assistant to OpenAI's Codex CLI for code generation, live web research, and diff-aware code review.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. EXAMPLES](#6--examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. RELATED](#8--related)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+  - [3.1 FEATURE HIGHLIGHTS](#31-feature-highlights)
+  - [3.2 FEATURE REFERENCE](#32-feature-reference)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
+
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-This skill orchestrates OpenAI's Codex CLI for tasks that benefit from a second AI perspective, sandbox-controlled code generation, built-in code review workflows, live web search, or parallel task processing. The calling AI acts as the conductor (planner, validator, integrator) while Codex CLI executes targeted tasks.
+### What This Skill Does
+
+This skill lets any AI assistant invoke OpenAI's Codex CLI for tasks that benefit from a second perspective, real-time web information, or parallel code generation. The calling AI stays the conductor, delegating specific jobs to Codex and integrating the results.
+
+Codex CLI runs two models. GPT-5.4 handles frontier reasoning tasks: architecture analysis, security audits, and complex planning. GPT-5.3-Codex focuses on code: generation, refactoring, documentation, and test suites. The split means you can route each task to the model built for it rather than using one model for everything.
+
+Three capabilities set Codex apart from other CLIs. The `--search` flag gives the agent live web browsing during execution, useful for checking library versions or finding community solutions. The built-in `/review` command runs diff-aware code review directly in the TUI. And configurable sandbox modes (read-only, workspace-write, full-access) let you match permissions to task risk.
+
+The skill includes a self-invocation guard: if you are already running inside Codex CLI, activation is blocked to prevent circular delegation.
 
 ### Key Statistics
 
-| Category | Value |
-|----------|-------|
-| Models | `GPT-5.4` (frontier reasoning) + `GPT-5.3-Codex` (code generation) |
-| Authentication | `OPENAI_API_KEY` or ChatGPT OAuth |
-| Agent System | 9 specialized agents in `.codex/agents/*.toml` |
-| Unique Features | `/review` command, `--search`, session resume/fork, `--image` |
-| Install | `npm i -g @openai/codex` |
+| Category | Value | Details |
+|----------|-------|---------|
+| **Models** | 2 | GPT-5.4 (reasoning), GPT-5.3-Codex (code generation) |
+| **Sandbox Modes** | 3 | read-only, workspace-write, danger-full-access |
+| **Reasoning Levels** | 6 | none, minimal, low, medium, high, xhigh |
+| **Agent Profiles** | 7 | review, context, research, write, debug, ultra-think, speckit |
+| **References** | 4 | cli_reference, codex_tools, agent_delegation, integration_patterns |
+| **Version** | 1.3.1 | |
 
-### When to Use
+### How This Compares
 
-- **Cross-AI Validation** — Second perspective on code review, security audit, bug detection
-- **Built-in Code Review** — `/review` command for diff-aware review of staged changes
-- **Web Research** — `--search` flag enables live web browsing during tasks
-- **Parallel Task Processing** — Background generation while the calling AI continues other work
-- **Agent-Delegated Tasks** — Route to specialized Codex agents via `.codex/agents/*.toml`
-- **Visual Input** — `--image` flag for screenshot-to-code and design implementation
+| Capability | Claude Code CLI | Gemini CLI | Copilot CLI | Codex CLI |
+|------------|-----------------|------------|-------------|-----------|
+| **Web search** | No | Google Search | No | `--search` live browsing |
+| **Code review** | Agent-based | Manual prompt | PR-oriented | Built-in `/review` with diff awareness |
+| **Sandbox control** | Permission modes | `--yolo` flag | `--allow-all-tools` | 3 sandbox modes + approval policies |
+| **Image input** | No | No | No | `--image` flag for visual context |
+| **Session management** | Continue/resume | Memory tool | Repo memory | Resume, fork, session history |
+| **Cloud execution** | No | No | Cloud delegation | `codex cloud` subcommand |
+
+### Key Features at a Glance
+
+| Feature | What It Does |
+|---------|-------------|
+| **Web Search** | `--search` enables live web browsing during task execution for current information |
+| **Diff-Aware Review** | `/review` command analyzes code changes with full diff context |
+| **Sandbox Modes** | Three levels of filesystem access control matching task risk |
+| **Reasoning Effort** | Six levels from `none` to `xhigh` for tuning depth vs speed |
+| **Image Input** | `--image` flag attaches screenshots or designs as visual context |
+| **Session Fork** | Branch from any prior session to explore alternative approaches |
+| **Agent Profiles** | TOML-based profiles in `config.toml` with model and sandbox overrides |
+
+### Requirements
+
+| Requirement | Value | Notes |
+|-------------|-------|-------|
+| **CLI** | `@openai/codex` | Install via `npm i -g @openai/codex` or `brew install --cask codex` |
+| **Auth** | `OPENAI_API_KEY` or ChatGPT OAuth | API key for programmatic use, `codex login` for interactive |
+| **Node.js** | 18+ | Required for npm installation |
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. QUICK START
 <!-- ANCHOR:quick-start -->
+## 2. QUICK START
 
-**Check availability and install:**
+### 1. Verify Installation
 
 ```bash
-# Check if Codex CLI is installed
-command -v codex || echo "Install: npm i -g @openai/codex"
+command -v codex || echo "Not installed. Run: npm i -g @openai/codex"
+```
 
-# Install
-npm i -g @openai/codex
+### 2. Authenticate
 
-# Authenticate — Option A: API key
+```bash
+# Option A: API key
 export OPENAI_API_KEY=your-key-here
 
-# Authenticate — Option B: ChatGPT OAuth
+# Option B: ChatGPT OAuth (interactive)
 codex login
 ```
 
-**Basic invocations:**
+### 3. Run a Simple Task
 
 ```bash
-# Code review with frontier reasoning (GPT-5.4)
-codex exec "Review @./src/auth.ts for security issues" --model gpt-5.4 --sandbox read-only
+codex exec "Explain the architecture of this project" -m gpt-5.4 2>&1
+```
 
-# Code generation with code-focused model (GPT-5.3-Codex)
-codex exec "Create a rate limiter middleware for Express" --model gpt-5.3-codex --sandbox workspace-write
+### 4. Generate Code with Auto-Approval
 
-# Web research
-codex exec "What's new in Next.js 15?" --model gpt-5.3-codex --search --sandbox read-only
-
-# Profile-based task delegation
-codex exec -p research "Research latest Express.js security advisories" --model gpt-5.4 --search
+```bash
+codex exec "Add error handling to src/api.ts" --model gpt-5.3-codex --full-auto 2>&1
 ```
 
 <!-- /ANCHOR:quick-start -->
 
 ---
 
-## 3. STRUCTURE
-<!-- ANCHOR:structure -->
-
-```
-cli-codex/
-├── SKILL.md                          # Entry point: routing logic, rules, invocation patterns
-├── README.md                         # This file
-├── references/
-│   ├── cli_reference.md              # CLI flags, subcommands, sandbox modes, config
-│   ├── agent_delegation.md           # 9 Codex agents, routing table, invocation
-│   ├── codex_tools.md                # Built-in capabilities comparison with Claude Code
-│   └── integration_patterns.md       # Cross-AI orchestration patterns
-└── assets/
-    └── prompt_templates.md           # Copy-paste ready templates
-```
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | AI agent activation triggers, smart routing, rules |
-| `references/cli_reference.md` | Complete CLI subcommands, flags, sandbox modes |
-| `references/agent_delegation.md` | 9 Codex agent roster and routing table |
-| `references/codex_tools.md` | Built-in capabilities (/review, --search, MCP, sessions) |
-| `references/integration_patterns.md` | Cross-AI patterns (Generate-Review-Fix, background exec) |
-| `assets/prompt_templates.md` | Copy-paste templates for common tasks |
-
-<!-- /ANCHOR:structure -->
-
----
-
-## 4. FEATURES
 <!-- ANCHOR:features -->
+## 3. FEATURES
 
-**Smart Routing**
-- Automatic intent detection scores 7 intents: GENERATION, REVIEW, RESEARCH, ARCHITECTURE, AGENT_DELEGATION, TEMPLATES, PATTERNS
-- Loads only the reference files relevant to the detected intent
+### 3.1 FEATURE HIGHLIGHTS
 
-**Dual Model Support**
+Codex CLI bridges the gap between code generation and real-world context through three differentiating capabilities.
 
-| Model | ID | Use Case |
-|-------|----|----------|
-| GPT-5.4 | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, security |
-| GPT-5.3-Codex | `gpt-5.3-codex` | Code generation, standard review, implementation, docs |
+Live web search is the first. The `--search` flag lets the agent browse the web mid-task. When generating code that depends on a third-party API, the agent can check current documentation rather than relying on training data. For debugging, it can look up recent issue reports and community solutions. This is not a separate tool or follow-up step. The browsing happens inline during execution, so the agent's code output reflects current information.
 
-Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Codex
+The sandbox model is the second differentiator. Most CLIs offer binary permission control: either ask before everything or auto-approve everything. Codex provides three graduated levels. `read-only` restricts the agent to file reads and analysis. `workspace-write` allows file modifications within the project directory. `danger-full-access` opens shell execution for tasks like running test suites. You can also layer approval policies (`untrusted`, `on-request`, `never`) on top of sandbox modes for fine-grained control.
 
-**Sandbox Modes**
+Session management rounds out the picture. Codex tracks conversation history and lets you resume where you left off or fork from any prior session. Forking is particularly useful when you want to explore two different implementation approaches from the same starting point without losing either thread.
 
-| Mode | Flag | Use For |
-|------|------|---------|
-| Read-only | `--sandbox read-only` | Review, analysis, research |
-| Workspace write | `--sandbox workspace-write` | Code generation, bug fixes, docs |
-| Full access | `--sandbox danger-full-access` | Requires explicit user approval |
+The reasoning effort system adds another dimension. GPT-5.4 supports six effort levels from `none` (fastest, cheapest) through `xhigh` (maximum depth). This means you can run quick formatting tasks at `low` effort and deep architecture reviews at `high` effort, paying only for the reasoning depth each task actually needs.
 
-**9 Specialized Agents** (`.codex/agents/*.toml`)
+### 3.2 FEATURE REFERENCE
 
-| Agent | Role | Sandbox |
-|-------|------|---------|
-| `context` | Read-only codebase exploration | read-only |
-| `debug` | Systematic debugging | workspace-write |
-| `handover` | Session state capture | workspace-write |
-| `orchestrate` | Multi-agent coordination | read-only |
-| `research` | Evidence gathering | workspace-write |
-| `review` | Code review, quality scoring | read-only |
-| `speckit` | Spec folder documentation | workspace-write |
-| `ultra-think` | Multi-strategy planning | read-only |
-| `write` | Documentation generation | workspace-write |
+#### Models
 
-**Unique Capabilities**
+| Model | ID | Best For | Default Effort |
+|-------|----|----------|---------------|
+| **GPT-5.4** | `gpt-5.4` | Reasoning, architecture, security audits, deep review | high (configurable) |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, implementation, documentation, tests | xhigh (fixed) |
 
-| Feature | Purpose |
-|---------|---------|
-| `/review` command | Diff-aware code review in TUI (staged changes, commits, branches) |
-| `codex exec review` | Non-interactive diff or commit review flow for scripts and automation |
-| `--search` flag | Live web browsing integrated into reasoning |
-| `codex mcp` | Connect to Model Context Protocol servers |
-| `codex resume` | Continue a previous Codex session |
-| `codex fork` | Branch from an existing session |
-| `--image` / `-i` | Attach screenshots or designs as visual input |
-| `codex cloud` | Remote task execution |
+#### Core Flags
+
+| Flag | Short | Purpose | Example |
+|------|-------|---------|---------|
+| `exec` | | Non-interactive execution | `codex exec "prompt"` |
+| `--model` | `-m` | Model selection | `-m gpt-5.4` |
+| `-c` | | Config override | `-c model_reasoning_effort="high"` |
+| `--sandbox` | | Filesystem access level | `--sandbox read-only` |
+| `--full-auto` | | Auto-approve all operations | `--full-auto` |
+| `--search` | | Enable web browsing | `--search` |
+| `--image` | `-i` | Attach visual input | `-i screenshot.png` |
+| `--ask-for-approval` | | Approval policy | `--ask-for-approval never` |
+
+> **Common flag mistakes:** `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist in Codex CLI. Use `-c model_reasoning_effort="high"` for reasoning effort (or set it in `config.toml`). There is no quiet flag.
+
+#### Sandbox Modes
+
+| Mode | Allows | Use Case |
+|------|--------|----------|
+| `read-only` | File reads only | Safe analysis and exploration |
+| `workspace-write` | File reads + writes in project | Standard code generation |
+| `danger-full-access` | Full shell access | Running tests, installing deps |
+
+#### Agent Profiles
+
+| Profile | Purpose | Invocation |
+|---------|---------|------------|
+| `review` | Code review, security audit | `codex exec -p review "Review @./src" -m gpt-5.4` |
+| `context` | Architecture exploration | `codex exec -p context "Analyze architecture" -m gpt-5.4` |
+| `research` | Technical research with web | `codex exec -p research "Research X" -m gpt-5.4 --search` |
+| `write` | Documentation generation | `codex exec -p write "Generate README" -m gpt-5.3-codex` |
+| `debug` | Fresh-perspective debugging | `codex exec -p debug "Debug error: X" -m gpt-5.3-codex` |
+| `ultra-think` | Multi-strategy planning | `codex exec -p ultra-think "Plan redesign" -m gpt-5.4` |
+| `speckit` | Spec documentation | `codex exec -p speckit "Create spec folder" -m gpt-5.3-codex` |
 
 <!-- /ANCHOR:features -->
 
 ---
 
-## 5. CONFIGURATION
-<!-- ANCHOR:configuration -->
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
 
-**Authentication:**
+```text
+cli-codex/
+  SKILL.md                              # Skill definition and smart routing logic
+  README.md                             # This file
+  assets/
+    prompt_templates.md                 # Copy-paste ready prompts for common tasks
+  references/
+    agent_delegation.md                 # Agent profiles, routing, invocation patterns
+    codex_tools.md                      # Unique capabilities and comparison table
+    cli_reference.md                    # CLI flags, commands, models, sandbox, config
+    integration_patterns.md             # Cross-AI orchestration workflows
+```
+
+<!-- /ANCHOR:structure -->
+
+---
+
+<!-- ANCHOR:configuration -->
+## 5. CONFIGURATION
+
+### Authentication
 
 | Method | Setup | Best For |
 |--------|-------|----------|
-| API Key | `export OPENAI_API_KEY=your-key` | Scripts, CI/CD |
-| ChatGPT OAuth | `codex login` | Personal use (Plus/Pro/Business/Edu/Enterprise) |
+| **API Key** | `export OPENAI_API_KEY=your-key` | Programmatic use, CI/CD |
+| **ChatGPT OAuth** | `codex login` | Interactive use (Plus/Pro/Business account required) |
 
-**Essential flags:**
+### Config File
 
-| Flag | Purpose |
-|------|---------|
-| `--model gpt-5.3-codex` | Model selection (always include) |
-| `-c model_reasoning_effort="<level>"` | Override GPT-5.4 reasoning depth (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`) |
-| `--sandbox read-only` | Safe mode for review/analysis |
-| `--sandbox workspace-write` | Allow file writes in workspace |
-| `--search` | Enable live web browsing |
-| `--image` / `-i` | Attach image input |
-| `--full-auto` | Low-friction mode (requires user approval) |
+Codex reads settings from `~/.codex/config.toml`. Key settings:
 
-**Configuration files:**
-- `.codex/config.toml` — MCP servers, agent definitions, and `model_reasoning_effort` defaults
-- `.codex/agents/*.toml` — Agent-specific configs (sandbox, reasoning, instructions)
-- `instructions.md` — Project context loaded automatically
+```toml
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+```
 
-**Platform support:** macOS (full), Linux (full), Windows (experimental, WSL required).
+### Agent Profiles
+
+Profiles override global settings per task type. Defined in `config.toml` under `[profiles.<name>]`:
+
+```toml
+[profiles.review]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+```
 
 <!-- /ANCHOR:configuration -->
 
 ---
 
-## 6. EXAMPLES
 <!-- ANCHOR:usage-examples -->
+## 6. USAGE EXAMPLES
 
-**Cross-AI code review (GPT-5.4 for deep analysis):**
+### Code Generation with Sandbox Control
+
 ```bash
-codex exec "Review @./src/auth.ts for security vulnerabilities. Check for XSS, injection, and auth bypasses." \
-  --model gpt-5.4 --sandbox read-only
+codex exec "Refactor utils.ts to use async/await" \
+  --model gpt-5.3-codex --sandbox workspace-write 2>&1
 ```
 
-**Non-interactive Git diff review:**
+### Web Research During Task
+
 ```bash
-codex exec review "Focus on security" --commit HEAD
+codex exec "Research and implement OAuth2 PKCE flow based on current best practices" \
+  --model gpt-5.4 --search --full-auto 2>&1
 ```
 
-**Web research:**
+### Image-Based Implementation
+
 ```bash
-codex exec "Search the web for the latest security advisories for Express.js as of March 2026." \
-  --model gpt-5.3-codex --search --sandbox read-only
+codex exec "Implement this UI component matching the wireframe" \
+  --image wireframe.png --model gpt-5.3-codex --full-auto 2>&1
 ```
 
-**Profile-based architecture analysis (GPT-5.4 for reasoning):**
+### Parallel Background Tasks
+
 ```bash
-codex exec -p context "Map all authentication-related files and their dependencies" \
-  --model gpt-5.4
-```
-
-**Background task:**
-```bash
-codex exec "Generate comprehensive Jest tests for @./src/utils.ts" \
-  --model gpt-5.3-codex --sandbox workspace-write > /tmp/tests.ts 2>&1 &
-```
-
-**Generate-Review-Fix cycle:**
-```bash
-# Step 1: Codex generates
-codex exec "Create a rate limiter middleware for Express" \
-  --model gpt-5.3-codex --sandbox workspace-write > /tmp/rate-limiter.ts
-
-# Step 2: Calling AI reviews (within session), writes review to /tmp/review.md
-
-# Step 3: Codex fixes
-codex exec "Fix these issues: $(cat /tmp/review.md). Source: $(cat /tmp/rate-limiter.ts)" \
-  --model gpt-5.3-codex --sandbox workspace-write > /tmp/rate-limiter-v2.ts
-```
-
-**Design-to-code with image:**
-```bash
-codex exec "Implement this UI component based on the attached design" \
-  --model gpt-5.3-codex -i design.png --sandbox workspace-write
+# Run multiple tasks simultaneously
+codex exec "Generate tests for src/auth/" -m gpt-5.3-codex --full-auto 2>&1 &
+codex exec "Generate tests for src/api/" -m gpt-5.3-codex --full-auto 2>&1 &
+wait
 ```
 
 <!-- /ANCHOR:usage-examples -->
 
 ---
 
-## 7. TROUBLESHOOTING
 <!-- ANCHOR:troubleshooting -->
+## 7. TROUBLESHOOTING
 
-| Issue | Solution |
-|-------|----------|
-| `codex` not found | `npm i -g @openai/codex` |
-| `OPENAI_API_KEY` not set | `export OPENAI_API_KEY=your-key` or run `codex login` |
-| Rate limit exceeded | Wait for auto-retry; add delays between scripted calls |
-| Auth expired | Run `codex login` to re-authenticate |
-| Sandbox violation | Match `--sandbox` level to task requirements |
-| Context too large | Specify files with `@` explicitly rather than broad prompts |
-| Agent not found | Verify agent name matches `.codex/agents/` directory |
-| Windows issues | Use WSL; PowerShell/Git Bash not supported |
+### Codex CLI Not Found
 
-For detailed troubleshooting, see `references/cli_reference.md` Section 13.
+**What you see**: `command not found: codex`
+**Common causes**: CLI not installed, or PATH not updated.
+**Fix**: Run `npm i -g @openai/codex` or `brew install --cask codex`. Restart terminal.
+
+### Non-Existent Flag Error
+
+**What you see**: Error when using `--reasoning`, `--reasoning-effort`, or `--quiet`.
+**Common causes**: These flags do not exist in Codex CLI.
+**Fix**: Use `-c model_reasoning_effort="high"` for reasoning effort. There is no quiet equivalent. Use `-o file.txt` to capture output to a file.
+
+### Authentication Failure
+
+**What you see**: `401 Unauthorized` or login prompt.
+**Common causes**: `OPENAI_API_KEY` not set, or OAuth session expired.
+**Fix**: Set `export OPENAI_API_KEY=your-key` or run `codex login` to re-authenticate.
+
+### Gate 3 Blocking in CLAUDE.md Projects
+
+**What you see**: Agent asks "Which spec folder?" instead of executing the task.
+**Common causes**: The project has a `CLAUDE.md` with mandatory gate checks that intercept Codex agents.
+**Fix**: This is a known issue when using Codex agents in projects with Claude Code gate systems. Consider running the task from outside the project directory or handling the task directly.
 
 <!-- /ANCHOR:troubleshooting -->
 
 ---
 
-## 8. RELATED
-<!-- ANCHOR:related -->
+<!-- ANCHOR:faq -->
+## 8. FAQ
 
-- **SKILL.md** — Full routing logic, rules (ALWAYS/NEVER/ESCALATE IF), success criteria
-- **cli-gemini skill** — Parallel cross-AI validation via Google's Gemini CLI
-- **sk-code--web** — Web development where Codex provides second opinions
-- **sk-code--full-stack** — Full-stack tasks with Codex architecture analysis
-- **External** — [Codex CLI GitHub](https://github.com/openai/codex) | [OpenAI Platform](https://platform.openai.com/api-keys)
+### General
 
-<!-- /ANCHOR:related -->
+**Q: When should I use Codex instead of other CLIs?**
+A: Use Codex for tasks requiring live web search (`--search`), diff-aware code review (`/review`), image input, or when you need graduated sandbox control. For deep extended thinking, use Claude Code instead.
+
+**Q: What is the difference between GPT-5.4 and GPT-5.3-Codex?**
+A: GPT-5.4 is the frontier reasoning model for analysis, planning, and review. GPT-5.3-Codex is optimized for code generation, refactoring, and implementation. Route accordingly.
+
+### Configuration
+
+**Q: How do I set reasoning effort without a CLI flag?**
+A: Use `-c model_reasoning_effort="high"` on the command line, or set `model_reasoning_effort = "high"` in `~/.codex/config.toml` for a persistent default.
+
+**Q: Can I use local models instead of OpenAI?**
+A: Yes. The `--oss` flag switches to local open-source models via Ollama.
+
+### Sessions
+
+**Q: How do I resume a previous session?**
+A: Use `codex resume [session-id]` to continue where you left off. Use `codex fork [session-id]` to branch from a prior session.
+
+**Q: Can Codex run in the cloud?**
+A: Yes. The `codex cloud` subcommand offloads execution to remote infrastructure.
+
+<!-- /ANCHOR:faq -->
+
+---
+
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
+
+### Skill Resources
+- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, models, sandbox, and config
+- [codex_tools.md](./references/codex_tools.md) -- Unique capabilities and cross-CLI comparison
+- [agent_delegation.md](./references/agent_delegation.md) -- Agent profiles, routing, and invocation patterns
+- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+
+### Related Skills
+- [cli-claude-code](../cli-claude-code/) -- Anthropic Claude Code CLI orchestrator
+- [cli-copilot](../cli-copilot/) -- GitHub Copilot CLI orchestrator
+- [cli-gemini](../cli-gemini/) -- Google Gemini CLI orchestrator
+
+<!-- /ANCHOR:related-documents -->

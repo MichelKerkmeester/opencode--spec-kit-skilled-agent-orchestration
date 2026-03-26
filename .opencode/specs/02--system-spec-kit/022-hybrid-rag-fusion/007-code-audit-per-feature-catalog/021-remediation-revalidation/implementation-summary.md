@@ -108,6 +108,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T035: Category 20 Stub Review (Catalog 20/01)
+
+| Field | Value |
+|-------|-------|
+| **Catalog Entry** | `20--remediation-revalidation/01-category-stub.md` |
+| **Verdict** | MATCH |
+| **Source Files** | `mcp_server/lib/validation/preflight.ts`, `mcp_server/handlers/v-rule-bridge.ts`, `mcp_server/handlers/quality-loop.ts`, `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/handlers/memory-save.ts`, `mcp_server/handlers/checkpoints.ts`, `mcp_server/handlers/memory-crud-health.ts` |
+
+Despite the filename `01-category-stub.md`, this is a fully developed catalog entry titled "Runtime remediation, revalidation, and auto-repair workflows." It documents the distributed remediation surface: `memory_save` orchestration, `preflight.ts` early guards, V-rule bridge dispositions, quality loop auto-fixes, pre-storage quality gate with 14-day rollout, `memory_health` bounded auto-repair, `memory_validate` confidence/feedback pipelines, and checkpoint rollback. All 7 referenced source files exist and implement the described behavior.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

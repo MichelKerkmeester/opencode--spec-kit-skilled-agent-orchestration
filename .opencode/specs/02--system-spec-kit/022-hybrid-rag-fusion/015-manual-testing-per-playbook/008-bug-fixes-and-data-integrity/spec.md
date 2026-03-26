@@ -72,6 +72,23 @@ Execute all 11 playbook scenarios, record pass/fail for each, and confirm the sy
 | `checklist.md` | Modify | Mark items as each scenario completes |
 | `tasks.md` | Modify | Mark tasks complete as scenarios pass |
 | `implementation-summary.md` | Modify | Fill in after all scenarios executed |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 001 | Graph channel ID fix (G1) | 08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md |
+| 2 | 002 | Chunk collapse deduplication (G3) | 08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md |
+| 3 | 003 | Co-activation fan-effect divisor (R17) | 08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md |
+| 4 | 004 | SHA-256 content-hash deduplication (TM-02) | 08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md |
+| 5 | 065 | Database and schema safety | 08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md |
+| 6 | 068 | Guards and edge cases | 08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md |
+| 7 | 075 | Canonical ID dedup hardening | 08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md |
+| 8 | 083 | Math.max/min stack overflow elimination | 08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md |
+| 9 | 084 | Session-manager transaction gap fixes | 08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md |
+| 10 | 116 | Chunking safe swap atomicity (P0-6) | 08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md |
+| 11 | 117 | SQLite datetime session cleanup (P0-7) | 08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

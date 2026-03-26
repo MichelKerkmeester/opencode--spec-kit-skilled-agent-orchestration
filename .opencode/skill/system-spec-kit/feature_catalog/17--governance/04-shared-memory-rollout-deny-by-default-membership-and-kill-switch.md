@@ -29,6 +29,8 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 `shared_space_upsert()` also preserves rollout cohort and metadata on partial updates. The UPSERT keeps existing values via `COALESCE(excluded.rollout_cohort, rollout_cohort)` and the same pattern for `metadata`, so renaming a space or toggling rollout flags no longer clears previously stored cohort labels or structured metadata.
 
+Admin identity governance, including server-configured admin actor resolution and deny-on-ambiguous-config behavior, is documented separately in `06-shared-memory-admin-identity-governance.md`.
+
 ---
 
 ## 3. SOURCE FILES

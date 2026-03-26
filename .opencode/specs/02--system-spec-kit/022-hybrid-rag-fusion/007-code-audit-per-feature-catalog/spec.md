@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit per Feature Catalog"
-description: "Comprehensive code audit of the Spec Kit Memory MCP server organized by the 19-category feature catalog covering 218 live features across 22 child folders."
+description: "Comprehensive code audit of the Spec Kit Memory MCP server organized by the 19-category feature catalog covering 222 live features across 22 child folders."
 trigger_phrases:
   - "code audit"
   - "feature catalog audit"
@@ -18,11 +18,26 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Comprehensive code audit of the Spec Kit Memory MCP server, systematically verifying the 218-feature live catalog against the actual source code. The work is decomposed into 22 child folders (001-022): 19 category audits, 2 synthesis/remediation meta-phases, and 1 downstream implementation/removal follow-up tracked under the same umbrella packet.
+Comprehensive code audit of the Spec Kit Memory MCP server, systematically verifying the 222-feature live catalog against the actual source code. The work is decomposed into 22 child folders (001-022): 19 category audits, 2 synthesis/remediation meta-phases, and 1 downstream implementation/removal follow-up tracked under the same umbrella packet.
 
 **Key Decisions**: Organize audit by feature catalog categories (not by source file), use phase decomposition for parallel execution
 
 **Critical Dependencies**: Feature catalog must be current and complete before audit phases begin
+
+---
+
+**Deep Research Addendum (2026-03-26)**
+
+A 12-agent deep research campaign (~3.3M tokens, GPT-5.4 high/xhigh via Codex CLI) cross-referenced the audit against current source code and feature catalog. Key findings:
+
+- **Stale feature count:** Umbrella spec says 218 features; actual catalog now has **222 snippets**. Delta of 4 needs reconciliation.
+- **5 unaudited snippets:** (1) session recovery `01/11`, (2) template compliance `16/18`, (3) audit mapping note `19/08`, (4) cat 20 stub, (5) cat 21 stub.
+- **13 BOTH_MISSING capabilities** exist in source but have no catalog entry AND no audit coverage: entire `mcp_server/api/` surface (6 files), ops/setup/kpi scripts, config contracts, constitutional gate-enforcement, phase-system node.
+- **2 AUDIT_MISSING** items (in catalog but not audited): `scripts/spec/create.sh`, `scripts/spec/validate.sh`.
+- **Phases 019/021/022** are mapping/meta packets whose audited-item lists no longer correspond to live catalog entries — consider reclassifying.
+- **Phases 009 and 011** have implementation summaries that overcount retired features no longer in the live catalog.
+
+Full details: `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep-research-round2-2026-03-26.md`.
 
 ---
 
@@ -46,7 +61,7 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for the Spec Kit Memory MCP server has evolved significantly through multiple refinement phases, now documenting 218 live features across 19 categories. No systematic audit has verified whether each documented feature accurately reflects the current source code. Gaps between documentation and implementation create risk of incorrect AI agent behavior, stale references, and undetected regressions.
+The feature catalog for the Spec Kit Memory MCP server has evolved significantly through multiple refinement phases, now documenting 222 live features across 19 categories. No systematic audit has verified whether each documented feature accurately reflects the current source code. Gaps between documentation and implementation create risk of incorrect AI agent behavior, stale references, and undetected regressions.
 
 ### Purpose
 Establish a verified baseline where every feature in the catalog has been audited against source code, with findings documented per category and cross-phase dependencies mapped.
@@ -58,7 +73,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 218 live features across 19 feature catalog categories
+- Audit all 222 live features across 19 feature catalog categories
 - Verify each feature's documented behavior against source code
 - Document findings (confirmed, divergent, missing, deprecated) per phase
 - Map cross-phase dependencies and shared code paths
@@ -202,10 +217,11 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: 217 of 218 live-catalog features have explicit packet status, with the remaining Retrieval delta called out for follow-up
-- **SC-002**: Every phase folder contains a completed implementation-summary.md with findings
+- **SC-001**: 222 of 222 live-catalog features have explicit audit findings — 5 previously unaudited snippets now audited (T032-T036), 13 BOTH_MISSING capabilities documented (T037-T049), 2 AUDIT_MISSING scripts audited (T050-T051)
+- **SC-002**: Every phase folder contains a completed implementation-summary.md with findings — all 22 phases updated with Phase 5 audit additions
 - **SC-003**: Cross-phase dependency map identifies shared code paths between categories
 - **SC-004**: Remediation backlog prioritized by severity (P0/P1/P2) for follow-up work
+- **SC-005**: All 13 BOTH_MISSING capabilities documented — 5 API surface modules (ARCH-1 facades), 3 operational scripts, 1 eval script, 2 config files, 1 constitutional memory, 1 knowledge node. `storage.ts` confirmed as intentional minimal facade (not dead code)
 
 ### Acceptance Scenarios
 
@@ -263,7 +279,7 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 22/25 | Files: 50+, Features: 218, Categories: 19 |
+| Scope | 22/25 | Files: 50+, Features: 222, Categories: 19 |
 | Risk | 15/25 | Catalog evolution, cross-dependencies |
 | Research | 15/20 | Source code investigation per feature |
 | Multi-Agent | 12/15 | 21 parallel phase workstreams |
@@ -370,6 +386,6 @@ A post-audit deep research cycle (10 iterations, 11 questions answered) identifi
 <!--
 LEVEL 3 SPEC - Parent Phase Spec
 - 22 child folders under umbrella ownership
-- 218 live-catalog features across 19 categories
+- 222 live-catalog features across 19 categories
 - Cross-phase synthesis in phases 019 and 021, with downstream follow-up in phase 022
 -->

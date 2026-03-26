@@ -73,6 +73,17 @@ Provide a single governance-focused specification that maps all five Phase 017 t
 | `checklist.md` | Rewrite | Phase 017 verification checklist for pre-execution and evidence quality gates |
 | `implementation-summary.md` | Rewrite | Blank template pending execution |
 | `description.json` | Rewrite | Reset to Draft, Not Started |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 063 | Feature flag governance | 17--governance/01-feature-flag-governance.md |
+| 2 | 064 | Feature flag sunset audit | 17--governance/02-feature-flag-sunset-audit.md |
+| 3 | 122 | Governed ingest and scope isolation (Phase 5) | 17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md |
+| 4 | 123 | Shared-space deny-by-default rollout (Phase 6) | 17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md |
+| 5 | 148 | Shared-memory disabled-by-default and first-run setup | 17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | In Progress (4/22 child phases complete, 18 pending) |
+| **Status** | In Progress — Testing: 272/272 PASS. Traceability remediation: PENDING (deep review verdict CONDITIONAL) |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -228,6 +228,73 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 - None at this time. The playbook and feature catalog provide all inputs needed for test execution.
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:deep-review -->
+## DEEP REVIEW FINDINGS (2026-03-26)
+
+A 6-iteration deep review (12 GPT-5.4 agents via codex exec) audited feature catalog ↔ playbook ↔ spec phase traceability. **Verdict: CONDITIONAL.**
+
+Full report: [`review-report.md`](review-report.md)
+
+### Finding Summary
+
+| ID | Severity | Title | Count | Remediation |
+|----|----------|-------|-------|-------------|
+| P0-001 | Critical | Features with NO playbook scenario (true gaps) | 29/222 (13.1%) | Create 29 playbook scenario files |
+| P1-001 | Major | Features missing from Section 12 cross-reference | 4 entries | Add 4 rows to Section 12 |
+| P1-002 | Major | Playbook scenarios lacking FC back-reference | 40 scenarios | Add `Feature catalog:` to 40 files |
+| P1-003 | Major | Spec phases lacking Scenario Registry table | 17/22 phases | Add registry table to 17 spec.md |
+| P1-004 | Major | Inconsistent FC ref patterns in spec phases | 6 phases | Standardize to registry tables |
+| P1-005 | Major | Features covered but unlinked (missing back-ref) | 25 scenarios | Add `Feature catalog:` to 25 files |
+| P2-001 | Advisory | Section 12 links all valid | 0 broken | No action |
+| P2-002 | Advisory | Spec phase 020 duplicates 019 name | 1 | No action (intentional) |
+| P2-003 | Advisory | Category count mismatches | Expected | No action (sub-scenario expansion) |
+
+### Remediation Workstreams
+
+| WS | Priority | Scope | Depends On |
+|----|----------|-------|------------|
+| WS-1 | P0 | Create 29 missing playbook scenario files | None |
+| WS-2 | P1 | Add FC back-references to 65 playbook scenarios (25+40) | WS-1 |
+| WS-3 | P1 | Add 33 rows to Section 12 index (4 existing + 29 new) | WS-1 |
+| WS-4 | P1 | Add Scenario Registry tables to 17 spec phase spec.md files | WS-1, WS-2, WS-3 |
+
+### True-Gap Features (P0-001) — 29 features needing new playbook scenarios
+
+| # | Category | Feature |
+|---|----------|---------|
+| 1 | 01-Retrieval | AST-level section retrieval tool |
+| 2 | 01-Retrieval | Tool-result extraction to working memory |
+| 3 | 01-Retrieval | Session recovery via /memory:continue |
+| 4 | 02-Mutation | Namespace management CRUD tools |
+| 5 | 02-Mutation | Correction tracking with undo |
+| 6 | 10-Graph Signal | ANCHOR tags as graph nodes |
+| 7 | 10-Graph Signal | Causal neighbor boost and injection |
+| 8 | 10-Graph Signal | Temporal contiguity layer |
+| 9 | 11-Scoring | Tool-level TTL cache |
+| 10 | 11-Scoring | Access-driven popularity scoring |
+| 11 | 11-Scoring | Temporal-structural coherence scoring |
+| 12 | 13-Memory Quality | Content-aware memory filename generation |
+| 13 | 13-Memory Quality | Generation-time duplicate and empty content prevention |
+| 14 | 14-Pipeline | Warm server / daemon mode |
+| 15 | 14-Pipeline | Backend storage adapter abstraction |
+| 16 | 14-Pipeline | Atomic write-then-index API |
+| 17 | 14-Pipeline | Embedding retry orchestrator |
+| 18 | 14-Pipeline | 7-layer tool architecture metadata |
+| 19 | 16-Tooling | Architecture boundary enforcement |
+| 20 | 16-Tooling | Watcher delete/rename cleanup |
+| 21 | 16-Tooling | Template Compliance Contract Enforcement |
+| 22 | 18-UX Hooks | Shared post-mutation hook wiring |
+| 23 | 18-UX Hooks | Memory health autoRepair metadata |
+| 24 | 18-UX Hooks | Schema and type contract synchronization |
+| 25 | 18-UX Hooks | Mutation hook result contract expansion |
+| 26 | 18-UX Hooks | Mutation response UX payload exposure |
+| 27 | 18-UX Hooks | Atomic-save parity and partial-indexing hints |
+| 28 | 18-UX Hooks | Final token metadata recomputation |
+| 29 | 18-UX Hooks | End-to-end success-envelope verification |
+<!-- /ANCHOR:deep-review -->
 
 ---
 

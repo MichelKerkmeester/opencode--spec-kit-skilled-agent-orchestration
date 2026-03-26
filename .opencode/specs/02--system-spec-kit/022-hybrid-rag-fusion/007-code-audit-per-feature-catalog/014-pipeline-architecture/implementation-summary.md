@@ -93,6 +93,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T041: mcp_server/api/providers.ts (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `mcp_server/api/providers.ts` (14 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as API surface |
+
+Minimal re-export surface for embedding providers and retry logic following ARCH-1 pattern. Exports: `generateEmbedding`, `generateQueryEmbedding`, `getEmbeddingProfile` (from `lib/providers/embeddings.ts`), `retryManager` namespace (from `lib/providers/retry-manager.ts`). Prevents direct coupling to provider internals. No separate catalog entry needed — provider functionality is documented under the pipeline architecture catalog category.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

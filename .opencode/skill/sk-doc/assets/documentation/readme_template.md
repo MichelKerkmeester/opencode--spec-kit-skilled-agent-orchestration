@@ -183,11 +183,11 @@ These patterns appear in mature project READMEs:
 **Architecture Diagrams**: Use ASCII box diagrams to show system connections (beyond directory trees):
 ```
 ┌──────────┐     ┌──────────┐     ┌──────────┐
-│  Client   │────▶│  Server  │────▶│ Database │
+│  Client  │────▶│  Server  │────▶│ Database │
 └──────────┘     └────┬─────┘     └──────────┘
                       │
                  ┌────▼─────┐
-                 │  Cache    │
+                 │  Cache   │
                  └──────────┘
 ```
 
@@ -612,6 +612,8 @@ and [key benefit 2] for [target audience].
 ```
 
 **Additional patterns** (Quick Start, Troubleshooting, Showcase, Before/After) follow the same principles demonstrated above. See §5 for section-specific writing tips.
+
+For the complete README creation workflow with quality criteria and pre-publish checklist, see [readme_creation.md](../../references/specific/readme_creation.md).
 
 ---
 
@@ -1185,6 +1187,7 @@ A: [Answer with code if applicable.]
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document formatting rules
 - [validation.md](../../references/global/validation.md) - Quality scoring (DQI)
+- [readme_creation.md](../../references/specific/readme_creation.md) - README creation workflow and standards
 
 ### Examples
 - Project READMEs in `/specs/` folders

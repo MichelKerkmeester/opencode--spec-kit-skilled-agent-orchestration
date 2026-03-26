@@ -76,6 +76,20 @@ Provide a single feature-flag-reference-focused specification that maps all eigh
 | `checklist.md` | Rewrite | Phase 019 verification checklist — all items unchecked |
 | `implementation-summary.md` | Rewrite | Blank template pending execution |
 | `description.json` | Rewrite | Reset to Draft, Not Started |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 028 | 1. Search Pipeline Features (SPECKIT_*) | 19--feature-flag-reference/01-1-search-pipeline-features-speckit.md |
+| 2 | 029 | 2. Session and Cache | 19--feature-flag-reference/02-2-session-and-cache.md |
+| 3 | 030 | 3. MCP Configuration | 19--feature-flag-reference/03-3-mcp-configuration.md |
+| 4 | 031 | 4. Memory and Storage | 19--feature-flag-reference/04-4-memory-and-storage.md |
+| 5 | 032 | 5. Embedding and API | 19--feature-flag-reference/05-5-embedding-and-api.md |
+| 6 | 033 | 6. Debug and Telemetry | 19--feature-flag-reference/06-6-debug-and-telemetry.md |
+| 7 | 034 | 7. CI and Build (informational) | 19--feature-flag-reference/07-7-ci-and-build-informational.md |
+| 8 | 125 | 125: Hydra roadmap capability flags | 19--feature-flag-reference/01-1-search-pipeline-features-speckit.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

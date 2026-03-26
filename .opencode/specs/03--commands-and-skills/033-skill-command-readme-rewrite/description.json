@@ -1,0 +1,22 @@
+{
+  "specFolder": "03--commands-and-skills/033-skill-command-readme-rewrite",
+  "description": "Feature Specification: Skill and Command README Rewrite",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "command",
+    "readme",
+    "rewrite"
+  ],
+  "lastUpdated": "2026-03-26T10:02:43.634Z",
+  "specId": "033",
+  "folderSlug": "skill-command-readme-rewrite",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "26-03-26_11-02__created-spec-folder-033-for-rewriting-23-readmes.md"
+  ]
+}

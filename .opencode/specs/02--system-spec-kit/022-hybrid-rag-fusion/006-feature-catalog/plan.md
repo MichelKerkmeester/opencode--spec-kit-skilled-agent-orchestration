@@ -24,11 +24,11 @@ contextType: "general"
 |--------|-------|
 | **Language/Stack** | TypeScript (MCP server source), Markdown (catalog) |
 | **Framework** | Spec Kit Memory MCP server |
-| **Storage** | Historical snapshot: 180 snippets (2026-03-08); current tree: 189 snippets (2026-03-16) |
+| **Storage** | Historical snapshot: 180 snippets (2026-03-08); current tree: 222 snippets (2026-03-26) |
 | **Testing** | Agent-based verification, file-path validation |
 
 ### Overview
-Historical plan: verify ~180 feature snippets and investigate 55 known gaps, then synthesize a remediation manifest. Current-state addendum: classify 14 omitted current snippets and fold follow-up actions into the remediation plan.
+Historical plan: verify ~180 feature snippets and investigate 55 known gaps, then synthesize a remediation manifest. Current-state addendum: classify 14 omitted current snippets and fold follow-up actions into the remediation plan. Deep research addendum (2026-03-26): 12-agent cross-system gap analysis found 13 BOTH_MISSING capabilities, 28 undocumented env vars, 168 uncovered script files, and subsystem fragmentation requiring 56 new tasks (T200-T255).
 <!-- /ANCHOR:summary -->
 
 ---
@@ -138,6 +138,34 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 - [x] Audit and classify 14 omitted current snippets
 - [x] Add two follow-up remediation items for source-path normalization/correction
 - [x] Clarify tooling and taxonomy drift without rewriting March 8 historical metrics
+
+### Phase H: Deep Research Remediation (2026-03-26) — NEW
+
+**Method:** 12-agent deep research (7 round 1 + 5 round 2, ~3.3M tokens GPT-5.4 via Codex CLI)
+
+**Scope:** Cross-system gap analysis covering MCP tools, internal subsystems, scripts, config, constitutional memory, shared memory, feature flags, and SKILL.md/README.md/ARCHITECTURE.md documentation.
+
+**Approach:**
+1. **H1 (P0):** Create 13 catalog entries for BOTH_MISSING capabilities — `mcp_server/api/` surface (5 active modules), ops/setup/kpi scripts, config contracts, constitutional/nodes assets
+2. **H2 (P0):** Document 28 undocumented SPECKIT_* env vars in cat 19 (5 HIGH, 18 MEDIUM, 5 LOW); remove 1 stale flag
+3. **H3 (P0):** Create 2 unified subsystem entries — constitutional memory end-to-end lifecycle, shared memory architecture and source map
+4. **H4 (P0):** Fix ARCHITECTURE.md drift (2 phantom references), mark phantom tool as planned/deferred
+5. **H5 (P1):** Fix 6 inaccurate/broken snippets in cats 17 and 19 (source paths, missing flag rows)
+6. **H6 (P1):** Replace 2 stubs (cats 20/21) with real content + create 5 new entries
+7. **H7 (P1):** Create 12 new entries for scripts ecosystem (168 uncovered files across 7 zero-coverage directories)
+8. **H8 (P1):** Create 2 governance entries, misc fixes (shared-spaces README, meta reclassification, cache bug investigation)
+
+**Delegation model:** Parallelizable tasks (T200-T212, T235-T246) suitable for Codex agent delegation at `high` reasoning effort. Sequential tasks (T219-T221, T228-T234) require careful source verification.
+
+**Dependencies:** Phase H depends on Phase E (current-state alignment) and inherits Phase F remediation items. H1-H4 are independent and parallelizable. H5-H8 can proceed after H1-H4.
+
+```
+Phase E (Current-State) ──► Phase H (Deep Research Remediation)
+                              ├── H1: BOTH_MISSING (13 entries)     ──┐
+                              ├── H2: Feature Flags (28 vars)       ──┤
+                              ├── H3: Unified Subsystems (2 entries) ──├──► H5-H8 (Fixes + Scripts)
+                              └── H4: Drift Fixes (3 items)         ──┘
+```
 <!-- /ANCHOR:phases -->
 
 ---
@@ -191,6 +219,9 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 | B: Stream 1 (Verification) | A | C |
 | B: Stream 2 (Investigation) | A | C |
 | C: Synthesis | B (both streams) | D |
+| E: Current-State Addendum | D | H |
+| H1-H4: P0 Critical | E | H5-H8 |
+| H5-H8: P1 Required | H1-H4 | F |
 | D: Documentation | C | None |
 
 ---

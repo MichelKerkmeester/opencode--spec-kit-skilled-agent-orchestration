@@ -3722,22 +3722,38 @@ This split playbook keeps automated coverage references in three places:
 | Catalog only | Features | Atomic-save parity and partial-indexing hints | No dedicated scenario - covered by parent save-path tests for parity envelopes, partial-indexing hints, and orphan-row cleanup on governance failure | [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) |
 | Catalog only | Features | Final token metadata recomputation | No dedicated scenario - covered by parent context-response tests for final token sync and post-resume budget enforcement | [18--ux-hooks/11-final-token-metadata-recomputation.md](../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) |
 | Catalog only | Features | End-to-end success-envelope verification | No dedicated scenario - covered by parent category tests | [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) |
+| 190 | Features | Session recovery via /memory:continue | [190](01--retrieval/190-session-recovery-memory-continue.md) | [01--retrieval/11-session-recovery-memory-continue.md](../feature_catalog/01--retrieval/11-session-recovery-memory-continue.md) |
+| 125-map | Features | Audit phase mapping note (020) | — | [19--feature-flag-reference/08-audit-phase-020-mapping-note.md](../feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md) |
+| 020-stub | Features | Remediation and revalidation (stub) | — | [20--remediation-revalidation/01-category-stub.md](../feature_catalog/20--remediation-revalidation/01-category-stub.md) |
+| 021-stub | Features | Implement and remove deprecated (stub) | — | [21--implement-and-remove-deprecated-features/01-category-stub.md](../feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md) |
+| 188 | Features | AST-level section retrieval tool | [188](01--retrieval/188-ast-level-section-retrieval-tool.md) | [01--retrieval/07-ast-level-section-retrieval-tool.md](../feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md) |
+| 189 | Features | Tool-result extraction to working memory | [189](01--retrieval/189-tool-result-extraction-to-working-memory.md) | [01--retrieval/09-tool-result-extraction-to-working-memory.md](../feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md) |
+| 191 | Features | Namespace management CRUD tools | [191](02--mutation/191-namespace-management-crud-tools.md) | [02--mutation/07-namespace-management-crud-tools.md](../feature_catalog/02--mutation/07-namespace-management-crud-tools.md) |
+| 192 | Features | Correction tracking with undo | [192](02--mutation/192-correction-tracking-with-undo.md) | [02--mutation/09-correction-tracking-with-undo.md](../feature_catalog/02--mutation/09-correction-tracking-with-undo.md) |
+| 193 | Features | ANCHOR tags as graph nodes | [193](10--graph-signal-activation/193-anchor-tags-as-graph-nodes.md) | [10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md](../feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) |
+| 194 | Features | Causal neighbor boost and injection | [194](10--graph-signal-activation/194-causal-neighbor-boost-and-injection.md) | [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) |
+| 195 | Features | Temporal contiguity layer | [195](10--graph-signal-activation/195-temporal-contiguity-layer.md) | [10--graph-signal-activation/11-temporal-contiguity-layer.md](../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md) |
+| 196 | Features | Tool-level TTL cache | [196](11--scoring-and-calibration/196-tool-level-ttl-cache.md) | [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md) |
+| 197 | Features | Access-driven popularity scoring | [197](11--scoring-and-calibration/197-access-driven-popularity-scoring.md) | [11--scoring-and-calibration/16-access-driven-popularity-scoring.md](../feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md) |
+| 198 | Features | Temporal-structural coherence scoring | [198](11--scoring-and-calibration/198-temporal-structural-coherence-scoring.md) | [11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md](../feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) |
+| 199 | Features | Content-aware memory filename generation | [199](13--memory-quality-and-indexing/199-content-aware-memory-filename-generation.md) | [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) |
+| 200 | Features | Generation-time duplicate prevention | [200](13--memory-quality-and-indexing/200-generation-time-duplicate-and-empty-content-prevention.md) | [13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md](../feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) |
+| 201 | Features | Warm server / daemon mode | [201](14--pipeline-architecture/201-warm-server-daemon-mode.md) | [14--pipeline-architecture/15-warm-server-daemon-mode.md](../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md) |
+| 202 | Features | Backend storage adapter abstraction | [202](14--pipeline-architecture/202-backend-storage-adapter-abstraction.md) | [14--pipeline-architecture/16-backend-storage-adapter-abstraction.md](../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md) |
+| 203 | Features | Atomic write-then-index API | [203](14--pipeline-architecture/203-atomic-write-then-index-api.md) | [14--pipeline-architecture/18-atomic-write-then-index-api.md](../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md) |
+| 204 | Features | Embedding retry orchestrator | [204](14--pipeline-architecture/204-embedding-retry-orchestrator.md) | [14--pipeline-architecture/19-embedding-retry-orchestrator.md](../feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md) |
+| 205 | Features | 7-layer tool architecture metadata | [205](14--pipeline-architecture/205-7-layer-tool-architecture-metadata.md) | [14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md](../feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md) |
+| 206 | Features | Architecture boundary enforcement | [206](16--tooling-and-scripts/206-architecture-boundary-enforcement.md) | [16--tooling-and-scripts/02-architecture-boundary-enforcement.md](../feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md) |
+| 207 | Features | Watcher delete/rename cleanup | [207](16--tooling-and-scripts/207-watcher-delete-rename-cleanup.md) | [16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md](../feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md) |
+| 208 | Features | Template compliance contract enforcement | [208](16--tooling-and-scripts/208-template-compliance-contract-enforcement.md) | [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) |
+| 209 | Features | Shared post-mutation hook wiring | [209](18--ux-hooks/209-shared-post-mutation-hook-wiring.md) | [18--ux-hooks/01-shared-post-mutation-hook-wiring.md](../feature_catalog/18--ux-hooks/01-shared-post-mutation-hook-wiring.md) |
+| 210 | Features | Memory health autoRepair metadata | [210](18--ux-hooks/210-memory-health-autorepair-metadata.md) | [18--ux-hooks/02-memory-health-autorepair-metadata.md](../feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md) |
+| 211 | Features | Schema and type contract sync | [211](18--ux-hooks/211-schema-and-type-contract-synchronization.md) | [18--ux-hooks/04-schema-and-type-contract-synchronization.md](../feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md) |
+| 212 | Features | Mutation hook result contract expansion | [212](18--ux-hooks/212-mutation-hook-result-contract-expansion.md) | [18--ux-hooks/06-mutation-hook-result-contract-expansion.md](../feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md) |
+| 213 | Features | Mutation response UX payload exposure | [213](18--ux-hooks/213-mutation-response-ux-payload-exposure.md) | [18--ux-hooks/07-mutation-response-ux-payload-exposure.md](../feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md) |
+| 214 | Features | Atomic-save parity and indexing hints | [214](18--ux-hooks/214-atomic-save-parity-and-partial-indexing-hints.md) | [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) |
+| 215 | Features | Final token metadata recomputation | [215](18--ux-hooks/215-final-token-metadata-recomputation.md) | [18--ux-hooks/11-final-token-metadata-recomputation.md](../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) |
+| 216 | Features | End-to-end success-envelope verification | [216](18--ux-hooks/216-end-to-end-success-envelope-verification.md) | [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) |
 
 ---
 
-## 13. GEMINI OVERLAY SCENARIO PACKS
-
-Use these as execution bundles over the canonical per-feature matrix:
-
-1. Full-Pipeline Search Routing
-2. Cognitive Fast-Path and Triggers
-3. Memory Storage, Quality and Deduplication
-4. Chunking and Rendering
-5. Graph Traversals and Topology
-6. Feedback and System Intelligence
-7. Lifecycle, Folders and Administration
-8. Evaluation and Telemetry
-
-Integrated source sections:
-- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5-review-protocol-and-release-readiness)
-- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6-sub-agent-orchestration-and-wave-planning)

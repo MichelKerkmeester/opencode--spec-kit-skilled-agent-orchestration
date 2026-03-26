@@ -33,6 +33,7 @@ Operators run the exact prompt and command sequence for `159` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Feature catalog: [11--scoring-and-calibration/19-learned-stage2-weight-combiner.md](../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `shared/ranking/learned-combiner.ts`
 

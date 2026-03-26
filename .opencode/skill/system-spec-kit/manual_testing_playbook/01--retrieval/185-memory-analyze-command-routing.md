@@ -33,6 +33,7 @@ Operators run the exact prompt and command sequence for `185` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 - Command file: [.opencode/command/memory/analyze.md](../../../../command/memory/analyze.md)
 
 ---

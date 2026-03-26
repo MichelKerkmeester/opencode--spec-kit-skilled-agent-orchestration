@@ -71,6 +71,13 @@ Execute every mutation-category playbook scenario, record a PASS/FAIL/PARTIAL ve
 | `tasks.md` | Modify | Update task status as scenarios are executed |
 | `checklist.md` | Modify | Mark items complete with evidence references |
 | `implementation-summary.md` | Modify | Complete after all scenarios are verdicted |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 002 | Audit phase scenarios | See parent spec |
+
 <!-- /ANCHOR:scope -->
 
 ---

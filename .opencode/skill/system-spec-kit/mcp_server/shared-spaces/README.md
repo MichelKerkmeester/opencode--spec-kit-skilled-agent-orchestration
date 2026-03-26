@@ -2,6 +2,8 @@
 
 > Collaborative memory sharing between users and agents.
 
+NOTE: This directory contains documentation only. The actual shared-memory implementation lives in `handlers/shared-memory.ts` and `lib/collab/shared-spaces.ts`.
+
 ## Status
 
 Shared memory has been **enabled** for this workspace.

@@ -288,7 +288,7 @@ All exceptions must be registered in `scripts/evals/import-policy-allowlist.json
 
 ```typescript
 // scripts/core/workflow.ts
-import { searchMemories } from '@spec-kit/mcp-server/api/search';
+import { hybridSearchEnhanced } from '@spec-kit/mcp-server/api/search';
 // Imports through the public API boundary
 ```
 
@@ -324,7 +324,7 @@ import { adaptiveFusion } from '@spec-kit/shared/algorithms/adaptive-fusion';
 | Pattern | Import Path | When to Use |
 |---------|-------------|-------------|
 | Script needs search | `@spec-kit/mcp-server/api/search` | Any script calling search functionality |
-| Script needs scoring | `@spec-kit/mcp-server/api/scoring` | Any script calling scoring functionality |
+| Script needs scoring | `@spec-kit/mcp-server/api` | Any script calling scoring functionality |
 | Both need an algorithm | `@spec-kit/shared/algorithms/*` | Reusable logic for both zones |
 | Wrapper delegation | `../../../scripts/dist/*` | Compatibility wrappers in `mcp_server/scripts/` only |
 

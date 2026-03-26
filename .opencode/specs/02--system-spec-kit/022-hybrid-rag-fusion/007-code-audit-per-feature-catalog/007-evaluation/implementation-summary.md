@@ -91,6 +91,20 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T044: scripts/evals/run-ablation.ts (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `scripts/evals/run-ablation.ts` (182 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as operational script |
+
+Runtime entry point for controlled ablation studies. Requires `SPECKIT_ABLATION=true` environment flag. Loads production database, initializes vector index and hybrid search, selectively disables search channels (vector, BM25, FTS5, graph, trigger) and measures Recall@20 delta against full-pipeline baseline. Supports `--channels` and `--verbose` flags. Outputs formatted markdown report to stdout and JSON to `/tmp/ablation-result.json`, stores results to `speckit-eval.db`. The eval API surface (`mcp_server/api/eval.ts`) re-exports the ablation framework used by this script.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

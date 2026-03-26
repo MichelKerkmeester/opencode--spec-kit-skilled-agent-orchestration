@@ -13,6 +13,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "26-03-26_10-20__deep-review-of-feature-catalog-manual-testing.md"
+  ]
 }

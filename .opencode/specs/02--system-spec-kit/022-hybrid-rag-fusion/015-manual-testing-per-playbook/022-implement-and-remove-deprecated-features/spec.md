@@ -74,6 +74,13 @@ Provide a single implement-and-remove-deprecated-features-focused specification 
 | `checklist.md` | Create | Phase 022 verification gates and evidence checklist |
 | `implementation-summary.md` | Create | Packet scaffold status until manual execution completes |
 | `description.json` | Create | Phase 022 metadata |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 022 | Audit phase scenarios | See parent spec |
+
 <!-- /ANCHOR:scope -->
 
 ---

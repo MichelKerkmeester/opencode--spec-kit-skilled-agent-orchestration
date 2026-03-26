@@ -117,8 +117,54 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:traceability -->
+## Traceability Remediation (Deep Review 2026-03-26)
+
+Deep review verdict: CONDITIONAL. See [`review-report.md`](review-report.md).
+
+### WS-1: Missing Playbook Scenarios (P0)
+
+- [ ] CHK-100 [P0] All 29 true-gap features have new playbook scenario files created
+- [ ] CHK-101 [P0] Each new scenario follows established template (title, overview, current reality, references, metadata)
+- [ ] CHK-102 [P0] Each new scenario includes `- Feature catalog:` back-reference in Section 4
+
+### WS-2: Feature Catalog Back-References (P1)
+
+- [ ] CHK-110 [P1] 25 covered-but-unlinked scenarios (IDs 156-180) have `Feature catalog:` added
+- [ ] CHK-111 [P1] 8 M-prefixed scenarios (M-001 through M-011) have `Feature catalog:` added
+- [ ] CHK-112 [P1] 5 PHASE-prefixed scenarios have `Feature catalog:` added
+- [ ] CHK-113 [P1] 7 remaining orphan scenarios (125, 182-187) have `Feature catalog:` added
+- [ ] CHK-114 [P1] Programmatic check: 0 playbook scenarios missing `Feature catalog:` back-ref
+
+### WS-3: Section 12 Cross-Reference Index (P1)
+
+- [ ] CHK-120 [P1] 4 existing-but-missing entries added to Section 12 (entries 11, 08-mapping, 20-stub, 21-stub)
+- [ ] CHK-121 [P1] 29 new entries from WS-1 added to Section 12
+- [ ] CHK-122 [P1] Section 12 entry count matches total feature catalog entries (222+)
+- [ ] CHK-123 [P1] All Section 12 links verified (0 broken)
+
+### WS-4: Scenario Registry Tables (P1)
+
+- [ ] CHK-130 [P1] 17 spec phases have `### Scenario Registry` table added
+- [ ] CHK-131 [P1] Each registry maps scenario IDs to feature catalog paths
+- [ ] CHK-132 [P1] All 22 spec phases now have Scenario Registry (100% coverage)
+
+### WS-5: Final Validation (P0)
+
+- [ ] CHK-140 [P0] Programmatic cross-check: 0 feature catalog entries without playbook scenario
+- [ ] CHK-141 [P0] Programmatic cross-check: 0 playbook scenarios without FC back-reference
+- [ ] CHK-142 [P0] Section 12 entry count = feature catalog entry count
+- [ ] CHK-143 [P0] All 22 spec phases have Scenario Registry tables
+- [ ] CHK-144 [P1] Parent spec.md counts updated to reflect new totals
+- [ ] CHK-145 [P1] `validate.sh --recursive` passes on updated tree
+<!-- /ANCHOR:traceability -->
+
+---
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
+
+### Phase 1-3 (Test Execution) — VERIFIED
 
 | Category | Total | Verified |
 |----------|-------|----------|
@@ -127,12 +173,21 @@ contextType: "general"
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-22
+
+### Phase 4 (Traceability Remediation) — PENDING
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 5 | 0/5 |
+| P1 Items | 10 | 0/10 |
+
+**Deep Review Date**: 2026-03-26
 <!-- /ANCHOR:summary -->
 
 ---
 
 <!--
-Level 2 checklist - Umbrella verification for 24-subdirectory manual testing
+Level 2 checklist - Umbrella verification for 24-subdirectory manual testing + traceability remediation
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->

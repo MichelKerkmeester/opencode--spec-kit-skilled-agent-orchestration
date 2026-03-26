@@ -1,285 +1,216 @@
 ---
-title: "Figma MCP"
-description: "Programmatic access to Figma design files through two supported paths: the Official Figma MCP (recommended) and Code Mode with figma-developer-mcp."
+title: "mcp-figma: Figma Design File Access"
+description: "Programmatic access to Figma design files via MCP, providing 18 tools for file retrieval, image export, component and style extraction, team management, and collaborative commenting."
 trigger_phrases:
-  - "figma"
-  - "design files"
-  - "figma mcp"
+  - figma file
+  - design file
+  - get design
+  - figma document
+  - export image
+  - export png
+  - export svg
+  - render node
+  - figma components
+  - design system
+  - component library
+  - design tokens
+  - figma styles
+  - team projects
+  - design comments
+  - figma feedback
 ---
 
-# Figma MCP
+# mcp-figma: Figma Design File Access
 
-> Programmatic access to Figma design files through two supported paths: the **Official Figma MCP** (recommended) and **Code Mode + `figma-developer-mcp`**. Get files, export images, extract components and styles, manage team projects and handle collaborative comments.
-
-> **Navigation**:
-> - New to Figma MCP? Start with [Quick Start](#2--quick-start)
-> - Need tool overview? See [Features](#4--features)
-> - Configuration help? See [Configuration](#5--configuration)
-> - Troubleshooting? See [Troubleshooting](#9--troubleshooting)
-
-[![npm](https://img.shields.io/npm/v/figma-developer-mcp.svg)](https://www.npmjs.com/package/figma-developer-mcp)
-[![MCP](https://img.shields.io/badge/MCP-compatible-blue.svg)](https://modelcontextprotocol.io)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+> Programmatic access to Figma design files through 18 specialized tools covering file retrieval, image export, component and style extraction, and collaboration.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. NAMING CONVENTION](#6--naming-convention)
-- [7. USAGE EXAMPLES](#7--usage-examples)
-- [8. CODE MODE TOOLS (18 TOTAL)](#8--code-mode-tools-18-total)
-- [9. TROUBLESHOOTING](#9--troubleshooting)
-- [10. FAQ](#10--faq)
-- [11. RELATED DOCUMENTS](#11--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
+<!-- /ANCHOR:table-of-contents -->
 
 ---
-
-<!-- /ANCHOR:table-of-contents -->
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What is Figma MCP?
+### What This Skill Does
 
-Figma MCP gives AI assistants programmatic access to Figma's design platform through two supported paths: the Official Figma MCP for direct HTTP/OAuth setup, and Code Mode with `figma-developer-mcp` for local stdio workflows. Both paths support reading design files, exporting images, extracting components and styles, managing team projects, and handling collaborative comments.
+The `mcp-figma` skill gives AI assistants direct read access to Figma design files. It provides 18 tools organized across six domains: file management, image export, component extraction, style extraction, team and project navigation, and collaborative commenting. All tools follow the naming pattern `figma.figma_{tool_name}` and are called through the Code Mode `call_tool_chain()` interface for token-efficient, on-demand access.
+
+Two integration paths are available. Option A uses the Official Figma MCP, an HTTP remote server at `mcp.figma.com` that requires no local installation and authenticates via OAuth in the browser. Option B uses Framelink (`figma-developer-mcp`), a locally installed stdio transport that authenticates with a Personal Access Token and integrates directly with Code Mode. Option A is recommended for most users because it works immediately with no package to install.
+
+This skill acts as a design-to-code bridge. It does not write to Figma or modify designs. Its purpose is to read file structure, export rendered assets, extract tokens and components for documentation, and participate in comment threads during design review.
 
 ### Key Statistics
 
-| Category | Count | Details |
-|----------|-------|---------|
-| Supported Paths | 2 | Official Figma MCP and Code Mode + `figma-developer-mcp` |
-| Recommended Path | 1 | Official Figma MCP |
-| Code Mode Tool Surface | 18 | Via `figma-developer-mcp` |
-| Authentication | 2 | OAuth (Official) or PAT (Code Mode) |
+| Metric | Value |
+| --- | --- |
+| Total tools | 18 |
+| High-priority tools | 5 |
+| Medium-priority tools | 7 |
+| Low-priority tools | 6 |
+| Export formats | PNG, JPG, SVG, PDF |
+| Scale range | 0.01x to 4x |
+| Skill version | 1.0.7.0 |
 
-### Supported Access Paths
+### How This Compares
 
-| Feature | Official Figma MCP | Code Mode + `figma-developer-mcp` |
-|---------|---------------------|----------------------------------|
-| **Setup** | Add HTTP MCP server | Configure `.utcp_config.json` |
-| **Authentication** | OAuth browser login | Figma Personal Access Token |
-| **Node.js** | Not required | 18+ required |
-| **Best For** | Recommended default path | Existing Code Mode workflows |
-| **Access Method** | Native MCP client | `call_tool_chain()` |
+| Capability | Option A (Official) | Option B (Framelink) |
+| --- | --- | --- |
+| Installation required | No | Yes (npx) |
+| Authentication | OAuth (browser) | Personal Access Token |
+| Transport | HTTP | stdio |
+| Code Mode integration | Not native | Direct via `.utcp_config.json` |
+| Recommended for | Getting started fast | Full Code Mode workflows |
 
 ### Key Features
 
 | Feature | Description |
-|---------|-------------|
-| **Design File Access** | Retrieve complete Figma files with configurable depth |
-| **Node Extraction** | Get specific nodes by ID for targeted data retrieval |
-| **Image Export** | Render nodes as PNG, JPG, SVG or PDF at custom scales |
-| **Component Discovery** | List and retrieve components from files or teams |
-| **Style Extraction** | Access design tokens (colors, typography, effects) |
-| **Collaboration** | Read and post comments on design files |
-| **Team Management** | Navigate team projects and files |
-
-### Supported Sources
-
-| Property | Value |
-|----------|-------|
-| **Official Server** | `https://mcp.figma.com/mcp` |
-| **Official Docs** | [Figma MCP Server](https://developers.figma.com/docs/figma-mcp-server/) |
-| **Code Mode Package** | [`figma-developer-mcp`](https://www.npmjs.com/package/figma-developer-mcp) |
-| **Code Mode Tool Surface** | 18 tools |
-
-### Requirements
-
-| Requirement | Official Path | Code Mode Path |
-|-------------|---------------|----------------|
-| AI Client | MCP-compatible client | Code Mode / `mcp-code-mode` available |
-| Authentication | Figma account for OAuth | Figma Personal Access Token |
-| Node.js | Not required | 18+ |
-
----
+| --- | --- |
+| File retrieval | Get complete file structure, specific nodes, version history |
+| Image export | Render nodes as PNG, JPG, SVG, or PDF at configurable scale |
+| Component extraction | List all components, get metadata, access team libraries |
+| Style extraction | Pull colors, typography, effects, and grid styles as tokens |
+| Team navigation | Browse team projects, list project files with pagination |
+| Commenting | Read comments, post feedback, reply to threads, delete comments |
+| Auth verification | Check API key status before operations |
 
 <!-- /ANCHOR:overview -->
+
+---
 
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
 
-### Prerequisites
+**Step 1: Choose your path.** For most users, Option A (Official Figma MCP) is the fastest path. It needs no local installation. For Code Mode integration with `call_tool_chain()`, use Option B (Framelink). See the [Install Guide](./INSTALL_GUIDE.md) for full configuration steps.
 
-- **Option A - Official Figma MCP (recommended):** An MCP-compatible client and a Figma account for OAuth login
-- **Option B - Code Mode + `figma-developer-mcp`:** Code Mode configured in `.utcp_config.json` plus a Figma Personal Access Token
+**Step 2: Get your file key.** Open any Figma file in the browser. The file key is the alphanumeric segment in the URL between `/file/` and the next `/`:
 
-### 30-Second Setup
-
-**Option A - Official Figma MCP (recommended)**
-1. Add the official HTTP server config shown in [Configuration](#5--configuration).
-2. Restart the AI client.
-3. Complete the browser-based OAuth prompt on first use.
-
-**Option B - Code Mode + `figma-developer-mcp`**
-1. Add the Figma provider to `.utcp_config.json`.
-2. Add the token to `.env`.
-3. Restart the AI client.
-
-### Verify Installation
-
-**Official path:** Trigger the first Figma request from the MCP client and confirm the browser OAuth flow completes successfully.
-
-**Code Mode path:**
-```typescript
-// Via Code Mode - discover Figma tools
-search_tools({ task_description: "figma" });
-
-// Expected output: List of figma.figma_* tools (18 total)
+```
+https://www.figma.com/file/ABC123xyz/My-Design
+                           └─────────┘
+                           This is your fileKey
 ```
 
-### First Use
-
-For the Official path, use the MCP client's normal Figma tool invocation after OAuth completes. The example below shows the Code Mode path.
+**Step 3: Verify the connection (Code Mode path).** Run the auth check before any other operation:
 
 ```typescript
-// Get a Figma file
 call_tool_chain({
   code: `
-    const file = await figma.figma_get_file({
-      fileKey: "YOUR_FILE_KEY"  // From Figma URL
-    });
+    const status = await figma.figma_check_api_key({});
+    console.log('Auth status:', status);
+    return status;
+  `
+});
+```
+
+**Step 4: Fetch a file.** Once auth passes, retrieve the file structure:
+
+```typescript
+call_tool_chain({
+  code: `
+    const file = await figma.figma_get_file({ fileKey: "ABC123xyz" });
     console.log('File:', file.name);
-    console.log('Pages:', file.document.children.length);
+    console.log('Pages:', file.document.children.map(p => p.name));
     return file;
   `
 });
 ```
 
-### Finding Your File Key
-
-The file key is in your Figma URL:
-```
-https://www.figma.com/file/ABC123xyz/My-Design-File
-                           └─────────┘
-                           This is your fileKey
-```
-
----
-
 <!-- /ANCHOR:quick-start -->
 
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
+---
 
-```
-.opencode/skill/mcp-figma/
-├── SKILL.md                    # AI agent instructions
-├── README.md                   # This file (user documentation)
-├── references/
-│   ├── tool_reference.md       # All 18 tools documented
-│   └── quick_start.md          # Getting started guide
-└── assets/
-    └── tool_categories.md      # Tool priority categorization
-```
+<!-- ANCHOR:features -->
+## 3. FEATURES
 
-### Key Files
+### 3.1 FEATURE HIGHLIGHTS
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | AI agent activation triggers and workflow guidance |
-| `references/tool_reference.md` | Complete tool documentation with all 18 tools |
-| `references/quick_start.md` | Getting started in 5 minutes |
-| `assets/tool_categories.md` | HIGH/MEDIUM/LOW categorization |
+The file access tools form the foundation of every workflow. `figma_get_file` returns the complete document tree including all pages, frames, and nested nodes. When working with large files, `figma_get_file_nodes` lets you fetch only the specific node IDs you need, which reduces response size and speeds up processing. You can also request a specific historical version using the `version` parameter, which makes it possible to compare designs across revisions.
+
+Image export works at the node level. `figma_get_image` accepts an array of node IDs and returns a map of each ID to a hosted image URL. You control the output format (PNG, JPG, SVG, PDF) and the scale factor from 0.01 to 4x. For high-density displays, passing `scale: 2` gives you a 2x asset without any additional tooling. `figma_get_image_fills` complements this by returning URLs for images that are already embedded inside the design as fill layers, which is useful when you need to extract photos or textures placed directly in the canvas.
+
+Component and style tools power design system documentation workflows. `figma_get_file_components` returns every published component in the file with its name, key, and node ID. `figma_get_file_styles` returns all styles categorized by type: FILL for colors, TEXT for typography, EFFECT for shadows and blurs, and GRID for layout grids. These two tools together give you the raw material to generate accurate design token documentation from the source of truth. Team-scoped variants of both tools (`figma_get_team_components`, `figma_get_team_styles`) extend that coverage across an entire organization's shared libraries, with pagination support for large teams.
+
+The collaboration tools cover the full comment lifecycle. You can read all comments on a file, post new feedback anchored to a specific node position, reply to an existing thread by passing a `comment_id`, and delete outdated comments. This makes it possible to automate parts of the design review process, such as posting a structured accessibility checklist as a comment after analyzing a frame.
+
+### 3.2 FEATURE REFERENCE
+
+#### Tool Categories
+
+| Category | Tools | Priority |
+| --- | --- | --- |
+| File Management | `get_file`, `get_file_nodes`, `set_api_key`, `check_api_key` | HIGH / LOW |
+| Images | `get_image`, `get_image_fills` | HIGH / MEDIUM |
+| Components | `get_file_components`, `get_component`, `get_team_components`, `get_team_component_sets` | HIGH / MEDIUM / LOW |
+| Styles | `get_file_styles`, `get_style`, `get_team_styles` | HIGH / MEDIUM / LOW |
+| Team and Projects | `get_team_projects`, `get_project_files` | MEDIUM |
+| Comments | `get_comments`, `post_comment`, `delete_comment` | MEDIUM / LOW |
+
+#### High-Priority Tools (5 tools)
+
+| Tool | Purpose | Required Parameters |
+| --- | --- | --- |
+| `figma_get_file` | Full file structure | `fileKey` |
+| `figma_get_file_nodes` | Specific nodes by ID | `fileKey`, `node_ids` |
+| `figma_get_image` | Render nodes as images | `fileKey`, `ids` |
+| `figma_get_file_components` | All components in file | `fileKey` |
+| `figma_get_file_styles` | All styles in file | `fileKey` |
+
+#### Export Format Options
+
+| Format | Use Case | Notes |
+| --- | --- | --- |
+| `png` | Raster assets, previews | Supports scale 0.01-4x |
+| `jpg` | Photos, large backgrounds | Smaller file size than PNG |
+| `svg` | Icons, vector assets | Supports `svg_include_id` option |
+| `pdf` | Print-ready exports | Full page layout |
+
+#### Pagination Parameters (team tools)
+
+| Parameter | Type | Purpose |
+| --- | --- | --- |
+| `page_size` | number | Items per page (default 30) |
+| `cursor` | string | Opaque token for the next page |
+
+<!-- /ANCHOR:features -->
 
 ---
+
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
+
+```
+mcp-figma/
+  SKILL.md              # Skill instructions, routing logic, rules
+  README.md             # This file
+  INSTALL_GUIDE.md      # Full setup guide for Option A and Option B
+  references/
+    tool_reference.md   # Complete reference for all 18 tools
+```
 
 <!-- /ANCHOR:structure -->
 
-<!-- ANCHOR:features -->
-## 4. FEATURES
-
-### File Management
-
-Access and navigate Figma design files.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_file` | Get complete file by key |
-| `figma.figma_get_file_nodes` | Get specific nodes by ID |
-| `figma.figma_set_api_key` | Set API key (alternative to env) |
-| `figma.figma_check_api_key` | Verify API key is configured |
-
-### Image Export
-
-Render design elements as images.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_image` | Export nodes as PNG/JPG/SVG/PDF |
-| `figma.figma_get_image_fills` | Get URLs for embedded images |
-
-**Supported Formats:**
-- `png` - Raster, best for web/app assets
-- `jpg` - Raster, smaller file size
-- `svg` - Vector, scalable graphics
-- `pdf` - Vector, print-ready
-
-**Scale Options:** 0.01 to 4x (default: 1x)
-
-### Components
-
-Extract component information for design systems.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_file_components` | List all components in a file |
-| `figma.figma_get_component` | Get specific component by key |
-| `figma.figma_get_team_components` | List team-wide components |
-| `figma.figma_get_team_component_sets` | List team component sets (variants) |
-
-### Styles (Design Tokens)
-
-Extract design tokens for implementation.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_file_styles` | List all styles in a file |
-| `figma.figma_get_style` | Get specific style by key |
-| `figma.figma_get_team_styles` | List team-wide styles |
-
-**Style Types:**
-- `FILL` - Color styles
-- `TEXT` - Typography styles
-- `EFFECT` - Shadow/blur styles
-- `GRID` - Layout grid styles
-
-### Team & Projects
-
-Navigate team structure and projects.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_team_projects` | List projects in a team |
-| `figma.figma_get_project_files` | List files in a project |
-
-### Comments
-
-Collaborate on designs programmatically.
-
-| Tool | Purpose |
-|------|---------|
-| `figma.figma_get_comments` | Read all comments on a file |
-| `figma.figma_post_comment` | Post a new comment |
-| `figma.figma_delete_comment` | Delete a comment |
-
-See [references/tool_reference.md](./references/tool_reference.md) for complete tool documentation.
-
 ---
-
-<!-- /ANCHOR:features -->
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
 
-### Official Figma MCP Configuration (Recommended)
+### Option A: Official Figma MCP (Recommended)
 
-Add the official HTTP MCP server to the client configuration. Example for OpenCode (`opencode.json`):
+Add the HTTP server to your MCP configuration. No package installation is required. Authentication uses OAuth via a browser login flow on first use.
 
 ```json
 {
@@ -292,11 +223,9 @@ Add the official HTTP MCP server to the client configuration. Example for OpenCo
 }
 ```
 
-On first use, the client opens a browser window for OAuth authorization.
+### Option B: Framelink via Code Mode
 
-### Code Mode + figma-developer-mcp Configuration
-
-Add to `.utcp_config.json`:
+Add the Figma provider to `.utcp_config.json` for Code Mode integration. This uses the `figma-developer-mcp` package over stdio.
 
 ```json
 {
@@ -311,7 +240,7 @@ Add to `.utcp_config.json`:
             "command": "npx",
             "args": ["-y", "figma-developer-mcp", "--stdio"],
             "env": {
-              "FIGMA_API_KEY": "figd_your_token_here"
+              "FIGMA_API_KEY": "${FIGMA_API_KEY}"
             }
           }
         }
@@ -321,536 +250,196 @@ Add to `.utcp_config.json`:
 }
 ```
 
-> **Important**: Code Mode does NOT support `${VAR}` env substitution. You must hardcode the API key directly in `.utcp_config.json`. Keep this file secure and do not commit to version control if it contains real API keys.
+### Environment Variable (Option B)
 
-### Environment Variables (Code Mode path)
-
-Add to `.env`:
+Code Mode prefixes all environment variable names with the provider's `name` field from `.utcp_config.json`. For a provider named `figma`, set the following in your `.env` file:
 
 ```bash
-# Figma API Key
-# Get from: Figma > Settings > Account > Personal access tokens
-#
-# CRITICAL: Code Mode requires PREFIXED variable names!
-# The prefix is the "name" field from your .utcp_config.json (e.g., "figma")
 figma_FIGMA_API_KEY=figd_your_token_here
 ```
 
-> **Code Mode Naming**: Code Mode prefixes all env vars with `{manual_name}_`. If your config has `"name": "figma"`, use `figma_FIGMA_API_KEY` in your `.env` file, NOT `FIGMA_API_KEY`.
-
-> **Security**: Never commit `.env` to version control. Add it to `.gitignore`.
-
-### Getting Your Figma Token (Code Mode path)
-
-1. Open [Figma Settings](https://www.figma.com/settings)
-2. Scroll to **Personal access tokens**
-3. Click **Generate new token**
-4. Give it a description (e.g., "MCP Integration")
-5. Copy the token immediately (you will not see it again)
-6. Add to your `.env` file
-
-### Code Mode Client Configurations
-
-**OpenCode** (`opencode.json`):
-```json
-{
-  "mcp": {
-    "code-mode": {
-      "type": "local",
-      "command": ["npx", "-y", "utcp-mcp"],
-      "env": {
-        "UTCP_CONFIG_PATH": ".utcp_config.json"
-      }
-    }
-  }
-}
-```
-
-**Claude Desktop** (`claude_desktop_config.json`):
-```json
-{
-  "mcpServers": {
-    "code-mode": {
-      "command": "npx",
-      "args": ["-y", "utcp-mcp"],
-      "env": {
-        "UTCP_CONFIG_PATH": "/path/to/.utcp_config.json"
-      }
-    }
-  }
-}
-```
-
----
+Using `FIGMA_API_KEY=figd_...` without the prefix will cause a "Variable not found" error. Generate your Personal Access Token in Figma under Settings, then Account Settings, then Personal Access Tokens.
 
 <!-- /ANCHOR:configuration -->
 
-<!-- ANCHOR:naming-convention -->
-## 6. NAMING CONVENTION
-
-### Code Mode Naming Pattern
-
-**The #1 most common error** when using the Code Mode + `figma-developer-mcp` path is wrong function names. All tool calls MUST follow this pattern:
-
-```
-figma.figma_{tool_name}
-```
-
-### Examples
-
-| Tool | Correct Call |
-|------|--------------|
-| get_file | `figma.figma_get_file({...})` |
-| get_image | `figma.figma_get_image({...})` |
-| get_file_components | `figma.figma_get_file_components({...})` |
-| post_comment | `figma.figma_post_comment({...})` |
-
-### Common Mistakes
-
-```typescript
-// WRONG - missing figma_ prefix
-await figma.get_file({ fileKey: "abc" });
-
-// WRONG - dot instead of underscore
-await figma.figma.get_file({ fileKey: "abc" });
-
-// WRONG - camelCase
-await figma.figma_getFile({ fileKey: "abc" });
-
-// CORRECT
-await figma.figma_get_file({ fileKey: "abc" });
-```
-
-### Discovery Methods (Code Mode path)
-
-```typescript
-// Use these to find exact tool names:
-search_tools({ task_description: "figma components" });
-list_tools();  // Filter for 'figma'
-tool_info({ tool_name: "figma.figma_get_file" });
-```
-
 ---
 
-<!-- /ANCHOR:naming-convention -->
-
 <!-- ANCHOR:usage-examples -->
-## 7. USAGE EXAMPLES
+## 6. USAGE EXAMPLES
 
-### Example 1: Get Design File Structure
+### Get File Structure and List Pages
 
 ```typescript
 call_tool_chain({
   code: `
     const file = await figma.figma_get_file({
       fileKey: "abc123XYZ",
-      depth: 1
+      depth: 2
     });
-    
-    console.log('File:', file.name);
-    console.log('Last modified:', file.lastModified);
-    
-    file.document.children.forEach(page => {
-      console.log('Page:', page.name);
-      page.children?.forEach(frame => {
-        console.log('  Frame:', frame.name);
-      });
-    });
-    
-    return { name: file.name, pages: file.document.children.length };
+    const pages = file.document.children.map(p => ({
+      id: p.id,
+      name: p.name
+    }));
+    console.log('Pages:', pages);
+    return { name: file.name, pages };
   `
 });
 ```
 
-### Example 2: Export Components as PNG
+### Export Multiple Nodes as PNG at 2x
 
 ```typescript
 call_tool_chain({
   code: `
-    const fileKey = "abc123XYZ";
-    
-    // Get components
-    const components = await figma.figma_get_file_components({ fileKey });
-    const componentList = Object.values(components.meta.components);
-    
-    // Export first 5 as PNG at 2x
-    const nodeIds = componentList.slice(0, 5).map(c => c.node_id);
     const images = await figma.figma_get_image({
-      fileKey,
-      ids: nodeIds,
+      fileKey: "abc123XYZ",
+      ids: ["1:234", "1:235", "1:236"],
       format: "png",
       scale: 2
     });
-    
-    console.log('Exported', Object.keys(images.images).length, 'images');
     return images;
-  `,
-  timeout: 60000
-});
-```
-
-### Example 3: Extract Design Tokens
-
-```typescript
-call_tool_chain({
-  code: `
-    const styles = await figma.figma_get_file_styles({
-      fileKey: "abc123XYZ"
-    });
-    
-    // Group by type
-    const tokens = { FILL: [], TEXT: [], EFFECT: [], GRID: [] };
-    
-    Object.values(styles.meta.styles).forEach(style => {
-      if (tokens[style.style_type]) {
-        tokens[style.style_type].push({
-          name: style.name,
-          key: style.key
-        });
-      }
-    });
-    
-    console.log('Colors:', tokens.FILL.length);
-    console.log('Typography:', tokens.TEXT.length);
-    console.log('Effects:', tokens.EFFECT.length);
-    
-    return tokens;
   `
 });
 ```
 
-### Example 4: Post Review Comment
+### Extract Components and Styles Together
 
 ```typescript
 call_tool_chain({
   code: `
-    const comment = await figma.figma_post_comment({
-      fileKey: "abc123XYZ",
-      message: "Approved for development",
-      client_meta: {
-        node_id: "1:234"  // Attach to specific node
-      }
-    });
-    
-    console.log('Comment posted:', comment.id);
-    return comment;
+    const [components, styles] = await Promise.all([
+      figma.figma_get_file_components({ fileKey: "abc123XYZ" }),
+      figma.figma_get_file_styles({ fileKey: "abc123XYZ" })
+    ]);
+
+    const componentList = components.meta.components.map(c => ({
+      name: c.name,
+      key: c.key,
+      nodeId: c.node_id
+    }));
+
+    const styleList = styles.meta.styles.map(s => ({
+      name: s.name,
+      type: s.style_type,
+      key: s.key
+    }));
+
+    return { components: componentList, styles: styleList };
   `
 });
 ```
-
-### Example 5: Multi-Tool Workflow
-
-```typescript
-call_tool_chain({
-  code: `
-    const fileKey = "abc123XYZ";
-    
-    // 1. Get file info
-    const file = await figma.figma_get_file({ fileKey, depth: 1 });
-    console.log('File:', file.name);
-    
-    // 2. Get components
-    const components = await figma.figma_get_file_components({ fileKey });
-    const componentCount = Object.keys(components.meta.components).length;
-    console.log('Components:', componentCount);
-    
-    // 3. Get styles
-    const styles = await figma.figma_get_file_styles({ fileKey });
-    const styleCount = Object.keys(styles.meta.styles).length;
-    console.log('Styles:', styleCount);
-    
-    // 4. Export hero component as SVG
-    const heroComponent = Object.values(components.meta.components)
-      .find(c => c.name.toLowerCase().includes('hero'));
-    
-    if (heroComponent) {
-      const images = await figma.figma_get_image({
-        fileKey,
-        ids: [heroComponent.node_id],
-        format: "svg"
-      });
-      console.log('Hero exported:', images.images);
-    }
-    
-    return {
-      file: file.name,
-      components: componentCount,
-      styles: styleCount
-    };
-  `,
-  timeout: 60000
-});
-```
-
----
 
 <!-- /ANCHOR:usage-examples -->
 
-<!-- ANCHOR:mcp-tools -->
-## 8. CODE MODE TOOLS (18 TOTAL)
-
-### Tool Priority Classification
-
-| Priority | Count | Tools |
-|----------|-------|-------|
-| **HIGH** | 5 | Core design access |
-| **MEDIUM** | 7 | Situational use |
-| **LOW** | 6 | Rarely needed |
-
-### HIGH Priority Tools
-
-| Tool | Purpose | Key Parameters |
-|------|---------|----------------|
-| `figma_get_file` | Get complete file | `fileKey`, `depth?`, `version?` |
-| `figma_get_file_nodes` | Get specific nodes | `fileKey`, `node_ids[]` |
-| `figma_get_image` | Export as image | `fileKey`, `ids[]`, `format?`, `scale?` |
-| `figma_get_file_components` | List components | `fileKey` |
-| `figma_get_file_styles` | List styles | `fileKey` |
-
-### MEDIUM Priority Tools
-
-| Tool | Purpose | Key Parameters |
-|------|---------|----------------|
-| `figma_get_image_fills` | Get embedded images | `fileKey` |
-| `figma_get_comments` | Read comments | `fileKey` |
-| `figma_post_comment` | Post comment | `fileKey`, `message` |
-| `figma_get_team_projects` | List team projects | `team_id` |
-| `figma_get_project_files` | List project files | `project_id` |
-| `figma_get_component` | Get one component | `key` |
-| `figma_get_style` | Get one style | `key` |
-
-### LOW Priority Tools
-
-| Tool | Purpose | Key Parameters |
-|------|---------|----------------|
-| `figma_set_api_key` | Set API key | `api_key` |
-| `figma_check_api_key` | Verify key | (none) |
-| `figma_delete_comment` | Delete comment | `fileKey`, `comment_id` |
-| `figma_get_team_components` | Team components | `team_id` |
-| `figma_get_team_component_sets` | Team component sets | `team_id` |
-| `figma_get_team_styles` | Team styles | `team_id` |
-
-See [references/tool_reference.md](./references/tool_reference.md) for complete parameter documentation.
-
 ---
-
-<!-- /ANCHOR:mcp-tools -->
 
 <!-- ANCHOR:troubleshooting -->
-## 9. TROUBLESHOOTING
+## 7. TROUBLESHOOTING
 
-### Common Issues
+### "Invalid token" or 401 Unauthorized
 
-Most issues below apply to the Code Mode + `figma-developer-mcp` path. Official-path issues usually appear during MCP connection setup or browser OAuth.
+**What you see:** API calls fail with a 401 status or an "Invalid token" message.
 
-#### Tool is not a function
+**Common causes:** The Personal Access Token has expired or was revoked. The `figma_FIGMA_API_KEY` variable is missing the `figma_` prefix required by Code Mode.
 
-**Symptom**: `TypeError: figma.get_file is not a function`
-
-**Cause**: Missing `figma_` prefix in tool name.
-
-**Solution**:
-```typescript
-// Wrong
-await figma.get_file({ fileKey: "abc" });
-
-// Correct
-await figma.figma_get_file({ fileKey: "abc" });
-```
-
-#### 403 Forbidden / Authentication Failed (Code Mode path)
-
-**Symptom**: `403 Forbidden` or `Invalid token`
-
-**Cause**: Invalid or expired Figma token.
-
-**Solution**:
-1. Check token in `.env`:
-   ```bash
-   grep FIGMA .env
-   ```
-2. Verify token format (should start with `figd_`)
-3. Regenerate token in Figma Settings if expired
-4. Restart AI client after changing `.env`
-
-#### 404 Not Found
-
-**Symptom**: `404 Not Found` when accessing a file
-
-**Cause**: Invalid file key or no access.
-
-**Solution**:
-1. Verify file key from URL:
-   ```
-   https://www.figma.com/file/ABC123xyz/Design
-                              └─────────┘
-                              Use this part
-   ```
-2. Check file permissions in Figma
-3. Ensure file was not deleted or moved
-
-#### Rate Limiting
-
-**Symptom**: `429 Too Many Requests`
-
-**Cause**: Exceeded Figma API rate limits.
-
-**Solution**:
-1. Wait and retry (limits reset quickly)
-2. Reduce request frequency
-3. Cache responses when possible
-4. Use pagination for large datasets
-
-#### Environment Variable Not Found (Code Mode path)
-
-**Symptom**: `Environment variable FIGMA_API_KEY not found` or `Variable 'figma_FIGMA_API_KEY' referenced in call template configuration not found`
-
-**Cause**: Token not in `.env`, `.env` not loaded or wrong variable name format.
-
-**Solution**:
-1. Check `.env` file exists
-2. **Use prefixed variable name for Code Mode**:
-   ```bash
-   # WRONG (non-prefixed)
-   FIGMA_API_KEY=figd_...
-
-   # CORRECT (prefixed with manual name)
-   figma_FIGMA_API_KEY=figd_...
-   ```
-3. Check `.utcp_config.json` references `.env`:
-   ```json
-   "load_variables_from": [
-     { "variable_loader_type": "dotenv", "env_file_path": ".env" }
-   ]
-   ```
-4. Restart AI client
-
-### Quick Fixes
-
-| Problem | Quick Fix |
-|---------|-----------|
-| Tool not found | Use `search_tools()` to discover exact name |
-| Auth failed | Regenerate token in Figma Settings |
-| File not found | Verify file key from URL |
-| Rate limited | Wait 60 seconds, retry |
-| Empty results | Check file has components/styles |
-
-### Diagnostic Commands
-
-```typescript
-// Check what tools are available
-call_tool_chain({
-  code: `
-    const tools = await list_tools();
-    return tools.tools.filter(t => t.includes('figma'));
-  `
-});
-
-// Verify API key
-call_tool_chain({
-  code: `await figma.figma_check_api_key({})`
-});
-
-// Test file access
-call_tool_chain({
-  code: `
-    const file = await figma.figma_get_file({ fileKey: "YOUR_KEY" });
-    return { name: file.name, pages: file.document.children.length };
-  `
-});
-```
+**Fix:** Open Figma, go to Settings, then Account Settings, then Personal Access Tokens. Generate a new token. In your `.env` file, set `figma_FIGMA_API_KEY=figd_your_new_token`. Restart your environment to reload the variable, then run `figma.figma_check_api_key({})` to confirm the key is valid before proceeding.
 
 ---
+
+### File Not Found (404)
+
+**What you see:** `figma_get_file` returns a 404 or an empty result.
+
+**Common causes:** The file key was copied incorrectly, or the authenticated user does not have access to the file.
+
+**Fix:** Copy the file key directly from the Figma URL. The key is the segment after `/file/` and before the next `/`. Verify that the account associated with your token has at least view access to the file. If the file lives inside a team or organization, ask the owner to share it with your account.
+
+---
+
+### Node ID No Longer Valid
+
+**What you see:** A node ID that worked in a previous session now returns an error or null.
+
+**Common causes:** Node IDs in Figma change when the design is edited. An ID captured in a previous session may no longer exist.
+
+**Fix:** Re-fetch the file with `figma_get_file` to get the current node tree, then extract updated node IDs from the response before running node-specific tools.
+
+---
+
+### Rate Limit Errors (429)
+
+**What you see:** Requests return 429 errors after a series of calls.
+
+**Common causes:** Figma's API enforces rate limits that scale with request volume. Tight loops over large node arrays exceed the limit quickly.
+
+**Fix:** Add a short delay between requests in batch loops. Reduce `page_size` for team queries. For large exports, process nodes in smaller batches rather than all at once.
+
+---
+
+### Empty Components or Styles List
+
+**What you see:** `figma_get_file_components` or `figma_get_file_styles` returns an empty array.
+
+**Common causes:** The file has components or styles that have not been published to the team library, or the file genuinely contains none.
+
+**Fix:** In Figma, open the Assets panel and confirm that components are visible there. For styles, check the Styles panel. If they appear in the UI but not via the API, select them and publish them to the team library, then re-run the API call.
 
 <!-- /ANCHOR:troubleshooting -->
 
+---
+
 <!-- ANCHOR:faq -->
-## 10. FAQ
+## 8. FAQ
 
-### General Questions
+**Q: Can this skill create or edit Figma designs?**
 
-**Q: What can Figma MCP do?**
-
-A: This skill supports both the Official Figma MCP and Code Mode + `figma-developer-mcp` for file access, image export, component/style extraction, team management and collaboration.
-
-**Q: Which path should I use?**
-
-A: Start with the Official Figma MCP. Use Code Mode + `figma-developer-mcp` when the workflow already depends on `call_tool_chain()` or when the local 18-tool stdio setup is the better fit.
-
-**Q: What is the difference between file-level and team-level tools?**
-
-A: File-level tools (`get_file_components`, `get_file_styles`) work on a single file. Team-level tools (`get_team_components`, `get_team_styles`) aggregate across all files in a team. This is useful for design system documentation.
-
-### Technical Questions
-
-**Q: How do I find my file key?**
-
-A: The file key is in your Figma URL:
-```
-https://www.figma.com/file/ABC123xyz/My-Design
-                           └─────────┘
-                           This is fileKey
-```
-
-**Q: What image formats are supported?**
-
-A: PNG, JPG, SVG and PDF. Use `format` parameter in `get_image`:
-```typescript
-await figma.figma_get_image({
-  fileKey: "abc",
-  ids: ["1:2"],
-  format: "svg",  // or "png", "jpg", "pdf"
-  scale: 2        // 0.01 to 4
-});
-```
-
-**Q: How do I get a specific node ID?**
-
-A: In Figma, right-click any element and select "Copy link". The node ID is in the URL after `node-id=`. You can also use `get_file` with `depth` to explore the structure.
-
-**Q: Can I create or edit designs?**
-
-A: No, Figma MCP is read-only. It can read files, export images and post comments, but cannot create or modify design elements.
-
-**Q: What are the API rate limits?**
-
-A: Figma's API has rate limits that vary by endpoint. If you hit limits, wait 60 seconds and retry. For batch operations, add delays between calls.
+A: No. All 18 tools are read-only with the exception of the three comment tools (`post_comment`, `delete_comment`) and the API key management tools (`set_api_key`). The skill cannot modify frames, components, or styles. Use the Figma application directly for design edits.
 
 ---
 
+**Q: What is the difference between Option A and Option B?**
+
+A: Option A (Official Figma MCP) connects to Figma's hosted HTTP server at `mcp.figma.com`. It requires no local package installation and authenticates via OAuth in the browser. It is the fastest way to get started. Option B (Framelink) installs `figma-developer-mcp` locally via npx, uses a Personal Access Token for auth, and routes through Code Mode's `call_tool_chain()` interface. Option B is needed when you want to use Figma tools in the same Code Mode chain as other tools like ClickUp or Chrome DevTools.
+
+---
+
+**Q: Why does my `.env` variable need the `figma_` prefix?**
+
+A: Code Mode prefixes all environment variable names with the provider's `name` field from `.utcp_config.json`. Because the provider is named `figma`, the base variable `FIGMA_API_KEY` becomes `figma_FIGMA_API_KEY` after prefixing. This namespacing prevents collisions when multiple providers define variables with the same base name.
+
+---
+
+**Q: How do I find my team ID for team-scoped tools?**
+
+A: Open Figma in the browser and navigate to your team page. The team ID appears in the URL at `figma.com/files/team/{team_id}/...`. Copy the numeric segment and pass it to tools like `figma_get_team_projects` or `figma_get_team_components`.
+
 <!-- /ANCHOR:faq -->
 
-<!-- ANCHOR:related -->
-## 11. RELATED DOCUMENTS
+---
 
-### Internal Documentation
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
+
+### THIS SKILL
 
 | Document | Purpose |
-|----------|---------|
-| [SKILL.md](./SKILL.md) | AI agent instructions and workflow guidance |
-| [references/tool_reference.md](./references/tool_reference.md) | Complete documentation for all 18 tools |
-| [references/quick_start.md](./references/quick_start.md) | Getting started in 5 minutes |
-| [assets/tool_categories.md](./assets/tool_categories.md) | Tool priority categorization |
+| --- | --- |
+| [SKILL.md](./SKILL.md) | Skill instructions, smart routing logic, rules, and integration points |
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full setup guide for Option A (Official) and Option B (Framelink) |
+| [references/tool_reference.md](./references/tool_reference.md) | Complete reference for all 18 tools with parameters and examples |
 
-### External Resources
+### RELATED SKILLS
 
-| Resource | Description |
-|----------|-------------|
-| [Figma MCP Server Docs](https://developers.figma.com/docs/figma-mcp-server/) | Official MCP setup and OAuth flow |
-| [figma-developer-mcp npm](https://www.npmjs.com/package/figma-developer-mcp) | Code Mode package documentation |
-| [Figma Settings](https://www.figma.com/settings) | Token generation for the Code Mode path |
+| Skill | Relationship |
+| --- | --- |
+| [mcp-code-mode](../mcp-code-mode/SKILL.md) | Required dependency for Option B. Figma tools are called via `call_tool_chain()` |
 
-### Related Skills
+### EXTERNAL RESOURCES
 
-| Skill | Purpose |
-|-------|---------|
-| [mcp-code-mode](../mcp-code-mode/README.md) | Tool orchestration via TypeScript execution |
-| [mcp-chrome-devtools](../mcp-chrome-devtools/README.md) | Browser-side validation for design implementation |
+| Resource | URL |
+| --- | --- |
+| Figma API Documentation | https://www.figma.com/developers/api |
+| Official Figma MCP Server | https://developers.figma.com/docs/figma-mcp-server/ |
+| figma-developer-mcp (npm) | https://www.npmjs.com/package/figma-developer-mcp |
 
-### Install Guide
-
-| Guide | Purpose |
-|-------|---------|
-| [Install Guide](./INSTALL_GUIDE.md) | Complete installation instructions |
-
-<!-- /ANCHOR:related -->
+<!-- /ANCHOR:related-documents -->

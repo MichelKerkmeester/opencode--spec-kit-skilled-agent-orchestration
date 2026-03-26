@@ -180,6 +180,48 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 | 18 | 18-template-compliance-contract-enforcement.md | 181 |
 
 Playbook-only operator audits without dedicated feature catalog entries: M-009, M-010, M-011, and 186 are tracked directly from the playbook because they validate runtime parity and command-routing behavior rather than a standalone feature-catalog file.
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | PHASE-001 | Phase detection scoring | — |
+| 2 | PHASE-002 | Phase folder creation | — |
+| 3 | PHASE-003 | Recursive phase validation | — |
+| 4 | M-004 | Main-Agent Review and Verdict Handoff | — |
+| 5 | PHASE-004 | Phase link validation | — |
+| 6 | PHASE-005 | Phase command workflow | — |
+| 7 | M-007 | Session Capturing Pipeline Quality | 16--tooling-and-scripts/12-session-capturing-pipeline-quality.md |
+| 8 | 061 | Tree thinning for spec folder consolidation (PI-B1) | 16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md |
+| 9 | 062 | Progressive validation for spec documents (PI-B2) | 16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md |
+| 10 | 070 | Dead code removal | 16--tooling-and-scripts/04-dead-code-removal.md |
+| 11 | 089 | Code standards alignment | 16--tooling-and-scripts/05-code-standards-alignment.md |
+| 12 | 099 | Real-time filesystem watching (P1-7) | 16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md |
+| 13 | 108 | Spec 007 finalized verification command suite evidence | — |
+| 14 | 113 | Standalone admin CLI | 16--tooling-and-scripts/07-standalone-admin-cli.md |
+| 15 | 127 | Migration checkpoint scripts | 16--tooling-and-scripts/09-migration-checkpoint-scripts.md |
+| 16 | 128 | Schema compatibility validation | 16--tooling-and-scripts/10-schema-compatibility-validation.md |
+| 17 | 135 | Grep traceability for feature catalog code references | 16--tooling-and-scripts/11-feature-catalog-code-references.md |
+| 18 | 136 | Feature catalog annotation name validity | 16--tooling-and-scripts/11-feature-catalog-code-references.md |
+| 19 | 137 | Multi-feature annotation coverage | 16--tooling-and-scripts/11-feature-catalog-code-references.md |
+| 20 | 138 | MODULE: header compliance via verify_alignment_drift.py | 16--tooling-and-scripts/11-feature-catalog-code-references.md |
+| 21 | 139 | Session capturing pipeline quality | 16--tooling-and-scripts/12-session-capturing-pipeline-quality.md |
+| 22 | 147 | Constitutional memory manager command | 16--tooling-and-scripts/13-constitutional-memory-manager-command.md |
+| 23 | 149 | Rendered memory template contract | 16--tooling-and-scripts/12-session-capturing-pipeline-quality.md |
+| 24 | 150 | Source-dist alignment validation | 16--tooling-and-scripts/14-source-dist-alignment-enforcement.md |
+| 25 | 151 | MODULE_MAP.md accuracy validation | 16--tooling-and-scripts/15-module-boundary-map.md |
+| 26 | 152 | No symlinks in lib/ tree | 16--tooling-and-scripts/15-module-boundary-map.md |
+| 27 | 153 | JSON mode structured summary hardening | 16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md |
+| 28 | 154 | JSON-primary deprecation posture | 16--tooling-and-scripts/17-json-primary-deprecation-posture.md |
+| 29 | 181 | Template Compliance Contract Enforcement | 16--tooling-and-scripts/18-template-compliance-contract-enforcement.md |
+| 30 | M-009 | Runtime Family Count Census | — |
+| 31 | M-010 | Runtime Lineage Naming Parity | — |
+| 32 | M-011 | Gemini Runtime Path Resolution | — |
+| 33 | 186 | /memory:manage command routing | FEATURE_CATALOG.md#command-surface-contract |
+| 34 | 206 | Architecture boundary enforcement | 16--tooling-and-scripts/02-architecture-boundary-enforcement.md |
+| 35 | 207 | Watcher delete/rename cleanup | 16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md |
+| 36 | 208 | Template Compliance Contract Enforcement | 16--tooling-and-scripts/18-template-compliance-contract-enforcement.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

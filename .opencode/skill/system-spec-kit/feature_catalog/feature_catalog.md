@@ -234,6 +234,8 @@ This planned feature would let you pull out a single section from a large docume
 
 **ROADMAP ONLY.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is still deferred until spec docs routinely exceed ~1000 lines. Existing anchor-aware thinning remains the current approach, so this is not part of the current runtime surface.
 
+**Status: PLANNED / NOT YET IMPLEMENTED** — This tool is documented as a planned capability but is not registered in the live MCP tool registry (`tool-schemas.ts`). It does not appear in the exported tool list.
+
 #### Source Files
 
 No source files yet. This feature is planned but not yet implemented.

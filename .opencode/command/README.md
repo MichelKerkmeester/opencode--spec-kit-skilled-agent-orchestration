@@ -24,16 +24,18 @@ trigger_phrases:
 - [5. INSTRUCTIONS](#5--instructions)
 - [6. USAGE](#6--usage)
 - [7. EXECUTION MODES](#7--execution-modes)
-- [8. TROUBLESHOOTING](#8--troubleshooting)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [8. FAQ](#8--faq)
+- [9. TROUBLESHOOTING](#9--troubleshooting)
+- [10. RELATED DOCUMENTS](#10--related-documents)
 
 ---
 
 <!-- /ANCHOR:table-of-contents -->
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Commands are invoked as slash commands (e.g., `/create:feature-catalog`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints and allowed tools.
+Commands are invoked as slash commands (e.g., `/create:feature-catalog`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints, and allowed tools.
 
 Commands are organized into three groups:
 
@@ -48,7 +50,7 @@ One standalone command (`agent_router.md`) lives at the root level for routing r
 ---
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
+
 <!-- ANCHOR:purpose -->
 ## 2. PURPOSE
 
@@ -59,6 +61,7 @@ This file is descriptive only. The executable contract for any workflow lives in
 ---
 
 <!-- /ANCHOR:purpose -->
+
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
 
@@ -96,6 +99,7 @@ command/
 ---
 
 <!-- /ANCHOR:structure -->
+
 <!-- ANCHOR:command-groups -->
 ## 4. COMMAND GROUPS
 
@@ -144,6 +148,7 @@ Structured workflows for the spec folder development lifecycle.
 ---
 
 <!-- /ANCHOR:command-groups -->
+
 <!-- ANCHOR:instructions -->
 ## 5. INSTRUCTIONS
 
@@ -151,11 +156,12 @@ Structured workflows for the spec folder development lifecycle.
 2. Use the canonical slash-command form `/<group>:<command>` unless the command is a top-level utility such as `/agent_router`.
 3. Prefer the unified commands over historical split commands.
 4. When a command supports `:auto` and `:confirm`, pick the mode that matches how much checkpointing you want.
-5. Follow the family-specific index under `command/<group>/README.txt` when you need detailed routing help.
+5. Follow the family-specific index under `command/<group>/README.md` when you need detailed routing help.
 
 ---
 
 <!-- /ANCHOR:instructions -->
+
 <!-- ANCHOR:usage -->
 ## 6. USAGE
 
@@ -196,6 +202,7 @@ Structured workflows for the spec folder development lifecycle.
 ---
 
 <!-- /ANCHOR:usage -->
+
 <!-- ANCHOR:execution-modes -->
 ## 7. EXECUTION MODES
 
@@ -217,8 +224,32 @@ The `spec_kit:complete` command supports two additional modes:
 ---
 
 <!-- /ANCHOR:execution-modes -->
+
+<!-- ANCHOR:faq -->
+## 8. FAQ
+
+**Q: What is the difference between `:auto` and `:confirm` mode?**
+
+A: `:auto` runs all steps in sequence without pausing. `:confirm` stops at each step and waits for your approval before continuing. Use `:auto` when you trust the workflow and want speed. Use `:confirm` when you want to review or adjust each step before it executes.
+
+**Q: Can I use a command without specifying a mode?**
+
+A: Yes. Most commands fall back to `:confirm` behavior when no mode suffix is given. Check the command's frontmatter for its default if the behavior is unclear.
+
+**Q: When should I use `/spec_kit:plan` instead of `/spec_kit:complete`?**
+
+A: Use `/spec_kit:plan` when you want to produce a spec and plan document for review before any implementation begins. Use `/spec_kit:complete` when you are ready to run the full workflow end-to-end, including implementation.
+
+**Q: How do I recover a session that was interrupted?**
+
+A: Run `/memory:continue`. This loads the most recent memory context for the active spec folder and reconstructs the task state so you can pick up where you left off.
+
+---
+
+<!-- /ANCHOR:faq -->
+
 <!-- ANCHOR:troubleshooting -->
-## 8. TROUBLESHOOTING
+## 9. TROUBLESHOOTING
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -233,12 +264,15 @@ The `spec_kit:complete` command supports two additional modes:
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:related-documents -->
-## 9. RELATED DOCUMENTS
+## 10. RELATED DOCUMENTS
 
 | Document | Purpose |
 |----------|---------|
 | [AGENTS.md](../../AGENTS.md) | Framework defining gates, protocols, agent routing |
-| [sk-doc SKILL.md](../.opencode/skill/sk-doc/SKILL.md) | Documentation standards and component creation |
-| [system-spec-kit SKILL.md](../.opencode/skill/system-spec-kit/SKILL.md) | Spec folder workflow and memory system |
+| [Create Commands](create/README.md) | Detailed index for all `/create:*` commands |
+| [sk-doc SKILL.md](../skill/sk-doc/SKILL.md) | Documentation standards and component creation |
+| [system-spec-kit SKILL.md](../skill/system-spec-kit/SKILL.md) | Spec folder workflow and memory system |
+
 <!-- /ANCHOR:related-documents -->

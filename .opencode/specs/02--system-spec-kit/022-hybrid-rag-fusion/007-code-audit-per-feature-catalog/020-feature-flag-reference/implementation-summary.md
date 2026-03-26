@@ -93,6 +93,40 @@ Each feature was verified by:
 
 ---
 
+### Phase 5 Audit Additions (2026-03-26)
+
+#### T034: Audit Phase 020 Mapping Note (Catalog 19/08)
+
+| Field | Value |
+|-------|-------|
+| **Catalog Entry** | `19--feature-flag-reference/08-audit-phase-020-mapping-note.md` |
+| **Classification** | META — not a feature description, excluded from accuracy scoring |
+| **Verdict** | N/A (meta note) |
+
+This file is an explicit meta note documenting the slug-based mapping between audit phase `020-feature-flag-reference` and the `19--feature-flag-reference` catalog category. The file itself states it is "excluded from feature-accuracy scoring." No source code audit needed.
+
+#### T045: config/config.jsonc (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `config/config.jsonc` (159 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as configuration reference |
+
+SpecKit runtime configuration settings. Only Section 1 (legacy settings: `maxResultPreview`, `maxConversationMessages`, `maxToolOutputLines`, `messageTimeWindow`, `contextPreviewHeadLines/TailLines`, `timezoneOffsetHours`) is ACTIVE. Sections 2-11 (semantic search, memory decay, importance tiers, hybrid search, context types, access tracking, checkpoints, constitutional tier, confidence tracking, templates) are DOCUMENTATION ONLY with values hardcoded in MCP modules. The feature flag reference category already documents these runtime defaults.
+
+#### T046: config/filters.jsonc (BOTH_MISSING Audit)
+
+| Field | Value |
+|-------|-------|
+| **Source File** | `config/filters.jsonc` (53 lines) |
+| **Classification** | BOTH_MISSING — exists in source, no catalog entry, no prior audit |
+| **Verdict** | Documented as configuration reference |
+
+Content filter pipeline configuration for memory ingestion and deduplication. 3 stages: (1) Noise filter (`minContentLength: 15`, `minUniqueWords: 3`), (2) Deduplication (`hashLength: 300`, `similarityThreshold: 0.70`), (3) Quality scoring (`warnThreshold: 20`, weighted factors: uniqueness 0.30, density 0.30, fileRefs 0.20, decisions 0.20). Used by the memory save pipeline. The feature flag reference category already documents these quality thresholds.
+
+---
+
 <!--
 Post-implementation documentation for code audit phase.
 Written in active voice per HVR rules.

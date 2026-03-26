@@ -119,6 +119,67 @@ For each phase:
 - [ ] Calculate overall pass rate
 - [ ] List all FAIL scenarios requiring follow-up
 - [ ] Document all bugs and playbook errors discovered
+### Phase 4: Traceability Remediation (from deep review 2026-03-26)
+
+Deep review (6 iterations, 12 GPT-5.4 agents) found traceability gaps. Verdict: CONDITIONAL.
+Full report: [`review-report.md`](review-report.md)
+
+#### WS-1 (P0): Create 29 Missing Playbook Scenarios
+Create one playbook scenario file per true-gap feature. Use `create:testing-playbook` skill.
+
+| # | Category | Feature Catalog Entry | Target Playbook Path |
+|---|----------|-----------------------|---------------------|
+| 1 | 01 | `07-ast-level-section-retrieval-tool.md` | `01--retrieval/` |
+| 2 | 01 | `09-tool-result-extraction-to-working-memory.md` | `01--retrieval/` |
+| 3 | 01 | `11-session-recovery-memory-continue.md` | `01--retrieval/` |
+| 4 | 02 | `07-namespace-management-crud-tools.md` | `02--mutation/` |
+| 5 | 02 | `09-correction-tracking-with-undo.md` | `02--mutation/` |
+| 6 | 10 | `09-anchor-tags-as-graph-nodes.md` | `10--graph-signal-activation/` |
+| 7 | 10 | `10-causal-neighbor-boost-and-injection.md` | `10--graph-signal-activation/` |
+| 8 | 10 | `11-temporal-contiguity-layer.md` | `10--graph-signal-activation/` |
+| 9 | 11 | `15-tool-level-ttl-cache.md` | `11--scoring-and-calibration/` |
+| 10 | 11 | `16-access-driven-popularity-scoring.md` | `11--scoring-and-calibration/` |
+| 11 | 11 | `17-temporal-structural-coherence-scoring.md` | `11--scoring-and-calibration/` |
+| 12 | 13 | `11-content-aware-memory-filename-generation.md` | `13--memory-quality-and-indexing/` |
+| 13 | 13 | `12-generation-time-duplicate-and-empty-content-prevention.md` | `13--memory-quality-and-indexing/` |
+| 14 | 14 | `15-warm-server-daemon-mode.md` | `14--pipeline-architecture/` |
+| 15 | 14 | `16-backend-storage-adapter-abstraction.md` | `14--pipeline-architecture/` |
+| 16 | 14 | `18-atomic-write-then-index-api.md` | `14--pipeline-architecture/` |
+| 17 | 14 | `19-embedding-retry-orchestrator.md` | `14--pipeline-architecture/` |
+| 18 | 14 | `20-7-layer-tool-architecture-metadata.md` | `14--pipeline-architecture/` |
+| 19 | 16 | `02-architecture-boundary-enforcement.md` | `16--tooling-and-scripts/` |
+| 20 | 16 | `08-watcher-delete-rename-cleanup.md` | `16--tooling-and-scripts/` |
+| 21 | 16 | `18-template-compliance-contract-enforcement.md` | `16--tooling-and-scripts/` |
+| 22 | 18 | `01-shared-post-mutation-hook-wiring.md` | `18--ux-hooks/` |
+| 23 | 18 | `02-memory-health-autorepair-metadata.md` | `18--ux-hooks/` |
+| 24 | 18 | `04-schema-and-type-contract-synchronization.md` | `18--ux-hooks/` |
+| 25 | 18 | `06-mutation-hook-result-contract-expansion.md` | `18--ux-hooks/` |
+| 26 | 18 | `07-mutation-response-ux-payload-exposure.md` | `18--ux-hooks/` |
+| 27 | 18 | `10-atomic-save-parity-and-partial-indexing-hints.md` | `18--ux-hooks/` |
+| 28 | 18 | `11-final-token-metadata-recomputation.md` | `18--ux-hooks/` |
+| 29 | 18 | `13-end-to-end-success-envelope-verification.md` | `18--ux-hooks/` |
+
+#### WS-2 (P1): Add Feature Catalog Back-References to 65 Playbook Scenarios
+Add `- Feature catalog: [path](../../feature_catalog/path)` to Section 4 REFERENCES in:
+- 25 covered-but-unlinked scenarios (feature-flag-gated IDs 156-180)
+- 40 other orphan scenarios (M-001 through M-011, PHASE-001 through PHASE-005, IDs 182-187)
+
+#### WS-3 (P1): Complete Section 12 Cross-Reference Index
+Append rows to Section 12 table in `MANUAL_TESTING_PLAYBOOK.md`:
+- 4 existing catalog entries currently missing from Section 12
+- 29 new entries from WS-1 (after scenarios are created)
+
+#### WS-4 (P1): Add Scenario Registry Tables to 17 Spec Phases
+Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analysis/spec.md` as template):
+
+003, 004, 005, 008, 009, 010, 011, 012, 014, 015, 016, 017, 018, 019, 020, 021, 022
+
+#### WS-5 (Validation): Cross-Check Verification
+- [ ] Re-run programmatic cross-reference check confirming 0 true gaps remaining
+- [ ] Verify all 222 catalog entries appear in Section 12
+- [ ] Verify all playbook scenarios have `Feature catalog:` back-reference
+- [ ] Verify all spec phases have Scenario Registry tables
+- [ ] Update parent spec.md counts to reflect new totals
 <!-- /ANCHOR:phases -->
 
 ---
@@ -162,16 +223,26 @@ For each phase:
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──► Phase 2 (Execute Numbered Phase Folders) ──► Phase 3 (Aggregate)
+Phase 1 (Setup) ──► Phase 2 (Execute) ──► Phase 3 (Aggregate) ──► Phase 4 (Traceability Remediation)
+                                                                     ├─ WS-1 (Create 29 scenarios)
+                                                                     ├─ WS-2 (Add 65 back-refs)  ← WS-1
+                                                                     ├─ WS-3 (Complete Sec.12)    ← WS-1
+                                                                     ├─ WS-4 (17 Registries)     ← WS-1,2,3
+                                                                     └─ WS-5 (Validation)        ← WS-1,2,3,4
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
 | Setup | None | Execute |
 | Execute (001-019) | Setup | Aggregate |
-| Aggregate | Execute | None |
+| Aggregate | Execute | Remediation |
+| WS-1 (Create scenarios) | Aggregate | WS-2, WS-3 |
+| WS-2 (Back-refs) | WS-1 | WS-4 |
+| WS-3 (Section 12) | WS-1 | WS-4 |
+| WS-4 (Registries) | WS-1, WS-2, WS-3 | WS-5 |
+| WS-5 (Validation) | WS-1, WS-2, WS-3, WS-4 | None |
 
-Note: Within Phase 2, individual phase folders (001-022) are independent and can be executed in any order or in parallel.
+Note: Within Phase 2, individual phase folders (001-022) are independent and can be executed in any order or in parallel. Within Phase 4, WS-1 must complete before WS-2/WS-3; WS-4 waits for WS-1/2/3.
 <!-- /ANCHOR:phase-deps -->
 
 ---

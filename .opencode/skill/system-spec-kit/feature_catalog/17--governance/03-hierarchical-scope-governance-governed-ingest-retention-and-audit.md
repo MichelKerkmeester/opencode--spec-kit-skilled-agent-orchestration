@@ -15,15 +15,15 @@ This feature controls who can save and read memories and keeps a record of every
 
 ## 2. CURRENT REALITY
 
-Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent` and `session`) so reads and writes are evaluated against explicit actor boundaries.
+Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent`, `session`, and optional shared space) so reads and writes are evaluated against explicit actor boundaries.
 
 Governed ingest now requires provenance metadata (`provenanceSource`, `provenanceActor`) when scoped identity fields are provided. Ingest attempts that carry scope identifiers without required provenance are rejected instead of being accepted as ambiguous writes.
 
-Retention policy validation is integrated with governance controls, and allow/deny outcomes are recorded for auditability. Ephemeral retention is now stricter: `validateGovernedIngest()` rejects `retentionPolicy: 'ephemeral'` when `deleteAfter` is missing, because an unscheduled ephemeral row would never expire. The standalone retention sweep module (`retention.ts`) was removed as dead code — it was never wired to an automatic schedule and had zero production callers. Retention cleanup is handled via `memory_bulk_delete` directly.
+Retention policy validation is integrated with governance controls, and allow/deny outcomes are recorded for auditability. `validateGovernedIngest()` now requires `deleteAfter` for `retentionPolicy: 'ephemeral'` and normalizes it into persisted governance metadata, so ephemeral rows always carry an explicit expiry timestamp.
 
-The governed save post-step is now fail-safe. `memory-save.ts` wraps governance field application and audit logging in a transaction, and if that post-insert step fails it deletes the just-created `memory_index` row instead of leaving behind a persisted record with missing tenant, actor, session, provenance, or retention metadata.
+The governed save post-step is fail-safe. `memory-save.ts` applies governance metadata and the corresponding allow-audit record inside a database transaction, and if that post-insert step fails it removes the just-created memory via `delete_memory_from_database(...)` instead of leaving behind a partially governed row.
 
-The governance audit trail captures scope decisions so policy behavior can be reviewed and verified after runtime operations.
+The governance audit trail remains queryable after runtime operations. Audit rows are stored in `governance_audit`, and `reviewGovernanceAudit()` returns filtered rows plus aggregate summaries so allow/deny/delete/conflict behavior can be reviewed without manual database inspection.
 
 ---
 
@@ -33,11 +33,10 @@ The governance audit trail captures scope decisions so policy behavior can be re
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/governance/scope-governance.ts` | Lib | Scope evaluation and allow/deny decisioning |
-| ~~`mcp_server/lib/governance/retention.ts`~~ | ~~Lib~~ | Deleted — retention sweep module removed as dead code |
-| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Governance and audit schema support |
-| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies scope filtering and shared-space allowlists to retrieval candidates |
-| `mcp_server/handlers/memory-save.ts` | Handler | Governed ingest validation and provenance enforcement |
+| `mcp_server/lib/governance/scope-governance.ts` | Lib | Governed-ingest validation, scope filtering, audit writes, and audit review via `reviewGovernanceAudit()` |
+| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Defines governance storage, including `governance_audit` and supporting schema/indexes |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies scope filtering and shared-space allowlists during candidate generation |
+| `mcp_server/handlers/memory-save.ts` | Handler | Validates governed ingest and transactionally applies governance metadata with fail-safe cleanup on failure |
 | `mcp_server/handlers/memory-search.ts` | Handler | Normalizes scoped retrieval context before pipeline execution |
 
 ### Tests

@@ -33,6 +33,7 @@ Operators run the exact prompt and command sequence for `165` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Feature catalog: [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/handlers/save/reconsolidation-bridge.ts`
 

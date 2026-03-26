@@ -1,33 +1,37 @@
 ---
 title: "Feature flag sunset audit"
-description: "Historical record of the Sprint 7 sunset audit whose graduation and dead-code actions were completed in Sprint 8."
+description: "Narrow governance note documenting sunset outcomes that are still visible in live code through retired paths, compatibility shims and graduated defaults."
 ---
 
 # Feature flag sunset audit
 
 ## 1. OVERVIEW
 
-Completed historical audit. The feature flag sunset audit inventoried 79 `SPECKIT_` flags and drove the graduation and removal work that landed in Sprint 8.
+This entry is a narrow governance note about sunset outcomes that are still observable in the codebase.
 
-This audit reviewed the feature-switch surface, classified what should graduate, what should be removed and what should remain configurable, then handed those decisions off to remediation. The audit itself is not an active runtime feature. It is retained here as governance history because it explains why several legacy flag gates disappeared and why some compatibility flags are now inert.
+It does not preserve sprint-era inventories or flag counts. Instead, it records the specific places where completed sunset work is still visible through retired runtime paths, compatibility aliases and graduated default behavior.
 
 ---
 
 ## 2. CURRENT REALITY
 
-A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Its disposition buckets were historical planning inputs: 27 flags were marked for graduation to permanent-ON defaults, 9 were marked as dead code for removal and 2 were tracked as operational knobs (`COACTIVATION_STRENGTH`, `PRESSURE_POLICY`). Those audit actions have since been completed or superseded. `ADAPTIVE_FUSION` graduated to always-on behavior and is no longer counted as an active knob.
+Completed sunset work is still visible in live code as compatibility shims and retired execution paths:
 
-The current active flag-helper inventory in `search-flags.ts` is 53 exported `is*` functions. There is no `isPipelineV2Enabled()` function; the helper was removed along with the legacy V1 pipeline. Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+- `mcp_server/lib/eval/shadow-scoring.ts` keeps the comparison types and pure analysis helpers, but the runtime path is retired: `runShadowScoring()` always returns `null` and `logShadowComparison()` always returns `false`. The legacy `SPECKIT_SHADOW_SCORING` flag is retained only for compatibility and documentation.
+- `shared/embeddings.ts` shows a graduated outcome: lazy loading is the permanent default, `SPECKIT_EAGER_WARMUP` and `SPECKIT_LAZY_LOADING` are inert, and `MODEL_NAME` remains as a legacy alias for backwards compatibility.
+- `mcp_server/context-server.ts` still surfaces sunset aftermath operationally. Startup logs explicitly call the warmup flags deprecated compatibility flags, and the remaining shadow-oriented jobs are constrained to evaluation-only behavior such as the shadow feedback scheduler and shadow-only batch learning with no live ranking mutations.
+- `mcp_server/lib/scoring/composite-scoring.ts` preserves additional graduated or inert behavior: novelty boost is permanently disabled, while graduated controls such as interference scoring and score normalization use default-on semantics with explicit opt-out.
 
-**Pipeline status:** The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environment variable is not consumed by runtime code.
-
-**Sprint 8 update:** The graduation and dead-code removal work identified by this audit has already been completed. Sprint 8 comprehensive remediation removed a large dead-code slice including dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`) and dead functions and exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6.
+The governance takeaway is that the old audit is no longer the source of truth. What remains valuable is the code-level evidence that some toggles were removed entirely, some became permanent defaults and some survive only as compatibility surfaces.
 
 ---
 
 ## 3. SOURCE FILES
 
-No dedicated source files. This describes governance process controls.
+- `.opencode/skill/system-spec-kit/mcp_server/lib/eval/shadow-scoring.ts` - Retired shadow-scoring runtime with compatibility-only flag references and surviving comparison/stat helpers.
+- `.opencode/skill/system-spec-kit/shared/embeddings.ts` - Graduated lazy-loading behavior and inert warmup compatibility flags.
+- `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` - Startup/runtime evidence for deprecated warmup flags and evaluation-only shadow jobs.
+- `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts` - Inert novelty boost path plus graduated default-on scoring controls with explicit opt-out semantics.
 
 ---
 
@@ -35,4 +39,4 @@ No dedicated source files. This describes governance process controls.
 
 - Group: Governance
 - Source feature title: Feature flag sunset audit
-- Current reality source: FEATURE_CATALOG.md
+- Current reality source: `mcp_server/lib/eval/shadow-scoring.ts`, `shared/embeddings.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/scoring/composite-scoring.ts`

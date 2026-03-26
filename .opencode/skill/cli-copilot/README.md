@@ -1,299 +1,373 @@
 ---
-title: "cli-copilot"
-description: "GitHub Copilot CLI orchestrator for cross-AI task delegation via GitHub's Copilot CLI."
+title: "Copilot CLI Orchestrator"
+description: "Cross-AI task delegation to GitHub's Copilot CLI for multi-model flexibility, autonomous execution, cloud delegation, and collaborative planning."
 trigger_phrases:
-  - "github copilot cli"
-  - "cli-copilot"
   - "copilot cli"
+  - "copilot"
+  - "delegate to copilot"
+  - "autopilot"
+  - "cloud delegation"
 ---
 
-# cli-copilot
+# Copilot CLI Orchestrator
 
-> GitHub Copilot CLI orchestrator enabling external AI assistants (Gemini, Codex, Claude) to invoke GitHub's Copilot CLI for supplementary tasks including multi-model code generation, cloud delegation, repository-wide memory, and automated plan execution.
-
-> **Navigation**:
-> - New to Copilot CLI? Start with [Quick Start](#2--quick-start)
-> - Need command reference? See [Features](#4--features)
-> - Troubleshooting? See [Troubleshooting](#7--troubleshooting)
+> Delegate tasks from any AI assistant to GitHub's Copilot CLI for multi-provider model access, autonomous execution, and cloud-powered coding agents.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. EXAMPLES](#6--examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. RELATED](#8--related)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+  - [3.1 FEATURE HIGHLIGHTS](#31-feature-highlights)
+  - [3.2 FEATURE REFERENCE](#32-feature-reference)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
+
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-This skill enables external AI assistants (Gemini CLI, Codex CLI, Claude Code, etc.) to invoke GitHub's Copilot CLI for tasks that benefit from its deep GitHub ecosystem integration, multi-model flexibility (GPT-5, Claude, Gemini), and cloud-side task delegation. The calling AI acts as the conductor (planner, validator, integrator) while Copilot CLI executes targeted repository operations.
+### What This Skill Does
+
+This skill lets external AI assistants (Claude Code, Gemini CLI, Codex CLI) invoke GitHub's Copilot CLI for tasks that benefit from multi-model flexibility, autonomous code generation, or cloud-delegated computing. The calling AI stays the conductor, choosing what to delegate and validating the results.
+
+Copilot CLI is GitHub's standalone terminal interface for Copilot (GA February 2026), replacing the deprecated `gh copilot` extension. It provides access to 5 frontier models from 3 providers through a single binary. You can switch between OpenAI, Anthropic, and Google models mid-session without changing tools or authentication.
+
+The defining feature is Autopilot mode. With `--allow-all-tools`, Copilot runs autonomously, reading files, writing code, and executing shell commands without pausing for approval. Combined with cloud delegation (`/delegate` or `&prompt`), this offloads heavy computation to GitHub's infrastructure rather than running everything locally.
+
+The skill includes a self-invocation guard: if you are already running inside Copilot CLI, activation is blocked to prevent circular delegation.
 
 ### Key Statistics
 
-| Category | Value |
-|----------|-------|
-| Models | `GPT-5.4`, `GPT-5.3-Codex`, `Claude Opus 4.6`, `Claude Sonnet 4.6`, `Gemini 3.1 Pro` |
-| Authentication | `GH_TOKEN`, `GITHUB_TOKEN`, or OAuth via `copilot /login` |
-| Agent System | Built-in `Explore` and `Task` agents + custom Markdown agents |
-| Unique Features | `/delegate` (cloud), plan mode, autopilot, repo memory, MCP support |
-| Install | `npm install -g @github/copilot` |
+| Category | Value | Details |
+|----------|-------|---------|
+| **Models** | 5 | From 3 providers (OpenAI, Anthropic, Google) |
+| **Agents** | 2 built-in | Explore (read-only analysis), Task (execution) |
+| **Execution Modes** | 3 | Interactive, Autopilot (`--allow-all-tools`), Cloud delegation |
+| **Reasoning Levels** | 4 | low, medium, high, xhigh (GPT-5.x models) |
+| **References** | 4 | cli_reference, copilot_tools, agent_delegation, integration_patterns |
+| **Version** | 1.3.1 | |
 
-### When to Use
+### How This Compares
 
-- **Multi-Model Validation** — Verify code logic across GPT-5.4, Claude Opus 4.6, and Gemini 3.1 Pro
-- **Cloud Delegation** — Offload long-running tasks to GitHub's cloud via `/delegate`
-- **Repository Memory** — Leverage Copilot's native indexing for large-scale codebase queries
-- **Autopilot Execution** — Automated multi-step plan fulfillment with self-correction
-- **GitHub Ecosystem Integration** — Seamless interaction with PRs, Issues, and Actions
-- **Safe Exploration** — Use `plan mode` for read-only analysis and architectural discovery
+| Capability | Claude Code CLI | Codex CLI | Gemini CLI | Copilot CLI |
+|------------|-----------------|-----------|------------|-------------|
+| **Model providers** | Anthropic only | OpenAI only | Google only | OpenAI + Anthropic + Google |
+| **Model count** | 3 | 2 | 1 | 5 |
+| **Autonomous mode** | bypassPermissions | --full-auto | --yolo | Autopilot (`--allow-all-tools`) |
+| **Cloud compute** | No | codex cloud | No | `/delegate` to GitHub coding agents |
+| **Repo memory** | Session-based | Session-based | save_memory tool | Built-in repo memory across sessions |
+| **Web search** | No | `--search` | Google Search | No |
+
+### Key Features at a Glance
+
+| Feature | What It Does |
+|---------|-------------|
+| **Multi-Model** | Switch between 5 models from 3 providers mid-session via `/model` |
+| **Autopilot** | Fully autonomous execution with `--allow-all-tools` for hands-free coding |
+| **Cloud Delegation** | Offload tasks to GitHub's cloud coding agents for heavy compute |
+| **Explore Agent** | Read-only codebase analysis for architecture mapping and onboarding |
+| **Task Agent** | Full-capability agent for implementation, refactoring, and testing |
+| **Repo Memory** | Persistent memory of project conventions and prior decisions across sessions |
+| **MCP Support** | Connect to Model Context Protocol servers for external data access |
+
+### Requirements
+
+| Requirement | Value | Notes |
+|-------------|-------|-------|
+| **CLI** | `copilot` binary | Install via `npm install -g @github/copilot` |
+| **Auth** | GitHub account | `GH_TOKEN` or `gh auth login` |
+| **Plan** | GitHub Copilot subscription | Free, Pro, Business, or Enterprise |
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. QUICK START
 <!-- ANCHOR:quick-start -->
+## 2. QUICK START
 
-**Check availability and install:**
+### 1. Verify Installation
 
 ```bash
-# Check if Copilot CLI is installed
-command -v copilot || echo "Install: npm install -g @github/copilot"
-
-# Install
-npm install -g @github/copilot
-
-# Authenticate — Option A: OAuth (interactive browser flow)
-copilot /login
-
-# Authenticate — Option B: Environment variable (CI/CD)
-export GITHUB_TOKEN=your-token-here
+command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 ```
 
-**CRITICAL nesting check:**
+### 2. Authenticate
 
 ```bash
-# Copilot CLI should not run recursively in automated flows without guardrails
-[ -n "$COPILOT_SESSION" ] && echo "WARNING: Already inside a Copilot session"
+# GitHub auth (if GH_TOKEN not set)
+gh auth login
 ```
 
-**Basic invocations:**
+### 3. Run a Simple Task
 
 ```bash
-# Non-interactive prompt execution
-copilot -p "Explain the authentication flow in @src/auth/" --allow-all-tools 2>&1
+copilot -p "Explain the data flow in src/" 2>&1
+```
 
-# Targeted model execution (GPT-5 Codex)
-copilot -p "Refactor this function for performance" --model gpt-5.3-codex --allow-all-tools 2>&1
+### 4. Run in Autopilot Mode
 
-# Plan mode (read-only analysis)
-copilot -p "Map all dependencies of the billing module" --mode plan 2>&1
-
-# Cloud delegation
-copilot -p "Run exhaustive security scan and generate report" /delegate 2>&1
-
-# Agent-specific task
-copilot -p "Find and fix all memory leaks in the stream processor" --agent task 2>&1
+```bash
+copilot -p "Implement the feature described in spec.md" --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:quick-start -->
 
 ---
 
-## 3. STRUCTURE
-<!-- ANCHOR:structure -->
-
-```
-cli-copilot/
-├── SKILL.md                          # Entry point: routing logic, rules, invocation patterns
-├── README.md                         # This file
-├── references/
-│   ├── cli_reference.md              # CLI flags, commands, models, auth, config
-│   ├── agent_delegation.md           # Built-in agents, custom MD agents, routing
-│   ├── copilot_tools.md              # Unique capabilities (Autopilot, Delegate, MCP)
-│   └── integration_patterns.md       # Cross-AI orchestration patterns
-└── assets/
-    └── prompt_templates.md           # Copy-paste ready templates for Copilot
-```
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | AI agent activation triggers, smart routing, rules |
-| `references/cli_reference.md` | Complete CLI flags, commands, models, auth, config |
-| `references/agent_delegation.md` | Explore/Task agents and custom agent configuration |
-| `references/copilot_tools.md` | Unique capabilities and cross-tool comparison |
-| `references/integration_patterns.md` | Cross-AI patterns (external AI conducts Copilot) |
-| `assets/prompt_templates.md` | Copilot-optimized templates for common tasks |
-
-<!-- /ANCHOR:structure -->
-
----
-
-## 4. FEATURES
 <!-- ANCHOR:features -->
+## 3. FEATURES
 
-**Smart Routing**
-- Automatic intent detection for 7 key workflows: CLOUD_DELEGATION, REPO_EXPLORATION, MULTI_MODEL_VALIDATION, PLAN_EXECUTION, AUTOPILOT, MCP_INTEGRATION, REFACTORING
-- Context-aware loading of Copilot-specific reference documentation
+### 3.1 FEATURE HIGHLIGHTS
 
-**Multi-Model Ecosystem**
+Copilot CLI has one capability that no other AI CLI offers: multi-provider model access from a single tool.
 
-| Model | ID | Primary Use |
-|-------|----|-------------|
-| GPT-5.4 | `gpt-5.4` | Frontier reasoning with effort levels |
-| GPT-5.3-Codex | `gpt-5.3-codex` | Advanced code generation |
-| Claude Opus 4.6 | `claude-opus-4.6` | Architecture and complex logic |
-| Claude Sonnet 4.6 | `claude-sonnet-4.6` | General coding and speed |
-| Gemini 3.1 Pro | `gemini-3.1-pro-preview` | Large context analysis |
+You can start a session with GPT-5.4 for planning, switch to Claude Opus 4.6 for detailed architecture analysis, and then move to Gemini 3.1 Pro for tasks that benefit from its large context window. All through the same binary, same auth, same project context. This matters when different models have different strengths and you want to use the right one for each phase of a complex workflow rather than committing to a single provider.
 
-**Execution Modes**
+Autopilot mode is the second major differentiator. When you pass `--allow-all-tools`, Copilot runs fully autonomously, reading codebases, writing files, executing tests, and iterating on failures without pausing for human approval. For the calling AI, this means you can delegate an entire implementation task and receive the completed result, not a half-finished draft that needs manual intervention.
 
-| Mode | Flag/Cmd | Purpose |
-|------|----------|---------|
-| Plan | `--mode plan` | Analysis, exploration, and read-only reporting |
-| Autopilot | `--autopilot` | Multi-step task fulfillment with auto-correction |
-| Manual | (default) | Step-by-step approval for every tool call |
-| Delegate | `/delegate` or `&prompt` | Offload execution to GitHub's cloud infrastructure |
+Cloud delegation pushes this further. The `/delegate` command (or `&prompt` prefix) sends tasks to GitHub's cloud-hosted coding agents. These agents run on GitHub's infrastructure, which means they have access to repository metadata, issue history, and CI/CD context that local tools lack. For tasks like "analyze this repo for security hot-spots," cloud agents can process the full repository graph rather than relying on local file reads.
 
-**Agent System**
+The Explore agent fills a distinct niche for read-only codebase analysis. It maps file relationships, traces data flows, and builds architecture summaries without touching any files. This is useful as a pre-implementation step where the calling AI needs to understand the codebase before deciding what to modify.
 
-| Agent | Scope | Description |
-|-------|-------|-------------|
-| `Explore` | Read-Only | Codebase navigation, dependency mapping, and discovery |
-| `Task` | Read/Write | Implementation, refactoring, and bug fixing |
-| `Custom` | Variable | Defined via Markdown files in `.github/copilot-agents/` |
+### 3.2 FEATURE REFERENCE
 
-**Unique Capabilities**
+#### Models
 
-| Feature | Purpose |
-|---------|---------|
-| Cloud Delegation | Run intensive tasks on remote GitHub compute via `/delegate` |
-| Repo Memory | Persistent indexing of the entire repository for fast retrieval |
-| Autopilot | High-autonomy mode for complex, multi-file transformations |
-| Multi-Model | Toggle between Anthropic, OpenAI, and Google models in one CLI |
-| MCP Support | Integration with Model Context Protocol servers for external data |
-| Plan Mode | Structured "think-before-act" phase for complex changes |
+| Model | ID | Provider | Best For |
+|-------|----|----------|----------|
+| **GPT-5.4** | `gpt-5.4` | OpenAI | Frontier reasoning with configurable effort levels |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI | Code generation and implementation |
+| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic | Complex architecture and detailed logic |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding and speed (default) |
+| **Gemini 3.1 Pro** | `gemini-3.1-pro-preview` | Google | Large context analysis |
+
+#### Core Flags
+
+| Flag | Short | Purpose | Example |
+|------|-------|---------|---------|
+| `-p` | | Non-interactive mode | `copilot -p "prompt"` |
+| `--model` | `-m` | Model selection | `--model gpt-5.4` |
+| `--allow-all-tools` | | Autopilot mode | `--allow-all-tools` |
+| `--agent` | | Agent routing | `--agent explore` |
+
+#### Reasoning Effort (GPT-5.x Models)
+
+| Level | Use Case | Models Supporting |
+|-------|----------|-------------------|
+| `low` | Fast responses, less reasoning | All GPT-5.x |
+| `medium` | Balanced (default for GPT-5.1) | All GPT-5.x |
+| `high` | Thorough reasoning (default for GPT-5.4) | All GPT-5.x |
+| `xhigh` | Maximum depth | GPT-5.4, GPT-5.3-Codex, GPT-5.1-Codex-Max |
+
+Set via `~/.copilot/config.json` under `"reasoning_effort"`. No CLI flag exists.
+
+#### Agent Types
+
+| Agent | Purpose | Invocation |
+|-------|---------|------------|
+| **Explore** | Read-only codebase analysis | `copilot -p "Explain src/ data flow" --agent explore 2>&1` |
+| **Task** | Full execution with file access | `copilot -p "Refactor login" --agent task --allow-all-tools 2>&1` |
+| **Cloud** | Remote GitHub coding agents | `copilot -p "/delegate Analyze security" 2>&1` |
+
+#### Unique Capabilities
+
+| Capability | What It Does |
+|------------|-------------|
+| **Autopilot** | Autonomous execution without approval prompts |
+| **Repo Memory** | Remembers conventions and decisions across sessions |
+| **Cloud Delegation** | Offloads to GitHub's cloud coding agents |
+| **Multi-Model** | Toggle between 3 providers mid-session |
+| **MCP Support** | Connect to external data via Model Context Protocol |
 
 <!-- /ANCHOR:features -->
 
 ---
 
-## 5. CONFIGURATION
-<!-- ANCHOR:configuration -->
+<!-- ANCHOR:structure -->
+## 4. STRUCTURE
 
-**Authentication:**
+```text
+cli-copilot/
+  SKILL.md                              # Skill definition and smart routing logic
+  README.md                             # This file
+  assets/
+    prompt_templates.md                 # Copy-paste ready prompts for common tasks
+  references/
+    agent_delegation.md                 # Explore/Task agents, custom agents, routing
+    cli_reference.md                    # CLI flags, commands, models, auth, config
+    copilot_tools.md                    # Autopilot, repo memory, MCP integration
+    integration_patterns.md             # Cross-AI orchestration workflows
+```
+
+<!-- /ANCHOR:structure -->
+
+---
+
+<!-- ANCHOR:configuration -->
+## 5. CONFIGURATION
+
+### Authentication
 
 | Method | Setup | Best For |
 |--------|-------|----------|
-| OAuth | `copilot /login` | Personal/Local development |
-| GitHub Token | `export GH_TOKEN=...` | Automation, Scripts, CI/CD |
-| GITHUB_TOKEN | (Auto-detected) | GitHub Actions environments |
+| **GH_TOKEN** | `export GH_TOKEN=your-token` | Programmatic use, CI/CD |
+| **gh auth** | `gh auth login` | Interactive browser flow |
 
-**Essential flags:**
+### Config File
 
-| Flag | Purpose |
-|------|---------|
-| `-p "prompt"` | Non-interactive prompt (required for delegation) |
-| `--no-ask-user` | Autonomous mode with no interactive questions |
-| `--allow-all-tools` | Bypass individual tool confirmations |
-| `--model NAME` | Specific model selection (e.g., `gpt-5.3-codex`) |
-| `--mode plan` | Read-only analysis mode |
-| `--autopilot` | Enable automated plan fulfillment |
-| `/delegate` | Invoke cloud-side execution |
-| `--agent NAME` | Route to a specific built-in or custom agent |
-| `--mcp CONFIG` | Load specific MCP server configurations |
+Copilot reads settings from `~/.copilot/config.json`:
 
-**Context & Guardrails:**
-- `.github/copilot-instructions.md` — Repository-specific rules
-- `.github/copilot-agents/` — Custom agent definitions
-- `.copilotignore` — File exclusion patterns for indexing
-- `~/.copilot/config.json` — Persistent client configuration, including `reasoning_effort` defaults for GPT-5.x models
+```json
+{
+  "model": "claude-sonnet-4.6",
+  "reasoning_effort": "high"
+}
+```
 
-**Reasoning effort:** GPT-5.x reasoning depth is configured through `reasoning_effort` in `~/.copilot/config.json` (`low`, `medium`, `high`, `xhigh`). There is no `--reasoning-effort` CLI flag, so non-interactive `copilot -p` calls read the value from the config file.
+### Setting Reasoning Effort (GPT-5.x)
 
-**Platform support:** macOS, Linux, Windows (GA Feb 2026).
+There is no `--reasoning-effort` CLI flag. Set it in config:
+
+```bash
+python3 -c "
+import json
+cfg_path = '$HOME/.copilot/config.json'
+with open(cfg_path) as f: cfg = json.load(f)
+cfg['reasoning_effort'] = 'high'
+with open(cfg_path, 'w') as f: json.dump(cfg, f, indent=2)
+"
+```
+
+Or select interactively: `/model` in interactive mode, choose GPT-5.x, select effort level.
 
 <!-- /ANCHOR:configuration -->
 
 ---
 
-## 6. EXAMPLES
 <!-- ANCHOR:usage-examples -->
+## 6. USAGE EXAMPLES
 
-**Multi-model verification cycle:**
+### Multi-Model Workflow
+
 ```bash
-# Step 1: Use GPT-5 to generate initial implementation
-copilot -p "Implement a robust circuit breaker in @src/network.ts" --model gpt-5.3-codex --allow-all-tools 2>&1
+# Architecture analysis with Opus
+copilot -p "Analyze authentication architecture" --model claude-opus-4.6 2>&1
 
-# Step 2: Use Claude 3.5 to verify and review
-copilot -p "Critically review the circuit breaker in @src/network.ts for edge cases" --model claude-sonnet-4.6 --mode plan 2>&1
+# Implementation with GPT-5.3-Codex
+copilot -p "Implement the auth refactor from the plan" --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
-**Cloud-delegated heavy lifting:**
+### Cloud Delegation
+
 ```bash
-copilot -p "Migrate the entire frontend from Webpack to Vite and update all configs" /delegate 2>&1
+copilot -p "/delegate Analyze this repository for security vulnerabilities and create issues for findings" 2>&1
 ```
 
-**Autopilot repository mapping:**
+### Autonomous Implementation
+
 ```bash
-copilot -p "Identify all unused exported symbols across the entire project" --mode plan --autopilot 2>&1
+copilot -p "Add error handling to all API routes in src/routes/" \
+  --allow-all-tools --model gpt-5.4 2>&1
 ```
 
-**Targeted agent execution:**
-```bash
-copilot -p "Update all API endpoints to include new versioning headers" --agent task --allow-all-tools 2>&1
-```
+### Explore Agent for Onboarding
 
-**Integration with External AI (Conductor Pattern):**
 ```bash
-# External AI generates a plan.md
-# External AI invokes Copilot to execute the heavy implementation
-copilot -p "Apply the implementation plan described in @specs/005-refactor/plan.md" --autopilot --allow-all-tools 2>&1
+copilot -p "Map the data flow from API request to database write in this project" \
+  --agent explore 2>&1
 ```
 
 <!-- /ANCHOR:usage-examples -->
 
 ---
 
-## 7. TROUBLESHOOTING
 <!-- ANCHOR:troubleshooting -->
+## 7. TROUBLESHOOTING
 
-| Issue | Solution |
-|-------|----------|
-| `copilot` not found | `npm install -g @github/copilot` |
-| Authentication Error | Run `copilot /login` or verify `GH_TOKEN` validity |
-| Delegation Failed | Ensure you have an active Copilot for Business/Enterprise seat |
-| Model Not Available | Check model availability for your region/organization |
-| Permission Denied | Use `--allow-all-tools` or check local file permissions |
-| Indexing Outdated | Force a re-index via `copilot /index-repo` |
-| Autopilot Halted | Review plan.md for logical loops or ambiguous instructions |
+### Copilot CLI Not Found
 
-For detailed troubleshooting, see `references/cli_reference.md` Section 10.
+**What you see**: `command not found: copilot`
+**Common causes**: CLI not installed, or using old `gh copilot` extension.
+**Fix**: Install the standalone binary with `npm install -g @github/copilot`. The `gh copilot` extension is deprecated.
+
+### Authentication Failure
+
+**What you see**: `403 Forbidden` or login redirect.
+**Common causes**: `GH_TOKEN` not set, GitHub auth expired, or no Copilot subscription.
+**Fix**: Run `gh auth login` and verify your GitHub account has an active Copilot subscription.
+
+### Model Not Available
+
+**What you see**: "Model not available" or unexpected model used.
+**Common causes**: Requested model not included in your Copilot plan tier.
+**Fix**: Check available models with `/model` in interactive mode. Some models require Business or Enterprise plans.
+
+### Autopilot Safety Block
+
+**What you see**: Task pauses unexpectedly despite `--allow-all-tools`.
+**Common causes**: Copilot's built-in safety system blocked a potentially destructive operation.
+**Fix**: Review the blocked action and approve it manually, or restructure the task to avoid the flagged operation.
 
 <!-- /ANCHOR:troubleshooting -->
 
 ---
 
-## 8. RELATED
-<!-- ANCHOR:related -->
+<!-- ANCHOR:faq -->
+## 8. FAQ
 
-- **SKILL.md** — Full routing logic, rules (ALWAYS/NEVER/ESCALATE IF), success criteria
-- **cli-claude-code skill** — Anthropic's Claude Code CLI for deep extended thinking
-- **cli-gemini skill** — Google Gemini CLI for Google Search grounding
-- **sk-code--full-stack** — Full-stack tasks where Copilot provides cloud-delegated execution
-- **mcp-code-mode** — Using MCP servers within the Copilot CLI ecosystem
-- **External** — [GitHub Copilot Documentation](https://docs.github.com/en/copilot) | [GitHub CLI Repository](https://github.com/github/copilot-cli)
+### General
 
-<!-- /ANCHOR:related -->
+**Q: When should I use Copilot instead of other CLIs?**
+A: Use Copilot when you need multi-provider model access (switch between OpenAI, Anthropic, Google), autonomous Autopilot execution, or cloud delegation to GitHub's infrastructure. For web search, use Codex or Gemini instead.
+
+**Q: Does Copilot CLI replace the `gh copilot` extension?**
+A: Yes. The standalone `copilot` binary is the current implementation. `gh copilot` is deprecated.
+
+### Models
+
+**Q: Can I switch models mid-session?**
+A: Yes. Use `/model` in interactive mode to switch between all 5 available models from 3 providers. The selection persists to config automatically.
+
+**Q: Which model is the default?**
+A: Claude Sonnet 4.6 is the default for general coding tasks. Override with `--model` per invocation.
+
+### Cloud Delegation
+
+**Q: What can cloud agents access that local execution cannot?**
+A: Cloud agents run on GitHub's infrastructure with access to repository metadata, issue history, PR context, and CI/CD status. They process the full repository graph, not just local files.
+
+**Q: Is cloud delegation free?**
+A: Cloud delegation uses your Copilot plan's compute allocation. Usage limits depend on your plan tier.
+
+<!-- /ANCHOR:faq -->
+
+---
+
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
+
+### Skill Resources
+- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, models, auth, and config
+- [copilot_tools.md](./references/copilot_tools.md) -- Autopilot, repo memory, and MCP integration
+- [agent_delegation.md](./references/agent_delegation.md) -- Explore/Task agents and custom agent creation
+- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+
+### Related Skills
+- [cli-claude-code](../cli-claude-code/) -- Anthropic Claude Code CLI orchestrator
+- [cli-codex](../cli-codex/) -- OpenAI Codex CLI orchestrator
+- [cli-gemini](../cli-gemini/) -- Google Gemini CLI orchestrator
+
+<!-- /ANCHOR:related-documents -->

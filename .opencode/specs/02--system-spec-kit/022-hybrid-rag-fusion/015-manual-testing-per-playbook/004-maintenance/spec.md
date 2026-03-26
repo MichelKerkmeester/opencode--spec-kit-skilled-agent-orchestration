@@ -76,6 +76,14 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 | `tasks.md` | Rewrite | One task per scenario, all pending |
 | `checklist.md` | Rewrite | P0/P1 items, all unchecked |
 | `implementation-summary.md` | Rewrite | Blank — to be filled after execution |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 014 | Workspace scanning and indexing (memory_index_scan) | 04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md |
+| 2 | 035 | Startup runtime compatibility guards | 04--maintenance/02-startup-runtime-compatibility-guards.md |
+
 <!-- /ANCHOR:scope -->
 
 ---

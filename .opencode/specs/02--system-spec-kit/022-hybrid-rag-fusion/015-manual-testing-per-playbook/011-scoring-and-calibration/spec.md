@@ -93,6 +93,36 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | `tasks.md` | Rewrite | Task tracker — one task per scenario, all pending |
 | `checklist.md` | Rewrite | Level 2 verification checklist — all items unchecked |
 | `implementation-summary.md` | Rewrite | Blank template awaiting execution completion |
+
+### Scenario Registry
+
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | 023 | Score normalization | 11--scoring-and-calibration/01-score-normalization.md |
+| 2 | 024 | Cold-start novelty boost (N4) | 11--scoring-and-calibration/02-cold-start-novelty-boost.md |
+| 3 | 025 | Interference scoring (TM-01) | 11--scoring-and-calibration/03-interference-scoring.md |
+| 4 | 026 | Classification-based decay (TM-03) | 11--scoring-and-calibration/04-classification-based-decay.md |
+| 5 | 027 | Folder-level relevance scoring (PI-A1) | 11--scoring-and-calibration/05-folder-level-relevance-scoring.md |
+| 6 | 028 | Embedding cache (R18) | 11--scoring-and-calibration/06-embedding-cache.md |
+| 7 | 029 | Double intent weighting investigation (G2) | 11--scoring-and-calibration/07-double-intent-weighting-investigation.md |
+| 8 | 030 | RRF K-value sensitivity analysis (FUT-5) | 11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md |
+| 9 | 031 | Negative feedback confidence signal (A4) | 11--scoring-and-calibration/09-negative-feedback-confidence-signal.md |
+| 10 | 032 | Auto-promotion on validation (T002a) | 11--scoring-and-calibration/10-auto-promotion-on-validation.md |
+| 11 | 066 | Scoring and ranking corrections | 11--scoring-and-calibration/11-scoring-and-ranking-corrections.md |
+| 12 | 074 | Stage 3 effectiveScore fallback chain | 11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md |
+| 13 | 079 | Scoring and fusion corrections | 11--scoring-and-calibration/13-scoring-and-fusion-corrections.md |
+| 14 | 098 | Local GGUF reranker via node-llama-cpp (P1-5) | 11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md |
+| 15 | 102 | node-llama-cpp optionalDependencies | — |
+| 16 | 118 | Stage-2 score field synchronization (P0-8) | 11--scoring-and-calibration/13-scoring-and-fusion-corrections.md |
+| 17 | 121 | Adaptive shadow proposal and rollback (Phase 4) | 11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md |
+| 18 | 159 | Learned Stage 2 combiner (SPECKIT_LEARNED_STAGE2_COMBINER) | 11--scoring-and-calibration/19-learned-stage2-weight-combiner.md |
+| 19 | 160 | Shadow feedback (SPECKIT_SHADOW_FEEDBACK) | 11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md |
+| 20 | 171 | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | 11--scoring-and-calibration/21-calibrated-overlap-bonus.md |
+| 21 | 172 | RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) | 11--scoring-and-calibration/22-rrf-k-experimental.md |
+| 22 | 196 | Tool-level TTL cache | 11--scoring-and-calibration/15-tool-level-ttl-cache.md |
+| 23 | 197 | Access-driven popularity scoring | 11--scoring-and-calibration/16-access-driven-popularity-scoring.md |
+| 24 | 198 | Temporal-structural coherence scoring | 11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md |
+
 <!-- /ANCHOR:scope -->
 
 ---
