@@ -50,10 +50,10 @@ The directory also holds `fixtures/` for versioned test cases and `out/` for rep
 | Component | Count | Notes |
 | --- | --- | --- |
 | Stop words | 106 | Filtered from queries before matching |
-| Synonym mappings | 89 | Expand user language to technical terms |
-| Intent boosters | 150 | Direct keyword-to-skill score mappings |
+| Synonym mappings | 90 | Expand user language to technical terms |
+| Intent boosters | 170 | Direct keyword-to-skill score mappings |
 | Multi-skill boosters | 32 | Ambiguous keywords that boost multiple skills |
-| Phrase intent boosters | 83 | Multi-token phrases with high-signal routing boosts |
+| Phrase intent boosters | 131 | Multi-token phrases with high-signal routing boosts |
 | Command bridges | 2 | Slash commands exposed as pseudo-skills |
 | Regression fixtures | 1 file | `skill_advisor_regression_cases.jsonl` |
 
@@ -128,6 +128,10 @@ fi
 
 **Regression and benchmark tooling.** The regression harness runs against a versioned JSONL fixture set and writes a report to `out/regression-report.json`. The benchmark harness measures p50/p95 latency across one-shot, warm, and batch run modes.
 
+**CocoIndex aliases and discovery routing.** `--semantic` and `--cocoindex` are equivalent aliases for built-in CocoIndex search. `--semantic-hits` and `--cocoindex-hits` are equivalent aliases for pre-computed JSON hits. Discovery prompts such as "find code that", "semantic code search", "code search", "where is the logic", and "how does X work" are optimized to favor `mcp-coco-index`.
+
+**Autonomous review boundary.** Explicit autonomous workflows such as `autoresearch`, `/autoresearch`, `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-research`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code--review`.
+
 ### 3.2 FEATURE REFERENCE
 
 **Matching Algorithm Steps**
@@ -161,6 +165,8 @@ fi
 | `--health` | Off | Runs diagnostics on skill discovery |
 | `--batch-file` | None | Path to a file with one request per line |
 | `--batch-stdin` | Off | Reads batch requests from stdin |
+| `--semantic`, `--cocoindex` | Off | Equivalent aliases that force built-in CocoIndex search |
+| `--semantic-hits`, `--cocoindex-hits` | None | Equivalent aliases for pre-computed CocoIndex JSON hits |
 
 **Synonym Expansion Examples**
 

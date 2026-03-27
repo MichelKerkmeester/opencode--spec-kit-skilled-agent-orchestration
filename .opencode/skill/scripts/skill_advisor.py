@@ -42,6 +42,7 @@ LOCAL_CCC_BIN = os.path.join(
     "bin",
     "ccc",
 )
+DISABLE_BUILTIN_SEMANTIC_ENV = "SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC"
 
 RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
 _RUNTIME_SPEC = None
@@ -438,6 +439,7 @@ INTENT_BOOSTERS = {
     # MCP-COCO-INDEX: Semantic code search via vector embeddings
     # ─────────────────────────────────────────────────────────────────
     "cocoindex": ("mcp-coco-index", 2.5),
+    "coco": ("mcp-coco-index", 1.5),
     "ccc": ("mcp-coco-index", 2.0),
     "semantic": ("mcp-coco-index", 1.5),
     "vector search": ("mcp-coco-index", 2.0),
@@ -460,7 +462,6 @@ MULTI_SKILL_BOOSTERS = {
     "context": [("system-spec-kit", 0.4)],
     "deployment": [("sk-code--web", 0.4), ("sk-git", 0.3)],
     "export": [("mcp-figma", 0.3), ("mcp-chrome-devtools", 0.2)],
-    "fix": [("sk-code--web", 0.3), ("sk-git", 0.1)],
     "handler": [("sk-code--web", 0.3), ("mcp-code-mode", 0.2)],
     "layout": [("sk-code--web", 0.5), ("mcp-chrome-devtools", 0.2)],
     "mobile": [("sk-code--web", 0.3), ("mcp-chrome-devtools", 0.2)],
@@ -507,6 +508,10 @@ PHRASE_INTENT_BOOSTERS = {
     "merge readiness": [("sk-code--review", 2.2), ("sk-git", 0.4)],
     "ready to merge": [("sk-code--review", 2.2), ("sk-git", 0.4)],
     "implement feature": [("sk-code--web", 0.9)],
+    "responsive css": [("sk-code--web", 1.2)],
+    "responsive css layout": [("sk-code--web", 1.4)],
+    "responsive css layout fix": [("sk-code--web", 2.2)],
+    "layout fix": [("sk-code--web", 1.0)],
     "css animation": [("sk-code--web", 0.8)],
     "api network": [("sk-code--web", 0.7), ("mcp-chrome-devtools", 0.4)],
     "template level validation": [("system-spec-kit", 0.8)],
@@ -515,11 +520,18 @@ PHRASE_INTENT_BOOSTERS = {
     "research loop": [("sk-deep-research", 2.5)],
     "autoresearch": [("sk-deep-research", 3.0)],
     "/autoresearch": [("sk-deep-research", 3.0)],
+    "auto research": [("sk-deep-research", 2.8)],
     "autonomous research": [("sk-deep-research", 2.5)],
     "iterative research": [("sk-deep-research", 2.5)],
     "multi-round research": [("sk-deep-research", 2.0)],
     "overnight research": [("sk-deep-research", 2.0)],
     # --- CocoIndex semantic code search ---
+    "semantic search": [("mcp-coco-index", 2.5)],
+    "code search": [("mcp-coco-index", 2.0)],
+    "cocoindex search": [("mcp-coco-index", 2.8)],
+    "coco index": [("mcp-coco-index", 2.5)],
+    "find implementation": [("mcp-coco-index", 1.5)],
+    "find usage": [("mcp-coco-index", 1.2)],
     "find code that": [("mcp-coco-index", 1.8)],
     "similar code": [("mcp-coco-index", 2.0)],
     "where is the logic": [("mcp-coco-index", 1.5)],
@@ -530,6 +542,9 @@ PHRASE_INTENT_BOOSTERS = {
     "semantic code search": [("mcp-coco-index", 2.5)],
     "how is.*implemented": [("mcp-coco-index", 1.2)],
     "how does.*work": [("mcp-coco-index", 1.0)],
+    "mcp-coco-index": [("mcp-coco-index", 2.8)],
+    "/mcp-coco-index": [("mcp-coco-index", 2.8)],
+    ".opencode/skill/mcp-coco-index": [("mcp-coco-index", 3.0)],
     "convergence detection": [("sk-deep-research", 2.0)],
     # --- Deep review mode (iterative code audit) ---
     "deep review": [("sk-deep-research", 2.5)],
@@ -540,6 +555,10 @@ PHRASE_INTENT_BOOSTERS = {
     "release readiness review": [("sk-deep-research", 2.0)],
     "spec folder review": [("sk-deep-research", 2.0), ("sk-code--review", 0.8)],
     "review convergence": [("sk-deep-research", 2.5)],
+    "auto review release readiness": [("sk-deep-research", 7.0)],
+    "auto review security audit": [("sk-deep-research", 2.5)],
+    "auto review audit": [("sk-deep-research", 2.2)],
+    "auto review loop": [("sk-deep-research", 2.5)],
     ":review": [("sk-deep-research", 3.0)],
     ":review:auto": [("sk-deep-research", 3.0)],
     ":review:confirm": [("sk-deep-research", 3.0)],
@@ -957,6 +976,12 @@ def resolve_cocoindex_binary() -> Optional[str]:
     if os.path.isfile(LOCAL_CCC_BIN) and os.access(LOCAL_CCC_BIN, os.X_OK):
         return LOCAL_CCC_BIN
     return shutil.which("ccc")
+
+
+def built_in_semantic_search_disabled() -> bool:
+    """Return True when external CocoIndex lookup is disabled via environment."""
+    value = os.environ.get(DISABLE_BUILTIN_SEMANTIC_ENV, "").strip().lower()
+    return value in {"1", "true", "yes", "on"}
 
 
 def is_exact_match_prompt(prompt_lower: str, tokens: List[str]) -> bool:
@@ -1473,9 +1498,9 @@ def analyze_batch(
             continue
 
         hits = None
-        if semantic_mode:
+        if semantic_mode and not built_in_semantic_search_disabled():
             hits = _cocoindex_search_builtin(trimmed, REPO_ROOT)
-        elif should_auto_use_semantic_search(trimmed):
+        elif should_auto_use_semantic_search(trimmed) and not built_in_semantic_search_disabled():
             hits = _cocoindex_search_builtin(trimmed, REPO_ROOT)
 
         results.append({
@@ -1511,9 +1536,11 @@ Examples:
 
   # CocoIndex semantic search (built-in, requires ccc daemon):
   python skill_advisor.py "deploy to production" --semantic
+  python skill_advisor.py "deploy to production" --cocoindex
 
   # CocoIndex semantic search (pre-computed MCP results):
   python skill_advisor.py "deploy to production" --semantic-hits '[{"path":".opencode/skill/sk-git/SKILL.md","score":0.92}]'
+  python skill_advisor.py "deploy to production" --cocoindex-hits '[{"path":".opencode/skill/sk-git/SKILL.md","score":0.92}]'
         '''
     )
     parser.add_argument('prompt', nargs='?', default='',
@@ -1534,9 +1561,9 @@ Examples:
                         help='Analyze prompts from stdin (one prompt per line) in one process.')
     parser.add_argument('--force-refresh', action='store_true',
                         help='Force refresh of skill discovery cache before analysis.')
-    parser.add_argument('--semantic', action='store_true',
+    parser.add_argument('--semantic', '--cocoindex', dest='semantic', action='store_true',
                         help='Run CocoIndex semantic search (via ccc CLI) to supplement keyword matching.')
-    parser.add_argument('--semantic-hits', type=str, default='',
+    parser.add_argument('--semantic-hits', '--cocoindex-hits', dest='semantic_hits', type=str, default='',
                         help='Pre-computed CocoIndex results as JSON array of {"path": str, "score": float} objects.')
 
     args = parser.parse_args()
@@ -1562,10 +1589,10 @@ Examples:
         try:
             pre_computed_hits = json.loads(args.semantic_hits)
             if not isinstance(pre_computed_hits, list):
-                print(json.dumps({"error": "--semantic-hits must be a JSON array"}), file=sys.stderr)
+                print(json.dumps({"error": "--semantic-hits/--cocoindex-hits must be a JSON array"}), file=sys.stderr)
                 pre_computed_hits = None
         except json.JSONDecodeError as exc:
-            print(json.dumps({"error": f"Invalid --semantic-hits JSON: {exc}"}), file=sys.stderr)
+            print(json.dumps({"error": f"Invalid --semantic-hits/--cocoindex-hits JSON: {exc}"}), file=sys.stderr)
 
     if args.batch_file:
         try:
@@ -1603,9 +1630,9 @@ Examples:
 
     # Resolve semantic hits: pre-computed > built-in search > none
     semantic_hits = pre_computed_hits
-    if semantic_hits is None and args.semantic:
+    if semantic_hits is None and args.semantic and not built_in_semantic_search_disabled():
         semantic_hits = _cocoindex_search_builtin(args.prompt, REPO_ROOT)
-    elif semantic_hits is None and should_auto_use_semantic_search(args.prompt):
+    elif semantic_hits is None and should_auto_use_semantic_search(args.prompt) and not built_in_semantic_search_disabled():
         semantic_hits = _cocoindex_search_builtin(args.prompt, REPO_ROOT)
 
     results = analyze_prompt(

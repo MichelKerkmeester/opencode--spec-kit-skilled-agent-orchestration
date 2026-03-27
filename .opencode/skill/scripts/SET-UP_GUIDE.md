@@ -93,11 +93,15 @@ Expected characteristics:
 python3 .opencode/skill/scripts/skill_advisor.py "create a pull request on github"
 python3 .opencode/skill/scripts/skill_advisor.py "save this conversation context to memory"
 python3 .opencode/skill/scripts/skill_advisor.py "/memory:save this context"
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/scripts/skill_advisor.py "auto review release readiness"
 ```
 
 Expected behavior:
 - natural language prompts prefer `kind: "skill"`
 - explicit slash prompts may return `kind: "command"`
+- discovery prompts with `--semantic` or `--cocoindex` should favor `mcp-coco-index`
+- explicit autonomous review wording should favor `sk-deep-research`
 
 ---
 
@@ -112,6 +116,17 @@ python3 .opencode/skill/scripts/skill_advisor.py "your prompt"
 Uses dual-threshold filtering:
 - `--threshold` default: `0.8`
 - `--uncertainty` default: `0.35`
+
+### CocoIndex Alias Flags
+
+```bash
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
+```
+
+Both flag pairs are aliases. Use either spelling consistently in local workflows.
 
 ### Confidence-Only Override
 
@@ -238,6 +253,10 @@ python3 .opencode/skill/scripts/skill_advisor.py --health
 
 # One-shot default mode
 python3 .opencode/skill/scripts/skill_advisor.py "create a pull request on github"
+
+# CocoIndex alias flags
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex
 
 # Confidence-only override
 python3 .opencode/skill/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
