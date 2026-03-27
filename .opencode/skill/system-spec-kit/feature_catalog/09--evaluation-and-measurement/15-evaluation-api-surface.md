@@ -35,8 +35,13 @@ The surface also exposes `loadGroundTruth` and `initEvalDb` directly from their 
 | `mcp_server/lib/eval/ground-truth-generator.ts` | Lib | Source of ground-truth loading exported through the public facade |
 | `mcp_server/lib/eval/eval-db.ts` | Lib | Source of evaluation database initialization exported through the public facade |
 
+### Tests
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct export contract for the public eval/search barrels and top-level API barrel parity |
+
 ---
 ## 4. SOURCE METADATA
 - Group: Evaluation and measurement
 - Source feature title: Evaluation API Surface
-- Source spec: Deep research remediation 2026-03-26
+- Current reality source: direct implementation audit of `mcp_server/api/eval.ts` and the explicit API-surface export test

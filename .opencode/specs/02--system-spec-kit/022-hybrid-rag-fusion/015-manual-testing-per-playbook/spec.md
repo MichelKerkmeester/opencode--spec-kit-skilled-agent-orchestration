@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook"
-description: "Execute manual testing across 231 scenario files (272 exact IDs) in 19 categories from the manual testing playbook, tracking coverage and verdicts per phase folder."
+description: "Root wrapper spec for the live manual-testing playbook tree: 290 scenario files across 21 categories, with historical execution evidence and current traceability remediation kept separate."
 trigger_phrases:
   - "manual testing"
   - "testing playbook"
@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | In Progress — Testing: 272/272 PASS. Traceability remediation: PENDING (deep review verdict CONDITIONAL) |
+| **Status** | In Progress — wrapper truth-sync active; historical execution evidence preserved; traceability remediation still open |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The manual testing playbook contains 231 scenario files expanding to 272 exact IDs across 19 categories. Each scenario defines prompts, expected behavior, pass/fail criteria, and evidence requirements for verifying Spec Kit Memory features. This spec folder tracks manual test execution across all scenarios, organized into 24 top-level subdirectories (22 numbered phase folders plus `memory/` and `scratch/`).
+The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.
 
 ### Purpose
-Execute and record manual test results for all 272 exact scenario IDs, producing per-phase verdicts (PASS/PARTIAL/FAIL) and an aggregate coverage report across the full playbook.
+Keep the root wrapper honest about the current live playbook tree while preserving the older `272 exact ID` execution wave as historical evidence only. This packet should coordinate the live wrapper state, not imply that the entire current tree has already been re-verified end to end.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,16 +49,16 @@ Execute and record manual test results for all 272 exact scenario IDs, producing
 ## 3. SCOPE
 
 ### In Scope
-- Manual test execution across 24 top-level subdirectories (001 through 022 plus `memory/` and `scratch/`)
-- Per-scenario verdict recording (PASS / PARTIAL / FAIL) with evidence
-- Aggregate coverage reporting across 272 exact IDs
-- Bug and playbook-error tracking discovered during test execution
+- Root-wrapper truth for the live playbook denominator: `290` scenario files across `21` categories
+- The current 22 numbered phase folders in this packet, including the retained duplicate `020-feature-flag-reference`
+- Historical execution evidence from the earlier `272 exact ID` wave
+- Still-open traceability-remediation status from the 2026-03-26 review
 
 ### Out of Scope
-- Automated test suite creation -- this is manual testing only
-- Feature catalog maintenance -- catalog is a read-only reference
-- Playbook authoring -- playbook is a read-only source of truth
-- Runtime code changes -- except for bugs discovered during testing
+- Re-running the full manual execution wave in this wrapper-only pass
+- Authoring new playbook scenarios in the source tree
+- Feature catalog maintenance outside root-wrapper coordination
+- Runtime code changes
 
 ### Files to Change
 
@@ -68,55 +68,43 @@ Execute and record manual test results for all 272 exact scenario IDs, producing
 | `plan.md` | Modify | Execution plan and phase dependencies |
 | `tasks.md` | Modify | Per-phase task tracking |
 | `checklist.md` | Modify | Quality gates and verification evidence |
-| `implementation-summary.md` | Create | Post-execution summary (after testing completes) |
-| `001-retrieval/` through `022-implement-and-remove-deprecated-features/` | Modify | Per-phase test execution docs |
+| `implementation-summary.md` | Maintain | Historical execution evidence plus root-wrapper follow-up notes |
+| `001-retrieval/` through `022-implement-and-remove-deprecated-features/` | Reference | Child phase folders remain the detailed execution surfaces |
 <!-- /ANCHOR:scope -->
 
 ---
 
 ## PHASE DOCUMENTATION MAP
 
-| Phase | Folder | Category | Scenario Files | Exact IDs |
-|-------|--------|----------|---------------|-----------|
-| 001 | `001-retrieval/` | Retrieval | 13 | 13 |
-| 002 | `002-mutation/` | Mutation | 9 | 9 |
-| 003 | `003-discovery/` | Discovery | 3 | 3 |
-| 004 | `004-maintenance/` | Maintenance | 2 | 2 |
-| 005 | `005-lifecycle/` | Lifecycle | 10 | 10 |
-| 006 | `006-analysis/` | Analysis | 7 | 7 |
-| 007 | `007-evaluation/` | Evaluation | 2 | 2 |
-| 008 | `008-bug-fixes-and-data-integrity/` | Bug Fixes and Data Integrity | 11 | 11 |
-| 009 | `009-evaluation-and-measurement/` | Evaluation and Measurement | 16 | 16 |
-| 010 | `010-graph-signal-activation/` | Graph Signal Activation | 15 | 15 |
-| 011 | `011-scoring-and-calibration/` | Scoring and Calibration | 22 | 22 |
-| 012 | `012-query-intelligence/` | Query Intelligence | 10 | 10 |
-| 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 27 | 34 |
-| 014 | `014-pipeline-architecture/` | Pipeline Architecture | 18 | 18 |
-| 015 | `015-retrieval-enhancements/` | Retrieval Enhancements | 11 | 11 |
-| 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 33 | 65 |
-| 017 | `017-governance/` | Governance | 5 | 5 |
-| 018 | `018-ux-hooks/` | UX Hooks | 11 | 11 |
-| 019 | `019-feature-flag-reference/` | Feature Flag Reference | 8 | 8 |
-| **TOTAL** | | | **231** | **272** |
+| Phase | Folder | Category | Scenario Files | Note |
+|-------|--------|----------|---------------|------|
+| 001 | `001-retrieval/` | Retrieval | 16 | Live category count |
+| 002 | `002-mutation/` | Mutation | 11 | Live category count |
+| 003 | `003-discovery/` | Discovery | 3 | Live category count |
+| 004 | `004-maintenance/` | Maintenance | 2 | Live category count |
+| 005 | `005-lifecycle/` | Lifecycle | 10 | Live category count |
+| 006 | `006-analysis/` | Analysis | 7 | Live category count |
+| 007 | `007-evaluation/` | Evaluation | 2 | Live category count |
+| 008 | `008-bug-fixes-and-data-integrity/` | Bug Fixes and Data Integrity | 11 | Live category count |
+| 009 | `009-evaluation-and-measurement/` | Evaluation and Measurement | 15 | Live category count |
+| 010 | `010-graph-signal-activation/` | Graph Signal Activation | 18 | Live category count |
+| 011 | `011-scoring-and-calibration/` | Scoring and Calibration | 24 | Live category count |
+| 012 | `012-query-intelligence/` | Query Intelligence | 10 | Live category count |
+| 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 29 | Live category count |
+| 014 | `014-pipeline-architecture/` | Pipeline Architecture | 25 | Live category count |
+| 015 | `015-retrieval-enhancements/` | Retrieval Enhancements | 11 | Live category count |
+| 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 51 | Live category count |
+| 017 | `017-governance/` | Governance | 8 | Live category count |
+| 018 | `018-ux-hooks/` | UX Hooks | 19 | Live category count |
+| 019 | `019-feature-flag-reference/` | Feature Flag Reference | 10 | Live category count |
+| 020 | `020-feature-flag-reference/` | Feature Flag Reference (duplicate wrapper) | 0 | Retained phase folder, not a new category denominator |
+| 021 | `021-remediation-revalidation/` | Remediation and Revalidation | 3 | Live category count |
+| 022 | `022-implement-and-remove-deprecated-features/` | Implement and Remove Deprecated Features | 5 | Live category count |
+| **TOTAL** | | **21 live categories across 22 numbered phase folders** | **290** | Root playbook index [manual-testing source of truth](../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) excluded |
 
-Current child-phase status snapshot (2026-03-24):
-- Complete: `009-evaluation-and-measurement`, `011-scoring-and-calibration`, `014-pipeline-architecture`, `016-tooling-and-scripts`
-- Pending (`Not Started`/`Draft`): `001`, `002`, `003`, `004`, `005`, `006`, `007`, `008`, `010`, `012`, `013`, `015`, `017`, `018`, `019`, `020`, `021`, `022`
-
-### Sub-Scenario Breakdown
-
-Categories 013 and 016 have more exact IDs than scenario files due to sub-scenarios:
-
-| Category | File | Parent ID | Sub-IDs | Extra IDs |
-|----------|------|-----------|---------|-----------|
-| 013 | 005-outsourced-agent-memory-capture-round-trip.md | M-005 | M-005a, M-005b, M-005c | +3 |
-| 013 | 006-session-enrichment-and-alignment-guardrails.md | M-006 | M-006a, M-006b, M-006c | +3 |
-| 013 | 155-post-save-quality-review.md | 155 | 155-F | +1 |
-| 016 | 007-session-capturing-pipeline-quality.md | M-007 | M-007a through M-007q | +17 |
-| 016 | 153-json-mode-hybrid-enrichment.md | 153 | 153-A through 153-O | +15 |
-| | | | **Sub-scenario surplus** | **+39** |
-
-> Scenario-file and sub-scenario tallies combine to the live exact-ID denominator (272).
+Historical execution note:
+- The older `272 exact ID` execution wave remains valid as historical evidence.
+- It is no longer the current live wrapper denominator.
 
 ---
 
@@ -127,17 +115,17 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All 24 top-level subdirectories contain executed test results | Each phase folder has recorded verdicts for every scenario in its category |
-| REQ-002 | Every exact scenario ID (272 total) has a verdict | Aggregate report shows 272 verdicts with zero unexecuted IDs |
-| REQ-003 | Per-phase execution summaries are recorded | Each phase folder contains pass/partial/fail counts with evidence |
+| REQ-001 | Root docs use the live playbook denominator truthfully | The wrapper packet uses `290` scenario files across `21` categories as the live denominator |
+| REQ-002 | Root docs describe the full live phase tree | The phase map includes the `021` and `022` folders and explains the retained duplicate `020` folder |
+| REQ-003 | Historical execution evidence is clearly bounded | The older `272 exact ID` wave is labeled as historical evidence, not current live coverage |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Bugs discovered during testing are documented | Each bug has a description, affected scenario ID, and severity |
-| REQ-005 | Playbook errors discovered during testing are documented | Each playbook error has a description, location, and correction |
-| REQ-006 | Aggregate coverage report produced | Summary table showing per-phase verdict counts and overall pass rate |
+| REQ-004 | Traceability remediation remains visible | The packet continues to show the still-open catalog/playbook alignment backlog |
+| REQ-005 | Root wrapper docs do not invent closure | The packet avoids claiming the current 290-file tree is fully re-verified |
+| REQ-006 | Root wrapper docs stay aligned internally | `spec.md`, `plan.md`, and `checklist.md` use the same live counts and status boundary |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -145,14 +133,14 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 272 exact scenario IDs have recorded verdicts (PASS, PARTIAL, or FAIL)
-- **SC-002**: Per-phase summaries are complete for all 24 subdirectories
-- **SC-003**: Aggregate coverage report shows overall pass rate and identifies any FAIL scenarios requiring follow-up
+- **SC-001**: The wrapper packet reports the live `290`-file, `21`-category denominator honestly.
+- **SC-002**: The wrapper packet includes all 22 numbered phase folders.
+- **SC-003**: Historical execution evidence is preserved without being overstated as current live coverage.
 ### Acceptance Scenarios
 
 **Given** the umbrella playbook packet, **when** a reviewer opens the phase map, **then** all numbered child folders from `001` through `022` appear in the documented execution sequence.
 
-**Given** the umbrella packet, **when** a reviewer checks coverage expectations, **then** the packet records the exact-ID denominator and the per-phase verdict-tracking intent without inventing missing execution.
+**Given** the umbrella packet, **when** a reviewer checks coverage expectations, **then** the packet distinguishes the historical `272 exact ID` execution evidence from the current live `290`-file denominator.
 
 **Given** a reviewer checks the execution controls, **when** they read the packet and checklist, **then** evidence, bug tracking, and playbook-error tracking expectations are explicit.
 
@@ -167,10 +155,10 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Manual testing playbook (231 scenario files) | Source of all prompts, commands, and pass/fail criteria | Treat playbook as read-only source of truth |
-| Dependency | Feature catalog (19 categories, 222 features) | Provides feature context for each test scenario | Symlinked into spec folder for reference |
-| Risk | Test environment state drift between phases | Medium -- results may not be comparable | Reset test environment between phases or document state |
-| Risk | Playbook errors blocking test execution | Medium | Document errors and proceed with corrected interpretation |
+| Dependency | Manual testing playbook (290 scenario files across 21 categories) | Source of live wrapper truth | Treat the playbook as read-only source of truth |
+| Dependency | Feature catalog (255 entries across 21 categories) | Traceability target for the wrapper packet | Treat the catalog as read-only reference truth |
+| Risk | Historical execution evidence may be mistaken for current live coverage | High | Keep the historical boundary explicit in every root wrapper file |
+| Risk | Duplicate phase `020` can be mistaken for a new category | Medium | Explain that `020-feature-flag-reference` is retained as a duplicate wrapper, not a new denominator bucket |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -182,13 +170,13 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 <!-- ANCHOR:nfr -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
-### Performance
-- **NFR-P01**: Each phase should complete within a single session
-- **NFR-P02**: Total execution across all 24 subdirectories should complete within 5 working days
-
 ### Reliability
-- **NFR-R01**: Test results must be reproducible given the same environment state
-- **NFR-R02**: Evidence must be captured inline or as file references for every verdict
+- **NFR-R01**: Root wrapper counts must be reproducible from the live filesystem.
+- **NFR-R02**: Historical execution evidence must remain distinguishable from current wrapper truth.
+
+### Traceability
+- **NFR-T01**: Root wrapper docs must stay aligned to the live `255 / 21 / 290 / 21` catalog and playbook denominators.
+- **NFR-T02**: The packet must keep the still-open traceability remediation visible until separately verified.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -197,16 +185,16 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty database: Some scenarios require a populated memory database; document prerequisite state
-- Maximum memory count: Scenarios testing bulk operations need sufficient test data
+- The live wrapper denominator excludes the root playbook index [manual-testing source of truth](../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md).
+- The duplicate `020-feature-flag-reference` phase folder remains in the packet even though it does not add a new live category.
 
 ### Error Scenarios
-- MCP server not running: Restart and re-execute affected scenarios
-- Embedding service unavailable: Skip embedding-dependent scenarios and mark as BLOCKED
+- If a live recount changes, the wrapper packet must update before any release summary cites it.
+- If traceability remediation closes or expands, the wrapper packet must describe that explicitly instead of relying on historical PASS totals.
 
 ### State Transitions
-- Partial phase completion: Resume from last completed scenario within the phase
-- Environment reset between phases: Document whether clean or cumulative state was used
+- Historical execution evidence can remain complete while the current wrapper status stays in progress.
+- Root wrapper truth-sync can complete without re-running every child-phase scenario.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -216,17 +204,17 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 20/25 | 24 subdirectories, 231 scenario files, 272 exact IDs |
-| Risk | 10/25 | Manual testing only, no production changes |
-| Research | 5/20 | Playbook provides all prompts and criteria |
-| **Total** | **35/70** | **Level 2** |
+| Scope | 20/25 | 22 numbered phase folders, 290 live scenario files, historical execution evidence, and open traceability remediation |
+| Risk | 12/25 | Root wrapper drift can misstate release-control truth |
+| Research | 6/20 | Requires live recount and historical-boundary preservation |
+| **Total** | **38/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---
 
 ## 10. OPEN QUESTIONS
 
-- None at this time. The playbook and feature catalog provide all inputs needed for test execution.
+- When the traceability backlog lands, should this wrapper preserve the duplicate `020-feature-flag-reference` folder or collapse it?
 <!-- /ANCHOR:questions -->
 
 ---
@@ -241,7 +229,7 @@ Full report: [`review-report.md`](review-report.md)
 
 | ID | Severity | Title | Count | Remediation |
 |----|----------|-------|-------|-------------|
-| P0-001 | Critical | Features with NO playbook scenario (true gaps) | 29/222 (13.1%) | Create 29 playbook scenario files |
+| P0-001 | Critical | Features with NO playbook scenario (true gaps) | Historical review baseline against the older 222-entry catalog | Reconcile against the live 255-entry catalog and current playbook tree |
 | P1-001 | Major | Features missing from Section 12 cross-reference | 4 entries | Add 4 rows to Section 12 |
 | P1-002 | Major | Playbook scenarios lacking FC back-reference | 40 scenarios | Add `Feature catalog:` to 40 files |
 | P1-003 | Major | Spec phases lacking Scenario Registry table | 17/22 phases | Add registry table to 17 spec.md |
@@ -295,4 +283,3 @@ Full report: [`review-report.md`](review-report.md)
 | 29 | 18-UX Hooks | End-to-end success-envelope verification |
 
 ---
-

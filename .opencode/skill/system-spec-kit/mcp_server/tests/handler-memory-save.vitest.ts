@@ -365,6 +365,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       runQualityGateMock?: ReturnType<typeof vi.fn>;
       isSaveQualityGateEnabledMock?: ReturnType<typeof vi.fn>;
       evaluateMemorySufficiencyMock?: ReturnType<typeof vi.fn>;
+      peGatingModuleFactory?: () => unknown;
       embeddingPipelineModuleFactory?: () => Record<string, unknown>;
       peOrchestrationModuleFactory?: () => Record<string, unknown>;
       createRecordModuleFactory?: () => unknown;
@@ -465,6 +466,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doMock('../handlers/save/embedding-pipeline', options.embeddingPipelineModuleFactory);
       }
 
+      if (options.peGatingModuleFactory) {
+        vi.doMock('../handlers/pe-gating', options.peGatingModuleFactory as any);
+      }
+
       if (options.peOrchestrationModuleFactory) {
         vi.doMock('../handlers/save/pe-orchestration', options.peOrchestrationModuleFactory);
       }
@@ -516,11 +521,21 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         evaluateMemorySufficiency: evaluateMemorySufficiencyMock,
       }));
 
+      vi.doMock('../lib/storage/lineage-state', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/storage/lineage-state')>();
+        return {
+          ...actual,
+          recordLineageTransition: vi.fn(),
+          recordLineageVersion: vi.fn(),
+        };
+      });
+
       vi.doMock('../utils', async (importOriginal) => {
         const actual = await importOriginal<typeof import('../utils')>();
         return {
           ...actual,
           requireDb: vi.fn(() => ({
+            exec: vi.fn(),
             prepare: vi.fn(() => ({
               get: vi.fn(() => undefined),
               all: vi.fn(() => []),
@@ -568,6 +583,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('../lib/parsing/memory-parser');
         vi.doUnmock('../handlers/quality-loop');
         vi.doUnmock('../handlers/save/dedup');
+        vi.doUnmock('../handlers/pe-gating');
         vi.doUnmock('../handlers/save/embedding-pipeline');
         vi.doUnmock('../handlers/save/pe-orchestration');
         vi.doUnmock('../handlers/save/create-record');
@@ -929,6 +945,130 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         canonicalFilePath: getCanonicalPathKey(filePath),
         filePath,
       });
+    });
+
+    it('passes governance scope into TM-04 semantic dedup candidate lookup', async () => {
+      const findSimilarMemoriesMock = vi.fn(() => []);
+      const runQualityGateMock = vi.fn((params: {
+        embedding: Float32Array;
+        findSimilar: (embedding: Float32Array, options: { limit: number; specFolder: string }) => unknown;
+      }) => {
+        params.findSimilar(params.embedding, { limit: 3, specFolder: 'specs/999-atomic-save-fi' });
+        return { pass: true, warnOnly: false, reasons: [], layers: {} };
+      });
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        runQualityGateMock,
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        peGatingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/pe-gating')>('../handlers/pe-gating');
+          return {
+            ...actual,
+            findSimilarMemories: findSimilarMemoriesMock,
+          };
+        },
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array(1024).fill(0.1),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: null,
+          })),
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: vi.fn(() => ({
+            decision: { action: 'CREATE', similarity: 0 },
+            earlyReturn: null,
+            supersededId: null,
+          })),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('quality-gate-scope.md');
+      fs.writeFileSync(filePath, '# original content', 'utf8');
+
+      await harness.module.indexMemoryFile(filePath, {
+        force: false,
+        asyncEmbedding: false,
+        scope: {
+          tenantId: 'tenant-a',
+          userId: 'user-a',
+          agentId: 'agent-a',
+          sessionId: 'session-a',
+          sharedSpaceId: 'shared-a',
+        },
+      });
+
+      expect(findSimilarMemoriesMock).toHaveBeenCalledWith(
+        expect.any(Float32Array),
+        expect.objectContaining({
+          limit: 3,
+          specFolder: 'specs/999-atomic-save-fi',
+          tenantId: 'tenant-a',
+          userId: 'user-a',
+          agentId: 'agent-a',
+          sessionId: 'session-a',
+          sharedSpaceId: 'shared-a',
+        }),
+      );
+    });
+
+    it('passes governance scope into PE arbitration', async () => {
+      const evaluateAndApplyPeDecisionMock = vi.fn(() => ({
+        decision: { action: 'CREATE', similarity: 0 },
+        earlyReturn: null,
+        supersededId: null,
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: evaluateAndApplyPeDecisionMock,
+        }),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array(1024).fill(0.2),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: null,
+          })),
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('pe-scope.md');
+      fs.writeFileSync(filePath, '# original content', 'utf8');
+
+      await harness.module.indexMemoryFile(filePath, {
+        force: false,
+        asyncEmbedding: false,
+        scope: {
+          tenantId: 'tenant-p',
+          userId: 'user-p',
+          agentId: 'agent-p',
+          sessionId: 'session-p',
+          sharedSpaceId: 'shared-p',
+        },
+      });
+
+      expect(evaluateAndApplyPeDecisionMock).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.any(Object),
+        expect.any(Float32Array),
+        false,
+        expect.any(Array),
+        'success',
+        filePath,
+        {
+          tenantId: 'tenant-p',
+          userId: 'user-p',
+          agentId: 'agent-p',
+          sessionId: 'session-p',
+          sharedSpaceId: 'shared-p',
+        },
+      );
     });
 
     it('does not rewrite file before later hard rejection under atomic save', async () => {

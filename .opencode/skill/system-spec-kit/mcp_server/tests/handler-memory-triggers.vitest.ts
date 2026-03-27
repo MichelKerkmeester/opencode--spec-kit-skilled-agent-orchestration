@@ -10,6 +10,7 @@ import * as attentionDecay from '../lib/cognitive/attention-decay';
 import * as tierClassifier from '../lib/cognitive/tier-classifier';
 import * as coActivation from '../lib/cognitive/co-activation';
 import * as consumptionLogger from '../lib/telemetry/consumption-logger';
+import * as sessionManager from '../lib/session/session-manager';
 import type {
   SignalDetection,
   TriggerMatch,
@@ -227,6 +228,11 @@ describe('Sprint-0 reliability fixes', () => {
 
     vi.spyOn(coActivation, 'isEnabled').mockReturnValue(false);
     vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
+    vi.spyOn(sessionManager, 'resolveTrustedSession').mockReturnValue({
+      requestedSessionId: 'session-1',
+      effectiveSessionId: 'session-1',
+      trusted: true,
+    });
 
     const tierLimitSpy = vi.spyOn(tierClassifier, 'filterAndLimitByState')
       .mockImplementation((memories, _state, limit = 20) => memories.slice(0, limit));

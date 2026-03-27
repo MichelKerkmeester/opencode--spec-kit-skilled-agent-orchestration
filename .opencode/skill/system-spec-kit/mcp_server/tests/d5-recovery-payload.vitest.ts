@@ -95,6 +95,14 @@ describe('shouldTriggerRecovery()', () => {
     }))).toBe(true);
   });
 
+  it('returns true when upstream evidence-gap detection marks coverage incomplete', () => {
+    expect(shouldTriggerRecovery(makeCtx({
+      resultCount: 1,
+      avgConfidence: 0.2,
+      evidenceGap: true,
+    }))).toBe(true);
+  });
+
   it('returns false when resultCount >= 3 and avgConfidence is not below threshold', () => {
     expect(shouldTriggerRecovery(makeCtx({
       resultCount: 5,
@@ -142,6 +150,15 @@ describe('buildRecoveryPayload() — status classification', () => {
 
   it('emits status "partial" when resultCount is between 1 and PARTIAL_RESULT_MIN-1', () => {
     const payload = buildRecoveryPayload(makeCtx({ resultCount: 2 }));
+    expect(payload.status).toBe('partial');
+  });
+
+  it('emits status "partial" when evidence-gap detection marks incomplete coverage', () => {
+    const payload = buildRecoveryPayload(makeCtx({
+      resultCount: 1,
+      avgConfidence: 0.2,
+      evidenceGap: true,
+    }));
     expect(payload.status).toBe('partial');
   });
 });

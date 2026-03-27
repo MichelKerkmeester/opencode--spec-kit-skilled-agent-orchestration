@@ -8,10 +8,10 @@
 <!-- ANCHOR:table-of-contents -->
 
 - [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
+- [2. PREREQUISITES & QUICK START](#2--prerequisites--quick-start)
+- [3. INSTALLATION STRUCTURE](#3--installation-structure)
 - [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
+- [5. VERIFICATION & CONFIGURATION](#5--verification--configuration)
 - [6. USAGE EXAMPLES](#6--usage-examples)
 - [7. TROUBLESHOOTING](#7--troubleshooting)
 - [8. FAQ](#8--faq)
@@ -32,7 +32,7 @@ These scripts automate installation and configuration of OpenCode components (MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Install Scripts | 8 | 3 real + 5 symlinks (component installers + 1 master installer) |
+| Install Scripts | 9 | 3 real + 6 symlinks (component installers + 1 master installer) |
 | Shared Utilities | 36 | Functions in `_utils.sh` |
 | Platforms | 3 | macOS, Linux, Windows (WSL) |
 | Install Time | 2-10 min | Per component, depending on complexity |
@@ -59,8 +59,14 @@ These scripts automate installation and configuration of OpenCode components (MC
 
 ---
 
-## 2. QUICK START
+## 2. PREREQUISITES & QUICK START
 <!-- ANCHOR:quick-start -->
+
+### Prerequisites
+
+- Run from the project root so the relative script paths resolve.
+- Ensure Bash, Node.js, and npm meet the requirements listed in [Overview](#1--overview).
+- Make the installer scripts executable before the first run.
 
 ### 30-Second Setup
 
@@ -76,6 +82,10 @@ chmod +x .opencode/install_guides/install_scripts/*.sh
 .opencode/install_guides/install_scripts/install-spec-kit-memory.sh
 .opencode/install_guides/install_scripts/install-sequential-thinking.sh
 ```
+
+### Installation
+
+The recommended installation path is to enable the three core MCP surfaces first, then layer on optional provider-specific installers such as Chrome DevTools, ClickUp, or CocoIndex Code.
 
 ### Verify Installation
 
@@ -96,11 +106,17 @@ opencode
 # Ask: "Use sequential thinking to analyze this problem..."
 ```
 
+### Verification
+
+- Confirm the expected MCP entries exist in `opencode.json`.
+- Start OpenCode and verify the installed MCP surfaces appear without startup errors.
+- If a component is still missing, continue with the script-specific checks in [Troubleshooting](#7--troubleshooting).
+
 <!-- /ANCHOR:quick-start -->
 
 ---
 
-## 3. STRUCTURE
+## 3. INSTALLATION STRUCTURE
 <!-- ANCHOR:structure -->
 
 ```
@@ -176,7 +192,7 @@ install_scripts/
 
 ---
 
-## 5. CONFIGURATION
+## 5. VERIFICATION & CONFIGURATION
 <!-- ANCHOR:configuration -->
 
 ### Configuration Files

@@ -1,1 +1,1 @@
-../skill/mcp-cocoindex-code/INSTALL_GUIDE.md
+../skill/mcp-coco-index/INSTALL_GUIDE.md

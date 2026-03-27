@@ -42,6 +42,13 @@ interface WithCacheOptions {
   ttlMs?: number;
 }
 
+interface InFlightEntry<T = unknown> {
+  promise: Promise<T>;
+  toolName: string;
+  cacheGeneration: number;
+  toolGeneration: number;
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
 ──────────────────────────────────────────────────────────────── */
@@ -58,7 +65,8 @@ const TOOL_CACHE_CONFIG: ToolCacheConfig = {
 ──────────────────────────────────────────────────────────────── */
 
 const cache = new Map<string, CacheEntry>();
-const inFlight = new Map<string, Promise<unknown>>();
+const inFlight = new Map<string, InFlightEntry>();
+const toolGenerations = new Map<string, number>();
 
 const stats = {
   hits: 0,
@@ -68,6 +76,7 @@ const stats = {
 };
 
 let cleanupInterval: ReturnType<typeof setInterval> | null = null;
+let cacheGeneration = 0;
 
 /* ───────────────────────────────────────────────────────────────
    4. CACHE KEY GENERATION
@@ -182,6 +191,36 @@ function del(key: string): boolean {
   return deleted;
 }
 
+function getToolGeneration(toolName: string): number {
+  return toolGenerations.get(toolName) ?? 0;
+}
+
+function bumpToolGeneration(toolName: string): void {
+  toolGenerations.set(toolName, getToolGeneration(toolName) + 1);
+}
+
+function removeInFlightWhere(predicate: (entry: InFlightEntry) => boolean): number {
+  let removed = 0;
+
+  for (const [key, entry] of inFlight.entries()) {
+    if (predicate(entry)) {
+      inFlight.delete(key);
+      removed++;
+    }
+  }
+
+  if (removed > 0) {
+    stats.invalidations += removed;
+  }
+
+  return removed;
+}
+
+function matchesTool(regex: RegExp, toolName: string): boolean {
+  regex.lastIndex = 0;
+  return regex.test(toolName);
+}
+
 /* ───────────────────────────────────────────────────────────────
    6. CACHE INVALIDATION
 ──────────────────────────────────────────────────────────────── */
@@ -200,6 +239,9 @@ function invalidateByTool(toolName: string): number {
     stats.invalidations++;
   }
 
+  bumpToolGeneration(toolName);
+  removeInFlightWhere((entry) => entry.toolName === toolName);
+
   return keysToDelete.length;
 }
 
@@ -212,10 +254,18 @@ function invalidateByPattern(pattern: RegExp | string): number {
     return 0;
   }
   const keysToDelete: string[] = [];
+  const affectedTools = new Set<string>();
 
   for (const [key, entry] of cache.entries()) {
-    if (regex.test(entry.toolName)) {
+    if (matchesTool(regex, entry.toolName)) {
       keysToDelete.push(key);
+      affectedTools.add(entry.toolName);
+    }
+  }
+
+  for (const entry of inFlight.values()) {
+    if (matchesTool(regex, entry.toolName)) {
+      affectedTools.add(entry.toolName);
     }
   }
 
@@ -224,13 +274,22 @@ function invalidateByPattern(pattern: RegExp | string): number {
     stats.invalidations++;
   }
 
+  for (const toolName of affectedTools) {
+    bumpToolGeneration(toolName);
+  }
+  removeInFlightWhere((entry) => affectedTools.has(entry.toolName));
+
   return keysToDelete.length;
 }
 
 function clear(): number {
   const count = cache.size;
+  const inFlightCount = inFlight.size;
   cache.clear();
-  stats.invalidations += count;
+  inFlight.clear();
+  toolGenerations.clear();
+  cacheGeneration++;
+  stats.invalidations += count + inFlightCount;
   return count;
 }
 
@@ -325,6 +384,8 @@ async function withCache<T>(
   }
 
   const key = generateCacheKey(tool_name, args);
+  const generationAtStart = cacheGeneration;
+  const toolGenerationAtStart = getToolGeneration(tool_name);
 
   // Use get() directly to avoid TOCTOU race between has() and get()
   const cached = get<T>(key);
@@ -333,21 +394,46 @@ async function withCache<T>(
   }
 
   const existing = inFlight.get(key);
+  if (
+    existing
+    && existing.toolName === tool_name
+    && existing.cacheGeneration === generationAtStart
+    && existing.toolGeneration === toolGenerationAtStart
+  ) {
+    return await existing.promise as T;
+  }
   if (existing) {
-    return await existing as T;
+    inFlight.delete(key);
   }
 
-  const pending = (async () => {
+  let pending: Promise<T>;
+  const pendingEntry = {
+    promise: undefined as unknown as Promise<T>,
+    toolName: tool_name,
+    cacheGeneration: generationAtStart,
+    toolGeneration: toolGenerationAtStart,
+  };
+
+  pending = (async () => {
     const result = await fn();
-    set(key, result, { toolName: tool_name, ttlMs });
+    if (
+      generationAtStart === cacheGeneration
+      && toolGenerationAtStart === getToolGeneration(tool_name)
+      && inFlight.get(key) === pendingEntry
+    ) {
+      set(key, result, { toolName: tool_name, ttlMs });
+    }
     return result;
   })();
 
-  inFlight.set(key, pending);
+  pendingEntry.promise = pending;
+  inFlight.set(key, pendingEntry);
   try {
     return await pending;
   } finally {
-    inFlight.delete(key);
+    if (inFlight.get(key) === pendingEntry) {
+      inFlight.delete(key);
+    }
   }
 
 }

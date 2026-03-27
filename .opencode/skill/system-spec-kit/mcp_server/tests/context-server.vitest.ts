@@ -374,6 +374,10 @@ describe('Context Server', () => {
 
     type RuntimeHarness = {
       registerAfterToolCallback: (fn: (tool: string, callId: string, result: unknown) => Promise<void>) => void
+      testables?: {
+        runCleanupStep: (label: string, cleanupFn: () => void) => void
+        runAsyncCleanupStep: (label: string, cleanupFn: () => Promise<void>) => Promise<void>
+      }
       dispatchToolMock: ReturnType<typeof vi.fn>
       autoSurfaceMemoriesMock: ReturnType<typeof vi.fn>
       autoSurfaceAtToolDispatchMock: ReturnType<typeof vi.fn>
@@ -382,6 +386,11 @@ describe('Context Server', () => {
       setInstructionsMock: ReturnType<typeof vi.fn>
       handleMemoryStatsMock: ReturnType<typeof vi.fn>
       processExitSpy: ReturnType<typeof vi.fn>
+      registeredProcessHandlers: Map<string, Array<(...args: any[]) => unknown>>
+      retryManagerStopBackgroundJobMock: ReturnType<typeof vi.fn>
+      toolCacheShutdownMock: ReturnType<typeof vi.fn>
+      transportCloseMock: ReturnType<typeof vi.fn>
+      fileWatcherCloseMock: ReturnType<typeof vi.fn>
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
     }
 
@@ -392,6 +401,12 @@ describe('Context Server', () => {
       bm25Enabled?: boolean
       degreeBoostEnabled?: boolean
       graphUnifiedEnabled?: boolean
+      fileWatcherEnabled?: boolean
+      watchPaths?: string[]
+      fileWatcherCloseError?: string
+      retryManagerStopThrows?: string
+      toolCacheShutdownThrows?: string
+      transportCloseThrows?: string
       toolDefinitions?: Array<{ name: string; description: string; inputSchema: Record<string, unknown> }>
       memoryStatsData?: {
         totalMemories?: number
@@ -415,6 +430,27 @@ describe('Context Server', () => {
       const syncEnvelopeTokenCountMock = vi.fn(actualSyncEnvelopeTokenCount)
       const serializeEnvelopeWithTokenCountMock = vi.fn(actualSerializeEnvelopeWithTokenCount)
       const setInstructionsMock = vi.fn()
+      const registeredProcessHandlers = new Map<string, Array<(...args: any[]) => unknown>>()
+      const transportCloseMock = vi.fn(() => {
+        if (options?.transportCloseThrows) {
+          throw new Error(options.transportCloseThrows)
+        }
+      })
+      const fileWatcherCloseMock = vi.fn(async () => {
+        if (options?.fileWatcherCloseError) {
+          throw new Error(options.fileWatcherCloseError)
+        }
+      })
+      const retryManagerStopBackgroundJobMock = vi.fn(() => {
+        if (options?.retryManagerStopThrows) {
+          throw new Error(options.retryManagerStopThrows)
+        }
+      })
+      const toolCacheShutdownMock = vi.fn(() => {
+        if (options?.toolCacheShutdownThrows) {
+          throw new Error(options.toolCacheShutdownThrows)
+        }
+      })
       const statsData = options?.memoryStatsData ?? {}
       const byStatus = statsData.byStatus ?? {}
       const handleMemoryStatsMock = vi.fn(async () => ({
@@ -453,7 +489,13 @@ describe('Context Server', () => {
         pragma: vi.fn(),
       }
 
-      vi.spyOn(process, 'on').mockImplementation(() => process)
+      vi.spyOn(process, 'on').mockImplementation(((event: string | symbol, handler: (...args: any[]) => unknown) => {
+        const key = String(event)
+        const handlersForEvent = registeredProcessHandlers.get(key) ?? []
+        handlersForEvent.push(handler)
+        registeredProcessHandlers.set(key, handlersForEvent)
+        return process
+      }) as typeof process.on)
       vi.spyOn(global, 'setImmediate').mockImplementation(() => 0 as unknown as NodeJS.Immediate)
       const processExitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
 
@@ -476,7 +518,7 @@ describe('Context Server', () => {
       vi.doMock('@modelcontextprotocol/sdk/server/stdio.js', () => ({
         StdioServerTransport: class {
           close(): void {
-            return
+            transportCloseMock()
           }
         },
       }))
@@ -543,7 +585,7 @@ describe('Context Server', () => {
           ...actual,
           isDegreeBoostEnabled: vi.fn(() => options?.degreeBoostEnabled ?? false),
           isDynamicInitEnabled: vi.fn(() => process.env.SPECKIT_DYNAMIC_INIT !== 'false'),
-          isFileWatcherEnabled: vi.fn(() => false),
+          isFileWatcherEnabled: vi.fn(() => options?.fileWatcherEnabled ?? false),
         };
       })
 
@@ -589,7 +631,7 @@ describe('Context Server', () => {
       }))
       vi.doMock('../lib/providers/retry-manager', () => ({
         startBackgroundJob: vi.fn(() => false),
-        stopBackgroundJob: vi.fn(),
+        stopBackgroundJob: retryManagerStopBackgroundJobMock,
       }))
       vi.doMock('../lib/session/session-manager', () => ({
         init: vi.fn(() => ({ success: true })),
@@ -600,14 +642,18 @@ describe('Context Server', () => {
       }))
       vi.doMock('../lib/extraction/extraction-adapter', () => ({ initExtractionAdapter: vi.fn() }))
       vi.doMock('../lib/ops/job-queue', () => ({ initIngestJobQueue: vi.fn(() => ({ resetCount: 0 })) }))
-      vi.doMock('../lib/search/folder-discovery', () => ({ getSpecsBasePaths: vi.fn(() => []) }))
-      vi.doMock('../lib/ops/file-watcher', () => ({ startFileWatcher: vi.fn(() => null) }))
+      vi.doMock('../lib/search/folder-discovery', () => ({ getSpecsBasePaths: vi.fn(() => options?.watchPaths ?? []) }))
+      vi.doMock('../lib/ops/file-watcher', () => ({
+        startFileWatcher: vi.fn(() => ({
+          close: fileWatcherCloseMock,
+        })),
+      }))
       vi.doMock('../lib/storage/incremental-index', () => ({}))
       vi.doMock('../lib/storage/transaction-manager', () => ({
         recoverAllPendingFiles: vi.fn(() => []),
         getMetrics: vi.fn(() => ({ totalRecoveries: 0, totalErrors: 0, totalAtomicWrites: 0 })),
       }))
-      vi.doMock('../lib/cache/tool-cache', () => ({ shutdown: vi.fn() }))
+      vi.doMock('../lib/cache/tool-cache', () => ({ shutdown: toolCacheShutdownMock }))
       vi.doMock('../lib/errors', () => ({
         ErrorCodes: { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
         getRecoveryHint: vi.fn(() => ({ code: 'UNKNOWN_TOOL' })),
@@ -628,6 +674,7 @@ describe('Context Server', () => {
 
       return {
         registerAfterToolCallback: module.registerAfterToolCallback,
+        testables: (module as { __testables?: RuntimeHarness['testables'] }).__testables,
         dispatchToolMock,
         autoSurfaceMemoriesMock,
         autoSurfaceAtToolDispatchMock,
@@ -636,6 +683,11 @@ describe('Context Server', () => {
         setInstructionsMock,
         handleMemoryStatsMock,
         processExitSpy,
+        registeredProcessHandlers,
+        retryManagerStopBackgroundJobMock,
+        toolCacheShutdownMock,
+        transportCloseMock,
+        fileWatcherCloseMock,
         callToolHandler: callToolHandler as (request: unknown, extra: unknown) => Promise<unknown>,
       }
     }
@@ -1117,6 +1169,42 @@ describe('Context Server', () => {
 
       expect(handleMemoryStatsMock).not.toHaveBeenCalled()
       expect(setInstructionsMock).not.toHaveBeenCalled()
+    })
+
+    it('T000o: runCleanupStep swallows sync cleanup failures with labeled logging', async () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { testables } = await loadRuntimeHarness()
+      const baselineCalls = errorSpy.mock.calls.length
+
+      expect(testables?.runCleanupStep).toBeTypeOf('function')
+      testables?.runCleanupStep('toolCache', () => {
+        throw new Error('tool-cache-failed')
+      })
+
+      const newCalls = errorSpy.mock.calls.slice(baselineCalls)
+      const cleanupLog = newCalls.find((call) =>
+        String(call?.[0] ?? '').includes('[context-server] toolCache cleanup failed:')
+      )
+      expect(cleanupLog).toBeDefined()
+      expect(String(cleanupLog?.[1] ?? '')).toContain('tool-cache-failed')
+    })
+
+    it('T000p: runAsyncCleanupStep swallows async cleanup failures with labeled logging', async () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { testables } = await loadRuntimeHarness()
+      const baselineCalls = errorSpy.mock.calls.length
+
+      expect(testables?.runAsyncCleanupStep).toBeTypeOf('function')
+      await testables?.runAsyncCleanupStep('fileWatcher', async () => {
+        throw new Error('file-watcher-close-failed')
+      })
+
+      const newCalls = errorSpy.mock.calls.slice(baselineCalls)
+      const cleanupLog = newCalls.find((call) =>
+        String(call?.[0] ?? '').includes('[context-server] fileWatcher cleanup failed:')
+      )
+      expect(cleanupLog).toBeDefined()
+      expect(String(cleanupLog?.[1] ?? '')).toContain('file-watcher-close-failed')
     })
   })
 
@@ -1654,6 +1742,7 @@ describe('Context Server', () => {
     it('T48: Double-shutdown guard', () => {
       expect(sourceCode).toMatch(/if\s*\(shuttingDown\)\s*return/)
     })
+
   })
 
   // =================================================================

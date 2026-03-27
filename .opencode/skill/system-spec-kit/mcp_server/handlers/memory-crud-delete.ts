@@ -80,6 +80,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
   let deletedCount = 0;
   let checkpointName: string | null = null;
+  let mutationLedgerWarning: string | null = null;
   const database = vectorIndex.getDb();
 
   if (!database) {
@@ -116,7 +117,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         // H1 FIX: Use db-specific invalidation instead of the no-op global version
         clearDegreeCacheForDb(database);
 
-        appendMutationLedgerSafe(database, {
+        const ledgerRecorded = appendMutationLedgerSafe(database, {
           mutationType: 'delete',
           reason: 'memory_delete: single memory delete',
           priorHash: singleSnapshot?.content_hash ?? null,
@@ -131,6 +132,9 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           },
           actor: 'mcp:memory_delete',
         });
+        if (!ledgerRecorded) {
+          mutationLedgerWarning = 'Mutation ledger append failed; audit trail may be incomplete.';
+        }
       }
     })();
   } else {
@@ -211,7 +215,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       // Mutation ledger entries written inside bulk transaction for atomicity with deletes.
       for (const deletedId of deletedIds) {
         const snapshot = hashById.get(deletedId) ?? null;
-        appendMutationLedgerSafe(database, {
+        const ledgerRecorded = appendMutationLedgerSafe(database, {
           mutationType: 'delete',
           reason: 'memory_delete: bulk delete by spec folder',
           priorHash: snapshot?.content_hash ?? null,
@@ -227,6 +231,9 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           },
           actor: 'mcp:memory_delete',
         });
+        if (!ledgerRecorded) {
+          mutationLedgerWarning = 'Mutation ledger append failed; audit trail may be incomplete.';
+        }
       }
     });
     bulkDeleteTx();
@@ -263,6 +270,9 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   if (postMutationFeedback) {
     hints.push(...postMutationFeedback.hints);
   }
+  if (mutationLedgerWarning) {
+    hints.push(mutationLedgerWarning);
+  }
 
   const data: Record<string, unknown> = { deleted: deletedCount };
   if (checkpointName) {
@@ -271,6 +281,9 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   }
   if (postMutationFeedback) {
     data.postMutationHooks = postMutationFeedback.data;
+  }
+  if (mutationLedgerWarning) {
+    data.warning = mutationLedgerWarning;
   }
 
   return createMCPSuccessResponse({

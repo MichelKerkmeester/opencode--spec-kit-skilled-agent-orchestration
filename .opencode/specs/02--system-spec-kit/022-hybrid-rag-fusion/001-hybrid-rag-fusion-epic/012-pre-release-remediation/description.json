@@ -1,16 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation",
-  "description": "Feature Specification: 012 Pre-Release Remediation (Consolidated Release-Control Packet)",
+  "description": "Feature Specification: 012 Pre-Release Remediation",
   "keywords": [
+    "feature",
+    "specification",
+    "012",
     "pre-release",
-    "remediation",
-    "release-control",
-    "hybrid-rag-fusion",
-    "consolidation"
+    "remediation"
   ],
-  "status": "In Progress",
-  "importance_tier": "high",
-  "lastUpdated": "2026-03-26T00:00:00.000Z",
+  "lastUpdated": "2026-03-27T17:15:13.423Z",
   "specId": "012",
   "folderSlug": "pre-release-remediation",
   "parentChain": [

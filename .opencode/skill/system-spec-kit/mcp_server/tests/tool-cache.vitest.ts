@@ -418,6 +418,40 @@ describe('Tool Cache (T012-T015)', () => {
       expect(has(readKey)).toBe(false);
     });
 
+    it('should not reuse or repopulate stale in-flight results after invalidation', async () => {
+      const args = { query: 'invalidate-in-flight' };
+      const key = generateCacheKey('memory_search', args);
+      let resolveFirst: ((value: string) => void) | null = null;
+
+      const first = withCache(
+        'memory_search',
+        args,
+        async () => await new Promise<string>((resolve) => {
+          resolveFirst = resolve;
+        }),
+      );
+
+      await Promise.resolve();
+
+      expect(invalidateByTool('memory_search')).toBe(0);
+
+      let secondCalls = 0;
+      const second = withCache('memory_search', args, async () => {
+        secondCalls++;
+        return 'fresh-result';
+      });
+
+      expect(await second).toBe('fresh-result');
+      expect(secondCalls).toBe(1);
+
+      expect(resolveFirst).not.toBeNull();
+      resolveFirst?.('stale-result');
+      expect(await first).toBe('stale-result');
+
+      await Promise.resolve();
+      expect(get(key)).toBe('fresh-result');
+    });
+
     it('should clear all entries', () => {
       set(generateCacheKey('tool1', {}), 'v1', { toolName: 'tool1' });
       set(generateCacheKey('tool2', {}), 'v2', { toolName: 'tool2' });
@@ -548,6 +582,33 @@ describe('Tool Cache (T012-T015)', () => {
       expect(stats.currentSize).toBe(0);
       expect(stats.hits).toBe(0);
       expect(stats.misses).toBe(0);
+    });
+
+    it('should drop stale in-flight work across shutdown boundaries', async () => {
+      const args = { query: 'shutdown-in-flight' };
+      const key = generateCacheKey('memory_search', args);
+      let resolveFirst: ((value: string) => void) | null = null;
+
+      const first = withCache(
+        'memory_search',
+        args,
+        async () => await new Promise<string>((resolve) => {
+          resolveFirst = resolve;
+        }),
+      );
+
+      await Promise.resolve();
+      shutdown();
+
+      const second = withCache('memory_search', args, async () => 'fresh-after-shutdown');
+      expect(await second).toBe('fresh-after-shutdown');
+
+      expect(resolveFirst).not.toBeNull();
+      resolveFirst?.('stale-after-shutdown');
+      expect(await first).toBe('stale-after-shutdown');
+
+      await Promise.resolve();
+      expect(get(key)).toBe('fresh-after-shutdown');
     });
   });
 

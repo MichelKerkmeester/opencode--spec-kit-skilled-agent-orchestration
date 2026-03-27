@@ -42,6 +42,8 @@ export interface RecoveryContext {
   query: string | null;
   /** Whether a specFolder filter was applied. */
   hasSpecFolderFilter: boolean;
+  /** Whether upstream search logic detected an evidence gap for this result set. */
+  evidenceGap?: boolean;
   /** How many results were returned (0 = no_results, 1–N = partial/low_confidence). */
   resultCount: number;
   /** Average confidence value across returned results (0–1). Only meaningful when resultCount > 0. */
@@ -66,6 +68,7 @@ function classifyStatus(ctx: RecoveryContext): RecoveryStatus {
   const threshold = ctx.lowConfidenceThreshold ?? DEFAULT_LOW_CONFIDENCE_THRESHOLD;
 
   if (ctx.resultCount === 0) return 'no_results';
+  if (ctx.evidenceGap) return 'partial';
   if (
     typeof ctx.avgConfidence === 'number' &&
     Number.isFinite(ctx.avgConfidence) &&
@@ -199,6 +202,7 @@ export function buildRecoveryPayload(ctx: RecoveryContext): RecoveryPayload {
  */
 export function shouldTriggerRecovery(ctx: RecoveryContext): boolean {
   if (ctx.resultCount === 0) return true;
+  if (ctx.evidenceGap) return true;
 
   const threshold = ctx.lowConfidenceThreshold ?? DEFAULT_LOW_CONFIDENCE_THRESHOLD;
 

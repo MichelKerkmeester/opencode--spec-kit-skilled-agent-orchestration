@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 012 Pre-Release Remediation"
-description: "Collapsed 13 recursive validation errors to 0 across the 022-hybrid-rag-fusion spec tree by fixing broken references, orphaned anchors, and missing files in 10 blocker packet families."
+description: "Current implementation summary for the packet-truth remediation pass that re-anchors 012 to the canonical review and removes stale release-control claims."
 trigger_phrases:
   - "012 implementation summary"
   - "pre-release remediation summary"
@@ -20,11 +20,11 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 012-pre-release-remediation |
-| **Completed** | 2026-03-26 |
+| **Completed** | 2026-03-27 |
 | **Level** | 3 |
-| **Baseline** | 13 errors, 10 warnings (recursive) |
-| **Final** | 0 errors, 7 warnings (recursive) |
-| **Runtime** | 8,598 tests passed, 0 failures |
+| **Baseline** | Canonical review verdict `FAIL`; `012` local validate failing on stale packet truth |
+| **Current Scope** | Packet/spec remediation only; no runtime code changes |
+| **Runtime Gate** | Preserved as external evidence from the canonical review and fresh reruns |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,27 +32,19 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The `022-hybrid-rag-fusion` recursive validation went from FAIL (13 errors across 10 blocker packet families) to PASS (0 errors, 7 non-blocking warnings). All fixes are documentation reference repairs — no runtime code was modified, and the green runtime baseline (8,598 tests) is preserved.
+This pass replaces the stale release-closure narrative in `012` with the current packet truth from the canonical review. The packet now functions as a live remediation contract rather than a retrospective claiming validator convergence that no longer matches local reality.
 
-### Reference Path Remediation
+### Canonical Review Re-anchoring
 
-Broken backtick `.md` references across spec packet docs were resolved to repo-root-relative paths that the validator can verify. The largest workload was `006-feature-catalog` (102 broken references to feature catalog entries with wrong paths or stale numbering).
+`012` now consistently treats `review/review-report.md` as the authoritative review surface and the packet-local top-level `review-report.md` as historical evidence only.
 
-### ChatGPT Agent Path Removal
+### Validator-Facing Packet Cleanup
 
-References to the deleted `.opencode/agent/chatgpt/` directory were de-linked across packets `003`, `007`, `010`, and `013`. The text content is preserved as historical record with backtick wrapping removed.
+The packet-local summary surfaces were updated so they no longer imply the packet is already clean or release-ready. The stale research-file mention was removed, the custom related-documents section that caused template-header drift was folded back into the standard packet structure, and the Level 3 AI execution protocol is now present in `plan.md`.
 
-### Epic-Level File Restoration
+### Scope Of This Pass
 
-The `001-hybrid-rag-fusion-epic` parent files (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`) were restored from HEAD to satisfy child phase `../spec.md` references.
-
-### Anchor and Structural Repairs
-
-Orphaned closing anchors in memory files for `001` and `005` were paired with opening anchors. The `011` successor reference was updated from the deleted predecessor to `012-pre-release-remediation`.
-
-### 012 Packet Template Compliance
-
-Template source headers, required anchors, and `decision-record.md` were added to the `012-pre-release-remediation` packet. Backtick references to deleted predecessor packets and not-yet-created files were de-linked.
+This implementation summary covers documentation-only remediation inside the approved spec-folder lane. It does not claim that runtime findings are fixed, and it does not replace the canonical review verdict.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -60,18 +52,12 @@ Template source headers, required anchors, and `decision-record.md` were added t
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Parallel execution with 6 GPT-5.4 codex agents (1 xhigh + 5 high reasoning) plus direct fixes:
+The work was delivered as a focused spec-folder truth-sync pass:
 
-| Agent | Target | Errors Fixed | Status |
-|-------|--------|-------------|--------|
-| Agent 1 (xhigh) | 006-feature-catalog | 102 | Completed autonomously |
-| Agent 6 (high) | 012-pre-release-remediation | 18 + structural | Completed autonomously |
-| Direct fix | 003, 010, 013, 016, 018 | 21 | ChatGPT refs + path fixes |
-| Direct fix | 015-manual-testing-per-playbook | 35 | Feature catalog path fixes |
-| Direct fix | 007-code-audit-per-feature-catalog | 29 | Multi-pattern path fixes |
-| Direct fix | 001-epic, 005-audit, root 022 | ~25 | File restore + anchor + ref fixes |
-
-Agents 2-5 stalled at CLAUDE.md Gate 3 in non-interactive mode; their work was completed directly.
+1. Read the canonical review and the packet-local remediation docs.
+2. Removed stale packet wording that contradicted the live review state.
+3. Added the missing Level 3 AI execution protocol content required by the validator.
+4. Kept the verdict `FAIL` and deferred runtime closure to fresh evidence.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -81,10 +67,10 @@ Agents 2-5 stalled at CLAUDE.md Gate 3 in non-interactive mode; their work was c
 
 | Decision | Why |
 |----------|-----|
-| Remove backtick wrapping for deleted file references | Preserves historical text while stopping validator from flagging non-existent paths |
-| Use repo-root-relative paths for feature catalog and playbook references | The validator resolves backtick refs against file dir, spec folder, and repo root — repo-root is the only prefix that resolves from spec folders to skill directories |
-| Restore epic-level files from HEAD rather than creating stubs | Restoring preserves the full historical content; 12 child phases depend on `../spec.md` |
-| Do not change runtime code | The green runtime baseline must be preserved per spec REQ-002 |
+| Keep `review/review-report.md` as the only active review authority | Prevents future packet prose from drifting away from the canonical finding registry |
+| Remove or rewrite stale implementation claims instead of preserving them as active truth | The previous summary overstated validator closure and packet readiness |
+| Add the AI execution framework to `plan.md` instead of scattering protocol fragments elsewhere | This satisfies the Level 3 validator contract in one canonical place |
+| Keep runtime status as cited evidence rather than new implementation closure | This pass did not touch runtime code |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -94,11 +80,9 @@ Agents 2-5 stalled at CLAUDE.md Gate 3 in non-interactive mode; their work was c
 
 | Check | Result |
 |-------|--------|
-| `022-hybrid-rag-fusion --recursive` | 0 errors, 7 warnings (PASSED) |
-| `npm test` (full vitest suite) | 8,598 passed, 74 skipped, 0 failures |
-| `012-pre-release-remediation --strict` | 1 error (intentional template headers), 3 warnings |
-| All 10 blocker families individually | All PASSED |
-| Root 022 non-recursive | PASSED |
+| `012-pre-release-remediation` local validate | Re-run in this pass; result recorded after edits |
+| Root `022 --recursive` | Re-run in this pass; expected to remain pass-with-warnings or improve |
+| Runtime gate (`npm test`) | Preserved as external evidence; no runtime edits in this pass |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -106,8 +90,7 @@ Agents 2-5 stalled at CLAUDE.md Gate 3 in non-interactive mode; their work was c
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- The `012-pre-release-remediation` tasks.md and checklist.md use domain-specific section headers instead of template-standard ones. This produces 1 TEMPLATE_HEADERS error locally, which is intentional for the consolidated backlog structure.
-- 7 non-blocking warnings remain (custom anchors and section headers in packets 013, 014, 015 that are functional deviations).
-- The FAIL verdict in `review-report.md` is preserved per spec — it can only be replaced by fresh rerun evidence.
-- Parent-epic rewrites and broader navigation cleanup remain out of scope per spec Section 3.
+- Runtime findings from the canonical review remain open until the code-owning workstreams land and are re-verified.
+- Wrapper and public-doc drift outside the packet still requires separate evidence-backed cleanup.
+- The packet keeps the release verdict `FAIL` unless fresh reruns justify a replacement review.
 <!-- /ANCHOR:limitations -->

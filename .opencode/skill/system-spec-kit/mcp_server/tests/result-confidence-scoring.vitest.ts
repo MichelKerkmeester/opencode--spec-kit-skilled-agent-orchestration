@@ -360,10 +360,18 @@ describe('D5 Phase A: result confidence scoring', () => {
         rerankerScore: 0.88,
       }),
       makeResult(2, {
-        similarity: 63,
-        averageSimilarity: 63,
-        intentAdjustedScore: 0.52,
-        rrfScore: 0.5,
+        similarity: 72,
+        averageSimilarity: 72,
+        intentAdjustedScore: 0.68,
+        rrfScore: 0.66,
+        fts_score: 0.63,
+        rerankerScore: 0.61,
+        traceMetadata: {
+          attribution: {
+            vector: [2],
+            fts: [2],
+          },
+        },
       }),
     ]);
     const weakEnvelope = await formatEnvelope([

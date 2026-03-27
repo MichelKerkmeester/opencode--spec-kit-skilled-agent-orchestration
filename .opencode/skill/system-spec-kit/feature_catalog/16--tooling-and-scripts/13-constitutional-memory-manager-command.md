@@ -35,7 +35,7 @@ The supporting command indexes and operator-facing docs now consistently describ
 | File | Layer | Role |
 |------|-------|------|
 | `.opencode/command/memory/learn.md` | Command | Primary constitutional memory manager contract and subcommand routing |
-| `.opencode/command/memory/README.txt` | Command docs | Memory command group index and usage examples |
+| `.opencode/command/memory/README.md` | Command docs | Memory command group index and usage examples |
 | `.opencode/command/README.txt` | Command docs | Global command registry entry for `/memory:learn` |
 | `.opencode/command/spec_kit/debug.md` | Command docs | Debug workflow guidance for when `/memory:learn` is appropriate |
 | `.opencode/command/spec_kit/complete.md` | Command docs | Completion workflow guidance for constitutional-rule capture |
@@ -60,7 +60,7 @@ The supporting command indexes and operator-facing docs now consistently describ
 
 - Group: Tooling and scripts
 - Source feature title: Constitutional memory manager command
-- Current reality source: Spec 004 verification and active command/documentation surfaces
+- Current reality source: direct command/docs audit of `.opencode/command/memory/*.md` plus the live docs-alignment regression in `scripts/tests/memory-learn-command-docs.vitest.ts`
 
 ---
 

@@ -57,9 +57,17 @@ Finally, the barrel exposes architecture and rollout metadata surfaces that woul
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Roadmap capability flag and default/phase helpers |
 | `mcp_server/api/README.md` | Docs | Consumer policy documenting `api/` as the approved public surface |
 
+### Tests
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct barrel export contract for search and top-level API surfaces |
+| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Rollout metadata and capability-flag exports exposed by the top-level barrel |
+| `mcp_server/tests/shared-spaces.vitest.ts` | Shared rollout metrics exposed through the public barrel |
+| `mcp_server/tests/memory-roadmap-flags.vitest.ts` | Memory-roadmap phase/default/capability helpers exposed through the public barrel |
+
 ---
 
 ## 4. SOURCE METADATA
 - Group: Pipeline Architecture
 - Source feature title: MCP Server Public API Barrel
-- Source spec: Deep research remediation 2026-03-26
+- Current reality source: direct implementation audit of `mcp_server/api/index.ts` plus the listed export and rollout-metadata tests

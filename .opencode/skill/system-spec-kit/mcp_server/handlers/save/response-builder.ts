@@ -138,7 +138,7 @@ export function buildIndexResult({
     id,
     ...(peDecision.existingMemoryId != null ? [peDecision.existingMemoryId] : []),
   ];
-  appendMutationLedgerSafe(database, {
+  const ledgerRecorded = appendMutationLedgerSafe(database, {
     mutationType: existing ? 'update' : 'create',
     reason: existing
       ? 'memory_save: updated indexed memory entry'
@@ -175,6 +175,10 @@ export function buildIndexResult({
     qualityScore: parsed.qualityScore,
     qualityFlags: parsed.qualityFlags,
   };
+  if (!ledgerRecorded) {
+    result.warnings = result.warnings || [];
+    result.warnings.push('Mutation ledger append failed; audit trail may be incomplete.');
+  }
 
   const assistiveRecommendation = finalizeAssistiveRecommendation(reconWarnings, id);
   if (assistiveRecommendation) {

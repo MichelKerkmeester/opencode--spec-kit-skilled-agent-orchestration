@@ -21,6 +21,8 @@ The handler accepts three sort modes: `created_at`, `updated_at` and `importance
 
 Validation and runtime failures return MCP error envelopes instead of raw throws. Direct handler calls with invalid `specFolder`, invalid `includeChunks`, or non-finite `limit`/`offset` values return `E_INVALID_INPUT` with a `requestId` in `data.details`. Database initialization/query failures also return MCP error envelopes.
 
+An empty-string `specFolder` is treated the same as omitting the filter entirely. The edge-case regression now seeds rows in multiple folders before comparing the two code paths, so the contract is exercised against non-empty data rather than only against an empty in-memory database.
+
 ---
 
 ## 3. SOURCE FILES
@@ -39,7 +41,7 @@ Validation and runtime failures return MCP error envelopes instead of raw throws
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/handler-memory-list-edge.vitest.ts` | Sort fallback, validation envelopes, pagination clamps, and default payload assertions |
+| `mcp_server/tests/handler-memory-list-edge.vitest.ts` | Sort fallback, validation envelopes, pagination clamps, and empty-string `specFolder` parity against seeded rows |
 | `mcp_server/tests/handler-memory-crud.vitest.ts` | Public export and direct input-validation coverage |
 | `mcp_server/tests/memory-crud-extended.vitest.ts` | Happy-path list structure, chunk inclusion, and trigger count parsing |
 

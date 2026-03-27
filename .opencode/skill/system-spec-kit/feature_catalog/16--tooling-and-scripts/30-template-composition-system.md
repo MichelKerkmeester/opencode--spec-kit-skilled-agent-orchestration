@@ -48,9 +48,16 @@ The shipped behavior in this slice currently works as follows:
 | `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/*.md` | Addendum set | Level 3 architecture fragments for spec, plan, and decision-record composition |
 | `.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/*.md` | Addendum set | Level 3+ governance fragments and extended checklist inputs |
 
+### Tests
+
+| File | Focus |
+|------|-------|
+| `scripts/tests/test-template-system.js` | Compose-script structure, `--verify`, `--dry-run`, and level-selection behavior |
+| `scripts/tests/test-template-comprehensive.js` | Compose-script function coverage, single/multi-level execution, and drift-detection mode |
+| `scripts/tests/template-structure.vitest.ts` | Template-structure validation and allowed-content drift checks |
+
 ## 4. SOURCE METADATA
 
 - Group: Tooling and Scripts
 - Source feature title: Template Composition System
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of the template composer and the current template source/output layout
+- Current reality source: direct implementation audit of the template composer, current template source/output layout, and the listed script-level coverage

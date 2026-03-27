@@ -1,1 +1,1 @@
-../../skill/mcp-cocoindex-code/scripts/install.sh
+../../skill/mcp-coco-index/scripts/install.sh

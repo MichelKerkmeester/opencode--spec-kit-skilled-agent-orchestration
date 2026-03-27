@@ -65,6 +65,7 @@ describe('shared-memory admin handlers', () => {
   beforeEach(() => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'user-owner';
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
     dbHolder.current = new Database(':memory:');
     mockRequireDb.mockClear();
   });
@@ -72,6 +73,7 @@ describe('shared-memory admin handlers', () => {
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
     delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
     vi.restoreAllMocks();
     dbHolder.current?.close();
     dbHolder.current = null;
@@ -304,6 +306,45 @@ describe('shared-memory admin handlers', () => {
     expect(ambiguousActor.ok).toBe(false);
     if (!ambiguousActor.ok) {
       expect(parseEnvelope(ambiguousActor.response).data.details?.reason).toBe('actor_identity_ambiguous');
+    }
+  });
+
+  it('allows omitted hints when the server-configured admin is an agent', () => {
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID = 'agent-owner';
+
+    const actor = resolveAdminActor('shared_space_upsert');
+
+    expect(actor.ok).toBe(true);
+    if (actor.ok) {
+      expect(actor.actor).toEqual({
+        subjectType: 'agent',
+        subjectId: 'agent-owner',
+      });
+    }
+  });
+
+  it('rejects wrong-type actor hints when the server-configured admin is an agent', () => {
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID = 'agent-owner';
+
+    const actor = resolveAdminActor('shared_space_upsert', 'user-owner', undefined);
+
+    expect(actor.ok).toBe(false);
+    if (!actor.ok) {
+      expect(parseEnvelope(actor.response).data.details?.reason).toBe('shared_memory_admin_identity_mismatch');
+    }
+  });
+
+  it('rejects mismatched agent hints when the server-configured admin is an agent', () => {
+    delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID = 'agent-owner';
+
+    const actor = resolveAdminActor('shared_space_membership_set', undefined, 'agent-other');
+
+    expect(actor.ok).toBe(false);
+    if (!actor.ok) {
+      expect(parseEnvelope(actor.response).data.details?.reason).toBe('shared_memory_admin_identity_mismatch');
     }
   });
 

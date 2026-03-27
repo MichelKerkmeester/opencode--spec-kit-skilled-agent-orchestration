@@ -149,19 +149,6 @@ Acceptance rule: the root packet must pass without structural errors, and any re
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Root packet normalization | Low | 1-2 hours |
-| Direct-child reconciliation | Medium | 2-4 hours |
-| Deep subtree cleanup | High | 1-2 follow-up cleanup passes |
-| **Total** | | **Packet-dependent follow-up after root truth-sync** |
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
 | Root packet truth sync | Low | Completed during current normalization pass |
 | Direct child navigation alignment | Medium | Completed during current normalization pass |
 | Recursive validator convergence | High | Ongoing across child packet families |

@@ -76,10 +76,29 @@ describe('handleMemoryList Edge Cases (T006)', () => {
   });
 
   it('T006-L7: Empty string specFolder behaves the same as omitting the filter', async () => {
+    vectorIndex.indexMemoryDeferred({
+      specFolder: 'specs/alpha',
+      filePath: 'alpha.md',
+      title: 'Alpha',
+      encodingIntent: 'document',
+    });
+    vectorIndex.indexMemoryDeferred({
+      specFolder: 'specs/beta',
+      filePath: 'beta.md',
+      title: 'Beta',
+      encodingIntent: 'document',
+    });
+
     const baseline = parseResponse(await handler.handleMemoryList({}));
     const emptyFilter = parseResponse(await handler.handleMemoryList({ specFolder: '' }));
+
     expect(emptyFilter.data.total).toBe(baseline.data.total);
     expect(emptyFilter.data.count).toBe(baseline.data.count);
+    expect(
+      new Set((emptyFilter.data.results as Array<{ filePath: string }>).map((row) => row.filePath)),
+    ).toEqual(
+      new Set((baseline.data.results as Array<{ filePath: string }>).map((row) => row.filePath)),
+    );
   });
 
   it('T006-L8: Default args return valid payload', async () => {

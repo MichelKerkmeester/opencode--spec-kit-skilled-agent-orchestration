@@ -83,7 +83,7 @@ export function evaluateAndApplyPeDecision(
         reinforced.embeddingStatus = embeddingStatus;
 
         if (reinforced.status !== 'error') {
-          appendMutationLedgerSafe(database, {
+          const ledgerRecorded = appendMutationLedgerSafe(database, {
             mutationType: 'update',
             reason: 'memory_save: reinforced existing memory via prediction-error gate',
             priorHash: priorSnapshot?.content_hash ?? null,
@@ -98,6 +98,12 @@ export function evaluateAndApplyPeDecision(
             },
             actor: 'mcp:memory_save',
           });
+          if (!ledgerRecorded) {
+            reinforced.warnings = [
+              ...(reinforced.warnings ?? validationWarnings ?? []),
+              'Mutation ledger append failed; audit trail may be incomplete.',
+            ];
+          }
         }
 
         return { decision: peDecision, earlyReturn: reinforced, supersededId: null };
@@ -129,7 +135,7 @@ export function evaluateAndApplyPeDecision(
         updated.warnings = validationWarnings;
         updated.embeddingStatus = embeddingStatus;
 
-        appendMutationLedgerSafe(database, {
+        const ledgerRecorded = appendMutationLedgerSafe(database, {
           mutationType: 'update',
           reason: 'memory_save: updated existing memory via prediction-error gate',
           priorHash: priorSnapshot?.content_hash ?? null,
@@ -144,6 +150,12 @@ export function evaluateAndApplyPeDecision(
           },
           actor: 'mcp:memory_save',
         });
+        if (!ledgerRecorded) {
+          updated.warnings = [
+            ...(updated.warnings ?? validationWarnings ?? []),
+            'Mutation ledger append failed; audit trail may be incomplete.',
+          ];
+        }
 
         return { decision: peDecision, earlyReturn: updated, supersededId: null };
       }

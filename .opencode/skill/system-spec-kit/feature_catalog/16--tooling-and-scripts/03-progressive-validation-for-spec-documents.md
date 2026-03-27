@@ -64,4 +64,4 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 - Group: Tooling and scripts
 - Source feature title: Progressive validation for spec documents
-- Current reality source: FEATURE_CATALOG.md
+- Current reality source: direct script audit of `scripts/spec/progressive-validate.sh` and `mcp_server/tests/progressive-validation.vitest.ts`

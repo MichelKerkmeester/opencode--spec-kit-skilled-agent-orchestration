@@ -65,14 +65,14 @@ const DEFAULT_ROUTING_CONFIG: ChannelRoutingConfig = {
 ----------------------------------------------------------------*/
 
 /**
- * Enforce the minimum 2-channel invariant on a channel list.
+ * Enforce the minimum 2-distinct-channel invariant on a channel list.
  * If the list has fewer than MIN_CHANNELS entries, pad with
  * fallback channels (vector, fts) until the minimum is met.
  */
 function enforceMinimumChannels(channels: ChannelName[]): ChannelName[] {
-  if (channels.length >= MIN_CHANNELS) return channels;
+  const result = [...new Set(channels)] as ChannelName[];
+  if (result.length >= MIN_CHANNELS) return result;
 
-  const result = [...channels];
   for (const fallback of FALLBACK_CHANNELS) {
     if (result.length >= MIN_CHANNELS) break;
     if (!result.includes(fallback)) {
@@ -80,8 +80,6 @@ function enforceMinimumChannels(channels: ChannelName[]): ChannelName[] {
     }
   }
 
-  // If still under minimum (e.g., input was ['vector'] and fallback only adds 'fts'),
-  // The loop above covers it. But if input was empty, both fallbacks are added.
   return result;
 }
 

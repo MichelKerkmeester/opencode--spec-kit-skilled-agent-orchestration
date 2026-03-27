@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit per Feature Catalog"
-description: "Comprehensive code audit of 222 features across 19 categories completed with 100% MATCH accuracy after catalog remediation (2026-03-26)"
+description: "Historical implementation summary for the 007 code-audit packet. This document records prior audit waves and must not be treated as current correctness evidence for the live 255-entry catalog."
 trigger_phrases:
   - "implementation summary"
   - "code audit"
@@ -15,6 +15,8 @@ contextType: "general"
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
+
+> Historical note (2026-03-27): this summary preserves the prior 222-feature audit narrative for provenance only. The canonical 012 review supersedes it as a current release-control surface and explicitly treats the `007` packet as stale for live correctness claims.
 
 <!-- ANCHOR:metadata -->
 ## Metadata

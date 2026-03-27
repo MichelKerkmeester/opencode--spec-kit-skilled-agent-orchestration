@@ -14,7 +14,14 @@ updated: "2026-03-26"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 21 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** tracks live-tree drift to 189 snippet files and classifies 14 omitted current snippets. A **2026-03-21 normalization addendum** removes all provisional `NEW-NNN` markers, adds phase 016/017 coverage, and brings the catalog to 194 files and the playbook to 200 files.
+This wrapper packet preserves the historical 2026-03-08 through 2026-03-26 audit trail, but it must no longer be read as the live denominator source on its own.
+
+The current live denominator is:
+
+- **255** feature entries across **21** numbered categories under `.opencode/skill/system-spec-kit/feature_catalog/`, excluding the root index documents
+- **290** manual-testing scenario files across the same **21** numbered categories under `.opencode/skill/system-spec-kit/manual_testing_playbook/`, excluding the root playbook index
+
+The older `180`, `189`, `194`, and `224/275` figures remain historical milestones inside this packet, not the current release-control denominator.
 
 **Key Decisions**: 30-agent partitioned research (20 verification + 10 gap investigation), 3-tier significance classification
 
@@ -42,18 +49,19 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - New playbook entries: 153-json-mode-hybrid-enrichment, 154-json-primary-deprecation-posture.
 - Both index files updated with new entries and cross-reference table rows.
 
-**Current-State Note (2026-03-23)**
+**Current-State Note (2026-03-27)**
 
-- Live filesystem count now reports **224** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
-- Live filesystem count now reports **275** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
-- Treat the earlier addendum counts above as historical milestones, not the current denominator.
+- Live filesystem count reports **255** feature entries across **21** numbered categories under `.opencode/skill/system-spec-kit/feature_catalog/`, excluding the root index documents [root feature catalog index](../../../../skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md) and [simple-terms index](../../../../skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md).
+- Live filesystem count reports **290** scenario files across the same **21** numbered categories under `.opencode/skill/system-spec-kit/manual_testing_playbook/`, excluding the root playbook index [root manual-testing index](../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md).
+- Treat the earlier `180`, `189`, `194`, and `224/275` figures as historical milestones only.
 
 **Deep Research Addendum (2026-03-26)**
 
 12-agent deep research (7 GPT-5.4 high + 2 GPT-5.4 xhigh round 1; 5 GPT-5.4 high round 2; ~3.3M tokens consumed) produced a comprehensive cross-system gap analysis. Key findings:
 
 - **MCP tool surface (33 tools):** Fully cataloged. 4 tools PARTIAL (grouped docs), 1 phantom tool (`read_spec_section` documented but not in live registry).
-- **Feature catalog (255 snippets post-Phase H; was 222 pre-remediation):** ~72 source-level gaps identified, 34 new entries created. Worst (pre-remediation): cat 19 (11 gaps, 28 undocumented SPECKIT_* flags), cat 20 (0/1 accurate stub), cat 21 (0/1 accurate stub), cat 17 (2/4 invalid paths). All remediated in Phase H. **Manual testing playbook** extended to 275 scenarios (+16 for new Phase H catalog entries).
+- **Feature catalog (255 live entries post-Phase H; was 222 pre-remediation):** ~72 source-level gaps identified, 34 new entries created. Worst (pre-remediation): cat 19 (11 gaps, 28 undocumented SPECKIT_* flags), cat 20 (0/1 accurate stub), cat 21 (0/1 accurate stub), cat 17 (2/4 invalid paths). All remediated in Phase H.
+- **Manual testing playbook** later expanded again and now stands at **290** live scenario files across the same `21` categories.
 - **13 BOTH_MISSING capabilities** (not in catalog AND not in code audit): entire `mcp_server/api/` public surface, ops/setup/kpi scripts, config contracts, constitutional gate-enforcement, phase-system node.
 - **Scripts ecosystem:** 223 files at 24.7% coverage (168 uncovered). 7 directories at 0%.
 - **137 total SPECKIT_* env vars** in source; 28 undocumented, 1 stale (`SPECKIT_RSF_FUSION`).
@@ -84,10 +92,10 @@ Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full detai
 <!-- ANCHOR:problem -->
 
 ### Problem Statement
-As-of 2026-03-08, the historical audit baseline covered 180 features and found 55 genuine undocumented gaps (17 high, 25 medium, 13 low significance). As-of 2026-03-16, the live tree has 189 snippets and includes 14 current entries that were outside the executed March 8 ranges. Without explicit addendum accounting, completeness claims become ambiguous.
+This packet still preserves important historical audit evidence, but downstream wrapper packets were reading its milestone counts as if they were current release-control truth. Without an explicit statement that the live denominator is now `255` feature entries across `21` categories, the packet contributes to stale-count drift.
 
 ### Purpose
-Preserve the March 8 snapshot as historical record while extending documentation with an explicit March 16 current-state addendum that tracks live-tree drift, omitted-snippet classification, and follow-up remediation priorities.
+Preserve the March 8 snapshot as historical record while making the live wrapper denominator explicit so other packets stop treating older milestone counts as current truth.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -107,7 +115,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 - Actual remediation edits to snippet files (separate follow-up phase)
 - Restructuring the 21-category taxonomy
 - Changes to MCP server source code
-- Updating the monolithic `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` (done after snippet remediation)
+- Updating the monolithic feature catalog index [root feature catalog index](../../../../skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md) (done after snippet remediation)
 
 ### Files to Change
 
@@ -342,7 +350,7 @@ All feature catalog references in code MUST use the feature name only, never fol
 - All TypeScript source files under `mcp_server/` (handlers, lib, shared, scripts)
 - All inline comments referencing spec folders, sprints, phases or ticket numbers
 - Adding feature catalog name references to key functions, modules and exports
-- The feature catalog at `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md` and its individual files as the source of truth for feature names
+- The root feature catalog index [feature catalog source of truth](../../../../skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md) and its individual files as the source of truth for feature names
 
 ### Out of Scope
 - Test files (`.vitest.ts`) are excluded from comment modifications

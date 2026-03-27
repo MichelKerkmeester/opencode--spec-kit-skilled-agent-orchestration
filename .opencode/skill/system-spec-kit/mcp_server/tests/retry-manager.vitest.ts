@@ -111,6 +111,35 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
     });
   });
 
+  describe('2b. Sanitization', () => {
+    it('T14b: sanitizeAndLogEmbeddingFailure redacts raw provider payloads from operator logs', () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const raw = new Error('OpenAI 401 unauthorized: sk-secret-value');
+
+      const message = mod.sanitizeAndLogEmbeddingFailure(
+        '[retry-manager] Embedding retry failed for #42',
+        raw,
+        { provider: 'text-embedding-3-large', force: true },
+      );
+
+      expect(message).toBe('EMBEDDING_PROVIDER_ERROR (provider=openai, type=auth)');
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledWith(
+        '[retry-manager] Embedding retry failed for #42',
+        {
+          sanitized: {
+            code: 'EMBEDDING_PROVIDER_ERROR',
+            provider: 'openai',
+            errorType: 'auth',
+          },
+          redacted: true,
+        },
+      );
+      expect(JSON.stringify(errorSpy.mock.calls)).not.toContain('sk-secret-value');
+      expect(JSON.stringify(errorSpy.mock.calls)).not.toContain('401 unauthorized');
+    });
+  });
+
   // ═══════════════════════════════════════════════════════════
   // ───────────────────────────────────────────────────────────────
   // 3. BACKGROUND JOB LIFECYCLE

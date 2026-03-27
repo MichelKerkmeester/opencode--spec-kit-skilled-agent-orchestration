@@ -175,10 +175,10 @@ function hasRerankerSignal(result: ScoredResult): boolean {
 
 /**
  * Compute the score margin between result[i] and result[i+1].
- * Returns 1.0 for the last result (no successor).
+ * Tail results have no successor, so they receive no synthetic margin boost.
  */
 function computeMargin(score: number, nextScore: number | null): number {
-  if (nextScore === null) return 1.0; // only result — treat as maximum margin
+  if (nextScore === null) return 0;
   const gap = score - nextScore;
   return Math.max(0, gap);
 }

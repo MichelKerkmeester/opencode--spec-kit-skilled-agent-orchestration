@@ -6,6 +6,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as core from '../core';
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as workingMemory from '../lib/cognitive/working-memory';
+import * as sessionManager from '../lib/session/session-manager';
 import { handleMemorySearch } from '../handlers/memory-search';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 
@@ -103,6 +104,14 @@ type ParsedContextResponse = {
 
 function parseResponse(result: Awaited<ReturnType<typeof handler.handleMemoryContext>>): ParsedContextResponse {
   return JSON.parse(result.content[0].text) as ParsedContextResponse;
+}
+
+function mockTrustedSession(sessionId: string): void {
+  vi.spyOn(sessionManager, 'resolveTrustedSession').mockReturnValue({
+    requestedSessionId: sessionId,
+    effectiveSessionId: sessionId,
+    trusted: true,
+  });
 }
 
 describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]', () => {
@@ -498,6 +507,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('T027l/T027m: caller session resume reports counter and injects top-5 context', async () => {
+      mockTrustedSession('session-abc');
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.spyOn(workingMemory, 'getSessionEventCounter').mockReturnValue(7);
       vi.spyOn(workingMemory, 'getSessionPromptContext').mockReturnValue([
@@ -533,6 +543,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('injects session transition into traced nested results when includeTrace=true', async () => {
+      mockTrustedSession('session-trace');
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.mocked(handleMemorySearch).mockResolvedValueOnce({
         content: [
@@ -582,6 +593,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('uses the last inferred mode as previousState when a traced caller session resumes', async () => {
+      mockTrustedSession('session-known');
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.spyOn(workingMemory, 'getSessionEventCounter').mockReturnValue(4);
       vi.spyOn(workingMemory, 'getSessionInferredMode').mockReturnValue('focused');
@@ -607,6 +619,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('default-on contract: auto-resume injection runs when SPECKIT_AUTO_RESUME is unset', async () => {
+      mockTrustedSession('session-default-on');
       delete process.env.SPECKIT_AUTO_RESUME;
       process.env.SPECKIT_ROLLOUT_PERCENT = '100';
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
@@ -637,6 +650,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('opt-out contract: SPECKIT_AUTO_RESUME=false disables context injection', async () => {
+      mockTrustedSession('session-opt-out');
       process.env.SPECKIT_AUTO_RESUME = 'false';
       process.env.SPECKIT_ROLLOUT_PERCENT = '100';
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);

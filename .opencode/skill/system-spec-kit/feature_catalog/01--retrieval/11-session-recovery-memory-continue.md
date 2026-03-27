@@ -60,10 +60,18 @@ When a session is interrupted by a crash, context compaction, or timeout, `/memo
 | `mcp_server/handlers/memory-crud-list.ts` | Handler | List handler (candidate discovery) |
 | `mcp_server/lib/session/session-manager.ts` | Lib | Session lifecycle and crash-recovery breadcrumbs |
 
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/memory-context.vitest.ts` | Resume-mode token budget, anchor selection, and auto-resume routing |
+| `mcp_server/tests/continue-session.vitest.ts` | CONTINUE_SESSION generation helpers and crash-recovery data shape |
+| `mcp_server/tests/crash-recovery.vitest.ts` | Crash breadcrumb generation and CONTINUE_SESSION write path |
+
 ---
 
 ## 4. SOURCE METADATA
 
 - Group: Retrieval (session recovery)
 - Source feature title: Session recovery via /memory:continue
-- Current reality source: `.opencode/command/memory/continue.md` frontmatter and recovery workflow
+- Current reality source: direct command/runtime audit of `.opencode/command/memory/continue.md` plus the listed resume and crash-recovery tests

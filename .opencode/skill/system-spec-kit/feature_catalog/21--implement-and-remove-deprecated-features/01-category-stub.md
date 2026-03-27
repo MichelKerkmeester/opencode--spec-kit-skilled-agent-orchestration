@@ -50,7 +50,10 @@ Taken together, these shims show the post-remediation pattern for deprecated run
 
 | File | Type | Role |
 |---|---|---|
-| `Deep research remediation 2026-03-26` | Source spec | Research packet identifying retired runtime shims and inert compatibility flags that should be reflected in the catalog. |
+| `mcp_server/tests/lazy-loading.vitest.ts` | MCP runtime test | Verifies `shouldEagerWarmup()` stays false by default and the eager/lazy compatibility flags remain non-restorative. |
+| `mcp_server/tests/scoring-observability.vitest.ts` | MCP runtime test | Verifies novelty telemetry stays at `0` / not applied even when `SPECKIT_NOVELTY_BOOST` is set. |
+| `mcp_server/tests/graph-flags.vitest.ts` | MCP runtime test | Verifies the legacy graph-flag shim still exposes the unified graph gate surface. |
+| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Docs/barrel test | Verifies the public API barrel still exports rollout metadata and capability-flag helpers used by shim-era documentation. |
 
 ---
 
@@ -58,6 +61,5 @@ Taken together, these shims show the post-remediation pattern for deprecated run
 
 - Group: Implement and Remove Deprecated Features
 - Source feature title: Retired runtime shims and inert compatibility flags
-- Canonical catalog source: `FEATURE_CATALOG.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/01-category-stub.md`
-- Source spec: `Deep research remediation 2026-03-26`
+- Current reality source: direct implementation audit of the listed runtime modules plus the listed lazy-loading, scoring, graph-flag, and barrel export tests

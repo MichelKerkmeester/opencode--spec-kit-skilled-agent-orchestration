@@ -9,7 +9,7 @@ import * as vectorIndex from '../lib/search/vector-index';
 import * as checkpoints from '../lib/storage/checkpoints';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import * as causalEdges from '../lib/storage/causal-edges';
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { recordHistory } from '../lib/storage/history';
@@ -77,7 +77,21 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
 
   const database = vectorIndex.getDb();
   if (!database) {
-    throw new Error('Database not available');
+    return createMCPErrorResponse({
+      tool: 'memory_bulk_delete',
+      error: 'Memory bulk delete aborted: database unavailable',
+      code: 'E_DB_UNAVAILABLE',
+      details: {
+        tier,
+        specFolder: specFolder || null,
+        olderThanDays: olderThanDays || null,
+      },
+      recovery: {
+        hint: 'Restart the MCP server or run memory_index_scan() to reinitialize the database.',
+        actions: ['Restart the MCP server', 'Call memory_index_scan()'],
+        severity: 'error',
+      },
+    });
   }
 
   // Build query to count affected memories
@@ -206,7 +220,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   bulkDeleteTx();
 
   // Record in mutation ledger (single entry for bulk operation)
-  appendMutationLedgerSafe(database, {
+  const ledgerRecorded = appendMutationLedgerSafe(database, {
     mutationType: 'delete',
     reason: `memory_bulk_delete: deleted ${deletedCount} memories with tier="${tier}"`,
     priorHash: null,
@@ -253,6 +267,9 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   if (postMutationFeedback) {
     hints.push(...postMutationFeedback.hints);
   }
+  if (!ledgerRecorded) {
+    hints.push('Mutation ledger append failed; audit trail may be incomplete.');
+  }
   hints.push(`Run memory_index_scan({ force: true }) to re-index if needed`);
 
   const data: Record<string, unknown> = {
@@ -268,6 +285,9 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   }
   if (postMutationFeedback) {
     data.postMutationHooks = postMutationFeedback.data;
+  }
+  if (!ledgerRecorded) {
+    data.warning = 'Mutation ledger append failed; audit trail may be incomplete.';
   }
 
   return createMCPSuccessResponse({

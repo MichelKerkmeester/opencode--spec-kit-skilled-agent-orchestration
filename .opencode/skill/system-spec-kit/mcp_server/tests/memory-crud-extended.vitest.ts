@@ -571,6 +571,22 @@ describe('handleMemoryDelete - Happy Path', () => {
     expect(parsed?.data?.error).toBe('Delete aborted: database unavailable');
     expect(parsed?.data?.details?.deleted).toBe(0);
   });
+
+  it('EXT-D7: Single delete surfaces mutation-ledger append warnings', async (ctx) => {
+    if (!mutationLedgerMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    installDeleteMocks({ deleteResult: true, dbAvailable: true });
+    vi.mocked(mutationLedgerMod.appendEntry).mockImplementationOnce(() => {
+      throw new Error('ledger offline');
+    });
+
+    const result = await handler.handleMemoryDelete({ id: 42 });
+    const parsed = parseResponse(result);
+
+    expect(parsed?.data?.deleted).toBe(1);
+    expect(parsed?.data?.warning).toBe('Mutation ledger append failed; audit trail may be incomplete.');
+    expect(parsed?.hints).toContain('Mutation ledger append failed; audit trail may be incomplete.');
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────
@@ -736,6 +752,22 @@ describe('handleMemoryUpdate - Happy Path', () => {
     expect(fields).toContain('triggerPhrases');
     expect(fields).toContain('importanceWeight');
     expect(fields).toContain('importanceTier');
+  });
+
+  it('EXT-U3b: Update surfaces mutation-ledger append warnings', async (ctx) => {
+    if (!mutationLedgerMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    installUpdateMocks({ existingMemory: { id: 7, title: 'Old Title' } });
+    vi.mocked(mutationLedgerMod.appendEntry).mockImplementationOnce(() => {
+      throw new Error('ledger offline');
+    });
+
+    const result = await handler.handleMemoryUpdate({ id: 7, title: 'New Title' });
+    const parsed = parseResponse(result);
+
+    expect(parsed?.data?.updated).toBe(7);
+    expect(parsed?.data?.mutationLedgerWarning).toBe('Mutation ledger append failed; audit trail may be incomplete.');
+    expect(parsed?.hints).toContain('Mutation ledger append failed; audit trail may be incomplete.');
   });
 
   it('EXT-U4: Update clears caches', async () => {

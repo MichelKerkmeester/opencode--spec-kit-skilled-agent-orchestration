@@ -359,21 +359,27 @@ function getIdentityMismatch(
   scope: SessionIdentityScope = {},
 ): string | null {
   const requestedTenantId = normalizeIdentityValue(scope.tenantId);
-  if (storedIdentity.tenantId && requestedTenantId && storedIdentity.tenantId !== requestedTenantId) {
+  if (requestedTenantId && storedIdentity.tenantId !== requestedTenantId) {
     return 'tenantId';
   }
 
   const requestedUserId = normalizeIdentityValue(scope.userId);
-  if (storedIdentity.userId && requestedUserId && storedIdentity.userId !== requestedUserId) {
+  if (requestedUserId && storedIdentity.userId !== requestedUserId) {
     return 'userId';
   }
 
   const requestedAgentId = normalizeIdentityValue(scope.agentId);
-  if (storedIdentity.agentId && requestedAgentId && storedIdentity.agentId !== requestedAgentId) {
+  if (requestedAgentId && storedIdentity.agentId !== requestedAgentId) {
     return 'agentId';
   }
 
   return null;
+}
+
+function hasCorroboratedIdentity(
+  storedIdentity: { tenantId: string | null; userId: string | null; agentId: string | null } | null,
+): storedIdentity is { tenantId: string | null; userId: string | null; agentId: string | null } {
+  return Boolean(storedIdentity && (storedIdentity.tenantId || storedIdentity.userId || storedIdentity.agentId));
 }
 
 function resolveTrustedSession(
@@ -402,7 +408,16 @@ function resolveTrustedSession(
   }
 
   const storedIdentity = getSessionIdentityRecord(normalizedSessionId);
-  const mismatch = storedIdentity ? getIdentityMismatch(storedIdentity, scope) : null;
+  if (!hasCorroboratedIdentity(storedIdentity)) {
+    return {
+      requestedSessionId: normalizedSessionId,
+      effectiveSessionId: '',
+      trusted: false,
+      error: `sessionId "${normalizedSessionId}" is not bound to a corroborated server identity. Omit sessionId to start a new server-generated session and reuse the effectiveSessionId returned by the server.`,
+    };
+  }
+
+  const mismatch = getIdentityMismatch(storedIdentity, scope);
   if (mismatch) {
     return {
       requestedSessionId: normalizedSessionId,

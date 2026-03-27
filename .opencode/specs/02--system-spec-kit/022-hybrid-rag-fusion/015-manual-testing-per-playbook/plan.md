@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook"
-description: "Execute manual testing across 24 top-level subdirectories covering 231 scenario files (272 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
+description: "Truth-sync plan for the root manual-testing wrapper packet against the live 290-file playbook tree, while preserving historical execution evidence."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
@@ -23,13 +23,18 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Spec Kit Memory MCP (TypeScript/Node.js) |
-| **Framework** | system-spec-kit manual testing playbook |
-| **Storage** | SQLite (memory_index.db) |
-| **Testing** | Manual scenario execution per playbook |
+| **Language/Stack** | Markdown wrapper docs over the system-spec-kit playbook tree |
+| **Framework** | system-spec-kit packet + manual testing playbook |
+| **Storage** | Root packet docs plus read-only playbook/category folders |
+| **Testing** | Focused validators and live-tree recounts |
 
 ### Overview
-Execute manual testing across 24 top-level subdirectories. The 22 numbered phase folders map to playbook categories, while `memory/` and `scratch/` hold supporting artifacts. Results are recorded as per-scenario verdicts (PASS/PARTIAL/FAIL) with evidence, then aggregated into a coverage report.
+This plan now governs wrapper truth-sync, not a fresh end-to-end manual execution wave. The root packet needs to:
+
+- report the live denominator of `290` scenario files across `21` categories,
+- include all 22 numbered phase folders that currently exist in the wrapper packet,
+- preserve the older `272 exact ID` execution wave as historical evidence only,
+- keep the still-open traceability remediation visible.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +43,16 @@ Execute manual testing across 24 top-level subdirectories. The 22 numbered phase
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Manual testing playbook is accessible (symlinked or direct path)
-- [ ] Feature catalog is accessible (symlinked or direct path)
-- [ ] MCP server is running and responding to tool calls
-- [ ] Test database is in a known state (fresh or documented baseline)
+- [x] Live playbook recount complete (`290` scenario files across `21` categories)
+- [x] Live feature-catalog recount complete (`255` entries across `21` categories)
+- [x] Current phase-folder inventory confirmed (`001` through `022`)
+- [x] Historical execution evidence boundary identified
 
 ### Definition of Done
-- [ ] All 272 exact scenario IDs have recorded verdicts
-- [ ] Per-phase summaries are complete for all 24 subdirectories
-- [ ] Aggregate coverage report is produced
-- [ ] Bugs and playbook errors are documented
+- [ ] Root docs use the live denominator consistently
+- [ ] Historical execution evidence is explicitly labeled as historical
+- [ ] Traceability-remediation work remains visible
+- [ ] Focused validation passes after the wrapper edits
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,17 +61,17 @@ Execute manual testing across 24 top-level subdirectories. The 22 numbered phase
 ## 3. ARCHITECTURE
 
 ### Pattern
-Phased manual test execution with verdict recording.
+Wrapper truth-sync with historical execution preservation.
 
 ### Key Components
-- **Playbook**: 231 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
-- **Feature Catalog**: 220 feature definitions across 19 categories providing feature context
-- **Phase Folders**: 24 top-level subdirectories (22 numbered phase folders plus `memory/` and `scratch/`)
-- **Aggregate Report**: Summary of all phase results with overall coverage metrics
+- **Playbook**: 290 live scenario files across 21 categories
+- **Feature Catalog**: 255 live entries across 21 categories
+- **Phase Folders**: 22 numbered wrapper phases plus `memory/` and `scratch/`
+- **Historical Execution Evidence**: the older `272 exact ID` result set
 
 ### Data Flow
 ```
-Playbook scenario file -> Read prompts/criteria -> Execute against MCP server -> Record verdict with evidence -> Phase summary -> Aggregate report
+Live recount -> wrapper truth-sync -> historical-boundary labeling -> focused validation -> updated release-control trust
 ```
 <!-- /ANCHOR:architecture -->
 
@@ -75,50 +80,21 @@ Playbook scenario file -> Read prompts/criteria -> Execute against MCP server ->
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Pre-Execution Setup
-- [ ] Verify playbook and feature catalog are accessible
-- [ ] Verify MCP server is running and healthy (`memory_health`)
-- [ ] Document test environment baseline (database state, feature flags, server version)
-- [ ] Confirm all 24 top-level subdirectories exist with scenario files
+### Phase 1: Recount And Boundary Check
+- [ ] Recount the live playbook and feature-catalog denominators
+- [ ] Confirm all 22 numbered phase folders still exist
+- [ ] Mark which phase folders are live categories versus retained duplicates
 
-### Phase 2: Execute Numbered Phase Folders
-Execute each phase by running its test scenarios per playbook. Phases can be run independently or in sequence.
+### Phase 2: Root Wrapper Truth-Sync
+- [ ] Update root docs to `290` scenario files and `21` categories
+- [ ] Preserve the `272 exact ID` execution wave as historical evidence only
+- [ ] Keep the 2026-03-26 traceability remediation visible
 
-| Phase | Folder | Scenarios | Exact IDs |
-|-------|--------|-----------|-----------|
-| 001 | `001-retrieval/` | 13 | 13 |
-| 002 | `002-mutation/` | 9 | 9 |
-| 003 | `003-discovery/` | 3 | 3 |
-| 004 | `004-maintenance/` | 2 | 2 |
-| 005 | `005-lifecycle/` | 10 | 10 |
-| 006 | `006-analysis/` | 7 | 7 |
-| 007 | `007-evaluation/` | 2 | 2 |
-| 008 | `008-bug-fixes-and-data-integrity/` | 11 | 11 |
-| 009 | `009-evaluation-and-measurement/` | 16 | 16 |
-| 010 | `010-graph-signal-activation/` | 15 | 15 |
-| 011 | `011-scoring-and-calibration/` | 22 | 22 |
-| 012 | `012-query-intelligence/` | 10 | 10 |
-| 013 | `013-memory-quality-and-indexing/` | 27 | 34 |
-| 014 | `014-pipeline-architecture/` | 18 | 18 |
-| 015 | `015-retrieval-enhancements/` | 11 | 11 |
-| 016 | `016-tooling-and-scripts/` | 33 | 65 |
-| 017 | `017-governance/` | 5 | 5 |
-| 018 | `018-ux-hooks/` | 11 | 11 |
-| 019 | `019-feature-flag-reference/` | 8 | 8 |
+### Phase 3: Focused Validation
+- [ ] Re-run `validate.sh` on the root 015 packet
+- [ ] Re-read denominator lines, phase map rows, and remediation references for consistency
+- [ ] Report any residual blockers without overstating closure
 
-For each phase:
-1. Read scenario files from the playbook category
-2. Execute each scenario's prompts/commands against the MCP server
-3. Compare actual behavior against expected behavior
-4. Record verdict (PASS/PARTIAL/FAIL) with evidence
-5. Document any bugs or playbook errors discovered
-
-### Phase 3: Aggregate Results
-- [ ] Collect per-phase verdict summaries
-- [ ] Produce aggregate coverage table (phase, pass, partial, fail, total)
-- [ ] Calculate overall pass rate
-- [ ] List all FAIL scenarios requiring follow-up
-- [ ] Document all bugs and playbook errors discovered
 ### Phase 4: Traceability Remediation (from deep review 2026-03-26)
 
 Deep review (6 iterations, 12 GPT-5.4 agents) found traceability gaps. Verdict: CONDITIONAL.
@@ -176,10 +152,10 @@ Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analys
 
 #### WS-5 (Validation): Cross-Check Verification
 - [ ] Re-run programmatic cross-reference check confirming 0 true gaps remaining
-- [ ] Verify all 222 catalog entries appear in Section 12
+- [ ] Verify all live catalog entries appear in Section 12 or an explicitly documented exception set
 - [ ] Verify all playbook scenarios have `Feature catalog:` back-reference
 - [ ] Verify all spec phases have Scenario Registry tables
-- [ ] Update parent spec.md counts to reflect new totals
+- [ ] Update parent spec.md counts to reflect current live totals
 <!-- /ANCHOR:phases -->
 
 ---
@@ -189,9 +165,9 @@ Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analys
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual scenario execution | All 272 exact IDs across 24 subdirectories | MCP tool calls, CLI commands |
-| Verdict recording | Per-scenario pass/fail with evidence | Inline documentation in phase folders |
-| Coverage aggregation | All 24 subdirectories | Summary table in implementation-summary.md |
+| Live recount | Root wrapper denominator truth | `find`, `rg`, focused readback |
+| Packet validation | Root wrapper packet | `validate.sh` |
+| Traceability follow-up | Review-surface accuracy | targeted file checks |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -201,11 +177,9 @@ Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analys
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Manual testing playbook | Internal | Green | Cannot execute -- source of all scenarios |
-| Feature catalog | Internal | Green | Cannot map scenarios to features |
-| MCP server (spec-kit-memory) | Internal | Green | Cannot execute tool-based scenarios |
-| Embedding service | External | Green | Embedding-dependent scenarios blocked |
-| SQLite database | Internal | Green | Cannot test data-dependent scenarios |
+| Manual testing playbook | Internal | Green | Cannot maintain wrapper truth without the live tree |
+| Feature catalog | Internal | Green | Cannot maintain traceability truth without current catalog totals |
+| Historical execution evidence | Internal | Green | Older PASS totals need explicit boundary labeling |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -213,8 +187,8 @@ Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analys
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Test execution corrupts database state or produces unreliable results
-- **Procedure**: Restore database from checkpoint, re-execute affected phase from clean state
+- **Trigger**: Root wrapper edits reintroduce stale counts, inconsistent phase maps, or false completion claims
+- **Procedure**: Restore the affected root docs and reapply only the verified live counts and historical-boundary notes
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -223,19 +197,16 @@ Add `### Scenario Registry` table to spec.md in these 17 phases (use `006-analys
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──► Phase 2 (Execute) ──► Phase 3 (Aggregate) ──► Phase 4 (Traceability Remediation)
-                                                                     ├─ WS-1 (Create 29 scenarios)
-                                                                     ├─ WS-2 (Add 65 back-refs)  ← WS-1
-                                                                     ├─ WS-3 (Complete Sec.12)    ← WS-1
-                                                                     ├─ WS-4 (17 Registries)     ← WS-1,2,3
-                                                                     └─ WS-5 (Validation)        ← WS-1,2,3,4
+Phase 1 (Recount) ──► Phase 2 (Truth-sync) ──► Phase 3 (Validation)
+                                         \
+                                          └──► Phase 4 (Traceability remediation remains active)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Execute |
-| Execute (001-019) | Setup | Aggregate |
-| Aggregate | Execute | Remediation |
+| Recount | None | Truth-sync |
+| Truth-sync | Recount | Validation |
+| Validation | Truth-sync | Accurate wrapper state |
 | WS-1 (Create scenarios) | Aggregate | WS-2, WS-3 |
 | WS-2 (Back-refs) | WS-1 | WS-4 |
 | WS-3 (Section 12) | WS-1 | WS-4 |
@@ -252,10 +223,10 @@ Note: Within Phase 2, individual phase folders (001-022) are independent and can
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 1 hour |
-| Execute (24 subdirectories) | High | 3-4 days |
-| Aggregate | Low | 2 hours |
-| **Total** | | **4-5 days** |
+| Recount and truth-sync | Low | <0.5 day |
+| Focused validation | Low | <0.25 day |
+| Traceability remediation follow-up | High | Separate implementation wave |
+| **Total** | | **Wrapper-dependent follow-up after recount** |
 <!-- /ANCHOR:effort -->
 
 ---

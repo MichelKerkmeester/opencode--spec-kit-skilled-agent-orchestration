@@ -270,7 +270,10 @@ describe('Session Manager Extended Tests', () => {
   describe('5a. resolveTrustedSession', () => {
     it('accepts server-tracked sessions', () => {
       resetDb();
-      sm.saveSessionState('trusted-session', { currentTask: 'tracked by server' });
+      sm.saveSessionState('trusted-session', {
+        currentTask: 'tracked by server',
+        tenantId: 'tenant-a',
+      });
 
       const result = sm.resolveTrustedSession('trusted-session');
 
@@ -278,6 +281,16 @@ describe('Session Manager Extended Tests', () => {
       expect(result.effectiveSessionId).toBe('trusted-session');
       expect(result.trusted).toBe(true);
       expect(result.error).toBeUndefined();
+    });
+
+    it('rejects tracked sessions without corroborated identity', () => {
+      resetDb();
+      sm.saveSessionState('trusted-session-without-identity', { currentTask: 'tracked by server' });
+
+      const result = sm.resolveTrustedSession('trusted-session-without-identity');
+
+      expect(result.trusted).toBe(false);
+      expect(result.error).toContain('not bound to a corroborated server identity');
     });
 
     it('rejects scope mismatches for bound sessions', () => {
@@ -292,6 +305,22 @@ describe('Session Manager Extended Tests', () => {
 
       expect(result.trusted).toBe(false);
       expect(result.error).toContain('different tenantId');
+    });
+
+    it('rejects caller identities that were never corroborated on the stored session', () => {
+      resetDb();
+      sm.saveSessionState('bound-session-missing-user', {
+        currentTask: 'tracked by server',
+        tenantId: 'tenant-a',
+      });
+
+      const result = sm.resolveTrustedSession('bound-session-missing-user', {
+        tenantId: 'tenant-a',
+        userId: 'user-a',
+      });
+
+      expect(result.trusted).toBe(false);
+      expect(result.error).toContain('different userId');
     });
 
     it('rejects untracked caller-supplied session IDs', () => {
@@ -548,7 +577,7 @@ describe('Session Manager Extended Tests', () => {
       const ids = r.sessions.map((session: InterruptedSession) => session.sessionId);
 
       expect(ids).toContain('int-scope-a');
-      expect(ids).toContain('int-unbound');
+      expect(ids).not.toContain('int-unbound');
       expect(ids).not.toContain('int-scope-b');
     });
 

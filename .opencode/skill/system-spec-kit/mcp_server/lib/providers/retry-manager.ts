@@ -281,7 +281,7 @@ export function sanitizeAndLogEmbeddingFailure(
         provider: failure.provider,
         errorType: failure.errorType,
       },
-      rawError: raw instanceof Error ? (raw.stack ?? raw.message) : String(raw),
+      redacted: true,
     });
   }
 

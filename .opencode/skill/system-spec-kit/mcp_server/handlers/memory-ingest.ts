@@ -144,6 +144,12 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
     throw new Error(`paths exceeds maximum of ${MAX_INGEST_PATHS}`);
   }
 
+  const overlengthPaths = paths
+    .filter((entry) => entry.length > MAX_PATH_LENGTH)
+    .map((entry) => ({
+      filePath: toPublicPathLabel(entry),
+      reason: `path exceeds ${MAX_PATH_LENGTH} characters`,
+    }));
   const withinLength = paths.filter((entry) => entry.length <= MAX_PATH_LENGTH);
   if (withinLength.length !== paths.length) {
     console.warn(
@@ -239,10 +245,16 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
       jobId: job.id,
       state: job.state,
       filesTotal: job.filesTotal,
+      acceptedPathCount: paths.length,
+      rejectedPathCount: overlengthPaths.length,
+      ...(overlengthPaths.length > 0 ? { rejectedPaths: overlengthPaths } : {}),
     },
     hints: [
       'Use memory_ingest_status with jobId to poll progress',
       'Use memory_ingest_cancel with jobId to stop processing',
+      ...(overlengthPaths.length > 0
+        ? ['Some input paths were rejected before queueing; inspect rejectedPaths for details']
+        : []),
     ],
   });
 }

@@ -228,6 +228,23 @@ describe('T026-03: Minimum 2-Channel Invariant', () => {
     // Vector should appear only once
     expect(result.filter(c => c === 'vector')).toHaveLength(1);
   });
+
+  it('T17b: duplicate channels are collapsed before minimum enforcement', () => {
+    const input: ChannelName[] = ['vector', 'vector'];
+    const result = enforceMinimumChannels(input);
+    expect(result).toEqual(['vector', 'fts']);
+  });
+
+  it('T17c: custom configs with duplicates still resolve to distinct channels', () => {
+    const brokenConfig: ChannelRoutingConfig = {
+      simple: ['vector', 'vector'],
+      moderate: ['vector', 'fts', 'bm25'],
+      complex: ['vector', 'fts', 'bm25', 'graph', 'degree'],
+    };
+
+    const channels = getChannelSubset('simple', brokenConfig);
+    expect(channels).toEqual(['vector', 'fts']);
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

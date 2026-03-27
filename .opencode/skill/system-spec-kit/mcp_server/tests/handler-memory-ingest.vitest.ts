@@ -111,6 +111,42 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
     expect((envelope.data as Record<string, unknown>).state).toBe('queued');
   });
 
+  it('start surfaces overlength path rejections alongside queued paths', async () => {
+    const longPath = `/tmp/${'x'.repeat(520)}.md`;
+    mocks.mockCreateIngestJob.mockResolvedValue({
+      id: 'job_trimmed',
+      state: 'queued',
+      specFolder: 'specs/001-test',
+      paths: ['/tmp/a.md'],
+      filesTotal: 1,
+      filesProcessed: 0,
+      errors: [],
+      createdAt: '2026-03-05T00:00:00.000Z',
+      updatedAt: '2026-03-05T00:00:00.000Z',
+    });
+
+    const result = await handler.handleMemoryIngestStart({
+      paths: ['/tmp/a.md', longPath],
+      specFolder: 'specs/001-test',
+    });
+
+    const envelope = parseEnvelope(result);
+    const data = envelope.data as Record<string, unknown>;
+
+    expect(mocks.mockCreateIngestJob).toHaveBeenCalledWith(expect.objectContaining({
+      paths: ['/tmp/a.md'],
+    }));
+    expect(data.acceptedPathCount).toBe(1);
+    expect(data.rejectedPathCount).toBe(1);
+    expect(data.rejectedPaths).toEqual([
+      {
+        filePath: `${'x'.repeat(520)}.md`,
+        reason: 'path exceeds 500 characters',
+      },
+    ]);
+    expect(envelope.hints).toContain('Some input paths were rejected before queueing; inspect rejectedPaths for details');
+  });
+
   it('status returns E404 payload when job is missing', async () => {
     mocks.mockGetIngestJob.mockReturnValue(null);
 

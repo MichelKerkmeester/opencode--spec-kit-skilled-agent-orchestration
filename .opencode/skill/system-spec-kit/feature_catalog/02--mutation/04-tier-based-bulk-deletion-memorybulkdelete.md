@@ -59,5 +59,5 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)
-- Current reality source: FEATURE_CATALOG.md
+- Current reality source: direct implementation audit of `memory-bulk-delete.ts`, related mutation/storage helpers, and the listed Vitest coverage
 - Source list updated 2026-03-26 per audit remediation

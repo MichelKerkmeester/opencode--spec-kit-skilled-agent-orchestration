@@ -174,6 +174,40 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.closeDb();
   });
 
+  it('returns an MCP database-unavailable envelope when bulk delete cannot open the database', async () => {
+    const tempDir = makeTempDir('spec-kit-bulk-db-unavailable-');
+    process.env.SPEC_KIT_DB_DIR = tempDir;
+    process.env.MEMORY_ALLOWED_PATHS = process.cwd();
+
+    vi.resetModules();
+    vi.doMock('../lib/search/vector-index', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../lib/search/vector-index')>();
+      return {
+        ...actual,
+        getDb: vi.fn(() => null),
+      };
+    });
+
+    try {
+      const bulkDelete = await import('../handlers/memory-bulk-delete');
+
+      const response = await bulkDelete.handleMemoryBulkDelete({
+        tier: 'deprecated',
+        confirm: true,
+      });
+
+      const envelope = JSON.parse(response.content[0].text);
+      expect(envelope.data?.code).toBe('E_DB_UNAVAILABLE');
+      expect(envelope.data?.error).toBe('Memory bulk delete aborted: database unavailable');
+      expect(envelope.data?.details).toMatchObject({
+        tier: 'deprecated',
+        specFolder: null,
+      });
+    } finally {
+      vi.doUnmock('../lib/search/vector-index');
+    }
+  });
+
   it('allows skipCheckpoint for non-critical tiers', async () => {
     const tempDir = makeTempDir('spec-kit-bulk-skip-checkpoint-');
     process.env.SPEC_KIT_DB_DIR = tempDir;

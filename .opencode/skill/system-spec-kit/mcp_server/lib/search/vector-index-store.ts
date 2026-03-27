@@ -132,17 +132,24 @@ export async function get_confirmed_embedding_dimension(timeout_ms = 5000): Prom
   return 768;
 }
 
-/**
- * Validates that stored vector dimensions match the provider.
- * @returns The validation result.
- */
-export function validate_embedding_dimension(): { valid: boolean; stored: number | null; current: number | null; reason?: string; warning?: string } {
-  if (!db || !sqlite_vec_available_flag) {
+type EmbeddingDimensionValidation = {
+  valid: boolean;
+  stored: number | null;
+  current: number | null;
+  reason?: string;
+  warning?: string;
+};
+
+function validate_embedding_dimension_for_connection(
+  database: Database.Database | null,
+  sqlite_vec_available: boolean,
+): EmbeddingDimensionValidation {
+  if (!database || !sqlite_vec_available) {
     return { valid: true, stored: null, current: null, reason: 'No database or sqlite-vec unavailable' };
   }
 
   try {
-    const meta_table = db.prepare(`
+    const meta_table = database.prepare(`
       SELECT name FROM sqlite_master WHERE type='table' AND name='vec_metadata'
     `).get();
 
@@ -150,7 +157,7 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
       return { valid: true, stored: null, current: get_embedding_dim(), reason: 'No metadata table (legacy DB)' };
     }
 
-    const stored_row = db.prepare(`
+    const stored_row = database.prepare(`
       SELECT value FROM vec_metadata WHERE key = 'embedding_dim'
     `).get() as { value: string } | undefined;
 
@@ -174,6 +181,14 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
     console.warn('[vector-index] Dimension validation error:', get_error_message(e));
     return { valid: true, stored: null, current: get_embedding_dim(), reason: get_error_message(e) };
   }
+}
+
+/**
+ * Validates that stored vector dimensions match the provider.
+ * @returns The validation result.
+ */
+export function validate_embedding_dimension(): { valid: boolean; stored: number | null; current: number | null; reason?: string; warning?: string } {
+  return validate_embedding_dimension_for_connection(db, sqlite_vec_available_flag);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -447,8 +462,8 @@ export function get_constitutional_memories(
     return cached.data;
   }
 
-  if (constitutional_cache_loading.get(cache_key)) {
-    return cached?.data || [];
+  if (constitutional_cache_loading.get(cache_key) && cached) {
+    return cached.data;
   }
 
   constitutional_cache_loading.set(cache_key, true);
@@ -502,9 +517,20 @@ export function get_constitutional_memories(
  */
 export function clear_constitutional_cache(spec_folder: string | null = null): void {
   if (spec_folder) {
-    constitutional_cache.delete(spec_folder);
+    const scoped_prefix = `${spec_folder}:`;
+    for (const key of [...constitutional_cache.keys()]) {
+      if (key === spec_folder || key.startsWith(scoped_prefix)) {
+        constitutional_cache.delete(key);
+      }
+    }
+    for (const key of [...constitutional_cache_loading.keys()]) {
+      if (key === spec_folder || key.startsWith(scoped_prefix)) {
+        constitutional_cache_loading.delete(key);
+      }
+    }
   } else {
     constitutional_cache.clear();
+    constitutional_cache_loading.clear();
   }
 }
 
@@ -613,33 +639,18 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   create_schema(new_db, { sqlite_vec_available: vec_available, get_embedding_dim });
   ensure_schema_version(new_db);
 
-  if (!custom_path) {
-    // C1 FIX: Temporarily assign globals so validate_embedding_dimension() can
-    // read the new connection, but roll back if validation fails so the fast
-    // path (`if (db && !custom_path) return db`) never serves a bad connection.
-    const prev_db = db;
-    const prev_path = db_path;
-    const prev_vec = sqlite_vec_available_flag;
+  const dimCheck = validate_embedding_dimension_for_connection(new_db, vec_available);
+  if (!dimCheck.valid && dimCheck.stored != null) {
+    const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
+    console.error(`[vector-index] FATAL: ${msg}`);
+    try { new_db.close(); } catch (_: unknown) { /* best-effort */ }
+    throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
+  }
 
+  if (!custom_path) {
     db = new_db;
     db_path = target_path;
     sqlite_vec_available_flag = vec_available;
-
-    // F9.09-F9.13 fix: Validate embedding dimension matches DB at init time.
-    if (sqlite_vec_available_flag) {
-      const dimCheck = validate_embedding_dimension();
-      if (!dimCheck.valid && dimCheck.stored != null) {
-        // Rollback globals — do not cache the bad connection
-        db = prev_db;
-        db_path = prev_path;
-        sqlite_vec_available_flag = prev_vec;
-        const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
-        console.error(`[vector-index] FATAL: ${msg}`);
-        try { new_db.close(); } catch (_: unknown) { /* best-effort */ }
-        throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
-      }
-    }
-
     try {
       fs.chmodSync(target_path, DB_PERMISSIONS);
     } catch (err: unknown) {

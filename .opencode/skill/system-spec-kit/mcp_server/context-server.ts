@@ -645,6 +645,11 @@ async function runAsyncCleanupStep(label: string, cleanupFn: () => Promise<void>
   }
 }
 
+export const __testables = {
+  runCleanupStep,
+  runAsyncCleanupStep,
+};
+
 async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
   if (shuttingDown) return;
   shuttingDown = true;

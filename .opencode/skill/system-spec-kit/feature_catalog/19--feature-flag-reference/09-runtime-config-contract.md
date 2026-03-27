@@ -75,9 +75,15 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Loader | Parses JSONC, merges defaults, validates `WorkflowConfig`, and exports frozen runtime constants |
 | `.opencode/skill/system-spec-kit/config/README.md` | Documentation | States that only Section 1 keys are used at runtime and distinguishes `filters.jsonc` from the core config loader |
 
+### Tests
+
+| File | Focus |
+|------|-------|
+| `scripts/tests/runtime-memory-inputs.vitest.ts` | Legacy `qualityAbortThreshold` normalization and explicit config-input failure handling in the script runtime |
+| `manual_testing_playbook/19--feature-flag-reference/223-runtime-config-contract.md` | End-to-end sandbox verification of Section 1 overrides, invalid values, and documentation-only sections |
+
 ## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: Runtime Config Contract
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Current reality source: direct loader audit of `scripts/core/config.ts`, `config/config.jsonc`, and the listed normalization/manual contract checks

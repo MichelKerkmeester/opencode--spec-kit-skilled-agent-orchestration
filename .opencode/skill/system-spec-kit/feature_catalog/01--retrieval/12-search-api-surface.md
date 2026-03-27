@@ -29,8 +29,14 @@ The `vectorIndex` namespace is not a single function but a large facade re-expor
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Hybrid-search initialization, orchestration, and exported search types |
 | `mcp_server/lib/search/sqlite-fts.ts` | Lib | SQLite FTS5 BM25 helper functions |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Namespace facade over vector-index types, schema, mutations, queries, cache, and store exports |
+
+### Tests
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct export contract for `api/search.ts` and top-level barrel parity |
+| `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid-search entrypoint behavior and public search-type stability |
 ---
 ## 4. SOURCE METADATA
 - Group: Retrieval
 - Source feature title: Search API surface
-- Source spec: Deep research remediation 2026-03-26
+- Current reality source: direct implementation audit of `mcp_server/api/search.ts` plus the listed export and hybrid-search coverage

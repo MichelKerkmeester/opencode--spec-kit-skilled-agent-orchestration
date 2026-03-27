@@ -25,7 +25,10 @@ The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5
 
 ## 3. SOURCE FILES
 
-No dedicated source files. This is a decision record.
+| File | Type | Role |
+|------|------|------|
+| `manual_testing_playbook/09--evaluation-and-measurement/090-int8-quantization-evaluation-r5.md` | Manual revalidation | Re-checks the NO-GO thresholds against current corpus size, p95 latency, and embedding dimensions |
+| `feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md` | Supporting measurement source | Documents the nearby baseline snapshot machinery used when evaluating rollout and storage thresholds |
 
 ---
 
@@ -33,4 +36,4 @@ No dedicated source files. This is a decision record.
 
 - Group: Evaluation and measurement
 - Source feature title: INT8 quantization evaluation
-- Current reality source: FEATURE_CATALOG.md
+- Current reality source: decision-record entry aligned to manual revalidation scenario `090-int8-quantization-evaluation-r5.md`

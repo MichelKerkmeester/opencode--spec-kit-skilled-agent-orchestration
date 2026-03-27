@@ -53,13 +53,13 @@ Together, these systems enable context-aware development with traceability, hard
 |---|---:|---|
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
 | MCP Tools | 40 | 33 memory + 7 code mode tools |
-| Agents | 9 | Base agent definitions in `.opencode/agent/*.md` |
+| Agents | 10 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 18 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 22 | Markdown command entry points in `.opencode/command/` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 27 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
-| Last Verified | 2026-03-21 | Counts refreshed against live repository state |
+| Last Verified | 2026-03-27 | Counts refreshed against live repository state |
 
 <!-- /ANCHOR:overview -->
 
@@ -70,7 +70,7 @@ Together, these systems enable context-aware development with traceability, hard
 
 ```
 .opencode/
-├── agent/           — 9 specialized AI agent definitions for task delegation
+├── agent/           — 10 specialized AI agent definitions for task delegation
 ├── command/         — 22 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
@@ -94,19 +94,20 @@ Together, these systems enable context-aware development with traceability, hard
 ## 3. AGENTS OVERVIEW
 <!-- ANCHOR:agents-overview -->
 
-The framework includes 9 specialized agents plus 2 built-in agents:
+The framework includes 10 specialized agents plus 2 built-in agents:
 
-This is an 11-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with aligned role definitions.
+This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with aligned role definitions.
 
 | Agent | Description | When to Use |
 |-------|-------------|-------------|
 | `@orchestrate` | Task decomposition and multi-agent coordination | Complex requests needing delegation across multiple agents |
 | `@context` | Codebase exploration and context retrieval (read-only) | ALL file search, pattern discovery and context loading tasks |
+| `@debug` | Fresh-perspective debugging (4-phase methodology) | After 3+ failed debug attempts, stuck issues |
 | `@deep-research` | Autonomous iterative research loop with externalized state | Deep multi-round investigation, evidence-based analysis |
+| `@deep-review` | Autonomous iterative review loop with findings convergence | Multi-round release and quality audits |
 | `@speckit` | Spec folder documentation (Level 1-3+) | Creating/updating spec folder docs (EXCLUSIVE for spec templates) |
 | `@review` | Code review with 5-dimension quality scoring | PR reviews, pre-commit checks, code quality validation |
 | `@write` | Documentation generation (READMEs, guides, skills) | Project-level docs outside spec folders |
-| `@debug` | Fresh-perspective debugging (4-phase methodology) | After 3+ failed debug attempts, stuck issues |
 | `@handover` | Session continuation and context preservation | Ending sessions, branching work, team handoffs |
 | `@ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies |
 | `@general` | General implementation and complex tasks | Default agent for code implementation (built-in) |

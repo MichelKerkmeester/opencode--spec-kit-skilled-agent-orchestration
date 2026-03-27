@@ -413,6 +413,11 @@ async function processPreparedMemory(
             return findSimilarMemories(emb as Float32Array, {
               limit: gateOptions.limit,
               specFolder: gateOptions.specFolder,
+              tenantId: scope.tenantId,
+              userId: scope.userId,
+              agentId: scope.agentId,
+              sessionId: scope.sessionId,
+              sharedSpaceId: scope.sharedSpaceId,
             }).map(m => ({
               id: m.id,
               file_path: m.file_path,
@@ -462,7 +467,7 @@ async function processPreparedMemory(
 
     // PE GATING
     const peResult = evaluateAndApplyPeDecision(
-      database, parsed, embedding, force, validation.warnings, embeddingStatus, filePath,
+      database, parsed, embedding, force, validation.warnings, embeddingStatus, filePath, scope,
     );
     if (peResult.earlyReturn) return peResult.earlyReturn;
 

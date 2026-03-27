@@ -38,7 +38,7 @@ This parent packet is the entry point for the Hybrid RAG Fusion epic. It replace
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | None (first direct phase) |
 | **Successor** | ../002-indexing-normalization/spec.md |
-| **Direct Children** | 12 numbered child folders: 11 sprint packets plus `012-pre-release-fixes-alignment-preparation` |
+| **Direct Children** | 12 numbered child folders: 11 sprint packets plus `012-pre-release-remediation` |
 
 ---
 
@@ -101,7 +101,7 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 | 009 | `009-sprint-8-deferred-features/` | Deferred and follow-on features | In Progress |
 | 010 | `010-sprint-9-extra-features/` | Productization and operational tooling | Complete |
 | 011 | `011-research-based-refinement/` | Research-based calibration & improvements (5 sub-phases: D1 Fusion, D2 Query, D3 Graph, D4 Feedback, D5 UX) | Draft |
-| 012 | `012-pre-release-fixes-alignment-preparation/` | Pre-release fixes, alignment, and release-readiness control | In Progress |
+| 012 | `012-pre-release-remediation/` | Post-review remediation, packet truth-sync, and release-control follow-up | In Progress |
 
 ---
 
@@ -113,7 +113,7 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Parent packet includes the required Level 3 companion docs | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist and match the parent level |
-| REQ-002 | Parent packet reports the live direct-child subtree | Parent docs state that the epic currently has 12 numbered direct children: 11 sprint packets plus `012-pre-release-fixes-alignment-preparation` |
+| REQ-002 | Parent packet reports the live direct-child subtree | Parent docs state that the epic currently has 12 numbered direct children: 11 sprint packets plus `012-pre-release-remediation` |
 | REQ-003 | Parent packet uses the current root relationship | Parent metadata points to `../spec.md` and the direct-phase successor `../002-indexing-normalization/spec.md` |
 | REQ-004 | Sprint-child specs use current parent links | Sprint children point back to `../spec.md` from their own folder context |
 | REQ-005 | Sprint-child phase navigation uses live sibling names | Sprint children use the current `001` through `011` sprint folder names in predecessor and successor references |

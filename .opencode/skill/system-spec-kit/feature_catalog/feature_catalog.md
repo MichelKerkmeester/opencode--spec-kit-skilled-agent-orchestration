@@ -1467,7 +1467,7 @@ The baseline path now initializes the eval database beside the context database 
 
 #### Source Files
 
-See [`09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md`](09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md`](09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md) for full implementation and test file listings.
 
 ---
 

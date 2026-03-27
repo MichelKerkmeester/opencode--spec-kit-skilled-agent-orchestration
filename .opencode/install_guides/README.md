@@ -14,7 +14,7 @@ importance_tier: "important"
 
 # OpenCode Install Guides
 
-> AI-executable guides for the OpenCode dev environment. Covers 6+ MCP servers, native skills, 9 agents, and optional CLI tools.
+> AI-executable guides for the OpenCode dev environment. Covers 7 MCP guides, native skills, 10 custom agents, and optional CLI tools.
 
 ---
 
@@ -56,7 +56,7 @@ The `install_guides/` directory is the central hub for all OpenCode setup and in
 | Category | Count | Details |
 |----------|-------|---------|
 | Guide files | 12 | 7 MCP guides, 4 SET-UP guides, 1 index guide (this README) |
-| Install scripts | 8 | 3 real + 5 symlinks in `install_scripts/` |
+| Install scripts | 9 | 3 real + 6 symlinks in `install_scripts/` |
 | MCP servers covered | 7 | Code Mode, Spec Kit Memory, Sequential Thinking, Chrome DevTools, ClickUp, CocoIndex Code, Figma |
 | Platforms supported | 3 | macOS, Linux, Windows WSL |
 
@@ -89,7 +89,7 @@ All `.md` guide files in this directory (5 real + 7 symlinks), grouped by type:
 | [SET-UP - Skill Advisor.md](./SET-UP%20-%20Skill%20Advisor.md) | Symlink | Skill advisor configuration |
 | [SET-UP - Skill Creation.md](./SET-UP%20-%20Skill%20Creation.md) | Real | Custom skill creation and packaging workflow |
 | **Automation** | | |
-| [install_scripts/](./install_scripts/) | Directory | Automated install scripts (8 scripts) |
+| [install_scripts/](./install_scripts/) | Directory | Automated install scripts (9 scripts) |
 
 ---
 
@@ -1176,16 +1176,18 @@ python .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/<my-skill
 
 The Agent System provides specialized AI personas with defined authorities, tool permissions and behavioral rules. Unlike skills (knowledge bundles), agents have **authority** to act and **tools** to execute.
 
-**Available Agents (8 total):**
+**Available Agents (10 total):**
 | Agent           | Purpose                         | Key Capability                        |
 | --------------- | ------------------------------- | ------------------------------------- |
 | **context**     | Context retrieval & analysis    | Exploration dispatch, memory loading  |
 | **debug**       | Fresh-perspective debugging     | Systematic 4-phase root cause analysis|
+| **deep-research** | Iterative research loops      | Multi-round investigation and convergence |
+| **deep-review** | Iterative review loops          | Findings-first release and quality audits |
 | **handover**    | Session continuation            | Context preservation, handover docs   |
 | **orchestrate** | Task decomposition & delegation | Parallel delegation (up to 20 agents) |
-| **research**    | Evidence gathering & planning   | Technical investigation, Gate 3 Option B |
 | **review**      | Code review & quality gates     | Pattern validation, quality scoring   |
 | **speckit**     | Spec folder creation            | Level 1-3+ documentation, templates  |
+| **ultra-think** | Multi-strategy planning         | Compare and score alternative solution paths |
 | **write**       | Documentation creation          | Template-first, DQI scoring           |
 
 **Quick Verification:**

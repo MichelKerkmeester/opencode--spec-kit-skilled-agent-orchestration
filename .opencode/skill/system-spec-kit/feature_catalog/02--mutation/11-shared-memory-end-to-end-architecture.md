@@ -81,9 +81,18 @@ The exposed shared-memory control plane is currently four lifecycle tools:
 | `mcp_server/tools/lifecycle-tools.ts` | Tool Dispatch | Publishes the shared-memory tool names and routes validated lifecycle tool calls to the shared-memory handlers |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema Validation | Defines the public argument contracts for enable, status, space upsert, and membership mutation tools |
 
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/shared-memory-handlers.vitest.ts` | Admin identity resolution, owner bootstrap, membership mutation, and README bootstrap |
+| `mcp_server/tests/shared-spaces.vitest.ts` | Deny-by-default access, rollout/kill-switch gating, and shared conflict persistence |
+| `mcp_server/tests/tool-input-schema.vitest.ts` | Public tool input contract for enable, space upsert, and membership mutation |
+| `mcp_server/tests/memory-governance.vitest.ts` | Shared-scope filtering and governance row visibility |
+| `mcp_server/tests/stage1-expansion.vitest.ts` | Stage-1 filtering through allowed shared-space IDs |
+
 ## 4. SOURCE METADATA
 
 - Group: Mutation
 - Source feature title: Shared Memory End-to-End Architecture and Source Map
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Current reality source: direct implementation audit plus the listed handler, scope, and rollout/access tests

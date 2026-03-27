@@ -122,6 +122,21 @@ export function resolveAdminActor(
     };
   }
 
+  if (hasUser || (hasAgent && normalizedAgentId !== configuredAgentId)) {
+    return {
+      ok: false,
+      response: createMCPErrorResponse({
+        tool,
+        error: 'Caller actor hint does not match the server-configured shared-memory admin.',
+        code: 'E_AUTHORIZATION',
+        details: { reason: 'shared_memory_admin_identity_mismatch' },
+        recovery: {
+          hint: 'Omit actorUserId/actorAgentId or send the same identity configured on the MCP server.',
+        },
+      }),
+    };
+  }
+
   return {
     ok: true,
     actor: { subjectType: 'agent', subjectId: configuredAgentId },

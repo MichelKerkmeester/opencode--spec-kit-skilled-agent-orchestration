@@ -103,7 +103,7 @@ describe('computeResultConfidence() — label thresholds', () => {
       rerankerScore: 0.88,
       anchorMetadata: [{ id: 'state', type: 'state' }, { id: 'summary', type: 'summary' }],
     });
-    const [conf] = computeResultConfidence([result]);
+    const [conf] = computeResultConfidence([result, makeResult({ id: 2, score: 0.15 })]);
     expect(conf.confidence.label).toBe('high');
     expect(conf.confidence.value).toBeGreaterThanOrEqual(0.7);
   });
@@ -139,12 +139,11 @@ describe('computeResultConfidence() — score margin', () => {
     expect(topConf.confidence.drivers).not.toContain('large_margin');
   });
 
-  it('last result (no successor) gets full margin contribution', () => {
+  it('last result (no successor) does not get a synthetic margin boost', () => {
     const results = makeResults([0.9, 0.5]);
     const confidences = computeResultConfidence(results);
-    // Last result has no next result — margin defaults to 1.0
     const lastConf = confidences[confidences.length - 1];
-    expect(lastConf.confidence.drivers).toContain('large_margin');
+    expect(lastConf.confidence.drivers).not.toContain('large_margin');
   });
 });
 
@@ -323,7 +322,7 @@ describe('computeResultConfidence() — drivers list', () => {
       rerankerApplied: true,
       anchorMetadata: [{ id: 'state' }, { id: 'summary' }],
     };
-    const [conf] = computeResultConfidence([result]); // single result → max margin
+    const [conf] = computeResultConfidence([result, makeResult({ id: 2, score: 0.2 })]);
     expect(conf.confidence.drivers.length).toBeGreaterThan(1);
     expect(conf.confidence.drivers).toContain('large_margin');
     expect(conf.confidence.drivers).toContain('multi_channel_agreement');

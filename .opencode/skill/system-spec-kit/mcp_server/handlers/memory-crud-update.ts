@@ -89,6 +89,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   let embeddingRegenerated = false;
   let embeddingMarkedForReindex = false;
   let embeddingStatusNeedsPendingWrite = false;
+  let mutationLedgerWarning: string | null = null;
 
   if (title !== undefined && title !== existing.title) {
     console.error(`[memory-update] Title changed, regenerating embedding for memory ${id} [requestId=${requestId}]`);
@@ -202,7 +203,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
         // History recording is best-effort
       }
 
-      appendMutationLedgerSafe(database, {
+      const ledgerRecorded = appendMutationLedgerSafe(database, {
         mutationType: 'update',
         reason: 'memory_update: metadata update',
         priorHash: priorSnapshot?.content_hash ?? (existing.content_hash as string | null) ?? null,
@@ -223,6 +224,9 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
         },
         actor: 'mcp:memory_update',
       });
+      if (!ledgerRecorded) {
+        mutationLedgerWarning = 'Mutation ledger append failed; audit trail may be incomplete.';
+      }
     });
   } else {
     // P1-021 — No database handle means we cannot guarantee transactional
@@ -266,6 +270,9 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   if (embeddingRegenerated) {
     hints.push('Embedding regenerated - search results may differ');
   }
+  if (mutationLedgerWarning) {
+    hints.push(mutationLedgerWarning);
+  }
   hints.push(...postMutationFeedback.hints);
 
   const data: Record<string, unknown> = {
@@ -278,6 +285,9 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   if (embeddingMarkedForReindex) {
     data.warning = 'Embedding regeneration failed, memory marked for re-indexing';
     data.embeddingStatus = 'pending';
+  }
+  if (mutationLedgerWarning) {
+    data.mutationLedgerWarning = mutationLedgerWarning;
   }
 
   return createMCPSuccessResponse({

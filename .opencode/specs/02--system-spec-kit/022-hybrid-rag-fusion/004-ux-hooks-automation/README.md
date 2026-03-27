@@ -1,11 +1,11 @@
 ---
-title: "007 — UX Hooks Automation"
+title: "004 — UX Hooks Automation"
 description: "Post-mutation hook automation and structured UX hints for memory handlers."
 importance_tier: "normal"
 contextType: "implementation"
 ---
 
-# 007 — UX Hooks Automation
+# 004 — UX Hooks Automation
 
 Defines automated post-mutation hook enforcement and structured UX hint output for memory mutation handlers (save, update, delete, bulk-delete, atomic save). Includes checkpoint delete safety via `confirmName`, `memory_health` auto-repair, and context-server hint appending.
 

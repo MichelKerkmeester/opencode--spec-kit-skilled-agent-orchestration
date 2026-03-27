@@ -26,6 +26,8 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-27 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../019-rewrite-repo-readme/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

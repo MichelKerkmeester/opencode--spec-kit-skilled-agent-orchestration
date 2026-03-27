@@ -603,6 +603,7 @@ export async function formatSearchResults(
     const recoveryCtx = {
       query,
       hasSpecFolderFilter: specFolder !== null && specFolder.length > 0,
+      evidenceGap: Boolean(extraData?.evidenceGap),
       resultCount: formatted.length,
       avgConfidence,
     };

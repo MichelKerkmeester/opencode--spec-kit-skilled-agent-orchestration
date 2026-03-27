@@ -278,7 +278,7 @@ export async function runReconsolidationIfEnabled(
               ? reconResult.newMemoryId
               : 0;
 
-          appendMutationLedgerSafe(database, {
+          const ledgerRecorded = appendMutationLedgerSafe(database, {
             mutationType: 'update',
             reason: `memory_save: reconsolidation ${reconResult.action}`,
             priorHash: null,
@@ -304,6 +304,9 @@ export async function runReconsolidationIfEnabled(
               title: parsed.title ?? '',
               reconsolidation: reconResult,
               message: `Reconsolidation: ${reconResult.action} (similarity: ${reconResult.similarity?.toFixed(3) ?? 'N/A'})`,
+              warnings: ledgerRecorded
+                ? undefined
+                : ['Mutation ledger append failed; audit trail may be incomplete.'],
             },
             warnings: reconWarnings,
           };

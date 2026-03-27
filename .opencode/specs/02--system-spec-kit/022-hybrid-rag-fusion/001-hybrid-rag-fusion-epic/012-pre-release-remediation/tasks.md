@@ -3,165 +3,123 @@
 # Tasks: 012 Pre-Release Remediation
 
 <!-- ANCHOR:notation -->
-## Packet Notes
+## Task Notation
 
-- This is the live consolidated backlog for `012-pre-release-remediation`.
-- Every carried-forward task is reset to `[ ]`, including tasks that were marked complete in `012`, `013`, or `014`.
-- Primary IDs in this file are new consolidated IDs (`CT###`).
-- Original task IDs are preserved inline as provenance.
-- Historical predecessor packet names below are preserved as provenance only.
-- Deduplication is conservative. Tasks are only merged where the source rows clearly describe the same downstream work.
+- This is the active remediation backlog generated from the canonical review in [`review/review-report.md`](./review/review-report.md).
+- The current documentation pass only stages the work. Every remediation item below remains `[ ]` until implementation is explicitly approved.
+- Primary IDs in this file use the `RT###` format.
+- Each task cites the canonical finding IDs it is meant to close, reduce, or re-verify.
+- The historical top-level `review-report.md` in this folder is provenance only and is not the task source of truth.
 
-## Coverage Summary
+### Coverage Summary
 
-| Source | Source Task Rows | Representation In This File |
-|--------|------------------|-----------------------------|
-| 012-pre-release-fixes-alignment-preparation/tasks.md | 97 | Preserved one-to-one as `CT001-CT030` and `CT035-CT104` |
-| 013-v7-remediation/tasks.md | 10 | Preserved across `CT031`, `CT032`, and `CT108-CT114` |
-| 014-v8-p1-p2-remediation/tasks.md | 12 | Preserved across `CT031`, `CT032`, `CT034`, `CT076-CT078`, `CT105-CT107`, `CT112-CT114` |
-| **Total source rows** | **119** | **114 consolidated tasks after 5 semantic merges** |
+| Source | Active Count | Representation In This File |
+|--------|--------------|-----------------------------|
+| Canonical `P1` findings | 14 | Mapped across `RT001-RT018`, `RT030`, and verification tasks |
+| Canonical `P2` findings | 16 | Mapped across `RT010-RT018`, `RT020-RT023`, `RT031-RT033`, and verification tasks |
+| Review workstreams | 4 | Preserved as sections 1 through 4 below |
+| Feature-state baseline | `191 / 48 / 7 / 9` | Preserved as planning context for WS-4 and final verification |
 <!-- /ANCHOR:notation -->
 
 <!-- ANCHOR:phase-1 -->
-## 1. Historical Carried-Forward Investigation And Early Remediation
+## Phase 1: Setup
 
-- [ ] CT001 Audit Memory MCP server health and capture blocker findings. `[Source: 012:T01]`
-- [ ] CT002 Audit `generate-context` and supporting scripts for pipeline and validation gaps. `[Source: 012:T02]`
-- [ ] CT003 Compare feature catalog coverage against code audit coverage. `[Source: 012:T03]`
-- [ ] CT004 Compare manual testing playbook coverage against the live catalog. `[Source: 012:T04]`
-- [ ] CT005 Audit pipeline architecture against shipped implementation. `[Source: 012:T05]`
-- [ ] CT006 Audit `009-perfect-session-capturing` completeness. `[Source: 012:T06]`
-- [ ] CT007 Audit validator output and template compliance across the tree. `[Source: 012:T07]`
-- [ ] CT008 Audit recent commits for regressions. `[Source: 012:T08]`
-- [ ] CT009 Audit `sk-code--opencode` compliance and JSON-mode quality paths. `[Source: 012:T09]`
-- [ ] CT010 Audit architecture docs against implementation boundaries. `[Source: 012:T10]`
-- [ ] CT011 Compile findings into the canonical epic research synthesis under `../research/`. `[Source: 012:T11]`
-- [ ] CT012 Cross-reference findings and identify cascade dependencies. `[Source: 012:T12]`
-- [ ] CT013 Fix MCP server module resolution for `@spec-kit/mcp-server/api`. `[Source: 012:T13]`
-- [ ] CT014 Add network-error handling to embedding and API-key startup validation. `[Source: 012:T14]`
-- [ ] CT015 Clear lint blockers that previously broke `npm run check`. `[Source: 012:T15]`
-- [ ] CT016 Reduce critical spec validation failures and restore missing packet scaffolding. `[Source: 012:T16]`
-- [ ] CT017 Fix rejection-path quality loop behavior. `[Source: 012:T17]`
-- [ ] CT018 Allow `preflight` and `postflight` through input normalization. `[Source: 012:T18]`
-- [ ] CT019 Forward `--session-id` through the workflow pipeline. `[Source: 012:T19]`
-- [ ] CT020 Remove dead script-registry entries and stale routing metadata. `[Source: 012:T20]`
-- [ ] CT021 Fix path-fragment trigger contamination and fold in the former JSON-enrichment subtask. `[Source: 012:T21]`
-- [ ] CT022 Restore Stage 1 vector fallback when hybrid fusion fails. `[Source: 012:T22]`
-- [ ] CT023 Add script-side indexing governance and preflight checks. `[Source: 012:T23]`
-- [ ] CT024 Resolve retention-sweep ambiguity by documenting or manualizing the path. `[Source: 012:T24]`
-- [ ] CT025 Update `.opencode/skill/system-spec-kit/mcp_server/tools/README.md` tool totals. `[Source: 012:T25]`
-- [ ] CT026 Update root 022 packet counts and remove phantom phase references. `[Source: 012:T26]`
-- [ ] CT027 Refresh MCP server README architecture map and DB-path examples. `[Source: 012:T27]`
-- [ ] CT028 Create the missing companion files for `009/016-json-mode-hybrid-enrichment`. `[Source: 012:T28]`
-- [ ] CT029 Triage dead-code, catalog, playbook, and metadata polish items as historical follow-up work. `[Source: 012:T29]`
-- [ ] CT030 Preserve the original post-release cleanup queue as carried-forward historical context that the merged packet can truth-sync explicitly. `[Source: 012:T30]`
-- [ ] CT031 Capture the authoritative v7 and v8 review findings, packet role, and blocker or advisory registry from the `012` review artifacts. `[Source: 013:T001, 014:T001]`
-- [ ] CT032 Capture the runtime and validator baselines needed for consolidation, including the landed runtime test gate and the recursive or non-recursive validator baselines. `[Source: 013:T002, 014:T002]`
-- [ ] CT033 Confirm the landed code-side remediation for `F-C01`, `F-C02`, `F-C03`, `F-C04`, and `F-S01` from live source and tests before consolidating packet lineage. `[Source: 013:T003]`
-- [ ] CT034 Split the remaining work into recursive blockers, P2 follow-ons, and consolidation-stage release-control work. `[Source: 014:T003]`
+- [ ] RT000 Confirm explicit implementation go-ahead before touching runtime, wrapper, or public-doc remediation surfaces. `[Gate]`
+- [ ] RT001 Replay the current baseline gates and capture the starting evidence set for remediation. `[Supports: HRF-DR-001-030]`
+- [ ] RT002 Keep the release verdict `FAIL` until fresh reruns justify any change. `[Supports: HRF-DR-001-030]`
+
+### WS-2 Packet/Spec Docs Truth-Sync
+
+- [ ] RT010 Re-anchor the packet docs to `review/review-report.md` and mark the top-level `review-report.md` as historical evidence only. `[Findings: HRF-DR-001, HRF-DR-009]`
+- [ ] RT011 Fix the `012` packet local validator failures, including packet-local template/header drift, AI-protocol expectations, and broken internal references. `[Findings: HRF-DR-001]`
+- [ ] RT012 Reconcile the `012` release story so packet-local FAIL, runtime-green, and historical statements no longer contradict each other. `[Findings: HRF-DR-002]`
+- [ ] RT013 Update parent-epic and packet-local references to the live `012-pre-release-remediation` slug. `[Findings: HRF-DR-003]`
+- [ ] RT014 Refresh packet-local summaries and companion docs only after the packet truth-sync work is evidence-backed. `[Findings: HRF-DR-001, HRF-DR-002, HRF-DR-009]`
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
-## 2. Tree Truth-Sync And Doc-Integrity Remediation
+## Phase 2: Implementation
 
-- [ ] CT035 Correct the root 022 status contract for phase 015. `[Source: 012:T31]`
-- [ ] CT036 Expand epic certification to the live 11-child subtree. `[Source: 012:T32]`
-- [ ] CT037 Repair sprint-tail navigation from sprint 010 to 011. `[Source: 012:T33]`
-- [ ] CT038 Truth-sync the retrieval audit coverage claim from 10 to the live 11-feature inventory. `[Source: 012:T34]`
-- [ ] CT039 Reconcile `021-remediation-revalidation` with the still-open 022 release packet. `[Source: 012:T35]`
-- [ ] CT040 Replace unbacked Hydra safety-rail verification with real drill evidence or honest pending state. `[Source: 012:T36]`
-- [ ] CT041 Truth-sync root 022 direct and recursive directory totals. `[Source: 012:T37]`
-- [ ] CT042 Correct `006-feature-catalog` snippet totals. `[Source: 012:T38]`
-- [ ] CT043 Correct `006-feature-catalog` category totals. `[Source: 012:T39]`
-- [ ] CT044 Add live child `022` to the 007 umbrella inventory. `[Source: 012:T40]`
-- [ ] CT045 Fix stale evaluation inventory counts in `007/009`. `[Source: 012:T41]`
-- [ ] CT046 Fix stale scoring inventory counts in `007/011`. `[Source: 012:T42]`
-- [ ] CT047 Rebuild the 015 umbrella playbook totals from the live tree. `[Source: 012:T43]`
-- [ ] CT048 Fix `014-agents-md-alignment` command inventory drift. `[Source: 012:T44]`
-- [ ] CT049 Fix `018-rewrite-system-speckit-readme` command inventory drift. `[Source: 012:T45]`
-- [ ] CT050 Fix `016-rewrite-memory-mcp-readme` tool inventory drift. `[Source: 012:T46]`
-- [ ] CT051 Truth-sync root README agent and MCP totals, including the missing `@deep-review`. `[Source: 012:T47]`
-- [ ] CT052 Refresh the root 022 checklist against the current validator. `[Source: 012:T48]`
-- [ ] CT053 Make the epic phase map mirror child status labels verbatim. `[Source: 012:T49]`
-- [ ] CT054 Resolve contradictory shipped-model and final-phase language in `010-template-compliance-enforcement`. `[Source: 012:T50]`
-- [ ] CT055 Fix impossible upstream blocker totals in the Hydra umbrella checklist. `[Source: 012:T51]`
-- [ ] CT056 Remove premature `Complete` status from Hydra children awaiting sign-off. `[Source: 012:T52]`
-- [ ] CT057 Align Hydra child summaries with the umbrella's actual activation caveats. `[Source: 012:T53]`
-- [ ] CT058 Reconcile sequencing and dependency drift between session phases 007 and 008. `[Source: 012:T54]`
-- [ ] CT059 Reopen or truthfully scope `016-json-mode-hybrid-enrichment`. `[Source: 012:T55]`
-- [ ] CT060 Align `017-json-primary-deprecation` docs with the shipped runtime. `[Source: 012:T56]`
-- [ ] CT061 Reconcile the T04 contradiction inside this packet's story of prior remediation. `[Source: 012:T57]`
-- [ ] CT062 Resolve `012-command-alignment` done and not-done contradictions. `[Source: 012:T58]`
-- [ ] CT063 Remove over-claiming from `013-agents-alignment`. `[Source: 012:T59]`
-- [ ] CT064 Fix the 015 umbrella's `Complete` claim while child packets remain open. `[Source: 012:T60]`
-- [ ] CT065 Remove the false verified-P1 claim from `013-memory-quality-and-indexing`. `[Source: 012:T61]`
-- [ ] CT066 Update the executed second-half 015 packets that still say `Not Started`. `[Source: 012:T62]`
-- [ ] CT067 Sync rewrite packet status with actual task completion. `[Source: 012:T63]`
-- [ ] CT068 Add a root navigation and traceability contract to `005-architecture-audit`. `[Source: 012:T64]`
-- [ ] CT069 Repair broken evidence links in `005-architecture-audit` and `010-template-compliance-enforcement`. `[Source: 012:T65]`
-- [ ] CT070 Add a traceability contract for completed 007 second-half phases. `[Source: 012:T66]`
-- [ ] CT071 Complete the Level 3+ companion docs for `016-json-mode-hybrid-enrichment`. `[Source: 012:T67]`
-- [ ] CT072 Remove orphaned references to the removed packet. `[Source: 012:T68]`
-- [ ] CT073 Fix the wrong parent pointer under `011-skill-alignment/001-post-session-capturing-alignment`. `[Source: 012:T69]`
-- [ ] CT074 Repair nonexistent playbook-path references in 015 child packets 003, 004, and 007. `[Source: 012:T70]`
-- [ ] CT075 Replace placeholder testing packets 020-022 with real packets or honest draft status. `[Source: 012:T71]`
-- [ ] CT076 Clear the remaining anchor and legacy-reference blockers across `001`, `003`, `005`, `010`, `013`, `016`, and `018` by completing the granular truth-sync and doc-integrity work captured in this section. `[Source: 014:T004]`
-- [ ] CT077 Clear the remaining `006-feature-catalog` doc-integrity backlog by closing the linked count, inventory, and documentation-truth tasks in this section. `[Source: 014:T005]`
-- [ ] CT078 Clear the remaining `007-code-audit-per-feature-catalog` and `015-manual-testing-per-playbook` doc-integrity backlog by closing the linked inventory, traceability, playbook, and testing-packet tasks in this section. `[Source: 014:T006]`
+### WS-1 Runtime/Code Integrity
+
+- [ ] RT020 Make TM-04 dedup scope-aware and add direct scoped-save regression coverage. `[Findings: HRF-DR-010, HRF-DR-012]`
+- [ ] RT021 Propagate scope through PE arbitration and prove cross-boundary safety. `[Findings: HRF-DR-011]`
+- [ ] RT022 Fix constitutional cache warmup empties and folder-scoped invalidation drift. `[Findings: HRF-DR-013, HRF-DR-015]`
+- [ ] RT023 Restore embedding-dimension integrity validation for custom-path DB initialization. `[Findings: HRF-DR-014]`
+- [ ] RT024 Bind working-memory and shared-memory actions to corroborated ownership rather than caller-controlled identity alone. `[Findings: HRF-DR-016, HRF-DR-017]`
+- [ ] RT025 Correct bulk-delete outage signaling, mixed-ingest partial acceptance, and mutation-ledger failure surfacing. `[Findings: HRF-DR-018, HRF-DR-019, HRF-DR-020]`
+- [ ] RT026 Revisit confidence scoring and query-routing invariants, and add direct fail-open coverage for Stage 2b. `[Findings: HRF-DR-021, HRF-DR-022, HRF-DR-023]`
+- [ ] RT027 Clear stale in-flight tool-cache reuse across invalidation or shutdown and extend lifecycle failure-branch coverage. `[Findings: HRF-DR-024, HRF-DR-025]`
+- [ ] RT028 Sanitize retry-manager operator logs so raw provider failures do not leak. `[Findings: HRF-DR-026]`
+
+### WS-3 Public Docs And Wrapper Alignment
+
+- [ ] RT030 Refresh root/public README and install surfaces to live counts, labels, versions, and filesystem paths, including the broken CocoIndex install path and UX-hooks README drift. `[Findings: HRF-DR-004]`
+- [ ] RT031 Rebuild `006-feature-catalog` wrapper denominators and claims against the live `255`-feature, `21`-category tree. `[Findings: HRF-DR-005]`
+- [ ] RT032 Rebuild `015-manual-testing-per-playbook` totals, orphan-story claims, and capability references against the live playbook tree. `[Findings: HRF-DR-006]`
+- [ ] RT033 Clear the root `019/020` phase-link warning and remove the duplicated effort-estimation block from root `022` plan surfaces. `[Findings: HRF-DR-007, HRF-DR-008]`
+
+### WS-4 Feature Verification And Tooling Contract Repair
+
+- [ ] RT040 Fix the `/memory:learn` docs-alignment contract across the command-group README surface, feature entry, and failing regression test. `[Findings: HRF-DR-027]`
+- [ ] RT041 Repair the seven catalog mismatch entries, including stale verification references, non-concrete evidence tables, and duplicate ordinals. `[Findings: HRF-DR-028]`
+- [ ] RT042 Reduce the under-tested block by adding direct tests, documenting strong static proof, or recording explicit approved deferrals for the `48` flagged features. `[Findings: HRF-DR-029]`
+- [ ] RT043 Retire or rewrite stale `007-code-audit-per-feature-catalog` correctness claims so they no longer function as live evidence. `[Findings: HRF-DR-030]`
 <!-- /ANCHOR:phase-2 -->
 
 <!-- ANCHOR:phase-3 -->
-## 3. Runtime And P2 Follow-On Remediation
+## Phase 3: Verification
 
-- [ ] CT079 Make the BM25 spec-folder scope filter fail closed. `[Source: 012:T72]`
-- [ ] CT080 Bind working-memory access to trusted server-side session scope. `[Source: 012:T73]`
-- [ ] CT081 Scope the governance audit away from full-table enumeration by default. `[Source: 012:T74]`
-- [ ] CT082 Sanitize persisted and surfaced embedding-provider failure messages. `[Source: 012:T75]`
-- [ ] CT083 Add an atomic claim step before retry work is processed. `[Source: 012:T76]`
-- [ ] CT084 Remove stale auto-entity rows during in-place memory updates. `[Source: 012:T77]`
-- [ ] CT085 Make SIGINT and SIGTERM cleanup clear workflow locks before reporting success. `[Source: 012:T78]`
-- [ ] CT086 Stop structured JSON saves from reporting complete when `nextSteps` remain pending. `[Source: 012:T79]`
-- [ ] CT087 Return bounded validation errors for empty `--json` input. `[Source: 012:T80]`
-- [ ] CT088 Align startup embedding-dimension validation with runtime fallback rules. `[Source: 012:T81]`
-- [ ] CT089 Reject invalid `EMBEDDINGS_PROVIDER` values at startup. `[Source: 012:T82]`
-- [ ] CT090 Respect configured `VOYAGE_BASE_URL` during startup validation. `[Source: 012:T83]`
-- [ ] CT091 Remove dead MCP-server code that still appears in release surfaces. `[Source: 012:T84]`
-- [ ] CT092 Keep `npm run check` green after the v3 code and documentation sweep. `[Source: 012:T85]`
-- [ ] CT093 Remove the production TODO marker from vector-index mutations. `[Source: 012:T86]`
-- [ ] CT094 Eliminate or regenerate orphaned dist artifacts. `[Source: 012:T87]`
-- [ ] CT095 Remove stale catalog references to deleted code and tests. `[Source: 012:T88]`
-- [ ] CT096 Add catalog coverage for the three uncataloged audit categories. `[Source: 012:T89]`
-- [ ] CT097 Replace brittle number-based catalog and audit matching with slug-based matching. `[Source: 012:T90]`
-- [ ] CT098 Migrate Python CLI scripts from `sys.argv` to `argparse`. `[Source: 012:T91]`
-- [ ] CT099 Move shell strict mode to the top of the affected scripts. `[Source: 012:T92]`
-- [ ] CT100 Improve weak `description.json` metadata for umbrella packets. `[Source: 012:T93]`
-- [ ] CT101 Raise playbook coverage above the current 75 percent baseline and clean orphan scenarios. `[Source: 012:T94]`
-- [ ] CT102 Resolve dormant code modules instead of leaving them half-supported. `[Source: 012:T95]`
-- [ ] CT103 Fix stale sprint metadata in sprints 5, 6, and 11. `[Source: 012:T96]`
-- [ ] CT104 Close the architecture components gap between docs and code. `[Source: 012:T97]`
-- [ ] CT105 Re-evaluate `F-P2-06` in `stage2-fusion.ts` and implement or re-defer it with evidence. `[Source: 014:T008]`
-- [ ] CT106 Refresh `F-P2-13` and `F-P2-24` across the feature catalog, manual testing playbook, and release-control checklists. `[Source: 014:T009]`
-- [ ] CT107 Record explicit disposition for remaining deferred P2 items that stay outside this wave. `[Source: 014:T010]`
+- [ ] RT050 Replay the baseline commands at remediation start: `012` local validate, root `022 --recursive`, and `mcp_server npm test`. `[Supports: HRF-DR-001-030]`
+- [ ] RT051 Run targeted subsystem Vitest subsets for each touched runtime or tooling wave before merge. `[Supports: HRF-DR-010-030]`
+- [ ] RT052 Re-run packet-local validation for `012` and any touched packet families after truth-sync or wrapper edits land. `[Supports: HRF-DR-001-009, HRF-DR-028-030]`
+- [ ] RT053 Update the canonical `review/` artifacts and packet-local release summaries from fresh evidence only. `[Supports: HRF-DR-001-030]`
+- [ ] RT054 Preserve the written `FAIL` verdict unless fresh reruns justify a replacement review. `[Supports: HRF-DR-001-030]`
+- [ ] RT055 Save implementation memory and handoff context after the remediation wave completes. `[Operational]`
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->
-## 4. Verification And Release-Control Sync
+## Completion Criteria
 
-- [ ] CT108 Rewrite the consolidated packet `spec.md` and `plan.md` to a current Level 3 structure that replaces the legacy `013` packet narrative. `[Source: 013:T004]`
-- [ ] CT109 Record `F-P0-02`, `F-C01`, `F-C02`, `F-C03`, `F-C04`, and `F-S01` as evidence-backed complete in the consolidated packet docs. `[Source: 013:T005]`
-- [ ] CT110 Add implementation-summary.md and restore required anchors across the consolidated packet docs. `[Source: 013:T008]`
-- [ ] CT111 Run packet-local validation and clear consolidated packet structural errors. `[Source: 013:T009]`
-- [ ] CT112 Re-run packet-local validation for each touched blocker packet before the global sweep. `[Source: 014:T007]`
-- [ ] CT113 Run the full post-cleanup verification sweep, including `npm test`, non-recursive validator baselines, and recursive `022-hybrid-rag-fusion` validation. `[Source: 013:T010, 014:T011]`
-- [ ] CT114 Update release-control artifacts and packet-local summaries to keep blocker truth honest, preserve the written v8 FAIL review until replaced, and leave wider cleanup explicitly open until reruns prove closure. `[Source: 013:T006, 013:T007, 014:T012]`
+- [ ] All active `P1` findings have landed fixes or evidence-backed reclassification.
+- [ ] All active `P2` findings have landed fixes, explicit proof, or explicit accepted deferrals.
+- [ ] The canonical `review/` packet and this packet's release-control docs are updated from fresh rerun evidence.
+- [ ] The verdict remains `FAIL` unless the reruns justify a replacement review.
 <!-- /ANCHOR:completion -->
 
 <!-- ANCHOR:cross-refs -->
-## Review Checklist For This Packet
+## Cross-References
 
-- [ ] Every source task row from `012`, `013`, and `014` is represented in this file via one-to-one carry-forward or explicit semantic merge.
-- [ ] Every staged task remains unchecked.
-- [ ] No merge was performed solely because source IDs collided.
-- [ ] The five semantic merges are acceptable for review:
-  `013:T001 + 014:T001`, `013:T002 + 014:T002`, `013:T010 + 014:T011`, and `013:T006 + 013:T007 + 014:T012`.
+| Finding | Task Coverage |
+|---------|---------------|
+| `HRF-DR-001` | `RT010`, `RT011`, `RT014`, `RT050`, `RT052`, `RT053`, `RT054` |
+| `HRF-DR-002` | `RT012`, `RT014`, `RT053`, `RT054` |
+| `HRF-DR-003` | `RT013` |
+| `HRF-DR-004` | `RT030` |
+| `HRF-DR-005` | `RT031` |
+| `HRF-DR-006` | `RT032` |
+| `HRF-DR-007` | `RT033` |
+| `HRF-DR-008` | `RT033` |
+| `HRF-DR-009` | `RT010`, `RT014`, `RT053` |
+| `HRF-DR-010` | `RT020` |
+| `HRF-DR-011` | `RT021` |
+| `HRF-DR-012` | `RT020` |
+| `HRF-DR-013` | `RT022` |
+| `HRF-DR-014` | `RT023` |
+| `HRF-DR-015` | `RT022` |
+| `HRF-DR-016` | `RT024` |
+| `HRF-DR-017` | `RT024` |
+| `HRF-DR-018` | `RT025` |
+| `HRF-DR-019` | `RT025` |
+| `HRF-DR-020` | `RT025` |
+| `HRF-DR-021` | `RT026` |
+| `HRF-DR-022` | `RT026` |
+| `HRF-DR-023` | `RT026` |
+| `HRF-DR-024` | `RT027` |
+| `HRF-DR-025` | `RT027` |
+| `HRF-DR-026` | `RT028` |
+| `HRF-DR-027` | `RT040` |
+| `HRF-DR-028` | `RT041` |
+| `HRF-DR-029` | `RT042` |
+| `HRF-DR-030` | `RT043` |
 <!-- /ANCHOR:cross-refs -->
