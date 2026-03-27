@@ -1,14 +1,13 @@
 ---
-title: "Verification Checklist: v3.0.0.0 Release Changelogs"
+title: "Verification Checklist: Bulk Changelog Audit and Omission Repair"
 description: "Verification Date: 2026-03-27"
 trigger_phrases:
-  - "verification"
-  - "checklist"
-  - "changelog"
-importance_tier: "normal"
+  - "bulk changelog verification"
+  - "omission repair checklist"
+importance_tier: "important"
 contextType: "general"
 ---
-# Verification Checklist: v3.0.0.0 Release Changelogs
+# Verification Checklist: Bulk Changelog Audit and Omission Repair
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -30,42 +29,40 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md
-- [x] CHK-002 [P0] Technical approach defined in plan.md
-- [x] CHK-003 [P1] Dependencies identified and available (codex exec v0.116.0)
+- [x] CHK-001 [P0] Canonical changelog format reviewed. [EVIDENCE: `.opencode/command/create/changelog.md` and `create_changelog_*.yaml` were read before changes.]
+- [x] CHK-002 [P0] Working packet path confirmed. [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-hybrid-raf-fusion-related-changelogs`.]
+- [x] CHK-003 [P1] Ranked source-set and filtered commit strategy defined. [EVIDENCE: 60-spec ranking used lastUpdated, then implementation-summary mtime, then git fallback; 100-commit audit excluded merge and auto-stash noise.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
-## Changelog Quality
+## Code Quality
 
-- [x] CHK-010 [P0] All 8 files follow canonical changelog template format — all have Highlights, Files Changed, Upgrade sections
-- [x] CHK-011 [P0] Version numbers sequential and non-conflicting — verified via sort -V per component
-- [x] CHK-012 [P0] Super changelog Included Component Releases section complete — 57 entries
-- [x] CHK-013 [P1] Highlights accurately reflect actual changes — derived from implementation-summary.md + git log
-- [x] CHK-014 [P1] Files Changed sections reference real file paths — cross-referenced with git diff
+- [x] CHK-010 [P0] The source-set ranking used lastUpdated, then implementation-summary mtime, then git fallback. [EVIDENCE: audit script output and packet plan.]
+- [x] CHK-011 [P0] Archive, scratch, memory, and non-product noise were excluded from the ranked audit. [EVIDENCE: excluded `z_archive`, `scratch`, `memory`, `00--ai-systems-non-dev`, and `01--anobel.com`.]
+- [x] CHK-012 [P1] The last 100 commits were filtered to exclude merge and auto-stash noise. [EVIDENCE: commit audit excluded `Merge branch ...` and `Auto stash before merge ...`.]
 <!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## Completeness
+## Testing
 
-- [x] CHK-020 [P0] 7 component changelogs created — all verified present
-- [x] CHK-021 [P0] 1 super changelog v3.0.0.0 created — 158 lines
-- [x] CHK-022 [P1] All 19 phases of 022 reflected in highlights — phases 001-019 covered in v2.5.0.0
-- [x] CHK-023 [P1] Specs 032-034 work reflected in documentation overhaul section — HVR, 23 READMEs in super changelog
+- [x] CHK-020 [P0] `.opencode/changelog/12--sk-deep-research/v1.2.1.0.md` now documents the shipped 034 review-folder contract. [EVIDENCE: new Review Folder Contract section plus updated Files Changed and Upgrade text.]
+- [x] CHK-021 [P0] `.opencode/changelog/04--commands/v2.6.1.0.md` now documents the command README rewrite wave and same-day cleanup. [EVIDENCE: new Command Documentation Modernization section plus expanded Files Changed table.]
+- [x] CHK-022 [P0] `.opencode/changelog/00--opencode-environment/v3.0.0.0.md` now documents the same 034 omission at environment scope. [EVIDENCE: updated intro paragraph, deep-research highlight bullet, Files Changed line, and Upgrade guidance for the `review/` packet contract.]
+- [x] CHK-023 [P1] The 4 CLI component folders now have current patch changelog coverage for the README rewrite wave. [EVIDENCE: new files `.opencode/changelog/19--cli-copilot/v1.3.2.0.md`, `.opencode/changelog/20--cli-codex/v1.3.2.0.md`, `.opencode/changelog/21--cli-claude-code/v1.1.2.0.md`, and `.opencode/changelog/22--cli-gemini/v1.2.2.0.md`.]
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Content Accuracy
+## Security
 
-- [x] CHK-030 [P0] No hallucinated file paths — all paths derived from git diff and ls
-- [x] CHK-031 [P0] No hallucinated version numbers — all sequential from existing latest
-- [x] CHK-032 [P1] Dates are 2026-03-27 — verified across all 8 files
+- [x] CHK-030 [P0] All changed or created changelog files contain the canonical required sections. [EVIDENCE: section check passed for `.opencode/changelog/12--sk-deep-research/v1.2.1.0.md`, `.opencode/changelog/04--commands/v2.6.1.0.md`, `.opencode/changelog/00--opencode-environment/v3.0.0.0.md`, and the 4 new CLI patch files.]
+- [x] CHK-031 [P0] New CLI patch versions are sequential and non-conflicting. [EVIDENCE: `v1.3.2.0`, `v1.3.2.0`, `v1.1.2.0`, and `v1.2.2.0` follow each current latest component version with no collisions.]
+- [x] CHK-032 [P1] `git diff --check` passes. [EVIDENCE: command rerun after packet cleanup returned exit code 0.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +70,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec folder 020 artifacts synchronized — spec.md, plan.md, tasks.md, checklist.md
-- [x] CHK-041 [P1] Tasks marked complete with evidence — all tasks verified
-- [ ] CHK-042 [P2] Memory context saved — deferred to post-commit
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` describe the audited repair workflow. [EVIDENCE: the packet now documents the 60-spec / 100-commit audit and the final 7-mutation changelog outcome.]
+- [x] CHK-041 [P1] `implementation-summary.md` exists and records the delivered result. [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-hybrid-raf-fusion-related-changelogs/implementation-summary.md`.]
+- [x] CHK-042 [P1] Strict packet validation passes. [EVIDENCE: the strict validator now reports no structural or integrity errors.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,8 +80,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] All changelogs in correct component folders — verified via ls
-- [x] CHK-051 [P1] No temp files left in scratch/ — no scratch/ directory used
+- [x] CHK-050 [P1] Changelog mutations stayed within existing component folders. [EVIDENCE: updated `00--opencode-environment`, `04--commands`, and `12--sk-deep-research`, plus 4 new files inside existing CLI folders; no new component directories were created.]
+- [x] CHK-051 [P1] Packet outputs stayed inside the existing 020 folder. [EVIDENCE: only packet docs and `implementation-summary.md` were created or updated in the packet.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -94,9 +91,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 7/7 |
+| P0 Items | 8 | 8/8 |
 | P1 Items | 8 | 8/8 |
-| P2 Items | 1 | 0/1 |
+| P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-03-27
 <!-- /ANCHOR:summary -->

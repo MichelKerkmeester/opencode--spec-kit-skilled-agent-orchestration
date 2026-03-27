@@ -1,14 +1,14 @@
 ---
-title: "Implementation Plan: v3.0.0.0 Release Changelogs"
-description: "3-phase pipeline using 20 GPT-5.4 agents to analyze source material, generate 7 component changelogs + 1 super changelog, and validate output."
+title: "Implementation Plan: Bulk Changelog Refresh From 60 Specs + 100 Commits"
+description: "Audit the last 60 relevant OpenCode specs and last 100 commits, then apply the minimum changelog mutations needed to reflect real uncovered work."
 trigger_phrases:
-  - "changelog"
-  - "v3.0.0.0"
-  - "release plan"
+  - "bulk changelog refresh plan"
+  - "60 specs"
+  - "100 commits"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: v3.0.0.0 Release Changelogs
+# Implementation Plan: Bulk Changelog Refresh From 60 Specs + 100 Commits
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -18,17 +18,27 @@ contextType: "general"
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
-### Technical Context
-
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, codex exec CLI |
-| **Framework** | create:changelog format (v{MAJOR}.{MINOR}.{PATCH}.{BUILD}) |
-| **Storage** | `.opencode/changelog/{NN--component}/` |
-| **Testing** | Format validation, version sequencing check |
+| **Language/Stack** | Markdown, git history, spec metadata |
+| **Primary Contract** | `.opencode/command/create/changelog.md` plus the changelog YAML assets |
+| **Working Packet** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-hybrid-raf-fusion-related-changelogs` |
+| **Mutation Strategy** | Update existing same-release notes in place; create new files only when the current latest component entry predates the work |
+
+### Technical Context
+
+- The packet follows the repository's canonical changelog structure from `.opencode/command/create/changelog.md` and the paired YAML assets.
+- The audit ranks recent specs deterministically and uses commit history only as supporting evidence for release-note truthfulness.
+- The final output set is intentionally small relative to the source audit: 3 in-place changelog updates plus 4 new CLI patch files.
 
 ### Overview
-Deploy up to 20 GPT-5.4 agents via `codex exec` in a 3-phase pipeline: (1) analyze all source material in parallel, (2) generate 7 component changelogs + spec folder docs in parallel, (3) generate super v3.0.0.0 changelog aggregating all components. All agents use `--model gpt-5.4 -c model_reasoning_effort="high"`.
+
+The implementation follows a four-step loop:
+
+1. rank recent specs deterministically,
+2. filter recent commits for meaningful evidence,
+3. compare that evidence against the latest published changelog files,
+4. repair only the existing release notes and component folders that the evidence shows are incomplete.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,16 +47,19 @@ Deploy up to 20 GPT-5.4 agents via `codex exec` in a 3-phase pipeline: (1) analy
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Source material identified (100 commits, 19 phases, specs 032-034)
-- [x] Changelog format understood (canonical template from 370+ existing files)
-- [x] All 23 component folders exist
-- [x] codex exec CLI available (v0.116.0)
+
+- [x] Canonical changelog format understood
+- [x] Working packet confirmed
+- [x] Latest relevant changelog files identified
+- [x] Commit chronology established for the shipped omissions and the CLI README rewrite wave
 
 ### Definition of Done
-- [ ] All 8 changelog files exist at expected paths
-- [ ] Super changelog lists all component releases since v2.4.0.3
-- [ ] Format validation passes on all files
-- [ ] Spec folder 020 artifacts complete
+
+- [x] The latest sk-deep-research changelog covers the spec-034 review-folder contract
+- [x] The latest commands changelog covers the spec-033 command README rewrite wave
+- [x] The environment v3 changelog covers the same shipped review-folder work
+- [x] The 4 CLI patch changelog files exist at the expected sequential versions
+- [ ] Validation commands pass
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -55,30 +68,23 @@ Deploy up to 20 GPT-5.4 agents via `codex exec` in a 3-phase pipeline: (1) analy
 ## 3. ARCHITECTURE
 
 ### Pattern
-Multi-agent pipeline with sequential phase dependencies
 
-### Key Components
-- **Analysis Agents (A01-A10)**: Read-only analysis of source material
-- **Generation Agents (G01-G08)**: Write component changelogs + spec docs
-- **Super Agent (G09)**: Aggregate all into v3.0.0.0
-- **Validation Agent (V01)**: Cross-changelog verification
+Audit-first changelog repair with narrow mutation scope
 
-### Data Flow
-```
-Source Material (commits, specs, phases)
-    |
-    v
-[A01-A10] Analysis (parallel, read-only)
-    |
-    v
-[G01-G08] Component Changelogs (parallel, write)
-    |
-    v
-[G09] Super Changelog v3.0.0.0 (sequential, write)
-    |
-    v
-[V01] Validation (read-only)
-```
+### Key Inputs
+
+- Ranked 60-spec source set
+- Filtered 100-commit history
+- Existing latest environment, commands, sk-deep-research, and CLI changelog files
+- Spec `033-skill-command-readme-rewrite`
+- Spec `034-sk-deep-research-review-folders`
+- Commit chronology for the v3 release sweep
+
+### Decision Rules
+
+- **Update existing latest file** when the missing work shipped in the same release commit as the current latest changelog.
+- **Create a new file** when the relevant component work is real and the current latest component changelog still predates it.
+- **Prefer the smallest truthful repair** over broader umbrella or micro-release expansion.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -87,33 +93,26 @@ Source Material (commits, specs, phases)
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Spec folder 020 created with spec.md, plan.md, tasks.md, checklist.md
 
-### Phase 2: Analysis (10 agents, parallel)
-- [ ] A01: system-spec-kit phases 001-009
-- [ ] A02: system-spec-kit phases 010-019
-- [ ] A03: system-spec-kit code changes
-- [ ] A04: sk-deep-research
-- [ ] A05: sk-doc + agents-md
-- [ ] A06: commands + skill-advisor + mcp-coco-index
-- [ ] A07: agent-orchestration
-- [ ] A08: Specs 032-034
-- [ ] A09: Cross-cutting git history
-- [ ] A10: Existing changelog inventory
+- Confirm the packet path and read the current packet docs.
+- Read the latest relevant changelog files before any edits.
 
-### Phase 3: Generation (8 agents, parallel → 1 sequential)
-- [ ] G01: system-spec-kit v2.5.0.0
-- [ ] G02: sk-deep-research v1.2.1.0
-- [ ] G03: sk-doc v1.4.1.0
-- [ ] G04: agents-md v2.3.0.0
-- [ ] G05: commands v2.6.1.0
-- [ ] G06: skill-advisor v1.1.1.0
-- [ ] G07: agent-orchestration v2.3.2.0
-- [ ] G09: super changelog v3.0.0.0 (after G01-G07)
+### Phase 2: Implementation
 
-### Phase 4: Verification
-- [ ] V01: Cross-changelog validation
-- [ ] Commit all files
+- Rank the last 60 relevant specs using metadata fallback rules.
+- Filter the last 100 commits for useful changelog evidence.
+- Update `.opencode/changelog/12--sk-deep-research/v1.2.1.0.md`.
+- Update `.opencode/changelog/04--commands/v2.6.1.0.md`.
+- Update `.opencode/changelog/00--opencode-environment/v3.0.0.0.md`.
+- Create the 4 CLI patch changelog files.
+- Rewrite the 020 packet docs and implementation summary to describe the audited outcome.
+
+### Phase 3: Verification
+
+- Run strict packet validation.
+- Run `git diff --check`.
+- Verify canonical changelog sections remain present in the edited and created release notes.
+- Verify new CLI patch versions are sequential and collision-free.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -123,10 +122,12 @@ Source Material (commits, specs, phases)
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Format | All 8 changelogs match canonical template | Manual review + grep |
-| Version | No version conflicts with existing files | ls + sort -V |
-| Completeness | Super changelog lists all component releases | grep count |
-| Content | Highlights match actual changes | Cross-reference with git log |
+| Source-set reproducibility | Ranked 60-spec audit | Python ranking script + manual spot-check |
+| Commit chronology | Same-release omission vs later work | `git show --format=fuller` |
+| Changelog format | Edited and created release-note files | `rg` for required section headers + manual review |
+| Version sequencing | New CLI patch files | `find ... | sort -V` |
+| Packet validation | 020 spec folder | `spec/validate.sh --strict` |
+| Diff hygiene | All modified files | `git diff --check` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -136,9 +137,10 @@ Source Material (commits, specs, phases)
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| codex exec CLI | External | Green | Cannot run GPT-5.4 agents |
-| Existing changelogs | Internal | Green | Need for inventory |
-| 022 phase impl summaries | Internal | Green | Need for analysis |
+| Existing latest changelog files | Internal | Green | Needed to compare published coverage vs missing coverage |
+| Spec 033 artifacts | Internal | Green | Needed to summarize the README rewrite wave accurately |
+| Spec 034 artifacts | Internal | Green | Needed to summarize the review-folder contract accurately |
+| Release commit chronology | Internal | Green | Needed to decide update-vs-create behavior correctly |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -146,58 +148,6 @@ Source Material (commits, specs, phases)
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Changelog content is incorrect or format invalid
-- **Procedure**: Delete new changelog files, they are all net-new (no existing files modified)
+- **Trigger**: Incorrect chronology, incorrect changelog narrative, or failed validation
+- **Procedure**: Revert the edited packet files and changelog files, then rerun the audit before trying again
 <!-- /ANCHOR:rollback -->
-
----
-
-<!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (Setup) ──► Phase 2 (Analysis, 10 parallel) ──► Phase 3 (Generation, 8+1) ──► Phase 4 (Verify)
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Analysis |
-| Analysis (A01-A10) | Setup | Generation |
-| Generation (G01-G08) | Analysis | Super Changelog |
-| Super Changelog (G09) | G01-G08 | Validation |
-| Validation (V01) | G09 | None |
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Setup | Low | 5 minutes |
-| Analysis (10 agents) | High | 3-5 minutes (parallel) |
-| Generation (9 agents) | High | 3-5 minutes (parallel + sequential) |
-| Validation | Low | 2 minutes |
-| **Total** | | **~15 minutes** |
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [x] No existing files will be modified
-- [x] All output paths verified as non-existent
-- [ ] Validation passes before commit
-
-### Rollback Procedure
-1. `git checkout -- .opencode/changelog/` to revert all new files
-2. Verify no existing changelogs were modified
-3. Re-run specific agents if partial failure
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: Delete new .md files
-<!-- /ANCHOR:enhanced-rollback -->

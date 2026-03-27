@@ -1,14 +1,13 @@
 ---
-title: "Tasks: v3.0.0.0 Release Changelogs"
+title: "Tasks: Bulk Changelog Refresh From 60 Specs + 100 Commits"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "tasks"
-  - "changelog"
-  - "v3.0.0.0"
+  - "bulk changelog refresh tasks"
+  - "020 tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: v3.0.0.0 Release Changelogs
+# Tasks: Bulk Changelog Refresh From 60 Specs + 100 Commits
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -33,53 +32,45 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create spec.md (`specs/.../020-.../spec.md`)
-- [x] T002 Create plan.md (`specs/.../020-.../plan.md`)
-- [x] T003 Create tasks.md (`specs/.../020-.../tasks.md`)
-- [x] T004 Create checklist.md (`specs/.../020-.../checklist.md`)
+- [x] T001 Confirm the working packet path
+- [x] T002 Read the current packet docs
+- [x] T003 Read the latest relevant changelog files before editing
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Analysis (10 parallel agents)
+## Phase 2: Implementation
 
-- [x] T010 [P] A01: Analyze system-spec-kit phases 001-009
-- [x] T011 [P] A02: Analyze system-spec-kit phases 010-019
-- [x] T012 [P] A03: Analyze system-spec-kit code changes
-- [x] T013 [P] A04: Analyze sk-deep-research changes
-- [x] T014 [P] A05: Analyze sk-doc + agents-md changes
-- [x] T015 [P] A06: Analyze commands + skill-advisor + mcp-coco-index
-- [x] T016 [P] A07: Analyze agent-orchestration changes
-- [x] T017 [P] A08: Analyze specs 032-034
-- [x] T018 [P] A09: Analyze cross-cutting git history
-- [x] T019 [P] A10: Inventory existing uncovered changelogs
+- [x] T010 Rank the last 60 relevant spec folders using lastUpdated, implementation-summary mtime, and git fallback
+- [x] T011 Filter the last 100 commits to remove merge, auto-stash, and scratch or memory-only noise
+- [x] T012 Confirm that spec 034 shipped in the same release commit as the current latest changelog files but was omitted from their narratives
+- [x] T013 Confirm that the spec-033 README rewrite wave still lacked component-level coverage for commands and the 4 CLI skills
+- [x] T014 Update `.opencode/changelog/12--sk-deep-research/v1.2.1.0.md`
+- [x] T015 Update `.opencode/changelog/04--commands/v2.6.1.0.md`
+- [x] T016 Update `.opencode/changelog/00--opencode-environment/v3.0.0.0.md`
+- [x] T017 Create `.opencode/changelog/19--cli-copilot/v1.3.2.0.md`
+- [x] T018 Create `.opencode/changelog/20--cli-codex/v1.3.2.0.md`
+- [x] T019 Create `.opencode/changelog/21--cli-claude-code/v1.1.2.0.md`
+- [x] T020 Create `.opencode/changelog/22--cli-gemini/v1.2.2.0.md`
+- [x] T021 Rewrite `spec.md` in the 020 packet to describe the audit-and-repair scope
+- [x] T022 Rewrite `plan.md` in the 020 packet to describe the implemented flow
+- [x] T023 Rewrite `tasks.md` in the 020 packet to track the real work
+- [x] T024 Rewrite `checklist.md` in the 020 packet with validation evidence
+- [x] T025 Update `implementation-summary.md` in the 020 packet with the delivered outcome
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Generation (8+1 agents)
+## Phase 3: Verification
 
-- [x] T020 [P] G01: Generate system-spec-kit v2.5.0.0 (`.opencode/changelog/01--system-spec-kit/v2.5.0.0.md`)
-- [x] T021 [P] G02: Generate sk-deep-research v1.2.1.0 (`.opencode/changelog/12--sk-deep-research/v1.2.1.0.md`)
-- [x] T022 [P] G03: Generate sk-doc v1.4.1.0 (`.opencode/changelog/11--sk-doc/v1.4.1.0.md`)
-- [x] T023 [P] G04: Generate agents-md v2.3.0.0 (`.opencode/changelog/02--agents-md/v2.3.0.0.md`)
-- [x] T024 [P] G05: Generate commands v2.6.1.0 (`.opencode/changelog/04--commands/v2.6.1.0.md`)
-- [x] T025 [P] G06: Generate skill-advisor v1.1.1.0 (`.opencode/changelog/05--skill-advisor/v1.1.1.0.md`)
-- [x] T026 [P] G07: Generate agent-orchestration v2.3.2.0 (`.opencode/changelog/03--agent-orchestration/v2.3.2.0.md`)
-- [x] T027 G09: Generate super changelog v3.0.0.0 (`.opencode/changelog/00--opencode-environment/v3.0.0.0.md`) — blocked by T020-T026
+- [x] T030 Run strict packet validation
+- [x] T031 Run `git diff --check`
+- [x] T032 Verify canonical changelog sections remain present in the edited and created changelog files
+- [x] T033 Verify the new CLI patch versions are sequential and non-conflicting
+- [x] T034 Record verification evidence in `checklist.md`
 <!-- /ANCHOR:phase-3 -->
-
----
-
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Verification
-
-- [x] T030 V01: Cross-changelog validation (format, versions, completeness)
-- [x] T031 Save context via generate-context.js
-- [x] T032 Git commit all new files
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
@@ -87,8 +78,8 @@ contextType: "general"
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] 8 new changelog files verified
+- [x] No `[B]` blocked tasks remain
+- [x] Verification evidence recorded in `checklist.md`
 <!-- /ANCHOR:completion -->
 
 ---
