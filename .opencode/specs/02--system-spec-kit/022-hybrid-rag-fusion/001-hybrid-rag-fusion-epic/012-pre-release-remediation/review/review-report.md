@@ -1,6 +1,6 @@
 ---
 title: "Deep Review Report: 012 Pre-Release Remediation"
-description: "Canonical 20-iteration release review for 012-pre-release-remediation, written to review/ and treating the top-level review-report.md as historical input only."
+description: "Canonical 60-iteration release review for 012-pre-release-remediation, written to review/ and treating the top-level review-report.md as historical input only."
 ---
 
 # Deep Review Report: 012 Pre-Release Remediation
@@ -12,21 +12,27 @@ description: "Canonical 20-iteration release review for 012-pre-release-remediat
 | **Verdict** | FAIL |
 | **hasAdvisories** | true |
 | **P0 (Blockers)** | 0 |
-| **P1 (Required)** | 6 |
-| **P2 (Advisories)** | 3 |
-| **Iterations** | 20 |
-| **Stop Reason** | max_iterations_reached |
-| **Review Scope** | 012 packet, parent epic, root 022 packet, public README/install surfaces, 006 and 015 wrappers, and targeted memory/retrieval runtime hotspots |
-| **Runtime Hotspot Audit** | No fresh P0/P1 code blocker confirmed in the sampled `memory-context`, `memory-save`, `memory-search`, `hybrid-search`, and `pipeline/orchestrator` surfaces |
-| **Fresh Baselines (2026-03-27)** | `012` local validate = FAIL, `022 --recursive` = PASS WITH WARNINGS, `npm test` = PASS |
+| **P1 (Required)** | 14 |
+| **P2 (Advisories)** | 16 |
+| **Iterations** | 60 |
+| **Stop Reason** | segment_extension_budget_reached |
+| **Review Scope** | 012 packet, parent epic, root 022 packet, public README/install surfaces, runtime hotspots, and the full live feature catalog plus backing code |
+| **Fresh Baselines (2026-03-27)** | `012` local validate = FAIL, `022 --recursive` = PASS WITH WARNINGS, `mcp_server npm test` = PASS |
+| **Segment-2 Delta** | `7` new runtime `P1`, `10` new runtime `P2` |
+| **Segment-3 Delta** | `1` new tooling `P1`, `3` new feature-catalog `P2` |
+| **Feature-State Summary** | `191 sound_and_supported / 48 sound_but_under-tested / 7 catalog_mismatch / 9 code_unsound` |
 
-This review found that the remaining release blockers are documentation, lineage, and traceability drift, not a newly discovered runtime regression. The memory/retrieval runtime hotspots stayed green in the targeted recheck, and the full `npm test` baseline is still passing, but the live `012` release-control packet is not yet authoritative because it is not locally validator-clean and it tells conflicting release-state stories.
+Segment 3 did not overturn the earlier runtime story; it made it more concrete. The audit now shows that the release is blocked by three stacked layers: stale packet/public documentation from segment 1, live runtime defects from segment 2, and a newly confirmed tooling contract regression plus a large under-tested feature block from segment 3.
 
-This `review/` packet is the canonical output of the audit. The top-level `/012-pre-release-remediation/review-report.md` remains historical release-control evidence and should not be treated as the current review surface.
+Late wave-1 evidence also sharpened the feature-state ledger without increasing the finding count. The evaluation category carries a duplicate-ordinal traceability defect across its two `15-*` entries, and the discovery slice confirmed that `memory_list` is directionally sound but still not stably verified on its empty-string folder-filter edge case.
+
+The new blocker from segment 3 is not theoretical. A fresh targeted scripts run fails `scripts/tests/memory-learn-command-docs.vitest.ts` because both the feature entry and the regression still depend on `.opencode/command/memory/README.txt`, while the live workspace only has `.opencode/command/memory/README.md`.
+
+This `review/` packet remains the canonical audit surface. The top-level `/012-pre-release-remediation/review-report.md` is historical evidence only.
 
 ## 2. Planning Trigger
 
-`/spec_kit:plan` is required. Six active P1 findings span the live 012 packet, the parent epic, public docs/install surfaces, and the feature-catalog/manual-testing wrappers, so remediation needs a new coordinated planning pass rather than an ad hoc edit sweep.
+`/spec_kit:plan` is required. The active blockers now span runtime behavior, tooling contract integrity, packet truth-sync, and feature-verification confidence.
 
 ```json
 {
@@ -35,56 +41,61 @@ This `review/` packet is the canonical output of the audit. The top-level `/012-
   "hasAdvisories": true,
   "activeFindings": {
     "P0": 0,
-    "P1": 6,
-    "P2": 3
+    "P1": 14,
+    "P2": 16
+  },
+  "featureStateSummary": {
+    "sound_and_supported": 194,
+    "sound_but_under-tested": 47,
+    "catalog_mismatch": 5,
+    "code_unsound": 9
   },
   "remediationWorkstreams": [
     {
       "id": "WS-1",
       "priority": "P1",
-      "title": "Packet/spec docs truth-sync",
+      "title": "Runtime/code integrity",
       "focus": [
-        "012 validator clean-up",
-        "012 release-story reconciliation",
-        "001 epic child-name alignment",
-        "canonical review/ boundary"
+        "scope-aware save dedup and PE arbitration",
+        "constitutional-cache coherence and custom-path DB integrity",
+        "session trust boundaries",
+        "bulk-delete outage signaling",
+        "tool-cache invalidation and shutdown safety"
       ]
     },
     {
       "id": "WS-2",
       "priority": "P1",
-      "title": "Public docs, feature catalog, and playbook alignment",
+      "title": "Packet/spec docs truth-sync",
       "focus": [
-        "README/install counts and versions",
-        "broken CocoIndex installer path",
-        "004 README packet/tool drift",
-        "006 and 015 denominator refresh"
+        "012 validator cleanup",
+        "012 release-story reconciliation",
+        "001 epic child-name alignment",
+        "canonical review boundary"
       ]
     },
     {
       "id": "WS-3",
-      "priority": "P2",
-      "title": "Runtime hold-line and advisory cleanup",
+      "priority": "P1",
+      "title": "Public docs and wrapper alignment",
       "focus": [
-        "preserve green npm test baseline",
-        "clear 019/020 phase-link warning",
-        "dedupe root plan effort section"
+        "README/install counts and versions",
+        "broken CocoIndex installer path",
+        "006 and 015 denominator refresh",
+        "root phase-link and plan-hygiene drift"
+      ]
+    },
+    {
+      "id": "WS-4",
+      "priority": "P1",
+      "title": "Feature verification and tooling contract repair",
+      "focus": [
+        "/memory:learn docs-alignment regression",
+        "seven catalog mismatch entries",
+        "forty-eight under-tested feature entries",
+        "retirement of stale 007 correctness assumptions"
       ]
     }
-  ],
-  "specSeed": [
-    "Point 012 Source Review at review/review-report.md and frame the top-level review-report.md as historical input",
-    "Reconcile 012 implementation-summary claims with current validator output",
-    "Update the 001 epic child map from 012-pre-release-fixes-alignment-preparation to 012-pre-release-remediation",
-    "Refresh 006 and 015 wrappers against live 255/290/21 denominators"
-  ],
-  "planSeed": [
-    "T-001 Fix 012 packet-local validator failures and AI protocol/template drift",
-    "T-002 Rewrite 012 release-state truth so historical FAIL and current baselines are clearly separated",
-    "T-003 Patch parent epic and public docs/install surfaces to live names, counts, versions, and installer targets",
-    "T-004 Refresh 006 and 015 wrappers from live feature catalog and playbook indexes",
-    "T-005 Re-run validate.sh locally on 012 and recursively on 022 after documentation fixes",
-    "T-006 Reconfirm npm test and targeted retrieval/session hotspots remain green after the doc cleanup"
   ]
 }
 ```
@@ -93,122 +104,182 @@ This `review/` packet is the canonical output of the audit. The top-level `/012-
 
 ### P1 Findings (required)
 
-#### HRF-DR-001 [P1] 012 packet is not locally validator-clean
-- **Dimension:** traceability
-- **File:line:** `012-pre-release-remediation/implementation-summary.md:47,97,109`
-- **Evidence:** The implementation summary says epic `research.md` was restored and that `012-pre-release-remediation --strict` has only one intentional error. A fresh `validate.sh` run on 2026-03-27 still fails on incomplete AI protocol state, a missing `research.md` reference, and template-header drift.
-- **Impact:** The live release-control packet cannot yet serve as authoritative pre-release truth because its own validation narrative is false.
-- **Fix recommendation:** Repair the packet-local validation failures or restate the implementation summary so it matches the current validator result exactly.
-- **Disposition:** OPEN
-
-#### HRF-DR-002 [P1] 012 packet tells conflicting release-state stories
-- **Dimension:** correctness, traceability
-- **File:line:** `012-pre-release-remediation/spec.md:28,30,48`; `012-pre-release-remediation/implementation-summary.md:25,35,97`; `012-pre-release-remediation/review-report.md:14,114`
-- **Evidence:** The spec and historical top-level report preserve a March 26 FAIL-oriented narrative, while the implementation summary claims recursive PASS, and the spec still points `Source Review` at the historical top-level report instead of the canonical `review/` output.
-- **Impact:** Reviewers cannot tell whether the live packet is asserting FAIL, PASS, or a historical merge-only posture.
-- **Fix recommendation:** Split historical evidence from current-state evidence explicitly and repoint the active packet at `review/review-report.md`.
-- **Disposition:** OPEN
-
-#### HRF-DR-003 [P1] Parent epic still points at the retired 012 child slug
-- **Dimension:** traceability
-- **File:line:** `001-hybrid-rag-fusion-epic/spec.md:41,104,116`
-- **Evidence:** The parent epic still names `012-pre-release-fixes-alignment-preparation` as the live child in metadata, the phase map, and REQ-002.
-- **Impact:** Parent-to-child navigation and phase truth are stale at the coordination layer above the review target.
-- **Fix recommendation:** Replace the retired child slug with `012-pre-release-remediation` across the parent epic's authoritative references.
-- **Disposition:** OPEN
-
-#### HRF-DR-004 [P1] Public docs/install surfaces drift from live repo truth
-- **Dimension:** maintainability, traceability
-- **File:line:** `.opencode/README.md:52-58`; `.opencode/install_guides/README.md:17,820,1179,1236,1433`; `.opencode/skill/system-spec-kit/SKILL.md:5`; `004-ux-hooks-automation/README.md:2,14`
-- **Evidence:** Public docs still publish stale counts (`9 agents`, `22 commands`) and `system-spec-kit v2.2.26.0` while the live skill is `v2.2.27.0`, the base agent directory contains 10 files, the CocoIndex installer symlink points at a missing target, and the `004` packet-local README still labels itself `007` and says `28 tools`.
-- **Impact:** Operator-facing setup, package inventory, and packet-local guidance are no longer trustworthy.
-- **Fix recommendation:** Refresh counts/versions from the live filesystem, repair the CocoIndex installer target, and correct the `004` README identity/tool-count drift.
-- **Disposition:** OPEN
-
-#### HRF-DR-005 [P1] 006 feature-catalog wrapper publishes stale denominators
-- **Dimension:** traceability
-- **File:line:** `006-feature-catalog/spec.md:45-56`
-- **Evidence:** The wrapper first calls the live tree `224 / 275`, then later `255 / 275`, but the fresh filesystem truth is `255` feature files and `290` playbook scenario files across `21` numbered categories.
-- **Impact:** Any release or coverage reasoning derived from the wrapper is using the wrong denominators.
-- **Fix recommendation:** Rewrite the current-state note and deep-research addendum so historical milestones remain historical and live denominators match current repo truth.
-- **Disposition:** OPEN
-
-#### HRF-DR-006 [P1] 015 manual-testing wrapper is materially stale and self-contradictory
-- **Dimension:** traceability
-- **File:line:** `015-manual-testing-per-playbook/spec.md:3,40,79-100,170-171`; `015-manual-testing-per-playbook/checklist.md:47,132`; `015-manual-testing-per-playbook/plan.md:162`; `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:151,179`
-- **Evidence:** The wrapper still advertises `231` scenario files, `272` IDs, `19` categories, and `222` features while the root playbook now states `290` scenarios, `255` features, and zero orphan scenario files. The wrapper also claims zero orphans while still tracking orphan-remediation workstreams.
-- **Impact:** The umbrella manual-testing packet no longer reflects the live playbook it claims to summarize.
-- **Fix recommendation:** Rebuild the wrapper's denominators, orphan status, and workstream claims from the current root playbook and filesystem.
-- **Disposition:** OPEN
+| ID | Title | Dimension | Evidence |
+|----|-------|-----------|----------|
+| `HRF-DR-001` | 012 packet is not locally validator-clean | traceability | `012/implementation-summary.md:47,97,109` plus fresh `validate.sh` failure |
+| `HRF-DR-002` | 012 packet tells conflicting release-state stories | correctness, traceability | `012/spec.md:28,30,48`; `012/implementation-summary.md:25,35,97`; historical top-level report |
+| `HRF-DR-003` | Parent epic still points at the retired 012 child slug | traceability | `001-hybrid-rag-fusion-epic/spec.md:41,104,116` |
+| `HRF-DR-004` | Public docs and install surfaces drift from live repo truth | maintainability, traceability | `.opencode/README.md`; `.opencode/install_guides/README.md`; `004-ux-hooks-automation/README.md` |
+| `HRF-DR-005` | 006 feature-catalog wrapper publishes stale denominators | traceability | `006-feature-catalog/spec.md:45-56` |
+| `HRF-DR-006` | 015 manual-testing wrapper is materially stale and self-contradictory | traceability | `015/spec.md`; `015/checklist.md`; `015/plan.md` |
+| `HRF-DR-010` | TM-04 semantic dedup drops scope | correctness, security | `mcp_server/handlers/memory-save.ts:405-421,805-811`; `mcp_server/handlers/save/dedup.ts:79-119,151-192` |
+| `HRF-DR-011` | PE arbitration drops scope | correctness, security | `mcp_server/handlers/memory-save.ts:463-466`; `mcp_server/handlers/save/pe-orchestration.ts:27-50` |
+| `HRF-DR-013` | Constitutional-cache warmup can return empty results | correctness | `mcp_server/lib/search/vector-index-store.ts:436-452`; `mcp_server/lib/search/vector-index-queries.ts:214-280` |
+| `HRF-DR-014` | Custom-path DB initialization bypasses embedding-dimension integrity validation | correctness | `mcp_server/lib/search/vector-index-store.ts:552-616,717-720` |
+| `HRF-DR-016` | Caller-controlled session trust boundary hole | correctness, security | `mcp_server/lib/session/session-manager.ts:307-419`; `mcp_server/handlers/memory-context.ts:667-699` |
+| `HRF-DR-018` | Bulk-delete DB outage is misreported as a generic search-style failure | correctness | `mcp_server/handlers/memory-bulk-delete.ts:78-80`; `mcp_server/context-server.ts:410`; `mcp_server/lib/errors/core.ts:261` |
+| `HRF-DR-024` | Tool-cache stale in-flight reuse crosses invalidation and shutdown boundaries | correctness, security | `mcp_server/lib/cache/tool-cache.ts:237-257,335-351,398-402` |
+| `HRF-DR-027` | Constitutional memory manager command docs-alignment contract is broken by a stale `README.txt` dependency | correctness, traceability, maintainability | `feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md:37-45`; `scripts/tests/memory-learn-command-docs.vitest.ts:24-38`; `.opencode/command/memory/README.md:1-16` |
 
 ### P2 Findings (advisories)
 
-#### HRF-DR-007 [P2] Root 019/020 phase-link drift remains open as a warning
-- **Dimension:** traceability, maintainability
-- **File:line:** `019-rewrite-repo-readme/spec.md:31`; `020-hybrid-raf-fusion-related-changelogs/spec.md:24-29`
-- **Evidence:** Fresh recursive validation of root `022` passes with one warning because `019` lacks the successor reference and `020` lacks expected parent/predecessor metadata.
-- **Impact:** Navigation metadata is still imperfect, but this does not currently fail recursive validation.
-- **Fix recommendation:** Patch the root phase metadata in the next documentation cleanup wave.
-- **Disposition:** OPEN
+| ID | Title | Dimension | Evidence |
+|----|-------|-----------|----------|
+| `HRF-DR-007` | Root 019/020 phase-link drift remains open as a warning | traceability, maintainability | `019/spec.md:31`; `020/spec.md:24-29` |
+| `HRF-DR-008` | Root 022 plan duplicates the effort-estimation section | maintainability | `022/plan.md:147-169` |
+| `HRF-DR-009` | Historical top-level 012 report is easy to confuse with the canonical review surface | maintainability, traceability | historical `012/review-report.md:1`; `012/spec.md:48` |
+| `HRF-DR-012` | Scoped save behavior lacks direct regression coverage | maintainability | `mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts`; `handler-memory-save.vitest.ts` |
+| `HRF-DR-015` | Folder-scoped constitutional cache invalidation misses suffixed keys | maintainability | `mcp_server/lib/search/vector-index-store.ts:442,503-505` |
+| `HRF-DR-017` | Shared-memory admin corroboration is asymmetric | security, maintainability | `mcp_server/handlers/shared-memory.ts:103-128`; `shared-memory-handlers.vitest.ts:270-307` |
+| `HRF-DR-019` | Mixed ingest partial acceptance is not surfaced to callers | correctness, maintainability | `mcp_server/handlers/memory-ingest.ts:147-156,235-245` |
+| `HRF-DR-020` | Mutation-ledger append failures are swallowed | correctness, maintainability | `mcp_server/handlers/memory-crud-utils.ts:43-68` and call sites |
+| `HRF-DR-021` | Tail confidence inflation from synthetic full-margin scoring | correctness | `mcp_server/lib/search/confidence-scoring.ts:177-181,224-254` |
+| `HRF-DR-022` | Query-router distinct-channel invariant is not enforced | correctness | `mcp_server/lib/search/query-router.ts:72-101` |
+| `HRF-DR-023` | Stage-2b enrichment fail-open contract lacks direct regression coverage | maintainability | `mcp_server/lib/search/pipeline/stage2b-enrichment.ts:25-48` |
+| `HRF-DR-025` | Context-server lifecycle failure branches are under-tested | maintainability | `mcp_server/context-server.ts:648-697,794-875`; `context-server.vitest.ts` |
+| `HRF-DR-026` | Retry-manager operator logging still exposes raw provider error text | security, maintainability | `mcp_server/lib/providers/retry-manager.ts:267-285,604-675` |
+| `HRF-DR-028` | Seven live feature entries weaken deterministic traceability with non-concrete evidence paths or duplicate ordinals | traceability, maintainability | `feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md:46-63`; `16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md:45-59`; `16--tooling-and-scripts/30-template-composition-system.md:47-49`; `21--implement-and-remove-deprecated-features/01-category-stub.md:49-53`; `21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md:44-48`; `09--evaluation-and-measurement/15-evaluation-api-surface.md:1-4`; `09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md:1-4` |
+| `HRF-DR-029` | Forty-eight live feature entries remain sound but under-tested | maintainability, traceability | examples: `feature_catalog/03--discovery/01-memory-browser-memorylist.md:16`; `mcp_server/tests/handler-memory-list-edge.vitest.ts:78`; `feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md:16-28`; `feature_catalog/01--retrieval/11-session-recovery-memory-continue.md:46`; `01--retrieval/12-search-api-surface.md:24-33`; `02--mutation/11-shared-memory-end-to-end-architecture.md:68-84`; `14--pipeline-architecture/22-mcp-server-public-api-barrel.md:38-62`; `19--feature-flag-reference/09-runtime-config-contract.md:68-78` |
+| `HRF-DR-030` | Historical 007 “100% MATCH” posture is not usable as current correctness evidence | traceability, maintainability | `007-code-audit-per-feature-catalog/implementation-summary.md:3,34-44,57-79,87-94,118-120` versus live `255`-entry state |
 
-#### HRF-DR-008 [P2] Root 022 plan duplicates the effort-estimation section
-- **Dimension:** maintainability
-- **File:line:** `022-hybrid-rag-fusion/plan.md:147-169`
-- **Evidence:** The root plan carries two `L2: EFFORT ESTIMATION` blocks with the same anchor.
-- **Impact:** The plan remains readable, but the authoritative planning surface is weaker than it should be.
-- **Fix recommendation:** Collapse the duplicate effort section into one canonical block.
-- **Disposition:** OPEN
+## 4. Claim-Adjudication JSON For New P1 Findings
 
-#### HRF-DR-009 [P2] Historical top-level 012 report is easy to confuse with the canonical review surface
-- **Dimension:** maintainability, traceability
-- **File:line:** `012-pre-release-remediation/review-report.md:1`; `012-pre-release-remediation/spec.md:48`
-- **Evidence:** The historical top-level report still sits beside active packet docs while `spec.md` still points the packet to that file instead of `review/review-report.md`.
-- **Impact:** Review consumers can follow the wrong artifact even after this canonical `review/` packet exists.
-- **Fix recommendation:** Keep the top-level report for provenance, but explicitly mark it historical and redirect readers to the canonical `review/` packet.
-- **Disposition:** OPEN
+```json
+[
+  {
+    "id": "HRF-DR-010",
+    "claim": "TM-04 semantic dedup drops scope and can block valid scoped saves",
+    "evidenceRefs": ["handlers/memory-save.ts:405-421,805-811", "handlers/save/dedup.ts:79-119,151-192"],
+    "counterevidenceSought": "Focused save and pipeline subsets plus scoped-save coverage review",
+    "alternativeExplanation": "SpecFolder-only dedup was intentionally sufficient across all scopes",
+    "finalSeverity": "P1",
+    "confidence": 0.88,
+    "downgradeTrigger": "A scoped-save regression proves dedup cannot compare across tenant/shared/governed boundaries"
+  },
+  {
+    "id": "HRF-DR-011",
+    "claim": "PE arbitration omits scope and can cross boundaries",
+    "evidenceRefs": ["handlers/memory-save.ts:463-466", "handlers/save/pe-orchestration.ts:27-50", "handlers/pe-gating.ts:64-89"],
+    "counterevidenceSought": "Focused save replay and cross-file call-chain review",
+    "alternativeExplanation": "Downstream helpers infer scope safely from other state",
+    "finalSeverity": "P1",
+    "confidence": 0.87,
+    "downgradeTrigger": "A call-chain audit or executable test proves arbitration always receives an equivalent scope constraint"
+  },
+  {
+    "id": "HRF-DR-013",
+    "claim": "Constitutional-cache warmup can transiently return empty results",
+    "evidenceRefs": ["lib/search/vector-index-store.ts:436-452", "lib/search/vector-index-queries.ts:214-280"],
+    "counterevidenceSought": "Vector-store replay and stale-index adversarial checks",
+    "alternativeExplanation": "Concurrent callers always await a populated promise before reading the cache",
+    "finalSeverity": "P1",
+    "confidence": 0.85,
+    "downgradeTrigger": "A concurrency-safe warmup contract or test proves empty reads cannot escape while warmup is in flight"
+  },
+  {
+    "id": "HRF-DR-014",
+    "claim": "Custom-path DB initialization bypasses embedding-dimension integrity validation",
+    "evidenceRefs": ["lib/search/vector-index-store.ts:552-616,717-720"],
+    "counterevidenceSought": "Custom-path initialization replay and schema-compatibility review",
+    "alternativeExplanation": "Dimension validation is performed elsewhere before any custom-path DB is used",
+    "finalSeverity": "P1",
+    "confidence": 0.86,
+    "downgradeTrigger": "A guaranteed higher-level integrity gate or direct test closes the bypass for all custom-path callers"
+  },
+  {
+    "id": "HRF-DR-016",
+    "claim": "Caller-controlled session IDs can be trusted without actor corroboration",
+    "evidenceRefs": ["lib/session/session-manager.ts:307-419", "lib/cognitive/working-memory.ts:314-316", "handlers/memory-context.ts:667-699"],
+    "counterevidenceSought": "Negative-case session/shared replays and adversarial tenant/session checks",
+    "alternativeExplanation": "All reachable callers already guarantee actor-bound session ownership",
+    "finalSeverity": "P1",
+    "confidence": 0.89,
+    "downgradeTrigger": "A proven upstream ownership guarantee or direct test closes the trust hole for all caller-controlled session IDs"
+  },
+  {
+    "id": "HRF-DR-018",
+    "claim": "Bulk-delete DB outages are surfaced with the wrong contract",
+    "evidenceRefs": ["handlers/memory-bulk-delete.ts:78-80", "context-server.ts:410", "lib/errors/core.ts:261"],
+    "counterevidenceSought": "Mutation-path replays and sibling delete handler comparison",
+    "alternativeExplanation": "All destructive mutation outages are intentionally normalized to the generic fallback contract",
+    "finalSeverity": "P1",
+    "confidence": 0.84,
+    "downgradeTrigger": "A documented contract or executable test shows bulk-delete should intentionally reuse the generic search-style error family"
+  },
+  {
+    "id": "HRF-DR-024",
+    "claim": "Tool-cache leaves stale in-flight reads alive across invalidation and shutdown",
+    "evidenceRefs": ["lib/cache/tool-cache.ts:237-257,335-351,398-402"],
+    "counterevidenceSought": "Focused tool-cache and lifecycle replays plus direct reasoning about inFlight cleanup",
+    "alternativeExplanation": "In-flight reuse after invalidation or shutdown is unreachable in practice",
+    "finalSeverity": "P1",
+    "confidence": 0.90,
+    "downgradeTrigger": "An executable invalidation or shutdown regression proves inFlight promises are cleared or isolated before later callers can attach"
+  },
+  {
+    "id": "HRF-DR-027",
+    "claim": "The constitutional-memory-manager command contract is broken because the live workspace no longer provides the README.txt surface the feature and regression still require",
+    "evidenceRefs": ["feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md:37-45", "scripts/tests/memory-learn-command-docs.vitest.ts:24-38", ".opencode/command/memory/README.md:1-16"],
+    "counterevidenceSought": "Direct rerun of the docs-alignment regression plus a filesystem check for the expected command-group surface",
+    "alternativeExplanation": "README.txt still exists or the regression is intentionally stale and not part of the live contract",
+    "finalSeverity": "P1",
+    "confidence": 0.93,
+    "downgradeTrigger": "The test is updated to the live README.md contract or README.txt is restored and the regression passes"
+  }
+]
+```
 
-## 4. Remediation Workstreams
+## 5. Remediation Workstreams
 
-### WS-1 [P1] Packet/spec docs truth-sync
-- **Findings:** `HRF-DR-001`, `HRF-DR-002`, `HRF-DR-003`
-- **Actions:** make `review/` canonical inside the 012 packet, fix the packet-local validator failures, reconcile the FAIL-vs-PASS story, and update the parent epic to the live 012 child slug
+### WS-1 [P1] Runtime/code integrity
+- **Findings:** `HRF-DR-010`, `011`, `013`, `014`, `016`, `018`, `024`
+- **Actions:** make save dedup and PE arbitration scope-aware, close constitutional-cache and custom-path integrity holes, bind session trust to corroborated ownership, fix bulk-delete outage signaling, and clear in-flight cache state on invalidation and shutdown
+- **Exit condition:** the runtime/code P1 registry drops to zero and the affected feature entries leave the `code_unsound` bucket
+
+### WS-2 [P1] Packet/spec docs truth-sync
+- **Findings:** `HRF-DR-001`, `002`, `003`, `009`
+- **Actions:** make `review/` canonical inside the 012 packet, fix packet-local validator failures, reconcile FAIL-vs-PASS prose, and update the parent epic to the live 012 child slug
 - **Exit condition:** `012` local validation matches its own prose and the parent epic names the live child folder everywhere
 
-### WS-2 [P1] Public docs, feature catalog, and playbook alignment
-- **Findings:** `HRF-DR-004`, `HRF-DR-005`, `HRF-DR-006`
-- **Actions:** refresh README/install counts and versions, repair the broken CocoIndex installer target, correct the `004` README identity/tool count, and rewrite the `006` and `015` wrappers to live `255 / 290 / 21` denominators and zero-orphan root truth
-- **Exit condition:** public and wrapper docs match the live filesystem and the root playbook/indexes they summarize
+### WS-3 [P1] Public docs and wrapper alignment
+- **Findings:** `HRF-DR-004`, `005`, `006`, `007`, `008`
+- **Actions:** refresh README/install counts and versions, repair the broken CocoIndex installer target, correct wrapper denominators, and clear the warning-level root hygiene drift
+- **Exit condition:** public and wrapper docs match the live filesystem they summarize
 
-### WS-3 [P2] Runtime hold-line and advisory cleanup
-- **Findings:** `HRF-DR-007`, `HRF-DR-008`, `HRF-DR-009`
-- **Actions:** preserve the green runtime baseline while clearing warning-level root phase-link drift, deduping the root plan, and making the historical top-level 012 report explicitly non-canonical
-- **Exit condition:** no warning-level root hygiene drift remains, and operators are routed to the canonical `review/` packet by default
+### WS-4 [P1] Feature verification and tooling contract repair
+- **Findings:** `HRF-DR-027`, `028`, `029`, `030`
+- **Actions:** repair `/memory:learn` docs alignment, replace non-concrete feature evidence tables with reproducible references, fix duplicate ordinals, add or explicitly defer direct verification for the under-tested block, and retire 007 as a live correctness proxy
+- **Exit condition:** the tooling regression passes, the mismatch block drops to zero, and the under-tested block is materially reduced or explicitly accepted with rationale
 
-## 5. Spec Seed
+## 6. Verification Snapshot
 
-- Update the 012 packet contract so `Source Review` points to `review/review-report.md` and the top-level `review-report.md` is framed as historical evidence only.
-- Rewrite the 012 implementation summary and any packet-local validation claims to match the fresh 2026-03-27 validator output.
-- Replace the retired child slug in the 001 parent epic with `012-pre-release-remediation`.
-- Refresh the `006` and `015` wrappers from live `255` feature files, `290` playbook scenarios, and `21` numbered categories.
-- Repair public install/docs drift: base agent counts, command counts, `system-spec-kit` version, the broken CocoIndex installer path, and the `004` packet-local README label/tool count.
+- Fresh commands executed on 2026-03-27:
+  - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <012 packet>` -> `FAIL`
+  - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <022 root> --recursive` -> `PASSED WITH WARNINGS`
+  - `cd .opencode/skill/system-spec-kit/mcp_server && npm test` -> `PASS`
+- Targeted segment-3 subsets:
+  - Retrieval/mutation/lifecycle subset -> `8` files, `256` passed
+  - Search/pipeline/indexing/scoring subset -> `11` files, `397` passed, `10` skipped
+  - Discovery subset -> `1` failed, `32` passed; the lone failure stayed classified as verification interference rather than a confirmed product bug
+  - Maintenance subset -> `7` files, `271` passed, `54` skipped
+  - Analysis subset -> `7` files, `245` passed
+  - Evaluation subset -> `13` files, `457` passed
+  - Scripts/tooling subset:
+    - `memory-learn-command-docs.vitest.ts` -> `1 failed`, `1 passed`
+    - `session-enrichment.vitest.ts` -> `16 passed`
+    - `task-enrichment.vitest.ts` -> `53 passed`
+- Live feature denominator re-verified:
+  - Feature catalog: `255` files across `21` categories
+  - Feature states: `191 supported / 48 under-tested / 7 mismatched / 9 unsound`
 
-## 6. Plan Seed
-
-- T-001 Run a packet-truth pass over `012/spec.md`, `012/implementation-summary.md`, and `012/review-report.md` so historical FAIL evidence and fresh local validation are separated cleanly.
-- T-002 Fix the packet-local validator blockers in `012` and rerun `validate.sh` on the packet.
-- T-003 Patch `001-hybrid-rag-fusion-epic/spec.md` to the live 012 child slug.
-- T-004 Repair `.opencode/README.md`, `.opencode/install_guides/README.md`, and the CocoIndex installer symlink/README surfaces against live filesystem truth.
-- T-005 Rebuild `006-feature-catalog/spec.md` and `015-manual-testing-per-playbook/spec.md` from the current root feature-catalog/playbook denominators and orphan state.
-- T-006 Re-run `022 --recursive` and `npm test` after the documentation sweep to prove the green runtime baseline and root recursive pass still hold.
-
-## 7. Traceability Status
+## 7. Protocol Status
 
 ### Core Protocols
 
 | Protocol | Status | Evidence | Unresolved Drift |
 |----------|--------|----------|-----------------|
-| `spec_code` | PARTIAL | Targeted runtime hotspot review and fresh `npm test` baseline found no new P1 code blocker, but packet-local release truth is split between FAIL-oriented spec/history and PASS-oriented implementation prose. | `HRF-DR-002` |
-| `checklist_evidence` | FAIL | Fresh local validation still fails the 012 packet while its implementation summary understates that failure. | `HRF-DR-001` |
+| `spec_code` | FAIL | Runtime defects plus a new tooling contract regression remain active. | `HRF-DR-010`, `011`, `013`, `014`, `016`, `018`, `024`, `027` |
+| `checklist_evidence` | FAIL | Fresh local validation still fails the 012 packet while its prose understates that failure. | `HRF-DR-001` |
 
 ### Overlay Protocols
 
@@ -216,189 +287,43 @@ This `review/` packet is the canonical output of the audit. The top-level `/012-
 |----------|--------|----------|-----------------|
 | `skill_agent` | NOT APPLICABLE | Review target is a spec folder, not a skill contract review. | None |
 | `agent_cross_runtime` | NOT APPLICABLE | No agent-family parity change was in scope for this audit. | None |
-| `feature_catalog_code` | FAIL | `006-feature-catalog/spec.md` still carries stale live denominators against the current feature/playbook tree. | `HRF-DR-005` |
-| `playbook_capability` | FAIL | `015-manual-testing-per-playbook` still contradicts the root playbook's live denominator and orphan state. | `HRF-DR-006` |
+| `feature_catalog_code` | FAIL | Segment 3 confirmed live mismatches, a large under-tested block, and a stale historical confidence proxy. | `HRF-DR-028`, `029`, `030` |
+| `playbook_capability` | PARTIAL | Segment 3 stayed strict to feature catalog and backing code; playbook drift remains a segment-1 artifact. | `HRF-DR-006` |
 
-## 8. Deferred Items
+## 8. Deferred And Ruled-Out Items
 
-| Item | Source | Reason for Deferral |
-|------|--------|-------------------|
-| Root 019/020 phase-link warning cleanup | `HRF-DR-007` | Warning-level drift; does not currently fail recursive validation |
-| Root 022 plan duplicate effort block cleanup | `HRF-DR-008` | Planning-surface hygiene only |
-| Historical top-level 012 report archival framing | `HRF-DR-009` | Important for operator clarity, but does not create the FAIL verdict by itself |
-| Exhaustive whole-codebase runtime audit beyond hotspots | Runtime sidecar note | No failing runtime signal justified a broader audit during this review |
+| Item | Outcome | Reason |
+|------|---------|--------|
+| Fresh segment-3 `P0` exploit or critical data-loss bug | RULED OUT | The new tooling regression is serious but did not escalate to critical severity |
+| Broad contradiction across discovery, maintenance, analysis, or evaluation categories | RULED OUT | Those categories stayed aligned or merely under-tested |
+| Need for a second non-canonical feature-catalog audit packet | RULED OUT | The canonical `012/review/` packet remains the right home |
+| Whole-catalog re-sweep without executable follow-up | DEFERRED | Diminishing returns after explicit feature-state closure |
 
 ## 9. Audit Appendix
 
 ### Convergence Summary
 
-| Iteration | Focus | New Ratio | New P0/P1/P2 | Result |
-|-----------|-------|-----------|---------------|--------|
-| 1 | Inventory + baseline | 1.00 | 0/2/0 | seeded active blockers |
-| 2 | memory-search + pipeline | 0.00 | 0/0/0 | no runtime correctness blocker |
-| 3 | context/save/hybrid | 0.00 | 0/0/0 | no quick-path or governed-save blocker |
-| 4 | fallback + tests | 0.00 | 0/0/0 | runtime baseline held |
-| 5 | session/shared-memory | 0.00 | 0/0/0 | no fresh security blocker |
-| 6 | path/retry/cleanup | 0.00 | 0/0/0 | no fresh security blocker |
-| 7 | validator drift detail | 0.00 | 0/0/0 | strengthened HRF-DR-001 |
-| 8 | release-story conflict | 0.00 | 0/0/0 | strengthened HRF-DR-002 |
-| 9 | parent epic child slug | 0.24 | 0/1/0 | new P1 |
-| 10 | root 019/020 warning | 0.12 | 0/0/1 | new P2 |
-| 11 | 006 denominators | 0.17 | 0/1/0 | new P1 |
-| 12 | 015 denominators/orphans | 0.16 | 0/1/0 | new P1 |
-| 13 | root docs/install counts | 0.21 | 0/1/0 | new P1 |
-| 14 | symlink + 004 README | 0.00 | 0/0/0 | strengthened HRF-DR-004 |
-| 15 | root plan hygiene | 0.07 | 0/0/1 | new P2 |
-| 16 | canonical review boundary | 0.05 | 0/0/1 | new P2 |
-| 17 | protocol matrix | 0.00 | 0/0/0 | protocol statuses closed |
-| 18 | adversarial self-check | 0.00 | 0/0/0 | severities confirmed |
-| 19 | workstream triage | 0.00 | 0/0/0 | workstreams grouped |
-| 20 | synthesis closure | 0.00 | 0/0/0 | final verdict locked |
-
-### Coverage Summary
-
-- Fresh commands executed on 2026-03-27:
-  - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <012 packet>` -> FAIL
-  - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <022 root> --recursive` -> PASS WITH WARNINGS
-  - `cd .opencode/skill/system-spec-kit/mcp_server && npm test` -> PASS
-- Live denominators re-verified:
-  - Feature catalog: `255` files across `21` categories
-  - Manual testing playbook: `290` scenario files across `21` categories
-- Runtime hotspot scope sampled:
-  - `handlers/memory-search.ts`
-  - `handlers/memory-context.ts`
-  - `handlers/memory-save.ts`
-  - `lib/search/hybrid-search.ts`
-  - `lib/search/pipeline/orchestrator.ts`
-
-### Ruled-Out Claims
-
-| Claim | Outcome | Reason |
-|------|---------|--------|
-| A fresh runtime hotspot P1 regression is blocking release | RULED OUT | Targeted hotspot review plus green `npm test` baseline did not support a new code blocker |
-| Root `022 --recursive` is still failing | RULED OUT | Fresh recursive validation passed with one warning |
-| Agent parity/runtime-family drift is a live blocker for this review target | RULED OUT | Outside the active review scope and unsupported by the sampled evidence |
+| Wave | Result |
+|------|--------|
+| Segment 1 (`001-020`) | Established six `P1` doc/lineage blockers and three `P2` advisories |
+| Segment 2 (`021-040`) | Added seven runtime `P1` findings and ten runtime `P2` findings |
+| Segment 3 wave 1 (`041-044`) | Retrieval, mutation, lifecycle, and evaluation breadth mostly stayed aligned; late normalization folded duplicate evaluation ordinals into `HRF-DR-028` and discovery-edge instability into `HRF-DR-029` without increasing the finding count |
+| Segment 3 wave 2 (`045-048`) | Tooling/deprecated-feature breadth added `HRF-DR-028` |
+| Segment 3 wave 3 (`049-052`) | Feature-state confidence sweep added `HRF-DR-029` and `HRF-DR-030` |
+| Segment 3 wave 4 (`053-056`) | Targeted tests confirmed the new tooling blocker `HRF-DR-027` and closed the feature-state model |
+| Segment 3 wave 5 (`057-060`) | New tooling `P1` survived adjudication; final verdict remained `FAIL` |
 
 ### Sources Reviewed
 
 - `012-pre-release-remediation/spec.md`
-- `012-pre-release-remediation/plan.md`
-- `012-pre-release-remediation/tasks.md`
-- `012-pre-release-remediation/checklist.md`
 - `012-pre-release-remediation/implementation-summary.md`
-- `012-pre-release-remediation/review-report.md`
 - `001-hybrid-rag-fusion-epic/spec.md`
-- `022-hybrid-rag-fusion/plan.md`
-- `019-rewrite-repo-readme/spec.md`
-- `020-hybrid-raf-fusion-related-changelogs/spec.md`
 - `.opencode/README.md`
 - `.opencode/install_guides/README.md`
-- `.opencode/skill/system-spec-kit/SKILL.md`
-- `004-ux-hooks-automation/README.md`
 - `006-feature-catalog/spec.md`
 - `015-manual-testing-per-playbook/spec.md`
-- `015-manual-testing-per-playbook/checklist.md`
-- `015-manual-testing-per-playbook/plan.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
-- `.opencode/skill/system-spec-kit/mcp_server/README.md`
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/orchestrator.ts`
-
-### Claim Adjudications (P1)
-
-```json
-[
-  {
-    "id": "HRF-DR-001",
-    "claim": "The live 012 packet is validator-clean after remediation.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.99,
-    "evidenceRefs": [
-      "012-pre-release-remediation/implementation-summary.md:47",
-      "012-pre-release-remediation/implementation-summary.md:97",
-      "012-pre-release-remediation/implementation-summary.md:109"
-    ]
-  },
-  {
-    "id": "HRF-DR-002",
-    "claim": "The 012 packet expresses one consistent release-state story.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.98,
-    "evidenceRefs": [
-      "012-pre-release-remediation/spec.md:28",
-      "012-pre-release-remediation/spec.md:48",
-      "012-pre-release-remediation/implementation-summary.md:25",
-      "012-pre-release-remediation/review-report.md:114"
-    ]
-  },
-  {
-    "id": "HRF-DR-003",
-    "claim": "The parent epic already points at the live 012 child folder.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.97,
-    "evidenceRefs": [
-      "001-hybrid-rag-fusion-epic/spec.md:41",
-      "001-hybrid-rag-fusion-epic/spec.md:104",
-      "001-hybrid-rag-fusion-epic/spec.md:116"
-    ]
-  },
-  {
-    "id": "HRF-DR-004",
-    "claim": "Public README/install surfaces still match live repo truth.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.96,
-    "evidenceRefs": [
-      ".opencode/README.md:52",
-      ".opencode/install_guides/README.md:17",
-      ".opencode/install_guides/README.md:820",
-      ".opencode/skill/system-spec-kit/SKILL.md:5",
-      "004-ux-hooks-automation/README.md:2"
-    ]
-  },
-  {
-    "id": "HRF-DR-005",
-    "claim": "The 006 wrapper's current-state denominators are up to date.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.98,
-    "evidenceRefs": [
-      "006-feature-catalog/spec.md:47",
-      "006-feature-catalog/spec.md:55"
-    ]
-  },
-  {
-    "id": "HRF-DR-006",
-    "claim": "The 015 wrapper still reflects the live playbook denominator and orphan state.",
-    "decision": "rejected",
-    "finalSeverity": "P1",
-    "confidence": 0.98,
-    "evidenceRefs": [
-      "015-manual-testing-per-playbook/spec.md:3",
-      "015-manual-testing-per-playbook/spec.md:100",
-      "015-manual-testing-per-playbook/checklist.md:47",
-      "015-manual-testing-per-playbook/plan.md:162",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:151",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md:179"
-    ]
-  }
-]
-```
-
-### Cross-Reference Appendix
-
-#### Core Protocols
-- `spec_code`: partial because hotspot runtime/code surfaces look stable, but the active 012 packet still conflicts with itself.
-- `checklist_evidence`: fail because the packet-local validator failure remains active and the implementation summary understates it.
-
-#### Overlay Protocols
-- `skill_agent`: not applicable in this review scope.
-- `agent_cross_runtime`: not applicable in this review scope.
-- `feature_catalog_code`: fail because `006` still uses stale current-state denominators.
-- `playbook_capability`: fail because `015` still contradicts the root playbook's live coverage and orphan truth.
+- `007-code-audit-per-feature-catalog/implementation-summary.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/**/*.md`
+- `.opencode/skill/system-spec-kit/mcp_server/**/*.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/**/*.vitest.ts`
+- `.opencode/skill/system-spec-kit/scripts/tests/**/*.vitest.ts`

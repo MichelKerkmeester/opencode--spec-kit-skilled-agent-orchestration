@@ -1,6 +1,6 @@
 ---
 title: Deep Review Strategy
-description: Session tracking for the canonical 20-iteration release review of 012-pre-release-remediation.
+description: Session tracking for the canonical 60-iteration review of 012-pre-release-remediation across release-control, runtime-hunt, and feature-catalog code-soundness segments.
 ---
 
 # Deep Review Strategy - 012 Pre-Release Remediation
@@ -10,12 +10,16 @@ description: Session tracking for the canonical 20-iteration release review of 0
 
 ### Purpose
 
-Serve as the persistent review brain for the canonical `review/` packet under `012-pre-release-remediation`, tracking active findings, dimension coverage, protocol status, and the release-readiness decision.
+Serve as the persistent review brain for the canonical `review/` packet under `012-pre-release-remediation`, tracking active findings, segment history, feature-state synthesis, protocol status, and the release-readiness decision across all three segments of the audit.
 
 ### Usage
 
 - Init source: `spec_kit_deep-research_review_auto.yaml`
-- Review mode: strict sequential loop, no parallel sharding inside the iteration path
+- Review mode: canonical review packet with segment-aware continuation
+- Segment 1: strict sequential release review (`001-020`)
+- Segment 2: strict wave-mode runtime hunt (`021-040`)
+- Segment 3: strict feature-catalog and backing-code soundness review (`041-060`)
+- Segment-3 local budget: `20 additional iterations, feature-catalog and backing-code only, strict wave mode`
 - Canonical output: `review/` only; top-level `review-report.md` remains historical input
 
 ---
@@ -24,7 +28,7 @@ Serve as the persistent review brain for the canonical `review/` packet under `0
 <!-- ANCHOR:topic -->
 ## 2. TOPIC
 
-Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation`, expanded to include the parent epic, root `022` packet, public README/install surfaces, feature catalog and playbook wrappers, and the main memory/retrieval runtime hotspots.
+Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation`, expanded first into runtime code-hunt territory and then into a strict live feature-catalog plus backing-code audit of the `255` feature entries under `.opencode/skill/system-spec-kit/feature_catalog/`.
 
 ---
 
@@ -44,8 +48,9 @@ Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Open
 
 - No runtime API, CLI, or schema changes.
 - No speculative cleanup outside the verified review scope.
-- No replacement of the top-level historical `012/review-report.md`; the new canonical review lives under `review/`.
-- No synthetic PASS claim for the 012 packet while local validation still fails.
+- No replacement of the top-level historical `012/review-report.md`; the canonical review lives under `review/`.
+- No synthetic PASS claim while `012` still fails local validation and live code or tooling defects remain open.
+- No custom non-canonical shard review outside the canonical `review/` packet.
 
 ---
 
@@ -53,9 +58,11 @@ Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Open
 <!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
 
-- Stop at 20 iterations or earlier only if the official workflow would converge with all active P0/P1 claims adjudicated.
+- Segment 1 closed at 20 iterations.
+- Segment 2 closed at 20 additional iterations (`021-040`) after the runtime-hunt waves completed and the active runtime P1 claims were re-adjudicated.
+- Segment 3 closed at 20 additional iterations (`041-060`) after the feature-catalog breadth passes, targeted verification waves, and feature-state closure completed.
 - Halt escalation if canonical `review/` state becomes contradictory.
-- Treat fresh validator/test command output as higher authority than March 26 prose.
+- Treat fresh validator and test command output as higher authority than historical prose or wrapper packets.
 
 ---
 
@@ -65,10 +72,10 @@ Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Open
 
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 6 | Targeted retrieval/runtime hotspots stayed green, but packet-level correctness drift remained. |
-| D2 Security | PASS | 6 | No fresh hotspot security blocker confirmed in sampled session/save/search surfaces. |
-| D3 Traceability | FAIL | 12 | Release-control truth, parent lineage, and wrapper-spec denominators drift materially from live repo state. |
-| D4 Maintainability | CONDITIONAL | 16 | Public docs and planning surfaces show drift and ambiguity, but most issues are documentation-bound. |
+| D1 Correctness | FAIL | 60 | Segments 2 and 3 leave active runtime defects plus a new tooling contract regression and nine code-unsound live feature entries. |
+| D2 Security | FAIL | 57 | Scope loss, session trust, and stale cache reuse remain active in the runtime-backed feature set. |
+| D3 Traceability | FAIL | 58 | Packet drift from segment 1 remains open, and segment 3 added stale historical 007 confidence plus five live feature-catalog mismatches. |
+| D4 Maintainability | FAIL | 60 | The catalog now cleanly separates supported, under-tested, mismatched, and code-unsound features, but the under-tested block remains too large for release confidence. |
 
 ---
 
@@ -76,20 +83,47 @@ Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Open
 <!-- ANCHOR:running-findings -->
 ## 7. RUNNING FINDINGS
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 6 active
-- **P2 (Minor):** 3 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **P1 (Major):** 14 active
+- **P2 (Minor):** 16 active
+- **Segment-3 delta:** +1 P1, +3 P2
 
 Active registry:
 - `HRF-DR-001` 012 packet not validator-clean
 - `HRF-DR-002` 012 packet tells conflicting release-state stories
 - `HRF-DR-003` Parent epic still points at retired 012 child slug
-- `HRF-DR-004` Public docs/install surfaces drift from live repo truth
+- `HRF-DR-004` Public docs and install surfaces drift from live repo truth
 - `HRF-DR-005` 006 feature-catalog wrapper denominators are stale
 - `HRF-DR-006` 015 manual-testing wrapper denominators and orphan claims are stale
 - `HRF-DR-007` Root 019/020 phase-link warning remains open
 - `HRF-DR-008` Root 022 plan duplicates effort-estimation block
 - `HRF-DR-009` Historical top-level 012 report is easy to confuse with the canonical review surface
+- `HRF-DR-010` TM-04 semantic dedup drops scope
+- `HRF-DR-011` PE arbitration drops scope
+- `HRF-DR-012` Scoped save behavior lacks direct regression coverage
+- `HRF-DR-013` Constitutional-cache warmup can return empty results
+- `HRF-DR-014` Custom-path DB init bypasses dimension integrity validation
+- `HRF-DR-015` Folder-scoped constitutional cache invalidation misses suffixed keys
+- `HRF-DR-016` Caller-controlled session trust boundary hole
+- `HRF-DR-017` Shared-memory admin corroboration is asymmetric
+- `HRF-DR-018` Bulk-delete DB outage is misreported as a generic search-style failure
+- `HRF-DR-019` Mixed ingest partial acceptance is not surfaced to callers
+- `HRF-DR-020` Mutation-ledger append failures are swallowed
+- `HRF-DR-021` Tail confidence inflation from synthetic full-margin scoring
+- `HRF-DR-022` Query-router distinct-channel invariant is not enforced
+- `HRF-DR-023` Stage-2b enrichment fail-open contract lacks direct regression coverage
+- `HRF-DR-024` Tool-cache stale in-flight reuse crosses invalidation and shutdown boundaries
+- `HRF-DR-025` Context-server lifecycle failure branches are under-tested
+- `HRF-DR-026` Retry-manager operator logging still exposes raw provider error text
+- `HRF-DR-027` Constitutional memory manager command docs-alignment contract is broken by a stale `README.txt` dependency
+- `HRF-DR-028` Seven live feature entries weaken deterministic traceability with non-concrete evidence paths or duplicate ordinals
+- `HRF-DR-029` Forty-eight live feature entries remain sound but under-tested
+- `HRF-DR-030` Historical 007 “100% MATCH” posture is not usable as current correctness evidence
+
+Segment-3 feature-state result:
+- `191` `sound_and_supported`
+- `48` `sound_but_under-tested`
+- `7` `catalog_mismatch`
+- `9` `code_unsound`
 
 ---
 
@@ -97,10 +131,10 @@ Active registry:
 <!-- ANCHOR:what-worked -->
 ## 8. WHAT WORKED
 
-- Fresh command baselines first: `validate.sh` and `npm test` immediately separated runtime truth from documentation truth. (iteration 1)
-- Targeted runtime hotspot recheck: reviewing `memory-context.ts`, `memory-save.ts`, `memory-search.ts`, `hybrid-search.ts`, and `pipeline/orchestrator.ts` was sufficient to avoid inventing a code blocker that the green tests did not support. (iterations 2-6)
-- Wrapper-first traceability passes: checking `006` and `015` against live filesystem counts exposed denominator drift faster than rereading historical prose. (iterations 11-12)
-- Public-surface audit: README/install docs, the broken CocoIndex symlink, and the packet-local `004` README explained most remaining operator-facing confusion. (iterations 13-14)
+- The live feature catalog was usable as an audit surface because its entries already carried CURRENT REALITY and SOURCE FILES tables.
+- Wave-mode feature review plus targeted executable subsets gave enough signal to classify every live feature entry into one of four states.
+- Narrow explorer lanes were useful for separating “implemented but thinly proven” from “actually contradicted” in retrieval and checkpoint-heavy categories.
+- The targeted scripts wave was high-signal and found a real new P1 instead of just more documentation noise.
 
 ---
 
@@ -108,9 +142,9 @@ Active registry:
 <!-- ANCHOR:what-failed -->
 ## 9. WHAT FAILED
 
-- Treating the historical top-level `012/review-report.md` as current truth created immediate ambiguity; it is a source input, not the canonical review surface. (iterations 1, 16)
-- Looking for a fresh runtime regression before locking packet truth would have wasted time; the blocker pattern is documentation and release-control drift, not a newly failing code path. (iterations 2-6)
-- Parent/root docs were not enough to infer current wrapper denominators; live filesystem counts had to be re-verified. (iterations 11-12)
+- Historical `006` and `007` packets remained too stale to use as correctness evidence.
+- The standalone progressive-validation targeted runner did not complete with a bounded result in this environment, so segment-3 tooling evidence leaned on the direct failing and passing scripts tests instead.
+- The under-tested block is still too large for feature-level release confidence even after targeted verification.
 
 ---
 
@@ -118,14 +152,15 @@ Active registry:
 <!-- ANCHOR:exhausted-approaches -->
 ## 10. EXHAUSTED APPROACHES (do not retry)
 
-### Runtime whole-codebase bug hunt -- BLOCKED BY SCOPE / LOW YIELD
-- What was tried: targeted review of memory/retrieval hotspot files plus fresh `npm test`
-- Why blocked: the request is release review, not another broad code audit; no fresh failure signal justified a full-codebase sweep
-- Do NOT retry: broad exploratory runtime audit unless a new failing test or security signal appears
+### Historical wrapper packets as current truth -- INVALID
+- What was tried: compare `006`/`007` claims against the live catalog, active registry, and fresh targeted tests
+- Result: they remain provenance only
+- Do NOT retry: treating the old `222 / 100% MATCH` posture as live correctness evidence
 
-### Historical prose replay -- PRODUCTIVE ONLY AS INPUT
-- What worked: use the historical top-level `012/review-report.md` only to seed March 26 context
-- Prefer for: provenance, not final verdict or canonical review storage
+### Blind whole-catalog “looks fine” pass -- INVALID
+- What was tried: breadth waves followed by executable verification and feature-state closure
+- Result: the only trustworthy synthesis is a state-classified catalog, not a prose-only confidence claim
+- Do NOT retry: a catalog sweep that does not end with explicit `supported / under-tested / mismatch / unsound` states
 
 ---
 
@@ -133,9 +168,9 @@ Active registry:
 <!-- ANCHOR:ruled-out-directions -->
 ## 11. RULED OUT DIRECTIONS
 
-- Fresh runtime regression in targeted retrieval/session hotspots: ruled out by hotspot code review and green `npm test` baseline. (iterations 2-6)
-- Current recursive root failure for `022`: ruled out; fresh recursive validation passed with one warning, not an error state. (iteration 1)
-- Agent/runtime parity regression as a blocker in this packet: ruled out as out of scope for this review target. (iteration 17)
+- Fresh segment-3 `P0`: ruled out. The new tooling regression is serious but not critical.
+- Broad contradiction across discovery, maintenance, analysis, or evaluation categories: ruled out.
+- Need for a new non-canonical catalog audit packet: ruled out. The canonical `012/review/` packet remains the right home.
 
 ---
 
@@ -144,9 +179,10 @@ Active registry:
 ## 12. NEXT FOCUS
 
 Session complete. The next focus is remediation planning:
-1. Make `review/` the explicit canonical review surface in 012 docs.
-2. Reconcile 012 packet-local validation truth and March 26 historical prose.
-3. Refresh parent/root/public wrapper docs against live `255 / 290 / 21` denominators and current version/install truth.
+1. Fix the new tooling blocker first: the stale `/memory:learn` docs-alignment contract.
+2. Fix the existing runtime/code workstream that still leaves nine live feature entries code-unsound.
+3. Repair the seven feature-catalog mismatches so SOURCE FILES, ordinals, and verification tables stay reproducible.
+4. Decide how to close or explicitly accept the `48` under-tested live feature entries.
 
 ---
 
@@ -154,15 +190,20 @@ Session complete. The next focus is remediation planning:
 <!-- ANCHOR:known-context -->
 ## 13. KNOWN CONTEXT
 
-- Fresh baseline on 2026-03-27:
+- Fresh baselines replayed on 2026-03-27:
   - `012-pre-release-remediation` local validate: FAIL
-  - `022-hybrid-rag-fusion --recursive`: PASS WITH WARNINGS (1 root warning)
-  - `npm test` in `mcp_server`: PASS
-- Existing top-level `012/review-report.md` is historical release-control evidence only.
-- Live counts re-verified during this review:
-  - Feature catalog: 255 files across 21 categories
-  - Manual testing playbook: 290 scenario files across 21 categories
-  - Base `.opencode/agent/*.md`: 10 files
+  - `022-hybrid-rag-fusion --recursive`: PASS WITH WARNINGS (`1` warning)
+  - `mcp_server npm test`: PASS (`8577` passed, `74` skipped, `26` todo)
+- Segment-3 targeted verification:
+  - Retrieval/mutation/lifecycle subset: `8` files, `256` passed
+  - Search/pipeline/indexing/scoring subset: `11` files, `397` passed, `10` skipped
+  - Scripts subset:
+    - `memory-learn-command-docs.vitest.ts`: `1 failed`, `1 passed`
+    - `session-enrichment.vitest.ts`: `16 passed`
+    - `task-enrichment.vitest.ts`: `53 passed`
+- Live feature denominator re-verified:
+  - Feature catalog: `255` files across `21` categories
+  - Feature states: `191 / 48 / 7 / 9`
 
 ---
 
@@ -172,12 +213,12 @@ Session complete. The next focus is remediation planning:
 
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 17 | Hotspot code and tests stayed green, but 012 release-state docs contradict each other and still point `Source Review` at the historical top-level report. |
-| `checklist_evidence` | core | fail | 17 | 012 packet remains locally validator-failing and still carries AI protocol/template drift that the implementation summary understates. |
+| `spec_code` | core | fail | 60 | Runtime defects plus a new tooling contract regression remain active. |
+| `checklist_evidence` | core | fail | 60 | 012 packet remains locally validator-failing. |
 | `skill_agent` | overlay | notApplicable | 17 | Review target is a spec folder, not a skill contract review. |
-| `agent_cross_runtime` | overlay | notApplicable | 17 | No agent-family parity change is in scope for this release review. |
-| `feature_catalog_code` | overlay | fail | 11 | `006-feature-catalog/spec.md` still publishes stale denominators vs the live `255 / 290 / 21` repo truth. |
-| `playbook_capability` | overlay | fail | 12 | `015-manual-testing-per-playbook` still advertises stale counts and contradicts the root playbook orphan state. |
+| `agent_cross_runtime` | overlay | notApplicable | 17 | No agent-family parity change is in scope for this audit target. |
+| `feature_catalog_code` | overlay | fail | 60 | Segment 3 confirmed seven live catalog mismatches, forty-eight under-tested entries, and the stale 007 confidence proxy. |
+| `playbook_capability` | overlay | partial | 60 | Segment 3 stayed strict to feature catalog and backing code; the playbook drift remains a segment-1 artifact. |
 
 ---
 
@@ -187,46 +228,19 @@ Session complete. The next focus is remediation planning:
 
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `012/spec.md` | D1, D3, D4 | 16 | 0 P0, 2 P1, 1 P2 | complete |
-| `012/plan.md` | D3, D4 | 1 | 0 P0, 0 P1, 0 P2 | partial |
-| `012/tasks.md` | D3 | 7 | 0 P0, 0 P1, 0 P2 | partial |
-| `012/checklist.md` | D3 | 7 | 0 P0, 0 P1, 0 P2 | partial |
-| `012/implementation-summary.md` | D1, D3 | 8 | 0 P0, 2 P1, 0 P2 | complete |
-| `012/review-report.md` | D3, D4 | 16 | 0 P0, 1 P1, 1 P2 | complete |
-| `001 epic/spec.md` | D3 | 9 | 0 P0, 1 P1, 0 P2 | complete |
-| `022/plan.md` | D3, D4 | 15 | 0 P0, 0 P1, 1 P2 | complete |
-| `019/spec.md` | D3 | 10 | 0 P0, 0 P1, 1 P2 | complete |
-| `020/spec.md` | D3 | 10 | 0 P0, 0 P1, 1 P2 | complete |
-| `.opencode/README.md` | D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
-| `install_guides/README.md` | D4 | 14 | 0 P0, 1 P1, 0 P2 | complete |
-| `install_scripts/install-cocoindex-code.sh` | D4 | 14 | 0 P0, 1 P1, 0 P2 | complete |
-| `004-ux-hooks-automation/README.md` | D4 | 14 | 0 P0, 1 P1, 0 P2 | complete |
-| `006-feature-catalog/spec.md` | D3 | 11 | 0 P0, 1 P1, 0 P2 | complete |
-| `015/spec.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `015/checklist.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `015/plan.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `MANUAL_TESTING_PLAYBOOK.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `mcp_server/README.md` | D1, D4 | 4 | 0 P0, 0 P1, 0 P2 | complete |
-| `handlers/memory-search.ts` | D1, D2 | 5 | 0 P0, 0 P1, 0 P2 | complete |
-| `handlers/memory-context.ts` | D1, D2 | 5 | 0 P0, 0 P1, 0 P2 | complete |
-| `handlers/memory-save.ts` | D1, D2 | 6 | 0 P0, 0 P1, 0 P2 | complete |
-| `lib/search/hybrid-search.ts` | D1, D2 | 6 | 0 P0, 0 P1, 0 P2 | complete |
-| `lib/search/pipeline/orchestrator.ts` | D1, D2 | 6 | 0 P0, 0 P1, 0 P2 | complete |
-
----
-
-<!-- /ANCHOR:files-under-review -->
-<!-- ANCHOR:review-boundaries -->
-## 16. REVIEW BOUNDARIES
-
-- Max iterations: 20
-- Convergence threshold: 0.10
-- Rolling STOP threshold: 0.08
-- No-progress threshold: 0.05
-- Coverage stabilization passes required: 1
-- Per-iteration budget: 12 tool calls, 10 minutes
-- Severity threshold: P2
-- Review target type: spec-folder
-- Cross-reference checks: core=`spec_code`,`checklist_evidence`; overlay=`skill_agent`,`agent_cross_runtime`,`feature_catalog_code`,`playbook_capability`
-- Started: 2026-03-27T15:35:00+01:00
-<!-- /ANCHOR:review-boundaries -->
+| `012/spec.md` | D1, D3, D4 | 016 | 0 P0, 2 P1, 1 P2 | complete |
+| `012/implementation-summary.md` | D1, D3 | 007 | 0 P0, 2 P1, 0 P2 | complete |
+| `mcp_server/handlers/memory-save.ts` | D1, D2 | 049 | 0 P0, 2 P1, 1 P2 | complete |
+| `mcp_server/lib/search/vector-index-store.ts` | D1, D2 | 050 | 0 P0, 2 P1, 1 P2 | complete |
+| `mcp_server/lib/cache/tool-cache.ts` | D1, D2, D4 | 045 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/02--mutation/01-memory-indexing-memorysave.md` | D1, D3 | 049 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md` | D1, D3 | 049 | 0 P0, 0 P1, 1 P2 | complete |
+| `feature_catalog/02--mutation/08-prediction-error-save-arbitration.md` | D1, D3 | 049 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/05--lifecycle/08-constitutional-memory-end-to-end-lifecycle.md` | D1, D3 | 049 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md` | D1, D3 | 050 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/13--memory-quality-and-indexing/05-pre-storage-quality-gate.md` | D1, D3 | 050 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/13--memory-quality-and-indexing/25-indexing-runtime-bootstrap-api.md` | D1, D3 | 050 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md` | D1, D3 | 050 | 0 P0, 1 P1, 0 P2 | complete |
+| `feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` | D1, D3, D4 | 055 | 0 P0, 1 P1, 0 P2 | complete |
+| `scripts/tests/memory-learn-command-docs.vitest.ts` | D1, D3 | 055 | 0 P0, 1 P1, 0 P2 | complete |
+| `007-code-audit-per-feature-catalog/implementation-summary.md` | D3, D4 | 052 | 0 P0, 0 P1, 1 P2 | complete |

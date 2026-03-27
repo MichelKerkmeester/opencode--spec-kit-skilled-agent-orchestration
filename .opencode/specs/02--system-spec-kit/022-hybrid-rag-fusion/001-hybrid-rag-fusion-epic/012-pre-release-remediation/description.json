@@ -18,9 +18,12 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 2,
+  "memorySequence": 5,
   "memoryNameHistory": [
     "26-03-26_18-27__implemented-spec-012-pre-release-remediation.md",
-    "26-03-26_18-47__completed-full-012-pre-release-remediation.md"
+    "26-03-26_18-47__completed-full-012-pre-release-remediation.md",
+    "27-03-26_15-38__manual-context-save.md",
+    "27-03-26_16-22__implemented-segment-2-runtime-hunt-continuation.md",
+    "27-03-26_17-07__implemented-segment-3-of-the-canonical-012-review.md"
   ]
 }
