@@ -220,6 +220,8 @@ The Spec Kit is a documentation framework that enforces structured spec folders 
 
 Every conversation that modifies files gets a spec folder. Gate 3 in the project's AGENTS.md enforces this -- the AI assistant asks "Which spec folder?" before any file modification begins. The only exemptions are single-file fixes under 5 characters (typo or whitespace corrections).
 
+---
+
 #### Documentation Levels
 
 Not every change needs the same amount of paperwork. A one-line bug fix does not need an architecture decision record. A multi-system refactor does. Spec Kit uses four levels to match documentation depth to task complexity.
@@ -234,6 +236,8 @@ Not every change needs the same amount of paperwork. A one-line bug fix does not
 The LOC ranges are guidance, not hard rules. Risk, complexity and the number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
 **Implementation-summary.md** is required at all levels but created **after** implementation completes, not at spec folder creation time.
+
+---
 
 #### Spec Folder Structure
 
@@ -258,6 +262,8 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 - **P0** — Hard blocker. Cannot ship without this. Cannot defer.
 - **P1** — Required. Must complete or get explicit user approval to defer.
 - **P2** — Optional. Nice to have. Can defer without approval.
+
+---
 
 #### Phase Decomposition
 
@@ -289,6 +295,8 @@ The `validate.sh` script runs 20 rules against a spec folder and reports what pa
 
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
 
+---
+
 #### CORE + ADDENDUM Template Architecture (v2.2)
 
 Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each level inherits from the level below and adds what it needs -- like building blocks that stack.
@@ -319,6 +327,8 @@ Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance extens
 - **`debug-delegation.md`** — Debug delegation template for fresh-perspective troubleshooting
 
 Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. Validation checks for required anchors, proper section ordering and template version alignment.
+
+---
 
 #### Scripts and Validation
 
@@ -360,6 +370,8 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 **How it works:** Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
 
 The memory engine uses a 222-feature pipeline developed across a 19-phase refinement program. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+
+---
 
 #### 33 Tools Across 7 Layers
 
@@ -496,6 +508,7 @@ When you search, HOT memories get full content in results. WARM memories appear 
 ---
 
 #### 3.2.5 CAUSAL GRAPH
+
 
 The system tracks how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
 
@@ -650,6 +663,8 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 **Shadow scoring with holdout evaluation** tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
 
+---
+
 #### Embedding Providers
 
 - **Voyage AI** — Set `VOYAGE_API_KEY` env var. Best quality, recommended.
@@ -667,6 +682,8 @@ For the complete 33-tool API reference (7 layers, 7,600 total token budget) and 
 12 agents total: 2 built-in platform agents and 10 custom specialists. Think of them like a team where the project manager (you or the orchestrator) delegates to the right expert instead of one generalist doing everything. Each agent has a defined role, specific tool permissions and clear boundaries on what it can and cannot modify.
 
 Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
+
+---
 
 #### All 12 Agents
 
@@ -706,6 +723,7 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 ---
 
 ### 3.4 COMMAND ARCHITECTURE
+
 
 22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec that tells the AI exactly how to run the workflow.
 
@@ -823,6 +841,8 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 | **Gate 2** | Skill Routing | REQUIRED | Runs `skill_advisor.py` against the request. Confidence >= 0.8 means the skill must be loaded. Ensures the right domain expertise is always in context |
 | **Gate 3** | Spec Folder | HARD BLOCK | Overrides Gates 1-2. Asks: A) Existing folder? B) New folder? C) Update related? D) Skip? E) Phase folder? No file changes without an answer |
 
+---
+
 #### How Requests Flow Through Gates
 
 ```
@@ -859,10 +879,14 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
   └─────────────────────────────────────────┘
 ```
 
+---
+
 #### Post-Execution Rules
 
 - **Memory Save** (HARD BLOCK) — Triggered by "save context" or `/memory:save`. Must use `generate-context.js` -- no manual memory file creation.
 - **Completion Verification** (HARD BLOCK) — Triggered by claiming "done" or "complete". Must load `checklist.md` and verify ALL items with evidence.
+
+---
 
 #### Analysis Lenses
 
@@ -882,6 +906,8 @@ Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS
 ### 3.7 CODE MODE MCP
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Think of it like a universal adapter -- instead of loading 47 separate tool definitions into the context window (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens). That is a 98.7% reduction.
+
+---
 
 #### Native MCP Servers
 
@@ -919,6 +945,8 @@ Defined in `opencode.json`:
 - **`webflow`** (MCP/remote) — Sites, CMS collections. Requires Webflow auth.
 
 </details>
+
+---
 
 #### Performance
 
