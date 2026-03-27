@@ -56,6 +56,8 @@ The framework adds three layers on top of the base platform:
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
+---
+
 ### Key Statistics
 
 | Category | Count | Details |
@@ -68,6 +70,8 @@ The framework adds three layers on top of the base platform:
 | **Runtimes** | 4 | OpenCode, Codex CLI, Claude Code, Gemini CLI |
 | **Templates** | 81 | CORE + ADDENDUM v2.2 |
 | **Feature Catalog** | 222 | Across 21 categories |
+
+---
 
 ### How This Compares
 
@@ -83,6 +87,8 @@ The framework adds three layers on top of the base platform:
 | **Agent coordination** | One generalist | One generalist | 12 specialists with gate-driven routing and skill auto-loading |
 | **Access control** | Filesystem permissions | None | Shared memory spaces with deny-by-default membership |
 | **Evaluation** | Manual testing | None | Ablation studies, 12-metric computation (MRR, NDCG), synthetic ground truth |
+
+---
 
 ### How It All Connects
 
@@ -130,26 +136,16 @@ The framework adds three layers on top of the base platform:
 
 ### Role-Based Navigation
 
-| I want to... | Start here |
-|---|---|
-| Get started with the framework | [Quick Start](#2-quick-start) |
-| Learn about spec folder workflows | [3.1 Spec Kit Documentation](#31-spec-kit-documentation) |
-| Understand the memory system | [3.2 Memory Engine](#32-memory-engine) |
-| See all agents and their roles | [3.3 Agent Network](#33-agent-network) |
-| Browse available commands | [3.4 Command Architecture](#34-command-architecture) |
-| Find the right skill for a task | [3.5 Skills Library](#35-skills-library) |
-| Understand how requests are validated | [3.6 Gate System](#36-gate-system) |
-| Work with external tools (Figma, GitHub, etc.) | [3.7 Code Mode MCP](#37-code-mode-mcp) |
-| Understand the folder structure | [Structure](#4-structure) |
-| Configure the framework | [Configuration](#5-configuration) |
-
-### Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| [OpenCode](https://github.com/sst/opencode) | v1.0.190+ | Latest |
-| Node.js | v18+ | v20+ |
-| npm | v9+ | v10+ |
+- **Get started with the framework** — [Quick Start](#2-quick-start)
+- **Learn about spec folder workflows** — [3.1 Spec Kit Documentation](#31-spec-kit-documentation)
+- **Understand the memory system** — [3.2 Memory Engine](#32-memory-engine)
+- **See all agents and their roles** — [3.3 Agent Network](#33-agent-network)
+- **Browse available commands** — [3.4 Command Architecture](#34-command-architecture)
+- **Find the right skill for a task** — [3.5 Skills Library](#35-skills-library)
+- **Understand how requests are validated** — [3.6 Gate System](#36-gate-system)
+- **Work with external tools (Figma, GitHub, etc.)** — [3.7 Code Mode MCP](#37-code-mode-mcp)
+- **Understand the folder structure** — [Structure](#4-structure)
+- **Configure the framework** — [Configuration](#5-configuration)
 
 <!-- /ANCHOR:overview -->
 
@@ -259,11 +255,9 @@ specs/<###-feature-name>/
 
 Checklists use a priority system so reviewers know what blocks shipping and what can wait:
 
-| Priority | Meaning | Deferral |
-|----------|---------|---------|
-| **P0** | Hard blocker -- cannot ship without this | Cannot defer |
-| **P1** | Required -- must complete or get user approval to defer | Needs explicit approval to skip |
-| **P2** | Optional -- nice to have | Can defer without approval |
+- **P0** — Hard blocker. Cannot ship without this. Cannot defer.
+- **P1** — Required. Must complete or get explicit user approval to defer.
+- **P2** — Optional. Nice to have. Can defer without approval.
 
 #### Phase Decomposition
 
@@ -289,11 +283,9 @@ Use `create.sh --phase` to create a parent with its first child in one step. Run
 
 The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency.
 
-| Exit Code | Meaning | Action |
-|-----------|---------|--------|
-| 0 | All rules pass | Ready to proceed |
-| 1 | Warnings found | Review and fix if practical |
-| 2 | Errors found | Must fix before claiming completion |
+- **Exit 0** — All rules pass. Ready to proceed.
+- **Exit 1** — Warnings found. Review and fix if practical.
+- **Exit 2** — Errors found. Must fix before claiming completion.
 
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
 
@@ -308,53 +300,52 @@ Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.m
 Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance extensions)
 ```
 
-| Core Template | File | Purpose |
-|---------------|------|---------|
-| Specification | `spec-core.md` | What the feature is, why it exists, requirements and success criteria |
-| Plan | `plan-core.md` | How to implement: architecture, phases, testing strategy |
-| Tasks | `tasks-core.md` | Step-by-step task breakdown with status tracking |
-| Implementation Summary | `impl-summary-core.md` | Post-implementation record of what changed and verification results |
+**Core Templates (4):**
+- **`spec-core.md`** — What the feature is, why it exists, requirements and success criteria
+- **`plan-core.md`** — How to implement: architecture, phases, testing strategy
+- **`tasks-core.md`** — Step-by-step task breakdown with status tracking
+- **`impl-summary-core.md`** — Post-implementation record of what changed and verification results
 
-| Addendum | Level | What It Adds |
-|----------|-------|-------------|
-| `level2-verify/` | 2+ | Quality gates, NFRs, edge cases, checklist template |
-| `level3-arch/` | 3+ | Architecture decisions, ADRs, risk matrix |
-| `level3plus-govern/` | 3+ | Enterprise governance, AI protocols, sign-off sections |
-| `phase/` | Any | Phase decomposition headers for parent/child folders |
+**Addendum Layers (4):**
+- **`level2-verify/`** (Level 2+) — Quality gates, NFRs, edge cases, checklist template
+- **`level3-arch/`** (Level 3+) — Architecture decisions, ADRs, risk matrix
+- **`level3plus-govern/`** (Level 3+) — Enterprise governance, AI protocols, sign-off sections
+- **`phase/`** (Any level) — Phase decomposition headers for parent/child folders
 
-| Special Template | Purpose |
-|-----------------|---------|
-| `context_template.md` (~26K) | Memory context template with standard ANCHOR sections |
-| `research.md` (~20K) | Deep research template for autonomous investigation |
-| `handover.md` | Session continuity template for handing off to the next AI |
-| `debug-delegation.md` | Debug delegation template for fresh-perspective troubleshooting |
+**Special Templates (4):**
+- **`context_template.md`** (~26K) — Memory context template with standard ANCHOR sections
+- **`research.md`** (~20K) — Deep research template for autonomous investigation
+- **`handover.md`** — Session continuity template for handing off to the next AI
+- **`debug-delegation.md`** — Debug delegation template for fresh-perspective troubleshooting
 
 Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. Validation checks for required anchors, proper section ordering and template version alignment.
 
 #### Scripts and Validation
 
-**Spec management** (12 scripts in `scripts/spec/`):
+<details>
+<summary><strong>Spec Management Scripts</strong> (12 in <code>scripts/spec/</code>)</summary>
 
-| Script | Purpose |
-|--------|---------|
-| `create.sh` | Create spec folders with level-appropriate templates. Use `--phase` for parent + child |
-| `validate.sh` | Run 20 validation rules. Use `--recursive` for phase folders |
-| `upgrade-level.sh` | Inject addendum templates to upgrade a folder to a higher level |
-| `recommend-level.sh` | Analyze scope and risk to recommend the right documentation level |
-| `calculate-completeness.sh` | Calculate spec folder completeness as a percentage |
-| `check-completion.sh` | Verify all completion criteria are met |
-| `check-placeholders.sh` | Find remaining `[PLACEHOLDER]` values after level upgrade |
+- **`create.sh`** — Create spec folders with level-appropriate templates. Use `--phase` for parent + child
+- **`validate.sh`** — Run 20 validation rules. Use `--recursive` for phase folders
+- **`upgrade-level.sh`** — Inject addendum templates to upgrade a folder to a higher level
+- **`recommend-level.sh`** — Analyze scope and risk to recommend the right documentation level
+- **`calculate-completeness.sh`** — Calculate spec folder completeness as a percentage
+- **`check-completion.sh`** — Verify all completion criteria are met
+- **`check-placeholders.sh`** — Find remaining `[PLACEHOLDER]` values after level upgrade
 
-**Memory scripts** (10 scripts in `scripts/memory/`):
+</details>
 
-| Script | Purpose |
-|--------|---------|
-| `generate-context.ts` | Primary workflow for saving session context to memory files |
-| `backfill-frontmatter.ts` | Add missing frontmatter to existing memory files |
-| `reindex-embeddings.ts` | Rebuild embedding vectors for stored memories |
-| `cleanup-orphaned-vectors.ts` | Remove vector entries with no matching memory |
-| `rebuild-auto-entities.ts` | Regenerate auto-extracted entity catalog |
-| `validate-memory-quality.ts` | Run quality checks on stored memory content |
+<details>
+<summary><strong>Memory Scripts</strong> (10 in <code>scripts/memory/</code>)</summary>
+
+- **`generate-context.ts`** — Primary workflow for saving session context to memory files
+- **`backfill-frontmatter.ts`** — Add missing frontmatter to existing memory files
+- **`reindex-embeddings.ts`** — Rebuild embedding vectors for stored memories
+- **`cleanup-orphaned-vectors.ts`** — Remove vector entries with no matching memory
+- **`rebuild-auto-entities.ts`** — Regenerate auto-extracted entity catalog
+- **`validate-memory-quality.ts`** — Run quality checks on stored memory content
+
+</details>
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
 
@@ -393,13 +384,11 @@ Lower layers load only when needed. L1 is always available. L2 loads for any sea
 
 When you search, the system checks five sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet, the recommendation board and the "related topics" corkboard all at the same time.
 
-| Channel | How It Works | Good For |
-|---------|-------------|----------|
-| **Vector** | Compares meaning via embeddings (Voyage AI 1024d) | Finding related content even when words differ |
-| **FTS5** | Full-text search on exact words and phrases | Specific terms and error messages |
-| **BM25** | Keyword relevance scoring | Ranking when you know roughly what you want |
-| **Causal Graph** | Follows cause-and-effect links between memories | "Why did we choose this?" questions |
-| **Degree** | Scores by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5) | Finding important hub decisions (capped to prevent over-influence) |
+- **Vector** — Compares meaning via embeddings (Voyage AI 1024d). Good for finding related content even when words differ.
+- **FTS5** — Full-text search on exact words and phrases. Good for specific terms and error messages.
+- **BM25** — Keyword relevance scoring. Good for ranking when you know roughly what you want.
+- **Causal Graph** — Follows cause-and-effect links between memories. Good for "Why did we choose this?" questions.
+- **Degree** — Scores by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5). Good for finding important hub decisions (capped to prevent over-influence).
 
 **Reciprocal Rank Fusion (RRF)** combines all channel results using `1/(K + rank)`. K is tuned per query intent through sensitivity analysis across values {10, 20, 40, 60, 80, 100, 120}. A memory that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
 
@@ -407,11 +396,9 @@ When you search, the system checks five sources at once. Think of a librarian wh
 
 **Quality-aware 3-tier fallback** escalates automatically when results are weak:
 
-| Fallback Tier | Channels Active | When It Kicks In |
-|---------------|----------------|------------------|
-| Tier 1 | Vector only | Default fast path for simple queries |
-| Tier 2 | Vector + BM25 | Results below confidence floor |
-| Tier 3 | All 5 channels | Still poor results after Tier 2 |
+- **Tier 1** — Vector only. Default fast path for simple queries.
+- **Tier 2** — Vector + BM25. Kicks in when results fall below confidence floor.
+- **Tier 3** — All 5 channels. Activates when Tier 2 still returns poor results.
 
 **Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items. **Evidence gap detection** (TRM Z-score) flags when retrieved memories do not adequately cover the query and suggests broadening the search. **Calibrated overlap bonus** rewards memories found by multiple channels at once. **Tool-level TTL cache** remembers recent results for 60 seconds with automatic invalidation on writes.
 
@@ -425,16 +412,14 @@ Every search goes through four stages. Each stage has one clear job and cannot c
 
 **Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
 
-| Signal | What It Does | Magnitude |
-|--------|-------------|-----------|
-| Co-activation boost | Memories co-occurring with matched results get a lift. Fan-effect `1/sqrt(neighbors)` prevents hub bias | +0.25 |
-| FSRS decay | Adjusts score by memory retrievability. Recently accessed memories score higher | multiplicative |
-| Interference penalty | Suppresses near-identical memory clusters (>0.75 Jaccard similarity) | -0.08 per neighbor |
-| Cold-start boost | Fresh memories (<48h) get `0.15 * exp(-elapsed/12)`, 12h half-life, capped at 0.95 | +0.15 max |
-| Session recency | Memories accessed in the current session get a recency bump | cap 0.20 |
-| Causal 2-hop | Memories 1-2 hops from causal neighbors get a contextual boost | variable |
-| Intent weights | Each of 7 task intents has its own channel weight profile | variable |
-| Channel min-rep | Floor ensures each active channel has at least one result | 0.005 |
+- **Co-activation boost** `+0.25` — Memories co-occurring with matched results get a lift. Fan-effect `1/sqrt(neighbors)` prevents hub bias.
+- **FSRS decay** `multiplicative` — Adjusts score by memory retrievability. Recently accessed memories score higher.
+- **Interference penalty** `-0.08/neighbor` — Suppresses near-identical memory clusters (>0.75 Jaccard similarity).
+- **Cold-start boost** `+0.15 max` — Fresh memories (<48h) get `0.15 * exp(-elapsed/12)`, 12h half-life, capped at 0.95.
+- **Session recency** `cap 0.20` — Memories accessed in the current session get a recency bump.
+- **Causal 2-hop** `variable` — Memories 1-2 hops from causal neighbors get a contextual boost.
+- **Intent weights** `variable` — Each of 7 task intents has its own channel weight profile.
+- **Channel min-rep** `0.005` — Floor ensures each active channel has at least one result.
 
 All channel scores are normalized to 0-1 before fusion so no single channel wins because its scale is bigger.
 
@@ -450,11 +435,9 @@ Before any search runs, the system figures out what kind of help you need. Think
 
 **Complexity routing** sizes up your question and picks the right amount of effort:
 
-| Complexity | Channels | Token Budget | When |
-|-----------|----------|-------------|------|
-| Simple | 2 | 800 tokens | Quick lookups, single-topic questions |
-| Moderate | 4 | 1,500 tokens | Multi-factor questions, debugging |
-| Complex | All 5 | 2,000 tokens | Research, architecture decisions |
+- **Simple** (2 channels, 800 tokens) — Quick lookups, single-topic questions
+- **Moderate** (4 channels, 1,500 tokens) — Multi-factor questions, debugging
+- **Complex** (all 5 channels, 2,000 tokens) — Research, architecture decisions
 
 **Intent classification** maps your query to one of 7 task types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each type has its own channel weight profile. A `find_decision` query boosts the causal graph channel. A `fix_bug` query boosts exact-match channels.
 
@@ -473,12 +456,10 @@ For low-confidence deep searches, two fallback strategies kick in:
 
 **Mode-aware response profiles** format results differently depending on what you are doing:
 
-| Mode | Behavior | Use Case |
-|------|----------|----------|
-| `quick` | Returns top answer only, minimal context | Fast lookups, single-topic questions |
-| `focused` | Returns targeted results for one topic | Standard development queries |
-| `deep` | Returns full results with evidence trails | Research, architecture decisions |
-| `resume` | Returns state summary + next-steps | Session recovery after crash or compaction |
+- **`quick`** — Top answer only, minimal context. For fast lookups and single-topic questions.
+- **`focused`** — Targeted results for one topic. For standard development queries.
+- **`deep`** — Full results with evidence trails. For research and architecture decisions.
+- **`resume`** — State summary + next-steps. For session recovery after crash or compaction.
 
 ---
 
@@ -520,14 +501,12 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Six types of causal relationships** link memories together:
 
-| Relation | Weight | Meaning |
-|----------|--------|---------|
-| **caused** | 1.0 | A led directly to B |
-| **enabled** | 0.75 | A made B possible |
-| **supersedes** | -- | B replaces A |
-| **contradicts** | -- | A and B conflict |
-| **derived_from** | -- | B is based on A |
-| **supports** | 0.5 | A provides evidence for B |
+- **`caused`** `1.0` — A led directly to B
+- **`enabled`** `0.75` — A made B possible
+- **`supersedes`** — B replaces A
+- **`contradicts`** — A and B conflict
+- **`derived_from`** — B is based on A
+- **`supports`** `0.5` — A provides evidence for B
 
 **Typed-weighted degree channel** uses these weights to rank memories by graph importance. Hub caps (`MAX_TYPED_DEGREE`=15, `MAX_TOTAL_DEGREE`=50) and a `DEGREE_BOOST_CAP` of 0.15 prevent any single highly-connected memory from dominating results.
 
@@ -553,12 +532,10 @@ When you save new knowledge, the system runs an arbitration process before stori
 
 **Prediction Error gating** compares new content against existing memories and picks one of four outcomes:
 
-| Outcome | When | What Happens |
-|---------|------|-------------|
-| **CREATE** | No similar memory exists | Stored as new knowledge |
-| **REINFORCE** | Similar exists, new one adds value | Both kept, old one gets a confidence boost |
-| **UPDATE** | Similar exists, new one is better | Old version replaced in place |
-| **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted to deprecated |
+- **CREATE** — No similar memory exists. Stored as new knowledge.
+- **REINFORCE** — Similar exists, new one adds value. Both kept, old one gets a confidence boost.
+- **UPDATE** — Similar exists, new one is better. Old version replaced in place.
+- **SUPERSEDE** — New knowledge contradicts the old. New version active, old one demoted to deprecated.
 
 This is session-scoped to prevent cross-session interference.
 
@@ -675,11 +652,9 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 #### Embedding Providers
 
-| Provider | Setup | Notes |
-|----------|-------|-------|
-| Voyage AI | `VOYAGE_API_KEY` env var | Best quality, recommended |
-| OpenAI | `OPENAI_API_KEY` env var | Strong alternative |
-| HuggingFace Local | No setup needed | Free, auto-detected fallback |
+- **Voyage AI** — Set `VOYAGE_API_KEY` env var. Best quality, recommended.
+- **OpenAI** — Set `OPENAI_API_KEY` env var. Strong alternative.
+- **HuggingFace Local** — No setup needed. Free, auto-detected fallback.
 
 **Local-first:** The memory database runs on your machine at `.opencode/skill/system-spec-kit/shared/mcp_server/database/`. No data leaves your system unless you configure a cloud embedding provider.
 
@@ -695,29 +670,38 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 #### All 12 Agents
 
-| Agent | Type | Role |
-|-------|------|------|
-| `@general` | Built-in | General implementation and complex coding tasks |
-| `@explore` | Built-in | Quick codebase exploration and file discovery |
-| `@orchestrate` | Custom | Senior task commander -- decomposes work, delegates to sub-agents, synthesizes results |
-| `@context` | Custom | Memory-first retrieval specialist -- exclusive entry point for ALL codebase exploration. Read-only |
-| `@speckit` | Custom | Spec folder documentation specialist -- EXCLUSIVE agent for writing `*.md` inside spec folders |
-| `@debug` | Custom | Fresh-perspective debugging with 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix) |
-| `@deep-research` | Custom | Autonomous deep research loop with externalized state and convergence detection |
-| `@deep-review` | Custom | Autonomous code quality auditing with P0/P1/P2 findings and evidence-backed quality risks |
-| `@review` | Custom | Code quality guardian -- READ-ONLY. Findings-first severity analysis with security assessment |
-| `@write` | Custom | Documentation generation specialist -- DQI-compliant READMEs, skills, guides. Must NOT write inside spec folders |
-| `@handover` | Custom | Session continuation specialist -- creates `handover.md` for context preservation |
-| `@ultra-think` | Custom | Multi-strategy planning architect -- dispatches diverse thinking strategies (Analytical, Creative, Critical, Pragmatic, Systems-level) |
+<details>
+<summary><strong>Built-in Agents (2)</strong></summary>
+
+- **`@general`** — General implementation and complex coding tasks
+- **`@explore`** — Quick codebase exploration and file discovery
+
+</details>
+
+<details>
+<summary><strong>Custom Agents (10)</strong></summary>
+
+- **`@orchestrate`** — Senior task commander. Decomposes work, delegates to sub-agents, synthesizes results.
+- **`@context`** — Memory-first retrieval specialist. Exclusive entry point for ALL codebase exploration. Read-only.
+- **`@speckit`** — Spec folder documentation specialist. EXCLUSIVE agent for writing `*.md` inside spec folders.
+- **`@debug`** — Fresh-perspective debugging with 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix).
+- **`@deep-research`** — Autonomous deep research loop with externalized state and convergence detection.
+- **`@deep-review`** — Autonomous code quality auditing with P0/P1/P2 findings and evidence-backed quality risks.
+- **`@review`** — Code quality guardian. READ-ONLY. Findings-first severity analysis with security assessment.
+- **`@write`** — Documentation generation specialist. DQI-compliant READMEs, skills, guides. Must NOT write inside spec folders.
+- **`@handover`** — Session continuation specialist. Creates `handover.md` for context preservation.
+- **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies (Analytical, Creative, Critical, Pragmatic, Systems-level).
+
+</details>
 
 #### Runtime Agent Directories
 
-| Runtime | Directory | Files | Notes |
-|---------|-----------|-------|-------|
-| OpenCode (default) | `.opencode/agent/` | 10 | Source of truth |
-| Claude Code | `.claude/agents/` | 10 | Runtime-adapted |
-| Codex CLI | `.codex/agents/` | 10 | Runtime-adapted |
-| Gemini CLI | `.gemini/agents/` | 10 | Runtime-adapted |
+Agent definitions live in `.opencode/agent/` (source of truth) and are adapted for each runtime:
+
+- **OpenCode** — `.opencode/agent/` (10 files, source of truth)
+- **Claude Code** — `.claude/agents/` (10 files, runtime-adapted)
+- **Codex CLI** — `.codex/agents/` (10 files, runtime-adapted)
+- **Gemini CLI** — `.gemini/agents/` (10 files, runtime-adapted)
 
 ---
 
@@ -725,47 +709,51 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec that tells the AI exactly how to run the workflow.
 
-#### spec_kit/ -- 8 Commands
+<details>
+<summary><strong>spec_kit/ — 8 Commands</strong></summary>
 
-| Command | Purpose |
-|---------|---------|
-| `/spec_kit:complete` | Full workflow: spec, plan, implement, verify. Supports `:auto`, `:confirm`, `:with-research`, `:auto-debug` modes |
-| `/spec_kit:plan` | Planning only, no implementation. Supports `:auto` and `:confirm` |
-| `/spec_kit:implement` | Execute an existing plan. Requires plan.md |
-| `/spec_kit:phase` | Decompose a spec into phased child folders |
-| `/spec_kit:debug` | Delegate debugging to a fresh-perspective `@debug` sub-agent |
-| `/spec_kit:resume` | Continue a previous session (auto-loads memory) |
-| `/spec_kit:deep-research` | Autonomous deep research loop with iterative investigation and convergence detection |
-| `/spec_kit:handover` | Create session handover document (`:quick` or `:full` variants) |
+- **`/spec_kit:complete`** — Full workflow: spec, plan, implement, verify. Modes: `:auto`, `:confirm`, `:with-research`, `:auto-debug`
+- **`/spec_kit:plan`** — Planning only, no implementation. Modes: `:auto`, `:confirm`
+- **`/spec_kit:implement`** — Execute an existing plan. Requires plan.md
+- **`/spec_kit:phase`** — Decompose a spec into phased child folders
+- **`/spec_kit:debug`** — Delegate debugging to a fresh-perspective `@debug` sub-agent
+- **`/spec_kit:resume`** — Continue a previous session (auto-loads memory)
+- **`/spec_kit:deep-research`** — Autonomous deep research loop with iterative investigation and convergence detection
+- **`/spec_kit:handover`** — Create session handover document (`:quick` or `:full` variants)
 
-#### memory/ -- 6 Commands
+</details>
 
-| Command | Purpose |
-|---------|---------|
-| `/memory:save` | Save context via `generate-context.js` with semantic indexing |
-| `/memory:continue` | Session recovery from crash or compaction |
-| `/memory:analyze` | Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
-| `/memory:learn` | Constitutional memory manager (create, list, edit, remove, budget) |
-| `/memory:manage` | Database operations: stats, health, cleanup, checkpoints, bulk ingestion |
-| `/memory:shared` | Shared memory: create spaces, manage members, inspect status (deny-by-default governance) |
+<details>
+<summary><strong>memory/ — 6 Commands</strong></summary>
 
-#### create/ -- 7 Commands
+- **`/memory:save`** — Save context via `generate-context.js` with semantic indexing
+- **`/memory:continue`** — Session recovery from crash or compaction
+- **`/memory:analyze`** — Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard
+- **`/memory:learn`** — Constitutional memory manager (create, list, edit, remove, budget)
+- **`/memory:manage`** — Database operations: stats, health, cleanup, checkpoints, bulk ingestion
+- **`/memory:shared`** — Shared memory: create spaces, manage members, inspect status (deny-by-default governance)
 
-| Command | Purpose |
-|---------|---------|
-| `/create:sk-skill` | Unified skill workflows (create, update, file) |
-| `/create:agent` | Scaffold a new agent definition |
-| `/create:folder_readme` | Unified README and install guide creation |
-| `/create:changelog` | Create changelog entry from recent work |
-| `/create:prompt` | Create or improve AI prompts with structured frameworks |
-| `/create:feature-catalog` | Create or update feature catalog packages |
-| `/create:testing-playbook` | Create or update manual testing playbook packages |
+</details>
 
-#### Utility -- 1 Command
+<details>
+<summary><strong>create/ — 7 Commands</strong></summary>
 
-| Command | Purpose |
-|---------|---------|
-| `/agent_router` | Route requests to AI systems with full System Prompt identity adoption |
+- **`/create:sk-skill`** — Unified skill workflows (create, update, file)
+- **`/create:agent`** — Scaffold a new agent definition
+- **`/create:folder_readme`** — Unified README and install guide creation
+- **`/create:changelog`** — Create changelog entry from recent work
+- **`/create:prompt`** — Create or improve AI prompts with structured frameworks
+- **`/create:feature-catalog`** — Create or update feature catalog packages
+- **`/create:testing-playbook`** — Create or update manual testing playbook packages
+
+</details>
+
+<details>
+<summary><strong>Utility — 1 Command</strong></summary>
+
+- **`/agent_router`** — Route requests to AI systems with full System Prompt identity adoption
+
+</details>
 
 ---
 
@@ -773,48 +761,53 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 18 skills in `.opencode/skill/`. Skills are on-demand capabilities loaded when a task matches -- like specialist consultants who are only called in when their expertise is needed. Gate 2 runs `skill_advisor.py` to recommend the right skill (confidence >= 0.8 means it must be loaded).
 
-#### Documentation Skills (2)
+<details>
+<summary><strong>Documentation Skills (2)</strong></summary>
 
-| Skill | Version | Description |
-|-------|---------|-------------|
-| `system-spec-kit` | v2.2.27.0 | Unified documentation and context preservation: spec folder workflow (levels 1-3+), CORE + ADDENDUM template architecture, validation and Spec Kit Memory. Mandatory for all file modifications |
-| `sk-doc` | v1.3.0.0 | Markdown quality enforcement, content optimization, component creation workflows, ASCII flowcharts and install guides |
+- **`system-spec-kit`** `v2.2.27.0` — Unified documentation and context preservation: spec folder workflow (levels 1-3+), CORE + ADDENDUM template architecture, validation and Spec Kit Memory. Mandatory for all file modifications.
+- **`sk-doc`** `v1.3.0.0` — Markdown quality enforcement, content optimization, component creation workflows, ASCII flowcharts and install guides.
 
-#### Code Workflow Skills (4)
+</details>
 
-| Skill | Version | Description |
-|-------|---------|-------------|
-| `sk-code--full-stack` | v1.1.0.0 | Stack-agnostic development with auto-detection via marker files. Supports Go, Node.js, React/Next.js, React Native/Expo and Swift |
-| `sk-code--opencode` | v1.2.0.0 | Code standards for OpenCode system code across JavaScript, TypeScript, Python, Shell and JSON/JSONC |
-| `sk-code--web` | v1.1.0.0 | Frontend development orchestrator with 6 specialized code quality sub-skills |
-| `sk-code--review` | v1.2.0.0 | Stack-agnostic code review baseline with findings-first severity analysis and mandatory security/correctness minimums |
+<details>
+<summary><strong>Code Workflow Skills (4)</strong></summary>
 
-#### MCP Integration Skills (5)
+- **`sk-code--full-stack`** `v1.1.0.0` — Stack-agnostic development with auto-detection via marker files. Supports Go, Node.js, React/Next.js, React Native/Expo and Swift.
+- **`sk-code--opencode`** `v1.2.0.0` — Code standards for OpenCode system code across JavaScript, TypeScript, Python, Shell and JSON/JSONC.
+- **`sk-code--web`** `v1.1.0.0` — Frontend development orchestrator with 6 specialized code quality sub-skills.
+- **`sk-code--review`** `v1.2.0.0` — Stack-agnostic code review baseline with findings-first severity analysis and mandatory security/correctness minimums.
 
-| Skill | Version | Description |
-|-------|---------|-------------|
-| `mcp-code-mode` | v1.0.7.0 | MCP orchestration via TypeScript execution for multi-tool workflows. 200+ tools through progressive disclosure. 98.7% context reduction |
-| `mcp-coco-index` | v1.0.0 | Semantic code search via vector embeddings. Natural-language discovery of code and implementations. CLI for direct use; MCP exposes `search` tool |
-| `mcp-figma` | v1.0.7.0 | Figma design file access via MCP. 18 tools for file retrieval, image export, component/style extraction and team management |
-| `mcp-chrome-devtools` | v1.0.7.0 | Chrome DevTools orchestrator. CLI-first (bdg) for speed, MCP fallback for multi-tool integration |
-| `mcp-clickup` | v1.0.0 | ClickUp project management. CLI-first (cu) for speed, MCP for enterprise features like docs, goals and webhooks |
+</details>
 
-#### Cross-AI CLI Skills (4)
+<details>
+<summary><strong>MCP Integration Skills (5)</strong></summary>
 
-| Skill | Version | Description |
-|-------|---------|-------------|
-| `cli-gemini` | v1.2.1 | Gemini CLI orchestrator for web research via Google Search, codebase architecture analysis and cross-AI validation |
-| `cli-codex` | v1.3.1 | Codex CLI orchestrator for OpenAI cross-AI tasks: code generation, web research, codebase analysis and parallel processing |
-| `cli-claude-code` | v1.1.1 | Claude Code CLI orchestrator for deep reasoning, extended thinking, code editing and structured output |
-| `cli-copilot` | v1.3.1 | Copilot CLI orchestrator for multi-model tasks, cloud delegation, collaborative planning and autopilot mode |
+- **`mcp-code-mode`** `v1.0.7.0` — MCP orchestration via TypeScript execution for multi-tool workflows. 200+ tools through progressive disclosure. 98.7% context reduction.
+- **`mcp-coco-index`** `v1.0.0` — Semantic code search via vector embeddings. Natural-language discovery of code and implementations. CLI for direct use; MCP exposes `search` tool.
+- **`mcp-figma`** `v1.0.7.0` — Figma design file access via MCP. 18 tools for file retrieval, image export, component/style extraction and team management.
+- **`mcp-chrome-devtools`** `v1.0.7.0` — Chrome DevTools orchestrator. CLI-first (bdg) for speed, MCP fallback for multi-tool integration.
+- **`mcp-clickup`** `v1.0.0` — ClickUp project management. CLI-first (cu) for speed, MCP for enterprise features like docs, goals and webhooks.
 
-#### Other Skills (3)
+</details>
 
-| Skill | Version | Description |
-|-------|---------|-------------|
-| `sk-deep-research` | v1.0.0 | Autonomous deep research loop protocol with iterative investigation, externalized state and convergence detection |
-| `sk-git` | v1.1.0.0 | Git workflow orchestrator: workspace setup (worktrees), clean conventional commits and pull request workflows |
-| `sk-prompt-improver` | v1.2.0.0 | Prompt engineering specialist with 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT) and CLEAR scoring |
+<details>
+<summary><strong>Cross-AI CLI Skills (4)</strong></summary>
+
+- **`cli-gemini`** `v1.2.1` — Gemini CLI orchestrator for web research via Google Search, codebase architecture analysis and cross-AI validation.
+- **`cli-codex`** `v1.3.1` — Codex CLI orchestrator for OpenAI cross-AI tasks: code generation, web research, codebase analysis and parallel processing.
+- **`cli-claude-code`** `v1.1.1` — Claude Code CLI orchestrator for deep reasoning, extended thinking, code editing and structured output.
+- **`cli-copilot`** `v1.3.1` — Copilot CLI orchestrator for multi-model tasks, cloud delegation, collaborative planning and autopilot mode.
+
+</details>
+
+<details>
+<summary><strong>Other Skills (3)</strong></summary>
+
+- **`sk-deep-research`** `v1.0.0` — Autonomous deep research loop protocol with iterative investigation, externalized state and convergence detection.
+- **`sk-git`** `v1.1.0.0` — Git workflow orchestrator: workspace setup (worktrees), clean conventional commits and pull request workflows.
+- **`sk-prompt-improver`** `v1.2.0.0` — Prompt engineering specialist with 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT) and CLEAR scoring.
+
+</details>
 
 ---
 
@@ -868,23 +861,19 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 #### Post-Execution Rules
 
-| Rule | Type | Trigger | Enforcement |
-|------|------|---------|-------------|
-| Memory Save | HARD BLOCK | "save context", `/memory:save` | Must use `generate-context.js` -- no manual memory file creation |
-| Completion Verification | HARD BLOCK | Claiming "done" or "complete" | Load `checklist.md`, verify ALL items with evidence |
+- **Memory Save** (HARD BLOCK) — Triggered by "save context" or `/memory:save`. Must use `generate-context.js` -- no manual memory file creation.
+- **Completion Verification** (HARD BLOCK) — Triggered by claiming "done" or "complete". Must load `checklist.md` and verify ALL items with evidence.
 
 #### Analysis Lenses
 
 Applied silently during gate processing on every request:
 
-| Lens | Focus |
-|------|-------|
-| CLARITY | Is this the simplest solution? Are abstractions earned? |
-| SYSTEMS | What does this touch? What are the side effects? |
-| BIAS | Is the user solving a symptom? Is the framing correct? |
-| SUSTAINABILITY | Will future developers understand this? |
-| VALUE | Does this change behavior or just refactor? |
-| SCOPE | Does solution complexity match problem size? |
+- **CLARITY** — Is this the simplest solution? Are abstractions earned?
+- **SYSTEMS** — What does this touch? What are the side effects?
+- **BIAS** — Is the user solving a symptom? Is the framing correct?
+- **SUSTAINABILITY** — Will future developers understand this?
+- **VALUE** — Does this change behavior or just refactor?
+- **SCOPE** — Does solution complexity match problem size?
 
 Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS.md).
 
@@ -906,28 +895,30 @@ Defined in `opencode.json`:
 | `sequential_thinking` | 1 | Structured multi-step reasoning for complex problems |
 | **Total** | **42** | |
 
-#### Code Mode Tools (7)
+<details>
+<summary><strong>Code Mode Tools (7)</strong></summary>
 
-| Tool | Purpose |
-|------|---------|
-| `search_tools` | Discover relevant tools by task description |
-| `tool_info` | Get complete tool parameters and TypeScript interface |
-| `call_tool_chain` | Execute TypeScript code with access to all registered tools |
-| `list_tools` | List all currently registered tool names |
-| `register_manual` | Register a new tool provider |
-| `deregister_manual` | Remove a tool provider |
-| `get_required_keys_for_tool` | Check required environment variables for a tool |
+- **`search_tools`** — Discover relevant tools by task description
+- **`tool_info`** — Get complete tool parameters and TypeScript interface
+- **`call_tool_chain`** — Execute TypeScript code with access to all registered tools
+- **`list_tools`** — List all currently registered tool names
+- **`register_manual`** — Register a new tool provider
+- **`deregister_manual`** — Remove a tool provider
+- **`get_required_keys_for_tool`** — Check required environment variables for a tool
 
-#### External Integrations (via `.utcp_config.json`)
+</details>
 
-| Provider | Type | Key Capabilities | Required Env Var |
-|----------|------|-----------------|-----------------|
-| `chrome_devtools_1` | MCP/stdio | Browser automation (instance 1) | None |
-| `chrome_devtools_2` | MCP/stdio | Browser automation (instance 2) | None |
-| `clickup` | MCP/stdio | Task management, goals, docs | `CLICKUP_API_KEY` |
-| `figma` | MCP/stdio | Design files, components, exports | `FIGMA_API_KEY` |
-| `github` | MCP/stdio | Issues, pull requests, commits | `GITHUB_PERSONAL_ACCESS_TOKEN` |
-| `webflow` | MCP/remote | Sites, CMS collections | Webflow auth |
+<details>
+<summary><strong>External Integrations</strong> (via <code>.utcp_config.json</code>)</summary>
+
+- **`chrome_devtools_1`** (MCP/stdio) — Browser automation (instance 1). No env var needed.
+- **`chrome_devtools_2`** (MCP/stdio) — Browser automation (instance 2). No env var needed.
+- **`clickup`** (MCP/stdio) — Task management, goals, docs. Requires `CLICKUP_API_KEY`.
+- **`figma`** (MCP/stdio) — Design files, components, exports. Requires `FIGMA_API_KEY`.
+- **`github`** (MCP/stdio) — Issues, pull requests, commits. Requires `GITHUB_PERSONAL_ACCESS_TOKEN`.
+- **`webflow`** (MCP/remote) — Sites, CMS collections. Requires Webflow auth.
+
+</details>
 
 #### Performance
 
@@ -978,14 +969,12 @@ opencode-spec-kit-framework/
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `CLAUDE.md` | Primary behavior framework -- gates, skills, coding rules |
-| `AGENTS.md` | Agent definitions, routing logic, capability reference |
-| `opencode.json` | MCP server bindings (4 servers: memory, code mode, CocoIndex, sequential thinking) |
-| `.utcp_config.json` | Code Mode external tool registrations (Figma, GitHub, Chrome, ClickUp, Webflow) |
-| `.opencode/skill/system-spec-kit/mcp_server/` | Memory MCP server source and build |
-| `.opencode/skill/system-spec-kit/scripts/` | CLI scripts for memory and validation |
+- **`CLAUDE.md`** — Primary behavior framework: gates, skills, coding rules
+- **`AGENTS.md`** — Agent definitions, routing logic, capability reference
+- **`opencode.json`** — MCP server bindings (4 servers: memory, code mode, CocoIndex, sequential thinking)
+- **`.utcp_config.json`** — Code Mode external tool registrations (Figma, GitHub, Chrome, ClickUp, Webflow)
+- **`.opencode/skill/system-spec-kit/mcp_server/`** — Memory MCP server source and build
+- **`.opencode/skill/system-spec-kit/scripts/`** — CLI scripts for memory and validation
 
 <!-- /ANCHOR:structure -->
 
@@ -996,40 +985,40 @@ opencode-spec-kit-framework/
 
 ### Core Configuration Files
 
-| File | Purpose | Who Uses It |
-|------|---------|-------------|
-| `CLAUDE.md` | Gate definitions, behavior rules, coding anti-patterns | Claude Code, primary runtime |
-| `AGENTS.md` | Agent routing, capability reference, gate documentation | All runtimes |
-| `opencode.json` | MCP server bindings (4 servers), model configuration | OpenCode platform |
-| `.utcp_config.json` | Code Mode external tool registrations | `mcp-code-mode` skill |
-| `.claude/mcp.json` | Claude Code MCP configuration | Claude Code only |
-| `.gemini/settings.json` | Gemini CLI configuration | Gemini CLI only |
+- **`CLAUDE.md`** — Gate definitions, behavior rules, coding anti-patterns. Used by Claude Code (primary runtime).
+- **`AGENTS.md`** — Agent routing, capability reference, gate documentation. Used by all runtimes.
+- **`opencode.json`** — MCP server bindings (4 servers), model configuration. Used by OpenCode platform.
+- **`.utcp_config.json`** — Code Mode external tool registrations. Used by `mcp-code-mode` skill.
+- **`.claude/mcp.json`** — Claude Code MCP configuration. Claude Code only.
+- **`.gemini/settings.json`** — Gemini CLI configuration. Gemini CLI only.
 
 ### Memory Engine Configuration
 
 The memory server reads configuration from environment variables:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VOYAGE_API_KEY` | No | Voyage AI embeddings (recommended) |
-| `OPENAI_API_KEY` | No | OpenAI embeddings (alternative) |
-| `MEMORY_DB_PATH` | No | Override default database path |
+- **`VOYAGE_API_KEY`** (optional) — Voyage AI embeddings (recommended)
+- **`OPENAI_API_KEY`** (optional) — OpenAI embeddings (alternative)
+- **`MEMORY_DB_PATH`** (optional) — Override default database path
 
 Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
 
-If no API key is set, the memory engine auto-detects HuggingFace Local embeddings (free, no setup required).
+> [!TIP]
+> If no API key is set, the memory engine auto-detects **HuggingFace Local** embeddings -- free, no setup required.
 
 ### Memory Feature Flags
 
 The memory server supports 26+ feature flags organized by category. These control which search channels, scoring signals and infrastructure components are active. All flags default to sensible values and most users never need to change them.
 
-| Category | Key Flags | Default |
-|----------|-----------|---------|
-| **Search Pipeline** | BM25, Graph channel, Reranker, MMR, Co-Activation, FSRS decay, Interference penalty | All enabled |
-| **Session/Cache** | Working memory, TTL cache, Session deduplication | All enabled |
-| **Memory/Storage** | Auto-promotion, Negative feedback, Content normalization | All enabled |
-| **Embedding/API** | Voyage AI, OpenAI, HuggingFace Local (auto-detected) | Provider-dependent |
-| **Debug** | Trace mode, Scoring observability, Shadow evaluation | All disabled |
+<details>
+<summary><strong>Flag Categories</strong></summary>
+
+- **Search Pipeline** — BM25, Graph channel, Reranker, MMR, Co-Activation, FSRS decay, Interference penalty. All enabled by default.
+- **Session/Cache** — Working memory, TTL cache, Session deduplication. All enabled by default.
+- **Memory/Storage** — Auto-promotion, Negative feedback, Content normalization. All enabled by default.
+- **Embedding/API** — Voyage AI, OpenAI, HuggingFace Local (auto-detected). Provider-dependent.
+- **Debug** — Trace mode, Scoring observability, Shadow evaluation. All disabled by default.
+
+</details>
 
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 
@@ -1037,15 +1026,18 @@ For the complete flag reference with per-flag defaults, see [MCP Server README S
 
 The memory system uses a SQLite database with 25 tables:
 
-| Table Group | Tables | Purpose |
-|-------------|--------|---------|
-| **Core** | memories, embeddings, memory_sections | Content storage and vector index |
-| **Search** | fts_memories, bm25_index, search_cache | Full-text and keyword search |
-| **Graph** | causal_edges, communities, co_activations | Causal relationships and clustering |
-| **Lifecycle** | memory_states, validation_feedback, promotions | State machine and quality tracking |
-| **Session** | working_memory, session_events | Current session context |
-| **Shared** | shared_spaces, memberships, kill_switches | Multi-user access control |
-| **Evaluation** | eval_runs, ablation_results, ground_truth | Quality measurement |
+<details>
+<summary><strong>25 Tables in 7 Groups</strong></summary>
+
+- **Core** (3) — `memories`, `embeddings`, `memory_sections`. Content storage and vector index.
+- **Search** (3) — `fts_memories`, `bm25_index`, `search_cache`. Full-text and keyword search.
+- **Graph** (3) — `causal_edges`, `communities`, `co_activations`. Causal relationships and clustering.
+- **Lifecycle** (3) — `memory_states`, `validation_feedback`, `promotions`. State machine and quality tracking.
+- **Session** (2) — `working_memory`, `session_events`. Current session context.
+- **Shared** (3) — `shared_spaces`, `memberships`, `kill_switches`. Multi-user access control.
+- **Evaluation** (3) — `eval_runs`, `ablation_results`, `ground_truth`. Quality measurement.
+
+</details>
 
 Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
 
@@ -1154,14 +1146,12 @@ The `@deep-research` agent runs an autonomous investigation loop with externaliz
 
 ### Common Patterns
 
-| Pattern | Command | When to Use |
-|---------|---------|-------------|
-| New feature end-to-end | `/spec_kit:complete [description]` | Starting any feature from scratch |
-| Planning without building | `/spec_kit:plan [description]` | When you want to review the plan first |
-| Pick up previous work | `/spec_kit:resume` | Returning to an in-progress spec |
-| Investigate a codebase | `@context [question]` | Exploration and research tasks |
-| Generate a README | `/create:folder_readme` | Documenting a directory or component |
-| Improve a prompt | `/create:prompt` | Prompt engineering with structured frameworks |
+- **New feature end-to-end** — `/spec_kit:complete [description]`. Starting any feature from scratch.
+- **Planning without building** — `/spec_kit:plan [description]`. When you want to review the plan first.
+- **Pick up previous work** — `/spec_kit:resume`. Returning to an in-progress spec.
+- **Investigate a codebase** — `@context [question]`. Exploration and research tasks.
+- **Generate a README** — `/create:folder_readme`. Documenting a directory or component.
+- **Improve a prompt** — `/create:prompt`. Prompt engineering with structured frameworks.
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -1231,13 +1221,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [sp
 
 ### Quick Fixes
 
-| Problem | Fix |
-|---------|-----|
-| Memory DB locked | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --checkpoint` |
-| Stale memory index | `/memory:manage` then select "reindex" |
-| Wrong spec folder picked up | Explicitly set folder: `/memory:save specs/###-folder-name` |
-| Command not found | Verify `.opencode/command/` contains the `.md` file for the command |
-| Agent not routing correctly | Check `.claude/agents/` or `.opencode/agent/` for the agent definition file |
+- **Memory DB locked** — Run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --checkpoint`
+- **Stale memory index** — `/memory:manage` then select "reindex"
+- **Wrong spec folder picked up** — Explicitly set folder: `/memory:save specs/###-folder-name`
+- **Command not found** — Verify `.opencode/command/` contains the `.md` file for the command
+- **Agent not routing correctly** — Check `.claude/agents/` or `.opencode/agent/` for the agent definition file
 
 ### Diagnostic Commands
 
@@ -1329,27 +1317,23 @@ A: The feature catalog is a 222-entry reference across 21 categories documenting
 
 ### Internal Documentation
 
-| Document | Purpose |
-|----------|---------|
-| [AGENTS.md](AGENTS.md) | Complete agent routing reference, gate definitions and behavior rules for all runtimes |
-| [Spec Kit README](.opencode/skill/system-spec-kit/README.md) | Full spec folder workflow, template architecture (81 templates), validation rules and memory pipeline |
-| [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md) | Complete memory API reference (33 tools across 7 layers), retrieval architecture and configuration |
-| [INSTALL_GUIDE.md](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md) | Step-by-step MCP server installation with embedding providers and environment setup |
-| [SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles, membership and kill switch |
-| [ARCHITECTURE.md](.opencode/skill/system-spec-kit/ARCHITECTURE.md) | API boundary contract between scripts/ and mcp_server/ |
-| [sk-doc SKILL.md](.opencode/skill/sk-doc/SKILL.md) | Documentation standards, DQI scoring, templates and HVR writing rules |
-| [Skills README](.opencode/skill/README.md) | Index of all 18 skills with descriptions and invocation patterns |
-| [FEATURE_CATALOG.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md) | 222-entry technical reference across 21 categories |
-| [FEATURE_CATALOG_IN_SIMPLE_TERMS.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md) | Plain-language companion to the technical catalog |
-| [AGENTS_example_fs_enterprises.md](AGENTS_example_fs_enterprises.md) | Example AGENTS.md for a full-stack enterprise project (runtime-neutral) |
+- **[AGENTS.md](AGENTS.md)** — Complete agent routing reference, gate definitions and behavior rules for all runtimes
+- **[Spec Kit README](.opencode/skill/system-spec-kit/README.md)** — Full spec folder workflow, template architecture (81 templates), validation rules and memory pipeline
+- **[MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** — Complete memory API reference (33 tools across 7 layers), retrieval architecture and configuration
+- **[INSTALL_GUIDE.md](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** — Step-by-step MCP server installation with embedding providers and environment setup
+- **[SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** — Shared memory guide with spaces, roles, membership and kill switch
+- **[ARCHITECTURE.md](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** — API boundary contract between scripts/ and mcp_server/
+- **[sk-doc SKILL.md](.opencode/skill/sk-doc/SKILL.md)** — Documentation standards, DQI scoring, templates and HVR writing rules
+- **[Skills README](.opencode/skill/README.md)** — Index of all 18 skills with descriptions and invocation patterns
+- **[FEATURE_CATALOG.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** — 222-entry technical reference across 21 categories
+- **[FEATURE_CATALOG_IN_SIMPLE_TERMS.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** — Plain-language companion to the technical catalog
+- **[AGENTS_example_fs_enterprises.md](AGENTS_example_fs_enterprises.md)** — Example AGENTS.md for a full-stack enterprise project (runtime-neutral)
 
 ### External Resources
 
-| Resource | Description |
-|----------|-------------|
-| [OpenCode](https://github.com/sst/opencode) | The underlying AI coding assistant platform this framework extends |
-| [Voyage AI](https://www.voyageai.com/) | Recommended embedding provider for memory retrieval |
-| [HuggingFace Local](https://huggingface.co/) | Free local embedding alternative (no API key required) |
+- **[OpenCode](https://github.com/sst/opencode)** — The underlying AI coding assistant platform this framework extends
+- **[Voyage AI](https://www.voyageai.com/)** — Recommended embedding provider for memory retrieval
+- **[HuggingFace Local](https://huggingface.co/)** — Free local embedding alternative (no API key required)
 
 <!-- /ANCHOR:related-documents -->
 
