@@ -61,18 +61,16 @@ The framework adds three layers on top of the base platform:
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
 
-### Key Statistics
+### At a Glance
 
-| Category | Count | Details |
-|----------|-------|---------|
-| **Agents** | 12 | 2 built-in + 10 custom (multi-runtime) |
-| **Skills** | 18 | Code, docs, git, prompts, MCP, research, cross-AI |
-| **Commands** | 22 | 8 spec_kit + 6 memory + 7 create + 1 utility |
-| **MCP Tools** | 42 | 33 memory + 7 code mode + 1 semantic code search + 1 sequential thinking |
-| **Gates** | 3 | Understanding, Skill Routing, Spec Folder |
-| **Runtimes** | 4 | OpenCode, Codex CLI, Claude Code, Gemini CLI |
-| **Templates** | 81 | CORE + ADDENDUM v2.2 |
-| **Feature Catalog** | 222 | Across 21 categories |
+- [x] **12 Agents** -- 2 built-in + 10 custom, multi-runtime. [Details](#33-agent-network)
+- [x] **18 Skills** -- Code, docs, git, prompts, MCP, research, cross-AI. [Details](#35-skills-library)
+- [x] **22 Commands** -- 8 spec_kit + 6 memory + 7 create + 1 utility. [Details](#34-command-architecture)
+- [x] **42 MCP Tools** -- 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking. [Details](#37-code-mode-mcp)
+- [x] **3 Gates** -- Understanding, Skill Routing, Spec Folder. [Details](#36-gate-system)
+- [x] **4 Runtimes** -- OpenCode, Codex CLI, Claude Code, Gemini CLI
+- [x] **81 Templates** -- CORE + ADDENDUM v2.2
+- [x] **222 Feature Catalog** -- Across 21 categories
 
 
 ### How This Compares
@@ -135,18 +133,17 @@ The framework adds three layers on top of the base platform:
          └──────────────────────────────────────────┘
 ```
 
-### Role-Based Navigation
+### Quick Navigation
 
-- **Get started with the framework** — [Quick Start](#2-quick-start)
-- **Learn about spec folder workflows** — [3.1 Spec Kit Documentation](#31-spec-kit-documentation)
-- **Understand the memory system** — [3.2 Memory Engine](#32-memory-engine)
-- **See all agents and their roles** — [3.3 Agent Network](#33-agent-network)
-- **Browse available commands** — [3.4 Command Architecture](#34-command-architecture)
-- **Find the right skill for a task** — [3.5 Skills Library](#35-skills-library)
-- **Understand how requests are validated** — [3.6 Gate System](#36-gate-system)
-- **Work with external tools (Figma, GitHub, etc.)** — [3.7 Code Mode MCP](#37-code-mode-mcp)
-- **Understand the folder structure** — [Structure](#4-structure)
-- **Configure the framework** — [Configuration](#5-configuration)
+- **Get started with the framework** -- [Quick Start](#2-quick-start)
+- **Learn about spec folder workflows** -- [3.1 Spec Kit Documentation](#31-spec-kit-documentation)
+- **Understand the memory system** -- [3.2 Memory Engine](#32-memory-engine)
+- **See all agents and their roles** -- [3.3 Agent Network](#33-agent-network)
+- **Browse available commands** -- [3.4 Command Architecture](#34-command-architecture)
+- **Find the right skill for a task** -- [3.5 Skills Library](#35-skills-library)
+- **Understand how requests are validated** -- [3.6 Gate System](#36-gate-system)
+- **Work with external tools (Figma, GitHub, etc.)** -- [3.7 Code Mode MCP](#37-code-mode-mcp)
+- **Configure the framework** -- [4. Configuration](#4-configuration)
 
 <!-- /ANCHOR:overview -->
 
