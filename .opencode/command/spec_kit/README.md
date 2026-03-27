@@ -83,7 +83,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 
 ```text
 spec_kit/
-├── README.md         # This file -- 8-command index and workflow guide
+├── README.md         # This file, 8-command index and workflow guide
 ├── complete.md       # /spec_kit:complete - Full end-to-end workflow
 ├── debug.md          # /spec_kit:debug - Debug delegation
 ├── handover.md       # /spec_kit:handover - Session handover

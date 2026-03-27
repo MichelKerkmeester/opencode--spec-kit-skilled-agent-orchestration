@@ -358,16 +358,16 @@ A: Cloud delegation uses your Copilot plan's compute allocation. Usage limits de
 ## 9. RELATED DOCUMENTS
 
 ### Skill Resources
-- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
-- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, models, auth, and config
-- [copilot_tools.md](./references/copilot_tools.md) -- Autopilot, repo memory, and MCP integration
-- [agent_delegation.md](./references/agent_delegation.md) -- Explore/Task agents and custom agent creation
-- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
-- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+- [SKILL.md](./SKILL.md): Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md): CLI flags, commands, models, auth, and config
+- [copilot_tools.md](./references/copilot_tools.md): Autopilot, repo memory, and MCP integration
+- [agent_delegation.md](./references/agent_delegation.md): Explore/Task agents and custom agent creation
+- [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
 
 ### Related Skills
-- [cli-claude-code](../cli-claude-code/) -- Anthropic Claude Code CLI orchestrator
-- [cli-codex](../cli-codex/) -- OpenAI Codex CLI orchestrator
-- [cli-gemini](../cli-gemini/) -- Google Gemini CLI orchestrator
+- [cli-claude-code](../cli-claude-code/): Anthropic Claude Code CLI orchestrator
+- [cli-codex](../cli-codex/): OpenAI Codex CLI orchestrator
+- [cli-gemini](../cli-gemini/): Google Gemini CLI orchestrator
 
 <!-- /ANCHOR:related-documents -->

@@ -350,16 +350,16 @@ A: Yes. The `codex cloud` subcommand offloads execution to remote infrastructure
 ## 9. RELATED DOCUMENTS
 
 ### Skill Resources
-- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
-- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, models, sandbox, and config
-- [codex_tools.md](./references/codex_tools.md) -- Unique capabilities and cross-CLI comparison
-- [agent_delegation.md](./references/agent_delegation.md) -- Agent profiles, routing, and invocation patterns
-- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
-- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+- [SKILL.md](./SKILL.md): Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md): CLI flags, commands, models, sandbox, and config
+- [codex_tools.md](./references/codex_tools.md): Unique capabilities and cross-CLI comparison
+- [agent_delegation.md](./references/agent_delegation.md): Agent profiles, routing, and invocation patterns
+- [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
 
 ### Related Skills
-- [cli-claude-code](../cli-claude-code/) -- Anthropic Claude Code CLI orchestrator
-- [cli-copilot](../cli-copilot/) -- GitHub Copilot CLI orchestrator
-- [cli-gemini](../cli-gemini/) -- Google Gemini CLI orchestrator
+- [cli-claude-code](../cli-claude-code/): Anthropic Claude Code CLI orchestrator
+- [cli-copilot](../cli-copilot/): GitHub Copilot CLI orchestrator
+- [cli-gemini](../cli-gemini/): Google Gemini CLI orchestrator
 
 <!-- /ANCHOR:related-documents -->

@@ -336,16 +336,16 @@ A: Yes. Add markdown files to `.opencode/agent/` (for Claude Code) or `.claude/a
 ## 9. RELATED DOCUMENTS
 
 ### Skill Resources
-- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
-- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, models, auth, and config
-- [claude_tools.md](./references/claude_tools.md) -- Unique capabilities and cross-CLI comparison
-- [agent_delegation.md](./references/agent_delegation.md) -- Agent roster, routing, and invocation patterns
-- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
-- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+- [SKILL.md](./SKILL.md): Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md): CLI flags, commands, models, auth, and config
+- [claude_tools.md](./references/claude_tools.md): Unique capabilities and cross-CLI comparison
+- [agent_delegation.md](./references/agent_delegation.md): Agent roster, routing, and invocation patterns
+- [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
 
 ### Related Skills
-- [cli-codex](../cli-codex/) -- OpenAI Codex CLI orchestrator
-- [cli-copilot](../cli-copilot/) -- GitHub Copilot CLI orchestrator
-- [cli-gemini](../cli-gemini/) -- Google Gemini CLI orchestrator
+- [cli-codex](../cli-codex/): OpenAI Codex CLI orchestrator
+- [cli-copilot](../cli-copilot/): GitHub Copilot CLI orchestrator
+- [cli-gemini](../cli-gemini/): Google Gemini CLI orchestrator
 
 <!-- /ANCHOR:related-documents -->

@@ -351,16 +351,16 @@ A: The tools activate based on prompt content. If you do not mention web search 
 ## 9. RELATED DOCUMENTS
 
 ### Skill Resources
-- [SKILL.md](./SKILL.md) -- Skill definition, smart routing logic, and activation triggers
-- [cli_reference.md](./references/cli_reference.md) -- CLI flags, commands, model, auth, and config
-- [gemini_tools.md](./references/gemini_tools.md) -- Built-in tools and cross-CLI comparison
-- [agent_delegation.md](./references/agent_delegation.md) -- Agent routing and invocation patterns
-- [integration_patterns.md](./references/integration_patterns.md) -- Cross-AI orchestration workflows
-- [prompt_templates.md](./assets/prompt_templates.md) -- Copy-paste ready prompts
+- [SKILL.md](./SKILL.md): Skill definition, smart routing logic, and activation triggers
+- [cli_reference.md](./references/cli_reference.md): CLI flags, commands, model, auth, and config
+- [gemini_tools.md](./references/gemini_tools.md): Built-in tools and cross-CLI comparison
+- [agent_delegation.md](./references/agent_delegation.md): Agent routing and invocation patterns
+- [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
+- [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
 
 ### Related Skills
-- [cli-claude-code](../cli-claude-code/) -- Anthropic Claude Code CLI orchestrator
-- [cli-codex](../cli-codex/) -- OpenAI Codex CLI orchestrator
-- [cli-copilot](../cli-copilot/) -- GitHub Copilot CLI orchestrator
+- [cli-claude-code](../cli-claude-code/): Anthropic Claude Code CLI orchestrator
+- [cli-codex](../cli-codex/): OpenAI Codex CLI orchestrator
+- [cli-copilot](../cli-copilot/): GitHub Copilot CLI orchestrator
 
 <!-- /ANCHOR:related-documents -->

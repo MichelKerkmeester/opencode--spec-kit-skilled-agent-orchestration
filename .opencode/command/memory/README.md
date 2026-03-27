@@ -125,7 +125,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 ```text
 memory/
-├── README.md       # This file -- 6-command index and coverage matrix
+├── README.md       # This file, 6-command index and coverage matrix
 ├── analyze.md      # /memory:analyze - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 ├── continue.md     # /memory:continue - Session recovery
 ├── learn.md        # /memory:learn - Constitutional memory manager
