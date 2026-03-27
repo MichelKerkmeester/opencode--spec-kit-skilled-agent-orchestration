@@ -15,7 +15,11 @@
 
 ---
 
+
 <!-- ANCHOR:table-of-contents -->
+
+---
+
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
@@ -28,18 +32,18 @@
   - [3.5 SKILLS LIBRARY](#35-skills-library)
   - [3.6 GATE SYSTEM](#36-gate-system)
   - [3.7 CODE MODE MCP](#37-code-mode-mcp)
-- [4. STRUCTURE](#4-structure)
-- [5. CONFIGURATION](#5-configuration)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. FAQ](#8-faq)
-- [9. RELATED DOCUMENTS](#9-related-documents)
+- [4. CONFIGURATION](#4-configuration)
+- [5. USAGE EXAMPLES](#5-usage-examples)
+- [6. FAQ](#6-faq)
+- [7. RELATED DOCUMENTS](#7-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
----
 
 <!-- ANCHOR:overview -->
+
+---
+
 ## 1. OVERVIEW
 
 ### What is OpenCode?
@@ -56,7 +60,6 @@ The framework adds three layers on top of the base platform:
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
----
 
 ### Key Statistics
 
@@ -71,7 +74,6 @@ The framework adds three layers on top of the base platform:
 | **Templates** | 81 | CORE + ADDENDUM v2.2 |
 | **Feature Catalog** | 222 | Across 21 categories |
 
----
 
 ### How This Compares
 
@@ -88,7 +90,6 @@ The framework adds three layers on top of the base platform:
 | **Access control** | Filesystem permissions | None | Shared memory spaces with deny-by-default membership |
 | **Evaluation** | Manual testing | None | Ablation studies, 12-metric computation (MRR, NDCG), synthetic ground truth |
 
----
 
 ### How It All Connects
 
@@ -149,9 +150,11 @@ The framework adds three layers on top of the base platform:
 
 <!-- /ANCHOR:overview -->
 
----
 
 <!-- ANCHOR:quick-start -->
+
+---
+
 ## 2. QUICK START
 
 ### Installation
@@ -209,9 +212,11 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 <!-- /ANCHOR:quick-start -->
 
----
 
 <!-- ANCHOR:features -->
+
+---
+
 ## 3. FEATURES
 
 ### 3.1 SPEC KIT DOCUMENTATION
@@ -220,7 +225,6 @@ The Spec Kit is a documentation framework that enforces structured spec folders 
 
 Every conversation that modifies files gets a spec folder. Gate 3 in the project's AGENTS.md enforces this -- the AI assistant asks "Which spec folder?" before any file modification begins. The only exemptions are single-file fixes under 5 characters (typo or whitespace corrections).
 
----
 
 #### Documentation Levels
 
@@ -237,7 +241,6 @@ The LOC ranges are guidance, not hard rules. Risk, complexity and the number of 
 
 **Implementation-summary.md** is required at all levels but created **after** implementation completes, not at spec folder creation time.
 
----
 
 #### Spec Folder Structure
 
@@ -263,7 +266,6 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 - **P1** — Required. Must complete or get explicit user approval to defer.
 - **P2** — Optional. Nice to have. Can defer without approval.
 
----
 
 #### Phase Decomposition
 
@@ -295,7 +297,6 @@ The `validate.sh` script runs 20 rules against a spec folder and reports what pa
 
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
 
----
 
 #### CORE + ADDENDUM Template Architecture (v2.2)
 
@@ -328,7 +329,6 @@ Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance extens
 
 Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. Validation checks for required anchors, proper section ordering and template version alignment.
 
----
 
 #### Scripts and Validation
 
@@ -361,7 +361,6 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 
 For the full spec folder workflow, template architecture (81 templates) and validation rules, see the [Spec Kit README](.opencode/skill/system-spec-kit/README.md).
 
----
 
 ### 3.2 MEMORY ENGINE
 
@@ -371,7 +370,6 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 
 The memory engine uses a 222-feature pipeline developed across a 19-phase refinement program. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
----
 
 #### 33 Tools Across 7 Layers
 
@@ -390,7 +388,6 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
----
 
 #### 3.2.1 HYBRID SEARCH
 
@@ -414,7 +411,6 @@ When you search, the system checks five sources at once. Think of a librarian wh
 
 **Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items. **Evidence gap detection** (TRM Z-score) flags when retrieved memories do not adequately cover the query and suggests broadening the search. **Calibrated overlap bonus** rewards memories found by multiple channels at once. **Tool-level TTL cache** remembers recent results for 60 seconds with automatic invalidation on writes.
 
----
 
 #### 3.2.2 SEARCH PIPELINE
 
@@ -439,7 +435,6 @@ All channel scores are normalized to 0-1 before fusion so no single channel wins
 
 **Stage 4 -- Filter and annotate**. Enforces score immutability (no score changes after Stage 2). Applies state filtering by minimum state parameter. Annotates results with confidence labels (high/medium/low) and feature flag states.
 
----
 
 #### 3.2.3 QUERY INTELLIGENCE
 
@@ -473,7 +468,6 @@ For low-confidence deep searches, two fallback strategies kick in:
 - **`deep`** — Full results with evidence trails. For research and architecture decisions.
 - **`resume`** — State summary + next-steps. For session recovery after crash or compaction.
 
----
 
 #### 3.2.4 MEMORY LIFECYCLE AND SCORING
 
@@ -505,7 +499,6 @@ A critical decision never fades. A temporary debugging note fades within days.
 
 When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
 
----
 
 #### 3.2.5 CAUSAL GRAPH
 
@@ -537,7 +530,6 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Async LLM graph backfill** uses an AI to read important documents after they are saved and suggest additional causal connections that pattern matching missed. Runs in the background after initial save.
 
----
 
 #### 3.2.6 SAVE INTELLIGENCE
 
@@ -568,7 +560,6 @@ This is session-scoped to prevent cross-session interference.
 
 **Correction tracking** maintains a paper trail of how knowledge evolved when newer memories replace older ones. When a save triggers an UPDATE or SUPERSEDE outcome, the system records the relationship between old and new versions.
 
----
 
 #### 3.2.7 SESSION AWARENESS
 
@@ -580,7 +571,6 @@ The system keeps track of what happened during your current conversation so it d
 
 **Context pressure monitoring** watches how full your AI's context window is getting. Above 60% usage: downgrades to focused mode. Above 80%: switches to quick mode. Prevents memory retrieval from overwhelming the conversation.
 
----
 
 #### 3.2.8 SHARED MEMORY
 
@@ -595,7 +585,6 @@ Think of it like a shared office with a keycard lock. The office stays locked un
 
 For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md).
 
----
 
 #### 3.2.9 QUALITY GATES AND LEARNING
 
@@ -615,7 +604,6 @@ If a file fails any gate, the system rejects it with a clear explanation. Previe
 
 **Empty result recovery** diagnoses why a search came back empty (too narrow filter, unclear question, missing knowledge) and suggests next steps.
 
----
 
 #### 3.2.10 RETRIEVAL ENHANCEMENTS
 
@@ -635,7 +623,6 @@ If a file fails any gate, the system rejects it with a clear explanation. Previe
 
 **Provenance-rich response envelopes** (when `includeTrace` is enabled) show exactly how each result was found: which channels contributed, how scores were calculated and where the information originated.
 
----
 
 #### 3.2.11 INDEXING AND INFRASTRUCTURE
 
@@ -649,7 +636,6 @@ If a file fails any gate, the system rejects it with a clear explanation. Previe
 
 **Atomic write-then-index** writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
 
----
 
 #### 3.2.12 EVALUATION INFRASTRUCTURE
 
@@ -663,7 +649,6 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 **Shadow scoring with holdout evaluation** tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
 
----
 
 #### Embedding Providers
 
@@ -675,7 +660,6 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 For the complete 33-tool API reference (7 layers, 7,600 total token budget) and configuration, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
----
 
 ### 3.3 AGENT NETWORK
 
@@ -683,7 +667,6 @@ For the complete 33-tool API reference (7 layers, 7,600 total token budget) and 
 
 Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
 
----
 
 #### All 12 Agents
 
@@ -729,7 +712,6 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 - **Codex CLI** — `.codex/agents/` (10 files, runtime-adapted)
 - **Gemini CLI** — `.gemini/agents/` (10 files, runtime-adapted)
 
----
 
 ### 3.4 COMMAND ARCHITECTURE
 
@@ -782,7 +764,6 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 </details>
 
----
 
 ### 3.5 SKILLS LIBRARY
 
@@ -849,7 +830,6 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 </details>
 
----
 
 ### 3.6 GATE SYSTEM
 
@@ -863,7 +843,6 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 | **Gate 2** | Skill Routing | REQUIRED | Runs `skill_advisor.py` against the request. Confidence >= 0.8 means the skill must be loaded. Ensures the right domain expertise is always in context |
 | **Gate 3** | Spec Folder | HARD BLOCK | Overrides Gates 1-2. Asks: A) Existing folder? B) New folder? C) Update related? D) Skip? E) Phase folder? No file changes without an answer |
 
----
 
 #### How Requests Flow Through Gates
 
@@ -901,14 +880,12 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
   └─────────────────────────────────────────┘
 ```
 
----
 
 #### Post-Execution Rules
 
 - **Memory Save** (HARD BLOCK) — Triggered by "save context" or `/memory:save`. Must use `generate-context.js` -- no manual memory file creation.
 - **Completion Verification** (HARD BLOCK) — Triggered by claiming "done" or "complete". Must load `checklist.md` and verify ALL items with evidence.
 
----
 
 #### Analysis Lenses
 
@@ -923,13 +900,11 @@ Applied silently during gate processing on every request:
 
 Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS.md).
 
----
 
 ### 3.7 CODE MODE MCP
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Think of it like a universal adapter -- instead of loading 47 separate tool definitions into the context window (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens). That is a 98.7% reduction.
 
----
 
 #### Native MCP Servers
 
@@ -968,7 +943,6 @@ Defined in `opencode.json`:
 
 </details>
 
----
 
 #### Performance
 
@@ -985,53 +959,12 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 
 <!-- /ANCHOR:features -->
 
----
-
-<!-- ANCHOR:structure -->
-## 4. STRUCTURE
-
-```
-opencode-spec-kit-framework/
-├── .opencode/                    # OpenCode runtime (source of truth)
-│   ├── agent/                   # 10 custom agent definitions
-│   ├── command/                 # 22 command entry files across 4 namespaces
-│   │   ├── spec_kit/            # 8 spec workflow commands
-│   │   ├── memory/              # 6 memory commands
-│   │   ├── create/              # 7 creation commands
-│   │   └── agent_router.md      # 1 utility command
-│   ├── skill/                   # 18 skills
-│   │   ├── system-spec-kit/     # Documentation + memory MCP server
-│   │   ├── sk-doc/              # Markdown quality and templates
-│   │   ├── sk-code--*/          # Code workflow skills (4)
-│   │   ├── mcp-*/               # MCP integration skills (5)
-│   │   ├── cli-*/               # Cross-AI CLI skills (4)
-│   │   └── sk-*/                # Other skills (3)
-│   └── specs/                   # Active spec folders
-│       ├── 01--[project]/       # Project-specific specs
-│       └── 02--system-spec-kit/ # Framework development specs
-├── .claude/agents/              # Claude Code agent adapters (10 files)
-├── .gemini/agents/              # Gemini CLI agent adapters (10 files)
-├── CLAUDE.md                    # Gate definitions + behavior rules
-├── AGENTS.md                    # Agent routing + capability reference
-├── opencode.json                # MCP server configuration (4 servers)
-└── .utcp_config.json            # Code Mode external tool registrations
-```
-
-### Key Files
-
-- **`CLAUDE.md`** — Primary behavior framework: gates, skills, coding rules
-- **`AGENTS.md`** — Agent definitions, routing logic, capability reference
-- **`opencode.json`** — MCP server bindings (4 servers: memory, code mode, CocoIndex, sequential thinking)
-- **`.utcp_config.json`** — Code Mode external tool registrations (Figma, GitHub, Chrome, ClickUp, Webflow)
-- **`.opencode/skill/system-spec-kit/mcp_server/`** — Memory MCP server source and build
-- **`.opencode/skill/system-spec-kit/scripts/`** — CLI scripts for memory and validation
-
-<!-- /ANCHOR:structure -->
-
----
 
 <!-- ANCHOR:configuration -->
-## 5. CONFIGURATION
+
+---
+
+## 4. CONFIGURATION
 
 ### Core Configuration Files
 
@@ -1121,10 +1054,12 @@ Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/databa
 
 <!-- /ANCHOR:configuration -->
 
----
 
 <!-- ANCHOR:usage-examples -->
-## 6. USAGE EXAMPLES
+
+---
+
+## 5. USAGE EXAMPLES
 
 ### Example 1: Start a New Feature
 
@@ -1136,7 +1071,6 @@ Use `/spec_kit:complete` to run the full workflow -- research, plan, implementat
 
 This creates a spec folder under `.opencode/specs/`, researches the codebase, builds a plan, implements it and saves memory automatically. When you come back tomorrow, the memory engine remembers everything about this feature.
 
----
 
 ### Example 2: Resume After a Crash or Compaction
 
@@ -1148,7 +1082,6 @@ Use `/memory:continue` to recover session context after a context window reset.
 
 The command loads the most recent memory files from the active spec folder and presents a session summary so you can pick up exactly where you left off. Working memory deduplication means follow-up queries skip results you have already seen.
 
----
 
 ### Example 3: Debug a Difficult Problem
 
@@ -1160,7 +1093,6 @@ Use `/spec_kit:debug` to delegate debugging to a fresh-perspective agent with no
 
 The `@debug` agent applies a 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix) and writes a `debug-delegation.md` with findings.
 
----
 
 ### Example 4: Code Review Before Merging
 
@@ -1172,7 +1104,6 @@ Ask `@review` to evaluate your changes before a pull request.
 
 The `@review` agent is read-only, applies the `sk-code--review` skill and returns a findings-first severity report.
 
----
 
 ### Example 5: Save Context Before Ending a Session
 
@@ -1182,7 +1113,6 @@ The `@review` agent is read-only, applies the `sk-code--review` skill and return
 
 This runs `generate-context.js` against your active spec folder, writes a timestamped memory file and indexes it immediately for future retrieval.
 
----
 
 ### Example 6: Deep Research on a Complex Topic
 
@@ -1192,7 +1122,6 @@ This runs `generate-context.js` against your active spec folder, writes a timest
 
 The `@deep-research` agent runs an autonomous investigation loop with externalized state, iterating until it converges on a complete answer or hits the iteration limit.
 
----
 
 ### Common Patterns
 
@@ -1205,154 +1134,57 @@ The `@deep-research` agent runs an autonomous investigation loop with externaliz
 
 <!-- /ANCHOR:usage-examples -->
 
----
-
-<!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
-
-### Memory server fails to start
-
-**What you see:** OpenCode reports MCP connection error on startup.
-
-**Common causes:** The memory server binary has not been built, or Node.js is below v18.
-
-**Fix:**
-```bash
-# Build the memory server
-cd .opencode/skill/system-spec-kit/mcp_server
-npm install && npm run build
-
-# Verify Node.js version
-node --version
-# Expected: v18.x.x or higher
-```
-
----
-
-### No embeddings generated (memory search returns no results)
-
-**What you see:** `memory_context()` returns empty results even for queries that should match.
-
-**Common causes:** No embedding provider is configured and HuggingFace Local failed to initialize.
-
-**Fix:**
-```bash
-# Set a Voyage AI key (recommended)
-export VOYAGE_API_KEY="your-key-here"
-
-# Or set an OpenAI key
-export OPENAI_API_KEY="your-key-here"
-
-# Then re-run memory indexing
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]
-```
-
----
-
-### Gate 3 asks for a spec folder on every message
-
-**What you see:** Every request triggers the spec folder question, even for read-only tasks.
-
-**Common causes:** The request contains a trigger word that the gate system interprets as a file modification intent.
-
-**Fix:** Use "skip context" or add `[skip]` to your message to bypass the gate for read-only exploration. Example: `[skip] What does the auth middleware do?`
-
----
-
-### `skill_advisor.py` returns low confidence
-
-**What you see:** Gate 2 reports confidence below 0.8 and no skill is loaded.
-
-**Common causes:** The request is ambiguous or the skill system does not have a strong match.
-
-**Fix:** Either rephrase the request with more domain-specific terms, or explicitly name the skill: "Using sk-doc, improve this README."
-
----
-
-### Quick Fixes
-
-- **Memory DB locked** — Run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --checkpoint`
-- **Stale memory index** — `/memory:manage` then select "reindex"
-- **Wrong spec folder picked up** — Explicitly set folder: `/memory:save specs/###-folder-name`
-- **Command not found** — Verify `.opencode/command/` contains the `.md` file for the command
-- **Agent not routing correctly** — Check `.claude/agents/` or `.opencode/agent/` for the agent definition file
-
-### Diagnostic Commands
-
-```bash
-# Check memory database health
-node .opencode/skill/system-spec-kit/scripts/dist/memory/validate-memory-quality.js
-
-# List all spec folders
-ls .opencode/specs/
-
-# Verify MCP server is running
-node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js --version
-
-# Check skill advisor output for a query
-python3 .opencode/skill/scripts/skill_advisor.py "your task description" --threshold 0.8
-```
-
-<!-- /ANCHOR:troubleshooting -->
-
----
 
 <!-- ANCHOR:faq -->
-## 8. FAQ
+
+---
+
+## 6. FAQ
 
 **Q: Do I need all 18 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -- `system-spec-kit` and `sk-doc` -- cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
----
 
 **Q: Is this only for OpenCode, or does it work with other runtimes?**
 
 A: It works with OpenCode, Codex CLI, Claude Code and Gemini CLI. Agent definitions are mirrored across all four runtime directories. Each runtime has its own adapter files that translate the source-of-truth definitions into the format that runtime expects.
 
----
 
 **Q: What happens if I do not use a spec folder?**
 
 A: Gate 3 blocks file modifications until a spec folder answer is provided. You can skip it with option D, but skipped sessions are undocumented and will not be recoverable via memory search. For trivial changes under 5 characters in a single file, Gate 3 does not trigger.
 
----
 
 **Q: How does the memory system know what is relevant to my current task?**
 
 A: Every memory file has YAML frontmatter with tags, context type and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search across all indexed memory files and returns the top matches. The system classifies your intent (7 types), routes by complexity and applies Reciprocal Rank Fusion to combine results from all channels.
 
----
 
 **Q: Can I use this framework without the cognitive memory features?**
 
 A: Yes. The Spec Kit documentation workflow (Gate 3, spec folders, templates) works independently of the memory MCP server. You will not have cross-session memory retrieval, but you will still get structured documentation, agent routing and skill loading.
 
----
 
 **Q: How do I add a new skill to the framework?**
 
 A: Use `/create:sk-skill` to scaffold the skill structure. The command creates the `SKILL.md`, references and assets directories following the `sk-doc` template. Then register the skill in `.opencode/skill/README.md`.
 
----
 
 **Q: What does "local-first" mean for the memory system?**
 
 A: The memory database is a SQLite file on your local machine. No session data, code or context is sent to any external service unless you configure a cloud embedding provider (Voyage AI or OpenAI). HuggingFace Local embeddings run entirely on-device.
 
----
 
 **Q: How do I contribute a new agent definition?**
 
 A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.claude/agents/`, `.codex/agents/` and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
 
----
 
 **Q: How many MCP tools are there and where are they defined?**
 
 A: 42 total across 4 native MCP servers: 33 memory tools (spec_kit_memory), 7 code mode tools, 1 semantic code search tool (cocoindex_code) and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 33 memory tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`.
 
----
 
 **Q: What is the feature catalog?**
 
@@ -1360,10 +1192,12 @@ A: The feature catalog is a 222-entry reference across 21 categories documenting
 
 <!-- /ANCHOR:faq -->
 
----
 
 <!-- ANCHOR:related-documents -->
-## 9. RELATED DOCUMENTS
+
+---
+
+## 7. RELATED DOCUMENTS
 
 ### Internal Documentation
 
@@ -1387,6 +1221,5 @@ A: The feature catalog is a 222-entry reference across 21 categories documenting
 
 <!-- /ANCHOR:related-documents -->
 
----
 
 *Documentation version: 4.0 | Last updated: 2026-03-25 | Framework: 12 agents, 18 skills, 22 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
