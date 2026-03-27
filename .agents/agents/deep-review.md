@@ -25,7 +25,7 @@ Executes ONE review iteration within an autonomous review loop. Reads externaliz
 
 **IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and @deep-research (state protocol, JSONL, iteration lifecycle). It reviews code but does NOT modify it.
 
-> **SPEC FOLDER PERMISSION:** @deep-review may write only `scratch/` artifacts inside the active spec folder (iteration artifacts, strategy, JSONL, dashboard). Review target files are strictly READ-ONLY, and writes outside `scratch/` are not part of this agent contract.
+> **SPEC FOLDER PERMISSION:** @deep-review may write only `review/` artifacts inside the active spec folder (iteration artifacts, strategy, JSONL, dashboard, report). Review target files are strictly READ-ONLY, and writes outside `review/` are not part of this agent contract.
 
 ---
 
@@ -48,7 +48,7 @@ Every iteration follows this exact sequence:
 2. DETERMINE FOCUS ─> Select dimension from strategy "Next Focus"
 3. EXECUTE REVIEW ──> 3-5 analysis actions (Read, Grep, Glob, Bash)
 4. CLASSIFY FINDINGS > Assign P0/P1/P2 with file:line evidence
-5. WRITE FINDINGS ──> Create scratch/iteration-NNN.md
+5. WRITE FINDINGS ──> Create review/iteration-NNN.md
 6. UPDATE STRATEGY ─> Edit strategy.md sections
 7. APPEND JSONL ────> Add ONE iteration record
 ```
@@ -57,9 +57,9 @@ Every iteration follows this exact sequence:
 
 #### Step 1: Read State
 Read these files (paths provided in dispatch context):
-- `scratch/deep-research-state.jsonl` -- Understand iteration history
-- `scratch/deep-review-strategy.md` -- Understand what dimensions to review
-- `scratch/deep-research-config.json` -- Read review configuration (read-only)
+- `review/deep-research-state.jsonl` -- Understand iteration history
+- `review/deep-review-strategy.md` -- Understand what dimensions to review
+- `review/deep-research-config.json` -- Read review configuration (read-only)
 
 Extract from state:
 - Current iteration number (count JSONL iteration records + 1)
@@ -138,7 +138,7 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `scratch/iteration-NNN.md` with this structure:
+Create `review/iteration-NNN.md` with this structure:
 
 ```markdown
 # Review Iteration [N]: [Dimension] - [Focus Area]
@@ -215,7 +215,7 @@ Create `scratch/iteration-NNN.md` with this structure:
 ```
 
 #### Step 6: Update Strategy
-Edit `scratch/deep-review-strategy.md`:
+Edit `review/deep-review-strategy.md`:
 
 1. Mark dimension as reviewed if covered (move from "Review Dimensions" to "Completed Dimensions" with score)
 2. Update "Running Findings" counts (P0/P1/P2 totals)
@@ -225,7 +225,7 @@ Edit `scratch/deep-review-strategy.md`:
 6. Set "Next Focus" for next iteration
 
 #### Step 7: Append JSONL
-Append ONE line to `scratch/deep-research-state.jsonl`:
+Append ONE line to `review/deep-research-state.jsonl`:
 
 ```json
 {"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","findingsSummary":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"findingsRefined":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":{"summary":{"required":N,"executed":N,"pass":N,"partial":N,"fail":N,"blocked":N,"notApplicable":N,"gatingFailures":N},"results":[{"protocolId":"spec_code","status":"pass|partial|fail","gateClass":"hard|advisory","applicable":true,"counts":{"pass":N,"partial":N,"fail":N},"evidence":["path/to/file:line"],"findingRefs":["P1-001"],"summary":"One-line traceability result."}]},"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
@@ -335,10 +335,10 @@ All paths are relative to the spec folder provided in dispatch context.
 
 | File | Path | Operation |
 |------|------|-----------|
-| Config | `scratch/deep-research-config.json` | Read only |
-| State log | `scratch/deep-research-state.jsonl` | Read + Append |
-| Strategy | `scratch/deep-review-strategy.md` | Read + Edit |
-| Iteration findings | `scratch/iteration-{NNN}.md` | Write (create new) |
+| Config | `review/deep-research-config.json` | Read only |
+| State log | `review/deep-research-state.jsonl` | Read + Append |
+| Strategy | `review/deep-review-strategy.md` | Read + Edit |
+| Iteration findings | `review/iteration-{NNN}.md` | Write (create new) |
 
 ### Iteration Number Derivation
 
@@ -354,7 +354,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Strategy: Use Edit tool to modify specific sections (never Write which overwrites).
 - Iteration file: Use Write tool to create new file (should not exist yet).
 - **CRITICAL: Review target files are READ-ONLY. NEVER edit code under review.**
-- Only write to: `scratch/iteration-NNN.md`, `scratch/deep-review-strategy.md`, `scratch/deep-research-state.jsonl`
+- Only write to: `review/iteration-NNN.md`, `review/deep-review-strategy.md`, `review/deep-research-state.jsonl`
 
 ---
 
@@ -451,8 +451,8 @@ REVIEW ITERATION VERIFICATION:
 [x] All findings cite file:line evidence
 [x] Hunter/Skeptic/Referee run on P0 candidates
 [x] New P0/P1 findings include typed claim-adjudication packets
-[x] scratch/iteration-NNN.md created with all sections
-[x] deep-review-strategy.md updated (dimensions, findings, next focus)
+[x] review/iteration-NNN.md created with all sections
+[x] review/deep-review-strategy.md updated (dimensions, findings, next focus)
 [x] deep-research-state.jsonl appended with exactly ONE record
 [x] traceabilityChecks recorded when protocol evidence was reviewed
 [x] newFindingsRatio calculated honestly with justification
@@ -478,9 +478,9 @@ Return this summary to the dispatcher after completing the iteration:
 **Recommended next focus**: [recommendation]
 
 **Files written**:
-- scratch/iteration-[NNN].md
-- scratch/deep-research-state.jsonl (appended)
-- scratch/deep-review-strategy.md (updated)
+- review/iteration-[NNN].md
+- review/deep-research-state.jsonl (appended)
+- review/deep-review-strategy.md (updated)
 
 **Status**: [complete | timeout | error | stuck | insight | thought]
 ```

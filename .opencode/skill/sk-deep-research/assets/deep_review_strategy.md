@@ -1,11 +1,11 @@
 ---
 title: Deep Review Strategy Template
-description: Runtime template copied to scratch/ during initialization to track review progress, dimension coverage, findings, and outcomes across iterations.
+description: Runtime template copied to review/ during initialization to track review progress, dimension coverage, findings, and outcomes across iterations.
 ---
 
 # Deep Review Strategy - Session Tracking Template
 
-Runtime template copied to `{spec_folder}/scratch/` during initialization. Tracks review progress across iterations.
+Runtime template copied to `{spec_folder}/review/` during initialization. Tracks review progress across iterations.
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -16,7 +16,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ### Usage
 
-- **Init:** Orchestrator copies this template to `{spec_folder}/scratch/deep-review-strategy.md` and populates Topic, Review Dimensions, Known Context, and Review Boundaries from config and memory context.
+- **Init:** Orchestrator copies this template to `{spec_folder}/review/deep-review-strategy.md` and populates Topic, Review Dimensions, Known Context, and Review Boundaries from config and memory context.
 - **Per iteration:** Agent reads Next Focus, reviews the assigned dimension/files, updates findings, marks dimensions complete, and sets new Next Focus.
 - **Mutability:** Mutable — updated by both orchestrator and agents throughout the session.
 - **Protection:** None (shared mutable state). Orchestrator validates consistency on resume.

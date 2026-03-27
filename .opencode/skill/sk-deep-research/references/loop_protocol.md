@@ -173,7 +173,7 @@ After dispatch, the orchestrator monitors the running iteration against budget l
 
 #### Step 4: Evaluate Results
 After agent completes:
-1. Verify `scratch/iteration-{NNN}.md` was created
+1. Verify `{spec_folder}/review/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
 3. Verify strategy.md was updated
 4. Extract `newInfoRatio` from JSONL record
@@ -495,7 +495,7 @@ Preserve research context to memory system.
 | JSONL malformed | Loop | Skip malformed lines, reconstruct from valid entries |
 | 3+ consecutive failures | Loop | Halt loop, enter synthesis with partial findings |
 | Agent dispatch failure (API overload, timeout) | Loop | Escalate through the documented recovery ladder in order. Direct mode fallback is reference-only unless the runtime explicitly supports it. |
-| Memory save fails | Save | Save to scratch/ as backup, log error |
+| Memory save fails | Save | Research mode saves to `scratch/` as backup; review mode preserves the `review/` packet as backup, then logs the error |
 
 ### State Recovery Protocol
 
@@ -558,9 +558,9 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - **Core**: `spec_code`, `checklist_evidence`
    - **Overlay**: `skill_agent`, `agent_cross_runtime`, `feature_catalog_code`, `playbook_capability`
    Only schedule overlay protocols that apply to the target type.
-6. **Write config**: `scratch/deep-research-config.json` with `mode: "review"` and review fields
+6. **Write config**: `{spec_folder}/review/deep-research-config.json` with `mode: "review"` and review fields
 7. **Initialize state log**: First JSONL line with config record including `mode: "review"`
-8. **Initialize strategy**: `scratch/deep-review-strategy.md` from review template with:
+8. **Initialize strategy**: `{spec_folder}/review/deep-review-strategy.md` from review template with:
    - Topic (review target description)
    - Review Dimensions checklist
    - Files Under Review table
@@ -573,9 +573,9 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - In **auto mode**: accept automatically and continue
 
 #### Outputs
-- `scratch/deep-research-config.json` (with review fields)
-- `scratch/deep-research-state.jsonl` (1 line)
-- `scratch/deep-review-strategy.md`
+- `{spec_folder}/review/deep-research-config.json` (with review fields)
+- `{spec_folder}/review/deep-research-state.jsonl` (1 line)
+- `{spec_folder}/review/deep-review-strategy.md`
 
 ### 6.2 Review Loop
 
@@ -583,7 +583,7 @@ The iteration loop follows the same Step 1-5 structure as research mode with the
 
 #### Step 1: Read State (adapted)
 - Read JSONL to count iterations and extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
-- Read `deep-review-strategy.md` to get next focus dimension/files, remaining dimensions, and protocol gaps
+- Read `{spec_folder}/review/deep-review-strategy.md` to get next focus dimension/files, remaining dimensions, and protocol gaps
 
 #### Step 2: Check Convergence (adapted)
 Run `shouldContinue_review()` (see convergence.md Section 10.3):
@@ -626,10 +626,10 @@ Traceability Protocols:
   - Overlay: {overlay_protocols}
 Active Findings: {findingsSummary}
 State Files:
-  - Config: {spec_folder}/scratch/deep-research-config.json
-  - State: {spec_folder}/scratch/deep-research-state.jsonl
-  - Strategy: {spec_folder}/scratch/deep-review-strategy.md
-Output: Write findings to {spec_folder}/scratch/iteration-{NNN}.md
+  - Config: {spec_folder}/review/deep-research-config.json
+  - State: {spec_folder}/review/deep-research-state.jsonl
+  - Strategy: {spec_folder}/review/deep-review-strategy.md
+Output: Write findings to {spec_folder}/review/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
@@ -651,7 +651,7 @@ Each protocol produces a structured result in `traceabilityChecks.results[]` wit
 
 #### Step 4: Evaluate Results (adapted)
 After agent completes:
-1. Verify `scratch/iteration-{NNN}.md` was created
+1. Verify `{spec_folder}/review/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with review iteration fields: `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
 3. Verify strategy.md was updated (dimension progress, findings count, protocol status)
 4. Extract `newFindingsRatio` from JSONL record
@@ -679,7 +679,7 @@ Protocol:
 This adjudication step happens after iteration evaluation and before the next convergence math run.
 
 #### Step 4b: Generate Dashboard (adapted)
-Generate `scratch/deep-review-dashboard.md` with review-specific sections:
+Generate `{spec_folder}/review/deep-review-dashboard.md` with review-specific sections:
 - Status with provisional verdict and `hasAdvisories`
 - Findings summary (P0/P1/P2 counts with deltas)
 - Progress table with dimension column
@@ -689,11 +689,11 @@ Generate `scratch/deep-review-dashboard.md` with review-specific sections:
 ### 6.3 Review Synthesis
 
 #### Purpose
-Compile all iteration findings into the final `review-report.md`.
+Compile all iteration findings into the final `{spec_folder}/review/review-report.md`.
 
 #### Steps
 
-1. **Read all iteration files**: `scratch/iteration-*.md`
+1. **Read all iteration files**: `{spec_folder}/review/iteration-*.md`
 2. **Read strategy**: Final state of dimensions, findings, coverage, and protocol status
 3. **Finding registry dedup**: Consolidate findings across iterations:
    - Group findings by file + line range + root cause
@@ -701,7 +701,7 @@ Compile all iteration findings into the final `review-report.md`.
    - Assign final findingIds (F001, F002, ...)
 4. **Severity reconciliation**: Use adjudicated `finalSeverity` for any P0/P1 that changed during review
 5. **Replay validation**: Recompute the convergence outcome from JSONL state before finalizing the report
-6. **Compile review-report.md**: Generate the 9-section contract (see state_format.md Section 8):
+6. **Compile `{spec_folder}/review/review-report.md`**: Generate the 9-section contract (see state_format.md Section 8):
    - Executive Summary
    - Planning Trigger
    - Active Finding Registry

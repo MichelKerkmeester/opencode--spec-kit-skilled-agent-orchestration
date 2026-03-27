@@ -25,6 +25,8 @@ The deep research loop uses 6 state files to maintain continuity across fresh-co
 
 All state files live in `{spec_folder}/scratch/` except `research.md` which lives at `{spec_folder}/research.md`. `research.md` is workflow-owned canonical synthesis output.
 
+Review mode uses the equivalent packet under `{spec_folder}/review/`, with `deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`, `iteration-NNN.md`, `.deep-research-pause`, and `review-report.md` all stored together in that folder.
+
 ---
 
 <!-- /ANCHOR:overview -->
@@ -345,6 +347,8 @@ Updated at the end of each iteration. Template at `assets/deep_research_strategy
 
 Write-once files. One per iteration, named with zero-padded 3-digit number.
 
+Review mode writes the equivalent files to `{spec_folder}/review/iteration-NNN.md`.
+
 ### Naming Convention
 
 ```
@@ -404,6 +408,8 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 ## 7. DASHBOARD (scratch/deep-research-dashboard.md)
 
 Auto-generated summary view of the research session. Never manually edited.
+
+Review mode writes the equivalent dashboard to `{spec_folder}/review/deep-review-dashboard.md`.
 
 ### Location and Lifecycle
 
@@ -663,7 +669,7 @@ Sections carried forward unchanged: Topic, Non-Goals, Stop Conditions, What Work
 
 ### review-report.md Section List
 
-The review synthesis output (`{spec_folder}/review-report.md`) contains 9 sections:
+The review synthesis output (`{spec_folder}/review/review-report.md`) contains 9 sections:
 
 | # | Section | Description |
 |---|---------|-------------|

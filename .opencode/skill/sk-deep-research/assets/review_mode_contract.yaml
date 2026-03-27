@@ -199,7 +199,7 @@ contract:
   # Output contracts consumed by synthesis and replay tooling.
   outputs:
     reviewReport:
-      pathPattern: "{spec_folder}/review-report.md"
+      pathPattern: "{spec_folder}/review/review-report.md"
       sections:
         - executive-summary
         - planning-trigger
@@ -211,7 +211,7 @@ contract:
         - deferred-items
         - audit-appendix
     strategy:
-      pathPattern: "{spec_folder}/scratch/deep-review-strategy.md"
+      pathPattern: "{spec_folder}/review/deep-review-strategy.md"
       requiredSections:
         - topic
         - review-dimensions
@@ -227,7 +227,7 @@ contract:
         - files-under-review
         - review-boundaries
     jsonl:
-      pathPattern: "{spec_folder}/scratch/deep-research-state.jsonl"
+      pathPattern: "{spec_folder}/review/deep-research-state.jsonl"
       iterationRecord:
         required:
           - type

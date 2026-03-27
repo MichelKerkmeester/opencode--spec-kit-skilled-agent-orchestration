@@ -72,8 +72,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
        RESEARCH: maxIterations=10, convergenceThreshold=0.05
        REVIEW:   maxIterations=7,  convergenceThreshold=0.10
 
-4. Search for related spec folders under the real specs root:
-   $ find .opencode/specs -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort | tail -10
+4. Search for related spec folders across alias roots:
+   $ find specs .opencode/specs -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort | tail -10
 
 5. Search for prior work (background):
    - memory_context({ input: research_topic OR review_target OR "deep-research", mode: "focused", includeContent: true })
@@ -93,9 +93,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
    Q1. Spec Folder (required):
      A) Use existing [suggest if found]
-     B) Create new under `.opencode/specs/[track]/[###]-[slug]/`
+     B) Create new under `specs/[track]/[###]-[slug]/` (accept `.opencode/specs/` alias roots when already in use)
      C) Update related [if match found]
-     D) Phase folder (e.g., `.opencode/specs/NN-track/NNN-name/001-phase/`)
+     D) Phase folder (e.g., `specs/NN-track/NNN-name/001-phase/` or matching `.opencode/specs/` alias)
 
    Q2. Execution Mode (if no suffix):
      A) Autonomous -- all iterations without approval
@@ -122,9 +122,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
    Q1. Spec Folder (required):
      A) Use existing [suggest if found]
-     B) Create new under `.opencode/specs/[track]/[###]-[slug]/`
+     B) Create new under `specs/[track]/[###]-[slug]/` (accept `.opencode/specs/` alias roots when already in use)
      C) Update related [if match found]
-     D) Phase folder (e.g., `.opencode/specs/NN-track/NNN-name/001-phase/`)
+     D) Phase folder (e.g., `specs/NN-track/NNN-name/001-phase/` or matching `.opencode/specs/` alias)
 
    Q2. Execution Mode (if not set via suffix):
      A) Autonomous -- all iterations without approval
@@ -139,9 +139,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
    Q1. Spec Folder (required):
      A) Use existing [suggest if found]
-     B) Create new under `.opencode/specs/[track]/[###]-[slug]/`
+     B) Create new under `specs/[track]/[###]-[slug]/` (accept `.opencode/specs/` alias roots when already in use)
      C) Update related [if match found]
-     D) Phase folder (e.g., `.opencode/specs/NN-track/NNN-name/001-phase/`)
+     D) Phase folder (e.g., `specs/NN-track/NNN-name/001-phase/` or matching `.opencode/specs/` alias)
 
    Q2. Execution Mode (if no suffix):
      A) Autonomous -- all iterations without approval
@@ -209,7 +209,7 @@ operating_mode:
 
 Run an iterative loop for deep research or code review:
 - **Research mode:** Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, and synthesize findings into research.md. Use when deep investigation requiring multiple rounds of discovery.
-- **Review mode:** Initialize state, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, and synthesize findings into review-report.md. Use when auditing code/specs for quality and release readiness.
+- **Review mode:** Initialize the review packet under `{spec_folder}/review/`, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, and synthesize findings into `{spec_folder}/review/review-report.md`. Use when auditing code/specs for quality and release readiness.
 
 ---
 
@@ -218,7 +218,7 @@ Run an iterative loop for deep research or code review:
 **Inputs:** `$ARGUMENTS` -- Research topic or review target with optional flags and mode suffix
 **Outputs:**
 - RESEARCH mode: Spec folder with research.md + state files + `STATUS=<OK|FAIL|CANCELLED>`
-- REVIEW mode: Spec folder with review-report.md + state files + `STATUS=<OK|FAIL|CANCELLED>`
+- REVIEW mode: Spec folder with `{spec_folder}/review/` packet + state files + `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
 
@@ -237,9 +237,9 @@ Run an iterative loop for deep research or code review:
 
 | Phase | Name | Purpose | Outputs |
 |-------|------|---------|---------|
-| Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | State files in scratch/ |
-| Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | iteration-NNN.md files, dashboard.md |
-| Synth | Synthesize | Build finding registry, deduplicate, compile review-report.md | review-report.md (9 sections) |
+| Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | Review packet in `{spec_folder}/review/` |
+| Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | `review/iteration-NNN.md` files, `review/deep-review-dashboard.md` |
+| Synth | Synthesize | Build finding registry, deduplicate, compile `review/review-report.md` | `review/review-report.md` (9 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
 ### Execution Modes
@@ -287,7 +287,7 @@ STATUS=OK PATH=[spec-folder-path]
 Deep review complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_dimensions_clean]
 Findings: P0=[N] P1=[N] P2=[N] | Verdict: [PASS|CONDITIONAL|FAIL] [PASS may include hasAdvisories=true]
-Artifacts: review-report.md, [N] iteration files, memory/*.md
+Artifacts: `review/review-report.md`, `[N]` iteration files in `review/`, memory/*.md
 Ready for: /spec_kit:plan [remediation] (if FAIL/CONDITIONAL)
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -344,7 +344,7 @@ Key references:
 ### Review Mode
 ```
 /spec_kit:deep-research:review "skill:sk-deep-research"
-/spec_kit:deep-research:review:auto ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/"
+/spec_kit:deep-research:review:auto "specs/03--commands-and-skills/030-sk-deep-research-review-mode/"
 /spec_kit:deep-research:review:confirm "agent:deep-research" --max-iterations 5
 /spec_kit:deep-research:review "track:03--commands-and-skills"
 /spec_kit:deep-research:review ".opencode/skill/sk-git/**/*.md" --convergence 0.15
@@ -373,7 +373,7 @@ Key references:
 | Agent dispatch timeout | Retry once with reduced scope, then mark timeout |
 | State file missing | Reconstruct from iteration files |
 | 3+ consecutive failures | Halt loop, enter synthesis with partial findings |
-| Memory save failure | Save to scratch/ as backup |
+| Memory save failure | Research mode saves to `scratch/` as backup; review mode preserves the `review/` packet as backup |
 
 ---
 
@@ -396,7 +396,7 @@ Key references:
 - Dimension coverage as convergence signal (all dimensions must be reviewed)
 - Cross-reference verification across spec/code/test boundaries
 - Finding deduplication and progressive synthesis
-- 9-section review-report.md with 3-verdict release readiness assessment
+- 9-section `review/review-report.md` with 3-verdict release readiness assessment
 - Does NOT proceed to implementation (outputs remediation plan for `/spec_kit:plan`)
 
 ---

@@ -99,7 +99,7 @@ workflow:
         action: "Validate required setup bindings and executable workflow contract before any file writes"
         verify:
           - required_values_present: [research_topic, spec_folder, max_iterations, convergence_threshold]
-          - spec_folder_is_within: ".opencode/specs/"
+          - spec_folder_is_within: "specs/ or .opencode/specs/ (canonicalize alias roots before validation)"
           - unresolved_placeholders: "FAIL if any user-facing template references placeholders not produced by earlier steps"
           - tool_contract: "FAIL if executable steps reference tools outside the command allowlist"
         on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"

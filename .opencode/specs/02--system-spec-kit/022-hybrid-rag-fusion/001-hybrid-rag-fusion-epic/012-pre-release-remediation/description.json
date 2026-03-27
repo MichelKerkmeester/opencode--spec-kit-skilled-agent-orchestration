@@ -18,8 +18,9 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "26-03-26_18-27__implemented-spec-012-pre-release-remediation.md"
+    "26-03-26_18-27__implemented-spec-012-pre-release-remediation.md",
+    "26-03-26_18-47__completed-full-012-pre-release-remediation.md"
   ]
 }

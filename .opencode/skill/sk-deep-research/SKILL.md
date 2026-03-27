@@ -189,6 +189,19 @@ User invokes: /spec_kit:deep-research "topic"
     └─────────────────────────────────┘
 ```
 
+Review mode uses a separate packet under `{spec_folder}/review/`:
+
+```
+review/
+  deep-research-config.json            # Immutable after init: review parameters
+  deep-research-state.jsonl            # Append-only review iteration log
+  deep-review-strategy.md              # Review dimensions, findings, next focus
+  deep-review-dashboard.md             # Auto-generated review dashboard
+  iteration-NNN.md                     # Write-once review findings
+  .deep-research-pause                 # Pause sentinel checked between review iterations
+  review-report.md                     # Final review report
+```
+
 ### Core Innovation: Fresh Context Per Iteration
 
 Each agent dispatch gets a fresh context window. State continuity comes from files, not memory. This solves context degradation in long research sessions.
@@ -308,10 +321,10 @@ These concepts remain documented for future design work, but they are not part o
 
 | Template | Purpose | Usage |
 |----------|---------|-------|
-| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to scratch/ during init |
-| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to scratch/ during init |
+| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to `scratch/` during research init |
+| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to `scratch/` during research init |
 | [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
-| [deep_review_strategy.md](assets/deep_review_strategy.md) | Review strategy file | Copied to scratch/ during review init |
+| [deep_review_strategy.md](assets/deep_review_strategy.md) | Review strategy file | Copied to `{spec_folder}/review/` during review init |
 | [deep_review_dashboard.md](assets/deep_review_dashboard.md) | Review dashboard template | Auto-generated each review iteration |
 
 ### Review Mode Resources
@@ -363,7 +376,7 @@ Every completed loop produces a convergence report:
 |----------|-------------|
 | Dimension coverage | All configured review dimensions reviewed with evidence |
 | Finding citations | P0/P1 findings include `file:line` citations |
-| Report completeness | `review-report.md` has all 9 sections |
+| Report completeness | `{spec_folder}/review/review-report.md` has all 9 sections |
 | Verdict justification | Release readiness verdict (PASS/CONDITIONAL/FAIL) is justified with findings; PASS includes hasAdvisories metadata when P2 findings exist |
 | Adversarial recheck | P0 findings confirmed via adversarial self-check before final report |
 
@@ -394,6 +407,11 @@ During research (each iteration):
   Agent writes scratch/iteration-NNN.md
   Agent updates scratch/deep-research-strategy.md
   Agent appends scratch/deep-research-state.jsonl
+
+During review (each iteration):
+  Agent writes {spec_folder}/review/iteration-NNN.md
+  Agent updates {spec_folder}/review/deep-review-strategy.md
+  Agent appends {spec_folder}/review/deep-research-state.jsonl
 
 After research:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]

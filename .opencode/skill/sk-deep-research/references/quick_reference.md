@@ -228,6 +228,16 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 | `/spec_kit:deep-research:review:auto "target"` | Run autonomous review (no approval gates) |
 | `/spec_kit:deep-research:review:confirm "target"` | Run review with approval gates at each iteration |
 
+Review mode stores its packet under `{spec_folder}/review/`:
+
+- Config: `{spec_folder}/review/deep-research-config.json`
+- State log: `{spec_folder}/review/deep-research-state.jsonl`
+- Strategy: `{spec_folder}/review/deep-review-strategy.md`
+- Dashboard: `{spec_folder}/review/deep-review-dashboard.md`
+- Iterations: `{spec_folder}/review/iteration-NNN.md`
+- Pause sentinel: `{spec_folder}/review/.deep-research-pause`
+- Report: `{spec_folder}/review/review-report.md`
+
 ### Review Parameters
 
 | Parameter | Default | Description |
