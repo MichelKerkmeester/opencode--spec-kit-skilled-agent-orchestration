@@ -17,8 +17,8 @@ operating_mode:
   validation: checkpoint_based
 
 resume_philosophy:
-  principle: "Context continuity with user control"
-  approach: "Detect, confirm, load, proceed"
+  principle: "Context continuity with user control and useful defaults"
+  approach: "Detect, recover just enough state, then let the user deepen only if needed"
 
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS
@@ -67,21 +67,32 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["Primary: handover.md (<24h old)", "Primary: Recent memory/*.md (embedded Project State Snapshot)", "Secondary: checklist.md for progress", "Secondary: CONTINUE_SESSION.md for crash recovery"]
-  note: "Prompt around primary sources first; use secondary sources only as fallback context when primary data is unavailable"
+  order: ["Primary: handover.md (<24h old)", "Primary: memory_context(mode: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
+  note: "Try the primary recovery chain first, then let the user choose whether extra memory context is needed"
 
 memory_loading:
   mode: interactive
-  behavior: "Check handover.md (<24h) first, then prompt user to select additional memory files"
+  behavior: "Check handover.md (<24h) first, then run memory_context() in resume mode and only ask for extra memory when the recovery packet is still missing something important"
   options:
-    - { id: A, label: "Load most recent memory file", description: "Quick context refresh" }
-    - { id: B, label: "Load all recent files (up to 3)", description: "Comprehensive context" }
-    - { id: C, label: "List all files and select specific", description: "Choose specific memories" }
-    - { id: D, label: "Skip", description: "Start fresh without prior context" }
+    - { id: A, label: "Fast resume", description: "Just enough context to continue safely" }
+    - { id: B, label: "Fill missing next step / blockers", description: "Target only the missing recovery gaps" }
+    - { id: C, label: "Deep context", description: "Load up to 3 recent files for a fuller picture" }
+    - { id: D, label: "Artifacts only", description: "Use tasks/checklist/handover without extra memory files" }
   mcp_integration:
-    tool: memory_search
+    tool: memory_context
     note: "Call MCP tools directly - NEVER through Code Mode"
-    parameters: { query: "resume context for {spec_folder_name}", specFolder: "{spec_folder_path}", anchors: ['summary', 'state', 'next-steps'] }
+    parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{spec_folder_path}", includeContent: true }
+
+smart_memory_logic:
+  objective: "Recover enough state to continue safely, then let the user choose whether to deepen context"
+  essentials: ["current phase or task", "last confirmed action", "next safe action", "blockers or none", "relevant artifact or file"]
+  sufficiency_rule: "Stop and present the resume brief once next safe action is known plus any two supporting essentials"
+  gap_fill_order:
+    - "If current phase or task is missing, inspect tasks.md/checklist.md/handover.md"
+    - "If next safe action is missing, use memory_context(mode: resume) then targeted memory_search on next-steps/state"
+    - "If blockers are missing, target blockers/summary"
+    - "If a concrete starting point is missing, use tasks.md or implementation-summary.md before loading more memory"
+    - "If ambiguity remains, show the uncertainty and ask the user which direction to investigate"
 
 checkpoint_options:
   session_selection:
@@ -109,9 +120,9 @@ confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with context loading and resume" }
     medium: { range: "40-79%", action: "Proceed with caution - present stale session options" }
-    low: { range: "0-39%", action: "STOP - Ask user about context reliability" }
+    low: { range: "0-39%", action: "STOP - Ask user about context reliability and avoid guessing the next step" }
   scoring_weights: { session_recency: 0.40, artifact_completeness: 0.30, memory_availability: 0.20, codebase_changes: 0.10 }
-  reply_format: ["Confidence: NN%", "Context source: handover|memory", "Next action"]
+  reply_format: ["Confidence: NN%", "Context source: handover|memory", "Now", "Last confirmed", "Next safe action"]
   escalation: { timebox_minutes: 5, failed_threshold: 2, action: "Present options to user with current findings" }
 
 # ─────────────────────────────────────────────────────────────────
@@ -138,36 +149,41 @@ workflow:
         - { label: "Cancel", description: "Cancel resume operation" }
 
   step_2_memory_selection:
-    purpose: Check for handover.md first, then present memory options
+    purpose: Recover the default resume packet first, then let the user deepen only where the packet is still weak
     activities:
       - Check for handover.md in spec_folder (<24h old)
-      - If exists, load and display contents
-      - Extract Last Completed, Next Action, Blockers from handover.md
-      - List memory files sorted by mtime (contain embedded Project State Snapshot)
+      - If recent handover exists, load and display contents
+      - Attempt memory_context() with mode="resume" for the resolved spec folder
+      - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
+      - If essentials are still missing, inspect CONTINUE_SESSION.md when present and recent
+      - Present targeted depth options instead of raw file-loading choices
       - Present numbered options to user, wait for selection
-    context_priority: ["handover.md", "memory/*.md (contains Project State Snapshot)"]
-    outputs: { handover_loaded: "true|false", selected_memory: user_choice, load_count: number }
+    context_priority: ["handover.md", "memory_context(mode: resume)", "CONTINUE_SESSION.md", "memory/*.md (supplemental)"]
+    outputs: { handover_loaded: "true|false", primary_recovery_loaded: "true|false", selected_memory: user_choice, load_count: number }
     checkpoint:
-      question: "Load additional context?"
-      note: "If handover.md loaded, user may skip additional memory"
+      question: "Do you want more context, or is the resume brief already enough?"
+      note: "Prefer the smallest context packet that makes the next action clear"
       options:
-        - { label: "A) Load most recent memory file", description: "Quick context refresh" }
-        - { label: "B) Load all recent files (up to 3)", description: "Comprehensive context" }
-        - { label: "C) List all files and select specific", description: "Choose specific memories" }
-        - { label: "D) Skip", description: "Continue with current context only" }
+        - { label: "A) Fast resume", description: "Current resume brief is enough" }
+        - { label: "B) Fill missing next step / blockers", description: "Target only the missing recovery gaps" }
+        - { label: "C) Deep context", description: "Load up to 3 recent files for a fuller picture" }
+        - { label: "D) Artifacts only", description: "Continue with the current artifacts and no extra memory files" }
 
   step_3_load_memory:
-    purpose: Load selected memory files (in addition to handover.md if loaded)
+    purpose: Fill specific recovery gaps instead of broad-loading memory by default
     activities:
-      - Read selected memory file(s) from step 2
-      - Merge with handover.md context if already loaded
-      - Extract Project State Snapshot (Phase, Active File, Last/Next Action, Blockers)
+      - If the user chose Fast resume, keep the current recovery packet and do not load more
+      - If the user chose Fill missing next step / blockers, run targeted anchored memory_search() only for those gaps
+      - If the user chose Deep context, load up to 3 recent memory files
+      - If the user chose Artifacts only, rely on tasks.md/checklist.md/handover.md and skip supplemental memory
+      - Merge supplemental results with handover and primary recovery context
+      - Extract Project State Snapshot (Phase, Active File, Last confirmed action, Next safe action, Blockers)
       - Parse and summarize combined context
     mcp_tool:
-      name: memory_search
-      note: "Call directly - NEVER through Code Mode. Use anchors for targeted retrieval (~90% token savings)."
-      parameters: { query: "resume context", specFolder: "{detected_spec_folder}", anchors: ['summary', 'state', 'next-steps'], includeContent: true }
-    outputs: { memory_loaded: true, context_source: "handover|memory|combined", context_summary: extracted_context }
+      name: memory_context
+      note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only when more detail is still needed."
+      parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
+    outputs: { memory_loaded: true, context_source: "handover|memory_context|continue_session|memory|combined", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
     validation: context_loaded
 
   step_4_calculate_progress:
@@ -177,8 +193,8 @@ workflow:
     validation: progress_calculated
 
   step_5_present_resume:
-    purpose: Display resume summary and offer continuation options
-    activities: [Display spec folder and last activity, Show progress bars, List artifacts status, Show pending work and next actions, Present continuation options]
+    purpose: Display a concise resume brief and offer continuation options
+    activities: [Display spec folder and last activity, Show progress bars, Show Now/Last confirmed/Next safe action/Blockers, Cite the artifact or task that justifies the recommendation, Present continuation options]
     outputs: { resume_summary: displayed }
     validation: resume_complete
     checkpoint:
@@ -218,12 +234,12 @@ interactive_execution:
   user_feedback_handling: { confirm: "Proceed to next step", select_different: "Show folder selection options", skip: "Proceed without loading memory", cancel: "Abort resume operation" }
 
 crash_recovery:
-  command_reference: "/memory:continue"
-  description: "For crash recovery (context compaction, session interruption) — provides automatic state detection, recovery hints, continuation prompt generation"
+  command_reference: "/spec_kit:resume"
+  description: "Crash recovery is handled inside the resume workflow through handover, resume-mode memory retrieval, crash breadcrumbs, and anchored search fallbacks"
   when_to_use: ["Session interrupted unexpectedly", "Context compaction detected", "Need to recover without handover.md"]
   integration_with_resume:
-    relationship: "/spec_kit:resume = standard continuation | /memory:continue = crash recovery"
-    recommendation: "Use /memory:continue when session crashed; /spec_kit:resume for normal continuation"
+    relationship: "/spec_kit:resume = standard continuation + interrupted-session recovery"
+    recommendation: "Use /spec_kit:resume for both ordinary continuation and crash recovery"
 
 # ─────────────────────────────────────────────────────────────────
 # ERROR RECOVERY
@@ -231,10 +247,11 @@ crash_recovery:
 error_recovery:
   no_active_session: "Report no session, suggest /spec_kit:complete"
   spec_folder_missing: "Report not found, ask user to specify or create"
-  memory_search_failed: { action: "Report error, offer to proceed without context", fallback: "Offer /memory:continue" }
+  memory_search_failed: { action: "Report that supplemental anchored recovery failed", fallback: "Offer to continue with the current /spec_kit:resume context or start fresh" }
   stale_session_detected: "Present stale session options to user"
   user_cancels: "Acknowledge cancellation, exit gracefully"
-  crash_detected: "Suggest /memory:continue for automatic crash recovery"
+  crash_detected: "Continue with the built-in resume recovery chain"
+  insufficient_context: "Show what is known, call out what is still unclear, and ask which missing area to investigate"
 
 # ─────────────────────────────────────────────────────────────────
 # RULES
@@ -248,9 +265,13 @@ rules:
   - display_clear_summary
   - use_mcp_tools_directly
   - respect_user_selections
+  - stop_loading_when_context_is_sufficient
+  - recommend_one_safe_next_action
   NEVER:
   - auto_load_without_confirmation
   - proceed_without_user_approval
   - proceed_without_valid_spec_folder
   - call_mcp_through_code_mode
   - ignore_user_cancellation
+  - dump_extra_memory_when_the_next_step_is_already_clear
+  - guess_missing_state_when_confidence_is_low

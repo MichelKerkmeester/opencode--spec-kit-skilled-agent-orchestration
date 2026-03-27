@@ -1,5 +1,5 @@
 ---
-description: Resume work on an existing spec folder - loads context, shows progress, and continues from last state
+description: Resume or recover work on an existing spec folder - smart memory recovery, crash breadcrumbs, and one clear next step
 argument-hint: "[spec-folder-path] [:auto|:confirm] [--phase-folder=<path>]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, memory_match_triggers, memory_list, memory_stats, memory_delete, memory_update, memory_validate, memory_index_scan, memory_health, checkpoint_create, checkpoint_list, checkpoint_restore, checkpoint_delete, mcp__cocoindex_code__search
 ---
@@ -105,9 +105,12 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      Missing: [list]
      A) Run /spec_kit:plan  B) Select different folder  C) Continue anyway
 
-   Q4. Memory Loading (if memory files exist):
+   Q4. Smart Memory Preference (if memory files exist):
      Found [N] file(s) in [spec_path]/memory/
-     A) Load most recent  B) Load all (1-3 max)  C) Skip
+     A) Fast resume - just enough context to continue safely
+     B) Fill missing next step / blockers
+     C) Deep context - load up to 3 recent files
+     D) Skip extra memory and use artifacts only
 
    Reply format: "A, A" or "A, A, B"
 
@@ -122,8 +125,10 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - memory_choice = [A/B/C from Q4, or N/A]
 
 10. Execute background operations:
-    - IF memory_choice == A: Load most recent memory file
-    - IF memory_choice == B: Load up to 3 recent memory files
+    - IF memory_choice == A: Recover only the default resume packet
+    - IF memory_choice == B: Run targeted gap-filling for next step / blockers
+    - IF memory_choice == C: Load up to 3 recent memory files
+    - IF memory_choice == D: Use artifacts only
     - Calculate progress from tasks.md/checklist.md
 
 11. SET STATUS: PASSED
@@ -174,7 +179,7 @@ Execute steps IN ORDER. Mark each ✅ ONLY after completing ALL activities and v
 | STEP | NAME               | REQUIRED OUTPUT      | VERIFICATION            |
 | ---- | ------------------ | -------------------- | ----------------------- |
 | 1    | Session Detection  | spec_path confirmed  | Path validated          |
-| 2    | Load Memory        | context_loaded       | Most recent file loaded |
+| 2    | Load Memory        | context_loaded       | Recovery packet loaded  |
 | 3    | Calculate Progress | progress_percentages | Tasks/checklist counted |
 | 4    | Present Resume     | resume_summary       | Summary displayed       |
 
@@ -186,7 +191,7 @@ Execute steps IN ORDER. Mark each ✅ ONLY after completing ALL activities and v
 | ---- | ------------------ | -------------------- | ----------------------- |
 | 1    | Session Detection  | spec_path confirmed  | Path validated          |
 | 2    | Memory Selection   | user_choice          | User selected A/B/C/D   |
-| 3    | Load Memory        | context_loaded       | Selected file(s) loaded |
+| 3    | Load Memory        | context_loaded       | Requested gaps loaded   |
 | 4    | Calculate Progress | progress_percentages | Tasks/checklist counted |
 | 5    | Present Resume     | resume_summary       | Summary displayed       |
 
@@ -194,7 +199,7 @@ Execute steps IN ORDER. Mark each ✅ ONLY after completing ALL activities and v
 
 # SpecKit Resume
 
-Resume work on an existing spec folder by detecting the last active session, loading context from memory files, and presenting progress with clear next steps.
+Resume work on an existing spec folder by detecting the last active session, loading just enough useful context to continue safely, and presenting progress with clear next steps.
 
 ```yaml
 role: Expert Developer using Smart SpecKit for Session Recovery
@@ -214,7 +219,7 @@ operating_mode:
 
 ## 6. PURPOSE
 
-Resume work on an existing spec folder by detecting the last active session, loading context from memory files, and presenting progress with next steps. Utility workflow for session continuity.
+Resume work on an existing or recently interrupted spec-folder session by detecting the last active state, loading structured handoff or memory context, and presenting the smallest useful recovery packet: where you are, what happened last, what should happen next, and what might block it. This command owns both normal continuation and crash-recovery routing.
 
 ---
 
@@ -251,20 +256,58 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 
 **Context loading priority (after spec_path confirmed):**
 1. handover.md (exists & <24h) → use handover context
-2. memory/*.{md,txt} → `memory_context()` L1 retrieval
-3. checklist.md → progress state fallback
+2. `memory_context({ mode: "resume" })` → primary interrupted-session recovery path
+3. `CONTINUE_SESSION.md` → crash breadcrumb when present and recent
+4. `memory_search()` with resume anchors → fallback when the summary is thin
+5. checklist.md → progress state fallback
 
 **Stale session (>7 days):** Warn user, offer: A) Resume anyway, B) Fresh start, C) Review changes, D) Cancel
 
 ---
 
-## 10. OUTPUT FORMATS
+## 10. SMART MEMORY LOGIC
+
+**Goal:** recover enough state to take the next safe action, not to replay the whole project history.
+
+### Resume Essentials
+
+| Signal | Why it matters | Primary source | Fallback |
+| ------ | -------------- | -------------- | -------- |
+| Current phase or task | Orient the user immediately | `handover.md`, `tasks.md` | `memory_context({ mode: "resume" })` |
+| Last confirmed action | Prevent duplicate work | `handover.md`, recent memory | `memory_search()` with `state` anchor |
+| Next safe action | Make the resume actually useful | `memory_context({ mode: "resume" })` | `memory_search()` with `next-steps` anchor |
+| Blockers or "none" | Avoid unsafe continuation | `memory_context({ mode: "resume" })` | `memory_search()` with `blockers` or `summary` anchor |
+| Relevant artifact or file | Give the user a concrete place to start | `tasks.md`, `implementation-summary.md`, `handover.md` | recent memory content |
+
+### Sufficiency Rule
+
+- Stop loading more context once the command can name a **Next Safe Action** plus at least two of: current phase/task, blocker status, last confirmed action, or relevant artifact/file.
+- If the next safe action is still ambiguous after the primary recovery chain, run targeted gap-filling instead of broad memory loading.
+- If ambiguity remains after targeted recovery, report uncertainty clearly instead of guessing.
+
+### Gap-Filling Order
+
+1. Missing current phase/task: check `tasks.md`, `checklist.md`, or `handover.md`.
+2. Missing next safe action: use `memory_context({ mode: "resume" })`, then targeted `memory_search()` on `next-steps` and `state`.
+3. Missing blockers: target `blockers` and `summary`.
+4. Missing concrete starting point: look for the most relevant artifact, file, or unfinished task before loading more memory files.
+5. Only use deep memory loading when the focused recovery packet is still insufficient.
+
+---
+
+## 11. OUTPUT FORMATS
 
 **Success:**
 ```
-SESSION RESUMED
-Spec: [path] | Context: [source] | Progress: [X]% ([done]/[total] tasks)
-Ready to continue. What would you like to work on?
+RESUME BRIEF
+Spec: [path]
+Confidence: [high|medium|low] | Source: [handover|memory_context|continue_session|combined]
+Now: [phase/current task]
+Last confirmed: [action]
+Next safe action: [action]
+Blockers: [none|details]
+Progress: [X]% ([done]/[total] tasks)
+Why this is next: [short reason based on tasks/checklist/memory]
 ```
 
 **No Session:** Offer /spec_kit:complete or specify folder path.
@@ -273,7 +316,7 @@ Ready to continue. What would you like to work on?
 
 ---
 
-## 11. REFERENCE
+## 12. REFERENCE
 
 **Full details in YAML prompts:** Workflow steps, progress calculation, memory loading, session detection priority, stale handling, mode behaviors, failure recovery.
 
@@ -281,7 +324,7 @@ Ready to continue. What would you like to work on?
 
 ---
 
-## 12. MCP TOOL USAGE
+## 13. MCP TOOL USAGE
 
 Call MCP tools directly — NEVER through Code Mode.
 
@@ -308,13 +351,13 @@ Call MCP tools directly — NEVER through Code Mode.
 | `checkpoint_restore` | Rollback to previous checkpoint      |
 | `checkpoint_delete`  | Clean up old checkpoints             |
 
-**Note:** No `memory_load` tool. Use `memory_search` with `includeContent: true` instead.
+**Note:** No `memory_load` tool. Use `memory_context({ mode: "resume" })` as the primary recovery path. In the current handler, resume mode is effectively a focused recovery search over the anchors `state`, `next-steps`, `summary`, and `blockers`; use `memory_search` with `includeContent: true` only when one of those essential signals is still missing.
 
 ### Session Deduplication
 
 - Prefer deterministic ranked active candidates (archive/test/fixture filtered)
-- handover.md takes priority over CONTINUE_SESSION.md
-- Use `/memory:continue` for explicit crash recovery
+- handover.md takes priority; if it is absent or thin, use `memory_context({ mode: "resume" })` before checking `CONTINUE_SESSION.md`
+- Treat `CONTINUE_SESSION.md` as a breadcrumb, not the primary source of truth
 - Older handovers preserved for audit trail
 
 ### Compaction Continuation Safety
@@ -324,29 +367,29 @@ Call MCP tools directly — NEVER through Code Mode.
 
 ### Validation on Resume
 
-After loading context, auto-validates: missing files, broken memory anchors, unfilled placeholders.
+After loading context, auto-validates: missing files, broken memory anchors, unfilled placeholders, and whether the recovery packet actually includes a usable next action.
 
 ---
 
-## 13. PARALLEL DISPATCH
+## 14. PARALLEL DISPATCH
 
 Resume is a **utility workflow** — no parallel dispatch. All steps sequential.
 - Auto: 4 steps | Confirm: 5 steps with user checkpoints
 
 ---
 
-## 14. EXAMPLES
+## 15. EXAMPLES
 
 ```
 /spec_kit:resume                                          → Auto-detect via deterministic filtered ranking
+/spec_kit:resume:auto                                     → Auto-detect and recover an interrupted session
 /spec_kit:resume specs/014-context-aware-permission-system/ → Resume specific folder
-/spec_kit:resume:auto                                      → Auto-load, skip selection
 /spec_kit:resume:confirm specs/014-*/                      → Interactive with memory options
 ```
 
 ---
 
-## 15. RELATED COMMANDS
+## 16. RELATED COMMANDS
 
 | Command               | Relationship                                            |
 | --------------------- | ------------------------------------------------------- |
@@ -354,11 +397,11 @@ Resume is a **utility workflow** — no parallel dispatch. All steps sequential.
 | `/spec_kit:plan`      | Create planning artifacts (if missing on resume)        |
 | `/spec_kit:implement` | Execute implementation (call after resume)              |
 | `/spec_kit:handover`  | Create handover doc (resume loads these)                |
-| `/memory:continue`    | Crash recovery — loads CONTINUE_SESSION.md              |
+| `/memory:analyze`     | Broader historical lookup and learning-history review   |
 
 ---
 
-## 16. COMMAND CHAIN
+## 17. COMMAND CHAIN
 
 ```
 [/spec_kit:handover] → /spec_kit:resume → [Continue workflow]
@@ -368,7 +411,7 @@ Prerequisite: `/spec_kit:handover [spec-folder-path]` (creates handover.md)
 
 ---
 
-## 17. NEXT STEPS
+## 18. NEXT STEPS
 
 | Condition                  | Suggested Command                        | Reason                    |
 | -------------------------- | ---------------------------------------- | ------------------------- |
@@ -376,6 +419,7 @@ Prerequisite: `/spec_kit:handover [spec-folder-path]` (creates handover.md)
 | Ready to implement         | `/spec_kit:implement [spec-folder-path]` | Continue implementation   |
 | Implementation in progress | Continue from last task                  | Resume where you left off |
 | Found issues               | `/spec_kit:debug [spec-folder-path]`     | Debug problems            |
+| Need broader history       | `/memory:analyze history [spec-folder]`  | Inspect learning history  |
 | Session ending again       | `/spec_kit:handover [spec-folder-path]`  | Save progress for later   |
 
 **ALWAYS** end with: "What would you like to do next?"

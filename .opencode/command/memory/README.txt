@@ -5,7 +5,6 @@ trigger_phrases:
   - "memory command"
   - "memory save"
   - "memory analyze"
-  - "memory continue"
   - "memory learn"
   - "memory manage"
   - "memory shared"
@@ -37,13 +36,13 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `memory` command group provides operations for the Spec Kit Memory MCP system. These 6 commands cover context preservation, unified knowledge retrieval and analysis, session recovery, constitutional memory management, database maintenance (including async ingest), and shared-memory spaces.
+The `memory` command group provides operations for the Spec Kit Memory MCP system. These 5 commands cover context preservation, unified knowledge retrieval and analysis, constitutional memory management, database maintenance (including async ingest), and shared-memory spaces. Session recovery now lives under `/spec_kit:resume`.
 
 All commands interact with the memory MCP server tools (`spec_kit_memory_*`). They follow a gate-based argument validation pattern: if required arguments are missing, the command prompts the user before proceeding.
 
 ### Canonical Section Order
 
-All 6 commands follow a consistent user-first section order:
+All 5 memory commands follow a consistent user-first section order:
 
 ```text
 GATE -> TITLE -> §1 PURPOSE -> §2 CONTRACT -> §3 QUICK REFERENCE
@@ -63,7 +62,6 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | Command | Invocation | Description |
 |---------|------------|-------------|
 | **analyze** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
-| **continue** | `/memory:continue [recovery-mode:auto\|manual]` | Recover session from crash, compaction, or timeout |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
 | **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |
 | **save** | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
@@ -125,9 +123,8 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 ```text
 memory/
-├── README.md       # This file, 6-command index and coverage matrix
+├── README.md       # This file, 5-command index and coverage matrix
 ├── analyze.md      # /memory:analyze - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
-├── continue.md     # /memory:continue - Session recovery
 ├── learn.md        # /memory:learn - Constitutional memory manager
 ├── manage.md       # /memory:manage - Database management, ingest
 ├── save.md         # /memory:save - Context saving
@@ -153,11 +150,11 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # Retrieve context with explicit intent
 /memory:analyze "auth flow" --intent:fix_bug
 
-# Recover from a crashed session
-/memory:continue
+# Recover from a crashed or interrupted session
+/spec_kit:resume
 
 # Auto-recovery mode
-/memory:continue :auto
+/spec_kit:resume :auto
 
 # Create a constitutional memory (always-surface rule)
 /memory:learn "Never commit API keys or secrets to git"
@@ -299,7 +296,6 @@ All 33 MCP tools mapped to their primary command home:
 | `/memory:save` | 1 | 3 (index_scan, stats, update) | L2 |
 | `/memory:manage` | 15 | 1 (search) | L3, L4, L5, L7 |
 | `/memory:learn` | 0 | uses manage/save tools | (none) |
-| `/memory:continue` | 0 | uses context/manage tools | (none) |
 | `/memory:shared` | 4 | (none) | L5 |
 | **Total** | **33** | | **L1-L7** |
 
@@ -312,9 +308,9 @@ All 33 MCP tools mapped to their primary command home:
 <!-- ANCHOR:faq -->
 ## 7. FAQ
 
-**Q: What is the difference between `/memory:analyze` and `/memory:continue`?**
+**Q: What is the difference between `/memory:analyze` and `/spec_kit:resume`?**
 
-`/memory:analyze` retrieves and searches existing memories using a query or subcommand. `/memory:continue` is specifically for session recovery: it reconstructs context from a prior session that ended due to crash, compaction, or timeout. Use `analyze` for knowledge lookup and `continue` after an interrupted session.
+`/memory:analyze` retrieves and searches existing memories using a query or subcommand. `/spec_kit:resume` handles session continuation and interrupted-session recovery: it reconstructs context from recent handovers, resume-mode memory retrieval, crash breadcrumbs, and progress artifacts. Use `analyze` for knowledge lookup and `resume` when you need to continue prior work.
 
 **Q: Do I need to run `/memory:shared enable` before every shared-memory operation?**
 
@@ -339,7 +335,7 @@ The scan re-indexes all memory files regardless of whether their content has cha
 |---------|-------|-----|
 | "No results" from knowledge | Query too narrow or no matching memories | Broaden query or try different intent |
 | Save fails | Spec folder path invalid or missing | Verify path exists under `specs/` |
-| Continue finds no session | No saved context from prior session | Use `/memory:analyze` with manual query instead |
+| Resume finds no session | No saved context from prior session | Use `/spec_kit:plan` to start fresh or `/memory:analyze` with a manual query |
 | Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and `.opencode/specs/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
 | Analyze ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |

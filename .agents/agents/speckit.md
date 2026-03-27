@@ -514,7 +514,7 @@ Use this template for completion reports:
 | `/spec_kit:debug`     | Debug delegation            | `.opencode/command/spec_kit/debug.md`     |
 | `/spec_kit:handover`  | Session handover            | `.opencode/command/spec_kit/handover.md`  |
 | `/memory:analyze`     | Retrieval & analysis (unified) | `.opencode/command/memory/analyze.md`   |
-| `/memory:continue`    | Crash recovery              | `.opencode/command/memory/continue.md`    |
+| `/spec_kit:resume`    | Resume or recover spec work | `.opencode/command/spec_kit/resume.md`    |
 | `/memory:learn`       | Constitutional memory manager | `.opencode/command/memory/learn.md`       |
 | `/memory:save`        | Save session context        | `.opencode/command/memory/save.md`        |
 | `/memory:manage`      | Memory management           | `.opencode/command/memory/manage.md`      |

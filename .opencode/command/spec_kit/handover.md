@@ -210,7 +210,7 @@ Show created file path and continuation instructions.
 
 **Output Location:** `[spec_folder]/handover.md` (NOT in memory/)
 
-> **Crash Recovery:** For emergency scenarios, same format can be saved as `CONTINUE_SESSION.md` in the spec folder. Checked by `/spec_kit:resume` and `/memory:continue`.
+> **Crash Recovery:** For emergency scenarios, same format can be saved as `CONTINUE_SESSION.md` in the spec folder. Checked by `/spec_kit:resume`.
 
 > **MANDATORY:** After creating handover, run:
 > `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
@@ -258,7 +258,7 @@ Show created file path and continuation instructions.
 | `/spec_kit:resume`   | Loads handover document to continue work                         |
 | `/spec_kit:complete` | Start new feature (handover captures in-progress)                |
 | `/memory:save`       | Recommended companion - save semantic context for search         |
-| `/memory:continue`   | Crash recovery - loads CONTINUE_SESSION.md or handover context   |
+| `/spec_kit:resume`   | Standard continuation and crash recovery - loads handover, CONTINUE_SESSION.md, and resume-mode memory context |
 
 > After creating handover.md, also run `/memory:save` for semantic retrieval across sessions.
 

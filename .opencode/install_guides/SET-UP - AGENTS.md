@@ -605,12 +605,11 @@ Commands are slash-prefixed shortcuts for common workflows.
 | `/create:sk-skill`        | Unified skill command               | Skill create/update/file flows    |
 | `/create:testing-playbook` | Create or update testing playbook | Rooted `manual_testing_playbook/` package |
 
-**Memory Commands (6)**
+**Memory Commands (5)**
 
 | Command            | Description                             | Output                          |
 | ------------------ | --------------------------------------- | ------------------------------- |
 | `/memory:analyze`  | Unified retrieval and analysis          | Context, epistemic, causal data |
-| `/memory:continue` | Recover prior session state             | Continued working context       |
 | `/memory:learn`    | Manage constitutional memories          | Memory rule files and budget    |
 | `/memory:manage`   | Manage database, checkpoints, ingest    | Operational status or mutations |
 | `/memory:save`     | Save current context                    | Memory file in spec folder      |

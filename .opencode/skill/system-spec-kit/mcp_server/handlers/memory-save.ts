@@ -311,6 +311,7 @@ async function processPreparedMemory(
     asyncEmbedding?: boolean;
     persistQualityLoopContent?: boolean;
     scope?: MemoryScopeMatch;
+    qualityGateMode?: 'enforce' | 'warn-only';
   } = {},
 ): Promise<IndexResult> {
   const {
@@ -318,6 +319,7 @@ async function processPreparedMemory(
     asyncEmbedding = false,
     persistQualityLoopContent = true,
     scope = {},
+    qualityGateMode = 'enforce',
   } = options;
   const {
     parsed,
@@ -426,7 +428,7 @@ async function processPreparedMemory(
           } : null,
         });
 
-        if (!qualityGateResult.pass && !qualityGateResult.warnOnly) {
+        if (!qualityGateResult.pass && !qualityGateResult.warnOnly && qualityGateMode !== 'warn-only') {
           console.error(`[memory-save] TM-04: Quality gate REJECTED save for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
           return {
             status: 'rejected',
@@ -443,6 +445,10 @@ async function processPreparedMemory(
               layers: qualityGateResult.layers,
             },
           };
+        }
+
+        if (!qualityGateResult.pass && qualityGateMode === 'warn-only') {
+          console.warn(`[memory-save] TM-04: Quality gate warn-only (spec doc) for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
         }
 
         if (qualityGateResult.wouldReject) {
@@ -634,6 +640,7 @@ async function indexMemoryFile(
     parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null,
     asyncEmbedding = false,
     scope = {} as MemoryScopeMatch,
+    qualityGateMode = 'enforce' as 'enforce' | 'warn-only',
   } = {},
 ): Promise<IndexResult> {
   // Reuse parsed content when provided by caller to avoid a second parse.
@@ -653,6 +660,7 @@ async function indexMemoryFile(
     asyncEmbedding,
     persistQualityLoopContent: true,
     scope,
+    qualityGateMode,
   });
 }
 

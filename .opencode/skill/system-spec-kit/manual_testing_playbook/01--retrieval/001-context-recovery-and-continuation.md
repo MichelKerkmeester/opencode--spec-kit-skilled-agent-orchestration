@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `/memory:continue specs/<target-spec>. Capture the evidence needed to prove Resume-ready state summary and next steps. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `/spec_kit:resume specs/<target-spec>. Capture the evidence needed to prove the resume-ready state summary and next steps. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
   1. `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder: "specs/<target-spec>", includeContent: true })` — primary recovery path
   2. If resume-mode returns a clear session match, verify the recovery summary includes: last action, next steps, likely files

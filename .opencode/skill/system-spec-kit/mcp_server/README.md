@@ -81,16 +81,16 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 ### How You Use It
 
-The memory system exposes 33 tools through 6 slash commands. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes 33 tools through 5 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
 | `/memory:analyze` | Search, retrieve and analyze knowledge | 13 tools |
-| `/memory:continue` | Recover an interrupted session | 4 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
 | `/memory:manage` | Database maintenance, checkpoints and bulk ingestion | 16 tools |
 | `/memory:save` | Save conversation context | 4 tools |
 | `/memory:shared` | Manage shared-memory spaces and memberships | 4 tools |
+| `/spec_kit:resume` | Continue or recover an interrupted spec-folder session using shared memory tools | 4 borrowed tools |
 
 ### Requirements
 

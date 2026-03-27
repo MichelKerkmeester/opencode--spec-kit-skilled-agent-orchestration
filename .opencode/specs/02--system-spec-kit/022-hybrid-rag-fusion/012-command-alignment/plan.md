@@ -1,6 +1,6 @@
 ---
 title: "Plan: Command Alignment"
-description: "Documentation-only reconciliation plan for updating the 012 command-alignment spec pack to the live 33-tool, 6-command memory-command surface."
+description: "Documentation-only reconciliation plan for updating the 012 command-alignment spec pack to the live 33-tool, 5-command memory-command surface plus /spec_kit:resume recovery ownership."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 012-command-alignment
@@ -23,7 +23,7 @@ description: "Documentation-only reconciliation plan for updating the 012 comman
 
 ### Overview
 
-This pass does not implement memory-command features. It reconciles the 012 command-alignment planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`. It also resolved the runtime-doc drift in analyze.md and shared.md during the 2026-03-21 reconciliation pass.
+This pass does not add new MCP tools. It reconciles the 012 command-alignment planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface, a 5-command memory suite, and session recovery owned by `/spec_kit:resume`, with retrieval merged into `/memory:analyze`.
 
 **Effort Estimate:** Small documentation rewrite limited to the five canonical 012 markdown files plus targeted runtime-doc patches.
 <!-- /ANCHOR:summary -->
@@ -40,7 +40,7 @@ This pass does not implement memory-command features. It reconciles the 012 comm
 
 ### Definition of Done
 - [ ] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` satisfy required Level 2 anchors and sections
-- [ ] The pack preserves the 33-tool / 6-command / `/memory:analyze` ownership story
+- [ ] The pack preserves the 33-tool / 5-command / `/spec_kit:resume` + `/memory:analyze` ownership story
 - [ ] Strict validation passes with no errors or warnings
 <!-- /ANCHOR:quality-gates -->
 
@@ -54,7 +54,7 @@ Documentation-only truth reconciliation against live repo sources.
 
 ### Key Components
 - **Schema inventory**: `tool-schemas.ts` and `schemas/tool-input-schemas.ts` define the canonical 33-tool surface.
-- **Runtime command docs**: `.opencode/command/memory/*.md` plus `README.txt` define the live 6-command ownership model.
+- **Runtime command docs**: `.opencode/command/memory/*.md`, `.opencode/command/spec_kit/resume.md`, and the README surfaces define the live 5-command ownership model plus spec-kit recovery routing.
 - **Spec pack**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` carry the reconciled narrative.
 
 ### Data Flow
@@ -71,14 +71,14 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 | Step | Action | Output | Priority |
 |------|--------|--------|----------|
 | 0.1 | Recount `TOOL_DEFINITIONS` | Confirm 33-tool baseline | P0 |
-| 0.2 | Count live memory command files | Confirm 6-command suite and no standalone `context` command file | P0 |
+| 0.2 | Count live memory command files | Confirm 5-command suite, no standalone `/memory:continue`, and no standalone `context` command file | P0 |
 | 0.3 | Verify command ownership in `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt` | Confirm retrieval plus `memory_quick_search` ownership | P0 |
 
 ### Phase 1: Reconcile the 012 Spec Pack
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
-| 1.1 | `spec.md` | Preserve the live 33-tool / 6-command current-state story and restore required success-criteria anchor coverage | P0 |
+| 1.1 | `spec.md` | Preserve the live 33-tool / 5-command current-state story and restore required success-criteria anchor coverage | P0 |
 | 1.2 | `plan.md` | Restore required Level 2 plan anchors while keeping the reconciliation scope narrow | P0 |
 | 1.3 | `tasks.md` | Restore required Level 2 task anchors and phase structure | P0 |
 | 1.4 | `checklist.md`, `implementation-summary.md` | Keep verification evidence aligned with the updated pack and validator contract | P1 |
@@ -106,7 +106,7 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 ### Verification Focus
 
 - The 012 pack now describes a 33-tool surface.
-- The 012 pack now describes a 6-command suite.
+- The 012 pack now describes a 5-command memory suite plus `/spec_kit:resume` recovery ownership.
 - The 012 pack no longer assumes a standalone `context` command file.
 - The 012 pack explicitly assigns retrieval plus `memory_quick_search` to `/memory:analyze`.
 - The 012 pack records the drift cluster as resolved, not open.
@@ -200,7 +200,8 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 ### Assumptions
 
 - Live repo state wins when it conflicts with older draft text.
-- The 6-command suite is the canonical current memory-command surface.
+- The 5-command suite is the canonical current memory-command surface.
+- Session recovery belongs to `/spec_kit:resume`, not `/memory:continue`.
 - `README.txt` already provides a complete 33-tool ownership map.
 - This pass resolved the runtime-doc drift in analyze.md and shared.md during the 2026-03-21 reconciliation.
 
@@ -209,5 +210,5 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 <!--
 PLAN: 012-command-alignment
 Reconciled 2026-03-21
-Current baseline: 33 tools, 6 commands, retrieval merged into analyze
+Current baseline: 33 tools, 5 memory commands, session recovery owned by /spec_kit:resume
 -->

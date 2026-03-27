@@ -1,6 +1,6 @@
 ---
 title: "Spec Kit Commands"
-description: "Slash commands for the spec folder development lifecycle including planning, implementation, deep-research, debugging, handover, and session resumption."
+description: "Slash commands for the spec folder development lifecycle including planning, implementation, deep-research, debugging, handover, resumption, and interrupted-session recovery."
 trigger_phrases:
   - "spec kit command"
   - "spec kit plan"
@@ -57,7 +57,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
 | **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
-| **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume work on an existing spec folder |
+| **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
 | **phase** | `/spec_kit:phase [description] [--phases N] [--phase-names list] [--parent specs/NNN-name/] [:auto\|:confirm]` | varies | Create and manage phase decomposition for complex spec folders |
 | **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:auto-debug]` | 14+ | Full end-to-end workflow combining all phases |
 
@@ -70,7 +70,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `deep-research` | Nothing (iterative research with convergence detection) |
 | `debug` | Existing spec folder with failing task |
 | `handover` | Existing spec folder with work history |
-| `resume` | Existing spec folder with saved state |
+| `resume` | Existing spec folder with saved state or recoverable session context |
 | `phase` | Nothing (creates parent and phase child spec folders) |
 | `complete` | Nothing (runs full lifecycle) |
 
@@ -208,7 +208,7 @@ Each mode maps to a YAML workflow file in `assets/`:
 # Create handover for session continuation
 /spec_kit:handover specs/012-rate-limiting
 
-# Resume work in a new session
+# Resume work in a new or interrupted session
 /spec_kit:resume specs/012-rate-limiting :auto
 
 # Full end-to-end with research and auto-debug
@@ -232,7 +232,7 @@ Use `/spec_kit:debug` after 3 or more failed fix attempts on the same task. The 
 
 **Q: Can I resume a spec folder that was never explicitly handed over?**
 
-Yes. `/spec_kit:resume` loads memory context for the spec folder from the Spec Kit Memory system regardless of whether a handover document exists. If no saved state is found, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session improves the quality of what `resume` can recover, but it is not required.
+Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder regardless of whether a handover document exists. It prefers a fresh `handover.md`, then uses resume-mode memory retrieval, `CONTINUE_SESSION.md`, and anchored search fallbacks when needed. If no saved state is found, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session improves the quality of what `resume` can recover, but it is not required.
 
 **Q: How does `/spec_kit:phase` relate to the parent spec folder?**
 

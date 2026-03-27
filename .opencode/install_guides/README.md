@@ -1235,12 +1235,12 @@ You have completed the installation. Here is your roadmap for getting started.
 | **Git Operations**       | sk-git skill           | Commit, PR creation workflows                             |
 | **Implementation**       | sk-code--web or sk-code--full-stack | 3-phase implementation lifecycle                          |
 
-### 16.3 Available Commands (22 total)
+### 16.3 Available Commands (21 total)
 
 | Category | Commands                                                                                                |
 | -------- | ------------------------------------------------------------------------------------------------------- |
 | Create   | `/create:agent`, `/create:changelog`, `/create:feature-catalog`, `/create:folder_readme`, `/create:prompt`, `/create:sk-skill`, `/create:testing-playbook` |
-| Memory   | `/memory:analyze`, `/memory:continue`, `/memory:learn`, `/memory:manage`, `/memory:save`, `/memory:shared` |
+| Memory   | `/memory:analyze`, `/memory:learn`, `/memory:manage`, `/memory:save`, `/memory:shared` |
 | SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:phase`, `/spec_kit:plan`, `/spec_kit:resume` |
 | Utility  | `/agent_router` |
 

@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Command Alignment"
-description: "Documentation reconciliation tasks for updating the 012 command-alignment spec pack to the live 33-tool, 6-command memory-command surface."
+description: "Documentation reconciliation tasks for updating the 012 command-alignment spec pack to the live 33-tool, 5-command memory-command surface plus /spec_kit:resume recovery ownership."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Tasks: 012-command-alignment
@@ -51,8 +51,8 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ### T01: Verify live memory command surface
 - **Priority:** P0
 - **Files:** `.opencode/command/memory/`
-- **Action:** Confirm the live suite contains `analyze`, `continue`, `learn`, `manage`, `save`, and `shared`, and confirm that no standalone `context` command file exists.
-- **Acceptance:** The reconciled 012 pack uses a 6-command model and removes the standalone `context` command assumption.
+- **Action:** Confirm the live memory suite contains `analyze`, `learn`, `manage`, `save`, and `shared`, that session recovery now lives under `/spec_kit:resume`, and that no standalone `context` command file exists.
+- **Acceptance:** The reconciled 012 pack uses a 5-command memory model, records `/spec_kit:resume` as the recovery workflow, and removes the standalone `context` command assumption.
 - **Covers:** CA-002, CA-003
 - [x] Done
 
@@ -73,8 +73,8 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ### T03: Rewrite `spec.md` counts and structure
 - **Priority:** P0
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md`
-- **Action:** Replace stale 32-tool, 7-command, and standalone `context` command planning language with live repo truth.
-- **Acceptance:** `spec.md` describes a 33-tool surface, a 6-command suite, and retrieval merged into `.opencode/command/memory/analyze.md`.
+- **Action:** Replace stale 32-tool, 7-command, `/memory:continue`, and standalone `context` command planning language with live repo truth.
+- **Acceptance:** `spec.md` describes a 33-tool surface, a 5-command memory suite, session recovery under `.opencode/command/spec_kit/resume.md`, and retrieval merged into `.opencode/command/memory/analyze.md`.
 - **Covers:** CA-001, CA-002, CA-003, CA-004
 - [x] Done
 
@@ -139,7 +139,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ## Completion Criteria
 
 - [x] All reconciliation tasks are marked complete
-- [x] The pack preserves the live 33-tool / 6-command / `/memory:analyze` ownership story
+- [x] The pack preserves the live 33-tool / 5-command / `/spec_kit:resume` + `/memory:analyze` ownership story
 - [x] Strict validation has been run and its result recorded
 <!-- /ANCHOR:completion -->
 
@@ -179,5 +179,5 @@ Phase 2:
 <!--
 TASKS: 012-command-alignment
 10/10 tasks complete - truth-reconciled 2026-03-21
-Current reality: 33 tools, 6 commands, retrieval merged into analyze
+Current reality: 33 tools, 5 memory commands, session recovery owned by /spec_kit:resume
 -->

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 012-command-alignment"
-description: "Truth-reconciled summary of the 012 command-alignment pack against the live 33-tool, 6-command memory-command surface."
+description: "Truth-reconciled summary of the 012 command-alignment pack against the live 33-tool, 5-command memory-command surface plus /spec_kit:resume recovery ownership."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 012-command-alignment
@@ -24,14 +24,15 @@ description: "Truth-reconciled summary of the 012 command-alignment pack against
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
 
-The 012 command-alignment pack originally described an in-flight transition from a 5-command memory suite to a larger command surface. That is no longer the live repo state. The repo now ships a **33-tool** Spec Kit Memory MCP surface and a **6-command** memory suite, with retrieval merged into `/memory:analyze`.
+The 012 command-alignment pack originally described an in-flight transition from a 5-command memory suite to a larger command surface. That is no longer the live repo state. The repo now ships a **33-tool** Spec Kit Memory MCP surface, a **5-command** memory suite, and session recovery owned by `/spec_kit:resume`, with retrieval merged into `/memory:analyze`.
 
 This reconciliation pass updated the canonical 012 pack so it reflects what is already true on disk instead of repeating older planning assumptions. It also resolved the runtime-doc drift in analyze.md and shared.md.
 
 **Key Metrics**
 - 33 MCP tools in `tool-schemas.ts`
-- 6 live memory commands in `.opencode/command/memory/`
+- 5 live memory commands in `.opencode/command/memory/`
 - `/memory:analyze` owns retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
+- `/spec_kit:resume` owns session recovery and crash/interrupted-session continuation
 - `/memory:manage ingest` owns async ingest workflows
 - README already maps 33/33 tools to command homes
 - The runtime-doc drift cluster in analyze.md and shared.md was resolved during this pass: analyze.md Appendix A updated from 12 to 13 tools with governed retrieval parameters now documented; shared.md create/member contract updated with tenantId, actor identity, and auto-grant behavior
@@ -44,7 +45,7 @@ This reconciliation pass updated the canonical 012 pack so it reflects what is a
 
 | File | Change |
 |------|--------|
-| `spec.md` | Reframed the spec around the live 33-tool, 6-command memory-command surface and narrowed the remaining-gap list |
+| `spec.md` | Reframed the spec around the live 33-tool, 5-command memory-command surface plus `/spec_kit:resume` recovery ownership and narrowed the remaining-gap list |
 | `plan.md` | Replaced the stale implementation roadmap with a documentation-only reconciliation plan |
 | `tasks.md` | Replaced outdated implementation tasks with live-state verification and pack-rewrite tasks |
 | `checklist.md` | Rewrote verification evidence around current counts, ownership, and strict validation |
@@ -60,7 +61,7 @@ This reconciliation pass updated the canonical 012 pack so it reflects what is a
 | `/memory:save` | `memory_save` | L2 |
 | `/memory:manage` | `memory_list`, `memory_stats`, `memory_health`, `memory_delete`, `memory_update`, `memory_validate`, `memory_bulk_delete`, `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, `checkpoint_delete`, `memory_index_scan`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | L3, L4, L5, L7 |
 | `/memory:learn` | Wrapper flow; uses other memory tools rather than owning distinct MCP inventory | — |
-| `/memory:continue` | Wrapper flow; uses analyze/manage surfaces rather than owning distinct MCP inventory | — |
+| `/spec_kit:resume` | Wrapper flow; owns continuation and session recovery while using analyze/manage surfaces for shared MCP inventory | — |
 | `/memory:shared` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | L5 |
 <!-- /ANCHOR:how-delivered -->
 
@@ -84,7 +85,7 @@ This reconciliation pass updated the canonical 012 pack so it reflects what is a
 | Check | Result | Evidence |
 |-------|--------|----------|
 | Live tool count | PASS | Counted 33 tool definitions in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` |
-| Live command count | PASS | `.opencode/command/memory/` contains `analyze`, `continue`, `learn`, `manage`, `save`, `shared`, plus `README.txt` |
+| Live command count | PASS | `.opencode/command/memory/` contains `analyze`, `learn`, `manage`, `save`, `shared`, plus `README.txt`, and `.opencode/command/spec_kit/resume.md` owns recovery |
 | Retrieval ownership | PASS | analyze.md frontmatter and Appendix A include `memory_quick_search`; README maps retrieval tools to `/memory:analyze` |
 | Learning-history ownership | PASS | README maps `memory_get_learning_history` to `/memory:analyze`; command docs use `/memory:analyze history <specFolder>` |
 | Async ingest ownership | PASS | README maps ingest tools to `/memory:manage ingest` |

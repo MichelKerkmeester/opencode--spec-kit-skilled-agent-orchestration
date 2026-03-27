@@ -135,8 +135,8 @@ interface ScanArgs {
 import { indexMemoryFile } from './memory-save';
 
 /** Index a single memory file, delegating to the shared indexMemoryFile logic */
-async function indexSingleFile(filePath: string, force: boolean = false): Promise<IndexResult> {
-  return indexMemoryFile(filePath, { force });
+async function indexSingleFile(filePath: string, force: boolean = false, options?: { qualityGateMode?: 'enforce' | 'warn-only' }): Promise<IndexResult> {
+  return indexMemoryFile(filePath, { force, qualityGateMode: options?.qualityGateMode });
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -203,6 +203,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   };
 
   const mergedFiles = [...specFiles, ...constitutionalFiles, ...specDocFiles];
+  const specDocKeySet = new Set(specDocFiles.map((f) => getCachedKey(f)));
   const seenCanonicalFiles = new Set<string>();
   const files: string[] = [];
 
@@ -379,7 +380,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
   if (filesToIndex.length > 0) {
     const batchResults = await processBatches(filesToIndex, async (filePath: string) => {
-      return await indexSingleFile(filePath, force);
+      const isSpecDoc = specDocKeySet.has(getCachedKey(filePath));
+      return await indexSingleFile(filePath, force, isSpecDoc ? { qualityGateMode: 'warn-only' } : undefined);
     });
 
     for (let i = 0; i < batchResults.length; i++) {

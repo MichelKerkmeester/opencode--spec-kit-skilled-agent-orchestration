@@ -17,8 +17,8 @@ operating_mode:
   validation: context_loaded
 
 resume_philosophy:
-  principle: "Context continuity, minimal friction"
-  approach: "Auto-detect, auto-load, fast resume"
+  principle: "Context continuity, minimal friction, maximum usefulness"
+  approach: "Recover the smallest useful context packet, then continue"
 
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS
@@ -67,18 +67,29 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["Primary: handover.md (<24h old)", "Primary: Recent memory/*.md (embedded Project State Snapshot)", "Secondary: checklist.md for progress", "Secondary: CONTINUE_SESSION.md for crash recovery"]
-  note: "Auto-load only primary sources; use secondary sources only as fallback context when primary data is unavailable"
+  order: ["Primary: handover.md (<24h old)", "Primary: memory_context(mode: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
+  note: "Use recent structured handoff first, then resume-mode recovery; only use breadcrumb and anchored-search fallbacks when the primary context is missing or thin"
 
 memory_loading:
   mode: automatic
-  behavior: "Auto-load handover.md (<24h) first, else most recent memory file without prompting"
+  behavior: "Auto-load handover.md (<24h) first, else run memory_context() in resume mode without prompting; stop as soon as one safe next action can be named"
   selection: most_recent
   max_files: 1
   mcp_integration:
-    tool: memory_search
+    tool: memory_context
     note: "Call MCP tools directly - NEVER through Code Mode"
-    parameters: { query: "resume context for {spec_folder_name}", specFolder: "{spec_folder_path}", anchors: ['summary', 'state', 'next-steps'] }
+    parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{spec_folder_path}", includeContent: true }
+
+smart_memory_logic:
+  objective: "Recover enough state to continue safely, not every detail from prior sessions"
+  essentials: ["current phase or task", "last confirmed action", "next safe action", "blockers or none", "relevant artifact or file"]
+  sufficiency_rule: "Stop once next safe action is known plus any two supporting essentials"
+  gap_fill_order:
+    - "If current phase or task is missing, inspect tasks.md/checklist.md/handover.md"
+    - "If next safe action is missing, use memory_context(mode: resume) then targeted memory_search on next-steps/state"
+    - "If blockers are missing, target blockers/summary"
+    - "If a concrete starting point is missing, use tasks.md or implementation-summary.md before loading more memory"
+    - "If ambiguity remains, surface uncertainty instead of guessing"
 
 stale_session_detection:
   check: "last_modified > 7 days"
@@ -91,9 +102,9 @@ confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with context loading and resume" }
     medium: { range: "40-79%", action: "Proceed but warn about potential context staleness" }
-    low: { range: "0-39%", action: "Warn user about context reliability issues" }
+    low: { range: "0-39%", action: "Warn user about context reliability issues and avoid guessing the next step" }
   scoring_weights: { session_recency: 0.40, artifact_completeness: 0.30, memory_availability: 0.20, codebase_changes: 0.10 }
-  reply_format: ["Confidence: NN%", "Context source: handover|memory", "Next action"]
+  reply_format: ["Confidence: NN%", "Context source: handover|memory", "Now", "Last confirmed", "Next safe action"]
   escalation: { timebox_minutes: 5, failed_threshold: 2 }
 
 # ─────────────────────────────────────────────────────────────────
@@ -114,18 +125,21 @@ workflow:
     validation: session_detected
 
   step_2_load_memory:
-    purpose: Load context using priority order (handover.md first, then memory)
+    purpose: Load context using handover first, then recover only the missing essentials needed for a useful resume
     activities:
       - Check for handover.md in spec_folder (<24h old)
-      - If exists, load as primary context
-      - If not, select most recent memory/*.md
-      - Extract key context (phase, decisions, pending work, next actions from state section)
-    context_priority: ["handover.md", "memory/*.md (contains Project State Snapshot)"]
+      - If recent handover exists, load as primary context
+      - If handover is absent or insufficient, call memory_context() with mode="resume"
+      - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
+      - If the recovery packet is still thin, inspect CONTINUE_SESSION.md when present and recent
+      - If specific essentials are still missing, run targeted anchored memory_search() for those gaps instead of broad loading
+      - If ambiguity remains after targeted gap filling, mark confidence low instead of inventing state
+    context_priority: ["handover.md", "memory_context(mode: resume)", "CONTINUE_SESSION.md", "memory_search() with resume anchors"]
     mcp_tool:
-      name: memory_search
-      note: "Call directly - NEVER through Code Mode. Use anchors for targeted retrieval (~90% token savings)."
-      parameters: { query: "resume context", specFolder: "{detected_spec_folder}", anchors: ['summary', 'state', 'next-steps'], includeContent: true }
-    outputs: { memory_loaded: true, context_source: "handover|memory", context_summary: extracted_context }
+      name: memory_context
+      note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only as a fallback when more detail is needed."
+      parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
+    outputs: { memory_loaded: true, context_source: "handover|memory_context|continue_session|memory_search", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
     validation: context_loaded
 
   step_3_calculate_progress:
@@ -135,8 +149,8 @@ workflow:
     validation: progress_calculated
 
   step_4_present_resume:
-    purpose: Display resume summary and continue work
-    activities: [Display spec folder and last activity, Show progress bars, List artifacts status, Show pending work and next actions, Proceed directly to continue work]
+    purpose: Display a concise resume brief with one recommended next-safe-action
+    activities: [Display spec folder and last activity, Show progress bars, Show Now/Last confirmed/Next safe action/Blockers, Cite the artifact or task that justifies the recommendation, Proceed directly to continue work]
     outputs: { resume_summary: displayed, continuation_mode: ready }
     validation: resume_complete
 
@@ -157,12 +171,12 @@ termination:
     - "Run /spec_kit:implement if tasks remain"
 
 crash_recovery:
-  command_reference: "/memory:continue"
-  description: "For crash recovery (context compaction, session interruption) — provides automatic state detection, recovery hints, continuation prompt generation"
+  command_reference: "/spec_kit:resume"
+  description: "Crash recovery is handled inside the resume workflow through handover, resume-mode memory retrieval, crash breadcrumbs, and anchored search fallbacks"
   when_to_use: ["Session interrupted unexpectedly", "Context compaction detected", "Need to recover without handover.md"]
   integration_with_resume:
-    relationship: "/spec_kit:resume = standard continuation | /memory:continue = crash recovery"
-    recommendation: "Use /memory:continue when session crashed; /spec_kit:resume for normal continuation"
+    relationship: "/spec_kit:resume = standard continuation + interrupted-session recovery"
+    recommendation: "Use /spec_kit:resume for both ordinary continuation and crash recovery"
 
 # ─────────────────────────────────────────────────────────────────
 # ERROR RECOVERY
@@ -170,9 +184,10 @@ crash_recovery:
 error_recovery:
   no_active_session: "Report no session, suggest /spec_kit:complete"
   spec_folder_missing: "Report not found, ask user to specify or create"
-  memory_search_failed: { action: "Proceed without context", fallback: "Try /memory:continue" }
+  memory_search_failed: { action: "Proceed only with essentials already recovered", fallback: "Offer /spec_kit:resume <spec-folder> or start fresh" }
   stale_session_detected: "Warn user, proceed with caution"
-  crash_detected: "Suggest /memory:continue for automatic crash recovery"
+  crash_detected: "Continue with the built-in resume recovery chain"
+  insufficient_context: "State what is known, call out what is missing, and avoid guessing the next step"
 
 # ─────────────────────────────────────────────────────────────────
 # RULES
@@ -184,8 +199,12 @@ rules:
   - calculate_progress_from_artifacts
   - display_clear_summary
   - use_mcp_tools_directly
+  - stop_loading_when_context_is_sufficient
+  - recommend_one_safe_next_action
   NEVER:
   - prompt_for_memory_selection_in_auto_mode
   - block_on_stale_session
   - proceed_without_valid_spec_folder
   - call_mcp_through_code_mode
+  - dump_extra_memory_when_the_next_step_is_already_clear
+  - guess_missing_state_when_confidence_is_low

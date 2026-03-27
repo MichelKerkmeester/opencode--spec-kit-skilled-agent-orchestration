@@ -42,7 +42,7 @@ Commands are organized into three groups:
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
 | **create** | `command/create/` | 7 | Scaffold OpenCode components, documentation packages, prompt artifacts, and changelogs |
-| **memory** | `command/memory/` | 6 | Memory system operations (analyze, save, continue, learn, manage, shared) |
+| **memory** | `command/memory/` | 5 | Memory system operations (analyze, save, learn, manage, shared) |
 | **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, debug, handover, resume, complete, phase) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
@@ -79,7 +79,6 @@ command/
 │   └── assets/               # YAML workflow definitions
 ├── memory/                   # Memory system commands
 │   ├── analyze.md            # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
-│   ├── continue.md           # Session recovery
 │   ├── learn.md              # Constitutional memory manager
 │   ├── manage.md             # Database management operations
 │   ├── save.md               # Save conversation context
@@ -124,7 +123,6 @@ Manage the Spec Kit Memory system for context preservation across sessions.
 | Command | Invocation | Purpose |
 |---------|------------|---------|
 | Analyze | `/memory:analyze <query>` or `/memory:analyze <subcommand>` | Unified retrieval + analysis (intent-aware search, epistemic, causal, eval) |
-| Continue | `/memory:continue` | Recover session from crash, compaction, or timeout |
 | Learn | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories |
 | Manage | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint) |
 | Save | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
@@ -242,7 +240,7 @@ A: Use `/spec_kit:plan` when you want to produce a spec and plan document for re
 
 **Q: How do I recover a session that was interrupted?**
 
-A: Run `/memory:continue`. This loads the most recent memory context for the active spec folder and reconstructs the task state so you can pick up where you left off.
+A: Run `/spec_kit:resume`. This loads the most relevant continuation context for the active spec folder, including recent handover state, resume-mode memory retrieval, crash breadcrumbs, and task progress so you can pick up where you left off.
 
 <!-- /ANCHOR:faq -->
 
@@ -274,7 +272,7 @@ A: Run `/memory:continue`. This loads the most recent memory context for the act
 | [Create Commands](create/README.md) | Detailed index for all `/create:*` commands |
 | [sk-doc SKILL.md](../skill/sk-doc/SKILL.md) | Documentation standards and component creation |
 | [system-spec-kit SKILL.md](../skill/system-spec-kit/SKILL.md) | Spec folder workflow and memory system |
-| [Memory Commands](memory/README.md) | Memory save, continue, and management commands |
+| [Memory Commands](memory/README.md) | Memory save, analyze, learn, manage, and shared commands |
 | [Spec Kit Commands](spec_kit/README.md) | SpecKit plan, implement, complete, and phase workflows |
 
 <!-- /ANCHOR:related-documents -->

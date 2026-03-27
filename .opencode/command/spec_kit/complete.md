@@ -348,7 +348,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 | Ending session | `/spec_kit:handover [spec-folder-path]` | Create continuation doc |
 | Found bugs | `/spec_kit:debug [spec-folder-path]` | Delegate debugging |
 | Ready for next feature | `/spec_kit:complete [feature-description]` | Start new workflow |
-| Need crash recovery | `/memory:continue` | Session recovery |
+| Need crash recovery | `/spec_kit:resume` | Session recovery and continuation |
 | Record constitutional rule | `/memory:learn [rule]` | Save a durable repo-wide rule |
 
 ---

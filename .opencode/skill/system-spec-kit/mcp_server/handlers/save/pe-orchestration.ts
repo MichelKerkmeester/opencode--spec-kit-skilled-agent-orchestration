@@ -100,7 +100,7 @@ export function evaluateAndApplyPeDecision(
           });
           if (!ledgerRecorded) {
             reinforced.warnings = [
-              ...(reinforced.warnings ?? validationWarnings ?? []),
+              ...(Array.isArray(reinforced.warnings) ? reinforced.warnings : validationWarnings ?? []),
               'Mutation ledger append failed; audit trail may be incomplete.',
             ];
           }
@@ -152,7 +152,7 @@ export function evaluateAndApplyPeDecision(
         });
         if (!ledgerRecorded) {
           updated.warnings = [
-            ...(updated.warnings ?? validationWarnings ?? []),
+            ...(Array.isArray(updated.warnings) ? updated.warnings : validationWarnings ?? []),
             'Mutation ledger append failed; audit trail may be incomplete.',
           ];
         }

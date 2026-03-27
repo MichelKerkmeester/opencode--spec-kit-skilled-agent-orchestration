@@ -49,16 +49,16 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **33 tools** organized under **6 slash commands**. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for this matrix is the `allowed-tools` field in each command file under `.opencode/command/memory/`.
+The Spec Kit Memory MCP server exposes **33 tools** organized under **5 memory slash commands**, with session recovery now owned by `/spec_kit:resume` as a spec-folder workflow using shared memory tools. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for memory ownership remains the `allowed-tools` field in each command file under `.opencode/command/memory/`, with recovery behavior documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
 | `/memory:analyze` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
-| `/memory:continue` | 4 | shared | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
 | `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
 | `/memory:manage` | 16 | owns | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
 | `/memory:shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+| `/spec_kit:resume` | 4 | shared | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:analyze` or `/memory:manage`).
 
@@ -280,31 +280,31 @@ See [`01--retrieval/09-tool-result-extraction-to-working-memory.md`](01--retriev
 
 ---
 
-### Session recovery via /memory:continue
+### Session recovery via /spec_kit:resume
 
 #### Description
 
-When a session is interrupted by a crash, context compaction, or timeout, this command reconstructs the most likely previous session state and routes the user to the best next step. It uses `memory_context` in resume mode as the primary recovery path, with a fallback chain through crash-recovery breadcrumbs, anchored memory search, and recent-candidate discovery.
+When a session is interrupted by a crash, context compaction, timeout, or an ordinary cross-session handoff, this command reconstructs the most likely previous session state and routes the user to the best next step. It uses `memory_context` in resume mode as the primary interrupted-session recovery path, with a fallback chain through crash-recovery breadcrumbs, anchored memory search, and recent-candidate discovery.
 
 #### Current Reality
 
-**SHIPPED.** `/memory:continue` is one of the 6 memory commands. It uses 4 shared MCP tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`.
+**SHIPPED.** `/spec_kit:resume` owns session recovery and continuation. It uses 4 shared MCP tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`.
 
 The primary recovery path calls `memory_context` in `resume` mode with anchors targeting `state`, `next-steps`, `summary`, and `blockers`. Resume mode uses a 1200-token budget with `minState=WARM`, `includeContent=true`, dedup and decay both disabled.
 
-Two recovery modes are available: **auto** (default) resolves the strongest session candidate with minimal prompting, and **manual** presents alternatives when multiple recent folders look plausible or confidence is low.
+Two recovery modes are available: **auto** resolves the strongest session candidate with minimal prompting, and **confirm** presents alternatives when multiple recent folders look plausible or confidence is low.
 
-The fallback chain has 5 priority levels: (1) `memory_context` in resume mode, (2) `CONTINUE_SESSION.md` crash breadcrumb, (3) anchored `memory_search` for thin summaries, (4) `memory_list` for recent-candidate discovery, (5) user confirmation as final fallback.
+The recovery chain prioritizes: (1) fresh `handover.md` when present, (2) `memory_context` in resume mode, (3) `CONTINUE_SESSION.md` crash breadcrumb, (4) anchored `memory_search` for thin summaries, (5) `memory_list` for recent-candidate discovery, and (6) user confirmation as final fallback.
 
-After recovery, the command routes to `/spec_kit:resume` for structured spec-folder work or `/memory:analyze history` for broader historical analysis, depending on user intent.
+After recovery, the command continues directly inside `/spec_kit:resume` for structured spec-folder work or routes to `/memory:analyze history` for broader historical analysis, depending on user intent.
 
 #### Source Files
 
 | File | Role |
 |------|------|
-| `.opencode/command/memory/continue.md` | `/memory:continue` command definition with auto/manual workflows |
+| `.opencode/command/spec_kit/resume.md` | `/spec_kit:resume` command definition with continuation and recovery workflows |
 
-See [`01--retrieval/11-session-recovery-memory-continue.md`](01--retrieval/11-session-recovery-memory-continue.md) for full details.
+See [`01--retrieval/11-session-recovery-spec-kit-resume.md`](01--retrieval/11-session-recovery-spec-kit-resume.md) for full details.
 
 ---
 

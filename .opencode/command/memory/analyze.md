@@ -737,7 +737,7 @@ STATUS=OK ACTION=dashboard
 - `/memory:save`: Save conversation context
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
-- `/memory:continue`: Session recovery
+- `/spec_kit:resume`: Session recovery and continuation
 - `/memory:shared`: Shared-memory spaces
 
 ---

@@ -170,7 +170,6 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 ### Memory Commands (`/memory:*`)
 
 - `/memory:save`: Save session context to memory files (auto-indexed)
-- `/memory:continue`: Crash recovery and context restoration
 - `/memory:manage`: Memory database maintenance (stats, health, cleanup, checkpoints)
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
 - `/memory:analyze`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
@@ -315,14 +314,14 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 
 **Memory Operations:**
 - Save context: `/memory:save` or trigger via "save context" phrase
-- Resume work: `/memory:continue` or `memory_search({ specFolder, anchors: ['state', 'next-steps'] })`
+- Resume work: `/spec_kit:resume` or `memory_search({ specFolder, anchors: ['state', 'next-steps'] })`
 - Explore memories: `memory_stats()`, `memory_list()`, `memory_health()`
 
 ### Common Workflows
 
 - **File modification:** Gate 1, Gate 2, Gate 3 (ask spec folder), Load memory context, Execute
 - **Research task:** `memory_match_triggers()`, `memory_context()`, Document findings
-- **Resume session:** `/memory:continue`, Review checklist, Continue work
+- **Resume session:** `/spec_kit:resume`, Review checklist, Continue work
 - **End session:** `/spec_kit:handover`, Save context, Continuation prompt
 
 ### Further Reading

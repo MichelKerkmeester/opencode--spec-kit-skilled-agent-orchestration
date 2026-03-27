@@ -464,7 +464,7 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
     actions: [
       'Start a new session with fresh sessionId',
       'Previously sent memories will be resent',
-      'Consider using /memory:continue for session recovery'
+      'Consider using /spec_kit:resume for session recovery'
     ],
     severity: 'low'
   },

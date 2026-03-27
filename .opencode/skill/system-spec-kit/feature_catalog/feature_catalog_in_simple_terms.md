@@ -51,16 +51,16 @@ The last three code-audit phases map to existing catalog categories rather than 
 
 ### Command-Surface Contract
 
-The memory system exposes **33 tools** through **6 slash commands**. Think of commands as doors into the system. Each door only opens access to the tools it needs. The source of truth for which tools each command can use is the `allowed-tools` field in each command file under `.opencode/command/memory/`.
+The memory system exposes **33 tools** through **5 memory slash commands**, while `/spec_kit:resume` handles session recovery using shared memory tools. Think of commands as doors into the system. Each door only opens access to the tools it needs. The source of truth for which tools each command can use is the `allowed-tools` field in each command file under `.opencode/command/memory/`, plus the recovery contract in `.opencode/command/spec_kit/resume.md`.
 
 | Command | What It Does | Tools It Can Use |
 |---------|-------------|-----------------|
 | `/memory:analyze` | Search, retrieve, and analyze knowledge (13 tools) | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
-| `/memory:continue` | Recover an interrupted session (4 tools, borrowed) | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
 | `/memory:learn` | Create and manage always-surface rules (6 tools, borrowed) | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
 | `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion (16 tools) | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
 | `/memory:save` | Save conversation context (4 tools, borrowed) | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
 | `/memory:shared` | Manage shared-memory spaces and memberships (4 tools) | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+| `/spec_kit:resume` | Continue or recover prior work (4 shared tools) | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
 
 Some commands own their tools (they are the primary home) while others borrow tools from `/memory:analyze` or `/memory:manage`. A borrowed tool works the same way; it is just administered somewhere else.
 
@@ -110,9 +110,9 @@ If your search does not find good results on the first try, the system automatic
 
 When the system finds something useful during a search, it keeps a mental note of it for the rest of your session. That way, if you ask a follow-up question a few turns later, the system still remembers what it found earlier. These notes gradually fade over time so the most recent findings stay prominent while older ones quietly step aside.
 
-### Session recovery (/memory:continue)
+### Session recovery (/spec_kit:resume)
 
-When a session is interrupted by a crash, context compaction, or timeout, this command figures out where you left off and helps you pick up again. It checks the memory system for your most recent work, looks for crash-recovery breadcrumbs, and presents what it found. Think of it like reopening your laptop after it went to sleep and having your browser restore all the tabs you had open. It uses 4 borrowed tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`. Two modes are available: auto (resolves the best candidate with minimal prompting) and manual (presents alternatives when it is not sure which session you want). After recovery, it routes you to the right next command depending on whether you want to continue structured work or just see what you were doing.
+When a session is interrupted by a crash, context compaction, timeout, or an ordinary cross-session handoff, this command figures out where you left off and helps you pick up again. It checks fresh handover state first, then the memory system for your most recent work, looks for crash-recovery breadcrumbs, and presents what it found. Think of it like reopening your laptop after it went to sleep and having your browser restore all the tabs you had open. It uses 4 borrowed tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`. Two modes are available: auto (resolves the best candidate with minimal prompting) and confirm (presents alternatives when it is not sure which session you want). After recovery, it keeps you inside the same resume workflow for structured work or points you to broader history when needed.
 
 ---
 

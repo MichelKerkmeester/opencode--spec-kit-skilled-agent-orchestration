@@ -148,10 +148,10 @@ Or use the command shorthand:
 Start a new session on work you did before:
 
 ```text
-/memory:continue
+/spec_kit:resume
 ```
 
-The system checks memory for your most recent work, finds crash-recovery breadcrumbs if the last session ended unexpectedly, and presents your prior decisions, file changes and next steps before you start.
+The system checks the best available continuation context for your most recent work, prefers a fresh `handover.md` when it exists, falls back to resume-mode memory retrieval and crash-recovery breadcrumbs when needed, and presents your prior decisions, file changes and next steps before you start.
 
 ### Search for Context
 
@@ -409,16 +409,17 @@ Spec Kit exposes 14 commands: 8 for spec folder workflows and 6 for memory opera
 
 **Command source files**: `.opencode/command/spec_kit/`
 
-#### Memory Commands (6)
+#### Memory Commands (5)
 
 | Command | Tool Count | Purpose |
 |---------|-----------|---------|
 | `/memory:save` | 4 | Save conversation context to a spec folder's `memory/` directory with semantic indexing |
 | `/memory:analyze` | 13 | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types |
-| `/memory:continue` | 4 | Recover an interrupted session from crash, compaction or timeout |
 | `/memory:manage` | 16 | Database maintenance: stats, scan, cleanup, bulk-delete, checkpoints, ingest |
 | `/memory:learn` | 6 | Constitutional memory manager: create, list, edit, remove always-surface rules |
 | `/memory:shared` | 4 | Shared-memory lifecycle: create spaces, manage memberships, inspect rollout |
+
+Session recovery lives in `/spec_kit:resume`, which uses shared memory tools for resume-mode retrieval, crash breadcrumbs, and continuation routing.
 
 Some commands own their tools (they are the primary home) while others borrow tools from `/memory:analyze` or `/memory:manage`. A borrowed tool works the same way -- it is just administered somewhere else.
 
@@ -605,7 +606,7 @@ The **spec folder workflow** is the filing system. Every time you modify files, 
 
 The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it so the next session can find it. When a new session starts, `memory_context` or `memory_match_triggers` retrieves the relevant context and hands it to the AI before work begins.
 
-The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/memory:continue` recovers a previous session.
+The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
 
 ```text
 Session starts
@@ -730,7 +731,7 @@ Fill `spec.md`, `plan.md`, `tasks.md` and `checklist.md` using the pre-merged te
 You worked on a feature yesterday and want to pick up where you left off:
 
 ```text
-/memory:continue
+/spec_kit:resume
 ```
 
 The system searches for your most recent context, presents your prior decisions and file changes, and routes you to the right next command. If it finds multiple candidates, it presents alternatives for you to choose from.
@@ -803,7 +804,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 | Architecture change | `create.sh NNN-name` + Level 3 | 500+ LOC, multiple systems |
 | Multi-phase work | `create.sh NNN-name --phase` | Large features, multiple sessions |
 | Save session progress | `/memory:save [folder]` | Before ending any session |
-| Recover after crash | `/memory:continue` | Session interrupted unexpectedly |
+| Recover after crash | `/spec_kit:resume` | Session interrupted unexpectedly |
 | Check prior decisions | `/memory:analyze "query"` | Starting a related task |
 | Upgrade documentation level | `upgrade-level.sh [folder] [level]` | Scope grew beyond original level |
 | Create always-surface rule | `/memory:learn` | Team standards, workflow rules |
@@ -910,7 +911,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | `generate-context.js` not found | Run `npm run build` in `system-spec-kit/` |
 | Spec folder fails validation | Run `validate.sh --verbose` and read each failing rule |
 | Memory context seems wrong | Call `memory_stats({})` to check index counts |
-| Session context lost after crash | Use `/memory:continue` to recover from last checkpoint |
+| Session context lost after crash | Use `/spec_kit:resume` to recover from the best available checkpoint or handoff |
 | Placeholder check fails | Run `check-placeholders.sh` and replace all `[PLACEHOLDER]` values |
 | Stale results after save | Call `memory_index_scan({ specFolder: "..." })` to force re-index |
 | Too many near-duplicate results | Check that interference penalty is active in feature flags |
@@ -1042,7 +1043,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | `AGENTS.md` (project root) | Gate definitions, AI behavior framework, mandatory workflow rules |
 | `.opencode/specs/` | All spec folders created by Spec Kit |
 | `.opencode/command/spec_kit/` | Spec Kit command definitions (8 commands) |
-| `.opencode/command/memory/` | Memory command definitions (6 commands) |
+| `.opencode/command/memory/` | Memory command definitions (5 commands) |
 
 ### External Resources
 

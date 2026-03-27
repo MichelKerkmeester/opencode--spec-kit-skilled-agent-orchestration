@@ -835,7 +835,7 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 - `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
 - `/memory:learn`: Constitutional memories
-- `/memory:continue`: Session recovery
+- `/spec_kit:resume`: Session recovery and continuation
 - `/memory:shared`: Shared-memory spaces
 
 ---

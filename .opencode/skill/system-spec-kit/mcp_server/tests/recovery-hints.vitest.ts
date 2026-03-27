@@ -701,7 +701,7 @@ describe('Action Content - T081-T090', () => {
   it('T090: SESSION_EXPIRED mentions recovery option', () => {
     const expiredHint = RECOVERY_HINTS[ERROR_CODES.SESSION_EXPIRED];
     const hasRecovery = expiredHint.actions.some(
-      (a: string) => a.includes('/memory:continue') || a.includes('recovery')
+      (a: string) => a.includes('/spec_kit:resume') || a.includes('recovery')
     );
     expect(hasRecovery).toBe(true);
   });

@@ -219,7 +219,7 @@ COMMAND_BOOSTS = {
     "/memory:save": "MEMORY",
     "/memory:manage": "MEMORY",
     "/memory:learn": "MEMORY",
-    "/memory:continue": "MEMORY",
+    "/spec_kit:resume": "MEMORY",
     "/memory:shared": "GOVERNANCE",
 }
 
@@ -558,7 +558,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~1073 lines) with ~44 handler files, 27 lib subdirectories, and 33 MCP tools across 7 layers.
 
-**Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 33 tools. The `/memory:analyze` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` for full command documentation.
+**Memory Commands:** 5 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover the memory command surface, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:analyze` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 

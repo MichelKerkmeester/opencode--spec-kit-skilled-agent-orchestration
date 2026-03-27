@@ -597,7 +597,7 @@ When ANY context pressure signal fires:
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
 | Resuming prior work (known spec)       | `/spec_kit:resume`   | Load context from spec folder          |
-| Resuming interrupted work (unknown)    | `/memory:continue`   | Crash recovery and context restoration |
+| Resuming interrupted work (unknown)    | `/spec_kit:resume`   | Auto-detect recent work or recover interrupted sessions |
 | Need retrieval, analysis, or eval      | `/memory:analyze`    | Unified knowledge retrieval            |
 | Memory maintenance or ingest           | `/memory:manage`     | Stats, health, cleanup, ingest ops     |
 | Constitutional memory rules            | `/memory:learn`      | Create/list/edit/remove always-surface rules |
@@ -780,7 +780,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/spec_kit:complete`        | Verification workflow                           | `.opencode/command/spec_kit/complete.md`     |
 | `/spec_kit:deep-research`   | Autonomous iterative research loop              | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`              | Context preservation                            | `.opencode/command/memory/save.md`           |
-| `/memory:continue`          | Crash recovery, context restoration             | `.opencode/command/memory/continue.md`       |
+| `/spec_kit:resume`          | Resume or recover work, including crash restoration | `.opencode/command/spec_kit/resume.md`   |
 | `/memory:analyze`           | Unified retrieval, analysis, eval               | `.opencode/command/memory/analyze.md`        |
 | `/memory:manage`            | Stats, health, cleanup, ingest                  | `.opencode/command/memory/manage.md`         |
 | `/memory:learn`             | Constitutional memory manager                   | `.opencode/command/memory/learn.md`          |

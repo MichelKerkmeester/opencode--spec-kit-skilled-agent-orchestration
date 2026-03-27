@@ -359,6 +359,6 @@ Prerequisite: `/spec_kit:plan [feature-description]` (creates spec.md, plan.md)
 | Ending session            | `/spec_kit:handover [spec-folder-path]`    | Create continuation document    |
 | Found bugs during testing | `/spec_kit:debug [spec-folder-path]`       | Delegate to fresh agent         |
 | Ready for next feature    | `/spec_kit:complete [feature-description]` | Start new workflow              |
-| Need crash recovery       | `/memory:continue`                         | Session recovery                |
+| Need crash recovery       | `/spec_kit:resume`                         | Session recovery and continuation |
 
 **ALWAYS** end with: "What would you like to do next?"

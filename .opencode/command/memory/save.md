@@ -472,7 +472,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 - `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
-- `/memory:continue`: Session recovery
+- `/spec_kit:resume`: Session recovery and continuation
 - `/memory:shared`: Shared-memory spaces
 - `/spec_kit:handover`: Full session handover document
 
