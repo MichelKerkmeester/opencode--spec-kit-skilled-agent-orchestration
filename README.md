@@ -572,7 +572,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Scores results via a 5-dimension rubric - each strategy uses a different lens and temperature
 - Plans only - never modifies files directly
 
-#### RUNTIME DIRECTORIES
+#### RUNTIME
 
 - **OpenCode** - `.opencode/agent/` (source of truth)
 - **Claude Code** - `.claude/agents/`
@@ -587,7 +587,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 20 commands across 4 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
-#### SPEC_KIT / - 8 COMMANDS (SPEC FOLDER LIFECYCLE)
+#### SPEC KIT
 
 **complete**
 - End-to-end workflow: research → plan → implement → verify → save memory
@@ -629,7 +629,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Gathers key decisions, blockers, current phase and next steps from spec folder state
 - Variants: `:quick` (summary) or `:full` (comprehensive)
 
-#### MEMORY / - 4 COMMANDS (COGNITIVE MEMORY)
+#### MEMORY
 
 **save**
 - Saves current session context to a timestamped memory file via `generate-context.js`
@@ -651,7 +651,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Checkpoint management: create, list, restore, delete
 - Bulk operations, ingestion (start/status/cancel), and shared-memory lifecycle
 
-#### CREATE / - 7 COMMANDS (COMPONENT SCAFFOLDING)
+#### CREATE
 
 **sk-skill**
 - Unified skill creation and update workflow
@@ -688,7 +688,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
 
-#### UTILITY - 1 COMMAND
+#### UTILITY
 
 **agent_router**
 - Routes requests to external AI systems (Gemini CLI, Codex CLI, Claude Code, Copilot CLI)
@@ -702,7 +702,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 18 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
-#### DOCUMENTATION SKILLS (2)
+#### DOCUMENTATION
 
 **system-spec-kit**
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
@@ -715,7 +715,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - HVR v0.210 compliance checking and component creation workflows (skills, agents, commands)
 - Handles README templates, frontmatter validation, feature catalog authoring, install guide generation
 
-#### CODE WORKFLOW SKILLS (4)
+#### CODE WORKFLOW
 
 **sk-code--full-stack**
 - Stack-agnostic development orchestrator with automatic stack detection via marker files
@@ -737,7 +737,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Baseline always runs first: security checklist, correctness checklist, SOLID checklist, threat model
 - Security and correctness minimums are mandatory and NEVER relaxed by the overlay. P0/P1/P2 findings.
 
-#### MCP INTEGRATION SKILLS (5)
+#### MCP INTEGRATION
 
 **mcp-code-mode**
 - MCP orchestration engine providing access to 200+ external tools through a single TypeScript interface
@@ -764,7 +764,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed
 - MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
 
-#### CROSS-AI CLI SKILLS (4)
+#### CROSS-AI CLI
 
 **cli-gemini**
 - Gemini CLI orchestrator enabling cross-AI delegation from Claude Code, Codex, or Copilot
@@ -786,7 +786,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Explore/Task agents for architecture mapping, `/delegate` for cloud-hosted coding agents
 - Autopilot autonomous execution mode, MCP server integration, native GitHub ecosystem perspective
 
-#### OTHER SKILLS (3)
+#### OTHER
 
 **sk-deep-research**
 - Dual-mode autonomous investigation system with iterative LEAF cycles
