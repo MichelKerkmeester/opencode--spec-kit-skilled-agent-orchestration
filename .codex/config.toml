@@ -1,5 +1,7 @@
 model_auto_compact_token_limit = 500000
 
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
 [mcp_servers.sequential_thinking]
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
