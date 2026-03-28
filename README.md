@@ -116,18 +116,6 @@ The framework adds three layers on top of the base platform:
          └──────────────────────────────────────────┘
 ```
 
-### Quick Navigation
-
-- **Get started with the framework** -- [Quick Start](#2-quick-start)
-- **Learn about spec folder workflows** -- [3.1 Spec Kit Documentation](#31-spec-kit-documentation)
-- **Understand the memory system** -- [3.2 Memory Engine](#32-memory-engine)
-- **See all agents and their roles** -- [3.3 Agent Network](#33-agent-network)
-- **Browse available commands** -- [3.4 Command Architecture](#34-command-architecture)
-- **Find the right skill for a task** -- [3.5 Skills Library](#35-skills-library)
-- **Understand how requests are validated** -- [3.6 Gate System](#36-gate-system)
-- **Work with external tools (Figma, GitHub, etc.)** -- [3.7 Code Mode MCP](#37-code-mode-mcp)
-- **Configure the framework** -- [4. Configuration](#4-configuration)
-
 <!-- /ANCHOR:overview -->
 
 
@@ -198,6 +186,8 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 ---
 
 ## 3. FEATURES
+
+---
 
 ### 3.1 SPEC KIT DOCUMENTATION
 
@@ -308,6 +298,8 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 For the full spec folder workflow, template architecture (81 templates) and validation rules, see the [Spec Kit README](.opencode/skill/system-spec-kit/README.md).
 
 
+---
+
 ### 3.2 MEMORY ENGINE
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
@@ -333,7 +325,7 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
 
-#### 3.2.1 HYBRID SEARCH
+#### HYBRID SEARCH
 
 Every search checks five channels at once:
 
@@ -346,12 +338,12 @@ Every search checks five channels at once:
 **Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. The system automatically escalates from vector-only to all 5 channels when confidence is low, truncates weak results, and ensures every active channel is represented.
 
 
-#### 3.2.2 SEARCH PIPELINE
+#### SEARCH PIPELINE
 
 Every search passes through 4 stages: **Gather** (parallel retrieval from active channels; constitutional-tier memories always inject), **Score** (RRF fusion with 8 post-fusion signals including co-activation, FSRS decay, interference penalties and intent-specific weights), **Rerank** (local cross-encoder model via node-llama-cpp; gracefully skips without VRAM), and **Filter** (confidence labels, state filtering, score immutability).
 
 
-#### 3.2.3 QUERY INTELLIGENCE
+#### QUERY INTELLIGENCE
 
 Before any search runs, the system classifies your query by complexity (simple/moderate/complex) and intent (7 types: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each intent has its own channel weight profile.
 
@@ -360,7 +352,7 @@ Multi-topic queries are automatically split into sub-queries, expanded with rela
 Four response modes format results by task: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
 
 
-#### 3.2.4 MEMORY LIFECYCLE AND SCORING
+#### MEMORY LIFECYCLE AND SCORING
 
 Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed varies by content type and importance tier -- critical decisions never fade; temporary debugging notes fade within days.
 
@@ -369,7 +361,7 @@ Key scoring signals: **cold-start boost** for fresh memories (under 48h), **inte
 **Five cognitive states** based on access patterns: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**. HOT memories get full content in results; COLD and below only surface if they score well enough.
 
 
-#### 3.2.5 CAUSAL GRAPH
+#### CAUSAL GRAPH
 
 
 The system tracks how decisions relate to each other through **six relationship types**: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from` and `supports`.
@@ -377,7 +369,7 @@ The system tracks how decisions relate to each other through **six relationship 
 The graph supports typed-weighted traversal (prioritizing connection types based on query intent), community detection (Louvain) for cluster boosting, co-activation spreading with fan-effect dampening, temporal contiguity for same-session grouping, graph momentum for trending knowledge, and background LLM-assisted link discovery. Hub caps prevent any single highly-connected memory from dominating results.
 
 
-#### 3.2.6 SAVE INTELLIGENCE
+#### SAVE INTELLIGENCE
 
 When you save new knowledge, **Prediction Error gating** compares it against existing memories and picks one of four outcomes:
 
@@ -389,12 +381,12 @@ When you save new knowledge, **Prediction Error gating** compares it against exi
 Additional save-time processing includes semantic sufficiency gating, verify-fix-verify quality loops, content normalization for cleaner embeddings, auto-entity extraction, SHA-256 deduplication, and correction tracking that records how knowledge evolves across versions.
 
 
-#### 3.2.7 SESSION AWARENESS
+#### SESSION AWARENESS
 
 Working memory tracks findings from the current session with attention decay -- recent findings rank higher, older ones fade gracefully. Session deduplication suppresses already-seen results in follow-up queries. Context pressure monitoring downgrades search mode as the context window fills.
 
 
-#### 3.2.8 SHARED MEMORY
+#### SHARED MEMORY
 
 By default, every memory is private. Shared memory adds controlled access for multiple people or agents:
 
@@ -406,24 +398,24 @@ By default, every memory is private. Shared memory adds controlled access for mu
 For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md).
 
 
-#### 3.2.9 QUALITY GATES AND LEARNING
+#### QUALITY GATES AND LEARNING
 
 Before a new memory enters the system, it passes three layered checks: **structure** (format, headings, metadata), **semantic sufficiency** (enough real content to be useful), and **duplicate detection** (triggers Prediction Error arbitration if similar content exists). Preview all checks without saving using `dryRun: true`.
 
 **Learned relevance feedback** boosts helpful results in future queries, with multiple safeguards against noise. Results are tagged with high/medium/low confidence scores. Two-tier explainability shows either plain-language reasons or exact channel contributions.
 
 
-#### 3.2.10 RETRIEVAL ENHANCEMENTS
+#### RETRIEVAL ENHANCEMENTS
 
 Additional retrieval signals include constitutional memory injection (always-surfaced rules), spec folder hierarchy awareness, cross-document entity linking, ANCHOR-based section retrieval (~93% token savings), dual-scope auto-surfacing on tool use and compression events, and provenance traces showing how each result was found.
 
 
-#### 3.2.11 INDEXING AND INFRASTRUCTURE
+#### INDEXING AND INFRASTRUCTURE
 
 The memory engine watches the filesystem in real-time (chokidar), tracks content hashes for incremental indexing, retries failed embeddings in the background, falls back to lexical-only indexing when embedding services are unavailable, and uses atomic writes with crash recovery.
 
 
-#### 3.2.12 EVALUATION INFRASTRUCTURE
+#### EVALUATION INFRASTRUCTURE
 
 Research-grade evaluation: 12-metric computation (MRR, NDCG, MAP), a 110-question synthetic ground truth corpus, ablation studies measuring per-channel quality impact, and shadow scoring for testing ranking changes before deployment.
 
@@ -436,6 +428,8 @@ Research-grade evaluation: 12-metric computation (MRR, NDCG, MAP), a 110-questio
 
 For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm parameters and 33-tool API reference, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
+
+---
 
 ### 3.3 AGENT NETWORK
 
@@ -489,6 +483,8 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 - **Gemini CLI** — `.gemini/agents/` (10 files, runtime-adapted)
 
 
+---
+
 ### 3.4 COMMAND ARCHITECTURE
 
 
@@ -538,6 +534,8 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 </details>
 
+
+---
 
 ### 3.5 SKILLS LIBRARY
 
@@ -604,6 +602,8 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 </details>
 
+
+---
 
 ### 3.6 GATE SYSTEM
 
@@ -674,6 +674,8 @@ Applied silently during gate processing on every request:
 
 Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS.md).
 
+
+---
 
 ### 3.7 CODE MODE MCP
 
@@ -840,46 +842,55 @@ The memory system uses a SQLite database with 25 tables:
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -- `system-spec-kit` and `sk-doc` -- cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
+---
 
 **Q: Is this only for OpenCode, or does it work with other runtimes?**
 
 A: It works with OpenCode, Codex CLI, Claude Code and Gemini CLI. Agent definitions are mirrored across all four runtime directories. Each runtime has its own adapter files that translate the source-of-truth definitions into the format that runtime expects.
 
+---
 
 **Q: What happens if I do not use a spec folder?**
 
 A: Gate 3 blocks file modifications until a spec folder answer is provided. You can skip it with option D, but skipped sessions are undocumented and will not be recoverable via memory search. For trivial changes under 5 characters in a single file, Gate 3 does not trigger.
 
+---
 
 **Q: How does the memory system know what is relevant to my current task?**
 
 A: Memory files have YAML frontmatter with tags and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search and returns the top matches, classified by intent and fused with RRF.
 
+---
 
 **Q: Can I use this framework without the cognitive memory features?**
 
 A: Yes. The Spec Kit documentation workflow (Gate 3, spec folders, templates) works independently of the memory MCP server. You will not have cross-session memory retrieval, but you will still get structured documentation, agent routing and skill loading.
 
+---
 
 **Q: How do I add a new skill to the framework?**
 
 A: Use `/create:sk-skill` to scaffold the skill structure. The command creates the `SKILL.md`, references and assets directories following the `sk-doc` template. Then register the skill in `.opencode/skill/README.md`.
 
+---
 
 **Q: What does "local-first" mean for the memory system?**
 
 A: The memory database is a SQLite file on your local machine. No session data, code or context is sent to any external service unless you configure a cloud embedding provider (Voyage AI or OpenAI). HuggingFace Local embeddings run entirely on-device.
 
+---
 
 **Q: How do I contribute a new agent definition?**
 
 A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.claude/agents/`, `.codex/agents/` and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
 
+---
 
 **Q: How many MCP tools are there and where are they defined?**
 
 A: 42 total across 4 native MCP servers: 33 memory tools (spec_kit_memory), 7 code mode tools, 1 semantic code search tool (cocoindex_code) and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 33 memory tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`.
 
+---
 
 **Q: What is the feature catalog?**
 
