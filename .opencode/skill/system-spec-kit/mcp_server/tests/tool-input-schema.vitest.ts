@@ -21,10 +21,20 @@ afterEach(() => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('Tool Schema Structural Integrity', () => {
-  it('no tool schema uses top-level oneOf, allOf, or anyOf', () => {
+  it('top-level oneOf is reserved for published actor exclusivity contracts', () => {
+    const actorExclusiveTools = new Set([
+      'shared_space_upsert',
+      'shared_space_membership_set',
+      'shared_memory_status',
+    ]);
+
     for (const tool of TOOL_DEFINITIONS) {
       const schema = tool.inputSchema as Record<string, unknown>;
-      expect(schema).not.toHaveProperty('oneOf');
+      if (actorExclusiveTools.has(tool.name)) {
+        expect(schema).toHaveProperty('oneOf');
+      } else {
+        expect(schema).not.toHaveProperty('oneOf');
+      }
       expect(schema).not.toHaveProperty('allOf');
       expect(schema).not.toHaveProperty('anyOf');
     }
@@ -253,6 +263,12 @@ describe('memory_search limit contract', () => {
     }).toThrow();
   });
 
+  it('public schema rejects limit above 100', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', { query: 'ab', limit: 101 }, TOOL_DEFINITIONS);
+    }).toThrow(/must be <= 100/);
+  });
+
   it('runtime rejects concepts arrays shorter than 2 items', () => {
     expect(() => {
       validateToolArgs('memory_search', { concepts: ['solo'] });
@@ -363,6 +379,16 @@ describe('governed retrieval schema propagation', () => {
 });
 
 describe('shared-memory admin actor schema', () => {
+  it('public schemas advertise one-of actor identity for shared-memory admin tools', () => {
+    for (const toolName of ['shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status']) {
+      const tool = TOOL_DEFINITIONS.find((entry) => entry.name === toolName);
+      expect(tool?.inputSchema).toMatchObject({
+        oneOf: [{ required: ['actorUserId'] }, { required: ['actorAgentId'] }],
+        not: { required: ['actorUserId', 'actorAgentId'] },
+      });
+    }
+  });
+
   it('runtime accepts exactly one actor identity for shared_space_upsert', () => {
     expect(() => {
       validateToolArgs('shared_space_upsert', {
@@ -417,6 +443,12 @@ describe('shared-memory admin actor schema', () => {
 });
 
 describe('memory_health schema', () => {
+  it('public schema rejects divergent_aliases limit above 200', () => {
+    expect(() => {
+      validateToolInputSchema('memory_health', { reportMode: 'divergent_aliases', limit: 201 }, TOOL_DEFINITIONS);
+    }).toThrow(/must be <= 200/);
+  });
+
   it('public schema accepts autoRepair confirmation payloads', () => {
     expect(() => {
       validateToolInputSchema('memory_health', { autoRepair: true, confirmed: true }, TOOL_DEFINITIONS);
@@ -430,6 +462,12 @@ describe('memory_health schema', () => {
 });
 
 describe('checkpoint_delete schema', () => {
+  it('public checkpoint_list schema rejects limit above 100', () => {
+    expect(() => {
+      validateToolInputSchema('checkpoint_list', { limit: 101 }, TOOL_DEFINITIONS);
+    }).toThrow(/must be <= 100/);
+  });
+
   it('requires confirmName at schema level', () => {
     expect(() => {
       validateToolInputSchema('checkpoint_delete', { name: 'danger-zone' }, TOOL_DEFINITIONS);

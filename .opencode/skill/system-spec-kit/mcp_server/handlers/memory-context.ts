@@ -80,6 +80,7 @@ interface ContextOptions {
   includeContent?: boolean;
   includeTrace?: boolean; // CHK-040: Forward to internal memory_search calls
   anchors?: string[];
+  profile?: string;
   sessionTransition?: SessionTransitionTrace;
 }
 
@@ -640,6 +641,7 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     sessionId: options.sessionId,
     sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
+    profile: options.profile,
     autoDetectIntent: true,
     useDecay: true,
     minState: 'COLD'
@@ -668,6 +670,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     sessionId: options.sessionId,
     sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
+    profile: options.profile,
     intent: intent ?? undefined,
     autoDetectIntent: intent ? false : true,
     useDecay: true,
@@ -700,6 +703,7 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     sessionId: options.sessionId,
     sessionTransition: options.sessionTransition,
     enableDedup: false,
+    profile: options.profile,
     autoDetectIntent: true,
     useDecay: false,
     minState: 'WARM'
@@ -1116,7 +1120,8 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     enableDedup: enableDedup,
     includeContent: include_content,
     includeTrace: (args as unknown as Record<string, unknown>).includeTrace === true, // CHK-040
-    anchors
+    anchors,
+    profile: args.profile,
   };
 
   const {

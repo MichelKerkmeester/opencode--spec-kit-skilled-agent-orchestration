@@ -292,6 +292,14 @@ function groupBySprint(
   return groups;
 }
 
+function getSprintTimeBounds(snapshots: SnapshotRow[]): { firstSeen: string; lastSeen: string } {
+  const timestamps = snapshots.map((snapshot) => snapshot.created_at).filter(Boolean).sort();
+  return {
+    firstSeen: timestamps[0] ?? '',
+    lastSeen: timestamps[timestamps.length - 1] ?? '',
+  };
+}
+
 /**
  * Compute summary statistics for a set of values.
  */
@@ -424,9 +432,7 @@ function buildSprintReport(
   }
 
   // Timestamps
-  const timestamps = snapshots.map(s => s.created_at).filter(Boolean).sort();
-  const firstSeen = timestamps[0] ?? '';
-  const lastSeen = timestamps[timestamps.length - 1] ?? '';
+  const { firstSeen, lastSeen } = getSprintTimeBounds(snapshots);
 
   return {
     sprint: sprintLabel,
@@ -578,35 +584,42 @@ export async function generateDashboardReport(
   // Group by sprint
   const sprintGroups = groupBySprint(snapshots, config.sprintFilter);
 
-  const sprintEntries = [...sprintGroups.entries()].sort(([, leftSnapshots], [, rightSnapshots]) => {
-    const leftFirstSeen = leftSnapshots
-      .map((snapshot) => snapshot.created_at)
-      .filter(Boolean)
-      .sort()[0] ?? '';
-    const rightFirstSeen = rightSnapshots
-      .map((snapshot) => snapshot.created_at)
-      .filter(Boolean)
-      .sort()[0] ?? '';
-    return leftFirstSeen.localeCompare(rightFirstSeen);
+  const sprintEntries = [...sprintGroups.entries()].map(([label, groupSnapshots]) => ({
+    label,
+    groupSnapshots,
+    ...getSprintTimeBounds(groupSnapshots),
+  }));
+
+  const rankedSprintEntries = [...sprintEntries].sort((left, right) => {
+    if (left.lastSeen !== right.lastSeen) {
+      return right.lastSeen.localeCompare(left.lastSeen);
+    }
+    return right.firstSeen.localeCompare(left.firstSeen);
   });
 
-  const limitedSprintEntries = config.limit && config.limit > 0
-    ? sprintEntries.slice(-config.limit)
-    : sprintEntries;
+  const limitedSprintEntries = (config.limit && config.limit > 0
+    ? rankedSprintEntries.slice(0, config.limit)
+    : rankedSprintEntries
+  ).sort((left, right) => {
+    if (left.lastSeen !== right.lastSeen) {
+      return left.lastSeen.localeCompare(right.lastSeen);
+    }
+    return left.firstSeen.localeCompare(right.firstSeen);
+  });
 
   const includedRunIds = [...new Set(
-    limitedSprintEntries.flatMap(([, groupSnapshots]) => groupSnapshots.map((snapshot) => snapshot.eval_run_id))
+    limitedSprintEntries.flatMap(({ groupSnapshots }) => groupSnapshots.map((snapshot) => snapshot.eval_run_id))
   )];
   const totalEvalRuns = includedRunIds.length;
   const totalSnapshots = limitedSprintEntries.reduce(
-    (sum, [, groupSnapshots]) => sum + groupSnapshots.length,
+    (sum, { groupSnapshots }) => sum + groupSnapshots.length,
     0,
   );
 
   // Query channel results only for included runs so row limits cannot starve kept groups.
   const channelRows = queryChannelResults(db, includedRunIds, config.channelFilter);
 
-  const limitedSprints = limitedSprintEntries.map(([label, groupSnapshots]) =>
+  const limitedSprints = limitedSprintEntries.map(({ label, groupSnapshots }) =>
     buildSprintReport(label, groupSnapshots, channelRows)
   );
 

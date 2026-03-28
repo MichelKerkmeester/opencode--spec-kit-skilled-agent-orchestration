@@ -148,7 +148,9 @@ export interface SchemaResult {
    1. CONSTANTS & CONFIGURATION
 ──────────────────────────────────────────────────────────────── */
 
-const ENABLE_RELATIONS: boolean = process.env.SPECKIT_RELATIONS !== 'false';
+function areRelationsEnabled(): boolean {
+  return process.env.SPECKIT_RELATIONS !== 'false';
+}
 
 /**
  * Defines the CORRECTION_TYPES constant.
@@ -220,7 +222,7 @@ export function get_db(): Database.Database | null {
  * Provides the is_enabled helper.
  */
 export function is_enabled(): boolean {
-  return ENABLE_RELATIONS;
+  return areRelationsEnabled();
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -279,7 +281,7 @@ export function ensure_schema(): SchemaResult {
     throw new Error('[corrections] Database not initialized. Call init() first.');
   }
 
-  if (!ENABLE_RELATIONS) {
+  if (!areRelationsEnabled()) {
     return { success: true, skipped: true, reason: 'SPECKIT_RELATIONS disabled' };
   }
 
@@ -377,7 +379,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     throw new Error('[corrections] Database not initialized. Call init() first.');
   }
 
-  if (!ENABLE_RELATIONS) {
+  if (!areRelationsEnabled()) {
     return {
       success: false,
       skipped: true,
@@ -543,7 +545,7 @@ export function undo_correction(correction_id: number): UndoResult {
     throw new Error('[corrections] Database not initialized. Call init() first.');
   }
 
-  if (!ENABLE_RELATIONS) {
+  if (!areRelationsEnabled()) {
     return {
       success: false,
       skipped: true,
@@ -675,7 +677,7 @@ export function get_corrections_for_memory(
     return [];
   }
 
-  if (!ENABLE_RELATIONS) {
+  if (!areRelationsEnabled()) {
     return [];
   }
 
@@ -712,7 +714,7 @@ export function get_correction_chain(
   memory_id: number,
   options: { max_depth?: number } = {}
 ): CorrectionChain {
-  if (!db || !ENABLE_RELATIONS) {
+  if (!db || !areRelationsEnabled()) {
     return { memory_id, chain: [], total: 0 };
   }
 
@@ -785,9 +787,9 @@ export function get_correction_chain(
  * Provides the get_corrections_stats helper.
  */
 export function get_corrections_stats(): CorrectionStats {
-  if (!db || !ENABLE_RELATIONS) {
+  if (!db || !areRelationsEnabled()) {
     return {
-      enabled: ENABLE_RELATIONS,
+      enabled: areRelationsEnabled(),
       total: 0,
       by_type: {},
       undone: 0,
@@ -812,7 +814,7 @@ export function get_corrections_stats(): CorrectionStats {
     `).all() as Array<{ correction_type: string; count: number }>;
 
     return {
-      enabled: ENABLE_RELATIONS,
+      enabled: areRelationsEnabled(),
       total: stats.total || 0,
       by_type: by_type.reduce((acc: Record<string, number>, row) => {
         acc[row.correction_type] = row.count;
@@ -825,7 +827,7 @@ export function get_corrections_stats(): CorrectionStats {
     const error_message = get_error_message(error);
     console.warn(`[corrections] get_corrections_stats failed: ${error_message}`);
     return {
-      enabled: ENABLE_RELATIONS,
+      enabled: areRelationsEnabled(),
       total: 0,
       by_type: {},
       undone: 0,

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
@@ -16,6 +16,7 @@ import {
   CAUSAL_LINK_MAPPINGS,
 } from '../handlers/causal-links-processor';
 import * as vectorIndex from '../lib/search/vector-index';
+import * as dbHelpers from '../utils';
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -71,6 +72,7 @@ describe('MEMORY SAVE EXTENDED', () => {
         title TEXT,
         trigger_phrases TEXT,
         content TEXT,
+        content_text TEXT,
         content_hash TEXT,
         context_type TEXT DEFAULT 'implementation',
         importance_tier TEXT DEFAULT 'normal',
@@ -546,6 +548,54 @@ describe('MEMORY SAVE EXTENDED', () => {
         expect(result).toHaveProperty('success');
       } else {
         expect(result.specFolder).toBe('specs/my-spec');
+      }
+    });
+
+    it('backfills content_hash when reinforcement populates missing content_text', () => {
+      const db = createTestDb();
+      const requireDbSpy = vi.spyOn(dbHelpers, 'requireDb').mockReturnValue(db as never);
+      const parsed = {
+        specFolder: 'specs/hash-refresh',
+        filePath: '/specs/hash-refresh/memory/doc.md',
+        title: 'Hash Refresh',
+        triggerPhrases: [],
+        content: 'Fresh reinforcement content',
+        contentHash: 'fresh-reinforcement-hash',
+        contextType: 'implementation',
+        importanceTier: 'normal',
+        documentType: 'memory',
+      };
+
+      try {
+        db.prepare(`
+          INSERT INTO memory_index (
+            id, spec_folder, file_path, title, content_text, content_hash, stability, difficulty, review_count
+          ) VALUES (?, ?, ?, ?, NULL, ?, ?, ?, ?)
+        `).run(
+          55,
+          parsed.specFolder,
+          parsed.filePath,
+          parsed.title,
+          'stale-hash',
+          2,
+          5,
+          0,
+        );
+
+        const result = reinforceFn!(55, parsed as any);
+        expect(result.status).toBe('reinforced');
+
+        const updated = db.prepare(`
+          SELECT content_text, content_hash
+          FROM memory_index
+          WHERE id = ?
+        `).get(55) as { content_text: string | null; content_hash: string | null };
+
+        expect(updated.content_text).toBe(parsed.content);
+        expect(updated.content_hash).toBe(parsed.contentHash);
+      } finally {
+        requireDbSpy.mockRestore();
+        db.close();
       }
     });
   });

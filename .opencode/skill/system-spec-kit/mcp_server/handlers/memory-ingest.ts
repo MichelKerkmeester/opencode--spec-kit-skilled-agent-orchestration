@@ -227,7 +227,21 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
     });
   }
 
-  paths = normalizedPaths;
+  const deduplicatedPaths: string[] = [];
+  const seenPaths = new Set<string>();
+  let duplicatePathCount = 0;
+
+  for (const normalizedPath of normalizedPaths) {
+    if (seenPaths.has(normalizedPath)) {
+      duplicatePathCount++;
+      continue;
+    }
+
+    seenPaths.add(normalizedPath);
+    deduplicatedPaths.push(normalizedPath);
+  }
+
+  paths = deduplicatedPaths;
 
   const jobId = createJobId();
   const job = await createIngestJob({
@@ -247,11 +261,15 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
       filesTotal: job.filesTotal,
       acceptedPathCount: paths.length,
       rejectedPathCount: overlengthPaths.length,
+      ...(duplicatePathCount > 0 ? { duplicatePathCount } : {}),
       ...(overlengthPaths.length > 0 ? { rejectedPaths: overlengthPaths } : {}),
     },
     hints: [
       'Use memory_ingest_status with jobId to poll progress',
       'Use memory_ingest_cancel with jobId to stop processing',
+      ...(duplicatePathCount > 0
+        ? ['Duplicate input paths were deduplicated before queueing']
+        : []),
       ...(overlengthPaths.length > 0
         ? ['Some input paths were rejected before queueing; inspect rejectedPaths for details']
         : []),

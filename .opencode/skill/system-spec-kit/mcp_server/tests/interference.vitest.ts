@@ -35,6 +35,7 @@ function createTestDb(): Database.Database {
       importance_tier TEXT DEFAULT 'normal',
       importance_weight REAL DEFAULT 0.5,
       embedding_status TEXT DEFAULT 'complete',
+      is_archived INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now')),
       parent_id INTEGER,
@@ -43,6 +44,12 @@ function createTestDb(): Database.Database {
       stability REAL DEFAULT 1.0,
       last_accessed TEXT,
       document_type TEXT DEFAULT 'memory'
+    );
+    CREATE TABLE active_memory_projection (
+      logical_key TEXT PRIMARY KEY,
+      root_memory_id INTEGER NOT NULL,
+      active_memory_id INTEGER NOT NULL,
+      updated_at TEXT NOT NULL
     )
   `);
   return db;
@@ -55,19 +62,33 @@ function insertMemory(
     triggerPhrases?: string;
     specFolder?: string;
     parentId?: number | null;
+    importanceTier?: string;
+    isArchived?: boolean;
+    includeInProjection?: boolean;
   }
 ): number {
   const stmt = db.prepare(`
-    INSERT INTO memory_index (title, trigger_phrases, spec_folder, parent_id)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO memory_index (title, trigger_phrases, spec_folder, parent_id, importance_tier, is_archived)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
   const result = stmt.run(
     opts.title,
     opts.triggerPhrases || '',
     opts.specFolder || 'specs/test-folder',
-    opts.parentId ?? null
+    opts.parentId ?? null,
+    opts.importanceTier ?? 'normal',
+    opts.isArchived ? 1 : 0,
   );
-  return Number(result.lastInsertRowid);
+  const id = Number(result.lastInsertRowid);
+
+  if ((opts.parentId ?? null) == null && opts.includeInProjection !== false) {
+    db.prepare(`
+      INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
+      VALUES (?, ?, ?, datetime('now'))
+    `).run(`logical-${id}`, id, id);
+  }
+
+  return id;
 }
 
 // 1. Text Similarity Heuristic
@@ -214,6 +235,32 @@ describe('computeInterferenceScore', () => {
     expect(score).toBe(0);
   });
 
+  it('ignores archived and deprecated siblings that are no longer retrievable', () => {
+    const sharedTriggers = 'authentication, login, session, token, validation, handler, middleware, security, user, access';
+    const id = insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access primary',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+    });
+    insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access archived',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+      isArchived: true,
+      includeInProjection: false,
+    });
+    insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access deprecated',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+      importanceTier: 'deprecated',
+      includeInProjection: false,
+    });
+
+    const score = computeInterferenceScore(db, id, 'specs/auth');
+    expect(score).toBe(0);
+  });
+
   it('returns 0 for empty spec_folder', () => {
     const id = insertMemory(db, {
       title: 'test memory',
@@ -312,6 +359,38 @@ describe('computeInterferenceScoresBatch', () => {
     expect(result.get(id2)).toBeGreaterThanOrEqual(1);
     // Id3 is alone in its folder
     expect(result.get(id3)).toBe(0);
+  });
+
+  it('skips archived and deprecated rows during batch scoring', () => {
+    const sharedTriggers = 'authentication, login, session, token, validation, handler, middleware, security, user, access';
+    const id1 = insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access primary',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+    });
+    const id2 = insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access secondary',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+    });
+    insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access archived',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+      isArchived: true,
+      includeInProjection: false,
+    });
+    insertMemory(db, {
+      title: 'authentication login session token validation handler middleware security user access deprecated',
+      triggerPhrases: sharedTriggers,
+      specFolder: 'specs/auth',
+      importanceTier: 'deprecated',
+      includeInProjection: false,
+    });
+
+    const result = computeInterferenceScoresBatch(db, [id1, id2]);
+    expect(result.get(id1)).toBe(1);
+    expect(result.get(id2)).toBe(1);
   });
 });
 

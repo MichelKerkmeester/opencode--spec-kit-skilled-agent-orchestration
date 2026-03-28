@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete — P0+P1 fixed, tests green; P2 triage deferred |
+| **Status** | Complete — All 121 findings triaged: 5 P0 + 75 P1 + 22 P2 fixed, 16 P2 deferred, 3 P2 rejected; 8771 tests pass |
 | **Created** | 2026-03-28 |
 | **Branch** | `main` |
 <!-- /ANCHOR:metadata -->

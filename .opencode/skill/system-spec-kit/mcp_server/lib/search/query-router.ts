@@ -10,6 +10,8 @@ import {
   type QueryComplexityTier,
   type ClassificationResult,
 } from './query-classifier';
+import { getStrategyForQuery } from './artifact-routing';
+import { classifyIntent } from './intent-classifier';
 
 // Feature catalog: Query complexity router
 
@@ -43,6 +45,15 @@ const MIN_CHANNELS = 2;
 
 /** Fallback channels used to pad configs that violate the minimum invariant. */
 const FALLBACK_CHANNELS: readonly ChannelName[] = ['vector', 'fts'] as const;
+const BM25_PRESERVING_ARTIFACTS = new Set([
+  'spec',
+  'plan',
+  'tasks',
+  'checklist',
+  'decision-record',
+  'implementation-summary',
+  'research',
+]);
 
 /* ───────────────────────────────────────────────────────────────
    2. DEFAULT ROUTING CONFIG
@@ -99,6 +110,16 @@ function getChannelSubset(
   return enforceMinimumChannels([...channels]);
 }
 
+function shouldPreserveBm25(query: string): boolean {
+  const intent = classifyIntent(query).intent;
+  if (intent === 'find_spec' || intent === 'find_decision') {
+    return true;
+  }
+
+  const artifact = getStrategyForQuery(query).detectedClass;
+  return BM25_PRESERVING_ARTIFACTS.has(artifact);
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. CONVENIENCE: CLASSIFY + ROUTE
 ----------------------------------------------------------------*/
@@ -131,10 +152,13 @@ function routeQuery(
   }
 
   const channels = getChannelSubset(classification.tier);
+  const adjustedChannels = classification.tier === 'simple' && shouldPreserveBm25(query)
+    ? enforceMinimumChannels([...channels, 'bm25'])
+    : channels;
 
   return {
     tier: classification.tier,
-    channels,
+    channels: adjustedChannels,
     classification,
   };
 }

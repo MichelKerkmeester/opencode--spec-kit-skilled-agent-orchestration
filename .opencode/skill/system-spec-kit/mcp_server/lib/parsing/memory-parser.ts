@@ -127,6 +127,56 @@ export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
 // 3. CORE PARSING FUNCTIONS
 
 // ───────────────────────────────────────────────────────────────
+function decodeUtf16BeBuffer(buffer: Buffer): string {
+  const contentBuffer = Buffer.from(buffer);
+  for (let i = 0; i < contentBuffer.length - 1; i += 2) {
+    const temp = contentBuffer[i];
+    contentBuffer[i] = contentBuffer[i + 1];
+    contentBuffer[i + 1] = temp;
+  }
+  return contentBuffer.toString('utf16le');
+}
+
+function detectBomlessUtf16Encoding(buffer: Buffer): 'utf16le' | 'utf16be' | null {
+  if (buffer.length < 4 || buffer.length % 2 !== 0) {
+    return null;
+  }
+
+  const sampleLength = Math.min(buffer.length, 256);
+  const pairCount = sampleLength / 2;
+  let evenNulls = 0;
+  let oddNulls = 0;
+  let evenPrintable = 0;
+  let oddPrintable = 0;
+
+  for (let i = 0; i < sampleLength; i += 1) {
+    const byte = buffer[i];
+    const isPrintableAscii = byte === 0x09 || byte === 0x0A || byte === 0x0D || (byte >= 0x20 && byte <= 0x7E);
+    if (i % 2 === 0) {
+      if (byte === 0x00) evenNulls += 1;
+      if (isPrintableAscii) evenPrintable += 1;
+    } else {
+      if (byte === 0x00) oddNulls += 1;
+      if (isPrintableAscii) oddPrintable += 1;
+    }
+  }
+
+  const evenNullRatio = evenNulls / pairCount;
+  const oddNullRatio = oddNulls / pairCount;
+  const evenPrintableRatio = evenPrintable / pairCount;
+  const oddPrintableRatio = oddPrintable / pairCount;
+
+  if (oddNullRatio >= 0.6 && evenPrintableRatio >= 0.6 && evenNullRatio <= 0.2) {
+    return 'utf16le';
+  }
+
+  if (evenNullRatio >= 0.6 && oddPrintableRatio >= 0.6 && oddNullRatio <= 0.2) {
+    return 'utf16be';
+  }
+
+  return null;
+}
+
 /** Read file with BOM detection for UTF-16 support */
 export function readFileWithEncoding(filePath: string): string {
   const buffer = fs.readFileSync(filePath);
@@ -153,14 +203,15 @@ export function readFileWithEncoding(filePath: string): string {
   if (buffer.length >= 2 &&
       buffer[0] === 0xFE &&
       buffer[1] === 0xFF) {
-    // Skip BOM (2 bytes), then swap remaining bytes for BE->LE conversion
-    const contentBuffer = buffer.slice(2);
-    for (let i = 0; i < contentBuffer.length - 1; i += 2) {
-      const temp = contentBuffer[i];
-      contentBuffer[i] = contentBuffer[i + 1];
-      contentBuffer[i + 1] = temp;
-    }
-    return contentBuffer.toString('utf16le');
+    return decodeUtf16BeBuffer(buffer.slice(2));
+  }
+
+  const bomlessUtf16Encoding = detectBomlessUtf16Encoding(buffer);
+  if (bomlessUtf16Encoding === 'utf16le') {
+    return buffer.toString('utf16le');
+  }
+  if (bomlessUtf16Encoding === 'utf16be') {
+    return decodeUtf16BeBuffer(buffer);
   }
 
   // No BOM detected, assume UTF-8

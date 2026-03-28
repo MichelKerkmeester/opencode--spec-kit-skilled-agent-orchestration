@@ -44,10 +44,19 @@ const DEFAULT_THINNING_THRESHOLD = 0.3;
 // Weights for composite score
 const ANCHOR_WEIGHT = 0.6;   // Anchor presence is primary signal
 const DENSITY_WEIGHT = 0.4;  // Content density is secondary
+const MIN_ANCHORED_DENSITY = 0.1;
+const MIN_ANCHORED_MEANINGFUL_CHARS = 24;
 
 /* ───────────────────────────────────────────────────────────────
    3. DENSITY COMPUTATION
 ──────────────────────────────────────────────────────────────── */
+
+function getMeaningfulContent(content: string): string {
+  return content
+    .replace(/<!--[\s\S]*?-->/g, '')    // HTML comments
+    .replace(/\s+/g, ' ')               // collapse whitespace
+    .trim();
+}
 
 /**
  * Compute content density for a chunk.
@@ -57,10 +66,7 @@ function computeContentDensity(content: string): number {
   if (!content || content.length === 0) return 0;
 
   // Strip HTML comments, anchor markers, excessive whitespace
-  const stripped = content
-    .replace(/<!--[\s\S]*?-->/g, '')    // HTML comments
-    .replace(/\s+/g, ' ')               // collapse whitespace
-    .trim();
+  const stripped = getMeaningfulContent(content);
 
   if (stripped.length === 0) return 0;
 
@@ -80,6 +86,15 @@ function computeContentDensity(content: string): number {
   return Math.min(1.0, (ratio * lengthFactor) + structureBonus);
 }
 
+function hasAnchoredSignal(chunk: AnchorChunk, densityScore: number): boolean {
+  if (chunk.anchorIds.length === 0) {
+    return true;
+  }
+
+  const meaningfulLength = getMeaningfulContent(chunk.content).length;
+  return densityScore >= MIN_ANCHORED_DENSITY && meaningfulLength >= MIN_ANCHORED_MEANINGFUL_CHARS;
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. CHUNK SCORING
 ──────────────────────────────────────────────────────────────── */
@@ -96,13 +111,14 @@ export function scoreChunk(chunk: AnchorChunk): ChunkScore {
   const densityScore = computeContentDensity(chunk.content);
 
   const score = (ANCHOR_WEIGHT * anchorScore) + (DENSITY_WEIGHT * densityScore);
+  const retained = hasAnchoredSignal(chunk, densityScore) && score >= DEFAULT_THINNING_THRESHOLD;
 
   return {
     chunk,
     score,
     anchorScore,
     densityScore,
-    retained: score >= DEFAULT_THINNING_THRESHOLD,
+    retained,
   };
 }
 
@@ -131,7 +147,7 @@ export function thinChunks(
 
   const scores = chunks.map(c => {
     const s = scoreChunk(c);
-    return { ...s, retained: s.score >= threshold };
+    return { ...s, retained: hasAnchoredSignal(c, s.densityScore) && s.score >= threshold };
   });
 
   const retained = scores.filter(s => s.retained).map(s => s.chunk);

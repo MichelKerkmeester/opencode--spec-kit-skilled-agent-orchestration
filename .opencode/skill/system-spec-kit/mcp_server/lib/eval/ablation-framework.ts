@@ -76,6 +76,13 @@ export interface AblationConfig {
   alignmentContext?: string;
 }
 
+interface QuerySelection {
+  queries: GroundTruthQuery[];
+  requestedQueryIds?: number[];
+  resolvedQueryIds?: number[];
+  missingQueryIds?: number[];
+}
+
 /** Summary of whether the static ground truth matches the active DB universe. */
 export interface GroundTruthAlignmentSummary {
   totalQueries: number;
@@ -178,6 +185,12 @@ export interface AblationReport {
   queryCount?: number;
   /** Total queries actually evaluated (queries with ground truth). */
   evaluatedQueryCount?: number;
+  /** Query IDs explicitly requested for this run (if any). */
+  requestedQueryIds?: number[];
+  /** Query IDs resolved from the static dataset. */
+  resolvedQueryIds?: number[];
+  /** Requested query IDs that were missing from the static dataset. */
+  missingQueryIds?: number[];
   /** Total wall-clock duration in milliseconds. */
   durationMs: number;
 }
@@ -365,12 +378,23 @@ function getGroundTruthForQuery(queryId: number): GroundTruthEntry[] {
 /**
  * Get the set of queries to evaluate, filtered by config.
  */
-function getQueriesToEvaluate(config: AblationConfig): GroundTruthQuery[] {
+function getQueriesToEvaluate(config: AblationConfig): QuerySelection {
   if (config.groundTruthQueryIds && config.groundTruthQueryIds.length > 0) {
-    const idSet = new Set(config.groundTruthQueryIds);
-    return GROUND_TRUTH_QUERIES.filter(q => idSet.has(q.id));
+    const requestedQueryIds = [...new Set(config.groundTruthQueryIds)];
+    const idSet = new Set(requestedQueryIds);
+    const queries = GROUND_TRUTH_QUERIES.filter(q => idSet.has(q.id));
+    const resolvedQueryIds = queries.map((query) => query.id);
+    const resolvedSet = new Set(resolvedQueryIds);
+    const missingQueryIds = requestedQueryIds.filter((id) => !resolvedSet.has(id));
+
+    return {
+      queries,
+      requestedQueryIds,
+      resolvedQueryIds,
+      missingQueryIds,
+    };
   }
-  return GROUND_TRUTH_QUERIES;
+  return { queries: GROUND_TRUTH_QUERIES };
 }
 
 /**
@@ -536,11 +560,21 @@ export async function runAblation(
   const startTime = Date.now();
   const runId = generateRunId();
   const recallK = config.recallK ?? 20;
-  const queries = getQueriesToEvaluate(config);
+  const querySelection = getQueriesToEvaluate(config);
+  const queries = querySelection.queries;
 
   if (queries.length === 0) {
-    console.warn('[ablation] No queries to evaluate.');
+    const suffix = querySelection.missingQueryIds && querySelection.missingQueryIds.length > 0
+      ? ` Requested IDs not found: ${querySelection.missingQueryIds.join(', ')}.`
+      : '';
+    console.warn(`[ablation] No queries to evaluate.${suffix}`);
     return null;
+  }
+
+  if (querySelection.missingQueryIds && querySelection.missingQueryIds.length > 0) {
+    console.warn(
+      `[ablation] Requested groundTruthQueryIds not found in the static dataset: ${querySelection.missingQueryIds.join(', ')}`,
+    );
   }
 
   try {
@@ -670,6 +704,11 @@ export async function runAblation(
       overallBaselineRecall,
       queryCount: queries.length,
       evaluatedQueryCount: evaluatedCount,
+      ...(querySelection.requestedQueryIds ? { requestedQueryIds: querySelection.requestedQueryIds } : {}),
+      ...(querySelection.resolvedQueryIds ? { resolvedQueryIds: querySelection.resolvedQueryIds } : {}),
+      ...(querySelection.missingQueryIds && querySelection.missingQueryIds.length > 0
+        ? { missingQueryIds: querySelection.missingQueryIds }
+        : {}),
       durationMs: Date.now() - startTime,
     };
 
@@ -728,14 +767,17 @@ export function storeAblationResults(report: AblationReport): boolean {
         report.overallBaselineRecall,
         'all',
         baselineQueryCount,
-        JSON.stringify({
-          runId: report.runId,
-          config: report.config,
-          durationMs: report.durationMs,
-          queryCount: baselineQueryCount,
-          channelFailures: report.channelFailures ?? [],
-        }),
-        report.timestamp,
+          JSON.stringify({
+            runId: report.runId,
+            config: report.config,
+            durationMs: report.durationMs,
+            queryCount: baselineQueryCount,
+            requestedQueryIds: report.requestedQueryIds ?? [],
+            resolvedQueryIds: report.resolvedQueryIds ?? [],
+            missingQueryIds: report.missingQueryIds ?? [],
+            channelFailures: report.channelFailures ?? [],
+          }),
+          report.timestamp,
       );
 
       // Store per-channel deltas
@@ -761,16 +803,30 @@ export function storeAblationResults(report: AblationReport): boolean {
         // Store all 9 multi-metric entries per channel
         if (result.metrics) {
           for (const [metricName, entry] of Object.entries(result.metrics)) {
+            const typedEntry = entry as AblationMetricEntry;
+            const isSyntheticTokenUsage =
+              metricName === 'token_usage'
+              && typedEntry.baseline === 0
+              && typedEntry.ablated === 0
+              && typedEntry.delta === 0;
+
+            if (isSyntheticTokenUsage) {
+              continue;
+            }
+
             insertSnapshot.run(
               evalRunId,
               `ablation_${metricName}_delta`,
-              (entry as AblationMetricEntry).delta,
+              typedEntry.delta,
               result.channel,
               result.queryCount,
               JSON.stringify({
                 runId: report.runId,
-                baseline: (entry as AblationMetricEntry).baseline,
-                ablated: (entry as AblationMetricEntry).ablated,
+                baseline: typedEntry.baseline,
+                ablated: typedEntry.ablated,
+                requestedQueryIds: report.requestedQueryIds ?? [],
+                resolvedQueryIds: report.resolvedQueryIds ?? [],
+                missingQueryIds: report.missingQueryIds ?? [],
               }),
               report.timestamp,
             );
@@ -812,6 +868,13 @@ export function formatAblationReport(report: AblationReport): string {
     ?? report.queryCount
     ?? 0;
   lines.push(`- **Queries evaluated:** ${queriesEvaluated}`);
+  if (report.requestedQueryIds && report.requestedQueryIds.length > 0) {
+    lines.push(`- **Requested query IDs:** ${report.requestedQueryIds.join(', ')}`);
+    lines.push(`- **Resolved query IDs:** ${(report.resolvedQueryIds ?? []).join(', ') || 'none'}`);
+  }
+  if (report.missingQueryIds && report.missingQueryIds.length > 0) {
+    lines.push(`- **Missing query IDs:** ${report.missingQueryIds.join(', ')}`);
+  }
   lines.push(``);
 
   // Sort by absolute delta descending (most impactful first)

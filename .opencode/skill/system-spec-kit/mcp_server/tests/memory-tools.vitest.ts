@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { mockHandleMemorySearch } = vi.hoisted(() => ({
   mockHandleMemorySearch: vi.fn(async () => ({
-    content: [{ type: 'text', text: JSON.stringify({ data: { results: [], count: 0 }, meta: {} }) }],
+    content: [{ type: 'text', text: JSON.stringify({ data: { results: [], count: 0 }, meta: { tool: 'memory_search' } }) }],
     isError: false,
   })),
 }));
@@ -39,7 +39,7 @@ describe('memory-tools dispatch', () => {
   });
 
   it('forwards governed scope fields through memory_quick_search', async () => {
-    await handleTool('memory_quick_search', {
+    const response = await handleTool('memory_quick_search', {
       query: 'auth design',
       tenantId: 'tenant-a',
       userId: 'user-1',
@@ -61,5 +61,8 @@ describe('memory-tools dispatch', () => {
       includeConstitutional: true,
       rerank: true,
     }));
+
+    const parsed = JSON.parse(response!.content[0].text) as { meta?: { tool?: string } };
+    expect(parsed.meta?.tool).toBe('memory_quick_search');
   });
 });

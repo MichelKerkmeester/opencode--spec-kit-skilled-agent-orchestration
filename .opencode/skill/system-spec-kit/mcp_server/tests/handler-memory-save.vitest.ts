@@ -630,15 +630,15 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       expect(result.status).toBe('indexed');
       expect(harness.runQualityLoopSpy).toHaveBeenCalledTimes(1);
-      expect(harness.runQualityLoopSpy).toHaveBeenCalledWith(
-        buildParsedMemory(filePath).content,
-        expect.objectContaining({
-          title: 'Atomic Save FI',
-          triggerPhrases: ['atomic-save-fi'],
-          specFolder: 'specs/999-atomic-save-fi',
-          filePath,
-        })
-      );
+      const qualityLoopCall = harness.runQualityLoopSpy.mock.calls[0];
+      expect(qualityLoopCall[0]).toBe(buildParsedMemory(filePath).content);
+      expect(qualityLoopCall[1]).toEqual(expect.objectContaining({
+        title: 'Atomic Save FI',
+        triggerPhrases: ['atomic-save-fi'],
+        specFolder: 'specs/999-atomic-save-fi',
+        filePath,
+      }));
+      expect(qualityLoopCall[2]).toEqual({ emitEvalMetrics: undefined });
     });
 
     it('T518-6c: same-path supersedes route through append-only lineage helpers', async () => {
@@ -1496,6 +1496,80 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(payload?.data?.validation?.skipped).toBe(true);
       expect(checkExistingRowMock).not.toHaveBeenCalled();
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# dry run original content');
+    });
+
+    it('passes emitEvalMetrics=false into quality loop during dry-run with skipPreflight', async () => {
+      const harness = await loadAtomicSaveHarness();
+      const filePath = createAtomicSaveTargetPath('dryrun-no-eval-logging.md');
+      fs.writeFileSync(filePath, '# dry run no eval logging', 'utf8');
+
+      await harness.module.handleMemorySave({
+        filePath,
+        dryRun: true,
+        skipPreflight: true,
+      } as Parameters<typeof harness.module.handleMemorySave>[0]);
+
+      expect(harness.runQualityLoopMock).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ emitEvalMetrics: false }),
+      );
+    });
+
+    it('passes emitEvalMetrics=false into quality loop during dry-run preflight', async () => {
+      const harness = await loadAtomicSaveHarness();
+      const filePath = createAtomicSaveTargetPath('dryrun-preflight-no-eval-logging.md');
+      fs.writeFileSync(filePath, '# dry run preflight no eval logging', 'utf8');
+
+      await harness.module.handleMemorySave({
+        filePath,
+        dryRun: true,
+      } as Parameters<typeof harness.module.handleMemorySave>[0]);
+
+      expect(harness.runQualityLoopMock).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ emitEvalMetrics: false }),
+      );
+    });
+
+    it('reparses from disk after the spec-folder lock when parsedOverride is supplied', async () => {
+      const harness = await loadBehavioralIndexHarness({
+        existingSamePathMemory: undefined,
+      });
+      const filePath = createAtomicSaveTargetPath('reparse-after-lock.md');
+      const staleParsed = {
+        ...buildParsedMemory(filePath),
+        content: `${buildParsedMemory(filePath).content}\nStale content marker.`,
+        contentHash: 'stale-hash',
+        triggerPhrases: ['stale-trigger'],
+      };
+      const freshParsed = {
+        ...buildParsedMemory(filePath),
+        content: `${buildParsedMemory(filePath).content}\nFresh content marker.`,
+        contentHash: 'fresh-hash',
+        triggerPhrases: ['fresh-trigger'],
+      };
+
+      harness.parseMemoryFileMock.mockReturnValueOnce(freshParsed);
+
+      const result = await harness.module.indexMemoryFile(filePath, {
+        force: false,
+        asyncEmbedding: false,
+        parsedOverride: staleParsed,
+      });
+
+      expect(result.status).toBe('indexed');
+      expect(harness.parseMemoryFileMock).toHaveBeenCalledWith(filePath);
+      expect(harness.createMemoryRecordSpy).toHaveBeenCalledTimes(1);
+      const createCall = harness.createMemoryRecordSpy.mock.calls[0];
+      expect(createCall[0]).toBe(harness.database);
+      expect(createCall[1]).toEqual(expect.objectContaining({
+        content: freshParsed.content,
+        contentHash: freshParsed.contentHash,
+        triggerPhrases: freshParsed.triggerPhrases,
+      }));
+      expect(createCall[2]).toBe(filePath);
     });
 
     it('persists quality-loop fixed content after successful chunked indexing', async () => {

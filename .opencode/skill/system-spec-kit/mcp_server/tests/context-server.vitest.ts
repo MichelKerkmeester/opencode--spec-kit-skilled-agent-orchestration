@@ -389,7 +389,10 @@ describe('Context Server', () => {
       processExitSpy: ReturnType<typeof vi.fn>
       registeredProcessHandlers: Map<string, Array<(...args: any[]) => unknown>>
       retryManagerStopBackgroundJobMock: ReturnType<typeof vi.fn>
+      checkDatabaseUpdatedMock: ReturnType<typeof vi.fn>
+      toolCacheClearMock: ReturnType<typeof vi.fn>
       toolCacheShutdownMock: ReturnType<typeof vi.fn>
+      triggerMatcherClearMock: ReturnType<typeof vi.fn>
       transportCloseMock: ReturnType<typeof vi.fn>
       fileWatcherCloseMock: ReturnType<typeof vi.fn>
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
@@ -421,6 +424,7 @@ describe('Context Server', () => {
       buildErrorResponseImpl?: (toolName: string, error: Error, args?: Record<string, unknown>) => ErrorResponse
       getRecoveryHintImpl?: (toolName: string, errorCode: string) => unknown
       errorCodes?: Record<string, string>
+      databaseUpdated?: boolean
     }): Promise<RuntimeHarness> {
       vi.resetModules()
       const previousDynamicInit = process.env.SPECKIT_DYNAMIC_INIT
@@ -455,11 +459,14 @@ describe('Context Server', () => {
           throw new Error(options.retryManagerStopThrows)
         }
       })
+      const checkDatabaseUpdatedMock = vi.fn(async () => options?.databaseUpdated ?? false)
+      const toolCacheClearMock = vi.fn(() => 0)
       const toolCacheShutdownMock = vi.fn(() => {
         if (options?.toolCacheShutdownThrows) {
           throw new Error(options.toolCacheShutdownThrows)
         }
       })
+      const triggerMatcherClearMock = vi.fn()
       const statsData = options?.memoryStatsData ?? {}
       const byStatus = statsData.byStatus ?? {}
       const handleMemoryStatsMock = vi.fn(async () => ({
@@ -540,7 +547,7 @@ describe('Context Server', () => {
       vi.doMock('../core', () => ({
         LIB_DIR: '/tmp',
         DEFAULT_BASE_PATH: '/tmp',
-        checkDatabaseUpdated: vi.fn(),
+        checkDatabaseUpdated: checkDatabaseUpdatedMock,
         reinitializeDatabase: vi.fn(),
         setEmbeddingModelReady: vi.fn(),
         waitForEmbeddingModel: vi.fn(async () => true),
@@ -623,6 +630,7 @@ describe('Context Server', () => {
         getIndex: vi.fn(() => ({ rebuildFromDatabase: vi.fn(() => 0) })),
       }))
       vi.doMock('../lib/parsing/memory-parser', () => ({ findMemoryFiles: vi.fn(() => []) }))
+      vi.doMock('../lib/parsing/trigger-matcher', () => ({ clearCache: triggerMatcherClearMock }))
       vi.doMock('../lib/telemetry/scoring-observability', () => ({ initScoringObservability: vi.fn() }))
       vi.doMock('../lib/storage/learned-triggers-schema', () => ({
         migrateLearnedTriggers: vi.fn(() => 0),
@@ -662,7 +670,7 @@ describe('Context Server', () => {
         recoverAllPendingFiles: vi.fn(() => []),
         getMetrics: vi.fn(() => ({ totalRecoveries: 0, totalErrors: 0, totalAtomicWrites: 0 })),
       }))
-      vi.doMock('../lib/cache/tool-cache', () => ({ shutdown: toolCacheShutdownMock }))
+      vi.doMock('../lib/cache/tool-cache', () => ({ clear: toolCacheClearMock, shutdown: toolCacheShutdownMock }))
       vi.doMock('../lib/errors', () => ({
         ErrorCodes: options?.errorCodes ?? { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
         getRecoveryHint: vi.fn(options?.getRecoveryHintImpl ?? (() => ({ code: 'UNKNOWN_TOOL' }))),
@@ -731,7 +739,10 @@ describe('Context Server', () => {
         processExitSpy,
         registeredProcessHandlers,
         retryManagerStopBackgroundJobMock,
+        checkDatabaseUpdatedMock,
+        toolCacheClearMock,
         toolCacheShutdownMock,
+        triggerMatcherClearMock,
         transportCloseMock,
         fileWatcherCloseMock,
         callToolHandler: callToolHandler as (request: unknown, extra: unknown) => Promise<unknown>,
@@ -797,6 +808,7 @@ describe('Context Server', () => {
       )
 
       await Promise.resolve()
+      await new Promise((resolve) => setTimeout(resolve, 0))
       expect(callbackSpy).not.toHaveBeenCalled()
 
       expect(releaseDispatch).not.toBeNull()
@@ -903,6 +915,28 @@ describe('Context Server', () => {
       expect(autoSurfaceAtToolDispatchMock).toHaveBeenCalledWith('checkpoint_list', { query: 'recent checks' })
       expect(autoSurfaceMemoriesMock).not.toHaveBeenCalled()
       expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+    })
+
+    it('clears in-process caches when the DB is reinitialized externally before dispatch', async () => {
+      const {
+        dispatchToolMock,
+        checkDatabaseUpdatedMock,
+        toolCacheClearMock,
+        triggerMatcherClearMock,
+        callToolHandler,
+      } = await loadRuntimeHarness({ databaseUpdated: true })
+
+      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+
+      await callToolHandler(
+        { id: 'call-cache-refresh', params: { name: 'checkpoint_list', arguments: { query: 'recent checks' } } },
+        {}
+      )
+
+      expect(checkDatabaseUpdatedMock.mock.calls.length).toBeGreaterThanOrEqual(1)
+      expect(toolCacheClearMock).toHaveBeenCalledTimes(1)
+      expect(triggerMatcherClearMock).toHaveBeenCalledTimes(1)
+      expect(dispatchToolMock).toHaveBeenCalledTimes(1)
     })
 
     it('T000f: memory-aware tools keep SK-004 path and skip TM-05 dispatch hook', async () => {

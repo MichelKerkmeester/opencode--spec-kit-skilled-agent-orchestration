@@ -53,7 +53,12 @@ import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, Artif
 
 import * as sessionBoost from '../session-boost';
 import * as causalBoost from '../causal-boost';
-import { isEnabled as isCoActivationEnabled, spreadActivation, CO_ACTIVATION_CONFIG, getRelatedMemories } from '../../cognitive/co-activation';
+import {
+  isEnabled as isCoActivationEnabled,
+  spreadActivation,
+  getRelatedMemories,
+  resolveCoActivationBoostFactor,
+} from '../../cognitive/co-activation';
 import type { SpreadResult } from '../../cognitive/co-activation';
 import * as fsrsScheduler from '../../cognitive/fsrs-scheduler';
 import { queryLearnedTriggers } from '../learned-feedback';
@@ -796,7 +801,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
               // Uses the same sqrt scaling as co-activation.ts boostScore().
               const relatedCount = typeof row.id === 'number' ? getRelatedMemories(row.id).length : 0;
               const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
-              const updated = withSyncedScoreAliases(row, baseScore + (boost * CO_ACTIVATION_CONFIG.boostFactor) / fanDivisor);
+              const updated = withSyncedScoreAliases(row, baseScore + (boost * resolveCoActivationBoostFactor()) / fanDivisor);
               return withGraphContribution(updated, 'coActivationDelta', resolveBaseScore(updated) - baseScore, 'co-activation');
             }
             return row;

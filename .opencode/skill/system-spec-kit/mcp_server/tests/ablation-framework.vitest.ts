@@ -923,8 +923,9 @@ describe('Ablation Framework — DB Integration (R13-S3)', () => {
       metadata: string;
     }>;
 
-    // Should have 1 baseline + 3 channels * (1 recall_delta + 9 metric deltas) = 31 total
-    expect(rows.length).toBe(31);
+    // Token usage rows are skipped until real measurements exist.
+    // 1 baseline + 3 channels * (1 recall_delta + 8 metric deltas) = 28 total
+    expect(rows.length).toBe(28);
 
     // First row should be the baseline
     const baselineRow = rows.find(r => r.metric_name === 'ablation_baseline_recall@20');
@@ -1281,14 +1282,15 @@ describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
         `SELECT metric_name, channel FROM eval_metric_snapshots WHERE metric_name LIKE 'ablation%' ORDER BY id`,
       ).all() as Array<{ metric_name: string; channel: string }>;
 
-      // 1 baseline + 3 channels * (1 recall_delta + 9 metric deltas) = 1 + 30 = 31
-      expect(rows.length).toBe(31);
+      // Token usage rows are skipped until real measurements exist.
+      // 1 baseline + 3 channels * (1 recall_delta + 8 persisted metric deltas) = 1 + 27 = 28
+      expect(rows.length).toBe(28);
 
       // Verify multi-metric rows exist for vector
       const vectorMetricRows = rows.filter(
         r => r.channel === 'vector' && r.metric_name.startsWith('ablation_') && r.metric_name !== 'ablation_recall@20_delta' && r.metric_name !== 'ablation_baseline_recall@20',
       );
-      expect(vectorMetricRows.length).toBe(9);
+      expect(vectorMetricRows.length).toBe(8);
 
       // Check specific metric names
       const metricNames = vectorMetricRows.map(r => r.metric_name);
@@ -1300,7 +1302,7 @@ describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
       expect(metricNames).toContain('ablation_hit_rate_delta');
       expect(metricNames).toContain('ablation_latency_p50_delta');
       expect(metricNames).toContain('ablation_latency_p95_delta');
-      expect(metricNames).toContain('ablation_token_usage_delta');
+      expect(metricNames).not.toContain('ablation_token_usage_delta');
     });
   });
 
@@ -1343,6 +1345,48 @@ describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
           expect(result.metrics![key]).toBeDefined();
         }
       }
+    } finally {
+      if (savedEnv !== undefined) {
+        process.env.SPECKIT_ABLATION = savedEnv;
+      } else {
+        delete process.env.SPECKIT_ABLATION;
+      }
+    }
+  });
+
+  it('warns about missing requested groundTruthQueryIds and records the resolved set', async () => {
+    const savedEnv = process.env.SPECKIT_ABLATION;
+    process.env.SPECKIT_ABLATION = 'true';
+
+    try {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
+        '../lib/eval/ground-truth-data'
+      );
+      const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
+        GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
+      );
+      expect(queryWithGT).toBeDefined();
+
+      const missingId = 999999;
+      const report = await runAblation(() => [], {
+        channels: ['vector'],
+        groundTruthQueryIds: [queryWithGT!.id, missingId],
+      });
+
+      expect(report).not.toBeNull();
+      if (!report) return;
+
+      expect(report.requestedQueryIds).toEqual([queryWithGT!.id, missingId]);
+      expect(report.resolvedQueryIds).toEqual([queryWithGT!.id]);
+      expect(report.missingQueryIds).toEqual([missingId]);
+
+      const formatted = formatAblationReport(report);
+      expect(formatted).toContain(`Requested query IDs:** ${queryWithGT!.id}, ${missingId}`);
+      expect(formatted).toContain(`Missing query IDs:** ${missingId}`);
+      expect(warnSpy).toHaveBeenCalledWith(
+        `[ablation] Requested groundTruthQueryIds not found in the static dataset: ${missingId}`,
+      );
     } finally {
       if (savedEnv !== undefined) {
         process.env.SPECKIT_ABLATION = savedEnv;

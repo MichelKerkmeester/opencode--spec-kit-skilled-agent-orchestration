@@ -123,6 +123,32 @@ describe('Preflight Validation', () => {
       expect(hash1).toBe(hash2);
       expect(hash1).not.toBe(hash3);
     });
+
+    it('ignores exact duplicate hits when stored content verification fails', () => {
+      const contentHash = preflight.computeContentHash(TEST_CONTENT_VALID);
+      const fakeDb = {
+        prepare: () => ({
+          get: () => ({
+            id: 41,
+            file_path: '/tmp/mismatched-memory.md',
+            content_text: 'Stored content that does not match the incoming payload.',
+          }),
+        }),
+      };
+
+      const result = preflight.checkDuplicate(
+        {
+          content: TEST_CONTENT_VALID,
+          content_hash: contentHash,
+          database: fakeDb as DuplicateParams['database'],
+        },
+        { check_exact: true }
+      );
+
+      expect(result.isDuplicate).toBe(false);
+      expect(result.duplicate_type).toBeNull();
+      expect(result.existingId).toBeNull();
+    });
   });
 
   /* ───────────────────────────────────────────────────────────────

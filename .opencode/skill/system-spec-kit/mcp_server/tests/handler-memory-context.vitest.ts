@@ -243,6 +243,22 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
   });
 
   describe('Governed scope forwarding', () => {
+    it('forwards response profile through routed search strategies', async () => {
+      await withTimeout(
+        handler.handleMemoryContext({
+          input: 'trace auth context',
+          mode: 'focused',
+          profile: 'quick',
+        }),
+        5000,
+        'profile-forward-focused'
+      );
+
+      expect(mockedHandleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        profile: 'quick',
+      }));
+    });
+
     it('forwards governed scope fields through deep-mode search routing', async () => {
       await withTimeout(
         handler.handleMemoryContext({

@@ -2,6 +2,7 @@
 // Tests for REQ-019: Standardized Response Structure
 
 import { describe, it, expect } from 'vitest';
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import {
   createResponse,
   createSuccessResponse,
@@ -248,7 +249,7 @@ describe('Response Envelope (T148-T155)', () => {
   });
 
   describe('T153: meta.tokenCount estimation accuracy', () => {
-    it('should estimate token count based on data size', () => {
+    it('should estimate token count from the final serialized envelope', () => {
       const envelope = createResponse({
         tool: 'memory_search',
         summary: 'Found results',
@@ -256,11 +257,10 @@ describe('Response Envelope (T148-T155)', () => {
       });
 
       expect(typeof envelope.meta.tokenCount).toBe('number');
-      expect(envelope.meta.tokenCount).toBeGreaterThan(0);
+      expect(envelope.meta.tokenCount).toBe(estimateTokenCount(JSON.stringify(envelope, null, 2)));
     });
 
-    it('should estimate ~4 chars per token', () => {
-      // Create data with known length
+    it('should exceed the data-only estimate when envelope metadata is included', () => {
       const testText = 'a'.repeat(100); // 100 chars = ~25 tokens
       const envelope = createResponse({
         tool: 'test_tool',
@@ -268,10 +268,9 @@ describe('Response Envelope (T148-T155)', () => {
         data: { content: testText }
       });
 
-      // JSON overhead for {"content":"aaa..."} adds chars
-      // Expected: (100 + ~15 overhead) / 4 = ~29 tokens
-      expect(envelope.meta.tokenCount).toBeGreaterThanOrEqual(25);
-      expect(envelope.meta.tokenCount).toBeLessThanOrEqual(40);
+      const dataOnlyEstimate = estimateTokenCount(JSON.stringify({ content: testText }));
+      expect(envelope.meta.tokenCount).toBeGreaterThan(dataOnlyEstimate);
+      expect(envelope.meta.tokenCount).toBe(estimateTokenCount(JSON.stringify(envelope, null, 2)));
     });
 
     it('should handle empty data', () => {
@@ -281,9 +280,8 @@ describe('Response Envelope (T148-T155)', () => {
         data: {}
       });
 
-      // {} = 2 chars = ~1 token
       expect(typeof envelope.meta.tokenCount).toBe('number');
-      expect(envelope.meta.tokenCount).toBeGreaterThanOrEqual(1);
+      expect(envelope.meta.tokenCount).toBe(estimateTokenCount(JSON.stringify(envelope, null, 2)));
     });
 
     it('should handle nested objects', () => {
@@ -299,7 +297,7 @@ describe('Response Envelope (T148-T155)', () => {
         }
       });
 
-      expect(envelope.meta.tokenCount).toBeGreaterThan(0);
+      expect(envelope.meta.tokenCount).toBe(estimateTokenCount(JSON.stringify(envelope, null, 2)));
     });
   });
 

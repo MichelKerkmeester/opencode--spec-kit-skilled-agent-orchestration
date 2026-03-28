@@ -911,7 +911,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
       expect(report.summary).toContain('improved');
     });
 
-    it('sprints are sorted chronologically by firstSeen', async () => {
+    it('sprints are sorted chronologically by recency bounds', async () => {
       seedSnapshots(testDb, [
         {
           eval_run_id: 3,
@@ -939,6 +939,38 @@ describe('Reporting Dashboard (R13-S3)', () => {
       const report = await generateDashboardReport();
       const labels = report.sprints.map(s => s.sprint);
       expect(labels).toEqual(['sprint-A', 'sprint-B', 'sprint-C']);
+    });
+
+    it('limit keeps the most recently active sprint even when it started earlier', async () => {
+      seedSnapshots(testDb, [
+        {
+          eval_run_id: 1,
+          metric_name: 'ndcg@5',
+          metric_value: 0.70,
+          metadata: JSON.stringify({ sprint: 'long-running' }),
+          created_at: '2026-01-01T10:00:00.000Z',
+        },
+        {
+          eval_run_id: 1,
+          metric_name: 'mrr@5',
+          metric_value: 0.82,
+          metadata: JSON.stringify({ sprint: 'long-running' }),
+          created_at: '2026-03-30T10:00:00.000Z',
+        },
+        {
+          eval_run_id: 2,
+          metric_name: 'ndcg@5',
+          metric_value: 0.90,
+          metadata: JSON.stringify({ sprint: 'recent-but-older' }),
+          created_at: '2026-03-01T10:00:00.000Z',
+        },
+      ]);
+
+      const report = await generateDashboardReport({ limit: 1 });
+
+      expect(report.sprints).toHaveLength(1);
+      expect(report.sprints[0].sprint).toBe('long-running');
+      expect(report.sprints[0].lastSeen).toBe('2026-03-30T10:00:00.000Z');
     });
   });
 });

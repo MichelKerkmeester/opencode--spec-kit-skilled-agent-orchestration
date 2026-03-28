@@ -137,6 +137,9 @@ function buildQualityLoopMetadata(
 function prepareParsedMemoryForIndexing(
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
   database: ReturnType<typeof requireDb>,
+  options: {
+    emitEvalMetrics?: boolean;
+  } = {},
 ): PreparedParsedMemory {
   const validation = memoryParser.validateParsedMemory(parsed);
   if (validation.warnings && validation.warnings.length > 0) {
@@ -188,7 +191,9 @@ function prepareParsedMemoryForIndexing(
     }
   }
 
-  const qualityLoopResult = runQualityLoop(parsed.content, buildQualityLoopMetadata(parsed, database));
+  const qualityLoopResult = runQualityLoop(parsed.content, buildQualityLoopMetadata(parsed, database), {
+    emitEvalMetrics: options.emitEvalMetrics,
+  });
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = qualityLoopResult.score.issues;
   if (qualityLoopResult.fixedTriggerPhrases) {
@@ -383,6 +388,7 @@ async function processPreparedMemory(
     force?: boolean;
     asyncEmbedding?: boolean;
     persistQualityLoopContent?: boolean;
+    refreshFromDiskAfterLock?: boolean;
     scope?: MemoryScopeMatch;
     qualityGateMode?: 'enforce' | 'warn-only';
   } = {},
@@ -391,59 +397,83 @@ async function processPreparedMemory(
     force = false,
     asyncEmbedding = false,
     persistQualityLoopContent = true,
+    refreshFromDiskAfterLock = false,
     scope = {},
     qualityGateMode = 'enforce',
   } = options;
-  const {
-    parsed,
-    validation,
-    qualityLoopResult,
-    sufficiencyResult,
-    templateContract,
-    finalizedFileContent,
-  } = prepared;
 
-  if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
-    if (qualityGateMode === 'warn-only') {
-      console.warn(`[memory-save] V-rule warn-only (spec doc) for ${path.basename(filePath)}: ${qualityLoopResult.rejectionReason}`);
-    } else {
-      return {
-        status: 'rejected',
-        id: 0,
-        specFolder: parsed.specFolder,
-        title: parsed.title ?? '',
-        triggerPhrases: parsed.triggerPhrases,
-        contextType: parsed.contextType,
-        importanceTier: parsed.importanceTier,
-        qualityScore: parsed.qualityScore,
-        qualityFlags: parsed.qualityFlags,
-        warnings: validation.warnings,
-        rejectionReason: qualityLoopResult.rejectionReason,
-        message: qualityLoopResult.rejectionReason,
-      };
+  const evaluatePreparedMemory = (currentPrepared: PreparedParsedMemory): IndexResult | null => {
+    const {
+      parsed,
+      validation,
+      qualityLoopResult,
+      sufficiencyResult,
+      templateContract,
+    } = currentPrepared;
+
+    if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
+      if (qualityGateMode === 'warn-only') {
+        console.warn(`[memory-save] V-rule warn-only (spec doc) for ${path.basename(filePath)}: ${qualityLoopResult.rejectionReason}`);
+      } else {
+        return {
+          status: 'rejected',
+          id: 0,
+          specFolder: parsed.specFolder,
+          title: parsed.title ?? '',
+          triggerPhrases: parsed.triggerPhrases,
+          contextType: parsed.contextType,
+          importanceTier: parsed.importanceTier,
+          qualityScore: parsed.qualityScore,
+          qualityFlags: parsed.qualityFlags,
+          warnings: validation.warnings,
+          rejectionReason: qualityLoopResult.rejectionReason,
+          message: qualityLoopResult.rejectionReason,
+        };
+      }
+    }
+
+    if (!sufficiencyResult.pass) {
+      if (qualityGateMode === 'warn-only') {
+        console.warn(`[memory-save] Sufficiency warn-only (spec doc) for ${path.basename(filePath)}: ${sufficiencyResult.reasons.join('; ')}`);
+      } else {
+        return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
+      }
+    }
+
+    if (!templateContract.valid) {
+      if (qualityGateMode === 'warn-only') {
+        console.warn(
+          `[memory-save] Template contract warn-only (spec doc) for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
+        );
+      } else {
+        return buildTemplateContractRejectionResult(parsed, validation, templateContract);
+      }
+    }
+
+    return null;
+  };
+
+  if (!refreshFromDiskAfterLock) {
+    const earlyResult = evaluatePreparedMemory(prepared);
+    if (earlyResult) {
+      return earlyResult;
     }
   }
 
-  if (!sufficiencyResult.pass) {
-    if (qualityGateMode === 'warn-only') {
-      console.warn(`[memory-save] Sufficiency warn-only (spec doc) for ${path.basename(filePath)}: ${sufficiencyResult.reasons.join('; ')}`);
-    } else {
-      return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
-    }
-  }
-
-  if (!templateContract.valid) {
-    if (qualityGateMode === 'warn-only') {
-      console.warn(
-        `[memory-save] Template contract warn-only (spec doc) for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
-      );
-    } else {
-      return buildTemplateContractRejectionResult(parsed, validation, templateContract);
-    }
-  }
-
-  return withSpecFolderLock(parsed.specFolder, async () => {
+  return withSpecFolderLock(prepared.parsed.specFolder, async () => {
     const database = requireDb();
+    const activePrepared = refreshFromDiskAfterLock
+      ? prepareParsedMemoryForIndexing(memoryParser.parseMemoryFile(filePath), database)
+      : prepared;
+    const lockedResult = evaluatePreparedMemory(activePrepared);
+    if (lockedResult) {
+      return lockedResult;
+    }
+    const {
+      parsed,
+      validation,
+      finalizedFileContent,
+    } = activePrepared;
     const canonicalFilePath = getCanonicalPathKey(filePath);
     const samePathExisting = findSamePathExistingMemory(
       database,
@@ -787,6 +817,7 @@ async function indexMemoryFile(
     force,
     asyncEmbedding,
     persistQualityLoopContent: true,
+    refreshFromDiskAfterLock: parsedOverride !== null,
     scope,
     qualityGateMode,
   });
@@ -889,7 +920,9 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   // DryRun must remain non-mutating even when preflight is explicitly skipped.
   if (dryRun && skipPreflight) {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
-    const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database);
+    const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
+      emitEvalMetrics: false,
+    });
     const { createMCPSuccessResponse } = await import('../lib/response/envelope');
     const dryRunSummary = buildDryRunSummary(
       preparedDryRun.sufficiencyResult,
@@ -976,7 +1009,9 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     );
 
     if (dryRun) {
-      const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database);
+      const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
+        emitEvalMetrics: false,
+      });
       const { createMCPSuccessResponse } = await import('../lib/response/envelope');
       const dryRunSummary = !preflightResult.dry_run_would_pass
         ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`

@@ -182,8 +182,6 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 ## 🧩 Features
 
----
-
 ### 📋 Spec Kit Documentation
 
 The Spec Kit enforces structured spec folders for every file-modifying conversation. Gate 3 requires a spec folder answer before any file modification begins (only typo/whitespace fixes under 5 characters are exempt).
@@ -297,20 +295,20 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
   │  Gate 1: Understanding (SOFT BLOCK)         │
   │  memory_match_triggers() surfaces context   │
   │  Classify intent: Research / Implementation │
-  │  confidence >= 0.70, uncertainty <= 0.35    │
+  │  confidence >= 0.70, uncertainty <= 0.35     │
   └──────────────────┬──────────────────────────┘
                      │
                      ▼
   ┌─────────────────────────────────────────────┐
   │  Gate 2: Skill Routing (REQUIRED)           │
   │  skill_advisor.py recommends skill          │
-  │  confidence >= 0.8 ─► MUST load skill       │
+  │  confidence >= 0.8 ─► MUST load skill        │
   └──────────────────┬──────────────────────────┘
                      │
                      ▼
   ┌─────────────────────────────────────────────┐
   │  Gate 3: Spec Folder (HARD BLOCK)           │
-  │  Only if file modification detected         │
+  │  Only if file modification detected           │
   │  A) Existing  B) New  C) Update             │
   │  D) Skip      E) Phase folder               │
   └──────────────────┬──────────────────────────┘
@@ -322,7 +320,7 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
   ┌─────────────────────────────────────────────┐
   │  Post-Rules                                 │
   │  Memory Save ─ must use generate-context.js │
-  │  Completion ─ verify checklist.md items      │
+  │  Completion ─ verify checklist.md items     │
   └─────────────────────────────────────────────┘
 ```
 

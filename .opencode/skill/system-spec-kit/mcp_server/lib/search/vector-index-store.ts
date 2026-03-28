@@ -655,7 +655,13 @@ export function refresh_interference_scores_for_folder(database: Database.Databa
 
   try {
     const rows = database.prepare(
-      'SELECT id FROM memory_index WHERE spec_folder = ? AND parent_id IS NULL'
+      `SELECT m.id
+       FROM memory_index m
+       JOIN active_memory_projection p ON p.active_memory_id = m.id
+       WHERE m.spec_folder = ?
+         AND m.parent_id IS NULL
+         AND COALESCE(m.is_archived, 0) = 0
+         AND COALESCE(m.importance_tier, 'normal') != 'deprecated'`
     ).all(specFolder) as Array<{ id: number }>;
 
     if (rows.length === 0) return;

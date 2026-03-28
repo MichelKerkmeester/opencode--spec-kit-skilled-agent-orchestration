@@ -149,11 +149,12 @@ function reinforceExistingMemory(memoryId: number, parsed: ParsedMemory): IndexR
       SET stability = ?,
           importance_weight = ?,
           content_text = COALESCE(content_text, ?),
+          content_hash = CASE WHEN content_text IS NULL THEN ? ELSE content_hash END,
           last_review = datetime('now'),
           review_count = COALESCE(review_count, 0) + 1,
           updated_at = datetime('now')
       WHERE id = ?
-    `).run(newStability, importanceWeight, parsed.content, memoryId);
+    `).run(newStability, importanceWeight, parsed.content, parsed.contentHash, memoryId);
 
     if ((updateResult as { changes: number }).changes === 0) {
       throw new Error(`PE reinforcement UPDATE matched 0 rows for memory ${memoryId}`);

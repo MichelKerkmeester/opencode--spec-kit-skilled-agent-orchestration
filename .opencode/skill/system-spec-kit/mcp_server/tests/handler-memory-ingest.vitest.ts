@@ -147,6 +147,35 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
     expect(envelope.hints).toContain('Some input paths were rejected before queueing; inspect rejectedPaths for details');
   });
 
+  it('start deduplicates normalized paths before creating the job', async () => {
+    mocks.mockCreateIngestJob.mockResolvedValue({
+      id: 'job_deduped',
+      state: 'queued',
+      specFolder: 'specs/001-test',
+      paths: ['/tmp/a.md', '/tmp/b.md'],
+      filesTotal: 2,
+      filesProcessed: 0,
+      errors: [],
+      createdAt: '2026-03-05T00:00:00.000Z',
+      updatedAt: '2026-03-05T00:00:00.000Z',
+    });
+
+    const result = await handler.handleMemoryIngestStart({
+      paths: ['/tmp/a.md', '/tmp/./a.md', '/tmp/b.md'],
+      specFolder: 'specs/001-test',
+    });
+
+    const envelope = parseEnvelope(result);
+    const data = envelope.data as Record<string, unknown>;
+
+    expect(mocks.mockCreateIngestJob).toHaveBeenCalledWith(expect.objectContaining({
+      paths: ['/tmp/a.md', '/tmp/b.md'],
+    }));
+    expect(data.acceptedPathCount).toBe(2);
+    expect(data.duplicatePathCount).toBe(1);
+    expect(envelope.hints).toContain('Duplicate input paths were deduplicated before queueing');
+  });
+
   it('status returns E404 payload when job is missing', async () => {
     mocks.mockGetIngestJob.mockReturnValue(null);
 

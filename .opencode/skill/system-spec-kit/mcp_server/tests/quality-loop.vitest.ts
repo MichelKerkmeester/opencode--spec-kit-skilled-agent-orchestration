@@ -11,6 +11,7 @@
 // - Eval metrics logging
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import * as evalDb from '../lib/eval/eval-db';
 
 import {
   computeMemoryQualityScore,
@@ -339,6 +340,19 @@ describe('normalizeAnchors', () => {
     expect(fixed).toContain('<!-- /ANCHOR: a -->');
     expect(fixed).toContain('<!-- /ANCHOR: b -->');
   });
+
+  it('repairs repeated anchor names until open and close counts match', () => {
+    const content = [
+      '<!-- ANCHOR: repeated -->',
+      'first block',
+      '<!-- ANCHOR: repeated -->',
+      'second block',
+      '<!-- /ANCHOR: repeated -->',
+    ].join('\n');
+    const fixed = normalizeAnchors(content);
+    const closingCount = fixed.match(/<!--\s*\/ANCHOR:\s*repeated\s*-->/g)?.length ?? 0;
+    expect(closingCount).toBe(2);
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────
@@ -548,6 +562,19 @@ describe('runQualityLoop', () => {
         expect(typeof fix).toBe('string');
         expect(fix.length).toBeGreaterThan(0);
       });
+    }
+  });
+
+  it('suppresses eval metric logging when emitEvalMetrics is false', () => {
+    process.env.SPECKIT_QUALITY_LOOP = 'true';
+    process.env.SPECKIT_EVAL_LOGGING = 'true';
+    const initSpy = vi.spyOn(evalDb, 'initEvalDb');
+
+    try {
+      runQualityLoop(GOOD_CONTENT, GOOD_METADATA, { emitEvalMetrics: false });
+      expect(initSpy).not.toHaveBeenCalled();
+    } finally {
+      initSpy.mockRestore();
     }
   });
 });

@@ -217,6 +217,29 @@ function buildScopePrefix(row: MemoryIndexRow): string | null {
   return `scope-sha256:${scopeHash}`;
 }
 
+function hasLogicalKeySeparatorCollision(...components: string[]): boolean {
+  return components.some((component) => component.includes('::'));
+}
+
+function buildHashedLogicalKey(parts: {
+  specFolder: string;
+  scopePrefix: string | null;
+  canonicalPath: string;
+  anchorId: string;
+}): string {
+  const payload = JSON.stringify({
+    version: 2,
+    specFolder: parts.specFolder,
+    scopePrefix: parts.scopePrefix,
+    canonicalPath: parts.canonicalPath,
+    anchorId: parts.anchorId,
+  });
+  const digest = createHash('sha256')
+    .update(payload, 'utf8')
+    .digest('hex');
+  return `logical-sha256:${digest}`;
+}
+
 function buildLogicalKey(row: MemoryIndexRow): string {
   const canonicalPath = typeof row.canonical_file_path === 'string' && row.canonical_file_path.trim().length > 0
     ? row.canonical_file_path.trim()
@@ -225,10 +248,19 @@ function buildLogicalKey(row: MemoryIndexRow): string {
     ? row.anchor_id.trim()
     : '_';
   const scopePrefix = buildScopePrefix(row);
-  // R3: Validate that components don't contain the separator to prevent ambiguous keys.
-  if (row.spec_folder.includes('::') || canonicalPath.includes('::') || anchorId.includes('::')) {
-    console.warn(`[lineage-state] Logical key component contains '::' separator — key may be ambiguous: spec_folder=${row.spec_folder}, path=${canonicalPath}, anchor=${anchorId}`);
+
+  if (hasLogicalKeySeparatorCollision(row.spec_folder, canonicalPath, anchorId)) {
+    logger.warn(
+      `[lineage-state] Logical key component contains '::'; using hashed structured key for spec_folder=${row.spec_folder}, path=${canonicalPath}, anchor=${anchorId}`,
+    );
+    return buildHashedLogicalKey({
+      specFolder: row.spec_folder,
+      scopePrefix,
+      canonicalPath,
+      anchorId,
+    });
   }
+
   if (!scopePrefix) {
     return `${row.spec_folder}::${canonicalPath}::${anchorId}`;
   }

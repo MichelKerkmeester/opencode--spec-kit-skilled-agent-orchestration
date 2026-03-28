@@ -96,6 +96,28 @@ export interface DefaultHints {
   rate_limited: string[];
 }
 
+function serializeEnvelope<T>(envelope: MCPEnvelope<T>): string {
+  return JSON.stringify(envelope, null, 2);
+}
+
+function syncEnvelopeTokenCount<T>(envelope: MCPEnvelope<T>): number {
+  let nextTokenCount = 0;
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    envelope.meta.tokenCount = nextTokenCount;
+    const serialized = serializeEnvelope(envelope);
+    const estimated = estimateTokens(serialized);
+    if (estimated === nextTokenCount) {
+      envelope.meta.tokenCount = estimated;
+      return estimated;
+    }
+    nextTokenCount = estimated;
+  }
+
+  envelope.meta.tokenCount = nextTokenCount;
+  return nextTokenCount;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS
 
@@ -137,25 +159,24 @@ export function createResponse<T = unknown>(options: CreateResponseOptions<T>): 
   // Calculate latency if start time provided
   const latencyMs = startTime ? Date.now() - startTime : null;
 
-  // Estimate token count from data
-  const dataString = JSON.stringify(data);
-  const tokenCount = estimateTokens(dataString);
-
   // Build meta object
   const meta: ResponseMeta = {
     tool,
-    tokenCount,
+    tokenCount: 0,
     ...(latencyMs !== null && { latencyMs }),
     cacheHit,
     ...extraMeta
   };
 
-  return {
+  const envelope: MCPEnvelope<T> = {
     summary,
     data,
     hints,
     meta
   };
+
+  syncEnvelopeTokenCount(envelope);
+  return envelope;
 }
 
 /**
@@ -247,7 +268,7 @@ export function wrapForMCP<T>(envelope: MCPEnvelope<T>, isError: boolean = false
   return {
     content: [{
       type: 'text',
-      text: JSON.stringify(envelope, null, 2)
+      text: serializeEnvelope(envelope)
     }],
     isError: isErrorResponse
   };

@@ -25,6 +25,31 @@ import {
   BulkDeleteArgs,
 } from './types';
 
+function relabelResponseTool(response: MCPResponse, toolName: string): MCPResponse {
+  const firstEntry = response?.content?.[0];
+  if (!firstEntry || firstEntry.type !== 'text' || typeof firstEntry.text !== 'string') {
+    return response;
+  }
+
+  try {
+    const envelope = JSON.parse(firstEntry.text) as Record<string, unknown>;
+    const meta = envelope.meta && typeof envelope.meta === 'object'
+      ? envelope.meta as Record<string, unknown>
+      : {};
+    envelope.meta = {
+      ...meta,
+      tool: toolName,
+    };
+
+    return {
+      ...response,
+      content: [{ ...firstEntry, text: JSON.stringify(envelope, null, 2) }],
+    };
+  } catch {
+    return response;
+  }
+}
+
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([
   'memory_search',
@@ -61,7 +86,8 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
         includeConstitutional: true,
         rerank: true,
       };
-      return handleMemorySearch(quickArgs);
+      const response = await handleMemorySearch(quickArgs);
+      return relabelResponseTool(response, 'memory_quick_search');
     }
     case 'memory_match_triggers': return handleMemoryMatchTriggers(parseArgs<TriggerArgs>(validateToolArgs('memory_match_triggers', args)));
     case 'memory_save':           return handleMemorySave(parseArgs<SaveArgs>(validateToolArgs('memory_save', args)));

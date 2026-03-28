@@ -7,6 +7,7 @@ import {
   BATCH_SIZE,
   BATCH_DELAY_MS,
   DEFAULT_RETRY_OPTIONS,
+  MAX_BATCH_SIZE,
 } from '../utils/batch-processor';
 
 type RetryFailure = {
@@ -50,6 +51,11 @@ describe('Batch Processor', () => {
       expect(typeof DEFAULT_RETRY_OPTIONS).toBe('object');
       expect(typeof DEFAULT_RETRY_OPTIONS.maxRetries).toBe('number');
       expect(typeof DEFAULT_RETRY_OPTIONS.retryDelay).toBe('number');
+    });
+
+    it('T06b: MAX_BATCH_SIZE exported as number', () => {
+      expect(typeof MAX_BATCH_SIZE).toBe('number');
+      expect(MAX_BATCH_SIZE).toBeGreaterThan(0);
     });
   });
 
@@ -217,6 +223,26 @@ describe('Batch Processor', () => {
     it('T21: Very large batchSize (10000) with small array works', async () => {
       const results = await processBatches([42], async (x: number) => x, 10000, 0);
       expect(results).toEqual([42]);
+    });
+
+    it('T21b: overly large batchSize is clamped before running concurrent work', async () => {
+      const batchLogs: string[] = [];
+      vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+        const message = args.join(' ');
+        if (message.includes('[batch-processor] Processing batch')) {
+          batchLogs.push(message);
+        }
+      });
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      const items = Array.from({ length: MAX_BATCH_SIZE * 2 + 1 }, (_, index) => index);
+      const results = await processBatches(items, async (x: number) => x, MAX_BATCH_SIZE * 10, 0);
+
+      expect(results).toHaveLength(items.length);
+      expect(batchLogs).toHaveLength(3);
+      expect(warnSpy).toHaveBeenCalledWith(
+        `[batch-processor] Clamped batch size ${MAX_BATCH_SIZE * 10} to ${MAX_BATCH_SIZE} to avoid unbounded concurrency`,
+      );
     });
 
     it('T22: Exact batch boundary (6 items / batchSize 3 = 2 batches)', async () => {

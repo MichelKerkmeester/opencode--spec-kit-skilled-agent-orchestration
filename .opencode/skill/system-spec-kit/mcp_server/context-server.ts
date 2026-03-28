@@ -20,6 +20,7 @@ import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprot
 import {
   DEFAULT_BASE_PATH,
   ALLOWED_BASE_PATHS,
+  checkDatabaseUpdated,
   setEmbeddingModelReady, waitForEmbeddingModel,
   init as initDbState
 } from './core';
@@ -263,6 +264,24 @@ export function registerAfterToolCallback(fn: AfterToolCallback): void {
   afterToolCallbacks.push(fn);
 }
 
+async function invalidateReinitializedDbCaches(): Promise<void> {
+  const invalidatedEntries = toolCache.clear();
+
+  try {
+    const triggerMatcher = await import('./lib/parsing/trigger-matcher');
+    if (typeof triggerMatcher.clearCache === 'function') {
+      triggerMatcher.clearCache();
+    }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`[context-server] Failed to clear trigger cache after DB reinit: ${message}`);
+  }
+
+  if (invalidatedEntries > 0) {
+    console.error(`[context-server] Cleared ${invalidatedEntries} tool-cache entries after DB reinitialization`);
+  }
+}
+
 /* ───────────────────────────────────────────────────────────────
    3. SERVER INITIALIZATION
 ──────────────────────────────────────────────────────────────── */
@@ -296,6 +315,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     validateInputLengths(args);
     // T304: Zod validation is applied per-tool inside each dispatch module
     // (tools/*.ts) to avoid double-validation overhead at the server layer.
+
+    const dbReinitialized = await checkDatabaseUpdated();
+    if (dbReinitialized) {
+      await invalidateReinitializedDbCaches();
+    }
 
     // SK-004/TM-05: Auto-surface memories before dispatch (after validation)
     let autoSurfacedContext: AutoSurfaceResult | null = null;

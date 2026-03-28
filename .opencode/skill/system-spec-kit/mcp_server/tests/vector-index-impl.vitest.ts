@@ -831,6 +831,42 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       const result = mod.deleteMemoryByPath('specs/nonexistent', '/nonexistent/path.md', null);
       expect(result).toBe(false);
     });
+
+    it('delete_memory_from_database aborts the primary delete when vec cleanup fails unexpectedly', async () => {
+      vi.resetModules();
+      const deletePrimarySpy = vi.fn(() => ({ changes: 1 }));
+      const database = {
+        transaction: (fn: () => boolean) => fn,
+        prepare: (sql: string) => {
+          if (sql.includes('DELETE FROM vec_memories')) {
+            return {
+              run: () => {
+                throw new Error('simulated vec delete failure');
+              },
+            };
+          }
+
+          if (sql.includes('DELETE FROM memory_index')) {
+            return { run: deletePrimarySpy };
+          }
+
+          return { run: vi.fn(() => ({ changes: 0 })) };
+        },
+      };
+
+      vi.doMock('../lib/search/vector-index-store', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/search/vector-index-store')>();
+        return {
+          ...actual,
+          sqlite_vec_available: () => true,
+        };
+      });
+
+      const mutations = await import('../lib/search/vector-index-mutations');
+
+      expect(() => mutations.delete_memory_from_database(database as never, 42)).toThrow(/Vector deletion failed/);
+      expect(deletePrimarySpy).not.toHaveBeenCalled();
+    });
   });
 
   // ───────────────────────────────────────────────────────────────

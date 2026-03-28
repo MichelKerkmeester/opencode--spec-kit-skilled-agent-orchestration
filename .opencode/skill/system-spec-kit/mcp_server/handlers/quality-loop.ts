@@ -48,6 +48,12 @@ interface QualityLoopResult {
   fixedTriggerPhrases?: string[];
 }
 
+interface QualityLoopOptions {
+  maxRetries?: number;
+  threshold?: number;
+  emitEvalMetrics?: boolean;
+}
+
 function triggerPhrasesChanged(
   original: unknown,
   updated: unknown,
@@ -527,7 +533,25 @@ function normalizeAnchors(content: string): string {
     closeAnchors.push(match[1]);
   }
 
-  const unclosed = openAnchors.filter(name => !closeAnchors.includes(name));
+  const countAnchors = (anchors: string[]): Map<string, number> => {
+    const counts = new Map<string, number>();
+    for (const name of anchors) {
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    return counts;
+  };
+
+  const openCounts = countAnchors(openAnchors);
+  const closeCounts = countAnchors(closeAnchors);
+  const unclosed: string[] = [];
+
+  for (const [name, openCount] of openCounts.entries()) {
+    const closeCount = closeCounts.get(name) ?? 0;
+    const missingClosers = openCount - closeCount;
+    for (let index = 0; index < Math.max(0, missingClosers); index++) {
+      unclosed.push(name);
+    }
+  }
 
   if (unclosed.length === 0) return content;
 
@@ -557,10 +581,11 @@ function normalizeAnchors(content: string): string {
 function runQualityLoop(
   content: string,
   metadata: Record<string, unknown>,
-  options?: { maxRetries?: number; threshold?: number },
+  options?: QualityLoopOptions,
 ): QualityLoopResult {
   const threshold = options?.threshold ?? 0.6;
   const maxRetries = options?.maxRetries ?? 2;
+  const emitEvalMetrics = options?.emitEvalMetrics ?? true;
 
   // Feature gate check
   if (!isQualityLoopEnabled()) {
@@ -584,7 +609,7 @@ function runQualityLoop(
   let autoFixAttemptsUsed = 0;
 
   if (score.total >= threshold) {
-    logQualityMetrics(score, 1, true, false);
+    logQualityMetrics(score, 1, true, false, emitEvalMetrics);
     return {
       passed: true,
       score,
@@ -621,7 +646,7 @@ function runQualityLoop(
     }
 
     if (score.total >= threshold) {
-      logQualityMetrics(score, attemptsUsed, true, false);
+      logQualityMetrics(score, attemptsUsed, true, false, emitEvalMetrics);
       return {
         passed: true,
         score,
@@ -645,7 +670,7 @@ function runQualityLoop(
   // Rejected after all retries
   const rejectionReason = `Quality score ${score.total.toFixed(3)} below threshold ${threshold} after ${autoFixAttemptsUsed} auto-fix attempt(s). Issues: ${score.issues.join('; ')}`;
 
-  logQualityMetrics(score, attemptsUsed, false, true);
+  logQualityMetrics(score, attemptsUsed, false, true, emitEvalMetrics);
 
   return {
     passed: false,
@@ -671,8 +696,10 @@ function logQualityMetrics(
   attempts: number,
   passed: boolean,
   rejected: boolean,
+  emitEvalMetrics: boolean = true,
 ): void {
   try {
+    if (!emitEvalMetrics) return;
     // Use eval logger's feature flag check
     if (process.env.SPECKIT_EVAL_LOGGING?.toLowerCase() !== 'true') return;
 

@@ -54,6 +54,7 @@ export interface ContextArgs {
   includeTrace?: boolean;
   tokenUsage?: number;
   anchors?: string[];
+  profile?: 'quick' | 'research' | 'resume' | 'debug';
 }
 
 /** Arguments for memory search requests. */

@@ -37,6 +37,7 @@ export type ItemProcessor<T, R> = (item: T) => Promise<R>;
 // Single source of truth for batch config — imported from core/config.ts
 import { BATCH_SIZE, BATCH_DELAY_MS } from '../core/config';
 export { BATCH_SIZE, BATCH_DELAY_MS };
+export const MAX_BATCH_SIZE = 100;
 
 /** Default retry configuration */
 export const DEFAULT_RETRY_OPTIONS: Readonly<RetryDefaults> = {
@@ -123,22 +124,29 @@ export async function processBatches<T, R>(
     throw new Error(`batchSize must be a positive integer, got: ${batchSize}`);
   }
 
+  const effectiveBatchSize = Math.min(batchSize, MAX_BATCH_SIZE);
+  if (effectiveBatchSize !== batchSize) {
+    console.warn(
+      `[batch-processor] Clamped batch size ${batchSize} to ${MAX_BATCH_SIZE} to avoid unbounded concurrency`,
+    );
+  }
+
   const results: Array<R | RetryErrorResult> = [];
-  const totalBatches = Math.ceil(items.length / batchSize);
+  const totalBatches = Math.ceil(items.length / effectiveBatchSize);
   let currentBatch = 0;
 
-  for (let i = 0; i < items.length; i += batchSize) {
+  for (let i = 0; i < items.length; i += effectiveBatchSize) {
     currentBatch++;
     console.error(`[batch-processor] Processing batch ${currentBatch}/${totalBatches}`);
 
-    const batch = items.slice(i, i + batchSize);
+    const batch = items.slice(i, i + effectiveBatchSize);
     const batchResults = await Promise.all(
       batch.map(item => processWithRetry(item, processor, retryOptions))
     );
     results.push(...batchResults);
 
     // Small delay between batches to prevent resource exhaustion
-    if (i + batchSize < items.length && delayMs > 0) {
+    if (i + effectiveBatchSize < items.length && delayMs > 0) {
       await new Promise<void>(resolve => setTimeout(resolve, delayMs));
     }
   }

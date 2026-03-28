@@ -21,17 +21,32 @@ import type Database from 'better-sqlite3';
  */
 const DEFAULT_COACTIVATION_STRENGTH = 0.25;
 
-const parsedBoostFactor = parseFloat(process.env.SPECKIT_COACTIVATION_STRENGTH || String(DEFAULT_COACTIVATION_STRENGTH));
+function resolveCoActivationEnabled(): boolean {
+  return process.env.SPECKIT_COACTIVATION !== 'false';
+}
 
-const CO_ACTIVATION_CONFIG = {
-  enabled: process.env.SPECKIT_COACTIVATION !== 'false',
-  boostFactor: Number.isFinite(parsedBoostFactor) ? Math.max(0, Math.min(1.0, parsedBoostFactor)) : DEFAULT_COACTIVATION_STRENGTH,
+function resolveCoActivationBoostFactor(): number {
+  const parsedBoostFactor = parseFloat(
+    process.env.SPECKIT_COACTIVATION_STRENGTH || String(DEFAULT_COACTIVATION_STRENGTH),
+  );
+  return Number.isFinite(parsedBoostFactor)
+    ? Math.max(0, Math.min(1.0, parsedBoostFactor))
+    : DEFAULT_COACTIVATION_STRENGTH;
+}
+
+const CO_ACTIVATION_CONFIG = Object.freeze({
+  get enabled(): boolean {
+    return resolveCoActivationEnabled();
+  },
+  get boostFactor(): number {
+    return resolveCoActivationBoostFactor();
+  },
   maxRelated: 5,
   minSimilarity: 70,
   decayPerHop: 0.5,
   maxHops: 2,
   maxSpreadResults: 20,
-} as const;
+});
 
 /* --- 2. INTERFACES --- */
 
@@ -79,7 +94,7 @@ function init(database: Database.Database): void {
 }
 
 function isEnabled(): boolean {
-  return CO_ACTIVATION_CONFIG.enabled;
+  return resolveCoActivationEnabled();
 }
 
 /* --- 5. CORE FUNCTIONS --- */
@@ -389,6 +404,7 @@ export {
   DEFAULT_COACTIVATION_STRENGTH,
   init,
   isEnabled,
+  resolveCoActivationBoostFactor,
   boostScore,
   getRelatedMemories,
   getCausalNeighbors,

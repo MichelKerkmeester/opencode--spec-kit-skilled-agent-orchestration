@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Dedup
 // ───────────────────────────────────────────────────────────────
+import fs from 'fs';
 import type Database from 'better-sqlite3';
 
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
@@ -74,6 +75,28 @@ function isSamePathMetadataEquivalent(
   const persistedQualityScore = existing.quality_score ?? 0;
   const parsedQualityScore = parsed.qualityScore ?? 0;
   return Math.abs(persistedQualityScore - parsedQualityScore) <= QUALITY_SCORE_EPSILON;
+}
+
+function verifyStoredContentMatch(
+  storedContent: string | null | undefined,
+  storedPath: string | null | undefined,
+  incomingContent: string,
+): boolean | null {
+  if (typeof storedContent === 'string') {
+    return storedContent === incomingContent;
+  }
+
+  if (typeof storedPath === 'string' && storedPath.length > 0) {
+    try {
+      if (fs.existsSync(storedPath)) {
+        return fs.readFileSync(storedPath, 'utf-8') === incomingContent;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
 }
 
 export function checkExistingRow(
@@ -164,7 +187,7 @@ export function checkContentHashDedup(
     const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
     const duplicateQuery = samePathExclusion
       ? `
-      SELECT id, file_path, title FROM memory_index
+      SELECT id, file_path, title, content_text FROM memory_index
       WHERE spec_folder = ?
         AND content_hash = ?
         AND parent_id IS NULL
@@ -180,7 +203,7 @@ export function checkContentHashDedup(
       LIMIT 1
     `
       : `
-      SELECT id, file_path, title FROM memory_index
+      SELECT id, file_path, title, content_text FROM memory_index
       WHERE spec_folder = ?
         AND content_hash = ?
         AND parent_id IS NULL
@@ -232,9 +255,19 @@ export function checkContentHashDedup(
       id: number;
       file_path: string;
       title: string | null;
+      content_text?: string | null;
     } | undefined;
 
     if (duplicateByHash) {
+      const verifiedMatch = verifyStoredContentMatch(
+        duplicateByHash.content_text,
+        duplicateByHash.file_path,
+        parsed.content,
+      );
+      if (verifiedMatch === false) {
+        console.warn(`[memory-save] Hash match for memory #${duplicateByHash.id} failed secondary content verification; continuing save`);
+        return null;
+      }
       console.error(`[memory-save] T054: Duplicate content detected (hash match id=${duplicateByHash.id}), skipping embedding`);
       return {
         status: 'duplicate',

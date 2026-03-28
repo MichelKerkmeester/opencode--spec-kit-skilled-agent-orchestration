@@ -318,6 +318,35 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
       expect(result).toBeNull();
     });
+
+    it('T054-6cc: Hash hits are ignored when stored content verification fails', () => {
+      const incomingContent = 'Incoming content should not be rejected by a mismatched stored payload.';
+      const folder = 'specs/hash-verification';
+      const existingPath = path.join(os.tmpdir(), `hash-verification-${Date.now()}.md`);
+      fs.writeFileSync(existingPath, 'Stored file content does not match the incoming content.', 'utf8');
+
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, content_text, embedding_status, parent_id
+        ) VALUES (?, ?, ?, ?, ?, NULL, 'success', NULL)
+      `).run(
+        folder,
+        existingPath,
+        existingPath,
+        'Mismatched Stored Payload',
+        sha256(incomingContent),
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory(folder, incomingContent, 'Incoming Content'),
+        false,
+        [],
+      );
+
+      expect(result).toBeNull();
+      fs.rmSync(existingPath, { force: true });
+    });
   });
 
   describe('Same-path unchanged gate', () => {

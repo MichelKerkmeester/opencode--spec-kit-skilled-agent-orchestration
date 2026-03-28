@@ -125,6 +125,17 @@ function simpleStem(word: string): string {
   return stem;
 }
 
+function splitLexicalFragments(text: string): string[] {
+  if (!text || typeof text !== 'string') return [];
+
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-_]/g, ' ')
+    .split(/\s+/)
+    .map(t => t.trim())
+    .filter(Boolean);
+}
+
 /**
  * Tokenize raw text into normalized BM25 terms.
  *
@@ -137,13 +148,7 @@ function simpleStem(word: string): string {
  * ```
  */
 function tokenize(text: string): string[] {
-  if (!text || typeof text !== 'string') return [];
-
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-_]/g, ' ')
-    .split(/\s+/)
-    .map(t => t.trim())
+  return splitLexicalFragments(text)
     .filter(t => t.length >= 2 && !STOP_WORDS.has(t))
     .map(simpleStem);
 }
@@ -305,7 +310,7 @@ class BM25Index {
   }
 
   search(query: string, limit: number = 10): BM25SearchResult[] {
-    const queryTokens = tokenize(query);
+    const queryTokens = normalizeLexicalQueryTokens(query).bm25;
     if (queryTokens.length === 0) return [];
 
     const results: BM25SearchResult[] = [];
@@ -459,6 +464,23 @@ function sanitizeQueryTokens(query: string): string[] {
     .filter(Boolean);
 }
 
+interface NormalizedLexicalQueryTokens {
+  fts: string[];
+  bm25: string[];
+}
+
+function normalizeLexicalQueryTokens(query: string): NormalizedLexicalQueryTokens {
+  const sharedTokens = sanitizeQueryTokens(query)
+    .flatMap((token) => splitLexicalFragments(token));
+
+  return {
+    fts: sharedTokens,
+    bm25: sharedTokens
+      .filter((token) => token.length >= 2 && !STOP_WORDS.has(token))
+      .map(simpleStem),
+  };
+}
+
 /**
  * Sanitize a query string for safe use with SQLite FTS5.
  * Delegates to `sanitizeQueryTokens` for tokenization, then wraps
@@ -492,6 +514,7 @@ export {
   isBm25Enabled,
   sanitizeQueryTokens,
   sanitizeFTS5Query,
+  normalizeLexicalQueryTokens,
   buildBm25DocumentText,
   DEFAULT_K1,
   DEFAULT_B,

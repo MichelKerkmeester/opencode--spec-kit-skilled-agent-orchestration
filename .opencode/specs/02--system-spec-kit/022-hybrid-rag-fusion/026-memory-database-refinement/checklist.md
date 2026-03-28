@@ -63,9 +63,9 @@ contextType: "general"
 - [x] CHK-064 [P1] Sprint 3 P1 fixes (security + governance) verified [Evidence: T060-T068 fixed via mega-agents; error sanitization, auth enforcement, response envelope, DB rebind, cursor scoping]
 - [x] CHK-065a [P1] T088+T088b: Projection UNIQUE constraint + nested transaction fixes verified [Evidence: 3 files changed; UNIQUE constraint failures dropped 145→1]
 - [x] CHK-065 [P1] Sprint 4 remaining P1 fixes verified [Evidence: T070-T091 all fixed; lineage, parsing, context, triggers, dedup, session learning, graph signals, index scan, config, eval — 8699 tests pass, tsc clean]
-- [ ] CHK-066 [P2] P2 findings triaged (fix or defer with documented reason) — 41 items pending review
+- [x] CHK-066 [P2] P2 findings triaged [Evidence: 5 parallel GPT-5.4 agents triaged all 41 P2 findings — 22 fixed, 16 deferred with reasons, 3 rejected; triage reports in scratch/p2-triage-agent[1-5].md]
 - [x] CHK-067 [P1] Cross-agent integration test failures reconciled [Evidence: 4 parallel GPT-5.4 agents fixed all 24 test failures across 9 files; test-only changes, no source overlap]
-- [x] CHK-068 [P1] Full test suite green [Evidence: 8748 passed, 326/328 files pass, tsc clean; sole failure is pre-existing eval_run_ablation 30s timeout]
+- [x] CHK-068 [P1] Full test suite green [Evidence: 8771 passed, 327/328 files pass, tsc clean; sole failure is pre-existing eval_run_ablation 30s timeout]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -90,10 +90,10 @@ contextType: "general"
 | P0 Items (fix) | 2 | 2/2 |
 | P1 Items (fix — sprints) | 4 | 4/4 |
 | P1 Items (fix — integration) | 2 | 2/2 |
-| P2 Items (fix) | 1 | 0/1 |
+| P2 Items (fix) | 1 | 1/1 |
 
 **Review Verification Date**: 2026-03-28
 **P0+P1 Fix Date**: 2026-03-28
 **Integration Test Reconciliation**: 2026-03-28
-**P2 Triage**: pending
+**P2 Triage**: 2026-03-28 — 22 fixed, 16 deferred, 3 rejected
 <!-- /ANCHOR:summary -->

@@ -506,7 +506,10 @@ export function delete_memory_from_database(database: Database.Database, id: num
         database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(id));
       } catch (e: unknown) {
         if (!isExpectedMissingVecMemoriesTable(e)) {
-          console.warn(`[vector-index] Vector deletion failed for memory ${id}: ${get_error_message(e)}`);
+          throw new VectorIndexError(
+            `Vector deletion failed for memory ${id}: ${get_error_message(e)}`,
+            VectorIndexErrorCode.MUTATION_FAILED,
+          );
         }
       }
     }

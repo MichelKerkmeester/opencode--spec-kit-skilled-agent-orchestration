@@ -2,6 +2,7 @@
 // MODULE: Preflight
 // ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
+import fs from 'fs';
 import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
 
 // Feature catalog: Dry-run preflight for memory_save
@@ -153,6 +154,28 @@ interface DatabaseLike {
   prepare(sql: string): {
     get(...params: unknown[]): Record<string, unknown> | undefined;
   };
+}
+
+function verifyStoredContentMatch(
+  storedContent: string | null | undefined,
+  storedPath: string | null | undefined,
+  incomingContent: string,
+): boolean | null {
+  if (typeof storedContent === 'string') {
+    return storedContent === incomingContent;
+  }
+
+  if (typeof storedPath === 'string' && storedPath.length > 0) {
+    try {
+      if (fs.existsSync(storedPath)) {
+        return fs.readFileSync(storedPath, 'utf-8') === incomingContent;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
 }
 
 /** Type for the find_similar callback */
@@ -397,13 +420,25 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
   if (check_exact && database) {
     try {
       const sql = spec_folder
-        ? 'SELECT id, file_path FROM memory_index WHERE content_hash = ? AND spec_folder = ? LIMIT 1'
-        : 'SELECT id, file_path FROM memory_index WHERE content_hash = ? LIMIT 1';
+        ? 'SELECT id, file_path, content_text FROM memory_index WHERE content_hash = ? AND spec_folder = ? LIMIT 1'
+        : 'SELECT id, file_path, content_text FROM memory_index WHERE content_hash = ? LIMIT 1';
 
       const paramsArray: unknown[] = spec_folder ? [content_hash, spec_folder] : [content_hash];
-      const existing = database.prepare(sql).get(...paramsArray) as { id: number; file_path: string } | undefined;
+      const existing = database.prepare(sql).get(...paramsArray) as {
+        id: number;
+        file_path: string;
+        content_text?: string | null;
+      } | undefined;
 
       if (existing) {
+        const verifiedMatch = verifyStoredContentMatch(
+          existing.content_text,
+          existing.file_path,
+          content,
+        );
+        if (verifiedMatch === false) {
+          return result;
+        }
         result.isDuplicate = true;
         result.duplicate_type = 'exact';
         result.existingId = existing.id;

@@ -40,6 +40,45 @@ export const INTERFERENCE_SIMILARITY_THRESHOLD = 0.75;
  */
 export const INTERFERENCE_PENALTY_COEFFICIENT = -0.08;
 
+interface MemoryIndexScopeInfo {
+  hasActiveProjection: boolean;
+  hasArchivedColumn: boolean;
+  hasImportanceTierColumn: boolean;
+}
+
+function getMemoryIndexScopeInfo(database: Database.Database): MemoryIndexScopeInfo {
+  const columns = database.prepare('PRAGMA table_info(memory_index)').all() as Array<{ name?: string }>;
+  const columnSet = new Set(
+    columns
+      .map((column) => (typeof column.name === 'string' ? column.name : ''))
+      .filter(Boolean),
+  );
+
+  return {
+    hasActiveProjection: Boolean(
+      database.prepare(
+        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'active_memory_projection'"
+      ).get(),
+    ),
+    hasArchivedColumn: columnSet.has('is_archived'),
+    hasImportanceTierColumn: columnSet.has('importance_tier'),
+  };
+}
+
+function buildRetrievableMemoryPredicates(alias: string, scopeInfo: MemoryIndexScopeInfo): string[] {
+  const predicates = [`${alias}.parent_id IS NULL`];
+
+  if (scopeInfo.hasArchivedColumn) {
+    predicates.push(`COALESCE(${alias}.is_archived, 0) = 0`);
+  }
+
+  if (scopeInfo.hasImportanceTierColumn) {
+    predicates.push(`COALESCE(${alias}.importance_tier, 'normal') != 'deprecated'`);
+  }
+
+  return predicates;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. TEXT SIMILARITY HEURISTIC
 
@@ -107,9 +146,17 @@ export function computeInterferenceScore(
 ): number {
   if (!specFolder) return 0;
 
+  const scopeInfo = getMemoryIndexScopeInfo(database);
+  const targetPredicates = buildRetrievableMemoryPredicates('m', scopeInfo);
+  const siblingPredicates = buildRetrievableMemoryPredicates('m', scopeInfo);
+
   // Get the target memory's text fields
   const targetRow = database.prepare(
-    'SELECT title, trigger_phrases FROM memory_index WHERE id = ?'
+    `SELECT m.title, m.trigger_phrases
+     FROM memory_index m
+     ${scopeInfo.hasActiveProjection ? 'JOIN active_memory_projection p ON p.active_memory_id = m.id' : ''}
+     WHERE m.id = ?
+       AND ${targetPredicates.join('\n       AND ')}`
   ).get(memoryId) as { title: string | null; trigger_phrases: string | null } | undefined;
 
   if (!targetRow) return 0;
@@ -119,8 +166,12 @@ export function computeInterferenceScore(
 
   // Get all other memories in the same spec_folder (excluding self and chunks)
   const siblings = database.prepare(
-    `SELECT id, title, trigger_phrases FROM memory_index
-     WHERE spec_folder = ? AND id != ? AND parent_id IS NULL`
+    `SELECT m.id, m.title, m.trigger_phrases
+     FROM memory_index m
+     ${scopeInfo.hasActiveProjection ? 'JOIN active_memory_projection p ON p.active_memory_id = m.id' : ''}
+     WHERE m.spec_folder = ?
+       AND m.id != ?
+       AND ${siblingPredicates.join('\n       AND ')}`
   ).all(specFolder, memoryId) as Array<{
     id: number;
     title: string | null;
@@ -159,11 +210,18 @@ export function computeInterferenceScoresBatch(
 
   if (memoryIds.length === 0) return results;
 
+  const scopeInfo = getMemoryIndexScopeInfo(database);
+  const rowPredicates = buildRetrievableMemoryPredicates('m', scopeInfo);
+  const folderPredicates = buildRetrievableMemoryPredicates('m', scopeInfo);
+
   // Get all memories with their spec_folders in one query
   const placeholders = memoryIds.map(() => '?').join(',');
   const rows = database.prepare(
-    `SELECT id, spec_folder, title, trigger_phrases FROM memory_index
-     WHERE id IN (${placeholders}) AND parent_id IS NULL`
+    `SELECT m.id, m.spec_folder, m.title, m.trigger_phrases
+     FROM memory_index m
+     ${scopeInfo.hasActiveProjection ? 'JOIN active_memory_projection p ON p.active_memory_id = m.id' : ''}
+     WHERE m.id IN (${placeholders})
+       AND ${rowPredicates.join('\n       AND ')}`
   ).all(...memoryIds) as Array<{
     id: number;
     spec_folder: string | null;
@@ -195,8 +253,11 @@ export function computeInterferenceScoresBatch(
 
     // Get ALL memories in this folder (not just the ones in our batch)
     const allInFolder = database.prepare(
-      `SELECT id, title, trigger_phrases FROM memory_index
-       WHERE spec_folder = ? AND parent_id IS NULL`
+      `SELECT m.id, m.title, m.trigger_phrases
+       FROM memory_index m
+       ${scopeInfo.hasActiveProjection ? 'JOIN active_memory_projection p ON p.active_memory_id = m.id' : ''}
+       WHERE m.spec_folder = ?
+         AND ${folderPredicates.join('\n         AND ')}`
     ).all(folder) as Array<{
       id: number;
       title: string | null;
