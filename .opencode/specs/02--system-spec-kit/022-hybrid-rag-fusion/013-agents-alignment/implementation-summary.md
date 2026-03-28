@@ -101,8 +101,8 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15
 | @explore in orchestrate LEAF lists (nonexistent) | P1 | Removed from all 5 runtimes |
 | @deep-review missing from orchestrate LEAF lists | P1 | Added to all 5 runtimes |
 | Dead `sk-code` path in orchestrate resource tables | P1 | Fixed → `sk-code--review` across 5 runtimes |
-| Memory command surface only /memory:save in orchestrate | P1 | Added all 6 commands to 5 runtimes |
-| /memory:shared missing from speckit | P1 | Added to all 5 runtimes |
+| Memory command surface only /memory:save in orchestrate | P1 | Added the live memory routing surface to all 5 runtimes, including `/memory:search` and `/memory:manage shared` |
+| `/memory:manage shared` missing from speckit | P1 | Added to all 5 runtimes |
 | memory/ EXCLUSIVITY exception too broad in speckit | P1 | **Deferred** — noted for follow-up (wording tightening); not counted as remediated |
 | Stale claim-adjudication + JSONL schema in deep-review | P1 | Ported canonical schemas to all 5 runtimes |
 
@@ -111,7 +111,7 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15
 | Agent | Runtimes | Change |
 |-------|----------|--------|
 | orchestrate | 5 | LEAF list, NDP example, memory commands, sk-code path |
-| speckit | 5 | /memory:shared, codex label fix |
+| speckit | 5 | `/memory:manage shared`, codex label fix |
 | deep-review | 5 | Claim adjudication packet, review JSONL schema, 4-dim taxonomy (codex) |
 
 ### Verification
@@ -120,7 +120,7 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15
 |-------|--------|
 | @explore grep across all agent dirs | 0 matches (PASS) |
 | Dead sk-code path grep | 0 matches (PASS) |
-| /memory:shared in speckit + orchestrate | Present (PASS) |
+| /memory:manage shared in speckit + orchestrate | Present (PASS) |
 | Stale JSONL fields in deep-review | 0 matches (PASS) |
 | TOML parse of codex deep-review | Valid (PASS) |
 

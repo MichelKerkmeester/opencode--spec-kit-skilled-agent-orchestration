@@ -67,8 +67,8 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 - [x] T016 Remove @explore from orchestrate LEAF lists and NDP examples (all 5 runtimes)
 - [x] T017 Add @deep-review to orchestrate LEAF lists (all 5 runtimes)
 - [x] T018 Fix dead `sk-code` path → `sk-code--review` in orchestrate resource tables (all 5 runtimes)
-- [x] T019 Add all 6 memory commands to orchestrate suggestion and resource tables (all 5 runtimes)
-- [x] T020 Add `/memory:shared` to speckit command tables (all 5 runtimes)
+- [x] T019 Align the live memory routing surface in orchestrate suggestion and resource tables, including `/memory:search` and `/memory:manage shared` (all 5 runtimes)
+- [x] T020 Add `/memory:manage shared` to speckit command tables (all 5 runtimes)
 - [x] T021 Fix `/memory:learn` label in codex speckit ("Explicit learning" → "Constitutional memory manager")
 - [x] T022 Port canonical claim-adjudication packet into all 5 deep-review agents (via copilot Wave A+B)
 - [x] T023 Port canonical review JSONL schema into all 5 deep-review agents (via copilot Wave A+B)
@@ -86,7 +86,7 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 - [x] The packet distinguishes scoped runtime-doc closeout from bulk runtime sync
 - [x] 6 of 7 P1 content alignment findings remediated across 15 agent files (1 P1 deferred: memory/ EXCLUSIVITY wording tightening)
 - [x] Deep-review schemas aligned with canonical loop_protocol.md and state_format.md
-- [x] Memory command surface complete (6 commands) in orchestrate and speckit agents
+- [x] Memory routing surface complete in orchestrate and speckit agents, matching the live 4-command suite plus `/memory:manage shared`
 <!-- /ANCHOR:completion -->
 
 ---

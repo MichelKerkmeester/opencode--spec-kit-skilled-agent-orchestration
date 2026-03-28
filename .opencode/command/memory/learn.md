@@ -498,11 +498,11 @@ STATUS=OK ACTION=budget
 
 ## 12. RELATED COMMANDS
 
-- `/memory:analyze`: Intent-aware context retrieval and analysis tools
+- `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:shared`: Shared-memory spaces
+- `/memory:manage shared`: Shared-memory spaces
 
 **Constitutional directory:** `.opencode/skill/system-spec-kit/constitutional/`
 **Full documentation:** `.opencode/skill/system-spec-kit/constitutional/README.md`

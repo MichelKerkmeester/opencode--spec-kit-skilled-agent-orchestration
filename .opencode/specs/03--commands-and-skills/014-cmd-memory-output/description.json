@@ -11,16 +11,12 @@
     "design",
     "system"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.598Z",
+  "lastUpdated": "2026-03-27T18:43:02.247Z",
   "specId": "014",
   "folderSlug": "cmd-memory-output",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Memory Command Dashboard Visual Design System [013-memory-command-output/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Memory Command Dashboard Visual Design System"
+  "memoryNameHistory": []
 }

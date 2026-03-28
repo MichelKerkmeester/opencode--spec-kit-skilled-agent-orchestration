@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_2/spec.md]"
-description: "Test specification for the retrieval category: 13 playbook scenarios covering memory_context, memory_search, memory_match_triggers, /memory:analyze routing, memory_quick_search, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
+description: "Test specification for the retrieval category: 13 playbook scenarios covering memory_context, memory_search, memory_match_triggers, /memory:search routing, memory_quick_search, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
 trigger_phrases:
   - "retrieval manual testing"
   - "phase 001 retrieval"
@@ -100,7 +100,7 @@ All 13 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 | 109 | Quality-aware 3-tier search fallback | `../../manual_testing_playbook/01--retrieval/109-quality-aware-3-tier-search-fallback.md` | 01--retrieval / 08-quality-aware-3-tier-search-fallback.md |
 | 142 | Session transition trace contract | `../../manual_testing_playbook/01--retrieval/142-session-transition-trace-contract.md` | 01--retrieval (pipeline / session signal) |
 | 143 | Bounded graph-walk rollout and diagnostics | `../../manual_testing_playbook/01--retrieval/143-bounded-graph-walk-rollout-and-diagnostics.md` | 01--retrieval (graph-backed retrieval) |
-| 185 | /memory:analyze command routing | `../../manual_testing_playbook/01--retrieval/185-memory-analyze-command-routing.md` | 01--retrieval / 01-unified-context-retrieval-memorycontext.md, 02-semantic-and-lexical-search-memorysearch.md, 03-trigger-phrase-matching-memorymatchtriggers.md, 10-fast-delegated-search-memory-quick-search.md |
+| 185 | /memory:search command routing | `../../manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md` | 01--retrieval / 01-unified-context-retrieval-memorycontext.md, 02-semantic-and-lexical-search-memorysearch.md, 03-trigger-phrase-matching-memorymatchtriggers.md, 10-fast-delegated-search-memory-quick-search.md |
 | 187 | Quick search (memory_quick_search) | `../../manual_testing_playbook/01--retrieval/187-quick-search-memory-quick-search.md` | 01--retrieval / 10-fast-delegated-search-memory-quick-search.md |
 
 ### P1 — Supporting Requirements
@@ -153,7 +153,7 @@ All 13 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 | Dependency | Parent plan `../plan.md` | Execution order and environment setup | Read parent plan before starting |
 | Dependency | Playbook folder `../../manual_testing_playbook/01--retrieval/` | Scenario steps not available | Confirm playbook files accessible before execution |
 | Dependency | Feature catalog `../../feature_catalog/01--retrieval/` | Cross-reference cannot be verified | Confirm catalog files accessible before execution |
-| Dependency | MCP runtime and command surface for `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, and `/memory:analyze` | Retrieval scenarios cannot be executed | Verify MCP runtime healthy before starting |
+| Dependency | MCP runtime and command surface for `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, and `/memory:search` | Retrieval scenarios cannot be executed | Verify MCP runtime healthy before starting |
 | Risk | 086 mutates trigger phrases and can pollute shared search indexes | High | Restrict trigger edits to disposable sandbox data and record rollback steps before execution |
 | Risk | 109 and 143 depend on feature flags and runtime restarts | Medium | Capture baseline env state, isolate runs per rollout state, restore defaults before the next scenario |
 | Risk | 142 requires prior session state for transition fields | Medium | Set up known session state per playbook prerequisites |

@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
 
-# Verification Checklist: 012 Pre-Release Remediation
+# Verification Checklist: 020 Pre-Release Remediation
 
 <!-- ANCHOR:protocol -->
 ## Verification Protocol
@@ -73,7 +73,7 @@
 
 - [ ] CHK-R010 [P0] The `012` packet validates locally or any remaining blockers are explicitly reduced to out-of-scope carry-over with evidence. `[Findings: HRF-DR-001]`
 - [ ] CHK-R011 [P0] The `012` packet tells one coherent release story and preserves the current `FAIL` verdict until reruns justify change. `[Findings: HRF-DR-002]`
-- [ ] CHK-R012 [P0] Parent-epic and packet-local references point at the live `012-pre-release-remediation` slug everywhere. `[Findings: HRF-DR-003]`
+- [ ] CHK-R012 [P0] Parent-epic and packet-local references point at the live `020-pre-release-remediation` slug everywhere. `[Findings: HRF-DR-003]`
 - [ ] CHK-R013 [P1] Packet-local docs clearly distinguish the canonical `review/` packet from the historical top-level report. `[Findings: HRF-DR-009]`
 - [ ] CHK-R014 [P1] Packet-local summaries and companion docs reflect the post-review remediation program rather than the historical consolidation storyline. `[Findings: HRF-DR-001, HRF-DR-002, HRF-DR-009]`
 - [ ] CHK-R030 [P1] Root/public README and install surfaces match live counts, labels, versions, and filesystem paths. `[Findings: HRF-DR-004]`

@@ -36,7 +36,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **6 commands**, with retrieval documented under `/memory:analyze`.
+The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **4 commands**, with retrieval documented under `/memory:search` and shared-memory lifecycle routed through `/memory:manage shared`.
 
 At the same time, most of the broad alignment backlog that 011 originally tracked had already landed elsewhere in the repo. The final work in scope for this phase was narrower and documentation-only:
 - align the `system-spec-kit` skill guide with the live 33-tool, 6-command memory surface and its save-workflow/shared-memory governance framing
@@ -55,7 +55,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ### In Scope
 - Rewrite this spec pack so all five canonical docs tell one documentation-only story grounded in current repo truth.
-- Replace stale command-surface references with the live memory model: 33 tools, 6 commands, retrieval in `/memory:analyze`.
+- Replace stale command-surface references with the live memory model: 33 tools, 4 commands, retrieval in `/memory:search`, and shared-memory lifecycle under `/memory:manage shared`.
 - Record the now-closed `system-spec-kit` documentation gaps that were still observable on disk at the start of this pass.
 - Record the canonical verification method for future memory-surface count checks.
 - Post-research-refinement alignment (2026-03-22): reconcile SKILL.md feature flags, feature catalog count (221), testing playbook count, memory_system tool table row, and graduated spec-011 environment variable flags.
@@ -104,7 +104,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | The 011 pack must tell one consistent story | No canonical file mixes completion language with draft or pre-implementation framing |
-| REQ-002 | The 011 pack must use live memory-surface truth | The pack uses 33 tools, 6 commands, and `/memory:analyze` as retrieval home |
+| REQ-002 | The 011 pack must use live memory-surface truth | The pack uses 33 tools, 4 commands, `/memory:search` as retrieval home, and `/memory:manage shared` as the shared-memory lifecycle route |
 | REQ-003 | The 011 pack must remove stale command-alignment residue | No canonical file still presents obsolete command counts or the retired standalone retrieval command as current state |
 | REQ-004 | The 011 pack must preserve the docs-only boundary | Scope and tasks stay limited to documentation work in `system-spec-kit` surfaces |
 | REQ-005 | The closeout scope must be genuinely current | Only the real `system-spec-kit` documentation gaps that existed at the start of the pass are listed, and the packet records when they were resolved |
@@ -120,9 +120,9 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ### Already-Landed Items (Do Not Re-Implement)
 
-- `012-command-alignment` already aligned the memory command docs to the live 33-tool, 6-command surface.
-- Retrieval ownership already lives in `/memory:analyze`; there is no standalone `context` command anymore.
-- SKILL.md already contains expanded routing scaffolding such as `INTENT_SIGNALS`, `RESOURCE_MAP`, `/memory:analyze`, and `/memory:shared` command boosts.
+- `012-command-alignment` already aligned the memory command docs to the live 33-tool, 4-command surface.
+- Retrieval ownership already lives in `/memory:search`; there is no standalone `context` command anymore.
+- SKILL.md already contains expanded routing scaffolding such as `INTENT_SIGNALS`, `RESOURCE_MAP`, `/memory:search`, and `/memory:manage shared` command boosts.
 - environment_variables already includes `SPECKIT_GRAPH_UNIFIED`.
 - trigger_config, epistemic_vectors, and troubleshooting guidance already received the earlier reconciliation pass and should not be re-added as open backlog by this spec.
 <!-- /ANCHOR:requirements -->
@@ -134,7 +134,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 - **SC-001**: All five canonical docs describe 011 as a completed documentation-only reconciliation record, not as a draft or pre-implementation phase.
 - **SC-002**: No canonical file repeats the obsolete command-surface framing or retired standalone retrieval ownership model.
-- **SC-003**: The pack records the live memory truth as 33 tools, 6 commands, and retrieval in `/memory:analyze`.
+- **SC-003**: The pack records the live memory truth as 33 tools, 4 commands, retrieval in `/memory:search`, and shared-memory lifecycle under `/memory:manage shared`.
 - **SC-004**: The packet records the last observable `system-spec-kit` gaps and their closeout: skill-guide memory-surface/save-governance wording, save-workflow/shared-memory framing, embedding/shared-space governance framing, and campaign/shared-space/cross-phase asset guidance.
 - **SC-005**: Strict Spec Kit validation passes for the `011-skill-alignment` folder.
 
@@ -157,7 +157,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | Tool-count truth could drift again if reviewers rely on prose instead of the schema file | Treat `TOOL_DEFINITIONS` as the canonical tool inventory |
-| Dependency | `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt` | Retrieval ownership can be misdocumented if future reviewers rely on older pack language | Point the pack to `/memory:analyze` and the live memory command directory |
+| Dependency | `.opencode/command/memory/search.md`, `.opencode/command/memory/manage.md`, and `.opencode/command/memory/README.txt` | Retrieval or shared-memory ownership can be misdocumented if future reviewers rely on older pack language | Point the pack to `/memory:search`, `/memory:manage shared`, and the live memory command directory |
 | Risk | Closeout over-pruning | Genuine start-of-pass documentation gaps could disappear if already-landed items and recorded fixes are not separated cleanly | Keep the recorded start-of-pass gaps explicitly scoped to the skill, reference, and asset surfaces reconciled here |
 | Risk | Numeric drift | The memory tool count may change again later | Document the canonical verification method and avoid hard-coding derived counts outside the pack narrative |
 <!-- /ANCHOR:risks -->
@@ -183,7 +183,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ### Verification Safety
 - **NFR-V01**: Count verification must use `mcp_server/tool-schemas.ts`, not brittle string-count heuristics.
-- **NFR-V02**: Command ownership verification must use `.opencode/command/memory/` and `/memory:analyze`, not superseded spec prose.
+- **NFR-V02**: Command ownership verification must use `.opencode/command/memory/`, `/memory:search`, and `/memory:manage shared`, not superseded spec prose.
 
 ### Change Control
 - **NFR-C01**: This phase does not authorize runtime TypeScript changes.

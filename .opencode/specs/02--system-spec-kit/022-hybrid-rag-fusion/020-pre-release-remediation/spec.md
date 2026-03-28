@@ -1,14 +1,14 @@
 ---
-title: "Feature Specification: 012 Pre-Release Remediation [template:level_3/spec.md]"
-description: "Live remediation contract for closing the canonical 60-iteration review findings for 012-pre-release-remediation."
+title: "Feature Specification: 020 Pre-Release Remediation [template:level_3/spec.md]"
+description: "Live remediation contract for closing the canonical 60-iteration review findings for 020-pre-release-remediation."
 trigger_phrases:
-  - "012 pre-release remediation"
+  - "020 pre-release remediation"
   - "post-review remediation"
   - "canonical review remediation"
 importance_tier: "high"
 contextType: "general"
 ---
-# Feature Specification: 012 Pre-Release Remediation
+# Feature Specification: 020 Pre-Release Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
@@ -186,7 +186,7 @@ Turn this packet into an implementation-ready remediation program that:
 
 ### Reliability
 
-- **NFR-R01**: All packet-local references must resolve from `012-pre-release-remediation/`.
+- **NFR-R01**: All packet-local references must resolve from `020-pre-release-remediation/`.
 - **NFR-R02**: The canonical review boundary must remain stable: `review/review-report.md` is authoritative and the top-level `review-report.md` is historical only.
 - **NFR-R03**: If report subsections drift, the packet must follow the normalized review state already reflected in the canonical `review/` artifacts.
 

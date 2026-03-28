@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-27T17:29:33.432Z",
+  "generated": "2026-03-27T18:43:02.198Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -589,16 +589,6 @@
       "lastUpdated": "2026-03-19T15:45:43.079Z"
     },
     {
-      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion",
-      "description": "Feature Specification: 022-hybrid-rag-fusion",
-      "keywords": [
-        "feature",
-        "specification",
-        "022-hybrid-rag-fusion"
-      ],
-      "lastUpdated": "2026-03-27T17:15:13.402Z"
-    },
-    {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
       "description": "Feature Specification: 001-hybrid-rag-fusion-epic",
       "keywords": [
@@ -753,7 +743,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -765,7 +755,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -776,7 +766,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -788,7 +778,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -800,19 +790,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
-    },
-    {
-      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation",
-      "description": "Feature Specification: 012 Pre-Release Remediation",
-      "keywords": [
-        "feature",
-        "specification",
-        "012",
-        "pre-release",
-        "remediation"
-      ],
-      "lastUpdated": "2026-03-27T17:15:13.423Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1165,7 +1143,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1620,7 +1598,7 @@
         "alignment",
         "system-spec-kit"
       ],
-      "lastUpdated": "2026-03-25T16:43:31.092Z"
+      "lastUpdated": "2026-03-27T18:18:08.190Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment",
@@ -1652,11 +1630,11 @@
         "specification",
         "012-command-alignment"
       ],
-      "lastUpdated": "2026-03-25T16:43:31.109Z"
+      "lastUpdated": "2026-03-27T18:29:11.492Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
-      "description": "013 — Agent Alignment: Runtime Lineage Truth Reconciliation + Content Alignment Remediation",
+      "description": "013 — Agent Alignment: Runtime Lineage Truth Reconciliation",
       "keywords": [
         "013",
         "agent",
@@ -1664,11 +1642,9 @@
         "runtime",
         "lineage",
         "truth",
-        "reconciliation",
-        "content",
-        "remediation"
+        "reconciliation"
       ],
-      "lastUpdated": "2026-03-25T15:07:27.699Z"
+      "lastUpdated": "2026-03-27T18:18:08.206Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
@@ -1677,7 +1653,7 @@
         "specification",
         "014-agents-md-alignment"
       ],
-      "lastUpdated": "2026-03-27T17:15:13.539Z"
+      "lastUpdated": "2026-03-27T18:38:34.019Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
@@ -1699,7 +1675,7 @@
         "retrieval",
         "phase"
       ],
-      "lastUpdated": "2026-03-27T17:15:13.548Z"
+      "lastUpdated": "2026-03-27T18:35:49.819Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation",
@@ -1901,7 +1877,7 @@
         "governance",
         "phase"
       ],
-      "lastUpdated": "2026-03-27T17:15:13.612Z"
+      "lastUpdated": "2026-03-27T18:18:08.225Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks",
@@ -2001,22 +1977,44 @@
       "lastUpdated": "2026-03-27T17:15:13.637Z"
     },
     {
-      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/020-hybrid-rag-fusion-related-changelogs",
-      "description": "Feature Specification: Bulk Changelog Refresh From 60 Specs + 100 Commits",
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation",
+      "description": "Feature Specification: 020 Pre-Release Remediation",
       "keywords": [
         "feature",
         "specification",
-        "bulk",
-        "changelog",
-        "refresh",
-        "specs",
-        "100",
-        "commits"
+        "020",
+        "pre-release",
+        "remediation"
       ],
-      "lastUpdated": "2026-03-27T17:29:33.432Z"
+      "lastUpdated": "2026-03-27T17:15:13.423Z"
     },
     {
-      "specFolder": "02--system-spec-kit/023-esm-module-compliance",
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping",
+      "description": "Feature Specification: Ground Truth ID Remapping",
+      "keywords": [
+        "feature",
+        "specification",
+        "ground",
+        "truth",
+        "remapping"
+      ],
+      "lastUpdated": "2026-03-27T18:08:47.585Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass",
+      "description": "Feature Specification: Spec Doc Indexing Bypass",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "doc",
+        "indexing",
+        "bypass"
+      ],
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/999-esm-module-compliance",
       "description": "Feature Specification: ESM Module Compliance",
       "keywords": [
         "feature",
@@ -2028,7 +2026,7 @@
       "lastUpdated": "2026-03-24T08:34:20.757Z"
     },
     {
-      "specFolder": "02--system-spec-kit/024-sqlite-to-turso",
+      "specFolder": "02--system-spec-kit/999-sqlite-to-turso",
       "description": "SQLite-to-Turso Migration Research",
       "keywords": [
         "sqlite-to-turso",
@@ -3757,7 +3755,7 @@
         "design",
         "system"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.598Z"
+      "lastUpdated": "2026-03-27T18:43:02.198Z"
     },
     {
       "specFolder": "03--commands-and-skills/015-cmd-create-changelog",

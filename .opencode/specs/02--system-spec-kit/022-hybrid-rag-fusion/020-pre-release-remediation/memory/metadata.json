@@ -190,7 +190,7 @@
         "failed_rules:none"
       ],
       "passedThrough": [
-        "current_spec:012-pre-release-remediation",
+        "current_spec:020-pre-release-remediation",
         "trigger_phrases:29",
         "key_topics:12",
         "captured_file_count:10",

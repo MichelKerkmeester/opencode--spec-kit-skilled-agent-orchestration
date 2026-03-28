@@ -61,7 +61,7 @@ contextType: "implementation"
 | T018 | 109 | Quality-aware 3-tier search fallback | DONE | PASS | lib/search/hybrid-search.ts:1466-1614 (3-tier chain, checkDegradation, calibrateTier3Scores, _degradation), lib/search/search-flags.ts:57-61 (SPECKIT_SEARCH_FALLBACK flag) |
 | T019 | 142 | Session transition trace contract | DONE | PASS | lib/search/session-transition.ts:16-22 (SessionTransitionTrace interface), :64-103 (buildSessionTransitionTrace), :142-190 (attachSessionTransitionTrace), handlers/memory-context.ts:780 (trace-only gating) |
 | T020 | 143 | Bounded graph-walk rollout and diagnostics | DONE | PASS | lib/search/search-flags.ts:148-163 (GraphWalkRolloutState, resolveGraphWalkRolloutState), lib/search/graph-flags.ts:26-42 (rollout accessors), lib/search/pipeline/ranking-contract.ts:14 (STAGE2_GRAPH_BONUS_CAP=0.03), formatters/search-results.ts:136-144 (graphContribution trace shape) |
-| T021 | 185 | /memory:analyze command routing | DONE | PASS | .opencode/command/memory/analyze.md:12-42 (no-args prompt + routing gates), :127-162 (analysis quick reference + subcommand routing), :2-4 (allowed tool surface includes retrieval + analysis tools) |
+| T021 | 185 | /memory:search command routing | DONE | PASS | `.opencode/command/memory/search.md` documents the no-args prompt, routing gates, analysis quick reference, and retrieval-plus-analysis tool surface for the renamed command. |
 | T022 | 187 | Quick search (memory_quick_search) | DONE | PASS | .opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts:47-65 (delegates to handleMemorySearch with defaults), schemas/tool-input-schemas.ts:389-485 (schema + allowed params), tests/memory-tools.vitest.ts:41-64 (governed-scope forwarding) |
 <!-- /ANCHOR:phase-2 -->
 

@@ -96,7 +96,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 - [ ] Run EX-003 (trigger phrase matching) — `memory_match_triggers` with `include_cognitive:true`
 - [ ] Run EX-004 (hybrid search pipeline) — channel contribution and non-empty tail inspection
 - [ ] Run EX-005 (4-stage pipeline architecture) — `memory_search` with `intent:understand`, stage invariant check
-- [ ] Run 185 (`/memory:analyze` command routing) — verify no-args prompt, retrieval-mode query routing, and analysis subcommand dispatch
+- [ ] Run 185 (`/memory:search` command routing) — verify no-args prompt, retrieval-mode query routing, and analysis subcommand dispatch
 - [ ] Run 187 (`memory_quick_search`) — verify query-only retrieval, `specFolder` scoping, `limit`, and governed retrieval boundaries
 
 ### Phase 3: Fallback and Trace Tests (086, 109, 142)
@@ -132,7 +132,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 | EX-003 | Trigger phrase matching (memory_match_triggers) | MCP |
 | EX-004 | Hybrid search pipeline | MCP |
 | EX-005 | 4-stage pipeline architecture | MCP |
-| 185 | /memory:analyze command routing | manual + MCP |
+| 185 | /memory:search command routing | manual + MCP |
 | 187 | Quick search (memory_quick_search) | MCP |
 | 086 | BM25 trigger phrase re-index gate | manual (sandbox required) |
 | 109 | Quality-aware 3-tier search fallback | manual |

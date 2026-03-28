@@ -214,7 +214,9 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
 
     const results = await hybridSearchEnhanced(query, embedding, searchOptions);
     return results.map((row, index) => ({
-      memoryId: Number(row.id),
+      memoryId: Number(
+        (row as Record<string, unknown>).parentMemoryId ?? row.id
+      ),
       score: row.score,
       rank: index + 1,
     }));

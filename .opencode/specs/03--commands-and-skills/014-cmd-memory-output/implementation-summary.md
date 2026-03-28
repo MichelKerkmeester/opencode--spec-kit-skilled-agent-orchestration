@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Memory Command Dashboard Visual Design System [013-memory-command-output/implementation-summary]"
-description: "Unified the visual output templates across all 5 memory commands (context, save, manage, learn, continue) with a shared Memory Dashboard Visual Design System. Defined 10 reusabl..."
+description: "This active summary reflects the live 4-command memory surface: `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory routing under `/memory:manage shared`."
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -12,76 +12,83 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Implementation Summary: Memory Command Dashboard Visual Design System
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
-## 1. SUMMARY
+<!-- ANCHOR:metadata -->
+## Metadata
 
-Unified the visual output templates across all 5 memory commands (`context`, `save`, `manage`, `learn`, `continue`) with a shared Memory Dashboard Visual Design System. Defined 10 reusable output components and applied them consistently to approximately 25 output template sections across 5 command files.
-
-### Key Design System Components
-
-| Component | Format | Usage |
-|-----------|--------|-------|
-| Command Header | `MEMORY:<COMMAND>` + thick `━━━` line | Top of every command output |
-| Section Label | `→ Title Case ────────── count` | Section separators |
-| Key-Value Pair | 2-space indent, 12-char padded label | Labeled data display |
-| Bar Chart | `█░` blocks | Scores, progress, distribution |
-| Result Item | `#id  Title` + metadata bar | Memory search results |
-| Status Line | `STATUS=OK KEY=value` | Machine-readable terminator |
-| Action Menu | `[key] verb` after thin `───` separator | Interactive prompts |
-| Indicators | `PASS` / `WARN` / `FAIL` | Health checks, status |
-| Inline Lists | middle dot `·` separator | Triggers, tags, weights |
-| Empty State | `(no results found)` | No data available |
-<!-- /ANCHOR:summary -->
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 014-cmd-memory-output |
+| **Completed** | 2026-03-27 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:changes -->
-## 2. CHANGES MADE
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Files Modified
+This active packet now reflects the live memory command surface instead of a removed five-command layout. You can read it as current truth for `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory lifecycle routed through `/memory:manage shared` rather than through a deleted standalone command. That keeps the packet usable for follow-up work instead of sending future edits toward removed files.
 
-| File | Sections Changed | Templates Updated |
-|------|-----------------|-------------------|
-| `.opencode/command/memory/context.md` | Section 4 Step 4 | 1 output template |
-| `.opencode/command/memory/save.md` | Section 10 | 2 output templates (save display, trigger edit) |
-| `.opencode/command/memory/manage.md` | Sections 7-15 | ~15 output templates (stats, scan, cleanup, tier, triggers, validate, delete, health, checkpoint CRUD) |
-| `.opencode/command/memory/learn.md` | Sections 6, 10, 11, 12 | 6 output templates (learn, correct preview/result, undo preview/result, history) |
-| `.opencode/command/memory/continue.md` | Sections 6, 12 | 5 output templates (recovery summary, action menu, 3 use case examples) |
+### Packet Normalization
 
-### What Changed
+The specification and plan now describe the current memory dashboard surface in slash-command terms. They point at the live command directory under `.opencode/command/memory/` and treat shared-memory lifecycle as part of the live `/memory:manage` surface.
 
-- **Headers**: Inconsistent formats (ALL CAPS, Title Case, emoji-prefixed) → unified `MEMORY:<COMMAND>` ALL CAPS with thick `━━━` separator
-- **Section labels**: Ad-hoc dividers → `→ Title Case ────────── count` with arrow prefix
-- **Key-value display**: Mixed colon/pipe formats → 2-space indent, 12-char padded labels
-- **Indicators**: Emoji (✓, ⚠, ❌, 🔄, ✅) → plain text `PASS` / `WARN` / `FAIL`
-- **Bar charts**: Added `█░` blocks for scores, progress, tier distribution
-- **Action menus**: `[a]ction | [b]ction` → `[a] action    [b] action`
-- **Status lines**: Already standardized — confirmed `STATUS=OK KEY=value` pattern across all commands
-- **Box frames**: Rounded (`╭╮╰╯`) and square (`┌┐└┘`) boxes → flat layout with section labels
+### Files Changed
 
-### What Did NOT Change
+| File | Action | Purpose |
+|------|--------|---------|
+| `spec.md` | Modified | Replaced removed-command narrative with the current 4-command memory surface |
+| `plan.md` | Modified | Reframed implementation phases around `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn` |
+| `tasks.md` | Created | Restored the missing Level 2 tasks document for this packet |
+| `checklist.md` | Modified | Brought the packet back to the active Level 2 checklist template and removed stale deleted-command claims |
+| `implementation-summary.md` | Modified | Rewrote the summary so it no longer points to removed command docs |
+<!-- /ANCHOR:what-built -->
 
-- No workflow logic, MCP tool signatures, or command functionality was modified
-- No section numbering, titles, or document structure was changed
-- No database schema or API surface changes
-<!-- /ANCHOR:changes -->
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+I read the active packet docs, checked the live command directory under `.opencode/command/memory/`, and then normalized only the active packet docs requested by the task. After that, I ran focused stale-string checks against the updated packet docs and used the strict packet validator to catch structural drift that predated this edit, including the missing `tasks.md` and non-template checklist and summary shapes.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Use slash-command language for current-state references | It describes the live surface clearly without creating broken filename references inside the packet |
+| Treat shared-memory lifecycle as part of `/memory:manage shared` | That matches the merged live command surface and avoids reviving the removed standalone shared command |
+| Restore `tasks.md` as part of this edit | The packet is Level 2, and strict validation requires the full active doc set |
+| Add explicit acceptance scenarios to `spec.md` | The Level 2 strict validator requires at least 4 acceptance scenarios, and adding them resolved the final `SECTION_COUNTS` warning without expanding scope beyond active packet docs |
+<!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-## 3. VERIFICATION
+## Verification
 
-- All 5 command files use `MEMORY:<COMMAND>` header format
-- All section labels use `→ Title Case` format
-- Zero emoji characters in any output template
-- All status lines follow `STATUS=OK KEY=value` pattern
-- All action menus use `[key] verb` format
-- Bar charts (`█░`) used for all numeric displays (scores, progress, tier distribution)
+| Check | Result |
+|-------|--------|
+| Focused stale-string sweep against active packet docs | PASS for active-truth uses of removed command files; remaining historical mentions were rewritten or removed |
+| Live command directory check | PASS: `.opencode/command/memory/` contains the live 4-command memory surface and no deleted legacy command docs |
+| Strict packet validation | PASS: `validate.sh --strict` passed on 2026-03-27 with Errors: 0, Warnings: 0 |
 <!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. This packet still carries historical design-system intent from an earlier command layout, so some wording remains normalization-oriented rather than greenfield.
+2. The packet now validates cleanly, but it remains a documentation-normalization packet rather than a fresh implementation spec.
+<!-- /ANCHOR:limitations -->

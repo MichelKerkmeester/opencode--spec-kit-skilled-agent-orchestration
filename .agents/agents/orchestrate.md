@@ -598,10 +598,10 @@ When ANY context pressure signal fires:
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
 | Resuming prior work (known spec)       | `/spec_kit:resume`   | Load context from spec folder          |
 | Resuming interrupted work (unknown)    | `/spec_kit:resume`   | Auto-detect recent work or recover interrupted sessions |
-| Need retrieval, analysis, or eval      | `/memory:analyze`    | Unified knowledge retrieval            |
+| Need retrieval, analysis, or eval      | `/memory:search`    | Unified knowledge retrieval            |
 | Memory maintenance or ingest           | `/memory:manage`     | Stats, health, cleanup, ingest ops     |
 | Constitutional memory rules            | `/memory:learn`      | Create/list/edit/remove always-surface rules |
-| Shared-memory spaces                   | `/memory:shared`     | Create spaces, manage memberships      |
+| Shared-memory spaces                   | `/memory:manage shared`     | Create spaces, manage memberships      |
 
 ---
 
@@ -781,10 +781,10 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/spec_kit:deep-research`   | Autonomous iterative research loop              | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`              | Context preservation                            | `.opencode/command/memory/save.md`           |
 | `/spec_kit:resume`          | Resume or recover work, including crash restoration | `.opencode/command/spec_kit/resume.md`   |
-| `/memory:analyze`           | Unified retrieval, analysis, eval               | `.opencode/command/memory/analyze.md`        |
+| `/memory:search`           | Unified retrieval, analysis, eval               | `.opencode/command/memory/search.md`        |
 | `/memory:manage`            | Stats, health, cleanup, ingest                  | `.opencode/command/memory/manage.md`         |
 | `/memory:learn`             | Constitutional memory manager                   | `.opencode/command/memory/learn.md`          |
-| `/memory:shared`            | Shared-memory lifecycle                         | `.opencode/command/memory/shared.md`         |
+| `/memory:manage shared`            | Shared-memory lifecycle                         | `.opencode/command/memory/manage.md`         |
 | `system-spec-kit`           | Spec folders, memory, validation                | `.opencode/skill/system-spec-kit/`           |
 | `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code--review/` |
 | `sk-code--*`         | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code--*/` |

@@ -408,7 +408,7 @@ context_loading:
     tool: memory_search
     note: "Call MCP tools directly - NEVER through Code Mode"
     parameters: { query: "context for {spec_folder_name}", specFolder: "{spec_folder_path}", anchors: ['summary', 'decisions', 'state'] }
-  command_reference: "/memory:analyze"
+  command_reference: "/memory:search"
   when_to_skip: ["New spec folder (no prior context)", "User says 'skip context' or 'fresh start'"]
   behavior: { if_context_found: "Surface relevant decisions and state", if_no_context: "Proceed to Step 1" }
 

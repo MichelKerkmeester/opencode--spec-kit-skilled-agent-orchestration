@@ -170,10 +170,9 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 ### Memory Commands (`/memory:*`)
 
 - `/memory:save`: Save session context to memory files (auto-indexed)
-- `/memory:manage`: Memory database maintenance (stats, health, cleanup, checkpoints)
+- `/memory:manage`: Memory database maintenance plus shared-memory lifecycle (`shared` setup, spaces, memberships, rollout)
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
-- `/memory:analyze`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
-- `/memory:shared`: Shared-memory space lifecycle and rollout status
+- `/memory:search`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
 
 ### Create Commands (`/create:*`)
 

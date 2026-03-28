@@ -171,7 +171,7 @@ Feature flags control experimental and optional functionality. All flags default
 | `SPEC_KIT_ENABLE_DECAY` | `true` | Attention decay system (time-weighted memory retrieval) |
 | `SPEC_KIT_ENABLE_EMBEDDING` | `true` | Vector embeddings for semantic search |
 | `SPEC_KIT_ENABLE_CHECKPOINT` | `true` | Incremental checkpointing (save context at intervals) |
-| `SPEC_KIT_ENABLE_CAUSAL` | `false` | Enables causal graph system (link/unlink/stats/drift-why tools) for decision dependency tracking. Mature — used by `/memory:analyze` |
+| `SPEC_KIT_ENABLE_CAUSAL` | `false` | Enables causal graph system (link/unlink/stats/drift-why tools) for decision dependency tracking. Mature — used by `/memory:search` |
 | `SPEC_KIT_ENABLE_VALIDATION` | `true` | Auto-validation on memory save |
 | `SPEC_KIT_ENABLE_INDEXING` | `true` | Automatic re-indexing after memory updates |
 | `SPEC_KIT_ENABLE_TRIGGERS` | `true` | Proactive memory surfacing via trigger matching |

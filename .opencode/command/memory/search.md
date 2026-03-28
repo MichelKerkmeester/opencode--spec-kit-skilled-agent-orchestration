@@ -50,7 +50,7 @@ IF $ARGUMENTS contains a query (any other text):
 
 ---
 
-# Memory Analyze Command
+# Memory Search Command
 
 Unified entry point for knowledge retrieval and analysis. Combines intent-aware context search (retrieval mode) with epistemic measurement, causal graph tools, and evaluation dashboards (analysis mode).
 
@@ -116,27 +116,27 @@ When evidence quality is low, responses may include an explicit evidence-gap war
 
 | Command | Result |
 |---------|--------|
-| `/memory:analyze "implement auth"` | Auto-detect add_feature, apply weights |
-| `/memory:analyze "auth bug" --intent:fix_bug` | Explicit fix_bug intent |
-| `/memory:analyze "how does auth work?"` | Auto-detect understand intent |
-| `/memory:analyze "optimize auth code"` | Auto-detect refactor intent |
-| `/memory:analyze "auth security review"` | Auto-detect security_audit intent |
-| `/memory:analyze "find the spec for auth"` | Auto-detect find_spec intent |
-| `/memory:analyze "why did we choose JWT"` | Auto-detect find_decision intent |
+| `/memory:search "implement auth"` | Auto-detect add_feature, apply weights |
+| `/memory:search "auth bug" --intent:fix_bug` | Explicit fix_bug intent |
+| `/memory:search "how does auth work?"` | Auto-detect understand intent |
+| `/memory:search "optimize auth code"` | Auto-detect refactor intent |
+| `/memory:search "auth security review"` | Auto-detect security_audit intent |
+| `/memory:search "find the spec for auth"` | Auto-detect find_spec intent |
+| `/memory:search "why did we choose JWT"` | Auto-detect find_decision intent |
 
 ### Analysis Mode (subcommand-triggered)
 
 | Command | Result |
 |---------|--------|
-| `/memory:analyze preflight specs/007-auth T1` | Capture epistemic baseline |
-| `/memory:analyze postflight specs/007-auth T1` | Calculate learning delta |
-| `/memory:analyze history specs/007-auth` | View learning history |
-| `/memory:analyze causal 42` | Trace causal chain for memory #42 |
-| `/memory:analyze link 42 43 caused` | Link memory #42 → #43 as caused |
-| `/memory:analyze unlink 5` | Remove causal edge #5 |
-| `/memory:analyze causal-stats` | View causal graph statistics |
-| `/memory:analyze ablation` | Run channel ablation study |
-| `/memory:analyze dashboard` | View reporting dashboard |
+| `/memory:search preflight specs/007-auth T1` | Capture epistemic baseline |
+| `/memory:search postflight specs/007-auth T1` | Calculate learning delta |
+| `/memory:search history specs/007-auth` | View learning history |
+| `/memory:search causal 42` | Trace causal chain for memory #42 |
+| `/memory:search link 42 43 caused` | Link memory #42 → #43 as caused |
+| `/memory:search unlink 5` | Remove causal edge #5 |
+| `/memory:search causal-stats` | View causal graph statistics |
+| `/memory:search ablation` | Run channel ablation study |
+| `/memory:search dashboard` | View reporting dashboard |
 
 ---
 
@@ -285,7 +285,7 @@ spec_kit_memory_memory_context({
 Format response:
 
 ```text
-MEMORY:ANALYZE
+MEMORY:SEARCH
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Query       "<query>"
@@ -386,7 +386,7 @@ $ARGUMENTS (first token is a known subcommand)
 
 #### Preflight
 
-**Trigger:** `/memory:analyze preflight <specFolder> <taskId>`
+**Trigger:** `/memory:search preflight <specFolder> <taskId>`
 
 Captures epistemic baseline before implementation. Records knowledge, uncertainty, and context scores for later comparison with postflight.
 
@@ -412,7 +412,7 @@ Captures epistemic baseline before implementation. Records knowledge, uncertaint
 ##### Output
 
 ```text
-MEMORY:ANALYZE PREFLIGHT
+MEMORY:SEARCH PREFLIGHT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Spec        <specFolder>
@@ -432,7 +432,7 @@ STATUS=OK ACTION=preflight
 
 #### Postflight
 
-**Trigger:** `/memory:analyze postflight <specFolder> <taskId>`
+**Trigger:** `/memory:search postflight <specFolder> <taskId>`
 
 Captures post-task epistemic state and calculates Learning Index. The `specFolder` and `taskId` must match a prior preflight record.
 
@@ -463,7 +463,7 @@ Captures post-task epistemic state and calculates Learning Index. The `specFolde
 ##### Output
 
 ```text
-MEMORY:ANALYZE POSTFLIGHT
+MEMORY:SEARCH POSTFLIGHT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Spec        <specFolder>
@@ -486,7 +486,7 @@ STATUS=OK ACTION=postflight LI=<value>
 
 #### Learning History
 
-**Trigger:** `/memory:analyze history <specFolder>`
+**Trigger:** `/memory:search history <specFolder>`
 
 View learning history (PREFLIGHT/POSTFLIGHT records) for a spec folder. Shows knowledge improvement deltas and Learning Index trends. Completes the epistemic lifecycle: capture (preflight) -> complete (postflight) -> review (history).
 
@@ -503,7 +503,7 @@ View learning history (PREFLIGHT/POSTFLIGHT records) for a spec folder. Shows kn
 ##### Output
 
 ```text
-MEMORY:ANALYZE HISTORY
+MEMORY:SEARCH HISTORY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Spec        <specFolder>
@@ -526,7 +526,7 @@ STATUS=OK ACTION=history
 
 #### Causal Trace
 
-**Trigger:** `/memory:analyze causal <memoryId>`
+**Trigger:** `/memory:search causal <memoryId>`
 
 Traces the causal chain for a memory to answer "why was this decision made?" Traverses causal edges up to `maxDepth` hops.
 
@@ -543,7 +543,7 @@ Traces the causal chain for a memory to answer "why was this decision made?" Tra
 ##### Output
 
 ```text
-MEMORY:ANALYZE CAUSAL
+MEMORY:SEARCH CAUSAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Memory      #<id> "<title>"
@@ -561,7 +561,7 @@ STATUS=OK ACTION=causal EDGES=<count>
 
 #### Causal Link
 
-**Trigger:** `/memory:analyze link <sourceId> <targetId> <relation>`
+**Trigger:** `/memory:search link <sourceId> <targetId> <relation>`
 
 Creates a causal relationship between two memories.
 
@@ -578,7 +578,7 @@ Creates a causal relationship between two memories.
 ##### Output
 
 ```text
-MEMORY:ANALYZE LINK
+MEMORY:SEARCH LINK
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Source      #<sourceId> "<title>"
@@ -591,9 +591,9 @@ STATUS=OK ACTION=link
 
 #### Causal Unlink
 
-**Trigger:** `/memory:analyze unlink <edgeId>`
+**Trigger:** `/memory:search unlink <edgeId>`
 
-Removes a causal relationship by edge ID. Use `/memory:analyze causal <memoryId>` first to find edge IDs.
+Removes a causal relationship by edge ID. Use `/memory:search causal <memoryId>` first to find edge IDs.
 
 ##### Parameters
 
@@ -604,7 +604,7 @@ Removes a causal relationship by edge ID. Use `/memory:analyze causal <memoryId>
 ##### Output
 
 ```text
-MEMORY:ANALYZE UNLINK
+MEMORY:SEARCH UNLINK
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Removed     Edge #<edgeId>
@@ -614,7 +614,7 @@ STATUS=OK ACTION=unlink
 
 #### Causal Stats
 
-**Trigger:** `/memory:analyze causal-stats`
+**Trigger:** `/memory:search causal-stats`
 
 Shows statistics about the causal memory graph. No parameters required.
 
@@ -623,7 +623,7 @@ Target: 60% of memories linked (CHK-065).
 ##### Output
 
 ```text
-MEMORY:ANALYZE CAUSAL-STATS
+MEMORY:SEARCH CAUSAL-STATS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Total Edges     <N>
@@ -646,7 +646,7 @@ STATUS=OK ACTION=causal-stats COVERAGE=<pct>%
 
 #### Ablation Study
 
-**Trigger:** `/memory:analyze ablation`
+**Trigger:** `/memory:search ablation`
 
 Runs a controlled channel ablation study (R13-S3). Requires `SPECKIT_ABLATION=true` environment variable.
 
@@ -663,7 +663,7 @@ Runs a controlled channel ablation study (R13-S3). Requires `SPECKIT_ABLATION=tr
 ##### Output
 
 ```text
-MEMORY:ANALYZE ABLATION
+MEMORY:SEARCH ABLATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Recall@<K> Deltas ──────────────────────────────
@@ -680,7 +680,7 @@ STATUS=OK ACTION=ablation
 
 #### Reporting Dashboard
 
-**Trigger:** `/memory:analyze dashboard`
+**Trigger:** `/memory:search dashboard`
 
 Generates R13-S3 reporting dashboard output with sprint/channel trend aggregation.
 
@@ -697,7 +697,7 @@ Generates R13-S3 reporting dashboard output with sprint/channel trend aggregatio
 ##### Output
 
 ```text
-MEMORY:ANALYZE DASHBOARD
+MEMORY:SEARCH DASHBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Sprint Trends ──────────────────────────────────
@@ -738,7 +738,7 @@ STATUS=OK ACTION=dashboard
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:shared`: Shared-memory spaces
+- `/memory:manage shared`: Shared-memory spaces
 
 ---
 <!-- APPENDIX: Reference material for AI agent implementation -->
@@ -919,7 +919,7 @@ When cognitive features are enabled (`session_id` + `include_cognitive`), trigge
 When the user selects "Analysis tools" from the empty-arguments prompt, or when context warrants showing available analysis capabilities:
 
 ```text
-MEMORY:ANALYZE — ANALYSIS TOOLS
+MEMORY:SEARCH — ANALYSIS TOOLS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Available Subcommands ──────────────────────────

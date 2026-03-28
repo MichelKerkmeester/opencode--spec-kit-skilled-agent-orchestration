@@ -34,8 +34,8 @@ This phase no longer tracks a broad pre-implementation alignment effort. It now 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Live memory truth confirmed as 33 tools and 6 commands
-- [x] Retrieval ownership confirmed in `/memory:analyze`
+- [x] Live memory truth confirmed as 33 tools and 4 commands
+- [x] Retrieval ownership confirmed in `/memory:search`
 - [x] Current `system-spec-kit` docs spot-checked to separate landed work from remaining gaps
 
 ### Definition of Done
@@ -65,7 +65,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 ### Verification Methodology
 - Count live tools from `mcp_server/tool-schemas.ts`
 - Count live memory commands from `.opencode/command/memory/*.md`
-- Confirm retrieval ownership in `/memory:analyze`
+- Confirm retrieval ownership in `/memory:search`
 - Remove any backlog item already covered in current `system-spec-kit` docs
 <!-- /ANCHOR:architecture -->
 
@@ -80,7 +80,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 - [x] Keep the scope explicitly documentation-only
 
 ### Phase 2: Skill-Guide Backlog
-- [x] Update SKILL.md memory-surface wording to the live 33-tool, 6-command, `/memory:analyze` model
+- [x] Update SKILL.md memory-surface wording to the live 33-tool, 4-command, `/memory:search` plus `/memory:manage shared` model
 - [x] Add save-workflow/shared-memory governance framing to SKILL.md
 
 ### Phase 3: Memory-Reference Backlog
@@ -115,7 +115,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 | Strict spec validation | Entire `011-skill-alignment` folder | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ... --strict` |
 | Stale-string audit | Canonical 011 docs only | Run a targeted grep for obsolete command-surface phrases, then manually confirm any hit is historical/negative rather than a current-state claim |
 | Live count verification | Memory tool and command surface | `node` against `tool-schemas.ts`, `find .opencode/command/memory -name '*.md'` |
-| Ownership verification | Retrieval command home | `rg` or `Read` on `.opencode/command/memory/analyze.md` |
+| Ownership verification | Retrieval command home | `rg` or `Read` on `.opencode/command/memory/search.md` |
 <!-- /ANCHOR:testing -->
 
 ---

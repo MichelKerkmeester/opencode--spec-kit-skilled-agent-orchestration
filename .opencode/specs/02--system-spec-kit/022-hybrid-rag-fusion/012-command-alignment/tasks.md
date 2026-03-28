@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Command Alignment"
-description: "Documentation reconciliation tasks for updating the 012 command-alignment spec pack to the live 33-tool, 5-command memory-command surface plus /spec_kit:resume recovery ownership."
+description: "Documentation reconciliation tasks for updating the 012 command-alignment spec pack to the live 33-tool, 4-command memory-command surface plus /spec_kit:resume recovery ownership."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Tasks: 012-command-alignment
@@ -32,7 +32,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 | Phase 1 (Setup) | 3 tasks (T00-T02) |
 | Phase 2 (Implementation) | 4 tasks (T03-T06) |
 | Phase 3 (Verification) | 3 tasks (T07-T09) |
-| Estimated LOC | ~250 |
+| Estimated LOC | ~220 |
 | Parallelizable | Phase 1 checks can run in parallel; rewrites depend on Phase 1 |
 
 ---
@@ -51,17 +51,17 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ### T01: Verify live memory command surface
 - **Priority:** P0
 - **Files:** `.opencode/command/memory/`
-- **Action:** Confirm the live memory suite contains `analyze`, `learn`, `manage`, `save`, and `shared`, that session recovery now lives under `/spec_kit:resume`, and that no standalone `context` command file exists.
-- **Acceptance:** The reconciled 012 pack uses a 5-command memory model, records `/spec_kit:resume` as the recovery workflow, and removes the standalone `context` command assumption.
+- **Action:** Confirm the live memory suite contains `search`, `learn`, `manage`, and `save`, that session recovery now lives under `/spec_kit:resume`, and that no standalone `analyze`, `shared`, or `context` command file exists.
+- **Acceptance:** The reconciled 012 pack uses a 4-command memory model, records `/spec_kit:resume` as the recovery workflow, and removes the standalone `analyze`, `shared`, and `context` command assumptions.
 - **Covers:** CA-002, CA-003
 - [x] Done
 
 ### T02: Verify retrieval ownership
 - **Priority:** P0
-- **Files:** `.opencode/command/memory/analyze.md`, `.opencode/command/memory/README.txt`
-- **Action:** Confirm `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
-- **Acceptance:** The reconciled 012 pack assigns retrieval ownership to `/memory:analyze`.
-- **Covers:** CA-004, CA-006
+- **Files:** `.opencode/command/memory/search.md`, `.opencode/command/memory/manage.md`, `.opencode/command/memory/README.txt`
+- **Action:** Confirm `/memory:search` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history, and confirm shared lifecycle lives under `/memory:manage shared`.
+- **Acceptance:** The reconciled 012 pack assigns retrieval ownership to `/memory:search` and shared lifecycle ownership to `/memory:manage shared`.
+- **Covers:** CA-004, CA-005
 - [x] Done
 <!-- /ANCHOR:phase-1 -->
 
@@ -73,16 +73,16 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ### T03: Rewrite `spec.md` counts and structure
 - **Priority:** P0
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md`
-- **Action:** Replace stale 32-tool, 7-command, `/memory:continue`, and standalone `context` command planning language with live repo truth.
-- **Acceptance:** `spec.md` describes a 33-tool surface, a 5-command memory suite, session recovery under `.opencode/command/spec_kit/resume.md`, and retrieval merged into `.opencode/command/memory/analyze.md`.
+- **Action:** Replace stale 32-tool, `/memory:analyze`, `/memory:shared`, and stale 5-command planning language with live repo truth.
+- **Acceptance:** `spec.md` describes a 33-tool surface, a 4-command memory suite, session recovery under `.opencode/command/spec_kit/resume.md`, retrieval under `.opencode/command/memory/search.md`, and shared lifecycle under `.opencode/command/memory/manage.md`.
 - **Covers:** CA-001, CA-002, CA-003, CA-004
 - [x] Done
 
-### T04: Rewrite `spec.md` gap analysis around what is still real
+### T04: Rewrite `spec.md` ownership notes around the landed rename/merge
 - **Priority:** P1
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md`
-- **Action:** Remove already-shipped items from the missing-work list and record only the directly observed runtime-doc drift cluster.
-- **Acceptance:** The spec treats `.opencode/command/memory/shared.md`, `.opencode/command/memory/analyze.md`, `/memory:manage ingest`, and README coverage as existing, and records the analyze.md plus shared.md drift that this pass resolves.
+- **Action:** Replace stale ownership notes with the landed `search` rename and `manage shared` merge, while keeping scope claims truthful.
+- **Acceptance:** The spec treats the live `search` and `manage` command docs, `/memory:manage ingest`, and README coverage as existing, and does not claim out-of-scope runtime-doc edits in this pass.
 - **Covers:** CA-005, CA-008
 - [x] Done
 
@@ -91,7 +91,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/plan.md`
 - **Action:** Replace the old implementation roadmap with a documentation-only reconciliation plan grounded in live repo state.
 - **Acceptance:** `plan.md` describes verification, rewrite, and validation steps instead of future command creation work.
-- **Covers:** CA-005, CA-007, CA-010
+- **Covers:** CA-006, CA-007, CA-010
 - [x] Done
 
 ### T06: Rebase `tasks.md` to reconciliation tasks
@@ -99,7 +99,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/tasks.md`
 - **Action:** Replace stale implementation tasks with a compact task list covering live-state verification, pack rewrites, and validation.
 - **Acceptance:** `tasks.md` is internally consistent with the reconciled `spec.md` and `plan.md`.
-- **Covers:** CA-005, CA-007, CA-010
+- **Covers:** CA-006, CA-007, CA-010
 - [x] Done
 <!-- /ANCHOR:phase-2 -->
 
@@ -111,7 +111,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ### T07: Grep the 012 pack for stale assumptions
 - **Priority:** P1
 - **Files:** `spec.md`, `plan.md`, `tasks.md`
-- **Action:** Search the reconciled pack for stale `32`, `7-command`, `7 commands`, and standalone `context` command assumptions.
+- **Action:** Search the reconciled pack for stale `32`, `/memory:analyze`, `/memory:shared`, old `analyze`/standalone `shared` command wording, and stale 5-command assumptions.
 - **Acceptance:** No stale live-state claims remain in the edited files.
 - **Covers:** CA-001, CA-002, CA-003, CA-010
 - [x] Done
@@ -124,11 +124,11 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 - **Covers:** CA-007
 - [x] Done
 
-### T09: Record drift as resolved
+### T09: Record rename/merge alignment
 - **Priority:** P1
 - **Files:** `spec.md`, `plan.md`
-- **Action:** Record that the `.opencode/command/memory/analyze.md` and `.opencode/command/memory/shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass.
-- **Acceptance:** The pack describes the drift cluster as resolved, not open.
+- **Action:** Record that the former `analyze` command was renamed to `/memory:search` and that standalone shared-memory lifecycle was merged into `/memory:manage shared`.
+- **Acceptance:** The pack describes the current live surface in terms of `search` and `manage shared`, not legacy command names.
 - **Covers:** CA-008
 - [x] Done
 <!-- /ANCHOR:phase-3 -->
@@ -139,7 +139,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 ## Completion Criteria
 
 - [x] All reconciliation tasks are marked complete
-- [x] The pack preserves the live 33-tool / 5-command / `/spec_kit:resume` + `/memory:analyze` ownership story
+- [x] The pack preserves the live 33-tool / 4-command / `/spec_kit:resume` + `/memory:search` + `/memory:manage shared` ownership story
 - [x] Strict validation has been run and its result recorded
 <!-- /ANCHOR:completion -->
 
@@ -178,6 +178,6 @@ Phase 2:
 
 <!--
 TASKS: 012-command-alignment
-10/10 tasks complete - truth-reconciled 2026-03-21
-Current reality: 33 tools, 5 memory commands, session recovery owned by /spec_kit:resume
+10/10 tasks complete - truth-reconciled 2026-03-27
+Current reality: 33 tools, 4 memory commands, session recovery owned by /spec_kit:resume
 -->

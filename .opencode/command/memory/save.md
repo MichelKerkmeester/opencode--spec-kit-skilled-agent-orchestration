@@ -362,7 +362,7 @@ Display the completion report (see Section 6).
     "timestamp": "2026-02-01T14:30:00Z"
   },
   "hints": [
-    "Use /memory:analyze to find this memory later",
+    "Use /memory:search to find this memory later",
     "Anchors enable 93% token savings when loading specific sections"
   ],
   "meta": {
@@ -460,7 +460,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | ---------------------------- | ------------------------------------------ | ----------------------------- |
 | Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
 | Ending session               | `/spec_kit:handover [spec-folder-path]`    | Create full handover document |
-| Search saved memories        | `/memory:analyze [query]`                | Find related context          |
+| Search saved memories        | `/memory:search [query]`                | Find related context          |
 | Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
 
 **ALWAYS** end with: "Context saved. What would you like to do next?"
@@ -469,11 +469,11 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## 9. RELATED COMMANDS
 
-- `/memory:analyze`: Intent-aware context retrieval and analysis tools
+- `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:shared`: Shared-memory spaces
+- `/memory:manage shared`: Shared-memory spaces
 - `/spec_kit:handover`: Full session handover document
 
 ---
@@ -655,7 +655,7 @@ The `memory_save` tool schema advertises advanced governance parameters for mult
 | `userId` | string | User boundary for governed ingest |
 | `agentId` | string | Agent boundary for governed ingest |
 | `sessionId` | string | Session boundary for governed ingest |
-| `sharedSpaceId` | string | Shared-memory space for collaboration saves. Requires explicit membership (see `/memory:shared`) |
+| `sharedSpaceId` | string | Shared-memory space for collaboration saves. Requires explicit membership (see `/memory:manage shared`) |
 
 #### Provenance
 

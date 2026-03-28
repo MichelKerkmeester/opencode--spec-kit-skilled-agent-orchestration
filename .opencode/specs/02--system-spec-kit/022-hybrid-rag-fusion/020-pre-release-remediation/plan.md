@@ -1,14 +1,14 @@
 ---
-title: "Implementation Plan: 012 Pre-Release Remediation [template:level_3/plan.md]"
-description: "Execution plan for closing the canonical review findings captured under 012-pre-release-remediation/review/."
+title: "Implementation Plan: 020 Pre-Release Remediation [template:level_3/plan.md]"
+description: "Execution plan for closing the canonical review findings captured under 020-pre-release-remediation/review/."
 trigger_phrases:
-  - "012 plan"
+  - "020 plan"
   - "post-review remediation plan"
   - "canonical review implementation plan"
 importance_tier: "high"
 contextType: "general"
 ---
-# Implementation Plan: 012 Pre-Release Remediation
+# Implementation Plan: 020 Pre-Release Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -24,7 +24,7 @@ contextType: "general"
 |--------|-------|
 | **Language/Stack** | Markdown packet docs coordinating TypeScript runtime, tests, validators, wrappers, and feature-catalog remediation |
 | **Framework** | system-spec-kit remediation packet driven by the canonical review in `review/` |
-| **Storage** | Spec packet docs under `012-pre-release-remediation/`; runtime and test surfaces under `.opencode/skill/system-spec-kit/` |
+| **Storage** | Spec packet docs under `020-pre-release-remediation/`; runtime and test surfaces under `.opencode/skill/system-spec-kit/` |
 | **Testing** | `validate.sh`, `validate.sh --recursive`, `npm test`, and targeted Vitest subsets from the canonical review |
 
 ### Overview
@@ -71,7 +71,7 @@ The active finding load that drives this plan is:
 
 ### Pre-Task Checklist
 
-- Confirm the edit stays inside the approved `012-pre-release-remediation` remediation scope.
+- Confirm the edit stays inside the approved `020-pre-release-remediation` remediation scope.
 - Read the canonical `review/review-report.md` and the packet docs before changing wording or status markers.
 - Keep runtime, wrapper, and review-surface claims tied to fresh validator or test evidence.
 - Re-run the relevant validators before reporting progress.

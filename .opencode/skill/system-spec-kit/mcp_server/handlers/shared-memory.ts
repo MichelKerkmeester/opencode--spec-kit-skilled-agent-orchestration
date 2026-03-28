@@ -272,7 +272,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
     if (!enabled) {
       return createMCPErrorResponse({
         tool: 'shared_space_upsert',
-        error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+        error: 'Shared memory is not enabled. Run /memory:manage shared enable first.',
         code: 'SHARED_MEMORY_DISABLED',
       });
     }
@@ -432,7 +432,7 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
     if (!enabled) {
       return createMCPErrorResponse({
         tool: 'shared_space_membership_set',
-        error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+        error: 'Shared memory is not enabled. Run /memory:manage shared enable first.',
         code: 'SHARED_MEMORY_DISABLED',
       });
     }
@@ -539,7 +539,7 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
       tool: 'shared_memory_status',
       summary: enabled
         ? `Shared memory enabled for ${allowedSharedSpaceIds.length} space(s)`
-        : 'Shared memory disabled — run /memory:shared enable to set up',
+        : 'Shared memory disabled — run /memory:manage shared enable to set up',
       data: {
         enabled,
         allowedSharedSpaceIds,
@@ -651,10 +651,10 @@ Shared memory has been **enabled** for this workspace.
 
 | Command | Description |
 |---------|-------------|
-| \`/memory:shared status\` | View rollout state and accessible spaces |
-| \`/memory:shared create <spaceId> <tenantId> <name>\` | Create or update a shared space; first creator becomes owner |
-| \`/memory:shared member <spaceId> <type> <id> <role>\` | Set membership; caller must already own the space |
-| \`/memory:shared enable\` | Re-run first-time setup (idempotent) |
+| \`/memory:manage shared status\` | View rollout state and accessible spaces |
+| \`/memory:manage shared create <spaceId> <tenantId> <name>\` | Create or update a shared space; first creator becomes owner |
+| \`/memory:manage shared member <spaceId> <type> <id> <role>\` | Set membership; caller must already own the space |
+| \`/memory:manage shared enable\` | Re-run first-time setup (idempotent) |
 
 ## Environment Overrides
 

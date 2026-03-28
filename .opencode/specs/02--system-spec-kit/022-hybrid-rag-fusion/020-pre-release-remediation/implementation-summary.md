@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary: 012 Pre-Release Remediation"
+title: "Implementation Summary: 020 Pre-Release Remediation"
 description: "Current implementation summary for the packet-truth remediation pass that re-anchors 012 to the canonical review and removes stale release-control claims."
 trigger_phrases:
-  - "012 implementation summary"
+  - "020 implementation summary"
   - "pre-release remediation summary"
 importance_tier: "high"
 contextType: "general"
 ---
-# Implementation Summary: 012 Pre-Release Remediation
+# Implementation Summary: 020 Pre-Release Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
@@ -19,7 +19,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 012-pre-release-remediation |
+| **Spec Folder** | 020-pre-release-remediation |
 | **Completed** | 2026-03-27 |
 | **Level** | 3 |
 | **Baseline** | Canonical review verdict `FAIL`; `012` local validate failing on stale packet truth |
@@ -80,7 +80,7 @@ The work was delivered as a focused spec-folder truth-sync pass:
 
 | Check | Result |
 |-------|--------|
-| `012-pre-release-remediation` local validate | Re-run in this pass; result recorded after edits |
+| `020-pre-release-remediation` local validate | Re-run in this pass; result recorded after edits |
 | Root `022 --recursive` | Re-run in this pass; expected to remain pass-with-warnings or improve |
 | Runtime gate (`npm test`) | Preserved as external evidence; no runtime edits in this pass |
 <!-- /ANCHOR:verification -->

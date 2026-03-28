@@ -24,8 +24,8 @@ describe('/memory:learn command docs', () => {
   it('keeps active command and workspace docs aligned to the constitutional manager wording', () => {
     const docPaths = [
       '.opencode/command/README.txt',
-      '.opencode/command/memory/README.md',
-      '.opencode/command/memory/analyze.md',
+      '.opencode/command/memory/README.txt',
+      '.opencode/command/memory/search.md',
       '.opencode/command/spec_kit/debug.md',
       '.opencode/command/spec_kit/complete.md',
       'README.md',

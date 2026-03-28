@@ -47,7 +47,7 @@ The feature lives inside the same SQLite database as your private memories. It d
 | **Default state** | Disabled. Requires explicit opt-in |
 | **Access model** | Deny-by-default. Nobody gets in unless granted membership |
 | **Database** | Same `context-index.sqlite` file. No separate database |
-| **Command** | `/memory:shared` with subcommands: `enable`, `create`, `member`, `status` |
+| **Command** | `/memory:manage shared` with subcommands: `enable`, `create`, `member`, `status` |
 
 ### When You Need This
 
@@ -93,7 +93,7 @@ Restart the MCP server after this change. Claude Code restarts it automatically 
 Run the command with no arguments. If shared memory is not yet enabled, it walks you through first-time setup:
 
 ```text
-/memory:shared
+/memory:manage shared
 ```
 
 Confirm when prompted. This creates the database tables and persists the enabled state.
@@ -101,7 +101,7 @@ Confirm when prompted. This creates the database tables and persists the enabled
 ### Step 3: Create your first space
 
 ```text
-/memory:shared create my-team my-tenant "Team Alpha" --actor-agent spec-kit
+/memory:manage shared create my-team my-tenant "Team Alpha" --actor-agent spec-kit
 ```
 
 The first create auto-grants the acting caller `owner` access so the space is not locked out from the start.
@@ -109,7 +109,7 @@ The first create auto-grants the acting caller `owner` access so the space is no
 ### Step 4: Verify
 
 ```text
-/memory:shared status
+/memory:manage shared status
 ```
 
 You should see 1 space with the acting agent listed as owner.
@@ -146,7 +146,7 @@ Your shared space contains outdated guidance after a breaking change. Flip the k
 
 ### Spaces
 
-A shared space is a named container for knowledge. Each space belongs to a tenant and holds its own membership list. You create spaces with `shared_space_upsert` and manage them through the `/memory:shared create` command.
+A shared space is a named container for knowledge. Each space belongs to a tenant and holds its own membership list. You create spaces with `shared_space_upsert` and manage them through the `/memory:manage shared create` command.
 
 Spaces store their definition in the `shared_spaces` database table alongside your existing memory tables. Creating a space does not copy or move any memories. It creates an access boundary that you then populate with members.
 
@@ -249,7 +249,7 @@ A complete MCP server configuration with shared memory admin identity:
 The system checks whether shared memory is active using two tiers. The first tier always wins.
 
 1. **Tier 1 (env var)**: If `SPECKIT_MEMORY_SHARED_MEMORY` or `SPECKIT_HYDRA_SHARED_MEMORY` is set to `true` or `1`, shared memory is enabled regardless of what the database says.
-2. **Tier 2 (database)**: The `config` table stores a `shared_memory_enabled` key. Running `/memory:shared enable` sets this to `true` and it persists across restarts.
+2. **Tier 2 (database)**: The `config` table stores a `shared_memory_enabled` key. Running `/memory:manage shared enable` sets this to `true` and it persists across restarts.
 
 If neither tier is active, shared memory stays off.
 
@@ -266,10 +266,10 @@ First-time setup followed by space creation:
 
 ```text
 # Turn on the subsystem (one-time)
-/memory:shared enable
+/memory:manage shared enable
 
 # Create a space named "research" in tenant "acme"
-/memory:shared create research acme "Research Team" --actor-agent spec-kit
+/memory:manage shared create research acme "Research Team" --actor-agent spec-kit
 ```
 
 ### Add Members
@@ -278,10 +278,10 @@ Grant access to agents and users. The acting agent must already own the space:
 
 ```text
 # Grant an agent editor access (read and write)
-/memory:shared member research acme agent claude-code editor --actor-agent spec-kit
+/memory:manage shared member research acme agent claude-code editor --actor-agent spec-kit
 
 # Grant a user viewer access (read-only)
-/memory:shared member research acme user alice viewer --actor-agent spec-kit
+/memory:manage shared member research acme user alice viewer --actor-agent spec-kit
 ```
 
 ### Emergency Kill Switch
@@ -290,16 +290,16 @@ Block access, verify the block, then restore:
 
 ```text
 # Block all access immediately
-/memory:shared create research acme "Research Team" --actor-agent spec-kit --kill-switch
+/memory:manage shared create research acme "Research Team" --actor-agent spec-kit --kill-switch
 
 # Confirm access is blocked
-/memory:shared status
+/memory:manage shared status
 
 # Restore access by updating without kill switch
-/memory:shared create research acme "Research Team" --actor-agent spec-kit
+/memory:manage shared create research acme "Research Team" --actor-agent spec-kit
 ```
 
-The kill switch is set through `shared_space_upsert` by passing `killSwitch: true`. The `/memory:shared create` command wraps this tool.
+The kill switch is set through `shared_space_upsert` by passing `killSwitch: true`. The `/memory:manage shared create` command wraps this tool.
 
 ### Check Accessible Spaces
 
@@ -307,13 +307,13 @@ Query which spaces are visible to a given identity:
 
 ```text
 # View all spaces you can access
-/memory:shared status
+/memory:manage shared status
 
 # View spaces for a specific user
-/memory:shared status --user alice
+/memory:manage shared status --user alice
 
 # View spaces for a specific agent
-/memory:shared status --agent claude-code
+/memory:manage shared status --agent claude-code
 ```
 
 <!-- /ANCHOR:usage-examples -->
@@ -333,7 +333,7 @@ Query which spaces are visible to a given identity:
 
 **Cause**: The subsystem has not been turned on yet.
 
-**Fix**: Run `/memory:shared enable` or set `SPECKIT_MEMORY_SHARED_MEMORY=true` in your environment.
+**Fix**: Run `/memory:manage shared enable` or set `SPECKIT_MEMORY_SHARED_MEMORY=true` in your environment.
 
 ### "Actor must already own the shared space"
 

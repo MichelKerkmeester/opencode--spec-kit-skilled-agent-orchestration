@@ -730,14 +730,12 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 </details>
 
 <details>
-<summary><strong>memory/ — 6 Commands</strong> (cognitive memory operations)</summary>
+<summary><strong>memory/ — 4 Commands</strong> (cognitive memory operations)</summary>
 
 - **`/memory:save`** — Saves current session context to a timestamped memory file via `generate-context.js`. AI composes structured JSON with session summary, key decisions and findings, then the script generates frontmatter, trigger phrases, and ANCHOR sections. Indexes immediately for future retrieval via `memory_save()` or `memory_index_scan()`.
-- **`/memory:continue`** — Session recovery after crash, compaction or new conversation. Loads the most recent memory files from the active spec folder, presents a state summary with key decisions and next steps, and restores working context. Session deduplication prevents re-surfacing results you already saw.
-- **`/memory:analyze`** — Unified retrieval and analysis entry point supporting intent-aware search, epistemic baselines (what-do-I-know checks), causal graph traversal, ablation studies (channel impact measurement), and dashboards. Routes by intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`.
+- **`/memory:search`** — Unified retrieval and analysis entry point supporting intent-aware search, epistemic baselines (what-do-I-know checks), causal graph traversal, ablation studies (channel impact measurement), and dashboards. Routes by intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`.
 - **`/memory:learn`** — Constitutional memory manager for always-surface rules that appear at the top of every search result. Lifecycle operations: create, list, edit, remove, budget. Constitutional memories carry a 3.0x boost and never decay. Use for project-wide rules, conventions, and architectural decisions that must always be visible.
-- **`/memory:manage`** — Database operations: stats (memory counts, index health), health checks, cleanup (orphaned vectors, stale entries), checkpoint management (create, list, restore, delete), bulk delete, bulk ingestion (start, status, cancel), index scan, and validation. The administrative interface for the memory database.
-- **`/memory:shared`** — Shared memory space lifecycle: create named spaces, manage memberships (owner/editor/viewer roles), inspect rollout status, and activate kill switch for emergency lockdown. Deny-by-default governance means no access until explicitly granted.
+- **`/memory:manage`** — Database operations: stats (memory counts, index health), health checks, cleanup (orphaned vectors, stale entries), checkpoint management (create, list, restore, delete), bulk delete, bulk ingestion (start, status, cancel), index scan, validation, and the nested `shared` namespace for shared-memory lifecycle operations. The administrative interface for the memory database.
 
 </details>
 
@@ -1071,13 +1069,13 @@ This creates a spec folder under `.opencode/specs/`, researches the codebase, bu
 
 ### Example 2: Resume After a Crash or Compaction
 
-Use `/memory:continue` to recover session context after a context window reset.
+Use `/spec_kit:resume` to recover session context after a context window reset.
 
 ```
-/memory:continue
+/spec_kit:resume
 ```
 
-The command loads the most recent memory files from the active spec folder and presents a session summary so you can pick up exactly where you left off. Working memory deduplication means follow-up queries skip results you have already seen.
+The command reconstructs context from recent handovers, resume-mode memory retrieval, crash breadcrumbs, and progress artifacts so you can pick up exactly where you left off. Working memory deduplication means follow-up queries skip results you have already seen.
 
 
 ### Example 3: Debug a Difficult Problem

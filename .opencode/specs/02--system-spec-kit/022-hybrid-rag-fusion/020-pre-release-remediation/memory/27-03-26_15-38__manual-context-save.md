@@ -1,5 +1,5 @@
 ---
-title: "Manual Context Save [012-pre-release-remediation/27-03-26_15-38__manual-context-save]"
+title: "Manual Context Save [020-pre-release-remediation/27-03-26_15-38__manual-context-save]"
 description: "Session focused on implementing and testing features."
 trigger_phrases:
   - "tree thinning"
@@ -51,7 +51,7 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 |:--------------|:----------|
 | Session Date | 2026-03-27 |
 | Session ID | session-1774622291542-dce3f0fe7276 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -109,20 +109,20 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation
 Last: Context save initiated
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-config.json, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-state.jsonl, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-review-strategy.md
+- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-config.json, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -138,7 +138,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-config.json |
+| Active File | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-config.json |
 | Last Action | Context save initiated |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -180,9 +180,9 @@ Session focused on implementing and testing features.
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/review-report.md` | Created the canonical 9-section review report with... | Tree-thinning merged 3 small files (deep-research-config.json, deep-research-state.jsonl, deep-review-strategy.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-config.json : Created the canonical review configuration with a... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-state.jsonl : Recorded the full 20-iteration review log with findings... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-review-strategy.md : Created the persistent review stra... |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/iteration-001.md` | Created the first per-iteration audit note;... |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-review-dashboard.md` | Added the human-readable dashboard summarizing the... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md` | Created the canonical 9-section review report with... | Tree-thinning merged 3 small files (deep-research-config.json, deep-research-state.jsonl, deep-review-strategy.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-config.json : Created the canonical review configuration with a... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl : Recorded the full 20-iteration review log with findings... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md : Created the persistent review stra... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-001.md` | Created the first per-iteration audit note;... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md` | Added the human-readable dashboard summarizing the... |
 
 <!-- /ANCHOR:summary -->
 
@@ -239,9 +239,9 @@ Manual context save
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -253,16 +253,16 @@ Manual context save
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation --force
 ```
 
 ### Recovery Priority
@@ -289,7 +289,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1774622291542-dce3f0fe7276"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation"
 channel: "main"
 
 # Git Provenance (M-007d)
@@ -401,19 +401,19 @@ trigger_phrases:
   - "pre"
 
 key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-config.json"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-research-state.jsonl"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-review-strategy.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/review-report.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/iteration-001.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation/review/deep-review-dashboard.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-config.json"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-001.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation"
 child_sessions:
 
   []
@@ -429,4 +429,3 @@ chunk_count: 1
 ---
 
 *Generated by system-spec-kit skill v1.7.2*
-

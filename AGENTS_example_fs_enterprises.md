@@ -70,7 +70,7 @@
 | **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                               |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings              |
 | **Code search**           | `CocoIndex search` for semantic/intent queries → `Grep()` for exact text → `Glob()` for file paths → `Read()` for contents         |
-| **Resume prior work**     | `/memory:continue` OR `memory_search({ query, specFolder, anchors: ['state', 'next-steps'] })` → Review checklist → Continue       |
+| **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder })` → Review checklist → Continue |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                              |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                        |
@@ -88,9 +88,9 @@
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
 | **Deep review**           | `/spec_kit:deep-research:review` → Scope discovery → Loop (@deep-review iterations) → Review convergence → review-report.md → Memory save      |
-| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
+| **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 | **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
-| **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                     |
+| **Shared memory**         | `/memory:manage shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                     |
 
 ### Code Search Protocol
 

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Memory Command Dashboard Visual Design System [013-memory-command-output/spec]"
-description: "Each of the 5 memory commands (context.md, save.md, manage.md, learn.md, continue.md) defines its own visual output format independently, producing 5 different visual languages...."
+description: "This active packet documents the Memory Dashboard Visual Design System against the current 4-command memory surface: `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory routing under `/memory:manage shared`."
 trigger_phrases:
   - "feature"
   - "specification"
@@ -37,11 +37,11 @@ contextType: "decision"
 
 ### Problem Statement
 
-Each of the 5 memory commands (`context.md`, `save.md`, `manage.md`, `learn.md`, `continue.md`) defines its own visual output format independently, producing 5 different visual languages. Headers alternate between ALL CAPS and Title Case, box-drawing characters range from square to rounded to absent, status line key patterns are inconsistent, and icon usage mixes emoji, ASCII symbols, and nothing at all. This makes the system feel disjointed and degrades the user experience across all memory workflows.
+This packet originally described an older 5-command memory surface that included deleted legacy retrieval and continuation docs. The live memory command surface is now `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory lifecycle routed through `/memory:manage shared`. If this packet keeps describing removed surfaces, it stops being a truthful reference for the current memory dashboard conventions.
 
 ### Purpose
 
-Define a unified Memory Dashboard Visual Design System — a shared component library (headers, dividers, tables, status bars, box frames, metric displays) applied consistently across all 5 memory commands — to create a cohesive and professional CLI output experience.
+Keep the Memory Dashboard Visual Design System packet aligned with the live memory command surface so it remains a truthful reference for current command output conventions, including the nested shared-memory lifecycle under `/memory:manage shared`.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -52,8 +52,9 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 ### In Scope
 
 - Define a visual design system reference document (shared template/component library for CLI output)
-- Standardize headers, dividers, status lines, tables, and box frames across all 5 memory commands
-- Update output templates in all 5 command files (`context.md`, `save.md`, `manage.md`, `learn.md`, `continue.md`)
+- Standardize headers, dividers, status lines, tables, and box frames across the live memory command docs
+- Keep the packet aligned to the current command surfaces: `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`
+- Treat shared-memory lifecycle output as part of `/memory:manage shared`, not as a standalone command
 - Ensure monospace/terminal-friendly rendering (minimum 80-character width)
 - ASCII-only indicators — no emoji per project rules
 
@@ -66,13 +67,12 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 
 ### Files to Change
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/command/memory/context.md` | Modify | Update visual output templates to use shared design system |
-| `.opencode/command/memory/save.md` | Modify | Update visual output templates to use shared design system |
-| `.opencode/command/memory/manage.md` | Modify | Update visual output templates to use shared design system |
-| `.opencode/command/memory/learn.md` | Modify | Update visual output templates to use shared design system |
-| `.opencode/command/memory/continue.md` | Modify | Update visual output templates to use shared design system |
+| Command Surface | Change Type | Description |
+|-----------------|-------------|-------------|
+| `/memory:search` | Reference | Live retrieval and analysis command surface |
+| `/memory:save` | Modify | Update visual output templates to use shared design system |
+| `/memory:manage` | Modify | Update visual output templates to use shared design system, including `/memory:manage shared` flows |
+| `/memory:learn` | Modify | Update visual output templates to use shared design system |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -85,16 +85,16 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Define a shared visual component library covering headers, dividers, status lines, tables, and box frames | Reference document exists with all components fully defined and example output shown for each |
-| REQ-002 | All 5 memory commands use a consistent header format | All command output headers follow the same capitalization, divider, and layout pattern |
-| REQ-003 | All 5 memory commands use a consistent status line format | All status lines follow the `STATUS=<OK\|FAIL> [KEY=value]...` pattern with no deviations |
-| REQ-004 | All 5 memory commands use a consistent divider style | The same box-drawing characters are used in all dividers across every command |
+| REQ-002 | All live memory command docs use a consistent header format | `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn` follow the same capitalization, divider, and layout pattern |
+| REQ-003 | All live memory command docs use a consistent status line format | All status lines in the live memory command docs follow the `STATUS=<OK\|FAIL> [KEY=value]...` pattern with no deviations |
+| REQ-004 | All live memory command docs use a consistent divider style | The same divider conventions are used across the live memory command docs, including `/memory:manage shared` outputs |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-005 | All table output follows a consistent format (pipe tables vs key-value blocks) | Visual comparison across commands shows uniform table style |
-| REQ-006 | Consistent icon/indicator system using ASCII only — no emoji | No emoji characters appear in any output template across all 5 files |
+| REQ-006 | Consistent icon/indicator system using ASCII only — no emoji | No emoji characters appear in any output template across the live memory command docs |
 | REQ-007 | Clear visual hierarchy in output (Header > Section > Content > Status) | Reading any command's output flows naturally through the defined hierarchy |
 <!-- /ANCHOR:requirements -->
 
@@ -103,9 +103,16 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Visual comparison of all 5 command outputs shows consistent formatting patterns — headers, dividers, status lines, and tables match the shared design system
-- **SC-002**: Zero emoji characters present in any output template across all 5 command files
-- **SC-003**: All status lines across all 5 commands follow the unified `STATUS=<OK|FAIL> [KEY=value]...` format
+- **SC-001**: Visual comparison of the live memory command outputs shows consistent formatting patterns — headers, dividers, status lines, and tables match the shared design system
+- **SC-002**: Zero emoji characters present in any output template across `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`
+- **SC-003**: All status lines across the live memory command docs follow the unified `STATUS=<OK|FAIL> [KEY=value]...` format
+
+### Acceptance Scenarios
+
+- **Given** the live `/memory:search` and `/memory:save` command outputs, **when** they are reviewed side by side, **then** they use the same header, divider, and status-line conventions.
+- **Given** the live `/memory:manage` surface and nested `/memory:manage shared` flows, **when** shared-memory lifecycle output is displayed, **then** it follows the same dashboard conventions as the rest of the manage surface.
+- **Given** any live memory command returns no results or an empty state, **when** the output is rendered, **then** it uses the shared empty-state presentation rather than a deleted legacy format.
+- **Given** the live memory command outputs are rendered in an 80-column terminal or a plain-ASCII fallback context, **when** the display width or character support is constrained, **then** the shared design system still presents readable status, hierarchy, and separators.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -115,7 +122,7 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Large scope — 5 files with approximately 150 output templates across all subcommands | Med | Define the design system reference document first, then apply changes methodically file by file |
+| Risk | Packet drift after command consolidation could keep pointing at deleted files instead of live command docs | Med | Keep the packet normalized to the live `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn` surfaces, with shared-memory lifecycle nested under `/memory:manage shared` |
 | Risk | Output changes could disorient existing users familiar with the current formats | Low | Maintain identical information density; only standardize visual presentation, not content |
 <!-- /ANCHOR:risks -->
 
@@ -144,7 +151,7 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 
 ### Data Boundaries
 
-- Empty data: All 5 commands must display a consistent "no results" or empty-state message using the shared format
+- Empty data: All live memory command docs must display a consistent "no results" or empty-state message using the shared format
 - Long content: Define explicit truncation rules for titles, paths, and content previews — maximum display length and ellipsis convention
 - Invalid format: Not applicable — edge cases are presentational only, no input validation involved
 
@@ -166,7 +173,7 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 15/25 | 5 files, approximately 150-200 LOC of template changes across 1 system |
+| Scope | 15/25 | 4 live command docs plus nested shared-memory output under `/memory:manage shared` |
 | Risk | 8/25 | Documentation-only changes, no runtime impact, no breaking API changes |
 | Research | 5/20 | All patterns already analyzed — no further investigation needed |
 | **Total** | **28/70** | **Level 2** |
@@ -177,7 +184,7 @@ Define a unified Memory Dashboard Visual Design System — a shared component li
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- None — analysis of all 5 commands is complete and all inconsistencies are fully documented
+- None — this packet now targets the live 4-command memory surface and no longer treats deleted legacy retrieval or continuation docs as active truth
 <!-- /ANCHOR:questions -->
 
 ---

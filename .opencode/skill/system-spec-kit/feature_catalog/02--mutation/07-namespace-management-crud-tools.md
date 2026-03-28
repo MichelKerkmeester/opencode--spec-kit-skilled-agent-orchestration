@@ -7,13 +7,13 @@ description: "Tracks the shared-memory lifecycle tools that provide workspace-le
 
 ## 1. OVERVIEW
 
-Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering. They live under the `/memory:shared` command and implement a deny-by-default membership model for multi-tenant shared-memory spaces. The subsystem is opt-in: disabled by default and activated via `shared_memory_enable`.
+Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering. They live under the `/memory:manage shared` command and implement a deny-by-default membership model for multi-tenant shared-memory spaces. The subsystem is opt-in: disabled by default and activated via `shared_memory_enable`.
 
 ---
 
 ## 2. CURRENT REALITY
 
-**SHIPPED.** All 4 tools are live at L5 under `/memory:shared`:
+**SHIPPED.** All 4 tools are live at L5 under `/memory:manage shared`:
 
 - **`shared_space_upsert`** -- Creates or updates a shared-memory space. Requires `spaceId`, `tenantId`, and `name`. `actorUserId` and `actorAgentId` are optional corroboration hints, not the authority for the mutation. If a hint is supplied, at most one may be provided and it must match the single shared-memory admin identity configured on the server. Supports optional rollout parameters (`rolloutEnabled`, `rolloutCohort`, `killSwitch`). The first successful create for a new space auto-grants `owner` access to that server-configured admin identity. Later updates require that same identity to already hold `owner` access.
 
@@ -51,7 +51,7 @@ The original full namespace CRUD (`list/create/switch/delete`) for complete mult
 
 | File | Role |
 |------|------|
-| `.opencode/command/memory/shared.md` | `/memory:shared` command: subcommand routing, enablement check, create/member/status workflows |
+| `.opencode/command/memory/manage.md` | `/memory:manage shared` command: subcommand routing, enablement check, create/member/status workflows |
 
 ---
 
@@ -59,4 +59,4 @@ The original full namespace CRUD (`list/create/switch/delete`) for complete mult
 
 - Group: Lifecycle (L5)
 - Source feature title: Namespace management CRUD tools
-- Current reality source: `.opencode/command/memory/shared.md` frontmatter and README.txt tool coverage matrix
+- Current reality source: `.opencode/command/memory/manage.md` frontmatter and README.txt tool coverage matrix

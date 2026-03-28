@@ -85,11 +85,11 @@ The memory system exposes 33 tools through 5 memory slash commands plus the borr
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
-| `/memory:analyze` | Search, retrieve and analyze knowledge | 13 tools |
+| `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
 | `/memory:manage` | Database maintenance, checkpoints and bulk ingestion | 16 tools |
 | `/memory:save` | Save conversation context | 4 tools |
-| `/memory:shared` | Manage shared-memory spaces and memberships | 4 tools |
+| `/memory:manage shared` | Manage shared-memory spaces and memberships | 4 tools |
 | `/spec_kit:resume` | Continue or recover an interrupted spec-folder session using shared memory tools | 4 borrowed tools |
 
 ### Requirements

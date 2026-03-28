@@ -50,7 +50,7 @@ All 13 retrieval-category playbook scenarios were executed via static source-cod
 | 109 | Quality-aware 3-tier search fallback | **PASS** | `lib/search/hybrid-search.ts:1466-1614` (`checkDegradation`, 3-tier chain, `calibrateTier3Scores`), `search-flags.ts:57-61` (`SPECKIT_SEARCH_FALLBACK`) |
 | 142 | Session transition trace contract | **PASS** | `lib/search/session-transition.ts:16-22` (interface), `:64-103` (build), `:142-190` (attach), `handlers/memory-context.ts:780` (trace-only gating) |
 | 143 | Bounded graph-walk rollout and diagnostics | **PASS** | `lib/search/search-flags.ts:148-163` (`GraphWalkRolloutState`), `pipeline/ranking-contract.ts:14` (`STAGE2_GRAPH_BONUS_CAP=0.03`), `formatters/search-results.ts:136-144` (trace shape) |
-| 185 | /memory:analyze command routing | **PASS** | `.opencode/command/memory/analyze.md:12-42` (no-args prompt + routing), `:127-162` (analysis subcommands + first-token dispatch), `:2-4` (retrieval/analysis tool surface) |
+| 185 | /memory:search command routing | **PASS** | `.opencode/command/memory/search.md` documents the no-args prompt, analysis subcommands, first-token dispatch, and retrieval/analysis tool surface for the renamed command |
 | 187 | Quick search (memory_quick_search) | **PASS** | `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts:47-65` (delegation layer), `schemas/tool-input-schemas.ts:389-485` (schema + governed params), `tests/memory-tools.vitest.ts:41-64` (scope forwarding) |
 
 **Coverage**: 13/13 scenarios executed. **Pass rate**: 13/13 (100%).
@@ -72,7 +72,7 @@ All 13 retrieval-category playbook scenarios were executed via static source-cod
 | `lib/search/graph-flags.ts` | 143 — rollout accessors (`isGraphWalkRuntimeEnabled`, `isGraphWalkTraceEnabled`) |
 | `formatters/search-results.ts` | 143 — `graphContribution` trace shape with `appliedBonus`, `capApplied`, `rolloutState` |
 | `shared/contracts/retrieval-trace.ts` | EX-005 — typed pipeline trace contract |
-| `.opencode/command/memory/analyze.md` | 185, 187 — `/memory:analyze` routing gates, tool ownership, and subcommand contract |
+| `.opencode/command/memory/search.md` | 185, 187 — `/memory:search` routing gates, tool ownership, and subcommand contract |
 | `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts` | 187 — `memory_quick_search` delegation into `handleMemorySearch()` |
 | `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` | 187 — `memory_quick_search` schema export and governed parameter allowlist |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-tools.vitest.ts` | 187 — governed retrieval field forwarding coverage |

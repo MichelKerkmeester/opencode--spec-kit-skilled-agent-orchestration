@@ -1,6 +1,6 @@
 ---
 title: "Command Alignment: Memory Commands vs MCP Tool Schemas"
-description: "Truth-reconcile the 012 command-alignment spec pack to the live 33-tool, 5-command memory surface plus /spec_kit:resume recovery."
+description: "Update the 012 command-alignment spec pack so it matches the live 33-tool, 4-command memory surface plus /spec_kit:resume recovery."
 trigger_phrases:
   - "command alignment"
   - "memory commands"
@@ -19,18 +19,19 @@ contextType: "implementation"
 
 ### Executive Summary
 
-The live Spec Kit Memory command surface no longer matches the original 012 planning story. The repo now ships **33 MCP tools** across L1-L7, a **5-command** memory suite (`analyze`, `learn`, `manage`, `save`, and `shared`), and session recovery owned by `/spec_kit:resume`. Retrieval is no longer owned by a standalone context.md; that responsibility now lives inside `/memory:analyze`, which also documents `memory_quick_search`, analysis/eval tooling, and learning history.
+The live Spec Kit Memory command surface no longer matches the earlier 012 reconciliation story. The repo now ships **33 MCP tools** across L1-L7, a **4-command** memory suite (`search`, `learn`, `manage`, and `save`), and session recovery owned by `/spec_kit:resume`. Retrieval plus analysis now live under `/memory:search`, while shared-memory lifecycle now lives under `/memory:manage shared`.
 
-This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, `plan.md`, and `tasks.md` with the repo as it exists today, preserve the historical implementation decisions that still hold, and narrow the remaining gap list to issues that are still real.
+This spec-pack update is documentation-only and limited to the five canonical 012 files. Its job is to reconcile the pack with the repo as it exists today, preserve the historical decisions that still hold, and replace stale command-surface language from the pre-rename/pre-merge shape.
 
 **Key Metrics**
 - 33 MCP tools in `TOOL_DEFINITIONS`
-- 5 live memory command files in `.opencode/command/memory/`
+- 4 live memory command files in `.opencode/command/memory/`
 - 0 uncovered tools in the live README coverage matrix
-- `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
+- `/memory:search` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
 - `/spec_kit:resume` is the documented home for session recovery and crash/interrupted-session continuation
 - `/memory:manage ingest` is the documented home for async ingest workflows
-- The runtime-doc drift cluster in analyze.md and shared.md was resolved during the 2026-03-21 reconciliation pass: analyze.md Appendix A now says 13 tools (was 12), governed retrieval parameters are documented, and shared.md create/member contract now includes tenantId and actor identity
+- `/memory:manage shared` is the documented home for shared-memory lifecycle operations (`enable`, `create`, `member`, `status`)
+- The command-surface rename/merge has landed: the former `analyze` command became `/memory:search`, and standalone shared-memory lifecycle was merged into `/memory:manage shared`
 
 ---
 
@@ -43,7 +44,7 @@ This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, 
 | **Priority** | P1 |
 | **Status** | Complete (truth-reconciled) |
 | **Created** | 2026-03-14 |
-| **Updated** | 2026-03-21 |
+| **Updated** | 2026-03-27 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../011-skill-alignment/spec.md |
@@ -59,32 +60,32 @@ This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, 
 
 ### Problem Statement
 
-The 012 spec pack previously described an older transition state that was no longer true on disk:
+The 012 spec pack previously described a command surface that is no longer true on disk:
 
 1. **Historical count drift**
    - The spec pack still says the memory MCP surface has 32 tools.
    - The live tool inventory in `tool-schemas.ts` now contains 33 tools.
 
 2. **Structural drift**
-   - The spec pack still assumes a 7-command target surface.
-   - The live memory command suite is already a 5-command surface because retrieval was merged into analyze.md, session recovery moved to `/spec_kit:resume`, and context.md no longer exists.
+   - The spec pack still assumes a 5-command memory surface with standalone `analyze` and `shared` commands.
+   - The live memory command suite is now a 4-command surface because `analyze` was renamed to `search` and shared-memory lifecycle was merged into `manage`.
 
 3. **Ownership drift**
-   - The spec pack still treats retrieval as a context.md concern.
-   - The live docs place `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, L6 analysis/eval tools, and `memory_get_learning_history` under `/memory:analyze`.
+   - The spec pack still points retrieval and analysis to `/memory:analyze` and shared lifecycle to `/memory:shared`.
+   - The live docs place `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, L6 analysis/eval tools, and `memory_get_learning_history` under `/memory:search`, while shared lifecycle now lives under `/memory:manage shared`.
 
-4. **Remaining-gap drift**
-   - The earlier spec pack framed many items as missing even though shared.md, analyze.md, `/memory:manage ingest`, and the README coverage matrix already existed.
-   - The remaining gap list was narrowed to factual items: the runtime-doc drift cluster in analyze.md and shared.md was resolved during the 2026-03-21 reconciliation pass.
+4. **Scope-truth drift**
+   - The earlier checklist and summary text described runtime-doc edits outside the five canonical 012 files.
+   - This update must stay truthful about scope: it reflects landed live changes, but it does not claim that this pass edited command files outside the packet.
 
 ### Purpose
 
 Bring the 012 planning docs into line with live repo truth so that:
-- the spec pack describes the current 33-tool, 5-command memory surface plus `/spec_kit:resume` session recovery
-- `/memory:analyze` is recorded as the command home for retrieval plus `memory_quick_search`
+- the spec pack describes the current 33-tool, 4-command memory surface plus `/spec_kit:resume` session recovery
+- `/memory:search` is recorded as the command home for retrieval plus `memory_quick_search`
 - `/spec_kit:resume` is recorded as the command home for session recovery
-- the spec distinguishes completed alignment work from the runtime-doc drift cluster that was resolved in this pass
-- later audits can use 012 as a reliable source instead of re-litigating already-shipped command changes
+- `/memory:manage shared` is recorded as the command home for shared-memory lifecycle
+- later audits can use 012 as a reliable source instead of re-litigating already-landed rename/merge work
 <!-- /ANCHOR:problem -->
 
 ---
@@ -97,26 +98,25 @@ Bring the 012 planning docs into line with live repo truth so that:
 | Category | Items |
 |----------|-------|
 | **Spec-pack reconciliation** | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` |
-| **Runtime-doc drift closeout** | Reconcile runtime command docs (analyze.md, shared.md) to resolve the drift cluster identified in this pass |
 | **Live-surface alignment** | Update all count, ownership, and command-structure claims to match the current repo |
-| **Truthful gap recording** | Record gaps that were resolved during this pass and verify no new drift remains |
+| **Truthful scope recording** | Reflect landed rename/merge work without claiming command-file edits in this pass |
 | **Source-of-truth references** | Reassert `tool-schemas.ts` plus `schemas/tool-input-schemas.ts` as the validation baseline |
 
 ### Out of Scope
 
 - MCP server implementation changes
 - New MCP tool creation
-- Cross-runtime command or agent docs
+- Command-file edits outside the five canonical 012 docs
 - Spec-folder artifacts outside the five canonical files
 
 ### Deliverables
 
 | # | Deliverable | Description |
 |---|-------------|-------------|
-| D1 | Updated `spec.md` | Reflect the live 33-tool, 5-command memory-command reality plus `/spec_kit:resume` recovery ownership |
+| D1 | Updated `spec.md` | Reflect the live 33-tool, 4-command memory-command reality plus `/spec_kit:resume` recovery ownership |
 | D2 | Updated `plan.md` | Rebase the plan from "implement missing commands" to "reconcile planning docs against shipped state" |
 | D3 | Updated `tasks.md` | Replace stale implementation tasks with reconciliation and verification tasks |
-| D4 | Drift closeout record | Resolved the analyze.md and shared.md runtime-doc drift (13-tool count, governed retrieval params, tenantId/actor identity, auto-grant behavior) during the 2026-03-21 reconciliation pass |
+| D4 | Rename/merge alignment record | Record that retrieval/analysis now live under `search`, while shared-memory lifecycle now lives under `manage shared` |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -129,25 +129,25 @@ Bring the 012 planning docs into line with live repo truth so that:
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
 | REQ-001 | The spec pack uses the live 33-tool inventory (legacy `CA-001`) | `spec.md`, `plan.md`, and `tasks.md` no longer claim a 32-tool surface |
-| REQ-002 | The spec pack uses the live 5-command memory suite (legacy `CA-002`) | The pack no longer claims a 7-command target surface or treats `/memory:continue` as a live command |
-| REQ-003 | The spec pack removes the standalone context.md assumption and records recovery ownership correctly (legacy `CA-003`) | Retrieval ownership is documented under `/memory:analyze`, while session recovery is documented under `/spec_kit:resume` |
-| REQ-004 | `/memory:analyze` is documented as the command home for retrieval plus `memory_quick_search` (legacy `CA-004`) | The pack explicitly assigns `memory_context`, `memory_quick_search`, `memory_search`, and `memory_match_triggers` to `/memory:analyze` |
+| REQ-002 | The spec pack uses the live 4-command memory suite (legacy `CA-002`) | The pack no longer presents standalone `analyze` or `shared` commands as current live commands |
+| REQ-003 | The spec pack records live retrieval and recovery ownership correctly (legacy `CA-003`) | Retrieval ownership is documented under `/memory:search`, while session recovery is documented under `/spec_kit:resume` |
+| REQ-004 | Shared-memory lifecycle is documented under `/memory:manage shared` (legacy `CA-004`) | The pack explicitly assigns `enable`, `create`, `member`, and `status` shared workflows to `/memory:manage shared` |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| REQ-005 | The pack distinguishes shipped work from resolved drift (legacy `CA-005`) | shared.md, analyze.md, `/memory:manage ingest`, and README coverage are treated as existing, not planned; former drift is recorded as resolved |
-| REQ-006 | The pack preserves true ownership decisions (legacy `CA-006`) | `/memory:analyze history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
+| REQ-005 | The pack preserves true ownership decisions (legacy `CA-005`) | `/memory:search history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
+| REQ-006 | Source-of-truth guidance remains explicit (legacy `CA-006`) | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
 | REQ-007 | Source-of-truth guidance remains explicit (legacy `CA-007`) | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
-| REQ-008 | Runtime drift was resolved in this pass (legacy `CA-008`) | The pack records that the analyze.md and shared.md mismatches were resolved during the 2026-03-21 reconciliation pass |
+| REQ-008 | Scope remains truthful in this pass (legacy `CA-008`) | The pack reflects landed live changes without claiming command-file edits outside the five canonical docs |
 
 ### P2 - Desired
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| REQ-009 | Historical context remains understandable (legacy `CA-009`) | The pack explains that 012 originally targeted a 7-command transition before retrieval was merged into analyze.md |
-| REQ-010 | Verification guidance is grep-friendly (legacy `CA-010`) | The pack includes concrete stale-string checks for `32`, `7 commands`, and context.md assumptions |
+| REQ-009 | Historical context remains understandable (legacy `CA-009`) | The pack explains that 012 previously described a 5-command surface before `analyze` became `search` and `shared` merged into `manage` |
+| REQ-010 | Verification guidance is grep-friendly (legacy `CA-010`) | The pack includes concrete stale-string checks for `32`, `/memory:analyze`, `/memory:shared`, and stale 5-command wording |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -156,10 +156,11 @@ Bring the 012 planning docs into line with live repo truth so that:
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The 012 pack describes the live 33-tool inventory and does not repeat the older 32-tool count as present-day truth.
-- **SC-002**: The 012 pack describes the live 5-command memory suite, does not treat `/memory:continue` as an existing command file, and does not treat context.md as an existing command file.
-- **SC-003**: `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+- **SC-002**: The 012 pack describes the live 4-command memory suite and does not treat `analyze` or `shared` as standalone current command files.
+- **SC-003**: `/memory:search` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
 - **SC-004**: `/spec_kit:resume` is documented as the command home for session recovery and crash/interrupted-session continuation.
-- **SC-005**: The pack records the runtime-doc drift cluster as resolved during the 2026-03-21 reconciliation pass.
+- **SC-005**: `/memory:manage shared` is documented as the command home for shared-memory lifecycle.
+- **SC-006**: The pack does not claim edits outside the five canonical 012 docs.
 
 ### Acceptance Scenarios
 
@@ -169,15 +170,15 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 ### Scenario B: Command-Surface Audit
 
-**Given** `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md`, **when** a reviewer compares 012 against the live command directories, **then** the pack describes a 5-command memory suite, assigns session recovery to `/spec_kit:resume`, and does not assume a standalone context.md.
+**Given** `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md`, **when** a reviewer compares 012 against the live command directories, **then** the pack describes a 4-command memory suite, assigns session recovery to `/spec_kit:resume`, and does not present `analyze` or `shared` as current command files.
 
 ### Scenario C: Ownership Audit
 
-**Given** analyze.md and `README.txt`, **when** a reviewer checks retrieval ownership, **then** `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+**Given** `/memory:search`, `/memory:manage shared`, and `README.txt`, **when** a reviewer checks command ownership, **then** `/memory:search` is documented as the command home for retrieval plus analysis, and `/memory:manage shared` is documented as the command home for shared-memory lifecycle.
 
-### Scenario D: Remaining-Gap Audit
+### Scenario D: Scope Audit
 
-**Given** the live memory command docs, **when** a reviewer compares them against the reconciled 012 pack, **then** already-shipped alignment work is not restated as missing and the former drift cluster is recorded as resolved.
+**Given** the live memory command docs and the five canonical 012 files, **when** a reviewer compares scope claims against actual edits, **then** the pack reflects landed live changes without claiming runtime-doc edits outside the packet.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -188,35 +189,36 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 | Command | Live Status | Notes |
 |---------|-------------|-------|
-| `/memory:analyze` | PRESENT | Unified retrieval + analysis command; owns retrieval, `memory_quick_search`, L6 tools, and learning history |
+| `/memory:search` | PRESENT | Unified retrieval + analysis command; owns retrieval, `memory_quick_search`, L6 tools, and learning history |
 | `/memory:learn` | PRESENT | Constitutional-memory workflow wrapper |
-| `/memory:manage` | PRESENT | Maintenance, mutation, checkpoint, and ingest workflows |
+| `/memory:manage` | PRESENT | Maintenance, mutation, checkpoint, ingest, and nested shared-lifecycle workflows |
 | `/memory:save` | PRESENT | Save workflow command |
-| `/memory:shared` | PRESENT | Shared-memory lifecycle command |
+| `/memory:analyze` | ABSENT BY DESIGN | Renamed to `/memory:search`; do not treat as a live command |
+| `/memory:shared` | ABSENT BY DESIGN | Merged into `/memory:manage shared`; do not treat as a live command |
 | `/spec_kit:resume` | PRESENT | Session recovery plus structured continuation workflow |
-| context.md | ABSENT BY DESIGN | Retrieval was merged into analyze.md; do not treat this as a missing file |
+| context.md | ABSENT BY DESIGN | Retrieval is owned by `/memory:search`; do not treat this as a missing file |
 
 #### A.2 Current Tool-Ownership Reality
 
 | Surface | Current Reality | Reconciliation Outcome |
 |---------|-----------------|------------------------|
 | Tool inventory | 33 tools in `TOOL_DEFINITIONS` | 012 must use 33 everywhere |
-| Retrieval home | `/memory:analyze` | 012 must stop assigning retrieval to context.md |
+| Retrieval home | `/memory:search` | 012 must stop assigning retrieval to old `analyze` wording |
 | Session recovery home | `/spec_kit:resume` | 012 must stop assigning recovery to `/memory:continue` |
-| Quick search home | `/memory:analyze` | 012 must explicitly name `memory_quick_search` there |
-| Learning history home | `/memory:analyze history <specFolder>` | Keep current ownership decision |
-| Shared-memory home | `/memory:shared` | Treat as already shipped |
+| Quick search home | `/memory:search` | 012 must explicitly name `memory_quick_search` there |
+| Learning history home | `/memory:search history <specFolder>` | Keep current ownership decision |
+| Shared-memory home | `/memory:manage shared` | Treat nested shared subcommands as the live surface |
 | Async ingest home | `/memory:manage ingest` | Treat as already shipped |
 | README coverage matrix | Present and already maps 33 tools | Treat as existing evidence, not future work |
 
-#### A.3 Drift Resolved in This Pass
+#### A.3 Rename/Merge Changes Reflected in This Pass
 
-The following runtime-doc drift was identified and resolved during the 2026-03-21 reconciliation pass:
+The following live command-surface changes are already present on disk and must be reflected by the canonical 012 pack:
 
 | Location | Drift (resolved) | Resolution |
 |----------|-------------------|------------|
-| `.opencode/command/memory/analyze.md` Appendix A and retrieval notes | Intro sentence said the command owned 12 tools, while the tool-coverage table listed 13 and included `memory_quick_search`; governed retrieval parameters were under-documented | Updated to 13 tools; governed retrieval parameters now documented |
-| `.opencode/command/memory/shared.md` create/member contract | Create/member docs omitted required `tenantId` and actor identity, and denied the first-create owner auto-grant behavior present in the live schema | tenantId and actor identity now present; auto-grant behavior documented |
+| `.opencode/command/memory/search.md` | The retrieval+analysis command now uses the `search` name instead of `analyze` | 012 must reference `/memory:search` everywhere |
+| `.opencode/command/memory/manage.md` | Shared-memory lifecycle moved under `shared` subcommands on `manage` | 012 must reference `/memory:manage shared` instead of a standalone `/memory:shared` command |
 
 #### A.4 Source-of-Truth Notes
 
@@ -229,32 +231,32 @@ The following runtime-doc drift was identified and resolved during the 2026-03-2
 
 The following decisions remain authoritative after truth reconciliation:
 
-1. `memory_get_learning_history` belongs to `/memory:analyze history <specFolder>`.
-2. Retrieval ownership lives in `/memory:analyze`; no standalone context.md command exists anymore.
+1. `memory_get_learning_history` belongs to `/memory:search history <specFolder>`.
+2. Retrieval ownership lives in `/memory:search`; no standalone context.md command exists anymore.
 3. Session recovery ownership lives in `/spec_kit:resume`; `/memory:continue` is no longer part of the live command surface.
-4. `memory_quick_search` belongs with the rest of the retrieval surface under `/memory:analyze`.
-5. Shared-memory lifecycle tools belong to `/memory:shared`.
+4. `memory_quick_search` belongs with the rest of the retrieval surface under `/memory:search`.
+5. Shared-memory lifecycle tools belong to `/memory:manage shared`.
 6. Async ingestion tools belong to `/memory:manage ingest`.
-7. The spec pack describes already-shipped command docs as existing; formerly open drift items are recorded as resolved.
+7. This pass updates only the five canonical 012 docs and should not claim edits outside that scope.
 ---
 
 #### A.6 Approach
 
 ### Phase 0: Verify Live Reality
 
-Confirm the current tool count, command-file count, command ownership, and the absence of context.md.
+Confirm the current tool count, command-file count, command ownership, and the absence of standalone `analyze` and `shared` command files.
 
 ### Phase 1: Rewrite 012 as a Reconciliation Record
 
-Update `spec.md`, `plan.md`, and `tasks.md` so they describe the shipped 5-command memory suite, the `/spec_kit:resume` recovery ownership model, and the current 33-tool schema surface.
+Update the canonical 012 docs so they describe the shipped 4-command memory suite, the `/spec_kit:resume` recovery ownership model, and the current 33-tool schema surface.
 
-### Phase 2: Resolve Runtime-Doc Drift
+### Phase 2: Align Ownership Language
 
-Reduce the old "missing command" narrative, resolve the runtime-doc drift in analyze.md (12-to-13 tool count, governed retrieval params) and shared.md (tenantId, actor identity, auto-grant behavior).
+Replace stale `analyze` and standalone `shared` ownership language with `/memory:search` and `/memory:manage shared`.
 
 ### Phase 3: Verify the Reconciled Pack
 
-Run targeted stale-string checks and spec validation so the 012 pack no longer reintroduces 32-tool, 7-command, or context.md assumptions.
+Run targeted stale-string checks and spec validation so the 012 pack no longer reintroduces 32-tool, `/memory:analyze`, `/memory:shared`, or stale 5-command assumptions.
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
@@ -262,8 +264,8 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 |------|--------|------------|
 | Historical notes get mistaken for current gaps | Medium | Reword every gap section around present-tense repo state |
 | Future schema changes make 012 stale again | Medium | Keep schema files as the explicit source of truth |
-| Resolved runtime-doc drift gets overstated in future reads | Low | Drift is recorded as resolved with specific evidence from the 2026-03-21 pass |
-| Old memory files inside the spec folder still mention older counts | Low | Keep this pass scoped to `spec.md`, `plan.md`, and `tasks.md` only |
+| Rename/merge details get partially updated | Medium | Grep for stale `analyze`, `shared`, and `5-command` wording after edits |
+| Scope claims overstate what this pass changed | Low | Keep every evidence note limited to the five canonical docs plus live repo references |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -271,7 +273,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None. The runtime-doc drift in analyze.md and shared.md was resolved during the 2026-03-21 reconciliation pass.
+- None. The live rename/merge outcome is clear on disk: `search` owns retrieval+analysis and `manage shared` owns shared-memory lifecycle.
 <!-- /ANCHOR:questions -->
 
 ---
@@ -288,9 +290,9 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 
 <!--
 SPEC: 012-command-alignment
-Level 2 - Complete (truth-reconciled 2026-03-21)
-Current reality: 33-tool schema surface, 5-command memory suite, session recovery owned by /spec_kit:resume
-Drift cluster resolved: analyze.md updated to 13 tools, shared.md contract updated with tenantId/actor/auto-grant
+Level 2 - Complete (truth-reconciled 2026-03-27)
+Current reality: 33-tool schema surface, 4-command memory suite, session recovery owned by /spec_kit:resume
+Live rename/merge reflected: analyze -> search, shared -> manage shared
 -->
 
 ---

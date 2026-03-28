@@ -331,28 +331,42 @@ async function processPreparedMemory(
   } = prepared;
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
-    return {
-      status: 'rejected',
-      id: 0,
-      specFolder: parsed.specFolder,
-      title: parsed.title ?? '',
-      triggerPhrases: parsed.triggerPhrases,
-      contextType: parsed.contextType,
-      importanceTier: parsed.importanceTier,
-      qualityScore: parsed.qualityScore,
-      qualityFlags: parsed.qualityFlags,
-      warnings: validation.warnings,
-      rejectionReason: qualityLoopResult.rejectionReason,
-      message: qualityLoopResult.rejectionReason,
-    };
+    if (qualityGateMode === 'warn-only') {
+      console.warn(`[memory-save] V-rule warn-only (spec doc) for ${path.basename(filePath)}: ${qualityLoopResult.rejectionReason}`);
+    } else {
+      return {
+        status: 'rejected',
+        id: 0,
+        specFolder: parsed.specFolder,
+        title: parsed.title ?? '',
+        triggerPhrases: parsed.triggerPhrases,
+        contextType: parsed.contextType,
+        importanceTier: parsed.importanceTier,
+        qualityScore: parsed.qualityScore,
+        qualityFlags: parsed.qualityFlags,
+        warnings: validation.warnings,
+        rejectionReason: qualityLoopResult.rejectionReason,
+        message: qualityLoopResult.rejectionReason,
+      };
+    }
   }
 
   if (!sufficiencyResult.pass) {
-    return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
+    if (qualityGateMode === 'warn-only') {
+      console.warn(`[memory-save] Sufficiency warn-only (spec doc) for ${path.basename(filePath)}: ${sufficiencyResult.reasons.join('; ')}`);
+    } else {
+      return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
+    }
   }
 
   if (!templateContract.valid) {
-    return buildTemplateContractRejectionResult(parsed, validation, templateContract);
+    if (qualityGateMode === 'warn-only') {
+      console.warn(
+        `[memory-save] Template contract warn-only (spec doc) for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
+      );
+    } else {
+      return buildTemplateContractRejectionResult(parsed, validation, templateContract);
+    }
   }
 
   return withSpecFolderLock(parsed.specFolder, async () => {

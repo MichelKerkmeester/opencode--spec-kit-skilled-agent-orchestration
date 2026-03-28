@@ -1,6 +1,6 @@
 ---
 title: "Plan: 014-agents-md-alignment"
-description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 6-command memory suite."
+description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 4-command memory surface and `/memory:manage shared` routing."
 trigger_phrases:
   - "014 plan"
   - "agents md plan"
@@ -36,7 +36,7 @@ Direct edit of 3 AGENTS.md files to close 5 identified gaps in Quick Reference w
 
 ### Definition of Ready
 - [x] All 3 AGENTS.md files read and gaps confirmed
-- [x] 6-command suite established by 012-command-alignment
+- [x] 4-command memory surface and `/memory:manage shared` routing established by 012-command-alignment
 
 ### Definition of Done
 - [x] All 5 gaps closed across 3 files
@@ -58,8 +58,8 @@ Documentation-only table updates.
 |-----|-------------|----------------|
 | 1 | Constitutional memory row missing subcommands (`list`, `edit`, `remove`, `budget`) | All 3 |
 | 2 | Database maintenance row missing `ingest` subcommand | All 3 |
-| 3 | Missing Analysis/evaluation row for `/memory:analyze` | All 3 |
-| 4 | Missing Shared memory row for `/memory:shared` | All 3 |
+| 3 | Missing Search or analysis row for `/memory:search` | All 3 |
+| 4 | Missing Shared memory lifecycle row for `/memory:manage shared` | All 3 |
 | 5 | FS-Enterprises Research/exploration row missing `memory_context()` | FS only |
 <!-- /ANCHOR:architecture -->
 
@@ -77,7 +77,7 @@ Documentation-only table updates.
 - [x] Fix Research/exploration row in FS-Enterprises only (Gap 5)
 
 ### Phase 3: Verify
-- [x] Grep checks: `/memory:analyze` (3 matches), `/memory:shared` (3 matches), `ingest operations` (3 matches), `list.*edit.*remove.*budget` (3 matches), `GIT POLICY: READ-ONLY` (1 match), `memory_context.*unified` (1 match)
+- [x] Grep checks: `/memory:search` (3 matches), `/memory:manage shared` (3 matches), `ingest operations` (3 matches), `list.*edit.*remove.*budget` (3 matches), `GIT POLICY: READ-ONLY` (1 match), `memory_context.*unified` (1 match)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -99,7 +99,7 @@ Documentation-only table updates.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| 012-command-alignment | Internal | Green | Source of truth for 6-command suite |
+| 012-command-alignment | Internal | Green | Source of truth for the 4-command memory surface and `/memory:manage shared` routing |
 <!-- /ANCHOR:dependencies -->
 
 ---

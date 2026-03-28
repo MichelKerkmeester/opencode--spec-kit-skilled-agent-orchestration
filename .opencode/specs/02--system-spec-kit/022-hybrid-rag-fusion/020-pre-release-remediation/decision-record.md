@@ -1,10 +1,10 @@
 ---
-title: "Decision Record: 012 Pre-Release Remediation"
+title: "Decision Record: 020 Pre-Release Remediation"
 description: "Architecture decisions for the consolidated pre-release remediation packet"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Decision Record: 012 Pre-Release Remediation
+# Decision Record: 020 Pre-Release Remediation
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2 -->
 
@@ -24,7 +24,7 @@ The old 012, 013, and 014 packets each describe part of the same release-control
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-Use 012-pre-release-remediation as the live control packet while preserving 012, 013, and 014 only as historical lineage.
+Use 020-pre-release-remediation as the live control packet while preserving 012, 013, and 014 only as historical lineage.
 <!-- /ANCHOR:adr-001-decision -->
 
 <!-- ANCHOR:adr-001-consequences -->

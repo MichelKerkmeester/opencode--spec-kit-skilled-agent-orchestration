@@ -158,7 +158,7 @@ The system checks the best available continuation context for your most recent w
 Ask the memory system a question in plain language:
 
 ```text
-/memory:analyze "how did we decide on the auth architecture?"
+/memory:search "how did we decide on the auth architecture?"
 ```
 
 The system reads your question, figures out you are looking for a past decision and routes to the right search strategy automatically.
@@ -409,19 +409,18 @@ Spec Kit exposes 14 commands: 8 for spec folder workflows and 6 for memory opera
 
 **Command source files**: `.opencode/command/spec_kit/`
 
-#### Memory Commands (5)
+#### Memory Commands (4)
 
 | Command | Tool Count | Purpose |
 |---------|-----------|---------|
 | `/memory:save` | 4 | Save conversation context to a spec folder's `memory/` directory with semantic indexing |
-| `/memory:analyze` | 13 | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types |
-| `/memory:manage` | 16 | Database maintenance: stats, scan, cleanup, bulk-delete, checkpoints, ingest |
+| `/memory:search` | 13 | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types |
+| `/memory:manage` | 20 | Database maintenance plus shared-memory lifecycle: stats, scan, cleanup, bulk-delete, checkpoints, ingest, spaces, memberships, rollout |
 | `/memory:learn` | 6 | Constitutional memory manager: create, list, edit, remove always-surface rules |
-| `/memory:shared` | 4 | Shared-memory lifecycle: create spaces, manage memberships, inspect rollout |
 
 Session recovery lives in `/spec_kit:resume`, which uses shared memory tools for resume-mode retrieval, crash breadcrumbs, and continuation routing.
 
-Some commands own their tools (they are the primary home) while others borrow tools from `/memory:analyze` or `/memory:manage`. A borrowed tool works the same way -- it is just administered somewhere else.
+Some commands own their tools (they are the primary home) while others borrow tools from `/memory:search` or `/memory:manage`. A borrowed tool works the same way -- it is just administered somewhere else.
 
 **Command source files**: `.opencode/command/memory/`
 
@@ -805,10 +804,10 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 | Multi-phase work | `create.sh NNN-name --phase` | Large features, multiple sessions |
 | Save session progress | `/memory:save [folder]` | Before ending any session |
 | Recover after crash | `/spec_kit:resume` | Session interrupted unexpectedly |
-| Check prior decisions | `/memory:analyze "query"` | Starting a related task |
+| Check prior decisions | `/memory:search "query"` | Starting a related task |
 | Upgrade documentation level | `upgrade-level.sh [folder] [level]` | Scope grew beyond original level |
 | Create always-surface rule | `/memory:learn` | Team standards, workflow rules |
-| Share knowledge across agents | `/memory:shared` | Multi-agent or team setups |
+| Share knowledge across agents | `/memory:manage shared` | Multi-agent or team setups |
 
 <!-- /ANCHOR:usage-examples -->
 

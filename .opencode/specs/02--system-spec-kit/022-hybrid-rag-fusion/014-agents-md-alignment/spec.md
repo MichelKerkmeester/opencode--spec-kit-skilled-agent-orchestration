@@ -28,7 +28,7 @@ contextType: "implementation"
 | **LOC estimate** | ~50+ |
 | **Epic** | 022-hybrid-rag-fusion |
 | **Phase** | 014 |
-| **Dependencies** | 012-command-alignment (source of truth for 6-command suite) |
+| **Dependencies** | 012-command-alignment (source of truth for the 4-command memory surface and `/memory:manage shared` routing) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../013-agents-alignment/spec.md |
 | **Successor** | ../015-manual-testing-per-playbook/spec.md |
@@ -41,16 +41,16 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 6. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand. Two entirely new commands (`/memory:analyze`, `/memory:shared`) have no rows at all. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
+The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 4-command memory surface. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand and the nested `/memory:manage shared` shared-memory lifecycle route. The retrieval row still points at the retired analyze command name instead of `/memory:search`. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
 
 ### Purpose
 
-Reconcile the AGENTS.md quick-reference governance docs to the live 6-command memory suite while preserving variant-specific policy and stack-detection content.
+Reconcile the AGENTS.md quick-reference governance docs to the live 4-command memory surface (`search`, `learn`, `manage`, `save`) while preserving nested shared-memory routing under `/memory:manage shared`, variant-specific policy, and stack-detection content.
 
 **Key Metrics**
 - 4 target files across 2 repositories (Public, Barter) -- 3 AGENTS.md + CLAUDE.md
 - 6 gaps identified and fixed (original 5 + G-01 through G-06 refinement gaps)
-- 6 memory commands now represented in Quick Reference tables (was 5)
+- 4 memory commands now represented in Quick Reference tables (was 5), with shared-memory lifecycle routed through `/memory:manage shared`
 - 2 skill-section overhauls (Universal + FS-Enterprises)
 - ~50+ LOC total change (initial ~36 + refinement passes)
 <!-- /ANCHOR:problem -->
@@ -66,8 +66,8 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 |---|------|------|
 | 1 | Update Constitutional memory row (add subcommands) | All 3 files |
 | 2 | Update Database maintenance row (add `ingest`) | All 3 files |
-| 3 | Add Analysis/evaluation row (`/memory:analyze`) | All 3 files |
-| 4 | Add Shared memory row (`/memory:shared`) | All 3 files |
+| 3 | Add Search or analysis row (`/memory:search`) | All 3 files |
+| 4 | Add Shared memory lifecycle row (`/memory:manage shared`) | All 3 files |
 | 5 | Fix Research/exploration row (add `memory_context()`) | FS-Enterprises only |
 | 6 | Fix G-01 through G-06 consistency gaps (refinement pass) | All 3 AGENTS.md + CLAUDE.md |
 | 7 | Overhaul skill sections (sk-code--opencode, sk-code--full-stack, sk-git) | Universal + FS-Enterprises |
@@ -100,8 +100,8 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 |----|-------------|---------------------|
 | REQ-001 | Constitutional memory row shows all 5 subcommands (legacy `F1`) | All three governance files document `list`, `edit`, `remove`, and `budget` alongside rule creation |
 | REQ-002 | Database maintenance row includes `ingest` (legacy `F2`) | All three governance files document `ingest` under `/memory:manage` |
-| REQ-003 | New Analysis or evaluation row is present in all 3 files (legacy `F3`) | All three governance files include `/memory:analyze` in their quick-reference tables |
-| REQ-004 | New Shared memory row is present in all 3 files (legacy `F4`) | All three governance files include `/memory:shared` in their quick-reference tables |
+| REQ-003 | Search or analysis row is present in all 3 files (legacy `F3`) | All three governance files include `/memory:search` in their quick-reference tables |
+| REQ-004 | Shared memory lifecycle row is present in all 3 files (legacy `F4`) | All three governance files include `/memory:manage shared` in their quick-reference tables |
 | REQ-005 | Barter READ-ONLY git policy and FS-Enterprises stack-detection guidance stay preserved (legacy `NF1` and `NF2`) | Existing variant-specific governance content remains present after the table updates |
 
 ### P1 - Required
@@ -123,7 +123,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 
 ### Acceptance Scenarios
 
-**Given** a reviewer opens any of the three governance files, **when** they inspect the Quick Reference table, **then** they see `/memory:analyze`, `/memory:shared`, and `/memory:manage ingest` represented.
+**Given** a reviewer opens any of the three governance files, **when** they inspect the Quick Reference table, **then** they see `/memory:search`, `/memory:manage shared`, and `/memory:manage ingest` represented.
 
 **Given** a reviewer opens the FS-Enterprises variant, **when** they inspect the Research or exploration row, **then** it includes `memory_context()` as the unified alternative.
 
@@ -140,7 +140,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Risk | Accidental removal of variant-specific rows | Medium | Verify row counts before and after edit |
-| Dependency | 012-command-alignment source of truth | Low | 6-command suite already established |
+| Dependency | 012-command-alignment source of truth | Low | 4-command memory surface and `/memory:manage shared` routing already established |
 <!-- /ANCHOR:risks -->
 
 ---

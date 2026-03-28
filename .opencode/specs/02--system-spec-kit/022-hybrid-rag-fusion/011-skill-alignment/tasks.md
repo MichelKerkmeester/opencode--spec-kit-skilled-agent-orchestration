@@ -41,7 +41,7 @@ contextType: "implementation"
 ## Phase 2: Implementation
 <!-- alias: Skill-Guide Closeout -->
 
-- [x] T004 Update SKILL.md to describe the live memory-command surface as 33 tools, 6 commands, and retrieval in `/memory:analyze`
+- [x] T004 Update SKILL.md to describe the live memory-command surface as 33 tools, 4 commands, retrieval in `/memory:search`, and shared-memory lifecycle under `/memory:manage shared`
 - [x] T005 Add save-workflow governance and shared-memory framing to SKILL.md so the skill guide explains how shared-memory and save behavior fit together
 <!-- /ANCHOR:phase-2 -->
 

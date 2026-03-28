@@ -7,7 +7,7 @@ description: "Reconstructs interrupted session state through the unified spec-fo
 
 ## 1. OVERVIEW
 
-When a session is interrupted by a crash, context compaction, timeout, or an ordinary handoff between sessions, `/spec_kit:resume` reconstructs the most likely previous state and routes the user to the best next step. Session recovery is no longer a standalone memory command. It now lives under the spec-folder resume workflow and uses 4 shared MCP tools borrowed from `/memory:analyze` and `/memory:manage`.
+When a session is interrupted by a crash, context compaction, timeout, or an ordinary handoff between sessions, `/spec_kit:resume` reconstructs the most likely previous state and routes the user to the best next step. Session recovery is no longer a standalone memory command. It now lives under the spec-folder resume workflow and uses 4 shared MCP tools borrowed from `/memory:search` and `/memory:manage`.
 
 ---
 
@@ -15,8 +15,8 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 **SHIPPED.** `/spec_kit:resume` owns both standard continuation and interrupted-session recovery, and it uses 4 shared MCP tools:
 
-- **`memory_context`** (from `/memory:analyze`) -- Called in `resume` mode as the primary interrupted-session recovery path whenever no fresh `handover.md` already provides enough state. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
-- **`memory_search`** (from `/memory:analyze`) -- Fallback for thin summaries when `memory_context` resolves the right folder but does not return enough state detail. Uses the same resume anchors.
+- **`memory_context`** (from `/memory:search`) -- Called in `resume` mode as the primary interrupted-session recovery path whenever no fresh `handover.md` already provides enough state. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
+- **`memory_search`** (from `/memory:search`) -- Fallback for thin summaries when `memory_context` resolves the right folder but does not return enough state detail. Uses the same resume anchors.
 - **`memory_list`** (from `/memory:manage`) -- Recent-candidate discovery when no clear session candidate exists. Returns the most recently updated memories.
 - **`memory_stats`** (from `/memory:manage`) -- Exposed on the command surface for visibility and diagnostics, but not part of the primary recovery chain.
 
@@ -40,7 +40,7 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 - Quick "what was I doing?" answer: stop after the recovery summary
 - Structured spec work: continue directly inside `/spec_kit:resume`
-- Broader historical analysis: recommend `/memory:analyze history <spec-folder>`
+- Broader historical analysis: recommend `/memory:search history <spec-folder>`
 
 ---
 

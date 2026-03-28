@@ -2783,7 +2783,7 @@ Constitutional memory manager
 Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent.
 
 #### Current Reality
-Prompt: `Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled; and partial shared-space updates preserve existing rolloutCohort and metadata fields when they are omitted from the update request. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:manage shared command shows setup prompt when disabled; and partial shared-space updates preserve existing rolloutCohort and metadata fields when they are omitted from the update request. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Default-off works; enable persists and is idempotent; env var overrides DB state; setup prompt appears when disabled; partial updates preserve cohort and metadata
 
@@ -3654,7 +3654,7 @@ This split playbook keeps automated coverage references in three places:
 | M-009 | Dedicated Memory/Spec-Kit Scenarios | Runtime Family Count Census | [M-009](16--tooling-and-scripts/182-runtime-family-count-census.md) | *(test-only, no catalog entry)* |
 | M-010 | Dedicated Memory/Spec-Kit Scenarios | Runtime Lineage Naming Parity | [M-010](16--tooling-and-scripts/183-runtime-lineage-naming-parity.md) | *(test-only, no catalog entry)* |
 | M-011 | Dedicated Memory/Spec-Kit Scenarios | Gemini Runtime Path Resolution | [M-011](16--tooling-and-scripts/184-gemini-runtime-path-resolution.md) | *(test-only, no catalog entry)* |
-| 185 | Features | /memory:analyze command routing | [185](01--retrieval/185-memory-analyze-command-routing.md) | [FEATURE_CATALOG.md#command-surface-contract](../feature_catalog/FEATURE_CATALOG.md#command-surface-contract) |
+| 185 | Features | /memory:search command routing | [185](01--retrieval/185-memory-search-command-routing.md) | [FEATURE_CATALOG.md#command-surface-contract](../feature_catalog/FEATURE_CATALOG.md#command-surface-contract) |
 | 186 | Features | /memory:manage command routing | [186](16--tooling-and-scripts/186-memory-manage-command-routing.md) | [FEATURE_CATALOG.md#command-surface-contract](../feature_catalog/FEATURE_CATALOG.md#command-surface-contract) |
 | 187 | Features | Quick search (memory_quick_search) | [187](01--retrieval/187-quick-search-memory-quick-search.md) | [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) |

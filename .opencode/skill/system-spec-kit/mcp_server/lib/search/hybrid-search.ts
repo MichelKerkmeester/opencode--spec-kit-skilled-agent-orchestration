@@ -877,9 +877,9 @@ async function hybridSearchEnhanced(
     if (activeChannels.has('fts')) {
       ftsChannelResults = ftsSearch(query, options);
       if (ftsChannelResults.length > 0) {
-        // FTS weight 0.8 < vector 1.0 because FTS lacks semantic understanding
-        // But provides strong exact-match signal; weights are later overridden by adaptive fusion.
-        lists.push({ source: 'fts', results: ftsChannelResults, weight: 0.8 });
+        // FTS weight reduced to 0.3 after ablation showed 0.8 was harmful,
+        // flooding top-K with noisy lexical matches despite its exact-match value.
+        lists.push({ source: 'fts', results: ftsChannelResults, weight: 0.3 });
       }
     }
 

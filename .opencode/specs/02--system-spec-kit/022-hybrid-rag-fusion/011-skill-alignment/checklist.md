@@ -47,7 +47,7 @@ Required evidence that the pack now reflects live repo truth.
 ## Code Quality
 
 - [x] CHK-014 [P0] The canonical 011 docs tell one consistent documentation-only story [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md all describe a scoped closeout rather than a draft/pre-implementation phase]
-- [x] CHK-011 [P0] The pack uses live memory-surface truth [EVIDENCE: canonical docs now reference 33 tools, 6 commands, and retrieval in `/memory:analyze`]
+- [x] CHK-011 [P0] The pack uses live memory-surface truth [EVIDENCE: canonical docs now reference 33 tools, 4 commands, retrieval in `/memory:search`, and shared-memory lifecycle under `/memory:manage shared`]
 - [x] CHK-012 [P1] Obsolete command-surface and retired retrieval-command framing is removed [EVIDENCE: canonical docs no longer describe the superseded command model as current state]
 - [x] CHK-013 [P1] The last observed system-spec-kit documentation gaps are closed in scope [EVIDENCE: system-spec-kit SKILL.md, save_workflow, embedding_resilience, and the four asset docs are now part of the completed closeout set]
 <!-- /ANCHOR:code-quality -->

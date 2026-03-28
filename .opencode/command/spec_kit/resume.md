@@ -397,7 +397,7 @@ Resume is a **utility workflow** — no parallel dispatch. All steps sequential.
 | `/spec_kit:plan`      | Create planning artifacts (if missing on resume)        |
 | `/spec_kit:implement` | Execute implementation (call after resume)              |
 | `/spec_kit:handover`  | Create handover doc (resume loads these)                |
-| `/memory:analyze`     | Broader historical lookup and learning-history review   |
+| `/memory:search`     | Broader historical lookup and learning-history review   |
 
 ---
 
@@ -419,7 +419,7 @@ Prerequisite: `/spec_kit:handover [spec-folder-path]` (creates handover.md)
 | Ready to implement         | `/spec_kit:implement [spec-folder-path]` | Continue implementation   |
 | Implementation in progress | Continue from last task                  | Resume where you left off |
 | Found issues               | `/spec_kit:debug [spec-folder-path]`     | Debug problems            |
-| Need broader history       | `/memory:analyze history [spec-folder]`  | Inspect learning history  |
+| Need broader history       | `/memory:search history [spec-folder]`  | Inspect learning history  |
 | Session ending again       | `/spec_kit:handover [spec-folder-path]`  | Save progress for later   |
 
 **ALWAYS** end with: "What would you like to do next?"

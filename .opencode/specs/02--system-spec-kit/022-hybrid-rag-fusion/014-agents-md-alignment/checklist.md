@@ -29,8 +29,8 @@ contextType: "checklist"
 
 - [x] CHK-001 [P0] Constitutional memory row updated in all 3 files -- shows `list | edit | remove | budget` subcommands [EVIDENCE: Grep `list.*edit.*remove.*budget` returns 3 matches (AGENTS.md:66, FS:92, Barter:98)]
 - [x] CHK-002 [P0] Database maintenance row includes `ingest` in all 3 files [EVIDENCE: Grep `ingest operations` returns 3 matches (AGENTS.md:62, FS:88, Barter:94)]
-- [x] CHK-003 [P0] Analysis/evaluation row (`/memory:analyze`) present in all 3 files [EVIDENCE: Grep `/memory:analyze` returns 3 matches (AGENTS.md:65, FS:91, Barter:97)]
-- [x] CHK-004 [P0] Shared memory row (`/memory:shared`) present in all 3 files [EVIDENCE: Grep `/memory:shared` returns 3 matches (AGENTS.md:67, FS:93, Barter:99)]
+- [x] CHK-003 [P0] Search or analysis row (`/memory:search`) present in all 3 files [EVIDENCE: Grep `/memory:search` returns 3 matches across the three governance files.]
+- [x] CHK-004 [P0] Shared memory lifecycle row (`/memory:manage shared`) present in all 3 files [EVIDENCE: Grep `/memory:manage shared` returns 3 matches across the three governance files.]
 - [x] CHK-005 [P0] Barter READ-ONLY git policy preserved [EVIDENCE: Grep `Read-only` returns matches (Barter:67, 87, 400)]
 <!-- /ANCHOR:pre-impl -->
 

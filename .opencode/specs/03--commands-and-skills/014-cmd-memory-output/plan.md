@@ -32,7 +32,7 @@ contextType: "decision"
 
 ### Overview
 
-This plan defines a Memory Dashboard Visual Design System — a shared set of output components (headers, dividers, tables, status bars, box frames, metric displays) — and applies them consistently across all 5 memory command files. The approach is: (1) define the design system reference, (2) apply to each command file, (3) verify visual consistency. No runtime code is modified; all changes are to the output template sections within markdown instruction files at `.opencode/command/memory/`.
+This plan defines a Memory Dashboard Visual Design System — a shared set of output components (headers, dividers, tables, status bars, box frames, metric displays) — and keeps the packet aligned with the current 4-command memory surface: `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`. Shared-memory lifecycle output is treated as part of `/memory:manage shared`, not as a standalone command. No runtime code is modified; this active packet now serves as the truthful current-state reference for the output template sections within `.opencode/command/memory/`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -44,14 +44,14 @@ This plan defines a Memory Dashboard Visual Design System — a shared set of ou
 
 - [x] Problem statement clear and scope documented
 - [x] Success criteria measurable
-- [x] All 5 current output templates analyzed and documented
+- [x] All live memory command docs analyzed and documented
 - [x] 12 design system components defined
 - [x] Dependencies identified (none external)
 
 ### Definition of Done
 
 - [ ] Visual design system reference defined (12 components, all with examples)
-- [ ] All 5 command files updated with consistent output templates
+- [ ] All live memory command docs updated with consistent output templates
 - [ ] Zero emoji characters in any output template
 - [ ] All status lines follow `STATUS=<OK|FAIL> [KEY=value]...` pattern
 - [ ] Visual comparison confirms consistent headers, dividers, tables, and indicators
@@ -68,20 +68,19 @@ Component-based design system
 
 ### Key Components
 
-- **Visual Design System Reference**: Central definition of all 12 reusable output components — the shared vocabulary that all commands draw from. Defined once, referenced in all 5 files.
+- **Visual Design System Reference**: Central definition of all 12 reusable output components — the shared vocabulary that all commands draw from. Defined once, referenced in the live memory command docs.
 - **Command-level output templates**: Per-command application of shared components. Each command's output sections are updated to use the design system components in place of ad-hoc formatting.
 
 ### Data Flow
 
-Design system reference is defined first, then applied to each command's output sections. At runtime, the AI agent reads a command file and renders the output templates literally — no code execution involved. The flow is:
+Design system reference is defined first, then applied to each live command's output sections. At runtime, the AI agent reads a command file and renders the output templates literally — no code execution involved. The flow is:
 
 ```
 Design System Reference (12 components)
-  └──► context.md output templates
-  └──► save.md output templates
-  └──► manage.md output templates  ──► AI agent renders at runtime
-  └──► learn.md output templates
-  └──► continue.md output templates
+  └──► /memory:search output templates
+  └──► /memory:save output templates
+  └──► /memory:manage output templates (+ /memory:manage shared)  ──► AI agent renders at runtime
+  └──► /memory:learn output templates
 ```
 <!-- /ANCHOR:architecture -->
 
@@ -111,21 +110,20 @@ Components to define:
 
 ### Phase 2: Apply to Each Command
 
-Apply the design system to each of the 5 command files. Update ALL output template sections within each file to use the shared components.
+Apply the design system to each live command doc. Update the output template sections within each file to use the shared components.
 
-- [ ] **2A. Update `context.md`** — Replace box-drawing output template (Section 4, Step 4) with: COMMAND HEADER + RESULT ITEMS + SECTION HEADER for relevance + METRIC ROW + STATUS BAR. Remove heavy `━━━` bars in favour of SECTION HEADER dividers.
-- [ ] **2B. Update `save.md`** — Replace ad-hoc header and dividers with COMMAND HEADER. Replace key-value display with KEY-VALUE PAIR component. Replace post-save menu with ACTION MENU component.
-- [ ] **2C. Update `manage.md`** — Apply design system to all subcommand outputs: stats dashboard, scan output, cleanup table, tier change, trigger edit, validate, delete, health check, and all checkpoint operations.
-- [ ] **2D. Update `learn.md`** — Apply design system to learning capture output, correction preview, and history listing.
-- [ ] **2E. Update `continue.md`** — Apply design system to recovery summary. Replace rounded box frame (`╭╮╰╯`) with square BOX FRAME or flat layout. Remove all emoji characters.
+- [ ] **2A. Update `/memory:search`** — Treat `.opencode/command/memory/search.md` as the live retrieval and analysis surface and keep its output templates aligned with the shared design system.
+- [ ] **2B. Update `/memory:save`** — Replace ad-hoc header and dividers with COMMAND HEADER. Replace key-value display with KEY-VALUE PAIR component. Replace post-save menu with ACTION MENU component.
+- [ ] **2C. Update `/memory:manage`** — Apply design system to all subcommand outputs in `.opencode/command/memory/manage.md`: stats dashboard, scan output, cleanup table, tier change, trigger edit, validate, delete, health check, checkpoint operations, and `/memory:manage shared` flows.
+- [ ] **2D. Update `/memory:learn`** — Apply design system to learning capture output, correction preview, and history listing.
 
 ### Phase 3: Verification
 
-- [ ] Visual comparison of all 5 command outputs side-by-side
+- [ ] Visual comparison of all live command outputs side-by-side
 - [ ] Verify consistent COMMAND HEADER pattern across all commands
 - [ ] Verify consistent SECTION HEADER divider style across all commands
 - [ ] Verify all status lines follow `STATUS=<OK|FAIL> [KEY=value]...` format
-- [ ] Verify zero emoji characters across all 5 files
+- [ ] Verify zero emoji characters across the live memory command docs
 - [ ] Verify all indicator usage matches INDICATOR SYSTEM (`[ok]`, `[!!]`, `[FAIL]`, `[--]`, `[..]`)
 - [ ] Verify all action menus follow ACTION MENU format
 - [ ] Verify empty state messages follow EMPTY STATE format
@@ -138,8 +136,8 @@ Apply the design system to each of the 5 command files. Update ALL output templa
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual visual inspection | Each command's output templates read and reviewed individually | Read tool + human review |
-| Cross-command comparison | All 5 command headers, dividers, status lines, and tables compared side-by-side | Read tool + manual diff |
+| Manual visual inspection | Each live command's output templates read and reviewed individually | Read tool + human review |
+| Cross-command comparison | `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn` headers, dividers, status lines, and tables compared side-by-side | Read tool + manual diff |
 | Edge case review | Empty states, long content truncation, action menus | Manual review against design system reference |
 <!-- /ANCHOR:testing -->
 
@@ -159,7 +157,7 @@ Apply the design system to each of the 5 command files. Update ALL output templa
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Visual regression discovered post-update, readability degraded, or output templates break AI rendering
-- **Procedure**: `git revert` the commit(s) affecting the command files; all 5 files return to prior state in a single revert operation
+- **Procedure**: `git revert` the commit(s) affecting the command files; the live memory command docs return to their prior state in a single revert operation
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -175,13 +173,12 @@ Phase 1 must be fully stable before Phase 2 begins. Changes to the design system
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Phase 1: Define Design System | None | Phase 2A–2E, Phase 3 |
-| Phase 2A: context.md | Phase 1 | Phase 3 |
-| Phase 2B: save.md | Phase 1 | Phase 3 |
-| Phase 2C: manage.md | Phase 1 | Phase 3 |
-| Phase 2D: learn.md | Phase 1 | Phase 3 |
-| Phase 2E: continue.md | Phase 1 | Phase 3 |
-| Phase 3: Verification | Phase 2A–2E | None |
+| Phase 1: Define Design System | None | Phase 2A–2D, Phase 3 |
+| Phase 2A: /memory:search | Phase 1 | Phase 3 |
+| Phase 2B: /memory:save | Phase 1 | Phase 3 |
+| Phase 2C: /memory:manage | Phase 1 | Phase 3 |
+| Phase 2D: /memory:learn | Phase 1 | Phase 3 |
+| Phase 3: Verification | Phase 2A–2D | None |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -192,13 +189,12 @@ Phase 1 must be fully stable before Phase 2 begins. Changes to the design system
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Phase 1: Define Design System (12 components) | Med | 1–2 sessions |
-| Phase 2A: Apply to context.md | Med | 1 session |
-| Phase 2B: Apply to save.md | Med | 1 session |
-| Phase 2C: Apply to manage.md | Med | 1–2 sessions (largest file, most subcommand outputs) |
-| Phase 2D: Apply to learn.md | Med | 1 session |
-| Phase 2E: Apply to continue.md | Med | 1 session |
+| Phase 2A: Apply to `/memory:search` | Med | 1 session |
+| Phase 2B: Apply to `/memory:save` | Med | 1 session |
+| Phase 2C: Apply to `/memory:manage` | Med | 1–2 sessions (largest file, most subcommand outputs, including `/memory:manage shared`) |
+| Phase 2D: Apply to `/memory:learn` | Med | 1 session |
 | Phase 3: Verification | Low | 1 session |
-| **Total** | | **7–9 sessions** |
+| **Total** | | **5–6 sessions** |
 <!-- /ANCHOR:effort -->
 
 ---

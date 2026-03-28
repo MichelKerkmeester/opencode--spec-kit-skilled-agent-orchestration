@@ -215,12 +215,12 @@ COMMAND_BOOSTS = {
     "/spec_kit:complete": "COMPLETE",
     "/spec_kit:handover": "HANDOVER",
     "/spec_kit:phase": "PHASE",
-    "/memory:analyze": "MEMORY",
+    "/memory:search": "MEMORY",
     "/memory:save": "MEMORY",
     "/memory:manage": "MEMORY",
     "/memory:learn": "MEMORY",
     "/spec_kit:resume": "MEMORY",
-    "/memory:shared": "GOVERNANCE",
+    "/memory:manage shared": "GOVERNANCE",
 }
 
 LOADING_LEVELS = {
@@ -558,7 +558,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~1073 lines) with ~44 handler files, 27 lib subdirectories, and 33 MCP tools across 7 layers.
 
-**Memory Commands:** 5 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover the memory command surface, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:analyze` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 5 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`, `/memory:manage shared`) cover the memory command surface, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -606,7 +606,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
 - Governed save and retrieval flows can carry `tenantId`, `userId`, `agentId`, and `sharedSpaceId` so private, agent-scoped, and shared-space memory boundaries stay aligned end to end.
-- Shared-memory collaboration is opt-in: use `/memory:shared` to enable rollout, create spaces, and manage deny-by-default memberships before relying on shared-space save or retrieval flows.
+- Shared-memory collaboration is opt-in: use `/memory:manage shared` to enable rollout, create spaces, and manage deny-by-default memberships before relying on shared-space save or retrieval flows.
 
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
 
@@ -684,7 +684,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Canonical capability flag for adaptive-ranking experiments; remains dormant unless explicitly enabled |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Canonical capability flag for scope-enforcement rollout tracking |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Canonical capability flag for governance-guardrail rollout tracking |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:shared` or explicit env enablement |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:manage shared` or explicit env enablement |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; dormant unless explicitly enabled |

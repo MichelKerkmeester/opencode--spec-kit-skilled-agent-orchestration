@@ -77,8 +77,8 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 - Remove stale @explore references from orchestrate LEAF lists and NDP examples.
 - Add @deep-review to orchestrate LEAF lists (existed but was missing from dispatch).
 - Fix dead `sk-code` path → `sk-code--review` in orchestrate resource tables.
-- Add all 6 memory commands to orchestrate suggestion and resource tables.
-- Add `/memory:shared` to speckit command tables.
+- Align the live memory routing surface in orchestrate suggestion and resource tables, including `/memory:search` and `/memory:manage shared`.
+- Add `/memory:manage shared` to speckit command tables.
 - Fix stale `/memory:learn` label in codex speckit.
 - Port canonical claim-adjudication packet and review JSONL schema into all 5 deep-review agents.
 

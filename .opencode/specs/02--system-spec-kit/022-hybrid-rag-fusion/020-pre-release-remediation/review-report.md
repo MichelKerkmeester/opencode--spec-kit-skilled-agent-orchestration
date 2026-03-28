@@ -1,4 +1,4 @@
-# Consolidated Release-Control Review Report — 012 Pre-Release Remediation
+# Consolidated Release-Control Review Report — 020 Pre-Release Remediation
 
 ## Executive Summary
 
@@ -15,7 +15,7 @@
 | Recursive Validator | `10 errors`, `7 warnings` across `001`, `003`, `005`, `006`, `007`, `010`, `013`, `015`, `016`, `018` |
 | Runtime Remediation Status | Runtime P0 and code-side P1 fixes remain landed and green |
 
-This report is the live release-control review artifact for `012-pre-release-remediation`, not a fresh rerun review. It keeps the written v8 FAIL review from the historical predecessor `012` packet as the backbone, folds in the current-state runtime truth recorded in historical `013`, and folds in the blocker-first follow-on scope recorded in historical `014`.
+This report is the live release-control review artifact for `020-pre-release-remediation`, not a fresh rerun review. It keeps the written v8 FAIL review from the historical predecessor `012` packet as the backbone, folds in the current-state runtime truth recorded in historical `013`, and folds in the blocker-first follow-on scope recorded in historical `014`.
 
 The merged release truth is unchanged from the latest top-level evidence dated **2026-03-26**: runtime remediation is green, but the `022-hybrid-rag-fusion` tree is still not release-ready because recursive validation remains red and release-significant follow-on work is still open.
 

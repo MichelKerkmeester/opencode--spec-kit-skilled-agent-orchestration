@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 014-agents-md-alignment"
-description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 6-command memory suite."
+description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 4-command memory surface and `/memory:manage shared` routing."
 trigger_phrases:
   - "014 summary"
   - "014 implementation"
@@ -11,7 +11,7 @@ contextType: "implementation-summary"
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 # Implementation Summary: 014-agents-md-alignment
 
-> **Note:** Subsequent AGENTS.md restructuring (post 2026-03-16) modified surrounding content but the 6-command Quick Reference alignment rows from this phase remain intact. Verified 2026-03-25 via deep review (all 8 grep checks pass against current files).
+> **Note:** Subsequent AGENTS.md restructuring (post 2026-03-16) modified surrounding content but the Quick Reference alignment rows from this phase still map to the current 4-command memory surface and `/memory:manage shared` routing. Re-verified 2026-03-27 after follow-up review and packet validation.
 
 ---
 
@@ -31,15 +31,15 @@ contextType: "implementation-summary"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework files to reflect the complete 6-command memory suite established by Phase 012 (command alignment).
+Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework files to reflect the current 4-command memory surface (`search`, `learn`, `manage`, `save`) and nested shared-memory routing under `/memory:manage shared` established by Phase 012 (command alignment).
 
 ### Changes by File
 
 **1. AGENTS.md (Universal Template)**
 - Constitutional memory row: added `list | edit | remove | budget` subcommands
 - Database maintenance row: added `ingest` to operations list
-- Added new Analysis/evaluation row for `/memory:analyze`
-- Added new Shared memory row for `/memory:shared`
+- Added new Search or analysis row for `/memory:search`
+- Added new Shared memory lifecycle row for `/memory:manage shared`
 
 **2. AGENTS_example_fs_enterprises.md (Full-Stack Template)**
 - Research/exploration row: added `memory_context()` (unified) OR alternative
@@ -98,8 +98,8 @@ Refinement pass (2026-03-16): Fixed G-01 through G-06 consistency gaps, added sk
 
 | Check | Result |
 |-------|--------|
-| `/memory:analyze` in all 3 files | 3/3 matches |
-| `/memory:shared` in all 3 files | 3/3 matches |
+| `/memory:search` in all 3 files | 3/3 matches |
+| `/memory:manage shared` in all 3 files | 3/3 matches |
 | `ingest operations` in all 3 files | 3/3 matches |
 | `list.*edit.*remove.*budget` in all 3 files | 3/3 matches |
 | Barter `GIT POLICY: READ-ONLY` preserved | 1/1 match |
@@ -112,12 +112,12 @@ Refinement pass (2026-03-16): Fixed G-01 through G-06 consistency gaps, added sk
 ## Known Limitations
 
 - LOC: approximately 36 lines modified/added across 3 files
-- Commands visible: 6 (was 5)
+- Current memory surface: 4 commands (`search`, `learn`, `manage`, `save`) plus nested `/memory:manage shared` routing
 - No code changes: documentation-only updates to markdown tables
 - No breaking changes: additive content only; existing rows preserved
-- Subsequent AGENTS.md restructuring shifted line numbers but all alignment rows remain present (verified 2026-03-25)
+- Subsequent AGENTS.md restructuring shifted line numbers but all alignment rows remain present (verified 2026-03-27)
 
-**Status**: CLOSED -- All tasks complete (14/14), all checklist items verified, changelog created.
+**Status**: CLOSED -- Summary remains aligned to the current 4-command memory surface, packet validation passes, and all checklist items remain verified.
 <!-- /ANCHOR:limitations -->
 
 ---

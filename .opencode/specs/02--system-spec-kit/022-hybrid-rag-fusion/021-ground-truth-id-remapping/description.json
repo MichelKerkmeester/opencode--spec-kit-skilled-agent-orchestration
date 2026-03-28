@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping",
+  "description": "Feature Specification: Ground Truth ID Remapping",
+  "keywords": [
+    "feature",
+    "specification",
+    "ground",
+    "truth",
+    "remapping"
+  ],
+  "lastUpdated": "2026-03-27T18:08:47.585Z",
+  "specId": "021",
+  "folderSlug": "ground-truth-id-remapping",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping.md"
+  ]
+}

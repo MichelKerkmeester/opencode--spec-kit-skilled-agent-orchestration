@@ -53,14 +53,14 @@ The Spec Kit Memory MCP server exposes **33 tools** organized under **5 memory s
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
-| `/memory:analyze` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
+| `/memory:search` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
 | `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
 | `/memory:manage` | 16 | owns | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
-| `/memory:shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+| `/memory:manage shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
 | `/spec_kit:resume` | 4 | shared | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
 
-**Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:analyze` or `/memory:manage`).
+**Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
 
 ---
 
@@ -296,7 +296,7 @@ Two recovery modes are available: **auto** resolves the strongest session candid
 
 The recovery chain prioritizes: (1) fresh `handover.md` when present, (2) `memory_context` in resume mode, (3) `CONTINUE_SESSION.md` crash breadcrumb, (4) anchored `memory_search` for thin summaries, (5) `memory_list` for recent-candidate discovery, and (6) user confirmation as final fallback.
 
-After recovery, the command continues directly inside `/spec_kit:resume` for structured spec-folder work or routes to `/memory:analyze history` for broader historical analysis, depending on user intent.
+After recovery, the command continues directly inside `/spec_kit:resume` for structured spec-folder work or routes to `/memory:search history` for broader historical analysis, depending on user intent.
 
 #### Source Files
 
@@ -468,11 +468,11 @@ See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutatio
 
 #### Description
 
-Shared-memory spaces let multiple users or agents access the same pool of knowledge under a deny-by-default membership model. Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering: create or update spaces, control user/agent access, inspect rollout status, and enable the subsystem. All four tools are live under the `/memory:shared` command.
+Shared-memory spaces let multiple users or agents access the same pool of knowledge under a deny-by-default membership model. Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering: create or update spaces, control user/agent access, inspect rollout status, and enable the subsystem. All four tools are live under the `/memory:manage shared` command.
 
 #### Current Reality
 
-**SHIPPED.** The shared-memory lifecycle is live with 4 L5 tools managed by `/memory:shared`:
+**SHIPPED.** The shared-memory lifecycle is live with 4 L5 tools managed by `/memory:manage shared`:
 
 - **`shared_space_upsert`** -- Creates or updates a shared-memory space with `tenantId`, `name`, and actor identity (`actorUserId` or `actorAgentId`). The first successful create auto-grants `owner` access to the acting caller.
 - **`shared_space_membership_set`** -- Controls user/agent access with a deny-by-default model. Requires `tenantId`, `subjectType` (`user` or `agent`), `subjectId`, `role` (`owner`, `editor`, or `viewer`), and actor identity. Membership mutations must be performed by an existing owner.
@@ -3979,11 +3979,11 @@ See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-
 
 #### Description
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is **disabled by default** and requires explicit first-run setup via `shared_memory_enable` or `/memory:shared`. Access is deny-by-default: nobody gets access unless explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is **disabled by default** and requires explicit first-run setup via `shared_memory_enable` or `/memory:manage shared`. Access is deny-by-default: nobody gets access unless explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong.
 
 #### Current Reality
 
-Phase 6 introduced shared-memory spaces with governance-first rollout controls. The subsystem is disabled by default with two-tier enablement: env var override (`SPECKIT_MEMORY_SHARED_MEMORY=true`) or DB config persistence via `shared_memory_enable`. The `/memory:shared` command includes a first-run enablement gate.
+Phase 6 introduced shared-memory spaces with governance-first rollout controls. The subsystem is disabled by default with two-tier enablement: env var override (`SPECKIT_MEMORY_SHARED_MEMORY=true`) or DB config persistence via `shared_memory_enable`. The `/memory:manage shared` command includes a first-run enablement gate.
 
 Access is deny-by-default: a caller can use a shared space only when explicit membership exists for the current identity. Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
 

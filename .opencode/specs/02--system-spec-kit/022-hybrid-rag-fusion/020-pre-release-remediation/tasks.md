@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-# Tasks: 012 Pre-Release Remediation
+# Tasks: 020 Pre-Release Remediation
 
 <!-- ANCHOR:notation -->
 ## Task Notation
@@ -33,7 +33,7 @@
 - [ ] RT010 Re-anchor the packet docs to `review/review-report.md` and mark the top-level `review-report.md` as historical evidence only. `[Findings: HRF-DR-001, HRF-DR-009]`
 - [ ] RT011 Fix the `012` packet local validator failures, including packet-local template/header drift, AI-protocol expectations, and broken internal references. `[Findings: HRF-DR-001]`
 - [ ] RT012 Reconcile the `012` release story so packet-local FAIL, runtime-green, and historical statements no longer contradict each other. `[Findings: HRF-DR-002]`
-- [ ] RT013 Update parent-epic and packet-local references to the live `012-pre-release-remediation` slug. `[Findings: HRF-DR-003]`
+- [ ] RT013 Update parent-epic and packet-local references to the live `020-pre-release-remediation` slug. `[Findings: HRF-DR-003]`
 - [ ] RT014 Refresh packet-local summaries and companion docs only after the packet truth-sync work is evidence-backed. `[Findings: HRF-DR-001, HRF-DR-002, HRF-DR-009]`
 <!-- /ANCHOR:phase-1 -->
 

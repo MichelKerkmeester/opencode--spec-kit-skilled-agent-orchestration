@@ -26,7 +26,7 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 ## What Was Built
 
 - Rewrote the 011 spec pack so it no longer presents itself as draft or pre-implementation while also claiming completion.
-- Replaced obsolete command-surface count language and retired standalone retrieval-command framing with the live memory-surface reality: **33 tools**, **6 commands**, retrieval in `/memory:analyze`.
+- Replaced obsolete command-surface count language and retired standalone retrieval-command framing with the live memory-surface reality: **33 tools**, **4 commands**, retrieval in `/memory:search`, and shared-memory lifecycle under `/memory:manage shared`.
 - Closed the last scoped `system-spec-kit` documentation drift:
   - SKILL.md memory-surface wording plus save-workflow/shared-memory governance framing
   - save_workflow shared-memory governance framing
@@ -46,7 +46,7 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 | `tasks.md` | Removed obsolete command-surface framing and kept only genuine remaining backlog items |
 | `checklist.md` | Replaced old verification evidence with pack-reconciliation checks |
 | `implementation-summary.md` | Replaced the superseded implementation story with this reconciliation summary |
-| `.opencode/skill/system-spec-kit/SKILL.md` | Memory-surface wording (33 tools, 6 commands), save-workflow/shared-memory governance framing |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Memory-surface wording (33 tools, 4 commands), save-workflow/shared-memory governance framing |
 | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Shared-memory governance and save-routing framing |
 | `.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md` | Shared-space and governance framing |
 | `.opencode/skill/system-spec-kit/references/memory/memory_system.md` | Added `memory_quick_search()` row (32 to 33 rows) |
@@ -63,8 +63,8 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 ## Key Decisions
 
 1. Treat live repo state as authoritative over older 011 prose.
-2. Treat the live memory surface as 33 tools and 6 commands.
-3. Treat `/memory:analyze` as the retrieval home for current memory-command documentation.
+2. Treat the live memory surface as 33 tools and 4 commands.
+3. Treat `/memory:search` as the retrieval home and `/memory:manage shared` as the shared-memory lifecycle route for current memory-command documentation.
 4. Keep 011 documentation-only and do not reopen already-landed command or agent alignment work.
 5. Record the final skill/reference/asset closeout rather than leaving phase 011 frozen as an open backlog.
 <!-- /ANCHOR:decisions -->
@@ -96,7 +96,7 @@ After spec-011 (research-based refinement) graduated 9 new feature flags and the
 ### Verification
 
 - Agent definitions (all runtimes): no stale tool/command/flag counts found
-- Command files (all 6 memory commands + README): all clean
+- Command files (all 4 memory commands + README, with shared lifecycle merged into `manage`): all clean
 - Command configs (27 YAML + 22 TOML): no stale references
 - sk-doc alignment: zero HVR violations, zero em dashes, zero semicolons, table columns consistent
 <!-- ANCHOR:limitations -->

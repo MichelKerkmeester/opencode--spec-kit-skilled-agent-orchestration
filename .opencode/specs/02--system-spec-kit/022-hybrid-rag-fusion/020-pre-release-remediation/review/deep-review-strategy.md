@@ -1,16 +1,16 @@
 ---
 title: Deep Review Strategy
-description: Session tracking for the canonical 60-iteration review of 012-pre-release-remediation across release-control, runtime-hunt, and feature-catalog code-soundness segments.
+description: Session tracking for the canonical 60-iteration review of 020-pre-release-remediation across release-control, runtime-hunt, and feature-catalog code-soundness segments.
 ---
 
-# Deep Review Strategy - 012 Pre-Release Remediation
+# Deep Review Strategy - 020 Pre-Release Remediation
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
 
-Serve as the persistent review brain for the canonical `review/` packet under `012-pre-release-remediation`, tracking active findings, segment history, feature-state synthesis, protocol status, and the release-readiness decision across all three segments of the audit.
+Serve as the persistent review brain for the canonical `review/` packet under `020-pre-release-remediation`, tracking active findings, segment history, feature-state synthesis, protocol status, and the release-readiness decision across all three segments of the audit.
 
 ### Usage
 
@@ -28,7 +28,7 @@ Serve as the persistent review brain for the canonical `review/` packet under `0
 <!-- ANCHOR:topic -->
 ## 2. TOPIC
 
-Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-remediation`, expanded first into runtime code-hunt territory and then into a strict live feature-catalog plus backing-code audit of the `255` feature entries under `.opencode/skill/system-spec-kit/feature_catalog/`.
+Release-readiness deep review of `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation`, expanded first into runtime code-hunt territory and then into a strict live feature-catalog plus backing-code audit of the `255` feature entries under `.opencode/skill/system-spec-kit/feature_catalog/`.
 
 ---
 
@@ -191,7 +191,7 @@ Session complete. The next focus is remediation planning:
 ## 13. KNOWN CONTEXT
 
 - Fresh baselines replayed on 2026-03-27:
-  - `012-pre-release-remediation` local validate: FAIL
+  - `020-pre-release-remediation` local validate: FAIL
   - `022-hybrid-rag-fusion --recursive`: PASS WITH WARNINGS (`1` warning)
   - `mcp_server npm test`: PASS (`8577` passed, `74` skipped, `26` todo)
 - Segment-3 targeted verification:
