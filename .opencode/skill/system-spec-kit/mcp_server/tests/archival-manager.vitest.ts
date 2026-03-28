@@ -1,6 +1,22 @@
 // TEST: ARCHIVAL MANAGER
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
+const {
+  mockClearDegreeCache,
+  mockClearGraphSignalsCache,
+} = vi.hoisted(() => ({
+  mockClearDegreeCache: vi.fn(),
+  mockClearGraphSignalsCache: vi.fn(),
+}));
+
+vi.mock('../lib/search/graph-search-fn', () => ({
+  clearDegreeCache: mockClearDegreeCache,
+}));
+
+vi.mock('../lib/graph/graph-signals', () => ({
+  clearGraphSignalsCache: mockClearGraphSignalsCache,
+}));
+
 import * as archivalManager from '../lib/cognitive/archival-manager';
 import Database from 'better-sqlite3';
 
@@ -28,6 +44,8 @@ let db: TestDatabase | null = null;
 
 afterEach(() => {
   archivalManager.__setEmbeddingsModuleForTests(null);
+  mockClearDegreeCache.mockReset();
+  mockClearGraphSignalsCache.mockReset();
 });
 
 function requireDb(): TestDatabase {
@@ -295,6 +313,24 @@ describe('Archival Manager (T059)', () => {
 
       const row = requireDb().prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id) as { is_archived: number };
       expect(row.is_archived).toBe(0);
+    });
+
+    it('T059-012c: archive and unarchive invalidate graph caches on success', () => {
+      const oldDate = new Date();
+      oldDate.setDate(oldDate.getDate() - 100);
+
+      const result = insertTestMemory({
+        title: 'Graph Cache Target',
+        created_at: oldDate.toISOString(),
+        importance_tier: 'normal',
+      });
+      const memory_id = toMemoryId(result.lastInsertRowid);
+
+      expect(archivalManager.archiveMemory(memory_id)).toBe(true);
+      expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
+
+      expect(mockClearDegreeCache).toHaveBeenCalledTimes(2);
+      expect(mockClearGraphSignalsCache).toHaveBeenCalledTimes(2);
     });
 
     it('T059-013: Batch archive succeeds', () => {

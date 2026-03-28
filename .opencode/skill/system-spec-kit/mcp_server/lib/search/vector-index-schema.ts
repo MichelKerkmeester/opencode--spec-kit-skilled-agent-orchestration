@@ -31,6 +31,8 @@ interface SchemaCompatibilityReport {
   schemaVersion: number | null;
   missingTables: string[];
   missingColumns: Record<string, string[]>;
+  missingIndexes: string[];
+  constraintMismatches: string[];
   warnings: string[];
 }
 
@@ -47,6 +49,20 @@ const ACTIVE_MEMORY_PROJECTION_TABLE = 'active_memory_projection';
 const LEGACY_MEMORY_LINEAGE_TABLE = 'hydra_memory_lineage';
 const LEGACY_ACTIVE_MEMORY_PROJECTION_TABLE = 'hydra_active_memory_projection';
 const REQUIRED_TABLES: readonly string[] = ['memory_index', 'schema_version'];
+const REQUIRED_INDEXES_BY_TABLE: Readonly<Record<string, readonly string[]>> = {
+  memory_index: [
+    'idx_stability',
+    'idx_last_review',
+    'idx_fsrs_retrieval',
+    'idx_document_type',
+    'idx_doc_type_folder',
+    'idx_quality_score',
+  ],
+  memory_conflicts: [
+    'idx_conflicts_memory',
+    'idx_conflicts_timestamp',
+  ],
+};
 const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
   'id',
   'spec_folder',
@@ -56,6 +72,22 @@ const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
   'session_id',
   'created_at',
   'updated_at',
+];
+const REQUIRED_MEMORY_CONFLICT_COLUMNS: readonly string[] = [
+  'id',
+  'timestamp',
+  'action',
+  'new_memory_hash',
+  'new_memory_id',
+  'existing_memory_id',
+  'similarity',
+  'reason',
+  'new_content_preview',
+  'existing_content_preview',
+  'contradiction_detected',
+  'contradiction_type',
+  'spec_folder',
+  'created_at',
 ];
 const REQUIRED_LINEAGE_TABLES: readonly string[] = [
   MEMORY_LINEAGE_TABLE,
@@ -92,10 +124,176 @@ function hasTable(database: Database.Database, tableName: string): boolean {
   return row?.present === 1;
 }
 
+function hasIndex(database: Database.Database, indexName: string): boolean {
+  const row = database.prepare(
+    "SELECT 1 AS present FROM sqlite_master WHERE type='index' AND name = ?"
+  ).get(indexName) as { present?: number } | undefined;
+
+  return row?.present === 1;
+}
+
 function getTableColumns(database: Database.Database, tableName: string): string[] {
   return (database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>)
     .map((column) => column.name)
     .filter((columnName) => typeof columnName === 'string' && columnName.length > 0);
+}
+
+function getTableSql(database: Database.Database, tableName: string): string | null {
+  const row = database.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name = ?"
+  ).get(tableName) as { sql?: string } | undefined;
+
+  return typeof row?.sql === 'string' ? row.sql : null;
+}
+
+function hasConstitutionalTierConstraint(database: Database.Database): boolean {
+  const tableSql = getTableSql(database, 'memory_index');
+  return typeof tableSql === 'string' && tableSql.includes("'constitutional'");
+}
+
+function createRequiredIndex(
+  database: Database.Database,
+  indexName: string,
+  sql: string,
+  context: string,
+): void {
+  try {
+    database.exec(sql);
+  } catch (error: unknown) {
+    if (hasIndex(database, indexName)) {
+      logger.warn(`${context}: reusing existing index after DDL warning`, {
+        indexName,
+        error: get_error_message(error),
+      });
+      return;
+    }
+    throw error;
+  }
+
+  if (!hasIndex(database, indexName)) {
+    throw new Error(`${context}: expected index "${indexName}" to exist after migration`);
+  }
+}
+
+function createMemoryConflictsTable(database: Database.Database): void {
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS memory_conflicts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+      action TEXT CHECK(action IN ('CREATE', 'CREATE_LINKED', 'UPDATE', 'SUPERSEDE', 'REINFORCE')),
+      new_memory_hash TEXT,
+      new_memory_id INTEGER,
+      existing_memory_id INTEGER,
+      similarity REAL,
+      reason TEXT,
+      new_content_preview TEXT,
+      existing_content_preview TEXT,
+      contradiction_detected INTEGER DEFAULT 0,
+      contradiction_type TEXT,
+      spec_folder TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (existing_memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
+    )
+  `);
+}
+
+function getFirstAvailableColumnExpression(
+  availableColumns: Set<string>,
+  candidates: string[],
+  fallback: string,
+): string {
+  for (const candidate of candidates) {
+    if (availableColumns.has(candidate)) {
+      return candidate;
+    }
+  }
+  return fallback;
+}
+
+function hasUnifiedMemoryConflictsTable(database: Database.Database): boolean {
+  if (!hasTable(database, 'memory_conflicts')) {
+    return false;
+  }
+
+  const columns = new Set(getTableColumns(database, 'memory_conflicts'));
+  return REQUIRED_MEMORY_CONFLICT_COLUMNS.every((columnName) => columns.has(columnName));
+}
+
+function migrateMemoryConflictsTable(database: Database.Database): void {
+  if (!hasTable(database, 'memory_conflicts')) {
+    createMemoryConflictsTable(database);
+    return;
+  }
+
+  if (hasUnifiedMemoryConflictsTable(database)) {
+    return;
+  }
+
+  database.exec('ALTER TABLE memory_conflicts RENAME TO memory_conflicts_legacy');
+  createMemoryConflictsTable(database);
+
+  const legacyColumns = new Set(getTableColumns(database, 'memory_conflicts_legacy'));
+  database.exec(`
+    INSERT INTO memory_conflicts (
+      id,
+      timestamp,
+      action,
+      new_memory_hash,
+      new_memory_id,
+      existing_memory_id,
+      similarity,
+      reason,
+      new_content_preview,
+      existing_content_preview,
+      contradiction_detected,
+      contradiction_type,
+      spec_folder,
+      created_at
+    )
+    SELECT
+      ${getFirstAvailableColumnExpression(legacyColumns, ['id'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['timestamp', 'created_at'], 'CURRENT_TIMESTAMP')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['action'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['new_memory_hash'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['new_memory_id'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['existing_memory_id'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['similarity', 'similarity_score'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['reason', 'notes'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['new_content_preview'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['existing_content_preview'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['contradiction_detected'], '0')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['contradiction_type'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['spec_folder'], 'NULL')},
+      ${getFirstAvailableColumnExpression(legacyColumns, ['created_at', 'timestamp'], 'CURRENT_TIMESTAMP')}
+    FROM memory_conflicts_legacy
+  `);
+  database.exec('DROP TABLE memory_conflicts_legacy');
+
+  if (!hasUnifiedMemoryConflictsTable(database)) {
+    throw new Error('Migration v12: memory_conflicts table is still missing unified columns after rebuild');
+  }
+}
+
+function summarizeCompatibilityFailures(report: SchemaCompatibilityReport): string {
+  const details: string[] = [];
+
+  if (report.missingTables.length > 0) {
+    details.push(`missing tables: ${report.missingTables.join(', ')}`);
+  }
+  if (Object.keys(report.missingColumns).length > 0) {
+    const missingColumns = Object.entries(report.missingColumns)
+      .map(([tableName, columns]) => `${tableName}[${columns.join(', ')}]`)
+      .join('; ');
+    details.push(`missing columns: ${missingColumns}`);
+  }
+  if (report.missingIndexes.length > 0) {
+    details.push(`missing indexes: ${report.missingIndexes.join(', ')}`);
+  }
+  if (report.constraintMismatches.length > 0) {
+    details.push(`constraint mismatches: ${report.constraintMismatches.join(', ')}`);
+  }
+
+  return details.join(' | ');
 }
 
 function logDuplicateColumnMigrationSkip(columnName: string, error: unknown): void {
@@ -223,14 +421,25 @@ export function run_migrations(database: Database.Database, from_version: number
       }
 
       // Create indexes for FSRS columns
-      try {
-        database.exec('CREATE INDEX IF NOT EXISTS idx_stability ON memory_index(stability DESC)');
-        database.exec('CREATE INDEX IF NOT EXISTS idx_last_review ON memory_index(last_review)');
-        database.exec('CREATE INDEX IF NOT EXISTS idx_fsrs_retrieval ON memory_index(stability, difficulty, last_review)');
-        logger.info('Migration v4: Created FSRS indexes');
-      } catch (e: unknown) {
-        console.warn('[VectorIndex] Migration v4 warning (indexes):', get_error_message(e));
-      }
+      createRequiredIndex(
+        database,
+        'idx_stability',
+        'CREATE INDEX IF NOT EXISTS idx_stability ON memory_index(stability DESC)',
+        'Migration v4',
+      );
+      createRequiredIndex(
+        database,
+        'idx_last_review',
+        'CREATE INDEX IF NOT EXISTS idx_last_review ON memory_index(last_review)',
+        'Migration v4',
+      );
+      createRequiredIndex(
+        database,
+        'idx_fsrs_retrieval',
+        'CREATE INDEX IF NOT EXISTS idx_fsrs_retrieval ON memory_index(stability, difficulty, last_review)',
+        'Migration v4',
+      );
+      logger.info('Migration v4: Created FSRS indexes');
     },
     5: () => {
       // V4 -> v5: Add memory_type column for type-specific half-lives (REQ-002, T006)
@@ -404,39 +613,22 @@ export function run_migrations(database: Database.Database, from_version: number
     },
     12: () => {
       // V11 -> v12: Unify memory_conflicts DDL (KL-1 Schema Unification)
-      try {
-        database.exec(`
-          DROP TABLE IF EXISTS memory_conflicts;
-          CREATE TABLE IF NOT EXISTS memory_conflicts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
-            action TEXT CHECK(action IN ('CREATE', 'CREATE_LINKED', 'UPDATE', 'SUPERSEDE', 'REINFORCE')),
-            new_memory_hash TEXT,
-            new_memory_id INTEGER,
-            existing_memory_id INTEGER,
-            similarity REAL,
-            reason TEXT,
-            new_content_preview TEXT,
-            existing_content_preview TEXT,
-            contradiction_detected INTEGER DEFAULT 0,
-            contradiction_type TEXT,
-            spec_folder TEXT,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (existing_memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
-          )
-        `);
-        logger.info('Migration v12: Unified memory_conflicts table (KL-1)');
-      } catch (e: unknown) {
-        console.warn('[VectorIndex] Migration v12 warning (memory_conflicts):', get_error_message(e));
-      }
+      migrateMemoryConflictsTable(database);
+      logger.info('Migration v12: Unified memory_conflicts table (KL-1)');
 
-      try {
-        database.exec('CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id)');
-        database.exec('CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC)');
-        logger.info('Migration v12: Created memory_conflicts indexes');
-      } catch (e: unknown) {
-        console.warn('[VectorIndex] Migration v12 warning (indexes):', get_error_message(e));
-      }
+      createRequiredIndex(
+        database,
+        'idx_conflicts_memory',
+        'CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id)',
+        'Migration v12',
+      );
+      createRequiredIndex(
+        database,
+        'idx_conflicts_timestamp',
+        'CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC)',
+        'Migration v12',
+      );
+      logger.info('Migration v12: Created memory_conflicts indexes');
     },
     13: () => {
       // V12 -> v13: Add document_type and spec_level for full spec folder document indexing
@@ -458,13 +650,19 @@ export function run_migrations(database: Database.Database, from_version: number
         }
       }
 
-      try {
-        database.exec('CREATE INDEX IF NOT EXISTS idx_document_type ON memory_index(document_type)');
-        database.exec('CREATE INDEX IF NOT EXISTS idx_doc_type_folder ON memory_index(document_type, spec_folder)');
-        logger.info('Migration v13: Created document_type indexes');
-      } catch (e: unknown) {
-        console.warn('[VectorIndex] Migration v13 warning (indexes):', get_error_message(e));
-      }
+      createRequiredIndex(
+        database,
+        'idx_document_type',
+        'CREATE INDEX IF NOT EXISTS idx_document_type ON memory_index(document_type)',
+        'Migration v13',
+      );
+      createRequiredIndex(
+        database,
+        'idx_doc_type_folder',
+        'CREATE INDEX IF NOT EXISTS idx_doc_type_folder ON memory_index(document_type, spec_folder)',
+        'Migration v13',
+      );
+      logger.info('Migration v13: Created document_type indexes');
 
       try {
         database.exec(`
@@ -593,12 +791,13 @@ export function run_migrations(database: Database.Database, from_version: number
         }
       }
 
-      try {
-        database.exec('CREATE INDEX IF NOT EXISTS idx_quality_score ON memory_index(quality_score)');
-        logger.info('Migration v15: Created quality score index');
-      } catch (e: unknown) {
-        console.warn('[VectorIndex] Migration v15 warning (idx_quality_score):', get_error_message(e));
-      }
+      createRequiredIndex(
+        database,
+        'idx_quality_score',
+        'CREATE INDEX IF NOT EXISTS idx_quality_score ON memory_index(quality_score)',
+        'Migration v15',
+      );
+      logger.info('Migration v15: Created quality score index');
     },
 
     16: () => {
@@ -869,6 +1068,7 @@ export function run_migrations(database: Database.Database, from_version: number
 
     // P1-3 fix: Migrate session_state.spec_folder using old→new mapping
     migrateSessionStateSpecFolders(database, updates);
+    migrateHistorySpecFolders(database, updates);
   };
 
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
@@ -906,10 +1106,16 @@ export function ensure_schema_version(database: Database.Database): number {
 
   const row = database.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version: number } | undefined;
   const current_version = row ? row.version : 0;
+  let compatibility = validate_backward_compatibility(database);
 
   if (current_version < SCHEMA_VERSION) {
     logger.info(`Migrating schema from v${current_version} to v${SCHEMA_VERSION}`);
     run_migrations(database, current_version, SCHEMA_VERSION);
+
+    compatibility = validate_backward_compatibility(database);
+    if (!compatibility.compatible) {
+      throw new Error(`Schema migration compatibility check failed: ${summarizeCompatibilityFailures(compatibility)}`);
+    }
 
     database.prepare(`
       INSERT OR REPLACE INTO schema_version (id, version, updated_at)
@@ -919,13 +1125,14 @@ export function ensure_schema_version(database: Database.Database): number {
     logger.info(`Schema migration complete: v${SCHEMA_VERSION}`);
   }
 
-  const compatibility = validate_backward_compatibility(database);
   if (!compatibility.compatible) {
     logger.warn(
       'Backward-compatibility validation detected schema gaps',
       compatibility as unknown as Record<string, unknown>
     );
   }
+
+  initHistory(database);
 
   return current_version;
 }
@@ -1174,6 +1381,8 @@ export function validate_backward_compatibility(database: Database.Database): Sc
   try {
     const missingTables = REQUIRED_TABLES.filter((tableName) => !hasTable(database, tableName));
     const missingColumns: Record<string, string[]> = {};
+    const missingIndexes: string[] = [];
+    const constraintMismatches: string[] = [];
     const warnings: string[] = [];
 
     if (hasTable(database, 'memory_index')) {
@@ -1182,8 +1391,30 @@ export function validate_backward_compatibility(database: Database.Database): Sc
       if (absentColumns.length > 0) {
         missingColumns.memory_index = absentColumns;
       }
+      if (!hasConstitutionalTierConstraint(database)) {
+        constraintMismatches.push('memory_index.importance_tier CHECK constraint is missing constitutional support');
+      }
     } else {
       missingColumns.memory_index = [...REQUIRED_MEMORY_INDEX_COLUMNS];
+    }
+
+    if (hasTable(database, 'memory_conflicts')) {
+      const existingColumns = new Set(getTableColumns(database, 'memory_conflicts'));
+      const absentColumns = REQUIRED_MEMORY_CONFLICT_COLUMNS.filter((columnName) => !existingColumns.has(columnName));
+      if (absentColumns.length > 0) {
+        missingColumns.memory_conflicts = absentColumns;
+      }
+    }
+
+    for (const [tableName, requiredIndexes] of Object.entries(REQUIRED_INDEXES_BY_TABLE)) {
+      if (!hasTable(database, tableName)) {
+        continue;
+      }
+      for (const indexName of requiredIndexes) {
+        if (!hasIndex(database, indexName)) {
+          missingIndexes.push(indexName);
+        }
+      }
     }
 
     if (!hasTable(database, 'memory_history')) {
@@ -1198,10 +1429,17 @@ export function validate_backward_compatibility(database: Database.Database): Sc
 
     const schemaVersion = safe_get_schema_version(database);
     return {
-      compatible: missingTables.length === 0 && Object.keys(missingColumns).length === 0,
+      compatible: (
+        missingTables.length === 0
+        && Object.keys(missingColumns).length === 0
+        && missingIndexes.length === 0
+        && constraintMismatches.length === 0
+      ),
       schemaVersion,
       missingTables,
       missingColumns,
+      missingIndexes,
+      constraintMismatches,
       warnings,
     };
   } catch (error: unknown) {
@@ -1210,6 +1448,8 @@ export function validate_backward_compatibility(database: Database.Database): Sc
       schemaVersion: null,
       missingTables: [...REQUIRED_TABLES],
       missingColumns: { memory_index: [...REQUIRED_MEMORY_INDEX_COLUMNS] },
+      missingIndexes: [],
+      constraintMismatches: ['compatibility inspection failed before constraint verification'],
       warnings: [
         `Compatibility check failed: ${error instanceof Error ? error.message : String(error)}`,
       ],
@@ -1574,28 +1814,23 @@ export function ensure_canonical_file_path_support(database: Database.Database):
  * @returns Nothing.
  */
 export function migrate_constitutional_tier(database: Database.Database): void {
-  const table_info = database.prepare(`
-    SELECT sql FROM sqlite_master
-    WHERE type='table' AND name='memory_index'
-  `).get() as { sql?: string } | undefined;
+  const tableSql = getTableSql(database, 'memory_index');
 
-  if (table_info && table_info.sql) {
-    if (table_info.sql.includes("'constitutional'")) {
+  if (tableSql) {
+    if (tableSql.includes("'constitutional'")) {
       return;
     }
 
-    const constitutional_count = (database.prepare(`
+    const constitutionalCount = (database.prepare(`
       SELECT COUNT(*) as count FROM memory_index
       WHERE importance_tier = 'constitutional'
     `).get() as { count: number }).count;
 
-    if (constitutional_count > 0) {
-      console.warn(`[vector-index] Found ${constitutional_count} constitutional memories`);
-    }
-
-    console.warn('[vector-index] Migration: Constitutional tier available');
-    console.warn('[vector-index] Note: For existing databases, constitutional tier may require manual schema update');
-    console.warn('[vector-index] New databases will have the updated constraint automatically');
+    throw new Error(
+      constitutionalCount > 0
+        ? `Legacy memory_index importance_tier constraint is missing constitutional support and blocks ${constitutionalCount} constitutional memories`
+        : 'Legacy memory_index importance_tier constraint is missing constitutional support and requires a table rebuild before startup can continue'
+    );
   }
 }
 
@@ -1797,6 +2032,49 @@ function migrateSessionStateSpecFolders(
   }
 }
 
+function migrateHistorySpecFolders(
+  database: Database.Database,
+  updates: Array<{ canonical: string; oldSpecFolder: string }>
+): void {
+  if (!hasTable(database, 'memory_history')) return;
+  if (!getTableColumns(database, 'memory_history').includes('spec_folder')) return;
+  if (updates.length === 0) return;
+
+  const mapping = new Map<string, Set<string>>();
+  for (const update of updates) {
+    if (!mapping.has(update.oldSpecFolder)) {
+      mapping.set(update.oldSpecFolder, new Set());
+    }
+    mapping.get(update.oldSpecFolder)!.add(update.canonical);
+  }
+
+  const updateStmt = database.prepare(
+    'UPDATE memory_history SET spec_folder = ? WHERE rowid = ? AND spec_folder = ?'
+  );
+  const historyRows = database.prepare(`
+    SELECT rowid AS history_rowid, spec_folder
+    FROM memory_history
+    WHERE spec_folder IS NOT NULL
+      AND trim(spec_folder) <> ''
+  `).all() as Array<{ history_rowid: number; spec_folder: string }>;
+
+  let updatedRows = 0;
+  for (const row of historyRows) {
+    const targets = mapping.get(row.spec_folder);
+    if (targets && targets.size === 1) {
+      const canonical = [...targets][0];
+      updateStmt.run(canonical, row.history_rowid, row.spec_folder);
+      updatedRows++;
+    } else if (targets && targets.size > 1) {
+      logger.warn(`Migration v23: Ambiguous memory_history mapping for "${row.spec_folder}". Skipping.`);
+    }
+  }
+
+  if (updatedRows > 0) {
+    logger.info(`Migration v23: Updated spec_folder for ${updatedRows} memory_history rows`);
+  }
+}
+
 // Create database schema
 /**
  * Creates or upgrades the vector-index schema.
@@ -1824,7 +2102,6 @@ export function create_schema(
     ensureLineageTables(database);
     ensureGovernanceTables(database);
     ensureSharedSpaceTables(database);
-    initHistory(database);
     const compatibility = validate_backward_compatibility(database);
     if (!compatibility.compatible) {
       logger.warn(
@@ -1960,7 +2237,6 @@ export function create_schema(
   ensureLineageTables(database);
   ensureGovernanceTables(database);
   ensureSharedSpaceTables(database);
-  initHistory(database);
 
   // the rollout (REQ-S2-001) — create embedding_cache table
   initEmbeddingCache(database);

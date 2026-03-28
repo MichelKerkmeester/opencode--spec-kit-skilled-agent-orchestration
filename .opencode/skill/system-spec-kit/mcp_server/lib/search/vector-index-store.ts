@@ -20,6 +20,8 @@ import * as path from 'path';
 import Database from 'better-sqlite3';
 import * as sqliteVec from 'sqlite-vec';
 
+import { getStartupEmbeddingDimension } from '@spec-kit/shared/embeddings/factory';
+
 import { DATABASE_DIR, DATABASE_PATH, SERVER_DIR } from '../../core/config';
 import { IVectorStore } from '../interfaces/vector-store';
 import * as embeddingsProvider from '../providers/embeddings';
@@ -86,10 +88,10 @@ export const EMBEDDING_DIM = 768;
  * @returns The embedding dimension.
  */
 export function get_embedding_dim(): number {
-  // F9.11 fix: Honor explicit EMBEDDING_DIM env var first
+  const startup_dim = getStartupEmbeddingDimension();
+
   if (process.env.EMBEDDING_DIM) {
-    const explicit = parseInt(process.env.EMBEDDING_DIM, 10);
-    if (Number.isFinite(explicit) && explicit > 0) return explicit;
+    return startup_dim;
   }
 
   try {
@@ -101,17 +103,10 @@ export function get_embedding_dim(): number {
         return profile.dim;
       }
     }
-
-    if (process.env.VOYAGE_API_KEY || process.env.EMBEDDINGS_PROVIDER === 'voyage') {
-      return 1024;
-    }
-    if (process.env.OPENAI_API_KEY || process.env.EMBEDDINGS_PROVIDER === 'openai') {
-      return 1536;
-    }
   } catch (e: unknown) {
     console.warn('[vector-index] Could not get embedding dimension from profile:', get_error_message(e));
   }
-  return EMBEDDING_DIM;
+  return startup_dim;
 }
 
 /**
@@ -140,43 +135,106 @@ type EmbeddingDimensionValidation = {
   warning?: string;
 };
 
-function validate_embedding_dimension_for_connection(
-  database: Database.Database | null,
-  sqlite_vec_available: boolean,
-): EmbeddingDimensionValidation {
-  if (!database || !sqlite_vec_available) {
-    return { valid: true, stored: null, current: null, reason: 'No database or sqlite-vec unavailable' };
+type StoredEmbeddingDimension = {
+  existing_db: boolean;
+  stored_dim: number | null;
+  source: 'vec_metadata' | 'vec_memories' | null;
+  reason?: string;
+};
+
+function get_existing_embedding_dimension(
+  database: Database.Database,
+): StoredEmbeddingDimension {
+  const schema_row = database.prepare(`
+    SELECT name FROM sqlite_master WHERE type='table' AND name='memory_index'
+  `).get();
+
+  if (!schema_row) {
+    return {
+      existing_db: false,
+      stored_dim: null,
+      source: null,
+      reason: 'No existing schema',
+    };
   }
 
-  try {
-    const meta_table = database.prepare(`
-      SELECT name FROM sqlite_master WHERE type='table' AND name='vec_metadata'
-    `).get();
+  const metadata_table = database.prepare(`
+    SELECT name FROM sqlite_master WHERE type='table' AND name='vec_metadata'
+  `).get();
 
-    if (!meta_table) {
-      return { valid: true, stored: null, current: get_embedding_dim(), reason: 'No metadata table (legacy DB)' };
-    }
-
+  if (metadata_table) {
     const stored_row = database.prepare(`
       SELECT value FROM vec_metadata WHERE key = 'embedding_dim'
     `).get() as { value: string } | undefined;
 
-    if (!stored_row) {
-      return { valid: true, stored: null, current: get_embedding_dim(), reason: 'No stored dimension' };
+    if (stored_row) {
+      const stored_dim = parseInt(stored_row.value, 10);
+      if (Number.isFinite(stored_dim) && stored_dim > 0) {
+        return {
+          existing_db: true,
+          stored_dim,
+          source: 'vec_metadata',
+        };
+      }
+    }
+  }
+
+  const vec_table = database.prepare(`
+    SELECT sql FROM sqlite_master WHERE name='vec_memories'
+  `).get() as { sql: string | null } | undefined;
+  const vec_sql = typeof vec_table?.sql === 'string' ? vec_table.sql : null;
+  const match = vec_sql?.match(/FLOAT\[(\d+)\]/i);
+
+  if (match) {
+    const stored_dim = parseInt(match[1], 10);
+    if (Number.isFinite(stored_dim) && stored_dim > 0) {
+      return {
+        existing_db: true,
+        stored_dim,
+        source: 'vec_memories',
+      };
+    }
+  }
+
+  return {
+    existing_db: true,
+    stored_dim: null,
+    source: null,
+    reason: 'No stored vector dimension found for existing schema',
+  };
+}
+
+function validate_embedding_dimension_for_connection(
+  database: Database.Database | null,
+  _sqlite_vec_available: boolean,
+): EmbeddingDimensionValidation {
+  if (!database) {
+    return { valid: true, stored: null, current: null, reason: 'No database' };
+  }
+
+  try {
+    const current_dim = get_embedding_dim();
+    const existing = get_existing_embedding_dimension(database);
+
+    if (!existing.existing_db) {
+      return { valid: true, stored: null, current: current_dim, reason: existing.reason };
     }
 
-    const stored_dim = parseInt(stored_row.value, 10);
-    const current_dim = get_embedding_dim();
+    if (existing.stored_dim == null) {
+      return { valid: true, stored: null, current: current_dim, reason: existing.reason || 'No stored dimension' };
+    }
 
-    if (stored_dim !== current_dim) {
-      const warning = `DIMENSION MISMATCH: Database has ${stored_dim}-dim vectors, but provider expects ${current_dim}. ` +
-        `Vector search will fail. Solutions: 1) Delete database and re-index, 2) Set EMBEDDINGS_PROVIDER to match original, ` +
+    if (existing.stored_dim !== current_dim) {
+      const source_label = existing.source === 'vec_metadata' ? 'vec_metadata' : 'vec_memories schema';
+      const warning = `EMBEDDING DIMENSION MISMATCH: Existing database stores ${existing.stored_dim}-dim vectors (${source_label}), ` +
+        `but the active embedding configuration resolves to ${current_dim}. Refusing to bootstrap because vector search would fail. ` +
+        `Solutions: 1) Delete database and re-index, 2) Set EMBEDDINGS_PROVIDER to match original, ` +
         `3) Use MEMORY_DB_PATH for provider-specific databases.`;
       console.error(`[vector-index] WARNING: ${warning}`);
-      return { valid: false, stored: stored_dim, current: current_dim, warning };
+      return { valid: false, stored: existing.stored_dim, current: current_dim, warning };
     }
 
-    return { valid: true, stored: stored_dim, current: current_dim };
+    return { valid: true, stored: existing.stored_dim, current: current_dim };
   } catch (e: unknown) {
     console.warn('[vector-index] Dimension validation error:', get_error_message(e));
     return { valid: true, stored: null, current: get_embedding_dim(), reason: get_error_message(e) };
@@ -310,15 +368,40 @@ let db_path = DEFAULT_DB_PATH;
 let sqlite_vec_available_flag = true;
 // C1 FIX: Key connections by resolved DB path to prevent cross-store data corruption
 const db_connections = new Map<string, Database.Database>();
+type DatabaseConnectionListener = (
+  database: Database.Database,
+  change: {
+    previousDb: Database.Database | null;
+    previousPath: string;
+    nextPath: string;
+  },
+) => void;
+const database_connection_listeners = new Set<DatabaseConnectionListener>();
 
 function set_active_database_connection(
   connection: Database.Database,
   target_path: string,
   vec_available: boolean,
 ): void {
+  const previousDb = db;
+  const previousPath = db_path;
   db = connection;
   db_path = target_path;
   sqlite_vec_available_flag = vec_available;
+
+  if (previousDb !== connection || previousPath !== target_path) {
+    for (const listener of database_connection_listeners) {
+      try {
+        listener(connection, {
+          previousDb,
+          previousPath,
+          nextPath: target_path,
+        });
+      } catch (error: unknown) {
+        console.warn(`[vector-index] Database connection listener failed: ${get_error_message(error)}`);
+      }
+    }
+  }
 
   if (target_path === ':memory:') {
     return;
@@ -334,6 +417,13 @@ function set_active_database_connection(
 /** Accessor for sqlite_vec_available (used by other modules) */
 export function sqlite_vec_available(): boolean {
   return sqlite_vec_available_flag;
+}
+
+export function on_database_connection_change(listener: DatabaseConnectionListener): () => void {
+  database_connection_listeners.add(listener);
+  return () => {
+    database_connection_listeners.delete(listener);
+  };
 }
 
 const constitutional_cache = new Map<string, { data: MemoryRow[]; timestamp: number }>();
@@ -659,6 +749,15 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   new_db.pragma('synchronous = NORMAL');
   new_db.pragma('temp_store = MEMORY');
 
+  const preBootstrapDimCheck = validate_embedding_dimension_for_connection(new_db, vec_available);
+  if (!preBootstrapDimCheck.valid && preBootstrapDimCheck.stored != null) {
+    const msg = preBootstrapDimCheck.warning ||
+      `Embedding dimension mismatch: DB=${preBootstrapDimCheck.stored}, provider=${preBootstrapDimCheck.current}`;
+    console.error(`[vector-index] FATAL: ${msg}`);
+    try { new_db.close(); } catch (_: unknown) { /* best-effort */ }
+    throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
+  }
+
   create_schema(new_db, { sqlite_vec_available: vec_available, get_embedding_dim });
   ensure_schema_version(new_db);
 
@@ -741,9 +840,13 @@ export class SQLiteVectorStore extends IVectorStore {
 
   _ensureInitialized(): void {
     if (!this._initialized) {
-      initialize_db(this.dbPath);
+      this._getDatabase();
       this._initialized = true;
     }
+  }
+
+  _getDatabase(): Database.Database {
+    return initialize_db(this.dbPath);
   }
 
   /**
@@ -760,6 +863,7 @@ export class SQLiteVectorStore extends IVectorStore {
    */
   async search(embedding: EmbeddingInput, topK: number, options: VectorSearchOptions = {}): Promise<MemoryRow[]> {
     this._ensureInitialized();
+    const database = this._getDatabase();
 
     const expected_dim = get_embedding_dim();
     if (!embedding || embedding.length !== expected_dim) {
@@ -782,7 +886,7 @@ export class SQLiteVectorStore extends IVectorStore {
 
     // Lazy import to avoid circular dependency at module load time
     const { vector_search } = await import('./vector-index-queries');
-    return vector_search(embedding, search_options);
+    return vector_search(embedding, search_options, database);
   }
 
   /**
@@ -799,6 +903,7 @@ export class SQLiteVectorStore extends IVectorStore {
    */
   async upsert(_id: string, embedding: EmbeddingInput, metadata: JsonObject): Promise<number> {
     this._ensureInitialized();
+    const database = this._getDatabase();
 
     const expected_dim = get_embedding_dim();
     if (!embedding || embedding.length !== expected_dim) {
@@ -840,7 +945,7 @@ export class SQLiteVectorStore extends IVectorStore {
     }
 
     const { index_memory } = await import('./vector-index-mutations');
-    return index_memory(params);
+    return index_memory(params, database);
   }
 
   /**
@@ -855,8 +960,9 @@ export class SQLiteVectorStore extends IVectorStore {
    */
   async delete(id: number): Promise<boolean> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { delete_memory } = await import('./vector-index-mutations');
-    return delete_memory(id);
+    return delete_memory(id, database);
   }
 
   /**
@@ -871,14 +977,16 @@ export class SQLiteVectorStore extends IVectorStore {
    */
   async get(id: number): Promise<MemoryRow | null> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { get_memory } = await import('./vector-index-queries');
-    return get_memory(id);
+    return get_memory(id, database);
   }
 
   async getStats(): Promise<{ total: number; pending: number; success: number; failed: number; retry: number }> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { get_stats } = await import('./vector-index-queries');
-    return get_stats();
+    return get_stats(database);
   }
 
   isAvailable(): boolean {
@@ -898,14 +1006,16 @@ export class SQLiteVectorStore extends IVectorStore {
 
   async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null): Promise<boolean> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { delete_memory_by_path } = await import('./vector-index-mutations');
-    return delete_memory_by_path(specFolder, filePath, anchorId);
+    return delete_memory_by_path(specFolder, filePath, anchorId, database);
   }
 
   async getByFolder(specFolder: string): Promise<MemoryRow[]> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { get_memories_by_folder } = await import('./vector-index-queries');
-    return get_memories_by_folder(specFolder);
+    return get_memories_by_folder(specFolder, database);
   }
 
   async searchEnriched(
@@ -913,22 +1023,25 @@ export class SQLiteVectorStore extends IVectorStore {
     options: { specFolder?: string | null; minSimilarity?: number } = {},
   ): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { vector_search_enriched } = await import('./vector-index-queries');
-    return vector_search_enriched(embedding, undefined, options);
+    return vector_search_enriched(embedding, undefined, options, database);
   }
 
   async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { enhanced_search } = await import('./vector-index-aliases');
-    return enhanced_search(embedding, undefined, options);
+    return enhanced_search(embedding, undefined, options, database);
   }
 
   async getConstitutionalMemories(
     options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {},
   ): Promise<MemoryRow[]> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { get_constitutional_memories_public } = await import('./vector-index-queries');
-    return get_constitutional_memories_public(options);
+    return get_constitutional_memories_public(options, database);
   }
 
   async verifyIntegrity(
@@ -944,8 +1057,9 @@ export class SQLiteVectorStore extends IVectorStore {
     cleaned?: { vectors: number; chunks: number };
   }> {
     this._ensureInitialized();
+    const database = this._getDatabase();
     const { verify_integrity } = await import('./vector-index-queries');
-    return verify_integrity(options);
+    return verify_integrity(options, database);
   }
 }
 
@@ -964,3 +1078,4 @@ export { validate_embedding_dimension as validateEmbeddingDimension };
 export { validate_file_path_local as validateFilePath };
 export { clear_constitutional_cache as clearConstitutionalCache };
 export { is_vector_search_available as isVectorSearchAvailable };
+export { on_database_connection_change as onDatabaseConnectionChange };

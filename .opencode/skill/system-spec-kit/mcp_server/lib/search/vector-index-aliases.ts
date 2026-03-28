@@ -6,6 +6,7 @@
 // Learning from selections, and enhanced search with ranking+diversity.
 
 import * as crypto from 'crypto';
+import type Database from 'better-sqlite3';
 import {
   parse_trigger_phrases,
   get_error_message,
@@ -401,7 +402,12 @@ export function record_access(memory_id: number): boolean {
  * @param options - Search tuning options.
  * @returns The ranked search results.
  */
-export async function enhanced_search(query: string, limit = 20, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
+export async function enhanced_search(
+  query: string,
+  limit = 20,
+  options: EnhancedSearchOptions = {},
+  database: Database.Database = initialize_db(),
+): Promise<EnrichedSearchResult[]> {
   const start_time = Date.now();
 
   const fetch_limit = Math.min(limit * 2, 100);
@@ -409,7 +415,7 @@ export async function enhanced_search(query: string, limit = 20, options: Enhanc
   const results = await vector_search_enriched(query, fetch_limit, {
     specFolder: options.specFolder,
     minSimilarity: options.minSimilarity || 30
-  });
+  }, database);
 
   const ranked = apply_smart_ranking(results);
 

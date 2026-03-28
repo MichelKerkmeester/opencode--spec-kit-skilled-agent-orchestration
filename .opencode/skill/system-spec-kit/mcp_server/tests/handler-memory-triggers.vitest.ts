@@ -11,6 +11,7 @@ import * as tierClassifier from '../lib/cognitive/tier-classifier';
 import * as coActivation from '../lib/cognitive/co-activation';
 import * as consumptionLogger from '../lib/telemetry/consumption-logger';
 import * as sessionManager from '../lib/session/session-manager';
+import * as vectorIndexStore from '../lib/search/vector-index-store';
 import type {
   SignalDetection,
   TriggerMatch,
@@ -187,6 +188,27 @@ describe('Sprint-0 reliability fixes', () => {
     expect(triggerSignals).toHaveLength(1);
   });
 
+  it('surfaces degraded trigger matching metadata when trigger parsing partially fails', async () => {
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+      buildTriggerMatchResult([buildTriggerMatch()], {
+        degraded: {
+          code: 'E_TRIGGER_SOURCE_PARSE',
+          message: 'Trigger cache loaded with 1 skipped source entries',
+          failedEntries: 1,
+          failures: [{ code: 'E_TRIGGER_SOURCE_PARSE', message: 'bad trigger payload', memoryId: 9 }],
+        },
+      })
+    );
+
+    const response = await handler.handleMemoryMatchTriggers({ prompt: 'test', include_cognitive: false });
+    const payload = parseEnvelope(response);
+    const data = getRecord(payload.data) ?? {};
+    const meta = getRecord(payload.meta) ?? {};
+
+    expect(getRecord(data.degradedMatching)?.code).toBe('E_TRIGGER_SOURCE_PARSE');
+    expect(getRecord(meta.degradedMatching)?.failedEntries).toBe(1);
+  });
+
   it('enforces caller limit on cognitive path responses', async () => {
     const requestedLimit = 2;
     const matches = Array.from({ length: 5 }, (_, index) => ({
@@ -255,5 +277,56 @@ describe('Sprint-0 reliability fixes', () => {
     expect(tierLimitSpy).toHaveBeenCalledWith(expect.any(Array), null, requestedLimit);
     expect(data.count).toBeLessThanOrEqual(requestedLimit);
     expect(results).toHaveLength(requestedLimit);
+  });
+
+  it('filters trigger matches by governed scope fields when provided', async () => {
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+      buildTriggerMatchResult([
+        buildTriggerMatch({ memoryId: 11, filePath: '/tmp/scoped.md' }),
+        buildTriggerMatch({ memoryId: 22, filePath: '/tmp/unscoped.md' }),
+      ])
+    );
+    vi.spyOn(evalLogger, 'logSearchQuery').mockReturnValue({ queryId: 41, evalRunId: 42 });
+    vi.spyOn(evalLogger, 'logFinalResult').mockImplementation(() => undefined);
+    vi.spyOn(vectorIndexStore, 'initialize_db').mockReturnValue({
+      prepare: vi.fn(() => ({
+        all: vi.fn(() => [
+          {
+            id: 11,
+            spec_folder: 'specs/001-auth',
+            tenant_id: 'tenant-a',
+            user_id: 'user-1',
+            agent_id: 'agent-1',
+            shared_space_id: 'shared-1',
+          },
+          {
+            id: 22,
+            spec_folder: 'specs/002-other',
+            tenant_id: 'tenant-b',
+            user_id: 'user-2',
+            agent_id: 'agent-2',
+            shared_space_id: 'shared-2',
+          },
+        ]),
+      })),
+    } as never);
+
+    const response = await handler.handleMemoryMatchTriggers({
+      prompt: 'resume auth work',
+      include_cognitive: false,
+      specFolder: 'specs/001-auth',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      agentId: 'agent-1',
+      sharedSpaceId: 'shared-1',
+    });
+    const payload = parseEnvelope(response);
+    const data = getRecord(payload.data) ?? {};
+    const results = getArray(data.results).map((item) => getRecord(item) ?? {});
+
+    expect(data.count).toBe(1);
+    expect(results).toHaveLength(1);
+    expect(results[0]?.memoryId).toBe(11);
+    expect(results[0]?.filePath).toBe('/tmp/scoped.md');
   });
 });

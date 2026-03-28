@@ -5,7 +5,7 @@
 // Cross-module wiring tests for MPAB, Quality Gate, Reconsolidation,
 // Shadow Scoring, and Feature Flag independence.
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import type Database from 'better-sqlite3';
+import Database from 'better-sqlite3';
 
 // Modules under test
 import {
@@ -345,34 +345,115 @@ describe('Sprint 4 Integration: Reconsolidation + Save', () => {
       const existingMemory = makeSimilarMemory({
         id: 42,
         similarity: 0.92, // Above MERGE_THRESHOLD
+        file_path: '/test/existing.md',
         content_text: 'Original memory content about the feature.',
       });
 
       const memory = makeNewMemory({ content: 'Updated memory content about the feature.' });
 
-      // Mock DB with minimal required tables
-      const mockDb = {
-        prepare: vi.fn().mockReturnValue({
-          run: vi.fn().mockReturnValue({ changes: 1 }),
-          get: vi.fn(),
-          all: vi.fn().mockReturnValue([]),
-        }),
-        transaction: vi.fn((fn: (...args: never[]) => unknown) => fn),
-      } as unknown as Database.Database;
-
       const generateEmbedding: GenerateEmbeddingFn = async () => makeEmbedding(10);
 
-      const result = await reconsolidate(memory, mockDb, {
-        findSimilar: () => [existingMemory],
-        storeMemory: () => 99,
-        generateEmbedding,
-      });
+      const database = new Database(':memory:');
+      try {
+        database.exec(`
+          CREATE TABLE memory_index (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            spec_folder TEXT NOT NULL DEFAULT '',
+            file_path TEXT NOT NULL DEFAULT '',
+            title TEXT,
+            content_text TEXT,
+            trigger_phrases TEXT DEFAULT '[]',
+            content_hash TEXT DEFAULT '',
+            importance_weight REAL DEFAULT 0.5,
+            importance_tier TEXT DEFAULT 'normal',
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+            last_review TEXT,
+            parent_id INTEGER,
+            embedding_status TEXT DEFAULT 'pending',
+            is_archived INTEGER DEFAULT 0
+          );
 
-      expect(result).not.toBeNull();
-      expect(result!.action).toBe('merge');
-      if (result!.action === 'merge') {
-        expect(result!.existingMemoryId).toBe(42);
-        expect(result!.similarity).toBe(0.92);
+          CREATE TABLE vec_memories (
+            rowid INTEGER PRIMARY KEY,
+            embedding BLOB
+          );
+
+          CREATE TABLE causal_edges (
+            id INTEGER PRIMARY KEY,
+            source_id TEXT NOT NULL,
+            target_id TEXT NOT NULL,
+            relation TEXT NOT NULL,
+            strength REAL DEFAULT 1.0,
+            evidence TEXT,
+            extracted_at TEXT DEFAULT (datetime('now')),
+            created_by TEXT DEFAULT 'manual',
+            last_accessed TEXT,
+            UNIQUE(source_id, target_id, relation)
+          );
+
+          CREATE TABLE weight_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            edge_id INTEGER NOT NULL,
+            old_strength REAL NOT NULL,
+            new_strength REAL NOT NULL,
+            changed_by TEXT DEFAULT 'manual',
+            changed_at TEXT DEFAULT (datetime('now')),
+            reason TEXT
+          );
+
+          CREATE TABLE memory_lineage (
+            memory_id INTEGER PRIMARY KEY,
+            logical_key TEXT NOT NULL,
+            version_number INTEGER NOT NULL,
+            root_memory_id INTEGER NOT NULL,
+            predecessor_memory_id INTEGER,
+            superseded_by_memory_id INTEGER,
+            valid_from TEXT NOT NULL,
+            valid_to TEXT,
+            transition_event TEXT NOT NULL,
+            actor TEXT NOT NULL DEFAULT 'system',
+            metadata TEXT,
+            created_at TEXT DEFAULT (datetime('now'))
+          );
+
+          CREATE TABLE active_memory_projection (
+            logical_key TEXT PRIMARY KEY,
+            root_memory_id INTEGER NOT NULL,
+            active_memory_id INTEGER NOT NULL,
+            updated_at TEXT NOT NULL
+          );
+        `);
+
+        database.prepare(`
+          INSERT INTO memory_index (
+            id, spec_folder, file_path, title, content_text, importance_weight,
+            embedding_status, created_at, updated_at
+          )
+          VALUES (
+            42, 'test-spec', '/test/existing.md', 'Existing Memory',
+            'Original memory content about the feature.', 0.5, 'success',
+            datetime('now'), datetime('now')
+          )
+        `).run();
+        database.prepare(`
+          INSERT INTO vec_memories (rowid, embedding) VALUES (42, ?)
+        `).run(Buffer.from(new Float32Array(makeEmbedding(10)).buffer));
+
+        const result = await reconsolidate(memory, database, {
+          findSimilar: () => [existingMemory],
+          storeMemory: () => 99,
+          generateEmbedding,
+        });
+
+        expect(result).not.toBeNull();
+        expect(result!.action).toBe('merge');
+        if (result!.action === 'merge') {
+          expect(result!.existingMemoryId).toBe(42);
+          expect(result!.similarity).toBe(0.92);
+        }
+      } finally {
+        database.close();
       }
     },
   ));

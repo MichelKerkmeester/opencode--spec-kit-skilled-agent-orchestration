@@ -61,6 +61,11 @@ let flushInterval: ReturnType<typeof setInterval> | null = null;
 ----------------------------------------------------------------*/
 
 function init(database: Database.Database): void {
+  if (db && db !== database) {
+    // A DB swap starts a new accounting context. Pending accumulator state
+    // must not bleed into the newly active database.
+    accumulators.clear();
+  }
   db = database;
   initExitHandlers();
   if (!flushInterval) {

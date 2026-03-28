@@ -49,6 +49,22 @@ export interface ErrorResponse {
   meta: ErrorResponseMeta;
 }
 
+const DEFAULT_TOOL_ERROR_CODES: Record<string, string> = {
+  memory_search: ERROR_CODES.SEARCH_FAILED,
+  memory_quick_search: ERROR_CODES.SEARCH_FAILED,
+  memory_context: ERROR_CODES.SEARCH_FAILED,
+  memory_match_triggers: ERROR_CODES.SEARCH_FAILED,
+  memory_save: ERROR_CODES.MEMORY_SAVE_FAILED,
+  memory_delete: ERROR_CODES.MEMORY_DELETE_FAILED,
+  memory_update: ERROR_CODES.MEMORY_UPDATE_FAILED,
+  checkpoint_create: ERROR_CODES.CHECKPOINT_CREATE_FAILED,
+  checkpoint_restore: ERROR_CODES.CHECKPOINT_RESTORE_FAILED,
+  memory_drift_why: ERROR_CODES.TRAVERSAL_ERROR,
+  memory_causal_link: ERROR_CODES.CAUSAL_GRAPH_ERROR,
+  memory_causal_stats: ERROR_CODES.CAUSAL_GRAPH_ERROR,
+  memory_causal_unlink: ERROR_CODES.CAUSAL_GRAPH_ERROR,
+};
+
 // 2. ERROR CODES (Legacy)
 //
 // Re-export from recovery-hints for backward compatibility.
@@ -75,6 +91,12 @@ export const ErrorCodes = {
   API_KEY_INVALID_STARTUP: 'E050',
   API_KEY_INVALID_RUNTIME: 'E051',
   LOCAL_MODEL_UNAVAILABLE: 'E052',
+  CAUSAL_EDGE_NOT_FOUND: 'E100',
+  CAUSAL_CYCLE_DETECTED: 'E101',
+  CAUSAL_INVALID_RELATION: 'E102',
+  CAUSAL_SELF_REFERENCE: 'E103',
+  CAUSAL_GRAPH_ERROR: 'E104',
+  TRAVERSAL_ERROR: 'E105',
   RATE_LIMITED: 'E429',
 } as const;
 
@@ -107,6 +129,10 @@ export class MemoryError extends Error {
   toJSON(): { code: string; message: string; details: Record<string, unknown> } {
     return { code: this.code, message: this.message, details: this.details };
   }
+}
+
+export function getDefaultErrorCodeForTool(toolName: string): string {
+  return DEFAULT_TOOL_ERROR_CODES[toolName] || ErrorCodes.SEARCH_FAILED;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -282,7 +308,10 @@ export function buildErrorResponse(
   context: Record<string, unknown> = {}
 ): ErrorResponse {
   // Extract error code (from MemoryError or fallback)
-  const errorCode = (error as MemoryError).code || ErrorCodes.SEARCH_FAILED;
+  const errorCode = (error as MemoryError).code || getDefaultErrorCodeForTool(toolName);
+  const publicMessage = error instanceof MemoryError
+    ? sanitizeErrorField(error.message)
+    : userFriendlyError(error);
 
   // Get recovery hint (zero-cost static lookup)
   const recoveryHint = getRecoveryHint(toolName, errorCode);
@@ -295,9 +324,9 @@ export function buildErrorResponse(
 
   // Build standardized envelope format
   return {
-    summary: `Error: ${sanitizeErrorField(error.message)}`,
+    summary: `Error: ${publicMessage}`,
     data: {
-      error: sanitizeErrorField(error.message),
+      error: publicMessage,
       code: errorCode,
       details: sanitizeDetails((error as MemoryError).details || context || null) as Record<string, unknown> | null
     },

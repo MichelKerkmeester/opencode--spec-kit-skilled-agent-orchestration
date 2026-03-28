@@ -22,6 +22,11 @@ function insertMemory(
     title: string;
     createdAt: string;
     updatedAt?: string;
+    tenantId?: string | null;
+    userId?: string | null;
+    agentId?: string | null;
+    sessionId?: string | null;
+    sharedSpaceId?: string | null;
   },
 ): void {
   database.prepare(`
@@ -38,8 +43,13 @@ function insertMemory(
       embedding_status,
       importance_tier,
       context_type,
-      content_text
-    ) VALUES (?, ?, ?, ?, ?, '[]', 0.5, ?, ?, 'pending', 'normal', 'general', ?)
+      content_text,
+      tenant_id,
+      user_id,
+      agent_id,
+      session_id,
+      shared_space_id
+    ) VALUES (?, ?, ?, ?, ?, '[]', 0.5, ?, ?, 'pending', 'normal', 'general', ?, ?, ?, ?, ?, ?)
   `).run(
     params.id,
     params.specFolder,
@@ -49,6 +59,11 @@ function insertMemory(
     params.createdAt,
     params.updatedAt ?? params.createdAt,
     `${params.title} body`,
+    params.tenantId ?? null,
+    params.userId ?? null,
+    params.agentId ?? null,
+    params.sessionId ?? null,
+    params.sharedSpaceId ?? null,
   );
 }
 
@@ -132,6 +147,104 @@ describe('Memory lineage state', () => {
     expect(report.compatible).toBe(true);
     expect(report.missingTables).toEqual([]);
     expect(report.missingColumns).toEqual({});
+  });
+
+  it('derives distinct logical keys for memories that only differ by tenant scope', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/scoped-tenant.md';
+    insertMemory(database, {
+      id: 61,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Tenant A',
+      createdAt: '2026-03-13T11:00:00.000Z',
+      tenantId: 'tenant-a',
+    });
+    insertMemory(database, {
+      id: 62,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Tenant B',
+      createdAt: '2026-03-13T11:05:00.000Z',
+      tenantId: 'tenant-b',
+    });
+
+    const tenantA = recordLineageVersion(database, {
+      memoryId: 61,
+      actor: 'ops:tenant-scope',
+      effectiveAt: '2026-03-13T11:00:00.000Z',
+    });
+    const tenantB = recordLineageVersion(database, {
+      memoryId: 62,
+      actor: 'ops:tenant-scope',
+      effectiveAt: '2026-03-13T11:05:00.000Z',
+    });
+
+    expect(tenantA.logicalKey).not.toBe(tenantB.logicalKey);
+    expect(tenantA.logicalKey).toContain('scope-sha256:');
+    expect(tenantB.logicalKey).toContain('scope-sha256:');
+
+    const projectionCount = database.prepare(`
+      SELECT COUNT(*) AS total
+      FROM active_memory_projection
+      WHERE logical_key IN (?, ?)
+    `).get(tenantA.logicalKey, tenantB.logicalKey) as { total: number };
+    expect(projectionCount.total).toBe(2);
+  });
+
+  it('derives distinct logical keys for memories that only differ by user scope', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/scoped-user.md';
+    insertMemory(database, {
+      id: 71,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'User A',
+      createdAt: '2026-03-13T12:00:00.000Z',
+      tenantId: 'tenant-a',
+      userId: 'user-a',
+    });
+    insertMemory(database, {
+      id: 72,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'User B',
+      createdAt: '2026-03-13T12:05:00.000Z',
+      tenantId: 'tenant-a',
+      userId: 'user-b',
+    });
+
+    const userA = recordLineageVersion(database, {
+      memoryId: 71,
+      actor: 'ops:user-scope',
+      effectiveAt: '2026-03-13T12:00:00.000Z',
+    });
+    const userB = recordLineageVersion(database, {
+      memoryId: 72,
+      actor: 'ops:user-scope',
+      effectiveAt: '2026-03-13T12:05:00.000Z',
+    });
+
+    expect(userA.logicalKey).not.toBe(userB.logicalKey);
+    expect(userA.versionNumber).toBe(1);
+    expect(userB.versionNumber).toBe(1);
+  });
+
+  it('preserves the legacy logical key format for unscoped memories', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/unscoped.md';
+    insertMemory(database, {
+      id: 81,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Unscoped v1',
+      createdAt: '2026-03-13T13:00:00.000Z',
+    });
+
+    const recorded = recordLineageVersion(database, {
+      memoryId: 81,
+      actor: 'ops:unscoped-compat',
+      effectiveAt: '2026-03-13T13:00:00.000Z',
+    });
+
+    expect(recorded.logicalKey).toBe('specs/015-memory-state::/tmp/specs/015-memory-state/memory/unscoped.md::_');
   });
 
   it('builds an operator-facing lineage summary for append-first chains', () => {

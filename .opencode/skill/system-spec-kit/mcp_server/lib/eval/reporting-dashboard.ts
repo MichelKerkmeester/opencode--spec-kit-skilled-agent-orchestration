@@ -66,6 +66,8 @@ export interface SprintReport {
   evalRunIds: number[];
   /** Per-metric summary statistics. */
   metrics: Record<string, MetricSummary>;
+  /** Per-metric, per-channel summary statistics derived from channel-tagged snapshots. */
+  channelMetrics: Record<string, Record<string, MetricSummary>>;
   /** Per-channel performance data. */
   channels: Record<string, ChannelPerformance>;
   /** Earliest timestamp in this sprint group. */
@@ -322,6 +324,8 @@ function buildSprintReport(
   // Group snapshots by metric name
   const metricGroups = new Map<string, number[]>();
   const metricLatest = new Map<string, { value: number; time: string }>();
+  const channelMetricGroups = new Map<string, Map<string, number[]>>();
+  const channelMetricLatest = new Map<string, Map<string, { value: number; time: string }>>();
 
   for (const snap of snapshots) {
     if (!metricGroups.has(snap.metric_name)) {
@@ -337,6 +341,30 @@ function buildSprintReport(
         time: snap.created_at,
       });
     }
+
+    if (snap.channel) {
+      if (!channelMetricGroups.has(snap.metric_name)) {
+        channelMetricGroups.set(snap.metric_name, new Map());
+      }
+      if (!channelMetricLatest.has(snap.metric_name)) {
+        channelMetricLatest.set(snap.metric_name, new Map());
+      }
+
+      const perMetricGroups = channelMetricGroups.get(snap.metric_name)!;
+      const perMetricLatest = channelMetricLatest.get(snap.metric_name)!;
+      if (!perMetricGroups.has(snap.channel)) {
+        perMetricGroups.set(snap.channel, []);
+      }
+      perMetricGroups.get(snap.channel)!.push(snap.metric_value);
+
+      const existingChannelMetric = perMetricLatest.get(snap.channel);
+      if (!existingChannelMetric || snap.created_at > existingChannelMetric.time) {
+        perMetricLatest.set(snap.channel, {
+          value: snap.metric_value,
+          time: snap.created_at,
+        });
+      }
+    }
   }
 
   // Build metric summaries
@@ -344,6 +372,18 @@ function buildSprintReport(
   for (const [name, values] of metricGroups) {
     const latest = metricLatest.get(name)?.value ?? 0;
     metrics[name] = computeMetricSummary(values, latest);
+  }
+
+  const channelMetrics: Record<string, Record<string, MetricSummary>> = {};
+  for (const [metricName, perChannelGroups] of channelMetricGroups) {
+    const perChannelLatest = channelMetricLatest.get(metricName) ?? new Map();
+    channelMetrics[metricName] = {};
+    for (const [channelName, values] of perChannelGroups) {
+      channelMetrics[metricName][channelName] = computeMetricSummary(
+        values,
+        perChannelLatest.get(channelName)?.value ?? 0,
+      );
+    }
   }
 
   // Build channel performance
@@ -393,6 +433,7 @@ function buildSprintReport(
     evalRunCount: evalRunIds.length,
     evalRunIds,
     metrics,
+    channelMetrics,
     channels,
     firstSeen,
     lastSeen,
@@ -473,6 +514,11 @@ function buildSummary(
     const metricNames = Object.keys(latest.metrics);
     if (metricNames.length > 0) {
       lines.push(`Latest sprint "${latest.sprint}" tracks ${metricNames.length} metric(s) across ${latest.evalRunCount} run(s).`);
+    }
+    const channelMetricCount = Object.values(latest.channelMetrics)
+      .reduce((total, metricsForChannels) => total + Object.keys(metricsForChannels).length, 0);
+    if (channelMetricCount > 0) {
+      lines.push(`Per-channel metric breakdowns: ${channelMetricCount}.`);
     }
     const channelNames = Object.keys(latest.channels);
     if (channelNames.length > 0) {
@@ -619,6 +665,21 @@ export function formatReportText(report: DashboardReport): string {
         lines.push(
           `    ${name.padEnd(35)} latest=${m.latest.toFixed(4)}  mean=${m.mean.toFixed(4)}  range=[${m.min.toFixed(4)}, ${m.max.toFixed(4)}]  n=${m.count}`
         );
+      }
+    }
+
+    const channelMetricNames = Object.keys(sprint.channelMetrics).sort();
+    if (channelMetricNames.length > 0) {
+      lines.push('  Metric Channels:');
+      for (const metricName of channelMetricNames) {
+        const channelsForMetric = sprint.channelMetrics[metricName];
+        const metricChannelNames = Object.keys(channelsForMetric).sort();
+        for (const channelName of metricChannelNames) {
+          const summary = channelsForMetric[channelName];
+          lines.push(
+            `    ${`${metricName} [${channelName}]`.padEnd(35)} latest=${summary.latest.toFixed(4)}  mean=${summary.mean.toFixed(4)}  range=[${summary.min.toFixed(4)}, ${summary.max.toFixed(4)}]  n=${summary.count}`
+          );
+        }
       }
     }
 

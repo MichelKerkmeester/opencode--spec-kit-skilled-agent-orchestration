@@ -91,6 +91,12 @@ function upsert_active_projection(
   updatedAt: string,
 ): void {
   const logicalKey = `${specFolder}::${canonicalFilePath}::${anchorId && anchorId.trim().length > 0 ? anchorId : '_'}`;
+  // Evict any stale projection row that maps a *different* logical_key to the
+  // same active_memory_id — prevents UNIQUE constraint violation on re-index
+  // when the logical_key changes (e.g. anchor or path normalization drift).
+  database.prepare(
+    'DELETE FROM active_memory_projection WHERE active_memory_id = ? AND logical_key != ?',
+  ).run(memoryId, logicalKey);
   database.prepare(`
     INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
     VALUES (?, ?, ?, ?)
@@ -127,9 +133,10 @@ type UpdateMemoryParams = Readonly<SharedUpdateMemoryParams> & {
  * });
  * ```
  */
-export function index_memory(params: IndexMemoryParams): number {
-  const database = initialize_db();
-
+export function index_memory(
+  params: IndexMemoryParams,
+  database: Database.Database = initialize_db(),
+): number {
   const {
     specFolder,
     filePath,
@@ -170,8 +177,8 @@ export function index_memory(params: IndexMemoryParams): number {
     ? null
     : stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
 
-    if (existing && !appendOnly) {
-    const updatedId = update_memory({
+  if (existing && !appendOnly) {
+    return update_memory({
       id: existing.id,
       title: title ?? undefined,
       triggerPhrases,
@@ -184,13 +191,7 @@ export function index_memory(params: IndexMemoryParams): number {
       qualityScore,
       qualityFlags,
       canonicalFilePath,
-    });
-    try {
-      upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, updatedId, now);
-    } catch (_error: unknown) {
-      // Best-effort for legacy databases that may not have lineage projection tables.
-    }
-    return updatedId;
+    }, database);
   }
 
   const sqlite_vec = get_sqlite_vec_available();
@@ -214,11 +215,7 @@ export function index_memory(params: IndexMemoryParams): number {
     const row_id = BigInt(result.lastInsertRowid);
     const metadata_id = Number(row_id);
 
-    try {
-      upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, metadata_id, now);
-    } catch (_error: unknown) {
-      // Best-effort for legacy databases that may not have lineage projection tables.
-    }
+    upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, metadata_id, now);
 
     if (sqlite_vec) {
       // Remove orphaned vec_memories entry before insert
@@ -244,9 +241,10 @@ export function index_memory(params: IndexMemoryParams): number {
  * @param params - The deferred memory values to index.
  * @returns The indexed memory identifier.
  */
-export function index_memory_deferred(params: IndexMemoryDeferredParams): number {
-  const database = initialize_db();
-
+export function index_memory_deferred(
+  params: IndexMemoryDeferredParams,
+  database: Database.Database = initialize_db(),
+): number {
   const {
     specFolder,
     filePath,
@@ -273,57 +271,53 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
     ? null
     : stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
 
-  if (existing && !appendOnly) {
-    database.prepare(`
-      UPDATE memory_index
-      SET title = ?,
-          trigger_phrases = ?,
-          importance_weight = ?,
-          canonical_file_path = ?,
-          embedding_status = 'pending',
-          failure_reason = ?,
-          updated_at = ?,
-          encoding_intent = COALESCE(?, encoding_intent),
-          document_type = ?,
-          spec_level = ?,
-          content_text = ?,
-          quality_score = ?,
-          quality_flags = ?,
-          retry_count = 0,
-          last_retry_at = NULL
-      WHERE id = ?
-    `).run(title, triggers_json, importanceWeight, canonicalFilePath, failureReason, now, encodingIntent, documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), existing.id);
-    try {
+  const index_memory_deferred_tx = database.transaction(() => {
+    if (existing && !appendOnly) {
+      database.prepare(`
+        UPDATE memory_index
+        SET title = ?,
+            trigger_phrases = ?,
+            importance_weight = ?,
+            canonical_file_path = ?,
+            embedding_status = 'pending',
+            failure_reason = ?,
+            updated_at = ?,
+            encoding_intent = COALESCE(?, encoding_intent),
+            document_type = ?,
+            spec_level = ?,
+            content_text = ?,
+            quality_score = ?,
+            quality_flags = ?,
+            retry_count = 0,
+            last_retry_at = NULL
+        WHERE id = ?
+      `).run(title, triggers_json, importanceWeight, canonicalFilePath, failureReason, now, encodingIntent, documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), existing.id);
       upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, existing.id, now);
-    } catch (_error: unknown) {
-      // Best-effort for legacy databases that may not have lineage projection tables.
+      refresh_interference_scores_for_folder(database, specFolder);
+      return existing.id;
     }
-    refresh_interference_scores_for_folder(database, specFolder);
-    return existing.id;
-  }
 
-  const result = database.prepare(`
-    INSERT INTO memory_index (
-      spec_folder, file_path, canonical_file_path, anchor_id, title, trigger_phrases,
-      importance_weight, created_at, updated_at, embedding_status,
-      failure_reason, retry_count, encoding_intent, document_type, spec_level,
-      content_text, quality_score, quality_flags
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, 0, ?, ?, ?, ?, ?, ?)
-  `).run(
-    specFolder, filePath, canonicalFilePath, anchorId, title, triggers_json,
-    importanceWeight, now, now, failureReason, encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags)
-  );
+    const result = database.prepare(`
+      INSERT INTO memory_index (
+        spec_folder, file_path, canonical_file_path, anchor_id, title, trigger_phrases,
+        importance_weight, created_at, updated_at, embedding_status,
+        failure_reason, retry_count, encoding_intent, document_type, spec_level,
+        content_text, quality_score, quality_flags
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, 0, ?, ?, ?, ?, ?, ?)
+    `).run(
+      specFolder, filePath, canonicalFilePath, anchorId, title, triggers_json,
+      importanceWeight, now, now, failureReason, encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags)
+    );
 
-  const row_id = BigInt(result.lastInsertRowid);
-  try {
+    const row_id = BigInt(result.lastInsertRowid);
     upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, Number(row_id), now);
-  } catch (_error: unknown) {
-    // Best-effort for legacy databases that may not have lineage projection tables.
-  }
-  refresh_interference_scores_for_folder(database, specFolder);
-  logger.info(`Deferred indexing: Memory ${Number(row_id)} saved without embedding (BM25/FTS5 searchable)`);
+    refresh_interference_scores_for_folder(database, specFolder);
+    logger.info(`Deferred indexing: Memory ${Number(row_id)} saved without embedding (BM25/FTS5 searchable)`);
 
-  return Number(row_id);
+    return Number(row_id);
+  });
+
+  return index_memory_deferred_tx();
 }
 
 /**
@@ -336,9 +330,10 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
  * const id = update_memory({ id: 42, title: 'Updated title', embedding });
  * ```
  */
-export function update_memory(params: UpdateMemoryParams): number {
-  const database = initialize_db();
-
+export function update_memory(
+  params: UpdateMemoryParams,
+  database: Database.Database = initialize_db(),
+): number {
   const {
     id,
     title,
@@ -358,7 +353,16 @@ export function update_memory(params: UpdateMemoryParams): number {
   const now = new Date().toISOString();
 
   const update_memory_tx = database.transaction(() => {
-    const existingRow = database.prepare('SELECT spec_folder FROM memory_index WHERE id = ?').get(id) as { spec_folder: string | null } | undefined;
+    const existingRow = database.prepare(`
+      SELECT spec_folder, anchor_id, canonical_file_path, file_path
+      FROM memory_index
+      WHERE id = ?
+    `).get(id) as {
+      spec_folder: string | null;
+      anchor_id: string | null;
+      canonical_file_path: string | null;
+      file_path: string | null;
+    } | undefined;
     const updates = ['updated_at = ?'];
     const values: unknown[] = [now];
 
@@ -447,6 +451,13 @@ export function update_memory(params: UpdateMemoryParams): number {
     }
 
     if (existingRow?.spec_folder) {
+      const projectionPath = canonicalFilePath
+        ?? existingRow.canonical_file_path
+        ?? getCanonicalPathKey(existingRow.file_path ?? '');
+      upsert_active_projection(database, existingRow.spec_folder, projectionPath, existingRow.anchor_id ?? null, id, now);
+    }
+
+    if (existingRow?.spec_folder) {
       refresh_interference_scores_for_folder(database, existingRow.spec_folder);
     }
     // H3 FIX: Invalidate search cache after update
@@ -468,8 +479,7 @@ export function update_memory(params: UpdateMemoryParams): number {
  * const deleted = delete_memory(42);
  * ```
  */
-export function delete_memory(id: number): boolean {
-  const database = initialize_db();
+export function delete_memory(id: number, database: Database.Database = initialize_db()): boolean {
   return delete_memory_from_database(database, id);
 }
 
@@ -538,8 +548,12 @@ export function delete_memory_from_database(database: Database.Database, id: num
  * const deleted = delete_memory_by_path('specs/001-demo', 'spec.md');
  * ```
  */
-export function delete_memory_by_path(spec_folder: string, file_path: string, anchor_id: string | null = null): boolean {
-  const database = initialize_db();
+export function delete_memory_by_path(
+  spec_folder: string,
+  file_path: string,
+  anchor_id: string | null = null,
+  database: Database.Database = initialize_db(),
+): boolean {
   const canonicalPath = getCanonicalPathKey(file_path);
 
   const row = database.prepare(`
@@ -552,7 +566,7 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
   `).get(spec_folder, canonicalPath, file_path, anchor_id, anchor_id) as { id: number; spec_folder?: string | null } | undefined;
 
   if (row) {
-    const deleted = delete_memory(row.id);
+    const deleted = delete_memory_from_database(database, row.id);
     if (deleted) {
       // Self-record DELETE history only after the delete succeeded.
       try {
@@ -576,12 +590,13 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
  * const outcome = delete_memories([1, 2, 3]);
  * ```
  */
-export function delete_memories(memory_ids: number[]): { deleted: number; failed: number } {
+export function delete_memories(
+  memory_ids: number[],
+  database: Database.Database = initialize_db(),
+): { deleted: number; failed: number } {
   if (!memory_ids || memory_ids.length === 0) {
     return { deleted: 0, failed: 0 };
   }
-
-  const database = initialize_db();
   const sqlite_vec = get_sqlite_vec_available();
   let deleted = 0;
   let failed = 0;
@@ -685,7 +700,11 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
  * @param status - The new embedding status.
  * @returns True when the status was updated.
  */
-export function update_embedding_status(id: number, status: string): boolean {
+export function update_embedding_status(
+  id: number,
+  status: string,
+  database: Database.Database = initialize_db(),
+): boolean {
   const valid_statuses = ['pending', 'success', 'failed', 'retry', 'partial'];
   if (!valid_statuses.includes(status)) {
     console.warn(`[vector-index] Invalid embedding status: ${status}`);
@@ -693,7 +712,6 @@ export function update_embedding_status(id: number, status: string): boolean {
   }
 
   try {
-    const database = initialize_db();
     const result = database.prepare(`
       UPDATE memory_index
       SET embedding_status = ?, updated_at = datetime('now')
@@ -713,14 +731,17 @@ export function update_embedding_status(id: number, status: string): boolean {
  * @param confidence - The confidence value to store.
  * @returns True when the confidence was updated.
  */
-export function update_confidence(memory_id: number, confidence: number): boolean {
+export function update_confidence(
+  memory_id: number,
+  confidence: number,
+  database: Database.Database = initialize_db(),
+): boolean {
   if (typeof confidence !== 'number' || confidence < 0 || confidence > 1) {
     console.warn(`[vector-index] Invalid confidence value: ${confidence}`);
     return false;
   }
 
   try {
-    const database = initialize_db();
     const result = database.prepare(`
       UPDATE memory_index
       SET confidence = ?

@@ -112,6 +112,8 @@ export const ERROR_CODES = {
   CAUSAL_CYCLE_DETECTED: 'E101',
   CAUSAL_INVALID_RELATION: 'E102',
   CAUSAL_SELF_REFERENCE: 'E103',
+  CAUSAL_GRAPH_ERROR: 'E104',
+  TRAVERSAL_ERROR: 'E105',
 
   // Rate limiting (HTTP-style codes)
   RATE_LIMITED: 'E429',
@@ -618,6 +620,26 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
     ],
     severity: 'low',
     toolTip: 'memory_list()'
+  },
+  [ERROR_CODES.CAUSAL_GRAPH_ERROR]: {
+    hint: 'The causal graph operation failed.',
+    actions: [
+      'Retry the graph operation',
+      'Run memory_causal_stats() to inspect graph health',
+      'Check server logs for the detailed failure'
+    ],
+    severity: 'medium',
+    toolTip: 'memory_causal_stats()'
+  },
+  [ERROR_CODES.TRAVERSAL_ERROR]: {
+    hint: 'The causal traversal could not be completed.',
+    actions: [
+      'Retry memory_drift_why() with a smaller maxDepth',
+      'Run memory_causal_stats() to inspect graph integrity',
+      'Check server logs for the detailed failure'
+    ],
+    severity: 'medium',
+    toolTip: 'memory_drift_why()'
   },
 
   // --- Rate Limiting ---

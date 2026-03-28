@@ -38,6 +38,7 @@ import {
 import {
   createUnifiedGraphSearchFn,
   computeDegreeScores,
+  DEGREE_CHANNEL_WEIGHT,
 } from '../lib/search/graph-search-fn';
 import { isDegreeBoostEnabled } from '../lib/search/search-flags';
 import type { RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
@@ -210,6 +211,7 @@ function buildRawFusionLists(
         lists.push({
           source: 'degree',
           results: degreeItems.map((item) => ({ id: item.id })),
+          weight: DEGREE_CHANNEL_WEIGHT,
         });
       }
     }
@@ -290,6 +292,9 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
       channels,
       groundTruthQueryIds: args.groundTruthQueryIds,
       recallK,
+      alignmentDb: db,
+      alignmentDbPath: dbPath,
+      alignmentContext: 'eval_run_ablation',
     });
   });
 

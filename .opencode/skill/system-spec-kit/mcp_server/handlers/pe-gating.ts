@@ -68,6 +68,13 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
     return [];
   }
 
+  const matchesScopedValue = (expected: string | null, actual: unknown): boolean => {
+    if (!expected) {
+      return true;
+    }
+    return typeof actual === 'string' && actual === expected;
+  };
+
   try {
     // Fetch extra candidates then post-filter by governance scope
     const results = vectorIndex.vectorSearch(embedding, {
@@ -79,12 +86,12 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
 
     // Post-filter by governance scope to prevent cross-tenant/session PE decisions
     const scopeFiltered = results.filter((r: Record<string, unknown>) => {
-      if (tenantId && r.tenant_id && r.tenant_id !== tenantId) return false;
-      if (userId && r.user_id && r.user_id !== userId) return false;
-      if (agentId && r.agent_id && r.agent_id !== agentId) return false;
+      if (!matchesScopedValue(tenantId, r.tenant_id)) return false;
+      if (!matchesScopedValue(userId, r.user_id)) return false;
+      if (!matchesScopedValue(agentId, r.agent_id)) return false;
       // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
-      if (sessionId && r.session_id && r.session_id !== sessionId) return false;
-      if (sharedSpaceId && r.shared_space_id && r.shared_space_id !== sharedSpaceId) return false;
+      if (!matchesScopedValue(sessionId, r.session_id)) return false;
+      if (!matchesScopedValue(sharedSpaceId, r.shared_space_id)) return false;
       return true;
     }).slice(0, limit);
 

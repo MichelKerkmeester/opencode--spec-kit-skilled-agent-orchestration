@@ -389,6 +389,8 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
   const result = checkpoints.restoreCheckpoint(name, clear_existing, scope);
   const hasRestoreErrors = result.errors.length > 0;
   const hasRestoredData = result.restored > 0 || result.workingMemoryRestored > 0;
+  const hasPartialFailure = result.partialFailure === true;
+  const hasPartialSuccess = !hasPartialFailure && (result.skipped > 0 || hasRestoreErrors);
 
   // T102 FIX: Rebuild search indexes after checkpoint restore
   // Without this, restored memories are invisible to search until server restart.
@@ -430,10 +432,37 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
     });
   }
 
-  if (hasRestoreErrors && hasRestoredData) {
+  if (hasPartialFailure && hasRestoredData) {
+    return createMCPErrorResponse({
+      tool: 'checkpoint_restore',
+      error: `Checkpoint "${name}" restore completed with partial failure`,
+      code: 'CHECKPOINT_RESTORE_PARTIAL_FAILURE',
+      details: {
+        name,
+        clearExisting: clear_existing,
+        restored: result.restored,
+        skipped: result.skipped,
+        workingMemoryRestored: result.workingMemoryRestored,
+        rolledBackTables: result.rolledBackTables ?? [],
+        errors: result.errors,
+      },
+      recovery: {
+        hint: 'Review the reported table failures before retrying restore.',
+        actions: [
+          'Inspect restored.errors and restored.rolledBackTables for the failed merge-replace tables',
+          'Retry with a narrower scope or clearExisting=true if you intend to replace current state',
+        ],
+      },
+      startTime,
+    });
+  }
+
+  if (hasPartialSuccess) {
     return createMCPSuccessResponse({
       tool: 'checkpoint_restore',
-      summary: `Checkpoint "${name}" restored with warnings (${result.errors.length})`,
+      summary: result.errors.length > 0
+        ? `Checkpoint "${name}" restored with warnings (${result.errors.length})`
+        : `Checkpoint "${name}" restored partially`,
       data: {
         success: true,
         partial: true,
@@ -441,7 +470,7 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
         restored: result,
       },
       hints: [
-        'Restore applied partially; review restored.errors before retrying',
+        'Restore applied partially; review restored.errors and restored.skipped before retrying',
         'Avoid immediate retry with clearExisting=true unless you intend to replace current state',
       ],
       startTime,

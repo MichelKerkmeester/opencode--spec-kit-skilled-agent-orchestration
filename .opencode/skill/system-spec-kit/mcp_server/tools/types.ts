@@ -213,8 +213,8 @@ export interface SharedSpaceMembershipArgs {
 
 export interface SharedMemoryStatusArgs {
   tenantId?: string;
-  userId?: string;
-  agentId?: string;
+  actorUserId?: string;
+  actorAgentId?: string;
 }
 
 /** Arguments for checkpoint creation requests. */
@@ -278,6 +278,7 @@ export interface PostflightArgs {
   contextScore: number;
   gapsClosed?: string[];
   newGapsDiscovered?: string[];
+  sessionId?: string | null;
 }
 
 /** Arguments for learning history requests. */

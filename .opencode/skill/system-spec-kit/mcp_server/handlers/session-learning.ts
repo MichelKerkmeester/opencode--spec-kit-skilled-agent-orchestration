@@ -38,6 +38,7 @@ interface PostflightArgs {
   contextScore: number;
   gapsClosed?: string[];
   newGapsDiscovered?: string[];
+  sessionId?: string | null;
 }
 
 interface LearningHistoryArgs {
@@ -108,6 +109,8 @@ export interface LearningHistoryPayload {
 
 interface PreflightRecord extends Record<string, unknown> {
   id: number;
+  phase: 'preflight' | 'complete';
+  session_id?: string | null;
   pre_knowledge_score: number;
   pre_uncertainty_score: number;
   pre_context_score: number;
@@ -150,8 +153,7 @@ const SCHEMA_SQL = `
     -- Timestamps
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now')),
-    completed_at TEXT,
-    UNIQUE(spec_folder, task_id)
+    completed_at TEXT
   )
 `;
 
@@ -160,9 +162,86 @@ const INDEX_SQL = `
   ON session_learning(spec_folder)
 `;
 
+const TASK_LOOKUP_INDEX_SQL = `
+  CREATE INDEX IF NOT EXISTS idx_session_learning_task_lookup
+  ON session_learning(spec_folder, task_id, session_id, phase, updated_at, id)
+`;
+
+const SESSION_LEARNING_COLUMNS = [
+  'id',
+  'spec_folder',
+  'task_id',
+  'phase',
+  'session_id',
+  'pre_knowledge_score',
+  'pre_uncertainty_score',
+  'pre_context_score',
+  'knowledge_gaps',
+  'post_knowledge_score',
+  'post_uncertainty_score',
+  'post_context_score',
+  'delta_knowledge',
+  'delta_uncertainty',
+  'delta_context',
+  'learning_index',
+  'gaps_closed',
+  'new_gaps_discovered',
+  'created_at',
+  'updated_at',
+  'completed_at',
+].join(', ');
+
 // M2 FIX: Track schema init per database instance, not as a process-global boolean.
 // If the server swaps to a fresh DB connection, the old global would skip init.
 const schemaInitializedDbs = new WeakSet<Database>();
+
+function normalizeSessionId(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function hasLegacyUniqueConstraint(database: Database): boolean {
+  const row = database.prepare(`
+    SELECT sql
+    FROM sqlite_master
+    WHERE type = 'table' AND name = 'session_learning'
+  `).get() as { sql?: string | null } | undefined;
+
+  return typeof row?.sql === 'string' && row.sql.includes('UNIQUE(spec_folder, task_id)');
+}
+
+function migrateLegacySchema(database: Database): void {
+  const tempTableName = 'session_learning_legacy_migration';
+
+  try {
+    database.exec('BEGIN IMMEDIATE');
+    database.exec(`ALTER TABLE session_learning RENAME TO ${tempTableName}`);
+    database.exec(SCHEMA_SQL);
+    database.exec(`
+      INSERT INTO session_learning (${SESSION_LEARNING_COLUMNS})
+      SELECT ${SESSION_LEARNING_COLUMNS}
+      FROM ${tempTableName}
+      ORDER BY id ASC
+    `);
+    database.exec(`DROP TABLE ${tempTableName}`);
+    database.exec('COMMIT');
+  } catch (err: unknown) {
+    try {
+      database.exec('ROLLBACK');
+    } catch {
+      // Best-effort rollback only.
+    }
+    const message = toErrorMessage(err);
+    throw new MemoryError(
+      ErrorCodes.DATABASE_ERROR,
+      'Failed to migrate session_learning schema',
+      { originalError: message }
+    );
+  }
+}
 
 /** Initialize the session_learning table schema if not already created */
 function ensureSchema(database: Database): void {
@@ -170,7 +249,11 @@ function ensureSchema(database: Database): void {
 
   try {
     database.exec(SCHEMA_SQL);
+    if (hasLegacyUniqueConstraint(database)) {
+      migrateLegacySchema(database);
+    }
     database.exec(INDEX_SQL);
+    database.exec(TASK_LOOKUP_INDEX_SQL);
     schemaInitializedDbs.add(database);
     console.error('[session-learning] Schema initialized');
   } catch (err: unknown) {
@@ -248,21 +331,22 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
 
   const now = new Date().toISOString();
   const gapsJson = JSON.stringify(knowledgeGaps);
+  const normalizedSessionId = normalizeSessionId(session_id);
 
-  // Check for existing record before INSERT to prevent silent data loss
+  // Re-record the current baseline when the same task is already open in the
+  // same session (or in the anonymous/null session bucket).
   const existing = database.prepare(
-    'SELECT id, phase FROM session_learning WHERE spec_folder = ? AND task_id = ?'
-  ).get(spec_folder, taskId) as { id: number; phase: string } | undefined;
+    `SELECT id, phase
+     FROM session_learning
+     WHERE spec_folder = ?
+       AND task_id = ?
+       AND phase = 'preflight'
+       AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
+     ORDER BY updated_at DESC, id DESC
+     LIMIT 1`
+  ).get(spec_folder, taskId, normalizedSessionId, normalizedSessionId) as { id: number; phase: string } | undefined;
 
   if (existing) {
-    if (existing.phase === 'complete') {
-      throw new MemoryError(
-        ErrorCodes.INVALID_PARAMETER,
-        `Learning record already exists and is complete for spec_folder="${spec_folder}", task_id="${taskId}" (id=${existing.id}). Completed records cannot be overwritten.`,
-        { existingId: existing.id, phase: existing.phase }
-      );
-    }
-    // Phase is 'preflight' — allow re-recording baseline (UPDATE, not replace)
     const updateStmt = database.prepare(`
       UPDATE session_learning
       SET session_id = ?, pre_knowledge_score = ?, pre_uncertainty_score = ?, pre_context_score = ?, knowledge_gaps = ?, updated_at = ?
@@ -271,7 +355,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
 
     try {
       updateStmt.run(
-        session_id,
+        normalizedSessionId,
         knowledge_score,
         uncertainty_score,
         context_score,
@@ -291,6 +375,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
             id: existing.id,
             specFolder: spec_folder,
             taskId: taskId,
+            sessionId: normalizedSessionId,
             phase: 'preflight',
             baseline: {
               knowledge: knowledge_score,
@@ -319,7 +404,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
     const result = stmt.run(
       spec_folder,
       taskId,
-      session_id,
+      normalizedSessionId,
       knowledge_score,
       uncertainty_score,
       context_score,
@@ -340,6 +425,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
           id: Number(recordId),
           specFolder: spec_folder,
           taskId: taskId,
+          sessionId: normalizedSessionId,
           phase: 'preflight',
           baseline: {
             knowledge: knowledge_score,
@@ -351,7 +437,9 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
         }
       },
       hints: [
-        `Call task_postflight with taskId: "${taskId}" after completing the task`,
+        normalizedSessionId
+          ? `Call task_postflight with taskId: "${taskId}", sessionId: "${normalizedSessionId}" after completing the task`
+          : `Call task_postflight with taskId: "${taskId}" after completing the task`,
         'Knowledge gaps can guide your exploration focus'
       ]
     });
@@ -375,7 +463,8 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
     uncertaintyScore: uncertainty_score,
     contextScore: context_score,
     gapsClosed = [],
-    newGapsDiscovered = []
+    newGapsDiscovered = [],
+    sessionId: session_id = null,
   } = args;
 
   // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
@@ -399,21 +488,55 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
   ensureSchema(database);
 
   const now = new Date().toISOString();
+  const normalizedSessionId = normalizeSessionId(session_id);
 
-  // Allow re-correction by accepting
-  // Both 'preflight' (first postflight) and 'complete' (re-posted postflight) records.
-  const preflightRecord = database.prepare(`
-    SELECT * FROM session_learning
-    WHERE spec_folder = ? AND task_id = ? AND phase IN ('preflight', 'complete')
-    ORDER BY CASE phase WHEN 'preflight' THEN 0 ELSE 1 END
-    LIMIT 1
-  `).get(spec_folder, taskId) as PreflightRecord | undefined;
+  const baseQuery = `
+    SELECT *
+    FROM session_learning
+    WHERE spec_folder = ? AND task_id = ?
+  `;
+  const params: unknown[] = [spec_folder, taskId];
+  let query = baseQuery;
+  if (normalizedSessionId !== null) {
+    query += ' AND session_id = ?';
+    params.push(normalizedSessionId);
+  }
+  query += `
+    AND phase IN ('preflight', 'complete')
+    ORDER BY CASE phase WHEN 'preflight' THEN 0 ELSE 1 END,
+             updated_at DESC,
+             id DESC
+  `;
+
+  const candidates = database.prepare(query).all(...params) as PreflightRecord[];
+  const preflightCandidates = candidates.filter((row) => row.phase === 'preflight');
+  const completeCandidates = candidates.filter((row) => row.phase === 'complete');
+
+  if (normalizedSessionId === null && preflightCandidates.length > 1) {
+    throw new MemoryError(
+      ErrorCodes.INVALID_PARAMETER,
+      `Multiple open preflight records found for spec_folder="${spec_folder}" and task_id="${taskId}". Provide sessionId to disambiguate postflight.`,
+      { specFolder: spec_folder, taskId: taskId }
+    );
+  }
+
+  if (normalizedSessionId === null && preflightCandidates.length === 0 && completeCandidates.length > 1) {
+    throw new MemoryError(
+      ErrorCodes.INVALID_PARAMETER,
+      `Multiple completed learning cycles found for spec_folder="${spec_folder}" and task_id="${taskId}". Provide sessionId to update the intended record.`,
+      { specFolder: spec_folder, taskId: taskId }
+    );
+  }
+
+  const preflightRecord = (preflightCandidates[0] ?? completeCandidates[0]) as PreflightRecord | undefined;
 
   if (!preflightRecord) {
     throw new MemoryError(
       ErrorCodes.FILE_NOT_FOUND,
-      `No preflight record found for spec_folder="${spec_folder}" and task_id="${taskId}". Call task_preflight first.`,
-      { specFolder: spec_folder, taskId: taskId }
+      normalizedSessionId === null
+        ? `No preflight record found for spec_folder="${spec_folder}" and task_id="${taskId}". Call task_preflight first.`
+        : `No preflight record found for spec_folder="${spec_folder}", task_id="${taskId}", session_id="${normalizedSessionId}". Call task_preflight first.`,
+      { specFolder: spec_folder, taskId: taskId, sessionId: normalizedSessionId }
     );
   }
 
@@ -489,6 +612,7 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
           id: preflightRecord.id,
           specFolder: spec_folder,
           taskId: taskId,
+          sessionId: (preflightRecord.session_id as string | null) ?? normalizedSessionId,
           baseline: {
             knowledge: preflightRecord.pre_knowledge_score,
             uncertainty: preflightRecord.pre_uncertainty_score,

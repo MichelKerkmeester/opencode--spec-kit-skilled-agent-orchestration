@@ -2,6 +2,7 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
+import * as bm25Index from '../lib/search/bm25-index';
 import { getHistory, init as initHistory } from '../lib/storage/history';
 import {
   isReconsolidationEnabled,
@@ -73,6 +74,20 @@ function makeSimilarMemory(overrides: Partial<SimilarMemory> = {}): SimilarMemor
   };
 }
 
+function getReachableVectorMemoryIds(database: Database.Database): number[] {
+  const rows = database.prepare(`
+    SELECT m.id
+    FROM memory_index m
+    JOIN active_memory_projection p ON p.active_memory_id = m.id
+    JOIN vec_memories v ON m.id = v.rowid
+    WHERE m.embedding_status = 'success'
+      AND (m.is_archived IS NULL OR m.is_archived = 0)
+    ORDER BY m.id ASC
+  `).all() as Array<{ id: number }>;
+
+  return rows.map((row) => row.id);
+}
+
 describe('Reconsolidation-on-Save (TM-06)', () => {
   let testDb: Database.Database;
 
@@ -87,11 +102,14 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         file_path TEXT NOT NULL DEFAULT '',
         title TEXT,
         content_text TEXT,
+        trigger_phrases TEXT DEFAULT '[]',
         content_hash TEXT DEFAULT '',
         importance_weight REAL DEFAULT 0.5,
         importance_tier TEXT DEFAULT 'normal',
         created_at TEXT NOT NULL DEFAULT (datetime('now')),
         updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+        last_review TEXT,
+        parent_id INTEGER,
         embedding_status TEXT DEFAULT 'pending',
         is_archived INTEGER DEFAULT 0
       )
@@ -135,6 +153,32 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       )
     `);
 
+    testDb.exec(`
+      CREATE TABLE IF NOT EXISTS memory_lineage (
+        memory_id INTEGER PRIMARY KEY,
+        logical_key TEXT NOT NULL,
+        version_number INTEGER NOT NULL,
+        root_memory_id INTEGER NOT NULL,
+        predecessor_memory_id INTEGER,
+        superseded_by_memory_id INTEGER,
+        valid_from TEXT NOT NULL,
+        valid_to TEXT,
+        transition_event TEXT NOT NULL,
+        actor TEXT NOT NULL DEFAULT 'system',
+        metadata TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    testDb.exec(`
+      CREATE TABLE IF NOT EXISTS active_memory_projection (
+        logical_key TEXT PRIMARY KEY,
+        root_memory_id INTEGER NOT NULL,
+        active_memory_id INTEGER NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    `);
+
     // Initialize causal edges module
     causalEdges.init(testDb);
     initHistory(testDb);
@@ -151,6 +195,9 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
     testDb.exec('DELETE FROM memory_index');
     testDb.exec('DELETE FROM vec_memories');
     testDb.exec('DELETE FROM causal_edges');
+    testDb.exec('DELETE FROM memory_lineage');
+    testDb.exec('DELETE FROM active_memory_projection');
+    vi.restoreAllMocks();
   });
 
   /* ───────────────────────────────────────────────────────────────
@@ -388,13 +435,30 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const existing = makeSimilarMemory({
         id: 101,
+        file_path: '/test/101.md',
+        title: 'No weight',
         content_text: 'Base content',
         importance_weight: undefined,
         similarity: 0.92,
       });
 
       const result = await executeMerge(existing, makeNewMemory({ content: 'Extra content' }), testDb);
+      expect(result.action).toBe('merge');
+      expect(result.existingMemoryId).toBe(101);
+      expect(result.newMemoryId).toBeGreaterThan(101);
       expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1) — default 0.5 + boost
+
+      const oldRow = testDb.prepare('SELECT is_archived FROM memory_index WHERE id = 101').get() as {
+        is_archived: number;
+      };
+      expect(oldRow.is_archived).toBe(1);
+
+      const newRow = testDb.prepare(
+        'SELECT importance_weight FROM memory_index WHERE id = ?'
+      ).get(result.newMemoryId) as {
+        importance_weight: number;
+      };
+      expect(newRow.importance_weight).toBeCloseTo(0.6);
     });
 
     it('MP3: Merge with embedding regeneration callback', async () => {
@@ -408,15 +472,117 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const existing = makeSimilarMemory({
         id: 102,
+        file_path: '/test/102.md',
+        title: 'With emb',
         content_text: 'Original',
         similarity: 0.89,
       });
 
-      const generateEmbedding = async () => new Float32Array([0, 1, 0]);
+      const generateEmbedding = vi.fn(async () => new Float32Array([0, 1, 0]));
 
       const result = await executeMerge(existing, makeNewMemory({ content: 'Additional content' }), testDb, generateEmbedding);
       expect(result.action).toBe('merge');
-      // Embedding was updated (non-fatal; we just check it doesn't crash)
+      expect(result.newMemoryId).toBeGreaterThan(102);
+      expect(generateEmbedding).toHaveBeenCalledWith('Original\n\n<!-- Merged content -->\nAdditional content');
+
+      const archivedRow = testDb.prepare(
+        'SELECT is_archived FROM memory_index WHERE id = 102'
+      ).get() as { is_archived: number };
+      expect(archivedRow.is_archived).toBe(1);
+
+      const newEmbeddingRow = testDb.prepare(`
+        SELECT embedding
+        FROM vec_memories
+        WHERE rowid = ?
+      `).get(result.newMemoryId) as { embedding: Buffer };
+      expect(newEmbeddingRow.embedding).toBeInstanceOf(Buffer);
+      expect(Array.from(new Float32Array(
+        newEmbeddingRow.embedding.buffer,
+        newEmbeddingRow.embedding.byteOffset,
+        newEmbeddingRow.embedding.byteLength / Float32Array.BYTES_PER_ELEMENT,
+      ))).toEqual([0, 1, 0]);
+    });
+
+    it('MP4: Keeps merged survivor reachable through active projection and hides archived predecessor', async () => {
+      const bm25RemoveDocument = vi.fn();
+      const bm25AddDocument = vi.fn();
+      vi.spyOn(bm25Index, 'isBm25Enabled').mockReturnValue(true);
+      vi.spyOn(bm25Index, 'getIndex').mockReturnValue({
+        removeDocument: bm25RemoveDocument,
+        addDocument: bm25AddDocument,
+      } as unknown as ReturnType<typeof bm25Index.getIndex>);
+
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, importance_weight,
+          embedding_status, created_at, updated_at
+        )
+        VALUES (
+          103, 'test-spec', '/test/103.md', 'Reachable Existing', 'Original reachable content',
+          0.5, 'success', datetime('now'), datetime('now')
+        )
+      `).run();
+      testDb.prepare(`
+        INSERT INTO vec_memories (rowid, embedding) VALUES (103, ?)
+      `).run(Buffer.from(new Float32Array([1, 0, 0]).buffer));
+
+      const existing = makeSimilarMemory({
+        id: 103,
+        file_path: '/test/103.md',
+        title: 'Reachable Existing',
+        content_text: 'Original reachable content',
+        similarity: 0.91,
+      });
+
+      const result = await executeMerge(
+        existing,
+        makeNewMemory({
+          title: 'Reachable Existing',
+          content: 'Merged addition that should stay searchable',
+        }),
+        testDb,
+      );
+
+      expect(result.newMemoryId).toBeGreaterThan(103);
+
+      const projectionRow = testDb.prepare(`
+        SELECT root_memory_id, active_memory_id
+        FROM active_memory_projection
+        WHERE logical_key = ?
+      `).get('test-spec::/test/103.md::_') as {
+        root_memory_id: number;
+        active_memory_id: number;
+      };
+      expect(projectionRow.root_memory_id).toBe(103);
+      expect(projectionRow.active_memory_id).toBe(result.newMemoryId);
+
+      const reachableIds = getReachableVectorMemoryIds(testDb);
+      expect(reachableIds).toContain(result.newMemoryId);
+      expect(reachableIds).not.toContain(103);
+
+      const archivedRow = testDb.prepare(`
+        SELECT is_archived
+        FROM memory_index
+        WHERE id = 103
+      `).get() as { is_archived: number };
+      expect(archivedRow.is_archived).toBe(1);
+
+      const newLineageRow = testDb.prepare(`
+        SELECT predecessor_memory_id, root_memory_id
+        FROM memory_lineage
+        WHERE memory_id = ?
+      `).get(result.newMemoryId) as {
+        predecessor_memory_id: number | null;
+        root_memory_id: number;
+      };
+      expect(newLineageRow.predecessor_memory_id).toBe(103);
+      expect(newLineageRow.root_memory_id).toBe(103);
+
+      expect(bm25RemoveDocument).toHaveBeenCalledWith('103');
+      expect(bm25AddDocument).toHaveBeenCalledWith(String(result.newMemoryId), expect.stringContaining('Merged addition'));
+      const bm25Text = bm25AddDocument.mock.calls[0]?.[1];
+      expect(bm25Text).toContain('Reachable Existing');
+      expect(bm25Text).toContain('/test/103.md');
     });
   });
 
@@ -572,7 +738,14 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       `).run();
 
       const findSimilar = mockFindSimilar([
-        makeSimilarMemory({ id: 400, similarity: 0.90, content_text: 'Existing content', importance_weight: 0.5 }),
+        makeSimilarMemory({
+          id: 400,
+          file_path: '/test/400.md',
+          title: 'Existing',
+          similarity: 0.90,
+          content_text: 'Existing content',
+          importance_weight: 0.5,
+        }),
       ]);
 
       const result = await reconsolidate(
@@ -585,8 +758,14 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result!.action).toBe('merge');
       if (result!.action === 'merge') {
         expect(result!.existingMemoryId).toBe(400);
+        expect(result!.newMemoryId).toBeGreaterThan(400);
         expect(result!.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       }
+
+      const archivedRow = testDb.prepare(
+        'SELECT is_archived FROM memory_index WHERE id = 400'
+      ).get() as { is_archived: number };
+      expect(archivedRow.is_archived).toBe(1);
     });
 
     it('RO2: Conflict path when similarity 0.75-0.88', async () => {
@@ -676,6 +855,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const findSimilar = mockFindSimilar([
         makeSimilarMemory({
           id: 450,
+          file_path: '/test/450.md',
+          title: 'Existing',
           similarity: 0.89, // Between TM-04 (0.92) and TM-06 merge (0.88)
           content_text: 'Existing content',
           importance_weight: 0.5,
@@ -697,8 +878,14 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result!.action).toBe('merge');
       if (result!.action === 'merge') {
         expect(result!.existingMemoryId).toBe(450);
+        expect(result!.newMemoryId).toBeGreaterThan(450);
         expect(result!.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       }
+
+      const archivedRow = testDb.prepare(
+        'SELECT is_archived FROM memory_index WHERE id = 450'
+      ).get() as { is_archived: number };
+      expect(archivedRow.is_archived).toBe(1);
     });
   });
 
@@ -813,6 +1000,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const existing = makeSimilarMemory({
         id: 510,
+        file_path: '/test/510.md',
+        title: 'Null content',
         content_text: null,
         similarity: 0.90,
         importance_weight: 0.5,
@@ -820,7 +1009,15 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const result = await executeMerge(existing, makeNewMemory({ content: 'New content' }), testDb);
       expect(result.action).toBe('merge');
+      expect(result.newMemoryId).toBeGreaterThan(510);
       expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
+
+      const newRow = testDb.prepare(
+        'SELECT content_text FROM memory_index WHERE id = ?'
+      ).get(result.newMemoryId) as {
+        content_text: string | null;
+      };
+      expect(newRow.content_text).toBe('New content');
     });
 
     it('EC4: Boundary similarity 0.88 -> merge (not conflict)', async () => {

@@ -176,4 +176,26 @@ describe('memory_search UX hook integration', () => {
     expect(results[0]?.resultId).toBe('6');
     expect(nextData.continuation).toBeNull();
   });
+
+  it('rejects continuation cursors when the resuming scope does not match the original query scope', async () => {
+    const initial = await handleMemorySearch({
+      query: 'Find fusion scoring decisions',
+      tenantId: 'tenant-a',
+      userId: 'user-a',
+    });
+    const initialEnvelope = parseEnvelope(initial);
+    const progressive = (initialEnvelope.data as Record<string, unknown>).progressiveDisclosure as Record<string, unknown>;
+    const continuation = progressive.continuation as Record<string, unknown>;
+
+    const resumed = await handleMemorySearch({
+      cursor: String(continuation.cursor),
+      tenantId: 'tenant-a',
+      userId: 'user-b',
+    });
+    const resumedEnvelope = parseEnvelope(resumed);
+    const resumedData = resumedEnvelope.data as Record<string, unknown>;
+
+    expect(resumedEnvelope.summary).toBe('Error: Cursor is invalid, expired, or out of scope');
+    expect(resumedData.error).toBe('Cursor is invalid, expired, or out of scope');
+  });
 });

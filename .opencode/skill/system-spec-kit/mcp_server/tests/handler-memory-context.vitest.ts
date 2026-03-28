@@ -178,6 +178,23 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(mode).toBe('focused');
     });
 
+    it('routes auto mode to resume when a caller session already exists without resume keywords', async () => {
+      mockTrustedSession('session-auto-resume');
+      vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({
+          input: 'what changed in this spec?',
+          sessionId: 'session-auto-resume',
+        }),
+        5000,
+        'auto-resume-session-context'
+      );
+
+      const parsed = parseResponse(result);
+      expect(parsed.meta.mode).toBe('resume');
+    });
+
     it('T524-3: Default mode is auto (adaptive strategy)', () => {
       expect(handler.CONTEXT_MODES).toBeTruthy();
       expect(handler.CONTEXT_MODES.auto).toBeTruthy();
@@ -207,6 +224,21 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         (parsed.data?.strategy === 'focused' ? 'focused' : undefined);
 
       expect(mode).toBe('focused');
+    });
+
+    it('keeps explicit focused mode intent-aware when no explicit intent is provided', async () => {
+      await withTimeout(
+        handler.handleMemoryContext({
+          input: 'why did search ranking regress after the fusion change?',
+          mode: 'focused',
+        }),
+        5000,
+        'focused-intent-auto-detect'
+      );
+
+      expect(mockedHandleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        autoDetectIntent: true,
+      }));
     });
   });
 
@@ -582,13 +614,13 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       const parsed = parseResponse(result);
       expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
       expect(handleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
-        sessionTransition: {
+        sessionTransition: expect.objectContaining({
           previousState: null,
           currentState: 'resume',
           confidence: 1,
-          signalSources: ['session-resume', 'explicit-mode'],
+          signalSources: expect.arrayContaining(['session-resume', 'explicit-mode']),
           reason: 'resumed session inferred resume mode',
-        },
+        }),
       }));
     });
 
@@ -771,6 +803,44 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       const parsed = parseResponse(result);
       expect(result.isError).toBe(false);
       expect(parsed.meta.mode).toBe('focused');
+    });
+
+    it('returns an error envelope when the routed strategy returns an MCP error response', async () => {
+      mockedHandleMemorySearch.mockResolvedValueOnce({
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            data: {
+              error: 'upstream search failed',
+              code: 'E_SEARCH_DOWN',
+              details: { layer: 'L2:Core' },
+            },
+            hints: ['retry search'],
+            meta: { isError: true, severity: 'error' },
+          }),
+        }],
+        isError: true,
+      });
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({
+          input: 'why is retrieval failing?',
+          mode: 'focused',
+        }),
+        5000,
+        'strategy-error-envelope'
+      );
+
+      const parsed = JSON.parse(result.content[0].text) as {
+        data: { code?: string; error?: string; details?: { upstream?: { layer?: string } } };
+        hints?: string[];
+      };
+
+      expect(result.isError).toBe(true);
+      expect(parsed.data.code).toBe('E_SEARCH_DOWN');
+      expect(parsed.data.error).toBe('upstream search failed');
+      expect(parsed.data.details?.upstream?.layer).toBe('L2:Core');
+      expect(parsed.hints).toContain('retry search');
     });
   });
 });

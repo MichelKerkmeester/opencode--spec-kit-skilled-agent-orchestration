@@ -395,6 +395,28 @@ function getFirstMeaningfulLine(section: string): string | null {
   return null;
 }
 
+function extractFrontmatterBlock(content: string): string | null {
+  if (!content || typeof content !== 'string') {
+    return null;
+  }
+
+  const frontmatterMatch = content.match(
+    /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\s*\r?\n([\s\S]*?)\r?\n---(?:\s*\r?\n|$)/,
+  );
+  return frontmatterMatch?.[1] ?? null;
+}
+
+function stripLeadingFrontmatter(content: string): string {
+  if (!content || typeof content !== 'string') {
+    return '';
+  }
+
+  return content.replace(
+    /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\s*\r?\n[\s\S]*?\r?\n---(?:\s*\r?\n|$)?/,
+    '',
+  );
+}
+
 /** Extract title from frontmatter or descriptive headings/content. */
 export function extractTitle(content: string): string | null {
   if (!content || typeof content !== 'string') {
@@ -402,9 +424,9 @@ export function extractTitle(content: string): string | null {
   }
 
   // Check YAML frontmatter first (allow leading comments before frontmatter).
-  const frontmatterMatch = content.match(/^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\s*\n([\s\S]*?)\n---/);
-  if (frontmatterMatch) {
-    const titleLineMatch = frontmatterMatch[1].match(/^\s*title:\s*(.+)\s*$/mi);
+  const frontmatter = extractFrontmatterBlock(content);
+  if (frontmatter) {
+    const titleLineMatch = frontmatter.match(/^\s*title:\s*(.+)\s*$/mi);
     let rawFrontmatterTitle = titleLineMatch?.[1]?.trim() || '';
 
     if (
@@ -428,9 +450,7 @@ export function extractTitle(content: string): string | null {
     .replace(/^(?:\uFEFF)?\s*/, '')
     .replace(/^(?:<!--[\s\S]*?-->\s*)+/, '');
 
-  if (body.startsWith('---')) {
-    body = body.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/, '');
-  }
+  body = stripLeadingFrontmatter(body);
 
   const h1Match = body.match(/^#\s+(.+)$/m);
   const h1Title = normalizeExtractedTitle(h1Match?.[1] || '');
@@ -464,9 +484,10 @@ export function extractTitle(content: string): string | null {
 /** Extract trigger phrases from ## Trigger Phrases section OR YAML frontmatter */
 export function extractTriggerPhrases(content: string): string[] {
   const triggers: string[] = [];
+  const frontmatter = extractFrontmatterBlock(content) ?? '';
 
   // Method 1a: Check YAML frontmatter inline format
-  const inlineMatch = content.match(/(?:triggerPhrases|trigger_phrases):\s*\[([^\]]+)\]/i);
+  const inlineMatch = frontmatter.match(/(?:triggerPhrases|trigger_phrases):\s*\[([^\]]+)\]/i);
   if (inlineMatch) {
     const arrayContent = inlineMatch[1];
     const phrases = arrayContent.match(/["']([^"']+)["']/g);
@@ -482,7 +503,7 @@ export function extractTriggerPhrases(content: string): string[] {
 
   // Method 1b: Check YAML frontmatter multi-line format
   if (triggers.length === 0) {
-    const lines = content.split('\n');
+    const lines = frontmatter.split('\n');
     let inTriggerBlock = false;
 
     for (const line of lines) {
@@ -539,7 +560,8 @@ export function extractContextType(content: string): ContextType {
   }
 
   // Check YAML metadata block
-  const yamlMatch = content.match(/(?:contextType|context_type):\s*["']?(\w+)["']?/i);
+  const frontmatter = extractFrontmatterBlock(content);
+  const yamlMatch = frontmatter?.match(/(?:contextType|context_type):\s*["']?(\w+)["']?/i);
   if (yamlMatch) {
     return CONTEXT_TYPE_MAP[yamlMatch[1].toLowerCase()] || 'general';
   }
@@ -554,9 +576,10 @@ export function extractImportanceTier(content: string, options: ExtractImportanc
   // Strip HTML comments to avoid matching instructional examples
   // (e.g., template comments containing "importanceTier: 'constitutional'" as documentation)
   const contentWithoutComments = content.replace(/<!--[\s\S]*?-->/g, '');
+  const frontmatter = extractFrontmatterBlock(contentWithoutComments);
 
   // Check YAML metadata block (only in non-comment content)
-  const yamlMatch = contentWithoutComments.match(/(?:importance_tier|importanceTier):\s*["']?(\w+)["']?/i);
+  const yamlMatch = frontmatter?.match(/(?:importance_tier|importanceTier):\s*["']?(\w+)["']?/i);
   if (yamlMatch) {
     const tier = yamlMatch[1].toLowerCase();
     if (isValidTier(tier)) {
@@ -717,33 +740,51 @@ const SPEC_DOCUMENT_FILENAMES_SET = SPEC_DOCUMENT_FILENAMES;
 export function validateAnchors(content: string): AnchorValidation {
   const warnings: string[] = [];
   const unclosedAnchors: string[] = [];
-
-  const openingPattern = /<!--\s*(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/gi;
+  const anchorStack: string[] = [];
+  let hasStructuralErrors = false;
+  const tokenPattern = /<!--\s*(\/)?(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/gi;
   const VALID_ANCHOR_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-/]*$/;
 
   let match: RegExpExecArray | null;
-  while ((match = openingPattern.exec(content)) !== null) {
-    const anchorId = match[1].trim();
+  while ((match = tokenPattern.exec(content)) !== null) {
+    const isClosingTag = Boolean(match[1]);
+    const anchorId = match[2].trim();
 
     // Validate anchor ID format
     if (!VALID_ANCHOR_PATTERN.test(anchorId)) {
       warnings.push(`Invalid anchor ID "${anchorId}" - should contain only alphanumeric and hyphens, start with alphanumeric`);
+      hasStructuralErrors = true;
+      continue;
     }
 
-    // Check if corresponding closing tag exists
-    const closingPattern = new RegExp(
-      `<!--\\s*/(?:ANCHOR|anchor):\\s*${escapeRegex(anchorId)}\\s*-->`,
-      'i'
-    );
-
-    if (!closingPattern.test(content)) {
-      unclosedAnchors.push(anchorId);
-      warnings.push(`Anchor "${anchorId}" is missing closing tag <!-- /ANCHOR:${anchorId} --> - anchor-based content extraction will fail`);
+    if (!isClosingTag) {
+      anchorStack.push(anchorId);
+      continue;
     }
+
+    const expectedAnchorId = anchorStack[anchorStack.length - 1];
+    if (!expectedAnchorId) {
+      warnings.push(`Anchor "${anchorId}" closes without a matching opening tag`);
+      hasStructuralErrors = true;
+      continue;
+    }
+
+    if (expectedAnchorId !== anchorId) {
+      warnings.push(`Anchor "${anchorId}" closes out of order; expected "${expectedAnchorId}" to close first`);
+      hasStructuralErrors = true;
+      continue;
+    }
+
+    anchorStack.pop();
+  }
+
+  for (const anchorId of anchorStack) {
+    unclosedAnchors.push(anchorId);
+    warnings.push(`Anchor "${anchorId}" is missing closing tag <!-- /ANCHOR:${anchorId} --> - anchor-based content extraction will fail`);
   }
 
   return {
-    valid: unclosedAnchors.length === 0,
+    valid: unclosedAnchors.length === 0 && !hasStructuralErrors,
     warnings,
     unclosedAnchors: unclosedAnchors,
   };

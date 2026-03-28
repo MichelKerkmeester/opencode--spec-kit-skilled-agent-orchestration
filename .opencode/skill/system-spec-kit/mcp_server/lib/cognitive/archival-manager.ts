@@ -4,6 +4,8 @@
 // Feature catalog: Automatic archival subsystem
 // Background archival job for dormant/archived memories
 import type Database from 'better-sqlite3';
+import { clearDegreeCache } from '../search/graph-search-fn';
+import { clearGraphSignalsCache } from '../graph/graph-signals';
 
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES (lazy-loaded)
@@ -25,6 +27,7 @@ function getTierClassifier(): Record<string, unknown> | null {
 
 interface Bm25IndexModule {
   isBm25Enabled: () => boolean;
+  buildBm25DocumentText: (row: Record<string, unknown>) => string;
   getIndex: () => {
     removeDocument: (id: string) => boolean;
     addDocument: (id: string, text: string) => void;
@@ -427,23 +430,16 @@ function syncBm25OnUnarchive(memoryId: number): void {
 
   try {
     const columns = getMemoryIndexColumns();
-    const searchableColumns = ['title', 'content_text', 'trigger_phrases', 'file_path']
+    const availableColumns = ['title', 'content_text', 'trigger_phrases', 'file_path']
       .filter(column => columns.has(column));
 
-    if (searchableColumns.length === 0) return;
+    if (availableColumns.length === 0) return;
 
-    const query = `SELECT ${searchableColumns.join(', ')} FROM memory_index WHERE id = ? AND is_archived = 0`;
+    const query = `SELECT ${availableColumns.join(', ')} FROM memory_index WHERE id = ? AND is_archived = 0`;
     const row = (db.prepare(query) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
     if (!row) return;
 
-    const text = searchableColumns
-      .map(column => {
-        const value = row[column];
-        return typeof value === 'string' ? value.trim() : '';
-      })
-      .filter(Boolean)
-      .join(' ');
-
+    const text = bm25.buildBm25DocumentText(row);
     if (!text) return;
     bm25.getIndex().addDocument(String(memoryId), text);
   } catch (error: unknown) {
@@ -484,6 +480,8 @@ function archiveMemory(memoryId: number): boolean {
       archivalStats.totalArchived++;
       syncBm25OnArchive(memoryId);
       syncVectorOnArchive(memoryId);
+      clearDegreeCache();
+      clearGraphSignalsCache();
       saveArchivalStats();
     }
     return success;
@@ -561,6 +559,8 @@ function unarchiveMemory(memoryId: number): boolean {
       archivalStats.totalUnarchived++;
       syncBm25OnUnarchive(memoryId);
       syncVectorOnUnarchive(memoryId);
+      clearDegreeCache();
+      clearGraphSignalsCache();
       saveArchivalStats();
     }
     return success;

@@ -11,7 +11,6 @@ import {
   assertSharedSpaceAccess,
   enableSharedMemory,
   ensureSharedCollabRuntime,
-  getAllowedSharedSpaceIds,
   isSharedMemoryEnabled,
   upsertSharedMembership,
   upsertSharedSpace,
@@ -28,19 +27,66 @@ type SharedAdminActor = {
   subjectId: string;
 };
 
+type SharedAdminTool = 'shared_space_upsert' | 'shared_space_membership_set';
+type SharedIdentityTool = SharedAdminTool | 'shared_memory_status';
+
+type SharedCallerAuthArgs = {
+  tool: SharedIdentityTool;
+  actorUserId?: string;
+  actorAgentId?: string;
+};
+
+type SharedAdminCallerAuthArgs = SharedCallerAuthArgs & {
+  tool: SharedAdminTool;
+};
+
+type ValidatedCallerAuth = {
+  actor: SharedAdminActor;
+  isAdmin: boolean;
+};
+
 export type AdminActorResult =
   | { ok: true; actor: SharedAdminActor }
   | { ok: false; response: MCPResponse };
 
+class SharedMemoryAuthError extends Error {
+  public readonly response: MCPResponse;
+
+  constructor(message: string, response: MCPResponse) {
+    super(message);
+    this.name = 'SharedMemoryAuthError';
+    this.response = response;
+  }
+}
+
+function throwSharedMemoryAuthError(message: string, response: MCPResponse): never {
+  throw new SharedMemoryAuthError(message, response);
+}
+
+function createCallerAuthErrorResponse(args: {
+  tool: SharedIdentityTool;
+  error: string;
+  code: string;
+  reason: string;
+  hint: string;
+}): MCPResponse {
+  return createMCPErrorResponse({
+    tool: args.tool,
+    error: args.error,
+    code: args.code,
+    details: { reason: args.reason },
+    recovery: {
+      hint: args.hint,
+    },
+  });
+}
+
 /**
  * Resolve the shared-memory admin identity from server-owned configuration.
- * Caller-supplied actor IDs are treated only as optional corroboration hints.
  */
 
 export function resolveAdminActor(
-  tool: 'shared_space_upsert' | 'shared_space_membership_set',
-  actorUserId?: string,
-  actorAgentId?: string,
+  tool: SharedAdminTool,
 ): AdminActorResult {
   const configuredUserId = typeof process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID === 'string'
     ? process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.trim()
@@ -50,11 +96,6 @@ export function resolveAdminActor(
     : '';
   const hasConfiguredUser = configuredUserId.length > 0;
   const hasConfiguredAgent = configuredAgentId.length > 0;
-  const normalizedUserId = typeof actorUserId === 'string' ? actorUserId.trim() : '';
-  const normalizedAgentId = typeof actorAgentId === 'string' ? actorAgentId.trim() : '';
-  const hasUser = normalizedUserId.length > 0;
-  const hasAgent = normalizedAgentId.length > 0;
-
   if (!hasConfiguredUser && !hasConfiguredAgent) {
     return {
       ok: false,
@@ -85,55 +126,10 @@ export function resolveAdminActor(
     };
   }
 
-  if (hasUser && hasAgent) {
-    return {
-      ok: false,
-      response: createMCPErrorResponse({
-        tool,
-        error: 'Provide only one actor identity hint.',
-        code: 'E_VALIDATION',
-        details: { reason: 'actor_identity_ambiguous' },
-        recovery: {
-          hint: 'Send only actorUserId or actorAgentId, not both.',
-        },
-      }),
-    };
-  }
-
   if (hasConfiguredUser) {
-    if (hasAgent || (hasUser && normalizedUserId !== configuredUserId)) {
-      return {
-        ok: false,
-        response: createMCPErrorResponse({
-          tool,
-          error: 'Caller actor hint does not match the server-configured shared-memory admin.',
-          code: 'E_AUTHORIZATION',
-          details: { reason: 'shared_memory_admin_identity_mismatch' },
-          recovery: {
-            hint: 'Omit actorUserId/actorAgentId or send the same identity configured on the MCP server.',
-          },
-        }),
-      };
-    }
-
     return {
       ok: true,
       actor: { subjectType: 'user', subjectId: configuredUserId },
-    };
-  }
-
-  if (hasUser || (hasAgent && normalizedAgentId !== configuredAgentId)) {
-    return {
-      ok: false,
-      response: createMCPErrorResponse({
-        tool,
-        error: 'Caller actor hint does not match the server-configured shared-memory admin.',
-        code: 'E_AUTHORIZATION',
-        details: { reason: 'shared_memory_admin_identity_mismatch' },
-        recovery: {
-          hint: 'Omit actorUserId/actorAgentId or send the same identity configured on the MCP server.',
-        },
-      }),
     };
   }
 
@@ -143,7 +139,79 @@ export function resolveAdminActor(
   };
 }
 
-function buildAdminScope(
+function validateSharedCallerIdentity(
+  args: SharedCallerAuthArgs,
+): SharedAdminActor {
+  const normalizedUserId = typeof args.actorUserId === 'string' ? args.actorUserId.trim() : '';
+  const normalizedAgentId = typeof args.actorAgentId === 'string' ? args.actorAgentId.trim() : '';
+  const hasUser = normalizedUserId.length > 0;
+  const hasAgent = normalizedAgentId.length > 0;
+
+  if (hasUser && hasAgent) {
+    throwSharedMemoryAuthError(
+      'Provide only one actor identity.',
+      createCallerAuthErrorResponse({
+        tool: args.tool,
+        error: 'Provide only one actor identity.',
+        code: 'E_VALIDATION',
+        reason: 'actor_identity_ambiguous',
+        hint: 'Send only actorUserId or actorAgentId, not both.',
+      }),
+    );
+  }
+
+  if (!hasUser && !hasAgent) {
+    throwSharedMemoryAuthError(
+      'Caller authentication is required for shared-memory operations.',
+      createCallerAuthErrorResponse({
+        tool: args.tool,
+        error: 'Caller authentication is required for shared-memory operations.',
+        code: 'E_AUTHENTICATION',
+        reason: 'actor_identity_required',
+        hint: 'Provide exactly one caller identity via actorUserId or actorAgentId.',
+      }),
+    );
+  }
+
+  return hasUser
+    ? { subjectType: 'user', subjectId: normalizedUserId }
+    : { subjectType: 'agent', subjectId: normalizedAgentId };
+}
+
+export function validateCallerAuth(
+  args: SharedAdminCallerAuthArgs,
+  tenantId: string,
+): ValidatedCallerAuth {
+  const normalizedTenantId = typeof tenantId === 'string' ? tenantId.trim() : '';
+
+  if (normalizedTenantId.length === 0) {
+    throwSharedMemoryAuthError(
+      'Tenant scope is required for shared-memory admin mutations.',
+      createCallerAuthErrorResponse({
+        tool: args.tool,
+        error: 'Tenant scope is required for shared-memory admin mutations.',
+        code: 'E_AUTHORIZATION',
+        reason: 'shared_space_tenant_required',
+        hint: 'Provide the tenantId for the target shared-space mutation.',
+      }),
+    );
+  }
+
+  const adminResult = resolveAdminActor(args.tool);
+  if (!adminResult.ok) {
+    throwSharedMemoryAuthError('Shared-memory admin validation failed.', adminResult.response);
+  }
+
+  const actor = validateSharedCallerIdentity(args);
+
+  return {
+    actor,
+    isAdmin: actor.subjectType === adminResult.actor.subjectType
+      && actor.subjectId === adminResult.actor.subjectId,
+  };
+}
+
+function buildActorScope(
   actor: SharedAdminActor,
   tenantId: string,
   sharedSpaceId?: string,
@@ -177,7 +245,7 @@ function recordSharedSpaceAdminAudit(
     action: 'shared_space_admin',
     decision: args.decision,
     reason: args.reason ?? args.operation,
-    ...buildAdminScope(args.actor, args.tenantId, args.spaceId),
+    ...buildActorScope(args.actor, args.tenantId, args.spaceId),
     metadata: {
       operation: args.operation,
       actorSubjectType: args.actor.subjectType,
@@ -188,13 +256,15 @@ function recordSharedSpaceAdminAudit(
 }
 
 function getSharedSpaceAccessErrorMessage(
-  tool: 'shared_space_upsert' | 'shared_space_membership_set',
+  tool: SharedAdminTool,
   spaceId: string,
   reason: string,
 ): string {
   switch (reason) {
     case 'shared_space_not_found':
       return `Shared space "${spaceId}" was not found.`;
+    case 'shared_space_create_admin_required':
+      return `Only the configured shared-memory admin can create shared space "${spaceId}".`;
     case 'shared_space_tenant_mismatch':
       return `Shared space "${spaceId}" belongs to a different tenant.`;
     case 'shared_space_owner_required':
@@ -223,7 +293,7 @@ function normalizeOwnerAdminDenyReason(reason: string): string {
 }
 
 function createSharedSpaceAuthError(
-  tool: 'shared_space_upsert' | 'shared_space_membership_set',
+  tool: SharedAdminTool,
   reason: string,
   error: string,
 ): MCPResponse {
@@ -235,6 +305,8 @@ function createSharedSpaceAuthError(
     recovery: {
       hint: reason === 'shared_space_not_found'
         ? 'Create the space first with shared_space_upsert.'
+        : reason === 'shared_space_create_admin_required'
+          ? 'Authenticate as the configured shared-memory admin before creating a new shared space.'
         : 'Use the tenant owner identity for this shared space.',
     },
   });
@@ -247,14 +319,49 @@ function createSharedMemoryInternalError(
   hint: string,
 ): MCPResponse {
   const message = error instanceof Error ? error.message : String(error);
+  console.error(`[shared-memory] ${tool} failed: ${message}`);
   return createMCPErrorResponse({
     tool,
-    error: `${prefix}: ${message}`,
+    error: prefix,
     code: 'E_INTERNAL',
+    details: { reason: 'shared_memory_internal_error' },
     recovery: {
       hint,
     },
   });
+}
+
+function getAllowedSharedSpaceIdsForCaller(
+  database: ReturnType<typeof requireDb>,
+  actor: SharedAdminActor,
+  tenantId?: string,
+): string[] {
+  if (!isSharedMemoryEnabled(database)) {
+    return [];
+  }
+
+  ensureSharedCollabRuntime(database);
+  const normalizedTenantId = typeof tenantId === 'string' && tenantId.trim().length > 0
+    ? tenantId.trim()
+    : null;
+
+  const rows = database.prepare(`
+    SELECT DISTINCT m.space_id
+    FROM shared_space_members m
+    JOIN shared_spaces s ON s.space_id = m.space_id
+    WHERE m.subject_type = ?
+      AND m.subject_id = ?
+      AND (? IS NULL OR s.tenant_id = ?)
+      AND s.kill_switch = 0
+      AND s.rollout_enabled = 1
+  `).all(
+    actor.subjectType,
+    actor.subjectId,
+    normalizedTenantId,
+    normalizedTenantId,
+  ) as Array<{ space_id: string }>;
+
+  return rows.map((row) => row.space_id);
 }
 
 /**
@@ -277,11 +384,11 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
       });
     }
 
-    const actorResult = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
-    if (!actorResult.ok) {
-      return actorResult.response;
-    }
-    const actor = actorResult.actor;
+    const { actor, isAdmin } = validateCallerAuth({
+      tool: 'shared_space_upsert',
+      actorUserId: args.actorUserId,
+      actorAgentId: args.actorAgentId,
+    }, args.tenantId);
 
     const result = db.transaction((): (
       | { success: true; created: boolean; rolloutEnabled: boolean; killSwitch: boolean }
@@ -299,31 +406,53 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
       } | undefined;
 
       if (existingSpace) {
-        const access = assertSharedSpaceAccess(
-          db,
-          buildAdminScope(actor, args.tenantId, args.spaceId),
-          args.spaceId,
-          'owner',
-        );
-        if (!access.allowed) {
-          const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
-          recordSharedSpaceAdminAudit(db, {
-            actor,
-            tenantId: args.tenantId,
-            spaceId: args.spaceId,
-            decision: 'deny',
-            operation: 'space_upsert',
-            reason,
-            metadata: {
+        if (!isAdmin) {
+          const access = assertSharedSpaceAccess(
+            db,
+            buildActorScope(actor, args.tenantId, args.spaceId),
+            args.spaceId,
+            'owner',
+          );
+          if (!access.allowed) {
+            const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
+            recordSharedSpaceAdminAudit(db, {
+              actor,
+              tenantId: args.tenantId,
+              spaceId: args.spaceId,
+              decision: 'deny',
+              operation: 'space_upsert',
+              reason,
+              metadata: {
+                operationType: 'update',
+                actorAuthRole: 'owner',
+              },
+            });
+            return {
+              error: reason,
+              msg: getSharedSpaceAccessErrorMessage('shared_space_upsert', args.spaceId, reason),
               operationType: 'update',
-            },
-          });
-          return {
-            error: reason,
-            msg: getSharedSpaceAccessErrorMessage('shared_space_upsert', args.spaceId, reason),
-            operationType: 'update',
-          };
+            };
+          }
         }
+      } else if (!isAdmin) {
+        const reason = 'shared_space_create_admin_required';
+        recordSharedSpaceAdminAudit(db, {
+          actor,
+          tenantId: args.tenantId,
+          spaceId: args.spaceId,
+          decision: 'deny',
+          operation: 'space_upsert',
+          reason,
+          metadata: {
+            operationType: 'create',
+            actorAuthRole: 'non_admin',
+          },
+        });
+        return {
+          error: reason,
+          msg: getSharedSpaceAccessErrorMessage('shared_space_upsert', args.spaceId, reason),
+          operationType: 'create',
+        };
       }
 
       const definition = existingSpace
@@ -374,6 +503,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         reason: created ? 'space_created' : 'space_updated',
         metadata: {
           operationType: created ? 'create' : 'update',
+          actorAuthRole: isAdmin ? 'admin' : 'owner',
           created,
           ownerBootstrap: created,
           rolloutEnabled: savedSpace?.rollout_enabled === 1,
@@ -408,6 +538,10 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
       },
     });
   } catch (error: unknown) {
+    if (error instanceof SharedMemoryAuthError) {
+      return error.response;
+    }
+
     return createSharedMemoryInternalError(
       'shared_space_upsert',
       'Shared space upsert failed',
@@ -437,44 +571,47 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
       });
     }
 
-    const actorResult = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
-    if (!actorResult.ok) {
-      return actorResult.response;
-    }
-    const actor = actorResult.actor;
+    const { actor, isAdmin } = validateCallerAuth({
+      tool: 'shared_space_membership_set',
+      actorUserId: args.actorUserId,
+      actorAgentId: args.actorAgentId,
+    }, args.tenantId);
 
-    const access = assertSharedSpaceAccess(
-      db,
-      buildAdminScope(actor, args.tenantId, args.spaceId),
-      args.spaceId,
-      'owner',
-    );
-    if (!access.allowed) {
-      const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
-      try {
-        recordSharedSpaceAdminAudit(db, {
-          actor,
-          tenantId: args.tenantId,
-          spaceId: args.spaceId,
-          decision: 'deny',
-          operation: 'membership_set',
-          reason,
-          metadata: {
-            operationType: 'membership_update',
-            subjectType: args.subjectType,
-            subjectId: args.subjectId,
-            role: args.role,
-          },
-        });
-      } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : String(error);
-        console.error(`[shared-memory] Failed to record shared_space_admin audit: ${message}`);
-      }
-      return createSharedSpaceAuthError(
-        'shared_space_membership_set',
-        reason,
-        getSharedSpaceAccessErrorMessage('shared_space_membership_set', args.spaceId, reason),
+    if (!isAdmin) {
+      const access = assertSharedSpaceAccess(
+        db,
+        buildActorScope(actor, args.tenantId, args.spaceId),
+        args.spaceId,
+        'owner',
       );
+      if (!access.allowed) {
+        const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
+        try {
+          recordSharedSpaceAdminAudit(db, {
+            actor,
+            tenantId: args.tenantId,
+            spaceId: args.spaceId,
+            decision: 'deny',
+            operation: 'membership_set',
+            reason,
+            metadata: {
+              operationType: 'membership_update',
+              actorAuthRole: 'owner',
+              subjectType: args.subjectType,
+              subjectId: args.subjectId,
+              role: args.role,
+            },
+          });
+        } catch (error: unknown) {
+          const message = error instanceof Error ? error.message : String(error);
+          console.error(`[shared-memory] Failed to record shared_space_admin audit: ${message}`);
+        }
+        return createSharedSpaceAuthError(
+          'shared_space_membership_set',
+          reason,
+          getSharedSpaceAccessErrorMessage('shared_space_membership_set', args.spaceId, reason),
+        );
+      }
     }
 
     db.transaction(() => {
@@ -494,6 +631,7 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
         reason: 'membership_updated',
         metadata: {
           operationType: 'membership_update',
+          actorAuthRole: isAdmin ? 'admin' : 'owner',
           subjectType: args.subjectType,
           subjectId: args.subjectId,
           role: args.role,
@@ -515,6 +653,10 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
       },
     });
   } catch (error: unknown) {
+    if (error instanceof SharedMemoryAuthError) {
+      return error.response;
+    }
+
     return createSharedMemoryInternalError(
       'shared_space_membership_set',
       'Shared space membership update failed',
@@ -533,8 +675,15 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
 export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Promise<MCPResponse> {
   try {
     const db = requireDb();
+    const actor = validateSharedCallerIdentity({
+      tool: 'shared_memory_status',
+      actorUserId: args.actorUserId,
+      actorAgentId: args.actorAgentId,
+    });
     const enabled = isSharedMemoryEnabled(db);
-    const allowedSharedSpaceIds = enabled ? Array.from(getAllowedSharedSpaceIds(db, args)) : [];
+    const allowedSharedSpaceIds = enabled
+      ? getAllowedSharedSpaceIdsForCaller(db, actor, args.tenantId)
+      : [];
     return createMCPSuccessResponse({
       tool: 'shared_memory_status',
       summary: enabled
@@ -544,11 +693,17 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
         enabled,
         allowedSharedSpaceIds,
         tenantId: args.tenantId ?? null,
-        userId: args.userId ?? null,
-        agentId: args.agentId ?? null,
+        userId: actor.subjectType === 'user' ? actor.subjectId : null,
+        agentId: actor.subjectType === 'agent' ? actor.subjectId : null,
+        actorSubjectType: actor.subjectType,
+        actorSubjectId: actor.subjectId,
       },
     });
   } catch (error: unknown) {
+    if (error instanceof SharedMemoryAuthError) {
+      return error.response;
+    }
+
     return createSharedMemoryInternalError(
       'shared_memory_status',
       'Shared memory status failed',

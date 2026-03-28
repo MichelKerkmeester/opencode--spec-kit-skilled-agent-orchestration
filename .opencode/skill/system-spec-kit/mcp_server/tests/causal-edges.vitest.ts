@@ -328,6 +328,41 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(nodes).toEqual(['A', 'B', 'C']);
       expect(new Set(nodes).size).toBe(3);
     });
+
+    it('preserves both branches of a diamond graph when they converge on the same node', () => {
+      insertEdgeOrThrow('A', 'B', causalEdges.RELATION_TYPES.CAUSED, 1.0);
+      insertEdgeOrThrow('A', 'C', causalEdges.RELATION_TYPES.ENABLED, 1.0);
+      insertEdgeOrThrow('B', 'D', causalEdges.RELATION_TYPES.SUPPORTS, 1.0);
+      insertEdgeOrThrow('C', 'D', causalEdges.RELATION_TYPES.DERIVED_FROM, 1.0);
+
+      const chain = causalEdges.getCausalChain('A', 10, 'forward');
+      const edgePairs = flattenChain(chain)
+        .flatMap((node) => node.children.map((child) => `${node.id}->${child.id}:${child.relation}`));
+
+      expect(edgePairs).toEqual(expect.arrayContaining([
+        'A->B:caused',
+        'A->C:enabled',
+        'B->D:supports',
+        'C->D:derived_from',
+      ]));
+      expect(edgePairs.filter((pair) => pair.endsWith('->D:supports') || pair.endsWith('->D:derived_from'))).toHaveLength(2);
+    });
+
+    it('propagates traversal strength cumulatively across deeper paths', () => {
+      insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.8);
+      insertEdgeOrThrow('2', '3', causalEdges.RELATION_TYPES.SUPPORTS, 0.5);
+
+      const chain = causalEdges.getCausalChain('1', 10, 'forward');
+      const firstHop = chain.children[0];
+      const secondHop = firstHop.children[0];
+      const firstHopExpected = Math.min(1, 0.8 * causalEdges.RELATION_WEIGHTS.caused);
+
+      expect(firstHop.strength).toBeCloseTo(firstHopExpected, 5);
+      expect(secondHop.strength).toBeCloseTo(
+        firstHopExpected * 0.5 * causalEdges.RELATION_WEIGHTS.supports,
+        5,
+      );
+    });
   });
 
   describe('T045 - Edge Management', () => {

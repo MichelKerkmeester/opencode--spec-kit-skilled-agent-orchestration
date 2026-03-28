@@ -5,6 +5,7 @@ import type {
   ExecutionLogEntry,
   MemoryByPhrase,
   TriggerCacheEntry,
+  TriggerMatcherDegradedState,
   TriggerMatchWithStats,
   TriggerMatcherConfig,
 } from '../lib/parsing/trigger-matcher';
@@ -318,6 +319,16 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       expect(cache[0].phrase).toBe('abc');
     });
 
+    it('3.3.4b filters single-word stopword trigger phrases', () => {
+      const fn = triggerMatcher.loadTriggerCache;
+      if (!fn) return;
+      setMockDb([
+        { id: 1, spec_folder: 's', file_path: '/a.md', title: 'T', trigger_phrases: '["the","save context","debug"]', importance_weight: 0.5 },
+      ]);
+      const cache = fn();
+      expect(cache.map((entry) => entry.phrase)).toEqual(['save context', 'debug']);
+    });
+
     it('3.3.5 returns cached data within TTL', () => {
       const fn = triggerMatcher.loadTriggerCache;
       if (!fn) return;
@@ -379,7 +390,21 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       expect(s.totalMatchedPhrases).toBe(2);
     });
 
-    it('3.4.3 empty prompt returns 0 matches', () => {
+    it('3.4.3 returns degraded stats when source parsing fails', () => {
+      const fn = triggerMatcher.matchTriggerPhrasesWithStats;
+      if (!fn) return;
+      setMockDb([
+        { id: 1, spec_folder: 's', file_path: '/bad.md', title: 'Bad', trigger_phrases: 'NOT_JSON', importance_weight: 0.5 },
+        { id: 2, spec_folder: 's', file_path: '/good.md', title: 'Good', trigger_phrases: '["valid trigger"]', importance_weight: 0.7 },
+      ]);
+      const result = fn('valid trigger') as TriggerMatchWithStats & {
+        stats: TriggerMatchWithStats['stats'] & { degraded?: TriggerMatcherDegradedState };
+      };
+      expect(result.stats.degraded?.code).toBe('E_TRIGGER_SOURCE_PARSE');
+      expect(result.stats.degraded?.failedEntries).toBe(1);
+    });
+
+    it('3.4.4 empty prompt returns 0 matches', () => {
       const fn = triggerMatcher.matchTriggerPhrasesWithStats;
       if (!fn) return;
       const result = fn('');
@@ -387,7 +412,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       expect(result.stats.matchCount).toBe(0);
     });
 
-    it('3.4.4 matchTimeMs is a non-negative number', () => {
+    it('3.4.5 matchTimeMs is a non-negative number', () => {
       const fn = triggerMatcher.matchTriggerPhrasesWithStats;
       if (!fn) return;
       const result = fn('anything');

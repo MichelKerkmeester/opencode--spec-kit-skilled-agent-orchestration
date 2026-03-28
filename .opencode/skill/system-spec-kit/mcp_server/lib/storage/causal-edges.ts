@@ -415,10 +415,7 @@ function getCausalChain(
 
   if (!db) return root;
 
-  const visited = new Set<string>();
-  visited.add(rootId);
-
-  function traverse(node: CausalChainNode, depth: number): void {
+  function traverse(node: CausalChainNode, depth: number, path: Set<string>): void {
     if (depth >= maxDepth) return;
 
     const edges = direction === 'forward'
@@ -427,13 +424,12 @@ function getCausalChain(
 
     for (const edge of edges) {
       const nextId = direction === 'forward' ? edge.target_id : edge.source_id;
-      if (visited.has(nextId)) continue;
+      if (path.has(nextId)) continue;
 
-      visited.add(nextId);
-
-      // C138: apply relation weight multiplier, then re-clamp to [0, 1]
+      // C138: apply cumulative path strength with relation weight multiplier,
+      // then clamp back to [0, 1].
       const weight = RELATION_WEIGHTS[edge.relation] ?? 1.0;
-      const weightedStrength = Math.min(1, edge.strength * weight);
+      const weightedStrength = clampStrength(node.strength * edge.strength * weight) ?? 0;
 
       const child: CausalChainNode = {
         id: nextId,
@@ -445,11 +441,13 @@ function getCausalChain(
       };
 
       node.children.push(child);
-      traverse(child, depth + 1);
+      const nextPath = new Set(path);
+      nextPath.add(nextId);
+      traverse(child, depth + 1, nextPath);
     }
   }
 
-  traverse(root, 0);
+  traverse(root, 0, new Set([rootId]));
   return root;
 }
 

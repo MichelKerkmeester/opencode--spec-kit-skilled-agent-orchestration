@@ -33,6 +33,7 @@ import * as preflight from '../lib/validation/preflight';
 import { requireDb } from '../utils';
 import type { MCPResponse } from './types';
 import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state';
+import * as causalEdges from '../lib/storage/causal-edges';
 
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
 import { isSaveQualityGateEnabled } from '../lib/search/search-flags';
@@ -303,6 +304,78 @@ async function finalizeMemoryFileContent(
   }
 }
 
+function appendResultWarning<T extends Record<string, unknown>>(result: T, warning: string | null): T {
+  if (!warning) {
+    return result;
+  }
+
+  const r = result as Record<string, unknown>;
+  const warnings = Array.isArray(r.warnings)
+    ? [...(r.warnings as string[])]
+    : [];
+  warnings.push(warning);
+  r.warnings = warnings;
+  return result;
+}
+
+function recordCrossPathPeSupersedes(
+  database: ReturnType<typeof requireDb>,
+  memoryId: number,
+  supersededMemoryId: number | null,
+  samePathMemoryId: number | null,
+  reason: string | null | undefined,
+): void {
+  if (supersededMemoryId == null || supersededMemoryId === samePathMemoryId) {
+    return;
+  }
+
+  causalEdges.init(database);
+  const evidence = reason && reason.trim().length > 0
+    ? reason.trim()
+    : 'Prediction-error contradiction across different file paths';
+  causalEdges.insertEdge(
+    String(memoryId),
+    String(supersededMemoryId),
+    causalEdges.RELATION_TYPES.SUPERSEDES,
+    1.0,
+    evidence,
+    true,
+    'auto',
+  );
+}
+
+function captureAtomicSaveOriginalState(filePath: string): { existed: boolean; content: string | null } {
+  if (!fs.existsSync(filePath)) {
+    return { existed: false, content: null };
+  }
+
+  return {
+    existed: true,
+    content: fs.readFileSync(filePath, 'utf-8'),
+  };
+}
+
+function restoreAtomicSaveOriginalState(
+  filePath: string,
+  originalState: { existed: boolean; content: string | null },
+): boolean {
+  try {
+    if (!originalState.existed) {
+      return !fs.existsSync(filePath) || transactionManager.deleteFileIfExists(filePath);
+    }
+
+    if (typeof originalState.content !== 'string') {
+      return false;
+    }
+
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, originalState.content, 'utf-8');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function processPreparedMemory(
   prepared: PreparedParsedMemory,
   filePath: string,
@@ -372,6 +445,16 @@ async function processPreparedMemory(
   return withSpecFolderLock(parsed.specFolder, async () => {
     const database = requireDb();
     const canonicalFilePath = getCanonicalPathKey(filePath);
+    const samePathExisting = findSamePathExistingMemory(
+      database,
+      parsed.specFolder,
+      canonicalFilePath,
+      filePath,
+      scope,
+    );
+    const shouldChunkContent = needsChunking(parsed.content);
+    const shouldPersistFinalizedFile = persistQualityLoopContent && typeof finalizedFileContent === 'string';
+    let finalizeWarning: string | null = null;
 
     // DEDUP: Check existing row by file path
     const existingResult = checkExistingRow(
@@ -387,24 +470,6 @@ async function processPreparedMemory(
 
     // NOTE: Content-hash dedup (C5-1) moved inside BEGIN IMMEDIATE transaction
     // to eliminate TOCTOU race between check and insert.
-
-    // CHUNKING BRANCH: Large files get split into parent + child records
-    // Must be inside withSpecFolderLock to serialize chunked saves too.
-    // Existing-row dedup above must run first so duplicate content exits before chunking.
-    if (needsChunking(parsed.content)) {
-      console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
-      const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
-
-      if (
-        persistQualityLoopContent &&
-        finalizedFileContent &&
-        (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
-      ) {
-        await finalizeMemoryFileContent(filePath, finalizedFileContent);
-      }
-
-      return chunkedResult;
-    }
 
     // EMBEDDING GENERATION (with persistent SQLite cache — REQ-S2-001)
     const embeddingResult = await generateOrCacheEmbedding(database, parsed, filePath, asyncEmbedding);
@@ -491,47 +556,101 @@ async function processPreparedMemory(
     );
     if (peResult.earlyReturn) return peResult.earlyReturn;
 
-    // A4 FIX: Wrap dedup-check + insert in BEGIN IMMEDIATE transaction for
-    // DB-level atomicity. withSpecFolderLock handles in-process serialization;
-    // this transaction provides defense-in-depth against multi-process races,
-    // and keeps reconsolidation archives atomic with the subsequent insert.
-    let id: number;
-    let existing: { id: number; content_hash: string } | undefined;
     let reconResult: Awaited<ReturnType<typeof runReconsolidationIfEnabled>> = {
       earlyReturn: null,
       warnings: [],
     };
 
-    const useTx = typeof database.exec === 'function';
-    let transactionCommitted = false;
-    if (useTx) database.exec('BEGIN IMMEDIATE');
-    try {
-      // C5-1: Content-hash dedup moved inside transaction to prevent TOCTOU race
-      const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
-        canonicalFilePath,
-        filePath,
-      }, scope);
-      if (dupResult) {
-        if (useTx) database.exec('ROLLBACK');
-        return dupResult;
+    // T028/T029: complete async reconsolidation planning before chunking or
+    // taking the SQLite writer lock, so chunked saves do not bypass the gate
+    // and BEGIN IMMEDIATE only covers synchronous DB mutation work.
+    reconResult = await runReconsolidationIfEnabled(
+      database,
+      parsed,
+      filePath,
+      force,
+      embedding,
+      scope,
+    );
+    if (reconResult.earlyReturn) return reconResult.earlyReturn;
+
+    if (shouldChunkContent) {
+      console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
+      const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
+
+      if (
+        peResult.supersededId != null
+        && (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
+      ) {
+        if (chunkedResult.id > 0) {
+          recordCrossPathPeSupersedes(
+            database,
+            chunkedResult.id,
+            peResult.supersededId,
+            samePathExisting?.id ?? null,
+            peResult.decision.reason,
+          );
+        }
+        if (!markMemorySuperseded(peResult.supersededId)) {
+          return {
+            ...chunkedResult,
+            status: 'error',
+            error: `Failed to mark predecessor ${peResult.supersededId} as superseded after chunked indexing`,
+            message: `Chunked indexing succeeded, but predecessor ${peResult.supersededId} could not be superseded`,
+          };
+        }
       }
 
-      // TM-06 fix: run reconsolidation inside the save transaction so any
-      // archive/update performed by the bridge rolls back with the save.
-      reconResult = await runReconsolidationIfEnabled(
-        database,
-        parsed,
-        filePath,
-        force,
-        embedding,
-        scope,
-      );
-      if (reconResult.earlyReturn) {
-        if (useTx) database.exec('COMMIT');
-        transactionCommitted = true;
-        return reconResult.earlyReturn;
+      if (
+        shouldPersistFinalizedFile
+        && finalizedFileContent
+        && (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
+      ) {
+        try {
+          await finalizeMemoryFileContent(filePath, finalizedFileContent);
+        } catch (finalizeErr: unknown) {
+          finalizeWarning = `Quality-loop file persistence failed after chunked indexing: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}`;
+          console.warn(`[memory-save] ${finalizeWarning}`);
+        }
       }
 
+      if (peResult.decision.action !== 'CREATE') {
+        chunkedResult.pe_action = peResult.decision.action;
+        chunkedResult.pe_reason = peResult.decision.reason;
+      }
+      if (peResult.supersededId != null) {
+        chunkedResult.superseded_id = peResult.supersededId;
+      }
+      if (Array.isArray(reconResult.warnings) && reconResult.warnings.length > 0) {
+        const existingWarnings = Array.isArray(chunkedResult.warnings)
+          ? [...(chunkedResult.warnings as string[])]
+          : [];
+        chunkedResult.warnings = [...existingWarnings, ...reconResult.warnings];
+      }
+
+      return appendResultWarning(chunkedResult, finalizeWarning);
+    }
+
+    // A4 FIX: Wrap dedup-check + insert in a single transaction for DB-level
+    // atomicity. Uses database.transaction() so inner transaction() calls in
+    // createMemoryRecord / index_memory correctly nest via SAVEPOINTs instead
+    // of failing with "cannot start a transaction within a transaction".
+    // withSpecFolderLock handles in-process serialization; this transaction
+    // provides defense-in-depth against multi-process races.
+    let existing: { id: number; content_hash: string } | undefined;
+
+    // C5-1: Content-hash dedup check BEFORE the write transaction — reads are
+    // safe outside the transaction and this avoids an early-return inside the
+    // transaction callback (which would COMMIT an empty tx unnecessarily).
+    const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
+      canonicalFilePath,
+      filePath,
+    }, scope);
+    if (dupResult) {
+      return dupResult;
+    }
+
+    const writeTransaction = database.transaction((): number => {
       // CREATE NEW MEMORY
       existing = findSamePathExistingMemory(
         database,
@@ -541,7 +660,7 @@ async function processPreparedMemory(
         scope,
       ) as { id: number; content_hash: string } | undefined;
 
-      id = existing && existing.content_hash !== parsed.contentHash
+      const memoryId = existing && existing.content_hash !== parsed.contentHash
         ? createAppendOnlyMemoryRecord({
             database,
             parsed,
@@ -572,7 +691,7 @@ async function processPreparedMemory(
       }
 
       recordLineageVersion(database, {
-        memoryId: id,
+        memoryId,
         predecessorMemoryId: existing && existing.content_hash !== parsed.contentHash
           ? existing.id
           : null,
@@ -582,23 +701,18 @@ async function processPreparedMemory(
           : 'CREATE',
       });
 
-      // WS-2 fix: finalize file BEFORE DB commit so a write failure triggers
-      // transaction rollback and the DB never references unwritten content.
-      if (persistQualityLoopContent && finalizedFileContent) {
-        await finalizeMemoryFileContent(filePath, finalizedFileContent);
-      }
+      return memoryId;
+    });
 
-      if (useTx) database.exec('COMMIT');
-      transactionCommitted = true;
-    } catch (txErr: unknown) {
-      if (useTx && !transactionCommitted) {
-        try {
-          database.exec('ROLLBACK');
-        } catch (rbErr: unknown) {
-          console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr));
-        }
+    const id: number = writeTransaction.immediate();
+
+    if (shouldPersistFinalizedFile && finalizedFileContent) {
+      try {
+        await finalizeMemoryFileContent(filePath, finalizedFileContent);
+      } catch (finalizeErr: unknown) {
+        finalizeWarning = `Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}`;
+        console.warn(`[memory-save] ${finalizeWarning}`);
       }
-      throw txErr;
     }
 
     // Data integrity: clean stale auto-entities before re-extraction on update
@@ -626,7 +740,7 @@ async function processPreparedMemory(
     const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichment(database, id, parsed);
 
     // BUILD RESULT
-    return buildIndexResult({
+    return appendResultWarning(buildIndexResult({
       database,
       existing,
       embeddingStatus,
@@ -640,7 +754,7 @@ async function processPreparedMemory(
       causalLinksResult,
       enrichmentStatus,
       filePath,
-    });
+    }), finalizeWarning);
   });
 }
 
@@ -1017,13 +1131,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
 /**
  * Save memory content to disk with retry + rollback guarded indexing.
  *
- * The file write uses atomic rename (write-to-temp + rename), while DB
- * indexing runs asynchronously afterward because
- * `indexMemoryFile` requires async embedding generation while
- * `executeAtomicSave` expects a synchronous `dbOperation` callback.
- *
- * Atomicity guard: if indexing fails after the write, retry once; if retry
- * also fails, rollback the written file to avoid write/index mismatch.
+ * The file write promotes a pending file before indexing so the database never
+ * commits a new memory row while the final path still points at stale content.
+ * If indexing later fails, the original file content is restored before the
+ * error is returned.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
   const { file_path, content } = params;
@@ -1032,12 +1143,15 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   // Use unique suffix to prevent concurrent pending-file race (F01-003)
   const basePendingPath = transactionManager.getPendingPath(file_path);
   const pendingPath = `${basePendingPath}.${randomUUID().slice(0, 8)}`;
+  const originalState = captureAtomicSaveOriginalState(file_path);
 
   let indexResult: IndexResult | null = null;
   let indexError: Error | null = null;
   let validationError: ReturnType<typeof memoryParser.validateParsedMemory> | null = null;
+  let restoredOriginalAfterFailure = false;
   const maxIndexAttempts = 2;
   for (let attempt = 1; attempt <= maxIndexAttempts; attempt++) {
+    let promotedToFinalPath = false;
     try {
       const prepared = prepareParsedMemoryForIndexing(
         memoryParser.parseMemoryContent(file_path, content),
@@ -1060,6 +1174,8 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
 
       fs.mkdirSync(path.dirname(pendingPath), { recursive: true });
       fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
+      fs.renameSync(pendingPath, file_path);
+      promotedToFinalPath = true;
 
       indexResult = await processPreparedMemory(prepared, file_path, {
         force,
@@ -1069,10 +1185,40 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       if (indexResult.status === 'error') {
         throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
       }
+      if (indexResult.status === 'rejected') {
+        const rollbackSucceeded = restoreAtomicSaveOriginalState(file_path, originalState);
+        return {
+          success: false,
+          filePath: file_path,
+          status: 'rejected',
+          id: indexResult.id,
+          specFolder: indexResult.specFolder,
+          title: indexResult.title,
+          summary: rollbackSucceeded
+            ? 'Atomic save rejected after file promotion rollback'
+            : 'Atomic save rejected but original file rollback failed',
+          message: indexResult.message ?? indexResult.rejectionReason ?? 'Memory save rejected',
+          embeddingStatus: indexResult.embeddingStatus,
+          hints: [
+            rollbackSucceeded
+              ? 'Original file content was restored because the save was rejected after promotion'
+              : 'Original file rollback failed after rejection; manual recovery may be required',
+          ],
+          ...(rollbackSucceeded ? {} : { error: 'Original file rollback failed after rejected save' }),
+        };
+      }
       indexError = null;
       break;
     } catch (err: unknown) {
       transactionManager.deleteFileIfExists(pendingPath);
+      if (promotedToFinalPath) {
+        restoredOriginalAfterFailure = restoreAtomicSaveOriginalState(file_path, originalState);
+        if (!restoredOriginalAfterFailure) {
+          const promoteMessage = err instanceof Error ? err.message : String(err);
+          indexError = new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
+          break;
+        }
+      }
       indexError = err instanceof Error ? err : new Error(String(err));
       if (attempt < maxIndexAttempts) {
         console.warn(`[memory-save] index attempt ${attempt} failed for ${file_path}, retrying once: ${indexError.message}`);
@@ -1091,31 +1237,9 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
     };
   }
 
-  if (indexResult?.status === 'rejected') {
-    const rollbackSucceeded = transactionManager.deleteFileIfExists(pendingPath);
-    return {
-      success: false,
-      filePath: file_path,
-      status: 'rejected',
-      id: indexResult.id,
-      specFolder: indexResult.specFolder,
-      title: indexResult.title,
-      summary: rollbackSucceeded
-        ? 'Atomic save rejected before pending file promotion'
-        : 'Atomic save rejected and pending cleanup failed',
-      message: indexResult.message ?? indexResult.rejectionReason ?? 'Memory save rejected',
-      embeddingStatus: indexResult.embeddingStatus,
-      hints: [
-        rollbackSucceeded
-          ? 'Pending file was removed because the save was rejected before final rename'
-          : 'Pending file cleanup failed after rejection; manual cleanup may be required',
-      ],
-      ...(rollbackSucceeded ? {} : { error: 'Pending-file cleanup failed after rejected save' }),
-    };
-  }
-
   if (indexError || !indexResult) {
-    const rollbackSucceeded = transactionManager.deleteFileIfExists(pendingPath);
+    const pendingCleanupRemoved = transactionManager.deleteFileIfExists(pendingPath);
+    const rollbackSucceeded = restoredOriginalAfterFailure || pendingCleanupRemoved || !fs.existsSync(pendingPath);
     const rollbackError = rollbackSucceeded ? '' : ' (rollback failed)';
 
     return {
@@ -1123,41 +1247,18 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       filePath: file_path,
       status: 'error',
       summary: rollbackSucceeded
-        ? 'Atomic save rolled back before pending file promotion'
+        ? 'Atomic save rolled back to the original file state'
         : 'Atomic save indexing failed and pending cleanup failed',
       message: rollbackSucceeded
-        ? 'Indexing failed and pending file was removed before final rename'
-        : 'Indexing failed and pending file could not be removed',
+        ? 'Indexing failed and the original file state was preserved or restored'
+        : 'Indexing failed and pending cleanup could not be completed',
       hints: [
         rollbackSucceeded
-          ? 'Original file was left untouched because indexing failed before the final rename'
+          ? 'Original file content was preserved or restored because indexing failed before completion'
           : 'Pending file cleanup failed after indexing error; manual cleanup may be required',
         'Retry memory_save({ filePath, force: true }) once dependencies are healthy',
       ],
       error: `Indexing failed after retry${rollbackError}: ${indexError?.message ?? 'unknown'}`,
-    };
-  }
-
-  try {
-    fs.renameSync(pendingPath, file_path);
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    return {
-      success: false,
-      filePath: file_path,
-      status: 'error',
-      id: indexResult.id,
-      specFolder: indexResult.specFolder,
-      title: indexResult.title,
-      summary: 'Atomic save indexed but pending file promotion failed',
-      message: 'Memory was indexed, but the pending file could not be promoted to the final path',
-      embeddingStatus: indexResult.embeddingStatus,
-      hints: [
-        `Pending file kept for recovery: ${pendingPath}`,
-        'Run pending-file recovery or retry the save after fixing filesystem issues',
-      ],
-      error: `Rename failed after DB commit: ${message}`,
-      dbCommitted: true,
     };
   }
 

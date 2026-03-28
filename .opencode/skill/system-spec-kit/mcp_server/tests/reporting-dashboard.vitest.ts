@@ -329,8 +329,17 @@ describe('Reporting Dashboard (R13-S3)', () => {
           eval_run_id: 1,
           metric_name: 'ndcg@5',
           metric_value: 0.85,
+          channel: 'vector',
           metadata: JSON.stringify({ sprint: 'sprint-1' }),
           created_at: '2026-01-10T10:00:00.000Z',
+        },
+        {
+          eval_run_id: 1,
+          metric_name: 'ndcg@5',
+          metric_value: 0.75,
+          channel: 'bm25',
+          metadata: JSON.stringify({ sprint: 'sprint-1' }),
+          created_at: '2026-01-10T10:05:00.000Z',
         },
       ]);
 
@@ -392,6 +401,16 @@ describe('Reporting Dashboard (R13-S3)', () => {
       const report = await generateDashboardReport();
       expect(report.sprints.length).toBe(1);
       expect(Object.keys(report.sprints[0].channels).length).toBe(0);
+    });
+
+    it('preserves per-channel metric summaries alongside aggregate metrics', async () => {
+      const report = await generateDashboardReport();
+      const sprint = report.sprints[0];
+
+      expect(sprint.metrics['ndcg@5'].count).toBe(2);
+      expect(sprint.channelMetrics['ndcg@5']).toBeDefined();
+      expect(sprint.channelMetrics['ndcg@5']['vector'].latest).toBe(0.85);
+      expect(sprint.channelMetrics['ndcg@5']['bm25'].latest).toBe(0.75);
     });
   });
 
@@ -580,6 +599,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
           eval_run_id: 1,
           metric_name: 'ndcg@5',
           metric_value: 0.85,
+          channel: 'vector',
           metadata: JSON.stringify({ sprint: 'sprint-1' }),
           created_at: '2026-01-10T10:00:00.000Z',
         },
@@ -592,6 +612,8 @@ describe('Reporting Dashboard (R13-S3)', () => {
       const text = formatReportText(report);
 
       expect(text).toContain('Channels:');
+      expect(text).toContain('Metric Channels:');
+      expect(text).toContain('ndcg@5 [vector]');
       expect(text).toContain('vector');
     });
 

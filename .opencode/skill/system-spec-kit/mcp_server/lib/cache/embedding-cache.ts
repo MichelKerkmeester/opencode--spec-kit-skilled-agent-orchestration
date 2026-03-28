@@ -50,32 +50,34 @@ function initEmbeddingCache(db: Database.Database): void {
 /* --- 3. CACHE LOOKUP --- */
 
 /**
- * Look up a cached embedding by content hash and model ID.
+ * Look up a cached embedding by content hash, model ID, and embedding dimension.
  * On hit: updates last_used_at and returns the embedding Buffer.
  * On miss: returns null.
  *
  * @param db - better-sqlite3 database instance
  * @param contentHash - SHA-256 hex digest of the content
  * @param modelId - Embedding model identifier
+ * @param dimensions - Expected embedding dimensions for this lookup
  * @returns Embedding buffer on cache hit, null on miss
  */
 function lookupEmbedding(
   db: Database.Database,
   contentHash: string,
   modelId: string,
+  dimensions: number,
 ): Buffer | null {
   const row = (db.prepare(
-    'SELECT embedding, dimensions FROM embedding_cache WHERE content_hash = ? AND model_id = ?',
-  ) as Database.Statement).get(contentHash, modelId) as
-    | { embedding: Buffer; dimensions: number }
+    'SELECT embedding FROM embedding_cache WHERE content_hash = ? AND model_id = ? AND dimensions = ?',
+  ) as Database.Statement).get(contentHash, modelId, dimensions) as
+    | { embedding: Buffer }
     | undefined;
 
   if (!row) return null;
 
   // Update last_used_at on cache hit
   (db.prepare(
-    "UPDATE embedding_cache SET last_used_at = datetime('now') WHERE content_hash = ? AND model_id = ?",
-  ) as Database.Statement).run(contentHash, modelId);
+    "UPDATE embedding_cache SET last_used_at = datetime('now') WHERE content_hash = ? AND model_id = ? AND dimensions = ?",
+  ) as Database.Statement).run(contentHash, modelId, dimensions);
 
   return row.embedding;
 }

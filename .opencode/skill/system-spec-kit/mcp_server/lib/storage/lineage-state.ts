@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Provides append-first lineage transitions, active projection reads,
 // Temporal asOf resolution, and backfill/integrity helpers.
+import { createHash } from 'node:crypto';
 import type Database from 'better-sqlite3';
 
 import * as bm25Index from '../search/bm25-index';
@@ -30,6 +31,11 @@ type MemoryIndexRow = Record<string, unknown> & {
   file_path: string;
   canonical_file_path?: string | null;
   anchor_id?: string | null;
+  tenant_id?: string | null;
+  user_id?: string | null;
+  agent_id?: string | null;
+  session_id?: string | null;
+  shared_space_id?: string | null;
   title?: string | null;
   content_hash?: string | null;
   created_at?: string;
@@ -182,6 +188,35 @@ function getSafeHistoryEvents(database: Database.Database, memoryId: number): Hi
   }
 }
 
+function normalizeScopeValue(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function buildScopePrefix(row: MemoryIndexRow): string | null {
+  const scopeTuple = [
+    ['tenant', normalizeScopeValue(row.tenant_id)],
+    ['user', normalizeScopeValue(row.user_id)],
+    ['agent', normalizeScopeValue(row.agent_id)],
+    ['session', normalizeScopeValue(row.session_id)],
+    ['shared_space', normalizeScopeValue(row.shared_space_id)],
+  ].filter((entry): entry is [string, string] => entry[1] != null);
+
+  if (scopeTuple.length === 0) {
+    return null;
+  }
+
+  const scopeHash = createHash('sha256')
+    .update(JSON.stringify(scopeTuple), 'utf8')
+    .digest('hex')
+    .slice(0, 24);
+
+  return `scope-sha256:${scopeHash}`;
+}
+
 function buildLogicalKey(row: MemoryIndexRow): string {
   const canonicalPath = typeof row.canonical_file_path === 'string' && row.canonical_file_path.trim().length > 0
     ? row.canonical_file_path.trim()
@@ -189,11 +224,15 @@ function buildLogicalKey(row: MemoryIndexRow): string {
   const anchorId = typeof row.anchor_id === 'string' && row.anchor_id.trim().length > 0
     ? row.anchor_id.trim()
     : '_';
+  const scopePrefix = buildScopePrefix(row);
   // R3: Validate that components don't contain the separator to prevent ambiguous keys.
   if (row.spec_folder.includes('::') || canonicalPath.includes('::') || anchorId.includes('::')) {
     console.warn(`[lineage-state] Logical key component contains '::' separator — key may be ambiguous: spec_folder=${row.spec_folder}, path=${canonicalPath}, anchor=${anchorId}`);
   }
-  return `${row.spec_folder}::${canonicalPath}::${anchorId}`;
+  if (!scopePrefix) {
+    return `${row.spec_folder}::${canonicalPath}::${anchorId}`;
+  }
+  return `${row.spec_folder}::${scopePrefix}::${canonicalPath}::${anchorId}`;
 }
 
 function getLineageRow(database: Database.Database, memoryId: number): MemoryLineageRow | null {
@@ -271,6 +310,12 @@ function upsertActiveProjection(
   activeMemoryId: number,
   updatedAt: string,
 ): void {
+  // Evict any stale projection row that maps a *different* logical_key to the
+  // same active_memory_id — prevents UNIQUE constraint violation on re-index
+  // when the logical_key changes (e.g. anchor or path normalization drift).
+  database.prepare(
+    'DELETE FROM active_memory_projection WHERE active_memory_id = ? AND logical_key != ?',
+  ).run(activeMemoryId, logicalKey);
   database.prepare(`
     INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
     VALUES (?, ?, ?, ?)
@@ -384,7 +429,12 @@ function insertAppendOnlyMemoryIndexRow(params: CreateAppendOnlyMemoryRecordPara
 
   if (bm25Index.isBm25Enabled()) {
     try {
-      bm25Index.getIndex().addDocument(String(memoryId), parsed.content);
+      bm25Index.getIndex().addDocument(String(memoryId), bm25Index.buildBm25DocumentText({
+        title: parsed.title,
+        content_text: parsed.content,
+        trigger_phrases: parsed.triggerPhrases,
+        file_path: filePath,
+      }));
     } catch (error: unknown) {
       logger.warn(`BM25 index update failed for memory ${memoryId}: ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -533,13 +583,14 @@ export function recordLineageTransition(
   // A1/B14: Wrap predecessor UPDATE + lineage INSERT + projection UPSERT in a transaction.
   const recordTransitionTx = database.transaction(() => {
     const row = getMemoryRow(database, memoryId);
+    const rowLogicalKey = buildLogicalKey(row);
     const actor = options.actor ?? 'system';
     const transitionEvent = options.transitionEvent ?? 'CREATE';
     const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
     const predecessorMemoryId = options.predecessorMemoryId ?? null;
     const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
 
-    let logicalKey = buildLogicalKey(row);
+    let logicalKey = rowLogicalKey;
     let rootMemoryId = memoryId;
     let versionNumber = 1;
     let predecessor: LineageRow | null = null;
@@ -547,6 +598,12 @@ export function recordLineageTransition(
     if (predecessorMemoryId != null) {
       predecessor = getLineageRow(database, predecessorMemoryId);
       if (predecessor) {
+        if (predecessor.logical_key !== rowLogicalKey) {
+          throw new Error(
+            `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${predecessor.logical_key} ` +
+            `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
+          );
+        }
         logicalKey = predecessor.logical_key;
         rootMemoryId = predecessor.root_memory_id;
         versionNumber = predecessor.version_number + 1;
@@ -555,6 +612,12 @@ export function recordLineageTransition(
           actor,
           transitionEvent: 'BACKFILL',
         });
+        if (seeded.logicalKey !== rowLogicalKey) {
+          throw new Error(
+            `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${seeded.logicalKey} ` +
+            `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
+          );
+        }
         logicalKey = seeded.logicalKey;
         rootMemoryId = seeded.rootMemoryId;
         versionNumber = seeded.versionNumber + 1;

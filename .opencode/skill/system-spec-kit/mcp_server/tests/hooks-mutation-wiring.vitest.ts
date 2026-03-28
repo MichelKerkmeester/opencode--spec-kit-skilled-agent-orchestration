@@ -10,12 +10,14 @@ const {
   mockInvalidateOnWrite,
   mockClearConstitutionalCache,
   mockClearGraphSignalsCache,
+  mockClearDegreeCache,
   mockClearRelatedCache,
 } = vi.hoisted(() => ({
   mockClearCache: vi.fn(),
   mockInvalidateOnWrite: vi.fn(),
   mockClearConstitutionalCache: vi.fn(),
   mockClearGraphSignalsCache: vi.fn(),
+  mockClearDegreeCache: vi.fn(),
   mockClearRelatedCache: vi.fn(),
 }));
 
@@ -33,6 +35,10 @@ vi.mock('../hooks/memory-surface', () => ({
 
 vi.mock('../lib/graph/graph-signals', () => ({
   clearGraphSignalsCache: mockClearGraphSignalsCache,
+}));
+
+vi.mock('../lib/search/graph-search-fn', () => ({
+  clearDegreeCache: mockClearDegreeCache,
 }));
 
 vi.mock('../lib/cognitive/co-activation', () => ({
@@ -60,6 +66,7 @@ describe('Hooks mutation wiring', () => {
     mockInvalidateOnWrite.mockReset().mockReturnValue(2);
     mockClearConstitutionalCache.mockReset().mockReturnValue(undefined);
     mockClearGraphSignalsCache.mockReset().mockReturnValue(undefined);
+    mockClearDegreeCache.mockReset().mockReturnValue(undefined);
     mockClearRelatedCache.mockReset().mockReturnValue(undefined);
   });
 
@@ -78,6 +85,7 @@ describe('Hooks mutation wiring', () => {
     expect(mockInvalidateOnWrite).toHaveBeenCalledTimes(MUTATION_OPERATIONS.length);
     expect(mockClearConstitutionalCache).toHaveBeenCalledTimes(MUTATION_OPERATIONS.length);
     expect(mockClearGraphSignalsCache).toHaveBeenCalledTimes(MUTATION_OPERATIONS.length);
+    expect(mockClearDegreeCache).toHaveBeenCalledTimes(MUTATION_OPERATIONS.length);
     expect(mockClearRelatedCache).toHaveBeenCalledTimes(MUTATION_OPERATIONS.length);
 
     MUTATION_OPERATIONS.forEach((operation, index) => {

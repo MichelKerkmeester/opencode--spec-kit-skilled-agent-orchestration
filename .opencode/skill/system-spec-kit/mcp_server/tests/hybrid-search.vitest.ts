@@ -3,6 +3,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import type Database from 'better-sqlite3';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
+import * as coActivation from '../lib/cognitive/co-activation';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion';
 
 /* ───────────────────────────────────────────────────────────────
@@ -113,6 +114,72 @@ function createDegreeAwareMockDb(): Database.Database {
           }
 
           return [];
+        },
+      };
+    },
+  } as unknown as Database.Database;
+}
+
+function createCoactivationPromotionDb(): Database.Database {
+  return {
+    prepare(sql: string) {
+      return {
+        get(param?: unknown) {
+          if (sql.includes('memory_fts')) {
+            return { count: 1 };
+          }
+
+          if (sql.includes('SELECT related_memories FROM memory_index WHERE id = ?')) {
+            if (Number(param) === 1) {
+              return { related_memories: JSON.stringify([{ id: 4, similarity: 100 }]) };
+            }
+            return { related_memories: null };
+          }
+
+          if (sql.includes('SELECT id, title, spec_folder, file_path, importance_tier FROM memory_index WHERE id = ?')) {
+            const memoryId = Number(param);
+            const doc = MOCK_DOCS.find((candidate) => candidate.id === memoryId);
+            if (!doc) return undefined;
+            return {
+              id: doc.id,
+              title: `Doc ${doc.id}`,
+              spec_folder: doc.spec_folder,
+              file_path: `/workspace/specs/${doc.spec_folder}/memory/${doc.id}.md`,
+              importance_tier: doc.importance_tier,
+            };
+          }
+
+          return null;
+        },
+        all(...params: unknown[]) {
+          if (sql.includes('causal_edges')) {
+            return [];
+          }
+
+          if (sql.includes('vec_memories')) {
+            return [];
+          }
+
+          if (sql.includes('memory_fts')) {
+            return MOCK_DOCS.slice(0, 3).map((doc, index) => ({
+              ...doc,
+              id: doc.id,
+              fts_score: 10 - index,
+            }));
+          }
+
+          if (params.length >= 2 && typeof params[1] === 'string' && params[1].startsWith('specs/')) {
+            const spec_folder = params[1];
+            return MOCK_DOCS.filter((doc) => doc.spec_folder === spec_folder).slice(0, 3).map((doc, index) => ({
+              ...doc,
+              fts_score: 10 - index,
+            }));
+          }
+
+          return MOCK_DOCS.slice(0, 3).map((doc, index) => ({
+            ...doc,
+            fts_score: 10 - index,
+          }));
         },
       };
     },
@@ -811,6 +878,84 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
   });
 });
 
+describe('P1 fallback threshold and channel gating regressions', () => {
+  const originalEnv = {
+    SPECKIT_SEARCH_FALLBACK: process.env.SPECKIT_SEARCH_FALLBACK,
+    SPECKIT_COMPLEXITY_ROUTER: process.env.SPECKIT_COMPLEXITY_ROUTER,
+  };
+
+  afterEach(() => {
+    bm25Index.resetIndex();
+    for (const [key, value] of Object.entries(originalEnv)) {
+      if (value === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = value;
+      }
+    }
+  });
+
+  it('T020: searchWithFallback uses percentage minSimilarity thresholds for adaptive retry', async () => {
+    process.env.SPECKIT_SEARCH_FALLBACK = 'false';
+    const seenThresholds: number[] = [];
+    const recordingVectorSearch: VectorSearchFn = (_embedding, options = {}) => {
+      seenThresholds.push(options.minSimilarity as number);
+      return [];
+    };
+
+    hybridSearch.init(createMockDb(), recordingVectorSearch, null);
+
+    const results = await hybridSearch.searchWithFallback(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 5, useFts: false, useBm25: false, useGraph: false }
+    );
+
+    expect(results).toEqual([]);
+    expect(seenThresholds).toEqual([30, 17]);
+  });
+
+  it('T020: collectRawCandidates tiered fallback widens vector search with 30/10 percent floors', async () => {
+    process.env.SPECKIT_SEARCH_FALLBACK = 'true';
+    process.env.SPECKIT_COMPLEXITY_ROUTER = 'false';
+    const seenThresholds: number[] = [];
+    const recordingVectorSearch: VectorSearchFn = (_embedding, options = {}) => {
+      seenThresholds.push(options.minSimilarity as number);
+      return [];
+    };
+
+    hybridSearch.init(createMockDb(), recordingVectorSearch, null);
+
+    await hybridSearch.collectRawCandidates(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 5, useFts: false, useBm25: false, useGraph: false }
+    );
+
+    expect(seenThresholds).toEqual([30, 10]);
+  });
+
+  it('T021: disabled lexical channels stay disabled through the fallback chain', async () => {
+    process.env.SPECKIT_SEARCH_FALLBACK = 'false';
+    const emptyVectorSearch: VectorSearchFn = () => [];
+
+    hybridSearch.init(createMockDb(), emptyVectorSearch, null);
+    bm25Index.resetIndex();
+    const bm25 = bm25Index.getIndex();
+    for (const doc of MOCK_DOCS) {
+      bm25.addDocument(String(doc.id), doc.content);
+    }
+
+    const results = await hybridSearch.searchWithFallback(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 5, useFts: false, useBm25: false, useGraph: false }
+    );
+
+    expect(results).toEqual([]);
+  });
+});
+
 describe('P1-002-1 raw candidate merge scoring', () => {
   const { mergeRawCandidate } = hybridSearch.__testables;
 
@@ -916,6 +1061,169 @@ describe('Degree channel fusion regression coverage', () => {
 
     expect(results[0]?.id).toBe(2);
     expect((results[0] as Record<string, unknown>).sources).toContain('degree');
+  });
+
+  it('T022: useGraph=false also suppresses the degree channel', async () => {
+    const degreeAwareDb = createDegreeAwareMockDb();
+    const vectorOnlySearch: VectorSearchFn = () => ([
+      { id: 1, similarity: 0.9, title: 'vector-first' },
+      { id: 2, similarity: 0.8, title: 'degree-promoted' },
+    ]);
+
+    hybridSearch.init(degreeAwareDb, vectorOnlySearch, () => [{ id: 2, score: 0.7 }]);
+    bm25Index.resetIndex();
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'fix auth bug',
+      new Float32Array(384).fill(0.1),
+      {
+        limit: 5,
+        useFts: false,
+        useBm25: false,
+        useGraph: false,
+        forceAllChannels: true,
+        intent: 'fix_bug',
+      }
+    );
+
+    expect(results[0]?.id).toBe(1);
+    expect(
+      results.some((result) => ((result as Record<string, unknown>).sources as string[] | undefined)?.includes('degree'))
+    ).toBe(false);
+  });
+
+  it('T023: graph-present fusion keeps lexical evidence grouped under the keyword channel', async () => {
+    const mockDb = createMockDb();
+    const graphSearch: GraphSearchFn = () => [{ id: 999, score: 0.6, title: 'graph result' }];
+
+    hybridSearch.init(mockDb, mockVectorSearch, graphSearch);
+    bm25Index.resetIndex();
+    const bm25 = bm25Index.getIndex();
+    for (const doc of MOCK_DOCS) {
+      bm25.addDocument(String(doc.id), doc.content);
+    }
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 10, intent: 'understand' }
+    );
+
+    const keywordBackedResult = results.find((result) =>
+      ((result as Record<string, unknown>).sources as string[] | undefined)?.includes('keyword')
+    );
+
+    expect(keywordBackedResult).toBeDefined();
+    expect(((keywordBackedResult as Record<string, unknown>).sources as string[])).not.toEqual(
+      expect.arrayContaining(['fts', 'bm25'])
+    );
+  });
+});
+
+describe('P1 post-ranking truncation and token budget regressions', () => {
+  const originalEnv = {
+    SPECKIT_CONFIDENCE_TRUNCATION: process.env.SPECKIT_CONFIDENCE_TRUNCATION,
+    SPECKIT_MMR: process.env.SPECKIT_MMR,
+    SPECKIT_CROSS_ENCODER: process.env.SPECKIT_CROSS_ENCODER,
+    SPECKIT_FOLDER_SCORING: process.env.SPECKIT_FOLDER_SCORING,
+    SPECKIT_DYNAMIC_TOKEN_BUDGET: process.env.SPECKIT_DYNAMIC_TOKEN_BUDGET,
+    SPECKIT_CONTEXT_HEADERS: process.env.SPECKIT_CONTEXT_HEADERS,
+    SPECKIT_SEARCH_FALLBACK: process.env.SPECKIT_SEARCH_FALLBACK,
+    SPECKIT_DOCSCORE_AGGREGATION: process.env.SPECKIT_DOCSCORE_AGGREGATION,
+  };
+
+  afterEach(() => {
+    for (const [key, value] of Object.entries(originalEnv)) {
+      if (value === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = value;
+      }
+    }
+  });
+
+  it('T024: co-activation promotion happens before confidence truncation drops tail candidates', async () => {
+    process.env.SPECKIT_CONFIDENCE_TRUNCATION = 'true';
+    process.env.SPECKIT_MMR = 'false';
+    process.env.SPECKIT_CROSS_ENCODER = 'false';
+    process.env.SPECKIT_FOLDER_SCORING = 'false';
+    process.env.SPECKIT_DYNAMIC_TOKEN_BUDGET = 'false';
+    process.env.SPECKIT_CONTEXT_HEADERS = 'false';
+    process.env.SPECKIT_SEARCH_FALLBACK = 'false';
+    process.env.SPECKIT_DOCSCORE_AGGREGATION = 'false';
+
+    const promotionDb = createCoactivationPromotionDb();
+    const vectorSearch: VectorSearchFn = () => ([
+      { id: 1, similarity: 0.99, title: 'seed one' },
+      { id: 2, similarity: 0.98, title: 'seed two' },
+      { id: 3, similarity: 0.97, title: 'seed three' },
+      { id: 4, similarity: 0.96, title: 'promoted by coactivation' },
+    ]);
+
+    hybridSearch.init(promotionDb, vectorSearch, null);
+    coActivation.init(promotionDb);
+    bm25Index.resetIndex();
+    const bm25 = bm25Index.getIndex();
+    for (const doc of MOCK_DOCS) {
+      bm25.addDocument(String(doc.id), doc.content);
+    }
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 10, useFts: false, useBm25: true, useGraph: false, intent: 'understand' }
+    );
+
+    expect(results.map((result) => result.id)).toContain(4);
+  });
+
+  it('T025: estimateResultTokens includes nested metadata and multi-source fields', () => {
+    const baseResult = {
+      id: 1,
+      score: 0.9,
+      source: 'vector',
+      title: 'Base result',
+    } as HybridSearchResult;
+    const enrichedResult = {
+      ...baseResult,
+      sources: ['vector', 'keyword'],
+      traceMetadata: {
+        stage4: { scoreTrace: 'x'.repeat(120) },
+        attribution: { sources: ['vector', 'keyword'] },
+      },
+    } as HybridSearchResult;
+
+    expect(hybridSearch.estimateResultTokens(enrichedResult)).toBeGreaterThan(
+      hybridSearch.estimateResultTokens(baseResult)
+    );
+  });
+
+  it('T025: truncateToBudget skips an oversized first result and keeps the best fitting candidate', () => {
+    const oversized = {
+      id: 1,
+      score: 0.95,
+      source: 'vector',
+      title: 'Oversized',
+      content: 'x'.repeat(40000),
+      traceMetadata: {
+        stage4: { debug: 'y'.repeat(4000) },
+      },
+    } as HybridSearchResult;
+    const compact = {
+      id: 2,
+      score: 0.8,
+      source: 'vector',
+      title: 'Compact result',
+    } as HybridSearchResult;
+    const budget = hybridSearch.estimateResultTokens(compact) + 5;
+
+    const truncated = hybridSearch.truncateToBudget([oversized, compact], budget, {
+      includeContent: false,
+      queryId: 'p1-token-skip',
+    });
+
+    expect(truncated.truncated).toBe(true);
+    expect(truncated.results.map((result) => result.id)).toEqual([2]);
   });
 });
 

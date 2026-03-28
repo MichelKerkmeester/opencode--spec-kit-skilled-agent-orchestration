@@ -117,4 +117,53 @@ describe('db-state graph search wiring', () => {
     expect(result).toBe(false);
     expect(sessionManager.init).toHaveBeenCalledTimes(1);
   });
+
+  it('rebinds all registered database consumers when the vector index swaps connections directly', () => {
+    const originalDb = { name: 'original-db' } as unknown as DatabaseLike;
+    const reboundDb = { name: 'rebound-db' } as unknown as DatabaseLike;
+    let connectionListener: ((database: DatabaseLike) => void) | null = null;
+
+    const vectorIndex = {
+      initializeDb: vi.fn(),
+      getDb: vi.fn(() => originalDb),
+      closeDb: vi.fn(),
+      vectorSearch: vi.fn(),
+      onDatabaseConnectionChange: vi.fn((listener: (database: DatabaseLike) => void) => {
+        connectionListener = listener;
+        return () => {
+          connectionListener = null;
+        };
+      }),
+    };
+
+    const checkpoints = { init: vi.fn() };
+    const accessTracker = { init: vi.fn() };
+    const hybridSearch = { init: vi.fn() };
+    const sessionManager = { init: vi.fn(() => ({ success: true })) };
+    const incrementalIndex = { init: vi.fn() };
+    const extraConsumer = { init: vi.fn() };
+
+    init({
+      vectorIndex,
+      checkpoints,
+      accessTracker,
+      hybridSearch,
+      sessionManager,
+      incrementalIndex,
+      graphSearchFn: null,
+      dbConsumers: [extraConsumer],
+    });
+
+    expect(vectorIndex.onDatabaseConnectionChange).toHaveBeenCalledTimes(1);
+    expect(connectionListener).not.toBeNull();
+
+    connectionListener?.(reboundDb);
+
+    expect(checkpoints.init).toHaveBeenCalledWith(reboundDb);
+    expect(accessTracker.init).toHaveBeenCalledWith(reboundDb);
+    expect(hybridSearch.init).toHaveBeenCalledWith(reboundDb, vectorIndex.vectorSearch, null);
+    expect(sessionManager.init).toHaveBeenCalledWith(reboundDb);
+    expect(incrementalIndex.init).toHaveBeenCalledWith(reboundDb);
+    expect(extraConsumer.init).toHaveBeenCalledWith(reboundDb);
+  });
 });

@@ -173,6 +173,8 @@ interface RestoreResult {
   skipped: number;
   errors: string[];
   workingMemoryRestored: number;
+  partialFailure?: boolean;
+  rolledBackTables?: string[];
 }
 
 interface SnapshotVectorRow {
@@ -834,16 +836,24 @@ function clearTableForRestoreScope(
     sharedSpaceIds: string[];
     edgeIds: number[];
     scope?: ScopeContext;
+    allowFullTableFallback?: boolean;
   },
 ): void {
-  const { checkpointSpecFolder, memoryIds, sharedSpaceIds, edgeIds, scope = {} } = options;
+  const {
+    checkpointSpecFolder,
+    memoryIds,
+    sharedSpaceIds,
+    edgeIds,
+    scope = {},
+    allowFullTableFallback = true,
+  } = options;
   const normalizedScope = normalizeScopeContext(scope);
   const hasScope = hasScopeConstraints(normalizedScope);
   if (!tableExists(database, tableName)) {
     return;
   }
 
-  if (!checkpointSpecFolder && !hasScope) {
+  if (!checkpointSpecFolder && !hasScope && allowFullTableFallback) {
     clearTable(database, tableName);
     return;
   }
@@ -942,7 +952,7 @@ function clearTableForRestoreScope(
     return;
   }
 
-  if (!hasScope) {
+  if (!hasScope && allowFullTableFallback) {
     clearTable(database, tableName);
   }
 }
@@ -985,6 +995,47 @@ function clearDerivedTablesForRestore(
     if (!hasScope) {
       clearTable(database, tableName);
     }
+  }
+}
+
+function restoreMergeTableAtomically(
+  database: Database.Database,
+  tableName: string,
+  tableSnapshot: TableSnapshot,
+  options: {
+    checkpointSpecFolder: string | null;
+    memoryIds: number[];
+    sharedSpaceIds: string[];
+    edgeIds: number[];
+    scope: ScopeContext;
+  },
+): { restoredCount: number; error?: string } {
+  const savepointName = `checkpoint_merge_${tableName.replace(/[^a-z0-9_]/gi, '_')}`;
+
+  database.exec(`SAVEPOINT ${savepointName}`);
+  try {
+    clearTableForRestoreScope(database, tableName, {
+      ...options,
+      allowFullTableFallback: false,
+    });
+    const restoredCount = restoreGenericTable(database, tableName, tableSnapshot);
+    database.exec(`RELEASE SAVEPOINT ${savepointName}`);
+    return { restoredCount };
+  } catch (error: unknown) {
+    const msg = toErrorMessage(error);
+    try {
+      database.exec(`ROLLBACK TO SAVEPOINT ${savepointName}`);
+    } finally {
+      try {
+        database.exec(`RELEASE SAVEPOINT ${savepointName}`);
+      } catch {
+        // Ignore follow-up release errors after rollback.
+      }
+    }
+    return {
+      restoredCount: 0,
+      error: `${tableName}: merge restore rolled back after pre-clear because reinsertion failed: ${msg}`,
+    };
   }
 }
 
@@ -1481,7 +1532,14 @@ function restoreCheckpoint(
   scope: ScopeContext = {},
 ): RestoreResult {
   const database = getDatabase();
-  const result: RestoreResult = { restored: 0, skipped: 0, errors: [], workingMemoryRestored: 0 };
+  const result: RestoreResult = {
+    restored: 0,
+    skipped: 0,
+    errors: [],
+    workingMemoryRestored: 0,
+    partialFailure: false,
+    rolledBackTables: [],
+  };
 
   try {
     const checkpoint = getCheckpoint(nameOrId, scope);
@@ -1611,6 +1669,7 @@ function restoreCheckpoint(
       }
 
       const txErrors: string[] = [];
+      const rolledBackTables = new Set<string>();
       const restoredMemoryIds = new Set<number>();
 
       for (const memory of memoryRows) {
@@ -1720,19 +1779,25 @@ function restoreCheckpoint(
         }
 
         try {
-          // In merge mode, scoped-delete in-scope rows before restoring
-          // so stale data for those IDs is replaced (e.g., causal_edges).
+          let restoredCount = 0;
+          // In merge mode, replace only the in-scope rows captured by the checkpoint.
           if (!clearExisting && tableSnapshot.rows.length > 0) {
-            try {
-              clearTableForRestoreScope(database, tableName, {
-                checkpointSpecFolder,
-                memoryIds: scopedMemoryIdsToReplace,
-                sharedSpaceIds,
-                edgeIds,
-              });
-            } catch { /* best-effort scoped delete */ }
+            const mergeResult = restoreMergeTableAtomically(database, tableName, tableSnapshot, {
+              checkpointSpecFolder,
+              memoryIds: scopedMemoryIdsToReplace,
+              sharedSpaceIds,
+              edgeIds,
+              scope: normalizedScope,
+            });
+            if (mergeResult.error) {
+              rolledBackTables.add(tableName);
+              txErrors.push(mergeResult.error);
+              continue;
+            }
+            restoredCount = mergeResult.restoredCount;
+          } else {
+            restoredCount = restoreGenericTable(database, tableName, tableSnapshot);
           }
-          const restoredCount = restoreGenericTable(database, tableName, tableSnapshot);
           if (tableName === 'working_memory') {
             result.workingMemoryRestored += restoredCount;
           }
@@ -1759,6 +1824,8 @@ function restoreCheckpoint(
 
       // For non-clearExisting, partial failures are acceptable (no data was deleted)
       if (txErrors.length > 0) {
+        result.partialFailure = true;
+        result.rolledBackTables = Array.from(rolledBackTables);
         result.errors.push(...txErrors);
       }
     });

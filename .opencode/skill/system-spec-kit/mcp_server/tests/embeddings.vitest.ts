@@ -1,12 +1,14 @@
 // TEST: Embeddings Architecture (T513)
 // Verifies current shared-provider architecture and MCP facade.
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createEmbeddingsProvider,
   getProviderInfo,
   resolveProvider,
+  resolveStartupEmbeddingConfig,
   validateApiKey,
 } from '@spec-kit/shared/embeddings/factory';
+import { VoyageProvider } from '@spec-kit/shared/embeddings/providers/voyage';
 import * as embeddingsFacade from '../lib/providers/embeddings';
 
 const ENV_KEYS = [
@@ -21,6 +23,7 @@ const ENV_KEYS = [
 const ORIGINAL_ENV = Object.fromEntries(
   ENV_KEYS.map((key) => [key, process.env[key]])
 ) as Record<string, string | undefined>;
+const originalFetch = globalThis.fetch;
 
 function resetEnv(): void {
   for (const key of ENV_KEYS) {
@@ -33,13 +36,30 @@ function resetEnv(): void {
   }
 }
 
+function restoreFetch(): void {
+  globalThis.fetch = originalFetch;
+}
+
+function mockFetch(status: number, body: Record<string, unknown>): void {
+  globalThis.fetch = vi.fn(async () => ({
+    ok: status >= 200 && status < 300,
+    status,
+    statusText: `HTTP ${status}`,
+    json: async () => body,
+  } as Response)) as typeof fetch;
+}
+
 describe('Embeddings Architecture (T513)', () => {
   beforeEach(() => {
     resetEnv();
+    restoreFetch();
+    vi.restoreAllMocks();
   });
 
   afterEach(() => {
     resetEnv();
+    restoreFetch();
+    vi.restoreAllMocks();
   });
 
   describe('Provider resolution', () => {
@@ -121,6 +141,44 @@ describe('Embeddings Architecture (T513)', () => {
       delete process.env.VOYAGE_API_KEY;
       await expect(createEmbeddingsProvider({ provider: 'voyage' })).rejects.toThrow('VOYAGE_API_KEY');
     });
+
+    it('T513-02d: auto fallback records effective provider metadata after warmup failure', async () => {
+      delete process.env.EMBEDDINGS_PROVIDER;
+      process.env.VOYAGE_API_KEY = 'voyage_test_key_1234567890';
+      delete process.env.OPENAI_API_KEY;
+      mockFetch(200, { data: [{ embedding: [0.1, 0.2, 0.3] }] });
+      vi.spyOn(VoyageProvider.prototype, 'warmup').mockResolvedValue(false);
+
+      const provider = await createEmbeddingsProvider({ warmup: true });
+      const factoryMetadata = (provider as { factoryMetadata?: {
+        requestedProvider: string;
+        effectiveProvider: string;
+        fallbackReason?: string;
+        dimensionChanged: boolean;
+      } }).factoryMetadata;
+
+      expect(provider.getMetadata().provider).toBe('hf-local');
+      expect(factoryMetadata).toMatchObject({
+        requestedProvider: 'voyage',
+        effectiveProvider: 'hf-local',
+        dimensionChanged: true,
+      });
+      expect(factoryMetadata?.fallbackReason).toContain('warmup failed');
+
+      const info = getProviderInfo();
+      expect(info.provider).toBe('hf-local');
+      expect(info.requestedProvider).toBe('voyage');
+      expect(info.effectiveProvider).toBe('hf-local');
+      expect(info.dimensionChanged).toBe(true);
+    });
+
+    it('T513-02e: validation runs before explicit cloud provider creation', async () => {
+      process.env.EMBEDDINGS_PROVIDER = 'openai';
+      process.env.OPENAI_API_KEY = 'invalid-openai-key';
+      mockFetch(401, { error: { message: 'Invalid API key' } });
+
+      await expect(createEmbeddingsProvider({ provider: 'openai' })).rejects.toThrow('invalid or unauthorized');
+    });
   });
 
   describe('Provider info and validation', () => {
@@ -131,6 +189,8 @@ describe('Embeddings Architecture (T513)', () => {
 
       const info = getProviderInfo();
       expect(info.provider).toBe('voyage');
+      expect(info.requestedProvider).toBe('voyage');
+      expect(info.effectiveProvider).toBe('voyage');
       expect(info.config.VOYAGE_API_KEY).toBe('***set***');
       expect(info.config.OPENAI_API_KEY).toBe('not set');
     });
@@ -153,6 +213,17 @@ describe('Embeddings Architecture (T513)', () => {
       expect(result.valid).toBe(false);
       expect(result.provider).toBe('openai');
       expect(result.errorCode).toBe('E050');
+    });
+
+    it('T513-03d: resolveStartupEmbeddingConfig validates before exposing dimension data', async () => {
+      process.env.EMBEDDINGS_PROVIDER = 'openai';
+      process.env.OPENAI_API_KEY = 'openai_test_key_1234567890';
+      mockFetch(200, { data: [{ embedding: [0.1, 0.2, 0.3] }] });
+
+      const startup = await resolveStartupEmbeddingConfig({ timeout: 100 });
+      expect(startup.validation.valid).toBe(true);
+      expect(startup.info.provider).toBe('openai');
+      expect(startup.dimension).toBeGreaterThan(0);
     });
   });
 

@@ -159,12 +159,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
             'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
           ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
           if (row) {
-            const textParts: string[] = [];
-            if (row.title) textParts.push(row.title);
-            if (row.content_text) textParts.push(row.content_text);
-            if (row.trigger_phrases) textParts.push(row.trigger_phrases);
-            if (row.file_path) textParts.push(row.file_path);
-            const text = textParts.join(' ');
+            const text = bm25Index.buildBm25DocumentText(row);
             if (text.trim()) {
               bm25Idx.addDocument(String(id), text);
             }

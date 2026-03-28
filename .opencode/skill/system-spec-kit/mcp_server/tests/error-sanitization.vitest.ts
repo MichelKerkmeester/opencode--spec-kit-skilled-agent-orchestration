@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildErrorResponse,
   ErrorCodes,
+  getDefaultErrorCodeForTool,
   MemoryError,
   sanitizeErrorField,
 } from '../lib/errors/core';
@@ -84,5 +85,23 @@ describe('buildErrorResponse', () => {
     const keys = details.keys as string[];
     expect(keys[0]).toBe('[REDACTED]');
     expect(keys[1]).toBe('safe-value');
+  });
+
+  it('maps non-search tools to domain-specific default error codes', () => {
+    expect(getDefaultErrorCodeForTool('memory_save')).toBe('E081');
+    expect(getDefaultErrorCodeForTool('memory_drift_why')).toBe('E105');
+    expect(getDefaultErrorCodeForTool('memory_causal_stats')).toBe('E104');
+  });
+
+  it('uses generic public messaging for plain internal exceptions', () => {
+    const response = buildErrorResponse(
+      'memory_causal_stats',
+      new Error('SQLITE_ERROR: no such table at /tmp/private/context-index.sqlite'),
+    );
+
+    expect(response.data.code).toBe('E104');
+    expect(response.summary).toBe('Error: An unexpected error occurred. Please check logs for details.');
+    expect(response.data.error).toBe('An unexpected error occurred. Please check logs for details.');
+    expect(JSON.stringify(response)).not.toContain('/tmp/private/context-index.sqlite');
   });
 });

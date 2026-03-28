@@ -13,6 +13,7 @@ import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activati
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
+import { DEGREE_CHANNEL_WEIGHT } from './graph-search-fn';
 import {
   isMMREnabled,
   isCrossEncoderEnabled,
@@ -230,6 +231,12 @@ const DEGRADATION_MIN_RESULTS = 3;
 
 /** Default result limit when none is specified by the caller. */
 const DEFAULT_LIMIT = 20;
+/** Primary vector similarity floor for hybrid fallback passes (percentage units). */
+const PRIMARY_FALLBACK_MIN_SIMILARITY = 30;
+/** Secondary vector similarity floor for adaptive retry passes (percentage units). */
+const SECONDARY_FALLBACK_MIN_SIMILARITY = 17;
+/** Tier-2 vector similarity floor for quality-aware fallback (percentage units). */
+const TIERED_FALLBACK_MIN_SIMILARITY = 10;
 
 /** Minimum MMR candidates required for diversity reranking to be worthwhile. */
 const MMR_MIN_CANDIDATES = 2;
@@ -656,6 +663,35 @@ function mergeRawCandidateSets(
   );
 }
 
+function getAllowedChannels(options: HybridSearchOptions): Set<ChannelName> {
+  const allowed = new Set<ChannelName>(['vector', 'fts', 'bm25', 'graph', 'degree']);
+
+  if (options.useVector === false) allowed.delete('vector');
+  if (options.useBm25 === false) allowed.delete('bm25');
+  if (options.useFts === false) allowed.delete('fts');
+  if (options.useGraph === false) {
+    allowed.delete('graph');
+    allowed.delete('degree');
+  }
+
+  return allowed;
+}
+
+function applyAllowedChannelOverrides(
+  options: HybridSearchOptions,
+  allowedChannels: Set<ChannelName>,
+  overrides: Partial<HybridSearchOptions> = {}
+): HybridSearchOptions {
+  return {
+    ...options,
+    ...overrides,
+    useVector: allowedChannels.has('vector'),
+    useBm25: allowedChannels.has('bm25'),
+    useFts: allowedChannels.has('fts'),
+    useGraph: allowedChannels.has('graph'),
+  };
+}
+
 // 11. HYBRID SEARCH
 
 /**
@@ -813,13 +849,12 @@ async function hybridSearchEnhanced(
       ? new Set<ChannelName>(allPossibleChannels)
       : new Set<ChannelName>(routeResult.channels);
 
-    // -- Ablation override: allow callers to force-disable channels (BUG-1 fix) --
-    // The ablation framework passes useVector/useBm25/useFts=false to disable
-    // Specific channels for contribution analysis. Without this intersection, ablation
-    // Channel disable was a no-op because only routeQuery() controlled activeChannels.
-    if (options.useVector === false) activeChannels.delete('vector');
-    if (options.useBm25 === false) activeChannels.delete('bm25');
-    if (options.useFts === false) activeChannels.delete('fts');
+    // Respect explicit caller channel disables across both the primary route and
+    // every fallback tier. useGraph=false also disables the dependent degree lane.
+    const allowedChannels = getAllowedChannels(options);
+    for (const channel of allPossibleChannels) {
+      if (!allowedChannels.has(channel)) activeChannels.delete(channel);
+    }
 
     const skippedChannels = allPossibleChannels.filter(ch => !activeChannels.has(ch));
 
@@ -956,7 +991,7 @@ async function hybridSearchEnhanced(
                 id: item.id,
                 degreeScore: item.degreeScore,
               })),
-              weight: 0.4,
+              weight: DEGREE_CHANNEL_WEIGHT,
             });
           }
         }
@@ -996,31 +1031,39 @@ async function hybridSearchEnhanced(
       // C138: Use adaptive fusion to get intent-aware weights replacing hardcoded [1.0, 0.8, 0.6]
       const intent = options.intent || classifyIntent(query).intent;
       const adaptiveResult = hybridAdaptiveFuse(semanticResults, keywordResults, intent);
-      const { semanticWeight, keywordWeight } = adaptiveResult.weights;
-      const lexicalChannelCount = [
-        ftsChannelResults.length > 0,
-        bm25ChannelResults.length > 0,
-      ].filter(Boolean).length;
-      const perLexicalWeight = lexicalChannelCount > 1
-        ? keywordWeight / lexicalChannelCount
-        : keywordWeight;
+      const { semanticWeight, keywordWeight, graphWeight: adaptiveGraphWeight } = adaptiveResult.weights;
+      const keywordFusionResults = keywordResults.map((result) => ({
+        ...result,
+        source: 'keyword',
+      }));
+      const fusionLists = lists
+        .filter((list) => list.source !== 'fts' && list.source !== 'bm25')
+        .map((list) => {
+          if (list.source === 'vector') {
+            return { ...list, weight: semanticWeight };
+          }
+          if (list.source === 'graph' && typeof adaptiveGraphWeight === 'number') {
+            return { ...list, weight: adaptiveGraphWeight };
+          }
+          return { ...list };
+        });
 
-      // Apply adaptive weights to the fusion lists (update in place)
-      const { graphWeight: adaptiveGraphWeight } = adaptiveResult.weights;
-      for (const list of lists) {
-        if (list.source === 'vector') list.weight = semanticWeight;
-        else if (list.source === 'fts' || list.source === 'bm25') list.weight = perLexicalWeight;
-        else if (list.source === 'graph' && typeof adaptiveGraphWeight === 'number') list.weight = adaptiveGraphWeight;
+      if (keywordFusionResults.length > 0 && keywordWeight > 0) {
+        fusionLists.push({
+          source: 'keyword',
+          results: keywordFusionResults,
+          weight: keywordWeight,
+        });
       }
 
       // Only short-circuit to adaptive fusion when the live fusion set contains
       // exactly the channels adaptive fusion already modeled. Extra channels like
       // degree must still flow through fuseResultsMulti even when graph is absent.
       const useAdaptiveResultsDirectly = adaptiveResult.results.length > 0
-        && lists.every((list) => list.source === 'vector' || list.source === 'fts' || list.source === 'bm25');
+        && fusionLists.every((list) => list.source === 'vector' || list.source === 'keyword');
       const fused = useAdaptiveResultsDirectly
         ? adaptiveResult.results
-        : fuseResultsMulti(lists);
+        : fuseResultsMulti(fusionLists);
 
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
@@ -1115,37 +1158,6 @@ async function hybridSearchEnhanced(
       } catch (err: unknown) {
         // Non-critical — enforcement failure does not block pipeline
         console.warn('[hybrid-search] channel enforcement failed:', err instanceof Error ? err.message : String(err));
-      }
-
-      // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
-      // Trims low-confidence tail from fused results using gap analysis.
-      // A gap > 2x median signals a relevance cliff — results below are noise.
-      // When disabled, passes results through unchanged.
-      if (!evaluationMode) {
-        try {
-          const truncationResult: TruncationResult = truncateByConfidence(
-            fusedHybridResults.map(r => ({ ...r, id: r.id, score: r.score })),
-          );
-
-          if (truncationResult.truncated) {
-            // Map truncated ScoredResults back to HybridSearchResult — preserve all fields
-            fusedHybridResults = truncationResult.results.map(r => r as HybridSearchResult);
-            s3meta.truncation = {
-              truncated: true,
-              originalCount: truncationResult.originalCount,
-              truncatedCount: truncationResult.truncatedCount,
-              medianGap: truncationResult.medianGap,
-              cutoffGap: truncationResult.cutoffGap,
-              cutoffIndex: truncationResult.cutoffIndex,
-              thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
-              minResultsGuaranteed: DEFAULT_MIN_RESULTS,
-              featureFlagEnabled: isConfidenceTruncationEnabled(),
-            };
-          }
-        } catch (err: unknown) {
-          // Non-critical — truncation failure does not block pipeline
-          console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
-        }
       }
 
       // C138: MMR reranking — retrieve embeddings from vec_memories for diversity pruning.
@@ -1287,55 +1299,40 @@ async function hybridSearchEnhanced(
         }
       }
 
+      // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
+      // Run after the ranking pipeline so later boosts/promotions can rescue
+      // candidates before low-confidence tails are trimmed.
+      if (!evaluationMode) {
+        try {
+          const truncationResult: TruncationResult = truncateByConfidence(
+            reranked.map(r => ({ ...r, id: r.id, score: r.score })),
+          );
+
+          if (truncationResult.truncated) {
+            reranked = truncationResult.results.map(r => r as HybridSearchResult);
+            s3meta.truncation = {
+              truncated: true,
+              originalCount: truncationResult.originalCount,
+              truncatedCount: truncationResult.truncatedCount,
+              medianGap: truncationResult.medianGap,
+              cutoffGap: truncationResult.cutoffGap,
+              cutoffIndex: truncationResult.cutoffIndex,
+              thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
+              minResultsGuaranteed: DEFAULT_MIN_RESULTS,
+              featureFlagEnabled: isConfidenceTruncationEnabled(),
+            };
+          }
+        } catch (err: unknown) {
+          // Non-critical — truncation failure does not block pipeline
+          console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
+        }
+      }
+
       // Preserve non-enumerable eval metadata across truncation reallocation.
       const shadowMeta = reranked as HybridSearchResult[] & ShadowMetaArray;
       const s4shadowMeta = shadowMeta._s4shadow;
       const s4attributionMeta = shadowMeta._s4attribution;
       const degradationMeta = shadowMeta._degradation;
-
-      let budgetTruncated = false;
-      let budgetLimit: number | undefined;
-      if (evaluationMode) {
-        reranked = applyResultLimit(reranked, options.limit);
-      } else {
-        // Apply token budget truncation before returning live results
-        // CHK-060: Reserve token overhead for contextual tree headers
-        // (max 100 chars + newline => ~26 tokens per result, chars/4 heuristic).
-        const headerOverhead = isContextHeadersEnabled()
-          ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
-          : 0;
-        const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
-
-        // Patch computed overhead values into tokenBudget trace now that they are known
-        if (s3meta.tokenBudget) {
-          s3meta.tokenBudget.headerOverhead = headerOverhead;
-          s3meta.tokenBudget.adjustedBudget = adjustedBudget;
-        }
-
-        const budgeted = truncateToBudget(reranked, adjustedBudget, {
-          includeContent: options.includeContent ?? false,
-          queryId: `hybrid-${Date.now()}`,
-        });
-        reranked = budgeted.results;
-        budgetTruncated = budgeted.truncated;
-        budgetLimit = budgetResult.budget;
-      }
-
-      if (s4shadowMeta !== undefined && reranked.length > 0) {
-        Object.defineProperty(reranked, '_s4shadow', {
-          value: s4shadowMeta,
-          enumerable: false,
-          configurable: true,
-        });
-      }
-
-      if (s4attributionMeta !== undefined && reranked.length > 0) {
-        Object.defineProperty(reranked, '_s4attribution', {
-          value: s4attributionMeta,
-          enumerable: false,
-          configurable: true,
-        });
-      }
 
       // Preserve routing and Stage 4 trace metadata as explicit result fields so downstream
       // Formatters can opt-in to provenance-rich envelopes without relying on
@@ -1354,8 +1351,6 @@ async function hybridSearchEnhanced(
               ...(s4shadowMeta !== undefined ? { stage4: s4shadowMeta } : {}),
               ...(s4attributionMeta !== undefined ? { attribution: s4attributionMeta } : {}),
               ...(degradationMeta !== undefined ? { degradation: degradationMeta } : {}),
-              budgetTruncated,
-              ...(budgetLimit !== undefined ? { budgetLimit } : {}),
               evaluationMode,
               // Wire queryComplexity from router classification into trace
               queryComplexity: routeResult.tier,
@@ -1382,6 +1377,66 @@ async function hybridSearchEnhanced(
         if (descriptionCache.size > 0) {
           reranked = reranked.map((row) => injectContextualTree(row, descriptionCache));
         }
+      }
+
+      let budgetTruncated = false;
+      let budgetLimit: number | undefined;
+      if (evaluationMode) {
+        reranked = applyResultLimit(reranked, options.limit);
+      } else {
+        // Apply token budget truncation after trace/header enrichment so token
+        // estimates reflect the actual returned payload shape.
+        const headerOverhead = isContextHeadersEnabled()
+          ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
+          : 0;
+        const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
+
+        if (s3meta.tokenBudget) {
+          s3meta.tokenBudget.headerOverhead = headerOverhead;
+          s3meta.tokenBudget.adjustedBudget = adjustedBudget;
+        }
+
+        const budgeted = truncateToBudget(reranked, adjustedBudget, {
+          includeContent: options.includeContent ?? false,
+          queryId: `hybrid-${Date.now()}`,
+        });
+        reranked = budgeted.results;
+        budgetTruncated = budgeted.truncated;
+        budgetLimit = budgetResult.budget;
+      }
+
+      if (reranked.length > 0) {
+        reranked = reranked.map((row): HybridSearchResult => {
+          const existingTraceMetadata =
+            typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
+              ? row.traceMetadata
+              : {};
+
+          return {
+            ...row,
+            traceMetadata: {
+              ...existingTraceMetadata,
+              budgetTruncated,
+              ...(budgetLimit !== undefined ? { budgetLimit } : {}),
+            },
+          };
+        });
+      }
+
+      if (s4shadowMeta !== undefined && reranked.length > 0) {
+        Object.defineProperty(reranked, '_s4shadow', {
+          value: s4shadowMeta,
+          enumerable: false,
+          configurable: true,
+        });
+      }
+
+      if (s4attributionMeta !== undefined && reranked.length > 0) {
+        Object.defineProperty(reranked, '_s4attribution', {
+          value: s4attributionMeta,
+          enumerable: false,
+          configurable: true,
+        });
       }
 
       // Attach pipeline metadata to results for eval/debugging
@@ -1416,51 +1471,42 @@ async function collectRawCandidates(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
+  const allowedChannels = getAllowedChannels(options);
+
   if (isSearchFallbackEnabled()) {
-    const tier1Options = {
-      ...options,
-      minSimilarity: options.minSimilarity ?? 0.3,
+    const tier1Options = applyAllowedChannelOverrides(options, allowedChannels, {
+      minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
       stopAfterFusion: true,
-    };
+    });
     let results = await hybridSearchEnhanced(query, embedding, tier1Options);
     const tier1Trigger = checkDegradation(results);
     if (!tier1Trigger) {
       return applyResultLimit(results, options.limit);
     }
 
-    const tier2Options: HybridSearchOptions = {
-      ...options,
-      minSimilarity: 0.1,
-      useBm25: true,
-      useFts: true,
-      useVector: true,
-      useGraph: true,
+    const tier2Options: HybridSearchOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+      minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
       forceAllChannels: true,
       stopAfterFusion: true,
-    };
+    });
     const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
     results = mergeRawCandidateSets(results, tier2Results, options.limit);
     if (results.length > 0) return results;
   } else {
-    const PRIMARY_THRESHOLD = 0.3;
-    const FALLBACK_THRESHOLD = 0.17;
-
-    const primaryOptions = {
-      ...options,
-      minSimilarity: options.minSimilarity ?? PRIMARY_THRESHOLD,
+    const primaryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+      minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
       stopAfterFusion: true,
-    };
+    });
     let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
 
     if (
       results.length === 0
-      && (primaryOptions.minSimilarity ?? PRIMARY_THRESHOLD) >= FALLBACK_THRESHOLD
+      && (primaryOptions.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY) >= SECONDARY_FALLBACK_MIN_SIMILARITY
     ) {
-      const fallbackOptions = {
-        ...options,
-        minSimilarity: FALLBACK_THRESHOLD,
+      const fallbackOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+        minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
         stopAfterFusion: true,
-      };
+      });
       results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
       if (results.length > 0) {
         results = results.map((result) => ({
@@ -1473,17 +1519,21 @@ async function collectRawCandidates(
     if (results.length > 0) return applyResultLimit(results, options.limit);
   }
 
-  const ftsFallback = collectCandidatesFromLists(
-    [{ source: 'fts', results: ftsSearch(query, options) }],
-    options.limit
-  );
-  if (ftsFallback.length > 0) return ftsFallback;
+  if (allowedChannels.has('fts')) {
+    const ftsFallback = collectCandidatesFromLists(
+      [{ source: 'fts', results: ftsSearch(query, options) }],
+      options.limit
+    );
+    if (ftsFallback.length > 0) return ftsFallback;
+  }
 
-  const bm25Fallback = collectCandidatesFromLists(
-    [{ source: 'bm25', results: bm25Search(query, options) }],
-    options.limit
-  );
-  if (bm25Fallback.length > 0) return bm25Fallback;
+  if (allowedChannels.has('bm25')) {
+    const bm25Fallback = collectCandidatesFromLists(
+      [{ source: 'bm25', results: bm25Search(query, options) }],
+      options.limit
+    );
+    if (bm25Fallback.length > 0) return bm25Fallback;
+  }
 
   console.warn('[hybrid-search] Raw candidate collection returned empty results');
   return [];
@@ -1493,7 +1543,7 @@ async function collectRawCandidates(
  * Search with automatic fallback chain.
  * When SPECKIT_SEARCH_FALLBACK=true: delegates to the 3-tier quality-aware
  * fallback (searchWithFallbackTiered). Otherwise: C138-P0 two-pass adaptive
- * fallback — primary at minSimilarity=0.3, retry at 0.17.
+ * fallback — primary at minSimilarity=30, retry at 17.
  *
  * @param query - The search query string.
  * @param embedding - Optional embedding vector for semantic search.
@@ -1505,24 +1555,27 @@ async function searchWithFallback(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
+  const allowedChannels = getAllowedChannels(options);
+
   // PI-A2: Delegate to tiered fallback when flag is enabled
   if (isSearchFallbackEnabled()) {
     return searchWithFallbackTiered(query, embedding, options);
   }
 
-  // Primary 0.3 filters noise; fallback 0.17 widens recall for sparse corpora
+  // Primary 30 filters noise; fallback 17 widens recall for sparse corpora
   // Where no result exceeds the primary threshold — chosen empirically via eval.
-  const PRIMARY_THRESHOLD = 0.3;
-  const FALLBACK_THRESHOLD = 0.17;
-
   // P3-03 FIX: Use hybridSearchEnhanced (with RRF fusion) instead of
   // The naive hybridSearch that merges raw scores
-  const primaryOptions = { ...options, minSimilarity: options.minSimilarity ?? PRIMARY_THRESHOLD };
+  const primaryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+    minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
+  });
   let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
 
   // Two-pass adaptive fallback
-  if (results.length === 0 && (primaryOptions.minSimilarity ?? PRIMARY_THRESHOLD) >= FALLBACK_THRESHOLD) {
-    const fallbackOptions = { ...options, minSimilarity: FALLBACK_THRESHOLD };
+  if (results.length === 0 && (primaryOptions.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY) >= SECONDARY_FALLBACK_MIN_SIMILARITY) {
+    const fallbackOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+      minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
+    });
     results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
     if (results.length > 0) {
       // Tag results with fallback metadata
@@ -1535,12 +1588,16 @@ async function searchWithFallback(
   if (results.length > 0) return results;
 
   // Fallback to FTS only
-  const ftsResults = ftsSearch(query, options);
-  if (ftsResults.length > 0) return ftsResults;
+  if (allowedChannels.has('fts')) {
+    const ftsResults = ftsSearch(query, options);
+    if (ftsResults.length > 0) return ftsResults;
+  }
 
   // Fallback to BM25 only
-  const bm25Results = bm25Search(query, options);
-  if (bm25Results.length > 0) return bm25Results;
+  if (allowedChannels.has('bm25')) {
+    const bm25Results = bm25Search(query, options);
+    if (bm25Results.length > 0) return bm25Results;
+  }
 
   console.warn('[hybrid-search] All search methods returned empty results');
   return [];
@@ -1860,10 +1917,10 @@ function mergeResults(
 /**
  * PI-A2: Quality-aware 3-tier search fallback chain.
  *
- * TIER 1: hybridSearchEnhanced at minSimilarity=0.3
+ * TIER 1: hybridSearchEnhanced at minSimilarity=30
  *   → Pass if quality signal is healthy AND count >= 3
  *
- * TIER 2: hybridSearchEnhanced at minSimilarity=0.1, all channels forced
+ * TIER 2: hybridSearchEnhanced at minSimilarity=10, all allowed channels forced
  *   → Merge with Tier 1, dedup by id
  *   → Pass if quality signal is healthy AND count >= 3
  *
@@ -1882,9 +1939,12 @@ async function searchWithFallbackTiered(
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
   const degradationEvents: DegradationEvent[] = [];
+  const allowedChannels = getAllowedChannels(options);
 
   // TIER 1: Standard enhanced search
-  const tier1Options = { ...options, minSimilarity: options.minSimilarity ?? 0.3 };
+  const tier1Options = applyAllowedChannelOverrides(options, allowedChannels, {
+    minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
+  });
   let results = await hybridSearchEnhanced(query, embedding, tier1Options);
 
   const tier1Trigger = checkDegradation(results);
@@ -1904,15 +1964,10 @@ async function searchWithFallbackTiered(
 
   console.error(`[hybrid-search] Tier 1→2 degradation: ${tier1Trigger.reason} (topScore=${tier1Trigger.topScore.toFixed(3)}, count=${tier1Trigger.resultCount})`);
 
-  const tier2Options: HybridSearchOptions = {
-    ...options,
-    minSimilarity: 0.1,
-    useBm25: true,
-    useFts: true,
-    useVector: true,
-    useGraph: true,
+  const tier2Options: HybridSearchOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+    minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
     forceAllChannels: true,
-  };
+  });
   const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
   results = mergeResults(results, tier2Results);
   degradationEvents.push({
@@ -2000,17 +2055,21 @@ function estimateTokenCount(text: string): number {
  * @returns Approximate token count based on serialized key-value lengths.
  */
 function estimateResultTokens(result: HybridSearchResult): number {
-  let chars = 0;
-
-  for (const [key, value] of Object.entries(result)) {
-    chars += key.length;
-    if (typeof value === 'string') {
-      chars += value.length;
-    } else if (typeof value === 'number' || typeof value === 'boolean') {
-      chars += String(value).length;
+  try {
+    const serialized = JSON.stringify(result);
+    if (typeof serialized === 'string') {
+      return estimateTokenCount(serialized);
     }
+  } catch (_err: unknown) {
+    // Fall through to the shallow estimator if serialization fails.
   }
 
+  let chars = 0;
+  for (const [key, value] of Object.entries(result)) {
+    chars += key.length;
+    if (typeof value === 'string') chars += value.length;
+    else if (typeof value === 'number' || typeof value === 'boolean') chars += String(value).length;
+  }
   return Math.ceil(chars / 4);
 }
 
@@ -2074,9 +2133,12 @@ function truncateToBudget(
     return { results: sorted, truncated: false };
   }
 
-  // Single-result overflow with includeContent: return summary fallback
-  if (sorted.length === 1 && includeContent) {
-    const summary = createSummaryFallback(sorted[0]!, effectiveBudget);
+  // Single-result overflow: summarize when content is included, otherwise keep
+  // the lone result and mark the overflow for callers.
+  if (sorted.length === 1) {
+    const outputResult = includeContent
+      ? createSummaryFallback(sorted[0]!, effectiveBudget)
+      : sorted[0]!;
     const overflow: OverflowLogEntry = {
       queryId,
       candidateCount: 1,
@@ -2086,10 +2148,10 @@ function truncateToBudget(
       timestamp: new Date().toISOString(),
     };
     console.warn(
-      `[hybrid-search] Token budget overflow (single-result summary fallback): ` +
+      `[hybrid-search] Token budget overflow (single-result fallback): ` +
       `${totalTokens} tokens > ${effectiveBudget} budget`
     );
-    return { results: [summary], truncated: true, overflow };
+    return { results: [outputResult], truncated: true, overflow };
   }
 
   // Greedy accumulation: take highest-scoring results until budget exhausted
@@ -2098,8 +2160,11 @@ function truncateToBudget(
 
   for (const result of sorted) {
     const tokens = estimateResultTokens(result);
-    if (accumulated + tokens > effectiveBudget && accepted.length > 0) {
-      break;
+    if (accumulated + tokens > effectiveBudget) {
+      if (accepted.length > 0) {
+        break;
+      }
+      continue;
     }
     accepted.push(result);
     accumulated += tokens;

@@ -9,6 +9,7 @@ import * as bm25Index from '../../lib/search/bm25-index';
 import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
 import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../../lib/storage/incremental-index';
+import * as causalEdges from '../../lib/storage/causal-edges';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 import { sanitizeEmbeddingFailureMessage } from '../../lib/providers/retry-manager';
 import { getCanonicalPathKey } from '../../lib/utils/canonical-path';
@@ -30,6 +31,66 @@ import { applyPostInsertMetadata } from './db-helpers';
 import type { PeDecision, MemoryScopeMatch } from './types';
 import { normalizeScopeMatchValue } from './types';
 export type { MemoryScopeMatch };
+
+interface LineageRoutingDecision {
+  predecessorMemoryId: number | null;
+  transitionEvent: 'CREATE' | 'UPDATE' | 'SUPERSEDE';
+  causalSupersedesMemoryId: number | null;
+}
+
+export function resolveCreateRecordLineage(
+  peDecision: PeDecision,
+  samePathExistingId: number | null,
+): LineageRoutingDecision {
+  if (peDecision.action === predictionErrorGate.ACTION.SUPERSEDE && peDecision.existingMemoryId != null) {
+    return {
+      predecessorMemoryId: samePathExistingId,
+      transitionEvent: samePathExistingId != null ? 'SUPERSEDE' : 'CREATE',
+      causalSupersedesMemoryId: samePathExistingId === peDecision.existingMemoryId
+        ? null
+        : peDecision.existingMemoryId,
+    };
+  }
+
+  if (samePathExistingId != null) {
+    return {
+      predecessorMemoryId: samePathExistingId,
+      transitionEvent: 'UPDATE',
+      causalSupersedesMemoryId: null,
+    };
+  }
+
+  return {
+    predecessorMemoryId: null,
+    transitionEvent: 'CREATE',
+    causalSupersedesMemoryId: null,
+  };
+}
+
+function recordCrossPathSupersedesEdge(
+  database: BetterSqlite3.Database,
+  memoryId: number,
+  supersededMemoryId: number | null,
+  reason: string | null | undefined,
+): void {
+  if (supersededMemoryId == null) {
+    return;
+  }
+
+  causalEdges.init(database);
+  const evidence = reason && reason.trim().length > 0
+    ? reason.trim()
+    : 'Prediction-error contradiction across different file paths';
+  causalEdges.insertEdge(
+    String(memoryId),
+    String(supersededMemoryId),
+    causalEdges.RELATION_TYPES.SUPERSEDES,
+    1.0,
+    evidence,
+    true,
+    'auto',
+  );
+}
 
 export function findSamePathExistingMemory(
   database: BetterSqlite3.Database,
@@ -112,12 +173,9 @@ export function createMemoryRecord(
       filePath,
       scope,
     );
-    const predecessorMemoryId = peDecision.action === predictionErrorGate.ACTION.SUPERSEDE && peDecision.existingMemoryId != null
-      ? peDecision.existingMemoryId
-      : samePathExisting?.id ?? null;
-    const transitionEvent = predecessorMemoryId == null
-      ? 'CREATE'
-      : (peDecision.action === predictionErrorGate.ACTION.SUPERSEDE ? 'SUPERSEDE' : 'UPDATE');
+    const lineageRouting = resolveCreateRecordLineage(peDecision, samePathExisting?.id ?? null);
+    const predecessorMemoryId = lineageRouting.predecessorMemoryId;
+    const transitionEvent = lineageRouting.transitionEvent;
 
     const memory_id: number = embedding
       ? vectorIndex.indexMemory({
@@ -197,11 +255,22 @@ export function createMemoryRecord(
       predecessorMemoryId,
       transitionEvent,
     });
+    recordCrossPathSupersedesEdge(
+      database,
+      memory_id,
+      lineageRouting.causalSupersedesMemoryId,
+      peDecision.reason,
+    );
 
     if (bm25Index.isBm25Enabled()) {
       try {
         const bm25 = bm25Index.getIndex();
-        bm25.addDocument(String(memory_id), parsed.content);
+        bm25.addDocument(String(memory_id), bm25Index.buildBm25DocumentText({
+          title: parsed.title,
+          content_text: parsed.content,
+          trigger_phrases: parsed.triggerPhrases,
+          file_path: filePath,
+        }));
       } catch (bm25_err: unknown) {
         const message = toErrorMessage(bm25_err);
         console.warn(embedding

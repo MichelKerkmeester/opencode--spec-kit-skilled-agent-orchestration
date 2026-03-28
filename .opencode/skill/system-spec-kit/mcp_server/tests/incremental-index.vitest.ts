@@ -1,5 +1,6 @@
 // TEST: INCREMENTAL INDEX (focused compatibility coverage)
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { createHash } from 'node:crypto';
 import Database from 'better-sqlite3';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
@@ -28,6 +29,10 @@ function createTempFile(content = 'test content'): string {
   );
   fs.writeFileSync(filePath, content, 'utf8');
   return filePath;
+}
+
+function sha256(content: string): string {
+  return createHash('sha256').update(content).digest('hex');
 }
 
 describe('Incremental index behavior (concrete)', () => {
@@ -67,14 +72,15 @@ describe('Incremental index behavior (concrete)', () => {
   });
 
   it('returns skip when mtime is unchanged and embedding status is success', () => {
-    const filePath = createTempFile('stable content');
+    const content = 'stable content';
+    const filePath = createTempFile(content);
     tempFiles.push(filePath);
     const mtime = fs.statSync(filePath).mtimeMs;
 
     db.prepare(`
       INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
       VALUES (?, ?, ?, ?, ?)
-    `).run('specs/test', filePath, mtime, 'hash-ok', 'success');
+    `).run('specs/test', filePath, mtime, sha256(content), 'success');
 
     expect(incrementalIndex.shouldReindex(filePath)).toBe('skip');
   });
@@ -94,14 +100,15 @@ describe('Incremental index behavior (concrete)', () => {
 
   it('categorizes files into toIndex, toSkip, and toDelete', () => {
     const newFile = createTempFile('brand new');
-    const unchangedFile = createTempFile('unchanged');
+    const unchangedContent = 'unchanged';
+    const unchangedFile = createTempFile(unchangedContent);
     tempFiles.push(newFile, unchangedFile);
 
     const unchangedMtime = fs.statSync(unchangedFile).mtimeMs;
     db.prepare(`
       INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
       VALUES (?, ?, ?, ?, ?)
-    `).run('specs/test', unchangedFile, unchangedMtime, 'hash-unchanged', 'success');
+    `).run('specs/test', unchangedFile, unchangedMtime, sha256(unchangedContent), 'success');
 
     const deletedPath = `/tmp/deleted-${Date.now()}.md`;
     db.prepare(`

@@ -364,12 +364,6 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     console.error(`[memory-index-scan] Fast-path skips: ${results.incremental.fast_path_skips}, Mtime changed: ${results.incremental.mtime_changed}`);
   }
 
-  if (filesToDelete.length > 0) {
-    const staleDeleteResult = deleteStaleIndexedRecords(filesToDelete);
-    results.staleDeleted = staleDeleteResult.deleted;
-    results.staleDeleteFailed = staleDeleteResult.failed;
-  }
-
   // T106/P0-09: Track successfully indexed files for post-indexing mtime update.
   // SAFETY INVARIANT: mtime markers are updated ONLY after indexing succeeds.
   // Failed files keep their old mtime so shouldReindex() returns 'modified'
@@ -472,6 +466,16 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     results.mtimeUpdates = mtimeUpdateResult.updated;
   }
 
+  if (filesToDelete.length > 0) {
+    if (results.failed === 0) {
+      const staleDeleteResult = deleteStaleIndexedRecords(filesToDelete);
+      results.staleDeleted = staleDeleteResult.deleted;
+      results.staleDeleteFailed = staleDeleteResult.failed;
+    } else {
+      console.warn('[memory-index-scan] Deferring stale cleanup because one or more replacement files failed to index');
+    }
+  }
+
   // Create causal chains between spec folder documents.
   // Includes deferred indexing outcomes and incremental single-file updates.
   if (include_spec_docs) {
@@ -559,6 +563,9 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   const hints: string[] = [];
   if (results.failed > 0) {
     hints.push(`${results.failed} files failed to index - check file format`);
+  }
+  if (filesToDelete.length > 0 && results.failed > 0 && results.staleDeleted === 0 && results.staleDeleteFailed === 0) {
+    hints.push('Deferred stale index cleanup because one or more replacement files failed to index');
   }
   if (results.staleDeleted > 0) {
     hints.push(`Removed ${results.staleDeleted} stale index record(s) for deleted files`);

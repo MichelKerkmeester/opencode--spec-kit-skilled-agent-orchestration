@@ -138,8 +138,8 @@ export function normalizeMarkdownTables(content: string): string {
  * Normalize markdown list notation to clean prose tokens.
  *
  * Handles:
- *   - GitHub-style task checkboxes:  `- [ ] T001 [P] Implement…`  →  `T001 [P] Implement…`
- *   - Checked checkboxes:            `- [x] Done item`             →  `Done item`
+ *   - GitHub-style task checkboxes:  `- [ ] T001 [P] Implement…`  →  `[ ] T001 [P] Implement…`
+ *   - Checked checkboxes:            `- [x] Done item`             →  `[x] Done item`
  *   - Plain list bullets:            `- item` / `* item`           →  `item`
  *   - Ordered list numbers:          `1. item`                      →  `item`
  *
@@ -148,8 +148,8 @@ export function normalizeMarkdownTables(content: string): string {
  */
 export function normalizeMarkdownLists(content: string): string {
   return content
-    // Task checkboxes (checked or unchecked), with optional leading whitespace
-    .replace(/^(\s*)[-*]\s+\[[ xX]\]\s*/gm, '$1')
+    // Preserve checklist state markers while dropping the bullet itself.
+    .replace(/^(\s*)[-*]\s+(\[[ xX]\])\s*/gm, '$1$2 ')
     // Plain unordered list bullets
     .replace(/^(\s*)[-*]\s+/gm, '$1')
     // Ordered list numbers

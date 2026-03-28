@@ -16,7 +16,16 @@ import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
+import * as bm25Index from '../search/bm25-index';
+import { clear_search_cache } from '../search/vector-index-aliases';
+import { refresh_interference_scores_for_folder } from '../search/vector-index-store';
+import { getCanonicalPathKey } from '../utils/canonical-path';
 import { delete_memory_from_database } from '../search/vector-index-mutations';
+import { recordLineageTransition } from './lineage-state';
+import {
+  applyPostInsertMetadata,
+  type PostInsertMetadataFields,
+} from './post-insert-metadata';
 
 // Feature catalog: Reconsolidation-on-save
 
@@ -206,6 +215,19 @@ export async function executeMerge(
     // Include content_hash in UPDATE so change-detection and dedup
     // Use the merged content's hash, not the stale pre-merge value.
     const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
+    const now = new Date().toISOString();
+    const memoryIndexColumns = getTableColumns(db, 'memory_index');
+    const existingRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+
+    if (!existingRow) {
+      throw new Error(`Existing memory ${existingMemory.id} not found`);
+    }
+
+    const reusedEmbeddingRow = db.prepare(`
+      SELECT embedding
+      FROM vec_memories
+      WHERE rowid = ?
+    `).get(existingMemory.id) as { embedding?: Buffer } | undefined;
 
     // Generate embedding BEFORE transaction (async I/O cannot run inside
     // Better-sqlite3's synchronous transaction callback).
@@ -220,6 +242,15 @@ export async function executeMerge(
       }
     }
 
+    const mergedEmbeddingBuffer = newEmbedding
+      ? embeddingToBuffer(newEmbedding)
+      : (reusedEmbeddingRow?.embedding ?? null);
+    const mergedEmbeddingStatus = mergedEmbeddingBuffer ? 'success' : getOptionalString(existingRow, 'embedding_status') ?? 'pending';
+    const mergedCanonicalPath = getOptionalString(existingRow, 'canonical_file_path') ?? getCanonicalPathKey(existingMemory.file_path);
+    const mergedTriggerPhrases = buildMergedTriggerPhrases(existingRow, newMemory.triggerPhrases);
+    const mergedTitle = newMemory.title ?? existingMemory.title ?? '';
+    const mergedImportanceTier = newMemory.importanceTier ?? getOptionalString(existingRow, 'importance_tier');
+
     // F04-001: Append-only merge — mark old as superseded, create new record
     db.transaction(() => {
       // Mark existing memory as archived (superseded)
@@ -230,22 +261,53 @@ export async function executeMerge(
         WHERE id = ?
       `).run(existingMemory.id);
 
-      // Insert merged content as a new memory record
-      const insertResult = db.prepare(`
-        INSERT INTO memory_index (
-          spec_folder, file_path, title, content_text, importance_weight,
-          content_hash, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-      `).run(
-        existingMemory.spec_folder,
-        existingMemory.file_path,
-        existingMemory.title ?? '',
-        mergedContent,
-        boostedWeight,
-        mergedHash,
-      );
+      const insertValues = buildMergedMemoryInsertValues(existingRow, {
+        spec_folder: existingMemory.spec_folder,
+        file_path: existingMemory.file_path,
+        canonical_file_path: mergedCanonicalPath,
+        anchor_id: getOptionalString(existingRow, 'anchor_id'),
+        title: mergedTitle,
+        trigger_phrases: mergedTriggerPhrases,
+        importance_weight: boostedWeight,
+        importance_tier: mergedImportanceTier,
+        content_text: mergedContent,
+        content_hash: mergedHash,
+        embedding_status: mergedEmbeddingStatus,
+        embedding_model: getOptionalString(existingRow, 'embedding_model'),
+        embedding_generated_at: mergedEmbeddingBuffer ? now : getOptionalString(existingRow, 'embedding_generated_at'),
+        encoding_intent: getOptionalString(existingRow, 'encoding_intent'),
+        document_type: getOptionalString(existingRow, 'document_type'),
+        spec_level: getOptionalNumber(existingRow, 'spec_level'),
+        created_at: now,
+        updated_at: now,
+      }, memoryIndexColumns);
+      const insertColumns = Object.keys(insertValues);
+      const insertSql = `
+        INSERT INTO memory_index (${insertColumns.join(', ')})
+        VALUES (${insertColumns.map(() => '?').join(', ')})
+      `;
+      const insertResult = db.prepare(insertSql).run(...insertColumns.map((column) => insertValues[column]));
 
       newId = Number(insertResult.lastInsertRowid);
+
+      if (mergedEmbeddingBuffer) {
+        db.prepare(`
+          INSERT INTO vec_memories (rowid, embedding)
+          VALUES (?, ?)
+        `).run(newId, mergedEmbeddingBuffer);
+      }
+
+      const postInsertMetadata = buildMergePostInsertMetadata(existingRow, {
+        content_hash: mergedHash,
+        importance_tier: mergedImportanceTier,
+        embedding_status: mergedEmbeddingStatus,
+        document_type: getOptionalString(existingRow, 'document_type'),
+        spec_level: getOptionalNumber(existingRow, 'spec_level'),
+      }, memoryIndexColumns);
+
+      if (Object.keys(postInsertMetadata).length > 0) {
+        applyPostInsertMetadata(db, newId, postInsertMetadata);
+      }
 
       // Create supersedes causal edge
       db.prepare(`
@@ -253,11 +315,42 @@ export async function executeMerge(
         VALUES (?, ?, 'supersedes', 1.0, datetime('now'))
       `).run(newId, existingMemory.id);
 
-      if (newEmbedding) {
-        const buffer = embeddingToBuffer(newEmbedding);
-        db.prepare(
-          'INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)'
-        ).run(newId, buffer);
+      recordLineageTransition(db, newId, {
+        actor: 'mcp:reconsolidation',
+        predecessorMemoryId: existingMemory.id,
+        transitionEvent: 'SUPERSEDE',
+      });
+
+      if (bm25Index.isBm25Enabled()) {
+        try {
+          const bm25 = bm25Index.getIndex();
+          bm25.removeDocument(String(existingMemory.id));
+          bm25.addDocument(String(newId), bm25Index.buildBm25DocumentText({
+            title: mergedTitle,
+            content_text: mergedContent,
+            trigger_phrases: mergedTriggerPhrases,
+            file_path: existingMemory.file_path,
+          }));
+        } catch (bm25Err: unknown) {
+          const message = bm25Err instanceof Error ? bm25Err.message : String(bm25Err);
+          console.warn('[reconsolidation] Failed to update BM25 index for merge:', message);
+        }
+      }
+
+      refresh_interference_scores_for_folder(db, existingMemory.spec_folder);
+      clear_search_cache();
+
+      try {
+        recordHistory(newId, 'ADD', null, mergedTitle || existingMemory.file_path, 'mcp:reconsolidation');
+        recordHistory(
+          existingMemory.id,
+          'UPDATE',
+          existingMemory.title ?? existingMemory.file_path,
+          mergedTitle || existingMemory.file_path,
+          'mcp:reconsolidation',
+        );
+      } catch (_historyErr: unknown) {
+        // Best-effort history tracking during reconsolidation merge
       }
     })();
 
@@ -586,6 +679,114 @@ function embeddingToBuffer(embedding: Float32Array | number[]): Buffer {
     return Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
   }
   return Buffer.from(new Float32Array(embedding).buffer);
+}
+
+function getTableColumns(db: Database.Database, tableName: string): Set<string> {
+  const rows = db.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name?: string }>;
+  return new Set(rows.map((row) => row.name).filter((name): name is string => typeof name === 'string'));
+}
+
+function getOptionalString(row: Record<string, unknown>, key: string): string | undefined {
+  const value = row[key];
+  return typeof value === 'string' && value.trim().length > 0 ? value : undefined;
+}
+
+function getOptionalNumber(row: Record<string, unknown>, key: string): number | undefined {
+  const value = row[key];
+  return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+}
+
+function buildMergedTriggerPhrases(
+  existingRow: Record<string, unknown>,
+  triggerPhrases?: string[],
+): string {
+  if (Array.isArray(triggerPhrases)) {
+    return JSON.stringify(triggerPhrases);
+  }
+  const existingValue = existingRow.trigger_phrases;
+  return typeof existingValue === 'string' ? existingValue : JSON.stringify([]);
+}
+
+function buildMergedMemoryInsertValues(
+  existingRow: Record<string, unknown>,
+  preferredValues: Record<string, unknown>,
+  tableColumns: Set<string>,
+): Record<string, unknown> {
+  const insertValues: Record<string, unknown> = {};
+
+  for (const column of tableColumns) {
+    if (column === 'id') {
+      continue;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(preferredValues, column)) {
+      const value = preferredValues[column];
+      if (value !== undefined) {
+        insertValues[column] = value;
+      }
+      continue;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(existingRow, column)) {
+      const value = existingRow[column];
+      if (value !== undefined) {
+        insertValues[column] = value;
+      }
+    }
+  }
+
+  return insertValues;
+}
+
+function buildMergePostInsertMetadata(
+  existingRow: Record<string, unknown>,
+  preferredFields: PostInsertMetadataFields,
+  tableColumns: Set<string>,
+): PostInsertMetadataFields {
+  const metadata: PostInsertMetadataFields = {};
+  const fallbackFields: Record<keyof PostInsertMetadataFields, unknown> = {
+    content_hash: existingRow.content_hash,
+    context_type: existingRow.context_type,
+    importance_tier: existingRow.importance_tier,
+    memory_type: existingRow.memory_type,
+    type_inference_source: existingRow.type_inference_source,
+    stability: existingRow.stability,
+    difficulty: existingRow.difficulty,
+    review_count: existingRow.review_count,
+    file_mtime_ms: existingRow.file_mtime_ms,
+    embedding_status: existingRow.embedding_status,
+    encoding_intent: existingRow.encoding_intent,
+    document_type: existingRow.document_type,
+    spec_level: existingRow.spec_level,
+    quality_score: existingRow.quality_score,
+    quality_flags: existingRow.quality_flags,
+    parent_id: existingRow.parent_id,
+    chunk_index: existingRow.chunk_index,
+    chunk_label: existingRow.chunk_label,
+    tenant_id: existingRow.tenant_id,
+    user_id: existingRow.user_id,
+    agent_id: existingRow.agent_id,
+    session_id: existingRow.session_id,
+    shared_space_id: existingRow.shared_space_id,
+    provenance_source: existingRow.provenance_source,
+    provenance_actor: existingRow.provenance_actor,
+    governed_at: existingRow.governed_at,
+    retention_policy: existingRow.retention_policy,
+    delete_after: existingRow.delete_after,
+    governance_metadata: existingRow.governance_metadata,
+  };
+
+  for (const key of Object.keys(fallbackFields) as Array<keyof PostInsertMetadataFields>) {
+    if (!tableColumns.has(key)) {
+      continue;
+    }
+    const value = preferredFields[key] ?? fallbackFields[key];
+    if (value !== undefined) {
+      metadata[key] = value as never;
+    }
+  }
+
+  return metadata;
 }
 
 /* ───────────────────────────────────────────────────────────────

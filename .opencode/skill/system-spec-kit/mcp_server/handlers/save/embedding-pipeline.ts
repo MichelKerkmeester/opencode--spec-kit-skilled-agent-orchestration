@@ -126,10 +126,11 @@ export async function generateOrCacheEmbedding(
   let embeddingStatus: 'success' | 'pending' = 'pending';
   let embeddingFailureReason: string | null = null;
   const modelId = embeddings.getModelName();
+  const embeddingDim = embeddings.getEmbeddingDimension();
   const cacheKey = computeCacheKey(parsed.content, modelId);
 
   if (asyncEmbedding) {
-    const cachedBuf = lookupEmbedding(database, cacheKey, modelId);
+    const cachedBuf = lookupEmbedding(database, cacheKey, modelId, embeddingDim);
     if (cachedBuf) {
       embedding = new Float32Array(new Uint8Array(cachedBuf).buffer);
       embeddingStatus = 'success';
@@ -141,7 +142,7 @@ export async function generateOrCacheEmbedding(
   } else {
     try {
       // Check persistent embedding cache before calling provider
-      const cachedBuf = lookupEmbedding(database, cacheKey, modelId);
+      const cachedBuf = lookupEmbedding(database, cacheKey, modelId, embeddingDim);
       if (cachedBuf) {
         // Cache hit: convert Buffer to Float32Array
         embedding = new Float32Array(new Uint8Array(cachedBuf).buffer);

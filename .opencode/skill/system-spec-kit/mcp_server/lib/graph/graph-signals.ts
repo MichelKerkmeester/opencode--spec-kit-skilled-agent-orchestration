@@ -73,7 +73,9 @@ export function snapshotDegrees(db: Database.Database): { snapshotted: number } 
       FROM (
         SELECT source_id AS node_id FROM causal_edges
         UNION ALL
-        SELECT target_id AS node_id FROM causal_edges
+        SELECT target_id AS node_id
+        FROM causal_edges
+        WHERE target_id != source_id
       )
       GROUP BY node_id
     `).all() as Array<{ node_id: string; degree_count: number }>;

@@ -655,6 +655,13 @@ describe('onIndex — Integration', () => {
     expect(result.skipped).toBe(true);
   });
 
+  it('returns skipped=true when graph refresh mode is off', () => {
+    process.env.SPECKIT_GRAPH_REFRESH_MODE = 'off';
+    const result = onIndex(db, 1, '## Section\n```typescript\ncode\n```');
+    expect(result.skipped).toBe(true);
+    expect(result.edgesCreated).toBe(0);
+  });
+
   it('returns skipped=true for empty content', () => {
     const result = onIndex(db, 1, '');
     expect(result.skipped).toBe(true);

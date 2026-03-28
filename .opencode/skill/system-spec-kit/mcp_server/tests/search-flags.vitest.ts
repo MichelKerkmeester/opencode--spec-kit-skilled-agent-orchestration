@@ -14,6 +14,7 @@ import {
   isCrossEncoderEnabled,
   isContextHeadersEnabled,
   isFileWatcherEnabled,
+  isGraphRefreshDisabled,
   isGraphSignalsEnabled,
   isLocalRerankerEnabled,
   isMMREnabled,
@@ -32,6 +33,7 @@ const FLAG_NAMES = [
   'SPECKIT_RECONSOLIDATION',
   'SPECKIT_FILE_WATCHER',
   'SPECKIT_GRAPH_SIGNALS',
+  'SPECKIT_GRAPH_REFRESH_MODE',
   'SPECKIT_GRAPH_WALK_ROLLOUT',
   'SPECKIT_ROLLOUT_PERCENT',
   'RERANKER_LOCAL',
@@ -185,6 +187,17 @@ describe('Search Feature Flags', () => {
     expect(getGraphWalkRolloutState()).toBe('off');
     expect(isGraphWalkTraceEnabled()).toBe(false);
     expect(isGraphWalkRuntimeEnabled()).toBe(false);
+  });
+
+  it('reports graph refresh as disabled only when refresh mode is explicitly off', () => {
+    delete process.env.SPECKIT_GRAPH_REFRESH_MODE;
+    expect(isGraphRefreshDisabled()).toBe(false);
+
+    process.env.SPECKIT_GRAPH_REFRESH_MODE = 'off';
+    expect(isGraphRefreshDisabled()).toBe(true);
+
+    process.env.SPECKIT_GRAPH_REFRESH_MODE = 'scheduled';
+    expect(isGraphRefreshDisabled()).toBe(false);
   });
 
   it('treats bounded_runtime as a trace-visible runtime-enabled graph-walk mode', () => {

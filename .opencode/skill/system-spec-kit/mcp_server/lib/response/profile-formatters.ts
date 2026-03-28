@@ -270,6 +270,12 @@ function computeTokenStats(text: string, resultCount: number) {
   };
 }
 
+function getPreservedDataFields(data: Record<string, unknown>): Record<string, unknown> {
+  const preserved = { ...data };
+  delete preserved.results;
+  return preserved;
+}
+
 // ── Profile formatters ─────────────────────────────────────────
 
 /**
@@ -452,6 +458,7 @@ export function applyProfileToEnvelope(
   const results: SearchResultEntry[] = Array.isArray(data.results)
     ? data.results as SearchResultEntry[]
     : [];
+  const preservedDataFields = getPreservedDataFields(data);
 
   const formatterInput: ProfileFormatterInput = {
     results,
@@ -467,7 +474,10 @@ export function applyProfileToEnvelope(
 
   const newEnvelope: Record<string, unknown> = {
     ...envelope,
-    data: formatted.data,
+    data: {
+      ...preservedDataFields,
+      ...formatted.data,
+    },
     meta: {
       ...(envelope.meta && typeof envelope.meta === 'object' ? envelope.meta : {}),
       responseProfile: formatted.profile,

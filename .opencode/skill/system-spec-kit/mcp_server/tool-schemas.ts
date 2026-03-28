@@ -209,7 +209,7 @@ const memoryQuickSearch: ToolDefinition = {
 const memoryMatchTriggers: ToolDefinition = {
   name: 'memory_match_triggers',
   description: '[L2:Core] Fast trigger phrase matching with cognitive memory features. Supports attention-based decay, tiered content injection (HOT=full, WARM=summary), and co-activation of related memories. Pass session_id and turnNumber for cognitive features. Token Budget: 1500.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { prompt: { type: 'string', description: 'User prompt or text to match against trigger phrases' }, limit: { type: 'number', default: 3, description: 'Maximum number of matching memories to return (default: 3)' }, session_id: { type: 'string', description: 'Session identifier for cognitive features. When provided, enables attention decay and tiered content injection.' }, turnNumber: { type: 'number', description: 'Current conversation turn number. Used with session_id for decay calculations.' }, include_cognitive: { type: 'boolean', default: true, description: 'Enable cognitive features (decay, tiers, co-activation). Requires session_id.' } }, required: ['prompt'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { prompt: { type: 'string', description: 'User prompt or text to match against trigger phrases' }, specFolder: { type: 'string', description: 'Limit trigger matches to a specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed trigger matching.' }, userId: { type: 'string', description: 'User boundary for governed trigger matching.' }, agentId: { type: 'string', description: 'Agent boundary for governed trigger matching.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed trigger matching.' }, limit: { type: 'number', default: 3, description: 'Maximum number of matching memories to return (default: 3)' }, session_id: { type: 'string', description: 'Session identifier for cognitive features. When provided, enables attention decay and tiered content injection.' }, turnNumber: { type: 'number', description: 'Current conversation turn number. Used with session_id for decay calculations.' }, include_cognitive: { type: 'boolean', default: true, description: 'Enable cognitive features (decay, tiers, co-activation). Requires session_id.' } }, required: ['prompt'] },
 };
 
 // T306: Added asyncEmbedding parameter for non-blocking embedding generation
@@ -397,7 +397,7 @@ const checkpointDelete: ToolDefinition = {
 
 const sharedSpaceUpsert: ToolDefinition = {
   name: 'shared_space_upsert',
-  description: '[L5:Lifecycle] Create or update a shared-memory space. Admin mutations run as the server-configured shared-memory admin identity. Optional actor fields are corroboration hints only and must match that configured identity when provided.',
+  description: '[L5:Lifecycle] Create or update a shared-memory space. Caller authentication is required. New spaces may only be created by the configured shared-memory admin; updates require the configured admin or a current space owner.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
@@ -405,8 +405,8 @@ const sharedSpaceUpsert: ToolDefinition = {
       spaceId: { type: 'string', description: 'Stable shared-space identifier.' },
       tenantId: { type: 'string', description: 'Owning tenant for the shared space.' },
       name: { type: 'string', description: 'Display name for the shared space.' },
-      actorUserId: { type: 'string', description: 'Optional user actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.' },
-      actorAgentId: { type: 'string', description: 'Optional agent actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.' },
+      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
+      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
       rolloutEnabled: { type: 'boolean', default: false, description: 'Enable this space for rollout.' },
       rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
       killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
@@ -417,15 +417,15 @@ const sharedSpaceUpsert: ToolDefinition = {
 
 const sharedSpaceMembershipSet: ToolDefinition = {
   name: 'shared_space_membership_set',
-  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Admin mutations run as the server-configured shared-memory admin identity. Optional actor fields are corroboration hints only and must match that configured identity when provided.',
+  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Caller authentication is required; membership changes require the configured shared-memory admin or a current space owner.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
     properties: {
       spaceId: { type: 'string', description: 'Shared-space identifier.' },
       tenantId: { type: 'string', description: 'Tenant boundary for the membership mutation.' },
-      actorUserId: { type: 'string', description: 'Optional user actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.' },
-      actorAgentId: { type: 'string', description: 'Optional agent actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.' },
+      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
+      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
       subjectType: { type: 'string', enum: ['user', 'agent'], description: 'Membership subject type.' },
       subjectId: { type: 'string', description: 'Membership subject identifier.' },
       role: { type: 'string', enum: ['owner', 'editor', 'viewer'], description: 'Access role inside the shared space.' },
@@ -436,14 +436,14 @@ const sharedSpaceMembershipSet: ToolDefinition = {
 
 const sharedMemoryStatus: ToolDefinition = {
   name: 'shared_memory_status',
-  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the spaces accessible to a user or agent.',
+  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the spaces accessible to the authenticated caller.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
     properties: {
-      tenantId: { type: 'string', description: 'Optional tenant scope.' },
-      userId: { type: 'string', description: 'Optional user scope.' },
-      agentId: { type: 'string', description: 'Optional agent scope.' },
+      tenantId: { type: 'string', description: 'Optional tenant filter applied to the authenticated caller scope.' },
+      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
+      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
     },
     required: [],
   },
@@ -470,7 +470,7 @@ const taskPreflight: ToolDefinition = {
 const taskPostflight: ToolDefinition = {
   name: 'task_postflight',
   description: '[L6:Analysis] Capture epistemic state after task execution and calculate learning delta. Call after completing implementation work. Calculates Learning Index: LI = (KnowledgeDelta x 0.4) + (UncertaintyReduction x 0.35) + (ContextImprovement x 0.25). Token Budget: 1200.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { specFolder: { type: 'string', description: 'Path to spec folder (must match preflight)' }, taskId: { type: 'string', description: 'Task identifier (must match preflight)' }, knowledgeScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task knowledge level (0-100)' }, uncertaintyScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task uncertainty level (0-100)' }, contextScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task context completeness (0-100)' }, gapsClosed: { type: 'array', items: { type: 'string' }, description: 'List of knowledge gaps closed during task (optional)' }, newGapsDiscovered: { type: 'array', items: { type: 'string' }, description: 'List of new gaps discovered during task (optional)' } }, required: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { specFolder: { type: 'string', description: 'Path to spec folder (must match preflight)' }, taskId: { type: 'string', description: 'Task identifier (must match preflight)' }, knowledgeScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task knowledge level (0-100)' }, uncertaintyScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task uncertainty level (0-100)' }, contextScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task context completeness (0-100)' }, gapsClosed: { type: 'array', items: { type: 'string' }, description: 'List of knowledge gaps closed during task (optional)' }, newGapsDiscovered: { type: 'array', items: { type: 'string' }, description: 'List of new gaps discovered during task (optional)' }, sessionId: { type: 'string', description: 'Optional session identifier. Required when multiple sessions share the same taskId and you need to target a specific learning cycle.' } }, required: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore'] },
 };
 
 // T043-T047: Causal Memory Graph tools (REQ-012) - L6: Analysis

@@ -6,6 +6,7 @@ import * as toolCache from '../lib/cache/tool-cache';
 import { clearConstitutionalCache } from '../hooks/memory-surface';
 import { clearGraphSignalsCache } from '../lib/graph/graph-signals';
 import { clearRelatedCache } from '../lib/cognitive/co-activation';
+import { clearDegreeCache } from '../lib/search/graph-search-fn';
 
 import type { MutationHookResult } from './memory-crud-types';
 
@@ -67,14 +68,15 @@ function runPostMutationHooks(
   let graphSignalsCacheCleared = false;
   try {
     clearGraphSignalsCache();
+    clearDegreeCache();
     graphSignalsCacheCleared = true;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(
-      `[mutation-hooks] clearGraphSignalsCache failed for operation="${operation}":`,
+      `[mutation-hooks] graph cache invalidation failed for operation="${operation}":`,
       message
     );
-    errors.push(`clearGraphSignalsCache: ${message}`);
+    errors.push(`graphCacheInvalidation: ${message}`);
     graphSignalsCacheCleared = false;
   }
 

@@ -47,6 +47,7 @@ interface CursorPayload {
   offset: number;
   queryHash: string;
   timestamp: number;
+  scopeKey?: string;
 }
 
 /** Cursor with remaining count metadata. */
@@ -77,6 +78,7 @@ interface DisclosureResult {
 /** Options for cursor creation. */
 interface CursorOptions {
   ttlMs?: number;
+  scopeKey?: string;
 }
 
 // -- Internal: Cursor Store --
@@ -329,6 +331,9 @@ function createCursor(
     offset: pageSize,
     queryHash,
     timestamp: now,
+    scopeKey: typeof options?.scopeKey === 'string' && options.scopeKey.length > 0
+      ? options.scopeKey
+      : undefined,
   };
 
   return {
@@ -358,6 +363,14 @@ function resolveCursor(
   const payload = decodeCursor(cursor);
   if (!payload) return null;
   const storeKey = payload.cursorKey ?? payload.queryHash;
+
+  if (
+    typeof payload.scopeKey === 'string'
+    && payload.scopeKey.length > 0
+    && payload.scopeKey !== options?.scopeKey
+  ) {
+    return null;
+  }
 
   pruneExpiredCursorEntries(ttlMs);
 
@@ -420,6 +433,7 @@ function buildProgressiveResponse(
   results: DisclosureResult[],
   pageSize: number = DEFAULT_PAGE_SIZE,
   query: string = '',
+  options?: CursorOptions,
 ): ProgressiveResponse {
   if (!Array.isArray(results) || results.length === 0) {
     return {
@@ -446,7 +460,7 @@ function buildProgressiveResponse(
   const summaryLayer = generateSummaryLayer(results);
 
   // Cursor for the remainder
-  const continuation = createCursor(results, pageSize, query);
+  const continuation = createCursor(results, pageSize, query, options);
 
   return {
     summaryLayer,

@@ -1,5 +1,6 @@
 // TEST: INCREMENTAL INDEX V2
 import { describe, it, expect, beforeEach } from 'vitest';
+import { createHash } from 'node:crypto';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
@@ -98,6 +99,10 @@ function createTempFile(content = 'test content'): string {
 /** Clean up a temp file (ignore errors). */
 function removeTempFile(p: string) {
   try { fs.unlinkSync(p); } catch {}
+}
+
+function sha256(value: string): string {
+  return createHash('sha256').update(value).digest('hex');
 }
 
 function supportsDirectorySymlinks(): boolean {
@@ -326,6 +331,29 @@ describe('shouldReindex()', () => {
     insertRow(db, { file_path: tmpFile, file_mtime_ms: mtimeMs, embedding_status: 'success' });
     const decision = mod.shouldReindex(tmpFile);
     expect(decision).toBe('skip');
+    removeTempFile(tmpFile);
+    db.close();
+  });
+
+  it('returns "modified" when content hash changes but mtime stays within the fast-path window', () => {
+    const db = createTestDb();
+    mod.init(db);
+    const tmpFile = createTempFile('original content');
+    const stats = fs.statSync(tmpFile);
+
+    insertRow(db, {
+      file_path: tmpFile,
+      file_mtime_ms: stats.mtimeMs,
+      content_hash: sha256('original content'),
+      embedding_status: 'success',
+    });
+
+    fs.writeFileSync(tmpFile, 'updated content', 'utf-8');
+    fs.utimesSync(tmpFile, stats.atime, new Date(stats.mtimeMs));
+
+    const decision = mod.shouldReindex(tmpFile);
+    expect(decision).toBe('modified');
+
     removeTempFile(tmpFile);
     db.close();
   });

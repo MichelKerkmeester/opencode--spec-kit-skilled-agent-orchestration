@@ -19,6 +19,7 @@ export {
   hasSpecificHint,
   getAvailableHints,
   getErrorCodes,
+  getDefaultErrorCodeForTool,
 } from './errors/index';
 
 export type {

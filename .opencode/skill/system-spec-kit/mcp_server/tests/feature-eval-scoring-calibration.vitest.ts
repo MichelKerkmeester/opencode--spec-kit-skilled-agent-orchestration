@@ -94,7 +94,7 @@ describe('T001: Embedding Cache', () => {
     const embedding = makeEmbeddingBuffer(dims, 42);
 
     storeEmbedding(db, hash, model, embedding, dims);
-    const result = lookupEmbedding(db, hash, model);
+    const result = lookupEmbedding(db, hash, model, dims);
 
     expect(result).not.toBeNull();
     expect(Buffer.isBuffer(result)).toBe(true);
@@ -104,7 +104,7 @@ describe('T001: Embedding Cache', () => {
 
   // T041-02: Cache miss returns null
   it('T041-02: cache miss returns null for unknown hash', () => {
-    const result = lookupEmbedding(db, 'deadbeef00000000', 'any-model');
+    const result = lookupEmbedding(db, 'deadbeef00000000', 'any-model', 384);
     expect(result).toBeNull();
   });
 
@@ -128,8 +128,8 @@ describe('T001: Embedding Cache', () => {
     expect(evicted).toBe(1);
 
     // Stale gone, fresh survives
-    expect(lookupEmbedding(db, staleHash, model)).toBeNull();
-    expect(lookupEmbedding(db, freshHash, model)).not.toBeNull();
+    expect(lookupEmbedding(db, staleHash, model, dims)).toBeNull();
+    expect(lookupEmbedding(db, freshHash, model, dims)).not.toBeNull();
   });
 
   // T041-04: computeContentHash is deterministic SHA-256

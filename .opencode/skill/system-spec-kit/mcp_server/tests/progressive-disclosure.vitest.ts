@@ -258,6 +258,15 @@ describe('createCursor()', () => {
     expect(parsed).toHaveProperty('timestamp');
   });
 
+  it('stores scope metadata in cursor payloads when provided', () => {
+    const results = makeResults(10);
+    const cursorInfo = createCursor(results, 5, 'scoped query', { scopeKey: 'tenant:user' });
+    expect(cursorInfo).not.toBeNull();
+
+    const payload = decodeCursor(cursorInfo!.cursor);
+    expect(payload?.scopeKey).toBe('tenant:user');
+  });
+
   it('reports correct remaining count', () => {
     const results = makeResults(12);
     const cursorInfo = createCursor(results, 5, 'test query');
@@ -359,6 +368,15 @@ describe('resolveCursor()', () => {
 
     expect(pageA?.results[0]?.id).toBe('A6');
     expect(pageB?.results[0]?.id).toBe('B6');
+  });
+
+  it('returns null when cursor scope does not match the resuming caller', () => {
+    const results = makeResults(10);
+    const cursorInfo = createCursor(results, 5, 'scoped query', { scopeKey: 'tenant-a:user-a' });
+    expect(cursorInfo).not.toBeNull();
+
+    const resolved = resolveCursor(cursorInfo!.cursor, 5, { scopeKey: 'tenant-b:user-a' });
+    expect(resolved).toBeNull();
   });
 });
 
@@ -481,6 +499,21 @@ describe('buildProgressiveResponse()', () => {
     expect(page3).not.toBeNull();
     expect(page3!.results).toHaveLength(2);
     expect(page3!.continuation).toBeNull();
+  });
+
+  it('passes cursor scope metadata through the progressive response builder', () => {
+    process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1 = 'true';
+    const results = makeResults(10);
+    const response = buildProgressiveResponse(results, 5, 'scoped progressive response', {
+      scopeKey: 'tenant-a:user-a',
+    });
+
+    expect(response.continuation).not.toBeNull();
+    const resolved = resolveCursor(response.continuation!.cursor, 5, { scopeKey: 'tenant-a:user-a' });
+    const rejected = resolveCursor(response.continuation!.cursor, 5, { scopeKey: 'tenant-b:user-a' });
+
+    expect(resolved?.results).toHaveLength(5);
+    expect(rejected).toBeNull();
   });
 });
 

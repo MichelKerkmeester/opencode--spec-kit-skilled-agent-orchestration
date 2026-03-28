@@ -205,6 +205,26 @@ triggerPhrases:
       expect(Array.isArray(triggersMulti)).toBe(true);
       expect(triggersMulti.length).toBe(3);
     });
+
+    it('T500-06c: YAML-looking body text does not override frontmatter metadata', () => {
+      const content = `---
+triggerPhrases: ["frontmatter trigger"]
+contextType: implementation
+importanceTier: critical
+---
+
+# Test
+
+contextType: research
+importanceTier: normal
+triggerPhrases:
+  - body trigger
+`;
+
+      expect(memoryParser.extractTriggerPhrases(content)).toEqual(['frontmatter trigger']);
+      expect(memoryParser.extractContextType(content)).toBe('implementation');
+      expect(memoryParser.extractImportanceTier(content)).toBe('critical');
+    });
   });
 
   // ───────────────────────────────────────────────────────────────
@@ -262,6 +282,19 @@ Some text without closing tag.
       const badValidation = memoryParser.validateAnchors(badContent);
       expect(badValidation.valid).toBe(false);
       expect(badValidation.unclosedAnchors).toContain('unclosed');
+    });
+
+    it('T500-09c: overlapping anchors are rejected', () => {
+      const overlappingContent = `<!-- ANCHOR:outer -->
+Outer
+<!-- ANCHOR:inner -->
+Inner
+<!-- /ANCHOR:outer -->
+<!-- /ANCHOR:inner -->`;
+
+      const validation = memoryParser.validateAnchors(overlappingContent);
+      expect(validation.valid).toBe(false);
+      expect(validation.warnings.some((warning) => warning.includes('out of order'))).toBe(true);
     });
   });
 

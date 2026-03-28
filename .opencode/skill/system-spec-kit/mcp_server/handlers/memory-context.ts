@@ -179,6 +179,14 @@ interface BuildResponseMetaParams {
   sessionTransition: SessionTransitionTrace;
 }
 
+interface StrategyErrorPayload {
+  error: string;
+  code: string;
+  details: Record<string, unknown>;
+  hints: string[];
+  severity: string | null;
+}
+
 function extractResultRowsFromContextResponse(responseText: string): Array<Record<string, unknown>> {
   try {
     const parsed = JSON.parse(responseText) as Record<string, unknown>;
@@ -206,6 +214,56 @@ function extractResultRowsFromContextResponse(responseText: string): Array<Recor
       : [];
   } catch {
     return [];
+  }
+}
+
+function extractStrategyError(result: ContextResult): StrategyErrorPayload | null {
+  if ((result as Record<string, unknown>).isError !== true) {
+    return null;
+  }
+
+  const content = Array.isArray((result as Record<string, unknown>).content)
+    ? ((result as Record<string, unknown>).content as Array<{ text?: string }>)
+    : [];
+  const responseText = content[0]?.text;
+  if (typeof responseText !== 'string' || responseText.length === 0) {
+    return {
+      error: 'Context strategy failed',
+      code: 'E_STRATEGY',
+      details: {},
+      hints: [],
+      severity: null,
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(responseText) as {
+      data?: {
+        error?: string;
+        code?: string;
+        details?: Record<string, unknown>;
+      };
+      hints?: string[];
+      meta?: {
+        severity?: string;
+      };
+    };
+
+    return {
+      error: parsed.data?.error ?? 'Context strategy failed',
+      code: parsed.data?.code ?? 'E_STRATEGY',
+      details: parsed.data?.details ?? {},
+      hints: Array.isArray(parsed.hints) ? parsed.hints : [],
+      severity: parsed.meta?.severity ?? null,
+    };
+  } catch {
+    return {
+      error: 'Context strategy failed',
+      code: 'E_STRATEGY',
+      details: {},
+      hints: [],
+      severity: null,
+    };
   }
 }
 
@@ -582,6 +640,7 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     sessionId: options.sessionId,
     sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
+    autoDetectIntent: true,
     useDecay: true,
     minState: 'COLD'
   });
@@ -610,7 +669,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
     intent: intent ?? undefined,
-    autoDetectIntent: false,
+    autoDetectIntent: intent ? false : true,
     useDecay: true,
     minState: 'WARM'
   });
@@ -641,6 +700,7 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     sessionId: options.sessionId,
     sessionTransition: options.sessionTransition,
     enableDedup: false,
+    autoDetectIntent: true,
     useDecay: false,
     minState: 'WARM'
   });
@@ -709,8 +769,6 @@ function resolveEffectiveMode(
     warning: string | null;
   },
 ): EffectiveModeResolution {
-  void session;
-
   const requestedMode = args.mode ?? 'auto';
   const explicitIntent = args.intent;
   const normalizedInput = args.input.trim();
@@ -723,20 +781,30 @@ function resolveEffectiveMode(
   let pressureWarning: string | null = null;
   let resumeHeuristicApplied = false;
 
-  if (requestedMode === 'auto') {
-    if (!detectedIntent) {
-      const classification: IntentClassification = intentClassifier.classifyIntent(normalizedInput);
-      detectedIntent = classification.intent;
-      intentConfidence = classification.confidence;
-    }
+  if (!detectedIntent && requestedMode !== 'quick') {
+    const classification: IntentClassification = intentClassifier.classifyIntent(normalizedInput);
+    detectedIntent = classification.intent;
+    intentConfidence = classification.confidence;
+  }
 
+  if (requestedMode === 'auto') {
     effectiveMode = INTENT_TO_MODE[detectedIntent!] || 'focused';
 
     if (normalizedInput.length < 50 || /^(what|how|where|when|why)\s/i.test(normalizedInput)) {
       effectiveMode = 'focused';
     }
 
-    if (/\b(resume|continue|pick up|where was i|what's next)\b/i.test(normalizedInput)) {
+    const hasResumeKeywords = /\b(resume|continue|pick up|where was i|what(?:'s| is) next)\b/i.test(normalizedInput);
+    const hasResumeContext =
+      session.resumed ||
+      session.priorMode === 'resume' ||
+      (
+        Boolean(args.specFolder) &&
+        normalizedInput.length <= 120 &&
+        /\b(next(?:\s+steps?)?|status|state|blockers|where\b|left off|what changed)\b/i.test(normalizedInput)
+      );
+
+    if (hasResumeKeywords || hasResumeContext) {
       effectiveMode = 'resume';
       resumeHeuristicApplied = true;
     }
@@ -1110,6 +1178,26 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       recovery: {
         hint: 'Try a different mode or check your input'
       }
+    });
+  }
+
+  const strategyError = extractStrategyError(result);
+  if (strategyError) {
+    return createMCPErrorResponse({
+      tool: 'memory_context',
+      error: strategyError.error,
+      code: strategyError.code,
+      details: {
+        requestId,
+        layer: 'L1:Orchestration',
+        mode: effectiveMode,
+        upstream: strategyError.details,
+      },
+      recovery: {
+        hint: strategyError.hints[0] ?? 'Try a different mode or check your input',
+        actions: strategyError.hints.slice(1),
+        severity: strategyError.severity ?? 'error',
+      },
     });
   }
 

@@ -61,7 +61,7 @@ describe('Embedding Cache (T015)', () => {
     const embedding = makeEmbeddingBuffer(dims);
 
     storeEmbedding(db, hash, model, embedding, dims);
-    const result = lookupEmbedding(db, hash, model);
+    const result = lookupEmbedding(db, hash, model, dims);
 
     expect(result).not.toBeNull();
     expect(Buffer.isBuffer(result)).toBe(true);
@@ -72,7 +72,7 @@ describe('Embedding Cache (T015)', () => {
 
   // T015-03: Cache miss returns null for unknown hash
   it('T015-03: cache miss returns null', () => {
-    const result = lookupEmbedding(db, 'nonexistent_hash', 'any-model');
+    const result = lookupEmbedding(db, 'nonexistent_hash', 'any-model', 384);
     expect(result).toBeNull();
   });
 
@@ -85,12 +85,24 @@ describe('Embedding Cache (T015)', () => {
     storeEmbedding(db, hash, 'model-A', embedding, dims);
 
     // Same hash, different model — should miss
-    const result = lookupEmbedding(db, hash, 'model-B');
+    const result = lookupEmbedding(db, hash, 'model-B', dims);
     expect(result).toBeNull();
 
     // Original model — should hit
-    const hit = lookupEmbedding(db, hash, 'model-A');
+    const hit = lookupEmbedding(db, hash, 'model-A', dims);
     expect(hit).not.toBeNull();
+  });
+
+  it('T015-04b: different dimensions trigger cache miss for same hash and model', () => {
+    const hash = computeContentHash('same content');
+    const model = 'model-A';
+    const originalDims = 1536;
+    const replacementDims = 1024;
+
+    storeEmbedding(db, hash, model, makeEmbeddingBuffer(originalDims), originalDims);
+
+    expect(lookupEmbedding(db, hash, model, replacementDims)).toBeNull();
+    expect(lookupEmbedding(db, hash, model, originalDims)).not.toBeNull();
   });
 
   // T015-05: lookupEmbedding updates last_used_at on hit
@@ -117,7 +129,7 @@ describe('Embedding Cache (T015)', () => {
       .get(hash, model) as { last_used_at: string };
 
     // Lookup triggers last_used_at refresh
-    lookupEmbedding(db, hash, model);
+    lookupEmbedding(db, hash, model, dims);
 
     const afterLookup = db
       .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ?')
@@ -150,9 +162,9 @@ describe('Embedding Cache (T015)', () => {
     expect(evicted).toBe(1);
 
     // Old entry gone
-    expect(lookupEmbedding(db, hash, model)).toBeNull();
+    expect(lookupEmbedding(db, hash, model, dims)).toBeNull();
     // Fresh entry still there
-    expect(lookupEmbedding(db, freshHash, model)).not.toBeNull();
+    expect(lookupEmbedding(db, freshHash, model, dims)).not.toBeNull();
   });
 
   // T015-07: getCacheStats returns correct counts
@@ -208,7 +220,7 @@ describe('Embedding Cache (T015)', () => {
     expect(getCacheStats(db).totalEntries).toBe(1);
 
     // Should return the second embedding
-    const result = lookupEmbedding(db, hash, model);
+    const result = lookupEmbedding(db, hash, model, dims);
     expect(result).not.toBeNull();
     expect(Buffer.compare(result!, emb2)).toBe(0);
   });
@@ -241,13 +253,13 @@ describe('Embedding Cache (T015)', () => {
     storeEmbedding(db, hash, model, emb, dims);
 
     // Warm up
-    lookupEmbedding(db, hash, model);
+    lookupEmbedding(db, hash, model, dims);
 
     // Benchmark 100 lookups
     const iterations = 100;
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
-      lookupEmbedding(db, hash, model);
+      lookupEmbedding(db, hash, model, dims);
     }
     const elapsed = performance.now() - start;
     const avgMs = elapsed / iterations;

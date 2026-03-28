@@ -370,6 +370,26 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       }
     });
 
+    it('T521-R5b: Returns MCP error response when restore reports partial failure after data changes', async () => {
+      const spy = vi.spyOn(checkpointStorageMod, 'restoreCheckpoint').mockReturnValue({
+        restored: 2,
+        skipped: 0,
+        errors: ['session_state: merge restore rolled back after pre-clear because reinsertion failed'],
+        workingMemoryRestored: 1,
+        partialFailure: true,
+        rolledBackTables: ['session_state'],
+      } satisfies RestoreResult);
+      try {
+        const result = await handler.handleCheckpointRestore({ name: 'partial-failure-checkpoint' });
+        expect(result.isError).toBe(true);
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.code).toBe('CHECKPOINT_RESTORE_PARTIAL_FAILURE');
+        expect(parsed.data?.details?.rolledBackTables).toEqual(['session_state']);
+      } finally {
+        spy.mockRestore();
+      }
+    });
+
     it('T521-R6: Scope mismatch blocks restore before storage mutation', async () => {
       const getSpy = vi.spyOn(checkpointStorageMod, 'getCheckpoint').mockReturnValue({
         id: 1,

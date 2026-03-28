@@ -4,6 +4,7 @@
 // Feature catalog: Deferred lexical-only indexing
 // Mtime-based incremental indexing for fast re-indexing
 // Node stdlib
+import { createHash } from 'node:crypto';
 import * as fs from 'fs';
 
 // External packages
@@ -135,6 +136,15 @@ function getStoredMetadata(filePath: string): StoredMetadata | null {
   }
 }
 
+function computeFileContentHash(filePath: string): string | null {
+  try {
+    const content = fs.readFileSync(filePath);
+    return createHash('sha256').update(content).digest('hex');
+  } catch {
+    return null;
+  }
+}
+
 /* ───────────────────────────────────────────────────────────────
    5. DECISION LOGIC
 ----------------------------------------------------------------*/
@@ -165,6 +175,14 @@ function shouldReindex(filePath: string): IndexDecision {
     if (stored.embedding_status === 'pending' || stored.embedding_status === 'failed') {
       return 'reindex';
     }
+
+    if (stored.content_hash) {
+      const currentContentHash = computeFileContentHash(filePath);
+      if (currentContentHash && currentContentHash !== stored.content_hash) {
+        return 'modified';
+      }
+    }
+
     return 'skip';
   }
 

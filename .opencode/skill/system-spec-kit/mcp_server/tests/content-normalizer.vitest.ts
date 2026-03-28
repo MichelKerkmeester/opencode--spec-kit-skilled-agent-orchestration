@@ -234,17 +234,17 @@ describe('normalizeMarkdownTables', () => {
 describe('normalizeMarkdownLists', () => {
   it('S1-L-01: strips unchecked task checkbox prefix', () => {
     const input = '- [ ] T001 Implement feature';
-    expect(normalizeMarkdownLists(input)).toBe('T001 Implement feature');
+    expect(normalizeMarkdownLists(input)).toBe('[ ] T001 Implement feature');
   });
 
   it('S1-L-02: strips checked task checkbox prefix (lowercase x)', () => {
     const input = '- [x] Done item';
-    expect(normalizeMarkdownLists(input)).toBe('Done item');
+    expect(normalizeMarkdownLists(input)).toBe('[x] Done item');
   });
 
   it('S1-L-03: strips checked task checkbox prefix (uppercase X)', () => {
     const input = '- [X] Done item uppercase';
-    expect(normalizeMarkdownLists(input)).toBe('Done item uppercase');
+    expect(normalizeMarkdownLists(input)).toBe('[X] Done item uppercase');
   });
 
   it('S1-L-04: strips plain dash bullet prefix', () => {
@@ -282,6 +282,11 @@ describe('normalizeMarkdownLists', () => {
   it('S1-L-10: does not strip content of non-list lines', () => {
     const input = 'Regular prose line.';
     expect(normalizeMarkdownLists(input)).toBe('Regular prose line.');
+  });
+
+  it('S1-L-11: preserves checklist state across mixed checked and unchecked items', () => {
+    const input = '- [x] Done\n- [ ] Todo';
+    expect(normalizeMarkdownLists(input)).toBe('[x] Done\n[ ] Todo');
   });
 });
 

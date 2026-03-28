@@ -9,6 +9,7 @@ import {
   getIndex,
   resetIndex,
   isBm25Enabled,
+  buildBm25DocumentText,
   DEFAULT_K1,
   DEFAULT_B,
 } from '../lib/search/bm25-index';
@@ -591,6 +592,22 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     expect(tf.get('login') || 0).toBe(2);
   });
 
+  it('C138-T6: buildBm25DocumentText matches rebuild field shape', () => {
+    const text = buildBm25DocumentText({
+      title: 'Spec Memory',
+      content_text: '---\ntitle: Hidden frontmatter\n---\nSearchable body token',
+      trigger_phrases: ['hybrid-search', 'bm25-sync'],
+      file_path: 'specs/001/spec.md',
+    });
+
+    expect(text).toContain('Spec Memory');
+    expect(text).toContain('Searchable body token');
+    expect(text).toContain('hybrid-search');
+    expect(text).toContain('bm25-sync');
+    expect(text).toContain('specs/001/spec.md');
+    expect(text).not.toContain('Hidden frontmatter');
+  });
+
   // MAINTENANCE: This harness mocks 10 modules. If any export signature
   // Changes upstream, update the corresponding vi.doMock below.
   async function setupMemoryUpdateHarness() {
@@ -630,6 +647,14 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     }));
     vi.doMock('../lib/search/bm25-index', () => ({
       isBm25Enabled: vi.fn(() => true),
+      buildBm25DocumentText: vi.fn((row: { title?: string | null; content_text?: string | null; trigger_phrases?: string | string[] | null; file_path?: string | null }) =>
+        [
+          row.title ?? '',
+          row.content_text ?? '',
+          Array.isArray(row.trigger_phrases) ? row.trigger_phrases.join(' ') : (row.trigger_phrases ?? ''),
+          row.file_path ?? '',
+        ].filter(Boolean).join(' ')
+      ),
       getIndex: vi.fn(() => ({
         addDocument,
       })),
@@ -678,7 +703,15 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
   it('BM25 re-index fires when title changes', async () => {
     const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
     await handleMemoryUpdate({ id: 42, title: 'Updated title' });
-    expect(addDocument).toHaveBeenCalledWith(expect.anything(), expect.stringContaining('Updated title'));
+    expect(addDocument).toHaveBeenCalledWith(
+      '42',
+      buildBm25DocumentText({
+        title: 'Updated title',
+        content_text: 'Updated body',
+        trigger_phrases: 'updated trigger phrase',
+        file_path: 'specs/001/spec.md',
+      })
+    );
   });
 
   it('BM25 re-index does NOT fire when non-trigger fields change', async () => {

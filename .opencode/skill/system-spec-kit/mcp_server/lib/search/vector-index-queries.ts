@@ -7,6 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
+import type Database from 'better-sqlite3';
 import { formatAgeString as format_age_string } from '../utils/format-helpers';
 import { createLogger } from '../utils/logger';
 import { recordHistory } from '../storage/history';
@@ -62,9 +63,7 @@ type CleanupOptions = {
  * const memory = get_memory(42);
  * ```
  */
-export function get_memory(id: number): MemoryRow | null {
-  const database = initialize_db();
-
+export function get_memory(id: number, database: Database.Database = initialize_db()): MemoryRow | null {
   const stmts = init_prepared_statements(database);
   const row = stmts.get_by_id.get(id);
 
@@ -81,9 +80,10 @@ export function get_memory(id: number): MemoryRow | null {
  * @param spec_folder - The spec folder to query.
  * @returns The memory rows for the folder.
  */
-export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
-  const database = initialize_db();
-
+export function get_memories_by_folder(
+  spec_folder: string,
+  database: Database.Database = initialize_db(),
+): MemoryRow[] {
   const rows = database.prepare(`
     SELECT m.*
     FROM memory_index m
@@ -103,8 +103,7 @@ export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
  * Gets the total number of indexed memories.
  * @returns The total memory count.
  */
-export function get_memory_count(): number {
-  const database = initialize_db();
+export function get_memory_count(database: Database.Database = initialize_db()): number {
   const stmts = init_prepared_statements(database);
   const result = stmts.count_all.get();
   return result?.count ?? 0;
@@ -114,9 +113,9 @@ export function get_memory_count(): number {
  * Gets memory counts grouped by embedding status.
  * @returns The counts for each embedding status.
  */
-export function get_status_counts(): { pending: number; success: number; failed: number; retry: number; partial: number } {
-  const database = initialize_db();
-
+export function get_status_counts(
+  database: Database.Database = initialize_db(),
+): { pending: number; success: number; failed: number; retry: number; partial: number } {
   const rows = database.prepare(`
     SELECT m.embedding_status, COUNT(*) as count
     FROM memory_index m
@@ -139,8 +138,10 @@ export function get_status_counts(): { pending: number; success: number; failed:
  * Gets summary counts for indexed memories.
  * @returns The aggregate memory statistics.
  */
-export function get_stats(): { total: number; pending: number; success: number; failed: number; retry: number; partial: number } {
-  const counts = get_status_counts();
+export function get_stats(
+  database: Database.Database = initialize_db(),
+): { total: number; pending: number; success: number; failed: number; retry: number; partial: number } {
+  const counts = get_status_counts(database);
   const total = counts.pending + counts.success + counts.failed + counts.retry + counts.partial;
 
   return {
@@ -164,14 +165,16 @@ export function get_stats(): { total: number; pending: number; success: number; 
  * const rows = vector_search(queryEmbedding, { limit: 5, specFolder: 'specs/001-demo' });
  * ```
  */
-export function vector_search(query_embedding: EmbeddingInput, options: VectorSearchOptions = {}): MemoryRow[] {
+export function vector_search(
+  query_embedding: EmbeddingInput,
+  options: VectorSearchOptions = {},
+  database: Database.Database = initialize_db(),
+): MemoryRow[] {
   const sqlite_vec = get_sqlite_vec_available();
   if (!sqlite_vec) {
     console.warn('[vector-index] Vector search unavailable - sqlite-vec not loaded');
     return [];
   }
-
-  const database = initialize_db();
 
   const {
     limit = 10,
@@ -286,9 +289,9 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
  * @returns The constitutional memory rows.
  */
 export function get_constitutional_memories_public(
-  options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {}
+  options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {},
+  database: Database.Database = initialize_db(),
 ): MemoryRow[] {
-  const database = initialize_db();
   const { specFolder = null, maxTokens = 2000, includeArchived = false } = options;
 
   let results = get_constitutional_memories(database, specFolder, includeArchived);
@@ -611,9 +614,9 @@ export async function generate_query_embedding(query: string): Promise<Float32Ar
  */
 export function keyword_search(
   query: string,
-  options: { limit?: number; specFolder?: string | null; includeArchived?: boolean } = {}
+  options: { limit?: number; specFolder?: string | null; includeArchived?: boolean } = {},
+  database: Database.Database = initialize_db(),
 ): MemoryRow[] {
-  const database = initialize_db();
   const { limit = 20, specFolder = null, includeArchived = false } = options;
 
   if (!query || typeof query !== 'string') {
@@ -702,7 +705,8 @@ export function keyword_search(
 export async function vector_search_enriched(
   query: string,
   limit = 20,
-  options: { specFolder?: string | null; minSimilarity?: number } = {}
+  options: { specFolder?: string | null; minSimilarity?: number } = {},
+  database: Database.Database = initialize_db(),
 ): Promise<EnrichedSearchResult[]> {
   const start_time = Date.now();
   const { specFolder = null, minSimilarity = 30 } = options;
@@ -718,11 +722,11 @@ export async function vector_search_enriched(
       limit,
       specFolder,
       minSimilarity
-    });
+    }, database);
   } else {
     console.warn('[vector-index] Falling back to keyword search');
     search_method = 'keyword';
-    raw_results = keyword_search(query, { limit, specFolder });
+    raw_results = keyword_search(query, { limit, specFolder }, database);
   }
 
   // HIGH-004 FIX: Read all files concurrently
@@ -1281,9 +1285,11 @@ export function get_memory_preview(memory_id: number, max_lines = 50): { id: num
  * @param options - Integrity verification options.
  * @returns The integrity summary.
  */
-export function verify_integrity(options: { autoClean?: boolean } = {}): { totalMemories: number; totalVectors: number; orphanedVectors: number; missingVectors: number; orphanedFiles: Array<{ id: number; file_path: string; reason: string }>; orphanedChunks: number; isConsistent: boolean; cleaned?: { vectors: number; chunks: number } } {
+export function verify_integrity(
+  options: { autoClean?: boolean } = {},
+  database: Database.Database = initialize_db(),
+): { totalMemories: number; totalVectors: number; orphanedVectors: number; missingVectors: number; orphanedFiles: Array<{ id: number; file_path: string; reason: string }>; orphanedChunks: number; isConsistent: boolean; cleaned?: { vectors: number; chunks: number } } {
   const { autoClean = false } = options;
-  const database = initialize_db();
   const sqlite_vec = get_sqlite_vec_available();
 
   const find_orphaned_vector_ids = () => {

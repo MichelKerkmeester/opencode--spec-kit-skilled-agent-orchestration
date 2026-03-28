@@ -437,13 +437,21 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   } = args;
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
+  const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
+  const progressiveScopeKey = JSON.stringify({
+    tenantId: normalizedScope.tenantId ?? null,
+    userId: normalizedScope.userId ?? null,
+    agentId: normalizedScope.agentId ?? null,
+    sessionId: normalizedScope.sessionId ?? null,
+    sharedSpaceId: normalizedScope.sharedSpaceId ?? null,
+  });
 
   if (typeof cursor === 'string' && cursor.trim().length > 0) {
-    const resolved = resolveCursor(cursor.trim());
+    const resolved = resolveCursor(cursor.trim(), undefined, { scopeKey: progressiveScopeKey });
     if (!resolved) {
       return createMCPErrorResponse({
         tool: 'memory_search',
-        error: 'Cursor is invalid or expired',
+        error: 'Cursor is invalid, expired, or out of scope',
         code: 'E_VALIDATION',
         details: { parameter: 'cursor' },
         recovery: {
@@ -467,7 +475,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   }
 
   const qualityThreshold = resolveQualityThreshold(minQualityScore, min_quality_score);
-  const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
 
   // Validate numeric limit parameter
   const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
@@ -802,6 +809,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           resultsForFormatting,
           undefined,
           effectiveQuery,
+          { scopeKey: progressiveScopeKey },
         );
         parsedFormatted.envelope.data = data;
         formatted = replaceResponseEnvelope(formatted, parsedFormatted.firstEntry, parsedFormatted.envelope);

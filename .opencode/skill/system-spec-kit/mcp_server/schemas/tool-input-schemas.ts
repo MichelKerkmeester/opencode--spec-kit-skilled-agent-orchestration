@@ -176,6 +176,11 @@ const memoryQuickSearchSchema = getSchema({
 
 const memoryMatchTriggersSchema = getSchema({
   prompt: z.string().min(1),
+  specFolder: optionalPathString(),
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   session_id: z.string().optional(),
   turnNumber: safeNumericPreprocess.pipe(z.number().int().min(1)).optional(),
@@ -329,6 +334,7 @@ const taskPostflightSchema = getSchema({
   contextScore: boundedNumber(0, 100),
   gapsClosed: optionalStringArray,
   newGapsDiscovered: optionalStringArray,
+  sessionId: z.string().optional(),
 });
 
 const memoryDriftWhySchema = getSchema({
@@ -446,6 +452,13 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   }).superRefine((value, ctx) => {
     const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
     const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
+    if (!hasActorUser && !hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorUserId'],
+      });
+    }
     if (hasActorUser && hasActorAgent) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -465,6 +478,13 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   }).superRefine((value, ctx) => {
     const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
     const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
+    if (!hasActorUser && !hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorUserId'],
+      });
+    }
     if (hasActorUser && hasActorAgent) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -475,8 +495,25 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   }) as unknown as ToolInputSchema,
   shared_memory_status: getSchema({
     tenantId: z.string().optional(),
-    userId: z.string().optional(),
-    agentId: z.string().optional(),
+    actorUserId: z.string().optional(),
+    actorAgentId: z.string().optional(),
+  }).superRefine((value, ctx) => {
+    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
+    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
+    if (!hasActorUser && !hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorUserId'],
+      });
+    }
+    if (hasActorUser && hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorAgentId'],
+      });
+    }
   }) as unknown as ToolInputSchema,
   shared_memory_enable: getSchema({}) as unknown as ToolInputSchema,
 };
@@ -485,7 +522,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors', 'profile'],
   memory_search: ['cursor', 'query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace', 'profile'],
   memory_quick_search: ['query', 'limit', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId'],
-  memory_match_triggers: ['prompt', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
+  memory_match_triggers: ['prompt', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
   memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding', 'tenantId', 'userId', 'agentId', 'sessionId', 'sharedSpaceId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_list: ['limit', 'offset', 'specFolder', 'sortBy', 'includeChunks'],
   memory_stats: ['folderRanking', 'excludePatterns', 'includeScores', 'includeArchived', 'limit'],
@@ -499,7 +536,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   checkpoint_restore: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'clearExisting'],
   checkpoint_delete: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'confirmName'],
   task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
-  task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered'],
+  task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered', 'sessionId'],
   memory_drift_why: ['memoryId', 'maxDepth', 'direction', 'relations', 'includeMemoryDetails'],
   memory_causal_link: ['sourceId', 'targetId', 'relation', 'strength', 'evidence'],
   memory_causal_stats: [],
@@ -513,7 +550,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_cancel: ['jobId'],
   shared_space_upsert: ['spaceId', 'tenantId', 'name', 'actorUserId', 'actorAgentId', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
   shared_space_membership_set: ['spaceId', 'tenantId', 'actorUserId', 'actorAgentId', 'subjectType', 'subjectId', 'role'],
-  shared_memory_status: ['tenantId', 'userId', 'agentId'],
+  shared_memory_status: ['tenantId', 'actorUserId', 'actorAgentId'],
   shared_memory_enable: [],
 };
 

@@ -45,6 +45,9 @@ const MAX_TOTAL_DEGREE = 50;
 /** Maximum normalized boost score */
 const DEGREE_BOOST_CAP = 0.15;
 
+/** Runtime fusion weight for the degree channel. Keep aligned with the boost cap. */
+const DEGREE_CHANNEL_WEIGHT = DEGREE_BOOST_CAP;
+
 // ───────────────────────────────────────────────────────────────
 // 3. CAUSAL EDGE CHANNEL (FTS5-BACKED)
 
@@ -554,6 +557,7 @@ export {
   DEFAULT_MAX_TYPED_DEGREE,
   MAX_TOTAL_DEGREE,
   DEGREE_BOOST_CAP,
+  DEGREE_CHANNEL_WEIGHT,
   computeTypedDegree,
   normalizeDegreeToBoostedScore,
   computeMaxTypedDegree,

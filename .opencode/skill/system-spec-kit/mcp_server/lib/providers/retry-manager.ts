@@ -9,7 +9,7 @@ import * as fsPromises from 'fs/promises';
 import * as vectorIndex from '../search/vector-index';
 import { computeContentHash, lookupEmbedding, storeEmbedding } from '../cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../parsing/content-normalizer';
-import { generateDocumentEmbedding, getModelName } from './embeddings';
+import { generateDocumentEmbedding, getEmbeddingDimension, getModelName } from './embeddings';
 
 // Type imports
 import type { MemoryDbRow } from '@spec-kit/shared/types';
@@ -584,8 +584,9 @@ async function retryEmbedding(
     // Comments, code fences) while sync-saved memories get clean normalized embeddings.
     const normalizedContent = normalizeContentForEmbedding(content);
     const modelId = getModelName();
+    const embeddingDim = getEmbeddingDimension();
     const contentHash = computeContentHash(normalizedContent);
-    const cachedEmbedding = lookupEmbedding(db, contentHash, modelId);
+    const cachedEmbedding = lookupEmbedding(db, contentHash, modelId, embeddingDim);
 
     let embedding: Float32Array | null = null;
 

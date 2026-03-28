@@ -41,6 +41,7 @@ import { validateInputLengths } from './utils';
 
 // History (audit trail for file-watcher deletes)
 import { recordHistory } from './lib/storage/history';
+import * as historyStore from './lib/storage/history';
 
 // Hooks
 import {
@@ -56,11 +57,13 @@ import {
 
 // Architecture
 import { getTokenBudget } from './lib/architecture/layer-definitions';
+import { createMCPErrorResponse, wrapForMCP } from './lib/response/envelope';
 
 // T303: Startup checks (extracted from this file)
 import { detectNodeVersionMismatch, checkSqliteVersion } from './startup-checks';
 import {
   getStartupEmbeddingDimension,
+  resolveStartupEmbeddingConfig,
   validateConfiguredEmbeddingsProvider,
 } from '@spec-kit/shared/embeddings/factory';
 
@@ -92,7 +95,7 @@ import { initScoringObservability } from './lib/telemetry/scoring-observability'
 import * as archivalManager from './lib/cognitive/archival-manager';
 // T099: Retry manager for background embedding retry job (REQ-031, CHK-179)
 import * as retryManager from './lib/providers/retry-manager';
-import { buildErrorResponse } from './lib/errors';
+import { buildErrorResponse, getDefaultErrorCodeForTool, getRecoveryHint } from './lib/errors';
 // T001-T004: Session deduplication
 import * as sessionManager from './lib/session/session-manager';
 import * as shadowEvaluationRuntime from './lib/feedback/shadow-evaluation-runtime';
@@ -282,7 +285,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
    5. TOOL DISPATCH (T303: routed through tools/*.ts)
 ──────────────────────────────────────────────────────────────── */
 
-server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown) => {
+server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown): Promise<any> => {
   const requestParams = request.params as { name: string; arguments?: Record<string, unknown> };
   const { name } = requestParams;
   const args: Record<string, unknown> = requestParams.arguments ?? {};
@@ -411,11 +414,20 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   } catch (error: unknown) {
     // REQ-004: Include recovery hints in all error responses
     const err = error instanceof Error ? error : new Error(String(error));
-    const errorResponse = buildErrorResponse(name, err, args);
-    return {
-      content: [{ type: 'text', text: JSON.stringify(errorResponse, null, 2) }],
-      isError: true
-    };
+    try {
+      const errorResponse = buildErrorResponse(name, err, args);
+      return wrapForMCP(errorResponse as any, true);
+    } catch (wrapError: unknown) {
+      const fallbackError = wrapError instanceof Error ? wrapError.message : String(wrapError);
+      console.error(`[context-server] Failed to build MCP error envelope for '${name}': ${fallbackError}`);
+      const fallbackCode = getDefaultErrorCodeForTool(name);
+      return createMCPErrorResponse({
+        tool: name,
+        error: 'Request failed.',
+        code: fallbackCode,
+        recovery: getRecoveryHint(name, fallbackCode),
+      });
+    }
   }
 });
 
@@ -762,27 +774,15 @@ async function main(): Promise<void> {
 
   validateConfiguredEmbeddingsProvider();
 
-  if (!process.env.EMBEDDING_DIM) {
-    process.env.EMBEDDING_DIM = String(getStartupEmbeddingDimension());
-  }
-
-  console.error('[context-server] Initializing database...');
-  vectorIndex.initializeDb();
-  dbInitialized = true;
-  console.error('[context-server] Database initialized');
-
-  // Initialize db-state module with dependencies
-  // P4-12/P4-19 FIX: Pass sessionManager and incrementalIndex so db-state can
-  // Refresh their DB handles during reinitializeDatabase(), preventing stale refs.
-  initDbState({ vectorIndex, checkpoints: checkpointsLib, accessTracker, hybridSearch, sessionManager, incrementalIndex });
-
   // T087-T090: Pre-Flight API Key Validation (REQ-029)
   // Validates API key at startup to fail fast with actionable error messages
   // Skip validation if SPECKIT_SKIP_API_VALIDATION=true (for testing/CI)
+  let startupEmbeddingConfig: Awaited<ReturnType<typeof resolveStartupEmbeddingConfig>> | null = null;
   if (process.env.SPECKIT_SKIP_API_VALIDATION !== 'true') {
     console.error('[context-server] Validating embedding API key...');
     try {
-      const validation: ApiKeyValidation = await embeddings.validateApiKey({ timeout: API_KEY_VALIDATION_TIMEOUT_MS });
+      startupEmbeddingConfig = await resolveStartupEmbeddingConfig({ timeout: API_KEY_VALIDATION_TIMEOUT_MS });
+      const validation: ApiKeyValidation = startupEmbeddingConfig.validation;
 
       if (!validation.valid) {
         if (validation.networkError) {
@@ -830,6 +830,38 @@ async function main(): Promise<void> {
   } else {
     console.warn('[context-server] API key validation skipped (SPECKIT_SKIP_API_VALIDATION=true)');
   }
+
+  if (!process.env.EMBEDDING_DIM) {
+    process.env.EMBEDDING_DIM = String(
+      startupEmbeddingConfig?.dimension ?? getStartupEmbeddingDimension(),
+    );
+  }
+
+  console.error('[context-server] Initializing database...');
+  vectorIndex.initializeDb();
+  dbInitialized = true;
+  console.error('[context-server] Database initialized');
+
+  // Initialize db-state module with dependencies
+  // P4-12/P4-19 FIX: Pass sessionManager and incrementalIndex so db-state can
+  // Refresh their DB handles during reinitializeDatabase(), preventing stale refs.
+  initDbState({
+    vectorIndex,
+    checkpoints: checkpointsLib,
+    accessTracker,
+    hybridSearch,
+    sessionManager,
+    incrementalIndex,
+    dbConsumers: [
+      sessionBoost,
+      causalBoost,
+      historyStore,
+      workingMemory,
+      attentionDecay,
+      coActivation,
+      archivalManager,
+    ],
+  });
 
   // T016-T019: Lazy Embedding Model Loading
   // Default: Skip warmup at startup for <500ms cold start

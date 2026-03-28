@@ -368,10 +368,12 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       peGatingModuleFactory?: () => unknown;
       embeddingPipelineModuleFactory?: () => Record<string, unknown>;
       peOrchestrationModuleFactory?: () => Record<string, unknown>;
+      reconsolidationModuleFactory?: () => unknown | Promise<unknown>;
       createRecordModuleFactory?: () => unknown;
       postInsertModuleFactory?: () => unknown;
       responseBuilderModuleFactory?: () => unknown | Promise<unknown>;
       chunkingModuleFactory?: () => unknown | Promise<unknown>;
+      nodeFsModuleFactory?: () => unknown | Promise<unknown>;
     } = {}) {
       vi.resetModules();
 
@@ -474,6 +476,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doMock('../handlers/save/pe-orchestration', options.peOrchestrationModuleFactory);
       }
 
+      if (options.reconsolidationModuleFactory) {
+        vi.doMock('../handlers/save/reconsolidation-bridge', options.reconsolidationModuleFactory as any);
+      }
+
       if (options.createRecordModuleFactory) {
         vi.doMock('../handlers/save/create-record', options.createRecordModuleFactory as any);
       }
@@ -488,6 +494,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       if (options.chunkingModuleFactory) {
         vi.doMock('../handlers/chunking-orchestrator', options.chunkingModuleFactory as any);
+      }
+
+      if (options.nodeFsModuleFactory) {
+        vi.doMock('node:fs', options.nodeFsModuleFactory as any);
       }
 
       vi.doMock('../utils/validators', async (importOriginal) => {
@@ -541,7 +551,17 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
               all: vi.fn(() => []),
               run: vi.fn(() => ({ changes: 0 })),
             })),
-            transaction: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
+            transaction: vi.fn((fn: (...args: unknown[]) => unknown) => {
+              const transactionRunner = (() => fn()) as ((...args: unknown[]) => unknown) & {
+                deferred?: () => unknown;
+                exclusive?: () => unknown;
+                immediate?: () => unknown;
+              };
+              transactionRunner.deferred = () => fn();
+              transactionRunner.exclusive = () => fn();
+              transactionRunner.immediate = () => fn();
+              return transactionRunner;
+            }),
           })),
         };
       });
@@ -584,12 +604,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('../handlers/quality-loop');
         vi.doUnmock('../handlers/save/dedup');
         vi.doUnmock('../handlers/pe-gating');
-        vi.doUnmock('../handlers/save/embedding-pipeline');
-        vi.doUnmock('../handlers/save/pe-orchestration');
-        vi.doUnmock('../handlers/save/create-record');
-        vi.doUnmock('../handlers/save/post-insert');
-        vi.doUnmock('../handlers/save/response-builder');
+      vi.doUnmock('../handlers/save/embedding-pipeline');
+      vi.doUnmock('../handlers/save/pe-orchestration');
+      vi.doUnmock('../handlers/save/reconsolidation-bridge');
+      vi.doUnmock('../handlers/save/create-record');
+      vi.doUnmock('../handlers/save/post-insert');
+      vi.doUnmock('../handlers/save/response-builder');
         vi.doUnmock('../handlers/chunking-orchestrator');
+        vi.doUnmock('node:fs');
         vi.doUnmock('../lib/validation/save-quality-gate');
         vi.doUnmock('../lib/search/search-flags');
         vi.doUnmock('@spec-kit/shared/parsing/memory-sufficiency');
@@ -630,7 +652,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const result = await harness.module.indexMemoryFile(filePath, { force: false, asyncEmbedding: false });
 
       expect(result.status).toBe('indexed');
-      expect(harness.findSamePathExistingMemorySpy).toHaveBeenCalledTimes(1);
+      expect(harness.findSamePathExistingMemorySpy).toHaveBeenCalledTimes(2);
       expect(harness.createMemoryRecordSpy).not.toHaveBeenCalled();
       expect(harness.createAppendOnlyMemoryRecordSpy).toHaveBeenCalledTimes(1);
       expect(harness.createAppendOnlyMemoryRecordSpy).toHaveBeenCalledWith(expect.objectContaining({
@@ -647,6 +669,47 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           transitionEvent: 'SUPERSEDE',
         })
       );
+    });
+
+    it('starts BEGIN IMMEDIATE only after reconsolidation planning resolves', async () => {
+      const harness = await loadBehavioralIndexHarness();
+      const filePath = createAtomicSaveTargetPath('recon-before-begin.md');
+      const callOrder: string[] = [];
+      const originalTransaction = harness.database.transaction.bind(harness.database);
+
+      vi.spyOn(harness.database, 'transaction').mockImplementation(((fn: Parameters<typeof harness.database.transaction>[0]) => {
+        const transactionRunner = originalTransaction(fn) as ReturnType<typeof harness.database.transaction> & {
+          deferred?: () => unknown;
+          exclusive?: () => unknown;
+          immediate?: () => unknown;
+        };
+        const originalImmediate = transactionRunner.immediate?.bind(transactionRunner);
+        const wrappedTransactionRunner = (() => transactionRunner()) as typeof transactionRunner;
+        wrappedTransactionRunner.deferred = transactionRunner.deferred?.bind(transactionRunner);
+        wrappedTransactionRunner.exclusive = transactionRunner.exclusive?.bind(transactionRunner);
+        wrappedTransactionRunner.immediate = () => {
+          callOrder.push('BEGIN IMMEDIATE');
+          return originalImmediate ? originalImmediate() : transactionRunner();
+        };
+        return wrappedTransactionRunner;
+      }) as typeof harness.database.transaction);
+      harness.runReconsolidationIfEnabledSpy.mockImplementation(async () => {
+        callOrder.push('recon:start');
+        await Promise.resolve();
+        callOrder.push('recon:end');
+        return {
+          earlyReturn: null,
+          warnings: [],
+        } as any;
+      });
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: false, asyncEmbedding: false });
+
+      expect(result.status).toBe('indexed');
+      expect(callOrder).toContain('recon:start');
+      expect(callOrder).toContain('recon:end');
+      expect(callOrder).toContain('BEGIN IMMEDIATE');
+      expect(callOrder.indexOf('recon:end')).toBeLessThan(callOrder.indexOf('BEGIN IMMEDIATE'));
     });
 
     it('retries when indexMemoryFile throws once then succeeds', async () => {
@@ -728,7 +791,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(true);
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(2);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(2);
     });
 
     it('treats indexMemoryFile status=rejected as non-retry rollback outcome', async () => {
@@ -831,6 +894,77 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       expect(result.status).toBe('indexed');
       expect(persistPendingEmbeddingCacheWriteMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('runs quality gate before chunked indexing and rejects failing large files', async () => {
+      const runQualityGateMock = vi.fn(() => ({
+        pass: false,
+        warnOnly: false,
+        reasons: ['signal density too low'],
+        layers: { semantic: { pass: false } },
+      }));
+      const indexChunkedMemoryFileMock = vi.fn(async () => ({
+        status: 'indexed',
+        id: 444,
+        specFolder: 'specs/999-atomic-save-fi',
+        title: 'Atomic Save FI',
+        message: 'Chunked indexed',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        checkContentHashDedupMock: vi.fn(() => null),
+        runQualityGateMock,
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: null,
+          })),
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        chunkingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
+          return {
+            ...actual,
+            needsChunking: vi.fn(() => true),
+            indexChunkedMemoryFile: indexChunkedMemoryFileMock,
+          };
+        },
+      });
+
+      const filePath = createAtomicSaveTargetPath('chunked-quality-gate-reject.md');
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('rejected');
+      expect(runQualityGateMock).toHaveBeenCalledTimes(1);
+      expect(indexChunkedMemoryFileMock).not.toHaveBeenCalled();
+    });
+
+    it('skips chunked indexing when reconsolidation resolves the save first', async () => {
+      const harness = await loadBehavioralIndexHarness();
+      harness.needsChunkingSpy.mockReturnValue(true);
+      harness.runReconsolidationIfEnabledSpy.mockResolvedValue({
+        earlyReturn: buildIndexResult({ status: 'merged', id: 555 }),
+        warnings: [],
+      } as any);
+
+      const chunkingModule = await import('../handlers/chunking-orchestrator');
+      const indexChunkedMemoryFileSpy = vi.spyOn(chunkingModule, 'indexChunkedMemoryFile').mockResolvedValue({
+        status: 'indexed',
+        id: 556,
+        specFolder: 'specs/999-atomic-save-fi',
+        title: 'Atomic Save FI',
+        message: 'Chunked indexed',
+      });
+
+      const filePath = createAtomicSaveTargetPath('chunked-recon-early-return.md');
+      const result = await harness.module.indexMemoryFile(filePath, { force: false, asyncEmbedding: false });
+
+      expect(result.status).toBe('merged');
+      expect(indexChunkedMemoryFileSpy).not.toHaveBeenCalled();
     });
 
     it('persists quality-loop trigger phrase fixes into downstream save inputs', async () => {
@@ -949,6 +1083,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
     it('passes governance scope into TM-04 semantic dedup candidate lookup', async () => {
       const findSimilarMemoriesMock = vi.fn(() => []);
+      const createMemoryRecordMock = vi.fn(() => 741);
       const runQualityGateMock = vi.fn((params: {
         embedding: Float32Array;
         findSimilar: (embedding: Float32Array, options: { limit: number; specFolder: string }) => unknown;
@@ -984,6 +1119,22 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
             supersededId: null,
           })),
         }),
+        reconsolidationModuleFactory: () => ({
+          runReconsolidationIfEnabled: vi.fn(async () => ({
+            earlyReturn: null,
+            warnings: [],
+          })),
+        }),
+        createRecordModuleFactory: () => ({
+          createMemoryRecord: createMemoryRecordMock,
+          findSamePathExistingMemory: vi.fn(() => undefined),
+        }),
+        postInsertModuleFactory: () => ({
+          runPostInsertEnrichment: vi.fn(async () => ({
+            causalLinksResult: null,
+            enrichmentStatus: 'skipped',
+          })),
+        }),
       });
 
       const filePath = createAtomicSaveTargetPath('quality-gate-scope.md');
@@ -1016,6 +1167,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('passes governance scope into PE arbitration', async () => {
+      const createMemoryRecordMock = vi.fn(() => 742);
       const evaluateAndApplyPeDecisionMock = vi.fn(() => ({
         decision: { action: 'CREATE', similarity: 0 },
         earlyReturn: null,
@@ -1035,6 +1187,22 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
             pendingCacheWrite: null,
           })),
           persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        reconsolidationModuleFactory: () => ({
+          runReconsolidationIfEnabled: vi.fn(async () => ({
+            earlyReturn: null,
+            warnings: [],
+          })),
+        }),
+        createRecordModuleFactory: () => ({
+          createMemoryRecord: createMemoryRecordMock,
+          findSamePathExistingMemory: vi.fn(() => undefined),
+        }),
+        postInsertModuleFactory: () => ({
+          runPostInsertEnrichment: vi.fn(async () => ({
+            causalLinksResult: null,
+            enrichmentStatus: 'skipped',
+          })),
         }),
       });
 
@@ -1155,6 +1323,41 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       expect(result.status).toBe('reinforced');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original on disk');
+    });
+
+    it('does not start DB indexing when pending promotion fails before atomic save indexing', async () => {
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({ status: 'indexed', id: 911 }));
+      const renameSyncMock = vi.fn((from: string | Buffer | URL, to: string | Buffer | URL) => {
+        if (String(from).includes('rename-before-index_pending.md')) {
+          throw new Error('simulated rename failure');
+        }
+        fs.renameSync(from, to);
+      });
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+        nodeFsModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
+          return {
+            ...actual,
+            renameSync: renameSyncMock,
+          };
+        },
+      });
+      const filePath = createAtomicSaveTargetPath('rename-before-index.md');
+      const originalContent = '# original on disk';
+      fs.writeFileSync(filePath, originalContent, 'utf8');
+
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# replacement content' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('error');
+      expect(result.error).toContain('simulated rename failure');
+      expect(renameSyncMock).toHaveBeenCalled();
+      expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(originalContent);
     });
 
     it('rejects insufficient context before embedding even when force=true', async () => {
@@ -1299,6 +1502,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const harness = await loadAtomicSaveHarness({
         checkExistingRowMock: vi.fn(() => null),
         checkContentHashDedupMock: vi.fn(() => null),
+        embeddingPipelineModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/embedding-pipeline')>('../handlers/save/embedding-pipeline');
+          return {
+            ...actual,
+            persistPendingEmbeddingCacheWrite: vi.fn(),
+            generateOrCacheEmbedding: vi.fn(async () => new Float32Array(384).fill(0.1)),
+          };
+        },
         chunkingModuleFactory: async () => {
           const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
           return {
@@ -1335,6 +1546,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const harness = await loadAtomicSaveHarness({
         checkExistingRowMock: vi.fn(() => null),
         checkContentHashDedupMock: vi.fn(() => null),
+        embeddingPipelineModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/embedding-pipeline')>('../handlers/save/embedding-pipeline');
+          return {
+            ...actual,
+            persistPendingEmbeddingCacheWrite: vi.fn(),
+            generateOrCacheEmbedding: vi.fn(async () => new Float32Array(384).fill(0.1)),
+          };
+        },
         chunkingModuleFactory: async () => {
           const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
           return {

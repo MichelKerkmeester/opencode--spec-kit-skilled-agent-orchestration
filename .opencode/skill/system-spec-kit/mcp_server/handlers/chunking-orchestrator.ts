@@ -245,7 +245,12 @@ async function indexChunkedMemoryFile(
   if (bm25Index.isBm25Enabled()) {
     try {
       const bm25 = bm25Index.getIndex();
-      bm25.addDocument(String(parentId), chunkResult.parentSummary);
+      bm25.addDocument(String(parentId), bm25Index.buildBm25DocumentText({
+        title: parsed.title,
+        content_text: chunkResult.parentSummary,
+        trigger_phrases: parsed.triggerPhrases,
+        file_path: filePath,
+      }));
     } catch (bm25_err: unknown) {
       const message = toErrorMessage(bm25_err);
       console.warn(`[memory-save] BM25 indexing failed for parent: ${message}`);
@@ -264,6 +269,7 @@ async function indexChunkedMemoryFile(
     const chunkEncodingIntent = isEncodingIntentEnabled()
       ? classifyEncodingIntent(chunk.content)
       : undefined;
+    let childId: number | undefined;
 
     try {
       // Persistent embedding cache (REQ-S2-001) avoids re-calling the embedding
@@ -274,7 +280,8 @@ async function indexChunkedMemoryFile(
       try {
         const chunkHash = computeNormalizedChunkCacheKey(chunk.content);
         const modelId = embeddings.getModelName();
-        const cachedChunkBuf = lookupEmbedding(database, chunkHash, modelId);
+        const embeddingDim = embeddings.getEmbeddingDimension();
+        const cachedChunkBuf = lookupEmbedding(database, chunkHash, modelId, embeddingDim);
         if (cachedChunkBuf) {
           chunkEmbedding = new Float32Array(new Uint8Array(cachedChunkBuf).buffer);
           chunkEmbeddingStatus = 'success';
@@ -290,51 +297,54 @@ async function indexChunkedMemoryFile(
         const message = toErrorMessage(embErr);
         console.warn(`[memory-save] Chunk ${i + 1} embedding failed: ${message}`);
       }
-
-      let childId: number;
       const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
+      const insertChunkTx = database.transaction(() => {
+        if (chunkEmbedding) {
+          childId = vectorIndex.indexMemory({
+            specFolder: parsed.specFolder,
+            filePath,
+            anchorId: chunk.label,
+            title: chunkTitle,
+            triggerPhrases: [],
+            importanceWeight,
+            embedding: chunkEmbedding,
+            encodingIntent: chunkEncodingIntent,
+            documentType: parsed.documentType || 'memory',
+            contentText: chunk.content,
+          }, database);
+        } else {
+          childId = vectorIndex.indexMemoryDeferred({
+            specFolder: parsed.specFolder,
+            filePath,
+            title: chunkTitle,
+            triggerPhrases: [],
+            importanceWeight,
+            failureReason: 'Chunk embedding failed',
+            encodingIntent: chunkEncodingIntent,
+            documentType: parsed.documentType || 'memory',
+            contentText: chunk.content,
+          }, database);
+        }
 
-      if (chunkEmbedding) {
-        childId = vectorIndex.indexMemory({
-          specFolder: parsed.specFolder,
-          filePath,
-          anchorId: chunk.label,
-          title: chunkTitle,
-          triggerPhrases: [],
-          importanceWeight,
-          embedding: chunkEmbedding,
-          encodingIntent: chunkEncodingIntent,
-          documentType: parsed.documentType || 'memory',
-          contentText: chunk.content,
+        // Re-chunk updates stage children without parent_id; parent swap is finalized
+        // atomically after successful chunk indexing.
+        applyMetadata(database, childId, {
+          ...(useSafeSwap ? {} : { parent_id: parentId }),
+          chunk_index: i,
+          chunk_label: chunk.label,
+          content_hash: parsed.contentHash,
+          context_type: parsed.contextType,
+          importance_tier: parsed.importanceTier,
+          embedding_status: chunkEmbeddingStatus,
+          encoding_intent: chunkEncodingIntent,
+          stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+          difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
         });
-      } else {
-        childId = vectorIndex.indexMemoryDeferred({
-          specFolder: parsed.specFolder,
-          filePath,
-          title: chunkTitle,
-          triggerPhrases: [],
-          importanceWeight,
-          failureReason: 'Chunk embedding failed',
-          encodingIntent: chunkEncodingIntent,
-          documentType: parsed.documentType || 'memory',
-          contentText: chunk.content,
-        });
-      }
 
-      // Re-chunk updates stage children without parent_id; parent swap is finalized
-      // Atomically after successful chunk indexing.
-      applyMetadata(database, childId, {
-        ...(useSafeSwap ? {} : { parent_id: parentId }),
-        chunk_index: i,
-        chunk_label: chunk.label,
-        content_hash: parsed.contentHash,
-        context_type: parsed.contextType,
-        importance_tier: parsed.importanceTier,
-        embedding_status: chunkEmbeddingStatus,
-        encoding_intent: chunkEncodingIntent,
-        stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+        return childId;
       });
+
+      childId = insertChunkTx();
 
       childIds.push(childId);
 
@@ -342,7 +352,12 @@ async function indexChunkedMemoryFile(
       if (bm25Index.isBm25Enabled()) {
         try {
           const bm25 = bm25Index.getIndex();
-          bm25.addDocument(String(childId), chunk.content);
+          bm25.addDocument(String(childId), bm25Index.buildBm25DocumentText({
+            title: chunkTitle,
+            content_text: chunk.content,
+            trigger_phrases: [],
+            file_path: filePath,
+          }));
         } catch (bm25_err: unknown) {
           const message = toErrorMessage(bm25_err);
           console.error(`[memory-save] BM25 indexing failed for chunk ${i + 1}: ${message}`);
@@ -353,6 +368,16 @@ async function indexChunkedMemoryFile(
       successCount++;
     } catch (chunkErr: unknown) {
       failedCount++;
+      // Best-effort orphan cleanup in case a child row was inserted before a metadata failure.
+      // The transactional insert path should roll back automatically, but this protects mixed
+      // callers and older implementations that might bypass the shared transaction.
+      if (typeof childId === 'number') {
+        try {
+          vectorIndex.deleteMemory(childId);
+        } catch (_cleanupErr: unknown) {
+          // Best-effort only; original chunk error remains authoritative.
+        }
+      }
       const message = toErrorMessage(chunkErr);
       console.error(`[memory-save] Failed to index chunk ${i + 1}: ${message}`);
     }

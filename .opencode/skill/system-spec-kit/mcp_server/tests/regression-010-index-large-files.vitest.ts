@@ -76,6 +76,63 @@ describe('Regression 010: index large files guardrails', () => {
     expect(result.chunks.some((chunk) => chunk.anchorIds.includes('details'))).toBe(true);
   });
 
+  it('preserves text outside anchors when anchor chunking is selected', () => {
+    const preface = `Preface outside anchors.\n${'P'.repeat(2200)}`;
+    const bridge = `Bridge text between anchors.\n${'B'.repeat(2200)}`;
+    const trailing = `Trailing notes outside anchors.\n${'T'.repeat(2200)}`;
+    const content = [
+      preface,
+      '',
+      '<!-- ANCHOR:intro -->',
+      `Intro section body.\n${'I'.repeat(2200)}`,
+      '<!-- /ANCHOR:intro -->',
+      '',
+      bridge,
+      '',
+      '<!-- ANCHOR:details -->',
+      `Details section body.\n${'D'.repeat(2200)}`,
+      '<!-- /ANCHOR:details -->',
+      '',
+      trailing,
+    ].join('\n');
+
+    const result = chunkLargeFile(content);
+    expect(result.strategy).toBe('anchor');
+
+    const combined = result.chunks.map((chunk) => chunk.content).join('\n');
+    expect(combined).toContain('Preface outside anchors.');
+    expect(combined).toContain('Bridge text between anchors.');
+    expect(combined).toContain('Trailing notes outside anchors.');
+    expect(result.chunks.some((chunk) => chunk.anchorIds.includes('intro'))).toBe(true);
+    expect(result.chunks.some((chunk) => chunk.anchorIds.includes('details'))).toBe(true);
+  });
+
+  it('uses structure-aware fallback so fenced code comments are not treated as headings', () => {
+    const markdown = [
+      '# Intro',
+      '',
+      'Lead paragraph.',
+      '',
+      '```sh',
+      '# not a heading',
+      'echo ok',
+      '```',
+      '',
+      '## After',
+      '',
+      'Tail text.',
+    ].join('\n');
+
+    const result = chunkLargeFile(markdown);
+    expect(result.strategy).toBe('structure');
+
+    const codeChunk = result.chunks.find((chunk) => chunk.content.includes('echo ok'));
+    expect(codeChunk).toBeDefined();
+    expect(codeChunk!.content).toContain('# not a heading');
+    expect(codeChunk!.content.trim().startsWith('```sh')).toBe(true);
+    expect(result.chunks.some((chunk) => chunk.content.trim() === '# not a heading')).toBe(false);
+  });
+
   it('initializes schema with v16 chunk columns and parent indexes', async () => {
     vi.resetModules();
     const tempDir = makeTempDir('spec-kit-schema-v16-');

@@ -648,7 +648,8 @@ function getModelName(): string {
 
 function detectConfiguredModelName(): string {
   const providerInfo = getProviderInfo();
-  switch (providerInfo.provider) {
+  const effectiveProvider = providerInfo.effectiveProvider || providerInfo.provider;
+  switch (effectiveProvider) {
     case 'voyage':
       return providerInfo.config.VOYAGE_EMBEDDINGS_MODEL
         || (process.env.VOYAGE_API_KEY ? 'voyage-4' : DEFAULT_MODEL_NAME);
@@ -657,12 +658,6 @@ function detectConfiguredModelName(): string {
         || (process.env.OPENAI_API_KEY ? 'text-embedding-3-small' : DEFAULT_MODEL_NAME);
     case 'hf-local':
     default:
-      if (process.env.VOYAGE_API_KEY && !process.env.OPENAI_API_KEY) {
-        return process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4';
-      }
-      if (process.env.OPENAI_API_KEY && !process.env.VOYAGE_API_KEY) {
-        return process.env.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small';
-      }
       return providerInfo.config.HF_EMBEDDINGS_MODEL || DEFAULT_MODEL_NAME;
   }
 }

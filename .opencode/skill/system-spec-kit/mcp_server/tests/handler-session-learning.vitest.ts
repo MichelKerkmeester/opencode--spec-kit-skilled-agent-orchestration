@@ -142,7 +142,7 @@ describe('Handler Session Learning (T522)', () => {
       }
     });
 
-    it('T011-OG1: Re-preflight on complete record throws overwrite error', async () => {
+    it('T011-OG1: Re-preflight on complete record starts a fresh cycle', async () => {
       // Set up an in-memory DB with a completed learning record
       const mockDb = new Database(':memory:');
       mockDb.exec(`
@@ -167,8 +167,7 @@ describe('Handler Session Learning (T522)', () => {
           new_gaps_discovered TEXT,
           created_at TEXT DEFAULT (datetime('now')),
           updated_at TEXT DEFAULT (datetime('now')),
-          completed_at TEXT,
-          UNIQUE(spec_folder, task_id)
+          completed_at TEXT
         )
       `);
       // Insert a completed record
@@ -182,23 +181,22 @@ describe('Handler Session Learning (T522)', () => {
       const dbSpy = vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
 
       try {
-        await handler.handleTaskPreflight({
+        const result = await handler.handleTaskPreflight({
           specFolder: 'specs/already-completed',
           taskId: 'completed-task',
           knowledgeScore: 50,
           uncertaintyScore: 30,
           contextScore: 40,
         });
-        // Should NOT reach here — handler must throw
-        expect.unreachable('Expected overwrite guard to throw');
-      } catch (error: unknown) {
-        // Must be the overwrite guard error, NOT a DB init error
-        expect(
-          hasErrorCode(error, 'E030')
-          || hasErrorMessage(error, 'overwritten')
-          || hasErrorMessage(error, 'complete')
-          || hasErrorMessage(error, 'Completed records cannot be overwritten')
-        ).toBe(true);
+        expect(result?.content?.[0]?.text).toContain('Preflight baseline captured');
+
+        const count = mockDb.prepare(`
+          SELECT COUNT(*) AS total
+          FROM session_learning
+          WHERE spec_folder = ? AND task_id = ?
+        `).get('specs/already-completed', 'completed-task') as { total: number };
+
+        expect(count.total).toBe(2);
       } finally {
         dbSpy.mockRestore();
         spy.mockRestore();

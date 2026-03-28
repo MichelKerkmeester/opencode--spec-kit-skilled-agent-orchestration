@@ -25,6 +25,13 @@ interface BM25Stats {
   avgDocLength: number;
 }
 
+interface BM25DocumentSource {
+  title?: string | null;
+  content_text?: string | null;
+  trigger_phrases?: string | string[] | null;
+  file_path?: string | null;
+}
+
 /* ───────────────────────────────────────────────────────────────
    1B. CONSTANTS & FEATURE FLAG
    ──────────────────────────────────────────────────────────────── */
@@ -158,6 +165,59 @@ function getTermFrequencies(tokens: string[]): Map<string, number> {
     freq.set(token, (freq.get(token) || 0) + 1);
   }
   return freq;
+}
+
+function normalizeTriggerPhrasesForBM25(triggerPhrases: string | string[] | null | undefined): string {
+  if (Array.isArray(triggerPhrases)) {
+    return triggerPhrases
+      .filter((phrase): phrase is string => typeof phrase === 'string' && phrase.trim().length > 0)
+      .join(' ');
+  }
+
+  if (typeof triggerPhrases !== 'string') {
+    return '';
+  }
+
+  const trimmed = triggerPhrases.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  try {
+    const parsed = JSON.parse(trimmed) as unknown;
+    if (Array.isArray(parsed)) {
+      return parsed
+        .filter((phrase): phrase is string => typeof phrase === 'string' && phrase.trim().length > 0)
+        .join(' ');
+    }
+  } catch {
+    // Fall back to raw string when the database value is not JSON.
+  }
+
+  return trimmed;
+}
+
+function buildBm25DocumentText(row: BM25DocumentSource): string {
+  const textParts: string[] = [];
+
+  if (typeof row.title === 'string' && row.title.trim()) {
+    textParts.push(row.title.trim());
+  }
+
+  if (typeof row.content_text === 'string' && row.content_text.trim()) {
+    textParts.push(normalizeContentForBM25(row.content_text));
+  }
+
+  const triggerPhrases = normalizeTriggerPhrasesForBM25(row.trigger_phrases);
+  if (triggerPhrases) {
+    textParts.push(triggerPhrases);
+  }
+
+  if (typeof row.file_path === 'string' && row.file_path.trim()) {
+    textParts.push(row.file_path.trim());
+  }
+
+  return textParts.join(' ').trim();
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -303,12 +363,7 @@ class BM25Index {
       }>;
 
       for (const row of rows) {
-        const textParts: string[] = [];
-        if (row.title) textParts.push(row.title);
-        if (row.content_text) textParts.push(normalizeContentForBM25(row.content_text));
-        if (row.trigger_phrases) textParts.push(row.trigger_phrases);
-        if (row.file_path) textParts.push(row.file_path);
-        const text = textParts.join(' ');
+        const text = buildBm25DocumentText(row);
         if (text.trim()) {
           this.addDocument(String(row.id), text);
         }
@@ -437,6 +492,7 @@ export {
   isBm25Enabled,
   sanitizeQueryTokens,
   sanitizeFTS5Query,
+  buildBm25DocumentText,
   DEFAULT_K1,
   DEFAULT_B,
   BM25_FTS5_WEIGHTS,
@@ -446,4 +502,5 @@ export {
 export type {
   BM25SearchResult,
   BM25Stats,
+  BM25DocumentSource,
 };

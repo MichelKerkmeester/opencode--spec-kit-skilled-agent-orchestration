@@ -13,6 +13,7 @@ import {
   normalizeDegreeToBoostedScore,
   clearDegreeCache,
   DEGREE_BOOST_CAP,
+  DEGREE_CHANNEL_WEIGHT,
 } from '../lib/search/graph-search-fn';
 
 // Helpers
@@ -245,7 +246,7 @@ describe('T002: Degree as 5th RRF Channel', () => {
       degreeItems.sort((a, b) => b.degreeScore - a.degreeScore);
 
       const degreeLists: RankedList[] = [
-        { source: SOURCE_TYPES.DEGREE, results: degreeItems.map(i => ({ id: i.id })), weight: 0.4 },
+        { source: SOURCE_TYPES.DEGREE, results: degreeItems.map(i => ({ id: i.id })), weight: DEGREE_CHANNEL_WEIGHT },
       ];
 
       const fused = fuseResultsMulti(degreeLists);

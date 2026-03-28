@@ -1,6 +1,9 @@
 // TEST: HANDLER CAUSAL GRAPH
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as handler from '../handlers/causal-graph';
+import * as core from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
+import * as causalEdges from '../lib/storage/causal-edges';
 
 type HandlerExportName = keyof typeof handler;
 
@@ -17,6 +20,14 @@ function expectErrorMessage(
     expect(matcher(error.message)).toBe(true);
   }
 }
+
+function parseResponse(result: { content: Array<{ text: string }> }) {
+  return JSON.parse(result.content[0].text);
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
@@ -86,6 +97,135 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
       expect(result.content).toBeDefined();
       const parsed = JSON.parse(result.content[0].text);
       expect(parsed.data && parsed.data.error).toBeTruthy();
+    });
+
+    it('T523-DW4: outgoing traversal uses outgoing buckets with direction-tagged edges', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue({} as ReturnType<typeof vectorIndex.getDb>);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'getCausalChain').mockReturnValue({
+        id: '10',
+        depth: 0,
+        relation: causalEdges.RELATION_TYPES.CAUSED,
+        strength: 1.0,
+        children: [
+          {
+            id: '11',
+            edgeId: 201,
+            depth: 1,
+            relation: causalEdges.RELATION_TYPES.CAUSED,
+            strength: 0.9,
+            children: [],
+          },
+        ],
+      });
+
+      const result = await handler.handleMemoryDriftWhy({
+        memoryId: '10',
+        direction: 'outgoing',
+        includeMemoryDetails: false,
+      });
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.incoming.totalEdges).toBe(0);
+      expect(parsed.data.outgoing.caused).toHaveLength(1);
+      expect(parsed.data.outgoing.caused[0]).toMatchObject({
+        from: '10',
+        to: '11',
+        direction: 'outgoing',
+      });
+      expect(parsed.data.totalOutgoingEdges).toBe(1);
+      expect(parsed.data.totalIncomingEdges).toBe(0);
+      expect(parsed.data.allEdges).toHaveLength(1);
+    });
+
+    it('T523-DW5: both direction keeps incoming and outgoing buckets separate', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue({} as ReturnType<typeof vectorIndex.getDb>);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'getCausalChain')
+        .mockImplementation((memoryId: string, _maxDepth?: number, direction?: 'forward' | 'backward') => {
+          if (direction === 'forward') {
+            return {
+              id: memoryId,
+              depth: 0,
+              relation: causalEdges.RELATION_TYPES.CAUSED,
+              strength: 1.0,
+              children: [
+                {
+                  id: '12',
+                  edgeId: 301,
+                  depth: 1,
+                  relation: causalEdges.RELATION_TYPES.SUPPORTS,
+                  strength: 0.7,
+                  children: [],
+                },
+              ],
+            };
+          }
+
+          return {
+            id: memoryId,
+            depth: 0,
+            relation: causalEdges.RELATION_TYPES.CAUSED,
+            strength: 1.0,
+            children: [
+              {
+                id: '8',
+                edgeId: 302,
+                depth: 1,
+                relation: causalEdges.RELATION_TYPES.CAUSED,
+                strength: 0.9,
+                children: [],
+              },
+            ],
+          };
+        });
+
+      const result = await handler.handleMemoryDriftWhy({
+        memoryId: '10',
+        direction: 'both',
+        includeMemoryDetails: false,
+      });
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.incoming.caused).toHaveLength(1);
+      expect(parsed.data.incoming.caused[0]).toMatchObject({
+        from: '8',
+        to: '10',
+        direction: 'incoming',
+      });
+      expect(parsed.data.outgoing.supports).toHaveLength(1);
+      expect(parsed.data.outgoing.supports[0]).toMatchObject({
+        from: '10',
+        to: '12',
+        direction: 'outgoing',
+      });
+      expect(parsed.data.totalIncomingEdges).toBe(1);
+      expect(parsed.data.totalOutgoingEdges).toBe(1);
+      expect(parsed.data.allEdges).toHaveLength(2);
+    });
+
+    it('T523-DW6: traversal failures use traversal error code and sanitize internal details', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue({} as ReturnType<typeof vectorIndex.getDb>);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'getCausalChain').mockImplementation(() => {
+        throw new Error('SQLITE_ERROR: failed to open /private/tmp/secret.sqlite');
+      });
+
+      const result = await handler.handleMemoryDriftWhy({
+        memoryId: '10',
+        direction: 'outgoing',
+      });
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.code).toBe('E105');
+      expect(parsed.data.error).toBe('Causal traversal failed.');
+      expect(JSON.stringify(parsed)).not.toContain('/private/tmp/secret.sqlite');
     });
   });
 
@@ -163,6 +303,57 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
         // Handler rejected invalid input
         expectErrorMessage(error);
       }
+    });
+
+    it('T523-CL4: invalid relation uses causal relation error code', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue({} as ReturnType<typeof vectorIndex.getDb>);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+
+      const result = await handler.handleMemoryCausalLink({
+        sourceId: '1',
+        targetId: '2',
+        relation: 'invalid-relation',
+      });
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.code).toBe('E102');
+      expect(parsed.data.error).toContain('Invalid relation type');
+    });
+  });
+
+  describe('graph operation error codes', () => {
+    it('uses causal graph error code for stats failures', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockImplementation(() => {
+        throw new Error('SQLITE_CORRUPT: /tmp/internal.db');
+      });
+
+      const result = await handler.handleMemoryCausalStats({});
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.code).toBe('E104');
+      expect(parsed.data.error).toBe('Causal graph statistics failed.');
+      expect(JSON.stringify(parsed)).not.toContain('/tmp/internal.db');
+    });
+
+    it('uses causal graph error code for unlink failures', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue({} as ReturnType<typeof vectorIndex.getDb>);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'deleteEdge').mockImplementation(() => {
+        throw new Error('SQLITE_BUSY at /tmp/causal.db');
+      });
+
+      const result = await handler.handleMemoryCausalUnlink({ edgeId: 123 });
+      const parsed = parseResponse(result);
+
+      expect(parsed.data.code).toBe('E104');
+      expect(parsed.data.error).toBe('Causal edge deletion failed.');
+      expect(JSON.stringify(parsed)).not.toContain('/tmp/causal.db');
     });
   });
 

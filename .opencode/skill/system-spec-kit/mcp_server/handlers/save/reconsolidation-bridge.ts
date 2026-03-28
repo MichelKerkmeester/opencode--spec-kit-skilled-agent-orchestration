@@ -248,7 +248,12 @@ export async function runReconsolidationIfEnabled(
                 if (bm25Index.isBm25Enabled()) {
                   try {
                     const bm25 = bm25Index.getIndex();
-                    bm25.addDocument(String(id), memory.content);
+                    bm25.addDocument(String(id), bm25Index.buildBm25DocumentText({
+                      title: memory.title,
+                      content_text: memory.content,
+                      trigger_phrases: memory.triggerPhrases ?? [],
+                      file_path: memory.filePath,
+                    }));
                   } catch (bm25Err: unknown) {
                     const message = toErrorMessage(bm25Err);
                     console.warn(`[memory-save] BM25 indexing failed (recon conflict store): ${message}`);
@@ -272,11 +277,7 @@ export async function runReconsolidationIfEnabled(
           // Reconsolidation handled the memory (merge or conflict) — skip normal CREATE path
           console.error(`[memory-save] TM-06: Reconsolidation ${reconResult.action} for ${path.basename(filePath)}`);
 
-          const reconId = reconResult.action === 'merge'
-            ? reconResult.existingMemoryId
-            : reconResult.action === 'conflict'
-              ? reconResult.newMemoryId
-              : 0;
+          const reconId = reconResult.newMemoryId;
 
           const ledgerRecorded = appendMutationLedgerSafe(database, {
             mutationType: 'update',
@@ -361,6 +362,9 @@ export async function runReconsolidationIfEnabled(
                   updated_at = datetime('now')
               WHERE id = ?
             `).run(topId);
+            if (bm25Index.isBm25Enabled()) {
+              bm25Index.getIndex().removeDocument(String(topId));
+            }
             console.warn(
               `[reconsolidation-bridge] assistive auto-merge: archived older=${topId} ` +
               `(similarity=${similarity.toFixed(3)}) — newer memory continues normal save`

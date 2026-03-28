@@ -406,6 +406,52 @@ describe('Ablation Framework (R13-S3)', () => {
       process.env.SPECKIT_ABLATION = 'true';
     });
 
+    it('enforces ground-truth alignment before running ablation iterations when an alignment DB is provided', async () => {
+      const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
+        '../lib/eval/ground-truth-data'
+      );
+      const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
+        GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
+      );
+      expect(queryWithGT).toBeDefined();
+
+      const relevantIds = GROUND_TRUTH_RELEVANCES
+        .filter(r => r.queryId === queryWithGT!.id && r.relevance > 0)
+        .map(r => r.memoryId);
+      expect(relevantIds.length).toBeGreaterThan(1);
+
+      const alignmentDb = new Database(':memory:');
+      alignmentDb.exec(`
+        CREATE TABLE memory_index (
+          id INTEGER PRIMARY KEY,
+          parent_id INTEGER
+        );
+      `);
+      alignmentDb.prepare('INSERT INTO memory_index (id, parent_id) VALUES (?, ?)').run(relevantIds[0], null);
+      alignmentDb.prepare('INSERT INTO memory_index (id, parent_id) VALUES (?, ?)').run(relevantIds[1], 999999);
+
+      const searchSpy = vi.fn<AblationSearchFn>(() => []);
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      const report = await runAblation(searchSpy, {
+        channels: ['vector'],
+        groundTruthQueryIds: [queryWithGT!.id],
+        alignmentDb,
+        alignmentDbPath: '/tmp/test-context-index.sqlite',
+        alignmentContext: 'unit-test',
+      });
+
+      expect(report).toBeNull();
+      expect(searchSpy).not.toHaveBeenCalled();
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[ablation] runAblation failed'),
+        expect.stringContaining('Ground truth is not aligned to parent memories'),
+      );
+
+      warnSpy.mockRestore();
+      alignmentDb.close();
+    });
+
     it('computes baseline and ablated recalls with mock search', async () => {
       // Mock the ground truth data module so we control exactly which queries/relevances exist
       // We use vi.mock to replace the ground truth imports used inside ablation-framework.ts

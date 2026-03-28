@@ -261,6 +261,31 @@ describe('Access Tracker Extended', () => {
 
       expect(() => mod.reset()).not.toThrow();
     });
+
+    it('init() clears pending accumulator state when rebinding to a different database', () => {
+      const firstDb = createDb(5);
+      const secondDb = createDb(5);
+
+      mod.init(firstDb);
+      for (let i = 0; i < 4; i++) {
+        mod.trackAccess(2);
+      }
+
+      expect(mod.getAccumulatorState(2).accumulated).toBeGreaterThan(0);
+
+      mod.init(secondDb);
+
+      const firstDbRow = firstDb.prepare('SELECT access_count FROM memory_index WHERE id = 2').get() as Pick<AccessRow, 'access_count'>;
+      const secondDbRow = secondDb.prepare('SELECT access_count FROM memory_index WHERE id = 2').get() as Pick<AccessRow, 'access_count'>;
+
+      expect(mod.getAccumulatorState(2).accumulated).toBe(0);
+      expect(firstDbRow.access_count).toBe(0);
+      expect(secondDbRow.access_count).toBe(0);
+
+      firstDb.close();
+      secondDb.close();
+      testDb = null;
+    });
   });
 
   /* ─────────────────────────────────────────────────────────────

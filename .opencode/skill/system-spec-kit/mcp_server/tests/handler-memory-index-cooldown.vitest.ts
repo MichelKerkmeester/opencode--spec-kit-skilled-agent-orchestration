@@ -272,6 +272,40 @@ describe('handler-memory-index cooldown behavior', () => {
     });
   });
 
+  it('defers stale deletion when replacement indexing fails in the same scan', async () => {
+    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/replacement.md']);
+    mocks.mockCategorizeFilesForIndexing.mockReturnValue({
+      toIndex: ['/tmp/replacement.md'],
+      toUpdate: [],
+      toSkip: [],
+      toDelete: ['/tmp/stale.md'],
+    });
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([707]);
+    mocks.mockProcessBatches.mockResolvedValue([
+      {
+        error: 'Replacement indexing failed',
+        errorDetail: 'boom',
+        item: '/tmp/replacement.md',
+        retries_failed: true,
+      },
+    ]);
+
+    const result = await handler.handleMemoryIndexScan({
+      includeConstitutional: false,
+      includeSpecDocs: false,
+    });
+
+    const envelope = JSON.parse(result.content[0].text);
+    expect(envelope.data.failed).toBe(1);
+    expect(envelope.data.staleDeleted).toBe(0);
+    expect(envelope.data.staleDeleteFailed).toBe(0);
+    expect(mocks.mockListIndexedRecordIdsForDeletedPaths).not.toHaveBeenCalled();
+    expect(mocks.mockDeleteMemory).not.toHaveBeenCalled();
+    expect(envelope.hints).toContain(
+      'Deferred stale index cleanup because one or more replacement files failed to index'
+    );
+  });
+
   it('treats RetryErrorResult entries as failed files and captures retry details', async () => {
     mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/retry-target.md']);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({

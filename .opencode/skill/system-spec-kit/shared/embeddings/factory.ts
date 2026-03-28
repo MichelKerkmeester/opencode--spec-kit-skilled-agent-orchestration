@@ -52,6 +52,34 @@ function parseValidationErrorBody(payload: unknown): ValidationErrorBody {
 
 type SupportedProviderName = 'voyage' | 'openai' | 'hf-local';
 type ConfiguredProviderName = SupportedProviderName | 'auto';
+type ProviderFactoryMetadata = {
+  requestedProvider: string;
+  effectiveProvider: string;
+  fallbackReason?: string;
+  dimensionChanged: boolean;
+};
+
+type ProviderInfoWithFallback = ProviderInfo & ProviderFactoryMetadata;
+
+type StartupEmbeddingConfig = {
+  resolution: ProviderResolution;
+  info: ProviderInfoWithFallback;
+  dimension: number;
+  validation: ApiKeyValidationResult;
+};
+
+interface ValidateApiKeyOptions {
+  timeout?: number;
+  provider?: SupportedProviderName;
+  apiKey?: string;
+  baseUrl?: string;
+  model?: string;
+}
+
+let lastProviderFactoryMetadata: ProviderFactoryMetadata | null = null;
+let lastProviderFactoryFingerprint: string | null = null;
+
+const providerValidationCache = new Map<string, Promise<ApiKeyValidationResult>>();
 
 export const SUPPORTED_PROVIDERS = ['openai', 'voyage', 'hf-local', 'auto'] as const;
 const SUPPORTED_PROVIDER_SET: ReadonlySet<string> = new Set(SUPPORTED_PROVIDERS);
@@ -126,6 +154,69 @@ function allowsAutomaticFallback(provider: string | undefined): boolean {
   return normalized === null || normalized === 'auto';
 }
 
+function buildProviderConfigFingerprint(provider: string): string {
+  return JSON.stringify({
+    provider,
+    EMBEDDINGS_PROVIDER: process.env.EMBEDDINGS_PROVIDER || '',
+    VOYAGE_API_KEY: process.env.VOYAGE_API_KEY || '',
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+    VOYAGE_EMBEDDINGS_MODEL: process.env.VOYAGE_EMBEDDINGS_MODEL || '',
+    OPENAI_EMBEDDINGS_MODEL: process.env.OPENAI_EMBEDDINGS_MODEL || '',
+    HF_EMBEDDINGS_MODEL: process.env.HF_EMBEDDINGS_MODEL || '',
+  });
+}
+
+function setLastProviderFactoryMetadata(metadata: ProviderFactoryMetadata): void {
+  lastProviderFactoryMetadata = metadata;
+  lastProviderFactoryFingerprint = buildProviderConfigFingerprint(metadata.requestedProvider);
+}
+
+function getProviderFactoryMetadataForCurrentConfig(resolution: ProviderResolution): ProviderFactoryMetadata {
+  const fingerprint = buildProviderConfigFingerprint(resolution.name);
+  if (lastProviderFactoryMetadata && lastProviderFactoryFingerprint === fingerprint) {
+    return lastProviderFactoryMetadata;
+  }
+
+  return {
+    requestedProvider: resolution.name,
+    effectiveProvider: resolution.name,
+    dimensionChanged: false,
+  };
+}
+
+function attachFactoryMetadata(provider: IEmbeddingProvider, metadata: ProviderFactoryMetadata): IEmbeddingProvider {
+  Object.assign(provider as IEmbeddingProvider & { factoryMetadata?: ProviderFactoryMetadata }, {
+    factoryMetadata: metadata,
+  });
+  setLastProviderFactoryMetadata(metadata);
+  return provider;
+}
+
+function getProviderInfoForResolution(resolution: ProviderResolution): ProviderInfoWithFallback {
+  const explicitProvider = validateConfiguredEmbeddingsProvider();
+  const metadata = getProviderFactoryMetadataForCurrentConfig(resolution);
+  const reason = metadata.fallbackReason
+    ? `Fallback from ${metadata.requestedProvider} to ${metadata.effectiveProvider}: ${metadata.fallbackReason}`
+    : resolution.reason;
+
+  return {
+    provider: metadata.effectiveProvider,
+    requestedProvider: metadata.requestedProvider,
+    effectiveProvider: metadata.effectiveProvider,
+    fallbackReason: metadata.fallbackReason,
+    dimensionChanged: metadata.dimensionChanged,
+    reason,
+    config: {
+      EMBEDDINGS_PROVIDER: explicitProvider || 'auto',
+      VOYAGE_API_KEY: process.env.VOYAGE_API_KEY ? '***set***' : 'not set',
+      VOYAGE_EMBEDDINGS_MODEL: process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4',
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY ? '***set***' : 'not set',
+      OPENAI_EMBEDDINGS_MODEL: process.env.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small',
+      HF_EMBEDDINGS_MODEL: process.env.HF_EMBEDDINGS_MODEL || 'nomic-ai/nomic-embed-text-v1.5',
+    },
+  };
+}
+
 export function validateConfiguredEmbeddingsProvider(value: string | undefined = process.env.EMBEDDINGS_PROVIDER): ConfiguredProviderName | null {
   const normalized = normalizeProviderName(value);
   if (!normalized) {
@@ -164,7 +255,7 @@ export function resolveProviderDimension(
   return dimensionsByModel[DEFAULT_PROVIDER_MODELS[supportedProvider]] ?? fallbackDimension;
 }
 
-export function getStartupEmbeddingDimension(): number {
+function resolveStartupEmbeddingDimension(resolution: ProviderResolution): number {
   if (process.env.EMBEDDING_DIM) {
     const explicitDimension = parseInt(process.env.EMBEDDING_DIM, 10);
     if (Number.isFinite(explicitDimension) && explicitDimension > 0) {
@@ -172,13 +263,28 @@ export function getStartupEmbeddingDimension(): number {
     }
   }
 
-  const explicitProvider = getExplicitProviderOverride();
-  if (explicitProvider && explicitProvider !== 'auto') {
-    return resolveProviderDimension(explicitProvider);
-  }
-
-  const resolution = resolveProvider();
   return resolveProviderDimension(resolution.name);
+}
+
+export function getStartupEmbeddingDimension(): number {
+  return resolveStartupEmbeddingDimension(resolveProvider());
+}
+
+export async function resolveStartupEmbeddingConfig(
+  options: Pick<ValidateApiKeyOptions, 'timeout'> = {},
+): Promise<StartupEmbeddingConfig> {
+  const resolution = resolveProvider();
+  const validation = await validateApiKey({
+    timeout: options.timeout,
+    provider: resolution.name as SupportedProviderName,
+  });
+
+  return {
+    resolution,
+    info: getProviderInfoForResolution(resolution),
+    dimension: resolveStartupEmbeddingDimension(resolution),
+    validation,
+  };
 }
 
 // ---------------------------------------------------------------
@@ -242,6 +348,145 @@ export function resolveProvider(): ProviderResolution {
   };
 }
 
+function createProviderInstance(
+  providerName: SupportedProviderName,
+  options: CreateProviderOptions,
+): IEmbeddingProvider {
+  switch (providerName) {
+    case 'voyage':
+      if (!process.env.VOYAGE_API_KEY && !options.apiKey) {
+        throw new Error(
+          'Voyage provider requires VOYAGE_API_KEY. ' +
+          'Set the variable or use EMBEDDINGS_PROVIDER=hf-local to force local.'
+        );
+      }
+      if (options.maxTextLength) {
+        console.warn('[factory] VoyageProvider does not support maxTextLength option - ignored');
+      }
+      return new VoyageProvider({
+        model: options.model,
+        dim: options.dim,
+        apiKey: options.apiKey,
+        baseUrl: options.baseUrl,
+        timeout: options.timeout,
+      });
+
+    case 'openai':
+      if (!process.env.OPENAI_API_KEY && !options.apiKey) {
+        throw new Error(
+          'OpenAI provider requires OPENAI_API_KEY. ' +
+          'Set the variable or use EMBEDDINGS_PROVIDER=hf-local to force local.'
+        );
+      }
+      if (options.maxTextLength) {
+        console.warn('[factory] OpenAIProvider does not support maxTextLength option - ignored');
+      }
+      return new OpenAIProvider({
+        model: options.model,
+        dim: options.dim,
+        apiKey: options.apiKey,
+        baseUrl: options.baseUrl,
+        timeout: options.timeout,
+      });
+
+    case 'hf-local':
+      if (options.baseUrl) {
+        console.warn('[factory] HfLocalProvider does not support baseUrl option - ignored');
+      }
+      return new HfLocalProvider({
+        model: options.model,
+        dim: options.dim,
+        maxTextLength: options.maxTextLength,
+        timeout: options.timeout,
+      });
+
+    default:
+      throw new Error(
+        `Unknown provider: ${providerName}. ` +
+        'Valid values: voyage, openai, hf-local, auto'
+      );
+  }
+}
+
+function buildProviderValidationCacheKey(options: ValidateApiKeyOptions): string {
+  const provider = options.provider || 'hf-local';
+  const apiKey = options.apiKey
+    || (provider === 'voyage' ? process.env.VOYAGE_API_KEY : process.env.OPENAI_API_KEY)
+    || '';
+  const baseUrl = options.baseUrl
+    || (provider === 'voyage' ? resolveVoyageBaseUrl() : (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'));
+  const model = resolveConfiguredModel(provider, options.model);
+
+  return JSON.stringify({ provider, apiKey, baseUrl, model });
+}
+
+async function ensureCloudProviderValidated(options: ValidateApiKeyOptions): Promise<ApiKeyValidationResult> {
+  const providerName = options.provider;
+  if (!providerName || providerName === 'hf-local') {
+    return {
+      valid: true,
+      provider: 'hf-local',
+      reason: 'Local provider - no API key required',
+    };
+  }
+
+  const cacheKey = buildProviderValidationCacheKey(options);
+  let validationPromise = providerValidationCache.get(cacheKey);
+  if (!validationPromise) {
+    validationPromise = validateApiKey(options);
+    providerValidationCache.set(cacheKey, validationPromise);
+  }
+
+  const validation = await validationPromise;
+  if (!validation.valid && !validation.networkError) {
+    throw new Error(validation.error || `${providerName} API key validation failed`);
+  }
+
+  if (validation.networkError && validation.error) {
+    console.warn(`[factory] API key validation warning for ${providerName}: ${validation.error}`);
+  }
+
+  return validation;
+}
+
+async function createFallbackProvider(
+  requestedProvider: SupportedProviderName,
+  options: CreateProviderOptions,
+  fallbackReason: string,
+  requestedDim: number,
+): Promise<IEmbeddingProvider> {
+  console.warn(`[factory] Attempting fallback from ${requestedProvider} to hf-local...`);
+  const provider = createProviderInstance('hf-local', options);
+  const fallbackDim = provider.getMetadata().dim;
+  const dimensionChanged = requestedDim !== fallbackDim;
+
+  if (dimensionChanged) {
+    console.error(
+      `[factory] WARNING: Provider fallback changed embedding dimension from ${requestedDim} to ${fallbackDim}. ` +
+      `Vector index may need rebuilding. Existing ${requestedDim}-dim vectors are incompatible with ${fallbackDim}-dim vectors.`
+    );
+  }
+
+  if (options.warmup) {
+    try {
+      await provider.warmup();
+    } catch (fallbackWarmupError: unknown) {
+      if (fallbackWarmupError instanceof Error) {
+        void fallbackWarmupError.message;
+      }
+      console.warn(`[factory] Fallback warmup failed: ${getErrorMessage(fallbackWarmupError)}`);
+      // Continue anyway - provider will attempt lazy initialization on first use
+    }
+  }
+
+  return attachFactoryMetadata(provider, {
+    requestedProvider,
+    effectiveProvider: 'hf-local',
+    fallbackReason,
+    dimensionChanged,
+  });
+}
+
 // ---------------------------------------------------------------
 // 2. PROVIDER FACTORY
 // ---------------------------------------------------------------
@@ -249,75 +494,26 @@ export function resolveProvider(): ProviderResolution {
 /** Create provider instance based on configuration */
 export async function createEmbeddingsProvider(options: CreateProviderOptions = {}): Promise<IEmbeddingProvider> {
   const resolution = resolveProvider();
-  const providerName = options.provider === 'auto' || !options.provider
-    ? resolution.name
+  const providerName: SupportedProviderName = options.provider === 'auto' || !options.provider
+    ? (resolution.name as SupportedProviderName)
     : toSupportedProviderName(options.provider);
+  const requestedDim = resolveProviderDimension(providerName, {
+    model: options.model,
+    dim: options.dim,
+  });
 
   console.error(`[factory] Using provider: ${providerName} (${resolution.reason})`);
 
-  let provider: IEmbeddingProvider;
-
   try {
-    switch (providerName) {
-      case 'voyage':
-        if (!process.env.VOYAGE_API_KEY && !options.apiKey) {
-          throw new Error(
-            'Voyage provider requires VOYAGE_API_KEY. ' +
-            'Set the variable or use EMBEDDINGS_PROVIDER=hf-local to force local.'
-          );
-        }
-        provider = new VoyageProvider({
-          model: options.model,
-          dim: options.dim,
-          apiKey: options.apiKey,
-          baseUrl: options.baseUrl,
-          timeout: options.timeout,
-        });
-        if (options.maxTextLength) {
-          console.warn('[factory] VoyageProvider does not support maxTextLength option — ignored');
-        }
-        break;
+    await ensureCloudProviderValidated({
+      provider: providerName,
+      apiKey: options.apiKey,
+      baseUrl: options.baseUrl,
+      model: options.model,
+      timeout: options.timeout,
+    });
 
-      case 'openai':
-        if (!process.env.OPENAI_API_KEY && !options.apiKey) {
-          throw new Error(
-            'OpenAI provider requires OPENAI_API_KEY. ' +
-            'Set the variable or use EMBEDDINGS_PROVIDER=hf-local to force local.'
-          );
-        }
-        provider = new OpenAIProvider({
-          model: options.model,
-          dim: options.dim,
-          apiKey: options.apiKey,
-          baseUrl: options.baseUrl,
-          timeout: options.timeout,
-        });
-        if (options.maxTextLength) {
-          console.warn('[factory] OpenAIProvider does not support maxTextLength option — ignored');
-        }
-        break;
-
-      case 'hf-local':
-        provider = new HfLocalProvider({
-          model: options.model,
-          dim: options.dim,
-          maxTextLength: options.maxTextLength,
-          timeout: options.timeout,
-        });
-        if (options.baseUrl) {
-          console.warn('[factory] HfLocalProvider does not support baseUrl option — ignored');
-        }
-        break;
-
-      case 'ollama':
-        throw new Error('Ollama provider not yet implemented. Use hf-local, voyage, or openai.');
-
-      default:
-        throw new Error(
-          `Unknown provider: ${providerName}. ` +
-          `Valid values: voyage, openai, hf-local, auto`
-        );
-    }
+    const provider = createProviderInstance(providerName, options);
 
     if (options.warmup) {
       console.error(`[factory] Warming up ${providerName}...`);
@@ -325,35 +521,22 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
       if (!success) {
         console.warn(`[factory] Warmup failed for ${providerName}`);
 
-        // Fallback to hf-local for cloud providers when auto-detected (not explicitly set)
         if ((providerName === 'openai' || providerName === 'voyage') && allowsAutomaticFallback(options.provider)) {
-          const originalDim = provider.getMetadata().dim;
-          console.warn(`[factory] Attempting fallback from ${providerName} to hf-local...`);
-          provider = new HfLocalProvider({
-            model: options.model,
-            dim: options.dim,
-          });
-          const fallbackDim = provider.getMetadata().dim;
-          if (originalDim !== fallbackDim) {
-            console.error(
-              `[factory] WARNING: Provider fallback changed embedding dimension from ${originalDim} to ${fallbackDim}. ` +
-              `Vector index may need rebuilding. Existing ${originalDim}-dim vectors are incompatible with ${fallbackDim}-dim vectors.`
-            );
-          }
-          try {
-            await provider.warmup();
-          } catch (fallbackWarmupError: unknown) {
-            if (fallbackWarmupError instanceof Error) {
-              void fallbackWarmupError.message;
-            }
-            console.warn(`[factory] Fallback warmup failed: ${getErrorMessage(fallbackWarmupError)}`);
-            // Continue anyway - provider will attempt lazy initialization on first use
-          }
+          return createFallbackProvider(
+            providerName,
+            options,
+            `warmup failed for ${providerName}`,
+            requestedDim,
+          );
         }
       }
     }
 
-    return provider;
+    return attachFactoryMetadata(provider, {
+      requestedProvider: providerName,
+      effectiveProvider: providerName,
+      dimensionChanged: false,
+    });
 
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -363,36 +546,12 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
 
     // Fallback to hf-local for cloud providers when auto-detected (not explicitly set)
     if ((providerName === 'openai' || providerName === 'voyage') && allowsAutomaticFallback(options.provider)) {
-      const failedProviderDim = resolveProviderDimension(providerName, {
-        model: options.model,
-        dim: options.dim,
-      });
-      console.warn(`[factory] Fallback to hf-local due to ${providerName} error`);
-      provider = new HfLocalProvider({
-        model: options.model,
-        dim: options.dim,
-      });
-      const fallbackDim = provider.getMetadata().dim;
-      if (failedProviderDim !== fallbackDim) {
-        console.error(
-          `[factory] WARNING: Provider fallback changed embedding dimension from ${failedProviderDim} to ${fallbackDim}. ` +
-          `Vector index may need rebuilding. Existing ${failedProviderDim}-dim vectors are incompatible with ${fallbackDim}-dim vectors.`
-        );
-      }
-
-      if (options.warmup) {
-        try {
-          await provider.warmup();
-        } catch (fallbackWarmupError: unknown) {
-          if (fallbackWarmupError instanceof Error) {
-            void fallbackWarmupError.message;
-          }
-          console.warn(`[factory] Fallback warmup failed: ${getErrorMessage(fallbackWarmupError)}`);
-          // Continue anyway - provider will attempt lazy initialization on first use
-        }
-      }
-
-      return provider;
+      return createFallbackProvider(
+        providerName,
+        options,
+        getErrorMessage(error),
+        requestedDim,
+      );
     }
 
     throw error;
@@ -404,22 +563,8 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
 // ---------------------------------------------------------------
 
 /** Get configuration information without creating the provider */
-export function getProviderInfo(): ProviderInfo {
-  const resolution = resolveProvider();
-  const explicitProvider = validateConfiguredEmbeddingsProvider();
-
-  return {
-    provider: resolution.name,
-    reason: resolution.reason,
-    config: {
-      EMBEDDINGS_PROVIDER: explicitProvider || 'auto',
-      VOYAGE_API_KEY: process.env.VOYAGE_API_KEY ? '***set***' : 'not set',
-      VOYAGE_EMBEDDINGS_MODEL: process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4',
-      OPENAI_API_KEY: process.env.OPENAI_API_KEY ? '***set***' : 'not set',
-      OPENAI_EMBEDDINGS_MODEL: process.env.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small',
-      HF_EMBEDDINGS_MODEL: process.env.HF_EMBEDDINGS_MODEL || 'nomic-ai/nomic-embed-text-v1.5',
-    },
-  };
+export function getProviderInfo(): ProviderInfoWithFallback {
+  return getProviderInfoForResolution(resolveProvider());
 }
 
 // ---------------------------------------------------------------
@@ -439,10 +584,9 @@ export const VALIDATION_TIMEOUT_MS: number = 5000;
  * This function should be called during MCP server startup to fail fast
  * if the configured embedding provider has an invalid API key.
  */
-export async function validateApiKey(options: { timeout?: number } = {}): Promise<ApiKeyValidationResult> {
+export async function validateApiKey(options: ValidateApiKeyOptions = {}): Promise<ApiKeyValidationResult> {
   const timeoutMs = options.timeout || VALIDATION_TIMEOUT_MS;
-  const resolution = resolveProvider();
-  const providerName = resolution.name;
+  const providerName: SupportedProviderName = options.provider || (resolveProvider().name as SupportedProviderName);
 
   // Local providers don't need API key validation
   if (providerName === 'hf-local') {
@@ -454,9 +598,9 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
   }
 
   // Check that API key environment variable is set
-  const apiKey = providerName === 'voyage'
+  const apiKey = options.apiKey || (providerName === 'voyage'
     ? process.env.VOYAGE_API_KEY
-    : process.env.OPENAI_API_KEY;
+    : process.env.OPENAI_API_KEY);
 
   if (!apiKey) {
     return {
@@ -477,13 +621,11 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const baseUrl = providerName === 'voyage'
+    const baseUrl = options.baseUrl || (providerName === 'voyage'
       ? resolveVoyageBaseUrl()
-      : (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1');
+      : (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'));
 
-    const model = providerName === 'voyage'
-      ? (process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4')
-      : (process.env.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small');
+    const model = resolveConfiguredModel(providerName, options.model);
 
     const body: Record<string, unknown> = {
       input: 'api key validation test',

@@ -6,12 +6,14 @@ const {
   mockInvalidateOnWrite,
   mockClearConstitutionalCache,
   mockClearGraphSignalsCache,
+  mockClearDegreeCache,
   mockClearRelatedCache,
 } = vi.hoisted(() => ({
   mockClearCache: vi.fn(),
   mockInvalidateOnWrite: vi.fn(),
   mockClearConstitutionalCache: vi.fn(),
   mockClearGraphSignalsCache: vi.fn(),
+  mockClearDegreeCache: vi.fn(),
   mockClearRelatedCache: vi.fn(),
 }));
 
@@ -31,6 +33,10 @@ vi.mock('../lib/graph/graph-signals', () => ({
   clearGraphSignalsCache: mockClearGraphSignalsCache,
 }));
 
+vi.mock('../lib/search/graph-search-fn', () => ({
+  clearDegreeCache: mockClearDegreeCache,
+}));
+
 vi.mock('../lib/cognitive/co-activation', () => ({
   clearRelatedCache: mockClearRelatedCache,
 }));
@@ -43,6 +49,7 @@ describe('Mutation hooks', () => {
     mockInvalidateOnWrite.mockReset().mockReturnValue(3);
     mockClearConstitutionalCache.mockReset().mockReturnValue(undefined);
     mockClearGraphSignalsCache.mockReset().mockReturnValue(undefined);
+    mockClearDegreeCache.mockReset().mockReturnValue(undefined);
     mockClearRelatedCache.mockReset().mockReturnValue(undefined);
   });
 
@@ -65,6 +72,7 @@ describe('Mutation hooks', () => {
     expect(mockInvalidateOnWrite).toHaveBeenCalledWith('save', { memoryId: 42 });
     expect(mockClearConstitutionalCache).toHaveBeenCalledTimes(1);
     expect(mockClearGraphSignalsCache).toHaveBeenCalledTimes(1);
+    expect(mockClearDegreeCache).toHaveBeenCalledTimes(1);
     expect(mockClearRelatedCache).toHaveBeenCalledTimes(1);
   });
 
@@ -92,6 +100,23 @@ describe('Mutation hooks', () => {
     expect(mockInvalidateOnWrite).toHaveBeenCalledTimes(1);
     expect(mockClearConstitutionalCache).toHaveBeenCalledTimes(1);
     expect(mockClearGraphSignalsCache).toHaveBeenCalledTimes(1);
+    expect(mockClearDegreeCache).toHaveBeenCalledTimes(1);
     expect(mockClearRelatedCache).toHaveBeenCalledTimes(1);
+  });
+
+  it('reports graph cache invalidation failures when degree cache clearing throws', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mockClearDegreeCache.mockImplementationOnce(() => {
+      throw new Error('degree cache failure');
+    });
+
+    const result = runPostMutationHooks('delete', { memoryId: 99 });
+
+    expect(result.graphSignalsCacheCleared).toBe(false);
+    expect(result.errors).toContain('graphCacheInvalidation: degree cache failure');
+    expect(warnSpy).toHaveBeenCalledWith(
+      '[mutation-hooks] graph cache invalidation failed for operation="delete":',
+      'degree cache failure'
+    );
   });
 });

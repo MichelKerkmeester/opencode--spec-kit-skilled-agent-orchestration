@@ -53,6 +53,7 @@ export interface TriggerMatchStats {
   totalMatchedPhrases: number;
   matchTimeMs: number;
   signals?: SignalDetection[];
+  degraded?: TriggerMatcherDegradedState;
 }
 
 /** Cache statistics */
@@ -62,6 +63,20 @@ export interface CacheStats {
   ageMs: number | null;
   regexCacheSize: number;
   maxRegexCacheSize: number;
+}
+
+export interface TriggerMatcherFailure {
+  code: string;
+  message: string;
+  memoryId?: number;
+  filePath?: string;
+}
+
+export interface TriggerMatcherDegradedState {
+  code: string;
+  message: string;
+  failedEntries: number;
+  failures: TriggerMatcherFailure[];
 }
 
 /** Memory result from getMemoriesByPhrase */
@@ -140,9 +155,33 @@ export function logExecutionTime(operation: string, durationMs: number, details:
 // In-memory cache of trigger phrases for fast matching
 let triggerCache: TriggerCacheEntry[] | null = null;
 let cacheTimestamp: number = 0;
+let lastDegradedState: TriggerMatcherDegradedState | null = null;
 
 // LRU cache for regex objects to prevent memory leaks
 const regexLruCache: Map<string, RegExp> = new Map();
+const COMMON_TRIGGER_STOPWORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but',
+  'is', 'am', 'are', 'was', 'were', 'be', 'been', 'being',
+  'to', 'of', 'in', 'on', 'at', 'for', 'from', 'with', 'by',
+]);
+
+function isSpecificTriggerPhrase(phrase: string): boolean {
+  const normalized = normalizeUnicode(phrase, false).trim();
+  if (normalized.length < CONFIG.MIN_PHRASE_LENGTH) {
+    return false;
+  }
+
+  const tokens = normalized.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) {
+    return false;
+  }
+
+  if (tokens.length === 1) {
+    return !COMMON_TRIGGER_STOPWORDS.has(tokens[0]);
+  }
+
+  return tokens.some((token) => token.length >= CONFIG.MIN_PHRASE_LENGTH);
+}
 
 /** Get or create a cached regex for a trigger phrase. @param phrase - The trigger phrase @returns Compiled RegExp */
 export function getCachedRegex(phrase: string): RegExp {
@@ -187,6 +226,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
   }
 
   try {
+    lastDegradedState = null;
     // InitializeDb() is called on every cache-miss path (not just at startup)
     // Because trigger-matcher may be the first module to access the database in the
     // Process. The function is idempotent — repeated calls return immediately when the
@@ -218,11 +258,20 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
 
     // Build flat cache for fast iteration
     triggerCache = [];
+    const failures: TriggerMatcherFailure[] = [];
     for (const row of rows) {
       let phrases: unknown;
       try {
         phrases = JSON.parse(row.trigger_phrases);
-      } catch (_err: unknown) { // Malformed JSON in trigger_phrases — skip row
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn(`[trigger-matcher] Failed to parse trigger phrases for memory ${row.id}: ${message}`);
+        failures.push({
+          code: 'E_TRIGGER_SOURCE_PARSE',
+          message,
+          memoryId: row.id,
+          filePath: row.file_path,
+        });
         continue;
       }
 
@@ -231,11 +280,14 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
       }
 
       for (const phrase of phrases) {
-        if (typeof phrase !== 'string' || phrase.length < CONFIG.MIN_PHRASE_LENGTH) {
+        if (typeof phrase !== 'string') {
           continue;
         }
 
         const phraseLower = normalizeUnicode(phrase, false);
+        if (!isSpecificTriggerPhrase(phraseLower)) {
+          continue;
+        }
         triggerCache.push({
           phrase: phraseLower,
           regex: getCachedRegex(phraseLower),
@@ -248,11 +300,25 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
       }
     }
 
+    lastDegradedState = failures.length > 0
+      ? {
+          code: 'E_TRIGGER_SOURCE_PARSE',
+          message: `Trigger cache loaded with ${failures.length} skipped source entries`,
+          failedEntries: failures.length,
+          failures,
+        }
+      : null;
     cacheTimestamp = now;
     return triggerCache;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[trigger-matcher] Cache load failed: ${message}`);
+    lastDegradedState = {
+      code: 'E_TRIGGER_CACHE_LOAD',
+      message,
+      failedEntries: 1,
+      failures: [{ code: 'E_TRIGGER_CACHE_LOAD', message }],
+    };
     return [];
   }
 }
@@ -261,6 +327,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
 export function clearCache(): void {
   triggerCache = null;
   cacheTimestamp = 0;
+  lastDegradedState = null;
   regexLruCache.clear();
 }
 
@@ -273,6 +340,10 @@ export function getCacheStats(): CacheStats {
     regexCacheSize: regexLruCache.size,
     maxRegexCacheSize: CONFIG.MAX_REGEX_CACHE_SIZE,
   };
+}
+
+export function getLastDegradedState(): TriggerMatcherDegradedState | null {
+  return lastDegradedState;
 }
 
 /* --- 5. STRING MATCHING --- */
@@ -533,6 +604,7 @@ export function matchTriggerPhrasesWithStats(userPrompt: string, limit: number =
       totalMatchedPhrases: matches.reduce((sum, m) => sum + m.matchedPhrases.length, 0),
       matchTimeMs: elapsed,
       ...(signals !== undefined ? { signals } : {}),
+      ...(lastDegradedState ? { degraded: lastDegradedState } : {}),
     },
   };
 }

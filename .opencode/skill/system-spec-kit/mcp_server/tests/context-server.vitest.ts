@@ -370,6 +370,7 @@ describe('Context Server', () => {
       '../lib/ops/file-watcher',
       '../lib/telemetry/scoring-observability',
       '../lib/errors',
+      '@spec-kit/shared/embeddings/factory',
     ] as const
 
     type RuntimeHarness = {
@@ -414,12 +415,20 @@ describe('Context Server', () => {
         byStatus?: { success?: number; pending?: number; failed?: number; retry?: number }
         topFolders?: unknown[]
       }
+      startupEmbeddingDimension?: number
+      startupValidation?: ApiKeyValidation
+      configuredEmbeddingsProvider?: string | null
+      buildErrorResponseImpl?: (toolName: string, error: Error, args?: Record<string, unknown>) => ErrorResponse
+      getRecoveryHintImpl?: (toolName: string, errorCode: string) => unknown
+      errorCodes?: Record<string, string>
     }): Promise<RuntimeHarness> {
       vi.resetModules()
       const previousDynamicInit = process.env.SPECKIT_DYNAMIC_INIT
+      const previousEmbeddingDim = process.env.EMBEDDING_DIM
       if (typeof options?.dynamicInit === 'string') {
         process.env.SPECKIT_DYNAMIC_INIT = options.dynamicInit
       }
+      delete process.env.EMBEDDING_DIM
 
       const handlers = new Map<unknown, (request: unknown, extra: unknown) => Promise<unknown>>()
       const dispatchToolMock = vi.fn()
@@ -655,14 +664,46 @@ describe('Context Server', () => {
       }))
       vi.doMock('../lib/cache/tool-cache', () => ({ shutdown: toolCacheShutdownMock }))
       vi.doMock('../lib/errors', () => ({
-        ErrorCodes: { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
-        getRecoveryHint: vi.fn(() => ({ code: 'UNKNOWN_TOOL' })),
-        buildErrorResponse: vi.fn((_tool: string, error: Error) => ({ error: error.message })),
+        ErrorCodes: options?.errorCodes ?? { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
+        getRecoveryHint: vi.fn(options?.getRecoveryHintImpl ?? (() => ({ code: 'UNKNOWN_TOOL' }))),
+        buildErrorResponse: vi.fn(options?.buildErrorResponseImpl ?? ((_tool: string, error: Error) => ({ error: error.message }))),
+        getDefaultErrorCodeForTool: vi.fn(() => 'UNKNOWN_TOOL'),
       }))
+      vi.doMock('@spec-kit/shared/embeddings/factory', () => {
+        const startupEmbeddingDimension = options?.startupEmbeddingDimension
+          ?? options?.dimValidation?.current
+          ?? options?.dimValidation?.stored
+          ?? 1536
+        const startupValidation = options?.startupValidation ?? {
+          valid: true,
+          provider: 'voyage',
+        }
+
+        return {
+          getStartupEmbeddingDimension: vi.fn(() => startupEmbeddingDimension),
+          resolveStartupEmbeddingConfig: vi.fn(async () => ({
+            resolution: { name: 'voyage', reason: 'mocked startup embedding config' },
+            info: {
+              provider: 'voyage',
+              requestedProvider: 'voyage',
+              effectiveProvider: 'voyage',
+              fallbackReason: undefined,
+              dimensionChanged: false,
+              reason: 'mocked startup embedding config',
+              config: {},
+            },
+            dimension: startupEmbeddingDimension,
+            validation: startupValidation,
+          })),
+          validateConfiguredEmbeddingsProvider: vi.fn(() => options?.configuredEmbeddingsProvider ?? null),
+        }
+      })
 
       const module = await import('../context-server')
       const callToolHandler = handlers.get(callToolSchema)
       expect(typeof callToolHandler).toBe('function')
+      await Promise.resolve()
+      await new Promise((resolve) => setTimeout(resolve, 0))
 
       if (typeof options?.dynamicInit === 'string') {
         if (previousDynamicInit === undefined) {
@@ -670,6 +711,11 @@ describe('Context Server', () => {
         } else {
           process.env.SPECKIT_DYNAMIC_INIT = previousDynamicInit
         }
+      }
+      if (previousEmbeddingDim === undefined) {
+        delete process.env.EMBEDDING_DIM
+      } else {
+        process.env.EMBEDDING_DIM = previousEmbeddingDim
       }
 
       return {
@@ -1289,9 +1335,22 @@ describe('Context Server', () => {
       expect(buildErrorPattern.test(sourceCode)).toBe(true)
     })
 
-    // T22: Error response has isError: true
+    // T22: Error response is wrapped as an MCP error envelope
     it('T22: Error responses set isError: true', () => {
-      expect(sourceCode).toMatch(/isError:\s*true/)
+      expect(sourceCode).toMatch(/wrapForMCP\(errorResponse\s+as\s+any,\s*true\)/)
+    })
+
+    it('T22b: catch path wraps buildErrorResponse output with wrapForMCP', () => {
+      expect(sourceCode).toMatch(/return\s+wrapForMCP\(errorResponse\s+as\s+any,\s*true\)/)
+    })
+
+    it('T22c: catch path falls back to createMCPErrorResponse when envelope building fails', () => {
+      expect(sourceCode).toMatch(/return\s+createMCPErrorResponse\(\{/)
+    })
+
+    it('T22d: source logs fallback envelope-build failures before returning createMCPErrorResponse', () => {
+      expect(sourceCode).toMatch(/Failed to build MCP error envelope/)
+      expect(sourceCode).toMatch(/createMCPErrorResponse\(\{/)
     })
 
     // T23: buildErrorResponse direct test

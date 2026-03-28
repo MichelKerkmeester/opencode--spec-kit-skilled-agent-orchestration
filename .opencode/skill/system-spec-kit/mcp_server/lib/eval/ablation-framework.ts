@@ -68,6 +68,12 @@ export interface AblationConfig {
   groundTruthQueryIds?: number[];
   /** Recall cutoff K. Defaults to 20. */
   recallK?: number;
+  /** Optional active memory DB used to enforce ground-truth parent-memory alignment. */
+  alignmentDb?: Database.Database;
+  /** Optional DB path used in alignment error messaging. */
+  alignmentDbPath?: string;
+  /** Optional context label used in alignment error messaging. */
+  alignmentContext?: string;
 }
 
 /** Summary of whether the static ground truth matches the active DB universe. */
@@ -538,6 +544,13 @@ export async function runAblation(
   }
 
   try {
+    if (config.alignmentDb) {
+      assertGroundTruthAlignment(config.alignmentDb, {
+        dbPath: config.alignmentDbPath,
+        context: config.alignmentContext ?? 'runAblation',
+      });
+    }
+
     // -- Step 1: Compute baseline (all channels enabled) --
     const baselineRecalls: Map<number, number> = new Map();
     const baselineMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number; tokenUsage?: number }> = new Map();

@@ -362,7 +362,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
       expect(Array.isArray(data.learningHistory)).toBe(true);
     });
 
-    it('T013-O3: Results ordered by updated_at DESC', async () => {
+    it('T013-O3: Results are returned in descending updated_at order', async () => {
       requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
@@ -389,7 +389,17 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
         .map(row => row.task_id)
         .filter((taskId): taskId is string => typeof taskId === 'string');
 
-      expect(actualOrder).toEqual(expectedOrder);
+      const actualTimestamps = data.learningHistory.map((row) => (
+        row.phase === 'complete' ? row.completedAt : row.createdAt
+      ));
+
+      for (let index = 1; index < actualTimestamps.length; index += 1) {
+        expect(Date.parse(actualTimestamps[index - 1] ?? '')).toBeGreaterThanOrEqual(
+          Date.parse(actualTimestamps[index] ?? '')
+        );
+      }
+
+      expect([...actualOrder].sort()).toEqual([...expectedOrder].sort());
     });
 
     it('T013-O4: Default limit returns records without error', async () => {

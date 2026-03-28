@@ -329,6 +329,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   const detectedSignals = Array.isArray(triggerMatchResult.stats?.signals)
     ? triggerMatchResult.stats.signals
     : [];
+  const degradedTriggerMatching = triggerMatchResult.stats?.degraded ?? null;
 
   if (!results || results.length === 0) {
     const noMatchResponse = createMCPEmptyResponse({
@@ -336,6 +337,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
       summary: 'No matching trigger phrases found',
       data: {
         matchType: useCognitive ? 'trigger-phrase-cognitive' : 'trigger-phrase',
+        degradedMatching: degradedTriggerMatching,
         cognitive: useCognitive ? {
           enabled: true,
           sessionId,
@@ -345,7 +347,8 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
       },
       hints: [
         'Ensure memories have trigger phrases defined',
-        'Try a different prompt or check memory content'
+        'Try a different prompt or check memory content',
+        ...(degradedTriggerMatching ? ['Trigger matching ran in degraded mode; inspect server logs for skipped trigger sources'] : []),
       ],
       startTime: startTime
     });
@@ -511,6 +514,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
       matchType: useCognitive ? 'trigger-phrase-cognitive' : 'trigger-phrase',
       count: formattedResults.length,
       results: formattedResults,
+      degradedMatching: degradedTriggerMatching,
       cognitive: cognitiveStats
     },
     hints,
@@ -518,6 +522,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     extraMeta: {
       latencyMs: latencyMs,
       triggerSignals: detectedSignals,
+      ...(degradedTriggerMatching ? { degradedMatching: degradedTriggerMatching } : {}),
     }
   });
 

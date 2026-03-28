@@ -426,6 +426,32 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       expect(result).toBeNull();
     });
 
+    it('T079-1: Force saves skip same-path content-hash dedup rejection', () => {
+      const content = 'Intentional same-path force save should not be rejected as duplicate.';
+      const filePath = '/specs/forced-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'success', NULL)
+      `).run(
+        'specs/forced-same-path',
+        filePath,
+        filePath,
+        'Force Save',
+        sha256(content),
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory('specs/forced-same-path', content, 'Force Save'),
+        true,
+        [],
+        { canonicalFilePath: filePath, filePath },
+      );
+
+      expect(result).toBeNull();
+    });
+
     it('T054-6h: Cross-path duplicates remain detectable when legacy rows have NULL canonical_file_path', () => {
       const content = 'Legacy rows with null canonical paths must still dedup across paths.';
       const originalFilePath = '/specs/legacy-null-canonical/memory/original.md';

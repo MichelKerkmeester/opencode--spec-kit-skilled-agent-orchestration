@@ -9,6 +9,7 @@ export {
   isTransientError,
   isPermanentError,
   buildErrorResponse,
+  getDefaultErrorCodeForTool,
   createErrorWithHint,
 } from './core';
 

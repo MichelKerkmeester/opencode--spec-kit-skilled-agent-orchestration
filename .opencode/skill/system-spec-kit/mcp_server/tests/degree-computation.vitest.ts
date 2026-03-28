@@ -10,6 +10,7 @@ import {
   DEFAULT_MAX_TYPED_DEGREE,
   MAX_TOTAL_DEGREE,
   DEGREE_BOOST_CAP,
+  DEGREE_CHANNEL_WEIGHT,
   computeTypedDegree,
   normalizeDegreeToBoostedScore,
   computeMaxTypedDegree,
@@ -178,6 +179,10 @@ describe('Typed-Weighted Degree Computation', () => {
       expect(s1).toBeLessThan(s2);
       expect(s2).toBeLessThan(s3);
       expect(s3).toBeLessThan(s4);
+    });
+
+    it('aligns the degree channel weight with the advertised boost cap', () => {
+      expect(DEGREE_CHANNEL_WEIGHT).toBe(DEGREE_BOOST_CAP);
     });
   });
 

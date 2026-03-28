@@ -30,12 +30,23 @@ describe('Vector index schema compatibility validator', () => {
           id INTEGER PRIMARY KEY,
           spec_folder TEXT,
           file_path TEXT,
-          importance_tier TEXT,
+          importance_tier TEXT CHECK(importance_tier IN ('constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated')),
           context_type TEXT,
           session_id TEXT,
           created_at TEXT,
-          updated_at TEXT
+          updated_at TEXT,
+          stability REAL,
+          difficulty REAL,
+          last_review TEXT,
+          document_type TEXT,
+          quality_score REAL
         );
+        CREATE INDEX idx_stability ON memory_index(stability DESC);
+        CREATE INDEX idx_last_review ON memory_index(last_review);
+        CREATE INDEX idx_fsrs_retrieval ON memory_index(stability, difficulty, last_review);
+        CREATE INDEX idx_document_type ON memory_index(document_type);
+        CREATE INDEX idx_doc_type_folder ON memory_index(document_type, spec_folder);
+        CREATE INDEX idx_quality_score ON memory_index(quality_score);
 
         CREATE TABLE memory_history (
           id INTEGER PRIMARY KEY,
@@ -51,8 +62,22 @@ describe('Vector index schema compatibility validator', () => {
 
         CREATE TABLE memory_conflicts (
           id INTEGER PRIMARY KEY,
+          timestamp TEXT,
+          action TEXT,
+          new_memory_hash TEXT,
+          new_memory_id INTEGER,
+          existing_memory_id INTEGER,
+          similarity REAL,
+          reason TEXT,
+          new_content_preview TEXT,
+          existing_content_preview TEXT,
+          contradiction_detected INTEGER,
+          contradiction_type TEXT,
+          spec_folder TEXT,
           created_at TEXT
         );
+        CREATE INDEX idx_conflicts_memory ON memory_conflicts(existing_memory_id);
+        CREATE INDEX idx_conflicts_timestamp ON memory_conflicts(timestamp DESC);
       `);
 
       const report = validateBackwardCompatibility(db);
@@ -60,6 +85,8 @@ describe('Vector index schema compatibility validator', () => {
       expect(report.schemaVersion).toBe(21);
       expect(report.missingTables).toEqual([]);
       expect(report.missingColumns).toEqual({});
+      expect(report.missingIndexes).toEqual([]);
+      expect(report.constraintMismatches).toEqual([]);
       expect(report.warnings).toEqual([]);
     } finally {
       db.close();

@@ -11,6 +11,7 @@ import {
   DEFAULT_MAX_TYPED_DEGREE,
   MAX_TOTAL_DEGREE,
   DEGREE_BOOST_CAP,
+  DEGREE_CHANNEL_WEIGHT,
   computeTypedDegree,
   normalizeDegreeToBoostedScore,
   computeMaxTypedDegree,
@@ -252,7 +253,7 @@ describe('T002: RRF 5th degree channel integration', () => {
     // Add degree channel with memory 1 ranked first
     const withDegree: RankedList[] = [
       ...baseLists,
-      { source: SOURCE_TYPES.DEGREE, results: [{ id: 1 }, { id: 2 }], weight: 0.4 },
+      { source: SOURCE_TYPES.DEGREE, results: [{ id: 1 }, { id: 2 }], weight: DEGREE_CHANNEL_WEIGHT },
     ];
     const fusedWith = fuseResultsMulti(withDegree);
 
@@ -266,8 +267,8 @@ describe('T002: RRF 5th degree channel integration', () => {
     expect(itemWith.sources).toContain('degree');
   });
 
-  it('T002.2 — degree channel weight 0.4 produces expected RRF contribution', () => {
-    const DEGREE_WEIGHT = 0.4;
+  it('T002.2 — degree channel weight matches the capped contribution budget', () => {
+    const DEGREE_WEIGHT = DEGREE_CHANNEL_WEIGHT;
 
     // Single degree channel, two items to verify relative ordering
     const lists: RankedList[] = [
@@ -289,7 +290,7 @@ describe('T002: RRF 5th degree channel integration', () => {
   it('T002.3 — degree channel triggers convergence bonus when memory appears in multiple channels', () => {
     const lists: RankedList[] = [
       { source: SOURCE_TYPES.VECTOR, results: [{ id: 5 }] },
-      { source: SOURCE_TYPES.DEGREE, results: [{ id: 5 }], weight: 0.4 },
+      { source: SOURCE_TYPES.DEGREE, results: [{ id: 5 }], weight: DEGREE_CHANNEL_WEIGHT },
     ];
 
     const fused = fuseResultsMulti(lists);
@@ -325,7 +326,7 @@ describe('T002: RRF 5th degree channel integration', () => {
 
     // Feed into RRF — rank order should be preserved
     const lists: RankedList[] = [
-      { source: SOURCE_TYPES.DEGREE, results: degreeItems.map(i => ({ id: i.id })), weight: 0.4 },
+      { source: SOURCE_TYPES.DEGREE, results: degreeItems.map(i => ({ id: i.id })), weight: DEGREE_CHANNEL_WEIGHT },
     ];
     const fused = fuseResultsMulti(lists);
     expect(fused[0].id).toBe(1);

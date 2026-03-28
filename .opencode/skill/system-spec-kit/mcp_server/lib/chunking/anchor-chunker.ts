@@ -5,6 +5,7 @@
 // Splits large memory files into chunks using ANCHOR tags as
 // Natural boundaries. Falls back to structure-aware markdown
 // Splitting when anchors are absent.
+import { chunkMarkdown } from '@spec-kit/shared/lib/structure-aware-chunker';
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -36,9 +37,14 @@ export interface ChunkingResult {
 }
 
 interface AnchorSection {
-  id: string;
+  id: string | null;
   content: string;
   charCount: number;
+}
+
+interface ExtractedAnchorSections {
+  sections: AnchorSection[];
+  anchorCount: number;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -65,12 +71,15 @@ const ANCHOR_OPEN_RE = /<!--\s*(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/g;
 
 /**
  * Extract anchor sections from content.
- * Returns sections between <!-- ANCHOR:id --> and <!-- /ANCHOR:id --> pairs.
+ * Returns sections between <!-- ANCHOR:id --> and <!-- /ANCHOR:id --> pairs,
+ * while preserving uncovered text between anchors as unanchored sections.
  */
-function extractAnchorSections(content: string): AnchorSection[] {
+function extractAnchorSections(content: string): ExtractedAnchorSections {
   const sections: AnchorSection[] = [];
   const openPattern = new RegExp(ANCHOR_OPEN_RE.source, 'gi');
   let match: RegExpExecArray | null;
+  let cursor = 0;
+  let anchorCount = 0;
 
   while ((match = openPattern.exec(content)) !== null) {
     const anchorId = match[1].trim();
@@ -86,6 +95,17 @@ function extractAnchorSections(content: string): AnchorSection[] {
     const closeMatch = closingPattern.exec(afterOpen);
 
     if (closeMatch) {
+      if (startPos > cursor) {
+        const uncovered = content.slice(cursor, startPos);
+        if (uncovered.trim()) {
+          sections.push({
+            id: null,
+            content: uncovered,
+            charCount: uncovered.length,
+          });
+        }
+      }
+
       const endPos = startPos + match[0].length + closeMatch.index + closeMatch[0].length;
       const sectionContent = content.slice(startPos, endPos);
 
@@ -94,10 +114,24 @@ function extractAnchorSections(content: string): AnchorSection[] {
         content: sectionContent,
         charCount: sectionContent.length,
       });
+      anchorCount++;
+      cursor = endPos;
+      openPattern.lastIndex = endPos;
     }
   }
 
-  return sections;
+  if (cursor < content.length) {
+    const trailing = content.slice(cursor);
+    if (trailing.trim()) {
+      sections.push({
+        id: null,
+        content: trailing,
+        charCount: trailing.length,
+      });
+    }
+  }
+
+  return { sections, anchorCount };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -112,25 +146,44 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
   const chunks: AnchorChunk[] = [];
   let currentContent = '';
   let currentAnchors: string[] = [];
+  let currentLabels: string[] = [];
   let currentSize = 0;
+  let unanchoredIndex = 0;
+
+  function getSectionLabel(section: AnchorSection): string {
+    if (section.id) {
+      return section.id;
+    }
+    unanchoredIndex++;
+    return `unanchored-${unanchoredIndex}`;
+  }
 
   function flush(): void {
     if (currentContent.trim()) {
+      const label = currentAnchors.length === 1
+        ? currentAnchors[0]
+        : currentAnchors.length > 1
+          ? `${currentAnchors[0]}..${currentAnchors[currentAnchors.length - 1]}`
+          : currentLabels.length === 1
+            ? currentLabels[0]
+            : `${currentLabels[0]}..${currentLabels[currentLabels.length - 1]}`;
+
       chunks.push({
         content: currentContent.trim(),
         anchorIds: [...currentAnchors],
-        label: currentAnchors.length === 1
-          ? currentAnchors[0]
-          : `${currentAnchors[0]}..${currentAnchors[currentAnchors.length - 1]}`,
+        label,
         charCount: currentContent.length,
       });
     }
     currentContent = '';
     currentAnchors = [];
+    currentLabels = [];
     currentSize = 0;
   }
 
   for (const section of sections) {
+    const sectionLabel = getSectionLabel(section);
+
     // F-10 — Oversized anchor sections must be further split to respect
     // MAX_CHUNK_CHARS. Previously they were emitted as single oversized chunks.
     if (section.charCount > MAX_CHUNK_CHARS) {
@@ -143,8 +196,8 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
         if (subContent.length + line.length + 1 > MAX_CHUNK_CHARS && subContent.trim()) {
           chunks.push({
             content: subContent.trim(),
-            anchorIds: [section.id],
-            label: `${section.id}:${subIdx}`,
+            anchorIds: section.id ? [section.id] : [],
+            label: section.id ? `${section.id}:${subIdx}` : `${sectionLabel}:${subIdx}`,
             charCount: subContent.length,
           });
           subContent = '';
@@ -156,8 +209,8 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
             const slice = line.slice(c, c + MAX_CHUNK_CHARS);
             chunks.push({
               content: slice,
-              anchorIds: [section.id],
-              label: `${section.id}:${subIdx}`,
+              anchorIds: section.id ? [section.id] : [],
+              label: section.id ? `${section.id}:${subIdx}` : `${sectionLabel}:${subIdx}`,
               charCount: slice.length,
             });
             subIdx++;
@@ -169,8 +222,10 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
       if (subContent.trim()) {
         chunks.push({
           content: subContent.trim(),
-          anchorIds: [section.id],
-          label: subIdx > 0 ? `${section.id}:${subIdx}` : section.id,
+          anchorIds: section.id ? [section.id] : [],
+          label: subIdx > 0
+            ? (section.id ? `${section.id}:${subIdx}` : `${sectionLabel}:${subIdx}`)
+            : sectionLabel,
           charCount: subContent.length,
         });
       }
@@ -183,7 +238,10 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
     }
 
     currentContent += (currentContent ? '\n\n' : '') + section.content;
-    currentAnchors.push(section.id);
+    currentLabels.push(sectionLabel);
+    if (section.id) {
+      currentAnchors.push(section.id);
+    }
     currentSize += section.charCount;
   }
 
@@ -197,59 +255,17 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
 
 /**
  * Fall back to splitting by markdown headings and paragraphs.
- * Uses a simple approach: split on H1/H2 headings, group small sections.
+ * Uses the shared AST-aware markdown chunker so fenced code and tables remain atomic.
  */
 function chunkByStructure(content: string): AnchorChunk[] {
-  const chunks: AnchorChunk[] = [];
+  const maxTokens = Math.floor(TARGET_CHUNK_CHARS / 4);
 
-  // Split on H1/H2 headings
-  const parts = content.split(/(?=^#{1,2}\s)/m);
-  let currentContent = '';
-  let currentSize = 0;
-  let chunkIdx = 0;
-
-  function flush(): void {
-    if (currentContent.trim()) {
-      chunkIdx++;
-      chunks.push({
-        content: currentContent.trim(),
-        anchorIds: [],
-        label: `chunk-${chunkIdx}`,
-        charCount: currentContent.length,
-      });
-    }
-    currentContent = '';
-    currentSize = 0;
-  }
-
-  for (const part of parts) {
-    if (!part.trim()) continue;
-
-    if (part.length > MAX_CHUNK_CHARS) {
-      // Large section — split further by paragraphs
-      flush();
-      const paragraphs = part.split(/\n\n+/);
-      for (const para of paragraphs) {
-        if (!para.trim()) continue;
-        if (currentSize + para.length > TARGET_CHUNK_CHARS && currentContent.trim()) {
-          flush();
-        }
-        currentContent += (currentContent ? '\n\n' : '') + para;
-        currentSize += para.length;
-      }
-      continue;
-    }
-
-    if (currentSize + part.length > TARGET_CHUNK_CHARS && currentContent.trim()) {
-      flush();
-    }
-
-    currentContent += (currentContent ? '\n\n' : '') + part;
-    currentSize += part.length;
-  }
-
-  flush();
-  return chunks;
+  return chunkMarkdown(content, maxTokens).map((chunk, index) => ({
+    content: chunk.content,
+    anchorIds: [],
+    label: `chunk-${index + 1}`,
+    charCount: chunk.content.length,
+  }));
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -270,9 +286,9 @@ export function chunkLargeFile(content: string): ChunkingResult {
   const parentSummary = content.slice(0, PARENT_SUMMARY_LENGTH).trim();
 
   // Try anchor-based chunking first
-  const anchorSections = extractAnchorSections(content);
+  const { sections: anchorSections, anchorCount } = extractAnchorSections(content);
 
-  if (anchorSections.length >= 2) {
+  if (anchorCount >= 2) {
     const chunks = chunkByAnchors(anchorSections);
     if (chunks.length >= 2) {
       return { strategy: 'anchor', chunks, parentSummary };

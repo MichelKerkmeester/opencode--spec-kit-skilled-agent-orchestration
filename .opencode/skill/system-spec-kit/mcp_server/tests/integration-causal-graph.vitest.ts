@@ -110,7 +110,7 @@ describe('Integration Causal Graph (T528)', () => {
         if (isError) {
           // Infrastructure/storage errors are acceptable in integration mode;
           // Relation-validation errors are not.
-          expect(['E020', 'E022', 'E042']).toContain(envelope.data?.code as string);
+          expect(['E020', 'E042', 'E104']).toContain(envelope.data?.code as string);
           continue;
         }
         expect(envelope.data?.success).toBe(true);
@@ -118,7 +118,7 @@ describe('Integration Causal Graph (T528)', () => {
       }
     });
 
-    it('T528-6b: storage failures return E022 instead of validation errors', async () => {
+    it('T528-6b: storage failures return graph-specific handler errors instead of validation errors', async () => {
       vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(true);
       vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(
         () => ({} as ReturnType<typeof vectorIndex.initializeDb>)
@@ -137,8 +137,13 @@ describe('Integration Causal Graph (T528)', () => {
         relation: 'caused',
       });
 
-      const envelope = expectErrorCode(response, ['E022']);
-      expect(envelope.data?.error).toBe('SQLITE_BUSY: database is locked');
+      const envelope = expectErrorCode(response, ['E104']);
+      expect(envelope.data?.error).toBe('Causal link creation failed.');
+      expect(envelope.data?.details).toMatchObject({
+        sourceId: 'test-source-id',
+        targetId: 'test-target-id',
+        relation: 'caused',
+      });
     });
 
     it('T528-7: Direction parameter "outgoing" accepted', async () => {
@@ -274,9 +279,9 @@ describe('Integration Causal Graph (T528)', () => {
         memoryId: '1',
         relations: ['invalid_relation'],
       });
-      const envelope = expectErrorCode(response, ['E020', 'E030', 'E042']);
-      // If DB is available, invalid relation validation should trigger E030.
-      if (envelope.data?.code === 'E030') {
+      const envelope = expectErrorCode(response, ['E020', 'E042', 'E102']);
+      // If DB is available, invalid relation validation should trigger E102.
+      if (envelope.data?.code === 'E102') {
         expect(String(envelope.data?.error)).toContain('Invalid relation types');
       }
     });

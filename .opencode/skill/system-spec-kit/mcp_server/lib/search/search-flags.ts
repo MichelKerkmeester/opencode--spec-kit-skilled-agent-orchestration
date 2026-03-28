@@ -399,6 +399,10 @@ export function getGraphRefreshMode(): string {
   return process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase() ?? 'write_local';
 }
 
+export function isGraphRefreshDisabled(): boolean {
+  return getGraphRefreshMode() === 'off';
+}
+
 /**
  * REQ-D3-004: Async LLM graph backfill for high-value documents.
  * Runs after deterministic extraction; adds probabilistic edges via LLM.

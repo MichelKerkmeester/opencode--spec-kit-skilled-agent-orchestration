@@ -662,6 +662,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // SnapshotDegrees should handle it
       const snapshot = snapshotDegrees(db);
       expect(snapshot.snapshotted).toBe(1);
+      const storedSnapshot = db.prepare(
+        'SELECT degree_count FROM degree_snapshots WHERE memory_id = 1'
+      ).get() as { degree_count: number } | undefined;
+      expect(storedSnapshot?.degree_count).toBe(1);
 
       // GetCurrentDegree uses COUNT(*) with WHERE source_id = ? OR target_id = ?
       // A self-loop is a single row where both conditions match, so COUNT = 1

@@ -344,6 +344,22 @@ describe('governed retrieval schema propagation', () => {
     }).not.toThrow();
     expect(validateToolArgs('memory_quick_search', args)).toEqual(args);
   });
+
+  it('public and runtime schemas accept governed scope fields for memory_match_triggers', () => {
+    const args = {
+      prompt: 'resume auth work',
+      specFolder: 'specs/001-auth',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      agentId: 'agent-1',
+      sharedSpaceId: 'shared-1',
+    };
+
+    expect(() => {
+      validateToolInputSchema('memory_match_triggers', args, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(validateToolArgs('memory_match_triggers', args)).toEqual(args);
+  });
 });
 
 describe('shared-memory admin actor schema', () => {
@@ -358,14 +374,14 @@ describe('shared-memory admin actor schema', () => {
     }).not.toThrow();
   });
 
-  it('runtime accepts shared_space_upsert when actor hints are omitted', () => {
+  it('runtime rejects shared_space_upsert when actor identity is omitted', () => {
     expect(() => {
       validateToolArgs('shared_space_upsert', {
         spaceId: 'space-1',
         tenantId: 'tenant-a',
         name: 'Alpha',
       });
-    }).not.toThrow();
+    }).toThrow(/Provide one actor identity/);
   });
 
   it('runtime rejects shared_space_membership_set when both actor identities are provided', () => {
@@ -380,6 +396,23 @@ describe('shared-memory admin actor schema', () => {
         role: 'viewer',
       });
     }).toThrow(/Provide only one actor identity/);
+  });
+
+  it('runtime requires caller identity for shared_memory_status', () => {
+    expect(() => {
+      validateToolArgs('shared_memory_status', {
+        tenantId: 'tenant-a',
+      });
+    }).toThrow(/Provide one actor identity/);
+  });
+
+  it('runtime accepts shared_memory_status with one actor identity', () => {
+    expect(() => {
+      validateToolArgs('shared_memory_status', {
+        tenantId: 'tenant-a',
+        actorAgentId: 'agent-1',
+      });
+    }).not.toThrow();
   });
 });
 

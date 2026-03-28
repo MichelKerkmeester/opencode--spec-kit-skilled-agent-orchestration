@@ -33,6 +33,7 @@ vi.mock('../lib/search/vector-index', () => ({
 
 vi.mock('../lib/providers/embeddings', () => ({
   getModelName: vi.fn(() => 'test-embedding-model'),
+  getEmbeddingDimension: vi.fn(() => 3),
   generateDocumentEmbedding: vi.fn(async () => new Float32Array([0.1, 0.2, 0.3])),
 }));
 
@@ -229,6 +230,23 @@ function configureVectorIndexMocks(): void {
   });
 }
 
+function applyTestMetadata(
+  db: Database.Database,
+  memoryId: number,
+  fields: Record<string, unknown>,
+): void {
+  const entries = Object.entries(fields).filter(([, value]) => value !== undefined);
+  if (entries.length === 0) {
+    return;
+  }
+
+  const setClause = entries.map(([column]) => `${column} = ?`).join(', ');
+  db.prepare(`UPDATE memory_index SET ${setClause} WHERE id = ?`).run(
+    ...entries.map(([, value]) => value),
+    memoryId,
+  );
+}
+
 function seedExistingParentWithChildren(filePath: string, oldChildCount: number): { parentId: number; oldChildIds: number[] } {
   const db = requireTestDb();
   const parentInsert = db.prepare(`
@@ -388,7 +406,7 @@ describe('T013: staged swap regressions', () => {
     vi.spyOn(db, 'transaction')
       .mockImplementation(((fn: Parameters<Database.Database['transaction']>[0]) => {
         transactionCalls += 1;
-        if (transactionCalls === 2) {
+        if (transactionCalls === 4) {
           return (() => {
             throw new Error('forced finalize swap failure');
           }) as unknown as ReturnType<Database.Database['transaction']>;
@@ -466,6 +484,42 @@ describe('T013: staged swap regressions', () => {
     expect(newChildren.some(row => row.embedding_status === 'pending')).toBe(true);
     expect(newChildren.some(row => row.embedding_status === 'success')).toBe(true);
     expect(newChildren.every(row => row.parent_id === parentId)).toBe(true);
+  });
+
+  it('rolls back inserted child rows when metadata application fails mid-chunk', async () => {
+    mockChunks = [
+      { content: 'metadata chunk 1', anchorIds: ['m1'], label: 'metadata-1', charCount: 16 },
+      { content: 'metadata chunk 2', anchorIds: ['m2'], label: 'metadata-2', charCount: 16 },
+    ];
+
+    const filePath = '/tmp/specs/test-safe-swap/memory-metadata-fail.md';
+    const parsed = createParsedMemory(filePath);
+    const applyPostInsertMetadata = vi.fn((db: Database.Database, memoryId: number, fields: Record<string, unknown>) => {
+      if (fields.chunk_label === 'metadata-1') {
+        throw new Error('forced metadata write failure');
+      }
+      applyTestMetadata(db, memoryId, fields);
+    });
+
+    const result = await indexChunkedMemoryFile(filePath, parsed, { applyPostInsertMetadata });
+    expect(result.status).toBe('indexed');
+    expect(result.message).toContain('Chunked: 1/2 chunks indexed');
+
+    const db = requireTestDb();
+    const failedChild = db.prepare(`
+      SELECT id
+      FROM memory_index
+      WHERE file_path = ? AND title = ?
+    `).get(filePath, 'Safe Swap Parent [chunk 1/2]');
+    expect(failedChild).toBeUndefined();
+
+    const survivingChildren = db.prepare(`
+      SELECT chunk_label
+      FROM memory_index
+      WHERE file_path = ? AND parent_id IS NOT NULL
+      ORDER BY chunk_index ASC
+    `).all(filePath) as Array<{ chunk_label: string | null }>;
+    expect(survivingChildren.map((row) => row.chunk_label)).toEqual(['metadata-2']);
   });
 
   it('uses normalized content hash for chunk embedding cache keys', async () => {

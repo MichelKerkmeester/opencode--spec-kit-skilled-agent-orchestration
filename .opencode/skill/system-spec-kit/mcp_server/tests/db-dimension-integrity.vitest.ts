@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { close_db, initializeDb } from '../lib/search/vector-index-store';
+import { close_db, getEmbeddingDim, initializeDb } from '../lib/search/vector-index-store';
 
 function createTempDbPath(label: string): { dir: string; dbPath: string } {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `${label}-`));
@@ -37,6 +37,9 @@ function expectDimensionMismatchOnReopen(dbPath: string, initialDim: string, reo
 
 describe('db-dimension-integrity', () => {
   const originalEmbeddingDim = process.env.EMBEDDING_DIM;
+  const originalEmbeddingsProvider = process.env.EMBEDDINGS_PROVIDER;
+  const originalVoyageApiKey = process.env.VOYAGE_API_KEY;
+  const originalOpenaiApiKey = process.env.OPENAI_API_KEY;
   const originalAllowedPaths = process.env.MEMORY_ALLOWED_PATHS;
 
   afterEach(() => {
@@ -45,6 +48,21 @@ describe('db-dimension-integrity', () => {
       delete process.env.EMBEDDING_DIM;
     } else {
       process.env.EMBEDDING_DIM = originalEmbeddingDim;
+    }
+    if (originalEmbeddingsProvider === undefined) {
+      delete process.env.EMBEDDINGS_PROVIDER;
+    } else {
+      process.env.EMBEDDINGS_PROVIDER = originalEmbeddingsProvider;
+    }
+    if (originalVoyageApiKey === undefined) {
+      delete process.env.VOYAGE_API_KEY;
+    } else {
+      process.env.VOYAGE_API_KEY = originalVoyageApiKey;
+    }
+    if (originalOpenaiApiKey === undefined) {
+      delete process.env.OPENAI_API_KEY;
+    } else {
+      process.env.OPENAI_API_KEY = originalOpenaiApiKey;
     }
     if (originalAllowedPaths === undefined) {
       delete process.env.MEMORY_ALLOWED_PATHS;
@@ -62,6 +80,24 @@ describe('db-dimension-integrity', () => {
     } finally {
       removeTempDir(dir);
     }
+  });
+
+  it('explicit hf-local provider override beats VOYAGE_API_KEY for startup dimension resolution', () => {
+    delete process.env.EMBEDDING_DIM;
+    process.env.EMBEDDINGS_PROVIDER = 'hf-local';
+    process.env.VOYAGE_API_KEY = 'voyage_test_key_1234567890';
+    process.env.OPENAI_API_KEY = 'openai_test_key_1234567890';
+
+    expect(getEmbeddingDim()).toBe(768);
+  });
+
+  it('placeholder API keys are ignored when resolving startup dimensions', () => {
+    delete process.env.EMBEDDING_DIM;
+    delete process.env.EMBEDDINGS_PROVIDER;
+    process.env.VOYAGE_API_KEY = 'your-key-here';
+    delete process.env.OPENAI_API_KEY;
+
+    expect(getEmbeddingDim()).toBe(768);
   });
 
   it('concurrent DB paths via connection cache', () => {
@@ -102,6 +138,27 @@ describe('db-dimension-integrity', () => {
 
     try {
       expectDimensionMismatchOnReopen(dbPath, '1024', '512');
+    } finally {
+      removeTempDir(dir);
+    }
+  });
+
+  it('provider-resolved mismatch fails before reopening an existing DB', () => {
+    const { dir, dbPath } = createTempDbPath('provider-resolved-mismatch');
+    setAllowedPaths([dir]);
+    delete process.env.EMBEDDING_DIM;
+    process.env.VOYAGE_API_KEY = 'voyage_test_key_1234567890';
+    delete process.env.EMBEDDINGS_PROVIDER;
+    delete process.env.OPENAI_API_KEY;
+
+    try {
+      const db = initializeDb(dbPath);
+      expect(db).toBeTruthy();
+
+      close_db();
+
+      process.env.EMBEDDINGS_PROVIDER = 'hf-local';
+      expect(() => initializeDb(dbPath)).toThrow(/EMBEDDING DIMENSION MISMATCH|Refusing to bootstrap/i);
     } finally {
       removeTempDir(dir);
     }

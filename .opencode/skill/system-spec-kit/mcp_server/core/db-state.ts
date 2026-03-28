@@ -23,6 +23,7 @@ export interface VectorIndexLike {
   getDb(): DatabaseLike | null;
   closeDb?(): void;
   vectorSearch?: VectorSearchFn;
+  onDatabaseConnectionChange?: (listener: (database: DatabaseLike) => void) => (() => void);
 }
 
 /** Canonical DB type shared across MCP runtime modules */
@@ -53,6 +54,11 @@ export interface IncrementalIndexLike {
   init(database: DatabaseLike): void;
 }
 
+/** Generic DB consumer interface for modules that cache DB handles internally. */
+export interface DatabaseConsumerLike {
+  init(database: DatabaseLike): unknown;
+}
+
 /** Dependencies for db-state initialization */
 export interface DbStateDeps {
   vectorIndex?: VectorIndexLike;
@@ -62,6 +68,7 @@ export interface DbStateDeps {
   sessionManager?: SessionManagerLike;
   incrementalIndex?: IncrementalIndexLike;
   graphSearchFn?: GraphSearchFn | null;
+  dbConsumers?: DatabaseConsumerLike[];
 }
 
 // ────────────────────────────────────────────────────────────────
@@ -89,6 +96,63 @@ let hybridSearch: HybridSearchLike | null = null;
 let sessionManagerRef: SessionManagerLike | null = null;
 let incrementalIndexRef: IncrementalIndexLike | null = null;
 let graphSearchFnRef: GraphSearchFn | null | undefined = undefined;
+let dbConsumersRef: DatabaseConsumerLike[] = [];
+let vectorIndexListenerCleanup: (() => void) | null = null;
+let subscribedVectorIndex: VectorIndexLike | null = null;
+let suppressVectorIndexListener = false;
+
+function registerVectorIndexListener(nextVectorIndex: VectorIndexLike): void {
+  if (subscribedVectorIndex === nextVectorIndex) {
+    return;
+  }
+
+  if (vectorIndexListenerCleanup) {
+    vectorIndexListenerCleanup();
+    vectorIndexListenerCleanup = null;
+  }
+
+  subscribedVectorIndex = nextVectorIndex;
+  if (typeof nextVectorIndex.onDatabaseConnectionChange !== 'function') {
+    return;
+  }
+
+  vectorIndexListenerCleanup = nextVectorIndex.onDatabaseConnectionChange((database: DatabaseLike) => {
+    if (suppressVectorIndexListener) {
+      return;
+    }
+
+    try {
+      rebindDatabaseConsumers(database);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`[db-state] Database consumer listener rebind failed: ${message}`);
+    }
+  });
+}
+
+function rebindDatabaseConsumers(database: DatabaseLike): boolean {
+  if (checkpoints) checkpoints.init(database);
+  if (accessTracker) accessTracker.init(database);
+  if (hybridSearch) {
+    if (!graphSearchFnRef && process.env.SPECKIT_GRAPH_UNIFIED !== 'false') {
+      console.warn('[db-state] hybridSearch reinit missing graphSearchFn; graph retrieval channel is disabled');
+    }
+    hybridSearch.init(database, vectorIndex?.vectorSearch, graphSearchFnRef ?? null);
+  }
+  if (sessionManagerRef) {
+    const sessionInitResult = sessionManagerRef.init(database);
+    if (!sessionInitResult.success) {
+      const errorSuffix = sessionInitResult.error ? `: ${sessionInitResult.error}` : '';
+      console.error(`[db-state] Session manager rebind failed${errorSuffix}`);
+      return false;
+    }
+  }
+  if (incrementalIndexRef) incrementalIndexRef.init(database);
+  for (const consumer of dbConsumersRef) {
+    consumer.init(database);
+  }
+  return true;
+}
 
 function getDbUpdatedFilePath(): string {
   return resolveDatabasePaths().dbUpdatedFile;
@@ -98,6 +162,7 @@ function getDbUpdatedFilePath(): string {
 export function init(deps: DbStateDeps): void {
   if (deps.vectorIndex) {
     vectorIndex = deps.vectorIndex;
+    registerVectorIndexListener(deps.vectorIndex);
     // The backing DB handle may differ across init calls; force config table re-check.
     configTableCreated = false;
   }
@@ -107,6 +172,13 @@ export function init(deps: DbStateDeps): void {
   if (deps.sessionManager) sessionManagerRef = deps.sessionManager;
   if (deps.incrementalIndex) incrementalIndexRef = deps.incrementalIndex;
   if (deps.graphSearchFn !== undefined) graphSearchFnRef = deps.graphSearchFn;
+  if (Array.isArray(deps.dbConsumers) && deps.dbConsumers.length > 0) {
+    for (const consumer of deps.dbConsumers) {
+      if (consumer && !dbConsumersRef.includes(consumer)) {
+        dbConsumersRef.push(consumer);
+      }
+    }
+  }
 }
 
 // ────────────────────────────────────────────────────────────────
@@ -166,10 +238,15 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
     constitutionalCacheTime = 0;
     configTableCreated = false;
 
-    if (typeof vectorIndex.closeDb === 'function') {
-      vectorIndex.closeDb();
+    suppressVectorIndexListener = true;
+    try {
+      if (typeof vectorIndex.closeDb === 'function') {
+        vectorIndex.closeDb();
+      }
+      vectorIndex.initializeDb();
+    } finally {
+      suppressVectorIndexListener = false;
     }
-    vectorIndex.initializeDb();
 
     const database = vectorIndex.getDb();
     if (!database) {
@@ -177,24 +254,9 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
       return false;
     }
 
-    if (checkpoints) checkpoints.init(database);
-    if (accessTracker) accessTracker.init(database);
-    if (hybridSearch) {
-      if (!graphSearchFnRef && process.env.SPECKIT_GRAPH_UNIFIED !== 'false') {
-        console.warn('[db-state] hybridSearch reinit missing graphSearchFn; graph retrieval channel is disabled');
-      }
-      hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef ?? null);
+    if (!rebindDatabaseConsumers(database)) {
+      return false;
     }
-    // P4-12, P4-19 FIX: Refresh stale DB handles in session-manager and incremental-index
-    if (sessionManagerRef) {
-      const sessionInitResult = sessionManagerRef.init(database as DatabaseLike);
-      if (!sessionInitResult.success) {
-        const errorSuffix = sessionInitResult.error ? `: ${sessionInitResult.error}` : '';
-        console.error(`[db-state] Session manager rebind failed${errorSuffix}`);
-        return false;
-      }
-    }
-    if (incrementalIndexRef) incrementalIndexRef.init(database as DatabaseLike);
     if (typeof updatedMarkerTime === 'number' && Number.isFinite(updatedMarkerTime)) {
       lastDbCheck = updatedMarkerTime;
     }

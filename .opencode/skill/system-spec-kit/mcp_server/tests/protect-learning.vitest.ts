@@ -46,17 +46,19 @@ describe('T207 - INSERT OR REPLACE removed from preflight', () => {
     const preflightEnd = source.indexOf('async function handleTaskPostflight');
     preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
 
-    expect(preflightCode).toContain('SELECT id, phase FROM session_learning WHERE spec_folder');
+    expect(preflightCode).toContain('SELECT id, phase');
+    expect(preflightCode).toContain('FROM session_learning');
+    expect(preflightCode).toContain('AND phase = \'preflight\'');
   });
 
-  it('T207-SRC3: Completed records protected', () => {
+  it('T207-SRC3: Preflight only reuses open records', () => {
     source = fs.readFileSync(sourceFile, 'utf-8');
     const preflightStart = source.indexOf('async function handleTaskPreflight');
     const preflightEnd = source.indexOf('async function handleTaskPostflight');
     preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
 
-    expect(preflightCode).toContain('complete');
-    expect(preflightCode).toContain('cannot be overwritten');
+    expect(preflightCode).toContain("phase = 'preflight'");
+    expect(preflightCode).not.toContain('cannot be overwritten');
   });
 
   it('T207-SRC4: Uses plain INSERT INTO (not INSERT OR REPLACE)', () => {
