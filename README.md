@@ -465,34 +465,50 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 #### Built-in Agents (2)
 
-| Agent | Description |
-|-------|-------------|
-| **General** | General-purpose implementation. Feature development, bug fixes, refactoring. Default fallback. |
-| **Explore** | Fast codebase exploration. File pattern matching, keyword search, structural questions. Read-only. |
+<dl>
+  <dt><strong>General</strong></dt>
+  <dd>General-purpose implementation. Feature development, bug fixes, refactoring. Default fallback.</dd>
+  <dt><strong>Explore</strong></dt>
+  <dd>Fast codebase exploration. File pattern matching, keyword search, structural questions. Read-only.</dd>
+</dl>
 
 #### Custom Agents (10)
 
-| Agent | Description |
-|-------|-------------|
-| **Orchestrate** | Senior task commander. Decomposes, delegates, evaluates and merges sub-agent outputs. Read-only. |
-| **Context** | Memory-first retrieval specialist. Checks memory before codebase. Returns structured Context Packages. Read-only. |
-| **Speckit** | Exclusive spec folder documentation agent. Template-first, Level 1-3+, 20-rule validation. |
-| **Debug** | Fresh-perspective debugger. Structured context handoff. 5-phase: Observe → Analyze → Hypothesize → Validate → Fix. |
-| **Deep-Research** | Autonomous research agent. Single LEAF iteration with externalized JSONL state. |
-| **Deep-Review** | Code quality auditor. P0/P1/P2 findings across 7 dimensions with adversarial self-check. Read-only. |
-| **Review** | Code quality guardian. Baseline + overlay standards with mandatory security/correctness minimums. Read-only. |
-| **Write** | Documentation generation for project-level docs outside spec folders. Template-first with DQI scoring. |
-| **Handover** | Session continuation. Creates `handover.md` with decisions, blockers, phase and next steps. |
-| **Ultra-Think** | Multi-strategy planning architect. 5 reasoning lenses, 5-dimension rubric. Plans only. |
+<dl>
+  <dt><strong>Orchestrate</strong></dt>
+  <dd>Senior task commander. Decomposes, delegates, evaluates and merges sub-agent outputs. Read-only.</dd>
+  <dt><strong>Context</strong></dt>
+  <dd>Memory-first retrieval specialist. Checks memory before codebase. Returns structured Context Packages. Read-only.</dd>
+  <dt><strong>Speckit</strong></dt>
+  <dd>Exclusive spec folder documentation agent. Template-first, Level 1-3+, 20-rule validation.</dd>
+  <dt><strong>Debug</strong></dt>
+  <dd>Fresh-perspective debugger. Structured context handoff. 5-phase: Observe → Analyze → Hypothesize → Validate → Fix.</dd>
+  <dt><strong>Deep-Research</strong></dt>
+  <dd>Autonomous research agent. Single LEAF iteration with externalized JSONL state.</dd>
+  <dt><strong>Deep-Review</strong></dt>
+  <dd>Code quality auditor. P0/P1/P2 findings across 7 dimensions with adversarial self-check. Read-only.</dd>
+  <dt><strong>Review</strong></dt>
+  <dd>Code quality guardian. Baseline + overlay standards with mandatory security/correctness minimums. Read-only.</dd>
+  <dt><strong>Write</strong></dt>
+  <dd>Documentation generation for project-level docs outside spec folders. Template-first with DQI scoring.</dd>
+  <dt><strong>Handover</strong></dt>
+  <dd>Session continuation. Creates handover.md with decisions, blockers, phase and next steps.</dd>
+  <dt><strong>Ultra-Think</strong></dt>
+  <dd>Multi-strategy planning architect. 5 reasoning lenses, 5-dimension rubric. Plans only — never modifies files.</dd>
+</dl>
 
 #### Runtime Directories
 
-| Runtime | Path |
-|---------|------|
-| OpenCode | `.opencode/agent/` (source of truth) |
-| Claude Code | `.claude/agents/` |
-| Codex CLI | `.codex/agents/` |
-| Gemini CLI | `.gemini/agents/` |
+<dl>
+  <dt><strong>OpenCode</strong></dt>
+  <dd><code>.opencode/agent/</code> (source of truth)</dd>
+  <dt><strong>Claude Code</strong></dt>
+  <dd><code>.claude/agents/</code></dd>
+  <dt><strong>Codex CLI</strong></dt>
+  <dd><code>.codex/agents/</code></dd>
+  <dt><strong>Gemini CLI</strong></dt>
+  <dd><code>.gemini/agents/</code></dd>
+</dl>
 
 
 ---
@@ -504,43 +520,63 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 #### spec_kit/ — 8 Commands (spec folder lifecycle)
 
-| Command | Description |
-|---------|-------------|
-| **complete** | End-to-end: research → plan → implement → verify → save memory. Modes: `:auto`, `:confirm`, `:with-research`, `:auto-debug` |
-| **plan** | Planning only (spec.md, plan.md, tasks.md). No implementation. Modes: `:auto`, `:confirm` |
-| **implement** | Execute an existing plan.md. Modes: `:auto`, `:confirm` |
-| **phase** | Decompose large features into parent + child spec folders |
-| **debug** | Delegate to debug agent with structured context handoff. Writes `debug-delegation.md` |
-| **resume** | Recover session context from memory. Pick up where you left off |
-| **deep-research** | Autonomous research loop until convergence. Modes: `:auto`, `:review` |
-| **handover** | Create session handover document. Variants: `:quick`, `:full` |
+<dl>
+  <dt><strong>complete</strong></dt>
+  <dd>End-to-end: research → plan → implement → verify → save memory. Modes: <code>:auto</code>, <code>:confirm</code>, <code>:with-research</code>, <code>:auto-debug</code></dd>
+  <dt><strong>plan</strong></dt>
+  <dd>Planning only (spec.md, plan.md, tasks.md). No implementation. Modes: <code>:auto</code>, <code>:confirm</code></dd>
+  <dt><strong>implement</strong></dt>
+  <dd>Execute an existing plan.md. Modes: <code>:auto</code>, <code>:confirm</code></dd>
+  <dt><strong>phase</strong></dt>
+  <dd>Decompose large features into parent + child spec folders.</dd>
+  <dt><strong>debug</strong></dt>
+  <dd>Delegate to debug agent with structured context handoff. Writes debug-delegation.md.</dd>
+  <dt><strong>resume</strong></dt>
+  <dd>Recover session context from memory. Pick up where you left off.</dd>
+  <dt><strong>deep-research</strong></dt>
+  <dd>Autonomous research loop until convergence. Modes: <code>:auto</code>, <code>:review</code></dd>
+  <dt><strong>handover</strong></dt>
+  <dd>Create session handover document. Variants: <code>:quick</code>, <code>:full</code></dd>
+</dl>
 
 #### memory/ — 4 Commands (cognitive memory)
 
-| Command | Description |
-|---------|-------------|
-| **save** | Save session context to a timestamped memory file via `generate-context.js` |
-| **search** | Unified retrieval: intent-aware search, causal graph, ablation studies, dashboards |
-| **learn** | Manage constitutional memories (always-surface rules, 3.0x boost, never decay) |
-| **manage** | Database admin: stats, health, cleanup, checkpoints, bulk operations, shared spaces |
+<dl>
+  <dt><strong>save</strong></dt>
+  <dd>Save session context to a timestamped memory file via generate-context.js.</dd>
+  <dt><strong>search</strong></dt>
+  <dd>Unified retrieval: intent-aware search, causal graph, ablation studies, dashboards.</dd>
+  <dt><strong>learn</strong></dt>
+  <dd>Manage constitutional memories (always-surface rules, 3.0x boost, never decay).</dd>
+  <dt><strong>manage</strong></dt>
+  <dd>Database admin: stats, health, cleanup, checkpoints, bulk operations, shared spaces.</dd>
+</dl>
 
 #### create/ — 7 Commands (component scaffolding)
 
-| Command | Description |
-|---------|-------------|
-| **sk-skill** | Create or update skills (SKILL.md, README, references, assets) |
-| **agent** | Scaffold agent definitions across all 4 runtimes |
-| **folder_readme** | README and install guide creation with DQI quality scoring |
-| **changelog** | Auto-detect recent work, generate formatted changelog entry |
-| **prompt** | Create or improve prompts using 7 frameworks + CLEAR scoring |
-| **feature-catalog** | Create or update feature catalog packages |
-| **testing-playbook** | Create or update manual testing playbook packages |
+<dl>
+  <dt><strong>sk-skill</strong></dt>
+  <dd>Create or update skills (SKILL.md, README, references, assets).</dd>
+  <dt><strong>agent</strong></dt>
+  <dd>Scaffold agent definitions across all 4 runtimes.</dd>
+  <dt><strong>folder_readme</strong></dt>
+  <dd>README and install guide creation with DQI quality scoring.</dd>
+  <dt><strong>changelog</strong></dt>
+  <dd>Auto-detect recent work, generate formatted changelog entry.</dd>
+  <dt><strong>prompt</strong></dt>
+  <dd>Create or improve prompts using 7 frameworks + CLEAR scoring.</dd>
+  <dt><strong>feature-catalog</strong></dt>
+  <dd>Create or update feature catalog packages.</dd>
+  <dt><strong>testing-playbook</strong></dt>
+  <dd>Create or update manual testing playbook packages.</dd>
+</dl>
 
 #### Utility — 1 Command
 
-| Command | Description |
-|---------|-------------|
-| **agent_router** | Route requests to external AI systems (Gemini, Codex, Claude Code, Copilot) with full identity adoption |
+<dl>
+  <dt><strong>agent_router</strong></dt>
+  <dd>Route requests to external AI systems (Gemini, Codex, Claude Code, Copilot) with full identity adoption.</dd>
+</dl>
 
 
 ---
@@ -551,46 +587,64 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 #### Documentation Skills (2)
 
-| Skill | Description |
-|-------|-------------|
-| **system-spec-kit** | Mandatory orchestrator for all file modifications. 4 doc levels (1-3+), 81 templates, 20 validation rules, 33-tool memory system, 255 feature catalog entries |
-| **sk-doc** | Markdown quality enforcement via DQI scoring, HVR compliance, component scaffolding, README templates, install guide generation |
+<dl>
+  <dt><strong>system-spec-kit</strong></dt>
+  <dd>Mandatory orchestrator for all file modifications. 4 doc levels (1-3+), 81 templates, 20 validation rules, 33-tool memory system, 255 feature catalog entries.</dd>
+  <dt><strong>sk-doc</strong></dt>
+  <dd>Markdown quality enforcement via DQI scoring, HVR compliance, component scaffolding, README templates, install guide generation.</dd>
+</dl>
 
 #### Code Workflow Skills (4)
 
-| Skill | Description |
-|-------|-------------|
-| **sk-code--full-stack** | Stack-agnostic development orchestrator. Auto-detects 7 stacks via marker files. 3 phases: implementation → testing → verification |
-| **sk-code--opencode** | Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON/JSONC). Evidence-based patterns |
-| **sk-code--web** | Frontend orchestrator with 5-phase lifecycle. Mandatory browser testing, DevTools, PageSpeed/Lighthouse targets |
-| **sk-code--review** | Stack-agnostic code review baseline. Baseline + overlay model with mandatory security/correctness minimums. P0/P1/P2 findings |
+<dl>
+  <dt><strong>sk-code--full-stack</strong></dt>
+  <dd>Stack-agnostic development orchestrator. Auto-detects 7 stacks via marker files. 3 phases: implementation → testing → verification.</dd>
+  <dt><strong>sk-code--opencode</strong></dt>
+  <dd>Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON/JSONC). Evidence-based patterns.</dd>
+  <dt><strong>sk-code--web</strong></dt>
+  <dd>Frontend orchestrator with 5-phase lifecycle. Mandatory browser testing, DevTools, PageSpeed/Lighthouse targets.</dd>
+  <dt><strong>sk-code--review</strong></dt>
+  <dd>Stack-agnostic code review baseline. Baseline + overlay model with mandatory security/correctness minimums. P0/P1/P2 findings.</dd>
+</dl>
 
 #### MCP Integration Skills (5)
 
-| Skill | Description |
-|-------|-------------|
-| **mcp-code-mode** | 200+ external tools via single TypeScript interface. 98.7% context reduction, progressive loading, type-safe |
-| **mcp-coco-index** | Semantic code search via vector embeddings across 28+ languages. CLI (`ccc`) and MCP server modes |
-| **mcp-figma** | 18 Figma tools: file access, asset export, design tokens, collaboration, team management |
-| **mcp-chrome-devtools** | Chrome DevTools with 2-mode routing: CLI (`bdg`) for speed, MCP for integration |
-| **mcp-clickup** | ClickUp orchestrator with 2-mode routing: CLI (`cu`) for basic ops, MCP for enterprise features |
+<dl>
+  <dt><strong>mcp-code-mode</strong></dt>
+  <dd>200+ external tools via single TypeScript interface. 98.7% context reduction, progressive loading, type-safe.</dd>
+  <dt><strong>mcp-coco-index</strong></dt>
+  <dd>Semantic code search via vector embeddings across 28+ languages. CLI (<code>ccc</code>) and MCP server modes.</dd>
+  <dt><strong>mcp-figma</strong></dt>
+  <dd>18 Figma tools: file access, asset export, design tokens, collaboration, team management.</dd>
+  <dt><strong>mcp-chrome-devtools</strong></dt>
+  <dd>Chrome DevTools with 2-mode routing: CLI (<code>bdg</code>) for speed, MCP for integration.</dd>
+  <dt><strong>mcp-clickup</strong></dt>
+  <dd>ClickUp orchestrator with 2-mode routing: CLI (<code>cu</code>) for basic ops, MCP for enterprise features.</dd>
+</dl>
 
 #### Cross-AI CLI Skills (4)
 
-| Skill | Description |
-|-------|-------------|
-| **cli-gemini** | Gemini CLI delegation. Real-time web search via Google Search grounding, 1M+ token context |
-| **cli-codex** | Codex CLI with dual models (`gpt-5.4` + `gpt-5.3-codex`), diff-aware review, web browsing, screenshot analysis |
-| **cli-claude-code** | Claude Code CLI with 3 models (Opus/Sonnet/Haiku), extended thinking, structured output |
-| **cli-copilot** | Copilot CLI with 5 models across 3 providers. Explore/Task agents, Autopilot mode, MCP integration |
+<dl>
+  <dt><strong>cli-gemini</strong></dt>
+  <dd>Gemini CLI delegation. Real-time web search via Google Search grounding, 1M+ token context.</dd>
+  <dt><strong>cli-codex</strong></dt>
+  <dd>Codex CLI with dual models (<code>gpt-5.4</code> + <code>gpt-5.3-codex</code>), diff-aware review, web browsing, screenshot analysis.</dd>
+  <dt><strong>cli-claude-code</strong></dt>
+  <dd>Claude Code CLI with 3 models (Opus/Sonnet/Haiku), extended thinking, structured output.</dd>
+  <dt><strong>cli-copilot</strong></dt>
+  <dd>Copilot CLI with 5 models across 3 providers. Explore/Task agents, Autopilot mode, MCP integration.</dd>
+</dl>
 
 #### Other Skills (3)
 
-| Skill | Description |
-|-------|-------------|
-| **sk-deep-research** | Dual-mode autonomous investigation. LEAF cycles with externalized state, convergence detection, pause/resume |
-| **sk-git** | Git workflow orchestrator: worktree setup, conventional commits, PR creation and branch cleanup |
-| **sk-prompt-improver** | Prompt engineering with 7 frameworks, DEPTH methodology, CLEAR scoring (40+/50 pass threshold) |
+<dl>
+  <dt><strong>sk-deep-research</strong></dt>
+  <dd>Dual-mode autonomous investigation. LEAF cycles with externalized state, convergence detection, pause/resume.</dd>
+  <dt><strong>sk-git</strong></dt>
+  <dd>Git workflow orchestrator: worktree setup, conventional commits, PR creation and branch cleanup.</dd>
+  <dt><strong>sk-prompt-improver</strong></dt>
+  <dd>Prompt engineering with 7 frameworks, DEPTH methodology, CLEAR scoring (40+/50 pass threshold).</dd>
+</dl>
 
 
 ---
