@@ -12,6 +12,7 @@ import {
   get_constitutional_memories,
   initializeDb,
 } from '../lib/search/vector-index-store';
+import { getMemoriesByFolder, indexMemoryDeferred } from '../lib/search/vector-index';
 
 function createTempDbPath(label: string): { dir: string; dbPath: string } {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `${label}-`));
@@ -141,5 +142,21 @@ describe('vector-index-store remediation regressions', () => {
     } finally {
       removeTempDir(dir);
     }
+  });
+
+  it('promotes in-memory initialization to the shared connection used by default operations', () => {
+    initializeDb(':memory:');
+
+    indexMemoryDeferred({
+      specFolder: 'specs/test-isolation',
+      filePath: 'fixture.md',
+      title: 'Fixture',
+      encodingIntent: 'document',
+    });
+
+    const results = getMemoriesByFolder('specs/test-isolation');
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({ file_path: 'fixture.md', spec_folder: 'specs/test-isolation' });
   });
 });

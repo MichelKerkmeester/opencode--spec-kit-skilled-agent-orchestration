@@ -51,7 +51,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Targeted Vitest coverage passes for integrity guards and eval-mode search [Evidence: `npm exec --workspace=@spec-kit/mcp-server vitest run tests/ablation-framework.vitest.ts tests/handler-eval-reporting.vitest.ts tests/hybrid-search.vitest.ts` passed twice after the data refresh.]
+- [x] CHK-020 [P0] Targeted Vitest coverage passes for integrity guards and eval-mode search [Evidence: `npm exec --workspace=@spec-kit/mcp-server vitest run tests/ablation-framework.vitest.ts tests/handler-eval-reporting.vitest.ts tests/hybrid-search.vitest.ts` passed with 151 tests after the data refresh and eval DB override changes.]
 - [x] CHK-021 [P0] Refreshed `ground-truth.json` validates with zero chunk-backed or missing IDs against the repo DB [Evidence: SQLite audit after refresh reported `unique_ids=126`, `parent_rows=126`, `chunk_rows=0`, `missing=0`.]
 - [x] CHK-022 [P1] One full ablation rerun completes on the aligned repo DB [Evidence: `SPECKIT_ABLATION=true npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts` produced run `ablation-1774694183830-651d` with baseline `0.32323232323232315`.]
 - [x] CHK-023 [P1] One focused `fts5` ablation rerun completes on the aligned repo DB [Evidence: `SPECKIT_ABLATION=true npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts --channels fts5` produced run `ablation-1774694221880-ef57`.]
@@ -64,7 +64,7 @@ contextType: "general"
 
 - [x] CHK-030 [P0] No secrets or new external endpoints were introduced [Evidence: changes are limited to local SQLite path validation, search options, and test coverage; existing `VOYAGE_API_KEY` usage is unchanged.]
 - [x] CHK-031 [P0] Eval-only behavior is opt-in and does not change live default search behavior [Evidence: truncation bypass is gated behind `evaluationMode: true` and is only wired from ablation callers.]
-- [x] CHK-032 [P1] Active DB provenance is stated in rerun evidence [Evidence: reruns log `Production DB: .../mcp_server/database/context-index.sqlite`; dist DB smoke check separately demonstrates fail-closed behavior.]
+- [x] CHK-032 [P1] Active DB provenance is stated in rerun evidence [Evidence: reruns log `Production DB: .../mcp_server/database/context-index.sqlite`; dist DB smoke check separately demonstrates fail-closed behavior. All 7 MCP configs now point `MEMORY_DB_PATH` at the repo DB.]
 <!-- /ANCHOR:security -->
 
 ---

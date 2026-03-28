@@ -1,96 +1,52 @@
 ---
-title: "Level 2 Templates [template:level_2/README.md]"
-description: "Verification-focused templates for medium complexity changes."
+title: "Packet README: Ablation Benchmark Integrity"
+description: "Close-out index for the ablation benchmark repair packet."
 trigger_phrases:
-  - "level 2"
-  - "checklist"
-  - "verification"
+  - "packet readme"
+  - "ablation benchmark"
+  - "benchmark integrity"
+importance_tier: "high"
 contextType: "general"
 ---
-# Level 2 Templates
+# Ablation Benchmark Integrity
 
-Use for medium-scope work that needs explicit validation.
+This packet captures the repair that made Spec Kit Memory ablation trustworthy again on the repo DB.
 
-## TABLE OF CONTENTS
-<!-- ANCHOR:table-of-contents -->
+## Status
 
-- [1. OVERVIEW](#1--overview)
-- [2. REQUIRED FILES](#2--required-files)
-- [3. LEVEL 2 ADDITIONS](#3--level-2-additions)
-- [4. QUICK START](#4--quick-start)
-- [5. WORKFLOW NOTES](#5--workflow-notes)
-- [6. PHASE DECOMPOSITION](#6--phase-decomposition)
-- [7. RELATED](#7--related)
+- **State**: Complete
+- **Date**: 2026-03-28
+- **Verdict**: FTS5 weight `0.3` is validated on the repaired benchmark path
 
-<!-- /ANCHOR:table-of-contents -->
+## What Changed
 
-## 1. OVERVIEW
-<!-- ANCHOR:overview -->
+- Ablation now fails closed when `ground-truth.json` and the active DB do not share the same parent-memory universe.
+- CLI and MCP ablation adapters now normalize `parentMemoryId ?? row.id`.
+- Evaluation-only mode bypasses confidence truncation and token-budget truncation so `Recall@K` is not clipped by response-budget heuristics.
+- The canonical ground-truth dataset was refreshed against the repo DB and revalidated.
+- MCP handler supports `SPECKIT_EVAL_DB_PATH` override via `withAblationDb()` for eval-only DB swapping.
+- All 7 MCP runtime configs repointed `MEMORY_DB_PATH` from external `~/.codex/memories/` (44 records) to the repo DB (2,417 records). Symlink placed at the old Codex path for backward compatibility.
 
-- Typical size is 100-499 LOC.
-- Quality gates and edge-case tracking are required.
-- Non-functional requirements must be documented.
+## Read First
 
-Escalate to Level 3 for architecture-heavy decisions.
+- `spec.md`: scope, requirements, success criteria
+- `plan.md`: implementation phases and rollback
+- `tasks.md`: execution history and completion state
+- `checklist.md`: verification evidence
+- `implementation-summary.md`: final findings, changed files, rerun results
 
-<!-- /ANCHOR:overview -->
+## Verification Snapshot
 
-## 2. REQUIRED FILES
-<!-- ANCHOR:files -->
+- Full rerun: `ablation-1774694183830-651d`
+- Focused FTS5 rerun: `ablation-1774694221880-ef57`
+- Clean baseline Recall@20: `0.32323232323232315`
+- FTS5 ablated Recall@20: `0.0`
 
-- `spec.md`
-- `plan.md`
-- `tasks.md`
-- `checklist.md`
-- `implementation-summary.md`
+## Remaining Boundary
 
-<!-- /ANCHOR:files -->
+None. All MCP configs now use the repo DB and the known limitation is resolved.
 
-## 3. LEVEL 2 ADDITIONS
-<!-- ANCHOR:additions -->
+## Related Packets
 
-- Verification-first `checklist.md` with P0/P1/P2 priorities.
-- NFR and edge-case sections in `spec.md`.
-- Stronger execution and rollback detail in `plan.md`.
-
-<!-- /ANCHOR:additions -->
-
-## 4. QUICK START
-<!-- ANCHOR:quick-start -->
-
-```bash
-mkdir -p specs/###-feature-name
-cp .opencode/skill/system-spec-kit/templates/level_2/*.md specs/###-feature-name/
-bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-name/
-```
-
-<!-- /ANCHOR:quick-start -->
-
-## 5. WORKFLOW NOTES
-<!-- ANCHOR:workflow-notes -->
-
-- Keep checklist current during implementation.
-- Completion checks run in priority order: P0, then P1, then P2.
-- `implementation-summary.md` is finalized after implementation work.
-
-<!-- /ANCHOR:workflow-notes -->
-
-## 6. PHASE DECOMPOSITION
-<!-- ANCHOR:phase -->
-
-Consider phase decomposition for multi-sprint Level 2 tasks where work naturally divides into ordered stages. Use Gate 3 Option E to target a specific phase child and `/spec_kit:phase` to create the phase structure.
-
-See the Phase System in the [main templates README](../README.md#phase-system) for full details.
-
-<!-- /ANCHOR:phase -->
-
-## 7. RELATED
-<!-- ANCHOR:related -->
-
-- `../level_1/README.md`
-- `../../../../skill/system-spec-kit/templates/level_1/README.md`
-- `../../../../skill/system-spec-kit/templates/level_3/README.md`
-- `../addendum/level2-verify/`
-- `../../../../skill/system-spec-kit/references/validation/validation_rules.md`
-
-<!-- /ANCHOR:related -->
+- `../021-ground-truth-id-remapping/`
+- `../022-spec-doc-indexing-bypass/`

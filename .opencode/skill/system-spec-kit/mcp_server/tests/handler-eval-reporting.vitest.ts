@@ -12,6 +12,8 @@ const mocks = vi.hoisted(() => ({
   mockCheckDatabaseUpdated: vi.fn(),
   mockGetDb: vi.fn(),
   mockGetDbPath: vi.fn(),
+  mockInitializeDb: vi.fn(),
+  mockCloseDb: vi.fn(),
   mockInitHybridSearch: vi.fn(),
   mockHybridSearchEnhanced: vi.fn(),
   mockBm25Search: vi.fn(),
@@ -37,6 +39,8 @@ vi.mock('../core', () => ({
 vi.mock('../lib/search/vector-index', () => ({
   getDb: mocks.mockGetDb,
   getDbPath: mocks.mockGetDbPath,
+  initializeDb: mocks.mockInitializeDb,
+  closeDb: mocks.mockCloseDb,
   vectorSearch: mocks.mockVectorSearch,
 }));
 
@@ -148,10 +152,14 @@ function getData(envelope: Record<string, unknown>): Record<string, unknown> {
 describe('Handler Eval Reporting (007-evaluation)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    delete process.env.SPECKIT_EVAL_DB_PATH;
+    delete process.env.MEMORY_DB_PATH;
 
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
     mocks.mockGetDb.mockReturnValue({ prepare: vi.fn() });
     mocks.mockGetDbPath.mockReturnValue('/tmp/test-context-index.sqlite');
+    mocks.mockInitializeDb.mockReturnValue({ prepare: vi.fn() });
+    mocks.mockCloseDb.mockImplementation(() => undefined);
     mocks.mockInitHybridSearch.mockImplementation(() => undefined);
     mocks.mockHybridSearchEnhanced.mockResolvedValue([]);
     mocks.mockBm25Search.mockReturnValue([]);
@@ -344,6 +352,43 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
           rank: 1,
         },
       ]);
+    });
+
+    it('T006-A10b: SPECKIT_EVAL_DB_PATH temporarily swaps the ablation DB and restores MEMORY_DB_PATH', async () => {
+      const originalMemoryDbPath = '/tmp/original-context-index.sqlite';
+      const overrideDbPath = '/tmp/eval-context-index.sqlite';
+      const originalDb = { prepare: vi.fn(), name: 'original-db' };
+      const overrideDb = { prepare: vi.fn(), name: 'override-db' };
+
+      process.env.MEMORY_DB_PATH = originalMemoryDbPath;
+      process.env.SPECKIT_EVAL_DB_PATH = overrideDbPath;
+
+      mocks.mockGetDb.mockReturnValue(originalDb);
+      mocks.mockGetDbPath
+        .mockReturnValueOnce(originalMemoryDbPath)
+        .mockReturnValueOnce(overrideDbPath);
+      mocks.mockInitializeDb
+        .mockReturnValueOnce(overrideDb)
+        .mockReturnValueOnce(originalDb);
+
+      await evalReporting.handleEvalRunAblation({ channels: ['vector'] });
+
+      expect(mocks.mockCloseDb).toHaveBeenCalledTimes(2);
+      expect(mocks.mockInitializeDb).toHaveBeenNthCalledWith(1);
+      expect(mocks.mockAssertGroundTruthAlignment).toHaveBeenCalledWith(
+        overrideDb,
+        {
+          dbPath: overrideDbPath,
+          context: 'eval_run_ablation',
+        },
+      );
+      expect(mocks.mockInitHybridSearch).toHaveBeenCalledWith(
+        overrideDb,
+        mocks.mockVectorSearch,
+        expect.any(Function),
+      );
+      expect(mocks.mockInitializeDb).toHaveBeenNthCalledWith(2);
+      expect(process.env.MEMORY_DB_PATH).toBe(originalMemoryDbPath);
     });
 
     it('T006-A11: mode=k_sensitivity forwards custom queries and uses raw channel lists', async () => {

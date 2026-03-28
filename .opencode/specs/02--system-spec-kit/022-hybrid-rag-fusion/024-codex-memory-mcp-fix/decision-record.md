@@ -32,14 +32,14 @@ contextType: "implementation"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The Codex-facing `spec_kit_memory` startup failure was fixed with a narrow set of runtime and launcher changes, then a follow-up caveat around spec-doc indexing tests was also fixed. Those fixes lived inside the broader `020-pre-release-remediation` packet, which still intentionally holds the overall `022` program in an open, non-release-ready state.
+The Codex-facing `spec_kit_memory` startup failure was fixed with a narrow set of runtime and launcher changes, and this session also landed a second narrow runtime fix in `vector-index-store` so `initializeDb(':memory:')` or custom-path initialization promotes the active shared DB connection instead of letting later default operations drift back into the persistent live DB. A follow-up caveat around spec-doc indexing tests was also fixed. Those fixes lived inside the broader `020-pre-release-remediation` packet, which still intentionally holds the overall `022` program in an open, non-release-ready state.
 
 We needed a cleaner resume surface for Codex-specific memory MCP work without rewriting the canonical broader remediation packet or pretending the whole program was done.
 
 ### Constraints
 
 - `../020-pre-release-remediation/review/review-report.md` remains the broader remediation source of truth.
-- The new packet must be honest about the difference between a landed narrow slice and an open broader backlog.
+- The new packet must be honest about the difference between a landed narrow slice and broader later-wave follow-on work.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -49,7 +49,7 @@ We needed a cleaner resume surface for Codex-specific memory MCP work without re
 
 **We chose**: Open `024-codex-memory-mcp-fix` as a dedicated Level 3 packet under `022-hybrid-rag-fusion`.
 
-**How it works**: This packet records the already-landed Codex startup stabilization work, records the follow-up caveat fix, and carries forward the broader unresolved runtime, docs, and release-control tasks as a focused backlog. `020` remains the broader packet for the open remediation verdict and the canonical review artifacts.
+**How it works**: This packet records the already-landed Codex startup stabilization work, the in-session DB-isolation fix, the follow-up caveat fix, and the broader unresolved runtime, docs, and release-control work as focused follow-on recommendations. `020` remains the broader packet for the open remediation verdict and the canonical review artifacts.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -73,7 +73,7 @@ We needed a cleaner resume surface for Codex-specific memory MCP work without re
 
 **What improves**:
 - Future sessions get a dedicated packet for Codex memory MCP work.
-- The landed startup fix and the still-open broader backlog stop competing for the same status line.
+- The landed startup fix, DB-isolation fix, and the still-open broader follow-on work stop competing for the same status line.
 
 **What it costs**:
 - Another numbered packet needs to stay in sync with `020`. Mitigation: cross-reference `020` directly in spec, tasks, checklist, and summary.
@@ -83,7 +83,7 @@ We needed a cleaner resume surface for Codex-specific memory MCP work without re
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Readers assume `024` replaces `020` | High | Repeat that `020` remains the broader remediation source of truth |
-| The backlog in `024` grows too large | Medium | Open a new numbered packet if future implementation no longer fits focused Codex remediation |
+| The follow-on recommendations in `024` grow too large | Medium | Open a new numbered packet if future implementation no longer fits focused Codex remediation |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -96,8 +96,8 @@ We needed a cleaner resume surface for Codex-specific memory MCP work without re
 | 1 | **Necessary?** | PASS | The landed Codex slice needed a durable packet instead of remaining buried inside `020` |
 | 2 | **Beyond Local Maxima?** | PASS | We considered extending `020` and using scratch-only notes |
 | 3 | **Sufficient?** | PASS | A focused Level 3 packet is simpler than re-scoping the canonical broader remediation packet |
-| 4 | **Fits Goal?** | PASS | The goal is a clean resume surface and backlog control, not a verdict rewrite |
-| 5 | **Open Horizons?** | PASS | The packet can carry near-term backlog and still hand off to a future numbered packet if scope expands |
+| 4 | **Fits Goal?** | PASS | The goal is a clean resume surface and follow-on control, not a verdict rewrite |
+| 5 | **Open Horizons?** | PASS | The packet can carry near-term follow-on recommendations and still hand off to a future numbered packet if scope expands |
 
 **Checks Summary**: 5/5 PASS
 <!-- /ANCHOR:adr-001-five-checks -->
@@ -109,7 +109,7 @@ We needed a cleaner resume surface for Codex-specific memory MCP work without re
 
 **What changes**:
 - Create a new Level 3 packet under `022-hybrid-rag-fusion` with packet-local docs and `description.json`.
-- Map the landed Codex MCP startup remediation and broader follow-up tasks into that packet without changing the canonical `020` review position.
+- Map the landed Codex MCP startup remediation, DB-isolation remediation, and broader follow-on recommendations into that packet without changing the canonical `020` review position.
 
 **How to roll back**: Revert the `024-codex-memory-mcp-fix` folder if the packet scope is wrong. Keep previously landed runtime fixes separate unless runtime evidence itself is disproved.
 <!-- /ANCHOR:adr-001-impl -->

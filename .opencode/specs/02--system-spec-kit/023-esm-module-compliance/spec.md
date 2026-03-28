@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: ESM Module Compliance"
-description: "Capture the real mcp_server ESM compliance refactor: align package metadata, compiler settings, import specifiers, and follow-on standards docs."
+description: "Decision-complete packet for the pending @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and standards-doc work deferred until runtime proof passes."
 trigger_phrases:
   - "esm module compliance"
   - "mcp_server esm refactor"
@@ -17,11 +17,11 @@ contextType: "architecture"
 
 ### Executive Summary
 
-This spec folder now describes the actual `mcp_server/` ESM compliance refactor rather than a documentation-only wording fix. The TypeScript source tree already prefers `import`/`export` authoring, but the runtime contract is still CommonJS-oriented today: the workspace compiler target is `commonjs`, the `@spec-kit/mcp-server` package does not declare `"type": "module"`, the built entrypoint emits `require(...)` and `exports`, and production code still contains 1,482 extensionless relative imports that are not valid Node ESM specifiers.
+The finished 20-iteration research in `research/research.md` confirms that this packet is not a docs-only cleanup and not a one-package flag flip. The implementation target is a coordinated native ESM migration for `@spec-kit/shared` and `@spec-kit/mcp-server`, while `@spec-kit/scripts` stays a CommonJS package and crosses the boundary through explicit dynamic-import interoperability helpers. Dual-build or conditional-exports is rejected for the first pass and becomes fallback-only if the bounded scripts-side interop refactor proves too invasive.
 
-**Key Decisions**: Treat this as a real code-and-tooling migration for `mcp_server/`, keep `scripts/` on CommonJS unless a later phase intentionally changes it, and update standards docs only after the runtime truth has been established in code.
+**Key Decisions**: move `shared` and `mcp-server` together to package-local native ESM, keep `scripts` on CommonJS as a package, scope scripts-side interop refactors into this migration, and defer standards-doc updates outside this packet until the runtime verification matrix passes.
 
-**Critical Dependencies**: `.opencode/skill/system-spec-kit/tsconfig.json`, `.opencode/skill/system-spec-kit/mcp_server/package.json`, relative import/export paths across `mcp_server/**/*.ts`, and the build/test harness that exercises those entrypoints.
+**Critical Dependencies**: package-local metadata and compiler changes in `shared` and `mcp_server`, scripts-side interoperability helpers, CommonJS-assumption test rewrites, and the exact verification matrix plus highest-risk recent-surface retests captured in `research/research.md`.
 
 ---
 
@@ -44,28 +44,26 @@ This spec folder now describes the actual `mcp_server/` ESM compliance refactor 
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The earlier version of this spec understated the work by treating ESM compliance as a standards-document update. In reality, the codebase is in a mixed state: authoring syntax looks ESM, but the package metadata, compiler settings, emitted JavaScript, and most production-relative imports still align to a CommonJS runtime shape.
+The earlier packet scope was too small. The research run now shows that `@spec-kit/mcp-server` still depends on CommonJS-shaped compiler output, package metadata, emitted artifacts, and sibling-package assumptions, and that `@spec-kit/shared` cannot be left behind as CommonJS if the server becomes truthful native ESM. At the same time, `@spec-kit/scripts` is intentionally pinned to CommonJS and still owns required CLI and workflow surfaces, so the migration has to repair that boundary rather than flatten the whole workspace into one module mode.
 
 ### Purpose
-Turn this spec into an actionable plan for completing the true `mcp_server/` ESM runtime migration and then documenting that final architecture accurately.
+Lock a decision-complete implementation packet that follows the finished research conclusions without overstating progress. This packet should tell the implementer exactly what the first migration pass is, what is explicitly rejected, what must be proven at runtime, and what documentation work remains blocked until that runtime proof exists.
 
 ### Rationale
-Without this correction, future implementation work would be under-scoped. The repo would still ship CommonJS output while the spec incorrectly claims the architecture is already ESM-compliant.
+Without this truth-sync, the packet would keep mixing documentation conclusions, runtime goals, and rejected fallback options. The research is now complete enough to freeze the strategy, ordered phases, verification matrix, and defer rules clearly before runtime code changes begin.
 <!-- /ANCHOR:problem -->
 
 ---
 
-### Current State Evidence
+### Research-Locked Current State
 
-| Artifact | Current State | Refactor Implication |
-|----------|---------------|----------------------|
-| `.opencode/skill/system-spec-kit/tsconfig.json` | Root compiler options still set `"module": "commonjs"` and `"moduleResolution": "node"` | `mcp_server` does not currently compile with a true Node ESM contract |
-| `.opencode/skill/system-spec-kit/mcp_server/package.json` | No `"type": "module"` is declared; `main`, `exports`, and `bin` all point to `.js` files in `dist/` | Node will continue treating emitted `.js` as CommonJS unless package metadata changes |
-| `.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | Built output starts with `"use strict"` and emits `require(...)` and `exports` wrappers | The current runtime artifact is CommonJS, not native ESM |
-| `.opencode/skill/system-spec-kit/mcp_server/**/*.ts` | `mcp_server` still has `1883` relative import/export statements and only `13` `.js`-suffixed ones across source plus tests; the non-test tree still has `0` `.js` relative specifiers | The migration needs a large specifier rewrite and cannot rely on test-only ESM-style imports |
-| `.opencode/skill/system-spec-kit/shared/**/*.ts` | `shared` still has `54` relative import/export statements without Node-valid `.js` specifiers | `mcp_server` cannot become native ESM safely while a heavily imported sibling package stays extensionless and CommonJS-shaped |
-| `.opencode/skill/system-spec-kit/scripts/package.json` and `scripts/**/*.ts` | `scripts` explicitly stays `"type": "commonjs"` and still touches `@spec-kit/shared` / `@spec-kit/mcp-server` in `38` files | The migration must preserve the CommonJS package boundary and add explicit interop instead of flipping the whole workspace |
-| `.opencode/skill/system-spec-kit/mcp_server/core/config.ts` | A live runtime file still reaches into `shared` with a sibling-relative import path (`../../shared/paths`) that resolves today through CommonJS behavior | Native ESM needs package/subpath imports at cross-package boundaries, not repo-relative hops that happen to work in CJS builds |
+| Artifact Area | Research Conclusion | Implementation Meaning |
+|---------------|---------------------|------------------------|
+| `@spec-kit/shared` | Must migrate with `@spec-kit/mcp-server`, not later | Shared package metadata, tsconfig, and relative imports are part of the first pass |
+| `@spec-kit/mcp-server` | Must become truthful native ESM from emitted `dist/*.js` | Package metadata, package-local NodeNext settings, import rewrites, and CommonJS-global cleanup are required |
+| `@spec-kit/scripts` | Must remain `"type": "commonjs"` | Scripts package conversion is out of scope, but scripts-side runtime interoperability work is in scope |
+| Dual-build / conditional exports | Rejected as the first pass | Only reconsider if scripts interop becomes materially too invasive after bounded implementation work |
+| Standards docs outside 023 | Not yet eligible to update | Keep `sk-code--opencode` and other standards surfaces deferred until runtime verification passes |
 
 ---
 
@@ -73,37 +71,36 @@ Without this correction, future implementation work would be under-scoped. The r
 ## 4. SCOPE
 
 ### In Scope
-- Update the spec package in this folder so it reflects the real cross-package migration scope and verification gates
-- Move `shared` and `mcp_server` package metadata and compiler settings to real ESM-compatible runtime contracts
-- Rewrite production relative imports/exports in `shared/**/*.ts` and `mcp_server/**/*.ts` to Node-valid runtime specifiers
-- Replace CommonJS-only runtime assumptions and path-resolution patterns at the `mcp_server` and `scripts` interoperability boundary
-- Replace cross-package relative imports with real package or subpath imports wherever `mcp_server` currently reaches into `shared`
-- Align test files, exact build/typecheck commands, emitted entrypoints, and runtime smoke checks with the chosen mixed-module strategy
-- Update standards documentation only after the runtime migration proves the final architecture
+- Truth-sync this packet to the completed research conclusions in `research/research.md`
+- Migrate `@spec-kit/shared` and `@spec-kit/mcp-server` together to package-local native ESM
+- Update package metadata and package-local TypeScript settings for both packages to Node-aware native ESM
+- Rewrite relative imports and re-exports across `shared/**/*.ts` and `mcp_server/**/*.ts` to runtime-valid ESM specifiers
+- Replace CommonJS-only runtime assumptions inside `mcp_server`, including CommonJS globals, `require(...)` sites, and cross-package relative hops
+- Keep `@spec-kit/scripts` on CommonJS and refactor scripts-side runtime consumers to explicit dynamic-import interoperability boundaries
+- Rewrite tests that currently assert CommonJS emit details or otherwise depend on the old module boundary
+- Re-test the highest-risk recent runtime surfaces first as part of the migration safety sequence
+- Update this packet’s summary and verification state as runtime work progresses
 
 ### Out of Scope
-- Converting the `scripts/` workspace itself to ESM in the same phase
-- Behavior changes unrelated to module loading or path resolution
-- Manual edits to generated `dist/` artifacts without corresponding source changes
-- Starting with dual-build / conditional-exports unless the bounded scripts-interop pass proves that necessary
-- Broad style-guide rewrites outside the module-compliance clarification
+- Converting `@spec-kit/scripts` itself to ESM in this first pass
+- Starting with dual-build or conditional exports for `shared` or `mcp_server`
+- Claiming runtime migration is complete before the exact verification matrix passes
+- Updating standards docs outside 023 before runtime verification passes
+- Broad standards refreshes or architectural wording changes outside this packet while runtime truth is still unproven
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Update | Reframe the spec around the real multi-package runtime migration |
-| `specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Update | Expand the implementation plan for the chosen ESM strategy |
-| `specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Update | Track `shared`, `mcp_server`, and `scripts` interop workstreams |
-| `specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Update | Verify ESM runtime, scripts interop, and doc follow-through |
-| `.opencode/skill/system-spec-kit/shared/package.json` | Update | Align `@spec-kit/shared` package metadata with package-local ESM |
-| `.opencode/skill/system-spec-kit/shared/tsconfig.json` | Update | Introduce package-local Node-aware ESM compiler settings |
-| `.opencode/skill/system-spec-kit/shared/**/*.ts` | Update | Rewrite runtime-relative imports/exports to `.js` specifiers |
-| `.opencode/skill/system-spec-kit/mcp_server/package.json` | Update | Align package metadata and entrypoints with ESM runtime expectations |
-| `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json` | Update | Introduce package-local Node-aware ESM compiler settings |
-| `.opencode/skill/system-spec-kit/mcp_server/**/*.ts` | Update | Rewrite runtime-relative imports/exports, convert cross-package relative imports to package/subpath imports, and fix module-resolution edge cases |
-| `.opencode/skill/system-spec-kit/scripts/**/*.ts` | Update | Preserve CommonJS entrypoints while adding explicit ESM interop helpers in both CLI wrappers and internal runtime modules |
-| `.opencode/skill/sk-code--opencode/SKILL.md` | Update | Document the final module standard after the code refactor lands |
+| `specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Update | Lock the finished research conclusions into the packet narrative |
+| `specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Update | Order the pending runtime work exactly as the research recommends |
+| `specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Update | Track pending work by subsystem and verification boundary |
+| `specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Update | Record strategy locks, pending runtime gates, and defer rules from research |
+| `specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Update | Replace the stale spec-refresh-only story with the finished research sync state |
+| `.opencode/skill/system-spec-kit/shared/**` | Pending runtime work | Package metadata, tsconfig, import rewrite, and export-surface alignment |
+| `.opencode/skill/system-spec-kit/mcp_server/**` | Pending runtime work | Package metadata, tsconfig, import rewrite, CommonJS-global cleanup, and boundary repairs |
+| `.opencode/skill/system-spec-kit/scripts/**` | Pending runtime work | CommonJS-to-ESM interoperability helpers and scripts-side runtime call-site refactors |
+| Standards docs outside `023` | Deferred follow-on | Update only after runtime proof passes |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -115,18 +112,19 @@ Without this correction, future implementation work would be under-scoped. The r
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | `shared` and `mcp_server` use real ESM runtime contracts | Package metadata and package-local compiler settings emit Node-executable ESM rather than CommonJS wrappers |
-| REQ-002 | Production imports/exports are ESM-compatible across both packages | Non-test `shared/**/*.ts` and `mcp_server/**/*.ts` files use runtime-valid relative specifiers, cross-package imports use package/subpath boundaries, and the packages pass typecheck/build verification |
-| REQ-003 | Entrypoints and exports remain launchable after migration | `shared` exports plus `mcp_server` `main`, `exports`, `bin`, and start commands resolve correctly against emitted ESM output |
-| REQ-004 | `scripts/` CommonJS workflows remain intact through explicit interop | `generate-context.js` and other `scripts/` entrypoints continue to work while `@spec-kit/shared` and `@spec-kit/mcp-server/api*` are loaded through approved interop boundaries |
+| REQ-001 | `@spec-kit/shared` and `@spec-kit/mcp-server` migrate together to package-local native ESM | Both packages declare native ESM package metadata, use package-local NodeNext settings, and emit truthful ESM output |
+| REQ-002 | `@spec-kit/scripts` stays CommonJS as a package | `scripts/package.json` remains CommonJS and runtime scripts consumption of `shared` or `mcp-server/api*` crosses explicit interoperability boundaries rather than direct CommonJS `require()` of ESM |
+| REQ-003 | Runtime verification proves the migration, not just source syntax | The exact verification matrix in `research/research.md` passes, including root commands, targeted tests, and direct runtime smokes |
+| REQ-004 | Highest-risk recent surfaces are re-tested first | The migration sequence re-tests the hot recent surfaces called out by research before standards docs outside 023 are updated |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Test harness and local tooling align with the new mixed-module mode | Vitest config, direct test imports, scripts interoperability helpers, and targeted runtime smoke checks pass under the chosen ESM strategy |
-| REQ-006 | Standards docs are updated after runtime truth is established | `sk-code--opencode` and any related ADR text describe the implemented architecture, not the pre-refactor assumption |
-| REQ-007 | Spec folder stays synchronized with the implementation reality | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` reflect actual migration status and evidence |
+| REQ-005 | Dual-build/conditional-exports is rejected for the first pass | The packet treats dual-build as fallback-only and revisits it only if scripts interop proves too invasive |
+| REQ-006 | Test rewrites cover CommonJS-emit assumptions | Module-sensitive tests stop asserting old CommonJS emit details and instead verify the new runtime boundary truthfully |
+| REQ-007 | Standards docs outside 023 stay deferred until runtime proof passes | No standards-doc update is treated as complete until the runtime verification matrix succeeds |
+| REQ-008 | Packet docs stay synchronized with `research/research.md` | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` reflect the finished research while keeping runtime implementation pending |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -134,22 +132,20 @@ Without this correction, future implementation work would be under-scoped. The r
 <!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
-- **SC-001**: `shared` and `mcp_server` build to native ESM entrypoints instead of CommonJS `require(...)` wrappers
-- **SC-002**: Non-test relative imports/exports under `shared/**/*.ts` and `mcp_server/**/*.ts` no longer rely on extensionless specifiers
-- **SC-003**: `scripts` CommonJS entrypoints continue to work while loading `@spec-kit/shared` and `@spec-kit/mcp-server/api*` through explicit interoperability helpers
-- **SC-004**: The exact verification matrix in `research/research.md` passes after migration, including `node dist/context-server.js` and `node scripts/dist/memory/generate-context.js --help`
-- **SC-005**: Standards documentation is updated to match the final runtime architecture
-<!-- /ANCHOR:success-criteria -->
-
----
+- **SC-001**: `shared` and `mcp_server` build to native ESM entrypoints instead of CommonJS wrappers
+- **SC-002**: `scripts` remains a CommonJS package but proves scripts-side interoperability with the migrated ESM sibling packages
+- **SC-003**: The exact verification matrix from `research/research.md` passes with the required root commands and targeted smokes
+- **SC-004**: The highest-risk recent surfaces are re-tested first and remain stable after the module migration
+- **SC-005**: Standards docs outside 023 remain deferred until the runtime proof exists, then update from the verified implementation rather than from speculation
 
 ### Acceptance Scenarios
 
-1. **Given** `shared` and `mcp_server` still emit CommonJS today, **when** package-local Node-aware ESM settings and package metadata are updated, **then** their emitted `dist/*.js` entrypoints should ship as native ESM without `require(...)` wrappers.
-2. **Given** production files still contain extensionless relative imports, **when** the import graphs are migrated, **then** non-test `shared/**/*.ts` and `mcp_server/**/*.ts` files should use runtime-valid ESM specifiers.
-3. **Given** `scripts` must remain CommonJS, **when** sibling packages flip to ESM, **then** scripts-owned runtime callers should continue working through explicit interoperability helpers instead of direct `require()` of ESM packages.
-4. **Given** package metadata, runtime imports, and boundary loaders change together, **when** the exact verification matrix runs, **then** `node dist/context-server.js`, `node scripts/dist/memory/generate-context.js --help`, and targeted tests should still resolve and execute successfully.
-5. **Given** the runtime migration is complete, **when** standards docs are refreshed, **then** `sk-code--opencode` and related spec artifacts should describe the final architecture instead of the pre-refactor assumption.
+1. **Given** `shared` and `mcp_server` are still CommonJS-shaped today, **when** the first implementation pass lands, **then** both packages should move together to truthful native ESM rather than splitting the boundary.
+2. **Given** `scripts` must remain CommonJS, **when** sibling packages flip to ESM, **then** scripts-owned runtime consumers should use explicit dynamic-import interoperability helpers instead of direct `require()` of ESM packages.
+3. **Given** dual-build is not the first-pass strategy, **when** interop work begins, **then** the bounded scripts interop refactor should be attempted before any fallback to dual-build is considered.
+4. **Given** recent runtime surfaces are already hot, **when** verification begins, **then** the first re-tests should cover the highest-risk recent surfaces called out by research.
+5. **Given** runtime verification is still pending, **when** standards docs outside 023 are reviewed, **then** they should stay deferred until the runtime matrix passes.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
@@ -158,67 +154,57 @@ Without this correction, future implementation work would be under-scoped. The r
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Widespread import-specifier churn creates noisy diffs and broken edge paths | High | Migrate in phases, prefer scripted edits where possible, and verify barrels/re-exports separately |
-| Risk | Workspace-level CJS and ESM settings interact in unexpected ways | High | Isolate `shared` and `mcp_server` package-local ESM changes, keep `scripts/` explicitly CommonJS, and smoke-test both entrypoint families |
-| Risk | Test helpers pass while production entrypoints still emit CommonJS | Medium | Inspect built `dist/context-server.js` directly instead of relying on source syntax alone |
-| Risk | `scripts` CommonJS callers break when sibling packages flip to ESM | High | Convert runtime consumers to explicit `await import(...)` helper boundaries and add focused interoperability regression tests |
-| Dependency | `@modelcontextprotocol/sdk` entrypoints already use `.js` ESM specifiers | Green | Use current SDK import style as the baseline for runtime-compatible imports |
-| Dependency | Existing package `exports` and CLI `bin` wiring | Yellow | Update `shared` export maps plus `mcp_server` metadata together with emitted file shape and smoke-test startup |
+| Risk | Scripts-side interoperability work is larger than expected | High | Attempt the bounded explicit-loader refactor first and consider dual-build only if that path proves materially too invasive |
+| Risk | `shared` and `mcp_server` drift if migrated separately | High | Treat them as one package-boundary change set and keep the sequence locked |
+| Risk | Recent hot runtime areas regress under new ESM path semantics | High | Re-test the highest-risk recent surfaces first, especially the areas touched by `f10fb98`, `ca15faf`, `85078af`, and `6da69a9` |
+| Risk | Tests keep asserting CommonJS emit details and hide true runtime issues | Medium | Rewrite module-sensitive tests to runtime-truth assertions and add the targeted strengthened gates from research |
+| Dependency | `research/research.md` sections 4-9 | Green | Source of truth for strategy, rejected options, ordered phases, verification matrix, and retest priorities |
+| Dependency | `@spec-kit/scripts` package boundary | Yellow | The package must stay CommonJS even while sibling packages move to native ESM |
+
+### Highest-Risk Recent Surfaces To Re-Test First
+
+- `mcp_server/handlers/memory-save.ts`
+- `mcp_server/handlers/memory-index.ts`
+- `mcp_server/handlers/shared-memory.ts`
+- `mcp_server/lib/search/vector-index-store.ts`
+- `mcp_server/lib/session/session-manager.ts`
+- `scripts/memory/generate-context.ts`
+- `scripts/core/workflow.ts`
 <!-- /ANCHOR:risks -->
-
----
-
-### Refactor Workstreams
-
-### Workstream 1: Module-System Boundary
-- Apply the locked package-local NodeNext strategy to `shared` and `mcp_server`
-- Keep `scripts/` explicitly isolated so CommonJS workflows do not break accidentally
-
-### Workstream 2: Import Graph Migration
-- Rewrite production relative imports and re-exports in `shared` and `mcp_server` to runtime-valid specifiers
-- Audit barrel files and deep `../` imports that are easy to miss during bulk edits
-
-### Workstream 3: Verification
-- Prove the emitted `shared` and `mcp_server` entrypoints are ESM
-- Re-run the exact build/typecheck/tests and boundary smoke checks after the import graphs and package metadata change
-
-### Workstream 4: Follow-On Documentation
-- Update standards docs and any shared ADR text after the runtime state is verified
-- Keep this spec package and implementation summary synchronized with actual results
 
 ---
 
 ## L2: EDGE CASES
 
-### Module Resolution
-- Barrel exports may compile cleanly but fail at runtime if re-export specifiers stay extensionless
-- `scripts` CommonJS consumers cannot use unchanged static `require()` calls against ESM sibling packages
-- Cross-package relative imports from `mcp_server` into `shared` need to become package/subpath imports before the runtime can be considered boundary-safe
-- JSON imports and package-internal path aliases need verification under the final ESM strategy
+### Module Boundary
+- `mcp_server` cannot safely flip alone while `shared` stays CommonJS-shaped
+- `scripts` must not silently fall back to direct CommonJS `require()` of ESM siblings
+- Cross-package relative hops, especially from `mcp_server` into `shared`, need package or subpath boundaries instead of CommonJS-friendly sibling resolution
 
-### Runtime Entrypoints
-- `shared` exports plus `mcp_server` `main`, `exports`, and `bin` all target `.js` files that currently execute as CommonJS
-- `node dist/context-server.js` must remain launchable after the migration
+### Runtime Assumptions
+- CommonJS globals in `mcp_server` must be replaced with native ESM-safe equivalents
+- Dist-sensitive bridge files and scripts-owned runtime entrypoints need explicit scrutiny under emitted ESM output
+- Tests that currently assert CommonJS output shape need rewrites before they can be trusted as migration proof
 
-### Test Boundary
-- Some tests already import `.js` paths, which can mask production files that still use extensionless imports
-- Vitest config may require small adjustments once package/module settings change
+### Documentation Boundary
+- Standards docs outside 023 should not be updated early just because the research is complete
+- This packet must stay implementation-pending until runtime code changes and verification actually land
 
 ---
 
 <!-- ANCHOR:questions -->
 ## 8. OPEN QUESTIONS
 
-- No unresolved strategy questions remain from the research run.
-- The implementation decision is locked: `shared` and `mcp_server` move together to package-local native ESM with `module: "nodenext"`, `moduleResolution: "nodenext"`, and `"type": "module"`.
-- `scripts` stays `"type": "commonjs"` and must consume ESM sibling packages only through explicit interoperability helpers.
-- Standards-doc updates should ship only after the runtime verification matrix passes.
+- No strategy question remains open. `research/research.md` locks the first-pass decision.
+- The only explicit fallback trigger is this: if the bounded scripts-side interoperability refactor proves materially too invasive, revisit dual-build then, not before.
+- Standards-doc updates outside 023 remain intentionally deferred until runtime verification passes.
 <!-- /ANCHOR:questions -->
 
 ---
 
 ### Related Documents
 
+- **Research Source of Truth**: See `research/research.md`
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

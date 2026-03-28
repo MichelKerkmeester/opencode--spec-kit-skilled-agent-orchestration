@@ -2,6 +2,8 @@
 // MODULE: Eval Reporting
 // ────────────────────────────────────────────────────────────────
 
+import path from 'path';
+
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import {
@@ -81,6 +83,62 @@ function initializeEvalHybridSearch(database: ReturnType<typeof vectorIndex.getD
   const graphSearchFn = createUnifiedGraphSearchFn(database);
   initHybridSearch(database, vectorIndex.vectorSearch, graphSearchFn);
   return graphSearchFn;
+}
+
+function resolveEvalDbPath(): string | null {
+  const configuredPath = process.env.SPECKIT_EVAL_DB_PATH?.trim();
+  if (!configuredPath) {
+    return null;
+  }
+
+  return path.resolve(process.cwd(), configuredPath);
+}
+
+async function withAblationDb<T>(
+  run: (database: NonNullable<ReturnType<typeof vectorIndex.getDb>>, dbPath: string) => Promise<T>,
+): Promise<T> {
+  const overrideDbPath = resolveEvalDbPath();
+  const activeDb = vectorIndex.getDb();
+
+  if (!overrideDbPath) {
+    if (!activeDb) {
+      throw new MemoryError(
+        ErrorCodes.DATABASE_ERROR,
+        'Database not initialized. Server may still be starting up.',
+        {}
+      );
+    }
+    return run(activeDb, vectorIndex.getDbPath());
+  }
+
+  const currentDbPath = path.resolve(vectorIndex.getDbPath());
+  if (currentDbPath === overrideDbPath) {
+    if (!activeDb) {
+      throw new MemoryError(
+        ErrorCodes.DATABASE_ERROR,
+        'Database not initialized. Server may still be starting up.',
+        {}
+      );
+    }
+    return run(activeDb, currentDbPath);
+  }
+
+  const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+  vectorIndex.closeDb();
+  process.env.MEMORY_DB_PATH = overrideDbPath;
+
+  try {
+    const overrideDb = vectorIndex.initializeDb();
+    return await run(overrideDb, vectorIndex.getDbPath());
+  } finally {
+    vectorIndex.closeDb();
+    if (previousMemoryDbPath === undefined) {
+      delete process.env.MEMORY_DB_PATH;
+    } else {
+      process.env.MEMORY_DB_PATH = previousMemoryDbPath;
+    }
+    vectorIndex.initializeDb();
+  }
 }
 
 function buildRawFusionLists(
@@ -182,65 +240,57 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     );
   }
 
-  const db = vectorIndex.getDb();
-  if (!db) {
-    throw new MemoryError(
-      ErrorCodes.DATABASE_ERROR,
-      'Database not initialized. Server may still be starting up.',
-      {}
-    );
-  }
-
-  try {
-    assertGroundTruthAlignment(db, {
-      dbPath: vectorIndex.getDbPath(),
-      context: 'eval_run_ablation',
-    });
-  } catch (error: unknown) {
-    throw new MemoryError(
-      ErrorCodes.INVALID_PARAMETER,
-      error instanceof Error ? error.message : String(error),
-      { dbPath: vectorIndex.getDbPath() },
-    );
-  }
-
-  initializeEvalHybridSearch(db);
-
   const channels = normalizeChannels(args.channels as string[] | undefined);
   const recallK = typeof args.recallK === 'number' && Number.isFinite(args.recallK)
     ? Math.max(1, Math.floor(args.recallK))
     : 20;
 
-  const searchFn: AblationSearchFn = async (query, disabledChannels) => {
-    const channelFlags = toHybridSearchFlags(disabledChannels);
-    const embedding = await generateQueryEmbedding(query);
+  const report = await withAblationDb(async (db, dbPath) => {
+    try {
+      assertGroundTruthAlignment(db, {
+        dbPath,
+        context: 'eval_run_ablation',
+      });
+    } catch (error: unknown) {
+      throw new MemoryError(
+        ErrorCodes.INVALID_PARAMETER,
+        error instanceof Error ? error.message : String(error),
+        { dbPath },
+      );
+    }
 
-    const searchOptions = {
-      // Use recallK, not hardcoded 20
-      limit: recallK,
-      useVector: channelFlags.useVector,
-      useBm25: channelFlags.useBm25,
-      useFts: channelFlags.useFts,
-      useGraph: channelFlags.useGraph,
-      triggerPhrases: channelFlags.useTrigger ? undefined : [],
-      forceAllChannels: true,
-      evaluationMode: true,
+    initializeEvalHybridSearch(db);
+
+    const searchFn: AblationSearchFn = async (query, disabledChannels) => {
+      const channelFlags = toHybridSearchFlags(disabledChannels);
+      const embedding = await generateQueryEmbedding(query);
+
+      const searchOptions = {
+        limit: recallK,
+        useVector: channelFlags.useVector,
+        useBm25: channelFlags.useBm25,
+        useFts: channelFlags.useFts,
+        useGraph: channelFlags.useGraph,
+        triggerPhrases: channelFlags.useTrigger ? undefined : [],
+        forceAllChannels: true,
+        evaluationMode: true,
+      };
+
+      const results = await hybridSearchEnhanced(query, embedding, searchOptions);
+      return results.map((row, index) => ({
+        memoryId: Number(
+          (row as Record<string, unknown>).parentMemoryId ?? row.id
+        ),
+        score: row.score,
+        rank: index + 1,
+      }));
     };
 
-    const results = await hybridSearchEnhanced(query, embedding, searchOptions);
-    return results.map((row, index) => ({
-      memoryId: Number(
-        (row as Record<string, unknown>).parentMemoryId ?? row.id
-      ),
-      score: row.score,
-      rank: index + 1,
-    }));
-  };
-
-  const report = await runAblation(searchFn, {
-    channels,
-    groundTruthQueryIds: args.groundTruthQueryIds,
-    recallK,
+    return runAblation(searchFn, {
+      channels,
+      groundTruthQueryIds: args.groundTruthQueryIds,
+      recallK,
+    });
   });
 
   if (!report) {

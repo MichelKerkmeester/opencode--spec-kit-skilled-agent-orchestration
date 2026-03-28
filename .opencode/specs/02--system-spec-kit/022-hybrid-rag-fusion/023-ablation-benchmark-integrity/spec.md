@@ -103,17 +103,17 @@ Restore a benchmark path that either runs against an aligned parent-memory datas
 - **SC-002**: A clean rerun no longer reports the unexplained `baseline Recall@20 = 0.0101` collapse.
 - **SC-003**: Full and focused post-fix reruns are reproducible from exact commands and DB paths.
 - **SC-004**: The final FTS5 0.3 recommendation is backed by a benchmark path that is explicitly marked trustworthy.
-<!-- /ANCHOR:success-criteria -->
-
----
-
-## L2: ACCEPTANCE SCENARIOS
 
 ### Acceptance Scenarios
-- **Scenario 1**: Running ablation on the repo DB with the refreshed ground truth succeeds and records a baseline against parent-memory IDs only.
-- **Scenario 2**: Running ablation against the current dist DB fails immediately with a provenance error instead of storing misleading metrics.
-- **Scenario 3**: Evaluation-mode search returns whatever candidate count the live fusion stack produced without reporting `budgetTruncated=true`.
-- **Scenario 4**: Removing FTS5 on the aligned repo DB produces a consistent delta in both the full run and the focused rerun.
+
+**Given** the repo DB and refreshed `ground-truth.json` are aligned to the same parent-memory universe, **when** a full ablation runs, **then** it records Recall@20 against parent-memory IDs only and no longer collapses to the unexplained `0.0101` baseline.
+
+**Given** the current Codex dist DB does not share the refreshed parent-memory universe, **when** ablation starts against that DB, **then** it fails immediately with a provenance error instead of storing misleading metrics.
+
+**Given** evaluation mode is enabled for ablation search, **when** a query would previously have been clipped by confidence or token-budget heuristics, **then** the benchmark still reports `budgetTruncated=false` and scores the full candidate window produced by the retrieval stack.
+
+**Given** the aligned repo DB benchmark is rerun with and without FTS5, **when** the full and focused reruns complete, **then** both runs show the same direction of impact for the FTS5 channel.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 

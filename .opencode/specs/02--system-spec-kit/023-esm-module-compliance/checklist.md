@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: ESM Module Compliance"
-description: "Verification gates for the real mcp_server ESM compliance refactor."
+description: "Verification gates for the pending shared plus mcp_server native ESM migration, with scripts retained as CommonJS and standards docs deferred until runtime proof."
 trigger_phrases:
   - "esm checklist"
   - "mcp_server esm verification"
@@ -29,9 +29,11 @@ contextType: "architecture"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Current-state evidence distinguishes authoring syntax from runtime module mode [EVIDENCE: spec.md section 3 documents the compiler, package, dist, import-pattern, and package-boundary baseline]
-- [x] CHK-010 [P1] Spec, plan, tasks, and checklist are synchronized to the real refactor scope [EVIDENCE: spec.md sections 4-7 plus the updated plan/tasks/checklist now describe the same `shared` + `mcp_server` ESM migration with `scripts` CommonJS interoperability]
-- [x] CHK-011 [P1] Final module strategy is selected for `shared` and `mcp_server` [EVIDENCE: research/research.md section 4 locks package-local NodeNext plus explicit `scripts` interoperability boundaries]
+- [x] CHK-001 [P0] Current-state evidence distinguishes authoring syntax from runtime module mode [EVIDENCE: `research/research.md` locks the baseline and `spec.md` sections 3-7 now mirror it]
+- [x] CHK-010 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` are synchronized to the finished 20-iteration research [EVIDENCE: packet docs now consistently reference `research/research.md` as source of truth and keep runtime implementation pending]
+- [x] CHK-011 [P1] First-pass module strategy is locked: `@spec-kit/shared` plus `@spec-kit/mcp-server` migrate together, `@spec-kit/scripts` stays CommonJS [EVIDENCE: `research/research.md` recommendation and `spec.md` requirements/plan phases match]
+- [x] CHK-012 [P1] Dual-build or conditional exports is explicitly rejected as the first pass and preserved only as fallback if scripts interop proves too invasive [EVIDENCE: `research/research.md` rejected-options guidance and `plan.md` Phases 3/7 rollback rules]
+- [x] CHK-013 [P1] Standards-doc updates outside 023 remain deferred until runtime verification passes [EVIDENCE: `spec.md` scope and `plan.md` Phase 4 defer downstream standards docs]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -39,8 +41,9 @@ contextType: "architecture"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare ESM-compatible runtime contracts
-- [ ] CHK-003 [P0] Package-local compiler settings emit ESM for `shared` and `mcp_server`
+- [ ] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare truthful native ESM runtime contracts
+- [ ] CHK-003 [P0] Package-local compiler settings emit native ESM for `shared` and `mcp_server`
+- [ ] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings
 - [ ] CHK-021 [P2] Guardrails exist to prevent new extensionless ESM-breaking imports
 <!-- /ANCHOR:code-quality -->
 
@@ -49,9 +52,11 @@ contextType: "architecture"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-004 [P0] Non-test relative imports/exports under `shared/**/*.ts` and `mcp_server/**/*.ts` are Node ESM compatible, and cross-package imports use package/subpath boundaries instead of sibling-relative hops
-- [ ] CHK-005 [P0] Built `dist/context-server.js` and emitted `shared` surfaces no longer depend on CommonJS `require(...)` / `exports`
-- [ ] CHK-006 [P0] The exact verification matrix passes, including `npm run --workspaces=false typecheck`, `npm run --workspaces=false test:cli`, workspace-targeted builds/tests, and targeted Vitest runs
+- [ ] CHK-005 [P0] Non-test relative imports and exports under `shared/**/*.ts` and `mcp_server/**/*.ts` are Node ESM compatible, and cross-package imports use package or subpath boundaries instead of sibling-relative hops
+- [ ] CHK-006 [P0] Built `dist/context-server.js` and emitted `shared` surfaces no longer depend on CommonJS `require(...)` / `exports`
+- [ ] CHK-007 [P0] The exact verification matrix from `research/research.md` passes, including `npm run --workspaces=false typecheck`, `npm run --workspaces=false test:cli`, workspace-targeted builds/tests, targeted Vitest runs, and direct runtime smokes
+- [ ] CHK-008 [P0] Highest-risk recent surfaces are re-tested first before downstream standards docs are touched
+- [ ] CHK-009 [P0] Scripts interoperability proof exists and is treated as required, not optional, including `node scripts/dist/memory/generate-context.js --help`, scripts interop tests, and scripts-owned API loading paths
 <!-- /ANCHOR:testing -->
 
 ---
@@ -68,9 +73,9 @@ contextType: "architecture"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-012 [P1] `scripts/` CommonJS workflows continue to work, including `node scripts/dist/memory/generate-context.js --help`, internal scripts-module interoperability, and scripts-side loading of `@spec-kit/shared` / `@spec-kit/mcp-server/api*`
-- [ ] CHK-013 [P1] `sk-code--opencode` and related decision docs match the implemented runtime
-- [ ] CHK-014 [P1] Final `implementation-summary.md` records verification evidence after code migration
+- [x] CHK-014 [P1] The packet documents scripts interoperability proof as mandatory and keeps runtime completion claims out until that proof exists [EVIDENCE: `spec.md` requirements/success criteria plus `tasks.md` T008-T013]
+- [ ] CHK-015 [P1] Final `implementation-summary.md` records runtime migration evidence after the code change actually lands
+- [ ] CHK-016 [P1] Standards docs outside 023 are updated from the verified runtime state after CHK-007 through CHK-009 pass
 <!-- /ANCHOR:docs -->
 
 ---
@@ -89,9 +94,9 @@ contextType: "architecture"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | 1/6 |
-| P1 Items | 7 | 2/7 |
-| P2 Items | 3 | 0/3 |
+| P0 Items | 8 | 1/8 |
+| P1 Items | 8 | 6/8 |
+| P2 Items | 2 | 0/2 |
 
 **Verification Date**: 2026-03-28
 <!-- /ANCHOR:summary -->

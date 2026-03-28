@@ -1,9 +1,9 @@
 ---
-title: "Implementation Summary: ESM Module Compliance Spec Refresh"
-description: "This pass upgraded the spec package itself so it now describes the real mcp_server ESM-runtime migration instead of a docs-only standards correction."
+title: "Implementation Summary: ESM Module Compliance Packet Sync"
+description: "Two-stage packet summary: the first pass corrected scope, and the second pass on 2026-03-28 locked the implementation-pending strategy from the finished 20-iteration research."
 trigger_phrases:
   - "implementation summary"
-  - "esm spec refresh"
+  - "esm packet sync"
   - "mcp_server esm analysis"
 importance_tier: "standard"
 contextType: "architecture"
@@ -21,8 +21,9 @@ contextType: "architecture"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 023-esm-module-compliance |
-| **Completed** | 2026-03-24 |
+| **Last Synced** | 2026-03-28 |
 | **Level** | 2 |
+| **Runtime Migration Status** | Pending |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,22 +31,25 @@ contextType: "architecture"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This pass upgraded the spec package itself. You can now see the actual `mcp_server` migration scope in one place instead of the earlier docs-only framing. The folder now calls out the CommonJS compiler target, missing package metadata, CommonJS `dist/` output, and the scale of the relative-import rewrite that a true ESM migration will require.
+This packet has now gone through two documentation-sync stages, but the runtime migration itself is still not implemented.
 
-### Spec Package Refresh
+### Stage 1: Scope Correction
 
-The spec, plan, tasks, checklist, and description metadata now describe a real runtime refactor. That means future implementation work is grounded in the current compiler and package reality rather than the assumption that `import` / `export` syntax alone already made the server ESM-compliant.
+The earlier pass corrected the packet away from a standards-only framing and re-established that this feature is a real runtime migration problem. That first stage made the packet honest about the current CommonJS reality and stopped treating ESM compliance as a docs-only cleanup.
 
-### Files Changed
+### Stage 2: Research-Locked Strategy Sync on 2026-03-28
+
+The second pass incorporated the finished 20-iteration `research/research.md` outcome and locked the implementation strategy. The packet now states clearly that `@spec-kit/shared` and `@spec-kit/mcp-server` migrate together to package-local native ESM, `@spec-kit/scripts` stays CommonJS as a package, scripts-side interoperability refactors are in scope, dual-build is rejected as the first pass, and standards docs outside 023 stay deferred until runtime verification passes.
+
+### Files Updated In This Packet
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Modified | Reframed the feature around the real runtime migration and added evidence |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Modified | Expanded the execution plan to cover toolchain, imports, verification, and docs |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Modified | Replaced docs-only tasks with concrete migration workstreams |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Modified | Added verification gates for runtime ESM compliance |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/description.json` | Modified | Updated the spec metadata to match the new scope |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Created | Made the level-2 spec folder structurally complete and recorded this documentation pass |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Modified | Locked the top-level strategy, scope boundary, and migration risks to the finished research |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Modified | Reordered the work into the research-backed phase sequence and captured the exact verification matrix and fallback rule |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Modified | Regrouped pending work by `shared`, `mcp_server`, scripts interop, test rewrites, high-risk retests, and deferred standards docs |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Modified | Distinguished completed strategy-lock items from still-pending runtime proof requirements |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Modified | Replaced the stale refresh-only story with the two-stage packet history |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -53,7 +57,7 @@ The spec, plan, tasks, checklist, and description metadata now describe a real r
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-I compared the current spec docs against the real runtime evidence in `tsconfig.json`, `package.json`, built `dist/context-server.js`, import-path patterns, and test/config files. I attempted CocoIndex first because this part of the codebase is concept-heavy, but the local `ccc` CLI failed at startup due to a missing native profiler module, so the evidence set was gathered with direct file reads and `rg`-based audits instead. No runtime code changed in this pass.
+I used `research/research.md` as the source of truth and synchronized only the packet markdown around it. The update was intentionally documentation-only: it locked decisions, phase ordering, task grouping, checklist gates, and deferral rules without claiming that any runtime package metadata, imports, loaders, or tests were already migrated.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -63,9 +67,11 @@ I compared the current spec docs against the real runtime evidence in `tsconfig.
 
 | Decision | Why |
 |----------|-----|
-| Reframe the spec from a standards-only change to a real runtime migration | The emitted server artifact and package/compiler settings are still CommonJS today |
-| Keep `scripts/` out of the immediate migration scope | The memory CLI should stay stable while `mcp_server` moves first |
-| Add `implementation-summary.md` now | Level-2 spec folders validate more cleanly when the summary file exists, and this pass materially changed the spec package |
+| Keep the packet implementation-pending | The research is complete, but the runtime migration and verification matrix are not |
+| Migrate `shared` and `mcp_server` together | The research concluded that a one-package flip would leave an unsafe boundary |
+| Keep `scripts` CommonJS and refactor interoperability instead of flipping the package | That is the smallest first-pass change that preserves the scripts package contract |
+| Reject dual-build as the first pass | The research only allows it as fallback if scripts interop proves materially too invasive |
+| Defer standards docs outside 023 | Standards should be updated from verified runtime behavior, not from planning intent |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,12 +81,11 @@ I compared the current spec docs against the real runtime evidence in `tsconfig.
 
 | Check | Result |
 |-------|--------|
-| Current-state config audit | PASS: confirmed `system-spec-kit/tsconfig.json` still targets `commonjs` and `node` resolution |
-| Package metadata audit | PASS: confirmed `mcp_server/package.json` does not declare `"type": "module"` |
-| Emitted artifact inspection | PASS: confirmed `dist/context-server.js` still emits `require(...)` and `exports` wrappers |
-| Import-pattern inventory | PASS: confirmed 1,482 non-test relative imports/exports still omit `.js`, with only 14 explicit `.js` specifiers |
-| CocoIndex semantic search | FAIL: local `ccc` CLI crashes on startup because `sentry_cpu_profiler-darwin-arm64-141.node` is missing |
-| Runtime build/test commands | SKIPPED: this was a documentation-only pass; no runtime code changed |
+| Source-of-truth alignment | PASS: packet content now follows `research/research.md` rather than the earlier refresh-only framing |
+| Scope boundary | PASS: runtime migration remains pending and standards docs outside 023 remain deferred |
+| Strategy lock | PASS: the packet now records the coordinated `shared` plus `mcp_server` ESM migration, required scripts interop, and fallback-only dual-build rule |
+| Runtime migration evidence | PENDING: no runtime package, loader, or test changes were implemented in this packet sync |
+| Strict spec validation | PASS: the packet validates cleanly after the markdown sync |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -88,6 +93,7 @@ I compared the current spec docs against the real runtime evidence in `tsconfig.
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Runtime migration still pending** This summary covers the spec-folder refresh only. The actual `mcp_server` code and package refactor has not been executed yet.
-2. **CocoIndex CLI is unavailable in this environment** Semantic code search could not be used until the local `ccc` installation issue is fixed or another search path is chosen.
+1. **Runtime code changes are still pending** This packet now describes the implementation strategy accurately, but it does not claim the migration has shipped.
+2. **Standards docs outside 023 remain deferred** Those updates should only happen after the verification matrix passes against the real runtime changes.
+3. **This summary is packet-local** `research/research.md` remains unchanged and continues to carry the full 20-iteration evidence set.
 <!-- /ANCHOR:limitations -->

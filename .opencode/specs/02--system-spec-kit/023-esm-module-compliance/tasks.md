@@ -1,6 +1,6 @@
 ---
 title: "Tasks: ESM Module Compliance"
-description: "Task breakdown for the real mcp_server ESM compliance refactor and the follow-on standards updates."
+description: "Subsystem-grouped worklist for the pending shared plus mcp_server native ESM migration and the deferred standards-doc follow-on."
 trigger_phrases:
   - "esm tasks"
   - "mcp_server esm migration tasks"
@@ -32,9 +32,9 @@ contextType: "architecture"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-### Analysis and Spec Refresh
+### Packet Sync
 
-- [x] T000 Refresh the spec package with current-state evidence - WHY: the previous docs understated the work by framing this as a standards-only change - Acceptance: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` describe the real runtime migration scope and verification needs
+- [x] T000 Sync the Level 2 packet to the finished 20-iteration research - WHY: implementation work should start from the locked strategy, not the older docs-only framing - Acceptance: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` match `research/research.md` while still marking runtime migration as pending
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -42,19 +42,38 @@ contextType: "architecture"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-### Toolchain and Package Alignment
+### `@spec-kit/shared` Metadata, Config, and Import Rewrite
 
-- [ ] T001 Implement the locked package-local NodeNext strategy in `shared` and `mcp_server` compiler config - WHY: source syntax alone does not change the runtime module system - Acceptance: package-local `tsconfig` files emit ESM for both packages without flipping the workspace root
-- [ ] T002 Update `.opencode/skill/system-spec-kit/shared/package.json` exports and metadata - WHY: Node needs package metadata that matches the emitted module format - Acceptance: shared public surfaces resolve correctly under native ESM
-- [ ] T003 Update `.opencode/skill/system-spec-kit/mcp_server/package.json` entrypoints and metadata - WHY: Node needs package metadata that matches the emitted module format - Acceptance: `main`, `exports`, and `bin` resolve correctly under the chosen ESM runtime
-- [ ] T004 Preserve `scripts/` CommonJS behavior through explicit interoperability loaders - WHY: the memory CLI and scripts-owned entrypoints must keep working while sibling packages migrate - Acceptance: `scripts/` runtime expectations stay stable without direct `require()` of ESM sibling packages
+- [ ] T001 Update `shared/package.json` to package-local native ESM metadata and truthful exports - WHY: `shared` cannot stay CommonJS-shaped if it migrates with `mcp_server` - Acceptance: package metadata matches native ESM runtime behavior
+- [ ] T002 Apply package-local TypeScript settings for `shared` ESM emit - WHY: authoring syntax alone does not change emitted runtime mode - Acceptance: `shared` emits native ESM without forcing the whole workspace to flip
+- [ ] T003 Rewrite production `shared` imports and exports to runtime-valid ESM specifiers - WHY: Node ESM requires explicit runtime-valid relative specifiers - Acceptance: non-test `shared` sources no longer depend on extensionless relative imports/exports
 
-### Source Migration
+### `@spec-kit/mcp-server` Metadata, Config, Import Rewrite, and CommonJS Cleanup
 
-- [ ] T005 Rewrite non-test relative imports/exports in `shared/**/*.ts` - WHY: Node ESM requires runtime-valid relative specifiers in every emitted sibling package - Acceptance: shared production files no longer rely on extensionless relative imports/exports
-- [ ] T006 Rewrite non-test relative imports/exports in `mcp_server/**/*.ts` - WHY: Node ESM requires runtime-valid relative specifiers - Acceptance: production server files no longer rely on extensionless relative imports/exports
-- [ ] T007 Replace cross-package relative imports and CommonJS-only globals in `mcp_server` runtime files - WHY: package metadata alone does not fix ESM-incompatible code shape or sibling-boundary leaks - Acceptance: high-risk files such as `v-rule-bridge.ts`, `memory-crud-health.ts`, `core/config.ts`, and `lib/errors/core.ts` resolve paths and modules safely under ESM and use package/subpath imports across package boundaries
-- [ ] T008 Normalize barrel exports, deep relative paths, scripts-side interop call sites, and dist-sensitive test imports/assertions - WHY: re-export chains, internal CommonJS callers, and CommonJS-emit assertions are common hidden breakage points during ESM migration - Acceptance: barrel files, internal scripts modules, nested imports, and module-sensitive tests resolve the same paths as production code
+- [ ] T004 Update `mcp_server/package.json` `type`, `main`, `exports`, and `bin` for native ESM - WHY: Node needs runtime metadata that matches the emitted package contract - Acceptance: public package surfaces reflect the locked ESM strategy
+- [ ] T005 Apply package-local TypeScript settings for `mcp_server` ESM emit - WHY: `mcp_server` must emit truthful native ESM rather than CommonJS wrappers - Acceptance: emitted server entrypoints are native ESM
+- [ ] T006 Rewrite production `mcp_server` imports and exports to runtime-valid ESM specifiers - WHY: emitted runtime files must resolve under Node ESM rules - Acceptance: non-test `mcp_server` sources no longer depend on extensionless relative imports/exports
+- [ ] T007 Replace cross-package relative imports and CommonJS-only runtime assumptions in `mcp_server` - WHY: the server cannot rely on sibling-relative CommonJS behavior after the migration - Acceptance: package/subpath imports replace cross-package relative hops and CommonJS globals/path assumptions are removed from production runtime files
+
+### `@spec-kit/scripts` CommonJS Interoperability Work
+
+- [ ] T008 Keep `scripts/package.json` CommonJS while introducing explicit dynamic-import interoperability helpers - WHY: `scripts` must remain CommonJS as a package while consuming ESM siblings safely - Acceptance: scripts-owned runtime consumers no longer depend on direct CommonJS `require()` of ESM sibling packages
+- [ ] T009 Refactor scripts-side loaders, bridges, and API entrypoints to use the explicit interoperability boundary - WHY: package-level CommonJS retention is only safe if every affected call site crosses the new boundary correctly - Acceptance: `scripts -> shared` and `scripts -> mcp_server/api*` flows resolve through the new loader pattern
+
+### Test Rewrites for Old CommonJS-Emit Assumptions
+
+- [ ] T010 Rewrite module-sensitive tests that currently assert CommonJS output details - WHY: tests anchored to old emit shape can hide real runtime breakage after the migration - Acceptance: targeted suites assert runtime-truth behavior instead of `require(...)` / `exports` wrappers
+- [ ] T011 Add or update scripts interop tests where current coverage is insufficient - WHY: scripts interoperability proof is required, not optional - Acceptance: scripts-owned tests exercise the explicit interop helpers and failing paths meaningfully
+
+### Highest-Risk Retest Surfaces
+
+- [ ] T012 Re-test the hottest recent runtime surfaces first - WHY: research identified these as the most likely regression zones under ESM path changes - Acceptance: the first targeted retests cover `memory-save.ts`, `memory-index.ts`, `shared-memory.ts`, `vector-index-store.ts`, `session-manager.ts`, `scripts/memory/generate-context.ts`, and `scripts/core/workflow.ts`
+- [ ] T013 Run the exact research verification matrix after subsystem work lands - WHY: packet closure depends on runtime proof, not just a successful import rewrite - Acceptance: all required root commands, workspace commands, targeted Vitest runs, runtime smokes, and scripts interop proofs from `research/research.md` pass
+
+### Deferred Standards-Doc Sync After Runtime Proof
+
+- [ ] T014 Update standards docs outside 023 only after runtime verification passes - WHY: standards should describe the verified implementation rather than the intended strategy - Acceptance: downstream standards docs remain deferred until T013 is complete, then sync from the final runtime truth
+- [ ] T015 Refresh `implementation-summary.md` with final runtime evidence at actual completion time - WHY: the packet summary should record what shipped and what passed, not only the planning state - Acceptance: summary captures the eventual runtime migration evidence without overstating progress early
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -62,12 +81,9 @@ contextType: "architecture"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-### Verification and Documentation
+### Packet Completion Gate
 
-- [ ] T009 Run deterministic root and workspace verification commands - WHY: emitted runtime behavior matters more than source syntax and the root scripts require `--workspaces=false` in this environment - Acceptance: the exact matrix from `research/research.md` passes for typecheck, CLI, build, and targeted Vitest coverage
-- [ ] T010 Run direct boundary smoke tests for `node dist/context-server.js`, scripts CLI entrypoints, and high-risk bridge handlers - WHY: package metadata and tests can still pass while runtime path resolution breaks - Acceptance: direct startup and targeted handler/interoperability smokes prove the mixed-module boundary is safe
-- [ ] T011 Update `.opencode/skill/sk-code--opencode/SKILL.md` and any related decision docs - WHY: standards should describe the architecture that actually shipped - Acceptance: docs no longer present CommonJS-only assumptions for `shared` / `mcp_server`
-- [ ] T012 Refresh `implementation-summary.md` with final migration evidence - WHY: the spec folder should preserve how the refactor was completed and verified - Acceptance: summary records what changed, what passed, and any remaining limitations
+- [ ] T016 Close the packet only after runtime verification, scripts interoperability proof, and deferred standards-doc sync all exist - WHY: research made those gates mandatory - Acceptance: no implementation-pending caveat remains once the packet is actually completed
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,10 +91,10 @@ contextType: "architecture"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All migration tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remain for the chosen phase boundary
-- [ ] Runtime verification proves ESM output and CommonJS interoperability, not just ESM-style source syntax
-- [ ] Standards docs and the spec package match the final implementation
+- [ ] All pending runtime migration tasks marked `[x]`
+- [ ] `@spec-kit/shared` plus `@spec-kit/mcp-server` native ESM migration is proven by runtime verification
+- [ ] `@spec-kit/scripts` interoperability proof exists while the package remains CommonJS
+- [ ] Standards docs outside 023 are updated only after runtime proof passes
 <!-- /ANCHOR:completion -->
 
 ---
@@ -89,4 +105,5 @@ contextType: "architecture"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+- **Research Source of Truth**: See `research/research.md`
 <!-- /ANCHOR:cross-refs -->

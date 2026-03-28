@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-28T10:36:08.288Z",
+  "generated": "2026-03-28T11:25:06.639Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -743,7 +743,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -755,7 +755,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -766,7 +766,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -778,7 +778,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -790,7 +790,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1143,7 +1143,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -2011,7 +2011,7 @@
         "indexing",
         "bypass"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
@@ -2023,7 +2023,7 @@
         "benchmark",
         "integrity"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
@@ -2036,7 +2036,7 @@
         "mcp",
         "fix"
       ],
-      "lastUpdated": "2026-03-28T10:40:55.000Z"
+      "lastUpdated": "2026-03-28T10:58:59.000Z"
     },
     {
       "specFolder": "02--system-spec-kit/023-esm-module-compliance",
@@ -2048,7 +2048,7 @@
         "module",
         "compliance"
       ],
-      "lastUpdated": "2026-03-28T10:35:07.600Z"
+      "lastUpdated": "2026-03-28T11:04:46.051Z"
     },
     {
       "specFolder": "02--system-spec-kit/999-sqlite-to-turso",
@@ -4018,7 +4018,7 @@
         "path",
         "migration"
       ],
-      "lastUpdated": "2026-03-28T10:36:08.288Z"
+      "lastUpdated": "2026-03-28T11:25:06.639Z"
     },
     {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",

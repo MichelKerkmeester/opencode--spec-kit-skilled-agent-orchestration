@@ -311,6 +311,26 @@ let sqlite_vec_available_flag = true;
 // C1 FIX: Key connections by resolved DB path to prevent cross-store data corruption
 const db_connections = new Map<string, Database.Database>();
 
+function set_active_database_connection(
+  connection: Database.Database,
+  target_path: string,
+  vec_available: boolean,
+): void {
+  db = connection;
+  db_path = target_path;
+  sqlite_vec_available_flag = vec_available;
+
+  if (target_path === ':memory:') {
+    return;
+  }
+
+  try {
+    fs.chmodSync(target_path, DB_PERMISSIONS);
+  } catch (err: unknown) {
+    console.warn(`[vector-index] Could not set permissions on ${target_path}: ${get_error_message(err)}`);
+  }
+}
+
 /** Accessor for sqlite_vec_available (used by other modules) */
 export function sqlite_vec_available(): boolean {
   return sqlite_vec_available_flag;
@@ -585,7 +605,10 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   // C1 FIX: Check connection map for existing connection to this path
   const resolved_target = path.resolve(target_path);
   const cached_conn = db_connections.get(resolved_target);
-  if (cached_conn) return cached_conn;
+  if (cached_conn) {
+    set_active_database_connection(cached_conn, target_path, sqlite_vec_available_flag);
+    return cached_conn;
+  }
 
   const dir = path.dirname(target_path);
   if (!fs.existsSync(dir)) {
@@ -647,16 +670,7 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
     throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
   }
 
-  if (!custom_path) {
-    db = new_db;
-    db_path = target_path;
-    sqlite_vec_available_flag = vec_available;
-    try {
-      fs.chmodSync(target_path, DB_PERMISSIONS);
-    } catch (err: unknown) {
-      console.warn(`[vector-index] Could not set permissions on ${target_path}: ${get_error_message(err)}`);
-    }
-  }
+  set_active_database_connection(new_db, target_path, vec_available);
 
   // C1 FIX: Only cache in connection map after all validation passes
   db_connections.set(resolved_target, new_db);

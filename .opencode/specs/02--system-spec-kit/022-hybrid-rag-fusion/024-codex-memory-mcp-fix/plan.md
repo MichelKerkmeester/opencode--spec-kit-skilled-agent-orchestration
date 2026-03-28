@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Codex Memory MCP Fix"
-description: "This plan creates a focused Level 3 packet that backfills the landed Codex startup remediation and turns the remaining broader cleanup into an explicit execution backlog."
+description: "This plan updates the focused Level 3 packet so it truthfully captures the landed Codex startup remediation, the in-session DB-isolation fix, and the remaining broader cleanup as explicit follow-on recommendations."
 trigger_phrases:
   - "codex memory mcp fix plan"
   - "startup remediation packet plan"
@@ -26,11 +26,11 @@ contextType: "implementation"
 | **Language/Stack** | Markdown, JSON, TypeScript, JSON/TOML launcher configs |
 | **Framework** | Spec-kit packet workflow plus Node-based MCP server |
 | **Storage** | SQLite (`context-index.sqlite`) and packet-local spec docs |
-| **Testing** | Packet validation plus previously verified build, Vitest, full core suite, and startup smoke evidence |
+| **Testing** | Packet validation plus focused Vitest, full core suite, and alignment verification evidence from this session |
 
 ### Overview
 
-This turn does not land new runtime code. It creates a new Level 3 packet that retroactively documents the already-landed Codex `spec_kit_memory` startup remediation, records the caveat fix that followed it, and sets up a broader backlog so future runtime or docs work can resume from a clean scope boundary instead of extending `020-pre-release-remediation`.
+This packet update truth-syncs a focused Level 3 remediation slice after the session landed new runtime code in `vector-index-store.ts` and its regression test. The packet now records the already-landed Codex startup remediation, the newly landed DB-isolation fix for `initializeDb(':memory:')` and custom-path flows, the caveat fix that followed it, and the broader follow-on recommendations so future runtime or docs work can resume from a clean scope boundary instead of extending `020-pre-release-remediation`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -40,13 +40,13 @@ This turn does not land new runtime code. It creates a new Level 3 packet that r
 
 ### Definition of Ready
 - [x] Problem statement is clear: Codex startup failure and broader remediation ambiguity are both defined.
-- [x] Success criteria are measurable: packet exists, validates, and carries concrete next tasks.
+- [x] Success criteria are measurable: packet exists, validates, and carries concrete next-wave recommendations.
 - [x] Dependencies are identified: `020` review artifacts, launcher configs, startup logger behavior, and caveat-fix surfaces.
 
 ### Definition of Done
 - [x] New `024` packet scaffold created under `022-hybrid-rag-fusion`.
 - [x] Spec, plan, tasks, checklist, decision record, summary, README, and `description.json` are populated with live context.
-- [ ] Future runtime backlog items are executed and re-verified in a later wave.
+- [x] Landed runtime work and still-open broader follow-ons are described separately and truthfully.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -64,16 +64,16 @@ This turn does not land new runtime code. It creates a new Level 3 packet that r
 
 | Rule ID | Rule | Why |
 |---------|------|-----|
-| AI-SCOPE-001 | Keep this packet focused on the Codex MCP slice and its next backlog | Prevents `024` from quietly absorbing the whole `020` program |
+| AI-SCOPE-001 | Keep this packet focused on the Codex MCP slice and its recorded next-wave recommendations | Prevents `024` from quietly absorbing the whole `020` program |
 | AI-TRUTH-001 | Distinguish landed narrow fixes from the still-open broader remediation program | Prevents false release-readiness signals |
 | AI-EVID-001 | Only mark packet checks complete when packet validation or current-session evidence exists | Keeps checklist state auditable |
-| AI-HANDOFF-001 | Push future runtime work into explicit tasks instead of vague notes | Makes the next implementation wave immediately actionable |
+| AI-HANDOFF-001 | Push future runtime work into explicit follow-on recommendations instead of vague notes | Makes the next implementation wave immediately actionable |
 
 ### Status Reporting Format
 
-- Start state: which packet surfaces are being edited and which broader backlog items are being carried forward.
+- Start state: which packet surfaces are being edited and which broader follow-on items are being carried forward.
 - Work state: which spec docs changed and whether validator issues remain.
-- End state: validator result, metadata checks, and any still-open warnings or follow-up tasks.
+- End state: validator result, metadata checks, and any later-wave follow-on recommendations that remain outside packet completion.
 
 ### Blocked Task Protocol
 
@@ -90,17 +90,18 @@ This turn does not land new runtime code. It creates a new Level 3 packet that r
 Focused remediation packet with retroactive evidence capture and forward-looking backlog control.
 
 ### Key Components
-- **Retroactive Evidence Layer**: Documents the landed writable DB-path fix, stderr-only logging fix, and caveat-fix surfaces.
-- **Backlog Mapping Layer**: Pulls the relevant broader unresolved work out of `020` and expresses it as concrete to-do tasks.
+- **Retroactive Evidence Layer**: Documents the landed writable DB-path fix, stderr-only logging fix, DB-isolation fix, and caveat-fix surfaces.
+- **Backlog Mapping Layer**: Pulls the relevant broader unresolved work out of `020` and expresses it as concrete later-wave recommendations.
 - **Packet Identity Layer**: Adds `description.json`, README context, and cross-references so resume flows can find this packet directly.
 
 ### Data Flow
 
 ```
 current remediation evidence
-    -> packet creation in 024
+    -> runtime fix lands in vector-index-store + regression tests
+    -> packet truth-sync in 024
     -> packet-local validation
-    -> future resume from tasks/checklist
+    -> closed packet plus remaining follow-on recommendations
     -> later runtime and docs execution waves
 ```
 <!-- /ANCHOR:architecture -->
@@ -111,19 +112,19 @@ current remediation evidence
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Retrospective Evidence Capture
-- [x] Confirm the landed Codex startup remediation and the follow-up caveat fix surfaces.
+- [x] Confirm the landed Codex startup remediation, the DB-isolation fix surfaces, and the follow-up caveat fix surfaces.
 - [x] Read `020-pre-release-remediation` to identify which broader items still matter for this focused packet.
 - [x] Decide to create a new numbered packet instead of expanding `020`.
 
 ### Phase 2: Packet Authoring
-- [x] Create `024-codex-memory-mcp-fix` from the Level 3 scaffold.
-- [x] Replace template placeholders with packet-specific content.
-- [x] Add `description.json` for packet identity and indexing.
+- [x] Update the existing `024-codex-memory-mcp-fix` packet so it reflects the landed runtime fix truthfully.
+- [x] Replace stale packet claims with current session root cause, fix, and verification evidence.
+- [x] Keep `description.json` and packet identity aligned to the same remediation slice.
 
 ### Phase 3: Packet Verification And Handoff
-- [ ] Validate the packet locally and fix any anchor/template drift.
-- [ ] Leave future runtime, docs, and release-control work queued as explicit tasks.
-- [ ] Save memory and handoff context after a later implementation wave, not during this packet-creation turn.
+- [x] Validate the packet locally and fix any anchor/template drift.
+- [x] Leave future runtime, docs, and release-control work captured as explicit follow-on recommendations outside this packet's completion gate.
+- [x] Document that any later implementation wave owns its own memory-save and handoff lifecycle.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -134,8 +135,8 @@ current remediation evidence
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Packet validation | Ensure the new Level 3 packet is template-compliant | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh --no-recursive` |
-| Runtime reference check | Preserve earlier evidence for build, targeted Vitest, full `test:core`, and startup smoke | Existing current-session verification results |
-| Future runtime verification | Re-run targeted suites and smoke checks when backlog items land | `npm run build`, `npx vitest`, `npm run test:core`, manual startup smoke |
+| Runtime evidence check | Capture the root-cause fix and current-session verification evidence in packet docs | `npx vitest run tests/vector-index-store-remediation.vitest.ts tests/handler-memory-list-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-search.vitest.ts`; `npm run test:core`; `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` |
+| Future runtime verification | Re-run focused suites plus broader checks when later-wave implementation lands | focused `npx vitest`, `npm run test:core`, alignment drift, manual startup smoke as needed |
 | Metadata validation | Confirm `description.json` parses and matches packet slug | `jq empty` |
 <!-- /ANCHOR:testing -->
 
@@ -148,7 +149,8 @@ current remediation evidence
 |------------|------|--------|-------------------|
 | `../020-pre-release-remediation/review/review-report.md` | Internal | Green | Without it, backlog mapping could drift from the canonical broader review |
 | Codex and sibling launcher config surfaces | Internal | Green | Future parity work cannot be scoped honestly |
-| Existing runtime evidence from the current remediation session | Internal | Green | Packet would lose the factual basis for its retroactive claims |
+| Existing runtime evidence from the current remediation session | Internal | Green | Packet would lose the factual basis for its remediation claims |
+| `vector-index-store.ts` active-connection promotion change | Internal | Green | The packet would not be able to describe the DB-isolation fix accurately |
 | Spec-kit validator | Internal | Green | Packet cannot be closed as usable if validation fails |
 <!-- /ANCHOR:dependencies -->
 
@@ -196,9 +198,9 @@ Phase 1 (evidence capture) -> Phase 2 (packet authoring) -> Phase 3 (validation 
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [x] Packet scope stays limited to retroactive documentation and backlog control.
-- [x] No new runtime code is bundled into this turn.
-- [ ] Future runtime waves must capture fresh evidence before they mark backlog items complete.
+- [x] Packet scope stays limited to the narrow Codex/spec_kit_memory remediation slice and packet truth-sync.
+- [x] Landed runtime code is described accurately without expanding the packet into unrelated backlog implementation.
+- [x] Future runtime waves must capture fresh evidence before they mark later-wave follow-on items complete.
 
 ### Rollback Procedure
 1. Remove or revert the `024-codex-memory-mcp-fix` packet if its scope is wrong.
@@ -220,10 +222,10 @@ Phase 1 (evidence capture) -> Phase 2 (packet authoring) -> Phase 3 (validation 
 020 canonical review
       |
       v
-024 packet scope -> tasks/checklist -> future runtime/docs wave
-      |
-      v
-packet validation
+landed runtime evidence -> 024 packet scope -> tasks/checklist -> future runtime/docs wave
+                              |
+                              v
+                       packet validation
 ```
 
 ### Dependency Matrix
@@ -260,9 +262,9 @@ packet validation
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
 | M1 | Packet scaffold created | `024` exists with Level 3 files | Completed in this turn |
-| M2 | Packet content backfilled | All placeholders removed and backlog captured | Completed in this turn |
+| M2 | Packet content truth-synced | Stale docs-only claims removed and remediation evidence captured | Completed in this turn |
 | M3 | Packet validated | `validate.sh --no-recursive` passes | Completed in this turn |
-| M4 | Future runtime wave starts | One or more pending backlog items begin implementation with fresh evidence | Later remediation session |
+| M4 | Follow-on recommendations captured | Later-wave runtime, docs, and release-control work is recorded without blocking packet closeout | Completed in this turn |
 <!-- /ANCHOR:milestones -->
 
 ---
