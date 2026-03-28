@@ -33,9 +33,8 @@
   - [3.6 GATE SYSTEM](#36-gate-system)
   - [3.7 CODE MODE MCP](#37-code-mode-mcp)
 - [4. CONFIGURATION](#4-configuration)
-- [5. USAGE EXAMPLES](#5-usage-examples)
-- [6. FAQ](#6-faq)
-- [7. RELATED DOCUMENTS](#7-related-documents)
+- [5. FAQ](#5-faq)
+- [6. RELATED DOCUMENTS](#6-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -50,13 +49,13 @@
 
 AI coding assistants have amnesia. Every session starts from zero. You explain your architecture Monday. By Wednesday, it is gone. Every decision, every trade-off, every carefully reasoned choice -- lost the moment the conversation window closes. This framework fixes that.
 
-OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. Think of it like giving your AI assistant a filing cabinet, a long-term memory and a team of specialists -- instead of one forgetful generalist that starts from scratch every time you open a new chat window.
+OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. It gives your AI assistant a filing cabinet, long-term memory and a team of specialists -- instead of one forgetful generalist starting from scratch every session.
 
 The framework adds three layers on top of the base platform:
 
-1. **Structured documentation** (Spec Kit) -- every file change gets a spec folder that records what changed, why and how. Like a lab notebook for software.
-2. **Cognitive memory** (MCP server) -- a local-first memory engine that stores decisions, context and project history in a searchable database. Like a personal librarian who remembers every conversation.
-3. **Coordinated agents** -- 12 specialized agents with domain expertise, routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist instead of doing everything alone.
+1. **Structured documentation** (Spec Kit) -- every file change gets a spec folder recording what changed, why and how. Like a lab notebook for software.
+2. **Cognitive memory** (MCP server) -- a local-first memory engine storing decisions, context and project history in a searchable database. Like a personal librarian who remembers every conversation.
+3. **Coordinated agents** -- 12 specialized agents routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist.
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
@@ -71,22 +70,6 @@ The framework adds three layers on top of the base platform:
 - [x] **4 Runtimes** -- OpenCode, Codex CLI, Claude Code, Gemini CLI
 - [x] **81 Templates** -- CORE + ADDENDUM v2.2
 - [x] **255 Feature Catalog** -- Across 21 categories
-
-
-### How This Compares
-
-| Capability | Manual Approach | Basic AI Chat | OpenCode Framework |
-|------------|----------------|--------------|-------------------|
-| **Documentation** | Ad hoc, inconsistent | None | Templated spec folders at 4 levels with 20-rule validation |
-| **Context across sessions** | Copy-paste from notes | Stateless | Persistent semantic memory with session recovery |
-| **Search** | Ctrl+F in files | Single-pass vector | 5-channel hybrid fused with Reciprocal Rank Fusion |
-| **"Why" queries** | Grep through commit messages | Not possible | Causal graph with 6 relationship types and community detection |
-| **Save quality** | Accept everything | Accept everything | 3-layer gate: structure, semantic sufficiency, duplicate check |
-| **Forgetting curve** | Everything treated equally | None | FSRS power-law decay tuned by content type and importance tier |
-| **Query understanding** | Keyword match | Keyword match | Intent classification (7 types), complexity routing, query decomposition |
-| **Agent coordination** | One generalist | One generalist | 12 specialists with gate-driven routing and skill auto-loading |
-| **Access control** | Filesystem permissions | None | Shared memory spaces with deny-by-default membership |
-| **Evaluation** | Manual testing | None | Ablation studies, 12-metric computation (MRR, NDCG), synthetic ground truth |
 
 
 ### How It All Connects
@@ -175,7 +158,7 @@ cd ../../../../
 
 ### Set Up Embedding Provider
 
-The memory engine needs an embedding provider to turn text into searchable vectors. Choose one:
+Choose an embedding provider:
 
 ```bash
 # Option A: Voyage AI (recommended -- best quality)
@@ -218,14 +201,12 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 ### 3.1 SPEC KIT DOCUMENTATION
 
-The Spec Kit is a documentation framework that enforces structured spec folders for every file change. Think of it like a lab notebook for software -- before you run an experiment, you write down what you plan to do. Before an AI modifies code, it documents what it plans to change.
-
-Every conversation that modifies files gets a spec folder. Gate 3 in the project's AGENTS.md enforces this -- the AI assistant asks "Which spec folder?" before any file modification begins. The only exemptions are single-file fixes under 5 characters (typo or whitespace corrections).
+The Spec Kit enforces structured spec folders for every file-modifying conversation. Gate 3 requires a spec folder answer before any file modification begins (only typo/whitespace fixes under 5 characters are exempt).
 
 
 #### Documentation Levels
 
-Not every change needs the same amount of paperwork. A one-line bug fix does not need an architecture decision record. A multi-system refactor does. Spec Kit uses four levels to match documentation depth to task complexity.
+Documentation depth scales with task complexity.
 
 | Level | LOC Guidance | Required Files | When to Use |
 |-------|-------------|----------------|-------------|
@@ -266,7 +247,7 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 
 #### Phase Decomposition
 
-When a feature is too large for a single spec folder, use phase decomposition to split it into parent and child folders. The parent holds the overall specification. Each child holds one phase of the work.
+Phase decomposition splits large features into a parent spec folder (overall specification) and child folders (one per phase).
 
 ```text
 specs/022-big-feature/             # Parent spec folder
@@ -293,38 +274,6 @@ The `validate.sh` script runs 20 rules against a spec folder and reports what pa
 - **Exit 2** — Errors found. Must fix before claiming completion.
 
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
-
-
-#### CORE + ADDENDUM Template Architecture (v2.2)
-
-Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each level inherits from the level below and adds what it needs -- like building blocks that stack.
-
-```text
-Level 1:  CORE only               → 4 files, ~455 LOC
-Level 2:  CORE + L2-VERIFY        → 6 files, ~875 LOC  (adds checklist.md)
-Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.md)
-Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance extensions)
-```
-
-**Core Templates (4):**
-- **`spec-core.md`** — What the feature is, why it exists, requirements and success criteria
-- **`plan-core.md`** — How to implement: architecture, phases, testing strategy
-- **`tasks-core.md`** — Step-by-step task breakdown with status tracking
-- **`impl-summary-core.md`** — Post-implementation record of what changed and verification results
-
-**Addendum Layers (4):**
-- **`level2-verify/`** (Level 2+) — Quality gates, NFRs, edge cases, checklist template
-- **`level3-arch/`** (Level 3+) — Architecture decisions, ADRs, risk matrix
-- **`level3plus-govern/`** (Level 3+) — Enterprise governance, AI protocols, sign-off sections
-- **`phase/`** (Any level) — Phase decomposition headers for parent/child folders
-
-**Special Templates (4):**
-- **`context_template.md`** (~26K) — Memory context template with standard ANCHOR sections
-- **`research.md`** (~20K) — Deep research template for autonomous investigation
-- **`handover.md`** — Session continuity template for handing off to the next AI
-- **`debug-delegation.md`** — Debug delegation template for fresh-perspective troubleshooting
-
-Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. Validation checks for required anchors, proper section ordering and template version alignment.
 
 
 #### Scripts and Validation
@@ -361,9 +310,7 @@ For the full spec folder workflow, template architecture (81 templates) and vali
 
 ### 3.2 MEMORY ENGINE
 
-The Memory Engine is a local-first cognitive memory system built as an MCP server. Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task -- except this librarian never forgets, understands synonyms, tracks cause-and-effect chains and knows which notes are getting stale.
-
-**How it works:** Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
+The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
 
 The memory engine uses a 222-feature pipeline developed across a 19-phase refinement program. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
@@ -388,194 +335,70 @@ Lower layers load only when needed. L1 is always available. L2 loads for any sea
 
 #### 3.2.1 HYBRID SEARCH
 
-When you search, the system checks five sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet, the recommendation board and the "related topics" corkboard all at the same time.
+Every search checks five channels at once:
 
-- **Vector** — Compares meaning via embeddings (Voyage AI 1024d). Good for finding related content even when words differ.
-- **FTS5** — Full-text search on exact words and phrases. Good for specific terms and error messages.
-- **BM25** — Keyword relevance scoring. Good for ranking when you know roughly what you want.
-- **Causal Graph** — Follows cause-and-effect links between memories. Good for "Why did we choose this?" questions.
-- **Degree** — Scores by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5). Good for finding important hub decisions (capped to prevent over-influence).
+- **Vector** — Semantic similarity via embeddings. Finds related content when words differ.
+- **FTS5** — Full-text search on exact words and phrases.
+- **BM25** — Keyword relevance scoring.
+- **Causal Graph** — Follows cause-and-effect links between memories.
+- **Degree** — Scores by graph connectivity, weighted by edge type.
 
-**Reciprocal Rank Fusion (RRF)** combines all channel results using `1/(K + rank)`. K is tuned per query intent through sensitivity analysis across values {10, 20, 40, 60, 80, 100, 120}. A memory that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
-
-**Channel min-representation** guarantees every active channel gets at least one result in the final set, preventing a single dominant channel from drowning out useful evidence.
-
-**Quality-aware 3-tier fallback** escalates automatically when results are weak:
-
-- **Tier 1** — Vector only. Default fast path for simple queries.
-- **Tier 2** — Vector + BM25. Kicks in when results fall below confidence floor.
-- **Tier 3** — All 5 channels. Activates when Tier 2 still returns poor results.
-
-**Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items. **Evidence gap detection** (TRM Z-score) flags when retrieved memories do not adequately cover the query and suggests broadening the search. **Calibrated overlap bonus** rewards memories found by multiple channels at once. **Tool-level TTL cache** remembers recent results for 60 seconds with automatic invalidation on writes.
+**Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. The system automatically escalates from vector-only to all 5 channels when confidence is low, truncates weak results, and ensures every active channel is represented.
 
 
 #### 3.2.2 SEARCH PIPELINE
 
-Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
-
-**Stage 1 -- Gather** candidates from active channels in parallel. Constitutional-tier memories always inject regardless of score.
-
-**Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
-
-- **Co-activation boost** `+0.25` — Memories co-occurring with matched results get a lift. Fan-effect `1/sqrt(neighbors)` prevents hub bias.
-- **FSRS decay** `multiplicative` — Adjusts score by memory retrievability. Recently accessed memories score higher.
-- **Interference penalty** `-0.08/neighbor` — Suppresses near-identical memory clusters (>0.75 Jaccard similarity).
-- **Cold-start boost** `+0.15 max` — Fresh memories (<48h) get `0.15 * exp(-elapsed/12)`, 12h half-life, capped at 0.95.
-- **Session recency** `cap 0.20` — Memories accessed in the current session get a recency bump.
-- **Causal 2-hop** `variable` — Memories 1-2 hops from causal neighbors get a contextual boost.
-- **Intent weights** `variable` — Each of 7 task intents has its own channel weight profile.
-- **Channel min-rep** `0.005` — Floor ensures each active channel has at least one result.
-
-All channel scores are normalized to 0-1 before fusion so no single channel wins because its scale is bigger.
-
-**Stage 3 -- Rerank** using a cross-encoder model that runs locally via node-llama-cpp (GGUF format). No cloud API needed. If your machine lacks VRAM, the reranker gracefully skips and Stage 2 order stands. MPAB (Multi-Pass Aggregation with Boundary) collapses individual chunks back to their parent memory -- the best chunk counts most, but documents with multiple matching chunks rank higher than a single lucky hit.
-
-**Stage 4 -- Filter and annotate**. Enforces score immutability (no score changes after Stage 2). Applies state filtering by minimum state parameter. Annotates results with confidence labels (high/medium/low) and feature flag states.
+Every search passes through 4 stages: **Gather** (parallel retrieval from active channels; constitutional-tier memories always inject), **Score** (RRF fusion with 8 post-fusion signals including co-activation, FSRS decay, interference penalties and intent-specific weights), **Rerank** (local cross-encoder model via node-llama-cpp; gracefully skips without VRAM), and **Filter** (confidence labels, state filtering, score immutability).
 
 
 #### 3.2.3 QUERY INTELLIGENCE
 
-Before any search runs, the system figures out what kind of help you need. Think of it like a triage nurse who reads your symptoms and routes you to the right specialist.
+Before any search runs, the system classifies your query by complexity (simple/moderate/complex) and intent (7 types: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each intent has its own channel weight profile.
 
-**Complexity routing** sizes up your question and picks the right amount of effort:
+Multi-topic queries are automatically split into sub-queries, expanded with related terms, and matched against pre-generated surrogates stored at index time. Context pressure monitoring downgrades search mode at 60% and 80% window usage. Low-confidence searches fall back to LLM reformulation or HyDE (Hypothetical Document Embeddings).
 
-- **Simple** (2 channels, 800 tokens) — Quick lookups, single-topic questions
-- **Moderate** (4 channels, 1,500 tokens) — Multi-factor questions, debugging
-- **Complex** (all 5 channels, 2,000 tokens) — Research, architecture decisions
-
-**Intent classification** maps your query to one of 7 task types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each type has its own channel weight profile. A `find_decision` query boosts the causal graph channel. A `fix_bug` query boosts exact-match channels.
-
-**Query decomposition** splits multi-topic questions into focused sub-queries. Each searches separately and results merge. No LLM call needed.
-
-**Query expansion** automatically adds related terms when the question is complex, so you find relevant results even when the exact wording differs.
-
-**Index-time query surrogates** pre-generate alternative names, summaries and likely questions about content when a memory is first saved. These are stored alongside the original so future searches match against them too. Like a library cataloger adding subject headings and cross-references to a new book.
-
-**Context pressure monitoring** watches how full your context window is getting. Above 60% usage the system downgrades to focused mode. Above 80% it switches to quick mode.
-
-For low-confidence deep searches, two fallback strategies kick in:
-
-- **LLM query reformulation** -- asks the LLM to rephrase the query more abstractly, grounding in actual knowledge base content
-- **HyDE (Hypothetical Document Embeddings)** -- writes a hypothetical answer to your question, then searches for real documents matching that imaginary answer
-
-**Mode-aware response profiles** format results differently depending on what you are doing:
-
-- **`quick`** — Top answer only, minimal context. For fast lookups and single-topic questions.
-- **`focused`** — Targeted results for one topic. For standard development queries.
-- **`deep`** — Full results with evidence trails. For research and architecture decisions.
-- **`resume`** — State summary + next-steps. For session recovery after crash or compaction.
+Four response modes format results by task: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
 
 
 #### 3.2.4 MEMORY LIFECYCLE AND SCORING
 
-Memories fade using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
+Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed varies by content type and importance tier -- critical decisions never fade; temporary debugging notes fade within days.
 
-Think of it like how your own brain works: things you reviewed recently are easy to recall, while things you have not thought about in months fade into the background.
+Key scoring signals: **cold-start boost** for fresh memories (under 48h), **interference penalty** to suppress near-duplicate clusters, **auto-promotion** (memories earn higher tiers through positive validation), and **negative feedback with 30-day decay** to prevent permanent blacklisting.
 
-**Two-dimensional decay matrix** -- decay speed is controlled by context type AND importance tier:
-
-| | constitutional | critical | important | normal | temporary | deprecated |
-|---|---|---|---|---|---|---|
-| **Decisions** | Never | Never | 1.5x | 1x | 0.5x | 0.25x |
-| **Research** | Never | 2x slower | 1.5x | 1x | 0.5x | 0.25x |
-| **General** | Never | 1.5x slower | Slow | Normal | Fast | Fastest |
-
-A critical decision never fades. A temporary debugging note fades within days.
-
-**Cold-start novelty boost** -- fresh memories (under 48 hours) get an exponential boost of `0.15 * exp(-elapsed_hours / 12)` with a 12-hour half-life, capped at 0.95.
-
-**Interference penalty** -- prevents similar memories from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points.
-
-**Auto-promotion** -- memories earn their way up. After 5 positive validation marks, a normal memory promotes to important. After 10, important promotes to critical. Rate-limited to prevent bulk promotion during busy sessions.
-
-**Negative feedback with 30-day decay** -- demotes unhelpful memories, but the penalty fades over time. Prevents permanent blacklisting and allows memories to recover relevance as the project evolves.
-
-**Five cognitive states** based on access patterns:
-
-**HOT** (just used) >> **WARM** (recently relevant) >> **COLD** (not accessed lately) >> **DORMANT** (inactive) >> **ARCHIVED** (stored but rarely surfaced)
-
-When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
+**Five cognitive states** based on access patterns: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**. HOT memories get full content in results; COLD and below only surface if they score well enough.
 
 
 #### 3.2.5 CAUSAL GRAPH
 
 
-The system tracks how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
+The system tracks how decisions relate to each other through **six relationship types**: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from` and `supports`.
 
-**Six types of causal relationships** link memories together:
-
-- **`caused`** `1.0` — A led directly to B
-- **`enabled`** `0.75` — A made B possible
-- **`supersedes`** — B replaces A
-- **`contradicts`** — A and B conflict
-- **`derived_from`** — B is based on A
-- **`supports`** `0.5` — A provides evidence for B
-
-**Typed-weighted degree channel** uses these weights to rank memories by graph importance. Hub caps (`MAX_TYPED_DEGREE`=15, `MAX_TOTAL_DEGREE`=50) and a `DEGREE_BOOST_CAP` of 0.15 prevent any single highly-connected memory from dominating results.
-
-**Co-activation spreading** boosts memories connected to ones you already found relevant. A fan-effect divisor (`1/sqrt(neighbor_count)`) prevents popular hub memories from getting an outsized boost.
-
-**Community detection** (Louvain algorithm) automatically clusters related memories into groups. When one memory in a cluster is relevant, its neighbors get a small boost.
-
-**Graph momentum** tracks how quickly a memory is gaining new connections. Trending knowledge surfaces higher than static nodes.
-
-**Temporal contiguity** gives a time-proximity boost to memories created around the same time. If one memory from a Tuesday afternoon session is relevant, others from that same session probably are too.
-
-**Typed traversal** pays attention to what kind of connection it follows based on your question. A "what caused this bug?" query prioritizes cause-and-effect links. A "what supports this decision?" query prioritizes evidence links.
-
-**Causal depth signals** measure how deep each memory sits in the decision tree. Root decisions (with many descendants) get different tiebreaker boosts than leaf tasks.
-
-**Async LLM graph backfill** uses an AI to read important documents after they are saved and suggest additional causal connections that pattern matching missed. Runs in the background after initial save.
+The graph supports typed-weighted traversal (prioritizing connection types based on query intent), community detection (Louvain) for cluster boosting, co-activation spreading with fan-effect dampening, temporal contiguity for same-session grouping, graph momentum for trending knowledge, and background LLM-assisted link discovery. Hub caps prevent any single highly-connected memory from dominating results.
 
 
 #### 3.2.6 SAVE INTELLIGENCE
 
-When you save new knowledge, the system runs an arbitration process before storing anything.
-
-**Prediction Error gating** compares new content against existing memories and picks one of four outcomes:
+When you save new knowledge, **Prediction Error gating** compares it against existing memories and picks one of four outcomes:
 
 - **CREATE** — No similar memory exists. Stored as new knowledge.
-- **REINFORCE** — Similar exists, new one adds value. Both kept, old one gets a confidence boost.
-- **UPDATE** — Similar exists, new one is better. Old version replaced in place.
-- **SUPERSEDE** — New knowledge contradicts the old. New version active, old one demoted to deprecated.
+- **REINFORCE** — Similar exists, new one adds value. Both kept, old one boosted.
+- **UPDATE** — Similar exists, new one is better. Old version replaced.
+- **SUPERSEDE** — New knowledge contradicts the old. Old one demoted to deprecated.
 
-This is session-scoped to prevent cross-session interference.
-
-**Reconsolidation-on-save** handles near-duplicates intelligently. Nearly identical content gets merged. Contradictions retire the old version. Different content keeps both.
-
-**Semantic sufficiency gating** rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
-
-**Verify-fix-verify loop** runs quality checks before saving. If the memory falls short, the system tries to fix problems automatically and checks again before storing.
-
-**Content normalization** strips formatting clutter (bullet markers, code fences, header symbols) before generating embeddings. Cleaner fingerprints match your questions more accurately.
-
-**Auto-entity extraction** spots tool names, project names and concept names when you save and adds them to a shared catalog. Connects memories mentioning the same things even when surrounding text differs.
-
-**SHA-256 content-hash deduplication** recognizes unchanged files instantly and skips expensive reprocessing.
-
-**Signal vocabulary expansion** recognizes correction signals ("actually", "wait") and preference signals ("prefer", "want") in conversation context, using them to adjust quality scoring during save.
-
-**Correction tracking** maintains a paper trail of how knowledge evolved when newer memories replace older ones. When a save triggers an UPDATE or SUPERSEDE outcome, the system records the relationship between old and new versions.
+Additional save-time processing includes semantic sufficiency gating, verify-fix-verify quality loops, content normalization for cleaner embeddings, auto-entity extraction, SHA-256 deduplication, and correction tracking that records how knowledge evolves across versions.
 
 
 #### 3.2.7 SESSION AWARENESS
 
-The system keeps track of what happened during your current conversation so it does not repeat itself or lose context mid-session.
-
-**Working memory with attention decay** stores findings from the current session. Each result's relevance decays by `0.85^distance` per event (where distance is how many tool calls ago it was found). Floor is 0.05, eviction at 0.01. Recent findings stay prominent while older ones fade gracefully.
-
-**Session deduplication** pushes down results you already saw. If you got a result 3 turns ago, new searches rank it lower. Saves approximately 50% of tokens on follow-up queries.
-
-**Context pressure monitoring** watches how full your AI's context window is getting. Above 60% usage: downgrades to focused mode. Above 80%: switches to quick mode. Prevents memory retrieval from overwhelming the conversation.
+Working memory tracks findings from the current session with attention decay -- recent findings rank higher, older ones fade gracefully. Session deduplication suppresses already-seen results in follow-up queries. Context pressure monitoring downgrades search mode as the context window fills.
 
 
 #### 3.2.8 SHARED MEMORY
 
-By default, every memory is private to the user or agent that created it. Shared memory adds controlled access so multiple people or agents can read and write to a common knowledge pool.
+By default, every memory is private. Shared memory adds controlled access for multiple people or agents:
 
-Think of it like a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. Management can lock it down instantly if something goes wrong.
-
-- **Spaces** -- named containers for shared knowledge (like rooms in the office)
+- **Spaces** -- named containers for shared knowledge
 - **Roles** -- `owner` (full control), `editor` (read/write), `viewer` (read-only)
 - **Deny-by-default** -- nobody gets access unless explicitly granted
 - **Kill switch** -- immediately blocks all access for emergencies
@@ -585,66 +408,24 @@ For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](.opencode/skil
 
 #### 3.2.9 QUALITY GATES AND LEARNING
 
-Before a new memory enters the system, it goes through three layered checks:
+Before a new memory enters the system, it passes three layered checks: **structure** (format, headings, metadata), **semantic sufficiency** (enough real content to be useful), and **duplicate detection** (triggers Prediction Error arbitration if similar content exists). Preview all checks without saving using `dryRun: true`.
 
-1. **Structure gate** -- does the file have the required format, headings and metadata?
-2. **Semantic sufficiency gate** -- is there enough real content to be useful?
-3. **Duplicate gate** -- does this already exist? If so, run Prediction Error arbitration (create, reinforce, update or supersede)
-
-If a file fails any gate, the system rejects it with a clear explanation. Preview all checks without saving using `dryRun: true`.
-
-**Learned relevance feedback** watches when you mark results as useful or not. Helpful results get a boost in future queries. 10 safeguards prevent noise: denylist, rate limits, 30-day decay, per-cycle caps, minimum session thresholds, one-week trial period before boosts go live.
-
-**Result confidence scoring** tags each result as high, medium or low confidence using fast heuristics (no LLM needed). Checks: top-K separation, multi-channel agreement, quality score and source document structure.
-
-**Two-tier explainability** -- basic mode shows a plain-language reason ("matched strongly on meaning, boosted by causal graph connection"). Debug mode shows exact channel contributions and weights.
-
-**Empty result recovery** diagnoses why a search came back empty (too narrow filter, unclear question, missing knowledge) and suggests next steps.
+**Learned relevance feedback** boosts helpful results in future queries, with multiple safeguards against noise. Results are tagged with high/medium/low confidence scores. Two-tier explainability shows either plain-language reasons or exact channel contributions.
 
 
 #### 3.2.10 RETRIEVAL ENHANCEMENTS
 
-**Constitutional memory as expert knowledge injection** tags high-priority memories with instructions about when to surface. They appear whenever relevant without you asking, like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X."
-
-**Spec folder hierarchy search** uses your project folder organization as a retrieval signal. If you are looking at a child folder, the system also checks parent and sibling folders for related information.
-
-**Dual-scope memory auto-surface** watches for tool use and context compression events and automatically brings up important memories without being asked.
-
-**Cross-document entity linking** connects memories across folders when they reference the same concept, even if the surrounding text is different.
-
-**Memory summary search channel** creates a short summary of each memory when saved and searches against those summaries.
-
-**Contextual tree injection** labels each result with its position in the project hierarchy ("Project > Feature > Detail") so you always know where it belongs.
-
-**ANCHOR-based section retrieval** memory files can include `<!-- ANCHOR:name -->` markers. The search system indexes individual sections separately, allowing retrieval of just "decisions" or "next-steps" from a large document (~93% token savings).
-
-**Provenance-rich response envelopes** (when `includeTrace` is enabled) show exactly how each result was found: which channels contributed, how scores were calculated and where the information originated.
+Additional retrieval signals include constitutional memory injection (always-surfaced rules), spec folder hierarchy awareness, cross-document entity linking, ANCHOR-based section retrieval (~93% token savings), dual-scope auto-surfacing on tool use and compression events, and provenance traces showing how each result was found.
 
 
 #### 3.2.11 INDEXING AND INFRASTRUCTURE
 
-**Real-time filesystem watching** (chokidar) monitors your project folder continuously. When you save, rename or delete a file, the index updates automatically.
-
-**Incremental indexing with content hashing** tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
-
-**Embedding retry orchestrator** when the embedding service is temporarily unavailable, the memory is saved without a vector and queued for retry. A background worker retries until it succeeds.
-
-**Deferred lexical-only indexing** saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
-
-**Atomic write-then-index** writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
+The memory engine watches the filesystem in real-time (chokidar), tracks content hashes for incremental indexing, retries failed embeddings in the background, falls back to lexical-only indexing when embedding services are unavailable, and uses atomic writes with crash recovery.
 
 
 #### 3.2.12 EVALUATION INFRASTRUCTURE
 
-Research-grade infrastructure for measuring and improving search quality over time.
-
-**12-metric core computation** grades every query across twelve quality dimensions (MRR@1/3/10, NDCG@10, MAP and more). Together they pinpoint exactly where search is struggling.
-
-**Synthetic ground truth corpus** 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality. The corpus is keyed to live parent-memory IDs, so after DB rebuilds or imports you should rerun `scripts/evals/map-ground-truth-ids.ts` against the active `context-index.sqlite` before trusting ablation or reporting deltas.
-
-**Ablation study framework** turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
-
-**Shadow scoring with holdout evaluation** tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
+Research-grade evaluation: 12-metric computation (MRR, NDCG, MAP), a 110-question synthetic ground truth corpus, ablation studies measuring per-channel quality impact, and shadow scoring for testing ranking changes before deployment.
 
 
 #### Embedding Providers
@@ -653,14 +434,12 @@ Research-grade infrastructure for measuring and improving search quality over ti
 - **OpenAI** — Set `OPENAI_API_KEY` env var. Strong alternative.
 - **HuggingFace Local** — No setup needed. Free, auto-detected fallback.
 
-**Local-first:** The memory database runs on your machine at `.opencode/skill/system-spec-kit/shared/mcp_server/database/`. No data leaves your system unless you configure a cloud embedding provider.
-
-For the complete 33-tool API reference (7 layers, 7,600 total token budget) and configuration, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm parameters and 33-tool API reference, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 
 ### 3.3 AGENT NETWORK
 
-12 agents total: 2 built-in platform agents and 10 custom specialists. Think of them like a team where the project manager (you or the orchestrator) delegates to the right expert instead of one generalist doing everything. Each agent has a defined role, specific tool permissions and clear boundaries on what it can and cannot modify.
+12 agents total: 2 built-in platform agents and 10 custom specialists. Each has a defined role, specific tool permissions and clear boundaries on what it can and cannot modify.
 
 Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
 
@@ -762,7 +541,7 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 ### 3.5 SKILLS LIBRARY
 
-18 skills in `.opencode/skill/`. Skills are on-demand capabilities loaded when a task matches -- like specialist consultants who are only called in when their expertise is needed. Gate 2 runs `skill_advisor.py` to recommend the right skill (confidence >= 0.8 means it must be loaded).
+18 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
 <details>
 <summary><strong>Documentation Skills (2)</strong></summary>
@@ -828,7 +607,7 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 ### 3.6 GATE SYSTEM
 
-3 mandatory gates run before any file change. They are like a security checkpoint at an airport -- every request passes through the same sequence and each gate checks for something different. The gates are defined in `CLAUDE.md` and `AGENTS.md` and apply to all runtimes.
+3 mandatory gates run before any file change, defined in `CLAUDE.md` and `AGENTS.md`. Every request passes through the same sequence.
 
 #### The 3 Gates
 
@@ -898,7 +677,7 @@ Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS
 
 ### 3.7 CODE MODE MCP
 
-Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Think of it like a universal adapter -- instead of loading 47 separate tool definitions into the context window (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens). That is a 98.7% reduction.
+Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) -- a 98.7% reduction.
 
 
 #### Native MCP Servers
@@ -985,7 +764,7 @@ Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/databa
 
 ### Memory Feature Flags
 
-The memory server supports 26+ feature flags organized by category. These control which search channels, scoring signals and infrastructure components are active. All flags default to sensible values and most users never need to change them.
+26+ feature flags control search channels, scoring signals and infrastructure components. All default to sensible values.
 
 <details>
 <summary><strong>Flag Categories</strong></summary>
@@ -1016,8 +795,6 @@ The memory system uses a SQLite database with 25 tables:
 - **Evaluation** (3) — `eval_runs`, `ablation_results`, `ground_truth`. Quality measurement.
 
 </details>
-
-Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
 
 ### opencode.json Structure
 
@@ -1050,83 +827,6 @@ Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/databa
 <!-- /ANCHOR:configuration -->
 
 
-<!-- ANCHOR:usage-examples -->
-
----
-
-## 5. USAGE EXAMPLES
-
-### Example 1: Start a New Feature
-
-Use `/spec_kit:complete` to run the full workflow -- research, plan, implementation and memory save.
-
-```
-/spec_kit:complete Add email verification to the user registration flow
-```
-
-This creates a spec folder under `.opencode/specs/`, researches the codebase, builds a plan, implements it and saves memory automatically. When you come back tomorrow, the memory engine remembers everything about this feature.
-
-
-### Example 2: Resume After a Crash or Compaction
-
-Use `/spec_kit:resume` to recover session context after a context window reset.
-
-```
-/spec_kit:resume
-```
-
-The command reconstructs context from recent handovers, resume-mode memory retrieval, crash breadcrumbs, and progress artifacts so you can pick up exactly where you left off. Working memory deduplication means follow-up queries skip results you have already seen.
-
-
-### Example 3: Debug a Difficult Problem
-
-Use `/spec_kit:debug` to delegate debugging to a fresh-perspective agent with no prior context bias.
-
-```
-/spec_kit:debug The authentication middleware is intermittently returning 401 for valid tokens
-```
-
-The `@debug` agent applies a 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix) and writes a `debug-delegation.md` with findings.
-
-
-### Example 4: Code Review Before Merging
-
-Ask `@review` to evaluate your changes before a pull request.
-
-```
-@review Review the changes in src/auth/ for security issues and coding standards
-```
-
-The `@review` agent is read-only, applies the `sk-code--review` skill and returns a findings-first severity report.
-
-
-### Example 5: Save Context Before Ending a Session
-
-```
-/memory:save
-```
-
-This runs `generate-context.js` against your active spec folder, writes a timestamped memory file and indexes it immediately for future retrieval.
-
-
-### Example 6: Deep Research on a Complex Topic
-
-```
-/spec_kit:deep-research Investigate how the authentication system handles token refresh across microservices
-```
-
-The `@deep-research` agent runs an autonomous investigation loop with externalized state, iterating until it converges on a complete answer or hits the iteration limit.
-
-
-### Common Patterns
-
-- **New feature end-to-end** — `/spec_kit:complete [description]`. Starting any feature from scratch.
-- **Planning without building** — `/spec_kit:plan [description]`. When you want to review the plan first.
-- **Pick up previous work** — `/spec_kit:resume`. Returning to an in-progress spec.
-- **Investigate a codebase** — `@context [question]`. Exploration and research tasks.
-- **Generate a README** — `/create:folder_readme`. Documenting a directory or component.
-- **Improve a prompt** — `/create:prompt`. Prompt engineering with structured frameworks.
-
 <!-- /ANCHOR:usage-examples -->
 
 
@@ -1134,7 +834,7 @@ The `@deep-research` agent runs an autonomous investigation loop with externaliz
 
 ---
 
-## 6. FAQ
+## 5. FAQ
 
 **Q: Do I need all 18 skills installed to use the framework?**
 
@@ -1153,7 +853,7 @@ A: Gate 3 blocks file modifications until a spec folder answer is provided. You 
 
 **Q: How does the memory system know what is relevant to my current task?**
 
-A: Every memory file has YAML frontmatter with tags, context type and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search across all indexed memory files and returns the top matches. The system classifies your intent (7 types), routes by complexity and applies Reciprocal Rank Fusion to combine results from all channels.
+A: Memory files have YAML frontmatter with tags and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search and returns the top matches, classified by intent and fused with RRF.
 
 
 **Q: Can I use this framework without the cognitive memory features?**
@@ -1192,7 +892,7 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 
 ---
 
-## 7. RELATED DOCUMENTS
+## 6. RELATED DOCUMENTS
 
 ### Internal Documentation
 
