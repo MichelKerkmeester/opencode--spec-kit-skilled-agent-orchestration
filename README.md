@@ -1,40 +1,32 @@
-<div align="left">
-
-# OpenCode -- AI Assistant Framework
+# OpenCode -- Skilled Agent Orchestration w/ The Best Custom Spec Kit Framework
 
 [![GitHub Stars](https://img.shields.io/github/stars/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&logo=github&color=fce566&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/stargazers)
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases)
 
 > Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 18 skills, 20 commands, 42 MCP tools -- built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
->
-> 99.999% of people won't try this system. Beat the odds?
-> Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
-</div>
-
----
-
+**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 12 Specialized Agents** • **⚡ 4 Runtimes**
 
 <!-- ANCHOR:table-of-contents -->
 
 ---
 
-## TABLE OF CONTENTS
+## Table of Contents
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. FEATURES](#3-features)
-  - [3.1 SPEC KIT DOCUMENTATION](#31-spec-kit-documentation)
-  - [3.2 MEMORY ENGINE](#32-memory-engine)
-  - [3.3 AGENT NETWORK](#33-agent-network)
-  - [3.4 COMMAND ARCHITECTURE](#34-command-architecture)
-  - [3.5 SKILLS LIBRARY](#35-skills-library)
-  - [3.6 GATE SYSTEM](#36-gate-system)
-  - [3.7 CODE MODE MCP](#37-code-mode-mcp)
-- [4. CONFIGURATION](#4-configuration)
-- [5. FAQ](#5-faq)
-- [6. RELATED DOCUMENTS](#6-related-documents)
+- [Overview](#-overview)
+- [Quick Start](#-quick-start)
+- [Features](#-features)
+  - [Spec Kit Documentation](#-spec-kit-documentation)
+  - [Memory Engine](#-memory-engine)
+  - [Agent Network](#-agent-network)
+  - [Command Architecture](#-command-architecture)
+  - [Skills Library](#-skills-library)
+  - [Gate System](#-gate-system)
+  - [Code Mode MCP](#-code-mode-mcp)
+- [Configuration](#%EF%B8%8F-configuration)
+- [FAQ](#-faq)
+- [Related Documents](#-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -43,9 +35,9 @@
 
 ---
 
-## 1. OVERVIEW
+## 🔍 Overview
 
-### What is OpenCode?
+### What This Framework Does
 
 AI coding assistants have amnesia. Every session starts from zero. You explain your architecture Monday. By Wednesday, it is gone. Every decision, every trade-off, every carefully reasoned choice -- lost the moment the conversation window closes. This framework fixes that.
 
@@ -62,14 +54,16 @@ The framework adds three layers on top of the base platform:
 
 ### At a Glance
 
-- [x] **12 Agents** -- 2 built-in + 10 custom, multi-runtime. [Details](#33-agent-network)
-- [x] **18 Skills** -- Code, docs, git, prompts, MCP, research, cross-AI. [Details](#35-skills-library)
-- [x] **20 Commands** -- 8 spec_kit + 4 memory + 7 create + 1 utility. [Details](#34-command-architecture)
-- [x] **42 MCP Tools** -- 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking. [Details](#37-code-mode-mcp)
-- [x] **3 Gates** -- Understanding, Skill Routing, Spec Folder. [Details](#36-gate-system)
-- [x] **4 Runtimes** -- OpenCode, Codex CLI, Claude Code, Gemini CLI
-- [x] **81 Templates** -- CORE + ADDENDUM v2.2
-- [x] **255 Feature Catalog** -- Across 21 categories
+| | |
+|---|---|
+| **🤖 12 Agents** | 2 built-in + 10 custom, multi-runtime |
+| **🎯 18 Skills** | Code, docs, git, prompts, MCP, research, cross-AI |
+| **⌨️ 20 Commands** | 8 spec_kit + 4 memory + 7 create + 1 utility |
+| **🔧 42 MCP Tools** | 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
+| **⚡ 4 Runtimes** | OpenCode, Codex CLI, Claude Code, Gemini CLI |
+| **📄 81 Templates** | CORE + ADDENDUM v2.2 |
+| **📦 255 Features** | Across 21 categories |
 
 
 ### How It All Connects
@@ -123,7 +117,7 @@ The framework adds three layers on top of the base platform:
 
 ---
 
-## 2. QUICK START
+## 🚀 Quick Start
 
 ### Installation
 
@@ -185,11 +179,11 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 ---
 
-## 3. FEATURES
+## 🧩 Features
 
 ---
 
-### 3.1 SPEC KIT DOCUMENTATION
+### 📋 Spec Kit Documentation
 
 The Spec Kit enforces structured spec folders for every file-modifying conversation. Gate 3 requires a spec folder answer before any file modification begins (only typo/whitespace fixes under 5 characters are exempt).
 
@@ -294,7 +288,7 @@ For the full spec folder workflow, template architecture (81 templates) and vali
 
 ---
 
-### 3.2 MEMORY ENGINE
+### 🧠 Memory Engine
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
 
@@ -425,7 +419,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 ---
 
-### 3.3 AGENT NETWORK
+### 🤖 Agent Network
 
 12 agents total: 2 built-in platform agents and 10 custom specialists. Each has a defined role, specific tool permissions and clear boundaries on what it can and cannot modify.
 
@@ -460,7 +454,7 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 ---
 
-### 3.4 COMMAND ARCHITECTURE
+### ⌨️ Command Architecture
 
 
 20 commands across 4 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
@@ -500,7 +494,7 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 ---
 
-### 3.5 SKILLS LIBRARY
+### 🎯 Skills Library
 
 18 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
@@ -540,7 +534,7 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 ---
 
-### 3.6 GATE SYSTEM
+### 🔒 Gate System
 
 3 mandatory gates run before any file change, defined in `CLAUDE.md` and `AGENTS.md`. Every request passes through the same sequence.
 
@@ -612,7 +606,7 @@ Full gate definitions and anti-pattern detection rules are in [AGENTS.md](AGENTS
 
 ---
 
-### 3.7 CODE MODE MCP
+### 🔌 Code Mode MCP
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) -- a 98.7% reduction.
 
@@ -669,7 +663,7 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 
 ---
 
-## 4. CONFIGURATION
+## ⚙️ Configuration
 
 ### Core Configuration Files
 
@@ -755,7 +749,7 @@ The memory system uses a SQLite database with 25 tables:
 
 ---
 
-## 5. FAQ
+## ❓ FAQ
 
 **Q: Do I need all 18 skills installed to use the framework?**
 
@@ -822,27 +816,27 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 
 ---
 
-## 6. RELATED DOCUMENTS
+## 📚 Related Documents
 
-### Internal Documentation
+**Internal Documentation:**
 
-- **[AGENTS.md](AGENTS.md)** — Complete agent routing reference, gate definitions and behavior rules for all runtimes
-- **[Spec Kit README](.opencode/skill/system-spec-kit/README.md)** — Full spec folder workflow, template architecture (81 templates), validation rules and memory pipeline
-- **[MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** — Complete memory API reference (33 tools across 7 layers), retrieval architecture and configuration
-- **[INSTALL_GUIDE.md](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** — Step-by-step MCP server installation with embedding providers and environment setup
-- **[SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** — Shared memory guide with spaces, roles, membership and kill switch
-- **[ARCHITECTURE.md](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** — API boundary contract between scripts/ and mcp_server/
-- **[sk-doc SKILL.md](.opencode/skill/sk-doc/SKILL.md)** — Documentation standards, DQI scoring, templates and HVR writing rules
-- **[Skills README](.opencode/skill/README.md)** — Index of all 18 skills with descriptions and invocation patterns
-- **[FEATURE_CATALOG.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** — 255-entry technical reference across 21 categories
-- **[FEATURE_CATALOG_IN_SIMPLE_TERMS.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** — Plain-language companion to the technical catalog
-- **[AGENTS_example_fs_enterprises.md](AGENTS_example_fs_enterprises.md)** — Example AGENTS.md for a full-stack enterprise project (runtime-neutral)
+- **[→ AGENTS.md](AGENTS.md)** — Agent routing, gate definitions, behavior rules
+- **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** — Spec folder workflow, 81 templates, validation rules
+- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** — Memory API reference (33 tools, 7 layers)
+- **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** — MCP server setup, embedding providers
+- **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** — Spaces, roles, membership, kill switch
+- **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** — API boundary contract
+- **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** — Documentation standards, DQI scoring
+- **[→ Skills Index](.opencode/skill/README.md)** — All 18 skills with invocation patterns
+- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** — 255-entry technical reference
+- **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** — Plain-language companion
+- **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** — Example AGENTS.md for full-stack enterprise
 
-### External Resources
+**External Resources:**
 
-- **[OpenCode](https://github.com/sst/opencode)** — The underlying AI coding assistant platform this framework extends
-- **[Voyage AI](https://www.voyageai.com/)** — Recommended embedding provider for memory retrieval
-- **[HuggingFace Local](https://huggingface.co/)** — Free local embedding alternative (no API key required)
+- **[→ OpenCode](https://github.com/sst/opencode)** — The underlying AI coding platform
+- **[→ Voyage AI](https://www.voyageai.com/)** — Recommended embedding provider
+- **[→ HuggingFace](https://huggingface.co/)** — Free local embedding alternative
 
 <!-- /ANCHOR:related-documents -->
 
