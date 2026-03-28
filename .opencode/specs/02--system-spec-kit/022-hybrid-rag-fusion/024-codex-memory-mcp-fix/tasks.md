@@ -57,12 +57,12 @@ contextType: "implementation"
 
 ### Broader Remediation Follow-On Capture
 
-- [x] T020 Record the still-open need to verify embedding-dimension integrity and adjacent custom-path invariants after the active-connection promotion fix (`mcp_server/core/db-state.ts`, vector-index initialization, direct tests)
-- [x] T021 Record the need to extend direct lifecycle coverage for startup failure branches, Stage 2b fail-open behavior, and stale in-flight tool-cache invalidation or shutdown cleanup (`context-server`, hooks, runtime tests)
-- [x] T022 Record the need to sanitize operator-facing provider failure logs without hiding useful debug context (`retry-manager`, related tests, packet docs if user-facing wording changes)
-- [x] T023 Record the need to refresh Codex-facing launcher and install docs so `MEMORY_DB_PATH`, writable-home expectations, and clean-transport guidance remain truthful across all entry points (`opencode.json`, `.codex/config.toml`, repo/system-spec-kit READMEs as needed)
+- [x] T020 Record the still-open need to verify embedding-dimension integrity and adjacent custom-path invariants after the active-connection promotion fix — **Implemented in `025-mcp-runtime-hardening`**: `tests/db-dimension-integrity.vitest.ts` (5 tests)
+- [x] T021 Record the need to extend direct lifecycle coverage for startup failure branches, Stage 2b fail-open behavior, and stale in-flight tool-cache invalidation or shutdown cleanup — **Implemented in `025-mcp-runtime-hardening`**: `tests/lifecycle-shutdown.vitest.ts` (4 tests) + `tests/stage2b-enrichment-extended.vitest.ts` (3 tests)
+- [x] T022 Record the need to sanitize operator-facing provider failure logs without hiding useful debug context — **Implemented in `025-mcp-runtime-hardening`**: `sanitizeErrorField()` in `lib/errors/core.ts`, `get_error_message()` in `context-server.ts`, `tests/error-sanitization.vitest.ts` (6 tests)
+- [x] T023 Record the need to refresh Codex-facing launcher and install docs so `MEMORY_DB_PATH`, writable-home expectations, and clean-transport guidance remain truthful across all entry points — **Implemented in `025-mcp-runtime-hardening`**: 3 doc files updated
 - [x] T024 Record the release-control truth that `020` remains the broader remediation source while the Codex startup slice is green in `024` (`020` and `024` packet docs/checklists)
-- [x] T025 Record the routing rule that the first non-trivial post-Codex runtime wave may need `025` to keep scope controlled (`024-codex-memory-mcp-fix/*.md`)
+- [x] T025 Record the routing rule that the first non-trivial post-Codex runtime wave may need `025` to keep scope controlled — **Activated**: `025-mcp-runtime-hardening` now exists
 <!-- /ANCHOR:phase-2 -->
 
 ---

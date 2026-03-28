@@ -186,6 +186,8 @@ Check that Spec Kit Memory tools are available:
 
 The response should return `status: "ok"` and database table counts. If it returns an error, see [Troubleshooting](#7-troubleshooting).
 
+Codex CLI note: if the MCP server runs in a restricted or read-only repo context, set `MEMORY_DB_PATH` to a writable location such as a directory under your home folder or `/tmp`.
+
 <!-- /ANCHOR:quick-start -->
 
 ---

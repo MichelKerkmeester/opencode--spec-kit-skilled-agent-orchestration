@@ -249,6 +249,29 @@ export function isPermanentError(error: Error): boolean {
 // ───────────────────────────────────────────────────────────────
 //
 // Build standardized error responses with recovery hints.
+export function sanitizeErrorField(value: string): string {
+  return value
+    .replace(/sk-[a-zA-Z0-9_\-]{20,}/g, '[REDACTED]')
+    .replace(/voy_[a-zA-Z0-9]{20,}/g, '[REDACTED]')
+    .replace(/[Bb]earer\s+[a-zA-Z0-9._\-]+/g, 'Bearer [REDACTED]')
+    .replace(/key[=:]\s*['"]?[a-zA-Z0-9_\-]{20,}/gi, 'key=[REDACTED]');
+}
+
+function sanitizeDetails(details: unknown, seen?: WeakSet<object>): unknown {
+  if (!details) return details;
+  if (typeof details === 'string') return sanitizeErrorField(details);
+  if (typeof details !== 'object') return details;
+  const visited = seen ?? new WeakSet<object>();
+  if (visited.has(details as object)) return '[Circular]';
+  visited.add(details as object);
+  if (Array.isArray(details)) return details.map(item => sanitizeDetails(item, visited));
+  const sanitized: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(details as Record<string, unknown>)) {
+    sanitized[k] = sanitizeDetails(v, visited);
+  }
+  return sanitized;
+}
+
 /**
  * Build an error response object with recovery hints.
  * REQ-019: Uses standardized envelope (summary, data, hints, meta).
@@ -272,11 +295,11 @@ export function buildErrorResponse(
 
   // Build standardized envelope format
   return {
-    summary: `Error: ${error.message}`,
+    summary: `Error: ${sanitizeErrorField(error.message)}`,
     data: {
-      error: error.message,
+      error: sanitizeErrorField(error.message),
       code: errorCode,
-      details: (error as MemoryError).details || context || null
+      details: sanitizeDetails((error as MemoryError).details || context || null) as Record<string, unknown> | null
     },
     hints,
     meta: {

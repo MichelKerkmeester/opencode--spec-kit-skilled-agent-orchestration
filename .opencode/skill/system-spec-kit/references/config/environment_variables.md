@@ -38,6 +38,8 @@ These variables control memory system behavior, token budgets, script execution,
 | `RERANKER_LOCAL` | `false` | Enable local GGUF reranker path in Stage 3 (`node-llama-cpp`) |
 | `SPECKIT_RERANKER_MODEL` | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional model path override for local reranker |
 
+Codex note: set `MEMORY_DB_PATH` to a writable location outside read-only repo paths (for example under your home directory or `/tmp`) so the MCP server can create and update its SQLite database.
+
 ---
 
 <!-- /ANCHOR:memory-system-mcp-server -->
@@ -395,3 +397,7 @@ SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/dist/con
 - [Quick Reference](../workflows/quick_reference.md)
 - [Memory System Architecture](../memory/memory_system.md)
 <!-- /ANCHOR:related-resources -->
+
+## Clean Transport (MCP Protocol)
+
+MCP servers must keep stdout reserved for protocol traffic only. Send diagnostics, warnings and startup logs to stderr so clients such as Codex do not see extra stdout output as a broken transport handshake.

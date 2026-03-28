@@ -82,6 +82,7 @@ import {
   isDynamicInitEnabled,
   isFileWatcherEnabled,
 } from './lib/search/search-flags';
+import { runCleanupStep, runAsyncCleanupStep } from './lib/utils/cleanup-helpers';
 import { disposeLocalReranker } from './lib/search/local-reranker';
 import * as workingMemory from './lib/cognitive/working-memory';
 import * as attentionDecay from './lib/cognitive/attention-decay';
@@ -626,24 +627,6 @@ let fileWatcher: FSWatcher | null = null;
 
 /** Maximum time (ms) to wait for async cleanup before force-exiting. */
 const SHUTDOWN_DEADLINE_MS = 5000;
-
-/** Run a shutdown cleanup step and log failures without aborting the sequence. */
-function runCleanupStep(label: string, cleanupFn: () => void): void {
-  try {
-    cleanupFn();
-  } catch (error: unknown) {
-    console.error(`[context-server] ${label} cleanup failed:`, error);
-  }
-}
-
-/** Await a shutdown cleanup step and log failures without aborting the sequence. */
-async function runAsyncCleanupStep(label: string, cleanupFn: () => Promise<void>): Promise<void> {
-  try {
-    await cleanupFn();
-  } catch (error: unknown) {
-    console.error(`[context-server] ${label} cleanup failed:`, error);
-  }
-}
 
 export const __testables = {
   runCleanupStep,

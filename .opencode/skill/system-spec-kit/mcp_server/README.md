@@ -1107,6 +1107,8 @@ Token budgets control how much content each tool can return per call. The budget
 
 For the complete list of all environment variables with defaults and examples, see `../references/config/environment_variables.md`.
 
+Codex note: set `MEMORY_DB_PATH` to a writable location (for example under your home directory or `/tmp`) so the MCP server does not fail when it needs to create or update the SQLite database.
+
 ### Embedding Providers
 
 The system needs an embedding provider to convert text into vectors for similarity search. Pick one:

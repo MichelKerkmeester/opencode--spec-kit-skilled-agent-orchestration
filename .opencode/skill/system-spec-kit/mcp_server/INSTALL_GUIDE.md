@@ -290,6 +290,8 @@ Add the following to `opencode.json` in your project root:
 Paths are relative to the project root. Use absolute paths if your client requires them:
 `/Users/YOUR_USERNAME/path/to/project/.opencode/skill/...`
 
+> **Codex CLI users**: If running in a read-only workspace, override `MEMORY_DB_PATH` with a writable path outside the repo (e.g., `~/.speckit/database/context-index.sqlite`). See `.codex/config.toml` for the default configuration.
+
 ### Option B: Claude Code CLI
 
 Add the following to `.mcp.json` in your project root:
@@ -725,7 +727,25 @@ sqlite3 .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.s
 # Restart your AI client after indexing completes
 ```
 
-### Example 8: Validating Markdown Links
+### Example 8: Troubleshooting Codex MCP Startup Failure
+
+```bash
+# Symptom: Codex cannot initialize spec_kit_memory MCP server
+
+# Check 1: MEMORY_DB_PATH must be writable
+# In .codex/config.toml, verify the path is writable:
+ls -la "$(grep MEMORY_DB_PATH .codex/config.toml | cut -d'"' -f2)"
+
+# Check 2: No stdout contamination
+# All MCP server logging must use stderr (console.error).
+# stdout is reserved for MCP JSON-RPC protocol messages.
+
+# Fix: Override MEMORY_DB_PATH to a writable location:
+# In .codex/config.toml, set:
+#   MEMORY_DB_PATH = "/Users/YOUR_USERNAME/.speckit/database/context-index.sqlite"
+```
+
+### Example 9a: Validating Markdown Links
 
 ```bash
 # From the skill root:
