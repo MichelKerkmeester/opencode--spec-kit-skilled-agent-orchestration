@@ -1,4 +1,4 @@
-# OpenCode -- Skilled Agent Orchestration w/ The Best Custom Spec Kit Framework
+# Skilled Agent Orchestration w/ The Best Custom Spec Kit Framework
 
 [![GitHub Stars](https://img.shields.io/github/stars/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&logo=github&color=fce566&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/stargazers)
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
@@ -292,7 +292,7 @@ For the full spec folder workflow, template architecture (81 templates) and vali
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
 
-The memory engine uses a 222-feature pipeline developed across a 19-phase refinement program. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+The memory engine uses a 222-feature pipeline. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 
 #### 33 Tools Across 7 Layers
@@ -328,33 +328,48 @@ Every search checks five channels at once:
 
 #### SEARCH PIPELINE
 
-Every search passes through 4 stages: **Gather** (parallel retrieval from active channels; constitutional-tier memories always inject), **Score** (RRF fusion with 8 post-fusion signals including co-activation, FSRS decay, interference penalties and intent-specific weights), **Rerank** (local cross-encoder model via node-llama-cpp; gracefully skips without VRAM), and **Filter** (confidence labels, state filtering, score immutability).
+Every search passes through 4 stages:
+
+- **Gather** — Parallel retrieval from active channels. Constitutional-tier memories always inject.
+- **Score** — RRF fusion with 8 post-fusion signals (co-activation, FSRS decay, interference penalties, intent-specific weights).
+- **Rerank** — Local cross-encoder model via node-llama-cpp. Gracefully skips without VRAM.
+- **Filter** — Confidence labels, state filtering, score immutability.
 
 
 #### QUERY INTELLIGENCE
 
-Before any search runs, the system classifies your query by complexity (simple/moderate/complex) and intent (7 types: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each intent has its own channel weight profile.
+- **Complexity routing** — Simple (2 channels), moderate (4), complex (all 5)
+- **Intent classification** — 7 types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`), each with its own channel weight profile
+- **Query decomposition** — Multi-topic queries split into sub-queries, expanded with related terms
+- **Context pressure** — Downgrades search mode at 60% and 80% window usage
+- **Fallback strategies** — LLM reformulation or HyDE for low-confidence searches
 
-Multi-topic queries are automatically split into sub-queries, expanded with related terms, and matched against pre-generated surrogates stored at index time. Context pressure monitoring downgrades search mode at 60% and 80% window usage. Low-confidence searches fall back to LLM reformulation or HyDE (Hypothetical Document Embeddings).
-
-Four response modes format results by task: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
+Four response modes: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
 
 
 #### MEMORY LIFECYCLE AND SCORING
 
 Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed varies by content type and importance tier -- critical decisions never fade; temporary debugging notes fade within days.
 
-Key scoring signals: **cold-start boost** for fresh memories (under 48h), **interference penalty** to suppress near-duplicate clusters, **auto-promotion** (memories earn higher tiers through positive validation), and **negative feedback with 30-day decay** to prevent permanent blacklisting.
+- **Cold-start boost** — Fresh memories (under 48h) get temporary scoring lift
+- **Interference penalty** — Suppresses near-duplicate clusters
+- **Auto-promotion** — Memories earn higher tiers through positive validation
+- **Negative feedback** — 30-day decay prevents permanent blacklisting
 
-**Five cognitive states** based on access patterns: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**. HOT memories get full content in results; COLD and below only surface if they score well enough.
+Five cognitive states: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**
 
 
 #### CAUSAL GRAPH
 
 
-The system tracks how decisions relate to each other through **six relationship types**: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from` and `supports`.
+Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from`, `supports`
 
-The graph supports typed-weighted traversal (prioritizing connection types based on query intent), community detection (Louvain) for cluster boosting, co-activation spreading with fan-effect dampening, temporal contiguity for same-session grouping, graph momentum for trending knowledge, and background LLM-assisted link discovery. Hub caps prevent any single highly-connected memory from dominating results.
+- **Typed traversal** — Prioritizes connection types based on query intent
+- **Community detection** — Louvain clustering with neighbor boosting
+- **Co-activation spreading** — Fan-effect dampening prevents hub bias
+- **Temporal contiguity** — Same-session grouping
+- **Graph momentum** — Trending knowledge surfaces higher
+- **LLM backfill** — Background discovery of missed causal links
 
 
 #### SAVE INTELLIGENCE
@@ -366,12 +381,21 @@ When you save new knowledge, **Prediction Error gating** compares it against exi
 - **UPDATE** — Similar exists, new one is better. Old version replaced.
 - **SUPERSEDE** — New knowledge contradicts the old. Old one demoted to deprecated.
 
-Additional save-time processing includes semantic sufficiency gating, verify-fix-verify quality loops, content normalization for cleaner embeddings, auto-entity extraction, SHA-256 deduplication, and correction tracking that records how knowledge evolves across versions.
+Additional save-time processing:
+
+- **Semantic sufficiency gating** — Rejects content too thin to be useful
+- **Verify-fix-verify** — Auto-fixes quality issues before storing
+- **Content normalization** — Strips formatting clutter for cleaner embeddings
+- **Auto-entity extraction** — Spots tool/project/concept names for cross-linking
+- **SHA-256 deduplication** — Skips unchanged files instantly
+- **Correction tracking** — Records how knowledge evolves across versions
 
 
 #### SESSION AWARENESS
 
-Working memory tracks findings from the current session with attention decay -- recent findings rank higher, older ones fade gracefully. Session deduplication suppresses already-seen results in follow-up queries. Context pressure monitoring downgrades search mode as the context window fills.
+- **Working memory** — Tracks current session findings with attention decay
+- **Session deduplication** — Suppresses already-seen results in follow-up queries
+- **Context pressure** — Downgrades search mode as the context window fills
 
 
 #### SHARED MEMORY
@@ -388,24 +412,40 @@ For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](.opencode/skil
 
 #### QUALITY GATES AND LEARNING
 
-Before a new memory enters the system, it passes three layered checks: **structure** (format, headings, metadata), **semantic sufficiency** (enough real content to be useful), and **duplicate detection** (triggers Prediction Error arbitration if similar content exists). Preview all checks without saving using `dryRun: true`.
+Three layered checks before storage:
 
-**Learned relevance feedback** boosts helpful results in future queries, with multiple safeguards against noise. Results are tagged with high/medium/low confidence scores. Two-tier explainability shows either plain-language reasons or exact channel contributions.
+- **Structure gate** — Format, headings, metadata validation
+- **Semantic sufficiency** — Enough real content to be useful
+- **Duplicate detection** — Triggers Prediction Error arbitration if similar content exists
+
+Preview all checks without saving using `dryRun: true`. Learned relevance feedback boosts helpful results with safeguards against noise. Two-tier explainability shows plain-language reasons or exact channel contributions.
 
 
 #### RETRIEVAL ENHANCEMENTS
 
-Additional retrieval signals include constitutional memory injection (always-surfaced rules), spec folder hierarchy awareness, cross-document entity linking, ANCHOR-based section retrieval (~93% token savings), dual-scope auto-surfacing on tool use and compression events, and provenance traces showing how each result was found.
+- **Constitutional injection** — Always-surfaced rules appear without asking
+- **Hierarchy awareness** — Searches parent and sibling spec folders
+- **Entity linking** — Connects memories referencing the same concepts
+- **ANCHOR retrieval** — Per-section indexing (~93% token savings)
+- **Auto-surfacing** — Triggers on tool use and context compression events
+- **Provenance traces** — Shows exactly how each result was found
 
 
 #### INDEXING AND INFRASTRUCTURE
 
-The memory engine watches the filesystem in real-time (chokidar), tracks content hashes for incremental indexing, retries failed embeddings in the background, falls back to lexical-only indexing when embedding services are unavailable, and uses atomic writes with crash recovery.
+- **Real-time watching** — Filesystem monitoring via chokidar
+- **Incremental indexing** — Content hashes skip unchanged files
+- **Embedding retry** — Background worker retries failed embeddings
+- **Lexical fallback** — Text-searchable when embedding services are down
+- **Atomic writes** — Crash-safe with pending-file recovery on startup
 
 
 #### EVALUATION INFRASTRUCTURE
 
-Research-grade evaluation: 12-metric computation (MRR, NDCG, MAP), a 110-question synthetic ground truth corpus, ablation studies measuring per-channel quality impact, and shadow scoring for testing ranking changes before deployment.
+- **12-metric computation** — MRR, NDCG, MAP and more
+- **Ground truth corpus** — 110 test questions with known correct answers
+- **Ablation studies** — Per-channel quality impact measurement
+- **Shadow scoring** — Test ranking changes before deployment
 
 
 #### Embedding Providers
@@ -428,21 +468,43 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 #### Built-in Agents (2)
 
-- **`@general`** — General-purpose implementation agent. Handles feature development, bug fixes, refactoring. Default fallback when no custom agent matches.
-- **`@explore`** — Fast codebase exploration. File pattern matching, keyword search, structural questions. Read-only.
+**General**
+- General-purpose implementation agent. Handles feature development, bug fixes, refactoring. Default fallback when no custom agent matches.
+
+**Explore**
+- Fast codebase exploration. File pattern matching, keyword search, structural questions. Read-only.
 
 #### Custom Agents (10)
 
-- **`@orchestrate`** — Senior task commander. Decomposes, delegates, evaluates and merges sub-agent outputs. Read-only (cannot implement directly).
-- **`@context`** — Memory-first retrieval specialist. Always checks memory before codebase. Read-only. Returns structured Context Packages.
-- **`@speckit`** — Exclusive spec folder documentation agent. Template-first, Level 1-3+, 20-rule validation. LEAF-only.
-- **`@debug`** — Fresh-perspective debugger. Receives structured context handoff (not conversation history). 5-phase methodology: Observe → Analyze → Hypothesize → Validate → Fix.
-- **`@deep-research`** — Autonomous research agent. Single LEAF iteration with externalized JSONL state. Writes `research.md` and `scratch/`.
-- **`@deep-review`** — Autonomous code quality auditor. Read-only on code. P0/P1/P2 findings across 7 dimensions with adversarial self-check.
-- **`@review`** — Code quality guardian. Read-only. Baseline + overlay standards model with mandatory security/correctness minimums.
-- **`@write`** — Documentation generation for project-level docs outside spec folders. Template-first with DQI quality scoring.
-- **`@handover`** — Session continuation specialist. Creates `handover.md` with key decisions, blockers, phase and next steps.
-- **`@ultra-think`** — Multi-strategy planning architect. 5 reasoning lenses, 5-dimension scoring rubric. Plans only — never modifies files.
+**Orchestrate**
+- Senior task commander. Decomposes, delegates, evaluates and merges sub-agent outputs. Read-only (cannot implement directly).
+
+**Context**
+- Memory-first retrieval specialist. Always checks memory before codebase. Read-only. Returns structured Context Packages.
+
+**Speckit**
+- Exclusive spec folder documentation agent. Template-first, Level 1-3+, 20-rule validation. LEAF-only.
+
+**Debug**
+- Fresh-perspective debugger. Receives structured context handoff (not conversation history). 5-phase methodology: Observe → Analyze → Hypothesize → Validate → Fix.
+
+**Deep-Research**
+- Autonomous research agent. Single LEAF iteration with externalized JSONL state. Writes `research.md` and `scratch/`.
+
+**Deep-Review**
+- Autonomous code quality auditor. Read-only on code. P0/P1/P2 findings across 7 dimensions with adversarial self-check.
+
+**Review**
+- Code quality guardian. Read-only. Baseline + overlay standards model with mandatory security/correctness minimums.
+
+**Write**
+- Documentation generation for project-level docs outside spec folders. Template-first with DQI quality scoring.
+
+**Handover**
+- Session continuation specialist. Creates `handover.md` with key decisions, blockers, phase and next steps.
+
+**Ultra-Think**
+- Multi-strategy planning architect. 5 reasoning lenses, 5-dimension scoring rubric. Plans only — never modifies files.
 
 #### Runtime Directories
 
@@ -461,35 +523,71 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 #### spec_kit/ — 8 Commands (spec folder lifecycle)
 
-- **`/spec_kit:complete`** — End-to-end: research → plan → implement → verify → save memory. Modes: `:auto`, `:confirm`, `:with-research`, `:auto-debug`.
-- **`/spec_kit:plan`** — Planning only (spec.md, plan.md, tasks.md). No implementation. Modes: `:auto`, `:confirm`.
-- **`/spec_kit:implement`** — Execute an existing plan.md. Modes: `:auto`, `:confirm`.
-- **`/spec_kit:phase`** — Decompose large features into parent + child spec folders.
-- **`/spec_kit:debug`** — Delegate to `@debug` with structured context handoff. Writes `debug-delegation.md`.
-- **`/spec_kit:resume`** — Recover session context from memory. Pick up where you left off.
-- **`/spec_kit:deep-research`** — Autonomous research loop until convergence. Modes: `:auto`, `:review`.
-- **`/spec_kit:handover`** — Create session handover document. Variants: `:quick`, `:full`.
+**complete**
+- End-to-end: research → plan → implement → verify → save memory. Modes: `:auto`, `:confirm`, `:with-research`, `:auto-debug`.
+
+**plan**
+- Planning only (spec.md, plan.md, tasks.md). No implementation. Modes: `:auto`, `:confirm`.
+
+**implement**
+- Execute an existing plan.md. Modes: `:auto`, `:confirm`.
+
+**phase**
+- Decompose large features into parent + child spec folders.
+
+**debug**
+- Delegate to debug agent with structured context handoff. Writes `debug-delegation.md`.
+
+**resume**
+- Recover session context from memory. Pick up where you left off.
+
+**deep-research**
+- Autonomous research loop until convergence. Modes: `:auto`, `:review`.
+
+**handover**
+- Create session handover document. Variants: `:quick`, `:full`.
 
 #### memory/ — 4 Commands (cognitive memory)
 
-- **`/memory:save`** — Save session context to a timestamped memory file via `generate-context.js`.
-- **`/memory:search`** — Unified retrieval: intent-aware search, causal graph, ablation studies, dashboards.
-- **`/memory:learn`** — Manage constitutional memories (always-surface rules, 3.0x boost, never decay).
-- **`/memory:manage`** — Database admin: stats, health, cleanup, checkpoints, bulk operations, shared spaces.
+**save**
+- Save session context to a timestamped memory file via `generate-context.js`.
+
+**search**
+- Unified retrieval: intent-aware search, causal graph, ablation studies, dashboards.
+
+**learn**
+- Manage constitutional memories (always-surface rules, 3.0x boost, never decay).
+
+**manage**
+- Database admin: stats, health, cleanup, checkpoints, bulk operations, shared spaces.
 
 #### create/ — 7 Commands (component scaffolding)
 
-- **`/create:sk-skill`** — Create or update skills (SKILL.md, README, references, assets).
-- **`/create:agent`** — Scaffold agent definitions across all 4 runtimes.
-- **`/create:folder_readme`** — README and install guide creation with DQI quality scoring.
-- **`/create:changelog`** — Auto-detect recent work, generate formatted changelog entry.
-- **`/create:prompt`** — Create or improve prompts using 7 frameworks + CLEAR scoring.
-- **`/create:feature-catalog`** — Create or update feature catalog packages.
-- **`/create:testing-playbook`** — Create or update manual testing playbook packages.
+**sk-skill**
+- Create or update skills (SKILL.md, README, references, assets).
+
+**agent**
+- Scaffold agent definitions across all 4 runtimes.
+
+**folder_readme**
+- README and install guide creation with DQI quality scoring.
+
+**changelog**
+- Auto-detect recent work, generate formatted changelog entry.
+
+**prompt**
+- Create or improve prompts using 7 frameworks + CLEAR scoring.
+
+**feature-catalog**
+- Create or update feature catalog packages.
+
+**testing-playbook**
+- Create or update manual testing playbook packages.
 
 #### Utility — 1 Command
 
-- **`/agent_router`** — Route requests to external AI systems (Gemini, Codex, Claude Code, Copilot) with full identity adoption.
+**agent_router**
+- Route requests to external AI systems (Gemini, Codex, Claude Code, Copilot) with full identity adoption.
 
 
 ---
@@ -500,36 +598,67 @@ Custom agents are defined in `.opencode/agent/` (source of truth) and adapted fo
 
 #### Documentation Skills (2)
 
-- **`system-spec-kit`** — Mandatory orchestrator for all file modifications. Spec folders with 4 documentation levels (1-3+), 81 templates, 20 validation rules, 33-tool memory system, 255 feature catalog entries.
-- **`sk-doc`** — Markdown quality enforcement via DQI scoring, HVR compliance, component scaffolding (skills, agents, commands), README templates, and install guide generation.
+**system-spec-kit**
+- Mandatory orchestrator for all file modifications. Spec folders with 4 documentation levels (1-3+), 81 templates, 20 validation rules, 33-tool memory system, 255 feature catalog entries.
+
+**sk-doc**
+- Markdown quality enforcement via DQI scoring, HVR compliance, component scaffolding (skills, agents, commands), README templates, and install guide generation.
 
 #### Code Workflow Skills (4)
 
-- **`sk-code--full-stack`** — Stack-agnostic development orchestrator. Auto-detects 7 stacks via marker files. 3 mandatory phases: implementation → testing → verification.
-- **`sk-code--opencode`** — Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON/JSONC). Evidence-based patterns with `file:line` citations.
-- **`sk-code--web`** — Frontend orchestrator with 5-phase lifecycle. Mandatory browser testing, DevTools integration, PageSpeed/Lighthouse targets.
-- **`sk-code--review`** — Stack-agnostic code review baseline. Baseline + overlay model with mandatory security/correctness minimums. P0/P1/P2 findings.
+**sk-code--full-stack**
+- Stack-agnostic development orchestrator. Auto-detects 7 stacks via marker files. 3 mandatory phases: implementation → testing → verification.
+
+**sk-code--opencode**
+- Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON/JSONC). Evidence-based patterns with `file:line` citations.
+
+**sk-code--web**
+- Frontend orchestrator with 5-phase lifecycle. Mandatory browser testing, DevTools integration, PageSpeed/Lighthouse targets.
+
+**sk-code--review**
+- Stack-agnostic code review baseline. Baseline + overlay model with mandatory security/correctness minimums. P0/P1/P2 findings.
 
 #### MCP Integration Skills (5)
 
-- **`mcp-code-mode`** — 200+ external tools via single TypeScript interface. 98.7% context reduction, progressive loading, type-safe.
-- **`mcp-coco-index`** — Semantic code search via vector embeddings across 28+ languages. CLI (`ccc`) and MCP server modes.
-- **`mcp-figma`** — 18 Figma tools: file access, asset export, design tokens, collaboration, team management.
-- **`mcp-chrome-devtools`** — Chrome DevTools with 2-mode routing: CLI (`bdg`) for speed, MCP for integration.
-- **`mcp-clickup`** — ClickUp orchestrator with 2-mode routing: CLI (`cu`) for basic ops, MCP for enterprise features.
+**mcp-code-mode**
+- 200+ external tools via single TypeScript interface. 98.7% context reduction, progressive loading, type-safe.
+
+**mcp-coco-index**
+- Semantic code search via vector embeddings across 28+ languages. CLI (`ccc`) and MCP server modes.
+
+**mcp-figma**
+- 18 Figma tools: file access, asset export, design tokens, collaboration, team management.
+
+**mcp-chrome-devtools**
+- Chrome DevTools with 2-mode routing: CLI (`bdg`) for speed, MCP for integration.
+
+**mcp-clickup**
+- ClickUp orchestrator with 2-mode routing: CLI (`cu`) for basic ops, MCP for enterprise features.
 
 #### Cross-AI CLI Skills (4)
 
-- **`cli-gemini`** — Gemini CLI delegation. Real-time web search via Google Search grounding, 1M+ token context.
-- **`cli-codex`** — Codex CLI with dual models (`gpt-5.4` + `gpt-5.3-codex`), diff-aware review, web browsing, screenshot analysis.
-- **`cli-claude-code`** — Claude Code CLI with 3 models (Opus/Sonnet/Haiku), extended thinking, structured output.
-- **`cli-copilot`** — Copilot CLI with 5 models across 3 providers. Explore/Task agents, Autopilot mode, MCP integration.
+**cli-gemini**
+- Gemini CLI delegation. Real-time web search via Google Search grounding, 1M+ token context.
+
+**cli-codex**
+- Codex CLI with dual models (`gpt-5.4` + `gpt-5.3-codex`), diff-aware review, web browsing, screenshot analysis.
+
+**cli-claude-code**
+- Claude Code CLI with 3 models (Opus/Sonnet/Haiku), extended thinking, structured output.
+
+**cli-copilot**
+- Copilot CLI with 5 models across 3 providers. Explore/Task agents, Autopilot mode, MCP integration.
 
 #### Other Skills (3)
 
-- **`sk-deep-research`** — Dual-mode autonomous investigation. LEAF cycles with externalized state, convergence detection, pause/resume.
-- **`sk-git`** — Git workflow orchestrator: worktree setup, conventional commits, PR creation and branch cleanup.
-- **`sk-prompt-improver`** — Prompt engineering with 7 frameworks, DEPTH methodology, CLEAR scoring (40+/50 pass threshold).
+**sk-deep-research**
+- Dual-mode autonomous investigation. LEAF cycles with externalized state, convergence detection, pause/resume.
+
+**sk-git**
+- Git workflow orchestrator: worktree setup, conventional commits, PR creation and branch cleanup.
+
+**sk-prompt-improver**
+- Prompt engineering with 7 frameworks, DEPTH methodology, CLEAR scoring (40+/50 pass threshold).
 
 
 ---
