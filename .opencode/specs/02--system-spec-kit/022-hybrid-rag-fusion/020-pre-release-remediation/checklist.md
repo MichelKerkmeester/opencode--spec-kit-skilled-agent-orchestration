@@ -7,7 +7,7 @@
 ## Verification Protocol
 
 - This is the active verification checklist derived from the canonical review in [`review/review-report.md`](./review/review-report.md).
-- The current documentation pass only stages verification. Every item below remains `[ ]` until remediation work actually runs.
+- Most verification items below remain `[ ]` while the broader remediation program is still staged. Two narrow slices are recorded as `[x]` below from fresh evidence, and neither changes the overall `FAIL` verdict.
 - Primary IDs in this file use the `CHK-R###` format.
 - Checklist rows are grouped by remediation workstream and by final rerun gates rather than by historical packet lineage.
 
@@ -43,6 +43,7 @@
 - [ ] CHK-R026 [P1] Stage-2b fail-open behavior and context-server lifecycle failure branches are covered by direct tests. `[Findings: HRF-DR-023, HRF-DR-025]`
 - [ ] CHK-R027 [P0] Tool-cache invalidation and shutdown clear stale in-flight state safely. `[Findings: HRF-DR-024]`
 - [ ] CHK-R028 [P1] Retry-manager operator logs no longer expose raw provider failure text. `[Findings: HRF-DR-026]`
+- [x] CHK-R029 [P1] `.opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts` records the landed `formatters/search-results.js` extended limit at `536` and the adjacent actual-count note at `536`. `[EVIDENCE: \`npx vitest run tests/modularization.vitest.ts\` passed, \`timeout 180 npm run test:core\` passed, and \`python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit\` passed for this narrow modularization/test-budget slice.]` `[Supports: narrow modularization/test-budget slice only; no canonical verdict change]`
 <!-- /ANCHOR:code-quality -->
 
 <!-- ANCHOR:testing -->
@@ -81,6 +82,7 @@
 - [ ] CHK-R032 [P1] `015-manual-testing-per-playbook` totals, orphan-story claims, and capability links match the live playbook tree. `[Findings: HRF-DR-006]`
 - [ ] CHK-R033 [P2] Root `019/020` phase-link drift is cleared. `[Findings: HRF-DR-007]`
 - [ ] CHK-R034 [P2] Root `022` plan no longer contains the duplicated effort-estimation block. `[Findings: HRF-DR-008]`
+- [x] CHK-R035 [P1] `.opencode/skill/system-spec-kit/mcp_server/scripts/map-ground-truth-ids.ts` is now a thin compatibility wrapper delegating to `../../scripts/dist/evals/map-ground-truth-ids.js`. `[EVIDENCE: \`npm run check --workspace=scripts\` in \`.opencode/skill/system-spec-kit\` exited 0, and \`python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit\` exited 0 for this wrapper-only alignment slice.]` `[Supports: narrow wrapper-alignment slice only; no canonical verdict change]`
 - [ ] CHK-R043 [P2] `007-code-audit-per-feature-catalog` is no longer treated as live correctness evidence anywhere in the release packet surfaces. `[Findings: HRF-DR-030]`
 <!-- /ANCHOR:docs -->
 
@@ -96,7 +98,7 @@
 ## Verification Summary
 
 - [ ] [P0] Every active finding from `HRF-DR-001` through `HRF-DR-030` is represented in `tasks.md` and `checklist.md`.
-- [ ] [P0] Every staged checklist item remains unchecked after this documentation-only pass.
+- [ ] [P0] All checklist items remain unchecked except the two evidence-backed narrow slices recorded in `CHK-R029` and `CHK-R035`.
 - [ ] [P0] The packet continues to treat `review/review-report.md` as canonical and the top-level `review-report.md` as historical.
 - [ ] [P1] The verification sequence still depends on fresh reruns rather than historical prose.
 <!-- /ANCHOR:summary -->

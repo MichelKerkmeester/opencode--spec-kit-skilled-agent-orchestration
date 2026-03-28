@@ -29,7 +29,7 @@ contextType: "general"
 
 ### Overview
 
-This plan turns the canonical review into an execution sequence. The current review baseline is still `FAIL` as of **2026-03-27**. The current documentation pass only stages the work; implementation begins after approval.
+This plan turns the canonical review into an execution sequence. The current review baseline is still `FAIL` as of **2026-03-27**. Implementation is now in progress for two narrow remediation slices: `.opencode/skill/system-spec-kit/mcp_server/scripts/map-ground-truth-ids.ts` has been converted into a thin compatibility wrapper that delegates to `../../scripts/dist/evals/map-ground-truth-ids.js`, and `.opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts` now records the landed `formatters/search-results.js` extended limit at `536` with the adjacent actual-count note updated to `536`. These slices are real and verified, but broader workstreams remain staged pending further execution and fresh rerun evidence.
 
 The work is organized into four review-driven remediation workstreams:
 
@@ -55,7 +55,7 @@ The active finding load that drives this plan is:
 - [x] The canonical review in [`review/review-report.md`](./review/review-report.md) has been read as the authoritative source
 - [x] The current packet docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) have been re-anchored to the canonical review
 - [x] The normalized feature-state denominator (`255` features, `21` categories, `191/48/7/9`) is known
-- [x] The implementation backlog remains staged and unchecked pending explicit go-ahead
+- [x] The packet records two evidence-backed narrow remediation slices as landed while the broader backlog remains staged or unchecked
 
 ### Definition of Done
 
@@ -142,12 +142,14 @@ Canonical-review-driven remediation packet
 
 ### Phase 2: WS-1 Runtime/Code Integrity
 
+- [x] Refresh the modularization guard in `.opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts` so `formatters/search-results.js` uses extended limit `536` and adjacent actual-count note `536`; verify with `npx vitest run tests/modularization.vitest.ts`, `timeout 180 npm run test:core`, and `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
 - [ ] Fix scope loss in save dedup and PE arbitration
 - [ ] Close constitutional cache, custom-path DB integrity, session trust, bulk-delete contract, tool-cache, and logging defects
 - [ ] Land the missing direct regression coverage the review identified while runtime fixes are touched
 
 ### Phase 3: WS-3 Public Docs And Wrapper Alignment
 
+- [x] Land the `map-ground-truth-ids` compatibility-wrapper fix by delegating `mcp_server/scripts/map-ground-truth-ids.ts` to `../../scripts/dist/evals/map-ground-truth-ids.js`; verify with `npm run check --workspace=scripts` in `.opencode/skill/system-spec-kit` and `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
 - [ ] Refresh public README and install surfaces against live repo truth
 - [ ] Rebuild wrapper denominators and status claims for `006`, `015`, and root hygiene surfaces
 - [ ] Clear release-surface warnings that still block trustworthy release-control summaries
@@ -325,4 +327,4 @@ spec + plan + tasks + checklist
 
 - **ADR-012-R1**: This packet now follows the canonical `review/` report instead of the historical top-level report.
 - **ADR-012-R2**: The remediation program is grouped by workstream rather than by predecessor packet lineage.
-- **ADR-012-R3**: The packet remains implementation-ready but execution-pending until explicit go-ahead is given.
+- **ADR-012-R3**: The packet remains in active remediation, with only the `map-ground-truth-ids` compatibility-wrapper slice and the modularization test-budget slice recorded as landed so far.

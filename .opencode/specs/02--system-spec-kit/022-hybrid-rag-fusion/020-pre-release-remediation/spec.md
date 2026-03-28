@@ -45,7 +45,7 @@ This documentation pass does not fix those findings yet. Its job is narrower and
 | **Updated For Review Baseline** | 2026-03-27 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Predecessor** | `../011-research-based-refinement/spec.md` |
+| **Predecessor** | `../019-rewrite-repo-readme/spec.md` |
 | **Historical Predecessors** | `012-pre-release-fixes-alignment-preparation`, `013-v7-remediation`, `014-v8-p1-p2-remediation` |
 | **Canonical Review Source** | `./review/review-report.md` |
 | **Historical Report** | `./review-report.md` (historical evidence only) |

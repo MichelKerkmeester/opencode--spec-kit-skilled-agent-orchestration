@@ -58,7 +58,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | Category | Count | Details |
 |----------|-------|---------|
 | **MCP Tools** | 33 | Across 7 layers (L1-L7), 7,600 total token budget |
-| **Commands** | 14 | 8 spec_kit + 6 memory |
+| **Commands** | 12 | 8 spec_kit + 4 memory |
 | **Documentation Levels** | 4 | Levels 1, 2, 3, 3+ |
 | **Feature Catalog Entries** | 255 | Across 21 categories |
 | **Search Channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
@@ -355,6 +355,7 @@ When you save new content, the system runs an arbitration process before storing
 | **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted |
 
 Three quality gates run before storage: structure check (required format and metadata), semantic sufficiency check (enough real content to be useful), and duplicate detection.
+Short decision-type memories can bypass the content-length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals (title, specFolder, or anchor) are present.
 
 #### Shared Memory
 
@@ -383,7 +384,7 @@ The memory system includes built-in tools for measuring search quality:
 
 ### 3.3 COMMANDS
 
-Spec Kit exposes 14 commands: 8 for spec folder workflows and 6 for memory operations. Each command opens access to a specific set of tools. Think of commands as doors into the system -- each door opens only the tools it needs.
+Spec Kit exposes 12 commands: 8 spec_kit + 4 memory operations. Each command opens access to a specific set of tools. Think of commands as doors into the system -- each door opens only the tools it needs.
 
 #### Spec Kit Commands (8)
 

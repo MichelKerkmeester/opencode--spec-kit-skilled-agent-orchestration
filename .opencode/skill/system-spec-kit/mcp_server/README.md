@@ -81,15 +81,14 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 ### How You Use It
 
-The memory system exposes 33 tools through 5 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes 33 tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
 | `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
-| `/memory:manage` | Database maintenance, checkpoints and bulk ingestion | 16 tools |
+| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 16 tools |
 | `/memory:save` | Save conversation context | 4 tools |
-| `/memory:manage shared` | Manage shared-memory spaces and memberships | 4 tools |
 | `/spec_kit:resume` | Continue or recover an interrupted spec-folder session using shared memory tools | 4 borrowed tools |
 
 ### Requirements
@@ -1090,7 +1089,7 @@ Tools are organized into layers based on what they do. Lower layers handle every
 | L2 | Core | 4 | 1,500 | The main search and save operations |
 | L3 | Discovery | 3 | 800 | Browse what is stored, check system health |
 | L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
-| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/disable |
+| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/status/shared-space lifecycle |
 | L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
 | L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
 | | **Total** | **33** | **7,600** | |

@@ -29,9 +29,9 @@ This document combines two complementary views of the Spec Kit Memory system int
 - [16. RETRIEVAL ENHANCEMENTS](#16-retrieval-enhancements)
 - [17. TOOLING AND SCRIPTS](#17-tooling-and-scripts)
 - [18. GOVERNANCE](#18-governance)
-- [19. UX HOOKS](#19-ux-hooks)
-- [20. SPEC KIT PHASE WORKFLOWS](#20-spec-kit-phase-workflows)
-- [21. FEATURE FLAG REFERENCE](#21-feature-flag-reference)
+- [19. FEATURE FLAG REFERENCE](#19-feature-flag-reference)
+- [20. REMEDIATION REVALIDATION](#20-remediation-revalidation)
+- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21-implement-and-remove-deprecated-features)
 
 ---
 
@@ -49,7 +49,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **33 tools** organized under **5 memory slash commands**, with session recovery now owned by `/spec_kit:resume` as a spec-folder workflow using shared memory tools. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for memory ownership remains the `allowed-tools` field in each command file under `.opencode/command/memory/`, with recovery behavior documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **33 tools** organized under **4 memory slash commands**, with session recovery now owned by `/spec_kit:resume` as a spec-folder workflow using shared memory tools. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for memory ownership remains the `allowed-tools` field in each command file under `.opencode/command/memory/`, with recovery behavior documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
@@ -3999,7 +3999,7 @@ See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kil
 
 ---
 
-## 19. UX HOOKS
+## 19. FEATURE FLAG REFERENCE
 
 Current mapping: this content is tracked under spec `006-ux-hooks-automation`.
 
@@ -4316,7 +4316,7 @@ See [`18--ux-hooks/17-retrieval-session-state.md`](18--ux-hooks/17-retrieval-ses
 
 ---
 
-## 20. SPEC KIT PHASE WORKFLOWS
+## 20. REMEDIATION REVALIDATION
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -4382,7 +4382,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## 21. FEATURE FLAG REFERENCE
+## 21. IMPLEMENT AND REMOVE DEPRECATED FEATURES
 
 The tables below catalogue the documented environment-variable surface that is still read by code or intentionally retained as a live compatibility shim. The "Default" column reflects the value in effect when the variable is absent from the environment.
 

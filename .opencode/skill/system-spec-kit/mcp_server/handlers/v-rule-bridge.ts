@@ -50,7 +50,7 @@ function loadModule(): void {
   if (_loadAttempted) return;
   _loadAttempted = true;
   try {
-    const distPath = path.resolve(__dirname, '../../scripts/dist/memory/validate-memory-quality.js');
+    const distPath = path.resolve(__dirname, '../../../scripts/dist/memory/validate-memory-quality.js');
     const mod = runtimeRequire(distPath);
     _validateMemoryQualityContent = mod.validateMemoryQualityContent;
     _determineValidationDisposition = mod.determineValidationDisposition;

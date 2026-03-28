@@ -134,25 +134,25 @@ node scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature"
 DEBUG=1 echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node scripts/dist/memory/generate-context.js --stdin
 
 # Use custom database location
-MEMORY_DB_PATH=/tmp/test-db.sqlite node mcp_server/context-server.ts
+MEMORY_DB_PATH=/tmp/test-db.sqlite node mcp_server/dist/context-server.js
 
 # Enable experimental reranker
-ENABLE_RERANKER=true node mcp_server/context-server.ts
+ENABLE_RERANKER=true node mcp_server/dist/context-server.js
 
 # Quiet mode for CI/CD
 SPECKIT_QUIET=true bash scripts/spec/validate.sh specs/001-feature/
 
 # Use Voyage AI embeddings (high quality, cloud-based)
-VOYAGE_API_KEY=your-key-here node mcp_server/context-server.ts
+VOYAGE_API_KEY=your-key-here node mcp_server/dist/context-server.js
 
 # Use OpenAI embeddings
-OPENAI_API_KEY=your-key-here node mcp_server/context-server.ts
+OPENAI_API_KEY=your-key-here node mcp_server/dist/context-server.js
 
 # Force local embeddings (no API key required)
-EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-server.ts
+EMBEDDINGS_PROVIDER=hf-local node mcp_server/dist/context-server.js
 
 # Use specific embedding model
-VOYAGE_EMBEDDINGS_MODEL=voyage-4-large VOYAGE_API_KEY=your-key node mcp_server/context-server.ts
+VOYAGE_EMBEDDINGS_MODEL=voyage-4-large VOYAGE_API_KEY=your-key node mcp_server/dist/context-server.js
 ```
 
 ---
@@ -351,23 +351,23 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_RECENCY_DECAY_DAYS` | `30` | S7 | Recency decay window in days for access tracking |
 | `SPECKIT_TOKEN_BUDGET` | auto | S5 | Override token budget for hybrid search responses |
 | `SPECKIT_FOLDER_TOP_K` | `5` | S3 | Top-K folder candidates for folder-scoped retrieval |
-| `SPECKIT_EAGER_WARMUP` | OFF | S9 | Eager model warmup at server startup |
-| `SPECKIT_LAZY_LOADING` | ON | S9 | Lazy module loading for faster startup |
+| `SPECKIT_EAGER_WARMUP` (deprecated — compatibility only) | OFF | S9 | Eager model warmup at server startup |
+| `SPECKIT_LAZY_LOADING` (deprecated — compatibility only) | ON | S9 | Lazy module loading for faster startup |
 
 ### Usage Examples
 
 ```bash
 # Enable an opt-in feature
-SPECKIT_ABLATION=true node mcp_server/context-server.ts
+SPECKIT_ABLATION=true node mcp_server/dist/context-server.js
 
 # Adjust numeric parameters
-SPECKIT_COACTIVATION_STRENGTH=0.3 SPECKIT_FOLDER_TOP_K=10 node mcp_server/context-server.ts
+SPECKIT_COACTIVATION_STRENGTH=0.3 SPECKIT_FOLDER_TOP_K=10 node mcp_server/dist/context-server.js
 
 # Disable deduplication for testing
-SPEC_KIT_ENABLE_DEDUP=false node mcp_server/context-server.ts
+SPEC_KIT_ENABLE_DEDUP=false node mcp_server/dist/context-server.js
 
 # Offline mode (no API calls, local embeddings only)
-SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-server.ts
+SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/dist/context-server.js
 ```
 
 ### Production Recommendations

@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentatio, 12 agents, 18 skills, 22 commands, 42 MCP tools -- built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 18 skills, 20 commands, 42 MCP tools -- built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 >
 > 99.999% of people won't try this system. Beat the odds?
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
@@ -65,12 +65,12 @@ The framework adds three layers on top of the base platform:
 
 - [x] **12 Agents** -- 2 built-in + 10 custom, multi-runtime. [Details](#33-agent-network)
 - [x] **18 Skills** -- Code, docs, git, prompts, MCP, research, cross-AI. [Details](#35-skills-library)
-- [x] **22 Commands** -- 8 spec_kit + 6 memory + 7 create + 1 utility. [Details](#34-command-architecture)
+- [x] **20 Commands** -- 8 spec_kit + 4 memory + 7 create + 1 utility. [Details](#34-command-architecture)
 - [x] **42 MCP Tools** -- 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking. [Details](#37-code-mode-mcp)
 - [x] **3 Gates** -- Understanding, Skill Routing, Spec Folder. [Details](#36-gate-system)
 - [x] **4 Runtimes** -- OpenCode, Codex CLI, Claude Code, Gemini CLI
 - [x] **81 Templates** -- CORE + ADDENDUM v2.2
-- [x] **222 Feature Catalog** -- Across 21 categories
+- [x] **255 Feature Catalog** -- Across 21 categories
 
 
 ### How This Compares
@@ -713,7 +713,7 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 ### 3.4 COMMAND ARCHITECTURE
 
 
-22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec that tells the AI exactly how to run the workflow.
+20 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec that tells the AI exactly how to run the workflow.
 
 <details>
 <summary><strong>spec_kit/ — 8 Commands</strong> (spec folder lifecycle)</summary>
@@ -1183,7 +1183,7 @@ A: 42 total across 4 native MCP servers: 33 memory tools (spec_kit_memory), 7 co
 
 **Q: What is the feature catalog?**
 
-A: The feature catalog is a 222-entry reference across 21 categories documenting every capability of the memory system. It comes in two versions: a technical reference and a simple-terms companion with plain-language explanations. Both are in `.opencode/skill/system-spec-kit/feature_catalog/`.
+A: The feature catalog is a 255-entry reference across 21 categories documenting every capability of the memory system. It comes in two versions: a technical reference and a simple-terms companion with plain-language explanations. Both are in `.opencode/skill/system-spec-kit/feature_catalog/`.
 
 <!-- /ANCHOR:faq -->
 
@@ -1204,7 +1204,7 @@ A: The feature catalog is a 222-entry reference across 21 categories documenting
 - **[ARCHITECTURE.md](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** — API boundary contract between scripts/ and mcp_server/
 - **[sk-doc SKILL.md](.opencode/skill/sk-doc/SKILL.md)** — Documentation standards, DQI scoring, templates and HVR writing rules
 - **[Skills README](.opencode/skill/README.md)** — Index of all 18 skills with descriptions and invocation patterns
-- **[FEATURE_CATALOG.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** — 222-entry technical reference across 21 categories
+- **[FEATURE_CATALOG.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** — 255-entry technical reference across 21 categories
 - **[FEATURE_CATALOG_IN_SIMPLE_TERMS.md](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** — Plain-language companion to the technical catalog
 - **[AGENTS_example_fs_enterprises.md](AGENTS_example_fs_enterprises.md)** — Example AGENTS.md for a full-stack enterprise project (runtime-neutral)
 
@@ -1217,4 +1217,4 @@ A: The feature catalog is a 222-entry reference across 21 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.0 | Last updated: 2026-03-25 | Framework: 12 agents, 18 skills, 22 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.0 | Last updated: 2026-03-28 | Framework: 12 agents, 18 skills, 20 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

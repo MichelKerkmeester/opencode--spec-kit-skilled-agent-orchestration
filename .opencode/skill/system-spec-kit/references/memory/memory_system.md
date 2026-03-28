@@ -94,7 +94,7 @@ Six-tier system for prioritizing memory relevance:
 <!-- ANCHOR:mcp-tools -->
 ## 3. MCP TOOLS
 
-> **Note:** MCP tool names use the format `spec_kit_memory_<tool_name>`. In documentation, shorthand names like `memory_search()` refer to the full `spec_kit_memory_memory_search()` tool.
+> **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `shared_memory_enable`.
 
 ### Tool Reference (33 tools)
 
@@ -119,7 +119,7 @@ Six-tier system for prioritizing memory relevance:
 | L5: Shared | `shared_space_upsert()` | Create or update a shared memory space | Set up team shared memory |
 | L5: Shared | `shared_space_membership_set()` | Add or remove members from shared space | Manage space access |
 | L5: Shared | `shared_memory_status()` | Get status of shared memory spaces | Check shared memory health |
-| L5: Shared | `shared_memory_enable()` | Enable or disable shared memory for a space | Toggle shared memory |
+| L5: Shared | `shared_memory_enable()` | Enable shared memory subsystem globally | Toggle shared memory |
 | L6: Analysis | `task_preflight()` | Capture epistemic baseline before task execution | Start of implementation work |
 | L6: Analysis | `task_postflight()` | Capture epistemic state after task, calculate Learning Index | After completing implementation |
 | L6: Analysis | `memory_drift_why()` | Trace causal chain for a memory ("why was this decided?") | Understand decision lineage |

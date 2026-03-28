@@ -558,7 +558,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~1073 lines) with ~44 handler files, 27 lib subdirectories, and 33 MCP tools across 7 layers.
 
-**Memory Commands:** 5 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`, `/memory:manage shared`) cover the memory command surface, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -602,6 +602,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **memory_save() — Save-Time Processing:**
 - Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
+- An exception path allows short decision-type memories to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
 - Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
 - A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
@@ -627,7 +628,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` plus canonical `SPECKIT_MEMORY_*` and legacy `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
-- **Feature catalog** — 221 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** — 255 documented features across 21 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 - **Tree-thinning threshold** — 150 tokens with merge group cap of 3 for improved file visibility in memory context
@@ -890,7 +891,7 @@ Automated validation of spec folder contents via `validate.sh`.
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (19 categories, 221 documented features)                | Per-feature current-reality docs  |
+| Feature Catalog   | `feature_catalog/` (21 categories, 255 documented features)                | Per-feature current-reality docs  |
 | Testing Playbook  | `manual_testing_playbook/` (19 categories, 227 per-test files)             | Manual validation matrix          |
 
 ---
