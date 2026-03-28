@@ -134,7 +134,7 @@ field_handling:
     date_format: "YYYY-MM-DD"
     version_format: "v{MAJOR}.{MINOR}.{PATCH}.{BUILD}"
     initial_version: "v1.0.0.0"
-    project_url: "https://github.com/MichelKerkmeester/opencode-spec-kit-framework"
+    project_url: "https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration"
 
 input_contract:
   required:
@@ -235,7 +235,7 @@ version_bump_rules:
 changelog_template: |
   # v{VERSION}
 
-  > Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode-spec-kit-framework)
+  > Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
 
   ---
 

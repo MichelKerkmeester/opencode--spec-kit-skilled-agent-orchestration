@@ -248,7 +248,7 @@ $ARGUMENTS
 ```markdown
 # v{VERSION}
 
-> Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode-spec-kit-framework)
+> Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
 
 ---
 

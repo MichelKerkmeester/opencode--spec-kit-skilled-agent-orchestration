@@ -1,8 +1,8 @@
 # OpenCode -- Skilled Agent Orchestration w/ The Best Custom Spec Kit Framework
 
-[![GitHub Stars](https://img.shields.io/github/stars/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&logo=github&color=fce566&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/stargazers)
-[![License](https://img.shields.io/github/license/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
-[![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&logo=github&color=fce566&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/stargazers)
+[![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
 > Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 18 skills, 20 commands, 42 MCP tools -- built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 
@@ -123,8 +123,8 @@ The framework adds three layers on top of the base platform:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/MichelKerkmeester/opencode-spec-kit-framework.git
-cd opencode-spec-kit-framework
+git clone https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration.git
+cd opencode--spec-kit-skilled-agent-orchestration
 
 # 2. Install dependencies
 npm install
