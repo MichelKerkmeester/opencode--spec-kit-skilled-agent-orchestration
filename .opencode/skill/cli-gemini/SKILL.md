@@ -363,6 +363,12 @@ gemini "[prompt]" -m gemini-3.1-pro-preview -o text
 6. **ALWAYS route to the appropriate Gemini agent** when the task matches an agent specialization
    - See agent routing table in Section 3
 
+7. **ALWAYS pass the spec folder to the delegated agent** in the prompt
+   - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
+   - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
+   - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+
 ### ❌ NEVER
 
 **NEVER do these:**

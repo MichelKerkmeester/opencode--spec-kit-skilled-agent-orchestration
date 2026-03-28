@@ -285,6 +285,12 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 5. **ALWAYS specify the model** if the task benefits from a specific provider's strength (e.g., Opus for reasoning).
 6. **ALWAYS validate output** against the local filesystem to ensure consistency.
 
+7. **ALWAYS pass the spec folder to the delegated agent** in the prompt.
+   - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
+   - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
+   - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+
 ### NEVER
 
 1. **NEVER use interactive mode** (omit `-p`) as it will hang the conductor's shell.

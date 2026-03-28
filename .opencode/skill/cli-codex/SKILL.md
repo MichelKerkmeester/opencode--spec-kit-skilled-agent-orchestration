@@ -418,6 +418,12 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
    - Use `-p <profile>` flag; see profile routing table in Section 3
    - Use `codex exec review` (built-in subcommand) for git diff reviews
 
+8. **ALWAYS pass the spec folder to the delegated agent** in the prompt
+   - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
+   - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
+   - This prevents the delegated agent from halting at the Gate 3 spec folder question in `--full-auto` or non-interactive mode
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+
 ### ❌ NEVER
 
 **NEVER do these:**
