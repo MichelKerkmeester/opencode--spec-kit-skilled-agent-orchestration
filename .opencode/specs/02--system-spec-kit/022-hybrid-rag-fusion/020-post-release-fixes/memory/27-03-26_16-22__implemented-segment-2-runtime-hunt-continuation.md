@@ -1,5 +1,5 @@
 ---
-title: "Implemented Segment 2 [020-pre-release-remediation/27-03-26_16-22__implemented-segment-2-runtime-hunt-continuation]"
+title: "Implemented Segment 2 [020-post-release-fixes/27-03-26_16-22__implemented-segment-2-runtime-hunt-continuation]"
 description: "Implemented segment-2 runtime-hunt continuation for the canonical 012 review packet. Normalized..."
 trigger_phrases:
   - "runtime hunt"
@@ -39,7 +39,7 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 |:--------------|:----------|
 | Session Date | 2026-03-27 |
 | Session ID | session-1774624936369-b633f4629fe9 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -103,13 +103,13 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes
 Last: Next Steps
 Next: Open a remediation planning pass with runtime/code integrity as the first workstream.
 ```
@@ -273,9 +273,9 @@ Implemented segment-2 runtime-hunt continuation for the canonical 012 review pac
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -287,16 +287,16 @@ Implemented segment-2 runtime-hunt continuation for the canonical 012 review pac
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes --force
 ```
 
 ### Recovery Priority
@@ -323,7 +323,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1774624936369-b633f4629fe9"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes"
 channel: "main"
 
 # Git Provenance (M-007d)
@@ -485,7 +485,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes"
 child_sessions:
 
   []

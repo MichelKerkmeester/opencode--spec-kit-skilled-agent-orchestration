@@ -19,7 +19,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 020-pre-release-remediation |
+| **Spec Folder** | 020-post-release-fixes |
 | **Completed** | In progress as of 2026-03-28; seven narrow slices landed |
 | **Level** | 3 |
 | **Baseline** | Canonical review verdict `FAIL`; `012` local validate failing on stale packet truth |

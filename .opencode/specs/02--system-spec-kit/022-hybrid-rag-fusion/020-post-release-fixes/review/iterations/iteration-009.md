@@ -9,7 +9,7 @@
 
 ### HRF-DR-003 [P1] Parent epic still points at the retired 012 child slug
 - **File:line:** `001-hybrid-rag-fusion-epic/spec.md:41,104,116`
-- **Evidence:** The parent epic still treats `012-pre-release-fixes-alignment-preparation` as the live direct child instead of `020-pre-release-remediation`.
+- **Evidence:** The parent epic still treats `012-pre-release-fixes-alignment-preparation` as the live direct child instead of `020-post-release-fixes`.
 - **Recommendation:** Normalize the parent epic's metadata, phase map, and requirement text to the live 012 folder name.
 
 ## Verified OK

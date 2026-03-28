@@ -1,6 +1,6 @@
 ---
 title: Deep Review Dashboard
-description: Final dashboard for the canonical 60-iteration review of 020-pre-release-remediation, including the segment-2 runtime-hunt and segment-3 feature-catalog continuation.
+description: Final dashboard for the canonical 60-iteration review of 020-post-release-fixes, including the segment-2 runtime-hunt and segment-3 feature-catalog continuation.
 ---
 
 # Deep Review Dashboard - Session Overview
@@ -26,7 +26,7 @@ Compact view of the completed release review so a maintainer can see verdict, se
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Target: `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation`
+- Target: `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes`
 - Target Type: `spec-folder`
 - Started: `2026-03-27T15:35:00+01:00`
 - Status: `COMPLETE`

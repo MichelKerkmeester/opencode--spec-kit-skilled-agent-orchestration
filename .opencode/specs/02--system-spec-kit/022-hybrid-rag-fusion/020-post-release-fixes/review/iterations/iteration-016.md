@@ -8,7 +8,7 @@
 ## Findings
 
 ### HRF-DR-009 [P2] Historical top-level 012 report is easy to confuse with the canonical review surface
-- **File:line:** `020-pre-release-remediation/review-report.md:1`; `020-pre-release-remediation/spec.md:48`
+- **File:line:** `020-post-release-fixes/review-report.md:1`; `020-post-release-fixes/spec.md:48`
 - **Evidence:** The historical top-level report still sits beside the packet docs while `spec.md` still points `Source Review` at that file rather than the canonical `review/review-report.md`.
 - **Recommendation:** Preserve the top-level report as historical evidence but explicitly redirect active review readers to `review/`.
 

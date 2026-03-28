@@ -24,7 +24,7 @@ The old 012, 013, and 014 packets each describe part of the same release-control
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-Use 020-pre-release-remediation as the live control packet while preserving 012, 013, and 014 only as historical lineage.
+Use 020-post-release-fixes as the live control packet while preserving 012, 013, and 014 only as historical lineage.
 <!-- /ANCHOR:adr-001-decision -->
 
 <!-- ANCHOR:adr-001-consequences -->

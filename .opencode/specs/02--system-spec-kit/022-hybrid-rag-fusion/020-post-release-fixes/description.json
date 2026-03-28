@@ -1,5 +1,5 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes",
   "description": "Feature Specification: 020 Pre-Release Remediation",
   "keywords": [
     "feature",
@@ -10,7 +10,7 @@
   ],
   "lastUpdated": "2026-03-28T08:31:54.986Z",
   "specId": "020",
-  "folderSlug": "pre-release-remediation",
+  "folderSlug": "post-release-fixes",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"

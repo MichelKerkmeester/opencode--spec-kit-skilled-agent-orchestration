@@ -1,6 +1,6 @@
 ---
 title: "Deep Review Report: 020 Pre-Release Remediation"
-description: "Canonical 60-iteration release review for 020-pre-release-remediation, written to review/ and treating the top-level review-report.md as historical input only."
+description: "Canonical 60-iteration release review for 020-post-release-fixes, written to review/ and treating the top-level review-report.md as historical input only."
 ---
 
 # Deep Review Report: 020 Pre-Release Remediation
@@ -28,7 +28,7 @@ Late wave-1 evidence also sharpened the feature-state ledger without increasing 
 
 The new blocker from segment 3 is not theoretical. A fresh targeted scripts run fails `scripts/tests/memory-learn-command-docs.vitest.ts` because both the feature entry and the regression still depend on `.opencode/command/memory/README.txt`, while the live workspace only has `.opencode/command/memory/README.md`.
 
-This `review/` packet remains the canonical audit surface. The top-level `/020-pre-release-remediation/review-report.md` is historical evidence only.
+This `review/` packet remains the canonical audit surface. The top-level `/020-post-release-fixes/review-report.md` is historical evidence only.
 
 ## 2. Planning Trigger
 
@@ -315,8 +315,8 @@ This `review/` packet remains the canonical audit surface. The top-level `/020-p
 
 ### Sources Reviewed
 
-- `020-pre-release-remediation/spec.md`
-- `020-pre-release-remediation/implementation-summary.md`
+- `020-post-release-fixes/spec.md`
+- `020-post-release-fixes/implementation-summary.md`
 - `001-hybrid-rag-fusion-epic/spec.md`
 - `.opencode/README.md`
 - `.opencode/install_guides/README.md`
