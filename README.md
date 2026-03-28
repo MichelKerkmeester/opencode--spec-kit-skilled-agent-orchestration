@@ -287,24 +287,42 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 
 3 mandatory gates run before any file change. Every request passes through the same sequence.
 
-**Gate 1 - Understanding + Context Surfacing** (SOFT BLOCK)
-- Calls `memory_match_triggers()` to surface relevant prior context
-- Classifies intent as Research or Implementation
-- Applies dual-threshold: confidence >= 0.70 AND uncertainty <= 0.35
-
-**Gate 2 - Skill Routing** (REQUIRED)
-- Runs `skill_advisor.py` against the request
-- Confidence >= 0.8 means the skill must be loaded
-- Ensures the right domain expertise is always in context
-
-**Gate 3 - Spec Folder** (HARD BLOCK)
-- Overrides Gates 1-2 when file modification is detected
-- Asks: A) Existing folder? B) New folder? C) Update related? D) Skip? E) Phase folder?
-- No file changes without an answer
-
-**Post-Execution Rules:**
-- **Memory Save** (HARD BLOCK) - Triggered by "save context" or `/memory:save`. Must use `generate-context.js`.
-- **Completion Verification** (HARD BLOCK) - Triggered by claiming "done". Must load `checklist.md` and verify ALL items with evidence.
+```
+  User message arrives
+         │
+         ▼
+  ┌─────────────────────────────────────────────┐
+  │  Gate 1: Understanding (SOFT BLOCK)         │
+  │  memory_match_triggers() surfaces context   │
+  │  Classify intent: Research / Implementation │
+  │  confidence >= 0.70, uncertainty <= 0.35    │
+  └──────────────────┬──────────────────────────┘
+                     │
+                     ▼
+  ┌─────────────────────────────────────────────┐
+  │  Gate 2: Skill Routing (REQUIRED)           │
+  │  skill_advisor.py recommends skill          │
+  │  confidence >= 0.8 ─► MUST load skill       │
+  └──────────────────┬──────────────────────────┘
+                     │
+                     ▼
+  ┌─────────────────────────────────────────────┐
+  │  Gate 3: Spec Folder (HARD BLOCK)           │
+  │  Only if file modification detected         │
+  │  A) Existing  B) New  C) Update             │
+  │  D) Skip      E) Phase folder               │
+  └──────────────────┬──────────────────────────┘
+                     │
+                     ▼
+              EXECUTION
+                     │
+                     ▼
+  ┌─────────────────────────────────────────────┐
+  │  Post-Rules                                 │
+  │  Memory Save ─ must use generate-context.js │
+  │  Completion ─ verify checklist.md items      │
+  └─────────────────────────────────────────────┘
+```
 
 **Analysis Lenses** - applied silently on every request:
 - **CLARITY** - Is this the simplest solution? Are abstractions earned?
