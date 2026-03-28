@@ -356,31 +356,34 @@ echo "No worktree cleanup needed."
    gh release create vX.X.X.X \
      --title "vX.X.X.X — Release Title" \
      --notes "$(cat <<'EOF'
-   ## Summary
-   <1-3 bullet points with **bold** key stats>
+   Plain-English summary of what this release does and why it matters.
 
-   ## Highlights
+   ## What Changed
 
-   ### Category: <Type>
-   - **Feature name** -- Description
+   ### [Category name]
+   - **[Fix/Feature name]** -- What was broken. What we did. Why it matters.
 
    ## Files Changed
-   <table or bullet list of key files>
+
+   | File | What changed |
+   |------|-------------|
+   | `path/to/file` | Brief description |
 
    ## Upgrade
-   1. Step one
-   2. Step two
+   No action required. / Steps if needed.
 
    Full changelog: [changelog/<component>/vX.X.X.X.md](<link>)
-
-   🤖 Generated with [Claude Code](https://claude.com/claude-code)
    EOF
    )"
    ```
 
 **Important**:
 - `gh release create` is MANDATORY — pushing a tag does NOT create a GitHub release
-- Release notes should follow PUBLIC_RELEASE.md Section 7 template format
+- Release notes MUST use plain-English style -- see PUBLIC_RELEASE.md Section 7 for the full template and rules
+- Write like you are explaining to a smart person who is not a developer
+- Every fix explained as: what was broken, what we did, why it matters
+- No jargon without explanation; no metrics soup
+- Technical details (file paths, line numbers) go in the Files Changed table, not in descriptions
 - GitHub release body must NOT include local changelog wrapper lines (`# vX.X.X.X`, `> Part of ...`, `## [**X.X.X.X**] - date`)
 - If a changelog file exists, extract the body (skip the wrapper) for the release notes
 - Always include a link back to the full changelog file in the repo
@@ -677,23 +680,27 @@ Created .opencode/changelog/01--system-spec-kit/v2.1.0.0.md
 > gh release create v2.1.0.0 \
     --title "v2.1.0.0 — OAuth2 Authentication + API Rate Limiting" \
     --notes "$(cat <<'EOF'
-## Summary
+Adds secure login and request throttling so the API can handle real-world traffic safely.
 
-Added **OAuth2 authentication** flow and **API rate limiting** with configurable thresholds.
+## What Changed
 
-## Highlights
+### Security
+- **OAuth2 authentication** -- The API only supported basic auth, which is vulnerable to brute-force attacks. We added a full OAuth2 login/logout flow with token management. Users now get industry-standard authentication.
+- **API rate limiting** -- Without limits, a single client could overwhelm the server. We added per-endpoint rate limits backed by Redis. This protects the service under heavy load.
 
-### Category: Features
-- **OAuth2 authentication** -- Complete login/logout flow with JWT token management
-- **API rate limiting** -- Configurable per-endpoint rate limits with Redis backing
+## Files Changed
+
+| File | What changed |
+|------|-------------|
+| `src/auth/oauth.ts` | New OAuth2 flow implementation |
+| `src/middleware/rate-limit.ts` | Rate limiting middleware |
+| `src/config/redis.ts` | Redis connection for rate limit counters |
 
 ## Upgrade
 1. Run database migration: `npm run migrate`
 2. Set `OAUTH_CLIENT_ID` and `OAUTH_SECRET` environment variables
 
 Full changelog: [changelog/01--system-spec-kit/v2.1.0.0.md](https://github.com/user/repo/blob/main/.opencode/changelog/01--system-spec-kit/v2.1.0.0.md)
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 

@@ -171,18 +171,23 @@ git push origin vX.X.X.X
 gh release create vX.X.X.X \
   --title "vX.X.X.X — Release Title" \
   --notes "$(cat <<'EOF'
-## Summary
-<release notes body — see Section 7 for format>
+Plain-English summary — see Section 7 for format.
 
-## Highlights
-...
+## What Changed
+
+### [Category name]
+- **[Fix/Feature name]** -- What was broken. What we did. Why it matters.
+
+## Files Changed
+
+| File | What changed |
+|------|-------------|
+| `path/to/file` | Brief description |
 
 ## Upgrade
-...
+No action required. / Steps if needed.
 
 Full changelog: [changelog/<component>/vX.X.X.X.md](link)
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
@@ -195,17 +200,17 @@ EOF
 
 | Field              | Value                                                                                  |
 | ------------------ | -------------------------------------------------------------------------------------- |
-| **Version**        | v3.0.0.4                                                                               |
+| **Version**        | v3.1.0.0                                                                               |
 | **Release Date**   | 2026-03-28                                                                             |
 | **GitHub**         | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration                       |
 | **Latest Release** | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases/latest       |
-| **Release Notes**  | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases/tag/v3.0.0.4 |
+| **Release Notes**  | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases/tag/v3.1.0.0 |
 
 ### Release Notes
 
 Release notes for each version are stored as individual files in `.opencode/changelog/00--opencode-environment/vX.X.X.X.md`, formatted per the template in Section 7. For GitHub publishing, use an extracted body that excludes the local changelog wrapper (`# v...`, `> Part of ...`, `## [**x.x.x.x**] - date`).
 
-**Latest**: See `.opencode/changelog/01--system-spec-kit/v3.0.0.4.md`
+**Latest**: See `.opencode/changelog/01--system-spec-kit/v3.1.0.0.md`
 
 ---
 
@@ -238,45 +243,53 @@ echo ".opencode-local/" >> .gitignore
 
 ## 7. RELEASE NOTES TEMPLATE
 
-GitHub release notes format optimized for scannability. Uses H2/H3 structure with category headers.
+Release notes should read like a brief written for a smart person who is not necessarily a developer. Lead with why the release matters, explain each change in plain English, and keep technical details in the Files Changed table.
 
 ### 7.1 Format
 
 ```markdown
-Short summary (1-2 sentences) with **bold key stats** like counts, percentages, or spec numbers.
+One or two sentences explaining what this release does and why it matters, in plain English.
 
-## Highlights
+> Spec folder: `path/to/spec` (if applicable)
 
-### Category: Fixes
-- **Feature name**: Description of what it does
-- **Another feature**: More details here
-- **Path format**: `old/path` → `new/path` (use arrows for changes)
+---
 
-### Category: Documentation
-- **Item one**: Description
-- **Item two**: Description with `code` references
+## What Changed
+
+### [Category name]
+
+- **[Fix/Feature name]** -- [Problem in plain English]. [What we did to fix it]. [Why it matters].
 
 ## Files Changed
-- `file1.yaml` · `file2.yaml` (use middle dots for inline lists)
-- `file3.yaml`
+
+| File | What changed |
+|------|-------------|
+| `path/to/file` | Brief description |
 
 ## Upgrade
-1. **Step one** — Description of upgrade step
-2. **Step two** — Another step if needed
 
-Or for simple patches: "No action required. Pull latest to get [description]."
+No action required. / Steps if needed.
 ```
 
 ### 7.2 Rules
 
-> **Note:** Category headers are used for GitHub release notes and local changelog files should stay plain text.
+**Writing style:**
+- Write like you are explaining to a smart person who is not a developer
+- Lead with WHY this release matters, not technical stats
+- Every fix explained as: what was broken, what we did, why it matters
+- No jargon without explanation (first use: "BM25 (exact word matching)")
+- No metrics soup -- do not pack 10 numbers into one sentence
+- Short bullet points (1-3 sentences each)
+- Technical details (file paths, line numbers, function names) go in "Files Changed" table, NOT in the description text
+- Analogies welcome when they help understanding
 
 **Structure:**
-- 1-2 sentence summary with **bold** key stats (counts, percentages, spec numbers)
-- `## Highlights` as main H2 section
-- `### Category: <Title>` for H3 category headers
-- Bullet points with **bold label**: description
-- `## Files Changed` section listing affected files
+- 1-2 sentence plain-English summary at the top
+- Optional spec folder reference as a blockquote
+- `## What Changed` as main H2 section
+- `### [Category name]` for H3 category headers (plain names -- see vocabulary below)
+- Bullet points with **bold label** -- description (using em dash or double hyphen)
+- `## Files Changed` table with File and What changed columns
 - `## Upgrade` section (always last)
 
 **GitHub release body hygiene:**
@@ -284,34 +297,33 @@ Or for simple patches: "No action required. Pull latest to get [description]."
   - `# vX.X.X.X`
   - `> Part of ...`
   - `## [**X.X.X.X**] - YYYY-MM-DD`
-- GitHub release notes must start with the summary paragraph and then `## Highlights`
+- GitHub release notes must start with the summary paragraph
 
-**Category vocabulary for H3 headers:**
-- `Fixes` - repairs, patches
-- `Architecture` - structure changes
-- `Documentation` - templates
-- `Testing` - validation
-- `Commands` - workflows
-- `Features` - new items
-- `Breaking Changes` - compatibility impacts
-
-**Inline formatting:**
-- `·` (middle dot) for compact file lists: `file1.yaml` · `file2.yaml`
-- `→` (arrow) for before/after: `old_name` → `new_name`
-- **Bold** for feature names and stats
-- `code` for file names, paths, commands
+**Category vocabulary for H3 headers (use plain names):**
+- `Search` -- search behavior, ranking, matching
+- `Saving Memories` -- memory save, context preservation
+- `Security` -- access control, input validation, secrets
+- `Documentation` -- templates, guides, READMEs
+- `Testing` -- test suites, validation
+- `Commands` -- CLI workflows, user-facing commands
+- `New Features` -- newly added capabilities
+- `Bug Fixes` -- repairs, patches, corrections
+- `Architecture` -- structural changes, refactoring
+- `Breaking Changes` -- compatibility impacts, migration required
 
 ### 7.3 Checklist
 
 Before publishing:
-- [ ] 1-2 sentence summary with **bold** key stats
+- [ ] Opens with 1-2 plain-English sentences explaining why this release matters
 - [ ] GitHub notes body excludes local changelog wrapper header block
-- [ ] `## Highlights` H2 section present
-- [ ] `### Category: <Title>` H3 headers for categories
-- [ ] Bullet points use **bold label**: description format
-- [ ] `## Files Changed` section listing affected files
+- [ ] `## What Changed` H2 section present
+- [ ] Category headers use plain names (see vocabulary above)
+- [ ] Each bullet explains: what was broken, what we did, why it matters
+- [ ] No unexplained jargon (first use includes parenthetical definition)
+- [ ] Technical details (paths, line numbers, function names) are in Files Changed table, not in descriptions
+- [ ] `## Files Changed` table present with File and What changed columns
 - [ ] `## Upgrade` section last
-- [ ] Category labels are consistent and plain text
+- [ ] Bullet points are short (1-3 sentences each)
 
 ---
 
@@ -357,7 +369,8 @@ Releases use a 4-part versioning scheme: `MAJOR.MINOR.SERIES.PATCH`
 | `2.2.2.x` | 2.2.2.0     | Gemini CLI agent fleet + TOML commands + MCP server config                              |
 | `2.3.0.x` | 2.3.0.0     | Gemini CLI full provider integration (4th runtime: agents, commands, skills, MCP)        |
 | `2.4.0.x` | 2.4.0.0-3   | SpecKit/Review/Agents consolidation + @ultra-think agent + sk-git commit logic           |
-| `3.0.0.x` | 3.0.0.0-2   | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases |
+| `3.0.0.x` | 3.0.0.0-4   | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases |
+| `3.1.0.x` | 3.1.0.0     | Plain-English release notes style, freshness audit, spec folder pass-through rule |
 
 ---
 
