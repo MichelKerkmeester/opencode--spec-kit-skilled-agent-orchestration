@@ -268,8 +268,7 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 
 #### Scripts and Validation
 
-<details>
-<summary><strong>Spec Management Scripts</strong> (12 in <code>scripts/spec/</code>)</summary>
+**Spec Management Scripts** (12 in `scripts/spec/`):
 
 - **`create.sh`** — Create spec folders with level-appropriate templates. Use `--phase` for parent + child
 - **`validate.sh`** — Run 20 validation rules. Use `--recursive` for phase folders
@@ -279,10 +278,7 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 - **`check-completion.sh`** — Verify all completion criteria are met
 - **`check-placeholders.sh`** — Find remaining `[PLACEHOLDER]` values after level upgrade
 
-</details>
-
-<details>
-<summary><strong>Memory Scripts</strong> (10 in <code>scripts/memory/</code>)</summary>
+**Memory Scripts** (10 in `scripts/memory/`):
 
 - **`generate-context.ts`** — Primary workflow for saving session context to memory files
 - **`backfill-frontmatter.ts`** — Add missing frontmatter to existing memory files
@@ -290,8 +286,6 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 - **`cleanup-orphaned-vectors.ts`** — Remove vector entries with no matching memory
 - **`rebuild-auto-entities.ts`** — Regenerate auto-extracted entity catalog
 - **`validate-memory-quality.ts`** — Run quality checks on stored memory content
-
-</details>
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
 
@@ -438,49 +432,30 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`) and Gemini CLI (`.gemini/agents/`). All four directories maintain the same 10 agent files, adapted for each runtime's frontmatter format.
 
 
-#### All 12 Agents
+#### Built-in Agents (2)
 
-<details>
-<summary><strong>Built-in Agents (2)</strong></summary>
+- **`@general`** — General-purpose implementation agent. Handles feature development, bug fixes, refactoring. Default fallback when no custom agent matches.
+- **`@explore`** — Fast codebase exploration. File pattern matching, keyword search, structural questions. Read-only.
 
-- **`@general`** — General-purpose implementation agent for complex, multi-step coding tasks. Handles feature development, bug fixes, refactoring and any work that does not require a specialist. Default fallback when no custom agent matches.
-- **`@explore`** — Fast codebase exploration agent specialized for file pattern matching (`**/*.tsx`), keyword search, and answering structural questions about the codebase. Read-only. Use for quick discovery before committing to a deeper investigation.
+#### Custom Agents (10)
 
-</details>
+- **`@orchestrate`** — Senior task commander. Decomposes, delegates, evaluates and merges sub-agent outputs. Read-only (cannot implement directly).
+- **`@context`** — Memory-first retrieval specialist. Always checks memory before codebase. Read-only. Returns structured Context Packages.
+- **`@speckit`** — Exclusive spec folder documentation agent. Template-first, Level 1-3+, 20-rule validation. LEAF-only.
+- **`@debug`** — Fresh-perspective debugger. Receives structured context handoff (not conversation history). 5-phase methodology: Observe → Analyze → Hypothesize → Validate → Fix.
+- **`@deep-research`** — Autonomous research agent. Single LEAF iteration with externalized JSONL state. Writes `research.md` and `scratch/`.
+- **`@deep-review`** — Autonomous code quality auditor. Read-only on code. P0/P1/P2 findings across 7 dimensions with adversarial self-check.
+- **`@review`** — Code quality guardian. Read-only. Baseline + overlay standards model with mandatory security/correctness minimums.
+- **`@write`** — Documentation generation for project-level docs outside spec folders. Template-first with DQI quality scoring.
+- **`@handover`** — Session continuation specialist. Creates `handover.md` with key decisions, blockers, phase and next steps.
+- **`@ultra-think`** — Multi-strategy planning architect. 5 reasoning lenses, 5-dimension scoring rubric. Plans only — never modifies files.
 
-<details>
-<summary><strong>Custom Agents (10)</strong></summary>
+#### Runtime Directories
 
-- **`@orchestrate`** — Senior task commander with full authority over decomposition, delegation, quality evaluation and conflict resolution. Read-only permissions (cannot implement directly). Single-hop delegation only (depth 2 max). Merges sub-agent outputs into one unified response. Use for complex multi-domain tasks that need coordinated specialists.
-
-- **`@context`** — Memory-first retrieval specialist and the exclusive entry point for ALL codebase exploration. Always checks memory before codebase (`match_triggers` → `memory_context` → `memory_search` → grep/glob). LEAF-only (never dispatches sub-agents). Read-only. Returns structured Context Packages combining memory findings with codebase evidence. Uses both CocoIndex semantic search and the 5-channel memory system.
-
-- **`@speckit`** — The ONLY agent permitted to create or substantively write `*.md` files inside spec folders. Template-first: always copies from `templates/level_N/` (never creates from scratch). Supports Level 1-3+ documentation creation with CORE + ADDENDUM architecture, progressive enhancement, and 20-rule validation. LEAF-only. Exceptions: `memory/` (via generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research).
-
-- **`@debug`** — Fresh-perspective debugging specialist that receives a structured context handoff (NOT conversation history) to avoid inherited bias from failed prior attempts. Applies a systematic 5-phase methodology: Observe → Analyze → Hypothesize → Validate → Fix. Writes `debug-delegation.md` with findings. Use when 3+ prior debugging attempts have failed and tunnel vision is suspected.
-
-- **`@deep-research`** — Autonomous research agent that executes a single iteration of the LEAF (Loop, Externalize, Analyze, Finish) protocol. State is externalized via JSONL + strategy.md. Reads current state, determines focus, executes research, writes findings, updates strategy. Loop orchestration is managed by the `/spec_kit:deep-research` command, not this agent. Has permission to write `research.md` and `scratch/` inside spec folders. Supports WebFetch for external source gathering.
-
-- **`@deep-review`** — Autonomous code quality auditor that executes a single review iteration using LEAF architecture. Reviews code but NEVER modifies target files (read-only on code). Produces P0/P1/P2 severity-ranked findings with `file:line` evidence across 7 review dimensions. Writes only to `review/` artifacts inside the spec folder (JSONL state, strategy, dashboard, iteration artifacts). Includes adversarial self-check on all findings before finalizing.
-
-- **`@review`** — Code quality guardian with strict READ-ONLY permissions (cannot write or edit any files). Implements the baseline + overlay standards model: loads `sk-code--review` baseline first, then exactly one `sk-code--*` overlay matching the detected stack. Security and correctness minimums are mandatory and never relaxed by the overlay. Produces findings-first severity analysis with quality scoring, pattern validation, and security assessment. Adversarial self-check on all P0/P1 findings.
-
-- **`@write`** — Documentation generation specialist for project-level docs OUTSIDE spec folders (READMEs, install guides, skills, agents, commands). Template-first: MUST load template before proceeding (hard gate). Runs `extract_structure.py` and `validate_document.py` for DQI quality scoring. MUST NOT write inside `specs/[###-name]/` directories (that is @speckit's exclusive domain). Supports WebFetch for external reference gathering.
-
-- **`@handover`** — Session continuation specialist that creates `handover.md` for context preservation across sessions. Has special permission to write `handover.md` inside spec folders (exception to @speckit exclusivity). Always gathers context from spec folder files BEFORE creating the handover (never creates without reading actual session state). Produces a 5-section handover format covering key decisions, blockers, current phase, and continuation instructions.
-
-- **`@ultra-think`** — Multi-strategy planning architect that dispatches diverse thinking strategies and synthesizes the optimal plan. Uses 5 reasoning lenses: Analytical, Creative, Critical, Pragmatic, and Holistic. Each strategy must use a different lens and temperature (never identical repetition). Scores results via a 5-dimension rubric. Plans only — never modifies files directly. Depth-aware: at depth 0 dispatches via Task tool; at depth 1 uses sequential_thinking inline.
-
-</details>
-
-#### Runtime Agent Directories
-
-Agent definitions live in `.opencode/agent/` (source of truth) and are adapted for each runtime:
-
-- **OpenCode** — `.opencode/agent/` (10 files, source of truth)
-- **Claude Code** — `.claude/agents/` (10 files, runtime-adapted)
-- **Codex CLI** — `.codex/agents/` (10 files, runtime-adapted)
-- **Gemini CLI** — `.gemini/agents/` (10 files, runtime-adapted)
+- **OpenCode** — `.opencode/agent/` (source of truth)
+- **Claude Code** — `.claude/agents/`
+- **Codex CLI** — `.codex/agents/`
+- **Gemini CLI** — `.gemini/agents/`
 
 
 ---
@@ -488,51 +463,39 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 ### 3.4 COMMAND ARCHITECTURE
 
 
-20 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec that tells the AI exactly how to run the workflow.
+20 commands across 4 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
-<details>
-<summary><strong>spec_kit/ — 8 Commands</strong> (spec folder lifecycle)</summary>
+#### spec_kit/ — 8 Commands (spec folder lifecycle)
 
-- **`/spec_kit:complete`** — End-to-end workflow: creates spec folder, runs research, builds plan, implements, verifies and saves memory. Supports 4 modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research before planning), `:auto-debug` (auto-delegates failures to @debug). The primary entry point for new features.
-- **`/spec_kit:plan`** — Planning-only workflow that creates spec.md, plan.md and tasks.md without implementing. Use when you need stakeholder review before coding. Dispatches up to 4 parallel `@context` agents for codebase exploration during planning. Modes: `:auto`, `:confirm`.
-- **`/spec_kit:implement`** — Executes an existing plan. Requires plan.md to already exist (run `/spec_kit:plan` first). 9-step workflow covering task breakdown, implementation, testing and verification. Modes: `:auto`, `:confirm`.
-- **`/spec_kit:phase`** — Decomposes a large feature into parent and child spec folders. Creates the parent with `create.sh --phase`, populates phase metadata, and sets up parent/child navigation links. Use for features that span multiple work phases.
-- **`/spec_kit:debug`** — Delegates debugging to the `@debug` agent with a structured context handoff (not conversation history). The fresh-perspective approach avoids confirmation bias from failed prior attempts. Writes `debug-delegation.md` with root cause analysis.
-- **`/spec_kit:resume`** — Continues a previous session by auto-loading memory from the spec folder. Presents session summary, shows progress against tasks.md, and picks up where you left off. Works after crashes, compactions, or new sessions.
-- **`/spec_kit:deep-research`** — Autonomous research loop that dispatches `@deep-research` agents iteratively until convergence. Modes: `:auto` (research), `:review` (code quality audit via @deep-review), `:review:auto`, `:review:confirm`. Externalized JSONL state enables pause/resume across sessions.
-- **`/spec_kit:handover`** — Creates a session handover document for continuing work in a new conversation. Gathers key decisions, blockers, current phase and next steps from spec folder state. Variants: `:quick` (summary) or `:full` (comprehensive).
+- **`/spec_kit:complete`** — End-to-end: research → plan → implement → verify → save memory. Modes: `:auto`, `:confirm`, `:with-research`, `:auto-debug`.
+- **`/spec_kit:plan`** — Planning only (spec.md, plan.md, tasks.md). No implementation. Modes: `:auto`, `:confirm`.
+- **`/spec_kit:implement`** — Execute an existing plan.md. Modes: `:auto`, `:confirm`.
+- **`/spec_kit:phase`** — Decompose large features into parent + child spec folders.
+- **`/spec_kit:debug`** — Delegate to `@debug` with structured context handoff. Writes `debug-delegation.md`.
+- **`/spec_kit:resume`** — Recover session context from memory. Pick up where you left off.
+- **`/spec_kit:deep-research`** — Autonomous research loop until convergence. Modes: `:auto`, `:review`.
+- **`/spec_kit:handover`** — Create session handover document. Variants: `:quick`, `:full`.
 
-</details>
+#### memory/ — 4 Commands (cognitive memory)
 
-<details>
-<summary><strong>memory/ — 4 Commands</strong> (cognitive memory operations)</summary>
+- **`/memory:save`** — Save session context to a timestamped memory file via `generate-context.js`.
+- **`/memory:search`** — Unified retrieval: intent-aware search, causal graph, ablation studies, dashboards.
+- **`/memory:learn`** — Manage constitutional memories (always-surface rules, 3.0x boost, never decay).
+- **`/memory:manage`** — Database admin: stats, health, cleanup, checkpoints, bulk operations, shared spaces.
 
-- **`/memory:save`** — Saves current session context to a timestamped memory file via `generate-context.js`. AI composes structured JSON with session summary, key decisions and findings, then the script generates frontmatter, trigger phrases, and ANCHOR sections. Indexes immediately for future retrieval via `memory_save()` or `memory_index_scan()`.
-- **`/memory:search`** — Unified retrieval and analysis entry point supporting intent-aware search, epistemic baselines (what-do-I-know checks), causal graph traversal, ablation studies (channel impact measurement), and dashboards. Routes by intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`.
-- **`/memory:learn`** — Constitutional memory manager for always-surface rules that appear at the top of every search result. Lifecycle operations: create, list, edit, remove, budget. Constitutional memories carry a 3.0x boost and never decay. Use for project-wide rules, conventions, and architectural decisions that must always be visible.
-- **`/memory:manage`** — Database operations: stats (memory counts, index health), health checks, cleanup (orphaned vectors, stale entries), checkpoint management (create, list, restore, delete), bulk delete, bulk ingestion (start, status, cancel), index scan, validation, and the nested `shared` namespace for shared-memory lifecycle operations. The administrative interface for the memory database.
+#### create/ — 7 Commands (component scaffolding)
 
-</details>
+- **`/create:sk-skill`** — Create or update skills (SKILL.md, README, references, assets).
+- **`/create:agent`** — Scaffold agent definitions across all 4 runtimes.
+- **`/create:folder_readme`** — README and install guide creation with DQI quality scoring.
+- **`/create:changelog`** — Auto-detect recent work, generate formatted changelog entry.
+- **`/create:prompt`** — Create or improve prompts using 7 frameworks + CLEAR scoring.
+- **`/create:feature-catalog`** — Create or update feature catalog packages.
+- **`/create:testing-playbook`** — Create or update manual testing playbook packages.
 
-<details>
-<summary><strong>create/ — 7 Commands</strong> (component scaffolding)</summary>
+#### Utility — 1 Command
 
-- **`/create:sk-skill`** — Unified skill creation and update workflow. Creates SKILL.md with 8-section structure, README.md, references directory, and assets directory. Registers in skill catalog. Can also update existing skills or manage individual skill files. Modes: `:auto`, `:confirm`.
-- **`/create:agent`** — Scaffolds a new agent definition with proper frontmatter (name, description, allowed-tools), behavioral rules, and tool permissions. Creates the source-of-truth file in `.opencode/agent/` and mirrors for Claude, Codex, and Gemini runtimes. Modes: `:auto`, `:confirm`.
-- **`/create:folder_readme`** — Unified README and install guide creation using sk-doc quality standards. Auto-detects folder type, loads the appropriate template (readme_template.md or install guide), fills structure, validates via DQI scoring (Structure 40%, Content 35%, Style 25%), and applies HVR v0.210 rules. Modes: `:auto`, `:confirm`.
-- **`/create:changelog`** — Creates a changelog entry by auto-detecting recent work (from spec folder artifacts or git history), resolving the correct component folder in `.opencode/changelog/`, calculating the next version number, and generating a formatted changelog file. Supports version bump auto-detection from commit keywords. Modes: `:auto`, `:confirm`.
-- **`/create:prompt`** — Creates or improves AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology (3-10 iteration rounds), and CLEAR quality scoring (40+/50 pass threshold). Auto-selects the best framework based on task intent. 5 output formats: text, short, json, yaml, raw.
-- **`/create:feature-catalog`** — Creates or updates feature catalog packages with category routing, format validation, and template compliance. Generates both technical reference entries and simple-terms companion entries. Validates against the established 255-entry catalog structure across 21 categories.
-- **`/create:testing-playbook`** — Creates or updates manual testing playbook packages with scenario structure, category assignment, and format compliance. Generates scenario files with test steps, expected results, and verification evidence fields. Validates against the established playbook format.
-
-</details>
-
-<details>
-<summary><strong>Utility — 1 Command</strong></summary>
-
-- **`/agent_router`** — Routes requests to external AI systems (Gemini CLI, Codex CLI, Claude Code, Copilot CLI) with full System Prompt identity adoption. The receiving AI operates under its own system prompt, not OpenCode's. Use for cross-AI delegation where the target AI needs to behave as itself rather than as an OpenCode sub-agent.
-
-</details>
+- **`/agent_router`** — Route requests to external AI systems (Gemini, Codex, Claude Code, Copilot) with full identity adoption.
 
 
 ---
@@ -541,66 +504,38 @@ Agent definitions live in `.opencode/agent/` (source of truth) and are adapted f
 
 18 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
-<details>
-<summary><strong>Documentation Skills (2)</strong></summary>
+#### Documentation Skills (2)
 
-- **`system-spec-kit`** `v2.2.27.0` — The mandatory orchestrator for all file modifications. Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 documentation levels (1-3+). Integrates the 33-tool Spec Kit Memory system for vector-search context preservation with constitutional-tier memory support, FSRS decay, and hybrid 5-channel retrieval. Manages 81 templates, 20 validation rules, 22 scripts, and 255 feature catalog entries across 21 categories. Activates automatically for any code file modification (JS, TS, Python, CSS, HTML, Markdown, JSON, YAML, config).
+- **`system-spec-kit`** — Mandatory orchestrator for all file modifications. Spec folders with 4 documentation levels (1-3+), 81 templates, 20 validation rules, 33-tool memory system, 255 feature catalog entries.
+- **`sk-doc`** — Markdown quality enforcement via DQI scoring, HVR compliance, component scaffolding (skills, agents, commands), README templates, and install guide generation.
 
-- **`sk-doc`** `v1.3.0.0` — Unified markdown specialist providing document quality enforcement via DQI scoring (Structure 40%, Content 35%, Style 25%), HVR v0.210 compliance checking, and component creation workflows. Handles 4 major workflows: document quality assessment, OpenCode component scaffolding (skills, agents, commands via `init_skill.py` and `package_skill.py`), ASCII flowchart creation, and install guide generation. Includes README templates, frontmatter validation, feature catalog authoring, manual testing playbook generation, and `llms.txt` creation for LLM navigation.
+#### Code Workflow Skills (4)
 
-</details>
+- **`sk-code--full-stack`** — Stack-agnostic development orchestrator. Auto-detects 7 stacks via marker files. 3 mandatory phases: implementation → testing → verification.
+- **`sk-code--opencode`** — Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON/JSONC). Evidence-based patterns with `file:line` citations.
+- **`sk-code--web`** — Frontend orchestrator with 5-phase lifecycle. Mandatory browser testing, DevTools integration, PageSpeed/Lighthouse targets.
+- **`sk-code--review`** — Stack-agnostic code review baseline. Baseline + overlay model with mandatory security/correctness minimums. P0/P1/P2 findings.
 
-<details>
-<summary><strong>Code Workflow Skills (4)</strong></summary>
+#### MCP Integration Skills (5)
 
-- **`sk-code--full-stack`** `v1.1.0.0` — Stack-agnostic development orchestrator with automatic stack detection via marker files (`go.mod`, `Package.swift`, `next.config.js`, `package.json` patterns). Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default. Enforces the Iron Law: no completion claims without stack-specific verification commands. Routes through 3 mandatory phases: implementation → testing/debugging → verification. Integrates with sk-code--review for baseline+overlay review contracts.
+- **`mcp-code-mode`** — 200+ external tools via single TypeScript interface. 98.7% context reduction, progressive loading, type-safe.
+- **`mcp-coco-index`** — Semantic code search via vector embeddings across 28+ languages. CLI (`ccc`) and MCP server modes.
+- **`mcp-figma`** — 18 Figma tools: file access, asset export, design tokens, collaboration, team management.
+- **`mcp-chrome-devtools`** — Chrome DevTools with 2-mode routing: CLI (`bdg`) for speed, MCP for integration.
+- **`mcp-clickup`** — ClickUp orchestrator with 2-mode routing: CLI (`cu`) for basic ops, MCP for enterprise features.
 
-- **`sk-code--opencode`** `v1.2.0.0` — Multi-language code standards for OpenCode system code with language detection routing across 5 languages: JavaScript (CommonJS `require`/`module.exports`, strict mode), TypeScript (interfaces, strict tsconfig, type guards), Python (`snake_case`, argparse, pytest, docstrings), Shell (`set -euo pipefail`, shebang, quoting), and JSON/JSONC (schema validation, commented config). Evidence-based patterns extracted from the actual OpenCode codebase with `file:line` citations. Standards-only (no full development phases).
+#### Cross-AI CLI Skills (4)
 
-- **`sk-code--web`** `v1.1.0.0` — Frontend development orchestrator with a 5-phase lifecycle: research → implementation → code quality → debugging → browser verification. Enforces mandatory browser testing before any completion claims with DevTools integration. Coordinates 6 specialized quality sub-skills covering style, async handling, form validation, cache-busting, and performance optimization. Targets PageSpeed, Lighthouse, TBT and INP metrics. Includes Webflow integration for CMS-based projects.
+- **`cli-gemini`** — Gemini CLI delegation. Real-time web search via Google Search grounding, 1M+ token context.
+- **`cli-codex`** — Codex CLI with dual models (`gpt-5.4` + `gpt-5.3-codex`), diff-aware review, web browsing, screenshot analysis.
+- **`cli-claude-code`** — Claude Code CLI with 3 models (Opus/Sonnet/Haiku), extended thinking, structured output.
+- **`cli-copilot`** — Copilot CLI with 5 models across 3 providers. Explore/Task agents, Autopilot mode, MCP integration.
 
-- **`sk-code--review`** `v1.2.0.0` — Stack-agnostic code review baseline implementing the baseline+overlay model. The baseline always runs first (security checklist, correctness checklist, SOLID checklist, threat model). Then exactly one overlay skill (`sk-code--opencode`, `sk-code--web`, or `sk-code--full-stack`) adds stack-specific style guidance. Security and correctness minimums are mandatory and NEVER relaxed by the overlay. Produces findings-first severity analysis with P0/P1/P2 ranking. Includes a removal-focused review option for cleanup tasks.
+#### Other Skills (3)
 
-</details>
-
-<details>
-<summary><strong>MCP Integration Skills (5)</strong></summary>
-
-- **`mcp-code-mode`** `v1.0.7.0` — MCP orchestration engine that provides access to 200+ external tools through a single TypeScript execution interface. Reduces context overhead by 98.7% (1.6k tokens vs 141k for 47 tools loaded individually) and speeds execution 60% faster via state persistence. Mandatory for ALL external MCP tool calls (ClickUp, Notion, Figma, Webflow, Chrome DevTools, GitHub). Progressive tool loading means zero upfront cost — tools load on first use. Type-safe with autocomplete and built-in error handling.
-
-- **`mcp-coco-index`** `v1.0.0` — Semantic code search via vector embeddings (Voyage Code 3 and All-MiniLM-L6-v2 models) enabling natural-language discovery of code patterns and implementations across 28+ languages. Two access modes: CLI (`ccc`) for direct terminal use, and MCP server exposing a single `search` tool for AI agent integration. Ideal for onboarding, concept-based discovery when exact names are unknown, architecture exploration, module relationship mapping, and cross-codebase pattern matching.
-
-- **`mcp-figma`** `v1.0.7.0` — Figma design file access providing 18 specialized tools across 6 categories: file access, asset export (PNG/JPG/SVG/PDF at 0.01-4x scale), design system extraction, design tokens (colors, typography, effects), collaboration (read/post/reply/delete comments), and team management. Two setup options: Official Figma MCP (HTTP, OAuth) or Framelink (stdio, local, API key auth). Enables design-to-code bridge and version history access.
-
-- **`mcp-chrome-devtools`** `v1.0.7.0` — Chrome DevTools orchestrator with intelligent 2-mode routing. CLI mode (`bdg`, browser-debugger-cli) is prioritized for speed and token efficiency — runs in terminal, supports Unix pipes, composable in CI/CD. MCP mode is the fallback for multi-tool integration scenarios. Capabilities: screenshot capture, HAR file analysis, console log inspection, DOM query execution, cookie manipulation, JavaScript execution, network monitoring, and CDP pattern references.
-
-- **`mcp-clickup`** `v1.0.0` — ClickUp project management orchestrator with 2-mode routing. CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed. MCP handles enterprise features: docs, goals, webhooks, bulk task operations, time tracking, custom fields, and attachment management. Supports workspace discovery, list/space/folder navigation, comment threading, and sprint management with standup summaries.
-
-</details>
-
-<details>
-<summary><strong>Cross-AI CLI Skills (4)</strong></summary>
-
-- **`cli-gemini`** `v1.2.1` — Gemini CLI orchestrator enabling cross-AI delegation from Claude Code, Codex, or Copilot. Provides real-time web search via Google Search grounding (no other CLI skill has this), deep codebase architecture analysis leveraging 1M+ token context, parallel code generation, and second-opinion security audits. Single model: `gemini-3.1-pro-preview`. Self-invocation guard prevents Gemini CLI from invoking itself.
-
-- **`cli-codex`** `v1.3.1` — OpenAI Codex CLI orchestrator with dual model support (`gpt-5.4` + `gpt-5.3-codex`), 7 execution profiles, and sandbox awareness. Key capabilities: `/review` command with diff-aware code review, `--search` flag for live web browsing, `--image` flag for screenshot/design analysis, session management (resume/fork for multi-turn workflows), agent profiles (`.codex/agents/*.toml`), and cost control via `--max-budget-usd`. Self-invocation guard.
-
-- **`cli-claude-code`** `v1.1.1` — Claude Code CLI orchestrator with 3 models (Opus 4.6, Sonnet 4.6, Haiku 4.5), extended thinking with chain-of-thought, surgical diff-based code editing, and JSON schema-validated structured output. Supports 9 built-in agents, permission modes (plan-only vs full), session continuity (`--continue`, `--resume`), and cost control. Self-invocation guard.
-
-- **`cli-copilot`** `v1.3.1` — GitHub Copilot CLI orchestrator with 5 models across 3 providers (GPT-5.4, GPT-5.3-Codex, Opus 4.6, Sonnet 4.6, Gemini 3.1 Pro). Key capabilities: Explore/Task agents for architecture mapping, `/delegate` and `&prompt` for cloud-hosted coding agents, Autopilot autonomous execution mode, MCP server integration, custom Markdown-based agent profiles, repo memory, and native GitHub ecosystem perspective. Self-invocation guard.
-
-</details>
-
-<details>
-<summary><strong>Other Skills (3)</strong></summary>
-
-- **`sk-deep-research`** `v1.2.0` — Dual-mode autonomous investigation system. Research mode runs iterative LEAF (Loop, Externalize, Analyze, Finish) cycles with fresh context per iteration, externalized JSONL state, convergence detection with diminishing-returns tracking, and per-iteration token budgets. Review mode reuses the same loop for automated code quality auditing, dispatching `@deep-review` agents that produce P0/P1/P2 findings across 7 dimensions. Features: persistent dashboards, quality guards blocking premature convergence, negative knowledge capture, novelty justification, diagnosis-led recovery, and pause/resume via sentinel files.
-
-- **`sk-git`** `v1.1.0.0` — Git workflow orchestrator coordinating 3 sub-skills: **git-worktree** (workspace isolation via `git worktree add`, branch creation, parallel development), **git-commit** (conventional commit format enforcement, staged change analysis, clean commit messages with scope detection), and **git-finish** (PR creation via `gh pr create`, branch cleanup, integration workflows). Includes hotfix vs cleanup decision matrix, workspace status detection (clean/dirty handling), and branch naming conventions.
-
-- **`sk-prompt-improver`** `v1.2.0.0` — Prompt engineering specialist that auto-selects from 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT) based on task intent via keyword-weighted scoring. Applies DEPTH thinking methodology (3-10 iteration rounds of progressive refinement). Quality is measured via CLEAR scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold). 5 output formats: text, short, json, yaml, raw. Command-prefix routing (`$improve`, `$text`, `$short`, `$refine`, `$json`, `$yaml`, `$raw`) for direct mode selection.
-
-</details>
+- **`sk-deep-research`** — Dual-mode autonomous investigation. LEAF cycles with externalized state, convergence detection, pause/resume.
+- **`sk-git`** — Git workflow orchestrator: worktree setup, conventional commits, PR creation and branch cleanup.
+- **`sk-prompt-improver`** — Prompt engineering with 7 frameworks, DEPTH methodology, CLEAR scoring (40+/50 pass threshold).
 
 
 ---
@@ -694,8 +629,7 @@ Defined in `opencode.json`:
 | `sequential_thinking` | 1 | Structured multi-step reasoning for complex problems |
 | **Total** | **42** | |
 
-<details>
-<summary><strong>Code Mode Tools (7)</strong></summary>
+#### Code Mode Tools (7)
 
 - **`search_tools`** — Discover relevant tools by task description
 - **`tool_info`** — Get complete tool parameters and TypeScript interface
@@ -705,10 +639,7 @@ Defined in `opencode.json`:
 - **`deregister_manual`** — Remove a tool provider
 - **`get_required_keys_for_tool`** — Check required environment variables for a tool
 
-</details>
-
-<details>
-<summary><strong>External Integrations</strong> (via <code>.utcp_config.json</code>)</summary>
+#### External Integrations (via `.utcp_config.json`)
 
 - **`chrome_devtools_1`** (MCP/stdio) — Browser automation (instance 1). No env var needed.
 - **`chrome_devtools_2`** (MCP/stdio) — Browser automation (instance 2). No env var needed.
@@ -716,8 +647,6 @@ Defined in `opencode.json`:
 - **`figma`** (MCP/stdio) — Design files, components, exports. Requires `FIGMA_API_KEY`.
 - **`github`** (MCP/stdio) — Issues, pull requests, commits. Requires `GITHUB_PERSONAL_ACCESS_TOKEN`.
 - **`webflow`** (MCP/remote) — Sites, CMS collections. Requires Webflow auth.
-
-</details>
 
 
 #### Performance
@@ -768,16 +697,11 @@ Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/databa
 
 26+ feature flags control search channels, scoring signals and infrastructure components. All default to sensible values.
 
-<details>
-<summary><strong>Flag Categories</strong></summary>
-
 - **Search Pipeline** — BM25, Graph channel, Reranker, MMR, Co-Activation, FSRS decay, Interference penalty. All enabled by default.
 - **Session/Cache** — Working memory, TTL cache, Session deduplication. All enabled by default.
 - **Memory/Storage** — Auto-promotion, Negative feedback, Content normalization. All enabled by default.
 - **Embedding/API** — Voyage AI, OpenAI, HuggingFace Local (auto-detected). Provider-dependent.
 - **Debug** — Trace mode, Scoring observability, Shadow evaluation. All disabled by default.
-
-</details>
 
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 
@@ -785,18 +709,13 @@ For the complete flag reference with per-flag defaults, see [MCP Server README S
 
 The memory system uses a SQLite database with 25 tables:
 
-<details>
-<summary><strong>25 Tables in 7 Groups</strong></summary>
-
-- **Core** (3) — `memories`, `embeddings`, `memory_sections`. Content storage and vector index.
-- **Search** (3) — `fts_memories`, `bm25_index`, `search_cache`. Full-text and keyword search.
-- **Graph** (3) — `causal_edges`, `communities`, `co_activations`. Causal relationships and clustering.
-- **Lifecycle** (3) — `memory_states`, `validation_feedback`, `promotions`. State machine and quality tracking.
-- **Session** (2) — `working_memory`, `session_events`. Current session context.
-- **Shared** (3) — `shared_spaces`, `memberships`, `kill_switches`. Multi-user access control.
-- **Evaluation** (3) — `eval_runs`, `ablation_results`, `ground_truth`. Quality measurement.
-
-</details>
+- **Core** (3) — `memories`, `embeddings`, `memory_sections`
+- **Search** (3) — `fts_memories`, `bm25_index`, `search_cache`
+- **Graph** (3) — `causal_edges`, `communities`, `co_activations`
+- **Lifecycle** (3) — `memory_states`, `validation_feedback`, `promotions`
+- **Session** (2) — `working_memory`, `session_events`
+- **Shared** (3) — `shared_spaces`, `memberships`, `kill_switches`
+- **Evaluation** (3) — `eval_runs`, `ablation_results`, `ground_truth`
 
 ### opencode.json Structure
 
