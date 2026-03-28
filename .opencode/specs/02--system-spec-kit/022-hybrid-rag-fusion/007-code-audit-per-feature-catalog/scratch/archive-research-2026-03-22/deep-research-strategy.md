@@ -62,7 +62,7 @@ description: Strategy for finding gaps in the 007-code-audit-per-feature-catalog
 None -- all 11 questions answered. Research cycle complete.
 
 ## Next Focus
-ALL 11 questions answered. Research is converged. Recommended: proceed to final synthesis phase to produce the canonical research.md output. If further iterations are dispatched, potential deep-dives include MEDIUM-risk phase analysis, deprecated file cleanup candidacy, and uncataloged new file activation status verification.
+ALL 11 questions answered. Research is converged. Recommended: proceed to final synthesis phase to produce the canonical research/research.md output. If further iterations are dispatched, potential deep-dives include MEDIUM-risk phase analysis, deprecated file cleanup candidacy, and uncataloged new file activation status verification.
 
 ## New Discovery: Audit Correction Error Pattern
 The audit agents detected real discrepancies but in ~50% of verified cases fabricated the "correct" answer instead of verifying against source code. This is a systemic quality concern affecting all 41 PARTIAL findings.
@@ -76,6 +76,6 @@ Current state: The code audit has been completed across all 21 phases with ~179 
 - Max iterations: 15
 - Convergence threshold: 0.05
 - Progressive synthesis: true
-- research.md ownership: workflow-owned canonical synthesis output
+- research/research.md ownership: workflow-owned canonical synthesis output
 - Current segment: 1
 - Started: 2026-03-22T18:22:00.000Z

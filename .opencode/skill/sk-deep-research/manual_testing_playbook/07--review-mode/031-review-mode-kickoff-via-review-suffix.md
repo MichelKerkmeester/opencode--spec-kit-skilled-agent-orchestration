@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-031 | Review mode kickoff via :review suffix | Verify that the `:review` suffix triggers review-specific setup questions (target, dimensions) and routes to the review YAML workflow. | Validate the review entrypoint for sk-deep-research. Confirm that `/spec_kit:deep-research:review` routes to the review YAML, triggers target and dimension setup questions, and is documented in the README quick start. | 1. `bash: rg -n ':review|review mode' .opencode/command/spec_kit/deep-research.md` -> 2. `bash: sed -n '1,100p' .opencode/command/spec_kit/assets/spec_kit_deep-research_review-auto.yaml` -> 3. `bash: rg -n 'review|:review' .opencode/skill/sk-deep-research/README.md` | The `:review` suffix maps to the review YAML, `phase_init` prompts for review target and dimension selection, and the README documents the review command. | Capture the mode-routing block, `phase_init` setup questions, and README review section together. | PASS if command routes to review YAML, setup questions include target and dimensions, and README matches; FAIL if routing is broken or setup questions are missing. | Start with the command entrypoint mode-routing, confirm `:review` maps to the review YAML, then inspect `phase_init` if setup questions are unclear. |
+| DR-031 | Review mode kickoff via :review suffix | Verify that the `:review` suffix triggers review-specific setup questions (target, dimensions) and routes to the review YAML workflow. | Validate the review entrypoint for sk-deep-research. Confirm that `/spec_kit:deep-research:review` routes to the review YAML, triggers target and dimension setup questions, and is documented in the README quick start. | 1. `bash: rg -n ':review|review mode' .opencode/command/spec_kit/deep-research.md` -> 2. `bash: sed -n '1,100p' .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` -> 3. `bash: rg -n 'review|:review' .opencode/skill/sk-deep-research/README.md` | The `:review` suffix maps to the review YAML, `phase_init` prompts for review target and dimension selection, and the README documents the review command. | Capture the mode-routing block, `phase_init` setup questions, and README review section together. | PASS if command routes to review YAML, setup questions include target and dimensions, and README matches; FAIL if routing is broken or setup questions are missing. | Start with the command entrypoint mode-routing, confirm `:review` maps to the review YAML, then inspect `phase_init` if setup questions are unclear. |
 
 ---
 
@@ -62,7 +62,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 | File | Role |
 |---|---|
 | `.opencode/command/spec_kit/deep-research.md` | Markdown setup and mode routing; use `:review` suffix routing block |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_review-auto.yaml` | Review workflow contract; inspect `phase_init` for setup questions |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` | Review workflow contract; inspect `phase_init` for setup questions |
 | `.opencode/skill/sk-deep-research/README.md` | User-facing examples; use `ANCHOR:quick-start` for review command documentation |
 
 ---

@@ -47,7 +47,7 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `level_3/` | Level 2 + architecture (`decision-record.md`) |
 | `level_3+/` | Level 3 + governance extensions |
 | `context_template.md` | Context snapshot template |
-| `research.md` | Research artifact template |
+| `research/research.md` | Research artifact template |
 | `handover.md` | Session handover template |
 | `debug-delegation.md` | Debug delegation template |
 | `examples/` | Filled references only |
@@ -85,7 +85,7 @@ LOC is guidance, not a hard limit. Risk and complexity can move work up a level.
 ## 5. PHASE SYSTEM
 <!-- ANCHOR:phase-system -->
 
-Large specs can be decomposed into ordered phases using the Phase System (Spec 139). Each phase becomes a child spec folder under the parent (e.g., `specs/<###-parent-spec>/<001-phase-one>/`, `specs/<###-parent-spec>/<002-phase-two>/`).
+Large specs can be decomposed into ordered phases using the Phase System (Spec 139). Each phase becomes a child spec folder under the parent (e.g., `<###-parent-spec>/<001-phase-one>/`, `specs/<###-parent-spec>/<002-phase-two>/`).
 
 - **Gate 3 Option E** targets a specific phase child folder for implementation work.
 - **`/spec_kit:phase`** decomposes a spec into phases, creating parent and child folders with proper linking.

@@ -130,7 +130,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -138,7 +138,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `accomplishments` | `implementation` | `compatibility` | `improvements` | `intelligence` | `standardized` | `conversation` | `environments` | `integration` | `methodology` | 
 <!-- /ANCHOR:project-state-snapshot -->
@@ -160,7 +160,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - `.opencode/agent/debug.md` - Documentation
 
-- `.opencode/agent/research.md` - Documentation
+- `.opencode/agent/research/research/research.md` - Documentation
 
 - `.opencode/agent/review.md` - Documentation
 
@@ -170,7 +170,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - `.opencode/agent/orchestrate.md` - Documentation
 
-- `.opencode/command/spec_kit/research.md` - Documentation
+- `.opencode/command/spec_kit/research/research/research.md` - Documentation
 
 - `.opencode/command/spec_kit/debug.md` - Documentation
 
@@ -195,7 +195,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ## 2. OVERVIEW
 
-Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
+Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research/research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research/research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
 
 **Key Outcomes**:
 - Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key...
@@ -211,12 +211,12 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/agent/debug.md` | Memory integration |
-| `.opencode/agent/research.md` | Workflow-to-template mapping |
+| `.opencode/agent/research/research/research.md` | Workflow-to-template mapping |
 | `.opencode/agent/review.md` | File modified (description pending) |
 | `.opencode/agent/write.md` | File modified (description pending) |
 | `.opencode/agent/speckit.md` | File modified (description pending) |
 | `.opencode/agent/orchestrate.md` | New mandatory sections |
-| `.opencode/command/spec_kit/research.md` | Workflow-to-template mapping |
+| `.opencode/command/spec_kit/research/research/research.md` | Workflow-to-template mapping |
 | `.opencode/command/spec_kit/debug.md` | Memory integration |
 | `.opencode/command/spec_kit/complete.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/implement.md` | File modified (description pending) |
@@ -233,7 +233,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 <!-- ANCHOR:implementation-completed-implementation-agent-improvements-cedd682f-session-1769161968510-r2t6m0y4m -->
 ### FEATURE: Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key...
 
-Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
+Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research/research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research/research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
 
 **Details:** debug agent | research agent improvements | 4-phase methodology | model preference opus | agent template | workflow-to-template mapping | evidence quality rubric | structured context handoff | general-purpose subagent | claude code opencode compatibility | subagent_type
 <!-- /ANCHOR:implementation-completed-implementation-agent-improvements-cedd682f-session-1769161968510-r2t6m0y4m -->
@@ -439,7 +439,7 @@ This session followed a **Sequential with Decision Points** conversation pattern
 
 > **User** | 2026-01-23 @ 10:52:48
 
-Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
+Completed implementation of Research Agent Improvements & Debug Sub-Agent Creation plan. Key accomplishments: (1) Enhanced research/research.md agent with workflow-to-template mapping, evidence quality rubric (grades A-F), and code intelligence tool selection guidance; (2) Enhanced research/research.md command with memory integration, circuit breaker examples, and mode examples; (3) Created new debug.md sub-agent with 4-phase methodology (Observe → Analyze → Hypothesize → Fix), structured context handoff, and three response formats (Success/Blocked/Escalation); (4) Updated orchestrate.md routing table to include @debug agent; (5) Standardized all agent model preferences to default to Opus 4.5 (removing Haiku option); (6) Updated agent_template.md to v2.0 with new mandatory sections; (7) Created symlink for debug.md in .claude/agents/; (8) Fixed subagent_type compatibility between Claude Code ('general-purpose') and OpenCode ('general') across 10 files.
 
 ---
 

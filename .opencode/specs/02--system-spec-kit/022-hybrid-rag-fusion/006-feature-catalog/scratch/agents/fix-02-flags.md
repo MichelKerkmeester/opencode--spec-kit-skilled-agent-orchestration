@@ -310,7 +310,7 @@ Validation passed, so I’m surfacing the exact diffs next rather than just summ
   │  91    | `SPECKIT_INDEX_SPEC_DOCS` | `true` | boolean | `handlers/memory-index-discovery.ts` |
   │        Controls whether `memory_index_scan` indexes spec folder documents (`spec.md`, `plan.md`,
   │         `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`,
-  │        `research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
+  │        `research/research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
   │
   │  92    | `SPECKIT_INTERFERENCE_SCORE` | `true` | boolean | `lib/scoring/interference-scoring.ts`
   │         | Enables interference-based penalty scoring in composite scoring. When disabled (set to

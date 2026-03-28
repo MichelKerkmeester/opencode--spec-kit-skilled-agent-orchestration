@@ -97,7 +97,7 @@
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/tasks.md
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/checklist.md
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record.md
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/research.md
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/research/research/research.md
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/files-changed.md
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/implementation-summary.md
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/feature-overview.md
@@ -140,7 +140,7 @@
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/tasks.md
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/checklist.md
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record.md
-.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/research.md
+.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/research/research/research.md
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/files-changed.md
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/implementation-summary.md
 .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/feature-overview.md

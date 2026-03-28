@@ -27,7 +27,7 @@ declare -a TEMPLATE_FILES=(
   'plan.md'
   'tasks.md'
   'checklist.md'
-  'research.md'
+  'research/research.md'
   'decision-record-*.md'
 )
 
@@ -262,6 +262,14 @@ calculate_spec_completeness() {
   FILES_ANALYZED=0
 
   for template_pattern in "${TEMPLATE_FILES[@]}"; do
+    local -a find_args=("$spec_folder")
+    if [[ "$template_pattern" == *"/"* ]]; then
+      find_args+=(-maxdepth 2 -path "$spec_folder/$template_pattern")
+    else
+      find_args+=(-maxdepth 1 -name "$template_pattern")
+    fi
+    find_args+=(-type f -print0)
+
     while IFS= read -r -d '' file; do
       calculate_file_completeness "$file"
 
@@ -277,7 +285,7 @@ calculate_spec_completeness() {
           FILES_ANALYZED=$((FILES_ANALYZED + 1))
         fi
       fi
-    done < <(find "$spec_folder" -maxdepth 1 -name "$template_pattern" -type f -print0 2>/dev/null)
+    done < <(find "${find_args[@]}" 2>/dev/null)
   done
 
   OVERALL_PERCENTAGE=100

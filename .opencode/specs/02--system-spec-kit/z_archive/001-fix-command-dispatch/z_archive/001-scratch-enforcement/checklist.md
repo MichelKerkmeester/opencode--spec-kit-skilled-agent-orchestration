@@ -61,7 +61,7 @@ Verify that all scratch folder enforcement rules are properly implemented across
 
 - [x] CHK005 [P1] spec.md template has "WORKING FILES" section | Evidence: .opencode/speckit/templates/spec.md
 - [x] CHK006 [P1] tasks.md template has "WORKING FILES LOCATION" section | Evidence: .opencode/speckit/templates/tasks.md
-- [x] CHK007 [P1] research.md template has "FILE ORGANIZATION" section | Evidence: .opencode/speckit/templates/research.md
+- [x] CHK007 [P1] research/research.md template has "FILE ORGANIZATION" section | Evidence: .opencode/speckit/templates/research/research/research.md
 - [x] CHK008 [P1] checklist.md template has CHK036-038 items | Evidence: .opencode/speckit/templates/checklist.md:97-105
 
 ### P1 - Skill Documentation
@@ -74,13 +74,13 @@ Verify that all scratch folder enforcement rules are properly implemented across
 
 - [x] CHK012 [P2] complete.md command has scratch usage note | Evidence: .opencode/commands/spec_kit/complete.md
 - [x] CHK013 [P2] implement.md command has scratch usage note | Evidence: .opencode/commands/spec_kit/implement.md
-- [x] CHK014 [P2] research.md command has scratch usage note | Evidence: .opencode/commands/spec_kit/research.md
+- [x] CHK014 [P2] research/research.md command has scratch usage note | Evidence: .opencode/commands/spec_kit/research/research/research.md
 
 ### P1 - Compatibility
 
 - [x] CHK015 [P1] All enforcement is documentation-based (no hook dependencies) | Evidence: Reviewed all changes
 - [x] CHK016 [P1] CHK036-038 are P1 items (verified before completion) | Evidence: checklist.md:99-101
-- [x] CHK017 [P1] Verification notes in templates | Evidence: tasks.md:116, research.md, checklist.md:103-104
+- [x] CHK017 [P1] Verification notes in templates | Evidence: tasks.md:116, research/research.md, checklist.md:103-104
 
 ### P1 - Spec Folder Documentation
 
@@ -126,7 +126,7 @@ Verify that all scratch folder enforcement rules are properly implemented across
 |------|--------|--------|
 | spec.md | Section 12 WORKING FILES | ✅ Done |
 | tasks.md | WORKING FILES LOCATION section | ✅ Done |
-| research.md | FILE ORGANIZATION section | ✅ Done |
+| research/research.md | FILE ORGANIZATION section | ✅ Done |
 | checklist.md | CHK036-038 items | ✅ Done |
 
 ### Command Changes (P2)
@@ -134,7 +134,7 @@ Verify that all scratch folder enforcement rules are properly implemented across
 |------|--------|--------|
 | complete.md | scratch usage note | ✅ Done |
 | implement.md | scratch usage note | ✅ Done |
-| research.md | scratch usage note | ✅ Done |
+| research/research.md | scratch usage note | ✅ Done |
 
 ### Skill Changes (P1)
 | File | Change | Status |

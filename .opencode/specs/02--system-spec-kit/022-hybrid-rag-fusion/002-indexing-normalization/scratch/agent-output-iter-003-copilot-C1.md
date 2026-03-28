@@ -412,7 +412,7 @@ Here’s the source-backed readout.
 **PERF-006 — `sk-doc` memory-save trigger ambiguity**
 - The ambiguity is real and comes from overlapping rules:
   - `memory_save` explicitly accepts **spec documents** in `specs/**/`, not just `memory/` notes. [`mcp_server/tool-schemas.ts:186-189`]
-  - Spec-doc discovery/indexing includes `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`. [`mcp_server/handlers/memory-index-discovery.ts:20-29`]
+  - Spec-doc discovery/indexing includes `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research/research.md`, `handover.md`. [`mcp_server/handlers/memory-index-discovery.ts:20-29`]
   - Global rules say memory saves must use `generate-context.js` when triggered by “save context”, “save memory”, `/memory:save`, or memory-file creation. [`AGENTS.md:129-138`]
   - But system-spec-kit also says `implementation-summary.md` is a **required spec artifact** for Level 1+, while also saying it should be created **at the end of implementation**. [`system-spec-kit/SKILL.md:63,393,690`]
   - `sk-doc` guidance itself uses the phrase “save context and evidence” without clarifying whether that means a `memory/` note, indexing spec docs, or both. [`.agents/skills/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md:283-291`]

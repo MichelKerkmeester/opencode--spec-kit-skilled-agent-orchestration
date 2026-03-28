@@ -128,7 +128,7 @@ The loop_protocol.md Section 6.1 has Security first ("D2 Security, D1 Correctnes
 
 **Evidence:**
 
-1. **@deep-review agent defines iteration file format with Scorecard, Findings (P0/P1/P2), Cross-Reference Results, Assessment** -- The agent file `.opencode/agent/deep-review.md` Step 5 (lines 149-213) specifies the `scratch/iteration-NNN.md` structure including:
+1. **@deep-review agent defines iteration file format with Scorecard, Findings (P0/P1/P2), Cross-Reference Results, Assessment** -- The agent file `.opencode/agent/deep-review.md` Step 5 (lines 149-213) specifies the `research/iterations/iteration-NNN.md` structure including:
    - **Scorecard**: Per-file scoring table (Corr/Sec/Patt/Maint/Perf/Total)
    - **Findings**: Structured by severity with explicit format:
      - P0-NNN: Title + Dimension + Evidence `[SOURCE: file:line]` + Cross-reference + Impact + Hunter/Skeptic/Referee verdicts + Final severity

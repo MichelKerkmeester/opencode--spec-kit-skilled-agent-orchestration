@@ -140,11 +140,11 @@ If a task cannot be completed:
 - Design documents from `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix`
 
 ### Prerequisites
-- **Required**: `spec.md`, `plan.md`, `research.md`
+- **Required**: `spec.md`, `plan.md`, `research/research.md`
 - **Optional**: None
 
 ### Organization
-Tasks are grouped by priority phase to enable systematic bug elimination while maintaining system stability. The full issue inventory in `research.md` is the source of truth and must be fully cleared.
+Tasks are grouped by priority phase to enable systematic bug elimination while maintaining system stability. The full issue inventory in `research/research.md` is the source of truth and must be fully cleared.
 
 ### Tests
 Testing is integrated into each task where verification is possible.
@@ -455,7 +455,7 @@ Testing is integrated into each task where verification is possible.
 #### T102: Standardize CHANGELOG Version Format
 - **Priority:** P0
 - **Affected Files:**
-  - `CHANGELOG.md` and any versioned docs (see research.md)
+  - `CHANGELOG.md` and any versioned docs (see research/research.md)
 - **Description:** Version format mismatch (`[1.7.1]` vs `17.1.0`).
 
 **STEP-BY-STEP EXECUTION:**
@@ -547,7 +547,7 @@ Testing is integrated into each task where verification is possible.
 #### T104: Add Rate Limiting for Batch Embedding Calls
 - **Priority:** P0
 - **Affected Files:**
-  - Embedding batch callers (see research.md)
+  - Embedding batch callers (see research/research.md)
 - **Description:** No rate limiting on batch embedding calls.
 
 **STEP-BY-STEP EXECUTION:**
@@ -878,15 +878,15 @@ Testing is integrated into each task where verification is possible.
 
 #### High-Priority Re-Analysis Buckets (T120-T127)
 
-> **IMPORTANT**: These bucket tasks reference the detailed issue inventory in `research.md`. 
-> For each bucket, open research.md and find the corresponding section to get exact file:line references.
+> **IMPORTANT**: These bucket tasks reference the detailed issue inventory in `research/research.md`. 
+> For each bucket, open research/research.md and find the corresponding section to get exact file:line references.
 
 #### T120: MCP Server Re-Analysis Fixes
 - **Priority:** P1
 - **Affected Files:** `.opencode/skill/system-spec-kit/mcp_server/context-server.js`
 - **Description:** Clear all additional MCP server issues from research inventory (null dereferences, numeric validation, cache invalidation, startup mutex, error format consistency).
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. Null dereference in database queries (lines 1685, 1744, 1772) - add null checks
 2. parseInt without radix (lines 285, 339) - add `, 10` parameter
 3. Missing numeric validation (lines 613-616, 660-663, 741-744, 791, 1021)
@@ -900,7 +900,7 @@ Testing is integrated into each task where verification is possible.
 grep -n "\.count\|parseInt\|validateNumeric" .opencode/skill/system-spec-kit/mcp_server/context-server.js | head -20
 ```
 
-- **Acceptance:** All MCP server items in research.md resolved
+- **Acceptance:** All MCP server items in research/research.md resolved
 - **Verification:** Run targeted regression tests for each listed issue
 
 ---
@@ -910,7 +910,7 @@ grep -n "\.count\|parseInt\|validateNumeric" .opencode/skill/system-spec-kit/mcp
 - **Affected Files:** `.opencode/skill/system-spec-kit/mcp_server/lib/*.js`
 - **Description:** Resolve JSON.parse crash paths, listener cleanup, global state mutation, error propagation, and timer cleanup issues.
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. **history.js**: JSON.parse in map callback without try-catch (lines 115-118, 159-166, 193-194)
 2. **temporal-contiguity.js**: JSON.parse inside loop without try-catch (lines 67-70, 107-110)
 3. **access-tracker.js**: Event listeners never removed (lines 123-135)
@@ -924,7 +924,7 @@ grep -n "\.count\|parseInt\|validateNumeric" .opencode/skill/system-spec-kit/mcp
 grep -n "JSON.parse" .opencode/skill/system-spec-kit/mcp_server/lib/*.js | head -20
 ```
 
-- **Acceptance:** All lib/ module items in research.md resolved
+- **Acceptance:** All lib/ module items in research/research.md resolved
 - **Verification:** Unit tests and targeted error-case simulation
 
 ---
@@ -934,7 +934,7 @@ grep -n "JSON.parse" .opencode/skill/system-spec-kit/mcp_server/lib/*.js | head 
 - **Affected Files:** `.opencode/skill/system-spec-kit/scripts/**`
 - **Description:** Resolve signal handling, cross-platform path issues, race conditions, and hardcoded values.
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. **generate-context.js**: Missing SIGTERM handler
 2. **archive-spec.sh:164**: macOS-specific `stat -f` command
 3. **create-spec-folder.sh:196**: xargs without -r flag
@@ -947,7 +947,7 @@ grep -n "JSON.parse" .opencode/skill/system-spec-kit/mcp_server/lib/*.js | head 
 grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js" --include="*.sh"
 ```
 
-- **Acceptance:** All script items in research.md resolved
+- **Acceptance:** All script items in research/research.md resolved
 - **Verification:** Run scripts on macOS/Linux paths with edge-case inputs
 
 ---
@@ -957,14 +957,14 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 - **Affected Files:** `.opencode/skill/system-spec-kit/templates/*.md`
 - **Description:** Fix status vocab inconsistencies, "WHEN TO USE" gaps, marker positioning, metadata field naming, and numbering logic.
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. Status field values inconsistent across templates
 2. Missing "WHEN TO USE" in handover.md, debug-delegation.md, implementation-summary.md
 3. Template markers on line 5 instead of line 1 (or inconsistent)
 4. Date format inconsistency in spec.md
 5. handover.md version v2.0 vs others at v1.0
 
-- **Acceptance:** All template issues in research.md resolved
+- **Acceptance:** All template issues in research/research.md resolved
 - **Verification:** Template lint pass and manual review
 
 ---
@@ -974,14 +974,14 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 - **Affected Files:** `.opencode/command/spec_kit/*.md`, `.opencode/command/spec_kit/assets/*.yaml`
 - **Description:** Resolve step mismatches, termination text inconsistencies, and YAML/MD divergence.
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. Step count/termination mismatches (complete.md:277)
 2. Cross-command step numbering inconsistency
 3. Confidence checkpoints differ between MD and YAML
 4. handover.md lacks auto/confirm YAML pattern
 5. MCP tool naming issues (double prefix in resume.md:435)
 
-- **Acceptance:** All command issues in research.md resolved
+- **Acceptance:** All command issues in research/research.md resolved
 - **Verification:** Diff MD vs YAML step tables and re-run command flows
 
 ---
@@ -991,14 +991,14 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 - **Affected Files:** `.opencode/skill/system-spec-kit/references/**`
 - **Description:** Align docs with actual parameter names, tier weights, and error code references.
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. Importance tier weights wrong in memory_system.md (lines 39-46)
 2. Missing MCP tools from documentation (7 listed, 14 actual)
 3. memory_list sortBy default incorrect
 4. Hardcoded "Memory #132" reference
 5. Level 1 required files inconsistency
 
-- **Acceptance:** All reference doc issues in research.md resolved
+- **Acceptance:** All reference doc issues in research/research.md resolved
 - **Verification:** Cross-check docs against implementation
 
 ---
@@ -1008,14 +1008,14 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 - **Affected Files:** `.opencode/skill/system-spec-kit/shared/**`, SKILL.md
 - **Description:** Document shared/ modules and resolve integration gaps (checkpoint_restore docs, missing changelog refs).
 
-**ISSUES TO RESOLVE (from research.md):**
+**ISSUES TO RESOLVE (from research/research.md):**
 1. Cache key collision risk in embeddings.js (16-char hash)
 2. Query embedding not cached (only document embedding cached)
 3. Inconsistent MAX_TEXT_LENGTH defined in multiple places
 4. Provider fallback only for OpenAI, not Voyage
 5. HF-Local truncates without semantic chunking
 
-- **Acceptance:** All shared/integration issues in research.md resolved
+- **Acceptance:** All shared/integration issues in research/research.md resolved
 - **Verification:** Documentation audit
 
 ---
@@ -1145,15 +1145,15 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 
 ---
 
-#### T023: Document research.md Phase 3
+#### T023: Document research/research.md Phase 3
 - **Priority:** P2
 - **Affected Files:**
-  - `.opencode/command/spec_kit/research.md`
+  - `.opencode/command/spec_kit/research/research/research.md`
   - `.opencode/skill/system-spec-kit/SKILL.md`
-- **Description:** research.md has unique Phase 3 (Prior Work Search) not documented in SKILL.md.
+- **Description:** research/research.md has unique Phase 3 (Prior Work Search) not documented in SKILL.md.
 - **Acceptance:**
   - Phase 3 documented in SKILL.md
-  - OR research.md aligned with SKILL.md
+  - OR research/research.md aligned with SKILL.md
 - **Verification:**
   - Cross-reference both files
 
@@ -1438,7 +1438,7 @@ grep -rn "/tmp\|/Users" .opencode/skill/system-spec-kit/scripts/ --include="*.js
 ### Cross-References
 - **Specification**: See `spec.md` for requirements
 - **Plan**: See `plan.md` for technical approach
-- **Research**: See `research.md` for investigation findings
+- **Research**: See `research/research.md` for investigation findings
 - **Checklist**: See `checklist.md` for validation criteria
 
 ---

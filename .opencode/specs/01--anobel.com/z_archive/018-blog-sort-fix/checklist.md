@@ -1,6 +1,6 @@
 ---
 title: "Checklist: Blog Sort Dropdown Fix [019-blog-sort-fix/checklist]"
-description: "Evidence: Deep dive completed 2026-01-18. See research.md for full findings."
+description: "Evidence: Deep dive completed 2026-01-18. See research/research.md for full findings."
 trigger_phrases:
   - "checklist"
   - "blog"
@@ -24,7 +24,7 @@ contextType: "implementation"
 - [x] **P1** Research Finsweet Reactive API (`listInstance.sorting.value`)
 - [x] **P1** Analyze bridge timing vs Finsweet initialization
 
-**Evidence:** Deep dive completed 2026-01-18. See `research.md` for full findings.
+**Evidence:** Deep dive completed 2026-01-18. See `research/research.md` for full findings.
 
 ---
 <!-- /ANCHOR:pre-implementation -->
@@ -137,7 +137,7 @@ contextType: "implementation"
 | Check | Status | Date | Notes |
 |-------|--------|------|-------|
 | Deep dive complete | ✅ | 2026-01-18 | 5 parallel agents |
-| Spec updated to Level 3 | ✅ | 2026-01-18 | Added decision-record.md, research.md |
+| Spec updated to Level 3 | ✅ | 2026-01-18 | Added decision-record.md, research/research.md |
 | Implementation complete | | | |
 | Testing complete | | | |
 | Deployed to production | | | |

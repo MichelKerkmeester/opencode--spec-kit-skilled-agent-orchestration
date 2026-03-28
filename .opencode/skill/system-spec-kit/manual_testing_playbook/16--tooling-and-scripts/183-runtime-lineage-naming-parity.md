@@ -27,10 +27,10 @@ This scenario remains prose-first because it carries compound operator logic, su
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .codex/agents -maxdepth 1 -type f -name '*.toml' -exec basename {} \; | sed 's/\.toml$/.md/' | sort)
   rg -n 'research\.md' .opencode/agent .claude/agents .codex/agents .gemini/agents
   ```
-- Expected: all diff commands produce no output; rg finds no active `research.md`.
+- Expected: all diff commands produce no output; rg finds no active `research/research.md`.
 - Evidence: diff output (empty on pass) and rg output (empty on pass).
 - Pass: normalized basenames match and no stale naming.
-- Fail triage: any mismatch or `research.md` hit; collect diff output and identify divergence.
+- Fail triage: any mismatch or `research/research.md` hit; collect diff output and identify divergence.
 
 ---
 

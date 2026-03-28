@@ -24,7 +24,7 @@ Quality assurance checklist for verifying the SpecKit consolidation migration.
 
 ### File Migration
 - [x] **CHK-001**: All 9 templates exist in `.opencode/skills/workflows-spec-kit/templates/`
-  - *Evidence: 9 templates found (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md, research-spike.md, handover.md, debug-delegation.md)*
+  - *Evidence: 9 templates found (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md, research-spike.md, handover.md, debug-delegation.md)*
 - [x] **CHK-002**: All 6 scripts exist in `.opencode/skills/workflows-spec-kit/scripts/`
   - *Evidence: 6 scripts found (common.sh, create-spec-folder.sh, check-prerequisites.sh, calculate-completeness.sh, recommend-level.sh, archive-spec.sh)*
 - [x] **CHK-003**: All 4 checklists exist in `.opencode/skills/workflows-spec-kit/checklists/`

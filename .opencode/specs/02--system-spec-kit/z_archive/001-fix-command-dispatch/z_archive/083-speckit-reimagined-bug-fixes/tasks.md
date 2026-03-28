@@ -67,9 +67,9 @@ contextType: "implementation"
 - **Change:** `.opencode/command/` → `.claude/commands/`
 - **Status:** [x] Complete
 
-### T-004: Fix YAML Path - research.md
+### T-004: Fix YAML Path - research/research.md
 - **Bug:** BUG-002
-- **File:** `.claude/commands/spec_kit/research.md`
+- **File:** `.claude/commands/spec_kit/research/research/research.md`
 - **Lines:** 420-422
 - **Change:** `.opencode/command/` → `.claude/commands/`
 - **Status:** [x] Complete
@@ -166,7 +166,7 @@ contextType: "implementation"
 
 ### T-018: Verify/Remove WebSearch Tool
 - **Bug:** BUG-008
-- **File:** `.claude/commands/spec_kit/research.md`
+- **File:** `.claude/commands/spec_kit/research/research/research.md`
 - **Line:** 4
 - **Change:** Remove WebSearch if phantom, standardize to lowercase
 - **Status:** [x] Complete
@@ -335,9 +335,9 @@ contextType: "implementation"
 - **Change:** Document CONTINUE_SESSION.md artifact
 - **Status:** [x] Complete
 
-### T-042: Fix Tool Capitalization - research.md
+### T-042: Fix Tool Capitalization - research/research.md
 - **Bug:** BUG-030
-- **File:** `.claude/commands/spec_kit/research.md`
+- **File:** `.claude/commands/spec_kit/research/research/research.md`
 - **Line:** 4
 - **Change:** Standardize to lowercase tool names
 - **Status:** [x] Complete

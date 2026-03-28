@@ -31,7 +31,7 @@ contextType: "architecture"
 
 - [x] CHK-001 [P0] Architecture-audit requirements are documented in `spec.md` [EVIDENCE: spec.md records the audit problem, scope, REQ-001 through REQ-008, and completed success criteria for the boundary-contract work.]
 - [x] CHK-002 [P0] Recoverable completed phase map is documented in `plan.md` [EVIDENCE: plan.md preserves the recovered completed phase map across Phases 0-13 plus later completed follow-up work.]
-- [x] CHK-003 [P1] Supporting decision and research artifacts remain available at the root [EVIDENCE: spec.md lists decision-record.md and research.md as critical dependencies, and RELATED DOCUMENTS points readers to both artifacts plus scratch/ and memory/.]
+- [x] CHK-003 [P1] Supporting decision and research artifacts remain available at the root [EVIDENCE: spec.md lists decision-record.md and research/research.md as critical dependencies, and RELATED DOCUMENTS points readers to both artifacts plus scratch/ and memory/.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -91,7 +91,7 @@ The original detailed root checklist was overwritten by the later coordination r
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-304 [P1] Supporting decision and research artifacts remain at the root [EVIDENCE: spec.md RELATED DOCUMENTS and critical dependencies both point to decision-record.md, research.md, scratch/, and memory/ as the packet's retained evidence surfaces.]
+- [x] CHK-304 [P1] Supporting decision and research artifacts remain at the root [EVIDENCE: spec.md RELATED DOCUMENTS and critical dependencies both point to decision-record.md, research/research.md, scratch/, and memory/ as the packet's retained evidence surfaces.]
 - [x] CHK-305 [P1] Restored root docs do not require child-folder routing to be understandable [EVIDENCE: spec.md and implementation-summary.md explain the completed audit in-place, and plan.md preserves the recovered phase map directly instead of relying on child-folder routing.]
 <!-- /ANCHOR:file-org -->
 

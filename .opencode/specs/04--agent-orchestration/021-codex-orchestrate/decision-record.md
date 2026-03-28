@@ -308,7 +308,7 @@ After orchestrate-focused optimization, sibling ChatGPT agent files still carrie
 - `.opencode/agent/chatgpt/context.md`
 - `.opencode/agent/chatgpt/debug.md`
 - `.opencode/agent/chatgpt/handover.md`
-- `.opencode/agent/chatgpt/research.md`
+- `.opencode/agent/chatgpt/research/research/research.md`
 - `.opencode/agent/chatgpt/review.md`
 - `.opencode/agent/chatgpt/speckit.md`
 - `.opencode/agent/chatgpt/write.md`

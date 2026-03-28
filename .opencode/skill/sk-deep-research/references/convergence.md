@@ -455,7 +455,7 @@ When 2 consecutive iterations on the same focus yield newInfoRatio < 0.10:
 ### Tier 3: State Reconstruction
 
 When JSONL is missing or corrupted beyond fault-tolerant parsing:
-- Scan `{spec_folder}/review/iteration-*.md` files
+- Scan `{spec_folder}/review/iterations/iteration-*.md` files
 - Parse `## Assessment` sections to reconstruct iteration records
 - Write reconstructed JSONL with `status: "reconstructed"`
 - See state_format.md "State Recovery from Iteration Files" for details

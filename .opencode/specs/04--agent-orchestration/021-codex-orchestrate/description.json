@@ -10,16 +10,12 @@
     "codex",
     "optimization"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.727Z",
+  "lastUpdated": "2026-03-28T10:08:37.619Z",
   "specId": "021",
   "folderSlug": "codex-orchestrate",
   "parentChain": [
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: ChatGPT Agent Suite Codex Optimization"
+  "memoryNameHistory": []
 }

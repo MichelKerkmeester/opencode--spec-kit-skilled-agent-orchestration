@@ -24,7 +24,7 @@ Improve `generate-context.js` direct/spec-folder mode by mining structured conte
 | --- | --- | --- |
 | `memory/*.md` | Prior saved context with normalized session summaries and state snapshots | High |
 | `scratch/*.md` | Working notes, manifests, audit logs, fix reports, temporary research | Medium |
-| `research.md` | Deep-dive research artifact for larger specs | High when present |
+| `research/research.md` | Deep-dive research artifact for larger specs | High when present |
 | `handover.md` | Explicit continuation state for next session | High when present |
 | `README.md` / extra notes | Folder-specific instructions or catalogs in some older specs | Medium |
 

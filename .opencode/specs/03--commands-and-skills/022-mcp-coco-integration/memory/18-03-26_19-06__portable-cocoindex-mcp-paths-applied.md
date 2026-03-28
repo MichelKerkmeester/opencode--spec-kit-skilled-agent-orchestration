@@ -151,14 +151,14 @@ Next: Continue implementation
 | plan.md | EXISTS |
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `commands skills/022` | `coco integration` | `skills/022 mcp` | `mcp coco` | `integration commands` | `structured observations` | `explicit structured` | `integration memory` | `generator explicit` | `observations treat` | `primary evidence.` | `memory generator` |
 

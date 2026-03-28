@@ -1,11 +1,11 @@
 ---
 title: Deep Research Strategy Template
-description: Runtime template copied to scratch/ during initialization to track research progress, focus decisions, and outcomes across iterations.
+description: Runtime template copied to research/ during initialization to track research progress, focus decisions, and outcomes across iterations.
 ---
 
 # Deep Research Strategy - Session Tracking Template
 
-Runtime template copied to `{spec_folder}/scratch/` during initialization. Tracks research progress across iterations.
+Runtime template copied to `{spec_folder}/research/` during initialization. Tracks research progress across iterations.
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -16,7 +16,7 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 
 ### Usage
 
-- **Init:** Orchestrator copies this template to `{spec_folder}/scratch/deep-research-strategy.md` and populates Topic, Key Questions, Known Context, and Research Boundaries from config and memory context.
+- **Init:** Orchestrator copies this template to `{spec_folder}/research/deep-research-strategy.md` and populates Topic, Key Questions, Known Context, and Research Boundaries from config and memory context.
 - **Per iteration:** Agent reads Next Focus, updates What Worked/Failed, marks questions answered, and sets new Next Focus.
 - **Mutability:** Mutable — updated by both orchestrator and agents throughout the session.
 - **Protection:** None (shared mutable state). Orchestrator validates consistency on resume.
@@ -121,7 +121,7 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 - Convergence threshold: [from config]
 - Per-iteration budget: [from config.maxToolCallsPerIteration] tool calls, [from config.maxMinutesPerIteration] minutes
 - Progressive synthesis: true (default)
-- research.md ownership: workflow-owned canonical synthesis output
+- research/research.md ownership: workflow-owned canonical synthesis output
 - Reference-only modes: `:restart`, segment partitioning, wave pruning, checkpoint commits, alternate `claude -p` dispatch
 - Current segment: 1
 - Started: [timestamp]

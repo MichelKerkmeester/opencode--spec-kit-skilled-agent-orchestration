@@ -2,8 +2,8 @@
 
 I'll read the audit and ADR, extract the critical/high findings, then verify each claim against the cited code before ranking the fixes.
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/research/research/research.md
   └ 944 lines read
 
 ● Read decision-record.md
@@ -320,7 +320,7 @@ _Read-only review; no code changes made._
 
 ## Validation Summary
 
-I validated the **51 explicitly enumerated CRITICAL/HIGH findings** in `research.md` against the cited source. One meta-note: the report summary says **48 HIGH**, but the numbered findings enumerate **46 HIGH + 5 CRITICAL = 51** critical/high items.
+I validated the **51 explicitly enumerated CRITICAL/HIGH findings** in `research/research.md` against the cited source. One meta-note: the report summary says **48 HIGH**, but the numbered findings enumerate **46 HIGH + 5 CRITICAL = 51** critical/high items.
 
 - **Validated substantially as written:** 41
 - **Validated, but with severity/scope adjustments:** 8

@@ -1,6 +1,6 @@
 ---
 title: "Checklist: Multi-Agent Dispatch Implementation [004-multi-agent-dispatch/checklist]"
-description: "1. .opencode/command/spec_kit/research.md - Added Phase 3 (Dispatch Mode)"
+description: "1. .opencode/command/spec_kit/research/research/research.md - Added Phase 3 (Dispatch Mode)"
 trigger_phrases:
   - "checklist"
   - "multi"
@@ -18,8 +18,8 @@ contextType: "implementation"
 ## P0 - Must Complete
 
 ### Command Updates
-- [x] **P0** research.md has Phase 3 with A/B/C dispatch options
-  - Evidence: `.opencode/command/spec_kit/research.md` contains "PHASE 3: DISPATCH MODE SELECTION"
+- [x] **P0** research/research.md has Phase 3 with A/B/C dispatch options
+  - Evidence: `.opencode/command/spec_kit/research/research/research.md` contains "PHASE 3: DISPATCH MODE SELECTION"
 - [x] **P0** debug.md Phase 2 extended with dispatch mode question
   - Evidence: `.opencode/command/spec_kit/debug.md` Phase 2 renamed to "MODEL + DISPATCH SELECTION"
 - [x] **P0** Both commands store dispatch_mode variable
@@ -34,10 +34,10 @@ contextType: "implementation"
   - Evidence: orchestrator and workers defined with model, role, responsibilities
 
 ### Agent Updates
-- [x] **P0** research.md agent has Coordinator Mode section
-  - Evidence: `.opencode/agent/research.md` contains "## 9. COORDINATOR MODE"
-- [x] **P0** research.md agent has Worker Mode section
-  - Evidence: `.opencode/agent/research.md` contains "## 10. WORKER MODE"
+- [x] **P0** research/research.md agent has Coordinator Mode section
+  - Evidence: `.opencode/agent/research/research/research.md` contains "## 9. COORDINATOR MODE"
+- [x] **P0** research/research.md agent has Worker Mode section
+  - Evidence: `.opencode/agent/research/research/research.md` contains "## 10. WORKER MODE"
 - [x] **P0** debug.md agent has Coordinator Mode section
   - Evidence: `.opencode/agent/debug.md` contains "## 4. COORDINATOR MODE"
 - [x] **P0** debug.md agent has Worker Mode section
@@ -59,7 +59,7 @@ contextType: "implementation"
 
 ### Documentation
 - [x] **P1** Work division tables accurate in agents
-  - Evidence: research.md has Worker Roles table, debug.md has Worker Roles table
+  - Evidence: research/research.md has Worker Roles table, debug.md has Worker Roles table
 - [x] **P1** Dispatch mode selection clearly documented
   - Evidence: Phase 3 (research) and Phase 2 (debug) have clear A/B/C options
 - [x] **P1** User prompt format matches plan
@@ -88,14 +88,14 @@ contextType: "implementation"
 
 | Item | Status | File |
 |------|--------|------|
-| Phase 3 in research.md | ✅ | `.opencode/command/spec_kit/research.md` |
+| Phase 3 in research/research.md | ✅ | `.opencode/command/spec_kit/research/research/research.md` |
 | Phase 2 extended in debug.md | ✅ | `.opencode/command/spec_kit/debug.md` |
 | multi_agent_config in research_auto.yaml | ✅ | `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` |
 | multi_agent_config in research_confirm.yaml | ✅ | `.opencode/command/spec_kit/assets/spec_kit_research_confirm.yaml` |
 | multi_agent_config in debug_auto.yaml | ✅ | `.opencode/command/spec_kit/assets/spec_kit_debug_auto.yaml` |
 | multi_agent_config in debug_confirm.yaml | ✅ | `.opencode/command/spec_kit/assets/spec_kit_debug_confirm.yaml` |
-| Coordinator Mode in research.md (Section 9) | ✅ | `.opencode/agent/research.md` |
-| Worker Mode in research.md (Section 10) | ✅ | `.opencode/agent/research.md` |
+| Coordinator Mode in research/research.md (Section 9) | ✅ | `.opencode/agent/research/research/research.md` |
+| Worker Mode in research/research.md (Section 10) | ✅ | `.opencode/agent/research/research/research.md` |
 | Coordinator Mode in debug.md (Section 4) | ✅ | `.opencode/agent/debug.md` |
 | Worker Mode in debug.md (Section 5) | ✅ | `.opencode/agent/debug.md` |
 
@@ -105,13 +105,13 @@ contextType: "implementation"
 <!-- ANCHOR:files-modified -->
 ## Files Modified
 
-1. `.opencode/command/spec_kit/research.md` - Added Phase 3 (Dispatch Mode)
+1. `.opencode/command/spec_kit/research/research/research.md` - Added Phase 3 (Dispatch Mode)
 2. `.opencode/command/spec_kit/debug.md` - Extended Phase 2
 3. `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` - Added multi_agent_config
 4. `.opencode/command/spec_kit/assets/spec_kit_research_confirm.yaml` - Added multi_agent_config
 5. `.opencode/command/spec_kit/assets/spec_kit_debug_auto.yaml` - Added multi_agent_config
 6. `.opencode/command/spec_kit/assets/spec_kit_debug_confirm.yaml` - Added multi_agent_config
-7. `.opencode/agent/research.md` - Added Sections 9 and 10, renumbered all sections
+7. `.opencode/agent/research/research/research.md` - Added Sections 9 and 10, renumbered all sections
 8. `.opencode/agent/debug.md` - Added Sections 4 and 5, renumbered all sections
 
 <!-- /ANCHOR:files-modified -->
@@ -121,9 +121,9 @@ contextType: "implementation"
 ## Post-Verification Fixes
 
 - [x] **P0** Phase 4 dependency reference corrected
-  - Evidence: `.opencode/command/spec_kit/research.md` Line 147: "EXECUTE AFTER PHASE 3 PASSES"
+  - Evidence: `.opencode/command/spec_kit/research/research/research.md` Line 147: "EXECUTE AFTER PHASE 3 PASSES"
 - [x] **P0** Violation detection phase reference corrected
-  - Evidence: `.opencode/command/spec_kit/research.md` Line 248: "(Phase 5)"
+  - Evidence: `.opencode/command/spec_kit/research/research/research.md` Line 248: "(Phase 5)"
 
 <!-- /ANCHOR:post-verification-fixes -->
 

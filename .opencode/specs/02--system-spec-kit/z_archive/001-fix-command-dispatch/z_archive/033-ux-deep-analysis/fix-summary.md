@@ -156,7 +156,7 @@ async function setupContextDirectory(specFolder) {
 3. tasks.md
 4. checklist.md
 5. decision-record.md
-6. research.md
+6. research/research.md
 7. handover.md
 8. debug-delegation.md
 9. quickstart.md

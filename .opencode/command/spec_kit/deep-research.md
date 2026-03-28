@@ -208,7 +208,7 @@ operating_mode:
 ## 1. PURPOSE
 
 Run an iterative loop for deep research or code review:
-- **Research mode:** Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, and synthesize findings into research.md. Use when deep investigation requiring multiple rounds of discovery.
+- **Research mode:** Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, and synthesize findings into research/research.md. Use when deep investigation requiring multiple rounds of discovery.
 - **Review mode:** Initialize the review packet under `{spec_folder}/review/`, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, and synthesize findings into `{spec_folder}/review/review-report.md`. Use when auditing code/specs for quality and release readiness.
 
 ---
@@ -217,7 +217,7 @@ Run an iterative loop for deep research or code review:
 
 **Inputs:** `$ARGUMENTS` -- Research topic or review target with optional flags and mode suffix
 **Outputs:**
-- RESEARCH mode: Spec folder with research.md + state files + `STATUS=<OK|FAIL|CANCELLED>`
+- RESEARCH mode: Spec folder with research/research.md + state files + `STATUS=<OK|FAIL|CANCELLED>`
 - REVIEW mode: Spec folder with `{spec_folder}/review/` packet + state files + `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
@@ -228,9 +228,9 @@ Run an iterative loop for deep research or code review:
 
 | Phase | Name | Purpose | Outputs |
 |-------|------|---------|---------|
-| Init | Initialize | Create config, strategy (with research charter), state files | State files in scratch/ |
+| Init | Initialize | Create config, strategy (with research charter), state files | State files in `research/` |
 | Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, dashboard.md |
-| Synth | Synthesize | Compile final research.md | research.md (17 sections) |
+| Synth | Synthesize | Compile final research/research.md | research/research.md (17 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
 ### Review Mode
@@ -238,7 +238,7 @@ Run an iterative loop for deep research or code review:
 | Phase | Name | Purpose | Outputs |
 |-------|------|---------|---------|
 | Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | Review packet in `{spec_folder}/review/` |
-| Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | `review/iteration-NNN.md` files, `review/deep-review-dashboard.md` |
+| Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | `review/iterations/iteration-NNN.md` files, `review/deep-review-dashboard.md` |
 | Synth | Synthesize | Build finding registry, deduplicate, compile `review/review-report.md` | `review/review-report.md` (9 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
@@ -277,7 +277,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 ```
 Deep research complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_answered]
-Artifacts: research.md, [N] iteration files, memory/*.md
+Artifacts: research/research.md, [N] iteration files, memory/*.md
 Ready for: /spec_kit:plan [feature-description]
 STATUS=OK PATH=[spec-folder-path]
 ```

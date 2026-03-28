@@ -21,7 +21,7 @@
 - `.opencode/agent/debug.md`
 - `.opencode/agent/handover.md`
 - `.opencode/agent/orchestrate.md`
-- `.opencode/agent/research.md`
+- `.opencode/agent/research/research/research.md`
 - `.opencode/agent/review.md`
 - `.opencode/agent/speckit.md`
 - `.opencode/agent/write.md`
@@ -31,7 +31,7 @@
 - Frontmatter remains platform-specific
 - Aligned review.md and orchestrate.md references from legacy workflows-code to current workflows-code--web-dev and sk-code--full-stack
 - Added explicit spec-015 note in review.md that frontmatter stays model-agnostic for parent-model inheritance
-- Removed stale WebSearch tool mention from research.md
+- Removed stale WebSearch tool mention from research/research.md
 
 ---
 
@@ -44,7 +44,7 @@
 - `.claude/agents/debug.md`
 - `.claude/agents/handover.md`
 - `.claude/agents/orchestrate.md`
-- `.claude/agents/research.md`
+- `.claude/agents/research/research/research.md`
 - `.claude/agents/review.md`
 - `.claude/agents/speckit.md`
 - `.claude/agents/write.md`
@@ -66,7 +66,7 @@
 - `.codex/agents/debug.md`
 - `.codex/agents/handover.md`
 - `.codex/agents/orchestrate.md`
-- `.codex/agents/research.md`
+- `.codex/agents/research/research/research.md`
 - `.codex/agents/review.md`
 - `.codex/agents/speckit.md`
 - `.codex/agents/write.md`

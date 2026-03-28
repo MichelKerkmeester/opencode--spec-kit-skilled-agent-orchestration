@@ -107,9 +107,9 @@ I’ve located the key files and one explicit parity test file. Next I’ll map 
   │ .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts
   └ L780:1160 (370 lines read)
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-mult
-  │ i-cli-parity/research.md
+  │ i-cli-parity/research/research/research.md
   └ 1 line read
 
 ● Search (grep)
@@ -196,14 +196,14 @@ I’ve confirmed the capability layer and contamination exception. I’ll now pi
   │ .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts
   └ L620:720 (100 lines read)
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-mult
-  │ i-cli-parity/research.md
+  │ i-cli-parity/research/research/research.md
   └ L1:260 (259 lines read)
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-mult
-  │ i-cli-parity/research.md
+  │ i-cli-parity/research/research/research.md
   └ L261:520 (176 lines read)
 
 ● Search (grep)

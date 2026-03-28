@@ -64,7 +64,7 @@ contextType: "implementation"
 
 | Bug | Fix | Files |
 |-----|-----|-------|
-| BUG-008 | Removed phantom WebSearch | research.md |
+| BUG-008 | Removed phantom WebSearch | research/research.md |
 | BUG-009 | Added 4-tier session detection | resume YAMLs |
 | BUG-010 | Resolved YAML contradiction | handover.md |
 | BUG-011 | Aligned handover sections | handover.md |
@@ -96,7 +96,7 @@ contextType: "implementation"
 | BUG-027 | Fixed short tool name | save.md |
 | BUG-028 | Clarified stats mode | manage.md |
 | BUG-029 | Documented CONTINUE_SESSION | resume YAMLs |
-| BUG-030 | Standardized lowercase tools | research.md |
+| BUG-030 | Standardized lowercase tools | research/research.md |
 
 ---
 
@@ -123,7 +123,7 @@ grep -n "key_steps" *.yaml
 
 # WebSearch removed (BUG-008)
 grep -n "WebSearch" *.md
-→ No matches in research.md
+→ No matches in research/research.md
 
 # Five Checks (BUG-024)
 grep -n "Five Checks" *.yaml
@@ -139,7 +139,7 @@ grep -n "Five Checks" *.yaml
 | File | Changes |
 |------|---------|
 | `spec_kit/debug.md` | YAML path, model name |
-| `spec_kit/research.md` | YAML path, WebSearch removed |
+| `spec_kit/research/research/research.md` | YAML path, WebSearch removed |
 | `spec_kit/complete.md` | YAML path |
 | `spec_kit/implement.md` | YAML path, Step 11 ref, duplicate step |
 | `spec_kit/plan.md` | YAML path, Q0-Q6 |

@@ -18,7 +18,7 @@ contextType: "implementation"
 ## Task List
 
 ### Command Updates
-- [x] Task 1: Update research.md command - Add Phase 2.5 ✅
+- [x] Task 1: Update research/research.md command - Add Phase 2.5 ✅
 - [x] Task 2: Update debug.md command - Extend Phase 2 ✅
 
 ### YAML Configuration
@@ -28,7 +28,7 @@ contextType: "implementation"
 - [x] Task 6: Update spec_kit_debug_confirm.yaml - Add multi_agent_config ✅
 
 ### Agent Updates
-- [x] Task 7: Update research.md agent - Add coordinator/worker modes ✅
+- [x] Task 7: Update research/research.md agent - Add coordinator/worker modes ✅
 - [x] Task 8: Update debug.md agent - Add coordinator/worker modes ✅
 
 <!-- /ANCHOR:task-list -->

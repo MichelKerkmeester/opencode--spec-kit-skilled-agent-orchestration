@@ -67,7 +67,7 @@ Move the requested agent surfaces to GPT-5.4 with the correct configuration form
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/context.md` | Modify | Switch OpenAI model to GPT-5.4, keep high reasoning |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/debug.md` | Modify | Switch OpenAI model to GPT-5.4, keep xhigh reasoning |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/handover.md` | Modify | Switch OpenAI model to GPT-5.4, keep medium reasoning |
-| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/research.md` | Modify | Switch OpenAI model to GPT-5.4, keep xhigh reasoning |
+| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/research/research/research.md` | Modify | Switch OpenAI model to GPT-5.4, keep xhigh reasoning |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/review.md` | Modify | Switch OpenAI model to GPT-5.4, keep xhigh reasoning, update model note |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/speckit.md` | Modify | Switch OpenAI model to GPT-5.4, keep medium reasoning |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/write.md` | Modify | Switch OpenAI model to GPT-5.4, keep medium reasoning |

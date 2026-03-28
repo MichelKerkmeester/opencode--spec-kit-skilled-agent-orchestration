@@ -1,3 +1,5 @@
+import { isWorkingArtifactPath } from '../config/spec-doc-paths';
+
 // ───────────────────────────────────────────────────────────────
 // MODULE: Document Helpers
 // ───────────────────────────────────────────────────────────────
@@ -35,8 +37,7 @@ export function calculateDocumentWeight(filePath: string, documentType?: string)
     if (weight !== undefined) return weight;
   }
 
-  const normalizedPath = filePath.replace(/\\/g, '/');
-  if (normalizedPath.includes('/scratch/')) return 0.25;
+  if (isWorkingArtifactPath(filePath)) return 0.25;
   return 0.5;
 }
 

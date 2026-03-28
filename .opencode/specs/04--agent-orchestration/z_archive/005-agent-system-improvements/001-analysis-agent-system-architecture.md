@@ -64,8 +64,8 @@ Deep analysis of the current OpenCode system reveals it's already well-architect
 
 ### Best Patterns (From Strong Agents)
 
-1. **Evidence Quality Rubric** (research.md) - Grade A-F with examples
-2. **Self-Review Checklist** (research.md) - 10 items before completion
+1. **Evidence Quality Rubric** (research/research.md) - Grade A-F with examples
+2. **Self-Review Checklist** (research/research.md) - 10 items before completion
 3. **Anti-Pattern Examples** (review.md) - BAD/GOOD code comparisons
 4. **Tool Routing Tables** (debug.md) - Primary Tool + Fallback columns
 5. **Structured Output Formats** (all) - JSON with STATUS=OK/FAIL
@@ -89,7 +89,7 @@ Deep analysis of the current OpenCode system reveals it's already well-architect
 
 | Domain | Commands | Quality | Issues |
 |--------|----------|---------|--------|
-| spec_kit | 7 commands | A | Minor: Q5/Q6 numbering in research.md |
+| spec_kit | 7 commands | A | Minor: Q5/Q6 numbering in research/research.md |
 | memory | 4 commands | A | None |
 
 **All 11 commands are high quality.** Consistent patterns:
@@ -256,7 +256,7 @@ Deep analysis of the current OpenCode system reveals it's already well-architect
 
 | Gap | Location | Fix |
 |-----|----------|-----|
-| Q5 duplicate numbering | research.md command | Renumber to Q6 |
+| Q5 duplicate numbering | research/research.md command | Renumber to Q6 |
 | Incomplete "for default" text | debug.md, implement.md commands | Complete sentence |
 
 ---

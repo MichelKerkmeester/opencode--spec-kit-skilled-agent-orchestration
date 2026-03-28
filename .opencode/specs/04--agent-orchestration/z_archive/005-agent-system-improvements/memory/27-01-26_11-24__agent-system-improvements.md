@@ -131,7 +131,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -139,7 +139,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `recommendations` | `implementation` | `parallelizable` | `documentation` | `comprehensive` | `improvements` | `requirements` | `verification` | `instruction` | `reliability` | 
 <!-- /ANCHOR:project-state-snapshot -->

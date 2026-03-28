@@ -18,7 +18,7 @@ The current template system consists of:
 | checklist.md | `/templates/checklist.md` | 279 | 4 |
 | decision-record.md | `/templates/decision-record.md` | 299 | 0 |
 | implementation-summary.md | `/templates/implementation-summary.md` | 103 | 0 |
-| research.md | `/templates/research.md` | 892 | 0 |
+| research/research.md | `/templates/research/research/research.md` | 892 | 0 |
 
 **Complexity Block Files** (in `/templates/complexity/`):
 | File | Purpose | Min Level |
@@ -106,7 +106,7 @@ The current template system consists of:
 | implementation-summary.md | REQUIRED* | REQUIRED* | REQUIRED* | REQUIRED* |
 | checklist.md | - | REQUIRED | REQUIRED | REQUIRED |
 | decision-record.md | - | - | REQUIRED | REQUIRED |
-| research.md | OPTIONAL | OPTIONAL | OPTIONAL | OPTIONAL |
+| research/research.md | OPTIONAL | OPTIONAL | OPTIONAL | OPTIONAL |
 
 *Note: implementation-summary.md is created AFTER implementation completes, not at spec folder creation.
 
@@ -361,7 +361,7 @@ level_3+/
 
 ```
 templates/
-  research.md                # Optional at all levels
+  research/research.md                # Optional at all levels
   context_template.md        # Memory context (not level-specific)
   debug-delegation.md        # Debug workflow (not level-specific)
   handover.md               # Handover workflow (not level-specific)

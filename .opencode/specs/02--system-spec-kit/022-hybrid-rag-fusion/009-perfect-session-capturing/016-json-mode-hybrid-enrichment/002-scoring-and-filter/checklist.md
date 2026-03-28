@@ -35,7 +35,7 @@ contextType: "implementation"
 - [x] CHK-002 [P0] Live scorer confirmed at workflow.ts:39 import (extractors/quality-scorer.ts, NOT core/) [Evidence: documented verification captured in this phase packet] — PASS: workflow.ts:39 imports from extractors/quality-scorer
 - [x] CHK-003 [P0] Dead-code scorer (core/quality-scorer.ts) confirmed as NOT imported in any production path [Evidence: documented verification captured in this phase packet] — PASS: no production file imports core/quality-scorer
 - [x] CHK-004 [P1] Baseline Vitest pass count recorded before any changes [Evidence: documented verification captured in this phase packet] — PASS: baseline 422 tests recorded
-- [x] CHK-005 [P1] Round 2 research.md Domains C and E reviewed for source-line citations [Evidence: documented verification captured in this phase packet] — PASS: round 2 research reviewed (74 findings)
+- [x] CHK-005 [P1] Round 2 research/research.md Domains C and E reviewed for source-line citations [Evidence: documented verification captured in this phase packet] — PASS: round 2 research reviewed (74 findings)
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -86,7 +86,7 @@ contextType: "implementation"
 
 - [x] CHK-050 [P1] spec.md, plan.md, tasks.md synchronized with final implementation (no stale sections) [Evidence: documented verification captured in this phase packet] — PASS: files synchronized
 - [x] CHK-051 [P1] decision-record.md ADR-001 (bonus removal), ADR-002 (filter scope), ADR-003 (post-save penalty) all marked Accepted [Evidence: documented verification captured in this phase packet] — PASS: ADRs exist in decision-record.md
-- [x] CHK-052 [P1] research.md finding references in spec.md are accurate (line numbers cited match live file) [Evidence: documented verification captured in this phase packet] — PASS: spot-checked 4 citations all accurate
+- [x] CHK-052 [P1] research/research.md finding references in spec.md are accurate (line numbers cited match live file) [Evidence: documented verification captured in this phase packet] — PASS: spot-checked 4 citations all accurate
 - [x] CHK-053 [P2] Code comments added to new filterContamination call sites explaining why each field is now cleaned [Evidence: documented verification captured in this phase packet] — PASS: workflow.ts:644,649,663,671 have inline comments
 <!-- /ANCHOR:docs -->
 

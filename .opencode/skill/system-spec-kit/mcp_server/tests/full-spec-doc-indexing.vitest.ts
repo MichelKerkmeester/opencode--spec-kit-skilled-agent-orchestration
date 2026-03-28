@@ -76,7 +76,8 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       { path: '/project/.opencode/specs/003/100-feature/checklist.md', expected: 'checklist', label: 'checklist.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/decision-record.md', expected: 'decision_record', label: 'decision-record.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/implementation-summary.md', expected: 'implementation_summary', label: 'implementation-summary.md in specs/' },
-      { path: '/project/.opencode/specs/003/100-feature/research.md', expected: 'research', label: 'research.md in specs/' },
+      { path: '/project/.opencode/specs/003/100-feature/research/research.md', expected: 'research', label: 'research/research.md in specs/' },
+      { path: '/project/.opencode/specs/003/100-feature/research.md', expected: 'research', label: 'legacy research.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/handover.md', expected: 'handover', label: 'handover.md in specs/' },
     ];
 
@@ -208,7 +209,8 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       { path: '/p/.opencode/specs/003/100/checklist.md', expected: 'checklist', label: 'checklist.md' },
       { path: '/p/.opencode/specs/003/100/decision-record.md', expected: 'decision_record', label: 'decision-record.md' },
       { path: '/p/.opencode/specs/003/100/implementation-summary.md', expected: 'implementation_summary', label: 'implementation-summary.md' },
-      { path: '/p/.opencode/specs/003/100/research.md', expected: 'research', label: 'research.md' },
+      { path: '/p/.opencode/specs/003/100/research/research.md', expected: 'research', label: 'research/research.md' },
+      { path: '/p/.opencode/specs/003/100/research.md', expected: 'research', label: 'legacy research.md' },
       { path: '/p/.opencode/specs/003/100/handover.md', expected: 'handover', label: 'handover.md' },
     ];
 
@@ -240,6 +242,10 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
 
     it('Returns "memory" for spec.md in /scratch/ directory', () => {
       expect(extractDocumentType('/p/.opencode/specs/003/100/scratch/spec.md')).toBe('memory');
+    });
+
+    it('Returns "memory" for iteration files in /research/iterations/', () => {
+      expect(extractDocumentType('/p/.opencode/specs/003/100/research/iterations/iteration-001.md')).toBe('memory');
     });
   });
 
@@ -347,7 +353,7 @@ describe('Spec 126 Phase 5: Indexing Pipeline', () => {
     });
 
     it('research -> 0.6', () => {
-      expect(calculateDocumentWeight('/p/specs/x/research.md', 'research')).toBe(0.6);
+      expect(calculateDocumentWeight('/p/specs/x/research/research.md', 'research')).toBe(0.6);
     });
 
     it('checklist -> 0.5', () => {
@@ -373,6 +379,11 @@ describe('Spec 126 Phase 5: Indexing Pipeline', () => {
 
     it('scratch path fallback -> 0.25', () => {
       expect(calculateDocumentWeight('/p/specs/x/scratch/temp.md')).toBe(0.25);
+    });
+
+    it('research/review iteration paths fall back to working-artifact weight', () => {
+      expect(calculateDocumentWeight('/p/specs/x/research/iterations/iteration-001.md')).toBe(0.25);
+      expect(calculateDocumentWeight('/p/specs/x/review/iterations/iteration-001.md')).toBe(0.25);
     });
   });
 

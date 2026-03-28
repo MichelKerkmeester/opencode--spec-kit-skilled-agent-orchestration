@@ -181,7 +181,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 | handover.md | EXISTS |
 
 **Related Documentation:**
@@ -190,7 +190,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `spec` | `../.opencode/specs/003 system spec kit/136 mcp working memory hybrid rag` | `handover` | `planning` | `state` | `continuation` | `../.opencode/specs/003` | `system` | `kit/136` | `mcp` | `memory` | `hybrid` | 

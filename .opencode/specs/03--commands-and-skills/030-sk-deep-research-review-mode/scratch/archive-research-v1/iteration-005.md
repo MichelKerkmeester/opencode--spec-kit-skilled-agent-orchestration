@@ -7,7 +7,7 @@ Q5: What should the review-report.md output look like and how does review mode i
 
 ### 1. review-report.md Format
 
-`review-report.md` should be the workflow-owned canonical output for `mode=review`, exactly parallel to how `research.md` is owned today.
+`review-report.md` should be the workflow-owned canonical output for `mode=review`, exactly parallel to how `research/research.md` is owned today.
 
 1. **Executive Summary**: purpose is immediate release posture. Structure: 1-row summary table plus a one-sentence recommendation. Example: `FAIL | 64/100 | NEEDS REVISION | P0:1 P1:3 P2:5 | 14/14 files, 5/5 dimensions`. Source: config target/scope, aggregate scorecard, active finding registry, JSONL stop reason.
 2. **Score Breakdown**: purpose is reproducible rubric scoring. Structure: 5-row table for Correctness, Security, Patterns, Maintainability, Performance with score, band, driver. Example: `Security | 18/25 | Weak | path traversal in download handler`. Source: per-file latest scorecards aggregated from iteration metadata.
@@ -99,7 +99,7 @@ Minimal iteration metadata needed in JSONL:
 | `convergenceThreshold` | reused | `0.10` in review mode | Diminishing returns should trigger sooner once coverage is broad |
 | `progressiveSynthesis` | reused | `true` | Reuses the existing workflow-owned progressive synthesis model |
 
-Keep the existing scratch filenames unchanged for compatibility: `scratch/deep-research-config.json`, `scratch/deep-research-state.jsonl`, `scratch/deep-research-strategy.md`, `scratch/deep-research-dashboard.md`. The mode switch should change behavior, not the storage layout.
+Keep the existing scratch filenames unchanged for compatibility: `research/deep-research-config.json`, `research/deep-research-state.jsonl`, `research/deep-research-strategy.md`, `research/deep-research-dashboard.md`. The mode switch should change behavior, not the storage layout.
 
 ### 5. Strategy Template Adaptation
 

@@ -12,7 +12,7 @@ CONTINUATION - Attempt 1 | Spec: .opencode/specs/03--commands-and-skills/030-sk-
 - **Accomplishments:**
   - GPT-5.4 initial review of spec folder 030
   - 8-iteration deep research via GPT-5.4 codex exec agents, answering all 7 key questions
-  - research.md v2 synthesized with full implementation roadmap
+  - research/research.md v2 synthesized with full implementation roadmap
   - Memory context saved
   - Phase 1 Foundation fully implemented (severity normalization, canonical manifest, sk-code--review split)
   - Phases 2-5 dispatched as parallel codex agents
@@ -35,7 +35,7 @@ CONTINUATION - Attempt 1 | Spec: .opencode/specs/03--commands-and-skills/030-sk-
 ### Research (100%)
 - [x] GPT-5.4 review of spec folder 030-sk-deep-research-review-mode
 - [x] 8-iteration deep research with convergence (all 7 questions answered)
-- [x] research.md v2 compiled (9 sections, 23-step roadmap)
+- [x] research/research.md v2 compiled (9 sections, 23-step roadmap)
 - [x] Memory context saved via generate-context.js
 
 ### Implementation Phase 1: Foundation (100%)
@@ -110,7 +110,7 @@ CONTINUATION - Attempt 1 | Spec: .opencode/specs/03--commands-and-skills/030-sk-
 4. `.opencode/skill/sk-deep-research/assets/deep_review_strategy.md` — Needs 7→4 dimension update
 
 ### Context to Load
-- Research findings: `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/research.md`
+- Research findings: `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/research/research/research.md`
 - Canonical manifest: `.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`
 - Memory: `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/memory/`
 
@@ -131,5 +131,5 @@ CONTINUATION - Attempt 1 | Spec: .opencode/specs/03--commands-and-skills/030-sk-
 | `spec_kit_deep-research_review_confirm.yaml` | Taxonomy migration (by Phase 4-5 agent) |
 | `agent/deep-review.md` + runtime variants | Taxonomy + integration (by Phase 4-5 agent) |
 | `command/spec_kit/deep-research.md` | Updated review mode description (by Phase 4-5 agent) |
-| `030-sk-deep-research-review-mode/research.md` | Rewritten as v2 research |
+| `030-sk-deep-research-review-mode/research/research/research.md` | Rewritten as v2 research |
 | `030-sk-deep-research-review-mode/scratch/*` | 8 new iteration files + archived v1 state |

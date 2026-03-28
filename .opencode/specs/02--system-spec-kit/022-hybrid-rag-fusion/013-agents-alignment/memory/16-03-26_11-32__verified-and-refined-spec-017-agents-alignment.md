@@ -157,7 +157,7 @@ Next: Continue implementation
 
 - `.opencode/agent/chatgpt/handover.md` - Documentation
 
-- `.opencode/agent/chatgpt/research.md` - Documentation
+- `.opencode/agent/chatgpt/research/research/research.md` - Documentation
 
 - `.opencode/agent/chatgpt/review.md` - Documentation
 
@@ -191,7 +191,7 @@ Verified and refined spec 013-agents-alignment: dispatched 5 parallel agents (do
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/(merged-small-files)` | Tree-thinning merged 1 small files (spec.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md : File modified (description pending) |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/(merged-small-files)` | Tree-thinning merged 2 small files (tasks.md, spec.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/tasks.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec.md : File modified (description pending) |
-| `.opencode/agent/chatgpt/(merged-small-files)` | Tree-thinning merged 7 small files (context.md, debug.md, handover.md, research.md, review.md, speckit.md, write.md). Merged from .opencode/agent/chatgpt/context.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/debug.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/handover.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/research.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/review.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/speckit.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/write.md : File modified (description pending) |
+| `.opencode/agent/chatgpt/(merged-small-files)` | Tree-thinning merged 7 small files (context.md, debug.md, handover.md, research/research.md, review.md, speckit.md, write.md). Merged from .opencode/agent/chatgpt/context.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/debug.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/handover.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/research/research/research.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/review.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/speckit.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/write.md : File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 

@@ -42,7 +42,7 @@ This phase modifies five files across two subsystems: the MCP server handler (me
 
 ### Definition of Ready
 - [x] Problem statement clear and scope documented in spec.md
-- [x] Research findings cited with file:line references (research.md Round 2)
+- [x] Research findings cited with file:line references (research/research.md Round 2)
 - [x] Sibling phase 003 landing plan confirmed (template-renderer.ts conflict avoidance)
 - [x] retry-manager.ts reviewed — stats shape identified (retry-manager.ts:86-233)
 

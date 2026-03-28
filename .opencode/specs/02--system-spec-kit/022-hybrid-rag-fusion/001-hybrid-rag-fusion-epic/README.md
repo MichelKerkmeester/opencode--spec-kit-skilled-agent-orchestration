@@ -13,7 +13,7 @@ This folder consolidates:
   - `checklist.md`
   - `decision-record.md`
   - `implementation-summary.md`
-  - `research.md`
+  - `research/research.md`
 - Preserved original folder contents:
   - `sources/000-feature-overview/`
   - `sources/002-hybrid-rag-fusion/`

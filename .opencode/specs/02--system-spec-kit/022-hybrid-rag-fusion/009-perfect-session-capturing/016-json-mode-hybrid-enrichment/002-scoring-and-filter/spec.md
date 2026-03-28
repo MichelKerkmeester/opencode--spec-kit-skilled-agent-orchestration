@@ -40,7 +40,7 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 | **Spec Folder** | `009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter` |
 | **Parent Spec** | `../spec.md` |
 | **Sibling (complete)** | `../001-initial-enrichment/spec.md` |
-| **Research Source** | `../research.md` (Round 2, Domains C + E) |
+| **Research Source** | `../research/research.md` (Round 2, Domains C + E) |
 
 ---
 
@@ -202,7 +202,7 @@ Restore discriminative power to quality_score by removing the bonus system and r
 |-----------|-------|----------|
 | Scope | 14/25 | Files: 7, LOC: ~110-150 total, Systems: 1 (pipeline) |
 | Risk | 12/25 | No auth/API, no breaking public contract, internal scorer change |
-| Research | 14/20 | Deep research Round 2 already completed (74 findings, citations in research.md) |
+| Research | 14/20 | Deep research Round 2 already completed (74 findings, citations in research/research.md) |
 | Multi-Agent | 6/15 | Single workstream, sequential changes |
 | Coordination | 9/15 | 7-file spread requires careful order; sibling phases must not conflict |
 | **Total** | **55/100** | **Level 3** |
@@ -276,5 +276,5 @@ Restore discriminative power to quality_score by removing the bonus system and r
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Source**: `../research.md` (Round 2, Domains C + E)
+- **Research Source**: `../research/research.md` (Round 2, Domains C + E)
 - **Sibling Phase**: `../001-initial-enrichment/spec.md` (Complete)

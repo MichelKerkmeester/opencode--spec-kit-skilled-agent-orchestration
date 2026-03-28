@@ -80,7 +80,7 @@ contextType: "general"
 - [x] CHK-031 [P0] plan.md updated with Wave 3 synthesis and remediation sprint plan (S1-S8) [Evidence: `plan.md` preserves the Wave 3 synthesis summary and eight-sprint remediation structure.]
 - [x] CHK-032 [P1] tasks.md reflects actual completion state [Evidence: `tasks.md` marks the Wave 3 documentation tasks complete and keeps remediation tasks pending.]
 - [x] CHK-033 [P1] decision-record.md has 8 ADRs with status and alternatives [Evidence: `decision-record.md` contains ADR-001 through ADR-008 with metadata and alternative-analysis sections.]
-- [ ] CHK-034 [P2] research.md compiled from OPUS-B5 output (optional)
+- [ ] CHK-034 [P2] research/research.md compiled from OPUS-B5 output (optional)
 <!-- /ANCHOR:docs -->
 
 ---

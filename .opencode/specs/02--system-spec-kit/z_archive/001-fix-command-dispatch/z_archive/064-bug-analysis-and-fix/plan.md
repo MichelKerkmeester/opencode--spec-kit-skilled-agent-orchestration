@@ -79,10 +79,10 @@ Phase 1 (BLOCKING) → Phase 2 → Phase 3 → Phase 4
 - **Spec**: See `spec.md` in this folder
 
 ### Input
-Bug analysis audit + re-analysis identifying ~231 issues across 4 severity levels (see research.md).
+Bug analysis audit + re-analysis identifying ~231 issues across 4 severity levels (see research/research.md).
 
 ### Summary
-Systematically fix all identified bugs in the system-spec-kit skill and spec_kit commands, prioritizing critical architectural issues and production-breaking defects (missing await in memory_search) before addressing documentation mismatches and minor inconsistencies. Each phase delivers independently verifiable improvements. The full issue inventory is in `research.md` and must be treated as the source of truth.
+Systematically fix all identified bugs in the system-spec-kit skill and spec_kit commands, prioritizing critical architectural issues and production-breaking defects (missing await in memory_search) before addressing documentation mismatches and minor inconsistencies. Each phase delivers independently verifiable improvements. The full issue inventory is in `research/research.md` and must be treated as the source of truth.
 
 ### Technical Context
 
@@ -436,7 +436,7 @@ grep -n "return.*formatSearchResults" .opencode/skill/system-spec-kit/mcp_server
 
 #### 1.6 Standardize CHANGELOG Version Format (REQ-FUNC-035)
 
-**Location**: `CHANGELOG.md` and any versioned docs (see research.md)
+**Location**: `CHANGELOG.md` and any versioned docs (see research/research.md)
 
 **Problem**: Version formats conflict (`[1.7.1]` vs `17.1.0`).
 
@@ -458,7 +458,7 @@ grep -n "return.*formatSearchResults" .opencode/skill/system-spec-kit/mcp_server
 
 #### 1.8 Add Rate Limiting for Batch Embedding Calls (REQ-FUNC-033)
 
-**Location**: Embedding batch API callers (see research.md)
+**Location**: Embedding batch API callers (see research/research.md)
 
 **Problem**: No rate limiting for batch calls; provider throttling risk.
 
@@ -547,7 +547,7 @@ grep -n "return.*formatSearchResults" .opencode/skill/system-spec-kit/mcp_server
 | Format notation    | complete.md:100    | Fix `[1] [2] [3] [all] [skip]` reference         |
 | Step numbering     | plan.md:248 vs 315 | Resolve Phase 5 vs Phase 6 discrepancy           |
 | Missing tool       | resume.md:421-427  | Add `checkpoint_restore` to tool table           |
-| Undocumented phase | research.md        | Document Phase 3 (Prior Work Search) in SKILL.md |
+| Undocumented phase | research/research.md        | Document Phase 3 (Prior Work Search) in SKILL.md |
 | Missing YAML refs  | handover.md        | Add YAML asset file references                   |
 
 #### 3.2 Script Bugs
@@ -748,7 +748,7 @@ None - all fixes are internal to system-spec-kit.
 | `.opencode/command/spec_kit/complete.md` | Modify      | Format notation   |
 | `templates/plan.md`                      | Modify      | Step numbering    |
 | `.opencode/command/spec_kit/resume.md`   | Modify      | Tool table        |
-| `.opencode/command/spec_kit/research.md` | Modify      | Phase 3 doc       |
+| `.opencode/command/spec_kit/research/research/research.md` | Modify      | Phase 3 doc       |
 | `.opencode/command/spec_kit/handover.md` | Modify      | YAML refs         |
 | `scripts/generate-context.js`            | Modify      | Regex validation  |
 | `scripts/semantic-summarizer.js`         | Modify      | Hardcoded path    |

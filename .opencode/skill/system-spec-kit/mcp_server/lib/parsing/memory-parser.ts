@@ -13,6 +13,13 @@ import { getCanonicalPathKey, canonicalizeForSpecFolderExtraction } from '../uti
 import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../scoring/importance-tiers';
 // Import type inference for memory_type classification
 import { inferMemoryType } from '../config/type-inference';
+import {
+  canClassifyAsSpecDocument,
+  extractSpecFolderFromSpecDocumentPath,
+  isWorkingArtifactPath,
+  matchesSpecDocumentPath,
+  SPEC_DOCUMENT_FILENAMES,
+} from '../config/spec-doc-paths';
 
 export { getCanonicalPathKey };
 
@@ -239,7 +246,7 @@ import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsi
  */
 export function extractDocumentType(filePath: string): string {
   const normalizedPath = filePath.replace(/\\/g, '/');
-  const basename = path.basename(normalizedPath).toLowerCase();
+  const basename = path.basename(filePath).toLowerCase();
 
   // Spec folder document types
   const FILENAME_TO_DOC_TYPE: Record<string, string> = {
@@ -253,10 +260,9 @@ export function extractDocumentType(filePath: string): string {
     'handover.md': 'handover',
   };
 
-  // Only classify as spec doc type if in specs/ and not in memory/ or scratch/
-  if (normalizedPath.includes('/specs/') && !normalizedPath.includes('/memory/') && !normalizedPath.includes('/scratch/')) {
+  if (canClassifyAsSpecDocument(filePath)) {
     const docType = FILENAME_TO_DOC_TYPE[basename];
-    if (docType) return docType;
+    if (docType && matchesSpecDocumentPath(filePath, basename)) return docType;
   }
 
   // Constitutional files
@@ -286,10 +292,9 @@ export function extractSpecFolder(filePath: string): string {
     return match[1];
   }
 
-  // Match specs/domain/spec-name/doc.md pattern for spec folder documents.
-  const specDocMatch = normalizedPath.match(/specs\/([^/]+(?:\/[^/]+)*?)\/(?:spec|plan|tasks|checklist|decision-record|implementation-summary|research|handover)\.md$/i);
-  if (specDocMatch) {
-    return specDocMatch[1];
+  const specDocumentFolder = extractSpecFolderFromSpecDocumentPath(normalizedPath);
+  if (specDocumentFolder) {
+    return specDocumentFolder;
   }
 
   // Fallback: try to extract from path segments
@@ -303,8 +308,9 @@ export function extractSpecFolder(filePath: string): string {
     }
     // If no memory/ dir exists, check for a spec document at the leaf.
     const fileName = segments[segments.length - 1].toLowerCase();
-    if (SPEC_DOCUMENT_FILENAMES_SET.has(fileName)) {
-      return segments.slice(specsIndex + 1, segments.length - 1).join('/');
+    const specDocumentFolderFromLeaf = extractSpecFolderFromSpecDocumentPath(normalizedPath);
+    if (specDocumentFolderFromLeaf) {
+      return specDocumentFolderFromLeaf;
     }
   }
 
@@ -687,11 +693,10 @@ export function isMemoryFile(filePath: string): boolean {
   // Spec folder documents (spec.md, plan.md, tasks.md, etc.).
   const isSpecDocument = (
     normalizedPath.endsWith('.md') &&
-    normalizedPath.includes('/specs/') &&
-    !normalizedPath.includes('/memory/') &&
-    !normalizedPath.includes('/scratch/') &&
-    !normalizedPath.includes('/z_archive/') &&
-    SPEC_DOCUMENT_FILENAMES_SET.has(path.basename(normalizedPath).toLowerCase())
+    canClassifyAsSpecDocument(normalizedPath) &&
+    !isWorkingArtifactPath(normalizedPath) &&
+    SPEC_DOCUMENT_FILENAMES_SET.has(path.basename(normalizedPath).toLowerCase()) &&
+    matchesSpecDocumentPath(normalizedPath, path.basename(normalizedPath).toLowerCase())
   );
 
   // Constitutional memories in skill folder
@@ -706,16 +711,7 @@ export function isMemoryFile(filePath: string): boolean {
 }
 
 /** Set of recognized spec folder document filenames (lowercase) */
-const SPEC_DOCUMENT_FILENAMES_SET = new Set([
-  'spec.md',
-  'plan.md',
-  'tasks.md',
-  'checklist.md',
-  'decision-record.md',
-  'implementation-summary.md',
-  'research.md',
-  'handover.md',
-]);
+const SPEC_DOCUMENT_FILENAMES_SET = SPEC_DOCUMENT_FILENAMES;
 
 /** Validate anchor tags in memory content */
 export function validateAnchors(content: string): AnchorValidation {

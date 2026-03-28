@@ -52,7 +52,7 @@ contextType: "implementation"
 - [x] CHK-012 [P0] @documentation-writer → @write fixed at line 154 ✓
 - [x] CHK-013 [P0] @documentation-writer → @write fixed at line 809 ✓
 - [x] CHK-014 [P0] No orphan @documentation-writer references in orchestrate.md ✓ (grep verified)
-- [x] CHK-015 [P1] Q5 → Q6 fixed in research.md command ✓ (line 72)
+- [x] CHK-015 [P1] Q5 → Q6 fixed in research/research.md command ✓ (line 72)
 - [x] CHK-016 [P1] "for default" text completed in debug.md ✓ (line 70)
 - [x] CHK-017 [P1] "for default" text completed in implement.md ✓ (line 91)
 
@@ -66,7 +66,7 @@ contextType: "implementation"
 
 - [x] CHK-020 [P0] OUTPUT VERIFICATION section added to speckit.md ✓ (already existed - Section 12)
 - [x] CHK-021 [P0] OUTPUT VERIFICATION section added to orchestrate.md ✓ (Section 26)
-- [x] CHK-022 [P0] HARD BLOCK verification section added to research.md agent ✓ (lines 636-667)
+- [x] CHK-022 [P0] HARD BLOCK verification section added to research/research.md agent ✓ (lines 636-667)
 - [x] CHK-023 [P1] Sections follow existing document patterns ✓
 - [x] CHK-024 [P1] Anti-hallucination rules included ✓
 
@@ -187,9 +187,9 @@ contextType: "implementation"
 |------|---------|----------------|
 | `.opencode/agent/orchestrate.md` | 8 changes | CHK-010-014, CHK-021, CHK-031, CHK-040-042 |
 | `.opencode/agent/speckit.md` | 1 change | CHK-020 |
-| `.opencode/agent/research.md` | 1 change | CHK-022 |
+| `.opencode/agent/research/research/research.md` | 1 change | CHK-022 |
 | `.opencode/command/spec_kit/complete.md` | 1 change | CHK-030 |
-| `.opencode/command/spec_kit/research.md` | 1 change | CHK-015 |
+| `.opencode/command/spec_kit/research/research/research.md` | 1 change | CHK-015 |
 | `.opencode/command/spec_kit/debug.md` | 1 change | CHK-016 |
 | `.opencode/command/spec_kit/implement.md` | 1 change | CHK-017 |
 

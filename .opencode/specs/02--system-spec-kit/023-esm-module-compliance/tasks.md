@@ -44,15 +44,17 @@ contextType: "architecture"
 
 ### Toolchain and Package Alignment
 
-- [ ] T001 Choose and implement the final `mcp_server` ESM strategy in compiler config - WHY: source syntax alone does not change the runtime module system - Acceptance: `tsconfig` and any workspace overrides emit ESM for `mcp_server`
-- [ ] T002 Update `.opencode/skill/system-spec-kit/mcp_server/package.json` entrypoints and metadata - WHY: Node needs package metadata that matches the emitted module format - Acceptance: `main`, `exports`, and `bin` resolve correctly under the chosen ESM runtime
-- [ ] T003 Preserve or explicitly isolate `scripts/` CommonJS behavior - WHY: the memory CLI must keep working while `mcp_server` migrates - Acceptance: `scripts/` runtime expectations remain stable or an approved follow-up spec is created
+- [ ] T001 Implement the locked package-local NodeNext strategy in `shared` and `mcp_server` compiler config - WHY: source syntax alone does not change the runtime module system - Acceptance: package-local `tsconfig` files emit ESM for both packages without flipping the workspace root
+- [ ] T002 Update `.opencode/skill/system-spec-kit/shared/package.json` exports and metadata - WHY: Node needs package metadata that matches the emitted module format - Acceptance: shared public surfaces resolve correctly under native ESM
+- [ ] T003 Update `.opencode/skill/system-spec-kit/mcp_server/package.json` entrypoints and metadata - WHY: Node needs package metadata that matches the emitted module format - Acceptance: `main`, `exports`, and `bin` resolve correctly under the chosen ESM runtime
+- [ ] T004 Preserve `scripts/` CommonJS behavior through explicit interoperability loaders - WHY: the memory CLI and scripts-owned entrypoints must keep working while sibling packages migrate - Acceptance: `scripts/` runtime expectations stay stable without direct `require()` of ESM sibling packages
 
 ### Source Migration
 
-- [ ] T004 Rewrite non-test relative imports/exports in `mcp_server/**/*.ts` - WHY: Node ESM requires runtime-valid relative specifiers - Acceptance: production files no longer rely on extensionless relative imports/exports
-- [ ] T005 Normalize barrel exports and deep relative paths - WHY: re-export chains are a common hidden breakage point during ESM migration - Acceptance: barrel files and nested imports resolve correctly under the new module mode
-- [ ] T006 Update test imports and module-resolution-sensitive tooling - WHY: mixed `.js` and extensionless paths can hide regressions - Acceptance: targeted tests and local tooling resolve the same paths as production code
+- [ ] T005 Rewrite non-test relative imports/exports in `shared/**/*.ts` - WHY: Node ESM requires runtime-valid relative specifiers in every emitted sibling package - Acceptance: shared production files no longer rely on extensionless relative imports/exports
+- [ ] T006 Rewrite non-test relative imports/exports in `mcp_server/**/*.ts` - WHY: Node ESM requires runtime-valid relative specifiers - Acceptance: production server files no longer rely on extensionless relative imports/exports
+- [ ] T007 Replace cross-package relative imports and CommonJS-only globals in `mcp_server` runtime files - WHY: package metadata alone does not fix ESM-incompatible code shape or sibling-boundary leaks - Acceptance: high-risk files such as `v-rule-bridge.ts`, `memory-crud-health.ts`, `core/config.ts`, and `lib/errors/core.ts` resolve paths and modules safely under ESM and use package/subpath imports across package boundaries
+- [ ] T008 Normalize barrel exports, deep relative paths, scripts-side interop call sites, and dist-sensitive test imports/assertions - WHY: re-export chains, internal CommonJS callers, and CommonJS-emit assertions are common hidden breakage points during ESM migration - Acceptance: barrel files, internal scripts modules, nested imports, and module-sensitive tests resolve the same paths as production code
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -62,9 +64,10 @@ contextType: "architecture"
 
 ### Verification and Documentation
 
-- [ ] T007 Run build, typecheck, and targeted server verification - WHY: emitted runtime behavior matters more than source syntax - Acceptance: the required commands pass and `dist/context-server.js` is confirmed to be ESM
-- [ ] T008 Update `.opencode/skill/sk-code--opencode/SKILL.md` and any related decision docs - WHY: standards should describe the architecture that actually shipped - Acceptance: docs no longer present CommonJS-only assumptions for `mcp_server`
-- [ ] T009 Refresh `implementation-summary.md` with final migration evidence - WHY: the spec folder should preserve how the refactor was completed and verified - Acceptance: summary records what changed, what passed, and any remaining limitations
+- [ ] T009 Run deterministic root and workspace verification commands - WHY: emitted runtime behavior matters more than source syntax and the root scripts require `--workspaces=false` in this environment - Acceptance: the exact matrix from `research/research.md` passes for typecheck, CLI, build, and targeted Vitest coverage
+- [ ] T010 Run direct boundary smoke tests for `node dist/context-server.js`, scripts CLI entrypoints, and high-risk bridge handlers - WHY: package metadata and tests can still pass while runtime path resolution breaks - Acceptance: direct startup and targeted handler/interoperability smokes prove the mixed-module boundary is safe
+- [ ] T011 Update `.opencode/skill/sk-code--opencode/SKILL.md` and any related decision docs - WHY: standards should describe the architecture that actually shipped - Acceptance: docs no longer present CommonJS-only assumptions for `shared` / `mcp_server`
+- [ ] T012 Refresh `implementation-summary.md` with final migration evidence - WHY: the spec folder should preserve how the refactor was completed and verified - Acceptance: summary records what changed, what passed, and any remaining limitations
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -74,7 +77,7 @@ contextType: "architecture"
 
 - [ ] All migration tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remain for the chosen phase boundary
-- [ ] Runtime verification proves ESM output, not just ESM-style source syntax
+- [ ] Runtime verification proves ESM output and CommonJS interoperability, not just ESM-style source syntax
 - [ ] Standards docs and the spec package match the final implementation
 <!-- /ANCHOR:completion -->
 

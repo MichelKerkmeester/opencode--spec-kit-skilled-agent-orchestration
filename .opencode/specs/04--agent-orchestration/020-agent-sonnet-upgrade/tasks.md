@@ -55,7 +55,7 @@ contextType: "implementation"
 
 ### Group 2 — Copilot agents: remove hard-pinned model (enable parent inheritance)
 
-- [x] T009 [P] Remove model field from research.md (`.opencode/agent/copilot/research.md`) — delete `opus-4.6` line
+- [x] T009 [P] Remove model field from research/research.md (`.opencode/agent/copilot/research/research/research.md`) — delete `opus-4.6` line
 - [x] T010 [P] Remove model field from debug.md (`.opencode/agent/copilot/debug.md`) — delete `opus-4.6` line
 
 ### Group 3 — Claude Code agents upgrade to `sonnet`
@@ -75,7 +75,7 @@ contextType: "implementation"
 ## Phase 3: Verification
 
 - [x] T015 [P] Verify all 10 agent files reflect correct final model assignment
-- [x] T016 Confirm research.md and debug.md have no `model:` line remaining
+- [x] T016 Confirm research/research.md and debug.md have no `model:` line remaining
 - [x] T017 Confirm no stale model strings (`haiku-4.5`, `sonnet-4.5`, `opus-4.6`) remain in any target file
 - [x] T018 Tag release as v2.1.3.0 and commit
 - [x] T019 Create spec folder documentation (retroactive — this task set)

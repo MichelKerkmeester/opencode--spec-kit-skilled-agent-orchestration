@@ -7,7 +7,7 @@
     "configs",
     "audit"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.360Z",
+  "lastUpdated": "2026-03-28T10:08:37.566Z",
   "specId": "",
   "folderSlug": "task-03-command-alignment",
   "parentChain": [
@@ -16,9 +16,5 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Task 03 — Command Configs Audit [task-03-command-alignment/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Task 03 — Command Configs Audit"
+  "memoryNameHistory": []
 }

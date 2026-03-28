@@ -197,7 +197,7 @@ scripts/
 | tasks.md | 610 | 43 tasks with acceptance criteria |
 | checklist.md | 140 | P0/P1/P2 verification items |
 | decision-record.md | 260 | 6 ADRs |
-| research.md | 345 | Function inventory, risk assessment |
+| research/research.md | 345 | Function inventory, risk assessment |
 | **Total** | **2,078** | Complete Level 3 documentation |
 <!-- /ANCHOR:files-058-generate-context-modularization -->
 

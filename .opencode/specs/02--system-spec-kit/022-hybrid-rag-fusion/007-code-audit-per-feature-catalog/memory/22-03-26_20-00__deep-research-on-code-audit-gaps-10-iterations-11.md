@@ -137,14 +137,14 @@ Next: Continue implementation
 | plan.md | EXISTS |
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `iterations questions` | `questions answered` | `fusion/007 audit` | `gaps iterations` | `kit/022 hybrid` | `rag fusion/007` | `research audit` | `found files...` | `deep research` | `spec kit/022` | `catalog deep` | `system spec` |
 

@@ -39,5 +39,5 @@ contextType: "decision"
 
 <!-- /ANCHOR:summary -->
 ## Deliverables
-- research.md with comprehensive findings
+- research/research.md with comprehensive findings
 - Recommendations with implementation paths

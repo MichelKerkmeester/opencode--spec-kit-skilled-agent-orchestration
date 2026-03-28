@@ -8,7 +8,7 @@ Simulate the 9-step research workflow for test verification.
 CRITICAL -- follow these rules exactly:
 
 1. DO NOT call MCP tools -- log as `SIMULATED: memory_context({...}) -> no prior work`
-2. DO NOT dispatch actual sub-agents -- when YAML says "dispatch @research", read the template, fill it, write it, log `SIMULATED: @research -> research.md created`
+2. DO NOT dispatch actual sub-agents -- when YAML says "dispatch @research", read the template, fill it, write it, log `SIMULATED: @research -> research/research.md created`
 3. DO NOT run generate-context.js -- create a sample memory file directly
 4. DO create real files in the workspace using L2 templates
 5. DO fill all template placeholders with realistic test data
@@ -35,7 +35,7 @@ CRITICAL -- follow these rules exactly:
 6. **Step 5.5 - Checkpoint**: SIMULATED: Save analysis checkpoint. Log: `SIMULATED: generate-context.js -> checkpoint saved`
 7. **Step 6 - Quality Checklist**: Create checklist.md for research quality. Items: scope_defined, questions_answered, codebase_reviewed, external_sources_cited, feasibility_assessed, risks_documented, recommendation_provided.
 8. **Step 7 - Solution Design**: Architecture recommendation: NestJS WebSocket gateway + Redis adapter + Yjs CRDT. 3-phase rollout: (1) basic WebSocket, (2) CRDT integration, (3) scaling infrastructure.
-9. **Step 8 - Research Compilation**: Read research.md template. Fill ALL 17 sections with realistic content. Write to workspace as `research.md`.
+9. **Step 8 - Research Compilation**: Read research/research.md template. Fill ALL 17 sections with realistic content. Write to workspace as `research/research.md`.
 10. **Step 9 - Save Context**: SIMULATED: generate-context.js -> memory file. Write `memory/14-02-26_13-00__research_session.md` with ANCHOR tags.
 
 **Quality Gates**:
@@ -43,8 +43,8 @@ CRITICAL -- follow these rules exactly:
 - Post-execution: research_exists(30) + all_sections_filled(25) + no_placeholders(25) + context_saved(20) = 100/70 PASS
 
 **Assertions**:
-- [ ] research.md exists with all 17 sections: metadata, investigation_report, executive_overview, core_architecture, technical_specifications, constraints_limitations, integration_patterns, implementation_guide, code_examples, testing_debugging, performance, security, maintenance, api_reference, troubleshooting, acknowledgements, appendix_changelog
-- [ ] No [YOUR_VALUE_HERE] or [PLACEHOLDER] markers in research.md
+- [ ] research/research.md exists with all 17 sections: metadata, investigation_report, executive_overview, core_architecture, technical_specifications, constraints_limitations, integration_patterns, implementation_guide, code_examples, testing_debugging, performance, security, maintenance, api_reference, troubleshooting, acknowledgements, appendix_changelog
+- [ ] No [YOUR_VALUE_HERE] or [PLACEHOLDER] markers in research/research.md
 - [ ] Memory file exists with ANCHOR tags
 - [ ] Quality gates: pre=PASS, post=PASS
 - [ ] checklist.md exists with all items checked
@@ -61,8 +61,8 @@ CRITICAL -- follow these rules exactly:
 **Steps**:
 1. **Steps 1-2**: Normal setup.
 2. **Step 3 - Codebase Investigation**: SIMULATED: @context agents find zero files. No patterns, no dependencies, no existing architecture. Log: `SIMULATED: @context x4 -> empty codebase, no patterns`
-3. **Steps 4-8**: Continue normally, but codebase-dependent sections in research.md note "Greenfield project -- no existing patterns to integrate with"
-4. **Step 8 - Research Compilation**: research.md created. Codebase sections filled with greenfield notes instead of N/A.
+3. **Steps 4-8**: Continue normally, but codebase-dependent sections in research/research.md note "Greenfield project -- no existing patterns to integrate with"
+4. **Step 8 - Research Compilation**: research/research.md created. Codebase sections filled with greenfield notes instead of N/A.
 5. **Step 9**: Save context.
 
 **Quality Gates**:
@@ -70,7 +70,7 @@ CRITICAL -- follow these rules exactly:
 - Post-execution: research_exists(30) + all_sections_filled(25) + no_placeholders(25) + context_saved(20) = 100/70 PASS
 
 **Assertions**:
-- [ ] research.md exists and is complete (no missing sections)
+- [ ] research/research.md exists and is complete (no missing sections)
 - [ ] Codebase-dependent sections filled with greenfield documentation (not empty or N/A)
 - [ ] integration_patterns section notes "no existing codebase to integrate with"
 - [ ] Recommendation still provided (not blocked by empty codebase)

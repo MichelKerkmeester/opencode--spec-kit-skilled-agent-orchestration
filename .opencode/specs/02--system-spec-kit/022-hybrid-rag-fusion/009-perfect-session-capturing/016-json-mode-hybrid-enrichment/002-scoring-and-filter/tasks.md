@@ -135,5 +135,5 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decisions**: See `decision-record.md`
-- **Research**: `../research.md` (Round 2, Domains C + E)
+- **Research**: `../research/research.md` (Round 2, Domains C + E)
 <!-- /ANCHOR:cross-refs -->

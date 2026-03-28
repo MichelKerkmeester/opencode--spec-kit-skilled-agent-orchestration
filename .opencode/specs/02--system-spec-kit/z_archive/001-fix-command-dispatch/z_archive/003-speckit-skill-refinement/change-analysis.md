@@ -100,7 +100,7 @@
 |---------|---------------|-----------------|---------------|
 | Level-by-level template selection | ~150 lines | Full Level 1/2/3 template lists with copy commands | Moved to level_specifications.md and template_mapping.md |
 | Template structure standards detail | ~80 lines | Extensive metadata examples, placeholder deep-dives | Condensed to essentials |
-| Supporting templates section | ~100 lines | Full research.md, tasks.md, checklist.md descriptions | These are in level_specifications.md |
+| Supporting templates section | ~100 lines | Full research/research.md, tasks.md, checklist.md descriptions | These are in level_specifications.md |
 | Sub-folder organization | ~150 lines | Automatic versioning, manual sub-folders, integration | Moved to level_specifications.md and automation_workflows.md |
 | Extended examples | ~100 lines | Multiple before/after examples | Kept key examples only |
 

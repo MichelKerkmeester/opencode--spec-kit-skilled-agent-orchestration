@@ -201,7 +201,7 @@ Next: The recursive validator now passes (0 errors). 7 non-blocking warnings rem
 
 - `016, 018: feature catalog and mcp_server path fixes` - Modified 016, 018: feature catalog and mcp server path fixes
 
-- `001-hybrid-rag-fusion-epic: restored spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md` - Documentation
+- `001-hybrid-rag-fusion-epic: restored spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md` - Documentation
 
 - `005-architecture-audit: memory file anchor fix` - Modified 005 architecture audit: memory file anchor fix
 
@@ -244,7 +244,7 @@ Implemented spec 012-pre-release-remediation: collapsed 13 recursive validation 
 |:---------|:----------------|
 | `003, 010, 013: chatgpt agent ref de-linking` | Modified 003, 010, 013: chatgpt agent ref de linking | Tree-thinning merged 3 small files (006-feature-catalog: implementation-summary.md, review-report.md, tasks.md (102 ref fixes), 015-manual-testing-per-playbook: plan.md, review-report.md (35 ref fixes), 007-code-audit-per-feature-catalog: parent + 22 sub-phases (29 ref fixes)).  Merged from 006-feature-catalog: implementation-summary.md, review-report.md, tasks.md (102 ref fixes) : Modified 006 feature catalog: implementation summary.md,... | Merged from 015-manual-testing-per-playbook: plan.md, review-report.md (35 ref fixes) : Modified 015 manual testing per playbook: plan.md,... | Merged from 007-code-audit-per-feature-catalog: parent + 22 sub-phases (29 ref fixes) : Modified 007 code audit per feature catalog: parent + 22... |
 | `016, 018: feature catalog and mcp_server path fixes` | Modified 016, 018: feature catalog and mcp server path fixes |
-| `001-hybrid-rag-fusion-epic: restored spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md` | Modified 001 hybrid rag fusion epic: restored spec.md,... |
+| `001-hybrid-rag-fusion-epic: restored spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md` | Modified 001 hybrid rag fusion epic: restored spec.md,... |
 | `005-architecture-audit: memory file anchor fix` | Modified 005 architecture audit: memory file anchor fix |
 | `011-research-based-refinement: successor reference update` | Modified 011 research based refinement: successor... |
 | `012-pre-release-remediation: template source headers, decision-record.md, ref de-linking, implementation-summary.md` | Modified 012 pre release remediation: template source... |

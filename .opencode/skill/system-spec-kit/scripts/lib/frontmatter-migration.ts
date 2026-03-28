@@ -672,7 +672,7 @@ function extractSpecPathFromNormalizedPath(normalizedPath: string): string | nul
   }
 
   const specDocMatch = normalizedPath.match(
-    /\/specs\/(.+?)\/(?:spec|plan|tasks|checklist|decision-record|implementation-summary|research|handover)\.md$/i
+    /\/specs\/(.+?)\/(?:(?:spec|plan|tasks|checklist|decision-record|implementation-summary|handover)\.md|research\/research\.md|research\.md)$/i
   );
   if (specDocMatch && specDocMatch[1]) {
     return specDocMatch[1];
@@ -730,7 +730,7 @@ export function classifyDocument(filePath: string, templatesRoot: string): Class
 
   if (SPEC_DOC_BASENAMES.has(fileName)) {
     const specPath = extractSpecPathFromNormalizedPath(normalized);
-    const specLeaf = path.basename(path.dirname(normalized));
+    const specLeaf = specPath ? path.basename(specPath) : path.basename(path.dirname(normalized));
     const suffixScope = specPath || specLeaf;
     const documentType = mapSpecDocType(fileName);
     return {

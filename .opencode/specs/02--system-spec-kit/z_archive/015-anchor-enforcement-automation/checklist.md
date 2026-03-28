@@ -52,7 +52,7 @@ P0 items are HARD BLOCKERS — spec cannot be marked complete until all P0 items
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: plan.md section 3, 3-layer enforcement architecture]
 - [x] CHK-003 [P1] Dependencies identified and available [Evidence: plan.md section 6, 7 dependencies all Green/Yellow status]
 - [x] CHK-004 [P0] Scope clearly defined with in/out boundaries [Evidence: spec.md section 3, 6 in-scope items, 4 out-of-scope]
-- [x] CHK-005 [P0] Root cause analysis completed [Evidence: research.md (927 lines, 39 ANCHOR tags, 3 root causes documented with 25+ evidence citations)]
+- [x] CHK-005 [P0] Root cause analysis completed [Evidence: research/research.md (927 lines, 39 ANCHOR tags, 3 root causes documented with 25+ evidence citations)]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -77,7 +77,7 @@ P0 items are HARD BLOCKERS — spec cannot be marked complete until all P0 items
 - [x] CHK-021 [P0] REQ-002 verified: ANCHOR tag enforcement catches mismatched tags [Evidence: check-anchors.sh enhanced to detect files with 0 ANCHOR tags (spec.md, plan.md, tasks.md checked); Test folder shows detection of missing tags with remediation guidance; grep -c syntax fixed for proper detection]
 - [x] CHK-022 [P0] REQ-003 verified: Speckit routing lock prevents bypass attempts [Evidence: orchestrate.md Rule 6 implements 4 detection patterns (spec template docs, memory/ violations, wrong agent dispatch, bypass attempts) + 3-tier enforcement (pre-dispatch check, output review, violation response); Test documented in /tmp/routing-test-result.md]
 - [x] CHK-023 [P0] REQ-004 verified: Pre-flight validation runs before file writes [Evidence: speckit.md lines 46-60 implements Pre-Flight Validation Gate with HARD STOP CONDITIONS that block Write tool if validation fails; orchestrate.md Rule 2 lines 162-178 enforces dispatch validation + post-creation verification; Integration verified through agent definition review and Gate 3 enforcement protocol]
-- [x] CHK-024 [P0] All P0 requirements (REQ-001 through REQ-005) acceptance criteria met [Evidence: REQ-001 verified (CHK-020), REQ-002 verified (CHK-021), REQ-003 verified (CHK-022), REQ-004 verified (CHK-023), REQ-005 verified through research.md with 3 root causes + 25+ citations]
+- [x] CHK-024 [P0] All P0 requirements (REQ-001 through REQ-005) acceptance criteria met [Evidence: REQ-001 verified (CHK-020), REQ-002 verified (CHK-021), REQ-003 verified (CHK-022), REQ-004 verified (CHK-023), REQ-005 verified through research/research.md with 3 root causes + 25+ citations]
 - [ ] CHK-025 [P1] Edge cases tested: empty files, partial templates, corrupted anchors
 - [ ] CHK-026 [P1] Error scenarios validated: template not found, validation failure, agent dispatch failure
 - [ ] CHK-027 [P1] Integration tests pass: full spec creation flow through @speckit
@@ -257,7 +257,7 @@ P0 items are HARD BLOCKERS — spec cannot be marked complete until all P0 items
 - [x] CHK-161 [P0] SC-002 verified: 100% spec docs have proper ANCHOR tags on major sections [Evidence: All templates have ANCHOR tags - level_1: 25, level_2: 39, level_3: 58, level_3+: 65; check-anchors.sh detects files with 0 ANCHOR tags; Test suite confirms mismatch detection]
 - [x] CHK-162 [P0] SC-003 verified: 100% spec file writes route through @speckit agent [Evidence: orchestrate.md Rule 6 implements 4 detection patterns + 3-tier enforcement; AGENTS.md Gate 3 @speckit Exclusivity section enforces routing; speckit.md has Pre-Flight Validation Gate; Test documented at /tmp/routing-test-result.md]
 - [x] CHK-163 [P0] SC-004 verified: validate.sh catches 100% of template/anchor violations [Evidence: Test suite validates all violation types - missing headers (CHK-020), missing anchors (CHK-021), unclosed anchors (test 4), empty files (test 5); All 5 tests pass with correct exit codes]
-- [x] CHK-164 [P0] SC-005 verified: Root cause analysis documented in research.md with evidence [Evidence: research.md (927 lines, 39 ANCHOR tags) documents 3 root causes with 25+ evidence citations from actual files; Analysis includes code excerpts, line numbers, and specific findings]
+- [x] CHK-164 [P0] SC-005 verified: Root cause analysis documented in research/research.md with evidence [Evidence: research/research.md (927 lines, 39 ANCHOR tags) documents 3 root causes with 25+ evidence citations from actual files; Analysis includes code excerpts, line numbers, and specific findings]
 <!-- /ANCHOR:success-criteria -->
 
 ---

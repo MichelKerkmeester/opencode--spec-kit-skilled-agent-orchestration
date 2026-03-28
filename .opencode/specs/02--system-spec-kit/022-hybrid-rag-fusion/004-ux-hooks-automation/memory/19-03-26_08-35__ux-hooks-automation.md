@@ -145,14 +145,14 @@ Next: Continue implementation
 | plan.md | EXISTS |
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `fusion/004 hooks` | `hooks automation` | `kit/022 hybrid` | `rag fusion/004` | `spec kit/022` | `system spec` | `hybrid rag` | `automation system` | `observation decision` | `doesn memory-indexer` | `imports imports` | `implementation summarized` |
 

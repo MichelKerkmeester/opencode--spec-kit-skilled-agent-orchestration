@@ -8,7 +8,7 @@
     "system",
     "improvements"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.814Z",
+  "lastUpdated": "2026-03-28T10:35:07.734Z",
   "specId": "005",
   "folderSlug": "agent-system-improvements",
   "parentChain": [
@@ -16,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Agent System Improvements [005-agent-system-improvements/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Agent System Improvements"
+  "memoryNameHistory": []
 }

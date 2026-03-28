@@ -46,7 +46,7 @@ The parent `009-perfect-session-capturing` pack had drifted away from on-disk tr
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: treat the current runtime and existing audit evidence as canonical truth, preserve `research.md` as the detailed synthesis, and keep the parent pack as the main audit entry point.
+**We chose**: treat the current runtime and existing audit evidence as canonical truth, preserve `research/research.md` as the detailed synthesis, and keep the parent pack as the main audit entry point.
 
 **How it works**: the parent spec summarizes the reconciled phase history, the proof boundaries, and the remaining open design work without hiding behind obsolete closure language.
 <!-- /ANCHOR:adr-001-decision -->
@@ -60,7 +60,7 @@ The parent `009-perfect-session-capturing` pack had drifted away from on-disk tr
 |--------|------|------|-------|
 | **Audit-first parent pack grounded in runtime truth (chosen)** | Matches the best available evidence and keeps readers aligned | Requires active maintenance of the parent narrative | 10/10 |
 | Preserve the old closure story and only fix validation issues | Minimal doc effort | Leaves readers with the wrong picture of proof closure | 1/10 |
-| Hide the audit in `research.md` only | Keeps the parent pack short | Makes the top-level spec less trustworthy as an entry point | 4/10 |
+| Hide the audit in `research/research.md` only | Keeps the parent pack short | Makes the top-level spec less trustworthy as an entry point | 4/10 |
 
 **Why this one**: It is the only option that keeps the top-level pack useful after the folder moves and renames while still preserving historical evidence as history.
 <!-- /ANCHOR:adr-001-alternatives -->
@@ -107,7 +107,7 @@ The parent `009-perfect-session-capturing` pack had drifted away from on-disk tr
 
 **What changes**:
 - Keep the parent pack centered on the audit truth.
-- Preserve `research.md` as the detailed synthesis.
+- Preserve `research/research.md` as the detailed synthesis.
 - Reconcile future roadmap phases through explicit child folders rather than vague parent-only prose.
 - Record phase `018` as shipped follow-up work and keep phase `019` explicitly analysis-only.
 

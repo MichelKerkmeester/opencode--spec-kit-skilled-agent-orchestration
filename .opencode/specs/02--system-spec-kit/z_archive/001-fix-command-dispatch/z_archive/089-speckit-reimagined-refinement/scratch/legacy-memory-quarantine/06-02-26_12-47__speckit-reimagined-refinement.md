@@ -180,7 +180,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -188,7 +188,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `implementation` | `comprehensive` | `documentation` | `continuation` | `successfully` | `recovering` | `compaction` | `reimagined` | `refinement` | `dispatched` | 
 
@@ -226,7 +226,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
+Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
 
 **Key Outcomes**:
 - Continuation session recovering from context compaction of the comprehensive system-spec-kit...
@@ -247,7 +247,7 @@ Continuation session recovering from context compaction of the comprehensive sys
 <!-- ANCHOR:implementation-continuation-session-recovering-context-61ceff39-session-1770378477275-uflru9d5z -->
 ### FEATURE: Continuation session recovering from context compaction of the comprehensive system-spec-kit...
 
-Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
+Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
 
 **Details:** speckit audit continuation | 089 refinement status | ecosystem audit complete | phase 1 ready | 10 agent parallel audit | level 3+ documentation | all-fixes summary | all-new-things summary | memory 267 | system-spec-kit remediation | context compaction recovery | speckit reimagined
 <!-- /ANCHOR:implementation-continuation-session-recovering-context-61ceff39-session-1770378477275-uflru9d5z -->
@@ -395,7 +395,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-02-06 @ 12:47:57
 
-Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
+Continuation session recovering from context compaction of the comprehensive system-spec-kit ecosystem audit (089-speckit-reimagined-refinement). Previous session dispatched 10 parallel Opus 4.6 research agents analyzing SKILL.md, references, assets, scripts, config, MCP server, commands, agents, pre-analysis 081, and target 089 folder. Created Level 3+ documentation (918 LOC across 6 files: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md) plus two summary documents (all-fixes.md with 56 items, all-new-things.md with 42 items). Memory #267 saved with full context. This continuation session confirmed all work is complete and Phase 1 implementation (6 CRITICAL P0 fixes) is ready to begin when user gives the go-ahead.
 
 ---
 

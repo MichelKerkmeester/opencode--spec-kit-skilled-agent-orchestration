@@ -63,7 +63,7 @@ Delivery followed the planned sequence for implementation work:
 
 | Decision | Why |
 |----------|-----|
-| Hybrid strategy: shared reference file + inline compact contract | Eliminates drift risk via single source of truth while ensuring agents have structural contracts available without runtime skill folder dependency (see research.md Section 3.4) |
+| Hybrid strategy: shared reference file + inline compact contract | Eliminates drift risk via single source of truth while ensuring agents have structural contracts available without runtime skill folder dependency (see research/research.md Section 3.4) |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -85,7 +85,7 @@ Delivery followed the planned sequence for implementation work:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Semantic compliance not covered.** The 2-layer architecture enforces structural compliance (headers, anchors, section order) but cannot detect semantic emptiness, factual inaccuracy, or stylistic issues. These remain in the 6-dimensional compliance gap identified in research.md Section 1.5.
+1. **Semantic compliance not covered.** The 2-layer architecture enforces structural compliance (headers, anchors, section order) but cannot detect semantic emptiness, factual inaccuracy, or stylistic issues. These remain in the 6-dimensional compliance gap identified in research/research.md Section 1.5.
 2. **Agent compliance is advisory.** Layers 1 and 2 are advisory by design. Agents can still produce non-compliant files if they ignore inline contracts and skip validation.
 <!-- /ANCHOR:limitations -->
 

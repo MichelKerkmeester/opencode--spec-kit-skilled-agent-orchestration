@@ -64,7 +64,7 @@ contextType: "general"
 ## Phase 5.5: Legacy @research Removal
 
 - [x] T-050: Delete 6 agent definitions (research.md/toml across all runtimes)
-- [x] T-051: Delete command definition (.opencode/command/spec_kit/research.md + .agents/commands/spec_kit/research.toml)
+- [x] T-051: Delete command definition (.opencode/command/spec_kit/research/research/research.md + .agents/commands/spec_kit/research.toml)
 - [x] T-052: Delete 2 YAML workflows (spec_kit_research_auto.yaml + spec_kit_research_confirm.yaml)
 - [x] T-053: Update spec_kit YAML workflows (plan/complete, auto/confirm) — agent_availability references
 - [x] T-054: Update orchestrate agents (all 5 runtimes) — routing tables, dispatch templates
@@ -99,7 +99,7 @@ contextType: "general"
   - Files: `assets/deep_research_strategy.md`, `.claude/agents/deep-research.md`
 
 - [ ] T-102: **State Recovery Fallback** (REQ-012, Effort: S)
-  - Add recovery function: scan `scratch/iteration-*.md` `## Assessment` sections
+  - Add recovery function: scan `research/iterations/iteration-*.md` `## Assessment` sections
   - Extract: run number, newInfoRatio, questions addressed/answered
   - Reconstruct JSONL from parsed data when primary JSONL corrupted
   - Files: `references/loop_protocol.md`, `references/state_format.md`
@@ -131,13 +131,13 @@ contextType: "general"
 ## Phase 7: P2 -- Enrichment & User Control (Adopt Next)
 
 - [ ] T-110: **Ideas Backlog File** (REQ-016, Effort: S)
-  - Add convention for `scratch/research-ideas.md` as parking lot
+  - Add convention for `research/research-ideas.md` as parking lot
   - Check at 3 points: strategy init, stuck recovery, auto-resume message
   - Protocol-only change -- no code, just agent + loop protocol update
   - Files: `references/loop_protocol.md`, `.claude/agents/deep-research.md`
 
 - [ ] T-111: **Sentinel Pause File** (REQ-017, Effort: S)
-  - Before each dispatch, check for `scratch/.deep-research-pause`
+  - Before each dispatch, check for `research/.deep-research-pause`
   - If present: log `{"type":"event","event":"paused"}`, halt with message
   - On resume: log `{"type":"event","event":"resumed"}`
   - Files: `references/loop_protocol.md`, YAML workflows (pre-dispatch check)
@@ -190,7 +190,7 @@ contextType: "general"
   - Files: `references/quick_reference.md`, agent output format
 
 - [ ] T-122: **Git Commit Per Iteration** (REQ-024, Effort: S)
-  - After each iteration: `git add scratch/deep-research-state.jsonl scratch/iteration-NNN.md scratch/deep-research-strategy.md`
+  - After each iteration: `git add research/deep-research-state.jsonl research/iterations/iteration-NNN.md research/deep-research-strategy.md`
   - Commit: `chore(deep-research): iteration NNN complete`
   - Targeted git add (NOT `-A`) to avoid binary/artifact bloat
   - Sanitize commit messages (lesson from pi-autoresearch PR #13)

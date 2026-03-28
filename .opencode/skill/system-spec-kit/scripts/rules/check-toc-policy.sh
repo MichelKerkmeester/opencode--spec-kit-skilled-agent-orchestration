@@ -8,7 +8,7 @@ set -euo pipefail
 
 # Rule: TOC_POLICY
 # Severity: error
-# Description: Enforces that Table of Contents sections appear only in research.md.
+# Description: Enforces that Table of Contents sections appear only in research/research.md.
 
 run_check() {
     local folder="$1"
@@ -60,7 +60,7 @@ run_check() {
         RULE_STATUS="fail"
         RULE_MESSAGE="TOC sections are not allowed in ${#violations[@]} non-research spec file(s)"
         RULE_DETAILS=("${violations[@]}")
-        RULE_REMEDIATION="Remove '## TABLE OF CONTENTS' / '## TOC' sections from spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, and debug-delegation.md. Only research.md may include a TOC."
+        RULE_REMEDIATION="Remove '## TABLE OF CONTENTS' / '## TOC' sections from spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, and debug-delegation.md. Only research/research.md may include a TOC."
     else
         RULE_STATUS="pass"
         RULE_MESSAGE="TOC policy passed: no TOC headings in non-research spec documents"

@@ -11,12 +11,12 @@
 
 ## Problem Statement
 
-Tests that L1 folders can have extra files like notes.md and research.md.
+Tests that L1 folders can have extra files like notes.md and research/research.md.
 
 ## Requirements
 
 - Extra files are allowed
-- Validation passes with notes.md and research.md
+- Validation passes with notes.md and research/research.md
 
 ## Scope
 

@@ -16,13 +16,26 @@ import * as fs from 'fs';
 // ───────────────────────────────────────────────────────────────
 // 2. CONFIGURATION
 // ───────────────────────────────────────────────────────────────
-const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
+function resolveScriptsWorkspaceRoot(): string {
+  const directParent = path.resolve(__dirname, '..');
+  if (path.basename(directParent) === 'scripts') return directParent;
+
+  const nestedParent = path.resolve(__dirname, '..', '..');
+  if (path.basename(nestedParent) === 'scripts') return nestedParent;
+
+  return directParent;
+}
+
+const SCRIPTS_ROOT = resolveScriptsWorkspaceRoot();
+const DB_DIR = path.resolve(SCRIPTS_ROOT, '../mcp_server/database');
 const DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
+const GT_PATH = path.resolve(SCRIPTS_ROOT, '../mcp_server/lib/eval/data/ground-truth.json');
 const OUTPUT_PATH = '/tmp/ground-truth-id-mapping.json';
 
 const args = process.argv.slice(2);
 const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const DRY_RUN = args.includes('--dry-run');
+const WRITE = args.includes('--write');
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPE DEFINITIONS
@@ -77,8 +90,7 @@ interface CountRow {
 // Read the canonical JSON dataset directly to avoid coupling to TS source formatting.
 
 function loadGroundTruthQueries(): GroundTruthQuery[] {
-  const gtPath = path.resolve(__dirname, '../../mcp_server/lib/eval/data/ground-truth.json');
-  const raw = fs.readFileSync(gtPath, 'utf-8');
+  const raw = fs.readFileSync(GT_PATH, 'utf-8');
   const parsed = JSON.parse(raw) as { queries?: GroundTruthQuery[] };
   const queries = Array.isArray(parsed.queries) ? parsed.queries : [];
 
@@ -407,7 +419,11 @@ function mapQueryToMemories(
 function main() {
   console.log('=== Ground Truth ID Mapping Script ===');
   console.log(`Database: ${DB_PATH}`);
-  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'PREVIEW'}\n`);
+  if (DRY_RUN && WRITE) {
+    console.error('ERROR: --dry-run and --write cannot be combined.');
+    process.exit(1);
+  }
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : WRITE ? 'WRITE' : 'PREVIEW'}\n`);
 
   // Fail fast when production DB is unavailable.
   if (!fs.existsSync(DB_PATH)) {
@@ -494,6 +510,33 @@ function main() {
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
   console.log(`\nMapping written to: ${OUTPUT_PATH}`);
+
+  if (WRITE) {
+    const currentGroundTruth = JSON.parse(fs.readFileSync(GT_PATH, 'utf-8')) as {
+      queries?: GroundTruthQuery[];
+      relevances?: Array<{ queryId: number; memoryId: number; relevance: 0 | 1 | 2 | 3 }>;
+    };
+    const nextRelevances = [...allMappings]
+      .map((mapping) => ({
+        queryId: mapping.queryId,
+        memoryId: mapping.memoryId,
+        relevance: mapping.relevance,
+      }))
+      .sort((left, right) => {
+        if (left.queryId !== right.queryId) return left.queryId - right.queryId;
+        if (left.relevance !== right.relevance) return right.relevance - left.relevance;
+        return left.memoryId - right.memoryId;
+      });
+
+    const nextGroundTruth = {
+      ...currentGroundTruth,
+      queries: currentGroundTruth.queries ?? queries,
+      relevances: nextRelevances,
+    };
+
+    fs.writeFileSync(GT_PATH, `${JSON.stringify(nextGroundTruth, null, 2)}\n`);
+    console.log(`Ground truth updated: ${GT_PATH}`);
+  }
 
   db.close();
 }

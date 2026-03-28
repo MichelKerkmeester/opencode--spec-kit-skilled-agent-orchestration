@@ -52,7 +52,7 @@ contextType: "implementation"
 - [ ] T013 Test addendum injection points (<!-- ADDENDUM: markers)
 - [ ] T014 Verify Level 1 file requirements: spec.md, plan.md, tasks.md, implementation-summary.md
 - [ ] T015 Verify Level 2 adds: checklist.md
-- [ ] T016 Verify Level 3 adds: decision-record.md, optional research.md
+- [ ] T016 Verify Level 3 adds: decision-record.md, optional research/research.md
 - [ ] T017 Verify Level 3+ adds: AI protocols, extended checklist, sign-offs
 
 ---

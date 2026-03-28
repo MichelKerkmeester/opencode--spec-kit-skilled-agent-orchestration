@@ -101,7 +101,7 @@ Implement automated enforcement mechanisms that make template/anchor non-complia
 | REQ-002 | ANCHOR Tag Enforcement | All spec template sections MUST have opening/closing ANCHOR tags |
 | REQ-003 | Speckit Routing Lock | All spec file creation MUST route through @speckit agent exclusively |
 | REQ-004 | Pre-flight Validation Gate | validate.sh MUST run automatically before file write in spec folders |
-| REQ-005 | Root Cause Documentation | Full analysis of why non-compliance currently possible documented in research.md |
+| REQ-005 | Root Cause Documentation | Full analysis of why non-compliance currently possible documented in research/research.md |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -131,7 +131,7 @@ Implement automated enforcement mechanisms that make template/anchor non-complia
 - **SC-002**: Zero spec documents missing ANCHOR tags on major sections (100% compliance)
 - **SC-003**: Zero spec file writes bypass @speckit agent (100% routing compliance)
 - **SC-004**: validate.sh catches 100% of template/anchor violations before file write
-- **SC-005**: Comprehensive root cause analysis documented in research.md with evidence citations
+- **SC-005**: Comprehensive root cause analysis documented in research/research.md with evidence citations
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -324,7 +324,7 @@ Implement automated enforcement mechanisms that make template/anchor non-complia
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Findings**: See `research.md`
+- **Research Findings**: See `research/research.md`
 
 ---
 

@@ -164,11 +164,11 @@ Next: Continue implementation
 | File | Status |
 |------|--------|
 | spec.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `hybrid enrichment` | `mode hybrid` | `json mode` | `system spec` | `hybrid rag` | `sequential thinking` |
 

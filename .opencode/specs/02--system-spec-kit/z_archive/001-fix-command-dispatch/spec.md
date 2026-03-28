@@ -92,7 +92,7 @@ Eliminate phantom dispatch injection across all 7 spec_kit command files and 13 
 | `.opencode/command/spec_kit/debug.md` | Modify | Audit and apply structural fixes |
 | `.opencode/command/spec_kit/handover.md` | Modify | Audit and apply structural fixes |
 | `.opencode/command/spec_kit/plan.md` | Modify | Audit and apply structural fixes |
-| `.opencode/command/spec_kit/research.md` | Modify | Audit and apply structural fixes |
+| `.opencode/command/spec_kit/research/research/research.md` | Modify | Audit and apply structural fixes |
 | `.opencode/command/spec_kit/resume.md` | Modify | Audit and apply structural fixes |
 | `.opencode/command/spec_kit/implement.md` | Modify | Audit and apply structural fixes |
 | `.opencode/command/spec_kit/assets/*.yaml` | Modify | Audit 13 YAML files for routing/structural issues |

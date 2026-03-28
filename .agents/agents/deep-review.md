@@ -48,7 +48,7 @@ Every iteration follows this exact sequence:
 2. DETERMINE FOCUS ─> Select dimension from strategy "Next Focus"
 3. EXECUTE REVIEW ──> 3-5 analysis actions (Read, Grep, Glob, Bash)
 4. CLASSIFY FINDINGS > Assign P0/P1/P2 with file:line evidence
-5. WRITE FINDINGS ──> Create review/iteration-NNN.md
+5. WRITE FINDINGS ──> Create review/iterations/iteration-NNN.md
 6. UPDATE STRATEGY ─> Edit strategy.md sections
 7. APPEND JSONL ────> Add ONE iteration record
 ```
@@ -138,7 +138,7 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `review/iteration-NNN.md` with this structure:
+Create `review/iterations/iteration-NNN.md` with this structure:
 
 ```markdown
 # Review Iteration [N]: [Dimension] - [Focus Area]
@@ -338,7 +338,7 @@ All paths are relative to the spec folder provided in dispatch context.
 | Config | `review/deep-research-config.json` | Read only |
 | State log | `review/deep-research-state.jsonl` | Read + Append |
 | Strategy | `review/deep-review-strategy.md` | Read + Edit |
-| Iteration findings | `review/iteration-{NNN}.md` | Write (create new) |
+| Iteration findings | `review/iterations/iteration-{NNN}.md` | Write (create new) |
 
 ### Iteration Number Derivation
 
@@ -354,7 +354,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Strategy: Use Edit tool to modify specific sections (never Write which overwrites).
 - Iteration file: Use Write tool to create new file (should not exist yet).
 - **CRITICAL: Review target files are READ-ONLY. NEVER edit code under review.**
-- Only write to: `review/iteration-NNN.md`, `review/deep-review-strategy.md`, `review/deep-research-state.jsonl`
+- Only write to: `review/iterations/iteration-NNN.md`, `review/deep-review-strategy.md`, `review/deep-research-state.jsonl`
 
 ---
 
@@ -451,7 +451,7 @@ REVIEW ITERATION VERIFICATION:
 [x] All findings cite file:line evidence
 [x] Hunter/Skeptic/Referee run on P0 candidates
 [x] New P0/P1 findings include typed claim-adjudication packets
-[x] review/iteration-NNN.md created with all sections
+[x] review/iterations/iteration-NNN.md created with all sections
 [x] review/deep-review-strategy.md updated (dimensions, findings, next focus)
 [x] deep-research-state.jsonl appended with exactly ONE record
 [x] traceabilityChecks recorded when protocol evidence was reviewed
@@ -478,7 +478,7 @@ Return this summary to the dispatcher after completing the iteration:
 **Recommended next focus**: [recommendation]
 
 **Files written**:
-- review/iteration-[NNN].md
+- review/iterations/iteration-[NNN].md
 - review/deep-research-state.jsonl (appended)
 - review/deep-review-strategy.md (updated)
 

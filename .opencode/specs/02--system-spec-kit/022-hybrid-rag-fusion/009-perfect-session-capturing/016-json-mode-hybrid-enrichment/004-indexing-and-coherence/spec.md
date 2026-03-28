@@ -40,7 +40,7 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 | **Phase** | 004 of 004 in `016-json-mode-hybrid-enrichment` |
 | **Parent Spec** | `../spec.md` |
 | **Siblings** | 001-initial-enrichment (done), 002-scoring-and-filter, 003-field-integrity-and-schema |
-| **Research** | `../research.md` Round 2, Domain D + F (74 findings, 20 recommendations) |
+| **Research** | `../research/research.md` Round 2, Domain D + F (74 findings, 20 recommendations) |
 
 ---
 
@@ -282,5 +282,5 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research**: See `../research.md` (Round 2, Domains D + F)
+- **Research**: See `../research/research.md` (Round 2, Domains D + F)
 - **Sibling Phase 003**: `../003-field-integrity-and-schema/` (template-renderer.ts — coordinate changes)

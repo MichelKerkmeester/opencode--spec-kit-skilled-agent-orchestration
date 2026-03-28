@@ -272,14 +272,14 @@ The edits are in. I’m doing a quick whitespace/diff sanity check and surfacing
   │ 20 -  The scanner discovers files from three sources: spec folder memory files
   │       (`specs/**/memory/*.md`), constitutional files (`.opencode/skill/*/constitutional/*.md`)
   │       and spec documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`,
-  │       `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`).
+  │       `decision-record.md`, `implementation-summary.md`, `research/research.md`, `handover.md`).
   │       Canonical path deduplication prevents the same file from being indexed twice under
   │       different paths (the `specs/` vs `.opencode/specs/` symlink problem).
   │ 20 +  The scanner discovers files from three sources: spec folder memory files under both
   │       `.opencode/specs/**/memory/` and `specs/**/memory/` (including `.md` and `.txt` memory
   │       files), constitutional files under `.opencode/skill/*/constitutional/` (currently `.md`,
   │       excluding `README.md`/`README.txt`), and spec documents (`spec.md`, `plan.md`, `tasks.md`,
-  │        `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`,
+  │        `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research/research.md`,
   │       `handover.md`). Canonical path deduplication prevents the same file from being indexed
   │       twice under different paths (the `specs/` vs `.opencode/specs/` alias problem).
   │

@@ -91,7 +91,7 @@ Level 1 (Baseline):     spec.md + plan.md + tasks.md + implementation-summary.md
                               ↓
 Level 2 (Verification): Level 1 + checklist.md
                               ↓
-Level 3 (Full):         Level 2 + decision-record.md + optional research.md
+Level 3 (Full):         Level 2 + decision-record.md + optional research/research.md
                               ↓
 Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
 ```
@@ -105,7 +105,7 @@ Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
 
 **Level 1 Copy Commands (Baseline):**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/###-name/spec.md
+cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
 cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
 cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md
@@ -129,7 +129,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md s
 cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-name/checklist.md
 cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 # Optional:
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 **Level 3+ Copy Commands (complete set):**
@@ -141,7 +141,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md 
 cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
 # Optional:
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 ---
@@ -154,7 +154,7 @@ These templates are OPTIONAL and only apply to Level 3 documentation:
 
 | Template File | Copy As       | When to Use                          | Copy Command                                                                          |
 | ------------- | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `research.md` | `research.md` | Comprehensive research documentation | `cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md` |
+| `research/research.md` | `research/research.md` | Comprehensive research documentation | `mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md` |
 
 **Notes:**
 - These are OPTIONAL - only copy when research is needed
@@ -218,7 +218,7 @@ specs/045-user-dashboard/
 ├── implementation-summary.md    (REQUIRED - from Level 2)
 ├── checklist.md                 (REQUIRED - from Level 2)
 ├── decision-record.md           (REQUIRED - architecture decisions)
-├── research.md                  (OPTIONAL - comprehensive research)
+├── research/research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
     └── *.md                     (auto-generated via generate-context.js)
 ```
@@ -240,7 +240,7 @@ specs/046-enterprise-migration/
 ├── implementation-summary.md    (REQUIRED - from Level 3)
 ├── checklist.md                 (REQUIRED - from Level 3, +extended items 100-150, +sign-offs, +compliance)
 ├── decision-record.md           (REQUIRED - from Level 3, +decision authority, +review requirements)
-├── research.md                  (OPTIONAL - comprehensive research)
+├── research/research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
     └── *.md                     (auto-generated via generate-context.js)
 ```
@@ -405,7 +405,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 
 ```bash
 # Comprehensive Research
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 ### Step 6: Fill Templates
@@ -475,7 +475,7 @@ Get explicit "yes/go ahead/proceed" before ANY file changes.
 - [decision-record.md](../templates/level_3+/decision-record.md) - Decision records with authority and review requirements
 
 **Optional Templates:**
-- [research.md](../templates/research.md) - Comprehensive research template (Level 3 only)
+- [research template](../templates/research.md) - Copy to `research/research.md` for Level 3 research packets
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

@@ -14,8 +14,8 @@ Per orchestrate.md and AGENTS.md protocols:
 - Tool calls: ~25-30 (will split into multiple @speckit dispatches per TCB rules)
 
 ### Phase 2: Research Deep-Dive (@research - :with-research flag)
-- Agent: @research (loaded from .opencode/agent/research.md)
-- Scope: Create research.md with comprehensive analysis
+- Agent: @research (loaded from .opencode/agent/research/research/research.md)
+- Scope: Create research/research.md with comprehensive analysis
 - Focus: Template compliance requirements, anchor format enforcement, validation mechanisms, automation opportunities
 - Tool calls: ~15-20
 

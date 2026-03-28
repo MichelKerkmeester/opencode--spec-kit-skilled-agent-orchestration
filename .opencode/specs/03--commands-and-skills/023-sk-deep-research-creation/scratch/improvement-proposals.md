@@ -66,7 +66,7 @@ These address known robustness and quality gaps using patterns proven across 2+ 
 | **Effort** | Small (S) |
 | **Impact** | Medium (M) |
 
-**Implementation sketch**: Add a recovery function that scans `scratch/iteration-*.md` files when JSONL is missing or unparseable. Parse each iteration file's `## Assessment` section to extract: run number, newInfoRatio, questions addressed, questions answered. Reconstruct JSONL iteration records from this data. This provides a degraded but functional state that allows the research loop to continue. Document the recovery path in the loop protocol alongside the primary JSONL read path.
+**Implementation sketch**: Add a recovery function that scans `research/iterations/iteration-*.md` files when JSONL is missing or unparseable. Parse each iteration file's `## Assessment` section to extract: run number, newInfoRatio, questions addressed, questions answered. Reconstruct JSONL iteration records from this data. This provides a degraded but functional state that allows the research loop to continue. Document the recovery path in the loop protocol alongside the primary JSONL read path.
 
 ---
 
@@ -94,7 +94,7 @@ These enrich existing capabilities with moderate effort. Each has clear value bu
 | **Effort** | Small (S) |
 | **Impact** | Medium (M) |
 
-**Implementation sketch**: Add a convention for `scratch/research-ideas.md` as a persistent parking lot for promising-but-not-pursued directions. The orchestrator checks this file during strategy initialization (add to the "read state files" step) and during stuck recovery (check ideas before defaulting to generic recovery). Users can edit this file between sessions to steer future iterations. No code changes -- protocol update only in the command and agent definitions.
+**Implementation sketch**: Add a convention for `research/research-ideas.md` as a persistent parking lot for promising-but-not-pursued directions. The orchestrator checks this file during strategy initialization (add to the "read state files" step) and during stuck recovery (check ideas before defaulting to generic recovery). Users can edit this file between sessions to steer future iterations. No code changes -- protocol update only in the command and agent definitions.
 
 ### P2.3: Iteration Reflection Section
 
@@ -242,7 +242,7 @@ Ideas to monitor but not implement now. Low immediate value or dependent on exte
 | **Effort** | Small (S) |
 | **Impact** | Medium (M) |
 
-**Implementation sketch**: Before dispatching each iteration, check for `scratch/.deep-research-pause`. If present, log an event `{"type":"event","event":"paused","reason":"sentinel file detected"}` and halt with message: "Research paused. Delete scratch/.deep-research-pause to resume." On resume, log `{"type":"event","event":"resumed"}`. For autonomous mode (future P4.3), this provides the only user intervention mechanism short of killing the process.
+**Implementation sketch**: Before dispatching each iteration, check for `research/.deep-research-pause`. If present, log an event `{"type":"event","event":"paused","reason":"sentinel file detected"}` and halt with message: "Research paused. Delete research/.deep-research-pause to resume." On resume, log `{"type":"event","event":"resumed"}`. For autonomous mode (future P4.3), this provides the only user intervention mechanism short of killing the process.
 
 ---
 
@@ -273,7 +273,7 @@ All 4 external repos run until a human stops them or a hard iteration cap is hit
 No external repo supports concurrent iteration execution. AGR mentions worktree-based parallelism but has not implemented it. pi-autoresearch Issue #12 proposes parallel topics but not parallel iterations. Our manual-orchestrated parallel waves (multiple agents investigating different questions simultaneously) are genuinely novel. The proposed scored branching with pruning (P2.5) would extend this into a structured exploration strategy.
 
 ### 4. Progressive Synthesis
-Our `research.md` output grows across iterations as a cumulative knowledge artifact. External repos accumulate metric logs and code changes, but none produces a progressive synthesis document. This is a research-native pattern with no optimization equivalent.
+Our `research/research.md` output grows across iterations as a cumulative knowledge artifact. External repos accumulate metric logs and code changes, but none produces a progressive synthesis document. This is a research-native pattern with no optimization equivalent.
 
 ### 5. Domain Adaptation
 Our system is purpose-built for knowledge research, not adapted from code optimization. The append-only-everything model (no discard, no revert), source tracking with citations, multi-tool investigation (WebFetch + Grep + Glob + Read), and qualitative assessment framework are all research-specific design choices that external repos lack.

@@ -89,7 +89,7 @@ Parent/child phase-tree reconciliation with explicit branch-parent documentation
 
 ### Key Components
 - **Parent pack**: the six Level 3 root markdown files
-- **Existing audit artifacts**: `research.md` and reconciled earlier phases
+- **Existing audit artifacts**: `research/research.md` and reconciled earlier phases
 - **Archived branch parent**: `000-dynamic-capture-deprecation/`
 - **Current direct-child continuation**:
   - `011-template-compliance/`

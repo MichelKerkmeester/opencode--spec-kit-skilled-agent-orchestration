@@ -14,8 +14,8 @@
       ],
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
-        "_NOTE_1_DATABASE": "Stores vectors in: .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
+        "MEMORY_DB_PATH": "/Users/michelkerkmeester/.codex/memories/spec_kit_memory/context-index.sqlite",
+        "_NOTE_1_DATABASE": "Stores vectors in: /Users/michelkerkmeester/.codex/memories/spec_kit_memory/context-index.sqlite",
         "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
         "_NOTE_3_EMBEDDINGS_PROVIDER": "Current: 'hf-local' (free, offline). Options: 'auto', 'voyage', 'openai'",
         "_NOTE_4_CLOUD_PROVIDERS": "For cloud: add VOYAGE_API_KEY or OPENAI_API_KEY and set EMBEDDINGS_PROVIDER=auto",

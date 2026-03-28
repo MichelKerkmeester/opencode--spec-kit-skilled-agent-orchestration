@@ -136,11 +136,11 @@ Next: Implementation Phase 1: Normalize severity, create canonical manifest, bui
 | File | Status |
 |------|--------|
 | spec.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `logic sk-deep-research` | `research improving` | `improving review` | `iterations via` | `deep research` | `gpt-5.4 codex` | `codex exec...` | `review logic` | `via gpt-5.4` |
 

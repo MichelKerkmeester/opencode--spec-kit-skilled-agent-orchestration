@@ -125,7 +125,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 | 013 | `013-spec-descriptions/` | Description infrastructure and filename/indexability | Shipped, with parity and collision proof still worth refreshing | `add verification` |
 | 014 | `014-stateless-quality-gates/` | Stateless quality gates and structured-input parity | Runtime shipped and current docs retained | `keep` |
 | 015 | `015-runtime-contract-and-indexability/` | Validation rule metadata and write/index disposition policy | Runtime shipped and phase docs reconciled | `keep` |
-| 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime phase shipped; `research.md` is archival context, not the live contract baseline | `keep` |
+| 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime phase shipped; `research/research.md` is archival context, not the live contract baseline | `keep` |
 | 017 | `017-json-primary-deprecation/` | JSON-primary deprecation and dynamic-capture recovery posture | Runtime shipped; current contract baseline | `keep` |
 | 018 | `018-memory-save-quality-fixes/` | Research-remediation merged Wave 1 + Wave 2 | Runtime shipped; current output baseline | `keep` |
 | 019 | `019-architecture-remediation/` | Architecture remediation audit (analysis-only) | Active architecture audit | `keep` |
@@ -204,7 +204,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Existing audit narrative and `research.md` | High | Treat them as the preserved truth baseline while extending the phase map |
+| Dependency | Existing audit narrative and `research/research.md` | High | Treat them as the preserved truth baseline while extending the phase map |
 | Dependency | Focused session-capturing tests and build | High | Use them as the evidence base for phase `018` |
 | Risk | Parent docs flatten implemented and open work into one status | High | Keep `018` as the last implementation phase. Phase `019` is an architecture audit. |
 | Risk | Child folders exist but parent docs stay inconsistent | High | Reconcile all six root markdown files in the same pass |
@@ -299,7 +299,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 
 ## RELATED DOCUMENTS
 
-- **Research Synthesis**: `research.md`
+- **Research Synthesis**: `research/research.md`
 - **Archived Branch Parent**: `000-dynamic-capture-deprecation/spec.md`
 - **Phase 014**: `014-stateless-quality-gates/spec.md`
 - **Phase 015**: `015-runtime-contract-and-indexability/spec.md`

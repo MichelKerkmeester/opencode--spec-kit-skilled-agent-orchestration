@@ -34,7 +34,7 @@
 - [x] CHK-010 [P0] Deep research iterations produce valid JSONL state records — **Evidence**: state.jsonl contains 1 config + 9 iteration + 1 synthesis_complete records (11 lines). All iteration records have required fields (type, run, status, focus, findingsCount, newInfoRatio, keyQuestions, answeredQuestions, timestamp)
 - [x] CHK-011 [P0] Each iteration file follows iteration-NNN.md format with Assessment section — **Evidence**: 9 iteration files (iteration-001.md through iteration-009.md) in scratch/, all containing Focus, Findings, Assessment, Reflection, and Recommended Next Focus sections
 - [x] CHK-012 [P1] Strategy.md updated correctly between iterations (Worked/Failed/Next Focus) — **Evidence**: strategy.md shows accumulated entries in What Worked (8+ items), What Failed (2+ items), and evolving Next Focus across iterations
-- [x] CHK-013 [P1] Progressive synthesis updates to research.md are additive (no overwrites) — **Evidence**: research.md created in iteration 7, updated in iteration 9 with additional findings and WIRE/EXTEND/PROTECT framework. Config has progressiveSynthesis: true
+- [x] CHK-013 [P1] Progressive synthesis updates to research/research.md are additive (no overwrites) — **Evidence**: research/research.md created in iteration 7, updated in iteration 9 with additional findings and WIRE/EXTEND/PROTECT framework. Config has progressiveSynthesis: true
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -54,7 +54,7 @@
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No external repo credentials or tokens in research output — **Evidence**: Grep for "token", "credential", "secret", "password" in research.md and improvement-proposals-v3.md returns zero matches for credential content
+- [x] CHK-030 [P0] No external repo credentials or tokens in research output — **Evidence**: Grep for "token", "credential", "secret", "password" in research/research.md and improvement-proposals-v3.md returns zero matches for credential content
 - [x] CHK-031 [P0] WebFetch targets limited to the 3 approved GitHub repos — **Evidence**: All WebFetch calls targeted github.com/JoaquinMulet/Artificial-General-Research, github.com/davebcn87/pi-autoresearch, github.com/dabiggm0e/autoresearch-opencode, or github.com/karpathy/autoresearch (4th repo approved in plan.md §4.3 scope)
 - [x] CHK-032 [P1] Research output contains no sensitive internal paths or secrets — **Evidence**: Research output references only relative spec folder paths and public GitHub URLs
 <!-- /ANCHOR:security -->
@@ -65,8 +65,8 @@
 ## Documentation
 
 - [x] CHK-040 [P1] v3 improvement-proposals.md created with file-level change lists — **Evidence**: scratch/improvement-proposals-v3.md (575 lines) with all 15 proposals having file-level change tables listing specific files, sections, and change descriptions
-- [x] CHK-041 [P1] research.md synthesized from all iterations with cited sources — **Evidence**: research.md (210 lines) synthesizes all 9 iterations. Citations are in iteration files (55+ [SOURCE:] tags) rather than inline in research.md (P1 quality review finding — traceability via iteration references, not inline citations)
-- [x] CHK-042 [P2] Implementation sequencing updated for v3 proposals — **Evidence**: Both research.md and improvement-proposals-v3.md contain 4-phase implementation critical path with dependencies
+- [x] CHK-041 [P1] research/research.md synthesized from all iterations with cited sources — **Evidence**: research/research.md (210 lines) synthesizes all 9 iterations. Citations are in iteration files (55+ [SOURCE:] tags) rather than inline in research/research.md (P1 quality review finding — traceability via iteration references, not inline citations)
+- [x] CHK-042 [P2] Implementation sequencing updated for v3 proposals — **Evidence**: Both research/research.md and improvement-proposals-v3.md contain 4-phase implementation critical path with dependencies
 <!-- /ANCHOR:docs -->
 
 ---

@@ -163,7 +163,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | @context  | `.claude/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
 | @deep-research | `.claude/agents/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state              |
 | @ultra-think | `.claude/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
-| @speckit  | `.claude/agents/speckit.md`  | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research.md |
+| @speckit  | `.claude/agents/speckit.md`  | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research/research.md |
 | @review   | `.claude/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
 | @write    | `.claude/agents/write.md`    | DQI standards enforcement                                                              |
 | @debug    | `.claude/agents/debug.md`    | Isolated by design (no conversation context)                                           |
@@ -351,12 +351,12 @@ TASK #2: Implement Notification System
 ### Rule 5: Spec Documentation Exclusivity
 **Trigger:** Any task that creates or substantively writes spec folder template documents.
 **Action:** MUST dispatch `@speckit`. NEVER use `@general`, `@write`, or any other agent to create these files.
-**Scope:** ALL documentation (*.md) written inside spec folders (`specs/[###-name]/`). This includes but is not limited to: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md, and any other markdown documentation.
+**Scope:** ALL documentation (*.md) written inside spec folders (`specs/[###-name]/`). This includes but is not limited to: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md, and any other markdown documentation.
 **Exceptions:**
 - `memory/` subdirectory → generated via `generate-context.js` script (never manual Write)
 - `scratch/` subdirectory → temporary workspace, any agent may write
 - `handover.md` → `@handover` agent exclusively (session continuation documents)
-- `research.md` → `@deep-research` agent exclusively (iterative investigation findings)
+- `research/research.md` → `@deep-research` agent exclusively (iterative investigation findings)
 - **Reading** spec docs is permitted by any agent
 - **Minor status updates** (e.g., checking task boxes) by implementing agents are acceptable
 **Logic:** `@speckit` enforces template structure, Level 1-3+ standards, and validation that other agents lack. Bypassing `@speckit` produces non-standard documentation that fails quality gates.

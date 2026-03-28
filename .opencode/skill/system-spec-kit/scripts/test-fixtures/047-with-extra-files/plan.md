@@ -25,7 +25,7 @@ Standard Level 1 with bonus documentation.
 - plan.md: Implementation
 - tasks.md: Task tracking
 - notes.md: Additional notes
-- research.md: Research documentation
+- research/research.md: Research documentation
 
 ## Implementation
 

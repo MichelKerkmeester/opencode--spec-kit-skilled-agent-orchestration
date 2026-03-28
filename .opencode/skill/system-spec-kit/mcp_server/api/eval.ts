@@ -12,10 +12,13 @@ export {
   formatAblationReport,
   toHybridSearchFlags,
   isAblationEnabled,
+  inspectGroundTruthAlignment,
+  assertGroundTruthAlignment,
   ALL_CHANNELS,
   type AblationChannel,
   type AblationSearchFn,
   type AblationReport,
+  type GroundTruthAlignmentSummary,
 } from '../lib/eval/ablation-framework';
 
 export {

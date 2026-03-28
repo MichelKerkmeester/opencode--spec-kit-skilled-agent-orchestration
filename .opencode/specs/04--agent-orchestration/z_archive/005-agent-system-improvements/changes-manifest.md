@@ -62,11 +62,11 @@
 
 
 <!-- ANCHOR:researchmd-agent -->
-## 3. research.md (Agent)
+## 3. research/research.md (Agent)
 
 | Attribute | Value |
 |-----------|-------|
-| **Path** | `.opencode/agent/research.md` |
+| **Path** | `.opencode/agent/research/research/research.md` |
 | **Part Of** | OpenCode Agent System |
 | **Purpose** | Technical investigation and evidence gathering agent |
 | **Changes** | 1 addition |
@@ -118,11 +118,11 @@
 
 
 <!-- ANCHOR:researchmd-command -->
-## 5. research.md (Command)
+## 5. research/research.md (Command)
 
 | Attribute | Value |
 |-----------|-------|
-| **Path** | `.opencode/command/spec_kit/research.md` |
+| **Path** | `.opencode/command/spec_kit/research/research/research.md` |
 | **Part Of** | OpenCode Command System (Spec Kit) |
 | **Purpose** | Research workflow command (9 steps) |
 | **Changes** | 1 fix |
@@ -295,11 +295,11 @@
 
 
 <!-- ANCHOR:researchmd-agent-updated -->
-## 13. research.md (Agent) - Updated
+## 13. research/research.md (Agent) - Updated
 
 | Attribute | Value |
 |-----------|-------|
-| **Path** | `.opencode/agent/research.md` |
+| **Path** | `.opencode/agent/research/research/research.md` |
 | **Part Of** | OpenCode Agent System |
 | **Purpose** | Technical investigation and evidence gathering agent |
 | **Changes** | 2 additions (updated) |
@@ -360,11 +360,11 @@
 
 
 <!-- ANCHOR:researchmd-command-updated -->
-## 16. research.md (Command) - Updated
+## 16. research/research.md (Command) - Updated
 
 | Attribute | Value |
 |-----------|-------|
-| **Path** | `.opencode/command/spec_kit/research.md` |
+| **Path** | `.opencode/command/spec_kit/research/research/research.md` |
 | **Part Of** | OpenCode Command System (Spec Kit) |
 | **Purpose** | Research workflow command (9 steps) |
 | **Changes** | 2 changes (updated) |
@@ -586,7 +586,7 @@
 |------|------|---------|
 | `orchestrate.md` | Multi-agent coordinator | 8 changes + diagram |
 | `speckit.md` | Spec folder creator | 1 diagram |
-| `research.md` | Investigation agent | 2 additions (HARD BLOCK + diagram) |
+| `research/research.md` | Investigation agent | 2 additions (HARD BLOCK + diagram) |
 | `handover.md` | Session continuation | 1 diagram |
 | `review.md` | Code review/quality gates | 1 diagram |
 | `write.md` | Documentation generation | 1 diagram |
@@ -599,7 +599,7 @@
 | `complete.md` | Full workflow | 1 diagram |
 | `plan.md` | Planning workflow | 1 diagram |
 | `implement.md` | Implementation workflow | 1 fix + 1 diagram |
-| `research.md` | Research workflow | 1 fix + 1 diagram |
+| `research/research.md` | Research workflow | 1 fix + 1 diagram |
 | `debug.md` | Debug delegation | 1 fix + 1 diagram |
 | `handover.md` | Session handover | 1 diagram |
 | `resume.md` | Session resume | 1 diagram |
@@ -626,9 +626,9 @@
 | Category | Count | Files |
 |----------|-------|-------|
 | Naming Consistency | 6 | orchestrate.md |
-| New Sections | 5 | orchestrate.md (4), research.md agent (1) |
+| New Sections | 5 | orchestrate.md (4), research/research.md agent (1) |
 | Mermaid Diagrams | 20 | All 7 agents, all 7 spec_kit commands, all 6 create commands |
-| Text Fixes | 3 | research.md cmd, debug.md, implement.md |
+| Text Fixes | 3 | research/research.md cmd, debug.md, implement.md |
 | Template Enhancements | 1 | orchestrate.md |
 | Unified Setup Refactor | 6 | All 6 create commands (consolidated prompts) |
 

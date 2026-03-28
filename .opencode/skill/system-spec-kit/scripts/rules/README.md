@@ -72,7 +72,7 @@ Validation rules are modular shell scripts that check spec folders for structura
 ```bash
 # Rules are invoked via the orchestrator, not directly
 # Run validation from repository root (automatically invokes all rules)
-.opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<###-spec-name>/
+.opencode/skill/system-spec-kit/scripts/spec/validate.sh <###-spec-name>/
 ```
 
 ### Verify Installation
@@ -119,7 +119,7 @@ rules/
 ├── check-priority-tags.sh  # PRIORITY_TAGS - Checklist priority context
 ├── check-section-counts.sh # SECTION_COUNTS - Section count validation
 ├── check-sections.sh       # SECTIONS_PRESENT - Required markdown sections
-├── check-toc-policy.sh     # TOC_POLICY - ToC allowed only in research.md
+├── check-toc-policy.sh     # TOC_POLICY - ToC allowed only in research/research.md
 ├── check-spec-doc-integrity.sh # SPEC_DOC_INTEGRITY - Markdown cross-reference validation
 ├── check-template-source.sh   # TEMPLATE_SOURCE - Template provenance marker checks
 └── README.md                  # This file
@@ -141,7 +141,7 @@ rules/
 | `check-links.sh`          | Link validation: validates wikilinks across skill markdown trees          |
 | `check-phase-links.sh`    | Phase validation: checks parent/child phase chain references              |
 | `check-spec-doc-integrity.sh` | Reference validation: verifies inline markdown file references resolve |
-| `check-toc-policy.sh`     | Style validation: allows ToC only in `research.md`                        |
+| `check-toc-policy.sh`     | Style validation: allows ToC only in `research/research.md`                        |
 | `check-template-source.sh`| Provenance validation: checks template-source metadata markers            |
 
 `check-links.sh` runs as `LINKS_VALID` only when `SPECKIT_VALIDATE_LINKS=true` to avoid expensive repository-wide scans during routine per-spec validation.
@@ -301,7 +301,7 @@ L3+: 10+ major sections, detailed acceptance scenarios
 **Purpose**: Enforces SpecKit ToC policy for spec artifacts
 
 **Policy**:
-- `research.md`: ToC allowed
+- `research/research.md`: ToC allowed
 - `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `debug-delegation.md`: ToC forbidden
 
 **Detection**:

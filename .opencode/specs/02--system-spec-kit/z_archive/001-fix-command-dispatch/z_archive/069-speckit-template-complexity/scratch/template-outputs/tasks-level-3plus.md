@@ -46,7 +46,7 @@ Design documents from `/specs/[###-feature-name]/`
 
 ### Prerequisites
 - **Required**: `plan.md`, `spec.md` (for user stories)
-- **Optional**: `research.md`
+- **Optional**: `research/research.md`
 
 ### Organization
 Tasks are grouped by user story to enable independent implementation and testing of each story.

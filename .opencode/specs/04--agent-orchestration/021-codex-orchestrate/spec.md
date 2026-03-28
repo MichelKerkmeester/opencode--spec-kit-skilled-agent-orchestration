@@ -79,7 +79,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 | `.opencode/agent/chatgpt/context.md` | Modify | Add adaptive retrieval modes and structured budget alignment |
 | `.opencode/agent/chatgpt/debug.md` | Modify | Clarify low-complexity fast path with explicit minimal analysis step |
 | `.opencode/agent/chatgpt/handover.md` | Modify | Align fast-path/tool-call bounds and context-package wording |
-| `.opencode/agent/chatgpt/research.md` | Modify | Add trivial-research exception semantics for memory-save step |
+| `.opencode/agent/chatgpt/research/research/research.md` | Modify | Add trivial-research exception semantics for memory-save step |
 | `.opencode/agent/chatgpt/review.md` | Modify | Codex model consistency and blocker-vs-required rule clarity |
 | `.opencode/agent/chatgpt/speckit.md` | Modify | Correct level semantics and validation completion wording |
 | `.opencode/agent/chatgpt/write.md` | Modify | Enforce template-first fast path and mode-aware DQI thresholds |

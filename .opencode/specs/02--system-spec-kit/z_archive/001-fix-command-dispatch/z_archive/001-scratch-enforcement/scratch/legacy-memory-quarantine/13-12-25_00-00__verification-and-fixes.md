@@ -170,12 +170,12 @@ Performed comprehensive verification ("ultrathink") of the scratch folder enforc
 | AGENTS.md Mandatory Rules Block | Lines 411-419 | VERIFIED |
 | spec.md template | "WORKING FILES" section | VERIFIED |
 | tasks.md template | "WORKING FILES LOCATION" section | VERIFIED |
-| research.md template | "FILE ORGANIZATION" section | VERIFIED |
+| research/research.md template | "FILE ORGANIZATION" section | VERIFIED |
 | research-spike.md template | "FILE ORGANIZATION" section | VERIFIED |
 | checklist.md template | CHK036-038 (lines 99-101) | VERIFIED |
 | complete.md command | scratch guidance | VERIFIED |
 | implement.md command | scratch guidance | VERIFIED |
-| research.md command | scratch guidance | VERIFIED |
+| research/research.md command | scratch guidance | VERIFIED |
 | SKILL.md enforcement rules | Lines 381-396 | VERIFIED |
 | SKILL.md ALWAYS #11 | Lines 634-638 | VERIFIED |
 | SKILL.md NEVER #8 | Lines 672-676 | VERIFIED |

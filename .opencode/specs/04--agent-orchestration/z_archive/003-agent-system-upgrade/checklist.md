@@ -56,7 +56,7 @@ contextType: "implementation"
 | ID | Check | Evidence | Status |
 |----|-------|----------|--------|
 | CHK-011 | @review agent file exists | .opencode/agent/review.md | [x] Verified |
-| CHK-012 | @research agent file exists | .opencode/agent/research.md | [x] Verified |
+| CHK-012 | @research agent file exists | .opencode/agent/research/research/research.md | [x] Verified |
 | CHK-013 | @speckit agent file exists | .opencode/agent/speckit.md | [x] Verified |
 | CHK-014 | @debug agent file exists | .opencode/agent/debug.md | [x] Verified |
 | CHK-015 | All agents default to Opus 4.5 | All agent files Section 0 | [x] Verified |
@@ -66,7 +66,7 @@ contextType: "implementation"
 
 | ID | Check | Evidence | Status |
 |----|-------|----------|--------|
-| CHK-017 | /spec_kit:research routes to @research | research.md Section 9 | [x] Verified |
+| CHK-017 | /spec_kit:research routes to @research | research/research.md Section 9 | [x] Verified |
 | CHK-018 | /spec_kit:plan routes to @speckit | plan.md Section 8 | [x] Verified |
 | CHK-019 | /spec_kit:implement routes to @review | implement.md Section 8 | [x] Verified |
 | CHK-020 | All YAML files have agent_routing | grep -l agent_routing *.yaml | [x] Verified |
@@ -104,9 +104,9 @@ contextType: "implementation"
 
 | ID | Check | Evidence | Status |
 |----|-------|----------|--------|
-| CHK-107 | Workflow-to-template mapping | research.md Section 3.5 | [x] Verified |
-| CHK-108 | Evidence quality rubric (A-F) | research.md Section 4 | [x] Verified |
-| CHK-109 | Tool routing guidance | research.md Section 5.5 | [x] Verified |
+| CHK-107 | Workflow-to-template mapping | research/research.md Section 3.5 | [x] Verified |
+| CHK-108 | Evidence quality rubric (A-F) | research/research.md Section 4 | [x] Verified |
+| CHK-109 | Tool routing guidance | research/research.md Section 5.5 | [x] Verified |
 | CHK-110 | Memory integration examples | research command Section 8.5 | [x] Verified |
 | CHK-111 | Circuit breaker examples | research command Section 11 | [x] Verified |
 | CHK-112 | Mode examples documented | research command Section 3 | [x] Verified |
@@ -118,7 +118,7 @@ contextType: "implementation"
 | CHK-113 | Dual subagent_type in save.md | memory/save.md lines 587, 677 | [x] Verified |
 | CHK-114 | Dual subagent_type in complete.md | spec_kit/complete.md line 827 | [x] Verified |
 | CHK-115 | Dual subagent_type in implement.md | spec_kit/implement.md lines 389, 427 | [x] Verified |
-| CHK-116 | Dual subagent_type in research.md | spec_kit/research.md lines 541, 569 | [x] Verified |
+| CHK-116 | Dual subagent_type in research/research.md | spec_kit/research/research/research.md lines 541, 569 | [x] Verified |
 | CHK-117 | Dual subagent_type in plan.md | spec_kit/plan.md lines 373, 398 | [x] Verified |
 | CHK-118 | Dual subagent_type in YAML files | All 4 debug YAML files | [x] Verified |
 
@@ -158,7 +158,7 @@ contextType: "implementation"
 | CHK-305 | tasks.md merged | 001/tasks.md (62+ tasks) | [x] Verified |
 | CHK-306 | checklist.md complete | This file | [x] Verified |
 | CHK-307 | decision-record.md has all ADRs | 001/decision-record.md | [x] Verified |
-| CHK-308 | research.md merged | 001/research.md | [x] Verified |
+| CHK-308 | research/research.md merged | 001/research/research/research.md | [x] Verified |
 | CHK-309 | ai-protocols.md preserved | 001/ai-protocols.md | [x] Verified |
 | CHK-310 | implementation-summary.md created | 001/implementation-summary.md | [x] Verified |
 | CHK-311 | Memory files migrated | 001/memory/ | [x] Verified |

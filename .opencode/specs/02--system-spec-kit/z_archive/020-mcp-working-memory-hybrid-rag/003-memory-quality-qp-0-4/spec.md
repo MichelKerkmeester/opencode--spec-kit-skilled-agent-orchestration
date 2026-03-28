@@ -1,6 +1,6 @@
 ---
 title: "Phase Package Spec: Memory Quality (QP-0 through QP-4) [003-memory-quality-qp-0-4/spec]"
-description: "This package defines memory-generation quality controls derived from research.md and source analysis artifacts in ../research/."
+description: "This package defines memory-generation quality controls derived from research/research.md and source analysis artifacts in ../research/."
 trigger_phrases:
   - "phase"
   - "package"
@@ -21,7 +21,7 @@ contextType: "decision"
 <!-- ANCHOR:executive-summary -->
 ## Executive Summary
 
-This package defines memory-generation quality controls derived from `research.md` and source analysis artifacts in `../research/`.
+This package defines memory-generation quality controls derived from `research/research.md` and source analysis artifacts in `../research/`.
 
 Primary outcome: new memory files are high-signal, actionable, and index-safe.
 <!-- /ANCHOR:executive-summary -->
@@ -35,7 +35,7 @@ Primary outcome: new memory files are high-signal, actionable, and index-safe.
 |-------|-------|
 | Package | `003-memory-quality-qp-0-4` |
 | Parent Spec | `../spec.md` |
-| Research Inputs | `../research.md`, `../research/` |
+| Research Inputs | `../research/research.md`, `../research/` |
 | Status | Complete |
 | Implementation Status | Complete (admin closure 2026-02-19) |
 | Last Updated | 2026-02-18 |

@@ -81,7 +81,7 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | `command/spec_kit/handover.md` | Modify | AGENTS.md references |
 | `command/spec_kit/implement.md` | Modify | AGENTS.md references |
 | `command/spec_kit/resume.md` | Modify | AGENTS.md references |
-| `command/spec_kit/research.md` | Modify | AGENTS.md references |
+| `command/spec_kit/research/research/research.md` | Modify | AGENTS.md references |
 | `command/spec_kit/plan.md` | Modify | AGENTS.md references |
 | `command/memory/save.md` | Modify | Gate 5 -> Memory Save Rule |
 | `command/spec_kit/assets/*.yaml` (9 files) | Modify | AGENTS.md references |
@@ -91,7 +91,7 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | `skill/system-spec-kit/README.md` | Modify | Template counts, AGENTS.md ref |
 | `scripts/skill_advisor.py` | Modify | Boost thresholds, debug routing |
 | `opencode.json` (project) | Modify | Document shared-DB |
-| `agent/research.md` | Modify | AGENTS.md reference |
+| `agent/research/research/research.md` | Modify | AGENTS.md reference |
 
 ---
 

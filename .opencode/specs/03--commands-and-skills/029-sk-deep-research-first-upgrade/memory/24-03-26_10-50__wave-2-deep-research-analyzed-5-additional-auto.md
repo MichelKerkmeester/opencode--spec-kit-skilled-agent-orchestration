@@ -133,10 +133,10 @@ Next: Continue implementation
 
 | File | Status |
 |------|--------|
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `deep research` | `gpt-researcher autoresearchclaw` | `additional auto-research` | `repos gpt-researcher` | `commands skills/029` | `analyzed additional` | `auto-research repos` | `research analyzed` | `skills/029 deep` | `research first` | `first upgrade` | `upgrade wave` |
 

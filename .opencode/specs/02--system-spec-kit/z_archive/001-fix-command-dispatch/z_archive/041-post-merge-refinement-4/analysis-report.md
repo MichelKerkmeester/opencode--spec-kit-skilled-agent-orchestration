@@ -181,7 +181,7 @@ These are improvements, polish items, or minor inconsistencies.
 2. **Template Count Inconsistency:**
    - `SKILL.md:133` claims 11 templates
    - `README.md:17` says 10 templates
-   - Actual count: 10 files (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md, handover.md, debug-delegation.md, implementation-summary.md, context_template.md) + `memory/context.md` = 11 if counted
+   - Actual count: 10 files (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md, handover.md, debug-delegation.md, implementation-summary.md, context_template.md) + `memory/context.md` = 11 if counted
 
 3. **Version Architecture:**
    - SKILL.md declares v16.0.0
@@ -421,7 +421,7 @@ These are improvements, polish items, or minor inconsistencies.
 **Key Findings:**
 
 1. **Template Count (10-11):**
-   - Root templates (10): spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md, handover.md, debug-delegation.md, implementation-summary.md, context_template.md
+   - Root templates (10): spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md, handover.md, debug-delegation.md, implementation-summary.md, context_template.md
    - Nested template (1): memory/context.md
    - Total: 11 if memory/context.md counted separately
 
@@ -703,7 +703,7 @@ These are improvements, polish items, or minor inconsistencies.
 │   ├── tasks.md
 │   ├── checklist.md
 │   ├── decision-record.md
-│   ├── research.md
+│   ├── research/research.md
 │   ├── handover.md
 │   ├── debug-delegation.md
 │   ├── implementation-summary.md

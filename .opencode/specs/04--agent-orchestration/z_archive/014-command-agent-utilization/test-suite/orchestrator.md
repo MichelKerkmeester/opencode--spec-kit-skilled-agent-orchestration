@@ -157,7 +157,7 @@ ls scratch/test-suite/workspaces/plan-happy/spec.md
 ls scratch/test-suite/workspaces/plan-happy/plan.md
 ls scratch/test-suite/workspaces/implement-happy/implementation-summary.md
 ls scratch/test-suite/workspaces/complete-happy/implementation-summary.md
-ls scratch/test-suite/workspaces/research-happy/research.md
+ls scratch/test-suite/workspaces/research-happy/research/research/research.md
 ls scratch/test-suite/workspaces/debug-happy/debug-delegation.md
 ls scratch/test-suite/workspaces/resume-happy/  # files exist
 ls scratch/test-suite/workspaces/handover-happy/handover.md
@@ -212,7 +212,7 @@ Write `results/test-report.md` with this format:
 | plan-happy | spec.md, plan.md, tasks.md | [list] | ✓/✗ |
 | implement-happy | tasks.md, impl-summary.md | [list] | ✓/✗ |
 | complete-happy | 5 artifacts | [list] | ✓/✗ |
-| research-happy | research.md | [list] | ✓/✗ |
+| research-happy | research/research.md | [list] | ✓/✗ |
 | debug-happy | debug-delegation.md | [list] | ✓/✗ |
 | handover-happy | handover.md | [list] | ✓/✗ |
 

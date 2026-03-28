@@ -177,7 +177,7 @@ The `handover.md` command uses a `model` parameter in Task tool invocations that
 
 ### Context
 
-The `research.md` command lists `WebSearch` in allowed-tools, but this tool may not exist. Only `webfetch` is confirmed to exist.
+The `research/research.md` command lists `WebSearch` in allowed-tools, but this tool may not exist. Only `webfetch` is confirmed to exist.
 
 ### Decision
 

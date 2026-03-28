@@ -40,7 +40,7 @@ optional_workflows:
       enabled: true
       prompt: |
         WORKFLOW CHECKPOINT - Research Complete
-        Research phase complete. Created: research.md (17 sections)
+        Research phase complete. Created: research/research.md (17 sections)
         Continue to Step 1 (Request Analysis)? [Y/n/review]
       options:
       - { key: "Y", action: "continue" }
@@ -683,7 +683,7 @@ workflow:
     - Load plan.md
     - Fill Technical Context
     - Fill Constitution Check section
-    - Phase 0: Generate research.md to resolve unknowns
+    - Phase 0: Generate research/research.md to resolve unknowns
     - Phase 1: Define component structure and interfaces
     - Generate Testing Strategy
     - Generate Success Metrics
@@ -692,7 +692,7 @@ workflow:
     - Generate Phase 2-4 outlines
     outputs:
     - plan.md: technical_approach
-    - research.md: resolved_unknowns
+    - research/research.md: resolved_unknowns
     template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
     template_prompt_contract:
       canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md

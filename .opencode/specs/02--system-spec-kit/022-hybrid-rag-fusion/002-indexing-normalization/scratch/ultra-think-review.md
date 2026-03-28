@@ -2,8 +2,8 @@
 
 I’m pulling the research doc plus a few scratch artifacts so I can verify whether the synthesis matches the underlying agent outputs before scoring it.
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ 1 line read
 
 ● List directory ~/.copilot/session-state/a125bdbb-3af8-4924-8e06-366e1d3d3fb9
@@ -19,12 +19,12 @@ I’ve got the file inventory. Next I’m mapping the research doc’s structure
 
 ● Search (grep)
   │ "^(#|##|###) " (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normaliza
-  │ tion/research.md)
+  │ tion/research/research/research.md)
   └ 78 lines found
 
 ● Search (grep)
   │ "\bP[0-3]\b|Priority|Finding|Decomposition|Recommendation" (.opencode/specs/02--system-spec-kit/
-  │ 022-hybrid-rag-fusion/002-indexing-normalization/research.md)
+  │ 022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md)
   └ 32 lines found
 
 ● Create session plan file (shell)
@@ -32,25 +32,25 @@ I’ve got the file inventory. Next I’m mapping the research doc’s structure
   │ '/Users/michelkerkmeester/.copilot/session-state/a125bdbb-3af8-4924-8e06-366e1d3d3fb9/plan.md'
   │ <<'EOF'
   │ # Plan
-  │ 1. Read research.md structure and extract findings, priorities, and decomposition advice.…
+  │ 1. Read research/research.md structure and extract findings, priorities, and decomposition advice.…
   └ 6 lines...
 
 I’ve mapped the document sections. Now I’m reading the core chunks plus three representative agent outputs across iterations so I can compare the document’s synthesis to the underlying evidence.
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ L131:260 (130 lines read)
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ L1:130 (130 lines read)
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ L391:470 (68 lines read)
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ L261:390 (130 lines read)
 
 ● Search (grep)
@@ -122,19 +122,19 @@ I’ve confirmed the architecture number isn’t flatly invented: one agent repo
 
 ● Search (grep)
   │ "TCOV|spec-affinity\.vitest|adversarial|cross-spec|generic trigger" (.opencode/specs/02--system-
-  │ spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md)
+  │ spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md)
   └ 12 lines found
 
 ● Search (grep)
   │ "AFFINITY-006|adversarial tests|spec-affinity\.vitest|generic trigger phrases|cross-spec
   │ collisions" (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalizatio
-  │ n/research.md)
+  │ n/research/research/research.md)
   └ 1 line found
 
 The cross-skill spot check exposed a bigger issue than I expected: the `ALIGN-001` in the final research doc is not the same `ALIGN-001` from the first cross-skill agent file. I’m checking the later cross-skill iteration now to see whether the doc intentionally renumbered/replaced findings or whether the IDs drifted during synthesis.
 
-● Read research.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+● Read research/research.md
+  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md
   └ L289:307 (19 lines read)
 
 ● Search (grep)
@@ -190,7 +190,7 @@ I resolved the header conflict: the files do have the documented `// MODULE:` he
 
 ● Search (grep)
   │ "importanceTier|importance_tier|recent_context|user_prompts" (.opencode/specs/02--system-spec-ki
-  │ t/022-hybrid-rag-fusion/002-indexing-normalization/research.md)
+  │ t/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md)
   └ 1 line found
 
 I’ve got enough to judge the synthesis quality now. I’m doing one last pass on the later cross-skill output so I can say confidently whether the final doc’s `ALIGN-*` section reflects the latest iteration rather than stale earlier IDs.
@@ -214,7 +214,7 @@ I’ve got enough to judge the synthesis quality now. I’m doing one last pass 
 
 I spot-checked `scratch/agent-output-iter-001-codex-A1.md`, `agent-output-iter-002-copilot-C1.md`, `agent-output-iter-002-codex-A1.md`, and the later cross-skill output in `agent-output-iter-003-codex-A1.md`.
 
-1. **Evidence support:** Mostly strong. The doc’s bug, affinity, and architecture findings are well-grounded in concrete files, counts, and line-level reasoning. The affinity synthesis matches the source closely, including the `27.44%` synthetic false-positive result and BM25 recommendation (`research.md:177-195`, `scratch/agent-output-iter-002-copilot-C1.md:291-311`). Bug/test findings also match the underlying notes (`scratch/agent-output-iter-001-codex-A1.md:736-839`).  
+1. **Evidence support:** Mostly strong. The doc’s bug, affinity, and architecture findings are well-grounded in concrete files, counts, and line-level reasoning. The affinity synthesis matches the source closely, including the `27.44%` synthetic false-positive result and BM25 recommendation (`research/research.md:177-195`, `scratch/agent-output-iter-002-copilot-C1.md:291-311`). Bug/test findings also match the underlying notes (`scratch/agent-output-iter-001-codex-A1.md:736-839`).  
 **Confidence:** High.
 
 2. **Contradictions:** No major internal contradiction, but there are two tensions. `PIPELINE-001` says canonical dedup “works correctly” while `EDGE-001` says canonical path dedup is incomplete. That is reconcilable because they refer to different paths, but the doc should say so explicitly. Also `ARCH-001` cites cyclomatic complexity `198`, while a later architecture pass reframed the true hotspot as the inner callback at `158`; both are evidence-backed, but the method difference should be disclosed (`scratch/agent-output-iter-002-codex-A1.md:1499-1529`, `scratch/agent-output-iter-001-codex-A2.md:1610-1618`).  

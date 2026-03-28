@@ -19,7 +19,7 @@ The deep research loop has 4 phases: initialization, iteration (repeated), synth
 │  INIT    │────>│  LOOP                    │────>│  SYNTHESIS   │────>│  SAVE    │
 │          │     │  ┌────────────────────┐  │     │              │     │          │
 │ Config    │     │  │ Read State         │  │     │ Final        │     │ Memory   │
-│ Strategy │     │  │ Check Convergence  │  │     │ research.md  │     │ Context  │
+│ Strategy │     │  │ Check Convergence  │  │     │ research/research.md  │     │ Context  │
 │ State    │     │  │ Dispatch Agent     │  │     │ compilation  │     │ Save     │
 │          │     │  │ Evaluate Results   │  │     │              │     │          │
 │          │     │  │ Loop Decision      │  │     │              │     │          │
@@ -44,10 +44,10 @@ Set up all state files for a new research session.
    - `resume`: config + state + strategy all exist and agree
    - `completed-session`: consistent prior state with `config.status == "complete"`
    - `invalid-state`: partial or contradictory artifacts
-2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/scratch`
-3. **Write config**: `scratch/deep-research-config.json` from template + user parameters
-4. **Initialize state log**: First line of `scratch/deep-research-state.jsonl` with config record
-5. **Initialize strategy**: `scratch/deep-research-strategy.md` from template with:
+2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/research/iterations`
+3. **Write config**: `research/deep-research-config.json` from template + user parameters
+4. **Initialize state log**: First line of `research/deep-research-state.jsonl` with config record
+5. **Initialize strategy**: `research/deep-research-strategy.md` from template with:
    - Topic from user input
    - Initial key questions (3-5, from topic analysis)
    - Known context from `memory_context()` results (if any), injected only after the strategy file exists
@@ -61,9 +61,9 @@ Set up all state files for a new research session.
 6. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing
 
 ### Outputs
-- `scratch/deep-research-config.json`
-- `scratch/deep-research-state.jsonl` (1 line)
-- `scratch/deep-research-strategy.md`
+- `research/deep-research-config.json`
+- `research/deep-research-state.jsonl` (1 line)
+- `research/deep-research-strategy.md`
 
 ### Auto-Resume Protocol
 If state files already exist from a prior session:
@@ -110,12 +110,12 @@ When the convergence algorithm returns STOP:
 
 Before dispatching, check for a pause sentinel file:
 
-1. Check if `scratch/.deep-research-pause` exists
+1. Check if `research/.deep-research-pause` exists
 2. If present:
    - Log event to JSONL: `{"type":"event","event":"paused","reason":"sentinel file detected"}`
    - Halt the loop with message:
      ```
-     Research paused. Delete scratch/.deep-research-pause to resume.
+     Research paused. Delete research/.deep-research-pause to resume.
      Current state: Iteration {N}, {remaining} questions remaining.
      ```
    - Do NOT exit to synthesis -- the loop is suspended, not stopped
@@ -151,10 +151,10 @@ Focus Area: {strategy.nextFocus}
 Remaining Questions: {strategy.remainingQuestions}
 Last 3 Iterations Summary: {brief summaries}
 State Files:
-  - Config: {spec_folder}/scratch/deep-research-config.json
-  - State: {spec_folder}/scratch/deep-research-state.jsonl
-  - Strategy: {spec_folder}/scratch/deep-research-strategy.md
-Output: Write findings to {spec_folder}/scratch/iteration-{NNN}.md
+  - Config: {spec_folder}/research/deep-research-config.json
+  - State: {spec_folder}/research/deep-research-state.jsonl
+  - Strategy: {spec_folder}/research/deep-research-strategy.md
+Output: Write findings to {spec_folder}/research/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 ```
 
@@ -173,7 +173,7 @@ After dispatch, the orchestrator monitors the running iteration against budget l
 
 #### Step 4: Evaluate Results
 After agent completes:
-1. Verify `{spec_folder}/review/iteration-{NNN}.md` was created
+1. Verify `{spec_folder}/research/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
 3. Verify strategy.md was updated
 4. Extract `newInfoRatio` from JSONL record
@@ -184,7 +184,7 @@ After agent completes:
 After evaluating iteration results, generate a human-readable dashboard:
 
 1. Read JSONL state log (all iteration records) and strategy.md (current state)
-2. Generate or regenerate `scratch/deep-research-dashboard.md` with the following sections:
+2. Generate or regenerate `research/deep-research-dashboard.md` with the following sections:
    - **Iteration table**: `| run | focus | newInfoRatio | findings count | status |`
    - **Question status**: `X/Y answered` with itemized list (answered vs remaining)
    - **Trend**: Last 3 newInfoRatio values with direction indicator (ascending, descending, flat)
@@ -206,16 +206,16 @@ After each iteration is verified (JSONL appended, iteration file written, strate
 
 1. **Stage targeted files only** (never `git add -A`):
    ```bash
-   git add scratch/iteration-{NNN}.md
-   git add scratch/deep-research-state.jsonl
-   git add scratch/deep-research-strategy.md
-   git add research.md  # if it exists
+   git add research/iterations/iteration-{NNN}.md
+   git add research/deep-research-state.jsonl
+   git add research/deep-research-strategy.md
+   git add research/research.md  # if it exists
    ```
 2. **Sanitize**: Exclude `.env`, credentials, large binaries from staging
 3. **Commit**: `git commit -m "chore(deep-research): iteration {NNN} complete"`
 4. **On commit failure**: Log warning and continue (checkpoint is non-blocking)
 
-Checkpoint commits provide rollback points: `git log -- scratch/` shows the last good state for any file. If state corruption occurs, `git checkout HEAD~1 -- scratch/deep-research-state.jsonl` restores the previous version.
+Checkpoint commits provide rollback points: `git log -- research/` shows the last good state for the research packet. If state corruption occurs, `git checkout HEAD~1 -- research/deep-research-state.jsonl` restores the previous version.
 
 #### Step 5: Loop Decision
 - If convergence check returns STOP: exit to synthesis
@@ -224,13 +224,13 @@ Checkpoint commits provide rollback points: `git log -- scratch/` shows the last
 
 ### Ideas Backlog Convention
 
-A persistent ideas file at `scratch/research-ideas.md` serves as a parking lot for promising directions not yet pursued.
+A persistent ideas file at `research/research-ideas.md` serves as a parking lot for promising directions not yet pursued.
 
 #### Check Points
 
 The orchestrator checks the ideas backlog at three points:
 
-1. **Init**: During strategy initialization, if `scratch/research-ideas.md` exists from a prior session, read it and incorporate relevant ideas into the initial key questions or "Next Focus"
+1. **Init**: During strategy initialization, if `research/research-ideas.md` exists from a prior session, read it and incorporate relevant ideas into the initial key questions or "Next Focus"
 2. **Stuck**: During stuck recovery (Step 2a of the recovery protocol in convergence.md), check ideas backlog before defaulting to generic recovery strategies. Deferred ideas often provide the best escape from stuck states
 3. **Resume**: On auto-resume, read the ideas file alongside JSONL and strategy.md to restore full context
 
@@ -281,7 +281,7 @@ When agent dispatch fails after the earlier recovery tiers are exhausted:
    - Read state files (JSONL + strategy.md)
    - Determine focus from strategy "Next Focus"
    - Execute 3-5 research actions directly
-   - Write `scratch/iteration-NNN.md`
+   - Write `research/iterations/iteration-NNN.md`
    - Update strategy.md
    - Append iteration record to JSONL
 4. Continue loop normally after direct-mode iteration completes
@@ -412,13 +412,13 @@ Replace Task tool dispatch with shell-level `claude -p` invocation:
 ## 4. PHASE: SYNTHESIS
 
 ### Purpose
-Compile all iteration findings into final research.md. The synthesis workflow owns the canonical `research.md` output.
+Compile all iteration findings into final research/research.md. The synthesis workflow owns the canonical `research/research.md` output.
 
 ### Steps
 
-1. **Read all iteration files**: `scratch/iteration-*.md`
+1. **Read all iteration files**: `research/iterations/iteration-*.md`
 2. **Read strategy.md**: Final state of questions, approaches
-3. **Compile research.md**: Merge findings into 17-section format
+3. **Compile research/research.md**: Merge findings into 17-section format
    - Deduplicate overlapping findings
    - Organize by section topic
    - Add citations from iteration files
@@ -434,8 +434,8 @@ Compile all iteration findings into final research.md. The synthesis workflow ow
 5. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredCount":A,"totalQuestions":Q,"stopReason":"converged"}`
 
 ### Progressive vs Final Synthesis
-- If `progressiveSynthesis: true` (default): research.md was updated each iteration. Final synthesis is a cleanup pass.
-- If `progressiveSynthesis: false`: research.md is created from scratch during synthesis.
+- If `progressiveSynthesis: true` (default): research/research.md was updated each iteration. Final synthesis is a cleanup pass.
+- If `progressiveSynthesis: false`: research/research.md is created from scratch during synthesis.
 
 ---
 
@@ -474,7 +474,7 @@ Preserve research context to memory system.
     |-- recovered (newInfoRatio > 0) --> [ITERATING]
     |-- still stuck --> [SYNTHESIZING] (gaps documented)
 
-[SYNTHESIZING] --> final research.md compilation
+[SYNTHESIZING] --> final research/research.md compilation
     |
 [SAVING] --> memory context preservation
     |
@@ -495,7 +495,7 @@ Preserve research context to memory system.
 | JSONL malformed | Loop | Skip malformed lines, reconstruct from valid entries |
 | 3+ consecutive failures | Loop | Halt loop, enter synthesis with partial findings |
 | Agent dispatch failure (API overload, timeout) | Loop | Escalate through the documented recovery ladder in order. Direct mode fallback is reference-only unless the runtime explicitly supports it. |
-| Memory save fails | Save | Research mode saves to `scratch/` as backup; review mode preserves the `review/` packet as backup, then logs the error |
+| Memory save fails | Save | Preserve the current `research/` or `review/` packet as backup, then log the error |
 
 ### State Recovery Protocol
 
@@ -505,7 +505,7 @@ When state files are missing or corrupted, apply this 5-priority cascade:
 |----------|-----------|----------------|
 | 1 (Primary) | JSONL exists and parseable | Normal operation (with fault-tolerant parsing) |
 | 2 (Strategy rebuild) | JSONL exists, strategy.md missing | Reconstruct strategy from JSONL: extract questions, focus areas, newInfoRatio trend. Create minimal strategy.md |
-| 3 (JSONL reconstruction) | JSONL missing/corrupt, iteration files exist | Scan `scratch/iteration-*.md`, parse Assessment sections, reconstruct JSONL with `status: "reconstructed"` |
+| 3 (JSONL reconstruction) | JSONL missing/corrupt, iteration files exist | Scan `research/iterations/iteration-*.md`, parse Assessment sections, reconstruct JSONL with `status: "reconstructed"` |
 | 4 (Config-only restart) | Only config.json remains | Restart from initialization phase using config parameters. Log: `{"type":"event","event":"fresh_restart","reason":"state_files_missing"}` |
 | 5 (Abort) | Config.json also missing | Cannot recover. Report error and halt. |
 
@@ -524,7 +524,7 @@ In confirm mode, the YAML workflow adds approval gates:
 | After initialization | Show config and initial strategy. Wait for approval |
 | After each iteration | Show iteration findings and convergence status. Options: Continue, Adjust Focus, Stop |
 | Before synthesis | Show summary of all iterations. Wait for approval to synthesize |
-| After synthesis | Show final research.md summary. Approve or request revisions |
+| After synthesis | Show final research/research.md summary. Approve or request revisions |
 
 <!-- /ANCHOR:confirm-mode-additions -->
 
@@ -543,7 +543,7 @@ Set up all state files for a new review session. Discover the scope, order dimen
 #### Steps
 
 1. **Classify session state**: Same as research mode (fresh, resume, completed-session, invalid-state)
-2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/scratch`
+2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/review/iterations`
 3. **Scope discovery**: Resolve the review target into a concrete file list:
    - `spec-folder`: Read spec.md, plan.md, implementation files listed in tasks.md
    - `skill`: Read SKILL.md, references/, assets/, scripts/, find agent definitions and command entry points
@@ -629,7 +629,7 @@ State Files:
   - Config: {spec_folder}/review/deep-research-config.json
   - State: {spec_folder}/review/deep-research-state.jsonl
   - Strategy: {spec_folder}/review/deep-review-strategy.md
-Output: Write findings to {spec_folder}/review/iteration-{NNN}.md
+Output: Write findings to {spec_folder}/review/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
@@ -651,7 +651,7 @@ Each protocol produces a structured result in `traceabilityChecks.results[]` wit
 
 #### Step 4: Evaluate Results (adapted)
 After agent completes:
-1. Verify `{spec_folder}/review/iteration-{NNN}.md` was created
+1. Verify `{spec_folder}/review/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with review iteration fields: `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
 3. Verify strategy.md was updated (dimension progress, findings count, protocol status)
 4. Extract `newFindingsRatio` from JSONL record
@@ -693,7 +693,7 @@ Compile all iteration findings into the final `{spec_folder}/review/review-repor
 
 #### Steps
 
-1. **Read all iteration files**: `{spec_folder}/review/iteration-*.md`
+1. **Read all iteration files**: `{spec_folder}/review/iterations/iteration-*.md`
 2. **Read strategy**: Final state of dimensions, findings, coverage, and protocol status
 3. **Finding registry dedup**: Consolidate findings across iterations:
    - Group findings by file + line range + root cause

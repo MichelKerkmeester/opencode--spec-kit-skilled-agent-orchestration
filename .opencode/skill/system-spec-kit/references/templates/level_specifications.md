@@ -256,7 +256,7 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 **Folder Structure:**
 ```
-specs/012-user-profile-api/
+012-user-profile-api/
 ├── spec.md                    # Requirements and scope
 ├── plan.md                    # Technical approach
 ├── tasks.md                   # Implementation tasks
@@ -308,7 +308,7 @@ specs/012-user-profile-api/
 
 ### Optional Files
 
-- `research.md` - Comprehensive research documentation
+- `research/research.md` - Comprehensive research documentation
 
 ### Content Expectations
 
@@ -351,7 +351,7 @@ specs/012-user-profile-api/
 - `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/decision-record.md`
 
 **Optional:**
-- `.opencode/skill/system-spec-kit/templates/research.md` (copy from root templates/)
+- `.opencode/skill/system-spec-kit/templates/research.md` (copy into `research/research.md` from root templates/)
 
 ### Template Adaptation
 
@@ -484,7 +484,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 - `.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/checklist-extended.md`
 
 **Optional:**
-- `.opencode/skill/system-spec-kit/templates/research.md` (copy from root templates/)
+- `.opencode/skill/system-spec-kit/templates/research.md` (copy into `research/research.md` from root templates/)
 
 ### Creating Level 3+ Spec Folder
 
@@ -838,7 +838,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 **Composed Level 3 (Core + Verify + Arch ~1090 LOC):**
 - All Level 2 templates + architecture decisions
 - [decision-record.md](../../templates/level_3/decision-record.md) - ADRs
-- [research.md](../../templates/research.md) - Research (optional)
+- [research template](../../templates/research.md) - Optional research template copied into `research/research.md`
 
 **Composed Level 3+ (All addendums ~1075 LOC):**
 - All Level 3 templates + enterprise governance

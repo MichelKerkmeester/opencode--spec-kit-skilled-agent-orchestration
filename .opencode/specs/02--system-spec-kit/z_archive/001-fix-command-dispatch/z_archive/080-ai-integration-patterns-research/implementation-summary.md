@@ -23,7 +23,7 @@ This research task analyzed three open-source AI integration repositories to ext
 
 | File | Purpose |
 |------|---------|
-| `research.md` | Comprehensive 13-section research document with code examples |
+| `research/research.md` | Comprehensive 13-section research document with code examples |
 | `spec.md` | Research scope and success criteria |
 | `plan.md` | Research methodology and key findings |
 | `tasks.md` | Completed and future task tracking |

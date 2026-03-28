@@ -190,7 +190,7 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Real-session output confirmed to contain path fragments and short tokens (research.md Domain D) |
+| 1 | **Necessary?** | PASS | Real-session output confirmed to contain path fragments and short tokens (research/research.md Domain D) |
 | 2 | **Beyond Local Maxima?** | PASS | Extraction depth reduction and AI-only alternatives evaluated and rejected |
 | 3 | **Sufficient?** | PASS | Three deterministic stages cover the three categories of noise identified in research |
 | 4 | **Fits Goal?** | PASS | Directly addresses REQ-003/REQ-004/REQ-005 |
@@ -280,7 +280,7 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | toolCalls/exchanges confirmed present in CollectedDataBase, confirmed absent from all template sections (research.md Domain F) |
+| 1 | **Necessary?** | PASS | toolCalls/exchanges confirmed present in CollectedDataBase, confirmed absent from all template sections (research/research.md Domain F) |
 | 2 | **Beyond Local Maxima?** | PASS | JSON blob and unconditional render alternatives evaluated and rejected |
 | 3 | **Sufficient?** | PASS | Optional guard sections with top-3 cap solve data loss without verbosity regression |
 | 4 | **Fits Goal?** | PASS | Directly addresses REQ-006/REQ-007/REQ-008 |

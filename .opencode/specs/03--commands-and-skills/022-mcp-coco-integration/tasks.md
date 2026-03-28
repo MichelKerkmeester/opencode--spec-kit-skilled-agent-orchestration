@@ -260,7 +260,7 @@ contextType: "implementation"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Research**: See `research.md` (v1.1, 6-agent investigation)
+- **Research**: See `research/research.md` (v1.1, 6-agent investigation)
 
 <!-- /ANCHOR:cross-refs -->
 

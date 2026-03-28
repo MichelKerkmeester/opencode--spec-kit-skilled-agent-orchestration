@@ -81,7 +81,7 @@ Design of a "review mode" for sk-deep-research — an auto, iterative deep revie
 
 ## 10. Next Focus
 
-Research complete. All 5 questions answered. Ready for synthesis → research.md.
+Research complete. All 5 questions answered. Ready for synthesis → research/research.md.
 
 ---
 

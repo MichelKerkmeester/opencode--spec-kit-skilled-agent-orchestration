@@ -78,10 +78,10 @@ Implement first. Highest ROI. Each has real-world evidence from reference repos 
 |------|-------------|--------|
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_evaluate_results` | Add `convergenceSignals` object (rolling_avg, MAD, entropy values) to iteration JSONL record |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_handle_convergence` | Replace generic "widen scope" fallback with strategy-based selection from convergence.md Section 4 (try opposites / combine findings / audit low-value) |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_dispatch_iteration` | Inject `scratch/research-ideas.md` contents into dispatch context; initialize file in `step_initialize` if absent |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_dispatch_iteration` | Inject `research/research-ideas.md` contents into dispatch context; initialize file in `step_initialize` if absent |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_check_convergence` | Invoke `validateNewInfoRatio()` logic from convergence.md Section 3; record noise floor in JSONL event |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_read_state` | Validate `fileProtection` constraints on state files; enforce append-only for JSONL, immutable for config |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_initialize` | Create `scratch/research-ideas.md` if not present (needed for P2.2 wiring) |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | `step_initialize` | Create `research/research-ideas.md` if not present (needed for P2.2 wiring) |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | JSONL consumers | Handle out-of-order JSONL from parallel waves (sort by `run` field when computing rolling averages) |
 | `.opencode/skill/sk-deep-research/assets/deep_research_config.json` | Top-level | Add `fileProtection` default map: `{"config.json":"immutable","state.jsonl":"append-only","strategy.md":"mutable","iteration-*.md":"write-once"}` |
 
@@ -420,7 +420,7 @@ Defer or deprioritize. Low immediate value, large effort, or dependent on extern
 | **Source** | Iteration 4 Finding 6 (autoresearch-opencode dual-file activation: opt-in + kill-switch) |
 | **v2 Origin** | Extends v2 P2.6 (Sentinel Pause File) with a second gate |
 
-**Description**: Require BOTH activation file existence AND absence of kill-switch for research to proceed. Two independent gates: one for activation (`scratch/.deep-research-active`), one for emergency stop (`scratch/.deep-research-pause`). Extends the existing P2.6 sentinel pattern.
+**Description**: Require BOTH activation file existence AND absence of kill-switch for research to proceed. Two independent gates: one for activation (`scratch/.deep-research-active`), one for emergency stop (`research/.deep-research-pause`). Extends the existing P2.6 sentinel pattern.
 
 **File-level changes:**
 

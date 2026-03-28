@@ -88,7 +88,7 @@
 
 ### Research → Debug Handoff
 When research identifies a bug:
-1. Research agent documents findings in research.md
+1. Research agent documents findings in research/research.md
 2. Orchestrator reviews findings
 3. If fix needed, dispatch @debug with structured handoff
 4. Debug agent receives: error, files, prior attempts (none for fresh bugs)

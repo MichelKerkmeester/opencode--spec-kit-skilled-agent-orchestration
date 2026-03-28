@@ -80,7 +80,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | 3 | Specification | Create spec.md | spec.md, feature branch |
 | 4 | Clarification | Resolve ambiguities | updated spec.md |
 | 5 | Quality Checklist | Generate validation checklist (ACTIVELY USED at completion) | checklist.md |
-| 6 | Planning | Create technical plan | plan.md, research.md |
+| 6 | Planning | Create technical plan | plan.md, research/research.md |
 | 7 | Task Breakdown | Break into tasks | tasks.md |
 | 8 | Analysis | Verify consistency | consistency_report |
 | 9 | Implementation Check | Verify prerequisites | greenlight |
@@ -114,7 +114,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | 3 | Specification | `spec.md` created | File exists, no [NEEDS CLARIFICATION] |
 | 4 | Clarification | updated `spec.md` | Ambiguities resolved |
 | 5 | Quality Checklist | `checklist.md` (Level 2+) | Checklist items defined |
-| 6 | Planning | `plan.md` (+ research.md if Phase 3 ran) | Technical approach documented |
+| 6 | Planning | `plan.md` (+ research/research.md if Phase 3 ran) | Technical approach documented |
 | 7 | Task Breakdown | `tasks.md` created | All tasks listed with IDs |
 
 ### Planning Gate (HARD BLOCK between Step 7 and Step 8)
@@ -133,7 +133,7 @@ IF any artifact missing -> STOP -> Return to appropriate step -> Complete -> Re-
 When `:with-research` flag present or research_triggered == TRUE:
 - Execute research workflow after Step 2, before Step 3 (Specification), using same spec_path and execution_mode
 - Display checkpoint with key findings summary
-- User responds: Y (continue) / n (pause) / review (see research.md first)
+- User responds: Y (continue) / n (pause) / review (see research/research.md first)
 - If research_triggered == FALSE, continue directly to Step 3 (Specification)
 
 ---

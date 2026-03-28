@@ -9,7 +9,7 @@
     "mcp",
     "integration"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.662Z",
+  "lastUpdated": "2026-03-28T10:35:07.699Z",
   "specId": "022",
   "folderSlug": "mcp-coco-integration",
   "parentChain": [
@@ -21,9 +21,5 @@
     "18-03-26_14-51__cross-cli-auto-usage-test.md",
     "18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md",
     "21-03-26_07-41__next-steps.md"
-  ],
-  "title": "Feature Specification: CocoIndex Code MCP Integration",
-  "status": "Complete (Phases 1-7 Cross-CLI Adoption Boosting)",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: CocoIndex Code MCP Integration"
+  ]
 }

@@ -12,7 +12,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.973Z",
+  "lastUpdated": "2026-03-28T10:35:07.647Z",
   "specId": "064",
   "folderSlug": "bug-analysis-and-fix",
   "parentChain": [
@@ -22,9 +22,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User [064-bug-analysis-and-fix/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User Stories"
+  "memoryNameHistory": []
 }

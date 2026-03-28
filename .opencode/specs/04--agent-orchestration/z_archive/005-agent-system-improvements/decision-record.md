@@ -131,8 +131,8 @@ Research identified gaps in agent system documentation (missing verification sec
 ### Implementation
 
 **Affected Systems**:
-- Agent files: orchestrate.md, speckit.md, research.md
-- Command files: complete.md, research.md, debug.md, implement.md
+- Agent files: orchestrate.md, speckit.md, research/research.md
+- Command files: complete.md, research/research.md, debug.md, implement.md
 
 **Rollback**: Git revert individual file changes
 

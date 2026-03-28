@@ -94,11 +94,11 @@ contextType: "implementation"
 
 | ID | Task | Priority | Status |
 |----|------|----------|--------|
-| T101 | Add @research agent routing to research.md | P0 | Complete |
+| T101 | Add @research agent routing to research/research.md | P0 | Complete |
 | T102 | Configure Steps 3-7 dispatch to @research | P0 | Complete |
 | T103 | Add fallback to "general" agent | P0 | Complete |
-| T104 | Add Quality Gates section to research.md | P1 | Complete |
-| T105 | Add Circuit Breaker section to research.md | P1 | Complete |
+| T104 | Add Quality Gates section to research/research.md | P1 | Complete |
+| T105 | Add Circuit Breaker section to research/research.md | P1 | Complete |
 
 ### Plan Command (T106-T110)
 
@@ -197,7 +197,7 @@ contextType: "implementation"
 | T305 | Merge tasks.md | P0 | Complete |
 | T306 | Merge checklist.md | P0 | Complete |
 | T307 | Merge decision-record.md | P0 | Complete |
-| T308 | Merge research.md | P1 | Complete |
+| T308 | Merge research/research.md | P1 | Complete |
 | T309 | Preserve ai-protocols.md from 006 | P1 | Complete |
 | T310 | Create implementation-summary.md | P0 | Complete |
 | T311 | Migrate memory files from 006 | P0 | Complete |

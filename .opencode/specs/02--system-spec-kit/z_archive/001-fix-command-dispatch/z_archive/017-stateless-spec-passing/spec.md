@@ -33,7 +33,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 
 **Critical Issues:**
 - `spec_folder_detection.md` has 18+ references and needs FULL REWRITE
-- `research.md` actively CREATES `.spec-active` (violates Gate 5)
+- `research/research.md` actively CREATES `.spec-active` (violates Gate 5)
 - `generate-context.js` has fallback code that reads `.spec-active`
 - Multiple YAML prompts reference the marker file
 
@@ -50,7 +50,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 
 **Commands:**
 - `.opencode/command/spec_kit/resume.md` (7 refs) - Rewrite Phase 1
-- `.opencode/command/spec_kit/research.md` (2 refs) - Remove lines 83-85
+- `.opencode/command/spec_kit/research/research/research.md` (2 refs) - Remove lines 83-85
 - `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` (7 refs)
 - `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` (7 refs)
 - `.opencode/command/prompt/assets/improve_prompt.yaml` (2 refs)

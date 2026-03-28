@@ -49,7 +49,7 @@ Audit all command configuration files in `.opencode/command/` to ensure agent ro
 |------|-----------------|
 | `.opencode/command/create/plan.md` | @speckit agent routing (spec 014) |
 | `.opencode/command/create/implement.md` | @speckit agent routing (spec 014) |
-| `.opencode/command/create/research.md` | @research agent routing (spec 014) |
+| `.opencode/command/create/research/research/research.md` | @research agent routing (spec 014) |
 | `.opencode/command/create/complete.md` | @speckit agent routing (spec 014) |
 | `.opencode/command/create/debug.md` | @debug agent routing (spec 014) |
 | `.opencode/command/create/resume.md` | @context agent routing (spec 014) |
@@ -66,7 +66,7 @@ Audit all command configuration files in `.opencode/command/` to ensure agent ro
 |------|-----------------|
 | `.opencode/command/spec_kit/complete.md` | References check-placeholders.sh (spec 128), check-anchors.sh (spec 129), upgrade-level.sh (spec 124) |
 | `.opencode/command/spec_kit/debug.md` | @debug agent routing (spec 014) |
-| `.opencode/command/spec_kit/research.md` | @research agent routing (spec 014) |
+| `.opencode/command/spec_kit/research/research/research.md` | @research agent routing (spec 014) |
 | `.opencode/command/spec_kit/implement.md` | @speckit agent routing |
 | `.opencode/command/spec_kit/plan.md` | @speckit agent routing |
 | `.opencode/command/spec_kit/resume.md` | @context agent routing |

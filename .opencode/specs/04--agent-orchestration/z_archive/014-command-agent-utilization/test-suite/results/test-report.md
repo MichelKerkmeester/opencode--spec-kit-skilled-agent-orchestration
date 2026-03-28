@@ -85,14 +85,14 @@
 
 #### T-RES-01: Happy path :auto — PASS
 - Steps: 9/9 completed
-- Artifacts: research.md (64KB), checklist.md (2.8KB), memory file
+- Artifacts: research/research.md (64KB), checklist.md (2.8KB), memory file
 - Quality Gates: Pre=PASS (100/70), Post=PASS (85/70)
 - Research Content: Comprehensive coverage of WebSocket collaboration patterns with citations
 - Workspace: `research-happy/`
 
 #### T-RES-02: Empty codebase — PASS
 - Expected Behavior: Research complete with gaps documented
-- Actual: research.md (57KB) with 8 explicit "greenfield project" markers documenting absence of existing codebase
+- Actual: research/research.md (57KB) with 8 explicit "greenfield project" markers documenting absence of existing codebase
 - Correctly focuses on architectural recommendations for new system
 - Workspace: `research-empty-codebase/`
 
@@ -176,7 +176,7 @@ Note: `[PLACEHOLDER]` appears in 2 checklist files as documentation text describ
 | plan-happy             | spec.md, plan.md, tasks.md, checklist.md, memory | spec.md, plan.md, tasks.md, checklist.md, memory/    | PASS   |
 | implement-happy        | tasks.md, implementation-summary.md, memory      | tasks.md, implementation-summary.md, checklist.md, 2x memory | PASS |
 | complete-happy         | spec.md, plan.md, tasks.md, checklist.md, impl-summary.md, memory | All present | PASS |
-| research-happy         | research.md, checklist.md, memory                | research.md (64KB), checklist.md, memory/             | PASS   |
+| research-happy         | research/research.md, checklist.md, memory                | research/research.md (64KB), checklist.md, memory/             | PASS   |
 | debug-happy            | debug-delegation.md                               | debug-delegation.md (4.7KB) + inherited fixtures     | PASS   |
 | resume-happy           | resume-summary.txt                                | resume-summary.txt (1.3KB) + inherited fixtures      | PASS   |
 | handover-happy         | handover.md                                       | handover.md (4.4KB) + inherited fixtures             | PASS   |

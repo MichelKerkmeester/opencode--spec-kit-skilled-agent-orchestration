@@ -97,7 +97,7 @@ prerequisites:
   level_1_required: ["[SPEC_FOLDER]/spec.md", "[SPEC_FOLDER]/plan.md", "[SPEC_FOLDER]/tasks.md"]
   level_2_required: ["[SPEC_FOLDER]/checklist.md"]
   level_3_required: ["[SPEC_FOLDER]/decision-record.md"]
-  optional_artifacts: ["[SPEC_FOLDER]/research.md"]
+  optional_artifacts: ["[SPEC_FOLDER]/research/research.md"]
   verification: MUST EXIST BEFORE PROCEEDING
   note: This workflow assumes planning completed via /spec_kit:plan
 
@@ -340,7 +340,7 @@ workflow:
     - Load and review all planning artifacts
     - Understand requirements, analyze approach, identify dependencies, note constraints
     required_documents: ["[SPEC_FOLDER]/spec.md", "[SPEC_FOLDER]/plan.md"]
-    optional_documents: [research.md, "decision-record-*.md"]
+    optional_documents: [research/research.md, "decision-record-*.md"]
     validation: planning_artifacts_understood
     checkpoint:
       question: "Step 1 Complete: Plan and spec reviewed. How would you like to proceed?"

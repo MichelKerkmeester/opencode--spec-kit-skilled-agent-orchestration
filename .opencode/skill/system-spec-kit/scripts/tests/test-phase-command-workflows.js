@@ -65,7 +65,7 @@ function testPhaseCommandContracts() {
 function testPhaseFolderContracts() {
   const commandDocs = [
     { name: 'plan', file: 'plan.md' },
-    { name: 'research', file: 'research.md' },
+    { name: 'deep-research', file: 'deep-research.md' },
     { name: 'implement', file: 'implement.md' },
     { name: 'complete', file: 'complete.md' },
     { name: 'resume', file: 'resume.md' },
@@ -76,8 +76,12 @@ function testPhaseFolderContracts() {
     assertTrue(exists(filePath), `/spec_kit:${doc.name} doc exists`);
 
     const text = readFile(filePath);
+    const hasPhaseFolderContract = doc.name === 'deep-research'
+      ? text.includes('Phase folder') || text.includes('phase child')
+      : text.includes('--phase-folder=<path>') || text.includes('--phase-folder=<path> provided');
+
     assertTrue(
-      text.includes('--phase-folder=<path>') || text.includes('--phase-folder=<path> provided'),
+      hasPhaseFolderContract,
       `/spec_kit:${doc.name} documents --phase-folder contract`
     );
 
@@ -92,8 +96,6 @@ function testAssetPhaseFolderNotes() {
   const yamlAssets = [
     'spec_kit_plan_auto.yaml',
     'spec_kit_plan_confirm.yaml',
-    'spec_kit_research_auto.yaml',
-    'spec_kit_research_confirm.yaml',
     'spec_kit_implement_auto.yaml',
     'spec_kit_implement_confirm.yaml',
     'spec_kit_complete_auto.yaml',

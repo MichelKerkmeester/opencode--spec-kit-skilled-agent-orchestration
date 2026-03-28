@@ -14,7 +14,7 @@
       "essential": true,
       "inputs": {
         "mode1": "JSON data file path (e.g., /tmp/context-data.json)",
-        "mode2": "Spec folder path (e.g., specs/007-feature/)"
+        "mode2": "Spec folder path (e.g., 007-feature/)"
       },
       "outputs": ["memory/*.md", "metadata.json"],
       "gate": "Memory Save Rule",
@@ -363,7 +363,7 @@
       "name": "check-toc-policy",
       "path": "scripts/rules/check-toc-policy.sh",
       "type": "bash",
-      "description": "TOC_POLICY rule - allows ToC only in research.md and rejects ToC in standard spec artifacts",
+      "description": "TOC_POLICY rule - allows ToC only in research/research.md and rejects ToC in standard spec artifacts",
       "severity": "error",
       "essential": true,
       "version": "1.0.0"

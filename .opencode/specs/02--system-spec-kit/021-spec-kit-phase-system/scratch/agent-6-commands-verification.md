@@ -46,7 +46,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, memory_context, memory_searc
 | `allowed-tools` | Present (line 4) | Present (line 4) | Present (line 4) | Present (line 4) | Present (line 4) | YES |
 | YAML delimiters | `---` top/bottom | `---` top/bottom | `---` top/bottom | `---` top/bottom | `---` top/bottom | YES |
 
-**Minor Observation (P2):** `phase.md` omits `Task` from `allowed-tools`, while `plan.md`, `implement.md`, `complete.md`, and `resume.md` all include it. This is arguably intentional since the phase command focuses on folder creation rather than multi-agent dispatch, but it is a deviation from the pattern. The `research.md` and `handover.md` commands similarly have varying tool lists, so this is not a strict requirement — tools are role-appropriate.
+**Minor Observation (P2):** `phase.md` omits `Task` from `allowed-tools`, while `plan.md`, `implement.md`, `complete.md`, and `resume.md` all include it. This is arguably intentional since the phase command focuses on folder creation rather than multi-agent dispatch, but it is a deviation from the pattern. The `research/research.md` and `handover.md` commands similarly have varying tool lists, so this is not a strict requirement — tools are role-appropriate.
 
 **Conclusion:** Frontmatter structure is fully consistent with the established 3-field YAML frontmatter pattern.
 

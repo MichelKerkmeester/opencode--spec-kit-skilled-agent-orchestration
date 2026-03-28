@@ -44,7 +44,7 @@ All agent model fields across the Copilot and Claude Code agent systems were upg
 | `.opencode/agent/copilot/review.md` | Modified | Added `github-copilot/claude-sonnet-4-6` model field; removed stale "keep model-agnostic" comment |
 | `.opencode/agent/copilot/speckit.md` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
 | `.opencode/agent/copilot/write.md` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
-| `.opencode/agent/copilot/research.md` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
+| `.opencode/agent/copilot/research/research/research.md` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
 | `.opencode/agent/copilot/debug.md` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
 | `.claude/agents/context.md` | Modified | `haiku` → `sonnet` |
 | `.claude/agents/handover.md` | Modified | `haiku` → `sonnet` |

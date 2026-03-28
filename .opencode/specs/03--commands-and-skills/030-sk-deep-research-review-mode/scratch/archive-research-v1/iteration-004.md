@@ -40,7 +40,7 @@ The current review agents are explicitly read-only and limited to `Read/Bash/Gre
 #### Option C: Mode-switch @deep-research via dispatch context
 
 - **Best case**: fastest prototype. Enrich the YAML dispatch payload with review scope, dimension, thresholds, and self-check instructions.
-- **Risk**: the underlying agent still says "research-focused," assumes 3-5 research actions, includes `WebFetch`, and discusses `research.md`, so the dispatch is fighting the base contract instead of extending it. See `deep-research.md:23`, `deep-research.md:50`, `deep-research.md:199`.
+- **Risk**: the underlying agent still says "research-focused," assumes 3-5 research actions, includes `WebFetch`, and discusses `research/research.md`, so the dispatch is fighting the base contract instead of extending it. See `deep-research.md:23`, `deep-research.md:50`, `deep-research.md:199`.
 - Clean mode switch would require explicit `MODE: review` branches inside the agent contract. If you do not change the agent file, this stays brittle.
 - **Pros**: fastest MVP, smallest immediate file diff.
 - **Cons**: hidden behavior, weaker review fidelity, higher chance of research-style output in review mode.
@@ -99,7 +99,7 @@ STATE FILES:
 - State Log: {spec_folder}/scratch/deep-review-state.jsonl
 - Strategy: {spec_folder}/scratch/deep-review-strategy.md
 OUTPUT CONTRACT:
-- Write {spec_folder}/scratch/iteration-{NNN}.md
+- Write {spec_folder}/research/iterations/iteration-{NNN}.md
 - Edit strategy.md
 - Append one JSONL iteration record
 CONSTRAINTS:
@@ -220,7 +220,7 @@ Check whether the same wrapper bypass exists in `src/api/projects.ts`.
 | `Write` | No | Create `iteration-NNN.md` only | No | Append-only |
 | `Edit` | No | No | Section-scoped edits only | No |
 
-Drop progressive `research.md` updates for review mode. The loop evaluator only needs iteration file, JSONL append, and strategy update, so omitting a root-level mutable artifact keeps permissions tighter.
+Drop progressive `research/research.md` updates for review mode. The loop evaluator only needs iteration file, JSONL append, and strategy update, so omitting a root-level mutable artifact keeps permissions tighter.
 
 ---
 

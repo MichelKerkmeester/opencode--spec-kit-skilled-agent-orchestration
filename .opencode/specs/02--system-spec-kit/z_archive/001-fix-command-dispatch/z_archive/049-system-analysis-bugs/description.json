@@ -7,7 +7,7 @@
     "analysis",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.920Z",
+  "lastUpdated": "2026-03-28T10:35:07.640Z",
   "specId": "049",
   "folderSlug": "system-analysis-bugs",
   "parentChain": [
@@ -17,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "System-Spec-Kit Bug Analysis and Remediation [049-system-analysis-bugs/spec]",
-  "importance_tier": "important",
-  "short_description": "System-Spec-Kit Bug Analysis and Remediation"
+  "memoryNameHistory": []
 }

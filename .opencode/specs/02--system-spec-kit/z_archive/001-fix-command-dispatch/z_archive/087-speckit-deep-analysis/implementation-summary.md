@@ -199,7 +199,7 @@ Gate 4 Option B                              Gate 3 Option B
 | `command/spec_kit/handover.md` | 368, 566 | Confirmed Section 2 references correct |
 | `command/spec_kit/implement.md` | 9, 389, 508 | Sections 2-4 → 2-6; Section 5 → 6 |
 | `command/spec_kit/resume.md` | 404 | Sections 2-4 → 2-6 |
-| `command/spec_kit/research.md` | 212, 470 | Sections 2-4 → 2-6 |
+| `command/spec_kit/research/research/research.md` | 212, 470 | Sections 2-4 → 2-6 |
 | `command/spec_kit/plan.md` | 165, 225, 360 | Sections 2-4 → 2-6 |
 
 ---
@@ -307,7 +307,7 @@ Level 3+: 6 files, ~750 LOC                 Level 3+: 7 files, ~1080 LOC
 
 ---
 
-### 18. `.opencode/agent/research.md`
+### 18. `.opencode/agent/research/research/research.md`
 
 **Fix:** Confirmed AGENTS.md reference and section references correct.
 

@@ -131,10 +131,10 @@ Next: Continue implementation
 
 | File | Status |
 |------|--------|
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `deep research` | `krzysztofdudek/researcherskill pjhoberman/autoresearch` | `analyzing krzysztofdudek/researcherskill` | `pjhoberman/autoresearch identify...` | `commands skills/029` | `research analyzing` | `skills/029 deep` | `research first` | `first upgrade` | `upgrade deep` |
 

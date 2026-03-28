@@ -91,7 +91,7 @@ Feature specification from `/specs/[###-feature-name]/spec.md`
 specs/[###-feature]/
   spec.md              # Feature specification (see spec-template.md)
   plan.md              # This file (/spec_kit:plan command output)
-  research.md          # Phase 0 output (/spec_kit:plan command)
+  research/research.md          # Phase 0 output (/spec_kit:plan command)
   data-model.md        # Phase 1 output (/spec_kit:plan command)
   quickstart.md        # Phase 1 output (/spec_kit:plan command)
   contracts/           # Phase 1 output (/spec_kit:plan command)
@@ -155,7 +155,7 @@ ios/ or android/
 
 - **Goal**: [YOUR_VALUE_HERE: research objectives - example: evaluate GraphQL vs REST for API design]
 - **Deliverables**:
-  - Research findings documented in research.md
+  - Research findings documented in research/research.md
   - Technical feasibility assessment
   - Architecture decision records
 - **Owner**: [YOUR_VALUE_HERE: team or individual]
@@ -389,7 +389,7 @@ ios/ or android/
 **Related templates:**
 - Start with `spec.md` for requirements and user stories
 - Generate `tasks.md` after plan.md is complete
-- Use `research.md` for deep technical investigation before planning
+- Use `research/research.md` for deep technical investigation before planning
 - Create `decision-record-*.md` for significant architectural decisions made during planning
 
 ---

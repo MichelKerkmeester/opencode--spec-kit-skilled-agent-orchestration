@@ -70,7 +70,7 @@
 | BUG-002a | P0 | 345-346 | YAML path mismatch |
 | BUG-019 | P2 | 57 | Fictional model name |
 
-### `.claude/commands/spec_kit/research.md`
+### `.claude/commands/spec_kit/research/research/research.md`
 
 | Bug ID | Priority | Line(s) | Issue |
 |--------|----------|---------|-------|

@@ -48,7 +48,7 @@ contextType: "implementation"
 
 ### Task 1.1: Update spec_kit namespace (7 commands)
 **Agent**: Agent 1 (Opus)
-**Commands**: complete.md, debug.md, handover.md, implement.md, plan.md, research.md, resume.md
+**Commands**: complete.md, debug.md, handover.md, implement.md, plan.md, research/research.md, resume.md
 
 Changes per command:
 - [ ] Replace `🔜 WHAT NEXT?` with standardized emoji/name
@@ -120,21 +120,21 @@ Changes:
 
 ### Task 4.1: Add OUTPUT FORMATS section (4 commands)
 **Agent**: Agent 1 (Opus)
-**Commands**: complete.md, implement.md, plan.md, research.md
+**Commands**: complete.md, implement.md, plan.md, research/research.md
 
 Changes per command:
 - [ ] Add `## N. 📊 OUTPUT FORMATS` section with example outputs
 
 ### Task 4.2: Add GATE 3 COMPLIANCE section (where missing)
 **Agent**: Agent 1 (Opus)
-**Commands**: complete.md, plan.md, research.md, handover.md, resume.md
+**Commands**: complete.md, plan.md, research/research.md, handover.md, resume.md
 
 Changes:
 - [ ] Add explicit `## ⛔ GATE 3 COMPLIANCE` section if not present
 
 ### Task 4.3: Add RELATED COMMANDS section (where missing)
 **Agent**: Agent 1 (Opus)
-**Commands**: complete.md, implement.md, plan.md, research.md
+**Commands**: complete.md, implement.md, plan.md, research/research.md
 
 Changes per command:
 - [ ] Add `## N. 🔗 RELATED COMMANDS` section

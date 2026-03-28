@@ -105,12 +105,12 @@ Contract-first folder relocation with targeted legacy migration.
 ### Migration Rules
 - Canonical post-change location is always `review/`.
 - Migrate only the review-specific whitelist:
-  - `scratch/deep-research-config.json`
-  - `scratch/deep-research-state.jsonl`
+  - `research/deep-research-config.json`
+  - `research/deep-research-state.jsonl`
   - the legacy deep-review strategy file in `scratch/`
   - the legacy deep-review dashboard file in `scratch/`
-  - `scratch/iteration-*.md`
-  - `scratch/.deep-research-pause`
+  - `research/iterations/iteration-*.md`
+  - `research/.deep-research-pause`
   - the root-level review report when the scratch state is clearly a legacy review packet
 - Leave unrelated `scratch/` artifacts untouched.
 <!-- /ANCHOR:architecture -->
@@ -164,7 +164,7 @@ Contract-first folder relocation with targeted legacy migration.
 
 ### Planned Verification Queries
 
-- `rg -n 'scratch/deep-review|scratch/deep-research-state.jsonl|scratch/iteration-|State files in scratch'` over the planned review surfaces should return no live-contract matches after implementation.
+- `rg -n 'scratch/deep-review|research/deep-research-state.jsonl|research/iterations/iteration-|State files in scratch'` over the planned review surfaces should return no live-contract matches after implementation.
 - `rg -n 'review/'` over the same surfaces should show the new canonical paths for config, state, strategy, dashboard, iterations, pause sentinel, and report.
 - Manual review-mode replay should confirm:
   - fresh initialization creates `review/`

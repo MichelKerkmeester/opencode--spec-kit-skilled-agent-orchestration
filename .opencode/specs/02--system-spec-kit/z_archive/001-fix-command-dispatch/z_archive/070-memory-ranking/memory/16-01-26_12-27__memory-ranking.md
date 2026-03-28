@@ -114,7 +114,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Field | Value |
 |-------|-------|
 | Phase | DOCUMENTATION COMPLETE |
-| Active File | research.md |
+| Active File | research/research.md |
 | Last Action | Quality review complete - all documentation errors fixed |
 | Next Action | Begin Phase 1 implementation (client-side ranking) |
 | Blockers | None |
@@ -130,7 +130,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ## 1. OVERVIEW
 
-Created comprehensive Level 3 documentation for memory and folder ranking improvements, then performed thorough review and enhancement. Initial documentation included spec.md, plan.md, tasks.md, checklist.md, and decision-record.md covering a 3-phase implementation approach (quick wins, MCP enhancements, advanced ranking). Review identified and fixed: incorrect decay rate math (was claiming 7-day half-life, actual is 10-day), scope section using checkboxes instead of bullets, missing task dependencies and decision references, missing D8 decision for constitutional decay exemption, and missing research.md. Final quality score improved from 85/100 to 95/100.
+Created comprehensive Level 3 documentation for memory and folder ranking improvements, then performed thorough review and enhancement. Initial documentation included spec.md, plan.md, tasks.md, checklist.md, and decision-record.md covering a 3-phase implementation approach (quick wins, MCP enhancements, advanced ranking). Review identified and fixed: incorrect decay rate math (was claiming 7-day half-life, actual is 10-day), scope section using checkboxes instead of bullets, missing task dependencies and decision references, missing D8 decision for constitutional decay exemption, and missing research/research.md. Final quality score improved from 85/100 to 95/100.
 
 **Key Outcomes**:
 - Created complete Level 3 spec folder documentation
@@ -138,7 +138,7 @@ Created comprehensive Level 3 documentation for memory and folder ranking improv
 - Defined composite ranking formula with weights (recency 40%, importance 30%, activity 20%, validation 10%)
 - Fixed documentation errors during quality review
 - Added missing D8 decision for constitutional decay exemption
-- Created research.md with existing code analysis
+- Created research/research.md with existing code analysis
 
 <!-- /ANCHOR:summary-071 -->
 <!-- /ANCHOR:summary -->
@@ -233,7 +233,7 @@ This session followed a **Linear Sequential** conversation pattern with **2** di
 - `specs/003-memory-and-spec-kit/071-memory-ranking/tasks.md` - Detailed task breakdown with dependencies
 - `specs/003-memory-and-spec-kit/071-memory-ranking/checklist.md` - QA verification items
 - `specs/003-memory-and-spec-kit/071-memory-ranking/decision-record.md` - ADR-style decision log
-- `specs/003-memory-and-spec-kit/071-memory-ranking/research.md` - Existing code analysis
+- `specs/003-memory-and-spec-kit/071-memory-ranking/research/research/research.md` - Existing code analysis
 <!-- /ANCHOR:files-071 -->
 
 **Technical Context:**
@@ -246,7 +246,7 @@ This session followed a **Linear Sequential** conversation pattern with **2** di
 2. Fixed scope section formatting (checkboxes → bullets)
 3. Added missing task dependencies and decision references
 4. Added D8 decision for constitutional decay exemption
-5. Created missing research.md with existing code analysis
+5. Created missing research/research.md with existing code analysis
 
 ---
 

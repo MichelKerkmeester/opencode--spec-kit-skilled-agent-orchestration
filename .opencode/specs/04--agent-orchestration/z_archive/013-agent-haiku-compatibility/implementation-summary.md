@@ -40,7 +40,7 @@ Updated orchestrate.md on both platforms to align with the thorough-only Haiku c
 ### Files NOT Changed (Verified)
 
 All 6 non-context agents verified — no mode references found:
-- research.md, speckit.md, write.md, review.md, debug.md, handover.md
+- research/research.md, speckit.md, write.md, review.md, debug.md, handover.md
 
 <!-- /ANCHOR:what-built -->
 

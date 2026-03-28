@@ -38,7 +38,7 @@ This plan implements a 2-layer defense-in-depth architecture to enforce structur
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented (research.md: 9 iterations, 8/8 questions answered)
+- [x] Problem statement clear and scope documented (research/research.md: 9 iterations, 8/8 questions answered)
 - [x] Success criteria measurable (SC-001 through SC-004 in spec.md)
 - [x] Dependencies identified (template-structure.js, validate.sh, target @speckit agent definitions)
 

@@ -484,7 +484,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 **12-metric core computation** -- grades every query across twelve quality dimensions (MRR@1/3/10, NDCG@10, MAP and more). Together they pinpoint exactly where search is struggling, like a doctor running multiple tests instead of just asking "do you feel sick?"
 
-**Synthetic ground truth corpus** -- 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality.
+**Synthetic ground truth corpus** -- 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality. The corpus is keyed to live parent-memory IDs, so after DB rebuilds or imports you should rerun `scripts/evals/map-ground-truth-ids.ts` against the active `context-index.sqlite` before trusting ablation or reporting deltas.
 
 **Ablation study framework** -- turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
 
@@ -954,6 +954,8 @@ Run a controlled experiment to test which search channels contribute most to fin
 | `storeResults` | boolean | Persist results to eval database |
 | `includeFormattedReport` | boolean | Return human-readable report |
 
+The MCP handler scores chunk-backed hits against `parentMemoryId ?? row.id`, so eval rows stay attached to canonical parent memories. Before comparing runs after a DB rebuild or import, preview or refresh the live ground-truth mapping with `scripts/evals/map-ground-truth-ids.ts`; if token-budget overflow collapses a run below `recallK`, treat that run as investigation-only rather than a clean benchmark.
+
 ---
 
 ##### `eval_reporting_dashboard`
@@ -974,14 +976,14 @@ Generate a report showing search performance trends over time. Aggregates metric
 
 ##### `memory_index_scan`
 
-Scan the workspace for new or changed memory files and add them to the index. Use after adding files manually or after a git pull. Processes three source families: constitutional rules, spec documents and spec memories.
+Scan the workspace for new or changed memory files and add them to the index. Use after adding files manually or after a git pull. Processes three source families: constitutional rules, spec documents and spec memories. Spec documents stay indexed by default; during scan they run through the save pipeline in warn-only quality mode so validation issues surface as warnings instead of silently bypassing retrieval.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `specFolder` | string | Scope scan to a folder |
 | `force` | boolean | Re-index even if file hash unchanged |
 | `includeConstitutional` | boolean | Include constitutional rules directory |
-| `includeSpecDocs` | boolean | Include spec folder documents |
+| `includeSpecDocs` | boolean | Include spec folder documents (default: true) |
 | `incremental` | boolean | Only process files changed since last scan |
 
 ---

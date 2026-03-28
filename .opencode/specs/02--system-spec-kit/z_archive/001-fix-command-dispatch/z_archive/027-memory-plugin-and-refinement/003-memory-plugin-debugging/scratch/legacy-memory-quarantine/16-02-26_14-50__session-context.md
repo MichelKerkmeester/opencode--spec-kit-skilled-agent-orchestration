@@ -179,7 +179,7 @@ All other code (`db.prepare()`, `db.close()`, `.all()`, `.get()`, `{ readonly: t
 
 ## Files Created
 - `specs/005-memory/015-memory-plugin-and-refinement/003-memory-plugin-debugging/`
-  - `research.md` - Comprehensive investigation
+  - `research/research.md` - Comprehensive investigation
   - `spec.md` - Problem statement
   - `plan.md` - Implementation plan
   - `tasks.md` - Task breakdown

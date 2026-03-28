@@ -56,7 +56,7 @@ ChatGPT Agent Suite Codex Optimization — session handover for context preserva
 | `.opencode/agent/chatgpt/context.md` | Adaptive retrieval modes; mode-specific output/tool budgets | COMPLETE |
 | `.opencode/agent/chatgpt/debug.md` | Low-complexity fast-path: added explicit minimal analysis step | COMPLETE |
 | `.opencode/agent/chatgpt/handover.md` | Fast-path tool-call cap updated; context-package wording aligned | COMPLETE |
-| `.opencode/agent/chatgpt/research.md` | Trivial-research exception added to Step 9 memory-save rule | COMPLETE |
+| `.opencode/agent/chatgpt/research/research/research.md` | Trivial-research exception added to Step 9 memory-save rule | COMPLETE |
 | `.opencode/agent/chatgpt/review.md` | Codex model pin clarified; blocker-vs-required semantics tightened | COMPLETE |
 | `.opencode/agent/chatgpt/speckit.md` | Level-3 semantics corrected; validation-exit language (0 or 1) fixed | COMPLETE |
 | `.opencode/agent/chatgpt/write.md` | Template-first fast path enforced; mode-aware DQI thresholds added | COMPLETE |

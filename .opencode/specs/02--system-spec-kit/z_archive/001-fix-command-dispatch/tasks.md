@@ -42,7 +42,7 @@ contextType: "implementation"
   - [x] T001b Audit `debug.md` for V1-V6 patterns
   - [x] T001c Audit `handover.md` for V1-V6 patterns
   - [x] T001d Audit `plan.md` for V1-V6 patterns
-  - [x] T001e Audit `research.md` for V1-V6 patterns
+  - [x] T001e Audit `research/research.md` for V1-V6 patterns
   - [x] T001f Audit `resume.md` for V1-V6 patterns
   - [x] T001g Audit `implement.md` for V1-V6 patterns
 - [x] T002 [P] Audit all 13 YAML workflow files for V5 routing issues (`.opencode/command/spec_kit/assets/*.yaml`)
@@ -60,7 +60,7 @@ contextType: "implementation"
   - [ ] T004b Apply Fix A+B to `debug.md`
   - [ ] T004c Apply Fix A+B to `handover.md`
   - [ ] T004d Apply Fix A+B to `plan.md`
-  - [ ] T004e Apply Fix A+B to `research.md`
+  - [ ] T004e Apply Fix A+B to `research/research.md`
   - [ ] T004f Apply Fix A+B to `resume.md`
   - [ ] T004g Apply Fix A+B to `implement.md`
 
@@ -73,7 +73,7 @@ contextType: "implementation"
 
 - [ ] T005 Apply Fix C to complete.md (fence 6 unfenced dispatch templates)
 - [ ] T006 Apply Fix C to debug.md (fence 3 unfenced dispatch templates)
-- [ ] T007 Apply Fix C to research.md (fence 2 unfenced dispatch templates)
+- [ ] T007 Apply Fix C to research/research.md (fence 2 unfenced dispatch templates)
 - [ ] T008 Apply Fix C to plan.md (fence 2 unfenced dispatch templates)
 - [ ] T009 Apply Fix D to complete.md (reduce 19 @refs to <10)
 - [ ] T010 Apply Fix D to debug.md (reduce 13 @refs to <8)

@@ -1,1 +1,1 @@
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/spec_kit/research.md
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/spec_kit/deep-research.md

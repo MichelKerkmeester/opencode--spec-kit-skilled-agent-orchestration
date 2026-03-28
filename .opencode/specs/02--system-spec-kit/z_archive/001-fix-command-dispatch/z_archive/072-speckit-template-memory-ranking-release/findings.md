@@ -528,7 +528,7 @@ Mix of "V17.1" and "v1.7.1" in documentation.
 ### LOW-011: Documentation Dates Outdated
 Constitutional README shows 2025-12-27.
 
-### LOW-012: research.md Missing from level_3+ Folder
+### LOW-012: research/research.md Missing from level_3+ Folder
 Referenced in docs but doesn't exist.
 
 ### LOW-013: Example Content Not Clearly Marked

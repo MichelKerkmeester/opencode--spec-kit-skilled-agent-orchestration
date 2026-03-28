@@ -117,6 +117,8 @@ describe('Folder Scoring Tests (T506)', () => {
       const archiveTests = [
         { path: 'specs/z_archive/old-project', expected: true },
         { path: 'specs/project/scratch/temp', expected: true },
+        { path: 'specs/project/research/iterations/iteration-001', expected: true },
+        { path: 'specs/project/review/iterations/iteration-001', expected: true },
         { path: 'specs/test-setup', expected: true },
         { path: 'specs/active-project', expected: false },
         { path: 'specs/production', expected: false },

@@ -8,7 +8,7 @@
     "haiku",
     "compatibility"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.882Z",
+  "lastUpdated": "2026-03-28T10:08:37.659Z",
   "specId": "013",
   "folderSlug": "agent-haiku-compatibility",
   "parentChain": [
@@ -16,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Agent Haiku Compatibility [013-agent-haiku-compatibility/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Agent Haiku Compatibility"
+  "memoryNameHistory": []
 }

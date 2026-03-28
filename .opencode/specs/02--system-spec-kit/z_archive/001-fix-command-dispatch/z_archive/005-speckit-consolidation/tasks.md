@@ -44,7 +44,7 @@ mkdir -p .opencode/skills/workflows-spec-kit/checklist-evidence
 - [ ] Copy `tasks.md`
 - [ ] Copy `checklist.md`
 - [ ] Copy `decision-record.md`
-- [ ] Copy `research.md`
+- [ ] Copy `research/research.md`
 - [ ] Copy `research-spike.md`
 - [ ] Copy `handover.md`
 - [ ] Copy `debug-delegation.md`

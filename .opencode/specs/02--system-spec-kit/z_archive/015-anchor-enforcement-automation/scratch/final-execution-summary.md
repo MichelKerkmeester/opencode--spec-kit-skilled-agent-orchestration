@@ -20,7 +20,7 @@
   - tasks.md (7.7KB, 12 anchors)
   - checklist.md (11KB, 21 anchors)
   - decision-record.md (18KB, 24 anchors)
-  - research.md (41KB, 39 anchors)
+  - research/research.md (41KB, 39 anchors)
   - implementation-summary.md (17KB, 11 anchors)
 
 ### Validation Status
@@ -70,7 +70,7 @@
 - ✅ SC-002: 100% spec docs have proper ANCHOR tags on major sections
 - ✅ SC-003: 100% spec file writes route through @speckit agent
 - ✅ SC-004: validate.sh catches 100% of template/anchor violations
-- ✅ SC-005: Root cause analysis documented in research.md with evidence
+- ✅ SC-005: Root cause analysis documented in research/research.md with evidence
 
 ---
 

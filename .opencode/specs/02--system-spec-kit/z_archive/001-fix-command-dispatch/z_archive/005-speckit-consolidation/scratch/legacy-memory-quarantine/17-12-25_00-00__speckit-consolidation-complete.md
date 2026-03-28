@@ -192,7 +192,7 @@ Successfully consolidated the standalone `.opencode/speckit/` folder into `.open
 **Files Copied:**
 ```
 Templates (11): spec.md, plan.md, tasks.md, checklist.md, decision-record.md,
-                research.md, research-spike.md, handover.md, debug-delegation.md,
+                research/research.md, research-spike.md, handover.md, debug-delegation.md,
                 .hashes, scratch/.gitkeep
 
 Scripts (6): common.sh, create-spec-folder.sh, check-prerequisites.sh,
@@ -252,7 +252,7 @@ Evidence (2): evidence.json, general-evidence.json
 │   ├── tasks.md
 │   ├── checklist.md
 │   ├── decision-record.md
-│   ├── research.md
+│   ├── research/research.md
 │   ├── research-spike.md
 │   ├── handover.md
 │   ├── debug-delegation.md

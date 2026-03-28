@@ -49,7 +49,7 @@ Mandatory for ALL file modifications: code files, documentation, configuration, 
 
 ### Agent Exclusivity
 
-`@speckit` is the ONLY agent permitted to create or write spec folder documentation (`*.md`). Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@research), `debug-delegation.md` (@debug).
+`@speckit` is the ONLY agent permitted to create or write spec folder documentation (`*.md`). Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research/research.md` (@research), `debug-delegation.md` (@debug).
 
 [SOURCE: SKILL.md:60-70]
 
@@ -87,7 +87,7 @@ Mandatory for ALL file modifications: code files, documentation, configuration, 
 |   +-- addendum/               # Level-specific additions (level2-verify, level3-arch, level3plus-govern, phase)
 |   +-- level_1/ - level_3+/    # Composed templates by level (pre-merged)
 |   +-- context_template.md     # Memory context template
-|   +-- research.md             # Research template
+|   +-- research/research.md             # Research template
 |   +-- handover.md             # Handover template
 |   +-- debug-delegation.md     # Debug delegation template
 +-- scripts/                    # CLI tools (TypeScript source + Bash)
@@ -193,7 +193,7 @@ specs/<###-feature-name>/
 | 1 | `/spec_kit:complete` | 14 | Full end-to-end workflow (supports :auto, :confirm, :with-research, :auto-debug) | `.opencode/command/spec_kit/complete.md` |
 | 2 | `/spec_kit:plan` | 7 | Planning only, no implementation (supports :auto, :confirm) | `.opencode/command/spec_kit/plan.md` |
 | 3 | `/spec_kit:implement` | 9 | Execute pre-planned work with PREFLIGHT/POSTFLIGHT (requires existing plan.md) | `.opencode/command/spec_kit/implement.md` |
-| 4 | `/spec_kit:research` | 9 | Technical investigation and documentation | `.opencode/command/spec_kit/research.md` |
+| 4 | `/spec_kit:research` | 9 | Technical investigation and documentation | `.opencode/command/spec_kit/research/research/research.md` |
 | 5 | `/spec_kit:resume` | 4 | Resume previous session on existing spec folder | `.opencode/command/spec_kit/resume.md` |
 | 6 | `/spec_kit:handover` | 4 | Create session handover document | `.opencode/command/spec_kit/handover.md` |
 | 7 | `/spec_kit:debug` | 5 | Delegate debugging to specialized sub-agent | `.opencode/command/spec_kit/debug.md` |
@@ -285,7 +285,7 @@ Each `templates/level_N/` directory contains fully composed templates ready for 
 | Template | Purpose |
 |---|---|
 | `context_template.md` | Memory context template (~26K, detailed session capture) |
-| `research.md` | Comprehensive multi-domain research template (~20K) |
+| `research/research.md` | Comprehensive multi-domain research template (~20K) |
 | `handover.md` | Session continuity document template |
 | `debug-delegation.md` | Sub-agent debugging delegation template |
 

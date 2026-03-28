@@ -155,7 +155,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -163,7 +163,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `decision` | `lines` | `summary` | `all` | `existing` | `implementation` | `summaries` | `workstream` | `hybrid` | `rag` | `fusion` | `all three` | 
 <!-- /ANCHOR:project-state-snapshot -->

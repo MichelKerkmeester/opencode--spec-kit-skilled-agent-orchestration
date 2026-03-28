@@ -63,7 +63,7 @@ The orchestrator (`orchestrate.md`) originally referenced `@explore` in 18+ loca
 ### In Scope
 - Create `.opencode/agent/context_loader.md` agent definition file
 - Define agent identity, capabilities, retrieval modes, output format
-- Follow structural patterns from research.md, write.md, review.md
+- Follow structural patterns from research/research.md, write.md, review.md
 - Define 3 thoroughness levels with clear routing logic
 - Include Memory MCP integration (memory_match_triggers, memory_search, memory_context)
 - Structured Context Package output format
@@ -94,7 +94,7 @@ The orchestrator (`orchestrate.md`) originally referenced `@explore` in 18+ loca
 |-----------|---------------|---------------------|
 | Speed | FAST (30s–5min) | THOROUGH (extended) |
 | Depth | Surface scan + pattern detection | Deep 9-step investigation |
-| Output | Structured context package | Full research.md document |
+| Output | Structured context package | Full research/research.md document |
 | Scope | Codebase + Memory retrieval | Technical investigation, feasibility |
 | Trigger | EVERY task (pre-implementation) | Complex/uncertain tasks only |
 | Purpose | "What exists?" + "What do we know?" | "What should we do?" + "Why?" |

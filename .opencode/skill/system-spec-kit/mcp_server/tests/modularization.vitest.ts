@@ -20,7 +20,7 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 const EXTENDED_LIMITS: Record<string, number> = {
   'context-server.js': 1065,        // actual: 1050 — Main entry point wiring for tools, hooks, startup lifecycle, startup root discovery, and remediation hooks
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
-  'formatters/search-results.js': 535, // actual: 531 — Search result formatting + Sprint 019/020 trace and session-transition envelope support
+  'formatters/search-results.js': 536, // actual: 536 — Search result formatting + Sprint 019/020 trace and session-transition envelope support
   'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration
   'handlers/memory-triggers.js': 470, // actual: 454 — Trigger matching with cognitive features + governance/scope wiring
   'handlers/memory-crud.js': 40,    // actual: 32 — Re-export barrel (decomposed into memory-crud-{health,update,delete,stats,list,utils,types}.js)

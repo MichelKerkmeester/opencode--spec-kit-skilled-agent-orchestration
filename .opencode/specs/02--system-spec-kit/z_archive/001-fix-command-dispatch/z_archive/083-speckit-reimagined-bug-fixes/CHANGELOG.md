@@ -21,7 +21,7 @@ This release addresses **30+ bugs** discovered during a comprehensive 15-agent p
 
 #### BUG-002: YAML Path Corrections
 - **Fixed:** 7 command files updated from `.opencode/command/` → `.claude/commands/`
-- **Files:** debug.md, research.md, complete.md, implement.md, plan.md, resume.md, handover.md
+- **Files:** debug.md, research/research.md, complete.md, implement.md, plan.md, resume.md, handover.md
 - **Impact:** YAML assets now load from correct paths
 
 #### BUG-003 & BUG-006: Missing Complete Steps
@@ -48,7 +48,7 @@ This release addresses **30+ bugs** discovered during a comprehensive 15-agent p
 ### High Priority Fixes (P1)
 
 #### BUG-008: Phantom WebSearch Tool
-- **Removed:** WebSearch from research.md allowed-tools (tool doesn't exist)
+- **Removed:** WebSearch from research/research.md allowed-tools (tool doesn't exist)
 - **Fixed:** Tool names standardized to lowercase
 
 #### BUG-009: Session Detection Enhancement
@@ -119,7 +119,7 @@ This release addresses **30+ bugs** discovered during a comprehensive 15-agent p
 - **Added:** CONTINUE_SESSION.md artifact documentation to resume YAMLs
 
 #### BUG-030: Tool Capitalization
-- **Standardized:** All tool names to lowercase in research.md
+- **Standardized:** All tool names to lowercase in research/research.md
 
 ---
 

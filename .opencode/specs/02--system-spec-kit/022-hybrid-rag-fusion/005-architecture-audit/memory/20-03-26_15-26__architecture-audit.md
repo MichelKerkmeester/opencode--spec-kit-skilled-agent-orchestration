@@ -1,6 +1,6 @@
 ---
 title: "Architecture Audit"
-description: "Deep Research implementation complete. All deliverables verified: 7/7 PASSED. research.md synthesized from 20 iterations (811 lines, 21 sections, 25 recommendations). Full sprint roadmap defined."
+description: "Deep Research implementation complete. All deliverables verified: 7/7 PASSED. research/research.md synthesized from 20 iterations (811 lines, 21 sections, 25 recommendations). Full sprint roadmap defined."
 trigger_phrases:
   - "architecture audit deep research"
   - "ADR-001 API-first boundary"
@@ -52,12 +52,12 @@ quality_flags: []
 
 **Phase:** RESEARCH — Deep Research complete, all deliverables verified 7/7.
 
-**Summary:** Completed the remaining deliverables of a 20-iteration deep research campaign analyzing the hybrid-rag-fusion retrieval system. research.md synthesized from all 20 iterations with 25 prioritized recommendations across 7 categories. Full sprint roadmap (Sprint 1-3 + Epic) defined and spec folder completed.
+**Summary:** Completed the remaining deliverables of a 20-iteration deep research campaign analyzing the hybrid-rag-fusion retrieval system. research/research.md synthesized from all 20 iterations with 25 prioritized recommendations across 7 categories. Full sprint roadmap (Sprint 1-3 + Epic) defined and spec folder completed.
 
 **Key Files Modified:**
 - `005-architecture-audit/spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`
-- `001-hybrid-rag-fusion-epic/research.md` — 811 lines, 21 sections, synthesized from 20 iterations
-- `001-hybrid-rag-fusion-epic/scratch/deep-research-state.jsonl` — convergence report appended
+- `001-hybrid-rag-fusion-epic/research/research/research.md` — 811 lines, 21 sections, synthesized from 20 iterations
+- `001-hybrid-rag-fusion-epic/research/deep-research-state.jsonl` — convergence report appended
 
 <!-- /ANCHOR:continue-session -->
 
@@ -83,7 +83,7 @@ quality_flags: []
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 <!-- /ANCHOR:project-state-snapshot -->
 
@@ -119,11 +119,11 @@ quality_flags: []
 
 | File | Role |
 |------|------|
-| `001-hybrid-rag-fusion-epic/research.md` | 811-line synthesis, 25 recommendations |
-| `001-hybrid-rag-fusion-epic/scratch/deep-research-state.jsonl` | 24-record JSONL with convergence report |
-| `001-hybrid-rag-fusion-epic/scratch/deep-research-strategy.md` | 18/18 research questions answered |
+| `001-hybrid-rag-fusion-epic/research/research/research.md` | 811-line synthesis, 25 recommendations |
+| `001-hybrid-rag-fusion-epic/research/deep-research-state.jsonl` | 24-record JSONL with convergence report |
+| `001-hybrid-rag-fusion-epic/research/deep-research-strategy.md` | 18/18 research questions answered |
 | `001-hybrid-rag-fusion-epic/scratch/ultra-think-review.md` | 113 lines, top 20 scored recommendations |
-| `005-architecture-audit/research.md` | Architecture audit research findings |
+| `005-architecture-audit/research/research/research.md` | Architecture audit research findings |
 
 <!-- /ANCHOR:task-guide -->
 
@@ -134,7 +134,7 @@ quality_flags: []
 ## 2. OVERVIEW
 
 <!-- ANCHOR:summary -->
-Deep Research implementation complete. All 7 verification criteria met (7/7 PASSED). 79 scratch files confirmed (20/20 native, 20/20 Codex, 20/20 Copilot — excess due to .log files and historical w1-w7 artifacts). research.md synthesized from 20 iterations with 25 prioritized recommendations across 7 categories. Full sprint roadmap defined.
+Deep Research implementation complete. All 7 verification criteria met (7/7 PASSED). 79 scratch files confirmed (20/20 native, 20/20 Codex, 20/20 Copilot — excess due to .log files and historical w1-w7 artifacts). research/research.md synthesized from 20 iterations with 25 prioritized recommendations across 7 categories. Full sprint roadmap defined.
 
 <!-- /ANCHOR:summary -->
 

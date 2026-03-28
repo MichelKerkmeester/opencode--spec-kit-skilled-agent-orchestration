@@ -81,6 +81,12 @@ interface HybridSearchOptions {
   useGraph?: boolean;
   includeArchived?: boolean;
   includeContent?: boolean;
+  /**
+   * Evaluation-only mode.
+   * When true, preserve the requested top-K window by bypassing confidence
+   * truncation and token-budget truncation without changing live defaults.
+   */
+  evaluationMode?: boolean;
   /** Classified query intent for adaptive fusion weight selection (e.g. 'understand', 'fix_bug'). */
   intent?: string;
   /** Optional trigger phrases for query-classifier trigger-match routing path. */
@@ -788,6 +794,7 @@ async function hybridSearchEnhanced(
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
   try {
+    const evaluationMode = options.evaluationMode === true;
     const lists: Array<{
       source: string;
       results: Array<{ id: number | string; [key: string]: unknown }>;
@@ -831,7 +838,7 @@ async function hybridSearchEnhanced(
     // Compute tier-aware budget early so it's available for downstream truncation.
     // When disabled, getDynamicTokenBudget returns the default 4000 budget with applied=false.
     const budgetResult = getDynamicTokenBudget(routeResult.tier);
-    if (budgetResult.applied) {
+    if (budgetResult.applied && !evaluationMode) {
       s3meta.tokenBudget = {
         tier: budgetResult.tier,
         budget: budgetResult.budget,
@@ -1114,29 +1121,31 @@ async function hybridSearchEnhanced(
       // Trims low-confidence tail from fused results using gap analysis.
       // A gap > 2x median signals a relevance cliff — results below are noise.
       // When disabled, passes results through unchanged.
-      try {
-        const truncationResult: TruncationResult = truncateByConfidence(
-          fusedHybridResults.map(r => ({ ...r, id: r.id, score: r.score })),
-        );
+      if (!evaluationMode) {
+        try {
+          const truncationResult: TruncationResult = truncateByConfidence(
+            fusedHybridResults.map(r => ({ ...r, id: r.id, score: r.score })),
+          );
 
-        if (truncationResult.truncated) {
-          // Map truncated ScoredResults back to HybridSearchResult — preserve all fields
-          fusedHybridResults = truncationResult.results.map(r => r as HybridSearchResult);
-          s3meta.truncation = {
-            truncated: true,
-            originalCount: truncationResult.originalCount,
-            truncatedCount: truncationResult.truncatedCount,
-            medianGap: truncationResult.medianGap,
-            cutoffGap: truncationResult.cutoffGap,
-            cutoffIndex: truncationResult.cutoffIndex,
-            thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
-            minResultsGuaranteed: DEFAULT_MIN_RESULTS,
-            featureFlagEnabled: isConfidenceTruncationEnabled(),
-          };
+          if (truncationResult.truncated) {
+            // Map truncated ScoredResults back to HybridSearchResult — preserve all fields
+            fusedHybridResults = truncationResult.results.map(r => r as HybridSearchResult);
+            s3meta.truncation = {
+              truncated: true,
+              originalCount: truncationResult.originalCount,
+              truncatedCount: truncationResult.truncatedCount,
+              medianGap: truncationResult.medianGap,
+              cutoffGap: truncationResult.cutoffGap,
+              cutoffIndex: truncationResult.cutoffIndex,
+              thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
+              minResultsGuaranteed: DEFAULT_MIN_RESULTS,
+              featureFlagEnabled: isConfidenceTruncationEnabled(),
+            };
+          }
+        } catch (err: unknown) {
+          // Non-critical — truncation failure does not block pipeline
+          console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
         }
-      } catch (err: unknown) {
-        // Non-critical — truncation failure does not block pipeline
-        console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
       }
 
       // C138: MMR reranking — retrieve embeddings from vec_memories for diversity pruning.
@@ -1284,25 +1293,33 @@ async function hybridSearchEnhanced(
       const s4attributionMeta = shadowMeta._s4attribution;
       const degradationMeta = shadowMeta._degradation;
 
-      // Apply token budget truncation before returning live results
-      // CHK-060: Reserve token overhead for contextual tree headers
-      // (max 100 chars + newline => ~26 tokens per result, chars/4 heuristic).
-      const headerOverhead = isContextHeadersEnabled()
-        ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
-        : 0;
-      const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
+      let budgetTruncated = false;
+      let budgetLimit: number | undefined;
+      if (evaluationMode) {
+        reranked = applyResultLimit(reranked, options.limit);
+      } else {
+        // Apply token budget truncation before returning live results
+        // CHK-060: Reserve token overhead for contextual tree headers
+        // (max 100 chars + newline => ~26 tokens per result, chars/4 heuristic).
+        const headerOverhead = isContextHeadersEnabled()
+          ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
+          : 0;
+        const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
 
-      // Patch computed overhead values into tokenBudget trace now that they are known
-      if (s3meta.tokenBudget) {
-        s3meta.tokenBudget.headerOverhead = headerOverhead;
-        s3meta.tokenBudget.adjustedBudget = adjustedBudget;
+        // Patch computed overhead values into tokenBudget trace now that they are known
+        if (s3meta.tokenBudget) {
+          s3meta.tokenBudget.headerOverhead = headerOverhead;
+          s3meta.tokenBudget.adjustedBudget = adjustedBudget;
+        }
+
+        const budgeted = truncateToBudget(reranked, adjustedBudget, {
+          includeContent: options.includeContent ?? false,
+          queryId: `hybrid-${Date.now()}`,
+        });
+        reranked = budgeted.results;
+        budgetTruncated = budgeted.truncated;
+        budgetLimit = budgetResult.budget;
       }
-
-      const budgeted = truncateToBudget(reranked, adjustedBudget, {
-        includeContent: options.includeContent ?? false,
-        queryId: `hybrid-${Date.now()}`,
-      });
-      reranked = budgeted.results;
 
       if (s4shadowMeta !== undefined && reranked.length > 0) {
         Object.defineProperty(reranked, '_s4shadow', {
@@ -1337,8 +1354,9 @@ async function hybridSearchEnhanced(
               ...(s4shadowMeta !== undefined ? { stage4: s4shadowMeta } : {}),
               ...(s4attributionMeta !== undefined ? { attribution: s4attributionMeta } : {}),
               ...(degradationMeta !== undefined ? { degradation: degradationMeta } : {}),
-              budgetTruncated: budgeted.truncated,
-              budgetLimit: budgetResult.budget,
+              budgetTruncated,
+              ...(budgetLimit !== undefined ? { budgetLimit } : {}),
+              evaluationMode,
               // Wire queryComplexity from router classification into trace
               queryComplexity: routeResult.tier,
               // Wire confidence truncation metadata into per-result trace (036)

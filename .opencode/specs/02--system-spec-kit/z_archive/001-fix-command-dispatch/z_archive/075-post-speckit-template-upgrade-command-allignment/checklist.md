@@ -49,7 +49,7 @@ contextType: "implementation"
 - [ ] CHK-014: OUTPUT FORMATS section added to complete.md
 - [ ] CHK-015: OUTPUT FORMATS section added to implement.md
 - [ ] CHK-016: OUTPUT FORMATS section added to plan.md
-- [ ] CHK-017: OUTPUT FORMATS section added to research.md
+- [ ] CHK-017: OUTPUT FORMATS section added to research/research.md
 
 ### Cross-References
 - [ ] CHK-018: /memory:database line 393 fixed (checkpoint reference)

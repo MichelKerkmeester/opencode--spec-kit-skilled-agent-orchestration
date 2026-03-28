@@ -116,7 +116,7 @@ This plan changes documentation policy content in all 8 ChatGPT agent files, not
 - [x] Update `context.md` retrieval mode and output-budget rules
 - [x] Update `debug.md` low-complexity fast path wording
 - [x] Update `handover.md` fast path and context-package phrasing
-- [x] Update `research.md` memory-save exception semantics
+- [x] Update `research/research.md` memory-save exception semantics
 - [x] Update `review.md` model and blocker/required clarity
 - [x] Update `speckit.md` level and validation semantics
 - [x] Update `write.md` template-first and mode-aware DQI completion rules

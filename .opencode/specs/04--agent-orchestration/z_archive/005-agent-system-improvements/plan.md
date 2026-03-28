@@ -64,8 +64,8 @@ This plan implements 9 documentation improvements across 7 agent/command files. 
 File-based documentation updates following existing markdown patterns
 
 ### Key Components
-- **Agent files**: orchestrate.md, speckit.md, research.md
-- **Command files**: complete.md, research.md, debug.md, implement.md
+- **Agent files**: orchestrate.md, speckit.md, research/research.md
+- **Command files**: complete.md, research/research.md, debug.md, implement.md
 
 ### Data Flow
 No data flow changes - documentation only
@@ -80,14 +80,14 @@ No data flow changes - documentation only
 
 ### Phase 1: Immediate Fixes (< 30 min) ✓ COMPLETE
 - [x] Fix @write naming in orchestrate.md (6 locations) ✓
-- [x] Fix Q5→Q6 in research.md command ✓
+- [x] Fix Q5→Q6 in research/research.md command ✓
 - [x] Complete "for default" text in debug.md ✓
 - [x] Complete "for default" text in implement.md ✓
 
 ### Phase 2: Core Additions (2-3 hours) ✓ COMPLETE
 - [x] Add OUTPUT VERIFICATION to speckit.md ✓ (already existed)
 - [x] Add OUTPUT VERIFICATION to orchestrate.md ✓ (Section 26)
-- [x] Add HARD BLOCK verification to research.md agent ✓
+- [x] Add HARD BLOCK verification to research/research.md agent ✓
 - [x] Add Mermaid diagram to complete.md ✓
 - [x] Add Mermaid diagram to orchestrate.md ✓
 
@@ -212,7 +212,7 @@ Note: Phases can run in parallel - no blocking dependencies.
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        PHASE 2: CORE ADDITIONS                           │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                   │
-│  │  speckit.md  │  │ orchestrate  │  │ research.md  │                   │
+│  │  speckit.md  │  │ orchestrate  │  │ research/research.md  │                   │
 │  │ OUTPUT VERIF │  │ OUTPUT VERIF │  │ HARD BLOCK   │                   │
 │  └──────────────┘  └──────────────┘  └──────────────┘                   │
 │                                                                          │
@@ -308,8 +308,8 @@ All items can run in parallel. No critical path dependencies.
 ### Tier 2: Parallel Execution
 | Agent | Focus | Files |
 |-------|-------|-------|
-| Agent 1 | Phase 1 fixes | orchestrate.md, research.md cmd, debug.md, implement.md |
-| Agent 2 | Phase 2 verifications | speckit.md, orchestrate.md, research.md agent |
+| Agent 1 | Phase 1 fixes | orchestrate.md, research/research.md cmd, debug.md, implement.md |
+| Agent 2 | Phase 2 verifications | speckit.md, orchestrate.md, research/research.md agent |
 | Agent 3 | Phase 2 diagrams | complete.md, orchestrate.md |
 | Agent 4 | Phase 3 enhancements | orchestrate.md |
 

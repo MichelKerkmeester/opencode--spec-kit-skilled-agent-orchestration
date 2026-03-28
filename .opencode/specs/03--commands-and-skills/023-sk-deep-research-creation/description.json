@@ -9,16 +9,12 @@
     "research",
     "loop"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.672Z",
+  "lastUpdated": "2026-03-28T10:35:07.704Z",
   "specId": "023",
   "folderSlug": "sk-deep-research-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Autonomous Deep Research Loop",
-  "status": "v1 Complete (incl. Phase 5.5 legacy removal), v2 Planned",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Autonomous Deep Research Loop"
+  "memoryNameHistory": []
 }

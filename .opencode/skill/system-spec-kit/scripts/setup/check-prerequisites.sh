@@ -81,13 +81,15 @@ check_feature_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
 if $PATHS_ONLY; then
     if $JSON_MODE; then
         # Minimal JSON paths payload (no validation performed)
-        printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s"}\n' \
+        printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s","RESEARCH_DIR":"%s","RESEARCH":"%s"}\n' \
             "$(json_escape "$REPO_ROOT")" \
             "$(json_escape "$CURRENT_BRANCH")" \
             "$(json_escape "$FEATURE_DIR")" \
             "$(json_escape "$FEATURE_SPEC")" \
             "$(json_escape "$IMPL_PLAN")" \
-            "$(json_escape "$TASKS")"
+            "$(json_escape "$TASKS")" \
+            "$(json_escape "$RESEARCH_DIR")" \
+            "$(json_escape "$RESEARCH")"
     else
         echo "REPO_ROOT: $REPO_ROOT"
         echo "BRANCH: $CURRENT_BRANCH"
@@ -95,6 +97,8 @@ if $PATHS_ONLY; then
         echo "FEATURE_SPEC: $FEATURE_SPEC"
         echo "IMPL_PLAN: $IMPL_PLAN"
         echo "TASKS: $TASKS"
+        echo "RESEARCH_DIR: $RESEARCH_DIR"
+        echo "RESEARCH: $RESEARCH"
     fi
     exit 0
 fi
@@ -134,7 +138,7 @@ fi
 # ───────────────────────────────────────────────────────────────
 
 docs=()
-[[ -f "$RESEARCH" ]] && docs+=("research.md")
+[[ -f "$RESEARCH" ]] && docs+=("research/research.md")
 [[ -d "$CHECKLISTS_DIR" && -n "$(ls -A "$CHECKLISTS_DIR" 2>/dev/null)" ]] && docs+=("checklists/")
 [[ -d "$DECISIONS_DIR" && -n "$(ls -A "$DECISIONS_DIR" 2>/dev/null)" ]] && docs+=("decisions/")
 $INCLUDE_TASKS && [[ -f "$TASKS" ]] && docs+=("tasks.md")
@@ -160,7 +164,7 @@ if $JSON_MODE; then
 else
     echo "FEATURE_DIR:$FEATURE_DIR"
     echo "AVAILABLE_DOCS:"
-    check_file "$RESEARCH" "research.md"
+    check_file "$RESEARCH" "research/research.md"
     check_dir "$CHECKLISTS_DIR" "checklists/"
     check_dir "$DECISIONS_DIR" "decisions/"
     $INCLUDE_TASKS && check_file "$TASKS" "tasks.md"

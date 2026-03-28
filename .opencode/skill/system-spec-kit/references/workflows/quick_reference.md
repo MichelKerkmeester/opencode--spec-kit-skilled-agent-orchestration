@@ -40,8 +40,8 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 |-----------|-------|-------------------|-------------------|
 | Any task (baseline) | 1 | spec.md + plan.md + tasks.md + implementation-summary.md | None |
 | Needs QA validation | 2 | L1 + checklist.md | None |
-| Complex/architectural | 3 | L2 + decision-record.md | research.md |
-| Enterprise/governance heavy | 3+ | L3 file set from `templates/level_3+/` | research.md |
+| Complex/architectural | 3 | L2 + decision-record.md | research/research.md |
+| Enterprise/governance heavy | 3+ | L3 file set from `templates/level_3+/` | research/research.md |
 
 **LOC as soft guidance:**
 - <100 LOC suggests Level 1
@@ -58,7 +58,7 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 ### Level 1: Baseline (ALL features start here)
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/###-name/spec.md
+cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
 cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
 cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md
@@ -100,7 +100,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 
 ```bash
 ## Comprehensive Research (from root templates folder):
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 ---
@@ -300,7 +300,7 @@ Then verify placeholders are fully resolved:
 | From | To | Files to Add |
 |------|----|--------------|
 | 1 → 2 | Add verification | checklist.md |
-| 2 → 3 | Add decision documentation | decision-record.md (+ optional research.md) |
+| 2 → 3 | Add decision documentation | decision-record.md (+ optional research/research.md) |
 | 3 → 3+ | Add governance | Extended governance sections + AI protocols |
 
 **Always:**
@@ -571,7 +571,7 @@ specs/###-parent/
 - **ALWAYS fill ALL placeholders** - No `<PLACEHOLDER>` marker in final docs
 - **ALWAYS respond to workflow prompts** - Ask user for A/B/C/D/E choice
 - **ALWAYS get user approval** - Explicit "yes" before file changes
-- **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research.md)
+- **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research/research.md)
 
 ### Enforcement
 
@@ -723,7 +723,7 @@ When in doubt:
 - [decision-record.md](../../templates/level_3/decision-record.md) - Architecture Decision Records template
 
 **Research Templates (Level 3 optional):**
-- [research.md](../../templates/research.md) - Comprehensive research template
+- [research template](../../templates/research.md) - Copy to `research/research.md` for Level 3 research packets
 
 **Session Management Templates:**
 - [handover.md](../../templates/handover.md) - Full session handover document

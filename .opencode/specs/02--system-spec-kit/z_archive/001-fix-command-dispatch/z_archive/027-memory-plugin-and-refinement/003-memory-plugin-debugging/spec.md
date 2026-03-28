@@ -74,5 +74,5 @@ Replace the `better-sqlite3` library with Bun's native `bun:sqlite` module, upda
 
 ## References
 
-- Research document: `./research.md`
+- Research document: `./research/research.md`
 - Bun SQLite docs: https://bun.sh/docs/api/sqlite

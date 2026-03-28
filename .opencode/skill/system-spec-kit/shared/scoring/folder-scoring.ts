@@ -33,6 +33,8 @@ export type FolderMemoryInput = Partial<Memory> & Record<string, unknown>;
 export const ARCHIVE_PATTERNS: readonly RegExp[] = [
   /z_archive\//i,
   /\/scratch\//i,
+  /\/research\/iterations\//i,
+  /\/review\/iterations\//i,
   /\/test-/i,
   /-test\//i,
   /\/prototype\//i,
@@ -91,6 +93,8 @@ export const TIER_ORDER: readonly string[] = ['constitutional', 'critical', 'imp
 const ARCHIVE_MULTIPLIERS: readonly ArchivePattern[] = [
   { pattern: /z_archive\//i, multiplier: 0.1, type: 'archive' },
   { pattern: /\/scratch\//i, multiplier: 0.2, type: 'scratch' },
+  { pattern: /\/research\/iterations\//i, multiplier: 0.2, type: 'scratch' },
+  { pattern: /\/review\/iterations\//i, multiplier: 0.2, type: 'scratch' },
   { pattern: /\/test-/i, multiplier: 0.2, type: 'test' },
   { pattern: /-test\//i, multiplier: 0.2, type: 'test' },
   { pattern: /\/prototype\//i, multiplier: 0.2, type: 'prototype' },

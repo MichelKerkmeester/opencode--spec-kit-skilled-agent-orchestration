@@ -101,7 +101,7 @@
 
 - **Gap 4 (P1):** The cross-reference guidance (Section 4, Step 6) covers sibling documents within one spec folder. For multi-level programs, children need to reference both their immediate parent and the root program. No convention or template section covers multi-level back-references.
 
-- **Gap 5 (P2):** Quality standards Section 7 states "Only `research.md` may include a Table of Contents" (ToC policy). Root synthesis documents like `022-hybrid-rag-fusion/implementation-summary.md` — which span 16 phases across 250+ lines with distinct major sections — benefit from navigation aids. No exception or guidance exists for epic-scale summary documents.
+- **Gap 5 (P2):** Quality standards Section 7 states "Only `research/research.md` may include a Table of Contents" (ToC policy). Root synthesis documents like `022-hybrid-rag-fusion/implementation-summary.md` — which span 16 phases across 250+ lines with distinct major sections — benefit from navigation aids. No exception or guidance exists for epic-scale summary documents.
 
 ---
 

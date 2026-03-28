@@ -28,7 +28,7 @@ Successfully added user-selectable multi-agent dispatch to `/spec_kit:research` 
 
 ### 1. Command Updates
 
-**research.md** (`.opencode/command/spec_kit/research.md`)
+**research.md** (`.opencode/command/spec_kit/research/research/research.md`)
 - Added **Phase 3: DISPATCH MODE SELECTION** after Phase 2
 - Users select A/B/C dispatch mode before proceeding
 - Updated Phase Status Verification table (Phases 1-5)
@@ -57,7 +57,7 @@ Each config includes:
 
 ### 3. Agent Updates
 
-**research.md agent** (`.opencode/agent/research.md`)
+**research.md agent** (`.opencode/agent/research/research/research.md`)
 - Added **Section 9: COORDINATOR MODE**
   - Dispatch workers, receive outputs, validate evidence, synthesize
   - Worker Output Validation checklist
@@ -107,7 +107,7 @@ User selects dispatch mode (A/B/C)
 <!-- ANCHOR:section-numbering -->
 ## Section Numbering
 
-### research.md Agent (15 sections)
+### research/research.md Agent (15 sections)
 0. Model Preference
 1. Core Workflow
 2. Capability Scan
@@ -148,13 +148,13 @@ User selects dispatch mode (A/B/C)
 
 | File | Change |
 |------|--------|
-| `.opencode/command/spec_kit/research.md` | Added Phase 3, renumbered phases 3-5 |
+| `.opencode/command/spec_kit/research/research/research.md` | Added Phase 3, renumbered phases 3-5 |
 | `.opencode/command/spec_kit/debug.md` | Extended Phase 2 |
 | `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` | Added multi_agent_config |
 | `.opencode/command/spec_kit/assets/spec_kit_research_confirm.yaml` | Added multi_agent_config |
 | `.opencode/command/spec_kit/assets/spec_kit_debug_auto.yaml` | Added multi_agent_config |
 | `.opencode/command/spec_kit/assets/spec_kit_debug_confirm.yaml` | Added multi_agent_config |
-| `.opencode/agent/research.md` | Added Sections 9-10, renumbered 4-15 |
+| `.opencode/agent/research/research/research.md` | Added Sections 9-10, renumbered 4-15 |
 | `.opencode/agent/debug.md` | Added Sections 4-5, renumbered 6-12 |
 
 <!-- /ANCHOR:files-modified -->
@@ -205,7 +205,7 @@ Workers for complete/plan workflows:
 
 | File | Change |
 |------|--------|
-| `.opencode/command/spec_kit/research.md` | Added Phase 3, renumbered phases 3-5 |
+| `.opencode/command/spec_kit/research/research/research.md` | Added Phase 3, renumbered phases 3-5 |
 | `.opencode/command/spec_kit/debug.md` | Extended Phase 2 |
 | `.opencode/command/spec_kit/complete.md` | Added Phase 4, renamed Phase 2.5→3, Phase 3→5 |
 | `.opencode/command/spec_kit/plan.md` | Added Phase 3, renamed Phase 3→4 |
@@ -217,7 +217,7 @@ Workers for complete/plan workflows:
 | `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml` | Added multi_agent_config |
 | `.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml` | Added multi_agent_config |
 | `.opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml` | Added multi_agent_config |
-| `.opencode/agent/research.md` | Added Sections 9-10, renumbered 4-15 |
+| `.opencode/agent/research/research/research.md` | Added Sections 9-10, renumbered 4-15 |
 | `.opencode/agent/debug.md` | Added Sections 4-5, renumbered 6-12 |
 
 <!-- /ANCHOR:files-modified-total -->

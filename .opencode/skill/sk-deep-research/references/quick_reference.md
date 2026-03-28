@@ -25,7 +25,7 @@ One-page cheat sheet for the autonomous deep research loop.
 | `--max-iterations` | 10 | Maximum loop iterations |
 | `--convergence` | 0.05 | Stop when avg newInfoRatio below this |
 | `--spec-folder` | auto | Target spec folder path |
-| `progressiveSynthesis` | true | Allow incremental `research.md` updates before final synthesis |
+| `progressiveSynthesis` | true | Allow incremental `research/research.md` updates before final synthesis |
 
 ---
 
@@ -56,7 +56,7 @@ One-page cheat sheet for the autonomous deep research loop.
     |                    |
     |                    +-- Init (config, strategy, state)
     |                    +-- Loop (dispatch, evaluate, decide)
-    |                    +-- Synthesize (final research.md)
+    |                    +-- Synthesize (final research/research.md)
     |                    +-- Save (memory context)
 ```
 
@@ -68,18 +68,18 @@ One-page cheat sheet for the autonomous deep research loop.
 
 | File | Location | Format | Purpose |
 |------|----------|--------|---------|
-| Config | `scratch/deep-research-config.json` | JSON | Loop parameters |
-| State | `scratch/deep-research-state.jsonl` | JSONL | Iteration log (append-only) |
-| Strategy | `scratch/deep-research-strategy.md` | Markdown | What worked/failed, next focus |
-| Iterations | `scratch/iteration-NNN.md` | Markdown | Per-iteration findings |
-| Output | `research.md` | Markdown | Workflow-owned progressive synthesis output |
+| Config | `research/deep-research-config.json` | JSON | Loop parameters |
+| State | `research/deep-research-state.jsonl` | JSONL | Iteration log (append-only) |
+| Strategy | `research/deep-research-strategy.md` | Markdown | What worked/failed, next focus |
+| Iterations | `research/iterations/iteration-NNN.md` | Markdown | Per-iteration findings |
+| Output | `research/research.md` | Markdown | Workflow-owned progressive synthesis output |
 
 ---
 
 ## Reference-Only Notes
 
 - `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch are documented for reference, not assumed available at runtime.
-- `progressiveSynthesis` defaults to `true`, so `research.md` is updated during the loop and finalized at synthesis.
+- `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
 
 ---
 
@@ -132,10 +132,10 @@ Each @deep-research iteration:
 1. Read `deep-research-state.jsonl` and `deep-research-strategy.md`
 2. Determine focus from strategy "Next Focus"
 3. Execute 3-5 research actions (WebFetch, Grep, Read, memory_search)
-4. Write `scratch/iteration-NNN.md` with findings
+4. Write `research/iterations/iteration-NNN.md` with findings
 5. Update `deep-research-strategy.md` (Worked/Failed/Questions/Next Focus)
 6. Append iteration record to `deep-research-state.jsonl`
-7. Optionally update `research.md` with new findings
+7. Optionally update `research/research.md` with new findings
 
 ---
 
@@ -161,7 +161,7 @@ Each @deep-research iteration:
 | Stops too early | Lower `--convergence` from 0.05 to 0.02 |
 | Repeats same research | Check strategy.md "Exhausted Approaches" is being read |
 | Agent ignores state | Verify file paths in dispatch prompt |
-| State file corrupt | Validate JSONL: `cat scratch/deep-research-state.jsonl \| jq .` |
+| State file corrupt | Validate JSONL: `cat research/deep-research-state.jsonl \| jq .` |
 | Loop runs too long | Set lower `--max-iterations` or higher `--convergence` |
 
 ---
@@ -234,7 +234,7 @@ Review mode stores its packet under `{spec_folder}/review/`:
 - State log: `{spec_folder}/review/deep-research-state.jsonl`
 - Strategy: `{spec_folder}/review/deep-review-strategy.md`
 - Dashboard: `{spec_folder}/review/deep-review-dashboard.md`
-- Iterations: `{spec_folder}/review/iteration-NNN.md`
+- Iterations: `{spec_folder}/review/iterations/iteration-NNN.md`
 - Pause sentinel: `{spec_folder}/review/.deep-research-pause`
 - Report: `{spec_folder}/review/review-report.md`
 

@@ -99,4 +99,4 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 - [tasks.md](./tasks.md) - Work breakdown
 - [checklist.md](./checklist.md) - Verification criteria
 - [decision-record.md](./decision-record.md) - Architectural decisions
-- [research.md](./research.md) - Detailed analysis findings
+- [research.md](./research/research.md) - Detailed analysis findings

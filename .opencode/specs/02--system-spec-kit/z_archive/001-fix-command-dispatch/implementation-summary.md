@@ -51,7 +51,7 @@ Five fix types applied in four implementation waves, followed by style alignment
 ### Fix A — Imperative Guardrail (all 7 .md files)
 
 - Added `DO NOT dispatch agents directly` guardrail block after frontmatter (lines 7-18)
-- Files: complete.md, debug.md, implement.md, research.md, plan.md, handover.md, resume.md
+- Files: complete.md, debug.md, implement.md, research/research.md, plan.md, handover.md, resume.md
 
 ### Fix B — YAML Loading Instruction at Top (all 7 .md files)
 
@@ -63,7 +63,7 @@ Five fix types applied in four implementation waves, followed by style alignment
 - Wrapped unfenced dispatch templates with `<!-- REFERENCE ONLY -->` / `<!-- END REFERENCE -->` HTML comments
 - complete.md: 7 fencing markers (6 templates)
 - debug.md: 3 fencing markers
-- research.md: 2 fencing markers (2 templates)
+- research/research.md: 2 fencing markers (2 templates)
 - plan.md: 2 fencing markers (2 templates)
 
 ### Fix D — Reduce @agent Density (2 .md files)
@@ -94,7 +94,7 @@ Five fix types applied in four implementation waves, followed by style alignment
 |------|--------|---------|
 | complete.md | Fix A+B+C+D | Guardrail, YAML instruction, fencing (7 markers), density reduction (19→~9) |
 | debug.md | Fix A+B+C+D | Guardrail, YAML instruction, fencing (3 markers), density reduction (15→~9) |
-| research.md | Fix A+B+C | Guardrail, YAML instruction, fencing (2 markers) |
+| research/research.md | Fix A+B+C | Guardrail, YAML instruction, fencing (2 markers) |
 | plan.md | Fix A+B+C | Guardrail, YAML instruction, fencing (2 markers) |
 | implement.md | Fix A+B | Guardrail, YAML instruction |
 | handover.md | Fix A+B | Guardrail, YAML instruction |
@@ -127,7 +127,7 @@ Five fix types applied in four implementation waves, followed by style alignment
 |------|-------|-------|--------|
 | Wave 1 (5 agents) | All 7 .md files | Fix A+B guardrail insertion | COMPLETE |
 | Wave 2 (5 agents) | complete.md, debug.md | Fix C+D fencing + density reduction | COMPLETE |
-| Wave 3a (2 agents) | research.md, plan.md | Fix C fencing | COMPLETE |
+| Wave 3a (2 agents) | research/research.md, plan.md | Fix C fencing | COMPLETE |
 | Wave 3b (3 agents) | 11 YAML files | Fix E YAML comments | COMPLETE |
 | Style Pass (2 rounds) | All 7 .md files | H2 emojis + decimal renumbering | COMPLETE |
 
@@ -177,7 +177,7 @@ After the 5 core fixes, all 7 command files were audited against `sk-doc` standa
 | complete.md | 16 | 16/16 (100%) | Two rounds of fixes applied |
 | debug.md | 15 | 15/15 (100%) | Two rounds of fixes applied; 1 H2 inside code block (correctly excluded) |
 | implement.md | 17 | 17/17 (100%) | Includes `## 0.` section |
-| research.md | 17 | 17/17 (100%) | Includes `## 0.` section |
+| research/research.md | 17 | 17/17 (100%) | Includes `## 0.` section |
 | plan.md | 15 | 15/15 (100%) | Decimal step renumbered |
 | handover.md | 15 | 15/15 (100%) | Clean after first round |
 | resume.md | 17 | 17/17 (100%) | Clean after first round |

@@ -61,7 +61,7 @@ Each agent output was evaluated against three gates:
 | tasks.md | Yes | v1.1 | PASS |
 | checklist.md | Yes | v1.0 | PASS |
 | decision-record.md | Yes | v1.0 | PASS |
-| research.md | Yes | v1.0 | PASS |
+| research/research.md | Yes | v1.0 | PASS |
 | research-spike.md | Yes | v1.0 | PASS |
 | handover.md | Yes | v2.0 | PASS |
 | debug-delegation.md | Yes | v1.0* | PASS |

@@ -8,7 +8,7 @@
     "ranking",
     "improvements"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.032Z",
+  "lastUpdated": "2026-03-28T10:35:07.652Z",
   "specId": "070",
   "folderSlug": "memory-ranking",
   "parentChain": [
@@ -18,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Memory & Folder Ranking Improvements [070-memory-ranking/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Memory & Folder Ranking Improvements"
+  "memoryNameHistory": []
 }

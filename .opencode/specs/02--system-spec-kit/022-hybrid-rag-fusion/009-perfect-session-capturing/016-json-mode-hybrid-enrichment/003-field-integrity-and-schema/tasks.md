@@ -127,7 +127,7 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Source**: `../research.md` (Round 2)
+- **Research Source**: `../research/research.md` (Round 2)
 
 ### P0 / P1 / P2 Task Map
 

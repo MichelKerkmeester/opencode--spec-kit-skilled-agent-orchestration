@@ -11,7 +11,7 @@
     "code",
     "subagents"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.844Z",
+  "lastUpdated": "2026-03-28T10:35:07.744Z",
   "specId": "009",
   "folderSlug": "claude-code-subagents",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Convert OpenCode Agents to Claude Code Subagents [009-claude-code-subagents/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Convert OpenCode Agents to Claude Code Subagents"
+  "memoryNameHistory": []
 }

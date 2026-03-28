@@ -16,7 +16,7 @@ Symlinking test-fixtures...
 [0;33m⊘[0m Valid priority tags (P0, P1, P2) [2m(validator not found)[0m [2m[6ms][0m
 [0;33m⊘[0m Valid evidence on P0/P1 completed items [2m(validator not found)[0m [2m[6ms][0m
 [0;33m⊘[0m Valid anchors in memory files [2m(validator not found)[0m [2m[7ms][0m
-[0;33m⊘[0m L1 with extra files (notes.md, research.md) [2m(validator not found)[0m [2m[6ms][0m
+[0;33m⊘[0m L1 with extra files (notes.md, research/research.md) [2m(validator not found)[0m [2m[6ms][0m
 [0;33m⊘[0m Valid sections in all files (L3) [2m(validator not found)[0m [2m[5ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m
@@ -294,7 +294,7 @@ Tests Complete.
 [0;32m✓[0m Valid priority tags (P0, P1, P2) [2m[308ms][0m
 [0;32m✓[0m Valid evidence on P0/P1 completed items [2m[347ms][0m
 [0;32m✓[0m Valid anchors in memory files [2m[352ms][0m
-[0;32m✓[0m L1 with extra files (notes.md, research.md) [2m[292ms][0m
+[0;32m✓[0m L1 with extra files (notes.md, research/research.md) [2m[292ms][0m
 [0;32m✓[0m Valid sections in all files (L3) [2m[315ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m
@@ -563,7 +563,7 @@ Tests Complete.
 [0;32m✓[0m Valid priority tags (P0, P1, P2) [2m[274ms][0m
 [0;32m✓[0m Valid evidence on P0/P1 completed items [2m[263ms][0m
 [0;32m✓[0m Valid anchors in memory files [2m[271ms][0m
-[0;32m✓[0m L1 with extra files (notes.md, research.md) [2m[234ms][0m
+[0;32m✓[0m L1 with extra files (notes.md, research/research.md) [2m[234ms][0m
 [0;32m✓[0m Valid sections in all files (L3) [2m[274ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m
@@ -847,7 +847,7 @@ Tests Complete.
 [0;32m✓[0m Valid priority tags (P0, P1, P2) [2m[375ms][0m
 [0;32m✓[0m Valid evidence on P0/P1 completed items [2m[370ms][0m
 [0;32m✓[0m Valid anchors in memory files [2m[350ms][0m
-[0;32m✓[0m L1 with extra files (notes.md, research.md) [2m[295ms][0m
+[0;32m✓[0m L1 with extra files (notes.md, research/research.md) [2m[295ms][0m
 [0;32m✓[0m Valid sections in all files (L3) [2m[326ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m
@@ -1150,7 +1150,7 @@ Tests Complete.
 [0;32m✓[0m Valid priority tags (P0, P1, P2) [2m[272ms][0m
 [0;32m✓[0m Valid evidence on P0/P1 completed items [2m[291ms][0m
 [0;32m✓[0m Valid anchors in memory files [2m[311ms][0m
-[0;32m✓[0m L1 with extra files (notes.md, research.md) [2m[287ms][0m
+[0;32m✓[0m L1 with extra files (notes.md, research/research.md) [2m[287ms][0m
 [0;32m✓[0m Valid sections in all files (L3) [2m[335ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m
@@ -1453,7 +1453,7 @@ Tests Complete.
 [0;32m✓[0m Valid priority tags (P0, P1, P2) [2m[283ms][0m
 [0;32m✓[0m Valid evidence on P0/P1 completed items [2m[296ms][0m
 [0;32m✓[0m Valid anchors in memory files [2m[338ms][0m
-[0;32m✓[0m L1 with extra files (notes.md, research.md) [2m[250ms][0m
+[0;32m✓[0m L1 with extra files (notes.md, research/research.md) [2m[250ms][0m
 [0;32m✓[0m Valid sections in all files (L3) [2m[317ms][0m
 
 [0;34m[1mLevel Declaration Tests (should PASS):[0m

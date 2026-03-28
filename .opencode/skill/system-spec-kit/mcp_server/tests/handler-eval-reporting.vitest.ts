@@ -11,6 +11,7 @@ import type { DashboardReport } from '../lib/eval/reporting-dashboard';
 const mocks = vi.hoisted(() => ({
   mockCheckDatabaseUpdated: vi.fn(),
   mockGetDb: vi.fn(),
+  mockGetDbPath: vi.fn(),
   mockInitHybridSearch: vi.fn(),
   mockHybridSearchEnhanced: vi.fn(),
   mockBm25Search: vi.fn(),
@@ -23,6 +24,7 @@ const mocks = vi.hoisted(() => ({
   mockStoreAblationResults: vi.fn(),
   mockFormatAblationReport: vi.fn(),
   mockToHybridSearchFlags: vi.fn(),
+  mockAssertGroundTruthAlignment: vi.fn(),
   mockGenerateDashboardReport: vi.fn(),
   mockFormatReportJSON: vi.fn(),
   mockFormatReportText: vi.fn(),
@@ -34,6 +36,7 @@ vi.mock('../core', () => ({
 
 vi.mock('../lib/search/vector-index', () => ({
   getDb: mocks.mockGetDb,
+  getDbPath: mocks.mockGetDbPath,
   vectorSearch: mocks.mockVectorSearch,
 }));
 
@@ -65,6 +68,7 @@ vi.mock('../lib/eval/ablation-framework', async () => {
     storeAblationResults: mocks.mockStoreAblationResults,
     formatAblationReport: mocks.mockFormatAblationReport,
     toHybridSearchFlags: mocks.mockToHybridSearchFlags,
+    assertGroundTruthAlignment: mocks.mockAssertGroundTruthAlignment,
   };
 });
 
@@ -147,6 +151,7 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
 
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
     mocks.mockGetDb.mockReturnValue({ prepare: vi.fn() });
+    mocks.mockGetDbPath.mockReturnValue('/tmp/test-context-index.sqlite');
     mocks.mockInitHybridSearch.mockImplementation(() => undefined);
     mocks.mockHybridSearchEnhanced.mockResolvedValue([]);
     mocks.mockBm25Search.mockReturnValue([]);
@@ -164,6 +169,19 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
       useFts: true,
       useGraph: true,
       useTrigger: true,
+    });
+    mocks.mockAssertGroundTruthAlignment.mockReturnValue({
+      totalQueries: 1,
+      totalRelevances: 1,
+      uniqueMemoryIds: 1,
+      parentRelevanceCount: 1,
+      chunkRelevanceCount: 0,
+      missingRelevanceCount: 0,
+      parentMemoryCount: 1,
+      chunkMemoryCount: 0,
+      missingMemoryCount: 0,
+      chunkExamples: [],
+      missingExamples: [],
     });
     mocks.mockGenerateDashboardReport.mockResolvedValue(makeDashboardReport());
     mocks.mockFormatReportJSON.mockReturnValue('{"format":"json"}');
@@ -286,8 +304,19 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
     });
 
     it('T006-A10: ablation search forces all channels and wires graph search', async () => {
+      mocks.mockHybridSearchEnhanced.mockResolvedValueOnce([
+        { id: 11, parentMemoryId: 99, score: 0.91 },
+      ]);
+
       await evalReporting.handleEvalRunAblation({ channels: ['graph'] });
 
+      expect(mocks.mockAssertGroundTruthAlignment).toHaveBeenCalledWith(
+        mocks.mockGetDb.mock.results[0].value,
+        {
+          dbPath: '/tmp/test-context-index.sqlite',
+          context: 'eval_run_ablation',
+        },
+      );
       expect(mocks.mockCreateUnifiedGraphSearchFn).toHaveBeenCalledTimes(1);
       expect(mocks.mockInitHybridSearch).toHaveBeenCalledWith(
         mocks.mockGetDb.mock.results[0].value,
@@ -298,13 +327,23 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
       const searchFn = mocks.mockRunAblation.mock.calls[0]?.[0];
       expect(typeof searchFn).toBe('function');
 
-      await searchFn('graph-heavy query', new Set());
+      const results = await searchFn('graph-heavy query', new Set());
 
       expect(mocks.mockHybridSearchEnhanced).toHaveBeenCalledWith(
         'graph-heavy query',
         [0.1, 0.2, 0.3],
-        expect.objectContaining({ forceAllChannels: true }),
+        expect.objectContaining({
+          forceAllChannels: true,
+          evaluationMode: true,
+        }),
       );
+      expect(results).toEqual([
+        {
+          memoryId: 99,
+          score: 0.91,
+          rank: 1,
+        },
+      ]);
     });
 
     it('T006-A11: mode=k_sensitivity forwards custom queries and uses raw channel lists', async () => {

@@ -81,8 +81,8 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 - P1.2: Composite Convergence Algorithm -- 3-signal weighted vote (rolling avg 0.30, MAD 0.35, question entropy 0.35)
 
 **P2 -- Adopt Next (6 items)**:
-- P2.2: Ideas Backlog File -- `scratch/research-ideas.md` checked at init, stuck recovery, auto-resume
-- P2.6: Sentinel Pause File -- `scratch/.deep-research-pause` for clean pause/resume
+- P2.2: Ideas Backlog File -- `research/research-ideas.md` checked at init, stuck recovery, auto-resume
+- P2.6: Sentinel Pause File -- `research/.deep-research-pause` for clean pause/resume
 - P3.2: Compact State Summary -- 200-token summary injected into every dispatch prompt
 - P2.1: Enriched Stuck Recovery -- try opposites, combine findings, audit low-value iterations
 - P2.4: Segment-Based State Partitioning -- segment field on JSONL records, per-segment convergence
@@ -156,7 +156,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | REQ-013 | Iteration template includes `## Reflection` section | P1 | S | karpathy PR #282 |
 | REQ-014 | Agent protocol defines 5-tier error recovery | P1 | S | AGR + Round 2 direct mode |
 | REQ-015 | Composite convergence: 3-signal weighted vote | P1 | M | Optuna + pi-autoresearch PR #22 |
-| REQ-016 | Ideas backlog file (`scratch/research-ideas.md`) | P2 | S | autoresearch-opencode |
+| REQ-016 | Ideas backlog file (`research/research-ideas.md`) | P2 | S | autoresearch-opencode |
 | REQ-017 | Sentinel pause file support | P2 | S | autoresearch-opencode + pi-autoresearch Issue #6 |
 | REQ-018 | Compact state summary in dispatch prompts | P2 | S | Novel (template approach) |
 | REQ-019 | 3 explicit stuck recovery heuristics | P2 | S | AGR stuck detection protocol |
@@ -175,7 +175,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `/spec_kit:deep-research:auto "What is markdown?"` with maxIterations=3 produces config.json, 3 JSONL entries, populated strategy.md, and research.md
+- **SC-001**: `/spec_kit:deep-research:auto "What is markdown?"` with maxIterations=3 produces config.json, 3 JSONL entries, populated strategy.md, and research/research.md
 - **SC-002**: Convergence test on narrow topic stops before max iterations
 - **SC-003**: `skill_advisor.py "deep research"` routes to sk-deep-research with confidence >= 0.8
 - **SC-004**: All 13 new files pass syntax validation
@@ -236,7 +236,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 |-----------|-------|----------|
 | Scope | 20/25 | Files: 18, LOC: ~2800, Systems: 3 (agent/command/skill) |
 | Risk | 12/25 | No auth, no API, no breaking changes |
-| Research | 18/20 | Complete (research.md exists) |
+| Research | 18/20 | Complete (research/research.md exists) |
 | Multi-Agent | 8/15 | 3 coordinated artifacts |
 | Coordination | 10/15 | Dependencies between phases |
 | **Total** | **68/100** | **Level 3** |
@@ -261,7 +261,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 **As a** developer, **I want** to run autonomous iterative research on an unfamiliar topic, **so that** I get comprehensive findings without manually re-prompting.
 
 **Acceptance Criteria**:
-1. Given a research topic, When I run `/spec_kit:deep-research:auto "topic"`, Then the system iterates until convergence and produces research.md
+1. Given a research topic, When I run `/spec_kit:deep-research:auto "topic"`, Then the system iterates until convergence and produces research/research.md
 
 ### US-002: Interactive Research with Approval Gates (Priority: P1)
 
@@ -290,7 +290,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 
 ## RELATED DOCUMENTS
 
-- **Research**: See `research.md`
+- **Research**: See `research/research.md`
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

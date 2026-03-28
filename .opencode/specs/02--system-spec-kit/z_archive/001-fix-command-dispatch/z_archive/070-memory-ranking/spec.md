@@ -185,4 +185,4 @@ Enhance memory search results with multi-factor scoring:
 - Current MCP implementation: `spec_kit_memory` tools
 - Dashboard command: `/memory:search`
 - Related spec: `058-generate-context-modularization`
-- **Research document:** `research.md` (prior art, alternatives, evidence)
+- **Research document:** `research/research.md` (prior art, alternatives, evidence)

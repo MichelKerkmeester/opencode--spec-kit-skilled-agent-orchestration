@@ -262,7 +262,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 - Should Phase 2 add new agent-routing rules? **RESOLVED: No -- advisor and docs hardening deliver more value with less maintenance**
 
 **Related Documents**:
-- Research: `research.md` (v1.1, 17 sections, 6-agent investigation)
+- Research: `research/research.md` (v1.1, 17 sections, 6-agent investigation)
 - Implementation Plan: `plan.md`
 - Task Breakdown: `tasks.md`
 - Verification Checklist: `checklist.md`

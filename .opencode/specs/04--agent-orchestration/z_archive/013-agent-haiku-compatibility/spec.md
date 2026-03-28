@@ -75,7 +75,7 @@ Ensure all agent files are compatible with the thorough-only Haiku context agent
 | `.claude/agents/orchestrate.md` | Modify | Mirror changes from Copilot version |
 | `.opencode/agent/context.md` | Verify | Confirm thorough-only is correctly stated (no changes expected) |
 | `.claude/agents/context.md` | Verify | Confirm thorough-only is correctly stated (no changes expected) |
-| `.opencode/agent/research.md` | Verify | Check for mode references (none expected) |
+| `.opencode/agent/research/research/research.md` | Verify | Check for mode references (none expected) |
 | `.opencode/agent/speckit.md` | Verify | Check for mode references (none expected) |
 | `.opencode/agent/write.md` | Verify | Check for mode references (none expected) |
 | `.opencode/agent/review.md` | Verify | Check for mode references (none expected) |

@@ -41,7 +41,7 @@ contextType: "implementation"
 - [x] T002 [P] Fix @documentation-writer → @write line 138 (`.opencode/agent/orchestrate.md`)
 - [x] T003 [P] Fix @documentation-writer → @write line 154 (`.opencode/agent/orchestrate.md`)
 - [x] T004 [P] Fix @documentation-writer → @write line 809 (`.opencode/agent/orchestrate.md`)
-- [x] T005 [P] Fix Q5 → Q6 duplicate numbering line 72 (`.opencode/command/spec_kit/research.md`)
+- [x] T005 [P] Fix Q5 → Q6 duplicate numbering line 72 (`.opencode/command/spec_kit/research/research/research.md`)
 - [x] T006 [P] Complete "for default" text line 70 (`.opencode/command/spec_kit/debug.md`)
 - [x] T007 [P] Complete "for default" text line 90 (`.opencode/command/spec_kit/implement.md`)
 
@@ -56,7 +56,7 @@ contextType: "implementation"
 ### Verification Sections
 - [x] T008 Add OUTPUT VERIFICATION section (~50 lines) (`.opencode/agent/speckit.md`) - Already exists Section 12
 - [x] T009 Add OUTPUT VERIFICATION section (~40 lines) (`.opencode/agent/orchestrate.md`) - Section 26
-- [x] T010 Add HARD BLOCK verification section (~60 lines) (`.opencode/agent/research.md`) - Lines 636-667
+- [x] T010 Add HARD BLOCK verification section (~60 lines) (`.opencode/agent/research/research/research.md`) - Lines 636-667
 
 ### Mermaid Diagrams
 - [x] T011 [P] Add Mermaid workflow diagram after Section 3 (`.opencode/command/spec_kit/complete.md`) - Lines 546-577
@@ -141,7 +141,7 @@ Before starting each task, verify:
 All tasks parallelizable, no dependencies.
 
 - [x] T001-T004 orchestrate.md @write fixes ✓
-- [x] T005 research.md command Q5→Q6 ✓
+- [x] T005 research/research.md command Q5→Q6 ✓
 - [x] T006 debug.md text fix ✓
 - [x] T007 implement.md text fix ✓
 
@@ -150,7 +150,7 @@ Verification sections and diagrams.
 
 - [x] T008 speckit.md OUTPUT VERIFICATION ✓
 - [x] T009 orchestrate.md OUTPUT VERIFICATION ✓
-- [x] T010 research.md HARD BLOCK ✓
+- [x] T010 research/research.md HARD BLOCK ✓
 - [x] T011 complete.md Mermaid ✓
 - [x] T012 orchestrate.md Mermaid ✓
 

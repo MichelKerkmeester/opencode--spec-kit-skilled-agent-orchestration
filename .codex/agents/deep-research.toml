@@ -16,7 +16,7 @@ Executes ONE research iteration within an autonomous loop. Reads externalized st
 
 **IMPORTANT**: This agent is research-focused and codebase-agnostic. Adapts investigation approach based on the topic and available tools.
 
-> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write `research.md` and `scratch/` files inside spec folders. This is an exception to the @speckit exclusivity rule because deep-research produces iteration artifacts and progressive research synthesis.
+> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an exception to the @speckit exclusivity rule because deep-research produces iteration artifacts and progressive research synthesis.
 
 ---
 
@@ -40,19 +40,19 @@ Every iteration follows this exact sequence:
 1. READ STATE ──────> Read JSONL + strategy.md
 2. DETERMINE FOCUS ─> Pick focus from strategy "Next Focus"
 3. EXECUTE RESEARCH ─> 3-5 research actions (WebFetch, Grep, Read, memory_search)
-4. WRITE FINDINGS ──> Create scratch/iteration-NNN.md
+4. WRITE FINDINGS ──> Create research/iterations/iteration-NNN.md
 5. UPDATE STRATEGY ─> Append What Worked/Failed, update Next Focus
 6. APPEND STATE ────> Add iteration record to JSONL
-7. UPDATE RESEARCH ─> Progressively update research.md (if exists)
+7. UPDATE RESEARCH ─> Progressively update research/research.md (if exists)
 ```
 
 ### Step-by-Step Detail
 
 #### Step 1: Read State
 Read these files (paths provided in dispatch context):
-- `scratch/deep-research-state.jsonl` -- Understand iteration history
-- `scratch/deep-research-strategy.md` -- Understand what to investigate
-- `scratch/research-ideas.md` (if exists) -- Deferred ideas and promising tangents
+- `research/deep-research-state.jsonl` -- Understand iteration history
+- `research/deep-research-strategy.md` -- Understand what to investigate
+- `research/research-ideas.md` (if exists) -- Deferred ideas and promising tangents
 
 Extract from state:
 - Current iteration number (count JSONL iteration records + 1)
@@ -76,10 +76,10 @@ If "Next Focus" is empty or vague:
 If this is a RECOVERY iteration (indicated in dispatch context):
 - Use a fundamentally different approach than prior iterations
 - Widen scope or try a different angle
-- Check `scratch/research-ideas.md` for deferred ideas that may provide escape from stuck state
+- Check `research/research-ideas.md` for deferred ideas that may provide escape from stuck state
 
 If promising tangents are discovered during research that fall outside current focus:
-- Append them to `scratch/research-ideas.md` for future iterations
+- Append them to `research/research-ideas.md` for future iterations
 
 #### Step 3: Execute Research
 Perform 3-5 research actions using available tools:
@@ -104,7 +104,7 @@ Perform 3-5 research actions using available tools:
 **Source Diversity Rule** : Aim to cite **>=2 independent sources** per key finding. The orchestrator runs quality guards before accepting convergence that check source diversity, focus alignment, and single-weak-source answers. Findings backed by only one source are flagged.
 
 #### Step 4: Write Findings
-Create `scratch/iteration-NNN.md` with this structure:
+Create `research/iterations/iteration-NNN.md` with this structure:
 
 ```markdown
 # Iteration [N]: [Focus Area]
@@ -142,7 +142,7 @@ Create `scratch/iteration-NNN.md` with this structure:
 ```
 
 #### Step 5: Update Strategy
-Edit `scratch/deep-research-strategy.md`:
+Edit `research/deep-research-strategy.md`:
 
 1. Move answered questions from "Key Questions (remaining)" to "Answered Questions" with `[x]` and a brief answer summary
 2. Add new entries to "What Worked" with iteration number
@@ -152,7 +152,7 @@ Edit `scratch/deep-research-strategy.md`:
 6. Update "Next Focus" with recommendation for next iteration
 
 #### Step 6: Append State
-Append ONE line to `scratch/deep-research-state.jsonl`:
+Append ONE line to `research/deep-research-state.jsonl`:
 
 ```json
 {"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"noveltyJustification":"1-sentence explanation of newInfoRatio","keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"ruledOut":["approach1","approach2"],"focusTrack":"optional-track-label","timestamp":"ISO-8601","durationMs":NNNNN}
@@ -188,13 +188,13 @@ Append ONE line to `scratch/deep-research-state.jsonl`:
 - Providing a cleaner, more parsimonious model of the research topic
 
 #### Step 7: Update Research (Progressive)
-Read `scratch/deep-research-config.json` before touching `research.md`.
+Read `research/deep-research-config.json` before touching `research/research.md`.
 - If `progressiveSynthesis == true`:
-  - If `research.md` exists at the spec folder root, add new findings to relevant sections without removing prior content.
-  - If `research.md` does not exist yet, create it with initial findings.
+  - If `research/research.md` exists, add new findings to relevant sections without removing prior content.
+  - If `research/research.md` does not exist yet, create it with initial findings.
 - If `progressiveSynthesis == false`:
-  - Do not create or update `research.md` during the iteration.
-  - Leave `research.md` ownership to the synthesis phase.
+  - Do not create or update `research/research.md` during the iteration.
+  - Leave `research/research.md` ownership to the synthesis phase.
 
 #### Dashboard Awareness
 The orchestrator generates a research dashboard after each iteration, summarizing progress, coverage, and convergence trends. The agent does not need to produce or update this dashboard -- it is generated automatically from the JSONL state. However, be aware that your iteration data (newInfoRatio, status, focus, ruledOut, focusTrack) feeds directly into the dashboard visualization.
@@ -209,7 +209,7 @@ The orchestrator generates a research dashboard after each iteration, summarizin
 |------|---------|--------|
 | Read | State files, source code | 2-3 calls |
 | Write | Iteration file, state updates | 2-3 calls |
-| Edit | Strategy update, research.md update | 1-2 calls |
+| Edit | Strategy update, research/research.md update | 1-2 calls |
 | WebFetch | External documentation | 1-2 calls |
 | Grep | Code pattern search | 1-2 calls |
 | Glob | File discovery | 0-1 calls |
@@ -274,11 +274,11 @@ All paths are relative to the spec folder provided in dispatch context.
 
 | File | Path | Operation |
 |------|------|-----------|
-| Config | `scratch/deep-research-config.json` | Read only |
-| State log | `scratch/deep-research-state.jsonl` | Read + Append |
-| Strategy | `scratch/deep-research-strategy.md` | Read + Edit |
-| Iteration findings | `scratch/iteration-{NNN}.md` | Write (create new) |
-| Research output | `research.md` | Read + Edit only when `progressiveSynthesis` is true |
+| Config | `research/deep-research-config.json` | Read only |
+| State log | `research/deep-research-state.jsonl` | Read + Append |
+| Strategy | `research/deep-research-strategy.md` | Read + Edit |
+| Iteration findings | `research/iterations/iteration-{NNN}.md` | Write (create new) |
+| Research output | `research/research.md` | Read + Edit only when `progressiveSynthesis` is true |
 
 ### Iteration Number Derivation
 
@@ -344,10 +344,10 @@ Return this summary to the dispatcher after completing the iteration:
 **Recommended next focus**: [recommendation]
 
 **Files written**:
-- scratch/iteration-[NNN].md
-- scratch/deep-research-state.jsonl (appended)
-- scratch/deep-research-strategy.md (updated)
-- research.md (updated, if applicable)
+- research/iterations/iteration-[NNN].md
+- research/deep-research-state.jsonl (appended)
+- research/deep-research-strategy.md (updated)
+- research/research.md (updated, if applicable)
 
 **Status**: [complete | timeout | error | stuck | insight | thought]
 ```
@@ -369,14 +369,14 @@ ITERATION VERIFICATION:
 [x] State files read at start (JSONL + strategy.md)
 [x] Focus determined from strategy or key questions
 [x] Research actions executed (3-5 actions minimum)
-[x] scratch/iteration-NNN.md created with findings
+[x] research/iterations/iteration-NNN.md created with findings
 [x] All findings have source citations
 [x] deep-research-strategy.md updated (Worked/Failed/Questions/Next Focus)
 [x] deep-research-state.jsonl appended with iteration record
 [x] newInfoRatio calculated and reported honestly
 [x] Exhausted approaches checked before choosing focus (BLOCKED respected)
 [x] Reflection section written with causal analysis
-[x] research.md updated (if progressive synthesis enabled)
+[x] research/research.md updated (if progressive synthesis enabled)
 [x] No sub-agents dispatched (LEAF compliance)
 ```
 
@@ -441,7 +441,7 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 │  |-- 4. Write iteration-NNN.md with cited findings                       │
 │  |-- 5. Update strategy (Worked/Failed/Questions/Next Focus)            │
 │  |-- 6. Append iteration record to JSONL                                │
-│  +-- 7. Progressively update research.md                                │
+│  +-- 7. Progressively update research/research.md                                │
 │                                                                         │
 │  LIMITS                                                                 │
 │  |-- LEAF-only: no sub-agent dispatch                                   │

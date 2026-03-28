@@ -98,7 +98,7 @@ Since this is a greenfield project, the following baseline architecture decision
 ## Session State
 
 - **Workflow Step Completed**: 9 (Save Context)
-- **Artifacts Created**: research.md, checklist.md
+- **Artifacts Created**: research/research.md, checklist.md
 - **Quality Gates**: Pre=PASS (100/70), Post=PASS (100/70)
 - **Codebase Context**: Greenfield - empty codebase, all sections documented with greenfield notes
 - **Next Steps**: Run /spec_kit:plan to create implementation plan, or /spec_kit:complete for full workflow

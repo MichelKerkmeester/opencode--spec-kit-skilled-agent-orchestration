@@ -118,7 +118,7 @@ contextType: "implementation"
 - **Status**: [ ] Pending
 
 ### Task 2.13: Update remaining templates
-- **Files**: decision-record.md, research.md, research-spike.md, handover.md, debug-delegation.md
+- **Files**: decision-record.md, research/research.md, research-spike.md, handover.md, debug-delegation.md
 - **References**: Check each for path references
 - **Status**: [ ] Pending
 

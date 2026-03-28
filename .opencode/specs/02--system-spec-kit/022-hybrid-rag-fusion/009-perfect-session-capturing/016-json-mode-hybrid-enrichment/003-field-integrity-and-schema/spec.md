@@ -275,5 +275,5 @@ Eliminate silent data loss and silent quality degradation in the memory-save pip
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Source**: `../research.md` (Round 2, findings F-D01 through F-D08 and F-S01 through F-S05)
+- **Research Source**: `../research/research.md` (Round 2, findings F-D01 through F-D08 and F-S01 through F-S05)
 - **Sibling Phases**: `001-initial-enrichment/`, `002-scoring-and-filter/`, `004-indexing-and-coherence/`

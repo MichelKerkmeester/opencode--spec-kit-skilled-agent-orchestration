@@ -30,7 +30,7 @@ Improve generated memory-file quality and retrieval usefulness by enforcing qual
 ## 2. Quality Gates
 
 ### Definition of Ready
-- Baseline findings from `../research.md` are accepted.
+- Baseline findings from `../research/research.md` are accepted.
 - Root requirements `REQ-018-023` are mapped to QP tasks.
 - Fixture strategy and KPI measurements are defined.
 
@@ -85,7 +85,7 @@ Improve generated memory-file quality and retrieval usefulness by enforcing qual
 <!-- ANCHOR:dependencies -->
 ## 6. Dependencies
 
-- Derived from `../research.md` baseline and root requirements `REQ-018-023`.
+- Derived from `../research/research.md` baseline and root requirements `REQ-018-023`.
 - Uses source research artifacts in `../research/` for traceability.
 - KPI and filtering outputs inform rollout confidence in package `../002-extraction-rollout-phases-2-3/`.
 <!-- /ANCHOR:dependencies -->
@@ -115,7 +115,7 @@ Planning-only package. No implementation has started.
 
 | Context Item | Current State | Package Implication |
 |--------------|---------------|---------------------|
-| Research baseline | Defined in `../research.md` and `../research/` | QP sequence must stay traceable to documented research findings |
+| Research baseline | Defined in `../research/research.md` and `../research/` | QP sequence must stay traceable to documented research findings |
 | Root quality requirements | Defined as `REQ-018-023` and `SC-006-SC-013` | Package owns implementation planning for memory-quality controls |
 | Downstream rollout confidence | Package 002 consumes quality outcomes | Quality gates must be explicit and testable before rollout confidence claims |
 | Legacy memory inventory | Existing indexed artifacts include mixed quality | QP-4 remediation sequencing must avoid unsafe archival or ranking regressions |
@@ -158,7 +158,7 @@ Deliver controlled normalization of active-tier legacy artifacts with safe re-in
 
 ### Pre-Task Checklist
 
-- Confirm `../research.md` and `../research/` references still represent current baseline findings.
+- Confirm `../research/research.md` and `../research/` references still represent current baseline findings.
 - Confirm requirement mapping to `REQ-018-023` and `SC-006-SC-013` remains unchanged.
 - Confirm package boundaries versus package 001 and package 002 remain explicit.
 - Confirm quality thresholds in this package remain synchronized with root artifacts.
@@ -168,7 +168,7 @@ Deliver controlled normalization of active-tier legacy artifacts with safe re-in
 | Rule | Description | Trigger | Action |
 |------|-------------|---------|--------|
 | MQ-ER-001 | Preserve hard validation gates | Any gate-rule update | Maintain hard-fail behavior for malformed/contaminated artifacts |
-| MQ-ER-002 | Preserve research traceability | Any requirement or task mapping edit | Keep links to `../research.md` and `../research/` explicit |
+| MQ-ER-002 | Preserve research traceability | Any requirement or task mapping edit | Keep links to `../research/research.md` and `../research/` explicit |
 | MQ-ER-003 | Preserve KPI comparability | Any threshold edit | Keep thresholds aligned with root `SC-006-SC-013` expectations |
 
 ### Status Reporting Format

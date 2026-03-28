@@ -118,7 +118,7 @@ When an AI assistant asks "Which spec folder?" at Gate 3, choose Option B (New) 
 # Create a Level 1 spec folder
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 042-my-feature
 
-# Creates: .opencode/specs/[project]/042-my-feature/
+# Creates: .opencode/[project]/042-my-feature/
 # Files: spec.md, plan.md, tasks.md (Level 1 starters)
 ```
 
@@ -375,8 +375,8 @@ The memory system includes built-in tools for measuring search quality:
 
 - **Ablation studies** -- turn off one search component at a time to measure its contribution, like removing one ingredient from a recipe to see if the dish still tastes good
 - **12-metric computation** -- MRR, NDCG, MAP and 9 other information retrieval metrics
-- **Synthetic ground truth corpus** -- 110 test questions with known correct answers for benchmarking
-- **Reporting dashboard** -- performance trends across work periods and search channels
+- **Synthetic ground truth corpus** -- 110 test questions with known correct answers for benchmarking, keyed to live parent-memory IDs; rerun `scripts/evals/map-ground-truth-ids.ts` after DB rebuilds or imports before trusting ablation or reporting comparisons
+- **Reporting dashboard** -- performance trends across work periods and search channels, sourced from parent-memory-normalized eval rows even when retrieval hits came from chunks
 
 ---
 
@@ -479,7 +479,7 @@ After editing core or addendum templates, run `templates/compose.sh` to regenera
 | Template | Purpose |
 |----------|---------|
 | `context_template.md` (~26K) | Memory context template with standard ANCHOR sections |
-| `research.md` (~20K) | Deep research template for autonomous investigation |
+| `research/research.md` (~20K) | Deep research template for autonomous investigation |
 | `handover.md` | Session continuity template for handing off to the next AI |
 | `debug-delegation.md` | Debug delegation template for fresh-perspective troubleshooting |
 
@@ -552,7 +552,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
 │   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
 │   ├── context_template.md     # Memory context template (~26K)
-│   ├── research.md             # Deep research template (~20K)
+│   ├── research/research.md             # Deep research template (~20K)
 │   ├── handover.md             # Session continuity template
 │   └── debug-delegation.md     # Debug delegation template
 ├── scripts/                    # CLI tools (TypeScript source + Bash)

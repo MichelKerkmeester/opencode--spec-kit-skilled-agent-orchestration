@@ -51,7 +51,7 @@ This specification covers remediation of:
 
 **Phase 1 - Command & YAML Files:**
 1. Memory Commands (5 files): save.md, manage.md, learn.md, continue.md, context.md
-2. Spec Kit Commands (7 files): debug.md, research.md, complete.md, implement.md, plan.md, resume.md, handover.md
+2. Spec Kit Commands (7 files): debug.md, research/research.md, complete.md, implement.md, plan.md, resume.md, handover.md
 3. YAML Workflow Assets (16 files): All auto/confirm workflow configurations
 4. Documentation (2 files): README.md, CHANGELOG.md
 5. Agent Files (1 file): speckit.md
@@ -140,7 +140,7 @@ This specification covers remediation of:
 
 | ID | Issue | Location | Description |
 |----|-------|----------|-------------|
-| **BUG-008** | Phantom WebSearch Tool | research.md line 4 | References non-existent tool |
+| **BUG-008** | Phantom WebSearch Tool | research/research.md line 4 | References non-existent tool |
 | **BUG-009** | Session Detection Mismatch | resume.md vs YAML | 4-tier vs 2-tier detection |
 | **BUG-010** | YAML Contradiction | handover.md lines 258 vs 550 | Claims no YAML then references YAML |
 | **BUG-011** | Section Mismatch | handover.md vs YAML | 7 sections vs 5 sections |
@@ -215,7 +215,7 @@ This specification covers remediation of:
 | **BUG-027** | Short Tool Name Example | save.md line 58 | Uses short form |
 | **BUG-028** | Stats Mode Clarity | manage.md line 17 | "stats" listed but no keyword |
 | **BUG-029** | CONTINUE_SESSION Not in YAML | resume.md | Defers to `/memory:continue` |
-| **BUG-030** | Tool Capitalization | research.md line 4 | Uses capitalized tool names |
+| **BUG-030** | Tool Capitalization | research/research.md line 4 | Uses capitalized tool names |
 | **AUD-031** | Context priority order | resume.md | Differs from YAML |
 | **AUD-032** | Case inconsistency | Various command files | Title Case vs lowercase |
 | **AUD-033** | Version mismatch | core/README.md | Shows 1.8.0 vs package.json 1.7.2 |

@@ -34,7 +34,7 @@ contextType: "decision"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bonuses of +0.05 for message count, +0.05 for tool usage, and +0.10 for decisions present — a combined maximum of +0.20. HIGH-severity findings block writes upstream and never reach the scorer. The maximum reachable penalty at the scorer level is MEDIUM severity at -0.15. This means five simultaneous soft failures (5 * -0.03) = -0.15, combined with all three bonuses (+0.20), produces a final score of 1.05 — clamped to 1.00. Even a session with no bonuses but five soft failures scores 0.85. The score provides no useful discrimination between good and bad saves. This was confirmed by Round 2 research (Domain C, finding #2, research.md).
+The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bonuses of +0.05 for message count, +0.05 for tool usage, and +0.10 for decisions present — a combined maximum of +0.20. HIGH-severity findings block writes upstream and never reach the scorer. The maximum reachable penalty at the scorer level is MEDIUM severity at -0.15. This means five simultaneous soft failures (5 * -0.03) = -0.15, combined with all three bonuses (+0.20), produces a final score of 1.05 — clamped to 1.00. Even a session with no bonuses but five soft failures scores 0.85. The score provides no useful discrimination between good and bad saves. This was confirmed by Round 2 research (Domain C, finding #2, research/research.md).
 
 ### Constraints
 
@@ -95,7 +95,7 @@ The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bon
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | research.md Domain C finding #2: "quality_score has zero discriminative power" |
+| 1 | **Necessary?** | PASS | research/research.md Domain C finding #2: "quality_score has zero discriminative power" |
 | 2 | **Beyond Local Maxima?** | PASS | Rebalancing alternative considered and rejected |
 | 3 | **Sufficient?** | PASS | Removing bonuses is the minimal change that restores discrimination |
 | 4 | **Fits Goal?** | PASS | Goal is discriminative quality_score; this directly achieves it |
@@ -193,7 +193,7 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Four text fields confirmed uncleaned in research.md Domain E |
+| 1 | **Necessary?** | PASS | Four text fields confirmed uncleaned in research/research.md Domain E |
 | 2 | **Beyond Local Maxima?** | PASS | Three approaches evaluated; targeted extension is best fit |
 | 3 | **Sufficient?** | PASS | Covers all identified uncleaned fields; 7 new pattern categories address known gaps |
 | 4 | **Fits Goal?** | PASS | Direct path to clean output for all text fields |

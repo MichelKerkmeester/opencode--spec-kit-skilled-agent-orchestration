@@ -262,7 +262,7 @@ AGR case study data shows diminishing returns past 15 iterations. We needed a se
 
 ## v2 Decisions (from 14-Iteration Deep Research)
 
-> These ADRs are derived from code-level analysis of 4 autoresearch repos + 322 community issues. See `scratch/improvement-proposals.md` v2 and `research.md` Section 18.
+> These ADRs are derived from code-level analysis of 4 autoresearch repos + 322 community issues. See `scratch/improvement-proposals.md` v2 and `research/research.md` Section 18.
 
 ---
 

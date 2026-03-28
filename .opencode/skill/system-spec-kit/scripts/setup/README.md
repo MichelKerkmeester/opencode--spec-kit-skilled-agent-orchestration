@@ -47,7 +47,7 @@ Setup scripts validate feature-folder prerequisites before implementation begins
 |---------|-------------|
 | **Feature Folder Validation** | Confirms active feature folder exists |
 | **File Requirement Checks** | Ensures required files exist for requested mode |
-| **Docs Discovery** | Reports available docs (`research.md`, `checklists/`, `decisions/`) |
+| **Docs Discovery** | Reports available docs (`research/research.md`, `checklists/`, `decisions/`) |
 | **Full Validation Integration** | Optionally runs complete validation suite |
 | **Multiple Output Formats** | Human-readable, JSON or paths-only modes |
 
@@ -79,9 +79,9 @@ cd /path/to/repo
 ./check-prerequisites.sh
 
 # Expected output:
-# FEATURE_DIR:/path/to/repo/specs/007-my-feature
+# FEATURE_DIR:/path/to/repo/007-my-feature
 # AVAILABLE_DOCS:
-# research.md
+# research/research.md
 # checklists/
 ```
 
@@ -153,7 +153,7 @@ setup/
 ```json
 {
   "FEATURE_DIR": "/path/to/specs/001-name",
-  "AVAILABLE_DOCS": ["research.md", "checklists/", "decisions/"]
+  "AVAILABLE_DOCS": ["research/research.md", "checklists/", "decisions/"]
 }
 ```
 

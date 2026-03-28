@@ -159,14 +159,14 @@ Next: Continue implementation
 | plan.md | EXISTS |
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `re-audit 007-code-audit-per-feature-catalog` | `007-code-audit-per-feature-catalog 3-agent` | `outputs scratch/reaudit-2026-03-23/` | `scratch/reaudit-2026-03-23/ per` | `deprecated/unused 013/f21` | `phases deprecated-as-live` | `deprecated-as-live phases` | `shadow deprecated/unused` | `gpt-5.3-codex verifier` | `shadow-archive 016/f11` | `3-agent triangulation` | `triangulation gpt-5.4` |
 

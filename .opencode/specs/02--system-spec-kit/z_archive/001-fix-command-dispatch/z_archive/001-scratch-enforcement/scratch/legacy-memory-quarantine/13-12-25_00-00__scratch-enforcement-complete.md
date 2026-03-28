@@ -169,7 +169,7 @@ AI agents were creating random test scripts, debug files, and prototypes in the 
 |-------|----------|---------|
 | 1 | AGENTS.md:140 | Critical rule (agents read at session start) |
 | 2 | AGENTS.md:253 | Failure pattern #15 with self-correction trigger |
-| 3 | Templates | Explicit guidance in spec.md, tasks.md, research.md, checklist.md |
+| 3 | Templates | Explicit guidance in spec.md, tasks.md, research/research.md, checklist.md |
 | 4 | Checklist CHK036-038 | Primary verification before completion claims |
 
 ## Key Files Modified
@@ -182,14 +182,14 @@ AI agents were creating random test scripts, debug files, and prototypes in the 
 ### Templates (.opencode/speckit/templates/)
 - `spec.md` - Section 12 "WORKING FILES"
 - `tasks.md` - "WORKING FILES LOCATION" section
-- `research.md` - "FILE ORGANIZATION" section  
+- `research/research.md` - "FILE ORGANIZATION" section  
 - `research-spike.md` - "FILE ORGANIZATION" section
 - `checklist.md` - CHK036-038 items
 
 ### Commands (.opencode/commands/spec_kit/)
 - `complete.md` - Scratch folder usage section
 - `implement.md` - Scratch folder usage section
-- `research.md` - Scratch folder usage section
+- `research/research.md` - Scratch folder usage section
 
 ### Skills
 - `.opencode/skills/workflows-spec-kit/SKILL.md`

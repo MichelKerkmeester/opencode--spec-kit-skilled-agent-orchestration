@@ -76,7 +76,7 @@ I found the core file set; next I’ll locate those phase-spec paths exactly, th
 ● Search (grep)
   │ "abort|validation|validate|quality gate|gate|index|indexing|contract|disposition|warning|warn|th
   │ row|error|planned|shipped|implemented|phase|stateless|structured" (.opencode/specs/02--system-sp
-  │ ec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research.md)
+  │ ec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/research/research.md)
   └ 5 lines found
 
 ● Search (grep)
@@ -150,7 +150,7 @@ I’ve mapped the target files; now I’m extracting precise claim lines (with l
 ● Search (grep)
   │ "Status|phase|abort|QUALITY_GATE|validation|validate|gate|index|indexing|write_skip_index|abort_
   │ write|contract|stateless|structured|warning|warn" (.opencode/specs/02--system-spec-kit/022-hybri
-  │ d-rag-fusion/009-perfect-session-capturing/research.md)
+  │ d-rag-fusion/009-perfect-session-capturing/research/research/research.md)
   └ 5 lines found
 
 ● Search (grep)
@@ -214,7 +214,7 @@ I’ve mapped the target files; now I’m extracting precise claim lines (with l
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/plan.md
   └ 221 lines read
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research
   │ .md
   └ 149 lines read
@@ -288,7 +288,7 @@ I’ve mapped the target files; now I’m extracting precise claim lines (with l
 ● Search (grep)
   │ "abort|validation|qualityValidation.valid|write-only|index|indexing|block|gate|V10|V11|HARD_BLOC
   │ K_RULES|disposition" (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-sess
-  │ ion-capturing/research.md)
+  │ ion-capturing/research/research/research.md)
   └ 5 lines found
 
 ● Search (grep)
@@ -321,7 +321,7 @@ Audit complete. Here’s Q7 (docs vs real abort/validation chain).
 - `018/spec.md` “V10-only can write+index” → **ACCURATE** (`validate-memory-quality.ts:111-117`, `workflow.ts:2287-2314`).
 - `017/spec.md` “V10-only proceeds with warning” → **ACCURATE** (`workflow.ts:2158-2162`).
 - `017/spec.md` says V8/V9 abort with `QUALITY_GATE_ABORT` → **OUTDATED** (now `CONTAMINATION_GATE_ABORT`, `workflow.ts:2141-2144`).
-- `research.md` says indexing still depends on `qualityValidation.valid===true` → **OUTDATED** (`workflow.ts:2287-2328`).
+- `research/research.md` says indexing still depends on `qualityValidation.valid===true` → **OUTDATED** (`workflow.ts:2287-2328`).
 - `implementation-summary.md` says phases 018-020 are doc-only/planned → **OUTDATED** vs shipped runtime (`spec.md:24`, `018/spec.md:25`, `019/spec.md:25`).
 
 **MISSING docs**
@@ -341,6 +341,6 @@ Audit complete. Here’s Q7 (docs vs real abort/validation chain).
 
 **4) Remaining work**
 
-Moderate: update `implementation-summary.md`, patch 017 abort-label wording + V12 note, refresh `research.md` indexing statement, and optionally extend parent map to 021.  
+Moderate: update `implementation-summary.md`, patch 017 abort-label wording + V12 note, refresh `research/research.md` indexing statement, and optionally extend parent map to 021.  
 Estimated **1–2 hours** (plus ~30 min for phase-map sync).
 

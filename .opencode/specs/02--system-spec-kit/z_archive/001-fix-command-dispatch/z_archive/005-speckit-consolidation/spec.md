@@ -110,7 +110,7 @@ Enable users to update the SpecKit functionality by updating a single skill fold
 ├── templates/ (9 templates + .hashes + scratch/)
 │   ├── spec.md, plan.md, tasks.md
 │   ├── checklist.md, decision-record.md
-│   ├── research.md, research-spike.md
+│   ├── research/research.md, research-spike.md
 │   ├── handover.md, debug-delegation.md
 │   └── .hashes (integrity verification)
 ├── scripts/ (6 scripts)
@@ -206,7 +206,7 @@ create-spec-folder.sh (standalone)
 │   ├── tasks.md
 │   ├── checklist.md
 │   ├── decision-record.md
-│   ├── research.md
+│   ├── research/research.md
 │   ├── research-spike.md
 │   ├── handover.md
 │   ├── debug-delegation.md

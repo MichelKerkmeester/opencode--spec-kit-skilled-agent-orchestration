@@ -1,4 +1,4 @@
-I’ll read the five iteration notes and `research.md` together, then cross-check for conflicts, disagreements, and gaps.
+I’ll read the five iteration notes and `research/research.md` together, then cross-check for conflicts, disagreements, and gaps.
 
 ● Read iteration-003.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/
@@ -25,7 +25,7 @@ I’ll read the five iteration notes and `research.md` together, then cross-chec
   │ iteration-002.md
   └ 105 lines read
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research
   │ .md
   └ 244 lines read

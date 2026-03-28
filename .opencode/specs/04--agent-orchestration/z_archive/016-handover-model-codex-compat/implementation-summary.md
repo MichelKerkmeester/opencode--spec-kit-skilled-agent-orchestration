@@ -69,7 +69,7 @@ Added fields: `profile`, `approval_policy`, `sandbox_mode`
 | `.codex/agents/speckit.md` | Frontmatter replaced |
 | `.codex/agents/write.md` | Frontmatter replaced |
 | `.codex/agents/debug.md` | Frontmatter replaced |
-| `.codex/agents/research.md` | Frontmatter replaced |
+| `.codex/agents/research/research/research.md` | Frontmatter replaced |
 | `.codex/agents/review.md` | Frontmatter replaced |
 | `.codex/agents/orchestrate.md` | Frontmatter replaced |
 

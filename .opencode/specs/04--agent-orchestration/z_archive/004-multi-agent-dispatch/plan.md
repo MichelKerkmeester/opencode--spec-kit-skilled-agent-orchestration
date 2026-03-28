@@ -41,7 +41,7 @@ User selects dispatch mode (A/B/C)
 
 ### Phase 1: Command Updates
 
-1. **Update research.md command**
+1. **Update research/research.md command**
    - Add Phase 2.5: DISPATCH MODE SELECTION
    - Present A/B/C options
    - Store dispatch_mode variable

@@ -81,7 +81,7 @@ All templates in `.opencode/skills/system-spec-kit/templates/` must be valid.
 **Templates to verify:**
 - spec.md, plan.md, tasks.md
 - checklist.md, decision-record.md
-- research.md, research-spike.md
+- research/research.md, research-spike.md
 - handover.md, debug-delegation.md
 - scratch/.gitkeep
 

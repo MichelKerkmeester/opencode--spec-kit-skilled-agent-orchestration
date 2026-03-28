@@ -181,7 +181,7 @@ contextType: "implementation"
 - [ ] CHK-140 [P1] Spec/plan/tasks synchronized
   - Evidence: _Cross-reference validation passes_
 - [ ] CHK-141 [P1] Test methodology documented
-  - Evidence: _Testing approach in research.md or plan.md_
+  - Evidence: _Testing approach in research/research.md or plan.md_
 - [ ] CHK-142 [P2] Knowledge transfer documented
   - Evidence: _Findings saved to memory/ for future sessions_
 

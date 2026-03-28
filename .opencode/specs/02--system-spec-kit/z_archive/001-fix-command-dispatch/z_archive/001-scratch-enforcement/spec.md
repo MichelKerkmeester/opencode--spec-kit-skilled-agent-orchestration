@@ -90,7 +90,7 @@ Ensure AI agents never place random scripts, tests, or temporary files in the pr
 **Not Documented (GAPS):**
 - spec.md template: NO scratch guidance
 - tasks.md template: NO scratch guidance
-- research.md template: NO scratch guidance
+- research/research.md template: NO scratch guidance
 - checklist.md template: NO cleanup verification item
 - All spec_kit commands: ZERO scratch references
 
@@ -188,7 +188,7 @@ When documenting features, use this pattern:
 ### Measurable Outcomes
 
 - **SC-001**: All spec_kit commands include scratch folder guidance
-- **SC-002**: Templates (spec.md, tasks.md, research.md) include file organization section
+- **SC-002**: Templates (spec.md, tasks.md, research/research.md) include file organization section
 - **SC-003**: checklist.md includes cleanup verification items (P1 priority)
 - **SC-004**: Documentation updates complete for all identified gaps
 - **SC-005**: AGENTS.md includes MUST/NEVER rules (documentation-based enforcement)
@@ -244,7 +244,7 @@ When documenting features, use this pattern:
 
 4. **Update `spec.md` template** - Add file organization section with OpenCode note
 5. **Update `tasks.md` template** - Add working files guidance with OpenCode note
-6. **Update `research.md` template** - Add file organization section
+6. **Update `research/research.md` template** - Add file organization section
 7. **Update `checklist.md` template** - Add scratch cleanup items (PRIMARY ENFORCEMENT):
    - `CHK036 [P1] All temporary files in scratch/ (not spec root or project root)`
    - `CHK037 [P1] scratch/ cleaned up before completion`

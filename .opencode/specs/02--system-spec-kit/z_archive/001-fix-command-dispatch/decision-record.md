@@ -120,7 +120,7 @@ When `/spec_kit:complete` and other spec_kit commands execute, OpenCode's runtim
 - `.opencode/command/spec_kit/debug.md`
 - `.opencode/command/spec_kit/handover.md`
 - `.opencode/command/spec_kit/plan.md`
-- `.opencode/command/spec_kit/research.md`
+- `.opencode/command/spec_kit/research/research/research.md`
 - `.opencode/command/spec_kit/resume.md`
 - `.opencode/command/spec_kit/implement.md`
 
@@ -257,7 +257,7 @@ Audit finding V2 confirmed that ALL 7 command files bury the critical "load YAML
 <!-- ANCHOR:adr-003-context -->
 ### Context
 
-Audit finding V3 identified 13 unfenced dispatch templates across 4 command files. These templates contain text like "call the task tool with subagent: debug" as regular prose, indistinguishable from actual execution instructions. The AI (and potentially the runtime) cannot differentiate between a template example and an imperative instruction when the template appears as undecorated text. Files affected: complete.md (6 unfenced), debug.md (3 unfenced), research.md (2 unfenced), plan.md (2 unfenced). Two files (implement.md, handover.md) already had properly fenced templates, confirming fencing is a viable pattern.
+Audit finding V3 identified 13 unfenced dispatch templates across 4 command files. These templates contain text like "call the task tool with subagent: debug" as regular prose, indistinguishable from actual execution instructions. The AI (and potentially the runtime) cannot differentiate between a template example and an imperative instruction when the template appears as undecorated text. Files affected: complete.md (6 unfenced), debug.md (3 unfenced), research/research.md (2 unfenced), plan.md (2 unfenced). Two files (implement.md, handover.md) already had properly fenced templates, confirming fencing is a viable pattern.
 
 ### Constraints
 - Templates serve as documentation/reference and must be preserved (not deleted)
@@ -341,7 +341,7 @@ Audit finding V3 identified 13 unfenced dispatch templates across 4 command file
 **Affected Systems**:
 - `.opencode/command/spec_kit/complete.md` (6 templates to fence)
 - `.opencode/command/spec_kit/debug.md` (3 templates to fence)
-- `.opencode/command/spec_kit/research.md` (2 templates to fence)
+- `.opencode/command/spec_kit/research/research/research.md` (2 templates to fence)
 - `.opencode/command/spec_kit/plan.md` (2 templates to fence)
 
 **Rollback**: `git checkout -- .opencode/command/spec_kit/{complete,debug,research,plan}.md` reverts affected files.
@@ -368,7 +368,7 @@ Audit finding V3 identified 13 unfenced dispatch templates across 4 command file
 <!-- ANCHOR:adr-004-context -->
 ### Context
 
-Audit finding V6 identified that complete.md contains 19 @agent references and debug.md contains 13 @agent references scattered throughout their content bodies. The `@agent` syntax (e.g., `@debug`, `@review`, `@speckit`) combined with `allowed-tools: Task` in frontmatter appears to be a structural trigger for OpenCode's runtime dispatch injection. High density of @agent mentions throughout a file increases the probability that the runtime identifies the file as needing agent dispatch, even when those mentions are purely documentary. Other files have lower counts (implement.md: 12, research.md: 7, plan.md: 5) and exhibit less severe injection behavior.
+Audit finding V6 identified that complete.md contains 19 @agent references and debug.md contains 13 @agent references scattered throughout their content bodies. The `@agent` syntax (e.g., `@debug`, `@review`, `@speckit`) combined with `allowed-tools: Task` in frontmatter appears to be a structural trigger for OpenCode's runtime dispatch injection. High density of @agent mentions throughout a file increases the probability that the runtime identifies the file as needing agent dispatch, even when those mentions are purely documentary. Other files have lower counts (implement.md: 12, research/research.md: 7, plan.md: 5) and exhibit less severe injection behavior.
 
 ### Constraints
 - @agent syntax in routing tables must be preserved (defines actual routing logic)

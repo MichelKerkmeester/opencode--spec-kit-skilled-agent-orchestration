@@ -190,6 +190,8 @@ This is the system's self-check tool. It tells you whether the database is conne
 
 This tool scans your project folders for new or changed files and adds them to the searchable knowledge base. It is like a librarian walking through the stacks every day to catalog new arrivals and update records for books that have been revised. Files that have not changed are skipped to save time. If a file fails to process, the system remembers and retries it next time.
 
+Spec documents are still part of that indexing flow by default. When one has validation issues, the scan keeps it searchable and reports the problem as a warning instead of pretending the document does not exist.
+
 ### Startup runtime compatibility guards
 
 When the system starts up, it checks that the software environment has not changed since it was last installed. If you updated your system or switched computers, some internal components might not be compatible anymore. This check warns you about mismatches early instead of letting them cause a mysterious crash later.
@@ -345,6 +347,8 @@ You cannot have a person hand-check every search result after every change. This
 ### Synthetic ground truth corpus
 
 To know if search results are right, you need an answer key. This is a collection of 110 test questions with known correct answers, written in everyday language rather than system keywords. It also includes trick questions designed to catch the system returning wrong results. Without this answer key, there would be no reliable way to measure whether changes actually improve or hurt search quality.
+
+Those answer-key links point at live parent-memory IDs, not old placeholder IDs. If you rebuild or replace the production memory database, rerun `scripts/evals/map-ground-truth-ids.ts` before treating new ablation or dashboard numbers as comparable to older runs.
 
 ### BM25-only baseline
 

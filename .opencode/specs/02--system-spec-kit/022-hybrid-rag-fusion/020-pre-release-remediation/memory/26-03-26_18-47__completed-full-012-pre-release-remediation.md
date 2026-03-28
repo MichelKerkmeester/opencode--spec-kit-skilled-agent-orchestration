@@ -172,7 +172,7 @@ Next: Recursive validator now passes with 0 errors 0 warnings — the 022 tree i
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
-**Key Topics:** `restored epic-level` | `downgraded extra` | `epic-level head` | `headers removed` | `removed custom` | `.opencode/skill/system-spec-kit/feature catalog/...` | `paths .opencode/skill/system-spec-kit/feature` | `decision-record.md implementation-summary.md` | `implementation-summary.md research.md` | `checklist.md decision-record.md` | `repo-root-relative paths` | `tasks.md checklist.md` |
+**Key Topics:** `restored epic-level` | `downgraded extra` | `epic-level head` | `headers removed` | `removed custom` | `.opencode/skill/system-spec-kit/feature catalog/...` | `paths .opencode/skill/system-spec-kit/feature` | `decision-record.md implementation-summary.md` | `implementation-summary.md research/research.md` | `checklist.md decision-record.md` | `repo-root-relative paths` | `tasks.md checklist.md` |
 
 <!-- /ANCHOR:project-state-snapshot -->
 
@@ -340,9 +340,9 @@ Recursive validator now passes with 0 errors 0 warnings — the 022 tree is stru
 ---
 
 <!-- ANCHOR:decision-restored-all-epiclevel-files-f79cc872 -->
-### Decision 3: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md) because 12 child phases depend on../spec.md
+### Decision 3: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md) because 12 child phases depend on../spec.md
 
-**Context**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md) because 12 child phases depend on../spec.md
+**Context**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md) because 12 child phases depend on../spec.md
 
 **Timestamp**: 2026-03-26T17:47:27.216Z
 
@@ -351,13 +351,13 @@ Recursive validator now passes with 0 errors 0 warnings — the 022 tree is stru
 #### Options Considered
 
 1. **Chosen Approach**
-   Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md) because 12 child phases depend on../spec.md
+   Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md) because 12 child phases depend on../spec.md
 
 #### Chosen Approach
 
-**Selected**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md) because 12 child phases depend on../spec.md
+**Selected**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md) because 12 child phases depend on../spec.md
 
-**Rationale**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research.md) because 12 child phases depend on../spec.md
+**Rationale**: Restored all deleted epic-level files from HEAD (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md) because 12 child phases depend on../spec.md
 
 #### Trade-offs
 

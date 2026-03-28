@@ -49,6 +49,7 @@ describe('C136-09 classifyArtifact', () => {
   });
 
   it('classifies research.md files', () => {
+    expect(classifyArtifact('/specs/007-auth/research/research.md')).toBe('research');
     expect(classifyArtifact('/specs/007-auth/research.md')).toBe('research');
   });
 

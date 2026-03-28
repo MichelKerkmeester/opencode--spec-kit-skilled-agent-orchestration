@@ -71,7 +71,7 @@ Session handover for cross-project implementation: Smart Agent Integration into 
 | `.opencode/command/spec_kit/complete.md` | Added @debug (Step 10), @handover (Step 14), dual-phase @review (Mode 2 Pre-Commit + Mode 4 Gate) | COMPLETE |
 | `.opencode/command/spec_kit/plan.md` | Added @research (Step 5, confidence < 60%), @handover (Step 7) | COMPLETE |
 | `.opencode/command/spec_kit/debug.md` | Added @review post-fix validation (Step 5, advisory/non-blocking) | COMPLETE |
-| `.opencode/command/spec_kit/research.md` | Added @handover (Step 9, session end) | COMPLETE |
+| `.opencode/command/spec_kit/research/research/research.md` | Added @handover (Step 9, session end) | COMPLETE |
 
 #### YAML Files (10 files)
 | File | Change Summary | Status |

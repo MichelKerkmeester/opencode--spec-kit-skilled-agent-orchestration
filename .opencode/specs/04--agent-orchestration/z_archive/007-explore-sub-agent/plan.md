@@ -49,13 +49,13 @@ Create `.opencode/agent/context_loader.md` with these sections (following peer a
 | Section | Content | Based On |
 |---------|---------|----------|
 | Frontmatter | YAML config with model, permissions, mode | All existing agents |
-| §1 Core Identity | Agent mission, model, key properties | research.md §1 |
-| §2 Core Workflow | 6-step retrieval workflow (RECEIVE→MEMORY→CODEBASE→DISPATCH→SYNTHESIZE→DELIVER) | research.md §1 |
-| §3 Capability Scan | Available tools and MCP integrations | research.md §2, write.md §3 |
+| §1 Core Identity | Agent mission, model, key properties | research/research.md §1 |
+| §2 Core Workflow | 6-step retrieval workflow (RECEIVE→MEMORY→CODEBASE→DISPATCH→SYNTHESIZE→DELIVER) | research/research.md §1 |
+| §3 Capability Scan | Available tools and MCP integrations | research/research.md §2, write.md §3 |
 | §4 Retrieval Modes | quick/medium/thorough definitions | Custom (new) |
 | §5 Agent Dispatch Protocol | Active Dispatch: @explore + @research sub-delegation | Custom (new, added during T5) |
 | §6 Retrieval Strategy | 3-layer approach (Memory→Codebase→Deep) | Custom (new) |
-| §7 Output Format | Context Package template | research.md output format |
+| §7 Output Format | Context Package template | research/research.md output format |
 | §8 Integration with Orchestrator | Dispatch patterns, CWB compliance, Two-Tier Model | orchestrate.md §27-28 |
 | §9 Rules & Constraints | READ-ONLY enforcement, boundaries | review.md rules |
 | §10 Anti-Patterns | What NOT to do | All existing agents |

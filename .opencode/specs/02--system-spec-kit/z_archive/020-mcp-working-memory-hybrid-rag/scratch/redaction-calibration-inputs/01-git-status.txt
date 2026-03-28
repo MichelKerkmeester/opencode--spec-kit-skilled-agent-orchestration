@@ -5,7 +5,7 @@ stdout:
  M ../../agent/chatgpt/debug.md
  M ../../agent/chatgpt/handover.md
  M ../../agent/chatgpt/orchestrate.md
- M ../../agent/chatgpt/research.md
+ M ../../agent/chatgpt/research/research/research.md
  M ../../agent/chatgpt/review.md
  M ../../agent/chatgpt/speckit.md
  M ../../agent/chatgpt/write.md

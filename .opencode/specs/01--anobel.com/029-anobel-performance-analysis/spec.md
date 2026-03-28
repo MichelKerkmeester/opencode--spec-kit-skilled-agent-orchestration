@@ -543,7 +543,7 @@ Achieve passing Core Web Vitals scores by:
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Findings**: See `research.md`
+- **Research Findings**: See `research/research.md`
 - **Prior Specs**: `024-performance-optimization`, `025-performance-review`
 
 ---

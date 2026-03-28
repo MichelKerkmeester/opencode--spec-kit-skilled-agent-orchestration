@@ -44,7 +44,7 @@ Gemini CLI users can now access the full agent, command, and skill system that C
 | `.gemini/agents/orchestrate.md` | Created | Orchestrate agent with Gemini frontmatter, Gemini Optimization Profile, `max_turns: 25` |
 | `.gemini/agents/context.md` | Created | Context agent adapted to Gemini tools array and `gemini-2.5-flash` |
 | `.gemini/agents/debug.md` | Created | Debug agent with full file/shell tools, `timeout_mins: 10` |
-| `.gemini/agents/research.md` | Created | Research agent with `web_search` access, `timeout_mins: 10` |
+| `.gemini/agents/research/research/research.md` | Created | Research agent with `web_search` access, `timeout_mins: 10` |
 | `.gemini/agents/review.md` | Created | Review agent (read-only tools) adapted to `gemini-2.5-flash` |
 | `.gemini/agents/speckit.md` | Created | Speckit agent with full file tools, `gemini-2.5-flash` |
 | `.gemini/agents/write.md` | Created | Write agent with file tools and `web_search` |
@@ -63,7 +63,7 @@ Gemini CLI users can now access the full agent, command, and skill system that C
 | `.gemini/commands/spec_kit/plan.toml` | Created | TOML wrapper injecting `spec_kit/plan.md` content |
 | `.gemini/commands/spec_kit/implement.toml` | Created | TOML wrapper injecting `spec_kit/implement.md` content |
 | `.gemini/commands/spec_kit/complete.toml` | Created | TOML wrapper injecting `spec_kit/complete.md` content |
-| `.gemini/commands/spec_kit/research.toml` | Created | TOML wrapper injecting `spec_kit/research.md` content |
+| `.gemini/commands/spec_kit/research.toml` | Created | TOML wrapper injecting `spec_kit/research/research/research.md` content |
 | `.gemini/commands/spec_kit/resume.toml` | Created | TOML wrapper injecting `spec_kit/resume.md` content |
 | `.gemini/commands/spec_kit/debug.toml` | Created | TOML wrapper injecting `spec_kit/debug.md` content |
 | `.gemini/commands/spec_kit/handover.toml` | Created | TOML wrapper injecting `spec_kit/handover.md` content |

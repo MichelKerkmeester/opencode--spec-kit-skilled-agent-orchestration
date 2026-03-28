@@ -73,7 +73,7 @@ This spec folder consolidates three previously separate implementations:
 | Agent | File | Mode | Status |
 |-------|------|------|--------|
 | @review | `.opencode/agent/review.md` | secondary | Complete |
-| @research | `.opencode/agent/research.md` | secondary | Complete |
+| @research | `.opencode/agent/research/research/research.md` | secondary | Complete |
 | @speckit | `.opencode/agent/speckit.md` | secondary | Complete |
 
 ### 1.3 ADRs Created
@@ -152,7 +152,7 @@ All files updated with:
 ### 3.4 Model Standardization
 
 All agents updated to default to Opus 4.5:
-- orchestrate.md, review.md, research.md, speckit.md, debug.md, write.md
+- orchestrate.md, review.md, research/research.md, speckit.md, debug.md, write.md
 
 ### 3.5 Cross-Environment Compatibility
 
@@ -175,7 +175,7 @@ All agents updated to default to Opus 4.5:
 |------|--------|--------------|
 | `orchestrate.md` | Modified | 1200+ |
 | `review.md` | Created | 600 |
-| `research.md` | Created/Enhanced | 400 |
+| `research/research.md` | Created/Enhanced | 400 |
 | `speckit.md` | Created | 350 |
 | `debug.md` | Created | 300 |
 | `handover.md` | Created | 250 |
@@ -185,7 +185,7 @@ All agents updated to default to Opus 4.5:
 
 | File | Sections Added |
 |------|----------------|
-| `research.md` | 9, 10, 11 |
+| `research/research.md` | 9, 10, 11 |
 | `plan.md` | 8, 9, 10 |
 | `implement.md` | 8, 9, 10 |
 | `complete.md` | 9, 10, 11 |
@@ -201,7 +201,7 @@ All updated with agent_routing, quality_gates, circuit_breaker blocks:
 ### Symlinks (7)
 
 All agents linked in `.claude/agents/`:
-- orchestrate.md, review.md, research.md, speckit.md, debug.md, write.md, handover.md
+- orchestrate.md, review.md, research/research.md, speckit.md, debug.md, write.md, handover.md
 
 ---
 

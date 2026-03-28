@@ -73,7 +73,7 @@ Duplicated all 8 copilot agent files to `.claude/agents/` with Claude Code (CC) 
 | `.claude/agents/orchestrate.md` | Modified | CC sync with restructured body |
 | `.claude/agents/context.md` | Modified | CC sync with copilot body |
 | `.claude/agents/review.md` | Modified | CC sync with copilot body + workflows-code--* |
-| `.claude/agents/research.md` | Modified | CC sync with copilot body |
+| `.claude/agents/research/research/research.md` | Modified | CC sync with copilot body |
 | `.claude/agents/speckit.md` | Modified | CC sync with copilot body |
 | `.claude/agents/write.md` | Modified | CC sync with copilot body |
 | `.claude/agents/debug.md` | Modified | CC sync with copilot body |

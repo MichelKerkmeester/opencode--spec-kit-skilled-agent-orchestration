@@ -156,7 +156,7 @@ Create a production-ready, fault-tolerant multi-agent system with:
 |-----------|-------------|-------------|
 | `.opencode/agent/orchestrate.md` | Modified | 23 sections with enterprise patterns |
 | `.opencode/agent/review.md` | Created | Code review specialist (mode: secondary) |
-| `.opencode/agent/research.md` | Created/Enhanced | 9-step workflow with template mapping |
+| `.opencode/agent/research/research/research.md` | Created/Enhanced | 9-step workflow with template mapping |
 | `.opencode/agent/speckit.md` | Created | Spec folder documentation (mode: secondary) |
 | `.opencode/agent/debug.md` | Created | 4-phase debugging methodology |
 | `.opencode/agent/write.md` | Modified | Model preference standardization |
@@ -429,7 +429,7 @@ Key ADRs (full details in decision-record.md):
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Findings**: See `research.md`
+- **Research Findings**: See `research/research.md`
 - **AI Protocols**: See `ai-protocols.md`
 - **Implementation Summary**: See `implementation-summary.md`
 
@@ -445,7 +445,7 @@ Key ADRs (full details in decision-record.md):
 |-------|------|------|---------|
 | `@orchestrate` | orchestrate.md | primary | Multi-agent coordination with enterprise patterns |
 | `@review` | review.md | secondary | Code review, quality scoring, pattern validation |
-| `@research` | research.md | secondary | Technical investigation, evidence gathering |
+| `@research` | research/research.md | secondary | Technical investigation, evidence gathering |
 | `@speckit` | speckit.md | secondary | Spec folder creation and maintenance |
 | `@debug` | debug.md | secondary | 4-phase systematic debugging |
 | `@write` | write.md | primary | Documentation generation |

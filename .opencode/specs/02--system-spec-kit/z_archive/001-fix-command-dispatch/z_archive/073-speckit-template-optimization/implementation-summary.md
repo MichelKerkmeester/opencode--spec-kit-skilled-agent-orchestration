@@ -146,7 +146,7 @@ templates/
 
 1. Consider creating automated compose script for future maintenance
 2. Unify level calculator (recommend-level.sh + complexity-config.jsonc)
-3. Evaluate adding research.md template based on usage patterns
+3. Evaluate adding research/research.md template based on usage patterns
 
 ---
 

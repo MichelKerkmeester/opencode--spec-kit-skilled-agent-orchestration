@@ -102,7 +102,7 @@ Line 696:
 | File | Lines |
 |------|-------|
 | `.claude/commands/spec_kit/debug.md` | 345-346 |
-| `.claude/commands/spec_kit/research.md` | 420-422 |
+| `.claude/commands/spec_kit/research/research/research.md` | 420-422 |
 | `.claude/commands/spec_kit/complete.md` | 604-605 |
 | `.claude/commands/spec_kit/implement.md` | 340-342 |
 | `.claude/commands/spec_kit/plan.md` | 309-310 |
@@ -227,7 +227,7 @@ Line 96:
 
 ### 3.1 BUG-008: Phantom WebSearch Tool
 
-**File:** `.claude/commands/memory/research.md`
+**File:** `.claude/commands/memory/research/research/research.md`
 **Line:** 4
 
 **Investigation needed:** Verify if WebSearch exists. If not:

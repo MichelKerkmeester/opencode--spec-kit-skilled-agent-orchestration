@@ -181,7 +181,7 @@ Session focused on implementing and testing features.
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md` | Created the canonical 9-section review report with... | Tree-thinning merged 3 small files (deep-research-config.json, deep-research-state.jsonl, deep-review-strategy.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-config.json : Created the canonical review configuration with a... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl : Recorded the full 20-iteration review log with findings... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md : Created the persistent review stra... |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-001.md` | Created the first per-iteration audit note;... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-001.md` | Created the first per-iteration audit note;... |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md` | Added the human-readable dashboard summarizing the... |
 
 <!-- /ANCHOR:summary -->
@@ -405,7 +405,7 @@ key_files:
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-001.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-001.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md"
 
 # Relationships

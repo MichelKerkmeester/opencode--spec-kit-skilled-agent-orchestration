@@ -44,7 +44,7 @@ contextType: "implementation"
 ### YAML Path Corrections (BUG-002)
 
 - [x] debug.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 345-346]
-- [x] research.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 421-422]
+- [x] research/research.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 421-422]
 - [x] complete.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 604-605]
 - [x] implement.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 341-342]
 - [x] plan.md references `.claude/commands/spec_kit/assets/` [EVIDENCE: grep line 309-310]
@@ -86,7 +86,7 @@ contextType: "implementation"
 ### WebSearch Tool (BUG-008)
 
 - [x] Verified if WebSearch tool exists - PHANTOM (does not exist)
-- [x] If phantom: removed from research.md allowed-tools [EVIDENCE: grep shows `allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, webfetch`]
+- [x] If phantom: removed from research/research.md allowed-tools [EVIDENCE: grep shows `allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, webfetch`]
 - [x] Tool names standardized to lowercase [EVIDENCE: webfetch is lowercase]
 
 ### Session Detection (BUG-009)
@@ -180,7 +180,7 @@ contextType: "implementation"
 - [x] save.md uses full tool prefix [EVIDENCE: grep line 58]
 - [x] manage.md stats mode clarified [EVIDENCE: grep line 18]
 - [x] resume YAMLs document CONTINUE_SESSION.md [EVIDENCE: grep lines 49-50]
-- [x] research.md uses lowercase tool names [EVIDENCE: allowed-tools shows lowercase webfetch]
+- [x] research/research.md uses lowercase tool names [EVIDENCE: allowed-tools shows lowercase webfetch]
 
 ---
 
@@ -250,7 +250,7 @@ contextType: "implementation"
 | BUG-004 | step_5_5_preflight at line 768 (auto), 845 (confirm) | Claude | 2025-01-XX |
 | BUG-005 | No `model` parameter in Task invocations | Claude | 2025-01-XX |
 | BUG-007 | key_steps: [1, 2, 4] - no step 5 reference | Claude | 2025-01-XX |
-| BUG-008 | research.md allowed-tools: lowercase webfetch, no WebSearch | Claude | 2025-01-XX |
+| BUG-008 | research/research.md allowed-tools: lowercase webfetch, no WebSearch | Claude | 2025-01-XX |
 | BUG-012 | README: complete=14, implement=9 | Claude | 2025-01-XX |
 | BUG-016 | learn.md: Section 17, 18, 19 references | Claude | 2025-01-XX |
 | BUG-017 | continue.md line 284: spec_kit_memory_memory_list | Claude | 2025-01-XX |

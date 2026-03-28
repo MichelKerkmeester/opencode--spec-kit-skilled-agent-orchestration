@@ -133,7 +133,7 @@ Based on analysis from 8 parallel agents, implement documentation-based enforcem
 |------|--------|--------------|
 | `.opencode/speckit/templates/spec.md` | Add "Working Files" section | ~20 lines |
 | `.opencode/speckit/templates/tasks.md` | Add "File Organization" section | ~15 lines |
-| `.opencode/speckit/templates/research.md` | Add "File Organization" section | ~15 lines |
+| `.opencode/speckit/templates/research/research/research.md` | Add "File Organization" section | ~15 lines |
 | `.opencode/speckit/templates/checklist.md` | Add scratch cleanup items (CHK036-038) | ~8 lines |
 
 ### Phase 3: Command Updates (P2)
@@ -141,7 +141,7 @@ Based on analysis from 8 parallel agents, implement documentation-based enforcem
 **Files to Update:**
 - `.opencode/commands/spec_kit/complete.md`
 - `.opencode/commands/spec_kit/implement.md`
-- `.opencode/commands/spec_kit/research.md`
+- `.opencode/commands/spec_kit/research/research/research.md`
 
 **Change:** Add scratch folder guidance to implementation steps
 
@@ -239,7 +239,7 @@ Is this content disposable after the task?
 > **Note:** Verify file placement manually before completion.
 ```
 
-### 4.6 research.md Template Addition
+### 4.6 research/research.md Template Addition
 
 **Location:** After Section 1 METADATA
 
@@ -249,14 +249,14 @@ Is this content disposable after the task?
 ## FILE ORGANIZATION
 
 **During research, organize files as:**
-- Research findings → This file (research.md)
+- Research findings → This file (research/research.md)
 - Experiments/code → `scratch/experiments/`
 - Raw data/responses → `scratch/data/`
 - Debug/logs → `scratch/logs/`
 
 **After research:**
 - Move valuable code to permanent location
-- Summarize key data in research.md
+- Summarize key data in research/research.md
 - Delete scratch/ contents
 
 > **Note:** Clean up scratch/ manually before claiming completion.
@@ -286,7 +286,7 @@ Is this content disposable after the task?
 | Failure pattern #15 added | Manual review | ✅ |
 | spec.md template has file organization section | Manual review | ✅ |
 | tasks.md template has working files guidance | Manual review | ✅ |
-| research.md template has file organization section | Manual review | ✅ |
+| research/research.md template has file organization section | Manual review | ✅ |
 | checklist.md has CHK036-038 items | Manual review | ✅ |
 
 ---

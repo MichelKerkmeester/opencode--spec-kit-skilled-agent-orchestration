@@ -805,7 +805,7 @@ Before starting each task, verify:
 - **Plan**: See `plan.md` (Phases section 4)
 - **Checklist**: See `checklist.md` (Verification sections)
 - **Decisions**: See `decision-record.md` (ADRs)
-- **Research**: See `research.md` (10-agent findings)
+- **Research**: See `research/research.md` (10-agent findings)
 
 
 <!-- /ANCHOR:cross-refs -->

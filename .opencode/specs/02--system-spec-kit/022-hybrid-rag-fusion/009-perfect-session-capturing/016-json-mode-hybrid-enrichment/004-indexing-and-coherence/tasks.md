@@ -176,6 +176,6 @@ If a task is blocked:
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
-- **Research**: See `../research.md` (Round 2, Domains D + F)
+- **Research**: See `../research/research.md` (Round 2, Domains D + F)
 - **Sibling blocking T023**: `../003-field-integrity-and-schema/`
 <!-- /ANCHOR:cross-refs -->

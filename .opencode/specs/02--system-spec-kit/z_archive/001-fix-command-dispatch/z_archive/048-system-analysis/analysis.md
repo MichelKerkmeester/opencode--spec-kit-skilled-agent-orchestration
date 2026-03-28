@@ -82,7 +82,7 @@ Templates are **3-10x more comprehensive** than actual usage:
 | -------------- | --------- | ------------ | ------------------ |
 | `spec.md`      | 447       | ~126 lines   | 3.5x               |
 | `plan.md`      | 393       | ~149 lines   | 2.6x               |
-| `research.md`  | 892       | Rarely used  | N/A                |
+| `research/research.md`  | 892       | Rarely used  | N/A                |
 | `checklist.md` | 35+ items | Custom items | Different approach |
 
 **Key Finding**: Templates use `[YOUR_VALUE_HERE:]` placeholders but actual specs use simplified structures without template markers.

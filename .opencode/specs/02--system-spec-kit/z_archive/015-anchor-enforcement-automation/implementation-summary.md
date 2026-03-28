@@ -62,7 +62,7 @@ Three complementary enforcement layers:
 
 ### Phase 1: Research & Analysis (100% complete)
 **Duration:** ~2 hours  
-**Artifacts:** research.md (927 lines, 39 ANCHOR tags)
+**Artifacts:** research/research.md (927 lines, 39 ANCHOR tags)
 
 **Key Findings:**
 - **3 Root Causes Identified:**
@@ -74,7 +74,7 @@ Three complementary enforcement layers:
 - **Impact Analysis:** High severity - breaks memory system structured retrieval
 
 **Files Created:**
-- `.opencode/specs/02--system-spec-kit/z_archive/015-anchor-enforcement-automation/research.md`
+- `.opencode/specs/02--system-spec-kit/z_archive/015-anchor-enforcement-automation/research/research/research.md`
 
 ### Phase 2: Validation Enhancement (40% complete - core validation working)
 **Duration:** ~1 hour  
@@ -250,7 +250,7 @@ Three complementary enforcement layers:
 - ✅ SC-002: 100% spec docs have ANCHOR tags (level_1: 25, level_2: 39, level_3: 58, level_3+: 65)
 - ✅ SC-003: 100% spec writes route through @speckit (enforced by orchestrate.md Rule 6)
 - ✅ SC-004: validate.sh catches 100% violations (test suite confirms)
-- ✅ SC-005: Root cause analysis documented (research.md with 25+ citations)
+- ✅ SC-005: Root cause analysis documented (research/research.md with 25+ citations)
 
 ### Files Modified Summary
 
@@ -572,7 +572,7 @@ Test results saved to: /tmp/speckit-validation-tests/test-results.log
 - **Test Suite:** `.opencode/skill/system-spec-kit/scripts/spec/test-validation.sh`
 - **Test Results:** `/tmp/speckit-validation-tests/test-results.log`
 - **Routing Test:** `/tmp/routing-test-result.md`
-- **Research Evidence:** `.opencode/specs/02--system-spec-kit/z_archive/015-anchor-enforcement-automation/research.md`
+- **Research Evidence:** `.opencode/specs/02--system-spec-kit/z_archive/015-anchor-enforcement-automation/research/research/research.md`
 - **Checklist:** `.opencode/specs/02--system-spec-kit/z_archive/015-anchor-enforcement-automation/checklist.md`
 
 ### Related Specifications

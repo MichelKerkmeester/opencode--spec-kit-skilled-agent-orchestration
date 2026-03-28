@@ -73,7 +73,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 | `.gemini/agents/general.md` | Create | Gemini-adapted copy of @general agent |
 | `.gemini/agents/orchestrate.md` | Create | Gemini-adapted copy of @orchestrate agent |
 | `.gemini/agents/context.md` | Create | Gemini-adapted copy of @context agent |
-| `.gemini/agents/research.md` | Create | Gemini-adapted copy of @research agent |
+| `.gemini/agents/research/research/research.md` | Create | Gemini-adapted copy of @research agent |
 | `.gemini/agents/write.md` | Create | Gemini-adapted copy of @write agent |
 | `.gemini/agents/review.md` | Create | Gemini-adapted copy of @review agent |
 | `.gemini/agents/speckit.md` | Create | Gemini-adapted copy of @speckit agent |

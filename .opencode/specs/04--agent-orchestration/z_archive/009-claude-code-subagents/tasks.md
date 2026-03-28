@@ -51,7 +51,7 @@ contextType: "implementation"
 - [ ] T004 [P] Convert context.md (.opencode/agent/context.md → .claude/agents/context.md)
 - [ ] T005 [P] Convert orchestrate.md (.opencode/agent/orchestrate.md → .claude/agents/orchestrate.md)
 - [ ] T006 [P] Convert speckit.md (.opencode/agent/speckit.md → .claude/agents/speckit.md)
-- [ ] T007 [P] Convert research.md (.opencode/agent/research.md → .claude/agents/research.md)
+- [ ] T007 [P] Convert research/research.md (.opencode/agent/research/research/research.md → .claude/agents/research/research/research.md)
 - [ ] T008 [P] Convert write.md (.opencode/agent/write.md → .claude/agents/write.md)
 - [ ] T009 [P] Convert debug.md (.opencode/agent/debug.md → .claude/agents/debug.md)
 - [ ] T010 [P] Convert review.md (.opencode/agent/review.md → .claude/agents/review.md)

@@ -37,7 +37,7 @@ contextType: "implementation"
   - Code examples
 
 - [x] **T5**: Create research documentation
-  - 13-section research.md
+  - 13-section research/research.md
   - Evidence citations
   - Anti-patterns
 

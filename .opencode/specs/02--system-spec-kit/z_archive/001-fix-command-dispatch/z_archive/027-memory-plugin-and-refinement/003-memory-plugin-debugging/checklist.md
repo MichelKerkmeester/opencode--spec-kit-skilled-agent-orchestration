@@ -77,7 +77,7 @@ contextType: "implementation"
 
 ## Documentation (P2 - Medium)
 
-- [ ] **P2**: research.md updated with implementation results
+- [ ] **P2**: research/research.md updated with implementation results
 - [ ] **P2**: Any unexpected findings documented
 - [ ] **P2**: Memory file created for future reference
 

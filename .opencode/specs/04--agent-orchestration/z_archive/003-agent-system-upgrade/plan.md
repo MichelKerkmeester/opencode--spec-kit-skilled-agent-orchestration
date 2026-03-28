@@ -271,7 +271,7 @@ Request → Circuit Breaker Check
 |------|--------|-------|
 | `orchestrate.md` | Modified | ~1200 |
 | `review.md` | Created | ~600 |
-| `research.md` | Created/Enhanced | ~400 |
+| `research/research.md` | Created/Enhanced | ~400 |
 | `speckit.md` | Created | ~350 |
 | `debug.md` | Created | ~300 |
 | `write.md` | Modified | ~300 |
@@ -280,7 +280,7 @@ Request → Circuit Breaker Check
 
 | File | Action | Lines Added |
 |------|--------|-------------|
-| `research.md` | Modified | ~150 |
+| `research/research.md` | Modified | ~150 |
 | `plan.md` | Modified | ~120 |
 | `implement.md` | Modified | ~130 |
 | `complete.md` | Modified | ~180 |
@@ -292,7 +292,7 @@ All files updated with `agent_routing`, `quality_gates`, `circuit_breaker` block
 ### Symlinks (6)
 
 All agents linked in `.claude/agents/`:
-- orchestrate.md, review.md, research.md, speckit.md, debug.md, write.md
+- orchestrate.md, review.md, research/research.md, speckit.md, debug.md, write.md
 
 ---
 

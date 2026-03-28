@@ -76,7 +76,7 @@ Multi-Provider Runtime Adapter (existing pattern — mirrors `.claude/` provider
 2. Gemini CLI reads `GEMINI.md` → follows symlink to `AGENTS.md` → behavioral framework loaded
 3. User invokes `/spec_kit:plan` → reads `.gemini/commands/spec_kit/plan.toml` → `@{path}` injection pulls OpenCode command content
 4. Model activates skill → reads `.gemini/skills/sk-doc/SKILL.md` → follows symlink to `.opencode/skill/` source
-5. Model dispatches subagent → reads `.gemini/agents/research.md` → executes with Gemini frontmatter config
+5. Model dispatches subagent → reads `.gemini/agents/research/research/research.md` → executes with Gemini frontmatter config
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -167,7 +167,7 @@ Create 8 agent files in `.gemini/agents/` using Gemini-native frontmatter.
 - [ ] **orchestrate.md** — tools: `[read_file]`, model: `gemini-2.5-pro`, `max_turns: 25`, `timeout_mins: 10`. Body from `.opencode/agent/orchestrate.md`, add Gemini Optimization Profile section, replace path convention to `.gemini/agents/*.md`
 - [ ] **context.md** — tools: `[read_file, read_many_files, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/context.md`
 - [ ] **debug.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/debug.md`
-- [ ] **research.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/research.md`
+- [ ] **research.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/research/research/research.md`
 - [ ] **review.md** — tools: `[read_file, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/review.md`
 - [ ] **speckit.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/speckit.md`
 - [ ] **write.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/write.md`

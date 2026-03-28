@@ -7,7 +7,7 @@
     "loader",
     "sub-agent"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.827Z",
+  "lastUpdated": "2026-03-28T10:35:07.739Z",
   "specId": "007",
   "folderSlug": "explore-sub-agent",
   "parentChain": [
@@ -15,8 +15,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Context Loader Sub-Agent (@context_loader)"
+  "memoryNameHistory": []
 }

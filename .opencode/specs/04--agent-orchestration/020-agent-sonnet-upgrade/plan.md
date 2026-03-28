@@ -91,7 +91,7 @@ Agent loads → reads frontmatter `model:` field → dispatches to specified mod
 - [x] Update `.opencode/agent/copilot/review.md` — add model field `sonnet-4-6`; remove stale comment
 - [x] Update `.opencode/agent/copilot/speckit.md` — `sonnet-4.5` → `sonnet-4-6`
 - [x] Update `.opencode/agent/copilot/write.md` — `sonnet-4.5` → `sonnet-4-6`
-- [x] Update `.opencode/agent/copilot/research.md` — delete `model:` line
+- [x] Update `.opencode/agent/copilot/research/research/research.md` — delete `model:` line
 - [x] Update `.opencode/agent/copilot/debug.md` — delete `model:` line
 - [x] Update `.claude/agents/context.md` — `haiku` → `sonnet`
 - [x] Update `.claude/agents/handover.md` — `haiku` → `sonnet`
@@ -114,7 +114,7 @@ Agent loads → reads frontmatter `model:` field → dispatches to specified mod
 |-----------|-------|-------|
 | Manual inspection | All 10 agent files — model field value | Read tool (file-by-file) |
 | Diff review | Confirm only model-field lines changed | git diff pre/post |
-| Negative check | research.md and debug.md have no `model:` line | grep absence check |
+| Negative check | research/research.md and debug.md have no `model:` line | grep absence check |
 <!-- /ANCHOR:testing -->
 
 ---

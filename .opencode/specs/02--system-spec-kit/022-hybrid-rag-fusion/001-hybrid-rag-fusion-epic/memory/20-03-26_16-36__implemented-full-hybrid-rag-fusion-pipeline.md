@@ -163,7 +163,7 @@ Next: Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 | handover.md | EXISTS |
 
 **Related Documentation:**
@@ -172,7 +172,7 @@ Next: Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `hybrid rag` | `already implemented` | `fusion/001 hybrid` | `implemented prior` | `verified already` | `sprint verified` | `kit/022 hybrid` | `rag fusion/001` | `zod validation` | `spec kit/022` | `memory aware` | `system spec` |

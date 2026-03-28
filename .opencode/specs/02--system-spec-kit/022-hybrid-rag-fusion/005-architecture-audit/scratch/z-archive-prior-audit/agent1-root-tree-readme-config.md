@@ -443,7 +443,7 @@ Totals:
 |   |   |   |-- implementation-summary.md
 |   |   |   |-- notes.md
 |   |   |   |-- plan.md
-|   |   |   |-- research.md
+|   |   |   |-- research/research.md
 |   |   |   |-- spec.md
 |   |   |   `-- tasks.md
 |   |   |-- 048-with-memory-placeholders/
@@ -714,7 +714,7 @@ Totals:
 |   |-- debug-delegation.md
 |   |-- handover.md
 |   |-- README.md
-|   `-- research.md
+|   `-- research/research.md
 |-- .env.example
 |-- .gitignore
 |-- .node-version-marker

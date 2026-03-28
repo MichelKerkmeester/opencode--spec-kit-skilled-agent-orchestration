@@ -99,7 +99,7 @@ tasks(004-speckit): scratch enforcement implementation
 
 - [x] T008 [P1] Add "12. WORKING FILES" section to spec.md template | Status: Done | Evidence: .opencode/speckit/templates/spec.md
 - [x] T009 [P1] Add "WORKING FILES LOCATION" section to tasks.md template | Status: Done | Evidence: .opencode/speckit/templates/tasks.md
-- [x] T010 [P1] Add "FILE ORGANIZATION" section to research.md template | Status: Done | Evidence: .opencode/speckit/templates/research.md
+- [x] T010 [P1] Add "FILE ORGANIZATION" section to research/research.md template | Status: Done | Evidence: .opencode/speckit/templates/research/research/research.md
 - [x] T011 [P1] Add CHK036-038 items to checklist.md template | Status: Done | Evidence: .opencode/speckit/templates/checklist.md
 
 **Checkpoint**: Template guidance complete
@@ -112,7 +112,7 @@ tasks(004-speckit): scratch enforcement implementation
 
 - [x] T012 [P2] Add scratch guidance to complete.md command | Status: Done | Evidence: .opencode/commands/spec_kit/complete.md
 - [x] T013 [P2] Add scratch guidance to implement.md command | Status: Done | Evidence: .opencode/commands/spec_kit/implement.md
-- [x] T014 [P2] Add scratch guidance to research.md command | Status: Done | Evidence: .opencode/commands/spec_kit/research.md
+- [x] T014 [P2] Add scratch guidance to research/research.md command | Status: Done | Evidence: .opencode/commands/spec_kit/research/research/research.md
 
 **Checkpoint**: Command guidance complete
 
@@ -170,9 +170,9 @@ tasks(004-speckit): scratch enforcement implementation
 - AGENTS.md (3 additions)
 - .opencode/speckit/templates/spec.md
 - .opencode/speckit/templates/tasks.md
-- .opencode/speckit/templates/research.md
+- .opencode/speckit/templates/research/research/research.md
 - .opencode/speckit/templates/checklist.md
 - .opencode/commands/spec_kit/complete.md
 - .opencode/commands/spec_kit/implement.md
-- .opencode/commands/spec_kit/research.md
+- .opencode/commands/spec_kit/research/research/research.md
 - .opencode/skills/workflows-spec-kit/SKILL.md

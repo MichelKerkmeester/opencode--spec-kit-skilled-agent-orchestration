@@ -66,8 +66,8 @@ Improve agent system reliability by adding missing verification sections, visual
 ## 3. SCOPE
 
 ### In Scope
-- Agent files: orchestrate.md, speckit.md, research.md
-- Command files: complete.md, research.md, debug.md, implement.md
+- Agent files: orchestrate.md, speckit.md, research/research.md
+- Command files: complete.md, research/research.md, debug.md, implement.md
 - Skill files: (none in this iteration)
 
 ### Out of Scope
@@ -82,9 +82,9 @@ Improve agent system reliability by adding missing verification sections, visual
 |-----------|-------------|-------------|
 | `.opencode/agent/orchestrate.md` | Modify | Fix @write naming (4 locations), add OUTPUT VERIFICATION, add PDR protocol, add Mermaid diagram, add scaling heuristics, enhance task template |
 | `.opencode/agent/speckit.md` | Modify | Add OUTPUT VERIFICATION section |
-| `.opencode/agent/research.md` | Modify | Add HARD BLOCK verification section |
+| `.opencode/agent/research/research/research.md` | Modify | Add HARD BLOCK verification section |
 | `.opencode/command/spec_kit/complete.md` | Modify | Add Mermaid workflow diagram |
-| `.opencode/command/spec_kit/research.md` | Modify | Fix Q5/Q6 duplicate numbering |
+| `.opencode/command/spec_kit/research/research/research.md` | Modify | Fix Q5/Q6 duplicate numbering |
 | `.opencode/command/spec_kit/debug.md` | Modify | Complete "for default" text |
 | `.opencode/command/spec_kit/implement.md` | Modify | Complete "for default" text |
 
@@ -110,7 +110,7 @@ Improve agent system reliability by adding missing verification sections, visual
 |----|-------------|---------------------|
 | REQ-004 | Add Mermaid diagram to complete.md | Flowchart visible after Section 3 |
 | REQ-005 | Add Mermaid diagram to orchestrate.md | Flowchart visible after Section 1 |
-| REQ-006 | Add HARD BLOCK verification to research.md | Section exists with 3-gate verification |
+| REQ-006 | Add HARD BLOCK verification to research/research.md | Section exists with 3-gate verification |
 | REQ-007 | Add Pre-Delegation Reasoning protocol | PDR section exists in orchestrate.md Section 11 |
 | REQ-008 | Fix minor command file issues | Q5→Q6, "for default" text completed |
 | REQ-009 | Add task description template enhancement | Objective, Boundary, Scale fields added |

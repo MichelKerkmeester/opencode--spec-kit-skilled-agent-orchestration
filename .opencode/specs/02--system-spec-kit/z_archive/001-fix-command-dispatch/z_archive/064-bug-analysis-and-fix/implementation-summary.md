@@ -325,12 +325,12 @@ Phase 4 (P2 Polish) -> 8 tasks -> 5 parallel agents (2 skipped)
 ### Templates (9 files)
 - All 9 user-facing templates updated for consistency:
   - spec.md, plan.md, tasks.md, checklist.md
-  - research.md, decision-record.md
+  - research/research.md, decision-record.md
   - handover.md, debug-delegation.md, implementation-summary.md
 
 ### Commands (7 files)
 - All 7 spec_kit commands standardized:
-  - complete.md, implement.md, plan.md, research.md
+  - complete.md, implement.md, plan.md, research/research.md
   - resume.md, handover.md, debug.md
 
 ### References (8 files)
@@ -470,7 +470,7 @@ This 4-phase parallel dispatch approach can be templated for future large-scale 
 | Spec | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec.md` |
 | Tasks | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/tasks.md` |
 | Checklist | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/checklist.md` |
-| Research | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/research.md` |
+| Research | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/research/research/research.md` |
 | Memory | `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/memory/15-01-26_11-52__bug-analysis-and-fix.md` |
 | Commit | `d8ae33f` |
 

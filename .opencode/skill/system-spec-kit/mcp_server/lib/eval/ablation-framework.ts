@@ -34,6 +34,7 @@ import {
   GROUND_TRUTH_RELEVANCES,
 } from './ground-truth-data';
 import type { GroundTruthQuery } from './ground-truth-data';
+import type Database from 'better-sqlite3';
 
 /* --- 1. FEATURE FLAG --- */
 
@@ -67,6 +68,21 @@ export interface AblationConfig {
   groundTruthQueryIds?: number[];
   /** Recall cutoff K. Defaults to 20. */
   recallK?: number;
+}
+
+/** Summary of whether the static ground truth matches the active DB universe. */
+export interface GroundTruthAlignmentSummary {
+  totalQueries: number;
+  totalRelevances: number;
+  uniqueMemoryIds: number;
+  parentRelevanceCount: number;
+  chunkRelevanceCount: number;
+  missingRelevanceCount: number;
+  parentMemoryCount: number;
+  chunkMemoryCount: number;
+  missingMemoryCount: number;
+  chunkExamples: Array<{ memoryId: number; parentMemoryId: number }>;
+  missingExamples: number[];
 }
 
 /**
@@ -173,6 +189,147 @@ function getDb() {
   } catch {
     return initEvalDb();
   }
+}
+
+interface MemoryIndexLookupRow {
+  id: number;
+  parent_id: number | null;
+}
+
+/**
+ * Inspect whether every ground-truth relevance ID resolves to a parent memory
+ * in the active DB. Chunk-backed or missing IDs make Recall@K comparisons
+ * against parent-memory outputs untrustworthy.
+ */
+export function inspectGroundTruthAlignment(
+  database: Database.Database,
+): GroundTruthAlignmentSummary {
+  const uniqueMemoryIds = Array.from(
+    new Set(GROUND_TRUTH_RELEVANCES.map((row) => row.memoryId)),
+  ).sort((left, right) => left - right);
+
+  if (uniqueMemoryIds.length === 0) {
+    return {
+      totalQueries: GROUND_TRUTH_QUERIES.length,
+      totalRelevances: 0,
+      uniqueMemoryIds: 0,
+      parentRelevanceCount: 0,
+      chunkRelevanceCount: 0,
+      missingRelevanceCount: 0,
+      parentMemoryCount: 0,
+      chunkMemoryCount: 0,
+      missingMemoryCount: 0,
+      chunkExamples: [],
+      missingExamples: [],
+    };
+  }
+
+  const placeholders = uniqueMemoryIds.map(() => '?').join(', ');
+  const rows = database.prepare(
+    `SELECT id, parent_id FROM memory_index WHERE id IN (${placeholders})`,
+  ).all(...uniqueMemoryIds) as MemoryIndexLookupRow[];
+
+  const rowById = new Map<number, MemoryIndexLookupRow>();
+  for (const row of rows) {
+    rowById.set(row.id, row);
+  }
+
+  let parentRelevanceCount = 0;
+  let chunkRelevanceCount = 0;
+  let missingRelevanceCount = 0;
+  const parentMemoryIds = new Set<number>();
+  const chunkMemoryIds = new Set<number>();
+  const missingMemoryIds = new Set<number>();
+  const chunkExamples: Array<{ memoryId: number; parentMemoryId: number }> = [];
+  const missingExamples: number[] = [];
+
+  for (const relevance of GROUND_TRUTH_RELEVANCES) {
+    const row = rowById.get(relevance.memoryId);
+    if (!row) {
+      missingRelevanceCount++;
+      if (!missingMemoryIds.has(relevance.memoryId) && missingExamples.length < 5) {
+        missingExamples.push(relevance.memoryId);
+      }
+      missingMemoryIds.add(relevance.memoryId);
+      continue;
+    }
+
+    if (row.parent_id == null) {
+      parentRelevanceCount++;
+      parentMemoryIds.add(relevance.memoryId);
+      continue;
+    }
+
+    chunkRelevanceCount++;
+    chunkMemoryIds.add(relevance.memoryId);
+    if (
+      chunkExamples.length < 5
+      && !chunkExamples.some((example) => example.memoryId === relevance.memoryId)
+    ) {
+      chunkExamples.push({
+        memoryId: relevance.memoryId,
+        parentMemoryId: row.parent_id,
+      });
+    }
+  }
+
+  return {
+    totalQueries: GROUND_TRUTH_QUERIES.length,
+    totalRelevances: GROUND_TRUTH_RELEVANCES.length,
+    uniqueMemoryIds: uniqueMemoryIds.length,
+    parentRelevanceCount,
+    chunkRelevanceCount,
+    missingRelevanceCount,
+    parentMemoryCount: parentMemoryIds.size,
+    chunkMemoryCount: chunkMemoryIds.size,
+    missingMemoryCount: missingMemoryIds.size,
+    chunkExamples,
+    missingExamples,
+  };
+}
+
+/**
+ * Reject the benchmark when the active DB and static ground truth do not share
+ * the same parent-memory ID universe.
+ */
+export function assertGroundTruthAlignment(
+  database: Database.Database,
+  options: { dbPath?: string; context?: string } = {},
+): GroundTruthAlignmentSummary {
+  const summary = inspectGroundTruthAlignment(database);
+  if (summary.chunkRelevanceCount === 0 && summary.missingRelevanceCount === 0) {
+    return summary;
+  }
+
+  const contextParts = [
+    options.context,
+    options.dbPath,
+  ].filter((value): value is string => typeof value === 'string' && value.trim().length > 0);
+  const contextSuffix = contextParts.length > 0 ? ` for ${contextParts.join(' @ ')}` : '';
+
+  const details: string[] = [];
+  if (summary.chunkRelevanceCount > 0) {
+    const sampleText = summary.chunkExamples
+      .map((example) => `${example.memoryId}->${example.parentMemoryId}`)
+      .join(', ');
+    details.push(
+      `chunk-backed relevances=${summary.chunkRelevanceCount} across ${summary.chunkMemoryCount} IDs`
+      + (sampleText ? ` (examples: ${sampleText})` : ''),
+    );
+  }
+  if (summary.missingRelevanceCount > 0) {
+    const sampleText = summary.missingExamples.join(', ');
+    details.push(
+      `missing relevances=${summary.missingRelevanceCount} across ${summary.missingMemoryCount} IDs`
+      + (sampleText ? ` (examples: ${sampleText})` : ''),
+    );
+  }
+
+  throw new Error(
+    `Ground truth is not aligned to parent memories${contextSuffix}: ${details.join('; ')}. `
+    + 'Refresh lib/eval/data/ground-truth.json with scripts/evals/map-ground-truth-ids.ts --write '
+    + 'against the active DB before rerunning ablation.',
+  );
 }
 
 /**

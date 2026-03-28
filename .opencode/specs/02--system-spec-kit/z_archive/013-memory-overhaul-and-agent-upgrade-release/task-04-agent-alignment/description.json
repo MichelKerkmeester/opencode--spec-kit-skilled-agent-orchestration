@@ -7,7 +7,7 @@
     "configs",
     "audit"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.365Z",
+  "lastUpdated": "2026-03-28T10:08:37.570Z",
   "specId": "",
   "folderSlug": "task-04-agent-alignment",
   "parentChain": [
@@ -16,9 +16,5 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Task 04 — Agent Configs Audit [task-04-agent-alignment/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Task 04 — Agent Configs Audit"
+  "memoryNameHistory": []
 }

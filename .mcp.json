@@ -15,7 +15,7 @@
       ],
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
+        "MEMORY_DB_PATH": "/Users/michelkerkmeester/.codex/memories/spec_kit_memory/context-index.sqlite"
       },
       "disabled": false
     },

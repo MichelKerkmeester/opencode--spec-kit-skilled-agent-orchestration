@@ -50,7 +50,7 @@ contextType: "implementation"
 - [x] T005 Update retrieval-mode and output-budget policy (`.opencode/agent/chatgpt/context.md`)
 - [x] T006 Update low-complexity fast-path analysis wording (`.opencode/agent/chatgpt/debug.md`)
 - [x] T007 Update handover fast-path/tool-call and context-package wording (`.opencode/agent/chatgpt/handover.md`)
-- [x] T008 Update research memory-save default and trivial exception wording (`.opencode/agent/chatgpt/research.md`)
+- [x] T008 Update research memory-save default and trivial exception wording (`.opencode/agent/chatgpt/research/research/research.md`)
 - [x] T009 Update review model convention and blocker-vs-required semantics (`.opencode/agent/chatgpt/review.md`)
 - [x] T010 Update speckit level semantics and validation-exit guidance (`.opencode/agent/chatgpt/speckit.md`)
 - [x] T011 Update write template-first fast-path and mode-aware DQI thresholds (`.opencode/agent/chatgpt/write.md`)

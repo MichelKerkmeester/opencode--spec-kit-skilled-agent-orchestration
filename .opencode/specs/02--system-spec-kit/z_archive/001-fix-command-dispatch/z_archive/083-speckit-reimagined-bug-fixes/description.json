@@ -9,7 +9,7 @@
     "fixes",
     "consolidated"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.167Z",
+  "lastUpdated": "2026-03-28T10:35:07.665Z",
   "specId": "083",
   "folderSlug": "speckit-reimagined-bug-fixes",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec Kit Reimagined Bug Fixes (Consolidated) [083-speckit-reimagined-bug-fixes/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Spec Kit Reimagined Bug Fixes (Consolidated)"
+  "memoryNameHistory": []
 }

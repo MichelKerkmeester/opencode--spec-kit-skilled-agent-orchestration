@@ -10,6 +10,7 @@ import {
   isValidType,
   resolveSpecDocumentType,
 } from './memory-types';
+import { isWorkingArtifactPath } from './spec-doc-paths';
 
 import type { MemoryTypeName, MemoryTypeConfig } from './memory-types';
 
@@ -345,7 +346,7 @@ export function validateInferredType(
   }
 
   // Check if scratch/temp content has fast-decay type
-  if ((filePath?.includes('/scratch/') || filePath?.includes('/temp/')) &&
+  if (isWorkingArtifactPath(filePath) &&
       !['working', 'episodic'].includes(inferredType)) {
     warnings.push(`Temporary file "${filePath}" has slow-decay type "${inferredType}"`);
   }

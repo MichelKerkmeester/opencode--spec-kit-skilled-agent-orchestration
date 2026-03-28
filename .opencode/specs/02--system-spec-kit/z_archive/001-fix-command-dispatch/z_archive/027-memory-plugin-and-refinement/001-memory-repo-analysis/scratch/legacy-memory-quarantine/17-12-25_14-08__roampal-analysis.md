@@ -41,7 +41,7 @@ contextType: general
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `compatibility` | `keydecisions` | `decisions` | `approach` | `decision` | `backward` | `support` | `object` | `format` | `chosen` | 
 

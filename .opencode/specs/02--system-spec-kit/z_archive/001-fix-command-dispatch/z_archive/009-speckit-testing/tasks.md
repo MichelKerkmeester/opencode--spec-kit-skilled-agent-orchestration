@@ -36,7 +36,7 @@ Task breakdown for parallel agent testing.
 - [x] T009 [P] Verify tasks.md template exists
 - [x] T010 [P] Verify checklist.md template exists
 - [x] T011 [P] Verify decision-record.md template exists
-- [x] T012 [P] Verify research.md, research-spike.md, handover.md, debug-delegation.md exist
+- [x] T012 [P] Verify research/research.md, research-spike.md, handover.md, debug-delegation.md exist
 - [x] T013 [P] Verify scratch/.gitkeep exists
 
 ### Agent 3: Reference Documentation Check

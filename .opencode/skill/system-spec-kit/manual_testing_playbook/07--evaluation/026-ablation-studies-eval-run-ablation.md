@@ -7,7 +7,7 @@ description: "This scenario validates Ablation studies (eval_run_ablation) for `
 
 ## 1. OVERVIEW
 
-This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It focuses on Channel impact experiment.
+This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It focuses on Full plus focused channel-impact verification.
 
 ---
 
@@ -15,10 +15,10 @@ This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It fo
 
 Operators run the exact prompt and command sequence for `EX-026` and confirm the expected signals without contradicting evidence.
 
-- Objective: Channel impact experiment
-- Prompt: `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Per-channel deltas reported
-- Pass/fail: PASS if run produces metrics/verdict
+- Objective: Full plus focused channel-impact verification
+- Prompt: `Run one full ablation plus one focused fts5 ablation. Capture the evidence needed to prove baseline recall, per-channel deltas, and focused fts5 verdict are reported, that the active eval DB matches the remapped ground-truth parent IDs, and that any run returning fewer than recallK candidates because of token-budget truncation is flagged as investigation-only rather than treated as a clean benchmark. Return a concise user-facing pass/fail verdict with the main reason.`
+- Expected signals: Baseline recall, per-channel deltas, focused fts5 verdict, and provenance/truncation status are all explicit
+- Pass/fail: PASS if the runs either produce clean comparable metrics or clearly isolate why the benchmark is invalid
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-026 | Ablation studies (eval_run_ablation) | Channel impact experiment | `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported. Return a concise user-facing pass/fail verdict with the main reason.` | `eval_run_ablation({ channels:["vector","bm25","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Per-channel deltas reported | Ablation + dashboard outputs | PASS if run produces metrics/verdict | Validate eval dataset setup |
+| EX-026 | Ablation studies (eval_run_ablation) | Full plus focused channel-impact verification | `Run one full ablation plus one focused fts5 ablation. Capture the evidence needed to prove baseline recall, per-channel deltas, and focused fts5 verdict are reported, that the active eval DB matches the remapped ground-truth parent IDs, and that any run returning fewer than recallK candidates because of token-budget truncation is flagged as investigation-only rather than treated as a clean benchmark. Return a concise user-facing pass/fail verdict with the main reason.` | `eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true })` -> `eval_run_ablation({ mode:"ablation", channels:["fts5"], storeResults:true, includeFormattedReport:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Baseline recall, per-channel deltas, focused fts5 verdict, and provenance/truncation status are explicit | Full ablation report, focused fts5 report, and dashboard output | PASS if the runs are cleanly comparable or the output isolates provenance/truncation invalidation before any channel verdict is trusted | Validate ground-truth mapping against the active parent-memory DB; inspect runtime logs for token-budget truncation if Recall@K collapses |
 
 ---
 

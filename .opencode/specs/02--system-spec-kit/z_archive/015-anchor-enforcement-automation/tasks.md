@@ -137,7 +137,7 @@ contextType: "implementation"
 - **Plan**: See `plan.md` (architecture, phases, effort estimates)
 - **Verification**: See `checklist.md` (P0/P1/P2 quality gates)
 - **Decisions**: See `decision-record.md` (ADRs for enforcement approach)
-- **Research**: See `research.md` (root cause analysis, evidence)
+- **Research**: See `research/research.md` (root cause analysis, evidence)
 <!-- /ANCHOR:cross-refs -->
 
 ---

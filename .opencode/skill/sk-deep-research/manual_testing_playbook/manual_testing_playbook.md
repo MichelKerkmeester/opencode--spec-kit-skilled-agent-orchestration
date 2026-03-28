@@ -221,9 +221,9 @@ Verify that the loop honors the strategy file’s Next Focus and avoids approach
 
 Feature file: [DR-009](03--iteration-execution-and-state-discipline/009-strategy-next-focus-and-exhausted-approach-discipline.md)
 
-### DR-010 | Progressive synthesis behavior for research.md
+### DR-010 | Progressive synthesis behavior for research/research.md
 
-Verify that `research.md` remains workflow-owned while progressive updates are allowed when `progressiveSynthesis` is enabled.
+Verify that `research/research.md` remains workflow-owned while progressive updates are allowed when `progressiveSynthesis` is enabled.
 
 Feature file: [DR-010](03--iteration-execution-and-state-discipline/010-progressive-synthesis-behavior-for-research-md.md)
 
@@ -355,7 +355,7 @@ Feature file: [DR-019](06--synthesis-save-and-guardrails/019-final-synthesis-mem
 
 ### DR-026 | Ruled-out directions synthesized
 
-Verify that iteration ruledOut data is consolidated into an Eliminated Alternatives section in research.md.
+Verify that iteration ruledOut data is consolidated into an Eliminated Alternatives section in research/research.md.
 
 Feature file: [DR-026](06--synthesis-save-and-guardrails/026-ruled-out-directions-in-synthesis.md)
 

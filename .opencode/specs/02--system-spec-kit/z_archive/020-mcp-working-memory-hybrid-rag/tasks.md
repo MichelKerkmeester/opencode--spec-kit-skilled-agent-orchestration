@@ -217,7 +217,7 @@ contextType: "implementation"
 <!-- ANCHOR:quality-phases -->
 ## Memory Quality Phases (QP-0 → QP-4)
 
-> **Source**: `research.md` 50-file audit, root causes RC1–RC5. These phases run in parallel with Phase 0–3 where feasible. QP-0 and QP-1 can begin immediately; QP-4 deferred until QP-2/QP-3 stable.
+> **Source**: `research/research.md` 50-file audit, root causes RC1–RC5. These phases run in parallel with Phase 0–3 where feasible. QP-0 and QP-1 can begin immediately; QP-4 deferred until QP-2/QP-3 stable.
 
 ---
 
@@ -227,7 +227,7 @@ contextType: "implementation"
 - [x] TQ002 Create 10 known-good example memory files (high-signal, specific decisions, non-empty triggers, no orchestration chatter) [Evidence: `scratch/quality-benchmarks/good/` (10 files)]
 - [x] TQ003 [P] Commit benchmark fixtures to `scratch/quality-benchmarks/good/` and `scratch/quality-benchmarks/bad/` [Evidence: `scratch/quality-benchmarks/bad/*.md` (10), `scratch/quality-benchmarks/good/*.md` (10)]
 - [x] TQ004 [P] Run current `generate-context.js` output through quality scorer on active 25 files; record baseline quality-band distribution (A/B/C/D counts and rates) [Evidence: `scratch/quality-baseline.md`, `bash scripts/kpi/quality-kpi.sh 02--system-spec-kit/020-mcp-working-memory-hybrid-rag`]
-- [x] TQ005 Document baseline in `scratch/quality-baseline.md` (band distribution, per-defect-class counts, reference to research.md prevalence rates) [Evidence: `scratch/quality-baseline.md`]
+- [x] TQ005 Document baseline in `scratch/quality-baseline.md` (band distribution, per-defect-class counts, reference to research/research.md prevalence rates) [Evidence: `scratch/quality-baseline.md`]
 
 **Pass/Fail Threshold**: All 10 known-bad fixtures produce validator FAIL; all 10 known-good fixtures produce PASS. Any regression in fixture outcomes blocks QP-1.
 
@@ -316,7 +316,7 @@ contextType: "implementation"
 
 ### QP-4: Legacy Remediation (2-4 days — deferred after QP-3 stable)
 
-- [x] TQ040 [B:TQ035] Identify all 104 files containing `003-memory-and-spec-kit` legacy path references (confirmed in research.md: 55.6% of 187 files) [Evidence: `.opencode/skill/system-spec-kit/scripts/evals/run-quality-legacy-remediation.ts`; `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch/quality-legacy-results.md`]
+- [x] TQ040 [B:TQ035] Identify all 104 files containing `003-memory-and-spec-kit` legacy path references (confirmed in research/research.md: 55.6% of 187 files) [Evidence: `.opencode/skill/system-spec-kit/scripts/evals/run-quality-legacy-remediation.ts`; `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch/quality-legacy-results.md`]
 - [x] TQ041 Run shadow retrieval comparison BEFORE remediation: record top-5 results for 20 representative queries (store in `scratch/quality-legacy-baseline.json`) [Evidence: `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch/quality-legacy-baseline.json`]
 - [x] TQ042 Batch re-normalize stale path references in active tier (25 files): replace `003-memory-and-spec-kit` with `02--system-spec-kit` in all YAML fields and content paths [Evidence: `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch/quality-legacy-results.md` (active-tier remaining=0)]
 - [x] TQ043 Isolate fixture/test memory files (`044-speckit-test-suite/`, `030-gate3-enforcement/`) — downgrade to `archived` importance tier; exclude from production ranking [Evidence: `.opencode/skill/system-spec-kit/scripts/evals/run-quality-legacy-remediation.ts` (downgraded to `deprecated` due index enum constraints); `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch/quality-legacy-results.md`]
@@ -436,7 +436,7 @@ Source backlog: `research/136 - prioritized-implementation-backlog-post-research
 - **Plan**: See `plan.md` for architecture, phases (including Phase 1.5 and Memory Quality Phases QP-0 to QP-4), ADRs
 - **Checklist**: See `checklist.md` for verification items (CHK-001 through CHK-200+)
 - **Decisions**: See `decision-record.md` for ADR-001 through ADR-006
-- **Research**: See `research.md` for 50-file memory quality audit, root causes RC1–RC5, P0/P1/P2 recommendations with acceptance metrics
+- **Research**: See `research/research.md` for 50-file memory quality audit, root causes RC1–RC5, P0/P1/P2 recommendations with acceptance metrics
 - **Research Sources**: See `research/136 - analysis-working-memory-hybrid-rag-systems.md` and `research/136 - recommendations-working-memory-hybrid-rag-adoption.md`
 - **Post-Research Backlog**: See `research/136 - prioritized-implementation-backlog-post-research.md` for C136-01..C136-12 execution sequencing
 - **Phase Packages**: See `001-foundation-phases-0-1-1-5/`, `002-extraction-rollout-phases-2-3/`, `003-memory-quality-qp-0-4/`, `004-post-research-wave-1-governance-foundations/`, `005-post-research-wave-2-controlled-delivery/`, and `006-post-research-wave-3-outcome-confirmation/` for dedicated phase documentation

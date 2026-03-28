@@ -39,6 +39,6 @@
     "deep-review-dashboard.md": "auto-generated",
     "review-report.md": "mutable",
     "iteration-*.md": "write-once",
-    "research.md": "mutable"
+    "research/research.md": "mutable"
   }
 }

@@ -467,7 +467,7 @@ async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> 
     { name: 'tasks.md', role: 'Task breakdown' },
     { name: 'checklist.md', role: 'QA checklist' },
     { name: 'decision-record.md', role: 'Architecture decisions' },
-    { name: 'research.md', role: 'Research findings' },
+    { name: 'research/research.md', role: 'Research findings' },
     { name: 'handover.md', role: 'Session handover notes' },
     { name: 'debug-delegation.md', role: 'Debug task delegation' }
   ];

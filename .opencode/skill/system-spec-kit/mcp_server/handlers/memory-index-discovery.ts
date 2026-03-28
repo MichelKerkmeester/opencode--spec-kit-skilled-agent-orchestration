@@ -8,6 +8,10 @@ import fs from 'fs';
 import path from 'path';
 
 import { toErrorMessage } from '../utils';
+import {
+  matchesSpecDocumentPath,
+  SPEC_DOCUMENT_FILENAMES,
+} from '../lib/config/spec-doc-paths';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
@@ -16,20 +20,8 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
 /* ------- 2. CONSTANTS ------- */
 
-/** Well-known spec folder document filenames. */
-const SPEC_DOCUMENT_FILENAMES = new Set([
-  'spec.md',
-  'plan.md',
-  'tasks.md',
-  'checklist.md',
-  'decision-record.md',
-  'implementation-summary.md',
-  'research.md',
-  'handover.md',
-]);
-
 /** Directories to exclude from spec document discovery. */
-const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules']);
+const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules', 'iterations', 'z_archive']);
 
 /** Constitutional markdown basenames intentionally excluded from indexing. */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
@@ -43,9 +35,9 @@ export interface SpecDiscoveryOptions {
 /**
  * Discover spec folder documents (.opencode/specs/ directory tree).
  * Finds spec.md, plan.md, tasks.md, checklist.md, decision-record.md,
- * implementation-summary.md, research.md, handover.md.
+ * implementation-summary.md, research/research.md, handover.md.
  *
- * Excludes scratch/, memory/, and hidden directories.
+ * Excludes scratch/, memory/, iterations/, and hidden directories.
  */
 export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryOptions = {}): string[] {
   // Respect explicit opt-out to disable spec document indexing.
@@ -69,6 +61,9 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
           walkSpecsDir(specsRoot, path.join(dir, entry.name));
         } else if (entry.isFile() && SPEC_DOCUMENT_FILENAMES.has(entry.name.toLowerCase())) {
           const fullPath = path.join(dir, entry.name);
+          if (!matchesSpecDocumentPath(fullPath, entry.name.toLowerCase())) {
+            continue;
+          }
 
           // Enforce optional specFolder scope before including a candidate file.
           if (options.specFolder) {

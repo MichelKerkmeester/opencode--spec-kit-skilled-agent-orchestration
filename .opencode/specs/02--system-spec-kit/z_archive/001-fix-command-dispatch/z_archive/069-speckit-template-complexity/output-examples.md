@@ -316,7 +316,7 @@ specs/XXX-enterprise-rewrite/
 ├── tasks.md                   ✓ Required
 ├── checklist.md               ✓ Required
 ├── decision-record.md         ✓ Required
-├── research.md                ✓ Optional (but recommended)
+├── research/research.md                ✓ Optional (but recommended)
 └── implementation-summary.md  ✓ Required (after implementation)
 ```
 

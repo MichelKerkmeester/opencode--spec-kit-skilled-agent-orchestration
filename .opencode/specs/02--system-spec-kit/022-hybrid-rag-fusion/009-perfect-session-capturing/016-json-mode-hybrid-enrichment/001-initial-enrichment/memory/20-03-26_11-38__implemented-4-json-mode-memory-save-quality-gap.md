@@ -169,7 +169,7 @@ Next: Commit the 4+1 changes across 4 files
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -177,7 +177,7 @@ Next: Commit the 4+1 changes across 4 files
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `git stash` | `perfect capturing/021` | `fusion/010 perfect` | `capturing/021 json` | `hybrid enrichment` | `kit/022 hybrid` | `rag fusion/010` | `spec kit/022` | `system spec` | `mode hybrid` | `hybrid rag` | `json mode` |
 

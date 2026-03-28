@@ -17,6 +17,7 @@ import {
   ALL_CHANNELS,
   isAblationEnabled,
   runAblation,
+  assertGroundTruthAlignment,
   storeAblationResults,
   formatAblationReport,
   toHybridSearchFlags,
@@ -190,6 +191,19 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     );
   }
 
+  try {
+    assertGroundTruthAlignment(db, {
+      dbPath: vectorIndex.getDbPath(),
+      context: 'eval_run_ablation',
+    });
+  } catch (error: unknown) {
+    throw new MemoryError(
+      ErrorCodes.INVALID_PARAMETER,
+      error instanceof Error ? error.message : String(error),
+      { dbPath: vectorIndex.getDbPath() },
+    );
+  }
+
   initializeEvalHybridSearch(db);
 
   const channels = normalizeChannels(args.channels as string[] | undefined);
@@ -210,6 +224,7 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
       useGraph: channelFlags.useGraph,
       triggerPhrases: channelFlags.useTrigger ? undefined : [],
       forceAllChannels: true,
+      evaluationMode: true,
     };
 
     const results = await hybridSearchEnhanced(query, embedding, searchOptions);

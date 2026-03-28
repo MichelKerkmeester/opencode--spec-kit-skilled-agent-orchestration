@@ -54,7 +54,7 @@ Enable the same agent routing and specialization system to work in both OpenCode
 - Convert 8 agent files from OpenCode to Claude Code format
 - Preserve all markdown body content (instructions, workflows, rules)
 - Convert YAML frontmatter only (name, description, routing metadata)
-- Files: context.md, orchestrate.md, speckit.md, research.md, write.md, debug.md, review.md, handover.md
+- Files: context.md, orchestrate.md, speckit.md, research/research.md, write.md, debug.md, review.md, handover.md
 
 ### Out of Scope
 - Modifying agent behavior or instructions - body content stays identical
@@ -68,7 +68,7 @@ Enable the same agent routing and specialization system to work in both OpenCode
 | `.claude/agents/context.md` | Create | Convert from `.opencode/agent/context.md` |
 | `.claude/agents/orchestrate.md` | Create | Convert from `.opencode/agent/orchestrate.md` |
 | `.claude/agents/speckit.md` | Create | Convert from `.opencode/agent/speckit.md` |
-| `.claude/agents/research.md` | Create | Convert from `.opencode/agent/research.md` |
+| `.claude/agents/research/research/research.md` | Create | Convert from `.opencode/agent/research/research/research.md` |
 | `.claude/agents/write.md` | Create | Convert from `.opencode/agent/write.md` |
 | `.claude/agents/debug.md` | Create | Convert from `.opencode/agent/debug.md` |
 | `.claude/agents/review.md` | Create | Convert from `.opencode/agent/review.md` |

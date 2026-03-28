@@ -14,9 +14,12 @@ import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } 
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import Database from 'better-sqlite3';
 
 import {
   isAblationEnabled,
+  inspectGroundTruthAlignment,
+  assertGroundTruthAlignment,
   runAblation,
   storeAblationResults,
   formatAblationReport,
@@ -221,6 +224,84 @@ describe('Ablation Framework (R13-S3)', () => {
       expect(ALL_CHANNELS).toContain('fts5');
       expect(ALL_CHANNELS).toContain('graph');
       expect(ALL_CHANNELS).toContain('trigger');
+    });
+  });
+
+  describe('ground truth alignment preflight', () => {
+    let alignmentDb: Database.Database | null = null;
+    let alignmentDbPath = '';
+
+    afterEach(() => {
+      if (alignmentDb) {
+        try { alignmentDb.close(); } catch { /* ignore */ }
+      }
+      alignmentDb = null;
+
+      if (alignmentDbPath && fs.existsSync(alignmentDbPath)) {
+        try { fs.unlinkSync(alignmentDbPath); } catch { /* ignore */ }
+      }
+      alignmentDbPath = '';
+    });
+
+    async function createAlignmentDb(overrides: {
+      chunkIds?: number[];
+      omitIds?: number[];
+    } = {}): Promise<Database.Database> {
+      const { GROUND_TRUTH_RELEVANCES } = await import('../lib/eval/ground-truth-data');
+      const uniqueIds = Array.from(
+        new Set(GROUND_TRUTH_RELEVANCES.map((row) => row.memoryId)),
+      ).sort((left, right) => left - right);
+
+      alignmentDbPath = path.join(os.tmpdir(), `ablation-alignment-${Date.now()}-${Math.random()}.sqlite`);
+      alignmentDb = new Database(alignmentDbPath);
+      alignmentDb.exec(`
+        CREATE TABLE memory_index (
+          id INTEGER PRIMARY KEY,
+          parent_id INTEGER
+        );
+      `);
+
+      const chunkIdSet = new Set(overrides.chunkIds ?? []);
+      const omitIdSet = new Set(overrides.omitIds ?? []);
+      const insert = alignmentDb.prepare('INSERT INTO memory_index (id, parent_id) VALUES (?, ?)');
+
+      for (const id of uniqueIds) {
+        if (omitIdSet.has(id)) continue;
+        insert.run(id, chunkIdSet.has(id) ? 999999 : null);
+      }
+
+      return alignmentDb;
+    }
+
+    it('passes when all ground-truth IDs resolve to parent rows', async () => {
+      const db = await createAlignmentDb();
+      const summary = inspectGroundTruthAlignment(db);
+
+      expect(summary.totalRelevances).toBeGreaterThan(0);
+      expect(summary.chunkRelevanceCount).toBe(0);
+      expect(summary.missingRelevanceCount).toBe(0);
+      expect(assertGroundTruthAlignment(db)).toEqual(summary);
+    });
+
+    it('throws when ground truth includes chunk-backed or missing IDs for the active DB', async () => {
+      const { GROUND_TRUTH_RELEVANCES } = await import('../lib/eval/ground-truth-data');
+      const uniqueIds = Array.from(new Set(GROUND_TRUTH_RELEVANCES.map((row) => row.memoryId)));
+      const [chunkId, missingId] = uniqueIds;
+      expect(chunkId).toBeDefined();
+      expect(missingId).toBeDefined();
+      const db = await createAlignmentDb({
+        chunkIds: [chunkId!],
+        omitIds: [missingId!],
+      });
+
+      const summary = inspectGroundTruthAlignment(db);
+      expect(summary.chunkRelevanceCount).toBeGreaterThan(0);
+      expect(summary.missingRelevanceCount).toBeGreaterThan(0);
+
+      expect(() => assertGroundTruthAlignment(db, {
+        dbPath: '/tmp/test-context-index.sqlite',
+        context: 'unit-test',
+      })).toThrow(/chunk-backed relevances=.*missing relevances=/i);
     });
   });
 

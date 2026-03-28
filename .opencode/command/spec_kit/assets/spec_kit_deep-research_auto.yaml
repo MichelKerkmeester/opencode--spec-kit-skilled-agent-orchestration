@@ -77,11 +77,11 @@ agent_config:
 # STATE FILE PATHS
 # ─────────────────────────────────────────────────────────────────
 state_paths:
-  config: "{spec_folder}/scratch/deep-research-config.json"
-  state_log: "{spec_folder}/scratch/deep-research-state.jsonl"
-  strategy: "{spec_folder}/scratch/deep-research-strategy.md"
-  iteration_pattern: "{spec_folder}/scratch/iteration-{NNN}.md"
-  research_output: "{spec_folder}/research.md"
+  config: "{spec_folder}/research/deep-research-config.json"
+  state_log: "{spec_folder}/research/deep-research-state.jsonl"
+  strategy: "{spec_folder}/research/deep-research-strategy.md"
+  iteration_pattern: "{spec_folder}/research/iterations/iteration-{NNN}.md"
+  research_output: "{spec_folder}/research/research.md"
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW
@@ -105,15 +105,15 @@ workflow:
         on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"
 
       step_create_directories:
-        action: "Create spec folder and scratch directory if they don't exist"
-        command: "mkdir -p {spec_folder}/scratch"
+        action: "Create spec folder and research packet directories if they don't exist"
+        command: "mkdir -p {spec_folder}/research/iterations"
 
       step_classify_session:
         action: "Classify the session before writing files"
         inspect:
-          - "{spec_folder}/scratch/deep-research-config.json"
-          - "{spec_folder}/scratch/deep-research-state.jsonl"
-          - "{spec_folder}/scratch/deep-research-strategy.md"
+          - "{spec_folder}/research/deep-research-config.json"
+          - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/deep-research-strategy.md"
         classify:
           fresh: "None of the three state artifacts exist"
           resume: "Config, JSONL, and strategy all exist and agree on topic/spec folder"
@@ -129,7 +129,7 @@ workflow:
           skip_to: phase_synthesis
         on_invalid_state:
           halt: true
-          message: "Existing deep-research state is incomplete or contradictory. Repair or archive the invalid scratch state before continuing."
+          message: "Existing deep-research state is incomplete or contradictory. Repair or archive the invalid research packet before continuing."
         on_fresh:
           action: "Proceed with a new session"
 
@@ -146,12 +146,12 @@ workflow:
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           executionMode: "auto"
-        output: "{spec_folder}/scratch/deep-research-config.json"
+        output: "{spec_folder}/research/deep-research-config.json"
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record"
         content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
-        output: "{spec_folder}/scratch/deep-research-state.jsonl"
+        output: "{spec_folder}/research/deep-research-state.jsonl"
 
       step_create_strategy:
         action: "Create strategy file from template with initial questions"
@@ -163,12 +163,12 @@ workflow:
           known_context_summary: "None"
           max_iterations: "{max_iterations}"
           convergence_threshold: "{convergence_threshold}"
-        output: "{spec_folder}/scratch/deep-research-strategy.md"
+        output: "{spec_folder}/research/deep-research-strategy.md"
 
       step_enrich_strategy_context:
         action: "Ensure Known Context is written only after strategy.md exists"
         condition: "prior_context_found"
-        edit: "{spec_folder}/scratch/deep-research-strategy.md"
+        edit: "{spec_folder}/research/deep-research-strategy.md"
         note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
 
       step_init_complete:
@@ -187,8 +187,8 @@ workflow:
       step_read_state:
         action: "Read current state from JSONL and strategy"
         read:
-          - "{spec_folder}/scratch/deep-research-state.jsonl"
-          - "{spec_folder}/scratch/deep-research-strategy.md"
+          - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/deep-research-strategy.md"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
           - current_iteration: "iteration_count + 1"
@@ -208,10 +208,10 @@ workflow:
 
       step_check_pause_sentinel:
         action: "Check for pause sentinel file"
-        check: "Does {spec_folder}/scratch/.deep-research-pause exist?"
+        check: "Does {spec_folder}/research/.deep-research-pause exist?"
         if_exists:
           log_event: '{"type":"event","event":"paused","reason":"sentinel file detected"}'
-          message: "Research paused. Delete scratch/.deep-research-pause to resume."
+          message: "Research paused. Delete research/.deep-research-pause to resume."
           halt: true
         if_not_exists:
           proceed: true
@@ -282,10 +282,10 @@ workflow:
             Last 3 Iterations Summary: {last_3_summaries}
 
             State Files (ALL paths relative to repo root):
-              Config: {spec_folder}/scratch/deep-research-config.json
-              State Log: {spec_folder}/scratch/deep-research-state.jsonl
-              Strategy: {spec_folder}/scratch/deep-research-strategy.md
-              Write findings to: {spec_folder}/scratch/iteration-{NNN}.md
+              Config: {spec_folder}/research/deep-research-config.json
+              State Log: {spec_folder}/research/deep-research-state.jsonl
+              Strategy: {spec_folder}/research/deep-research-strategy.md
+              Write findings to: {spec_folder}/research/iterations/iteration-{NNN}.md
 
             CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
             CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
@@ -295,7 +295,7 @@ workflow:
       step_evaluate_results:
         action: "Verify iteration outputs and extract metrics"
         verify:
-          - file_exists: "{spec_folder}/scratch/iteration-{NNN}.md"
+          - file_exists: "{spec_folder}/research/iterations/iteration-{NNN}.md"
           - jsonl_appended: "New iteration record in state.jsonl"
           - strategy_updated: "Strategy.md has been modified"
         extract:
@@ -310,10 +310,10 @@ workflow:
       step_generate_dashboard:
         action: "Generate or refresh the human-readable dashboard"
         read:
-          - "{spec_folder}/scratch/deep-research-state.jsonl"
-          - "{spec_folder}/scratch/deep-research-strategy.md"
+          - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/deep-research-strategy.md"
         template: .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
-        output: "{spec_folder}/scratch/deep-research-dashboard.md"
+        output: "{spec_folder}/research/deep-research-dashboard.md"
         note: "Auto-generated from JSONL + strategy. Never manually edited."
 
       step_update_tracking:
@@ -331,15 +331,15 @@ workflow:
   # PHASE 3: SYNTHESIS
   # ═══════════════════════════════════════════════════════════════
   phase_synthesis:
-    purpose: Compile all iteration findings into final research.md
+    purpose: Compile all iteration findings into final research/research.md
     steps:
 
       step_hydrate_summary_metrics:
         action: "Hydrate summary metrics before synthesis, including completed-session resume paths"
         read:
-          - "{spec_folder}/scratch/deep-research-config.json"
-          - "{spec_folder}/scratch/deep-research-state.jsonl"
-          - "{spec_folder}/scratch/deep-research-strategy.md"
+          - "{spec_folder}/research/deep-research-config.json"
+          - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/deep-research-strategy.md"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
           - current_iteration: "iteration_count + 1"
@@ -356,25 +356,25 @@ workflow:
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
-        read_pattern: "{spec_folder}/scratch/iteration-*.md"
-        read_also: "{spec_folder}/scratch/deep-research-strategy.md"
+        read_pattern: "{spec_folder}/research/iterations/iteration-*.md"
+        read_also: "{spec_folder}/research/deep-research-strategy.md"
 
       step_compile_research:
-        action: "Compile or finalize research.md"
+        action: "Compile or finalize research/research.md"
         instructions: |
-          If research.md exists (progressive synthesis was active):
-            1. Read current research.md
+          If research/research.md exists (progressive synthesis was active):
+            1. Read current research/research.md
             2. Consolidate and deduplicate findings across all iterations
             3. Fill any empty sections with findings from iteration files
             4. Remove redundancy while preserving all unique findings
             5. Add convergence report as appendix
 
-          If research.md does not exist:
-            1. Create research.md following 17-section template
+          If research/research.md does not exist:
+            1. Create research/research.md following 17-section template
             2. Populate sections from iteration files
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
-        output: "{spec_folder}/research.md"
+        output: "{spec_folder}/research/research.md"
 
       step_convergence_report:
         action: "Generate and append convergence report"
@@ -391,7 +391,7 @@ workflow:
 
       step_update_config_status:
         action: "Mark config as complete"
-        edit: "{spec_folder}/scratch/deep-research-config.json"
+        edit: "{spec_folder}/research/deep-research-config.json"
         set_field: { status: "complete" }
 
   # ═══════════════════════════════════════════════════════════════
@@ -425,8 +425,8 @@ workflow:
       Questions answered: {answered_count}/{total_questions}
 
       Artifacts:
-        - research.md (compiled from {iteration_count} iterations)
-        - {iteration_count} iteration files in scratch/
+        - research/research.md (compiled from {iteration_count} iterations)
+        - {iteration_count} iteration files in research/
         - State files: config.json, state.jsonl, strategy.md
         - Memory context saved
 
@@ -443,7 +443,7 @@ error_recovery:
   agent_dispatch_timeout: "Retry once with reduced scope (fewer research actions). If second timeout, mark as 'timeout' and continue."
   state_file_missing: "If JSONL missing during loop, reconstruct from iteration files. If strategy missing, create minimal version."
   consecutive_failures: "After 3 consecutive errors, halt loop and enter synthesis with partial findings."
-  memory_save_failure: "Save to scratch/ as backup. Log warning."
+  memory_save_failure: "Preserve the research/ packet as backup. Log warning."
 
 # ─────────────────────────────────────────────────────────────────
 # RULES
@@ -471,7 +471,7 @@ reference_only_appendix:
   checkpoint_commit:
     note: "Checkpoint commits are intentionally excluded from workflow.steps."
     commands:
-      - "git add {spec_folder}/scratch/iteration-{NNN}.md {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/scratch/deep-research-strategy.md {spec_folder}/research.md"
+      - "git add {spec_folder}/research/iterations/iteration-{NNN}.md {spec_folder}/research/deep-research-state.jsonl {spec_folder}/research/deep-research-strategy.md {spec_folder}/research/research.md"
       - 'git commit -m "chore(deep-research): iteration {NNN} complete"'
   wave_orchestration:
     note: "Wave execution is intentionally excluded from workflow.steps."

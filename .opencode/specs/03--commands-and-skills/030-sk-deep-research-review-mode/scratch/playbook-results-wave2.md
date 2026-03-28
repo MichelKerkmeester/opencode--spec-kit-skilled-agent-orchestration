@@ -95,12 +95,12 @@
 
 5. **State format** (`state_format.md` line 541): Config schema includes `crossReference` object field: `{ spec: true, checklist: true, agentConsistency: true }`. The "Review Strategy Sections Mapping" table (line 553) lists "Cross-Reference Status" as a review-specific section.
 
-6. **research.md reference file does NOT exist**: The scenario expected `research.md §4` to describe cross-reference output format. The file `.opencode/skill/sk-deep-research/references/research.md` does not exist. This is a gap -- the scenario's source anchor is invalid.
+6. **research.md reference file does NOT exist**: The scenario expected `research/research.md §4` to describe cross-reference output format. The file `.opencode/skill/sk-deep-research/references/research/research/research.md` does not exist. This is a gap -- the scenario's source anchor is invalid.
 
 7. **State format §8**: The scenario expected cross-reference fields in state format section 8. State format section 8 is the "Review Report Format" which includes "Section 8: Cross-Reference Results" (line 572) as one of the 11 report sections. This partially satisfies the check.
 
 **Issues:**
-- `references/research.md` does not exist. The scenario references it as a source anchor for §4 (cross-reference output format), but the file was never created. The cross-reference output format is instead documented in the @deep-review agent's Step 5 template and the review YAML's `step_compile_review_report`.
+- `references/research/research/research.md` does not exist. The scenario references it as a source anchor for §4 (cross-reference output format), but the file was never created. The cross-reference output format is instead documented in the @deep-review agent's Step 5 template and the review YAML's `step_compile_review_report`.
 - Loop protocol does not have a dedicated cross-reference protocols section. The 6 protocols are defined only in the review auto YAML's `reference_only_appendix`, not in loop_protocol.md §6 as the scenario suggests.
 - The 6 protocols are in a `reference_only_appendix` section, which may raise questions about whether they are part of the live contract.
 
@@ -153,7 +153,7 @@
 
 ### Actionable Gaps (from PARTIAL verdicts)
 
-1. **DR-037**: `references/research.md` does not exist. The scenario references it as a source anchor for cross-reference output format (§4). Either:
+1. **DR-037**: `references/research/research/research.md` does not exist. The scenario references it as a source anchor for cross-reference output format (§4). Either:
    - Create the file with the expected content, OR
    - Update scenario DR-037 to reference the correct source anchors (deep-review agent Step 5 template + review YAML `step_compile_review_report` Section 6)
 

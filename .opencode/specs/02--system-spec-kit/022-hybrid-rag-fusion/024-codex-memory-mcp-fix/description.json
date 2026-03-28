@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
+  "description": "Feature Specification: Codex Memory MCP Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "codex",
+    "memory",
+    "mcp",
+    "fix"
+  ],
+  "lastUpdated": "2026-03-28T10:40:55.000Z",
+  "specId": "024",
+  "folderSlug": "codex-memory-mcp-fix",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

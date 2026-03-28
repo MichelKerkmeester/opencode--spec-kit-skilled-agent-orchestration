@@ -84,7 +84,7 @@ state_paths:
   state_log: "{spec_folder}/review/deep-research-state.jsonl"
   strategy: "{spec_folder}/review/deep-review-strategy.md"
   dashboard: "{spec_folder}/review/deep-review-dashboard.md"
-  iteration_pattern: "{spec_folder}/review/iteration-{NNN}.md"
+  iteration_pattern: "{spec_folder}/review/iterations/iteration-{NNN}.md"
   review_output: "{spec_folder}/review/review-report.md"
 
 # ─────────────────────────────────────────────────────────────────
@@ -109,11 +109,11 @@ workflow:
         on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"
 
       step_create_directories:
-        action: "Create spec folder and canonical review directory if they don't exist"
-        command: "mkdir -p {spec_folder}/review"
+        action: "Create spec folder and canonical review packet directories if they don't exist"
+        command: "mkdir -p {spec_folder}/review/iterations"
 
       step_migrate_legacy_review_state:
-        action: "Rehome legacy scratch-based review artifacts into review/ before session classification"
+        action: "Rehome legacy review artifacts into review/iterations before session classification"
         detect:
           canonical_review_state:
             - "{spec_folder}/review/deep-research-config.json"
@@ -126,6 +126,7 @@ workflow:
             - "{spec_folder}/scratch/deep-review-dashboard.md"
             - "{spec_folder}/scratch/iteration-*.md"
             - "{spec_folder}/scratch/.deep-research-pause"
+            - "{spec_folder}/review/iteration-*.md"
             - "{spec_folder}/review-report.md"
           legacy_review_markers:
             - "scratch/deep-review-strategy.md exists"
@@ -135,13 +136,14 @@ workflow:
           - "{spec_folder}/scratch/deep-research-state.jsonl -> {spec_folder}/review/deep-research-state.jsonl"
           - "{spec_folder}/scratch/deep-review-strategy.md -> {spec_folder}/review/deep-review-strategy.md"
           - "{spec_folder}/scratch/deep-review-dashboard.md -> {spec_folder}/review/deep-review-dashboard.md"
-          - "{spec_folder}/scratch/iteration-*.md -> {spec_folder}/review/"
+          - "{spec_folder}/scratch/iteration-*.md -> {spec_folder}/review/iterations/"
           - "{spec_folder}/scratch/.deep-research-pause -> {spec_folder}/review/.deep-research-pause"
+          - "{spec_folder}/review/iteration-*.md -> {spec_folder}/review/iterations/"
           - "{spec_folder}/review-report.md -> {spec_folder}/review/review-report.md"
         on_canonical_present: "Leave canonical review/ state untouched and do not overwrite it with legacy scratch artifacts."
         on_legacy_detected: "Move only the review-specific whitelist. Leave unrelated scratch files untouched."
         on_conflict: "If canonical review/ state and legacy scratch review state both exist but disagree, halt for operator repair instead of merging contradictory state."
-        command: "mkdir -p {spec_folder}/review && if [ ! -e {spec_folder}/review/deep-research-config.json ] && [ ! -e {spec_folder}/review/deep-research-state.jsonl ] && [ ! -e {spec_folder}/review/deep-review-strategy.md ] && [ -e {spec_folder}/scratch/deep-review-strategy.md ] && ( [ -e {spec_folder}/scratch/deep-research-config.json ] || [ -e {spec_folder}/scratch/deep-research-state.jsonl ] ); then [ -e {spec_folder}/scratch/deep-research-config.json ] && mv {spec_folder}/scratch/deep-research-config.json {spec_folder}/review/deep-research-config.json; [ -e {spec_folder}/scratch/deep-research-state.jsonl ] && mv {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/review/deep-research-state.jsonl; [ -e {spec_folder}/scratch/deep-review-strategy.md ] && mv {spec_folder}/scratch/deep-review-strategy.md {spec_folder}/review/deep-review-strategy.md; [ -e {spec_folder}/scratch/deep-review-dashboard.md ] && mv {spec_folder}/scratch/deep-review-dashboard.md {spec_folder}/review/deep-review-dashboard.md; find {spec_folder}/scratch -maxdepth 1 -name 'iteration-*.md' -exec mv {} {spec_folder}/review/ \\; ; [ -e {spec_folder}/scratch/.deep-research-pause ] && mv {spec_folder}/scratch/.deep-research-pause {spec_folder}/review/.deep-research-pause; [ -e {spec_folder}/review-report.md ] && mv {spec_folder}/review-report.md {spec_folder}/review/review-report.md; fi"
+        command: "mkdir -p {spec_folder}/review/iterations && if [ ! -e {spec_folder}/review/deep-research-config.json ] && [ ! -e {spec_folder}/review/deep-research-state.jsonl ] && [ ! -e {spec_folder}/review/deep-review-strategy.md ] && [ -e {spec_folder}/scratch/deep-review-strategy.md ] && ( [ -e {spec_folder}/scratch/deep-research-config.json ] || [ -e {spec_folder}/scratch/deep-research-state.jsonl ] ); then [ -e {spec_folder}/scratch/deep-research-config.json ] && mv {spec_folder}/scratch/deep-research-config.json {spec_folder}/review/deep-research-config.json; [ -e {spec_folder}/scratch/deep-research-state.jsonl ] && mv {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/review/deep-research-state.jsonl; [ -e {spec_folder}/scratch/deep-review-strategy.md ] && mv {spec_folder}/scratch/deep-review-strategy.md {spec_folder}/review/deep-review-strategy.md; [ -e {spec_folder}/scratch/deep-review-dashboard.md ] && mv {spec_folder}/scratch/deep-review-dashboard.md {spec_folder}/review/deep-review-dashboard.md; find {spec_folder}/scratch -maxdepth 1 -name 'iteration-*.md' -exec mv {} {spec_folder}/review/iterations/ \\; ; [ -e {spec_folder}/scratch/.deep-research-pause ] && mv {spec_folder}/scratch/.deep-research-pause {spec_folder}/review/.deep-research-pause; [ -e {spec_folder}/review-report.md ] && mv {spec_folder}/review-report.md {spec_folder}/review/review-report.md; fi; find {spec_folder}/review -maxdepth 1 -name 'iteration-*.md' -exec mv {} {spec_folder}/review/iterations/ \\; 2>/dev/null || true"
 
       step_classify_session:
         action: "Classify the session before writing files"
@@ -402,7 +404,7 @@ workflow:
               Config: {spec_folder}/review/deep-research-config.json
               State Log: {spec_folder}/review/deep-research-state.jsonl
               Strategy: {spec_folder}/review/deep-review-strategy.md
-              Write findings to: {spec_folder}/review/iteration-{NNN}.md
+              Write findings to: {spec_folder}/review/iterations/iteration-{NNN}.md
 
             CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
             CONSTRAINT: Target 9 tool calls. Soft max 12, hard max 13.
@@ -415,7 +417,7 @@ workflow:
       step_evaluate_results:
         action: "Verify iteration outputs and extract metrics"
         verify:
-          - file_exists: "{spec_folder}/review/iteration-{NNN}.md"
+          - file_exists: "{spec_folder}/review/iterations/iteration-{NNN}.md"
           - jsonl_appended: "New iteration record in state.jsonl"
           - strategy_updated: "Strategy.md has been modified"
         extract:
@@ -434,7 +436,7 @@ workflow:
       step_post_iteration_claim_adjudication:
         action: "Validate typed claim-adjudication packets for any new P0/P1 findings"
         verify:
-          - typed_packets_present: "Every new P0/P1 finding in review/iteration-{NNN}.md contains a claim-adjudication JSON block"
+          - typed_packets_present: "Every new P0/P1 finding in review/iterations/iteration-{NNN}.md contains a claim-adjudication JSON block"
           - packet_fields: "Each packet includes claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger"
         on_fail:
           action: "Mark the iteration as invalid for convergence and require rewrite before STOP is permitted"
@@ -534,7 +536,7 @@ workflow:
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
-        read_pattern: "{spec_folder}/review/iteration-*.md"
+        read_pattern: "{spec_folder}/review/iterations/iteration-*.md"
         read_also: "{spec_folder}/review/deep-review-strategy.md"
 
       step_build_finding_registry:
@@ -650,7 +652,7 @@ workflow:
 
       Artifacts:
         - review/review-report.md (compiled from {iteration_count} iterations)
-        - {iteration_count} iteration files in review/
+        - {iteration_count} iteration files in review/iterations/
         - State files in review/: config.json, state.jsonl, strategy.md, dashboard.md
         - Memory context saved
 
@@ -701,7 +703,7 @@ reference_only_appendix:
   checkpoint_commit:
     note: "Checkpoint commits are intentionally excluded from workflow.steps."
     commands:
-      - "git add {spec_folder}/review/iteration-{NNN}.md {spec_folder}/review/deep-research-state.jsonl {spec_folder}/review/deep-review-strategy.md {spec_folder}/review/review-report.md"
+      - "git add {spec_folder}/review/iterations/iteration-{NNN}.md {spec_folder}/review/deep-research-state.jsonl {spec_folder}/review/deep-review-strategy.md {spec_folder}/review/review-report.md"
       - 'git commit -m "chore(deep-review): iteration {NNN} complete"'
   severity_weights:
     note: "Severity weights for newFindingsRatio calculation"

@@ -166,7 +166,7 @@ workflow:
       - Read template, fill all placeholders with phase outputs
       - Generate task_id as debug-YYYYMMDD-HHMM
       - Classify error_category, document previous_attempts, add root cause hypothesis
-      - Save to spec folder or scratch/
+      - Save to spec folder or research/
     error_categories: { syntax_error: "Parse errors, tokens", type_error: "Type mismatch, TS errors", runtime_error: "Exceptions, crashes", test_failure: "Assertion failures, timeouts", build_error: "Compilation, bundling", lint_error: "Linter, style violations", unknown: "Cannot classify" }
     save_location: { with_spec: "[spec_path]/debug-delegation.md", ad_hoc: "scratch/debug-delegation.md" }
     checkpoint:

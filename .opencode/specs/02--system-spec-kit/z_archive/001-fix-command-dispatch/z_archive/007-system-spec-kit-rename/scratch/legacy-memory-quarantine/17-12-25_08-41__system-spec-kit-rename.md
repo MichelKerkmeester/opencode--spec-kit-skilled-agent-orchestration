@@ -123,7 +123,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - `.opencode/.../templates/decision-record.md` - Template file
 
-- `.opencode/skills/system-spec-kit/templates/research.md` - Template file
+- `.opencode/skills/system-spec-kit/templates/research/research/research.md` - Template file
 
 - `.opencode/skills/system-spec-kit/templates/research-spike.md` - Template file
 
@@ -163,7 +163,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 | `.opencode/skills/system-spec-kit/templates/tasks.md` | Modified during session |
 | `.opencode/skills/system-spec-kit/templates/checklist.md` | Modified during session |
 | `.opencode/.../templates/decision-record.md` | Modified during session |
-| `.opencode/skills/system-spec-kit/templates/research.md` | Modified during session |
+| `.opencode/skills/system-spec-kit/templates/research/research/research.md` | Modified during session |
 | `.opencode/skills/system-spec-kit/templates/research-spike.md` | Modified during session |
 | `.opencode/skills/system-spec-kit/templates/handover.md` | Modified during session |
 | `.opencode/.../templates/debug-delegation.md` | Modified during session |

@@ -39,7 +39,7 @@ This plan uses the existing `/spec_kit:deep-research:auto` system to run autonom
 - [ ] All 18 v2 proposals validated with status
 - [ ] v3 improvement-proposals.md created with file-level change lists
 - [ ] Cross-runtime consistency audit complete
-- [ ] research.md synthesized from all iterations
+- [ ] research/research.md synthesized from all iterations
 - [ ] Memory saved via generate-context.js
 <!-- /ANCHOR:quality-gates -->
 
@@ -56,7 +56,7 @@ Meta-research loop: the deep-research system investigates itself using its own p
 - **Research Agent**: `@deep-research` LEAF agent (dispatched per iteration)
 - **State Files**: config.json, state.jsonl, strategy.md (in `scratch/`)
 - **External Sources**: 3 GitHub repos accessed via WebFetch
-- **Output**: research.md + v3 improvement-proposals.md
+- **Output**: research/research.md + v3 improvement-proposals.md
 
 ### Data Flow
 ```
@@ -67,7 +67,7 @@ Meta-research loop: the deep-research system investigates itself using its own p
     → Agent fetches external repo code / analyzes local files
     → Agent writes iteration-NNN.md + appends JSONL + updates strategy
   → Convergence check (3-signal composite)
-  → Synthesis: Compile research.md from all iterations
+  → Synthesis: Compile research/research.md from all iterations
   → Save: generate-context.js → memory/
 ```
 <!-- /ANCHOR:architecture -->
@@ -92,13 +92,13 @@ Invoke `/spec_kit:deep-research:auto` with the prepared context:
 
 - [ ] **2.1** Launch: `/spec_kit:deep-research:auto "Investigate improvements to sk-deep-research system"` targeting this spec folder
 - [ ] **2.2** Monitor convergence (expected 8-15 iterations)
-- [ ] **2.3** Verify research.md produced with synthesized findings
+- [ ] **2.3** Verify research/research.md produced with synthesized findings
 
 ### Phase 3: Post-Research Synthesis (Manual review)
 
 After deep-research converges, synthesize findings into actionable outputs:
 
-- [ ] **3.1** Review research.md for completeness and quality
+- [ ] **3.1** Review research/research.md for completeness and quality
 - [ ] **3.2** Create v3 improvement-proposals.md with validated proposals
 - [ ] **3.3** Cross-runtime consistency audit (compare agent definitions)
 - [ ] **3.4** Update spec 024 with final findings
@@ -171,7 +171,7 @@ These questions seed the strategy.md for the autonomous research loop:
 | Quality | Each iteration produces cited findings | Review iteration-NNN.md for [SOURCE:] tags |
 | Completeness | All 18 proposals validated | Review v3 proposals for validation status |
 | Consistency | Cross-runtime agent alignment | Diff agent definition files |
-| Manual | Review research.md for coherence | Human review of synthesized output |
+| Manual | Review research/research.md for coherence | Human review of synthesized output |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -215,7 +215,7 @@ Phase 1 (Preparation) ──► Phase 2 (Deep Research :auto) ──► Phase 3 
 |-------|------------|--------|
 | 1 - Preparation | Spec 023 proposals, spec folder | Phase 2 |
 | 2 - Deep Research | Phase 1, external repo access | Phase 3 |
-| 3 - Synthesis | Phase 2 research.md output | Phase 4 |
+| 3 - Synthesis | Phase 2 research/research.md output | Phase 4 |
 | 4 - Verification | Phase 3 v3 proposals | None |
 <!-- /ANCHOR:phase-deps -->
 
@@ -244,7 +244,7 @@ Phase 1 (Preparation) ──► Phase 2 (Deep Research :auto) ──► Phase 3 
 - [ ] Research questions seeded in strategy.md
 
 ### Rollback Procedure
-1. Stop research loop (delete scratch/.deep-research-pause sentinel if needed)
+1. Stop research loop (delete research/.deep-research-pause sentinel if needed)
 2. Preserve all scratch/ iteration files and JSONL
 3. Manually synthesize findings from available iterations
 4. Fall back to spec 023 v2 proposals

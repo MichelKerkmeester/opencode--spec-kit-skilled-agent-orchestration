@@ -32,7 +32,7 @@ Complete feature specification for addressing ~231 identified issues across the 
 - **Feature Branch**: `064-bug-analysis-and-fix`
 - **Created**: 2026-01-15
 - **Status**: In Progress
-- **Input**: Comprehensive bug analysis audit + re-analysis (see research.md)
+- **Input**: Comprehensive bug analysis audit + re-analysis (see research/research.md)
 
 ### Stakeholders
 - Engineering (primary)
@@ -50,7 +50,7 @@ A comprehensive audit and re-analysis of the system-spec-kit skill and spec_kit 
 7. **No batch API rate limiting** - embedding batch calls can overwhelm providers
 8. **CHANGELOG version mismatch** - `[1.7.1]` vs `17.1.0` inconsistency
 
-These issues undermine system reliability, cause inconsistent behavior, and erode trust in the documentation. The full inventory lives in `research.md` and must be treated as the source of truth.
+These issues undermine system reliability, cause inconsistent behavior, and erode trust in the documentation. The full inventory lives in `research/research.md` and must be treated as the source of truth.
 
 ### Purpose
 Systematically fix all identified issues (including re-analysis findings) to ensure the system-spec-kit and spec_kit commands function as documented, with consistent behavior and reliable operation.
@@ -74,9 +74,9 @@ Systematically fix all identified issues (including re-analysis findings) to ens
 ## 2. SCOPE
 
 ### In Scope
-- Fix all 9 CRITICAL issues (see research.md inventory)
-- Fix all 47 HIGH priority issues (see research.md inventory)
-- Fix all 86 MEDIUM priority issues (see research.md inventory)
+- Fix all 9 CRITICAL issues (see research/research.md inventory)
+- Fix all 47 HIGH priority issues (see research/research.md inventory)
+- Fix all 86 MEDIUM priority issues (see research/research.md inventory)
 - Address LOW priority issues as time permits (template consistency, naming conventions)
 - Create missing `/memory:save` command or remove references
 - Either implement ANCHOR functionality fully or remove false claims from documentation
@@ -271,7 +271,7 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 - **REQ-FUNC-019:** `complete.md` line 100 MUST use correct format notation
 - **REQ-FUNC-020:** `plan.md` MUST have consistent step numbering (resolve 5 vs 6 discrepancy)
 - **REQ-FUNC-021:** `resume.md` tool table MUST include `checkpoint_restore`
-- **REQ-FUNC-022:** `research.md` Phase 3 MUST be documented in SKILL.md
+- **REQ-FUNC-022:** `research/research.md` Phase 3 MUST be documented in SKILL.md
 - **REQ-FUNC-023:** `handover.md` MUST include YAML asset file references like other commands
 - **REQ-FUNC-024:** `generate-context.js` MUST have stricter spec folder path validation
 - **REQ-FUNC-025:** `semantic-summarizer.js` MUST NOT have hardcoded macOS path

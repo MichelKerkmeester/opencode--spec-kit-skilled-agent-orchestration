@@ -105,7 +105,7 @@ Automate session continuity and context management through hook-based extraction
 <!-- ANCHOR:research-findings -->
 ## 3.5. RESEARCH FINDINGS (Memory Quality Audit)
 
-> **Full analysis**: See [`research.md`](research.md) — 50-file stratified sample audit of `.opencode/specs/02--system-spec-kit/**/memory/*.md`
+> **Full analysis**: See [`research/research.md`](research/research.md) — 50-file stratified sample audit of `.opencode/specs/02--system-spec-kit/**/memory/*.md`
 
 ### Population & Sample
 
@@ -262,7 +262,7 @@ Wave ownership lock:
 - **SC-004**: Top-5 MRR >= 0.95x baseline (Mean Reciprocal Rank stability, no degradation from boosting)
 - **SC-005**: User satisfaction >= 4.0/5.0 on continuity survey ("Agent remembered context across pauses")
 
-### Memory Content Quality Targets (derived from research.md findings)
+### Memory Content Quality Targets (derived from research/research.md findings)
 - **SC-006**: Placeholder leakage rate in newly generated files <= 2% over 14-day rolling window (baseline: 40–60%, RC1)
 - **SC-007**: Generic fallback decision sentence prevalence in new files <= 10% (baseline: 66%, RC2)
 - **SC-008**: Orchestration contamination phrase occurrence in new files <= 1% (baseline: 18%, RC5)
@@ -538,7 +538,7 @@ Wave ownership lock:
 
 ### v1.4 (2026-02-18)
 **Research findings incorporated — memory content quality requirements**:
-- **Research**: Added §3.5 "Research Findings" section summarizing `research.md` 50-file audit: population context (187 files, 50 sampled), quantitative rates (60% `[N/A]`, 66% generic fallback, 34% empty `trigger_phrases`), quality bands (50% C+D below production bar), root causes RC1–RC5, and prioritized recommendations (P0/P1/P2 with acceptance metrics).
+- **Research**: Added §3.5 "Research Findings" section summarizing `research/research.md` 50-file audit: population context (187 files, 50 sampled), quantitative rates (60% `[N/A]`, 66% generic fallback, 34% empty `trigger_phrases`), quality bands (50% C+D below production bar), root causes RC1–RC5, and prioritized recommendations (P0/P1/P2 with acceptance metrics).
 - **REQ-018**: Post-render hard validation gate — rejects files with placeholder leakage, malformed `spec_folder`, empty trigger blocks, or generic fallback sentence. Target: <= 2% placeholder leakage over 14-day rolling window; malformed `spec_folder` = 0 in CI.
 - **REQ-019**: Memory extraction contamination filter — strips orchestration chatter before summary/trigger extraction. Target: <= 1% contamination occurrence in new files.
 - **REQ-020**: Decision extraction quality — suppress low-signal fallback-only output; emit `decision_count: 0` instead of boilerplate. Target: generic fallback sentence in new files <= 10%.
@@ -547,7 +547,7 @@ Wave ownership lock:
 - **REQ-023**: Stronger decision extraction signal coverage via lexical/rule cues. Target: >= 70% of sessions with design choices produce at least one concrete decision.
 - **SC-006–SC-013**: Added measurable quality targets derived from research baseline rates.
 - **Acceptance Scenarios 16–18**: Added scenarios for quality gate rejection, fallback suppression, and contamination filtering.
-- **Related Documents**: Added `research.md` link with description.
+- **Related Documents**: Added `research/research.md` link with description.
 - Removed `implementation-summary.md` (implementation has not started; per user request and v1.2 M1 precedent).
 
 ### v1.3 (2026-02-18)
@@ -618,7 +618,7 @@ Wave ownership lock:
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Memory Quality Audit**: See `research.md` — 50-file stratified sample, root causes RC1–RC5, P0/P1/P2 recommendations with acceptance metrics
+- **Memory Quality Audit**: See `research/research.md` — 50-file stratified sample, root causes RC1–RC5, P0/P1/P2 recommendations with acceptance metrics
 - **Source Analysis**: See `research/136 - analysis-working-memory-hybrid-rag-systems.md`
 - **Source Recommendations**: See `research/136 - recommendations-working-memory-hybrid-rag-adoption.md`
 
@@ -630,6 +630,6 @@ LEVEL 3+ SPEC
 - Approval Workflow, Compliance, Stakeholders
 - Full governance controls
 - 18 explicit acceptance scenarios (SECTION_COUNTS compliance; 15 original + 3 quality gate scenarios)
-- Content derived from `research/136 - recommendations-working-memory-hybrid-rag-adoption.md`, `research/136 - analysis-working-memory-hybrid-rag-systems.md`, and `research.md` (50-file memory quality audit)
+- Content derived from `research/136 - recommendations-working-memory-hybrid-rag-adoption.md`, `research/136 - analysis-working-memory-hybrid-rag-systems.md`, and `research/research.md` (50-file memory quality audit)
 - v1.4: Added §3.5 research findings, REQ-018–023, SC-006–013, Scenarios 16–18, quality gate requirements
 -->

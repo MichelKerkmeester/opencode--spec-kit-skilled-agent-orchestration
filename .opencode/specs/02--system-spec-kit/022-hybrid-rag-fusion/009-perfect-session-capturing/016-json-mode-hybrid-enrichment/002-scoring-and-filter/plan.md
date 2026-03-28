@@ -40,7 +40,7 @@ This plan addresses two defects identified in Domain C (Quality Scoring Accuracy
 
 ### Definition of Ready
 
-- [x] Round 2 research complete with source-level citations (../research.md)
+- [x] Round 2 research complete with source-level citations (../research/research.md)
 - [x] Sibling phase 001-initial-enrichment complete (workflow.ts changes won't conflict)
 - [x] Live scorer confirmed: extractors/quality-scorer.ts imported at workflow.ts:39
 - [x] Dead-code scorer confirmed: core/quality-scorer.ts is NOT imported anywhere in production paths
@@ -276,7 +276,7 @@ Phase 1 (Foundation) ──► Phase 2 (Scorer) ──► Phase 3 (Filter Extens
 
 1. `git stash` or `git checkout -- scripts/` to revert all changes in the scripts directory
 2. Run `npx vitest run` to confirm baseline restored
-3. Re-examine research.md citations before retrying
+3. Re-examine research/research.md citations before retrying
 
 ### Data Reversal
 

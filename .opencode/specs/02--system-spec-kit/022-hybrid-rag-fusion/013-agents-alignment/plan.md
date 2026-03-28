@@ -81,7 +81,7 @@ Document runtime-facing paths first, then note storage details only where they m
 - Reconcile the write-agent projections so Claude, Gemini, ChatGPT, and Codex keep the documented catalog/playbook modes and nested `references/**/*.md` routing aligned with the authoring families.
 
 ### Phase 3: Verify
-- Grep the packet for stale research.md naming and single-source language.
+- Grep the packet for stale research/research.md naming and single-source language.
 - Run strict spec validation.
 - Re-read canonical docs for internal consistency.
 <!-- /ANCHOR:phases -->

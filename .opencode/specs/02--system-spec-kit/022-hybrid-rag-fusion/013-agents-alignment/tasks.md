@@ -51,7 +51,7 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Remove stale research.md naming from canonical packet docs
+- [x] T010 Remove stale research/research.md naming from canonical packet docs
 - [x] T011 Remove stale single-source/copy-to-every-runtime language from canonical packet docs
 - [x] T012 Run strict validation on `013-agents-alignment`
 - [x] T013 Re-read the packet for internal consistency and runtime-path accuracy

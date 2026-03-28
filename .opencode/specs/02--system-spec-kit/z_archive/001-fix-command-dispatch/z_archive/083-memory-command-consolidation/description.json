@@ -6,7 +6,7 @@
     "command",
     "consolidation"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.159Z",
+  "lastUpdated": "2026-03-28T10:35:07.660Z",
   "specId": "083",
   "folderSlug": "memory-command-consolidation",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Memory Command Consolidation [083-memory-command-consolidation/spec]",
-  "importance_tier": "important",
-  "short_description": "Memory Command Consolidation"
+  "memoryNameHistory": []
 }

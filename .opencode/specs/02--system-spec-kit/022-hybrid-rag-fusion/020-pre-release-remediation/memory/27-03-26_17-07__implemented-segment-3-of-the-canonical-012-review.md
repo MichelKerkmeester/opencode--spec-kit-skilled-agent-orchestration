@@ -197,12 +197,12 @@ Canonical segment-3 verdict and state totals finalized; JSONL tail was normalize
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl` | Wrong P2 totals and feature-state counts | Tree-thinning merged 3 small files (deep-review-strategy.md, deep-review-dashboard.md, review-report.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-strategy.md : 191 sound_and_supported | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md : 191 sound_and_supported | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md : 191 sound_and_supported |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-043.md` | Updated iteration 043 |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-044.md` | Updated iteration 044 |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-048.md` | Broadened HRF-DR-028 to the final mismatched-entry scope |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-056.md` | Updated the feature-state closure snapshot to the final... |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-052.md` | Aligned historical reconciliation notes with the... |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-059.md` | Aligned the final severity reconciliation note with the... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-043.md` | Updated iteration 043 |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-044.md` | Updated iteration 044 |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-048.md` | Broadened HRF-DR-028 to the final mismatched-entry scope |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-056.md` | Updated the feature-state closure snapshot to the final... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-052.md` | Aligned historical reconciliation notes with the... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-059.md` | Aligned the final severity reconciliation note with the... |
 
 <!-- /ANCHOR:summary -->
 
@@ -236,7 +236,7 @@ The deep-research-state.jsonl tail still contained an older reconstructed segmen
 
 Late subagent evidence from iteration 044 showed that category 09 contains duplicate live 15 ordinals across the evaluation API surface and the memory-roadmap baseline snapshot. That traceability defect was folded into HRF-DR-028 rather than becoming a new P2 ID.
 
-**Files:** .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md, .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md, .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-044.md
+**Files:** .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md, .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md, .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-044.md
 **Details:** 09--evaluation-and-measurement/15-evaluation-api-surface.md and 15-memory-roadmap-baseline-snapshot.md share the same ordinal inside the same category. | The focused evaluation replay passed 13 files and 457 tests green. | The documentary-only INT8 evaluation entry did not become a mismatch; it stayed in the under-tested bucket.
 <!-- /ANCHOR:integration-evaluation-lane-broadened-catalog-680430f7 -->
 
@@ -245,7 +245,7 @@ Late subagent evidence from iteration 044 showed that category 09 contains dupli
 
 Late subagent evidence from iteration 043 showed that memory_list looks sound in code, but its empty-string folder-filter equivalence assertion is still unstable in the focused edge test. That evidence strengthened HRF-DR-029 instead of creating a new defect ID.
 
-**Files:** .opencode/skill/system-spec-kit/feature_catalog/03--discovery/01-memory-browser-memorylist.md, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts, .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-list-edge.vitest.ts, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-043.md
+**Files:** .opencode/skill/system-spec-kit/feature_catalog/03--discovery/01-memory-browser-memorylist.md, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts, .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-list-edge.vitest.ts, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-043.md
 **Details:** The handler only applies the folder filter when specFolder is truthy. | handler-memory-list-edge.vitest.ts still fails the empty-string equivalence assertion at line 78. | The failure was treated as shared-state verification interference rather than a confirmed product bug.
 <!-- /ANCHOR:implementation-discovery-lane-reinforced-undertested-fa9fd79e -->
 
@@ -254,7 +254,7 @@ Late subagent evidence from iteration 043 showed that memory_list looks sound in
 
 The tooling lane found a real failing regression instead of just documentation drift. scripts/tests/memory-learn-command-docs.vitest.ts still expects.opencode/command/memory/README.txt even though the live workspace only has README.md, so the feature and regression disagree with the real command-group contract.
 
-**Files:** .opencode/command/memory/README.md, .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md, .opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-055.md
+**Files:** .opencode/command/memory/README.md, .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md, .opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-055.md
 **Details:** memory-learn-command-docs.vitest.ts failed with 1 failed and 1 passed. | session-enrichment.vitest.ts passed with 16 assertions green. | task-enrichment.vitest.ts passed with 53 assertions green.
 <!-- /ANCHOR:discovery-scripts-subset-confirmed-new-945aad63 -->
 
@@ -504,12 +504,12 @@ key_files:
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-review-dashboard.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/review-report.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/deep-research-state.jsonl"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-043.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-044.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-048.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-056.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-052.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iteration-059.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-043.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-044.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-048.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-056.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-052.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/020-pre-release-remediation/review/iterations/iteration-059.md"
 
 # Relationships
 related_sessions:

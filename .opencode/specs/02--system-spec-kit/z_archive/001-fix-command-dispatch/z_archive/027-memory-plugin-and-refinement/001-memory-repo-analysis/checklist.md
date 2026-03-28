@@ -64,8 +64,8 @@ Validation checklist for research task completion. All P0 items must be complete
 - [x] **P0-006**: plan.md created with implementation roadmap
   - Evidence: File exists at `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/plan.md`
 
-- [x] **P0-007**: research.md created with comprehensive analysis
-  - Evidence: File exists at `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/research.md` (779 lines)
+- [x] **P0-007**: research/research.md created with comprehensive analysis
+  - Evidence: File exists at `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/research/research/research.md` (779 lines)
 
 - [x] **P0-008**: decision-record.md created (Level 3 requirement)
   - Evidence: File exists at `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/decision-record.md`

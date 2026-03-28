@@ -4,7 +4,7 @@
 
 Checked:
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/research/research.md`
 - `intent-classifier.ts`
 - `query-router.ts`
 - `query-classifier.ts`
@@ -200,7 +200,7 @@ So this is live rollout infrastructure, but not every caller uses it in a way th
 
 ---
 
-[^research-4ch]: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research.md:118-123,148-153`
+[^research-4ch]: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/research/research.md:118-123,148-153`
 [^router-5]: `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts:21-24,38-45,57-60`
 [^router-defaults]: `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts:52-60,95-101,119-141`
 [^search-readme-5]: `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:41-42,87-97,100-113`

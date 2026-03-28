@@ -128,7 +128,7 @@ spec_folder_health: {"pass":false,"score":0.8,"errors":1,"warnings":1}
 ```
 CONTINUATION - Attempt 2
 Spec: 02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/021-json-mode-hybrid-enrichment
-Last: Compiled research.md with 21 findings across 4 domains
+Last: Compiled research/research.md with 21 findings across 4 domains
 Next: Implement Phase 1 fixes: deep-clone FILES, preserve session/git in manual path, validate git.repositoryState
 ```
 
@@ -151,7 +151,7 @@ Next: Implement Phase 1 fixes: deep-clone FILES, preserve session/git in manual 
 |-------|-------|
 | Phase | RESEARCH |
 | Active File | N/A |
-| Last Action | Compiled research.md with 21 findings across 4 domains |
+| Last Action | Compiled research/research.md with 21 findings across 4 domains |
 | Next Action | Implement Phase 1 fixes: deep-clone FILES, preserve session/git in manual path, validate git.repositoryState |
 | Blockers | COMPLETED+completionPercent=30 and BLOCKED+100% emitted unchanged. |
 
@@ -164,7 +164,7 @@ Next: Implement Phase 1 fixes: deep-clone FILES, preserve session/git in manual 
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -172,7 +172,7 @@ Next: Implement Phase 1 fixes: deep-clone FILES, preserve session/git in manual 
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `perfect capturing/021` | `fusion/010 perfect` | `capturing/021 json` | `hybrid enrichment` | `kit/022 hybrid` | `rag fusion/010` | `spec kit/022` | `system spec` | `mode hybrid` | `hybrid rag` | `json mode` | `enrichment system` |
 

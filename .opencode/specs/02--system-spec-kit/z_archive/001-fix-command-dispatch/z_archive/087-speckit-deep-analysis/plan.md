@@ -98,8 +98,8 @@ Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Mo
 - [x] M-2: speckit.md missing commands added
 
 ### Phase 2b: Extended AGENTS.md Migration (bonus)
-- [x] handover.md, implement.md, resume.md, research.md, plan.md
-- [x] agent/research.md
+- [x] handover.md, implement.md, resume.md, research/research.md, plan.md
+- [x] agent/research/research/research.md
 - [x] 9 YAML asset files
 - [x] skill_advisor.py comments
 - [x] README.md

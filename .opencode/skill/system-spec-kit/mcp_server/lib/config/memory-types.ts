@@ -1,3 +1,11 @@
+import {
+  canClassifyAsSpecDocument,
+  matchesSpecDocumentPath,
+  SPEC_DOCUMENT_FILENAMES,
+} from './spec-doc-paths';
+
+export { SPEC_DOCUMENT_FILENAMES } from './spec-doc-paths';
+
 // ───────────────────────────────────────────────────────────────
 // MODULE: Memory Types
 // ───────────────────────────────────────────────────────────────
@@ -140,6 +148,8 @@ export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   // Working memory patterns
   { pattern: /\/scratch\//, type: 'working' },
   { pattern: /\/temp\//, type: 'working' },
+  { pattern: /\/research\/iterations\//, type: 'working' },
+  { pattern: /\/review\/iterations\//, type: 'working' },
   { pattern: /\/session-state/i, type: 'working' },
 
   // Spec document filenames are resolved through SPEC_DOCUMENT_CONFIGS.
@@ -298,16 +308,11 @@ export function resolveSpecDocumentType(filePath: string | null | undefined): Me
     return null;
   }
 
-  const normalizedPath = filePath.replace(/\\/g, '/').toLowerCase();
-  if (
-    // H5 FIX: Also match relative paths starting with 'specs/' (no leading slash)
-    !(normalizedPath.includes('/specs/') || normalizedPath.startsWith('specs/'))
-    || normalizedPath.includes('/memory/')
-    || normalizedPath.includes('/scratch/')
-  ) {
+  if (!canClassifyAsSpecDocument(filePath)) {
     return null;
   }
 
+  const normalizedPath = filePath.replace(/\\/g, '/').toLowerCase();
   const matchedConfig = SPEC_DOCUMENT_CONFIGS.find((config) => config.filePattern.test(normalizedPath));
   return matchedConfig?.memoryType ?? null;
 }
@@ -390,21 +395,9 @@ export const SPEC_DOCUMENT_CONFIGS: readonly SpecDocumentConfig[] = [
   { filePattern: /(?:^|\/)checklist\.md$/i,               documentType: 'checklist',               memoryType: 'procedural',  defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
   { filePattern: /(?:^|\/)decision-record\.md$/i,         documentType: 'decision_record',         memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.8 },
   { filePattern: /(?:^|\/)implementation-summary\.md$/i,  documentType: 'implementation_summary',  memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
-  { filePattern: /(?:^|\/)research\.md$/i,                documentType: 'research',                memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
+  { filePattern: /(?:^|\/)(?:research\/research\.md|research\.md)$/i, documentType: 'research', memoryType: 'semantic', defaultImportanceTier: 'normal', defaultImportanceWeight: 0.6 },
   { filePattern: /(?:^|\/)handover\.md$/i,                documentType: 'handover',                memoryType: 'episodic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
 ] as const;
-
-/** Well-known spec folder document filenames */
-export const SPEC_DOCUMENT_FILENAMES = new Set([
-  'spec.md',
-  'plan.md',
-  'tasks.md',
-  'checklist.md',
-  'decision-record.md',
-  'implementation-summary.md',
-  'research.md',
-  'handover.md',
-]);
 
 /**
  * Infer document type from a file path.
@@ -413,15 +406,26 @@ export const SPEC_DOCUMENT_FILENAMES = new Set([
  */
 export function inferDocumentTypeFromPath(filePath: string): DocumentType {
   const normalizedPath = filePath.replace(/\\/g, '/');
+  const BASENAME_BY_DOCUMENT_TYPE: Partial<Record<DocumentType, string>> = {
+    spec: 'spec.md',
+    plan: 'plan.md',
+    tasks: 'tasks.md',
+    checklist: 'checklist.md',
+    decision_record: 'decision-record.md',
+    implementation_summary: 'implementation-summary.md',
+    research: 'research.md',
+    handover: 'handover.md',
+  };
 
   // Check spec document patterns first
   for (const config of SPEC_DOCUMENT_CONFIGS) {
-    if (config.filePattern.test(normalizedPath)) {
-      // Only classify as spec doc if it's actually in a specs/ directory (not memory/)
-      // H5 FIX: Also match relative paths starting with 'specs/'
-      if ((normalizedPath.includes('/specs/') || normalizedPath.startsWith('specs/')) && !normalizedPath.includes('/memory/')) {
-        return config.documentType;
-      }
+    const basename = BASENAME_BY_DOCUMENT_TYPE[config.documentType];
+    if (
+      basename &&
+      config.filePattern.test(normalizedPath)
+      && matchesSpecDocumentPath(filePath, basename)
+    ) {
+      return config.documentType;
     }
   }
 

@@ -46,7 +46,7 @@ Enhance Spec Kit Memory MCP with session-cognitive automation by adding bounded 
 
 ### Definition of Ready
 - [x] Analysis documents reviewed from `research/` (`research/136 - analysis-working-memory-hybrid-rag-systems.md`, `research/136 - recommendations-working-memory-hybrid-rag-adoption.md`)
-- [x] Research findings reviewed (`research.md`): root causes RC1–RC5, quality bands, P0/P1/P2 recommendations with acceptance metrics
+- [x] Research findings reviewed (`research/research.md`): root causes RC1–RC5, quality bands, P0/P1/P2 recommendations with acceptance metrics
 - [x] Existing codebase understood (RRF fusion in `lib/search/hybrid-search.ts`, working memory table in `lib/cache/cognitive/working-memory.ts`, causal-edges in `lib/storage/causal-edges.ts`, mode routing in `handlers/memory-context.ts`, dispatch in `context-server.ts → dispatchTool()`)
 - [x] Success metrics defined (token waste, context errors, manual saves, MRR, user satisfaction, memory quality KPIs: placeholder leakage, fallback prevalence, contamination rate, semantic field coverage)
 - [x] Feature flag strategy documented
@@ -77,7 +77,7 @@ Enhance Spec Kit Memory MCP with session-cognitive automation by adding bounded 
 <!-- ANCHOR:memory-quality -->
 ## 2.5. MEMORY CONTENT QUALITY IMPROVEMENT APPROACH
 
-> **Research basis**: See [`research.md`](research.md) — 50-file stratified audit (seed 136). Key findings: 60% `[N/A]` placeholder leakage, 66% generic decision fallback, 34% empty `trigger_phrases`, 18% contamination artifacts, 50% of corpus below production bar (quality bands C+D). Root causes: RC1 (placeholder defaults), RC2 (template fallback), RC3 (narrow decision signals), RC5 (no post-render validation).
+> **Research basis**: See [`research/research.md`](research/research.md) — 50-file stratified audit (seed 136). Key findings: 60% `[N/A]` placeholder leakage, 66% generic decision fallback, 34% empty `trigger_phrases`, 18% contamination artifacts, 50% of corpus below production bar (quality bands C+D). Root causes: RC1 (placeholder defaults), RC2 (template fallback), RC3 (narrow decision signals), RC5 (no post-render validation).
 
 ### Quality Improvement Architecture
 
@@ -266,7 +266,7 @@ Layered MCP Server with middleware hooks (extraction, pressure monitoring) and p
 - [x] Run user satisfaction survey (continuity, relevance, performance, trust)
 - [x] Create runbook for rollback procedure (flip feature flags, verify baseline behavior)
 
-### Memory Quality Phases (QP-0 through QP-4, derived from research.md findings)
+### Memory Quality Phases (QP-0 through QP-4, derived from research/research.md findings)
 
 > **Research baseline** (n=50 sample): 60% `[N/A]` leakage, 66% generic fallback, 34% empty `trigger_phrases`, 18% contamination. These phases run in parallel with the main Phase 0–3 roadmap where feasible (QP-0 and QP-1 can begin immediately; QP-4 legacy remediation runs after QP-2/QP-3 stabilize).
 

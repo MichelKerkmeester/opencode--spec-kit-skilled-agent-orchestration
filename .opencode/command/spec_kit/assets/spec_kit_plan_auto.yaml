@@ -401,8 +401,8 @@ workflow:
         approach: ["Read files identified by @context agents", "Verify/refute each hypothesis", "Cross-reference for consistency", "Build complete mental model", "Resolve conflicts by reading additional files"]
       outputs: [architecture_findings, feature_findings, dependency_findings, test_findings, verified_mental_model]
       fallback: { on_failure: "Use inline planning activities below" }
-    activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Phase 2-4 outlines]
-    outputs: [plan.md, research.md]
+    activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research/research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Phase 2-4 outlines]
+    outputs: [plan.md, research/research.md]
     template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
     template_prompt_contract:
       canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md

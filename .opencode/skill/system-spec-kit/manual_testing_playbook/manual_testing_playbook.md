@@ -452,9 +452,9 @@ healthy/degraded status and diagnostics
 Incremental sync run.
 
 #### Current Reality
-Prompt: `Run index scan for changed docs. Capture the evidence needed to prove Scan summary and updated index state. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run index scan for changed docs. Capture the evidence needed to prove Scan summary and updated index state, and that spec documents remain indexed in warn-only quality mode rather than being silently skipped. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Scan summary and updated index state
+Scan summary, updated index state, and spec-doc warn-only indexing behavior
 
 #### Test Execution
 > **Feature File:** [EX-014](04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md)
@@ -620,9 +620,9 @@ Historical entries returned; fresh DB init succeeds; NaN rejected
 Channel impact experiment.
 
 #### Current Reality
-Prompt: `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported and token_usage omits synthetic zero-only samples when no token data exists. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run one full ablation plus one focused fts5 ablation. Capture the evidence needed to prove baseline recall, per-channel deltas, and focused fts5 verdict are reported, that the active eval DB matches the remapped ground-truth parent IDs, and that any run returning fewer than recallK candidates because of token-budget truncation is flagged as investigation-only rather than treated as a clean benchmark. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Per-channel deltas reported and token_usage omits synthetic zero-only samples when no token data exists
+Baseline recall, per-channel deltas, focused fts5 verdict, and provenance/truncation status are all explicit
 
 #### Test Execution
 > **Feature File:** [EX-026](07--evaluation/026-ablation-studies-eval-run-ablation.md)
@@ -634,9 +634,9 @@ Per-channel deltas reported and token_usage omits synthetic zero-only samples wh
 Eval reporting pass.
 
 #### Current Reality
-Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats, the active eval DB remains selected, and request limit trims sprint groups rather than raw runs. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats, the active eval DB remains selected, request limit trims sprint groups rather than raw runs, and chunk-backed eval rows roll up to parent memory IDs instead of transient chunk IDs. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs
+Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; chunk-backed rows aggregate to parent memory IDs
 
 #### Test Execution
 > **Feature File:** [EX-027](07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md)

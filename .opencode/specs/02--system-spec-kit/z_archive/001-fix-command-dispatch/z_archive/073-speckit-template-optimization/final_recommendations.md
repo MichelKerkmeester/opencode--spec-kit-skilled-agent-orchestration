@@ -75,12 +75,12 @@ Analysis of 9+ real spec folders revealed what's ACTUALLY used vs template bloat
 
 | File | Frequency | Purpose |
 |------|-----------|---------|
-| `research.md` | Common | Prior art, alternatives |
+| `research/research.md` | Common | Prior art, alternatives |
 | `handover.md` | Common | Session continuation |
 | `test-summary.md` | Occasional | Test coverage |
 | `verification-commands.md` | Occasional | Pre/post verification |
 
-**Recommendation:** Add `research.md` and `handover.md` templates.
+**Recommendation:** Add `research/research.md` and `handover.md` templates.
 
 ---
 

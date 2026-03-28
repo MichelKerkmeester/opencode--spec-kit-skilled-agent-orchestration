@@ -167,7 +167,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 | handover.md | EXISTS |
 
 **Related Documentation:**
@@ -176,7 +176,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `indexing normalization` | `fusion/002 indexing` | `adr-001 canonical` | `kit/022 hybrid` | `rag fusion/002` | `spec kit/022` | `system spec` | `hybrid rag` | `normalization system` | `adr-002 deterministic` | `canonical frontmatter` | `frontmatter contract` |
@@ -216,7 +216,7 @@ Next: Continue implementation
 
 - `.opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts` - Add tier mapping consistency tests
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md` - Documentation
 
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A1.md` - Documentation
 
@@ -259,7 +259,7 @@ find the actual hybrid-rag-fusion codebase and understand the MCP ser; **Iterati
 - Excellent progress! Q2 answered (all 30+ weights hardcoded, no calibration). New
 - Iteration 3 complete (70 lines, JSONL at 4 lines). the state and dis
 - List existing scratch files to see current state
-- Read scratch/deep-research-state.jsonl
+- Read research/deep-research-state.jsonl
 
 **Key Files:**
 
@@ -269,7 +269,7 @@ find the actual hybrid-rag-fusion codebase and understand the MCP ser; **Iterati
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)` | Tree-thinning merged 1 small files (memory-index.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts : Dedup merged scan file list before batch indexing |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/(merged-small-files)` | Tree-thinning merged 1 small files (importance-tiers.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts : Clarify and enforce default tier mapping behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)` | Tree-thinning merged 3 small files (handler-memory-index.vitest.ts, memory-parser.vitest.ts, importance-tiers.vitest.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts : Add duplicate-source scan regression coverage | Merged from .opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts : Add tier precedence and parser normalization tests | Merged from .opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts : Add tier mapping consistency tests |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/(merged-small-files)` | Tree-thinning merged 1 small files (research.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md : Updated research |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/(merged-small-files)` | Tree-thinning merged 1 small files (research/research.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research/research/research.md : Updated research |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/(merged-small-files)` | Tree-thinning merged 3 small files (agent-output-iter-001-codex-A1.md, agent-output-iter-001-codex-A2.md, agent-output-iter-001-codex-A3.md).  Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A1.md : Updated agent output iter 001 codex a1 | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A2.md : Updated agent output iter 001 codex a2 | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A3.md : Updated agent output iter 001 codex a3 |
 
 <!-- /ANCHOR:summary -->
@@ -346,29 +346,29 @@ List existing scratch files to see current state
 <!-- /ANCHOR:implementation-list-existing-scratch-files-7443a44a -->
 
 <!-- ANCHOR:discovery-read-scratchdeepresearchstatejsonl-adfa2e6d -->
-### BUGFIX: Read scratch/deep-research-state.jsonl
+### BUGFIX: Read research/deep-research-state.jsonl
 
 read
 
-**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/scratch/deep-research-state.jsonl
+**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/deep-research-state.jsonl
 **Details:** Tool: read | Status: error | Result: File does not exist. Note: your current working directory is /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public.
 <!-- /ANCHOR:discovery-read-scratchdeepresearchstatejsonl-adfa2e6d -->
 
 <!-- ANCHOR:discovery-read-scratchdeepresearchconfigjson-bd0ebda8 -->
-### BUGFIX: Read scratch/deep-research-config.json
+### BUGFIX: Read research/deep-research-config.json
 
 read
 
-**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/scratch/deep-research-config.json
+**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/deep-research-config.json
 **Details:** Tool: read | Status: error | Result: File does not exist. Note: your current working directory is /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public.
 <!-- /ANCHOR:discovery-read-scratchdeepresearchconfigjson-bd0ebda8 -->
 
 <!-- ANCHOR:discovery-read-scratchdeepresearchstrategymd-e609ec92 -->
-### BUGFIX: Read scratch/deep-research-strategy.md
+### BUGFIX: Read research/deep-research-strategy.md
 
 read
 
-**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/scratch/deep-research-strategy.md
+**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/deep-research-strategy.md
 **Details:** Tool: read | Status: error | Result: File does not exist. Note: your current working directory is /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public.
 <!-- /ANCHOR:discovery-read-scratchdeepresearchstrategymd-e609ec92 -->
 

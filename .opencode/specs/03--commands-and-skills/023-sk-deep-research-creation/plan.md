@@ -50,7 +50,7 @@ Build skill first because agent and command reference skill templates/docs.
 ### Phase 3: Agent (@deep-research)
 LEAF agent for single-iteration execution.
 - `.claude/agents/deep-research.md` (~400 LOC)
-- Pattern: `.claude/agents/research.md` (483 lines, deleted in Phase 5.5)
+- Pattern: `.claude/agents/research/research/research.md` (483 lines, deleted in Phase 5.5)
 
 ### Phase 4: Command (/spec_kit:deep-research)
 YAML workflows managing the loop.
@@ -186,8 +186,8 @@ Phase 9 (P4 Track) -- future, no immediate dependencies
 
 | File | Purpose |
 |------|---------|
-| `.claude/agents/research.md` | Agent definition pattern (483 LOC) — **DELETED in Phase 5.5** |
+| `.claude/agents/research/research/research.md` | Agent definition pattern (483 LOC) — **DELETED in Phase 5.5** |
 | `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` | YAML workflow pattern (453 LOC) — **DELETED in Phase 5.5** |
 | `.opencode/skill/sk-git/SKILL.md` | 8-section SKILL.md pattern (478 LOC) |
-| `023-sk-deep-research-creation/research.md` | Source design with all state formats |
+| `023-sk-deep-research-creation/research/research/research.md` | Source design with all state formats |
 | `.claude/agents/orchestrate.md` | NDP/CWB/TCB constraints |

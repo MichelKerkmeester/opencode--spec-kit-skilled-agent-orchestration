@@ -444,7 +444,7 @@ Update plan.md First Message Protocol
 <!-- ANCHOR:discovery-tool-task-a5d8eacf-session-1766587539098-pdw8wkyz7 -->
 ### RESEARCH: Tool: task
 
-Update research.md prior work search
+Update research/research.md prior work search
 
 **Details:** Tool: task | Status: completed
 <!-- /ANCHOR:discovery-tool-task-a5d8eacf-session-1766587539098-pdw8wkyz7 -->

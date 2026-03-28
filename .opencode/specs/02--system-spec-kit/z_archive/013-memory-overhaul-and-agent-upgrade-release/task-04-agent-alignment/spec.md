@@ -53,7 +53,7 @@ Audit agent configuration files across all 3 platforms (OpenCode, Claude Code, C
 | `.opencode/agent/speckit.md` | Agent routing description current |
 | `.opencode/agent/write.md` | Agent routing description current |
 | `.opencode/agent/debug.md` | Agent routing description current |
-| `.opencode/agent/research.md` | Agent routing description current |
+| `.opencode/agent/research/research/research.md` | Agent routing description current |
 | `.opencode/agent/orchestrate.md` | Agent routing description current |
 
 ### Claude Code Agent Configs (P0)
@@ -66,7 +66,7 @@ Audit agent configuration files across all 3 platforms (OpenCode, Claude Code, C
 | `.claude/agents/speckit.md` | Agent description current |
 | `.claude/agents/write.md` | Agent description current |
 | `.claude/agents/debug.md` | Agent description current |
-| `.claude/agents/research.md` | Agent description current |
+| `.claude/agents/research/research/research.md` | Agent description current |
 | `.claude/agents/orchestrate.md` | Agent description current |
 
 ### Codex Agent Configs (P0)
@@ -79,7 +79,7 @@ Audit agent configuration files across all 3 platforms (OpenCode, Claude Code, C
 | `.codex/agents/speckit.md` | Profile = balanced, Codex-native frontmatter |
 | `.codex/agents/write.md` | Profile = balanced, Codex-native frontmatter |
 | `.codex/agents/debug.md` | Profile = powerful, Codex-native frontmatter |
-| `.codex/agents/research.md` | Profile = powerful, Codex-native frontmatter |
+| `.codex/agents/research/research/research.md` | Profile = powerful, Codex-native frontmatter |
 | `.codex/agents/orchestrate.md` | Profile = powerful, Codex-native frontmatter |
 
 ### Codex Config (P0)

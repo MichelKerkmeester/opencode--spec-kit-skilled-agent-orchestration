@@ -90,7 +90,7 @@ Successfully aligned **19 commands** and **20 YAML asset files** across 4 namesp
 - handover.md (Section 5 - already had)
 - implement.md (Section 5)
 - plan.md (Section 5)
-- research.md (Section 6)
+- research/research.md (Section 6)
 - resume.md (Section 4 - already had)
 
 ### Phase 7: YAML Asset Analysis (10 Opus Agents)
@@ -240,7 +240,7 @@ Files: create_skill.yaml, create_skill_asset.yaml, create_skill_reference.yaml, 
 │   ├── handover.md      ✅ Headers
 │   ├── implement.md     ✅ Headers + OUTPUT FORMATS
 │   ├── plan.md          ✅ Headers + OUTPUT FORMATS
-│   ├── research.md      ✅ Headers + OUTPUT FORMATS
+│   ├── research/research.md      ✅ Headers + OUTPUT FORMATS
 │   └── resume.md        ✅ Headers
 ├── memory/
 │   ├── checkpoint.md    ✅ (no changes needed)

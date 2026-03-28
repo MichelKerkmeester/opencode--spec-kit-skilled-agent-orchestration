@@ -20,12 +20,12 @@ The deep research loop uses 6 state files to maintain continuity across fresh-co
 | `deep-research-state.jsonl` | JSON Lines | Structured iteration log | Append-only |
 | `deep-research-strategy.md` | Markdown | Agent context ("persistent brain") | Updated each iteration |
 | `deep-research-dashboard.md` | Markdown | Auto-generated session summary | Auto-generated (read-only) |
-| `scratch/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
-| `research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
+| `research/iterations/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
+| `research/research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
-All state files live in `{spec_folder}/scratch/` except `research.md` which lives at `{spec_folder}/research.md`. `research.md` is workflow-owned canonical synthesis output.
+Research mode stores its runtime packet under `{spec_folder}/research/`, with iteration findings under `{spec_folder}/research/iterations/` and canonical synthesis at `{spec_folder}/research/research.md`. `research/research.md` is workflow-owned canonical synthesis output.
 
-Review mode uses the equivalent packet under `{spec_folder}/review/`, with `deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`, `iteration-NNN.md`, `.deep-research-pause`, and `review-report.md` all stored together in that folder.
+Review mode uses the equivalent packet under `{spec_folder}/review/`, with `deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`, `.deep-research-pause`, and `review-report.md` at the review root plus iteration findings under `{spec_folder}/review/iterations/`.
 
 ---
 
@@ -57,7 +57,7 @@ Created during initialization. Not modified after creation.
 | convergenceThreshold | number | No | 0.05 | Stop when avg newInfoRatio below this |
 | stuckThreshold | number | No | 3 | Consecutive no-progress iterations before recovery |
 | maxDurationMinutes | number | No | 120 | Hard timeout for entire loop |
-| progressiveSynthesis | boolean | No | true | Update research.md after each iteration; synthesis still performs a cleanup pass |
+| progressiveSynthesis | boolean | No | true | Update research/research.md after each iteration; synthesis still performs a cleanup pass |
 | specFolder | string | Yes | -- | Spec folder path (relative to specs/) |
 | createdAt | ISO 8601 | Yes | -- | Session start timestamp |
 | status | string | Yes | "initialized" | initialized, running, converged, stuck, complete, error |
@@ -77,7 +77,7 @@ The config file may include a `fileProtection` map declaring mutability constrai
     "deep-research-state.jsonl": "append-only",
     "deep-research-strategy.md": "mutable",
     "iteration-*.md": "write-once",
-    "research.md": "mutable"
+    "research/research.md": "mutable"
   }
 }
 ```
@@ -161,7 +161,7 @@ Iteration records may include a `ruledOut` array documenting approaches that wer
 | reason | string | Yes | Why it was ruled out |
 | evidence | string | No | Source reference supporting the elimination |
 
-Iteration files (`scratch/iteration-NNN.md`) MUST include `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured. These sections feed strategy updates and prevent future iterations from re-exploring eliminated paths.
+Iteration files (`research/iterations/iteration-NNN.md`) MUST include `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured. These sections feed strategy updates and prevent future iterations from re-exploring eliminated paths.
 
 ### Novelty Justification
 
@@ -273,7 +273,7 @@ This ensures the research loop continues even after partial state corruption. Th
 
 When the JSONL is missing or entirely unparseable, reconstruct state from iteration files:
 
-1. **Scan** `scratch/iteration-*.md` files, sorted by filename
+1. **Scan** `research/iterations/iteration-*.md` files, sorted by filename
 2. **Parse** each file's `## Assessment` section to extract:
    - `newInfoRatio` from "New information ratio: X.XX"
    - `keyQuestions` from "Questions addressed: [list]"
@@ -343,18 +343,18 @@ Updated at the end of each iteration. Template at `assets/deep_research_strategy
 
 <!-- /ANCHOR:strategy-file -->
 <!-- ANCHOR:iteration-files -->
-## 5. ITERATION FILES (scratch/iteration-NNN.md)
+## 5. ITERATION FILES (research/iterations/iteration-NNN.md)
 
 Write-once files. One per iteration, named with zero-padded 3-digit number.
 
-Review mode writes the equivalent files to `{spec_folder}/review/iteration-NNN.md`.
+Review mode writes the equivalent files to `{spec_folder}/review/iterations/iteration-NNN.md`.
 
 ### Naming Convention
 
 ```
-scratch/iteration-001.md
-scratch/iteration-002.md
-scratch/iteration-003.md
+research/iterations/iteration-001.md
+research/iterations/iteration-002.md
+research/iterations/iteration-003.md
 ```
 
 ### Structure
@@ -390,9 +390,9 @@ scratch/iteration-003.md
 
 <!-- /ANCHOR:iteration-files -->
 <!-- ANCHOR:research-output -->
-## 6. RESEARCH OUTPUT (research.md)
+## 6. RESEARCH OUTPUT (research/research.md)
 
-Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{spec_folder}/research.md` (not in scratch/). `research.md` is workflow-owned canonical synthesis output.
+Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{spec_folder}/research/research.md` (not in scratch/). `research/research.md` is workflow-owned canonical synthesis output.
 
 ### Progressive Update Rules
 
@@ -405,7 +405,7 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 
 <!-- /ANCHOR:research-output -->
 <!-- ANCHOR:dashboard -->
-## 7. DASHBOARD (scratch/deep-research-dashboard.md)
+## 7. DASHBOARD (research/deep-research-dashboard.md)
 
 Auto-generated summary view of the research session. Never manually edited.
 
@@ -413,7 +413,7 @@ Review mode writes the equivalent dashboard to `{spec_folder}/review/deep-review
 
 ### Location and Lifecycle
 
-- **Path**: `{spec_folder}/scratch/deep-research-dashboard.md`
+- **Path**: `{spec_folder}/research/deep-research-dashboard.md`
 - **Generated from**: JSONL state log + strategy data only
 - **Refresh**: Regenerated after every iteration evaluation
 - **Protection**: `"deep-research-dashboard.md": "auto-generated"` in `fileProtection`
@@ -459,15 +459,16 @@ The `auto-generated` protection level means the file is system-managed and overw
 
 ```
 {spec_folder}/
-  research.md                          # Workflow-owned progressive synthesis (top-level)
-  scratch/
-    deep-research-config.json           # Loop configuration
-    deep-research-state.jsonl           # Structured iteration log
-    deep-research-strategy.md           # Agent context / persistent brain
-    deep-research-dashboard.md          # Auto-generated session summary (read-only)
-    iteration-001.md                   # Iteration 1 findings
-    iteration-002.md                   # Iteration 2 findings
-    ...
+  research/
+    research/research.md               # Workflow-owned progressive synthesis
+    deep-research-config.json          # Loop configuration
+    deep-research-state.jsonl          # Structured iteration log
+    deep-research-strategy.md          # Agent context / persistent brain
+    deep-research-dashboard.md         # Auto-generated session summary (read-only)
+    iterations/
+      iteration-001.md                 # Iteration 1 findings
+      iteration-002.md                 # Iteration 2 findings
+      ...
 ```
 
 <!-- /ANCHOR:file-location-summary -->

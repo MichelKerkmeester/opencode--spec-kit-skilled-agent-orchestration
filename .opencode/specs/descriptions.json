@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-28T08:46:22.115Z",
+  "generated": "2026-03-28T10:36:08.288Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -128,7 +128,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-03-21T13:24:03.746Z"
+      "lastUpdated": "2026-03-28T10:35:07.523Z"
     },
     {
       "specFolder": "01--anobel.com/030-label-product-content-attr",
@@ -448,7 +448,7 @@
         "dropdown",
         "fix"
       ],
-      "lastUpdated": "2026-03-21T13:24:03.821Z"
+      "lastUpdated": "2026-03-28T10:35:07.532Z"
     },
     {
       "specFolder": "01--anobel.com/z_archive/019-form-attribute-audit",
@@ -495,7 +495,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-03-21T13:24:03.836Z"
+      "lastUpdated": "2026-03-28T10:35:07.537Z"
     },
     {
       "specFolder": "01--anobel.com/z_archive/023-performance-review",
@@ -743,7 +743,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -755,7 +755,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -766,7 +766,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -778,7 +778,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -790,7 +790,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -826,7 +826,7 @@
         "hooks",
         "automation"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.299Z"
+      "lastUpdated": "2026-03-28T10:35:07.545Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
@@ -837,7 +837,7 @@
         "architecture",
         "audit"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.319Z"
+      "lastUpdated": "2026-03-28T10:35:07.551Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
@@ -1143,7 +1143,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1225,7 +1225,7 @@
         "session",
         "capturing"
       ],
-      "lastUpdated": "2026-03-25T11:05:25.275Z"
+      "lastUpdated": "2026-03-28T10:35:07.559Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
@@ -1511,7 +1511,7 @@
         "contamination",
         "expansion"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.500Z"
+      "lastUpdated": "2026-03-28T10:35:07.568Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
@@ -1524,7 +1524,7 @@
         "schema",
         "validation"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.505Z"
+      "lastUpdated": "2026-03-28T10:35:07.574Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence",
@@ -1535,7 +1535,7 @@
         "indexing",
         "coherence"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.510Z"
+      "lastUpdated": "2026-03-28T10:35:07.579Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
@@ -1586,7 +1586,7 @@
         "compliance",
         "enforcement"
       ],
-      "lastUpdated": "2026-03-27T17:15:13.533Z"
+      "lastUpdated": "2026-03-28T10:35:07.584Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
@@ -2011,7 +2011,32 @@
         "indexing",
         "bypass"
       ],
-      "lastUpdated": "2026-03-28T08:46:22.115Z"
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
+      "description": "Feature Specification: Ablation Benchmark Integrity",
+      "keywords": [
+        "feature",
+        "specification",
+        "ablation",
+        "benchmark",
+        "integrity"
+      ],
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
+      "description": "Feature Specification: Codex Memory MCP Fix",
+      "keywords": [
+        "feature",
+        "specification",
+        "codex",
+        "memory",
+        "mcp",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-28T10:40:55.000Z"
     },
     {
       "specFolder": "02--system-spec-kit/023-esm-module-compliance",
@@ -2023,7 +2048,7 @@
         "module",
         "compliance"
       ],
-      "lastUpdated": "2026-03-28T08:45:21.345Z"
+      "lastUpdated": "2026-03-28T10:35:07.600Z"
     },
     {
       "specFolder": "02--system-spec-kit/999-sqlite-to-turso",
@@ -2046,7 +2071,7 @@
         "dispatch",
         "vulnerability"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.035Z"
+      "lastUpdated": "2026-03-28T10:08:37.508Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement",
@@ -2061,7 +2086,7 @@
         "requirements",
         "analysis"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.513Z"
+      "lastUpdated": "2026-03-28T10:35:07.606Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/002-alignment-fixes",
@@ -2114,7 +2139,7 @@
         "migration",
         "strategy"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.537Z"
+      "lastUpdated": "2026-03-28T10:35:07.611Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename",
@@ -2149,7 +2174,7 @@
         "post-rename",
         "testing"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.554Z"
+      "lastUpdated": "2026-03-28T10:35:07.618Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment",
@@ -2213,7 +2238,7 @@
         "system",
         "alignment"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.580Z"
+      "lastUpdated": "2026-03-28T10:35:07.623Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
@@ -2426,7 +2451,7 @@
         "sqlite",
         "migration"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.742Z"
+      "lastUpdated": "2026-03-28T10:35:07.632Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix",
@@ -2678,7 +2703,7 @@
         "analysis",
         "remediation"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.920Z"
+      "lastUpdated": "2026-03-28T10:35:07.640Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation",
@@ -2800,7 +2825,7 @@
         "user",
         "stories"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.973Z"
+      "lastUpdated": "2026-03-28T10:35:07.647Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation",
@@ -2879,7 +2904,7 @@
         "ranking",
         "improvements"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.032Z"
+      "lastUpdated": "2026-03-28T10:35:07.652Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment",
@@ -3039,7 +3064,7 @@
         "command",
         "consolidation"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.159Z"
+      "lastUpdated": "2026-03-28T10:35:07.660Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes",
@@ -3052,7 +3077,7 @@
         "fixes",
         "consolidated"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.167Z"
+      "lastUpdated": "2026-03-28T10:35:07.665Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite",
@@ -3116,7 +3141,7 @@
         "analysis",
         "remediation"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.206Z"
+      "lastUpdated": "2026-03-28T10:08:37.561Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation",
@@ -3355,7 +3380,7 @@
         "configs",
         "audit"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.360Z"
+      "lastUpdated": "2026-03-28T10:08:37.566Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment",
@@ -3366,7 +3391,7 @@
         "configs",
         "audit"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.365Z"
+      "lastUpdated": "2026-03-28T10:08:37.570Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates",
@@ -3411,7 +3436,7 @@
         "file",
         "support"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.114Z"
+      "lastUpdated": "2026-03-28T10:35:07.674Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/015-anchor-enforcement-automation",
@@ -3423,7 +3448,7 @@
         "enforcement",
         "automation"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.120Z"
+      "lastUpdated": "2026-03-28T10:35:07.680Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/016-index-workflows-code",
@@ -3490,7 +3515,7 @@
         "rag",
         "automation"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.145Z"
+      "lastUpdated": "2026-03-28T10:35:07.686Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5",
@@ -3527,7 +3552,7 @@
         "qp-0",
         "qp-4"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.457Z"
+      "lastUpdated": "2026-03-28T10:35:07.691Z"
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations",
@@ -3855,7 +3880,7 @@
         "mcp",
         "integration"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.662Z"
+      "lastUpdated": "2026-03-28T10:35:07.699Z"
     },
     {
       "specFolder": "03--commands-and-skills/023-sk-deep-research-creation",
@@ -3868,7 +3893,7 @@
         "research",
         "loop"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.672Z"
+      "lastUpdated": "2026-03-28T10:35:07.704Z"
     },
     {
       "specFolder": "03--commands-and-skills/024-sk-deep-research-refinement",
@@ -3881,7 +3906,7 @@
         "via",
         "self-research"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.681Z"
+      "lastUpdated": "2026-03-28T10:35:07.710Z"
     },
     {
       "specFolder": "03--commands-and-skills/025-cmd-create-feature-catalog",
@@ -3942,7 +3967,7 @@
         "review",
         "mode"
       ],
-      "lastUpdated": "2026-03-24T17:33:40.771Z"
+      "lastUpdated": "2026-03-28T10:35:07.715Z"
     },
     {
       "specFolder": "03--commands-and-skills/032-sk-doc-readme-hvr-improvements",
@@ -3984,6 +4009,18 @@
       "lastUpdated": "2026-03-27T09:55:00.000Z"
     },
     {
+      "specFolder": "03--commands-and-skills/035-sk-deep-research-path-migration",
+      "description": "Feature Specification: sk-deep-research Path Migration",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-deep-research",
+        "path",
+        "migration"
+      ],
+      "lastUpdated": "2026-03-28T10:36:08.288Z"
+    },
+    {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",
       "description": "Feature Specification: OpenCode Agent Path Only",
       "keywords": [
@@ -4019,7 +4056,7 @@
         "sonnet",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.210Z"
+      "lastUpdated": "2026-03-28T10:08:37.615Z"
     },
     {
       "specFolder": "04--agent-orchestration/021-codex-orchestrate",
@@ -4033,7 +4070,7 @@
         "codex",
         "optimization"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.727Z"
+      "lastUpdated": "2026-03-28T10:08:37.619Z"
     },
     {
       "specFolder": "04--agent-orchestration/022-context-overload-prevention",
@@ -4057,7 +4094,7 @@
         "cli",
         "compatibility"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.215Z"
+      "lastUpdated": "2026-03-28T10:08:37.624Z"
     },
     {
       "specFolder": "04--agent-orchestration/025-codex-cli-agents",
@@ -4097,7 +4134,7 @@
         "model",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-21T13:24:04.221Z"
+      "lastUpdated": "2026-03-28T10:08:37.629Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode",
@@ -4132,7 +4169,7 @@
         "system",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.792Z"
+      "lastUpdated": "2026-03-28T10:35:07.723Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/004-multi-agent-dispatch",
@@ -4145,7 +4182,7 @@
         "debug",
         "commands"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.799Z"
+      "lastUpdated": "2026-03-28T10:35:07.729Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/005-agent-system-improvements",
@@ -4157,7 +4194,7 @@
         "system",
         "improvements"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.814Z"
+      "lastUpdated": "2026-03-28T10:35:07.734Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/006-orchestrate-context-window",
@@ -4182,7 +4219,7 @@
         "loader",
         "sub-agent"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.827Z"
+      "lastUpdated": "2026-03-28T10:35:07.739Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/008-context-loader-enforcement",
@@ -4207,7 +4244,7 @@
         "code",
         "subagents"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.844Z"
+      "lastUpdated": "2026-03-28T10:35:07.744Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/010-explore-routing-fix",
@@ -4261,7 +4298,7 @@
         "haiku",
         "compatibility"
       ],
-      "lastUpdated": "2026-03-19T15:45:44.882Z"
+      "lastUpdated": "2026-03-28T10:08:37.659Z"
     },
     {
       "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization",

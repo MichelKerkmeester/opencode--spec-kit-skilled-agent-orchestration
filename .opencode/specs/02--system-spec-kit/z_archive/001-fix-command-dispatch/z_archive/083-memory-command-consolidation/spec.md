@@ -328,7 +328,7 @@ The following `/spec_kit:*` commands reference `/memory:why` and need updates:
 | 11 | plan.md | 669 lines, 7-step workflow, consumes memory commands |
 | 12 | implement.md | 842 lines, 9-step workflow, consumes memory commands |
 | 13 | complete.md | 1126 lines, 14-step master orchestrator |
-| 14 | research.md | 948 lines, 9-step investigation |
+| 14 | research/research.md | 948 lines, 9-step investigation |
 | 15 | resume.md | 627 lines, overlaps with memory:continue |
 | 16 | handover.md | 611 lines, companion to memory:save |
 | 17 | debug.md | 637 lines, sub-agent delegation |

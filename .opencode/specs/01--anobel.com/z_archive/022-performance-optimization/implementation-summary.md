@@ -192,7 +192,7 @@ setTimeout(function () {
 | 9 | External Libs | Swiper full bundle uses ~30% |
 | 10 | Network | TypeKit + jQuery blocking, missing preconnects |
 
-Full findings documented in `research.md`.
+Full findings documented in `research/research.md`.
 
 ---
 

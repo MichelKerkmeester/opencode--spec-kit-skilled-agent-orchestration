@@ -398,7 +398,7 @@ Executed sequential_thinking_sequentialthinking
 <!-- ANCHOR:discovery-tool-task-4c1b9b8f-3-session-1767273200731-xrp6rwvxi -->
 ### RESEARCH: Tool: task
 
-Create spec folder and research.md
+Create spec folder and research/research.md
 
 **Details:** Tool: task | Status: completed
 <!-- /ANCHOR:discovery-tool-task-4c1b9b8f-3-session-1767273200731-xrp6rwvxi -->
@@ -446,7 +446,7 @@ Executed sequential_thinking_sequentialthinking
 <!-- ANCHOR:discovery-tool-task-4c1b9b8f-4-session-1767273200731-xrp6rwvxi -->
 ### RESEARCH: Tool: task
 
-Update research.md recommendations
+Update research/research.md recommendations
 
 **Details:** Tool: task | Status: completed
 <!-- /ANCHOR:discovery-tool-task-4c1b9b8f-4-session-1767273200731-xrp6rwvxi -->

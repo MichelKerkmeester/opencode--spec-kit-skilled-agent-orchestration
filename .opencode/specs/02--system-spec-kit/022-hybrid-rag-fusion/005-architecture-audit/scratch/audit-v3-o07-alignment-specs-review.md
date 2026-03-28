@@ -110,8 +110,8 @@ However, the `/memory:shared` row that 013 claims to have added (lines 57/84) is
 - **Severity**: LOW
 - **Category**: completeness
 - **Location**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec.md`
-- **Description**: Phase 012 listed 9 agents to sync but used the name `research.md` rather than distinguishing between `research.md` (which does not exist as a standalone agent) and `deep-research.md`. The actual canonical directory contains: context, debug, deep-research, handover, orchestrate, review, speckit, ultra-think, write. There is no separate `research.md` -- it was renamed/split to `deep-research.md`. The 012 spec references `research.md` 6 times.
-- **Evidence**: `ls .opencode/agent/*.md` shows `deep-research.md`, not `research.md`. 012 tasks.md references "T011: Sync research.md" and "T020: Sync research.md". The actual file is `deep-research.md` in all 3 runtimes.
+- **Description**: Phase 012 listed 9 agents to sync but used the name `research/research.md` rather than distinguishing between `research/research.md` (which does not exist as a standalone agent) and `deep-research.md`. The actual canonical directory contains: context, debug, deep-research, handover, orchestrate, review, speckit, ultra-think, write. There is no separate `research/research.md` -- it was renamed/split to `deep-research.md`. The 012 spec references `research/research.md` 6 times.
+- **Evidence**: `ls .opencode/agent/*.md` shows `deep-research.md`, not `research/research.md`. 012 tasks.md references "T011: Sync research.md" and "T020: Sync research.md". The actual file is `deep-research.md` in all 3 runtimes.
 - **Impact**: The spec documentation uses an incorrect filename. However, the work WAS done correctly based on timestamp evidence (deep-research.md exists and was synced in all runtimes). This is a documentation naming error, not a functional gap.
 - **Recommended Fix**: No action needed unless 012 docs are being reused for a future sync. The naming discrepancy is cosmetic -- the work was executed on the correct file.
 
@@ -156,7 +156,7 @@ However, the `/memory:shared` row that 013 claims to have added (lines 57/84) is
 | O7-003 | MEDIUM | alignment | 013 | `/memory:shared` row missing from live files |
 | O7-004 | LOW | alignment | 013 | Stale "7-command" references |
 | O7-005 | LOW | alignment | 010 | Stale command count references |
-| O7-006 | LOW | completeness | 012 | Spec references `research.md` not `deep-research.md` |
+| O7-006 | LOW | completeness | 012 | Spec references `research/research.md` not `deep-research.md` |
 | O7-007 | HIGH | architecture | 012 | No automated agent sync mechanism |
 | O7-008 | LOW | architecture | 012/013 | Phases are distinct (NOT redundant) -- informational |
 | O7-009 | LOW | completeness | 010 | CHK-067 permanently failing |

@@ -62,9 +62,9 @@ Add user-selectable multi-agent dispatch to `/spec_kit:research` and `/spec_kit:
 ## Scope
 
 ### In Scope
-- Command files: research.md, debug.md
+- Command files: research/research.md, debug.md
 - YAML configs: 4 files (research auto/confirm, debug auto/confirm)
-- Agent files: research.md, debug.md
+- Agent files: research/research.md, debug.md
 
 ### Out of Scope
 - Other spec_kit commands (complete, plan, implement, handover)

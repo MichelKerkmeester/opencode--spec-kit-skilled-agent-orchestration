@@ -234,7 +234,7 @@ Phase 1 (Update orchestrate.md) ──► Phase 2 (Mirror to Claude Code) ──
 - 4 YAML workflows dispatch @context: spec_kit_plan (auto/confirm), spec_kit_complete (auto/confirm)
 - All use `subagent_type: context` with opus model
 - AGENTS.md line 495 defines @context as exclusive exploration agent
-- Context Packages feed into plan.md and research.md via verification approach
+- Context Packages feed into plan.md and research/research.md via verification approach
 
 ---
 

@@ -36,7 +36,7 @@ contextType: "implementation"
 
 ### P0
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-023, including quality gate requirements REQ-018–023 from research.md findings) [Evidence: `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/spec.md` (requirements table includes REQ-001..023 and REQ-018..023 quality gates); `grep REQ-00[1-9]|REQ-01[0-9]|REQ-02[0-3]` on `spec.md`]
+- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-023, including quality gate requirements REQ-018–023 from research/research.md findings) [Evidence: `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/spec.md` (requirements table includes REQ-001..023 and REQ-018..023 quality gates); `grep REQ-00[1-9]|REQ-01[0-9]|REQ-02[0-3]` on `spec.md`]
 - [x] CHK-002 [P0] Technical approach defined in plan.md (Phase 0+1+2+3, ADRs, dependencies) [Evidence: `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/plan.md` (sections: summary, architecture, phases 0/1/1.5/2/3, dependencies, ADR references)]
 
 ### P1
@@ -368,9 +368,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:quality-verify -->
-## Memory Content Quality Verification (research.md findings)
+## Memory Content Quality Verification (research/research.md findings)
 
-> **Research baseline** (n=50): 60% `[N/A]` leakage, 66% generic fallback, 34% empty `trigger_phrases`, 18% contamination. Targets derived from research.md P0/P1/P2 recommendations. See `research.md` for full root-cause attribution and evidence ledger.
+> **Research baseline** (n=50): 60% `[N/A]` leakage, 66% generic fallback, 34% empty `trigger_phrases`, 18% contamination. Targets derived from research/research.md P0/P1/P2 recommendations. See `research/research.md` for full root-cause attribution and evidence ledger.
 
 ### P0
 
@@ -482,7 +482,7 @@ Level 3+ checklist (v1.5 — 2026-02-18) - Full verification + architecture + me
 - Security items expanded (CHK-035 PII redaction, CHK-036 regex safety, CHK-037-038 provenance)
 - Evidence requirements explicit ([Evidence: file path])
 - Explicit P0 and P1 section headers for all major sections (SECTIONS_PRESENT compliance)
-- v1.4: Added CHK-190-212 (memory quality gates from research.md findings); updated summary counts (42→49 P0, 58→73 P1, 13→15 P2)
+- v1.4: Added CHK-190-212 (memory quality gates from research/research.md findings); updated summary counts (42→49 P0, 58→73 P1, 13→15 P2)
 - v1.4.1: Added CHK-213-216 for phase package documentation verification
 - v1.5: Reconciled summary totals with current checklist entries (P0/P1/P2 now 47/71/16)
 Mark [x] with evidence when verified

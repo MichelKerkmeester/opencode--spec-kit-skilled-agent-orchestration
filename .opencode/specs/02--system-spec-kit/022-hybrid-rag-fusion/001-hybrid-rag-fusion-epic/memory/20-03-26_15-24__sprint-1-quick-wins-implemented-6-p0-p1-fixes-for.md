@@ -144,7 +144,7 @@ Next: Sprint 2: Medium-effort items from the recommendation synthesis (iteration
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 | handover.md | EXISTS |
 
 **Related Documentation:**
@@ -153,7 +153,7 @@ Next: Sprint 2: Medium-effort items from the recommendation synthesis (iteration
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `hybrid rag` | `fusion/001 hybrid` | `kit/022 hybrid` | `rag fusion/001` | `spec kit/022` | `system spec` | `fusion epic` | `comparedeterministicrows extractscoringvalue` | `extractscoringvalue resolveeffectivescore` | `memory-search.ts feedbacksignalsapplied` | `delegating comparedeterministicrows` | `resolveeffectivescore canonical` |

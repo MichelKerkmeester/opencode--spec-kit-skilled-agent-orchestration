@@ -289,6 +289,6 @@ See `decision-record.md` for full rationale.
 
 - Finsweet Attributes API: https://finsweet.com/attributes/attributes-api
 - List Sort Documentation: https://finsweet.com/attributes/list-sort
-- Deep Dive Research: See `research.md`
+- Deep Dive Research: See `research/research.md`
 - Decision Rationale: See `decision-record.md`
 <!-- /ANCHOR:references -->

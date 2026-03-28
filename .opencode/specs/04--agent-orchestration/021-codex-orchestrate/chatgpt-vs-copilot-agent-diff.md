@@ -7,7 +7,7 @@
 
 ## Scope
 
-- Included only these 8 agent files: `context.md`, `debug.md`, `handover.md`, `orchestrate.md`, `research.md`, `review.md`, `speckit.md`, `write.md`.
+- Included only these 8 agent files: `context.md`, `debug.md`, `handover.md`, `orchestrate.md`, `research/research.md`, `review.md`, `speckit.md`, `write.md`.
 - Excluded runtime code, command files, and non-ChatGPT/Copilot agent families.
 
 ## context.md
@@ -39,7 +39,7 @@
 - ChatGPT adds anti-microtask safeguard: do not spawn an agent for work estimated under 4 tool calls unless isolation is required. Copilot has no equivalent guard.
 - ChatGPT raises split thresholds and budgets (TCB safe range, CWB trigger, workflow token budget, per-task budgets) to reduce micro-task fan-out. Copilot uses lower, parallel-first defaults.
 
-## research.md
+## research/research.md
 
 - ChatGPT includes an explicit **ILLEGAL NESTING RULE (HARD BLOCK)** statement (LEAF-only, delegation requests ignored). Copilot has no equivalent statement.
 - ChatGPT formalizes a trivial-research exception for Step 9 memory save (`<5 findings`) and requires documenting exception usage. Copilot wording is softer and does not enforce the same documented exception path in completion gates.

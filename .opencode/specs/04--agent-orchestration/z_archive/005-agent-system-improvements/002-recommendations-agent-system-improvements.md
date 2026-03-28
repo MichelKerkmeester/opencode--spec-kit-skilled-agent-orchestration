@@ -93,7 +93,7 @@ flowchart TD
 
 ### 2. Strengthen Completion Verification [REFINED]
 
-**Research Finding**: research.md is missing HARD BLOCK verification (speckit.md and write.md have it). Gap identified and specific text provided.
+**Research Finding**: research/research.md is missing HARD BLOCK verification (speckit.md and write.md have it). Gap identified and specific text provided.
 
 **Add to research.md** after line 578 (after Quality Metrics table):
 
@@ -106,7 +106,7 @@ flowchart TD
 
 ```
 GATE 1: Artifact Existence
-□ research.md file exists (Read tool verification)
+□ research/research.md file exists (Read tool verification)
 □ memory/*.md file created (Step 9 completed)
 
 GATE 2: Content Quality
@@ -126,7 +126,7 @@ If ANY gate fails → Fix first, THEN claim completion
 
 | Rule                                                                              | Enforcement |
 | --------------------------------------------------------------------------------- | ----------- |
-| NEVER claim "Research Complete" without Read verification that research.md exists |
+| NEVER claim "Research Complete" without Read verification that research/research.md exists |
 | NEVER claim memory saved without verifying memory/*.md file exists                |
 | NEVER skip checklist.md verification if spec folder exists (Level 2+)             |
 ```
@@ -302,7 +302,7 @@ TASK #N: [Descriptive Title]
 
 | File         | Line | Issue                         | Fix                          |
 | ------------ | ---- | ----------------------------- | ---------------------------- |
-| research.md  | 72   | Duplicate Q5                  | Change to Q6                 |
+| research/research.md  | 72   | Duplicate Q5                  | Change to Q6                 |
 | debug.md     | 70   | Incomplete text "for default" | "or leave blank for default" |
 | implement.md | 90   | Incomplete text "for default" | "or leave blank for default" |
 
@@ -328,7 +328,7 @@ TASK #N: [Descriptive Title]
 | #   | Recommendation                                 | Effort | Impact |
 | --- | ---------------------------------------------- | ------ | ------ |
 | 1   | Mermaid diagrams (complete.md, orchestrate.md) | 1-2 hr | HIGH   |
-| 2   | research.md HARD BLOCK verification            | 30 min | HIGH   |
+| 2   | research/research.md HARD BLOCK verification            | 30 min | HIGH   |
 | 5   | speckit.md OUTPUT VERIFICATION                 | 20 min | HIGH   |
 | 6   | orchestrate.md OUTPUT VERIFICATION             | 15 min | HIGH   |
 

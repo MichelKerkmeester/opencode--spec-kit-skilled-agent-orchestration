@@ -44,7 +44,7 @@ contextType: "implementation"
 |------|---------|--------|
 | `.opencode/agent/orchestrate.md` | 8 changes (naming, sections, diagrams, protocols) | COMPLETE |
 | `.opencode/agent/speckit.md` | Mermaid diagram added | COMPLETE |
-| `.opencode/agent/research.md` | HARD BLOCK + Mermaid diagram | COMPLETE |
+| `.opencode/agent/research/research/research.md` | HARD BLOCK + Mermaid diagram | COMPLETE |
 | `.opencode/agent/handover.md` | Mermaid diagram added | COMPLETE |
 | `.opencode/agent/review.md` | Mermaid diagram added | COMPLETE |
 | `.opencode/agent/write.md` | Mermaid diagram added | COMPLETE |
@@ -57,7 +57,7 @@ contextType: "implementation"
 | `.opencode/command/spec_kit/complete.md` | Mermaid diagram (pre-existing) | COMPLETE |
 | `.opencode/command/spec_kit/plan.md` | Mermaid diagram added | COMPLETE |
 | `.opencode/command/spec_kit/implement.md` | Text fix + Mermaid diagram | COMPLETE |
-| `.opencode/command/spec_kit/research.md` | Q5→Q6 fix + Mermaid diagram | COMPLETE |
+| `.opencode/command/spec_kit/research/research/research.md` | Q5→Q6 fix + Mermaid diagram | COMPLETE |
 | `.opencode/command/spec_kit/debug.md` | Text fix + Mermaid diagram | COMPLETE |
 | `.opencode/command/spec_kit/handover.md` | Mermaid diagram added | COMPLETE |
 | `.opencode/command/spec_kit/resume.md` | Mermaid diagram added | COMPLETE |
@@ -88,7 +88,7 @@ contextType: "implementation"
 - Grep verification: 0 orphan references remain
 
 **Minor Text Fixes (T005-T007)**
-- Q5→Q6: Fixed duplicate question numbering in research.md command (line 72)
+- Q5→Q6: Fixed duplicate question numbering in research/research.md command (line 72)
 - debug.md: Completed "or leave blank for default" (line 70)
 - implement.md: Completed "or leave blank for default" (line 91)
 
@@ -97,7 +97,7 @@ contextType: "implementation"
 **Verification Sections**
 - speckit.md: OUTPUT VERIFICATION already existed as Section 12 (more comprehensive than requested)
 - orchestrate.md: Added OUTPUT VERIFICATION as Section 26 (lines 948+)
-- research.md: Added HARD BLOCK verification section (lines 636-667)
+- research/research.md: Added HARD BLOCK verification section (lines 636-667)
 
 **Mermaid Diagrams**
 - complete.md: Added workflow flowchart after Section 3 (lines 546-577)
@@ -118,14 +118,14 @@ contextType: "implementation"
 - write.md: 6-step documentation workflow (line 79)
 - debug.md: 4-phase debugging workflow (line 244)
 - speckit.md: Spec folder creation workflow (line 95)
-- research.md: 9-step research workflow (line 84)
+- research/research.md: 9-step research workflow (line 84)
 
 ### Phase 5: Visual Consistency - Spec Kit Commands (T022-T027)
 
 **Mermaid Diagrams Added to All Spec Kit Commands**
 - plan.md: 7-step planning workflow (line 224)
 - implement.md: 9-step implementation workflow (line 257)
-- research.md: 9-step research workflow (line 280)
+- research/research.md: 9-step research workflow (line 280)
 - debug.md: 5-step debug delegation workflow (line 245)
 - handover.md: 4-step handover creation workflow (line 197)
 - resume.md: 4-step session resume workflow (line 253)

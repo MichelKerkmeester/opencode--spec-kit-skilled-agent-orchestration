@@ -144,7 +144,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -152,7 +152,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `json mode` | `perfect capturing/016` | `fusion/009 perfect` | `capturing/016 json` | `hybrid enrichment` | `kit/022 hybrid` | `rag fusion/009` | `spec kit/022` | `system spec` | `mode hybrid` | `hybrid rag` | `enrichment system` |
 

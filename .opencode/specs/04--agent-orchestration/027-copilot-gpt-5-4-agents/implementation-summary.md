@@ -46,7 +46,7 @@ You can now keep the three agent systems aligned on GPT-5.4 without changing the
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/context.md` | Modified | Switch ChatGPT context agent to `openai/gpt-5.4` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/debug.md` | Modified | Switch ChatGPT debug agent to `openai/gpt-5.4` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/handover.md` | Modified | Switch ChatGPT handover agent to `openai/gpt-5.4` |
-| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/research.md` | Modified | Switch ChatGPT research agent to `openai/gpt-5.4` |
+| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/research/research/research.md` | Modified | Switch ChatGPT research agent to `openai/gpt-5.4` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/review.md` | Modified | Switch ChatGPT review agent to `openai/gpt-5.4` and update model note |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/speckit.md` | Modified | Switch ChatGPT speckit agent to `openai/gpt-5.4` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/agent/chatgpt/write.md` | Modified | Switch ChatGPT write agent to `openai/gpt-5.4` |

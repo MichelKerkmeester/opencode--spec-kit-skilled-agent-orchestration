@@ -640,7 +640,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 **12-metric core computation** grades every query across twelve quality dimensions (MRR@1/3/10, NDCG@10, MAP and more). Together they pinpoint exactly where search is struggling.
 
-**Synthetic ground truth corpus** 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality.
+**Synthetic ground truth corpus** 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality. The corpus is keyed to live parent-memory IDs, so after DB rebuilds or imports you should rerun `scripts/evals/map-ground-truth-ids.ts` against the active `context-index.sqlite` before trusting ablation or reporting deltas.
 
 **Ablation study framework** turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
 

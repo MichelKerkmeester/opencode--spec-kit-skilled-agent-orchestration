@@ -17,7 +17,7 @@ Orchestrates mandatory spec folder creation for all conversations involving file
 
 ### What is a Spec Folder?
 
-A **spec folder** is a numbered directory (e.g., `specs/007-auth-feature/`) that contains documentation for a single feature/task or a coordinated packet of related phase work:
+A **spec folder** is a numbered directory (e.g., `007-auth-feature/`) that contains documentation for a single feature/task or a coordinated packet of related phase work:
 
 Spec folders may also be nested as coordination-root packets with direct-child phase folders (e.g., `specs/02--track/022-feature/011-phase/002-child/`).
 
@@ -67,7 +67,7 @@ Status: ✅ This requirement applies immediately once file edits are requested.
   - `memory/` → uses generate-context.js script
   - `scratch/` → temporary workspace, any agent
   - `handover.md` → @handover agent only
-  - `research.md` → @deep-research agent only
+  - `research/research.md` → @deep-research agent only
   - `debug-delegation.md` → @debug agent only
 
 Routing to `@general`, `@write`, or other agents for spec documentation is a **hard violation**. See constitutional memory: `speckit-exclusivity.md`
@@ -748,7 +748,7 @@ Automated validation of spec folder contents via `validate.sh`.
 16. **Suggest /spec_kit:phase when task requires multi-phase decomposition** - Complex specs spanning multiple sessions or workstreams
 17. **Route all code creation/updates through `sk-code--opencode`** - Full alignment is mandatory before claiming completion
 18. **Route all documentation creation/updates through `sk-doc`** - Full alignment is mandatory before claiming completion
-19. **Enforce ToC policy from validation rules** - Only `research.md` may include a Table of Contents section; remove ToC headings from standard spec artifacts
+19. **Enforce ToC policy from validation rules** - Only `research/research.md` may include a Table of Contents section; remove ToC headings from standard spec artifacts
 
 ### ❌ NEVER
 
@@ -790,7 +790,7 @@ Automated validation of spec folder contents via `validate.sh`.
 - [ ] All placeholders replaced with actual content
 - [ ] Sample content and instructional comments removed
 - [ ] Cross-references to sibling documents work (spec.md ↔ plan.md ↔ tasks.md)
-- [ ] No ToC heading in non-research spec artifacts (ToC allowed only in `research.md`)
+- [ ] No ToC heading in non-research spec artifacts (ToC allowed only in `research/research.md`)
 
 ### User Approval
 

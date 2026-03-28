@@ -147,7 +147,8 @@ get_feature_paths() {
     printf 'FEATURE_SPEC=%q\n' "$feature_dir/spec.md"
     printf 'IMPL_PLAN=%q\n' "$feature_dir/plan.md"
     printf 'TASKS=%q\n' "$feature_dir/tasks.md"
-    printf 'RESEARCH=%q\n' "$feature_dir/research.md"
+    printf 'RESEARCH_DIR=%q\n' "$feature_dir/research"
+    printf 'RESEARCH=%q\n' "$feature_dir/research/research.md"
     printf 'CHECKLISTS_DIR=%q\n' "$feature_dir/checklists"
     printf 'DECISIONS_DIR=%q\n' "$feature_dir/decisions"
 }

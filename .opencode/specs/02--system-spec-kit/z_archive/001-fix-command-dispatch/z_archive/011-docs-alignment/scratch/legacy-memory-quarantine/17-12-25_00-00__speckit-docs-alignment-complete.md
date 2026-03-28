@@ -170,7 +170,7 @@ Aligned SpecKit documentation (README.md and SKILL.md) with actual filesystem re
 ### Actual Filesystem Reality Confirmed
 | Resource Type | Count | Files |
 |---------------|-------|-------|
-| Templates | 9 | spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research.md, research-spike.md, handover.md, debug-delegation.md |
+| Templates | 9 | spec.md, plan.md, tasks.md, checklist.md, decision-record.md, research/research.md, research-spike.md, handover.md, debug-delegation.md |
 | Scripts | 6 | common.sh, create-spec-folder.sh, check-prerequisites.sh, calculate-completeness.sh, recommend-level.sh, archive-spec.sh |
 | References | 4 | level_specifications.md, template_guide.md, quick_reference.md, path_scoped_rules.md |
 | Assets | 2 | level_decision_matrix.md, template_mapping.md |

@@ -7,7 +7,7 @@
     "system",
     "upgrade"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.792Z",
+  "lastUpdated": "2026-03-28T10:35:07.723Z",
   "specId": "003",
   "folderSlug": "agent-system-upgrade",
   "parentChain": [
@@ -15,9 +15,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Specification: Agent System Upgrade [003-agent-system-upgrade/spec]",
-  "status": "Complete (Consolidated)",
-  "importance_tier": "important",
-  "short_description": "Specification: Agent System Upgrade"
+  "memoryNameHistory": []
 }

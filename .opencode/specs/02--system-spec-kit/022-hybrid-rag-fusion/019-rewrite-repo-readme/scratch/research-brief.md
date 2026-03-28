@@ -21,7 +21,7 @@ Custom agents share the same role definitions across 4 runtime directories. Open
 | 4 | `@context` | Custom | sonnet | Memory-first retrieval specialist | Exclusive entry point for ALL exploration. Read-only. Surfaces Context Packages. Memory-first retrieval. NEVER writes, edits, creates, or deletes files |
 | 5 | `@speckit` | Custom | sonnet | Spec folder documentation specialist | EXCLUSIVE agent for writing `*.md` inside spec folders. Template-first. Creates/maintains Level 1-3+ documentation. CORE + ADDENDUM architecture |
 | 6 | `@debug` | Custom | opus | Fresh perspective debugging specialist | 5-phase methodology: Observe, Analyze, Hypothesize, Validate, Fix. Starts with NO prior context (intentional bias prevention). May write `debug-delegation.md` in spec folders |
-| 7 | `@research` | Custom | opus | Technical investigation specialist | 9-step research process. Evidence gathering, planning, Gate 3 Option B. May write `research.md` inside spec folders |
+| 7 | `@research` | Custom | opus | Technical investigation specialist | 9-step research process. Evidence gathering, planning, Gate 3 Option B. May write `research/research.md` inside spec folders |
 | 8 | `@review` | Custom | opus | Code quality guardian | READ-ONLY. Quality scoring, pattern validation, security assessment, standards enforcement. Baseline+overlay standards contract |
 | 9 | `@write` | Custom | sonnet | Documentation generation specialist | Template-first. DQI-compliant output. Creates READMEs, skills, guides. MUST NOT write inside spec folders |
 | 10 | `@handover` | Custom | sonnet | Session continuation specialist | Creates continuation documents (handover.md). Gathers context from spec folders. May write `handover.md` in spec folders |

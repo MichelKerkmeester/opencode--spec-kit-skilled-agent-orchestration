@@ -49,7 +49,7 @@ contextType: "implementation"
 - [ ] T010 [P] Create `.gemini/agents/orchestrate.md` with Gemini frontmatter + optimization profile
 - [ ] T011 [P] Create `.gemini/agents/context.md` with Gemini frontmatter
 - [ ] T012 [P] Create `.gemini/agents/debug.md` with Gemini frontmatter
-- [ ] T013 [P] Create `.gemini/agents/research.md` with Gemini frontmatter
+- [ ] T013 [P] Create `.gemini/agents/research/research/research.md` with Gemini frontmatter
 - [ ] T014 [P] Create `.gemini/agents/review.md` with Gemini frontmatter
 - [ ] T015 [P] Create `.gemini/agents/speckit.md` with Gemini frontmatter
 - [ ] T016 [P] Create `.gemini/agents/write.md` with Gemini frontmatter

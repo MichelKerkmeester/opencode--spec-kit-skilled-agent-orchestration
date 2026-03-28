@@ -11,7 +11,7 @@
     "requirements",
     "analysis"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.513Z",
+  "lastUpdated": "2026-03-28T10:35:07.606Z",
   "specId": "001",
   "folderSlug": "scratch-enforcement",
   "parentChain": [
@@ -21,9 +21,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis [001-scratch-enforcement/spec]",
-  "status": "Details",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis"
+  "memoryNameHistory": []
 }

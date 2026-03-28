@@ -69,7 +69,7 @@ The `cocoindex_code` MCP server entry is registered in all 6 CLI config files us
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3 GPT-5.4 agents investigated CocoIndex Code in parallel, producing a 17-section `research.md` (v1.1). The research identified the PATH collision risk, corrected the cold start estimate to 20-30 seconds (not 3-8), and validated the phased rollout strategy. Phase 2 reused that evidence and the cross-CLI findings to focus on practical hardening instead of new routing rules. Phase 3 then converted the helper scripts from advisory wrappers into stricter readiness boundaries: `doctor.sh` stays read-only, `ensure_ready.sh` remains the bootstrap boundary, and both now share centralized readiness logic from `common.sh`.
+Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3 GPT-5.4 agents investigated CocoIndex Code in parallel, producing a 17-section `research/research.md` (v1.1). The research identified the PATH collision risk, corrected the cold start estimate to 20-30 seconds (not 3-8), and validated the phased rollout strategy. Phase 2 reused that evidence and the cross-CLI findings to focus on practical hardening instead of new routing rules. Phase 3 then converted the helper scripts from advisory wrappers into stricter readiness boundaries: `doctor.sh` stays read-only, `ensure_ready.sh` remains the bootstrap boundary, and both now share centralized readiness logic from `common.sh`.
 
 <!-- /ANCHOR:how-delivered -->
 

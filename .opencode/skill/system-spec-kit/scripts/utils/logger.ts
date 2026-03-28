@@ -5,7 +5,8 @@
 // ───────────────────────────────────────────────────────────────
 // 1. LOGGER
 // ───────────────────────────────────────────────────────────────
-// Structured logging with severity levels and JSON metadata output
+// Structured logging with severity levels and JSON metadata output.
+// Always emit to stderr so MCP/server callers keep stdout reserved for protocol/data output.
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────
@@ -32,16 +33,18 @@ function structuredLog(level: LogLevel, message: string, data: Record<string, un
   };
 
   const jsonOutput: string = JSON.stringify(logEntry);
+  const writeStructuredEntry = (): void => {
+    process.stderr.write(`${jsonOutput}\n`);
+  };
 
-  if (level === 'error') {
-    console.error(jsonOutput);
-  } else if (level === 'warn') {
-    console.warn(jsonOutput);
-  } else if (level === 'debug' && process.env.DEBUG) {
-    console.log(jsonOutput);
-  } else if (level === 'info') {
-    console.log(jsonOutput);
+  if (level === 'debug') {
+    if (process.env.DEBUG) {
+      writeStructuredEntry();
+    }
+    return;
   }
+
+  writeStructuredEntry();
 }
 
 // ───────────────────────────────────────────────────────────────

@@ -32,7 +32,7 @@ contextType: "implementation"
 
 ## Phase 1: Critical Commands
 - [x] P0: `resume.md` - Remove Phase 1 detection section (CLI-first approach)
-- [x] P0: `research.md` - Remove lines 82-85 (was creating .spec-active!)
+- [x] P0: `research/research.md` - Remove lines 82-85 (was creating .spec-active!)
 - [x] P0: `spec_kit_resume_auto.yaml` - Updated session detection to stateless
 - [x] P0: `spec_kit_resume_confirm.yaml` - Updated session detection to stateless
 
@@ -67,7 +67,7 @@ contextType: "implementation"
 | implement.md | 38, 106, 180 | "NEVER infer from .spec-active" |
 | plan.md | 81 | "Stateless - no .spec-active file created" |
 | resume.md | 45, 326 | "Stateless - no .spec-active marker" |
-| research.md | 82 | "Stateless architecture - no .spec-active" |
+| research/research.md | 82 | "Stateless architecture - no .spec-active" |
 | YAML files | 31, 38 | "Stateless architecture" notes |
 | spec_folder_detection.md | 265-276 | Migration cleanup instructions |
 

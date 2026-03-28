@@ -70,7 +70,7 @@ grep @documentation-writer .opencode/ → 0 matches
 
 ---
 
-### 3. research.md (Agent) ✅
+### 3. research/research.md (Agent) ✅
 
 | Change | Line(s) | Verified |
 |--------|---------|----------|
@@ -110,7 +110,7 @@ grep @documentation-writer .opencode/ → 0 matches
 
 ---
 
-### 5. research.md (Command) ✅
+### 5. research/research.md (Command) ✅
 
 | Change | Line | Verified |
 |--------|------|----------|
@@ -200,7 +200,7 @@ grep @documentation-writer .opencode/ → 0 matches
 | CHK-017 | implement.md text | ✅ VERIFIED |
 | CHK-020 | speckit.md OUTPUT VERIFICATION | ✅ VERIFIED (pre-existing) |
 | CHK-021 | orchestrate.md OUTPUT VERIFICATION | ✅ VERIFIED |
-| CHK-022 | research.md HARD BLOCK | ✅ VERIFIED |
+| CHK-022 | research/research.md HARD BLOCK | ✅ VERIFIED |
 | CHK-030 | complete.md Mermaid | ✅ VERIFIED |
 | CHK-031 | orchestrate.md Mermaid | ✅ VERIFIED |
 | CHK-040 | PDR protocol | ✅ VERIFIED |

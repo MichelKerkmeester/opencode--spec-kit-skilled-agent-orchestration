@@ -33,6 +33,6 @@ A new execution mode for sk-deep-research that:
 ## Success Criteria
 
 - [x] All 5 research questions answered with evidence — 5 iterations, all newInfoRatio=1.0
-- [x] research.md synthesized with 10 sections — complete with executive summary through convergence report
+- [x] research/research.md synthesized with 10 sections — complete with executive summary through convergence report
 - [x] Implementation roadmap is actionable — 6-phase plan with LOC estimates (570-1,145 total)
 - [x] No contradictions between agent proposals — 2 minor resolved as Open Questions (#1, #2)

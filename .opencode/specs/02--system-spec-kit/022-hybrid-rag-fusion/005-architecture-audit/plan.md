@@ -146,7 +146,7 @@ The recoverable original phase map shows 15 completed architecture-audit phases:
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `decision-record.md` | Internal | Green | Architecture rationale becomes harder to verify |
-| `research.md` | Internal | Green | Deep audit evidence becomes harder to recover |
+| `research/research.md` | Internal | Green | Deep audit evidence becomes harder to recover |
 | Enforcement tooling | Internal | Green | Boundary claims weaken without executable checks |
 | `scratch/` and `memory/` evidence | Internal | Green | Later follow-up provenance is harder to trace |
 <!-- /ANCHOR:dependencies -->

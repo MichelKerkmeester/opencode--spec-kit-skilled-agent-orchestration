@@ -33,7 +33,7 @@ contextType: "implementation"
 - [ ] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-010)
 - [ ] CHK-002 [P0] Technical approach defined in plan.md (4-phase architecture)
 - [ ] CHK-003 [P1] Dependencies identified and available (`template-structure.js` verified to exist)
-- [ ] CHK-004 [P0] Research complete -- 9 iterations, 8/8 questions answered, all artifacts drafted in `research.md`
+- [ ] CHK-004 [P0] Research complete -- 9 iterations, 8/8 questions answered, all artifacts drafted in `research/research.md`
 <!-- /ANCHOR:pre-impl -->
 
 ---

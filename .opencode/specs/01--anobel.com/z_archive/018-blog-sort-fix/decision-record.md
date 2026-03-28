@@ -285,7 +285,7 @@ console.warn('FinsweetBridge: Reactive API failed, falling back to URL', err);
 <!-- ANCHOR:references -->
 ## References
 
-- Deep dive research: `research.md`
+- Deep dive research: `research/research.md`
 - Finsweet API docs: https://finsweet.com/attributes/attributes-api
 - Forum discussion: https://forum.finsweet.com/t/list-combine-and-list-sort-on-attributes-v2/5244
 <!-- /ANCHOR:references -->

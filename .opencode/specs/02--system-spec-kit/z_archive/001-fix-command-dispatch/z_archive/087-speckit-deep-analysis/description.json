@@ -9,7 +9,7 @@
     "analysis",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.206Z",
+  "lastUpdated": "2026-03-28T10:08:37.561Z",
   "specId": "087",
   "folderSlug": "speckit-deep-analysis",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: System-Spec-Kit Deep Analysis & Remediation"
+  "memoryNameHistory": []
 }

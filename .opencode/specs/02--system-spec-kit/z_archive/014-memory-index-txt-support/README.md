@@ -75,7 +75,7 @@ Extend the memory indexing subsystem to discover and index `.txt` files alongsid
 - **Tasks**: [tasks.md](./tasks.md) — Task breakdown with dependencies
 - **Checklist**: [checklist.md](./checklist.md) — Verification gates (P0/P1/P2)
 - **Decision Record**: [decision-record.md](./decision-record.md) — Architecture decisions
-- **Research**: [research.md](./research.md) — Technical investigation findings
+- **Research**: [research.md](./research/research.md) — Technical investigation findings
 - **Implementation Summary**: [implementation-summary.md](./implementation-summary.md) — Post-implementation (TBD)
 
 ---

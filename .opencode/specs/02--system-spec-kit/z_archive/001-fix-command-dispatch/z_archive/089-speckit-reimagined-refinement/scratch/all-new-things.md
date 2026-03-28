@@ -12,7 +12,7 @@
 |---|---------------|-------------|--------|
 | N-01 | `complexity_decision_matrix.md` in asset inventory | `SKILL.md:233-239` | File exists in `assets/` but not listed in the assets table |
 | N-02 | `templates/examples/` directory documentation | `SKILL.md` Section 2 or 3 | Complete worked examples for levels 1-3+ exist but are undocumented |
-| N-03 | `templates/research.md` utility template | `SKILL.md:870` | Root-level template exists but not documented (only `handover.md` and `debug-delegation.md` mentioned) |
+| N-03 | `templates/research/research/research.md` utility template | `SKILL.md:870` | Root-level template exists but not documented (only `handover.md` and `debug-delegation.md` mentioned) |
 | N-04 | `templates/context_template.md` utility template | `SKILL.md:870` | Root-level template exists but not documented |
 | N-05 | `scripts/setup/check-prerequisites.sh` documentation | `SKILL.md:192-202` | Script exists but not in Key Scripts table |
 | N-06 | `scripts/memory/cleanup-orphaned-vectors.js` documentation | `SKILL.md` | Script exists but not mentioned |

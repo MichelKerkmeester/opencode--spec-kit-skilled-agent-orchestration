@@ -24,7 +24,7 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] **P0** Existing agent patterns analyzed (research.md, write.md, review.md)
+- [x] **P0** Existing agent patterns analyzed (research/research.md, write.md, review.md)
 - [x] **P0** Architecture designed via Sequential Thinking (8 thoughts)
 - [x] **P0** Differentiation from @research clearly defined
 - [x] **P0** Spec folder documentation created (Level 2)

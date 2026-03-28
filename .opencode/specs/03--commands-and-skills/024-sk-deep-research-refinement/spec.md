@@ -111,7 +111,7 @@ Run rigorous autonomous deep-research rounds that investigate improvements to th
 
 ### Acceptance Scenarios
 
-- **AS-1 Research Convergence**: **Given** the deep research loop is running with maxIterations=15, **When** the composite stop-score exceeds 0.60, **Then** the loop terminates naturally and research.md contains synthesized findings from all iterations.
+- **AS-1 Research Convergence**: **Given** the deep research loop is running with maxIterations=15, **When** the composite stop-score exceeds 0.60, **Then** the loop terminates naturally and research/research.md contains synthesized findings from all iterations.
 
 - **AS-2 Proposal Validation**: **Given** 18 v2 proposals are loaded as baseline from spec 023, **When** each proposal is cross-referenced against external repo source code, **Then** every proposal has a validation status: confirmed, revised, deprecated, or needs-data.
 

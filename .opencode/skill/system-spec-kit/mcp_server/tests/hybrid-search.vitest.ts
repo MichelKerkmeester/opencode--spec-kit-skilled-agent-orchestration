@@ -1001,6 +1001,40 @@ describe('Sprint 1 Search-Core Fixes (Task #2)', () => {
     expect(s3meta?.tokenBudget?.budget).toBe(1500);
     expect(results.length).toBeLessThan(20);
   });
+
+  it('S1-FIX-04: evaluationMode bypasses token-budget truncation for benchmark calls', async () => {
+    process.env.SPECKIT_COMPLEXITY_ROUTER = 'true';
+    process.env.SPECKIT_DYNAMIC_TOKEN_BUDGET = 'true';
+
+    const hugeVectorSearch = (_embedding: unknown, options: Record<string, unknown> = {}) => {
+      const limit = (options.limit as number) || 20;
+      return Array.from({ length: limit }, (_v, idx) => ({
+        id: idx + 2000,
+        title: `Huge Eval Result ${idx + 1}`,
+        content: 'x'.repeat(6000),
+        similarity: 0.99 - idx * 0.01,
+      }));
+    };
+
+    const mockDb = createMockDb();
+    hybridSearch.init(mockDb, hugeVectorSearch, null);
+
+    const embedding = new Float32Array(384).fill(0.3);
+    const results = await hybridSearch.hybridSearchEnhanced('fix bug', embedding, {
+      limit: 20,
+      useBm25: false,
+      useFts: false,
+      useGraph: false,
+      forceAllChannels: true,
+      evaluationMode: true,
+    });
+
+    expect(results).toHaveLength(20);
+    expect(results[0]?.traceMetadata).toMatchObject({
+      budgetTruncated: false,
+      evaluationMode: true,
+    });
+  });
 });
 
 // -- BUG-1 fix: Ablation channel disable integration tests --

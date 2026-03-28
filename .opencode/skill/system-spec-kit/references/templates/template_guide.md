@@ -19,7 +19,7 @@ Level 1 (Baseline):     spec.md + plan.md + tasks.md + implementation-summary.md
                                ↓
 Level 2 (Verification): Level 1 + checklist.md
                                ↓
-Level 3 (Full):         Level 2 + decision-record.md + optional research.md
+Level 3 (Full):         Level 2 + decision-record.md + optional research/research.md
                                ↓
 Level 3+ (Extended):    Level 3 + governance/AI protocol content
 ```
@@ -81,7 +81,7 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 
 **Copy commands:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/###-name/spec.md
+cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
 cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
 cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md
@@ -174,7 +174,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/##
 
 **Optional Templates:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 **When to use:**
@@ -389,17 +389,17 @@ cp .opencode/skill/system-spec-kit/templates/level_N/[template].md specs/###-nam
 <!-- ANCHOR:supporting-templates -->
 ## 5. SUPPORTING TEMPLATES
 
-### research.md - Comprehensive Feature Research
+### research/research.md - Comprehensive Feature Research
 
 **When to use:** Before implementation for complex features requiring deep technical investigation
 
 **Purpose:** Comprehensive research documentation spanning multiple technical areas
 
-**Template:** `research.md`
+**Template:** `research/research.md`
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
+mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
 ```
 
 **Sections to fill:**
@@ -722,7 +722,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 8. **Document level changes** - Use `upgrade-level.sh` for level upgrades (recommended), then auto-populate placeholder content. Note changes in changelog
 9. **Keep history immutable** - Append to history, don't rewrite
 10. **Validate before coding** - Complete pre-implementation checklist first
-11. **Apply ToC policy consistently** - Only `research.md` may include a Table of Contents section; keep standard spec artifacts ToC-free
+11. **Apply ToC policy consistently** - Only `research/research.md` may include a Table of Contents section; keep standard spec artifacts ToC-free
 
 ### Pre-Delivery Checklist
 
@@ -1157,7 +1157,7 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 |-------|--------|----------|
 | Level 1 | `templates/level_1/` | spec.md, plan.md, tasks.md, implementation-summary.md |
 | Level 2 | `templates/level_2/` | Level 1 + checklist.md |
-| Level 3 | `templates/level_3/` | Level 2 + decision-record.md (research.md at root) |
+| Level 3 | `templates/level_3/` | Level 2 + decision-record.md (research/research.md at root) |
 | Level 3+ | `templates/level_3+/` | Level 3 + AI protocol, extended checklist |
 | Root | `templates/` (root) | handover.md, debug-delegation.md (cross-level) |
 
@@ -1172,7 +1172,7 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 
 **Level 3 Templates (includes Level 2 content):**
 - [decision-record.md](../../templates/level_3/decision-record.md) - Architecture Decision Records template
-- [research.md](../../templates/research.md) - Comprehensive research template (optional, at root templates/)
+- [research template](../../templates/research.md) - Copy to `research/research.md` when Level 3 research is needed
 
 **Cross-Level Templates (at templates root):**
 - [handover.md](../../templates/handover.md) - Full session handover document (~100-150 lines)

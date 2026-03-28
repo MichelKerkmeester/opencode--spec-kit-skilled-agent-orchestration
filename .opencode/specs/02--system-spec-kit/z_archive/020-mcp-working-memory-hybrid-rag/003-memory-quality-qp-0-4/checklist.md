@@ -36,7 +36,7 @@ contextType: "implementation"
 - [x] MQ-CHK-001 Root checks `CHK-190-196` mapped and verifiable in this package. [EVIDENCE: File: ../checklist.md; Source: CHK-190-196 mapping retained in package scope]
 - [x] MQ-CHK-002 Benchmark fixture gate passes (bad fixtures fail, good fixtures pass). [EVIDENCE: File: plan.md; Source: Execution Model QP-0 baseline and gate definition]
 - [x] MQ-CHK-003 Post-render validator enforcement and indexing behavior are defined. [EVIDENCE: File: plan.md; Source: Execution Model QP-1 gate plus Dependencies]
-- [x] MQ-CHK-004 Package references include both `../research.md` and `../research/` source docs. [EVIDENCE: File: spec.md; Source: Metadata and Dependencies sections]
+- [x] MQ-CHK-004 Package references include both `../research/research.md` and `../research/` source docs. [EVIDENCE: File: spec.md; Source: Metadata and Dependencies sections]
 <!-- /ANCHOR:p0-blockers -->
 
 <!-- ANCHOR:p1-required -->
@@ -62,7 +62,7 @@ contextType: "implementation"
 
 ## Evidence
 
-- Research baseline: `../research.md`
+- Research baseline: `../research/research.md`
 - Research source docs: `../research/`
 - Root tasks: `../tasks.md`
 - Root verification: `../checklist.md`

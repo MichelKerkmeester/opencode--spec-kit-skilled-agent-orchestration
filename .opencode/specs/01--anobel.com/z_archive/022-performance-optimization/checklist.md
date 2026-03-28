@@ -157,7 +157,7 @@ contextType: "implementation"
 - [x] checklist.md - This file
 - [x] decision-record.md - Needs update
 - [x] webflow-guide.md - Updated, video poster removed
-- [x] research.md - Complete (no changes needed)
+- [x] research/research.md - Complete (no changes needed)
 
 <!-- /ANCHOR:documentation-updated -->
 

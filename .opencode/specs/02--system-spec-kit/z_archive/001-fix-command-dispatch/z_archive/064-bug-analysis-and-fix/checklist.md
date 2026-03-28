@@ -138,7 +138,7 @@ Before claiming ANY phase complete:
 - **Specification**: [spec.md](./spec.md)
 - **Implementation Plan**: [plan.md](./plan.md)
 - **Task List**: [tasks.md](./tasks.md)
-- **Research**: [research.md](./research.md)
+- **Research**: [research.md](./research/research.md)
 
 ---
 
@@ -149,9 +149,9 @@ Before claiming ANY phase complete:
 - [x] CHK001 [P0] Full system backup created before any changes | Evidence: Git history preserved, working on branch
 - [x] CHK002 [P0] Git branch created: `fix/speckit-bug-analysis` | Evidence: Branch 064-bug-analysis-and-fix active
 - [x] CHK003 [P0] Database backup created (context-index.sqlite) | Evidence: SQLite database preserved
-- [x] CHK004 [P1] All affected files identified and documented | Evidence: research.md documents all 231 issues
+- [x] CHK004 [P1] All affected files identified and documented | Evidence: research/research.md documents all 231 issues
 - [x] CHK005 [P1] Development environment verified (Node.js, dependencies) | Evidence: All syntax checks pass
-- [x] CHK006 [P1] research.md reviewed and understood | Evidence: 20-agent analysis reviewed
+- [x] CHK006 [P1] research/research.md reviewed and understood | Evidence: 20-agent analysis reviewed
 - [x] CHK007 [P2] Team notified of upcoming changes | Evidence: Solo project, N/A
 
 ---
@@ -232,7 +232,7 @@ Before claiming ANY phase complete:
 - [x] CHK045 [P2] complete.md option format references valid | Evidence: Command cross-refs validated
 - [x] CHK046 [P2] plan.md step numbering consistent | Evidence: Step numbering verified
 - [x] CHK047 [P2] resume.md tool table includes checkpoint_restore | Evidence: Tool table updated
-- [x] CHK048 [P2] research.md Phase 3 documented in SKILL.md | Evidence: SKILL.md Phase 3/Prior Work section added
+- [x] CHK048 [P2] research/research.md Phase 3 documented in SKILL.md | Evidence: SKILL.md Phase 3/Prior Work section added
 - [x] CHK049 [P2] handover.md has YAML references like other commands | Evidence: Command format standardized
 
 #### Script/Code Issues (T025-T029)
@@ -336,7 +336,7 @@ Before claiming ANY phase complete:
 
 - [x] CHK104 [P1] All temporary/debug files in scratch/ (not spec root) | Evidence: scratch/ used appropriately
 - [x] CHK105 [P1] scratch/ cleaned up before completion claim | Evidence: Cleanup performed
-- [x] CHK106 [P2] Valuable findings moved to memory/ or permanent docs | Evidence: Findings preserved in research.md
+- [x] CHK106 [P2] Valuable findings moved to memory/ or permanent docs | Evidence: Findings preserved in research/research.md
 
 ---
 

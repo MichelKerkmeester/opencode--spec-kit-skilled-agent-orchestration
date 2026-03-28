@@ -55,7 +55,7 @@
 - Moved review routing references to Step 12 completion verification
 - Standardized fallback subagent_type to "general"
 
-### 6. `.opencode/command/spec_kit/research.md`
+### 6. `.opencode/command/spec_kit/research/research/research.md`
 **Priority**: P1
 **Changes**:
 - Standardized fallback routing to subagent_type: "general"

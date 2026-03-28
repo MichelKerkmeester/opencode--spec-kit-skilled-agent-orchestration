@@ -177,7 +177,7 @@ setTimeout(function () {
 | 9 | External Libs | Swiper full bundle uses ~30% |
 | 10 | Network | TypeKit + jQuery blocking, missing preconnects |
 
-See `research.md` for complete findings.
+See `research/research.md` for complete findings.
 
 ---
 
@@ -208,7 +208,7 @@ See `research.md` for complete findings.
 | `tasks.md` | Task breakdown | Updated |
 | `checklist.md` | QA checklist | Updated |
 | `decision-record.md` | Architectural decisions | Updated |
-| `research.md` | Research findings (10 agents) | Complete |
+| `research/research.md` | Research findings (10 agents) | Complete |
 | `webflow-guide.md` | Webflow configuration guide | Complete |
 
 ---

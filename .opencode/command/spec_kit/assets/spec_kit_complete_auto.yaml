@@ -40,7 +40,7 @@ optional_workflows:
       enabled: true
       prompt: |
         WORKFLOW CHECKPOINT - Research Complete
-        Research phase complete. Created: research.md (17 sections)
+        Research phase complete. Created: research/research.md (17 sections)
         Continue to Step 1 (Request Analysis)? [Y/n/review]
       options:
       - { key: "Y", action: "continue" }
@@ -630,7 +630,7 @@ workflow:
     - Fill Technical Context (mark unknowns as NEEDS CLARIFICATION)
     - Fill Constitution Check section
     - Evaluate gates (ERROR if violations unjustified)
-    - Phase 0: Generate research.md to resolve all unknowns
+    - Phase 0: Generate research/research.md to resolve all unknowns
     - Phase 1: Define component structure and interfaces
     - Generate Testing Strategy with test pyramid
     - Generate Success Metrics from spec criteria
@@ -641,7 +641,7 @@ workflow:
     - Generate Phase 2-4 outlines (implementation phases)
     outputs:
     - plan.md: technical_approach
-    - research.md: resolved_unknowns
+    - research/research.md: resolved_unknowns
     level_1_baseline: [spec.md, plan.md, tasks.md]
     level_2_verification: [checklist.md]
     level_3_full: [decision-record.md]

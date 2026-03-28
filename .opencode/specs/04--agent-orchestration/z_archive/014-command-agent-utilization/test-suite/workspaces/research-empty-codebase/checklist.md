@@ -39,7 +39,7 @@ contextType: "implementation"
 
 ## Research Quality
 
-- [x] CHK-010 [P0] All 17 research.md sections populated with substantive content
+- [x] CHK-010 [P0] All 17 research/research.md sections populated with substantive content
 - [x] CHK-011 [P0] No placeholder markers remaining ([YOUR_VALUE_HERE], [PLACEHOLDER])
 - [x] CHK-012 [P1] Sources cited for all major findings with URLs or code references
 - [x] CHK-013 [P1] Architecture diagram included and accurately represents recommended solution

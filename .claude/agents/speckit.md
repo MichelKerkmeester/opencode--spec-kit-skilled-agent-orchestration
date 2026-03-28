@@ -20,7 +20,7 @@ Spec folder documentation specialist responsible for creating, maintaining, and 
 
 **Path Convention**: Use only `.claude/agents/*.md` as the canonical runtime path reference.
 
-> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
+> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research/research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
 
 **CRITICAL**: Always copy templates from `templates/level_N/` folders. NEVER create spec documentation from scratch or memory. Templates are the source of truth.
 
@@ -232,7 +232,8 @@ Additional content in existing files:
 - Inline the exact scaffold for the specific spec doc being written: include the canonical template path plus the matching H1, required ANCHOR IDs, required H2 order, and checklist `CHK-NNN [P0/P1/P2]` format when applicable
 - Remove ALL placeholder content `[PLACEHOLDER]` and sample text
 - Use 3-digit padding for spec numbers (001, 042, 099)
-- Run `validate.sh --strict` AFTER EACH FILE WRITE. Fix errors before proceeding to the next file
+- Run `validate.sh` before claiming completion
+- Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` immediately after each spec-doc write or update; if it fails, repair template drift before continuing
 - Use kebab-case for folder names (e.g., `007-add-auth`)
 - Fill spec.md FIRST, then plan.md, then tasks.md
 
@@ -265,10 +266,10 @@ specs/###-short-name/
 ├── implementation-summary.md  # Post-implementation (REQUIRED all levels)
 ├── checklist.md               # Quality gates (Level 2+)
 ├── decision-record.md         # ADRs (Level 3)
-├── research.md                # Technical research (optional)
+├── research/research.md                # Technical research (optional)
 ├── memory/                    # Context preservation (5-state model, ANCHOR format)
 │   └── DD-MM-YY_HH-MM__topic.md  # Uses ANCHOR tags for structured retrieval
-└── scratch/                   # Temporary files
+└── scratch/                   # Temporary/debug files (not part of deep-research canon)
     └── debug-logs.md
 ```
 
@@ -312,9 +313,28 @@ Mark checklist items with evidence references:
 
 Use these prefix formats for cross-referencing and filtering in spec documentation:
 
-### Template Compliance Contract (MANDATORY)
+### Inline Scaffold Contract
 
-After writing ANY spec folder `.md` file, run `validate.sh --strict` and fix all errors before proceeding.
+When drafting or updating `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, or `implementation-summary.md`:
+
+1. Read the canonical template from `templates/level_N/`.
+2. Copy the matching scaffold into the working prompt: H1, required ANCHOR tags, required H2 sequence, and checklist item format when relevant.
+3. Keep custom sections only after the required template structure.
+4. Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` before moving to the next workflow step.
+
+#### Quick Reference: Level 2 spec.md scaffold
+
+```
+# Feature Specification: [Title]
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- ANCHOR:metadata --> ## 1. METADATA <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem --> ## 2. PROBLEM & PURPOSE <!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope --> ## 3. SCOPE <!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements --> ## 4. REQUIREMENTS <!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria --> ## 5. SUCCESS CRITERIA <!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks --> ## 6. RISKS & DEPENDENCIES <!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions --> ## 10. OPEN QUESTIONS <!-- /ANCHOR:questions -->
+```
 
 **spec.md** anchors → headers:
 metadata → ## 1. METADATA | problem → ## 2. PROBLEM & PURPOSE | scope → ## 3. SCOPE | requirements → ## 4. REQUIREMENTS | success-criteria → ## 5. SUCCESS CRITERIA | risks → ## 6. RISKS & DEPENDENCIES | questions → ## 10. OPEN QUESTIONS

@@ -24,6 +24,7 @@ import * as fs from 'fs';
 import {
   runAblation, storeAblationResults, formatAblationReport,
   toHybridSearchFlags, isAblationEnabled, ALL_CHANNELS,
+  assertGroundTruthAlignment,
   initEvalDb, generateQueryEmbedding,
   initHybridSearch, hybridSearchEnhanced, vectorIndex,
   type AblationChannel, type AblationSearchFn, type AblationReport,
@@ -31,7 +32,18 @@ import {
 
 // -- Config ------------------------------------------------------
 
-const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
+function resolveScriptsWorkspaceRoot(): string {
+  const directParent = path.resolve(__dirname, '..');
+  if (path.basename(directParent) === 'scripts') return directParent;
+
+  const nestedParent = path.resolve(__dirname, '..', '..');
+  if (path.basename(nestedParent) === 'scripts') return nestedParent;
+
+  return directParent;
+}
+
+const SCRIPTS_ROOT = resolveScriptsWorkspaceRoot();
+const DB_DIR = path.resolve(SCRIPTS_ROOT, '../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/ablation-result.json';
 
@@ -99,6 +111,14 @@ async function main(): Promise<void> {
     'SELECT COUNT(*) as c FROM memory_index'
   ).get() as { c: number }).c;
   log(`Production memories: ${memCount}`);
+  const gtAlignment = assertGroundTruthAlignment(db, {
+    dbPath: PROD_DB_PATH,
+    context: 'cli ablation',
+  });
+  log(
+    `Ground truth alignment: ${gtAlignment.parentRelevanceCount}/${gtAlignment.totalRelevances} `
+    + `parent relevances across ${gtAlignment.parentMemoryCount} memory IDs`
+  );
 
   // 4. Initialize eval DB
   initEvalDb(DB_DIR);
@@ -123,10 +143,11 @@ async function main(): Promise<void> {
       useGraph: channelFlags.useGraph,
       triggerPhrases: channelFlags.useTrigger ? undefined : [],
       forceAllChannels: true,
+      evaluationMode: true,
     });
 
     return results.map((r, idx) => ({
-      memoryId: Number(r.id),
+      memoryId: Number((r as Record<string, unknown>).parentMemoryId ?? r.id),
       score: r.score,
       rank: idx + 1,
     }));

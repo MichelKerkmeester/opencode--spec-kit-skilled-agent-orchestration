@@ -35,7 +35,7 @@ contextType: "implementation"
 
 Phase A: High-Impact, Low-Risk -- create foundational artifacts.
 
-- [ ] T001 Create shared compliance reference file (references/template-compliance-contract.md) -- 140-line canonical source with L1-L3 contracts, sync protocol, version metadata. Content drafted in scratch/iteration-009.md Finding 2.
+- [ ] T001 Create shared compliance reference file (references/template-compliance-contract.md) -- 140-line canonical source with L1-L3 contracts, sync protocol, version metadata. Content drafted in research/iterations/iteration-009.md Finding 2.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -84,8 +84,8 @@ Phase D: End-to-end testing across all enforcement layers.
 
 - **Specification**: See `spec.md` -- requirements REQ-001 through REQ-010
 - **Plan**: See `plan.md` -- 4 phases (A-D) with architecture and testing strategy
-- **Research**: See `research.md` -- 9 iterations, 8/8 questions answered, per-document failure analysis
-- **Contract Draft**: See `scratch/iteration-009.md` Finding 2 -- complete 140-line reference file content
+- **Research**: See `research/research.md` -- 9 iterations, 8/8 questions answered, per-document failure analysis
+- **Contract Draft**: See `research/iterations/iteration-009.md` Finding 2 -- complete 140-line reference file content
 - **Validation System**: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`
 - **Template Engine**: `.opencode/skill/system-spec-kit/scripts/utils/template-structure.js`
 <!-- /ANCHOR:cross-refs -->

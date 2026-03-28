@@ -34,7 +34,7 @@ templates/
 ├── level_3/                 # Pre-composed Level 3
 ├── level_3+/                # Pre-composed Level 3+
 │
-└── [cross-level templates]  # handover.md, debug-delegation.md, research.md
+└── [cross-level templates]  # handover.md, debug-delegation.md, research/research.md
 ```
 
 > **IMPORTANT:** Always copy templates from `level_N/` folders for new specs. The `core/` and `addendum/` folders are source components.
@@ -69,7 +69,7 @@ For iterative work within a spec folder:
 Format: `NNN-topic-name`
 
 ```
-specs/007-feature/
+007-feature/
 ├── 001-initial-implementation/
 ├── 002-bug-fixes/
 └── 003-performance-optimization/
@@ -128,7 +128,7 @@ specs/NNN-name/
 **Optional:**
 - `scratch/`
 - `memory/`
-- `research.md` - Extended research documentation
+- `research/research.md` - Extended research documentation
 
 ---
 

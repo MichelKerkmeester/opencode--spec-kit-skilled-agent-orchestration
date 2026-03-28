@@ -201,7 +201,7 @@ Verification approach (line 524–529): Read each file → Verify/refute hypothe
 - Fill Technical Context (mark unknowns as NEEDS CLARIFICATION, line 537)
 - Fill Constitution Check section (line 538)
 - Evaluate gates (line 539)
-- Phase 0: Generate research.md to resolve unknowns (line 540)
+- Phase 0: Generate research/research.md to resolve unknowns (line 540)
 - Phase 1: Define component structure & interfaces (line 541)
 - Generate Testing Strategy with test pyramid (line 542)
 - Generate Success Metrics from spec criteria (line 543)
@@ -611,7 +611,7 @@ Before marking complete: implementation-summary.md exists with all required sect
 | Phase | Steps | Duration | Primary Output | Gate | Status |
 |-------|-------|----------|---|---|---|
 | **Understanding** | 1–5 | 40–60 min | spec.md, checklist.md (L2+) | None | Sequential |
-| **Research** | Phase 3 | 30–45 min | research.md (optional) | Triggered <60% confidence | Optional |
+| **Research** | Phase 3 | 30–45 min | research/research.md (optional) | Triggered <60% confidence | Optional |
 | **Planning** | 6–7 | 45–60 min | plan.md, tasks.md | Phase Gate (Hard) | After 7 |
 | **Analysis** | 8–9 | 20–25 min | Consistency report, greenlight | Pre-execution (Hard) | Sequential |
 | **Learning Capture** | 9.5 | <1 min | PREFLIGHT baseline | None | Before dev |

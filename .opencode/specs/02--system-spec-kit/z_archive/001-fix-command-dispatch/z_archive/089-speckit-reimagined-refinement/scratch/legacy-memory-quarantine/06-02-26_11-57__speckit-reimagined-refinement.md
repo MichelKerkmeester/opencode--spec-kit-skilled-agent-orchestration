@@ -180,7 +180,7 @@ Next: Continue implementation
 | tasks.md | EXISTS |
 | checklist.md | EXISTS |
 | decision-record.md | EXISTS |
-| research.md | EXISTS |
+| research/research.md | EXISTS |
 
 **Related Documentation:**
 - [`spec.md`](./spec.md) - Requirements specification
@@ -188,7 +188,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`research.md`](./research.md) - Research findings
+- [`research/research.md`](./research/research.md) - Research findings
 
 **Key Topics:** `escapelikepattern` | `recommendation` | `comprehensive` | `contradiction` | `documentation` | `implemented` | `directories` | `remediation` | `centralized` | `references` | 
 
@@ -217,7 +217,7 @@ Next: Continue implementation
 
 - `.opencode/.../089-speckit-reimagined-refinement/decision-record.md` - Documentation
 
-- `.opencode/.../089-speckit-reimagined-refinement/research.md` - Documentation
+- `.opencode/.../089-speckit-reimagined-refinement/research/research/research.md` - Documentation
 
 - `.opencode/.../scratch/all-fixes.md` - Documentation
 
@@ -270,7 +270,7 @@ Comprehensive ecosystem-wide audit of the entire system-spec-kit skill using 10 
 | `.opencode/.../089-speckit-reimagined-refinement/tasks.md` | File modified (description pending) |
 | `.opencode/.../089-speckit-reimagined-refinement/checklist.md` | File modified (description pending) |
 | `.opencode/.../089-speckit-reimagined-refinement/decision-record.md` | File modified (description pending) |
-| `.opencode/.../089-speckit-reimagined-refinement/research.md` | File modified (description pending) |
+| `.opencode/.../089-speckit-reimagined-refinement/research/research/research.md` | File modified (description pending) |
 | `.opencode/.../scratch/all-fixes.md` | Updated all fixes |
 | `.opencode/.../scratch/all-new-things.md` | All-fixes.md (56 items) and all-new-things |
 

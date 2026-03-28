@@ -4,7 +4,7 @@ description: "Autonomous deep research and review loop protocol with iterative i
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
 argument-hint: "[topic|target] [:auto|:confirm|:review|:review:auto|:review:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.2.0
+version: 1.2.2.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -183,23 +183,24 @@ User invokes: /spec_kit:deep-research "topic"
     │  deep-research-config.json       │  Persists across iterations
     │  deep-research-state.jsonl      │
     │  deep-research-strategy.md      │
-    │  scratch/iteration-NNN.md       │
-    │  research.md (workflow-owned     │
+    │  research/iterations/iteration-NNN.md │
+    │  research/research.md (workflow-owned │
     │  progressive synthesis)         │
     └─────────────────────────────────┘
 ```
 
 Review mode uses a separate packet under `{spec_folder}/review/`:
 
-```
+```text
 review/
   deep-research-config.json            # Immutable after init: review parameters
   deep-research-state.jsonl            # Append-only review iteration log
   deep-review-strategy.md              # Review dimensions, findings, next focus
   deep-review-dashboard.md             # Auto-generated review dashboard
-  iteration-NNN.md                     # Write-once review findings
   .deep-research-pause                 # Pause sentinel checked between review iterations
   review-report.md                     # Final review report
+  iterations/
+    iteration-NNN.md                   # Write-once review findings
 ```
 
 ### Core Innovation: Fresh Context Per Iteration
@@ -229,7 +230,7 @@ Loop --> Read state --> Check convergence --> Dispatch @deep-research
   +--- Continue? --> Yes: next iteration
   |                  No: exit loop
   v
-Synthesize --> Compile final research.md
+Synthesize --> Compile final research/research.md
   |
 Save --> generate-context.js --> verify memory artifact
 ```
@@ -243,7 +244,7 @@ Save --> generate-context.js --> verify memory artifact
 | **Convergence** | Multi-signal detection: newInfoRatio, stuck count, questions answered |
 | **Strategy file** | "Persistent brain" recording what worked, failed, and where to look next |
 | **JSONL log** | Append-only structured log for machine-parseable iteration data |
-| **Progressive synthesis** | `progressiveSynthesis` defaults to `true`; the agent may update `research.md` incrementally, and the orchestrator always performs the final consolidation pass |
+| **Progressive synthesis** | `progressiveSynthesis` defaults to `true`; the agent may update `research/research.md` incrementally, and the orchestrator always performs the final consolidation pass |
 
 ---
 
@@ -261,7 +262,7 @@ Save --> generate-context.js --> verify memory artifact
 6. **Respect exhausted approaches** -- Never retry approaches in the "Exhausted" list
 7. **Cite sources** -- Every finding must cite `[SOURCE: url]` or `[SOURCE: file:line]`
 8. **Use generate-context.js for memory saves** -- Never manually create memory files
-9. **Treat research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research.md`
+9. **Treat research/research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research/research.md`
 10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
 11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
 12. **Quality guards must pass before convergence** -- Research mode: source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger. Review mode: evidence completeness, scope alignment, no inference-only, severity coverage, and cross-reference checks must pass (see convergence.md Section 10.4)
@@ -277,7 +278,7 @@ Save --> generate-context.js --> verify memory artifact
 4. **Ask the user** -- Autonomous execution; make best-judgment decisions
 5. **Skip convergence checks** -- Every iteration must be evaluated
 6. **Modify config after init** -- Config is read-only after initialization
-7. **Overwrite prior findings** -- Append to research.md, never replace
+7. **Overwrite prior findings** -- Append to research/research.md, never replace
 
 ### Iteration Status Enum
 
@@ -321,8 +322,8 @@ These concepts remain documented for future design work, but they are not part o
 
 | Template | Purpose | Usage |
 |----------|---------|-------|
-| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to `scratch/` during research init |
-| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to `scratch/` during research init |
+| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to `research/` during research init |
+| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to `research/` during research init |
 | [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
 | [deep_review_strategy.md](assets/deep_review_strategy.md) | Review strategy file | Copied to `{spec_folder}/review/` during review init |
 | [deep_review_dashboard.md](assets/deep_review_dashboard.md) | Review dashboard template | Auto-generated each review iteration |
@@ -349,7 +350,7 @@ Agent runtime paths:
 ### Loop Completion
 - Research loop ran to convergence or max iterations
 - All state files present and consistent (config, JSONL, strategy)
-- research.md produced with findings from all iterations
+- research/research.md produced with findings from all iterations
 - Memory context saved via generate-context.js
 
 ### Quality Gates
@@ -358,7 +359,7 @@ Agent runtime paths:
 |------|----------|----------|
 | **Pre-loop** | Config valid, strategy initialized, state log created | Yes |
 | **Per-iteration** | iteration-NNN.md written, JSONL appended, strategy updated | Yes |
-| **Post-loop** | research.md exists with content, convergence report generated | Yes |
+| **Post-loop** | research/research.md exists with content, convergence report generated | Yes |
 | **Quality guards** | Source diversity (>=2), focus alignment, no single-weak-source | Yes |
 | **Memory save** | memory/*.md created via generate-context.js | No |
 
@@ -404,12 +405,12 @@ Before research:
   --> Loads prior research into strategy.md "Known Context"
 
 During research (each iteration):
-  Agent writes scratch/iteration-NNN.md
-  Agent updates scratch/deep-research-strategy.md
-  Agent appends scratch/deep-research-state.jsonl
+  Agent writes research/iterations/iteration-NNN.md
+  Agent updates research/deep-research-strategy.md
+  Agent appends research/deep-research-state.jsonl
 
 During review (each iteration):
-  Agent writes {spec_folder}/review/iteration-NNN.md
+  Agent writes {spec_folder}/review/iterations/iteration-NNN.md
   Agent updates {spec_folder}/review/deep-review-strategy.md
   Agent appends {spec_folder}/review/deep-research-state.jsonl
 
@@ -440,7 +441,7 @@ After research:
 3. Iterations 1-3: Broad survey, official docs, codebase patterns
 4. Iterations 4-6: Deep dive into specific strategies, edge cases
 5. Iteration 7: Convergence detected after recent newInfoRatio values stay below the configured threshold
-6. Synthesis produces 17-section research.md
+6. Synthesis produces 17-section research/research.md
 7. Memory saved via generate-context.js
 
 **Narrow Research with Early Convergence**:
@@ -448,7 +449,7 @@ After research:
 2. Init creates config with 2 key questions
 3. Iteration 1: Finds definitive answer from official specs
 4. All questions answered after iteration 1
-5. Loop stops cleanly, research.md produced
+5. Loop stops cleanly, research/research.md produced
 
 **Stuck Recovery Example**:
 1. Iterations 4-6 all have newInfoRatio below the configured threshold

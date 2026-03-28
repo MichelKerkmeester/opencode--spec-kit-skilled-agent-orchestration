@@ -73,7 +73,7 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 | Codex runtime count (`.codex/agents/*.toml`) | PASS (10 files) |
 | Gemini runtime count (`find -L .gemini/agents`) | PASS (10 files) |
 | Gemini symlink/runtime-path verification | PASS |
-| Stale research.md naming removed from packet docs | PASS |
+| Stale research/research.md naming removed from packet docs | PASS |
 | Strict spec validation | PASS (0 errors, 2 non-blocking warnings for custom Pass 2 sections) |
 <!-- /ANCHOR:verification -->
 

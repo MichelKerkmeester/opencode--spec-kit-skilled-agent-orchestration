@@ -143,7 +143,7 @@ Memory Command Alignment - Session Complete
 
 ## Session Summary
 
-Aligned the `/memory` command (search.md) with the structural patterns used in save.md, complete.md, and research.md. Also updated the workflows-memory SKILL.md to reflect the consolidated command structure.
+Aligned the `/memory` command (search.md) with the structural patterns used in save.md, complete.md, and research/research.md. Also updated the workflows-memory SKILL.md to reflect the consolidated command structure.
 
 ## Work Completed
 
@@ -217,7 +217,7 @@ Aligned the `/memory` command (search.md) with the structural patterns used in s
 ## Verification Performed
 
 Used Sequential Thinking MCP for thorough analysis:
-- Compared all 4 command files (memory.md, save.md, complete.md, research.md)
+- Compared all 4 command files (memory.md, save.md, complete.md, research/research.md)
 - Verified 14-point structural alignment checklist
 - Confirmed all section cross-references are correct
 - Verified no stale command references remain in SKILL.md

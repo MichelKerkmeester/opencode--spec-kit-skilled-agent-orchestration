@@ -71,7 +71,7 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 | `.opencode/agent/copilot/review.md` | Modify | Add model field `sonnet-4-6`; remove stale comment |
 | `.opencode/agent/copilot/speckit.md` | Modify | `sonnet-4.5` → `sonnet-4-6` |
 | `.opencode/agent/copilot/write.md` | Modify | `sonnet-4.5` → `sonnet-4-6` |
-| `.opencode/agent/copilot/research.md` | Modify | Delete `model:` line (opus-4.6 → inherit) |
+| `.opencode/agent/copilot/research/research/research.md` | Modify | Delete `model:` line (opus-4.6 → inherit) |
 | `.opencode/agent/copilot/debug.md` | Modify | Delete `model:` line (opus-4.6 → inherit) |
 | `.claude/agents/context.md` | Modify | `haiku` → `sonnet` |
 | `.claude/agents/handover.md` | Modify | `haiku` → `sonnet` |

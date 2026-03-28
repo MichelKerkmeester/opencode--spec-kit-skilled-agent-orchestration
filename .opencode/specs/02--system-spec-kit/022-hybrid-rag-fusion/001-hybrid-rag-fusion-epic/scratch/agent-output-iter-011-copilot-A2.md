@@ -64,7 +64,7 @@ I found the hybrid-rag-fusion spec trail. Next I’m reading the current researc
 
 ● Read recent deep research state (shell)
   │ tail -n 25 '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-
-  │ kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/scratch/deep-research-state.jsonl'
+  │ kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research/deep-research-state.jsonl'
   └ 25 lines...
 
 ● memory_context

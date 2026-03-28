@@ -40,7 +40,7 @@ This implementation applies the approved 043 policy refinements to `sk-code--ope
 
 ### Definition of Ready
 - [x] Problem statement and fixed scope are documented in `spec.md`.
-- [x] Research synthesis and implementation recommendations are complete in `research.md` and `scratch/*.md`.
+- [x] Research synthesis and implementation recommendations are complete in `research/research.md` and `scratch/*.md`.
 - [x] Scope lock is clear for target files in `sk-code--opencode` and conditional optional `sk-code--review` files.
 
 ### Definition of Done
@@ -65,7 +65,7 @@ Governance-first documentation refactor with deterministic verification and clos
 - **Global Quality Sweep Workstream**: Runs required closure protocol across every changed file before completion claim.
 
 ### Data Flow
-1. Inputs from `spec.md`, `research.md`, and `scratch/*.md` define mandatory requirements and boundaries.
+1. Inputs from `spec.md`, `research/research.md`, and `scratch/*.md` define mandatory requirements and boundaries.
 2. Decision record locks policy tradeoffs so implementation text remains consistent.
 3. File edits are executed in dependency order: shared policy, language guides, checklists, optional review files.
 4. Verification commands produce evidence for checklist items and quality sweep table.
@@ -78,7 +78,7 @@ Governance-first documentation refactor with deterministic verification and clos
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preparation and Baseline Freeze
-- [x] Confirm analysis completion from existing `spec.md`, `research.md`, and `scratch/*.md` artifacts.
+- [x] Confirm analysis completion from existing `spec.md`, `research/research.md`, and `scratch/*.md` artifacts.
 - [ ] Freeze in-scope file list from `spec.md` Section 3 to prevent scope drift.
 - [ ] Capture pre-change baseline snippets for comment policy, header conventions, and checklist principle coverage.
 
@@ -168,7 +168,7 @@ rg -n "KISS|DRY|SOLID|module|adapter|interface|abstraction|responsibility|depend
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `spec.md` requirements and scope table | Internal | Green | Implementation cannot proceed without strict scope lock |
-| `research.md` recommendations and evidence | Internal | Green | Policy deltas risk drifting from validated findings |
+| `research/research.md` recommendations and evidence | Internal | Green | Policy deltas risk drifting from validated findings |
 | `scratch/*.md` analysis artifacts | Internal | Green | Tradeoff decisions lose provenance and acceptance mapping |
 | Existing `sk-code--opencode` file structure | Internal | Green | Cross-language consistency updates become non-deterministic |
 | Optional `sk-code--review` baseline resources | Internal | Green | Conditional alignment phase cannot execute if trigger is met |
@@ -342,7 +342,7 @@ See `decision-record.md` for full ADR set and tradeoffs.
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation
-**Files**: `spec.md`, `research.md`, `scratch/*.md`, `decision-record.md`
+**Files**: `spec.md`, `research/research.md`, `scratch/*.md`, `decision-record.md`
 **Duration**: ~45 minutes
 **Agent**: Primary only (leaf constraint, no nested dispatch)
 
@@ -394,7 +394,7 @@ See `decision-record.md` for full ADR set and tradeoffs.
 
 | ID | Name | Owner | Files | Status |
 |----|------|-------|-------|--------|
-| W1 | Prior-work continuity lock | Primary | `spec.md`, `research.md`, `scratch/*.md` | Active |
+| W1 | Prior-work continuity lock | Primary | `spec.md`, `research/research.md`, `scratch/*.md` | Active |
 | W2 | Shared policy and header invariants | Primary | `sk-code--opencode/SKILL.md`, shared references | Planned |
 | W3 | Language style guide alignment | Primary | JS/TS/Python/Shell/Config style guides | Planned |
 | W4 | Checklist hardening | Primary | Universal + language checklists | Planned |

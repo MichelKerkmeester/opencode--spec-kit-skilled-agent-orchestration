@@ -78,5 +78,5 @@ contextType: "implementation"
 - **Plan**: `plan.md`
 - **Implementation Summary**: `implementation-summary.md`
 - **Child Phases**: `001-initial-enrichment/`, `002-scoring-and-filter/`, `003-field-integrity-and-schema/`, `004-indexing-and-coherence/`
-- **Research Artifact**: `research.md`
+- **Research Artifact**: `research/research.md`
 <!-- /ANCHOR:cross-refs -->

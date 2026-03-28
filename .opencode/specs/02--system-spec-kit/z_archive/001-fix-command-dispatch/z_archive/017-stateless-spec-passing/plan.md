@@ -27,7 +27,7 @@ Core commands that actively read/write `.spec-active` - MUST be refactored.
     - Remove `cat .spec-active`, `echo ... > .spec-active`
     - Update Output formats
 
-- [ ] **Refactor `research.md`** (2 refs):
+- [ ] **Refactor `research/research.md`** (2 refs):
     - Remove lines 83-85 (`echo ... > .spec-active`)
     - This file actively CREATES the marker (Gate 5 violation)
 

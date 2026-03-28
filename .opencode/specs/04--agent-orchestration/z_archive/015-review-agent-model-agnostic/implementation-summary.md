@@ -49,7 +49,7 @@ Removed the hardcoded `model: github-copilot/claude-opus-4.6` line from the revi
 | `.opencode/command/spec_kit/assets/*.yaml` (13 files) | YAML asset files | Contain `model: opus` for orchestrator dispatch modes, not review agent |
 | `.opencode/agent/context.md` | Agent file | Own model config, unrelated to review |
 | `.opencode/agent/debug.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/research.md` | Agent file | Own model config, unrelated to review |
+| `.opencode/agent/research/research/research.md` | Agent file | Own model config, unrelated to review |
 | `.opencode/agent/handover.md` | Agent file | Own model config, unrelated to review |
 | `.opencode/agent/speckit.md` | Agent file | Own model config, unrelated to review |
 | `.opencode/agent/write.md` | Agent file | Own model config, unrelated to review |

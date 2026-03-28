@@ -154,7 +154,7 @@ Parse spec-folder documents into structured signals that stateless mode can reus
   - `tasks.md`
   - `checklist.md`
   - `decision-record.md`
-  - `research.md`
+  - `research/research.md`
   - `handover.md`
 - Extract:
   - feature title / task title

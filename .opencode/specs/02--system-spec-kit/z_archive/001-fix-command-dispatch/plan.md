@@ -91,7 +91,7 @@ User runs /spec_kit:complete
 ### Phase 2: Targeted Fixes (C+D) — 4 .md files
 - [ ] Fence unfenced dispatch templates in complete.md (6 unfenced) (Fix C)
 - [ ] Fence unfenced dispatch templates in debug.md (3 unfenced) (Fix C)
-- [ ] Fence unfenced dispatch templates in research.md (2 unfenced) (Fix C)
+- [ ] Fence unfenced dispatch templates in research/research.md (2 unfenced) (Fix C)
 - [ ] Fence unfenced dispatch templates in plan.md (2 unfenced) (Fix C)
 - [ ] Reduce @agent refs in complete.md (19 → <10) (Fix D)
 - [ ] Reduce @agent refs in debug.md (13 → <8) (Fix D)
@@ -154,7 +154,7 @@ User runs /spec_kit:complete
 | complete.md | 19 | L140 | 6 unfenced | MISSING | HIGH | CRITICAL | 1 |
 | debug.md | 13 | L174 | 3 unfenced | MISSING | MEDIUM | MEDIUM | 2 |
 | implement.md | 12 | L171 | 2 fenced | MISSING | MEDIUM | MEDIUM | 3 |
-| research.md | 7 | L145 | 2 unfenced | MISSING | MEDIUM | MEDIUM | 4 |
+| research/research.md | 7 | L145 | 2 unfenced | MISSING | MEDIUM | MEDIUM | 4 |
 | plan.md | 5 | L143 | 2 unfenced | MISSING | LOW | MEDIUM | 5 |
 | handover.md | 5 | L140 | 2 fenced | MISSING | LOW | LOW | 6 |
 | resume.md | 0 | L183 | 0 | MISSING | LOW | LOW | 7 |

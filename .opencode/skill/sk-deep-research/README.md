@@ -38,7 +38,7 @@ trigger_phrases:
 
 `sk-deep-research` runs autonomous, multi-iteration investigation loops for topics that require more than a single pass to understand. Each iteration dispatches a fresh agent with no prior context, using file-based state (JSONL log, strategy file, iteration notes) to carry knowledge forward without degrading the context window. When information yield drops below a configurable threshold across multiple consecutive iterations, a 3-signal composite convergence algorithm stops the loop and triggers final synthesis.
 
-The skill operates in two functional modes. Research mode investigates external topics using WebFetch, Grep, and Glob across web sources and the codebase, producing a `research.md` synthesis document. Review mode audits code quality using Read and Grep only, targeting a spec folder or skill package, and produces `{spec_folder}/review/review-report.md` with a binary release readiness verdict. Both modes share the same loop architecture, state format, and convergence detection. The divergence is in agent behavior and output format.
+The skill operates in two functional modes. Research mode investigates external topics using WebFetch, Grep, and Glob across web sources and the codebase, producing a `research/research.md` synthesis document. Review mode audits code quality using Read and Grep only, targeting a spec folder or skill package, and produces `{spec_folder}/review/review-report.md` with a binary release readiness verdict. Both modes share the same loop architecture, state format, and convergence detection. The divergence is in agent behavior and output format.
 
 All continuity across iterations comes from disk, not agent memory. The orchestrating command reads JSONL state, checks convergence, and dispatches the next agent with the current strategy file as its only context. This approach eliminates context window exhaustion for long sessions and makes state fully inspectable, resumable, and recoverable.
 
@@ -53,7 +53,7 @@ All continuity across iterations comes from disk, not agent memory. The orchestr
 | Convergence signals | 3 (rolling avg 0.30, MAD 0.35, question entropy 0.35) | 3 (rolling avg 0.30, MAD 0.25, dimension coverage 0.45) |
 | Quality guards | 3 binary checks (source diversity, focus alignment, no single-weak-source) | 3 binary gates (evidence, scope, coverage) |
 | Tool budget per iteration | 8-11 (max 12) | 9-12 (max 13) |
-| Output document | `research.md` (17-section synthesis) | `{spec_folder}/review/review-report.md` (9-section findings-first report) |
+| Output document | `research/research.md` (17-section synthesis) | `{spec_folder}/review/review-report.md` (9-section findings-first report) |
 | Review dimensions | N/A | 4 (Correctness, Security, Traceability, Maintainability) |
 
 ### How This Compares
@@ -76,7 +76,7 @@ All continuity across iterations comes from disk, not agent memory. The orchestr
 | 3-signal convergence | Rolling average, MAD noise floor, and question entropy cast weighted votes |
 | Quality guards | Binary pre-convergence checks block premature STOP if evidence is thin |
 | Auto-resume | Detects existing state and continues from the last completed iteration |
-| Progressive synthesis | Agent may update `research.md` incrementally. Workflow owns final consolidation. |
+| Progressive synthesis | Agent may update `research/research.md` incrementally. Workflow owns final consolidation. |
 | Stuck recovery | Diagnosis-led failure classification triggers targeted recovery actions |
 | Review mode | Iterative code audit with P0/P1/P2 severity, adversarial self-check, and release verdict |
 | Negative knowledge | Ruled-out directions tracked as first-class output in iteration files and JSONL |
@@ -113,7 +113,7 @@ All continuity across iterations comes from disk, not agent memory. The orchestr
 
 ```bash
 # Research: verify synthesis was produced
-cat {spec_folder}/research.md | head -30
+cat {spec_folder}/research/research.md | head -30
 
 # Review: verify report and verdict
 grep "Release Readiness Verdict" {spec_folder}/review/review-report.md
@@ -136,7 +136,7 @@ Stuck recovery goes beyond a simple retry. When consecutive iterations fall belo
 
 Review mode reuses the same loop architecture but changes what the agent does inside each iteration. Instead of fetching and summarizing external sources, it reads code with Grep and Read, maps findings to four review dimensions (Correctness, Security, Traceability, Maintainability), and runs an adversarial self-check on any P0 finding before recording it. The synthesis produces a 9-section `{spec_folder}/review/review-report.md` with a three-way verdict: PASS, CONDITIONAL, or FAIL. A PASS verdict includes a `hasAdvisories` flag when P2 findings exist, so callers know the code ships clean but has non-blocking notes.
 
-Progressive synthesis lets the agent update `research.md` incrementally during the loop, rather than waiting until all iterations complete. This means partial results are readable at any point. The orchestrator always performs a final consolidation pass regardless of how many partial updates occurred.
+Progressive synthesis lets the agent update `research/research.md` incrementally during the loop, rather than waiting until all iterations complete. This means partial results are readable at any point. The orchestrator always performs a final consolidation pass regardless of how many partial updates occurred.
 
 ### 3.2 FEATURE REFERENCE
 
@@ -210,27 +210,33 @@ Progressive synthesis lets the agent update `research.md` incrementally during t
     review_mode_contract.yaml           # Review mode behavioral contract
 ```
 
-**Research runtime state files** (created in `{spec_folder}/scratch/` during init)
+**Research runtime state files** (created in `{spec_folder}/research/` during init)
 
-```
-scratch/
+```text
+research/
   deep-research-config.json            # Immutable after init: loop parameters
   deep-research-state.jsonl            # Append-only structured log of all research iterations
   deep-research-strategy.md            # Mutable: what worked, what failed, next focus
   deep-research-dashboard.md           # Auto-regenerated each research iteration
-  iteration-NNN.md                     # Write-once per-iteration detailed findings
-research.md                            # Workflow-owned canonical synthesis output
+  research-ideas.md                    # Optional deferred ideas / promising tangents
+  .deep-research-pause                 # Pause sentinel checked between research iterations
+  research/research.md                 # Workflow-owned canonical synthesis output
+  iterations/
+    iteration-NNN.md                   # Write-once per-iteration detailed findings
+```
 
 **Review runtime state files** (created in `{spec_folder}/review/` during init)
 
+```text
 review/
   deep-research-config.json            # Immutable after init: review parameters
   deep-research-state.jsonl            # Append-only structured log of all review iterations
-  deep-review-strategy.md               # Mutable: review dimensions, findings, next focus
-  deep-review-dashboard.md              # Auto-regenerated after each review iteration
-  iteration-NNN.md                     # Write-once per-iteration detailed findings
+  deep-review-strategy.md              # Mutable: review dimensions, findings, next focus
+  deep-review-dashboard.md             # Auto-regenerated after each review iteration
   .deep-research-pause                 # Pause sentinel checked between review iterations
   review-report.md                     # Review mode: 9-section findings-first report
+  iterations/
+    iteration-NNN.md                   # Write-once per-iteration detailed findings
 ```
 
 **Agent definitions** (resolved by active runtime)
@@ -264,7 +270,7 @@ review/
 | `mode` | string | `"research"` or `"review"` |
 | `maxIterations` | number | Hard cap copied from command parameter |
 | `convergenceThreshold` | number | Rolling avg threshold copied from command parameter |
-| `progressiveSynthesis` | boolean | Allow agent to update `research.md` incrementally (default `true`) |
+| `progressiveSynthesis` | boolean | Allow agent to update `research/research.md` incrementally (default `true`) |
 | `specFolder` | string | Resolved spec folder path |
 | `topic` | string | Research topic or review target passed at invocation |
 
@@ -280,7 +286,7 @@ review/
 
 ### Pause and Resume
 
-Create a file at `scratch/.deep-research-pause` during a running research loop to halt between iterations. Delete the file to resume. Auto-resume detects existing JSONL state on reinvocation and continues from the last completed iteration without re-running prior work. For review mode, use `{spec_folder}/review/.deep-research-pause`.
+Create a file at `research/.deep-research-pause` during a running research loop to halt between iterations. Delete the file to resume. Auto-resume detects existing JSONL state on reinvocation and continues from the last completed iteration without re-running prior work. For review mode, use `{spec_folder}/review/.deep-research-pause`.
 
 <!-- /ANCHOR:configuration -->
 
@@ -302,7 +308,7 @@ Expected progression:
 - Iterations 1-3: broad survey across official docs, MDN, codebase patterns
 - Iterations 4-7: deep dive into specific reconnection strategies and browser edge cases
 - Iteration 8: convergence detected (rolling avg newInfoRatio below 0.05 for 3 iterations)
-- Synthesis produces `research.md` with full findings
+- Synthesis produces `research/research.md` with full findings
 - Memory saved via `generate-context.js`
 
 ### Example 2: Narrow Research with Early Convergence
@@ -318,7 +324,7 @@ Expected progression:
 - Iteration 1: finds definitive answer from official browser specs
 - Question entropy signal votes STOP (all questions answered)
 - Loop stops cleanly after 1 iteration
-- Synthesis produces compact `research.md`
+- Synthesis produces compact `research/research.md`
 
 ### Example 3: Iterative Code Quality Review
 
@@ -347,13 +353,13 @@ Expected progression:
 |-------------|---------------|-----|
 | Loop stops after 1-2 iterations | Convergence threshold too high, or initial questions answered immediately | Lower `--convergence` from 0.05 to 0.02 and re-run |
 | Loop repeats the same research | Exhausted approaches not tracked, or strategy.md not being read | Check that `strategy.md` "Exhausted Approaches" section is populated after each iteration |
-| Agent ignores state files | File paths in dispatch prompt do not match actual locations | Verify JSONL and strategy.md paths in the dispatch context match `{spec_folder}/scratch/` for research or `{spec_folder}/review/` for review |
-| JSONL parse error on resume | Partial write due to crash or interruption | Validate with `cat scratch/deep-research-state.jsonl \| jq .` for research, or the corresponding review JSONL under `{spec_folder}/review/` |
+| Agent ignores state files | File paths in dispatch prompt do not match actual locations | Verify JSONL and strategy.md paths in the dispatch context match `{spec_folder}/research/` for research or `{spec_folder}/review/` for review |
+| JSONL parse error on resume | Partial write due to crash or interruption | Validate with `cat research/deep-research-state.jsonl \| jq .` for research, or the corresponding review JSONL under `{spec_folder}/review/` |
 | Loop runs to max iterations without converging | Threshold too low or topic genuinely exhausted | Raise `--convergence` to 0.08 or 0.10 and re-run with auto-resume |
 | Agent dispatches a sub-agent | LEAF constraint violated in agent definition | Verify agent definition contains `task: deny` in its allowed-tools list |
 | Review finds no issues on known-bad code | Scope too narrow or files not discovered | Confirm scope includes all relevant files. Check dimension coverage in `{spec_folder}/review/deep-review-dashboard.md`. |
 | Review verdict appears wrong | P0 finding severity misclassified | Confirm adversarial self-check ran on the P0 finding in the relevant iteration file |
-| `research.md` is empty after synthesis | Progressive synthesis produced no content and final pass also failed | Check `scratch/iteration-NNN.md` files for content. Re-run synthesis step manually. |
+| `research/research.md` is empty after synthesis | Progressive synthesis produced no content and final pass also failed | Check `research/iterations/iteration-NNN.md` files for content. Re-run synthesis step manually. |
 
 <!-- /ANCHOR:troubleshooting -->
 
@@ -363,10 +369,10 @@ Expected progression:
 ## 8. FAQ
 
 **Q: Can I pause a running autonomous research loop?**
-A: Yes. Create a file at `scratch/.deep-research-pause` during the research loop. The orchestrator checks for this file between iterations and halts cleanly if it finds it. For review mode, use `{spec_folder}/review/.deep-research-pause`. Delete the file to continue.
+A: Yes. Create a file at `research/.deep-research-pause` during the research loop. The orchestrator checks for this file between iterations and halts cleanly if it finds it. For review mode, use `{spec_folder}/review/.deep-research-pause`. Delete the file to continue.
 
 **Q: What happens if the agent crashes mid-iteration?**
-A: The orchestrator attempts documented recovery tiers in order. If live recovery cannot continue safely, it halts and reports the failure. Partial state is recoverable from iteration files in `scratch/`. Re-invocation triggers auto-resume from the last completed iteration.
+A: The orchestrator attempts documented recovery tiers in order. If live recovery cannot continue safely, it halts and reports the failure. Partial state is recoverable from iteration files in `research/iterations/` for research mode or `review/iterations/` for review mode. Re-invocation triggers auto-resume from the last completed iteration.
 
 **Q: How do I extend research after convergence?**
 A: Raise `--max-iterations` above the number of completed iterations and re-invoke with the same topic. Auto-resume detects existing JSONL state and continues without repeating prior iterations.

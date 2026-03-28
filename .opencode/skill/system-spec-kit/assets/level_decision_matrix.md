@@ -47,7 +47,7 @@ Level 1 (Baseline):     spec.md + plan.md + tasks.md + implementation-summary.md
                               ↓
 Level 2 (Verification): Level 1 + checklist.md
                               ↓
-Level 3 (Full):         Level 2 + decision-record.md + optional research.md
+Level 3 (Full):         Level 2 + decision-record.md + optional research/research.md
                               ↓
 Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
 ```
@@ -269,7 +269,7 @@ If scope grows during implementation, escalate by adding the required files:
 | From Level | To Level                   | Action                                          | Files to Add                                                    |
 | ---------- | -------------------------- | ----------------------------------------------- | --------------------------------------------------------------- |
 | 1 → 2      | Add verification           | `checklist.md`                                  |                                                                 |
-| 2 → 3      | Add decision documentation | `decision-record.md` (+ optional `research.md`) |                                                                 |
+| 2 → 3      | Add decision documentation | `decision-record.md` (+ optional `research/research.md`) |                                                                 |
 | 3 → 3+     | Add governance             | AI execution protocol + extended checklist      | Sign-off section in spec.md + multi-agent coordination patterns |
 
 **Changelog example:**

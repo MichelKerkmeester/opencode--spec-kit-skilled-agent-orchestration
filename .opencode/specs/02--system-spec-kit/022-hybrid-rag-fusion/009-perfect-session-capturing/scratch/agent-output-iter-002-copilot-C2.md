@@ -38,7 +38,7 @@ I found relevant code hits and now I’m drilling into exact documentation text 
   │ "saved but not indexed|not
   │ indexed|indexability|index|searchable|memory_index_scan|memory_save|quality
   │ gate|quality|skipped|manual index|recover|recovery|soft-fail|soft fail" (.opencode/specs/02--sys
-  │ tem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research.md)
+  │ tem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research/research/research.md)
   └ 25 lines found
 
 ● Search (grep)
@@ -70,7 +70,7 @@ I found relevant code hits and now I’m drilling into exact documentation text 
   │ .opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts
   └ L60:84 (25 lines read)
 
-● Read research.md
+● Read research/research.md
   │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research
   │ .md
   └ L56:76 (21 lines read)
@@ -187,7 +187,7 @@ Yes, mostly. It is explicitly documented as intentional policy in phase 018 (`wr
 `.opencode/specs/.../018-runtime-contract-and-indexability/spec.md:40-56, 82-91`.  
 It is also reflected in the feature catalog (`V2 ... writeable but intentionally skips semantic indexing`) at  
 `.opencode/skill/system-spec-kit/feature_catalog/.../12-session-capturing-pipeline-quality.md:80-86`.  
-But `research.md` still contains older wording (`qualityValidation.valid` gate) that now reads stale (`research.md:62-64`).
+But `research/research.md` still contains older wording (`qualityValidation.valid` gate) that now reads stale (`research/research.md:62-64`).
 
 2. **User-visible messages (exact):**  
 `QUALITY_GATE_WARN: Save continuing, but semantic indexing will be skipped due to validation rules: ...` (`workflow.ts:2155-2157`)  

@@ -23,7 +23,7 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 
 **Key Decisions**: adopt an API-first boundary for cross-area consumers, consolidate duplicate helpers into shared modules, break handler cycles with focused local utilities, and enforce the contract with layered checks rather than documentation alone.
 
-**Critical Dependencies**: `decision-record.md`, `research.md`, import-policy enforcement scripts, and the audit evidence preserved under `scratch/` and `memory/`.
+**Critical Dependencies**: `decision-record.md`, `research/research.md`, import-policy enforcement scripts, and the audit evidence preserved under `scratch/` and `memory/`.
 
 ---
 
@@ -101,7 +101,7 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 | REQ-005 | Enforcement is automated, not only documented | Import-policy and related boundary checks run in normal validation workflows |
 | REQ-006 | Verification-driven follow-up work is captured honestly | Later naming, routing, README, symlink, and source-dist fixes are represented as completed audit follow-up work |
 | REQ-007 | Root docs read as a completed standalone spec | No stale parent-coordination or child-phase routing language remains in the restored root docs |
-| REQ-008 | Supporting evidence remains traceable | Readers can follow decisions and research through `decision-record.md`, `research.md`, `scratch/`, and `memory/` |
+| REQ-008 | Supporting evidence remains traceable | Readers can follow decisions and research through `decision-record.md`, `research/research.md`, `scratch/`, and `memory/` |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -218,7 +218,7 @@ Archived review notes scored the completed audit at **87/100**, which remains a 
 ## RELATED DOCUMENTS
 
 - **Decision Records**: See `decision-record.md`
-- **Research**: See `research.md`
+- **Research**: See `research/research.md`
 - **Evidence**: See `scratch/` and `memory/`
 
 ---

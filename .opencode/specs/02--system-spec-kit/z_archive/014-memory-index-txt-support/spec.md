@@ -258,7 +258,7 @@ Enable `.txt` file indexing in `memory_index_scan` to surface command documentat
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Technical Research**: See `research.md`
+- **Technical Research**: See `research/research.md`
 
 ---
 
