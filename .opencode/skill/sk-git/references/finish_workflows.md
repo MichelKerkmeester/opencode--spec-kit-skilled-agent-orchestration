@@ -320,6 +320,85 @@ echo "No worktree cleanup needed."
 
 **Validation**: `worktree_cleaned`
 
+
+### Step 6: Create Release (Optional)
+
+**Purpose**: Create an annotated git tag AND a GitHub release with formatted release notes. This step runs only when the user explicitly asks for a release.
+
+**Trigger phrases**: "create release", "make release", "tag release", "new release", "publish release", "release vX.X.X", "new version"
+
+**Actions**:
+
+1. **Determine version number**:
+   - If user provided version: use it exactly
+   - If not: check latest tag and suggest next patch increment
+   ```bash
+   git tag --sort=-v:refname | head -5
+   ```
+
+2. **Locate or create changelog**:
+   - Check for existing changelog at `.opencode/changelog/*/vX.X.X.X.md`
+   - If found: use as release notes source
+   - If not found: ask user whether to create one or use commit log
+
+3. **Create annotated tag**:
+   ```bash
+   git tag -a vX.X.X.X -m "vX.X.X.X: Release description"
+   ```
+
+4. **Push commit(s) and tag to remote**:
+   ```bash
+   git push origin <branch> --tags
+   ```
+
+5. **Create GitHub release** (CRITICAL — tags alone do NOT create releases):
+   ```bash
+   gh release create vX.X.X.X \
+     --title "vX.X.X.X — Release Title" \
+     --notes "$(cat <<'EOF'
+   ## Summary
+   <1-3 bullet points with **bold** key stats>
+
+   ## Highlights
+
+   ### Category: <Type>
+   - **Feature name** -- Description
+
+   ## Files Changed
+   <table or bullet list of key files>
+
+   ## Upgrade
+   1. Step one
+   2. Step two
+
+   Full changelog: [changelog/<component>/vX.X.X.X.md](<link>)
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   EOF
+   )"
+   ```
+
+**Important**:
+- `gh release create` is MANDATORY — pushing a tag does NOT create a GitHub release
+- Release notes should follow PUBLIC_RELEASE.md Section 7 template format
+- GitHub release body must NOT include local changelog wrapper lines (`# vX.X.X.X`, `> Part of ...`, `## [**X.X.X.X**] - date`)
+- If a changelog file exists, extract the body (skip the wrapper) for the release notes
+- Always include a link back to the full changelog file in the repo
+
+**Validation**: `release_created`
+
+**Common Mistakes**:
+
+**Only pushing tag without gh release create**:
+- **Problem**: Tag appears under "Tags" on GitHub but NOT under "Releases". No release page, no release notes, no downloadable assets.
+- **Fix**: Always run `gh release create` after pushing the tag
+- **Detection**: If user says "release" or "make release" → must include `gh release create`, not just `git tag` + `git push`
+
+**Using --notes-file with unprocessed changelog**:
+- **Problem**: Local changelog files include wrapper headers (`# vX.X.X.X`, `> Part of ...`) that look wrong on GitHub
+- **Fix**: Strip wrapper lines or compose release body directly with HEREDOC
+- **Detection**: Check if notes start with `# v` or `> Part of` → strip before publishing
+
 ---
 
 <!-- /ANCHOR:complete-workflow -->
@@ -336,6 +415,7 @@ echo "No worktree cleanup needed."
 | Feature branch (long-running) | Option 2 (Create PR) | Aligns with git-worktrees feature_branch strategy |
 | Hotfix for production | Option 1 or 2 (Merge/PR) | Never discard or keep hotfixes |
 | Spike/research | Option 4 (Discard) | Research doesn't need to be merged |
+| Release requested by user | Step 6 (Create Release) | Creates annotated tag + GitHub release with formatted notes |
 
 ---
 
@@ -572,6 +652,54 @@ Deleted branch experiment/alternative-approach
 ✓ Cleaned up worktree
 
 ✅ Complete! Branch and worktree discarded.
+```
+
+
+### Example 5: Commit, Push, and Release
+
+```text
+User: "commit and push all changes and create release v2.1.0.0"
+
+Agent: "I'm using the git-commit skill to commit, then creating the release."
+
+[Commit and Push]
+> git add -A
+> git commit -m "release(v2.1.0.0): add OAuth2 authentication + API rate limiting"
+> git push origin main
+
+[Create Changelog]
+Created .opencode/changelog/01--system-spec-kit/v2.1.0.0.md
+
+[Tag and Release]
+> git tag -a v2.1.0.0 -m "v2.1.0.0: OAuth2 authentication + API rate limiting"
+> git push origin v2.1.0.0
+
+> gh release create v2.1.0.0 \
+    --title "v2.1.0.0 — OAuth2 Authentication + API Rate Limiting" \
+    --notes "$(cat <<'EOF'
+## Summary
+
+Added **OAuth2 authentication** flow and **API rate limiting** with configurable thresholds.
+
+## Highlights
+
+### Category: Features
+- **OAuth2 authentication** -- Complete login/logout flow with JWT token management
+- **API rate limiting** -- Configurable per-endpoint rate limits with Redis backing
+
+## Upgrade
+1. Run database migration: `npm run migrate`
+2. Set `OAUTH_CLIENT_ID` and `OAUTH_SECRET` environment variables
+
+Full changelog: [changelog/01--system-spec-kit/v2.1.0.0.md](https://github.com/user/repo/blob/main/.opencode/changelog/01--system-spec-kit/v2.1.0.0.md)
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
+
+✓ Release created: https://github.com/user/repo/releases/tag/v2.1.0.0
+
+✅ Complete! Committed, pushed, tagged, and GitHub release published.
 ```
 
 ---
@@ -893,6 +1021,7 @@ Which option? (1-3)
 - ✅ User informed of final state and next steps
 - ✅ No data loss or accidental deletions
 - ✅ Git repository in expected final state
+- ✅ If release requested: annotated tag created AND `gh release create` executed (not just tag pushed)
 
 ---
 

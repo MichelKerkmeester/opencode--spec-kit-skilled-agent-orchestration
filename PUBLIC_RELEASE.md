@@ -160,16 +160,34 @@ git push origin main
 
 ```bash
 cd ~/your-project/
-git tag -a vX.X.X.X -m "Release description"
+
+# 1. Create annotated tag
+git tag -a vX.X.X.X -m "vX.X.X.X: Release description"
+
+# 2. Push tag
 git push origin vX.X.X.X
 
-# Extract GitHub release body from changelog (exclude local wrapper)
-awk 'f;/^## \[\*\*/{f=1}' .opencode/changelog/00--opencode-environment/vX.X.X.X.md > /tmp/release-notes.md
-
+# 3. Create GitHub release (MANDATORY — tags alone do NOT appear as releases)
 gh release create vX.X.X.X \
-  --title "vX.X.X.X - Release Title" \
-  --notes-file /tmp/release-notes.md
+  --title "vX.X.X.X — Release Title" \
+  --notes "$(cat <<'EOF'
+## Summary
+<release notes body — see Section 7 for format>
+
+## Highlights
+...
+
+## Upgrade
+...
+
+Full changelog: [changelog/<component>/vX.X.X.X.md](link)
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
 ```
+
+> **CRITICAL**: `git push origin vX.X.X.X` only pushes the tag — it does NOT create a GitHub Release. You MUST run `gh release create` to make the release visible on the GitHub Releases page with formatted notes and downloadable assets.
 
 ---
 
@@ -177,17 +195,17 @@ gh release create vX.X.X.X \
 
 | Field              | Value                                                                                  |
 | ------------------ | -------------------------------------------------------------------------------------- |
-| **Version**        | v3.0.0.0                                                                               |
-| **Release Date**   | 2026-03-27                                                                             |
+| **Version**        | v3.0.0.2                                                                               |
+| **Release Date**   | 2026-03-28                                                                             |
 | **GitHub**         | https://github.com/MichelKerkmeester/opencode-spec-kit-framework                       |
 | **Latest Release** | https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases/latest       |
-| **Release Notes**  | https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases/tag/v3.0.0.0 |
+| **Release Notes**  | https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases/tag/v3.0.0.2 |
 
 ### Release Notes
 
 Release notes for each version are stored as individual files in `.opencode/changelog/00--opencode-environment/vX.X.X.X.md`, formatted per the template in Section 7. For GitHub publishing, use an extracted body that excludes the local changelog wrapper (`# v...`, `> Part of ...`, `## [**x.x.x.x**] - date`).
 
-**Latest**: See `.opencode/changelog/00--opencode-environment/v3.0.0.0.md`
+**Latest**: See `.opencode/changelog/01--system-spec-kit/v3.0.0.2.md`
 
 ---
 
@@ -339,7 +357,7 @@ Releases use a 4-part versioning scheme: `MAJOR.MINOR.SERIES.PATCH`
 | `2.2.2.x` | 2.2.2.0     | Gemini CLI agent fleet + TOML commands + MCP server config                              |
 | `2.3.0.x` | 2.3.0.0     | Gemini CLI full provider integration (4th runtime: agents, commands, skills, MCP)        |
 | `2.4.0.x` | 2.4.0.0-3   | SpecKit/Review/Agents consolidation + @ultra-think agent + sk-git commit logic           |
-| `3.0.0.x` | 3.0.0.0     | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases |
+| `3.0.0.x` | 3.0.0.0-2   | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases |
 
 ---
 
