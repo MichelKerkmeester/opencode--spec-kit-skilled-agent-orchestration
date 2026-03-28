@@ -108,9 +108,9 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | enable | `/memory:manage shared enable` | Enable shared memory (first-time setup, required) |
 | create | `/memory:manage shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create or update shared space. First create auto-grants owner access to the actor |
 | member | `/memory:manage shared member <spaceId> <tenantId> <type> <id> <role> (--actor-user <id> \| --actor-agent <id>)` | Set membership as an existing owner |
-| status | `/memory:manage shared status [--tenant <id>] [--user <id>] [--agent <id>]` | Inspect rollout status |
+| status | `/memory:manage shared status [--tenant <id>] (--actor-user <id> \| --actor-agent <id>)` | Inspect rollout status for a concrete caller |
 
-> **Note:** Shared memory is disabled by default. Run `/memory:manage shared` or `/memory:manage shared enable` to complete first-time setup before using other subcommands. Shared spaces stay deny-by-default after bootstrap: the first successful `create` auto-grants `owner` to the acting caller, and later access changes still require explicit membership updates.
+> **Note:** Shared memory is disabled by default. Run `/memory:manage shared` or `/memory:manage shared enable` to complete first-time setup before using other subcommands. Shared spaces stay deny-by-default after bootstrap: the first successful `create` auto-grants `owner` to the acting caller, and later access changes still require explicit membership updates. `shared_memory_enable()` requires authenticated caller context and succeeds only for the configured shared-memory admin; `shared status` likewise requires one actor identity so rollout access is evaluated for a real caller.
 
 <!-- /ANCHOR:commands -->
 
@@ -205,7 +205,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 /memory:manage shared member team-alpha tenant-1 user user-42 editor --actor-user user-1
 
 # View rollout status
-/memory:manage shared status
+/memory:manage shared status --tenant tenant-1 --actor-user user-42
 
 # Start async ingestion of multiple files
 /memory:manage ingest start /path/to/file1.md /path/to/file2.md
@@ -313,6 +313,8 @@ All 33 MCP tools mapped to their primary command home:
 
 No. Run `enable` only once during first-time setup. After that, the shared-memory subsystem stays active and you can use `shared create`, `shared member`, and `shared status` directly. Re-running `enable` on an already-enabled system returns `alreadyEnabled: true` without making changes.
 
+Enablement still requires the configured shared-memory admin and an authenticated caller context from the runtime session. If auth is missing or the caller is not the configured admin, the MCP tool returns an auth error instead of enabling the subsystem.
+
 **Q: When should I use `/memory:learn` vs `/memory:save`?**
 
 Use `/memory:learn` to create constitutional memories: short, always-surface rules that appear at the top of every search result (e.g., coding standards, project constraints). Use `/memory:save` to preserve session context, implementation decisions, and research findings tied to a specific spec folder. Constitutional memories apply globally. Saved context is scoped to a spec folder.
@@ -336,6 +338,8 @@ The scan re-indexes all memory files regardless of whether their content has cha
 | Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and `.opencode/specs/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
 | Search ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |
+| Ablation warns about missing IDs | `groundTruthQueryIds` do not exist in the active static dataset | Fix the requested IDs or rerun `scripts/evals/map-ground-truth-ids.ts` after DB rebuild/swap |
+| Ablation shows `Token budget overflow` with fewer than `recallK` candidates | Candidate truncation made Recall@K unreliable | Treat the run as investigation-only until truncation is fixed |
 | Shared space access denied | No membership | Use `/memory:manage shared member` to grant access |
 | Ingest job not found | Invalid or expired job ID | Start a new job with `/memory:manage ingest start` |
 | History returns empty | No PREFLIGHT/POSTFLIGHT records | Use `/memory:search preflight` before tasks, view with `/memory:search history` |

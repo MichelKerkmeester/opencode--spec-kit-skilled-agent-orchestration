@@ -654,11 +654,18 @@ Runs a controlled channel ablation study (R13-S3). Requires `SPECKIT_ABLATION=tr
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
+| `mode` | string | No | Evaluation mode. Defaults to `ablation`; use `k_sensitivity` for raw pre-fusion RRF K analysis |
 | `channels` | string[] | No | Channels to ablate: `vector`, `bm25`, `fts5`, `graph`, `trigger` (default: all) |
 | `groundTruthQueryIds` | number[] | No | Subset of ground truth query IDs to evaluate |
 | `recallK` | number | No | Recall cutoff K (default: 20) |
 | `storeResults` | boolean | No | Persist metrics to eval_metric_snapshots (default: true) |
 | `includeFormattedReport` | boolean | No | Include human-readable markdown report (default: true) |
+
+##### Behavior Notes
+
+- Missing `groundTruthQueryIds` now produce a warning and the run continues with the remaining IDs that exist in the static dataset.
+- If the report includes `Token budget overflow` and fewer than `recallK` candidates were evaluated, treat the run as investigation-only rather than a reliable Recall@K verdict.
+- After a DB rebuild or eval DB swap, rerun `scripts/evals/map-ground-truth-ids.ts` before comparing baselines or channel deltas.
 
 ##### Output
 
@@ -726,6 +733,8 @@ STATUS=OK ACTION=dashboard
 | Missing required parameter | `STATUS=FAIL ERROR="Missing <param> for <subcommand>"` |
 | Preflight/postflight specFolder mismatch | `STATUS=FAIL ERROR="specFolder must match preflight record"` |
 | SPECKIT_ABLATION not enabled | `STATUS=FAIL ERROR="Requires SPECKIT_ABLATION=true"` |
+| Ablation warns about missing IDs | Continue with available IDs, then correct `groundTruthQueryIds` or rerun `scripts/evals/map-ground-truth-ids.ts` |
+| Ablation reports `Token budget overflow` below `recallK` | Report the run as investigation-only and fix truncation before using Recall@K as evidence |
 | No causal edges found | Display empty graph message |
 | Memory ID not found | `STATUS=FAIL ERROR="Memory #<id> not found"` |
 | No learning history records | Suggest using `preflight` before tasks |
@@ -826,7 +835,7 @@ spec_kit_memory_memory_causal_unlink({ edgeId })
 spec_kit_memory_memory_causal_stats({})
 
 // Evaluation
-spec_kit_memory_eval_run_ablation({ channels, groundTruthQueryIds, recallK, storeResults, includeFormattedReport })
+spec_kit_memory_eval_run_ablation({ mode: "ablation", channels, groundTruthQueryIds, recallK, storeResults: true, includeFormattedReport: true })
 spec_kit_memory_eval_reporting_dashboard({ sprintFilter, channelFilter, metricFilter, limit, format })
 spec_kit_memory_memory_get_learning_history({ specFolder, sessionId, limit, onlyComplete, includeSummary })
 ```

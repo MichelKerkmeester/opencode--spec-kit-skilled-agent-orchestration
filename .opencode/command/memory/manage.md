@@ -95,7 +95,7 @@ Provide a unified interface for memory database **management** operations:
 | `shared enable`                          | Enable Shared     | `/memory:manage shared enable`                         |
 | `shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create Shared Space | `/memory:manage shared create team-alpha tenant-1 "Team Alpha" --actor-user user-1` |
 | `shared member <spaceId> <tenantId> <subjectType> <subjectId> <role> (--actor-user <id> \| --actor-agent <id>)` | Set Membership | `/memory:manage shared member team-alpha tenant-1 user user-42 editor --actor-user user-1` |
-| `shared status [--tenant <id>] [--user <id>] [--agent <id>]` | Shared Status | `/memory:manage shared status --user user-42` |
+| `shared status [--tenant <id>] (--actor-user <id> \| --actor-agent <id>)` | Shared Status | `/memory:manage shared status --tenant tenant-1 --actor-user user-42` |
 
 ### Importance Tiers
 
@@ -835,7 +835,7 @@ This namespace manages shared-memory setup, shared-space creation, membership ch
 
 ### Shared Enablement Gate
 
-Before routing any `shared` subcommand, call `shared_memory_status()` unless the explicit subcommand is `enable`.
+Before routing any `shared` subcommand, call `shared_memory_status()` with exactly one actor identity unless the explicit subcommand is `enable`.
 
 ```text
 1. Parse the nested subcommand after `shared`
@@ -893,6 +893,8 @@ STATUS=OK ACTION=shared-overview
 ### Shared Enable
 
 **Trigger:** `/memory:manage shared enable`
+
+`shared_memory_enable()` still takes no user-supplied arguments, but the server now requires authenticated caller context and only the configured shared-memory admin can complete the first-run enablement. If the runtime does not provide an authenticated caller, surface the auth error verbatim instead of retrying with guessed parameters.
 
 Call `spec_kit_memory_shared_memory_enable({})`. On success:
 
@@ -958,9 +960,13 @@ STATUS=OK ACTION=shared-member SPACE=<spaceId>
 
 ### Shared Status
 
-**Trigger:** `/memory:manage shared status [--tenant <id>] [--user <id>] [--agent <id>]`
+**Trigger:** `/memory:manage shared status [--tenant <id>] (--actor-user <id> | --actor-agent <id>)`
 
-Call `shared_memory_status()` with the optional scope filters.
+Workflow:
+1. Parse the optional `tenantId`
+2. Validate exactly one actor identity is present: `--actor-user <id>` or `--actor-agent <id>`
+3. Call `shared_memory_status({ tenantId, actorUserId, actorAgentId })`
+4. Display rollout state and accessible spaces for that caller
 
 ```text
 MEMORY:MANAGE SHARED STATUS
@@ -996,6 +1002,7 @@ STATUS=OK ACTION=shared-status
 | Ingest job not found     | `STATUS=FAIL ERROR="Job '<jobId>' not found"`                                                                                    |
 | Too many ingest paths    | `STATUS=FAIL ERROR="Maximum 50 paths per job"`                                                                                   |
 | Shared memory disabled   | Offer `/memory:manage shared enable` or first-time setup prompt                                                                   |
+| Shared enable denied     | `STATUS=FAIL ERROR="Only the configured shared-memory admin can enable shared memory"`; verify authenticated caller context      |
 | Invalid shared role      | `STATUS=FAIL ERROR="role must be owner, editor, or viewer"`                                                                      |
 | Invalid shared subject   | `STATUS=FAIL ERROR="subjectType must be user or agent"`                                                                          |
 | Shared space not found   | `STATUS=FAIL ERROR="Space '<spaceId>' not found"`                                                                                |
@@ -1062,7 +1069,7 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 spec_kit_memory_shared_memory_enable({})
 spec_kit_memory_shared_space_upsert({ spaceId, tenantId, name, actorUserId, actorAgentId, rolloutEnabled, rolloutCohort, killSwitch })
 spec_kit_memory_shared_space_membership_set({ spaceId, tenantId, subjectType, subjectId, role, actorUserId, actorAgentId })
-spec_kit_memory_shared_memory_status({ tenantId, userId, agentId })
+spec_kit_memory_shared_memory_status({ tenantId, actorUserId, actorAgentId })
 ```
 
 > **Feature Flag Behavior:** `SPECKIT_ADAPTIVE_FUSION` affects scan and search behavior: when enabled, index scans apply adaptive weight profiles during embedding and artifact-class routing during re-indexing. `SPECKIT_EXTENDED_TELEMETRY` enables detailed per-operation metrics for scan, search, and health calls. **Mutation Ledger:** cleanup and delete operations are recorded in the append-only mutation ledger, providing a full audit trail that can be reviewed when investigating unexpected state changes.
