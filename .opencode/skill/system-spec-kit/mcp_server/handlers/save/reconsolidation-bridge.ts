@@ -131,6 +131,33 @@ export interface ReconsolidationBridgeResult {
   assistiveRecommendation?: AssistiveRecommendation | null;
 }
 
+function repairBm25Document(args: {
+  memoryId: number;
+  title: string | null;
+  contentText: string;
+  triggerPhrases: string[];
+  filePath: string;
+  contextLabel: string;
+}): string | null {
+  try {
+    const bm25 = bm25Index.getIndex();
+    const documentText = bm25Index.buildBm25DocumentText({
+      title: args.title,
+      content_text: args.contentText,
+      trigger_phrases: args.triggerPhrases,
+      file_path: args.filePath,
+    });
+
+    bm25.removeDocument(String(args.memoryId));
+    bm25.addDocument(String(args.memoryId), documentText);
+    return null;
+  } catch (repairErr: unknown) {
+    const repairMessage = toErrorMessage(repairErr);
+    console.warn(`[memory-save] Immediate BM25 repair failed (${args.contextLabel}): ${repairMessage}`);
+    return `BM25 repair failed after ${args.contextLabel} for memory ${args.memoryId}: ${repairMessage}`;
+  }
+}
+
 /**
  * Runs reconsolidation when enabled and returns either an early tool response
  * or a signal to continue the standard create-record path.
@@ -257,6 +284,17 @@ export async function runReconsolidationIfEnabled(
                   } catch (bm25Err: unknown) {
                     const message = toErrorMessage(bm25Err);
                     console.warn(`[memory-save] BM25 indexing failed (recon conflict store): ${message}`);
+                    const bm25Warning = repairBm25Document({
+                      memoryId: id,
+                      title: memory.title,
+                      contentText: memory.content,
+                      triggerPhrases: memory.triggerPhrases ?? [],
+                      filePath: memory.filePath,
+                      contextLabel: 'recon conflict store',
+                    });
+                    if (bm25Warning) {
+                      reconWarnings.push(bm25Warning);
+                    }
                   }
                 }
 
@@ -296,6 +334,11 @@ export async function runReconsolidationIfEnabled(
             },
             actor: 'mcp:memory_save',
           });
+          const earlyReturnWarnings = [
+            ...reconWarnings,
+            ...(reconResult.warnings ?? []),
+            ...(!ledgerRecorded ? ['Mutation ledger append failed; audit trail may be incomplete.'] : []),
+          ];
 
           return {
             earlyReturn: {
@@ -305,9 +348,7 @@ export async function runReconsolidationIfEnabled(
               title: parsed.title ?? '',
               reconsolidation: reconResult,
               message: `Reconsolidation: ${reconResult.action} (similarity: ${reconResult.similarity?.toFixed(3) ?? 'N/A'})`,
-              warnings: ledgerRecorded
-                ? undefined
-                : ['Mutation ledger append failed; audit trail may be incomplete.'],
+              warnings: earlyReturnWarnings.length > 0 ? earlyReturnWarnings : undefined,
             },
             warnings: reconWarnings,
           };

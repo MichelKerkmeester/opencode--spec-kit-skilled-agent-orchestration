@@ -1,4 +1,5 @@
 // TEST: INTEGRATION CAUSAL GRAPH
+import Database from 'better-sqlite3';
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as causalHandler from '../handlers/causal-graph';
 import * as causalEdges from '../lib/storage/causal-edges';
@@ -19,6 +20,7 @@ type MCPEnvelope = {
   summary: string;
   data: Record<string, unknown>;
   meta: Record<string, unknown>;
+  hints?: string[];
 };
 
 function parseEnvelope(response: unknown): { envelope: MCPEnvelope; isError: boolean } {
@@ -35,6 +37,27 @@ function expectErrorCode(response: unknown, expectedCodes: string[]): MCPEnvelop
   expect(typeof code).toBe('string');
   expect(expectedCodes).toContain(code as string);
   return envelope;
+}
+
+function createCausalGraphDb(): InstanceType<typeof Database> {
+  const db = new Database(':memory:');
+  db.exec(`
+    CREATE TABLE causal_edges (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source_id TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      relation TEXT NOT NULL CHECK(relation IN (
+        'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
+      )),
+      strength REAL DEFAULT 1.0 CHECK(strength >= 0.0 AND strength <= 1.0),
+      evidence TEXT,
+      extracted_at TEXT DEFAULT (datetime('now')),
+      created_by TEXT DEFAULT 'manual',
+      last_accessed TEXT,
+      UNIQUE(source_id, target_id, relation)
+    );
+  `);
+  return db;
 }
 
 afterEach(() => {
@@ -302,6 +325,122 @@ describe('Integration Causal Graph (T528)', () => {
         expect(traversalOptions.maxDepth).toBeGreaterThanOrEqual(1);
       } else {
         expect(envelope.summary).toContain('No causal relationships');
+      }
+    });
+
+    it('T015-DW6: traversal uses one transaction-backed snapshot for related memory details', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+
+      let transactionActive = false;
+      const snapshotRows: Record<string, Record<string, unknown>> = {
+        '10': { id: '10', title: 'Root', spec_folder: 'spec-root', importance_tier: 'normal', importance_weight: 0.7, context_type: 'decision', created_at: '2026-03-28', updated_at: '2026-03-28', file_path: '/mem/10.md' },
+        '11': { id: '11', title: 'Child A', spec_folder: 'spec-root', importance_tier: 'normal', created_at: '2026-03-28' },
+        '12': { id: '12', title: 'Child B', spec_folder: 'spec-root', importance_tier: 'normal', created_at: '2026-03-28' },
+      };
+      const liveRows: Record<string, Record<string, unknown>> = {
+        '10': snapshotRows['10']!,
+        '11': snapshotRows['11']!,
+      };
+
+      const fakeDb = {
+        transaction: vi.fn((callback: () => unknown) => () => {
+          transactionActive = true;
+          try {
+            return callback();
+          } finally {
+            transactionActive = false;
+          }
+        }),
+        prepare: vi.fn((_sql: string) => ({
+          get: (id: string | number) => {
+            const key = String(id);
+            const rows = transactionActive ? snapshotRows : liveRows;
+            return rows[key];
+          },
+        })),
+      } as unknown as NonNullable<ReturnType<typeof vectorIndex.getDb>>;
+
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue(fakeDb);
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'getCausalChain').mockReturnValue({
+        id: '10',
+        depth: 0,
+        relation: causalEdges.RELATION_TYPES.CAUSED,
+        strength: 1.0,
+        truncated: false,
+        truncationLimit: null,
+        children: [
+          {
+            id: '11',
+            edgeId: 201,
+            depth: 1,
+            relation: causalEdges.RELATION_TYPES.CAUSED,
+            strength: 0.9,
+            children: [],
+          },
+          {
+            id: '12',
+            edgeId: 202,
+            depth: 1,
+            relation: causalEdges.RELATION_TYPES.SUPPORTS,
+            strength: 0.8,
+            children: [],
+          },
+        ],
+      });
+
+      const response = await causalHandler.handleMemoryDriftWhy({
+        memoryId: '10',
+        direction: 'outgoing',
+        includeMemoryDetails: true,
+      });
+      const { envelope, isError } = parseEnvelope(response);
+
+      expect(isError).toBe(false);
+      expect(fakeDb.transaction).toHaveBeenCalledTimes(1);
+      const relatedMemories = envelope.data.relatedMemories as Record<string, Record<string, unknown>>;
+      expect(relatedMemories).toBeDefined();
+      for (const edge of envelope.data.allEdges as Array<{ from: string; to: string }>) {
+        expect(relatedMemories[edge.from]).toBeDefined();
+        expect(relatedMemories[edge.to]).toBeDefined();
+      }
+    });
+
+    it('T015-DW7: traversal surfaces truncation when a node exceeds the per-node edge limit', async () => {
+      const db = createCausalGraphDb();
+      try {
+        vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+        vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+        vi.spyOn(vectorIndex, 'getDb').mockReturnValue(
+          db as unknown as NonNullable<ReturnType<typeof vectorIndex.getDb>>
+        );
+
+        const insertEdge = db.prepare(`
+          INSERT INTO causal_edges (source_id, target_id, relation, strength)
+          VALUES (?, ?, ?, ?)
+        `);
+        for (let i = 0; i <= causalEdges.MAX_EDGES_LIMIT; i++) {
+          insertEdge.run('1', String(2 + i), causalEdges.RELATION_TYPES.CAUSED, 0.9);
+        }
+
+        const response = await causalHandler.handleMemoryDriftWhy({
+          memoryId: '1',
+          direction: 'outgoing',
+          maxDepth: 1,
+          includeMemoryDetails: false,
+        });
+        const { envelope, isError } = parseEnvelope(response);
+
+        expect(isError).toBe(false);
+        expect(envelope.data.truncated).toBe(true);
+        expect(envelope.data.truncationLimit).toBe(causalEdges.MAX_EDGES_LIMIT);
+        expect(envelope.data.totalEdges).toBe(causalEdges.MAX_EDGES_LIMIT);
+        expect(envelope.hints).toEqual(
+          expect.arrayContaining([expect.stringContaining('Traversal truncated after 100 edges per node')])
+        );
+      } finally {
+        db.close();
       }
     });
   });

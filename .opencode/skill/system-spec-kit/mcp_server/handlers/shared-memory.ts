@@ -27,7 +27,8 @@ type SharedAdminActor = {
   subjectId: string;
 };
 
-type SharedAdminTool = 'shared_space_upsert' | 'shared_space_membership_set';
+type SharedSpaceAdminTool = 'shared_space_upsert' | 'shared_space_membership_set';
+type SharedAdminTool = SharedSpaceAdminTool | 'shared_memory_enable';
 type SharedIdentityTool = SharedAdminTool | 'shared_memory_status';
 
 type SharedCallerAuthArgs = {
@@ -180,11 +181,11 @@ function validateSharedCallerIdentity(
 
 export function validateCallerAuth(
   args: SharedAdminCallerAuthArgs,
-  tenantId: string,
+  tenantId?: string,
 ): ValidatedCallerAuth {
   const normalizedTenantId = typeof tenantId === 'string' ? tenantId.trim() : '';
 
-  if (normalizedTenantId.length === 0) {
+  if (args.tool !== 'shared_memory_enable' && normalizedTenantId.length === 0) {
     throwSharedMemoryAuthError(
       'Tenant scope is required for shared-memory admin mutations.',
       createCallerAuthErrorResponse({
@@ -256,7 +257,7 @@ function recordSharedSpaceAdminAudit(
 }
 
 function getSharedSpaceAccessErrorMessage(
-  tool: SharedAdminTool,
+  tool: SharedSpaceAdminTool,
   spaceId: string,
   reason: string,
 ): string {
@@ -293,7 +294,7 @@ function normalizeOwnerAdminDenyReason(reason: string): string {
 }
 
 function createSharedSpaceAuthError(
-  tool: SharedAdminTool,
+  tool: SharedSpaceAdminTool,
   reason: string,
   error: string,
 ): MCPResponse {
@@ -308,6 +309,18 @@ function createSharedSpaceAuthError(
         : reason === 'shared_space_create_admin_required'
           ? 'Authenticate as the configured shared-memory admin before creating a new shared space.'
         : 'Use the tenant owner identity for this shared space.',
+    },
+  });
+}
+
+function createSharedMemoryEnableAuthError(reason: string, error: string): MCPResponse {
+  return createMCPErrorResponse({
+    tool: 'shared_memory_enable',
+    error,
+    code: 'E_AUTHORIZATION',
+    details: { reason },
+    recovery: {
+      hint: 'Authenticate as the configured shared-memory admin before enabling shared memory.',
     },
   });
 }
@@ -720,8 +733,20 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
  * already enables the runtime check. Subsequent calls that find both the
  * DB flag set and the README present return `alreadyEnabled: true`.
  */
-export async function handleSharedMemoryEnable(_args: Record<string, unknown>): Promise<MCPResponse> {
+export async function handleSharedMemoryEnable(args: Record<string, unknown>): Promise<MCPResponse> {
   try {
+    const { actor, isAdmin } = validateCallerAuth({
+      tool: 'shared_memory_enable',
+      actorUserId: typeof args.actorUserId === 'string' ? args.actorUserId : undefined,
+      actorAgentId: typeof args.actorAgentId === 'string' ? args.actorAgentId : undefined,
+    });
+    if (!isAdmin) {
+      return createSharedMemoryEnableAuthError(
+        'shared_memory_enable_admin_required',
+        'Only the configured shared-memory admin can enable shared memory.',
+      );
+    }
+
     const db = requireDb();
 
     // Check DB-level persistence (not runtime env-var) to decide idempotency.
@@ -742,7 +767,11 @@ export async function handleSharedMemoryEnable(_args: Record<string, unknown>): 
       return createMCPSuccessResponse({
         tool: 'shared_memory_enable',
         summary: 'Shared memory is already enabled',
-        data: { alreadyEnabled: true },
+        data: {
+          alreadyEnabled: true,
+          actorSubjectType: actor.subjectType,
+          actorSubjectId: actor.subjectId,
+        },
       });
     }
 
@@ -758,9 +787,15 @@ export async function handleSharedMemoryEnable(_args: Record<string, unknown>): 
         alreadyEnabled: false,
         enabled: true,
         readmeCreated,
+        actorSubjectType: actor.subjectType,
+        actorSubjectId: actor.subjectId,
       },
     });
   } catch (error: unknown) {
+    if (error instanceof SharedMemoryAuthError) {
+      return error.response;
+    }
+
     return createSharedMemoryInternalError(
       'shared_memory_enable',
       'Shared memory enable failed',

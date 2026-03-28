@@ -4,17 +4,38 @@
 // Detection, regex caching, and matching performance.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+interface MockMemoryRow {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title: string | null;
+  trigger_phrases: string;
+  importance_weight: number | null;
+}
+
+const mockDbState = vi.hoisted(() => ({
+  rows: [] as MockMemoryRow[],
+}));
+
 // Mock transitive DB dependencies so the module can load
-// Without better-sqlite3 or vector-index wiring.
+// without better-sqlite3 or vector-index wiring.
 vi.mock('../lib/search/vector-index', () => ({
   initializeDb: vi.fn(),
-  getDb: vi.fn(() => null),
+  getDb: vi.fn(() => ({
+    prepare: vi.fn(() => ({
+      all: () => mockDbState.rows,
+    })),
+  })),
 }));
 
 import {
+  getMemoriesByPhrase,
+  getTriggerCandidates,
+  loadTriggerCache,
   matchPhraseWithBoundary,
   matchTriggerPhrases,
   normalizeUnicode,
+  normalizeTriggerText,
   CONFIG,
   clearCache,
   getCacheStats,
@@ -23,9 +44,52 @@ import {
 type TriggerPrompt = Parameters<typeof matchTriggerPhrases>[0];
 type UnicodeInput = Parameters<typeof normalizeUnicode>[0];
 
+function setMockDbRows(rows: MockMemoryRow[]): void {
+  mockDbState.rows = rows;
+}
+
+function runFullScan(prompt: string, limit: number = CONFIG.DEFAULT_LIMIT) {
+  const promptNormalized = normalizeUnicode(prompt, false);
+  const cache = loadTriggerCache();
+  const matchesByMemory = new Map<number, ReturnType<typeof matchTriggerPhrases>[number]>();
+
+  for (const entry of cache) {
+    if (!matchPhraseWithBoundary(promptNormalized, entry.phrase, entry.regex)) {
+      continue;
+    }
+
+    const existing = matchesByMemory.get(entry.memoryId);
+    if (existing) {
+      existing.matchedPhrases.push(entry.phrase);
+      continue;
+    }
+
+    matchesByMemory.set(entry.memoryId, {
+      memoryId: entry.memoryId,
+      specFolder: entry.specFolder,
+      filePath: entry.filePath,
+      title: entry.title,
+      importanceWeight: entry.importanceWeight,
+      matchedPhrases: [entry.phrase],
+    });
+  }
+
+  return Array.from(matchesByMemory.values())
+    .sort((left, right) => {
+      const phraseDiff = right.matchedPhrases.length - left.matchedPhrases.length;
+      if (phraseDiff !== 0) {
+        return phraseDiff;
+      }
+
+      return right.importanceWeight - left.importanceWeight;
+    })
+    .slice(0, limit);
+}
+
 describe('Trigger Matcher (T501)', () => {
   beforeEach(() => {
     clearCache();
+    setMockDbRows([]);
   });
 
   // 4.1 EXACT MATCH (T501-01)
@@ -125,6 +189,14 @@ describe('Trigger Matcher (T501)', () => {
       const nullResult = normalizeUnicode(null as unknown as UnicodeInput);
       expect(nullResult).toBe('');
     });
+
+    it('T501-08e: trigger normalization is consistent for indexing and lookup', () => {
+      const normalizedIndex = normalizeTriggerText('Cafe\u0301  MODE');
+      const normalizedLookup = normalizeTriggerText('CAF\u00C9 mode');
+
+      expect(normalizedIndex).toBe(normalizedLookup);
+      expect(normalizedIndex).toBe('caf\u00e9 mode');
+    });
   });
 
   // 4.9 MATCH CONFIG / SCORING (T501-09)
@@ -180,6 +252,36 @@ describe('Trigger Matcher (T501)', () => {
     });
   });
 
+  describe('Unicode trigger matching (T501-13)', () => {
+    it('T501-13a: Unicode-aware boundaries match Cyrillic and CJK trigger phrases', () => {
+      expect(matchPhraseWithBoundary('Нужен быстрый поиск памяти', 'быстрый поиск')).toBe(true);
+      expect(matchPhraseWithBoundary('今日は情報検索を改善したい', '情報検索')).toBe(true);
+    });
+
+    it('T501-13b: cache lookup and prompt matching share the same normalization path', () => {
+      setMockDbRows([
+        {
+          id: 1,
+          spec_folder: 'specs/001',
+          file_path: '/unicode.md',
+          title: 'Unicode Memory',
+          trigger_phrases: JSON.stringify(['Cafe\u0301 Mode', 'быстрый поиск', '情報検索']),
+          importance_weight: 0.9,
+        },
+      ]);
+
+      const cachedPhrase = loadTriggerCache()[0]?.phrase;
+      const lookupMatches = getMemoriesByPhrase('CAF\u00C9 MODE');
+      const cyrillicMatch = matchTriggerPhrases('Нужен быстрый поиск по базе', 5);
+      const cjkMatch = matchTriggerPhrases('今日は情報検索を改善したい', 5);
+
+      expect(cachedPhrase).toBe(normalizeTriggerText('CAF\u00C9 MODE'));
+      expect(lookupMatches.map((match) => match.memoryId)).toEqual([1]);
+      expect(cyrillicMatch.map((match) => match.memoryId)).toContain(1);
+      expect(cjkMatch.map((match) => match.memoryId)).toContain(1);
+    });
+  });
+
   // 4.12 CACHE STATS (T501-12)
   describe('Cache Stats (T501-12)', () => {
     it('T501-12: cache stats structure', () => {
@@ -196,6 +298,78 @@ describe('Trigger Matcher (T501)', () => {
       clearCache();
       const stats = getCacheStats();
       expect(stats.size).toBe(0);
+    });
+  });
+
+  describe('Indexed proactive surfacing candidates (T501-14)', () => {
+    it('T501-14a: indexed candidate filtering returns the same matches as a full scan', () => {
+      const rows: MockMemoryRow[] = Array.from({ length: 540 }, (_, index) => ({
+        id: index + 1,
+        spec_folder: 'specs/bench',
+        file_path: `/bench-${index + 1}.md`,
+        title: `Bench ${index + 1}`,
+        trigger_phrases: JSON.stringify([`topic${index + 1} marker${index + 1}`]),
+        importance_weight: 0.2,
+      }));
+
+      rows.push({
+        id: 2001,
+        spec_folder: 'specs/bench',
+        file_path: '/unicode-fix.md',
+        title: 'Unicode Fix',
+        trigger_phrases: JSON.stringify(['unicode trigger repair', 'candidate index optimization']),
+        importance_weight: 0.95,
+      });
+
+      setMockDbRows(rows);
+
+      const prompt = 'Please ship the unicode trigger repair and candidate index optimization fixes';
+      const indexedMatches = matchTriggerPhrases(prompt, 5);
+      const fullScanMatches = runFullScan(prompt, 5);
+
+      expect(indexedMatches).toEqual(fullScanMatches);
+    });
+
+    it('T501-14b: candidate index narrows the regex scan workload on large caches', () => {
+      const rows: MockMemoryRow[] = Array.from({ length: 620 }, (_, index) => ({
+        id: index + 1,
+        spec_folder: 'specs/perf',
+        file_path: `/perf-${index + 1}.md`,
+        title: `Perf ${index + 1}`,
+        trigger_phrases: JSON.stringify([`background${index + 1} archive${index + 1}`]),
+        importance_weight: 0.1,
+      }));
+
+      rows.push({
+        id: 9001,
+        spec_folder: 'specs/perf',
+        file_path: '/target.md',
+        title: 'Target',
+        trigger_phrases: JSON.stringify(['focused trigger benchmark']),
+        importance_weight: 1,
+      });
+
+      setMockDbRows(rows);
+
+      const prompt = 'We need the focused trigger benchmark to pass';
+      const cache = loadTriggerCache();
+      const candidates = getTriggerCandidates(prompt, cache);
+
+      const indexedStart = Date.now();
+      for (let iteration = 0; iteration < 180; iteration += 1) {
+        matchTriggerPhrases(prompt, 5);
+      }
+      const indexedElapsed = Date.now() - indexedStart;
+
+      const fullScanStart = Date.now();
+      for (let iteration = 0; iteration < 180; iteration += 1) {
+        runFullScan(prompt, 5);
+      }
+      const fullScanElapsed = Date.now() - fullScanStart;
+
+      expect(candidates.length).toBeLessThan(cache.length);
+      expect(candidates.some((entry) => entry.phrase === 'focused trigger benchmark')).toBe(true);
+      expect(indexedElapsed).toBeLessThan(fullScanElapsed);
     });
   });
 });

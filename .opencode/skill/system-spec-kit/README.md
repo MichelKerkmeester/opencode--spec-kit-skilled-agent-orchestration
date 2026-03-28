@@ -566,8 +566,8 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── utils/                  # Utility modules (20 utilities)
 │   └── dist/                   # Compiled JavaScript output
 ├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
-│   ├── context-server.ts       # MCP server entry (~1073 lines, 33 tools)
-│   ├── handlers/               # Tool handlers (31 .ts files + 13 in handlers/save/)
+│   ├── context-server.ts       # MCP server entry point and tool registration
+│   ├── handlers/               # Tool handlers, save pipeline, and response assembly
 │   ├── lib/                    # Search pipeline, cognitive engine, graph, governance
 │   ├── tests/                  # MCP test suite
 │   ├── INSTALL_GUIDE.md        # Full installation walkthrough
@@ -606,7 +606,7 @@ Think of Spec Kit as a filing system with a librarian attached.
 
 The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
 
-The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it so the next session can find it. When a new session starts, `memory_context` or `memory_match_triggers` retrieves the relevant context and hands it to the AI before work begins.
+The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `memory_match_triggers` can fast-surface trigger-based context and `memory_context` can route a full hybrid retrieval pass before work begins.
 
 The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
 
@@ -654,7 +654,7 @@ The memory system converts text to numerical embeddings for vector search. Three
 |----------|----------|-------------|
 | `VOYAGE_API_KEY` | Recommended | Voyage AI embeddings (1024d, best retrieval quality) |
 | `OPENAI_API_KEY` | Alternative | OpenAI embeddings fallback |
-| `SPEC_KIT_DB_PATH` | No | Override default SQLite database path |
+| `MEMORY_DB_PATH` | No | Override default SQLite database path |
 | `SPEC_KIT_LOG_LEVEL` | No | Log verbosity: `debug`, `info`, `warn`, `error` |
 
 For the full list of environment variables (including evaluation, telemetry and feature flag overrides), see [`references/config/environment_variables.md`](./references/config/environment_variables.md).
@@ -681,16 +681,15 @@ For the full installation walkthrough including database migration and embedding
 
 ### Feature Flags
 
-The memory system uses feature flags to control which pipeline features are active. Six groups exist:
+The memory system uses runtime-resolved feature flags rather than import-time snapshots. Long-lived MCP processes re-read relevant `process.env` values during search, scoring, and rollout checks, so operator flips take effect without requiring a module reload.
 
 | Group | Controls |
 |-------|---------|
-| Search Pipeline | Hybrid channels, adaptive RRF, query complexity routing, MMR diversity |
-| Session and Cache | Embedding cache, session deduplication, crash recovery |
-| MCP Config | Server warm mode, dynamic instructions, cross-process rebinding |
-| Memory and Storage | Atomic write-index, mutation ledger, causal graph |
-| Embedding and API | Voyage AI, OpenAI, HuggingFace provider selection |
-| Debug and Telemetry | Shadow scoring, observability, eval reporting |
+| Search Pipeline | 5-channel retrieval, fallback routing, reranking, graph-walk rollout, confidence and token-budget policies |
+| Session and Cache | Embedding cache, session deduplication, crash recovery, DB rebind invalidation |
+| Memory and Storage | Save quality gate, reconsolidation, governed save/retrieval scopes, causal graph maintenance |
+| Embedding and API | Startup provider resolution, fail-fast dimension checks, structured fallback metadata |
+| Evaluation and Telemetry | Ablation guardrails, reporting dashboard output, optional trace and eval logging |
 
 For the full flag reference and rollback procedures, see [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md).
 
@@ -975,7 +974,7 @@ A: The memory system can index any markdown file, beyond spec folder contents. B
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 33-tool API reference, search pipeline architecture, scoring signals, cognitive memory lifecycle, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 33-tool API reference, 5-channel hybrid retrieval, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 

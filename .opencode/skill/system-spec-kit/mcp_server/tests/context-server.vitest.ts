@@ -914,7 +914,8 @@ describe('Context Server', () => {
       expect(autoSurfaceAtToolDispatchMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceAtToolDispatchMock).toHaveBeenCalledWith('checkpoint_list', { query: 'recent checks' })
       expect(autoSurfaceMemoriesMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
+      expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('clears in-process caches when the DB is reinitialized externally before dispatch', async () => {
@@ -957,7 +958,8 @@ describe('Context Server', () => {
 
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceAtToolDispatchMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
+      expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('T000g: memory_context resume mode invokes TM-05 compaction hook at runtime', async () => {
@@ -990,7 +992,8 @@ describe('Context Server', () => {
       expect(autoSurfaceAtCompactionMock).toHaveBeenCalledWith('session resume context')
       expect(autoSurfaceMemoriesMock).not.toHaveBeenCalled()
       expect(autoSurfaceAtToolDispatchMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
+      expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('T000h: memory_context non-resume mode keeps SK-004 memory-aware path', async () => {
@@ -1021,10 +1024,11 @@ describe('Context Server', () => {
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledWith('focused retrieval context')
       expect(autoSurfaceAtCompactionMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
+      expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
-    it('T000i: successful responses append auto-surface hints and preserve autoSurfacedContext', async () => {
+    it('T000i: successful responses append auto-surface hints and keep autoSurfacedContext inside the envelope', async () => {
       const {
         dispatchToolMock,
         autoSurfaceAtToolDispatchMock,
@@ -1058,7 +1062,7 @@ describe('Context Server', () => {
       ) as { content: Array<{ text: string }>; autoSurfacedContext?: unknown }
 
       expect(appendAutoSurfaceHintsMock).toHaveBeenCalledTimes(1)
-      expect(response.autoSurfacedContext).toEqual(surfaced)
+      expect(response.autoSurfacedContext).toBeUndefined()
 
       const parsed = JSON.parse(response.content[0].text)
       expect(parsed.hints.some((hint: string) => hint.includes('Auto-surface hook: injected 1 constitutional and 1 triggered memories'))).toBe(true)
@@ -1068,6 +1072,7 @@ describe('Context Server', () => {
         surfaced_at: '2026-03-06T12:00:00.000Z',
         latencyMs: 7,
       })
+      expect(parsed.meta.autoSurfacedContext).toEqual(surfaced)
       expect(parsed.meta.tokenBudget).toBe(1000)
       expect(parsed.meta.tokenCount).toBeGreaterThan(0)
     })
@@ -1897,12 +1902,9 @@ describe('Context Server', () => {
   // GROUP 12: Auto-Surface Context Integration (SK-004)
   // =================================================================
   describe('Group 12: Auto-Surface Context (SK-004)', () => {
-    // T58: autoSurfacedContext injected into successful responses
-    it('T58: Auto-surfaced context injected into response', () => {
-      // Source uses type assertion: (result as unknown as Record<string, unknown>).autoSurfacedContext = ...
-      expect(sourceCode).toMatch(
-        /autoSurfacedContext[\s\S]*?\.autoSurfacedContext\s*=\s*autoSurfacedContext/
-      )
+    // T58: autoSurfacedContext injected into successful response envelope metadata
+    it('T58: Auto-surfaced context injected into response envelope metadata', () => {
+      expect(sourceCode).toMatch(/meta\.autoSurfacedContext\s*=\s*autoSurfacedContext/)
     })
 
     // T59: Auto-surface errors are non-fatal

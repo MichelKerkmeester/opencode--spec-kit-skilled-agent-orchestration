@@ -76,6 +76,13 @@ function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError';
 }
 
+function hasTimeoutCode(error: unknown): boolean {
+  return typeof error === 'object'
+    && error !== null
+    && 'code' in error
+    && (error as { code?: unknown }).code === 'ETIMEDOUT';
+}
+
 interface VoyageErrorBody {
   detail?: string;
   error?: {
@@ -286,13 +293,27 @@ export class VoyageProvider implements IEmbeddingProvider {
   async warmup(): Promise<boolean> {
     try {
       console.error('[voyage] Checking connectivity with Voyage API...');
-      const result = await this.embedQuery('test warmup query');
+      const result = await Promise.race([
+        this.embedQuery('test warmup query'),
+        new Promise<Float32Array | null>((_, reject) => {
+          setTimeout(() => {
+            const timeoutError: ErrorWithStatus = new Error(`Voyage warmup timed out after ${this.timeout}ms`);
+            timeoutError.code = 'ETIMEDOUT';
+            reject(timeoutError);
+          }, this.timeout);
+        }),
+      ]);
       this.isHealthy = result !== null;
       console.error('[voyage] Connectivity verified successfully');
       return this.isHealthy;
     } catch (error: unknown) {
       if (error instanceof Error) {
         void error.message;
+      }
+      if (hasTimeoutCode(error)) {
+        console.warn(`[voyage] Warmup timed out after ${this.timeout}ms; proceeding with cold provider state`);
+        this.isHealthy = true;
+        return true;
       }
       console.warn(`[voyage] Warmup failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;

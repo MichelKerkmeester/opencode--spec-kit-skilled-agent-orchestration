@@ -52,6 +52,8 @@ export interface FlattenedChain {
   by_supports: FlatEdge[];
   total_edges: number;
   max_depth_reached: boolean;
+  truncated: boolean;
+  truncation_limit: number | null;
 }
 
 interface DirectionalBuckets {
@@ -64,6 +66,8 @@ interface DirectionalBuckets {
   allEdges: FlatEdge[];
   totalEdges: number;
   maxDepthReached: boolean;
+  truncated: boolean;
+  truncationLimit: number | null;
 }
 
 interface DriftWhyArgs {
@@ -140,6 +144,8 @@ function flattenCausalTree(
     by_supports: [],
     total_edges: 0,
     max_depth_reached: false,
+    truncated: Boolean(root.truncated),
+    truncation_limit: root.truncationLimit ?? null,
   };
 
   function traverse(node: CausalChainNode): void {
@@ -206,6 +212,8 @@ function mergeFlattenedChains(a: FlattenedChain, b: FlattenedChain): FlattenedCh
     by_supports: [],
     total_edges: 0,
     max_depth_reached: a.max_depth_reached || b.max_depth_reached,
+    truncated: a.truncated || b.truncated,
+    truncation_limit: a.truncation_limit ?? b.truncation_limit ?? null,
   };
 
   function addEdge(edge: FlatEdge): void {
@@ -270,6 +278,8 @@ function filterChainByRelations(
     by_supports: allowed.has('supports') ? chain.by_supports : [],
     total_edges: 0,
     max_depth_reached: chain.max_depth_reached,
+    truncated: chain.truncated,
+    truncation_limit: chain.truncation_limit,
   };
   filtered.total_edges = filtered.all.length;
   return filtered;
@@ -286,6 +296,8 @@ function createEmptyChain(): FlattenedChain {
     by_supports: [],
     total_edges: 0,
     max_depth_reached: false,
+    truncated: false,
+    truncation_limit: null,
   };
 }
 
@@ -300,6 +312,8 @@ function toDirectionalBuckets(chain: FlattenedChain): DirectionalBuckets {
     allEdges: chain.all,
     totalEdges: chain.total_edges,
     maxDepthReached: chain.max_depth_reached,
+    truncated: chain.truncated,
+    truncationLimit: chain.truncation_limit,
   };
 }
 
@@ -380,61 +394,89 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
 
     const mappedDirection = mapDirection(direction);
 
-    let incomingChain = createEmptyChain();
-    let outgoingChain = createEmptyChain();
-    if (mappedDirection === 'both') {
-      const forwardTree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'forward');
-      const backwardTree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'backward');
-      outgoingChain = forwardTree ? flattenCausalTree(forwardTree, maxDepth, 'forward') : createEmptyChain();
-      incomingChain = backwardTree ? flattenCausalTree(backwardTree, maxDepth, 'backward') : createEmptyChain();
-    } else if (mappedDirection === 'forward') {
-      const tree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'forward');
-      outgoingChain = tree ? flattenCausalTree(tree, maxDepth, 'forward') : createEmptyChain();
-    } else {
-      const tree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'backward');
-      incomingChain = tree ? flattenCausalTree(tree, maxDepth, 'backward') : createEmptyChain();
-    }
+    const readTraversalSnapshot = (): {
+      incomingChain: FlattenedChain;
+      outgoingChain: FlattenedChain;
+      combinedChain: FlattenedChain;
+      memoryDetails: Record<string, unknown> | null;
+      relatedMemories: Record<string, Record<string, unknown>>;
+    } => {
+      let incomingChain = createEmptyChain();
+      let outgoingChain = createEmptyChain();
 
-    // T203: Apply relations filter (after traversal, before response)
-    incomingChain = filterChainByRelations(incomingChain, relations);
-    outgoingChain = filterChainByRelations(outgoingChain, relations);
-    const combinedChain = mergeFlattenedChains(incomingChain, outgoingChain);
-
-    let memoryDetails: Record<string, unknown> | null = null;
-    const relatedMemories: Record<string, Record<string, unknown>> = {};
-
-    if (includeMemoryDetails) {
-      const sourceMemory = db.prepare(`
-        SELECT id, title, spec_folder, importance_tier, importance_weight,
-               context_type, created_at, updated_at, file_path
-        FROM memory_index
-        WHERE id = ? OR CAST(id AS TEXT) = ?
-      `).get(memoryId, String(memoryId)) as Record<string, unknown> | undefined;
-
-      if (sourceMemory) {
-        memoryDetails = sourceMemory;
+      if (mappedDirection === 'both') {
+        const forwardTree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'forward');
+        const backwardTree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'backward');
+        outgoingChain = forwardTree ? flattenCausalTree(forwardTree, maxDepth, 'forward') : createEmptyChain();
+        incomingChain = backwardTree ? flattenCausalTree(backwardTree, maxDepth, 'backward') : createEmptyChain();
+      } else if (mappedDirection === 'forward') {
+        const tree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'forward');
+        outgoingChain = tree ? flattenCausalTree(tree, maxDepth, 'forward') : createEmptyChain();
+      } else {
+        const tree = causalEdges.getCausalChain(String(memoryId), maxDepth, 'backward');
+        incomingChain = tree ? flattenCausalTree(tree, maxDepth, 'backward') : createEmptyChain();
       }
 
-      const memoryIds = new Set<string>();
-      for (const edge of combinedChain.all) {
-        memoryIds.add(edge.from);
-        memoryIds.add(edge.to);
-      }
+      // T203: Apply relations filter (after traversal, before response)
+      incomingChain = filterChainByRelations(incomingChain, relations);
+      outgoingChain = filterChainByRelations(outgoingChain, relations);
+      const combinedChain = mergeFlattenedChains(incomingChain, outgoingChain);
 
-      if (memoryIds.size > 0) {
-        const idsArray = Array.from(memoryIds);
-        for (const id of idsArray) {
-          const memory = db.prepare(`
-            SELECT id, title, spec_folder, importance_tier, created_at
-            FROM memory_index
-            WHERE id = ? OR CAST(id AS TEXT) = ?
-          `).get(id, String(id)) as Record<string, unknown> | undefined;
-          if (memory) {
-            relatedMemories[id] = memory;
+      let memoryDetails: Record<string, unknown> | null = null;
+      const relatedMemories: Record<string, Record<string, unknown>> = {};
+
+      if (includeMemoryDetails) {
+        const sourceMemory = db.prepare(`
+          SELECT id, title, spec_folder, importance_tier, importance_weight,
+                 context_type, created_at, updated_at, file_path
+          FROM memory_index
+          WHERE id = ? OR CAST(id AS TEXT) = ?
+        `).get(memoryId, String(memoryId)) as Record<string, unknown> | undefined;
+
+        if (sourceMemory) {
+          memoryDetails = sourceMemory;
+        }
+
+        const memoryIds = new Set<string>();
+        for (const edge of combinedChain.all) {
+          memoryIds.add(edge.from);
+          memoryIds.add(edge.to);
+        }
+
+        if (memoryIds.size > 0) {
+          const idsArray = Array.from(memoryIds);
+          for (const id of idsArray) {
+            const memory = db.prepare(`
+              SELECT id, title, spec_folder, importance_tier, created_at
+              FROM memory_index
+              WHERE id = ? OR CAST(id AS TEXT) = ?
+            `).get(id, String(id)) as Record<string, unknown> | undefined;
+            if (memory) {
+              relatedMemories[id] = memory;
+            }
           }
         }
       }
-    }
+
+      return {
+        incomingChain,
+        outgoingChain,
+        combinedChain,
+        memoryDetails,
+        relatedMemories,
+      };
+    };
+
+    const traversalSnapshot = typeof db.transaction === 'function'
+      ? db.transaction(readTraversalSnapshot)()
+      : readTraversalSnapshot();
+    const {
+      incomingChain,
+      outgoingChain,
+      combinedChain,
+      memoryDetails,
+      relatedMemories,
+    } = traversalSnapshot;
 
     if (combinedChain.total_edges === 0) {
       return createMCPEmptyResponse({
@@ -466,6 +508,11 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
     if (combinedChain.max_depth_reached) {
       hints.push(`Max depth (${maxDepth}) reached - more relationships may exist beyond this depth`);
     }
+    if (combinedChain.truncated) {
+      hints.push(
+        `Traversal truncated after ${combinedChain.truncation_limit ?? causalEdges.MAX_EDGES_LIMIT} edges per node - results may be incomplete`
+      );
+    }
     if (combinedChain.by_contradicts.length > 0) {
       hints.push('Contradicting relationships detected - review for consistency');
     }
@@ -483,6 +530,8 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
         totalIncomingEdges: incomingChain.total_edges,
         totalOutgoingEdges: outgoingChain.total_edges,
         maxDepthReached: combinedChain.max_depth_reached,
+        truncated: combinedChain.truncated,
+        truncationLimit: combinedChain.truncation_limit,
         relatedMemories: Object.keys(relatedMemories).length > 0 ? relatedMemories : null,
         traversalOptions: { direction: mappedDirection, maxDepth }
       },

@@ -1,12 +1,11 @@
 ---
 title: "Tools: Dispatch Layer"
-description: "Dispatcher modules that route MCP tool names to typed handler calls."
+description: "Typed MCP tool dispatch modules, schema validation, and quick-search delegation."
 trigger_phrases:
   - "tool dispatch"
-  - "MCP tools"
-  - "dispatch layer"
+  - "memory quick search"
+  - "typed tool args"
 ---
-
 
 # Tools: Dispatch Layer
 
@@ -15,52 +14,39 @@ trigger_phrases:
 
 - [1. OVERVIEW](#1--overview)
 - [2. IMPLEMENTED STATE](#2--implemented-state)
-- [3. HARDENING NOTES](#3--hardening-notes)
-- [4. RELATED](#4--related)
+- [3. RELATED](#3--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the Tools: Dispatch Layer directory.
+`tools/` is the MCP dispatch layer. It maps runtime tool names to validated handler calls and keeps the handler modules grouped by domain.
 
-`tools/` maps MCP tool names to handler functions.
+Files in this directory:
 
-- Central router: `dispatchTool()` in `index.ts`.
-- Domain dispatchers: `context-tools.ts`, `memory-tools.ts`, `causal-tools.ts`, `checkpoint-tools.ts`, `lifecycle-tools.ts`.
-- Shared typing and argument parsing: `types.ts`.
+- `context-tools.ts` - dispatch for `memory_context`.
+- `memory-tools.ts` - dispatch for search, quick search, triggers, save, CRUD, stats, health, validate, and bulk delete.
+- `causal-tools.ts` - dispatch for causal graph operations.
+- `checkpoint-tools.ts` - dispatch for checkpoints and learning-history style lifecycle helpers.
+- `lifecycle-tools.ts` - dispatch for ingestion jobs and shared-memory lifecycle tools.
+- `types.ts` - shared MCP response type aliases and typed arg shapes.
+- `index.ts` - exports `ALL_DISPATCHERS` and `dispatchTool()`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
 ## 2. IMPLEMENTED STATE
 
-
-- Current footprint: 33 tools across 5 dispatch modules.
-- Routing model: first dispatcher with `TOOL_NAMES.has(name)` handles the call.
-- `parseArgs<T>()` is the single protocol-boundary cast point.
-- Tool args include recent fields such as:
-  - `includeSpecDocs` for `memory_index_scan`
-  - `asyncEmbedding` for `memory_save`
-  - cognitive/intent-related flags on search/context flows
-  - `onlyComplete` and `includeSummary` for `memory_get_learning_history`
-
+- Tool calls are schema-validated before handler dispatch via `validateToolArgs()` from `schemas/tool-input-schemas.ts`.
+- `memory-tools.ts` implements the `memory_quick_search` delegation path by building a richer `memory_search` request and relabeling the returned envelope metadata back to `memory_quick_search`.
+- `types.ts` remains the typed boundary for parsed handler arguments and MCP response aliases.
+- `dispatchTool()` in `index.ts` routes in fixed dispatcher order and returns `null` only when no tool module claims the name.
 
 <!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:hardening-notes -->
-## 3. HARDENING NOTES
-
-
-- Dispatch remains modular so new tools can be added without monolithic switch growth.
-- Typed arg interfaces in `types.ts` reduce drift between schemas and handlers.
-- L6/L7 lifecycle and causal tooling is now part of the default dispatcher chain.
-
-
-<!-- /ANCHOR:hardening-notes -->
 <!-- ANCHOR:related -->
-## 4. RELATED
-
+## 3. RELATED
 
 - `../handlers/README.md`
-- `../tool-schemas.ts`
-- `../../shared/types.ts`
+- `../schemas/README.md`
+- `../core/README.md`
+
 <!-- /ANCHOR:related -->

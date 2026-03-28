@@ -554,9 +554,9 @@ Memory files are always saved to the child folder's `memory/` directory (e.g., `
 
 ### Spec Kit Memory System (Integrated)
 
-Context preservation across sessions via hybrid search (vector similarity + BM25 + FTS with Reciprocal Rank Fusion).
+Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~1073 lines) with ~44 handler files, 27 lib subdirectories, and 33 MCP tools across 7 layers.
+**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 33 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
@@ -565,7 +565,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
 | `memory_context()`              | L1    | Unified entry point — modes: auto, quick, deep, focused, resume |
-| `memory_search()`               | L2    | Hybrid search (vector + FTS + BM25 with RRF fusion). With optional adaptive fusion (SPECKIT_ADAPTIVE_FUSION) and artifact-class routing |
+| `memory_search()`               | L2    | 5-channel hybrid retrieval with intent-aware routing, channel normalization, graph/degree signals, reranking, and filtered output |
 | `memory_quick_search()`         | L2    | Simplified search (query + optional spec folder)  |
 | `memory_match_triggers()`       | L2    | Trigger matching + cognitive (decay, tiers, co-activation) |
 | `memory_save()`                 | L2    | Index a memory file with pre-flight validation    |
@@ -575,7 +575,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
 | `memory_stats()`                | L3    | System statistics and memory counts                |
 | `memory_health()`              | L3    | Diagnostics: orphan detection, index consistency   |
-| `shared_memory_status()`        | L3    | Shared-memory subsystem status check               |
+| `shared_memory_status()`        | L5    | Shared-memory subsystem status check               |
 | `memory_index_scan()`          | L7    | Workspace scanning and re-indexing                 |
 | `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
 | `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
@@ -583,7 +583,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `shared_space_upsert()`         | L5    | Create or update shared collaboration space        |
 | `shared_space_membership_set()` | L5    | Set membership for shared collaboration space      |
 
-> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
+> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
 **memory_context() — Mode Routing:**
 
@@ -605,6 +605,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - An exception path allows short decision-type memories to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
 - Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
 - A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
+- Preflight parses are revalidated inside the write lock when file contents change, and duplicate short-circuits verify stored content before trusting a stale hash hit.
+- Delete and replacement paths now treat vector cleanup and projection replacement as integrity-critical instead of best-effort, so stale vector/projection rows do not silently survive successful writes.
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
 - Governed save and retrieval flows can carry `tenantId`, `userId`, `agentId`, and `sharedSpaceId` so private, agent-scoped, and shared-space memory boundaries stay aligned end to end.
 - Shared-memory collaboration is opt-in: use `/memory:manage shared` to enable rollout, create spaces, and manage deny-by-default memberships before relying on shared-space save or retrieval flows.
@@ -623,7 +625,10 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Checkpoints** — Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
 - **Indexing persistence** — After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
 - **Artifact routing** — 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
-- **Adaptive fusion** — Intent-aware weighted RRF with 7 task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision). Enabled by default via feature flag `SPECKIT_ADAPTIVE_FUSION` (set `false` to disable)
+- **Adaptive fusion** — Intent-aware weighted RRF with 7 task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision), plus corrected channel fallback and normalization behavior in the live hybrid pipeline
+- **Causal graph diagnostics** — `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
+- **Eval guardrails** — Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
+- **Runtime-resolved flags** — Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
 - **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
@@ -637,6 +642,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Structural blocker detection** — Structural pattern detection identifies blockers (avoiding false positives from broad keyword matching)
 
 **Feature Flags:**
+
+Flags below describe live runtime behavior. Several retrieval and scoring controls are resolved at call time rather than captured once at module import, so changing `process.env` affects long-running MCP processes without a code reload.
 
 | Flag                          | Default | Effect                                                                                      |
 | ----------------------------- | ------- | ------------------------------------------------------------------------------------------- |

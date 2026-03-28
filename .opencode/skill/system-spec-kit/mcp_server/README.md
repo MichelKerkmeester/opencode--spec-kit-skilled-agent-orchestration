@@ -21,17 +21,17 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. FEATURES](#3-features)
-  - [3.1 HOW THE MEMORY SYSTEM WORKS](#31-how-the-memory-system-works)
-  - [3.2 TOOL REFERENCE](#32-tool-reference)
-- [4. STRUCTURE](#4-structure)
-- [5. CONFIGURATION](#5-configuration)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. FAQ](#8-faq)
-- [9. RELATED DOCUMENTS](#9-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. QUICK START](#2--quick-start)
+- [3. FEATURES](#3--features)
+  - [3.1 HOW THE MEMORY SYSTEM WORKS](#31--how-the-memory-system-works)
+  - [3.2 TOOL REFERENCE](#32--tool-reference)
+- [4. STRUCTURE](#4--structure)
+- [5. CONFIGURATION](#5--configuration)
+- [6. USAGE EXAMPLES](#6--usage-examples)
+- [7. TROUBLESHOOTING](#7--troubleshooting)
+- [8. FAQ](#8--faq)
+- [9. RELATED DOCUMENTS](#9--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -1038,35 +1038,27 @@ Cancel a running import job. The current file finishes processing before the job
 <!-- ANCHOR:structure -->
 ## 4. STRUCTURE
 
-```
+``` 
 mcp_server/
-├── context-server.ts          # Server entry point, registers all 33 tools
-├── dist/                      # Compiled JavaScript build output
-├── cli.ts                     # CLI entry point
-├── tool-schemas.ts            # Single source of truth for all tool definitions
-├── api/                       # Public API surface (search, indexing)
-├── core/                      # Core runtime logic (lifecycle, orchestration)
-├── configs/                   # Runtime configuration modules
-├── formatters/                # Output formatting (markdown, structured)
-├── schemas/                   # Zod validation schemas
-├── handlers/                  # Per-tool request handlers
-│   ├── memory-save.ts         # Save handler with pre-flight quality gate
-│   ├── memory-search.ts       # Core search handler
-│   ├── memory-context.ts      # Unified context entry point
-│   └── ...                    # One handler file per tool or tool group
-├── lib/
-│   ├── search/                # 4-stage hybrid search pipeline
-│   │   ├── README.md          # Per-stage module mapping
-│   │   └── pipeline/          # Stage modules (stage1 through stage4)
-│   ├── cognitive/             # Memory states and FSRS decay
-│   ├── graph/                 # Causal graph operations
-│   ├── governance/            # Scope, tenant and shared-space enforcement
-│   └── ...                    # 27 additional runtime subdirectories
-├── hooks/                     # Post-mutation lifecycle hooks
-├── tools/                     # Tool dispatch layer (5 domain dispatchers)
-├── shared-spaces/             # Shared memory space management
-├── database/                  # SQLite database files
-├── tests/                     # Vitest test suites
+├── context-server.ts          # MCP entry point and runtime bootstrap
+├── startup-checks.ts          # Startup diagnostics used before tool registration
+├── cli.ts                     # Admin/maintenance CLI surface
+├── tool-schemas.ts            # Tool definition source of truth
+├── api/                       # Stable public imports for eval, indexing, search, providers, storage
+├── core/                      # Runtime config, DB-state coordination, rebind hooks
+├── configs/                   # Cognitive config + search-weights reference data
+├── database/                  # Runtime SQLite artifacts and profile-specific DBs
+├── formatters/                # Search-result and token-metric formatting
+├── handlers/                  # MCP tool handlers plus save/index helper modules
+├── hooks/                     # Auto-surface hints, mutation feedback, token-count sync
+├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
+├── schemas/                   # Zod tool-input schemas
+├── shared-spaces/             # Documentation-only shared-memory surface
+├── tests/                     # Vitest suites (329 root `.vitest.ts` files at audit time)
+├── tools/                     # Tool dispatch layer
+├── package.json               # Package metadata and scripts
+├── tsconfig.json              # TypeScript build config
+├── vitest.config.ts           # Vitest configuration
 ├── INSTALL_GUIDE.md           # Full installation walkthrough
 └── README.md                  # This file
 ```
@@ -1075,10 +1067,11 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener and registers all 33 tools. This is the entry point. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 33 tools. |
+| `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
-| `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks for duplicates, generates embeddings, stores the result. |
-| `lib/search/README.md` | Maps each search pipeline stage to its source module. |
+| `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
+| `api/index.ts` | Stable external import surface for eval, indexing, search, provider, rollout, and discovery helpers. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
 ### 7-Layer Tool Architecture
@@ -1119,83 +1112,28 @@ The system needs an embedding provider to convert text into vectors for similari
 | **OpenAI** | `EMBEDDING_PROVIDER=openai`, `OPENAI_API_KEY=your-key` | Widely available |
 | **HuggingFace local** | `EMBEDDING_PROVIDER=huggingface` | No API key needed, runs on your machine |
 
-### Feature Flags
+### Representative Environment Variables
 
-Feature flags control which parts of the pipeline are active. Most are turned on by default. The evaluation rule is simple: absent, empty or `'true'` means enabled. `'false'` or `'0'` means disabled.
+The full source of truth lives in `../references/config/environment_variables.md`. The table below lists the variables most likely to matter during server bring-up and documentation audits.
 
-The global rollout gate `SPECKIT_ROLLOUT_PERCENT` (default `100`) applies a percentage filter on top of all individual flags. Set to `0` to turn off the entire pipeline.
-
-**Search Pipeline** (representative flags):
-
-| Flag | Default | What It Controls |
+| Variable | Default | What It Controls |
 |------|---------|-----------------|
-| `ENABLE_BM25` | `true` | BM25 keyword scoring channel |
-| `ENABLE_GRAPH_SEARCH` | `true` | Causal graph traversal channel |
-| `ENABLE_RERANKER` | `true` | Cross-encoder reranking at Stage 3 |
-| `ENABLE_MMR` | `true` | Diversity reranking |
-| `ENABLE_CO_ACTIVATION` | `true` | Co-activation spreading boost |
-| `ENABLE_FSRS_DECAY` | `true` | FSRS power-law decay scoring |
-| `ENABLE_INTERFERENCE_PENALTY` | `true` | Suppresses over-retrieved memories |
-| `SPECKIT_ROLLOUT_PERCENT` | `100` | Global percentage gate (0-100) |
-| `SPECKIT_ABLATION` | `false` | Enable ablation study mode |
-| `SPECKIT_RESPONSE_TRACE` | `false` | Include retrieval trace in responses |
+| `MEMORY_DB_PATH` | `mcp_server/dist/database/context-index.sqlite` | Override the active memory database location |
+| `ENABLE_RERANKER` | `false` | Enable the experimental reranker path |
+| `ENABLE_TOOL_CACHE` | `true` | Enable tool-level result caching |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | Strict Zod validation for MCP tool inputs |
+| `SPECKIT_RESPONSE_TRACE` | `false` | Include trace-rich scores/source metadata by default |
+| `SPECKIT_DYNAMIC_INIT` | `true` | Inject live startup memory/index summary into MCP init |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | Prepend contextual tree headers to markdown results |
+| `SPECKIT_FILE_WATCHER` | `false` | Enable chokidar-based auto re-indexing |
+| `SPEC_KIT_BATCH_SIZE` | `5` | Batch size for `memory_index_scan` |
+| `SPEC_KIT_BATCH_DELAY_MS` | `100` | Delay between scan batches in milliseconds |
 
-**Session and Cache**:
+Provider selection and the wider rollout-flag matrix drift more often than this overview. For current values, rely on:
 
-| Flag | Default | What It Controls |
-|------|---------|-----------------|
-| `ENABLE_SESSION_DEDUP` | `true` | Skip memories already seen this session |
-| `ENABLE_TOOL_CACHE` | `true` | TTL cache for tool-level results |
-| `SESSION_CACHE_TTL` | `300` | Cache lifetime in seconds |
-
-**MCP Configuration**:
-
-| Flag | Default | What It Controls |
-|------|---------|-----------------|
-| `SPECKIT_MIN_QUALITY_SCORE` | `0.3` | Minimum quality score to accept a save |
-| `SPECKIT_PREFLIGHT_STRICT` | `false` | Reject saves that fail the quality gate |
-| `SPECKIT_MAX_CHUNK_SIZE` | `50000` | Character threshold for section chunking |
-
-**Memory and Storage**:
-
-| Flag | Default | What It Controls |
-|------|---------|-----------------|
-| `DB_PATH` | `mcp_server/database/spec-kit.db` | SQLite database path |
-| `SPECKIT_EMBEDDING_CACHE` | `true` | Cache embeddings to avoid re-generation |
-| `SPECKIT_BATCH_SIZE` | `50` | Batch size for bulk indexing |
-
-**Embedding and API**:
-
-| Flag | Default | What It Controls |
-|------|---------|-----------------|
-| `EMBEDDING_PROVIDER` | `voyage` | Provider: `voyage`, `openai`, `huggingface` |
-| `VOYAGE_API_KEY` | _(none)_ | Voyage AI API key |
-| `OPENAI_API_KEY` | _(none)_ | OpenAI API key |
-
-**Debug and Telemetry**:
-
-| Flag | Default | What It Controls |
-|------|---------|-----------------|
-| `SPECKIT_DEBUG` | `false` | Verbose debug logging |
-| `SPECKIT_SCORE_TRACE` | `false` | Log per-channel scores for each result |
-
-### Database Schema
-
-The SQLite database has 25 tables. The most important ones:
-
-| Table | What It Stores |
-|-------|---------------|
-| `memory_index` | Core memory records (id, path, title, content, metadata) |
-| `vec_memories` | Vector embeddings for similarity search |
-| `memory_fts` | FTS5 full-text search index |
-| `checkpoints` | Named memory state snapshots |
-| `causal_edges` | Typed causal relationships between memories |
-| `learning_records` | Preflight/postflight epistemic snapshots |
-| `working_memory` | Session-scoped attention tracking |
-| `shared_spaces` | Shared memory space definitions |
-| `shared_space_members` | Membership records for shared spaces |
-| `session_state` | Cross-turn session context |
-| `schema_version` | Migration version tracking |
+- `../references/config/environment_variables.md`
+- `configs/README.md`
+- `database/README.md`
 
 <!-- /ANCHOR:configuration -->
 
@@ -1507,7 +1445,7 @@ Restore if needed:
 
 ### Server Fails to Start
 
-**What you see**: `node dist/context-server.js` exits with a module error or DB_PATH error.
+**What you see**: `node dist/context-server.js` exits with a module error or `MEMORY_DB_PATH`/database-path error.
 
 **Fix**: Rebuild and check the database path:
 
@@ -1526,7 +1464,7 @@ node -e "require('./dist/context-server.js')" 2>&1 | head -20
 | Search returning empty | Run `memory_index_scan` to re-index |
 | Tools not appearing in MCP client | Restart the MCP client after config changes |
 | BM25 index stale | Set `ENABLE_BM25=false` to fall back to FTS5 |
-| Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and check `SESSION_CACHE_TTL` |
+| Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and review cache + trace settings before enabling heavier debug output |
 | Embedding API rate limit | Set `SPECKIT_EMBEDDING_RETRY_DELAY_MS=1000` |
 | Shared memory not working | Call `shared_memory_enable` first, then create a space with an actor identity |
 

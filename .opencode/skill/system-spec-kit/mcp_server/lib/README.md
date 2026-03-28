@@ -44,8 +44,8 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
-| Total Modules | 167 | Recursive `.ts` files under `lib/`, spanning 28 top-level directories plus top-level `errors.ts` |
-| Last Verified | 2026-03-25 | Module category and TypeScript file counts revalidated against the live source tree |
+| Total Modules | 169 | Recursive `.ts` files under `lib/`, spanning 28 top-level directories plus top-level `errors.ts` |
+| Last Verified | 2026-03-28 | Module category and TypeScript file counts revalidated against the live source tree |
 
 ### Key Features
 

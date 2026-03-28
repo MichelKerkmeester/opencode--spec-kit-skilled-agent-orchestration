@@ -6,11 +6,18 @@
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';
 
+interface RankedIntent {
+  intent: IntentType;
+  confidence: number;
+  score: number;
+}
+
 interface IntentResult {
   intent: IntentType;
   confidence: number;
   scores: Record<IntentType, number>;
   keywords: string[];
+  rankedIntents: RankedIntent[];
 }
 
 interface IntentWeights {
@@ -185,6 +192,7 @@ const INTENT_NEGATIVE_PATTERNS: Partial<Record<IntentType, RegExp[]>> = {
 
 /** P3-12: Minimum confidence threshold below which "general" style fallback is used */
 const MIN_CONFIDENCE_THRESHOLD = 0.08;
+const MAX_RANKED_INTENTS = 3;
 
 const INTENT_WEIGHT_ADJUSTMENTS: Record<IntentType, IntentWeights> = {
   add_feature: { recency: 0.3, importance: 0.4, similarity: 0.3, contextType: 'implementation' },
@@ -368,6 +376,23 @@ function calculateCentroidScore(query: string, intent: IntentType): number {
   return Math.max(0, dotProduct(queryEmb, centroid));
 }
 
+function buildRankedIntents(scores: Record<IntentType, number>): RankedIntent[] {
+  return Object.entries(scores)
+    .map(([intent, score]) => ({
+      intent: intent as IntentType,
+      confidence: Math.min(1, score),
+      score,
+    }))
+    .filter((rankedIntent) => rankedIntent.score > 0)
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+      return left.intent.localeCompare(right.intent);
+    })
+    .slice(0, MAX_RANKED_INTENTS);
+}
+
 /* --- 3. CLASSIFICATION --- */
 
 /**
@@ -383,6 +408,7 @@ function classifyIntent(query: string): IntentResult {
       confidence: 0,
       scores: { add_feature: 0, fix_bug: 0, refactor: 0, security_audit: 0, understand: 0, find_spec: 0, find_decision: 0 },
       keywords: [],
+      rankedIntents: [],
     };
   }
 
@@ -436,6 +462,8 @@ function classifyIntent(query: string): IntentResult {
     }
   }
 
+  const rankedIntents = buildRankedIntents(scores);
+
   // P3-12: If top score is below minimum confidence, return "understand" with low confidence
   // This prevents weak single-keyword matches from dominating classification.
   if (topScore < MIN_CONFIDENCE_THRESHOLD) {
@@ -444,6 +472,7 @@ function classifyIntent(query: string): IntentResult {
       confidence: topScore,
       scores,
       keywords: [...new Set(allKeywords)],
+      rankedIntents,
     };
   }
 
@@ -452,6 +481,7 @@ function classifyIntent(query: string): IntentResult {
     confidence: Math.min(1, topScore),
     scores,
     keywords: [...new Set(allKeywords)],
+    rankedIntents,
   };
 }
 
@@ -620,5 +650,6 @@ export {
 export type {
   IntentType,
   IntentResult,
+  RankedIntent,
   IntentWeights,
 };

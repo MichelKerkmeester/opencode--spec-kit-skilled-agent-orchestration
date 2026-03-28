@@ -1066,19 +1066,6 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     resumedContextCount: 0,
   };
 
-  const sessionStateResult = sessionManager.saveSessionState(effectiveSessionId, {
-    specFolder: spec_folder,
-    tenantId: args.tenantId,
-    userId: args.userId,
-    agentId: args.agentId,
-    currentTask: normalizedInput.slice(0, 500),
-  });
-  if (!sessionStateResult.success) {
-    console.warn(
-      `[memory-context] Failed to persist session identity for ${effectiveSessionId}: ${sessionStateResult.error ?? 'unknown error'}`,
-    );
-  }
-
   // Get layer info for response metadata
   const layerInfo: LayerInfo | null = layerDefs.getLayerInfo('memory_context');
   const tokenBudget = layerInfo?.tokenBudget ?? 2000;
@@ -1160,6 +1147,18 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
 
   const discoveredFolder = maybeDiscoverSpecFolder(options, { ...args, input: normalizedInput });
+  const sessionStateResult = sessionManager.saveSessionState(effectiveSessionId, {
+    specFolder: options.specFolder ?? spec_folder,
+    tenantId: args.tenantId,
+    userId: args.userId,
+    agentId: args.agentId,
+    currentTask: normalizedInput.slice(0, 500),
+  });
+  if (!sessionStateResult.success) {
+    console.warn(
+      `[memory-context] Failed to persist session identity for ${effectiveSessionId}: ${sessionStateResult.error ?? 'unknown error'}`,
+    );
+  }
 
   let result: ContextResult;
   try {

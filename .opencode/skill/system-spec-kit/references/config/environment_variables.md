@@ -214,7 +214,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_DASHBOARD_LIMIT` | `100` | S7 | Row cap for `eval_reporting_dashboard` queries |
 | `SPECKIT_GRAPH_UNIFIED` | ON | S7 | Unified graph retrieval with deterministic ranking, explainability trace, and rollback support |
 | `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, write_global. Graduated default: write_local |
-| `SPECKIT_GRAPH_WALK_ROLLOUT` | `bounded_runtime` | S5 | Graph walk rollout state: off, bounded_runtime, full. Default: bounded_runtime |
+| `SPECKIT_GRAPH_WALK_ROLLOUT` | `bounded_runtime` | S5 | Graph walk rollout state: off, trace_only, bounded_runtime. Default: bounded_runtime |
 | `SPECKIT_HYDE` | ON | R-011 | HyDE shadow document generation for embedding enrichment |
 | `SPECKIT_HYDE_ACTIVE` | ON | R-011 | Promote HyDE from shadow to active query pipeline. Set `false` to disable merging |
 | `SPECKIT_LLM_REFORMULATION` | ON | R-011 | LLM-based corpus-grounded query reformulation |

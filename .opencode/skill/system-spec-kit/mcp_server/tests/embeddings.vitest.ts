@@ -1,5 +1,7 @@
 // TEST: Embeddings Architecture (T513)
 // Verifies current shared-provider architecture and MCP facade.
+import fs from 'fs';
+import path from 'path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createEmbeddingsProvider,
@@ -24,6 +26,9 @@ const ORIGINAL_ENV = Object.fromEntries(
   ENV_KEYS.map((key) => [key, process.env[key]])
 ) as Record<string, string | undefined>;
 const originalFetch = globalThis.fetch;
+const HF_LOCAL_PROVIDER_FILE = path.resolve(__dirname, '..', '..', 'shared', 'embeddings', 'providers', 'hf-local.ts');
+const OPENAI_PROVIDER_FILE = path.resolve(__dirname, '..', '..', 'shared', 'embeddings', 'providers', 'openai.ts');
+const VOYAGE_PROVIDER_FILE = path.resolve(__dirname, '..', '..', 'shared', 'embeddings', 'providers', 'voyage.ts');
 
 function resetEnv(): void {
   for (const key of ENV_KEYS) {
@@ -59,6 +64,7 @@ describe('Embeddings Architecture (T513)', () => {
   afterEach(() => {
     resetEnv();
     restoreFetch();
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
@@ -224,6 +230,27 @@ describe('Embeddings Architecture (T513)', () => {
       expect(startup.validation.valid).toBe(true);
       expect(startup.info.provider).toBe('openai');
       expect(startup.dimension).toBeGreaterThan(0);
+    });
+
+    it('T513-03e: hf-local inference respects provider timeout', async () => {
+      const source = fs.readFileSync(HF_LOCAL_PROVIDER_FILE, 'utf8');
+      expect(source).toContain('async function withTimeout<T>(');
+      expect(source).toContain('HF local inference timed out after ${this.timeout}ms');
+      expect(source).toContain('const output = await withTimeout(');
+    });
+
+    it('T513-03f: openai warmup uses a bounded Promise.race deadline', () => {
+      const source = fs.readFileSync(OPENAI_PROVIDER_FILE, 'utf8');
+      expect(source).toContain('const result = await Promise.race([');
+      expect(source).toContain('OpenAI warmup timed out after ${this.timeout}ms');
+      expect(source).toContain('proceeding with cold provider state');
+    });
+
+    it('T513-03g: voyage warmup uses a bounded Promise.race deadline', () => {
+      const source = fs.readFileSync(VOYAGE_PROVIDER_FILE, 'utf8');
+      expect(source).toContain('const result = await Promise.race([');
+      expect(source).toContain('Voyage warmup timed out after ${this.timeout}ms');
+      expect(source).toContain('proceeding with cold provider state');
     });
   });
 

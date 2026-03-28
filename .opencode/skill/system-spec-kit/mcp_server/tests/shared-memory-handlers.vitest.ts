@@ -572,12 +572,34 @@ describe('shared-memory admin handlers', () => {
     expect(envelope.data.details?.reason).toBe('actor_identity_required');
   });
 
-  it('returns an internal error before README checks when shared-memory enablement fails', async () => {
+  it('rejects shared-memory enable when caller identity is omitted', async () => {
+    const response = await handleSharedMemoryEnable({});
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.code).toBe('E_AUTHENTICATION');
+    expect(envelope.data.details?.reason).toBe('actor_identity_required');
+  });
+
+  it('rejects shared-memory enable when the caller is not the configured admin', async () => {
+    const response = await handleSharedMemoryEnable({
+      actorUserId: 'user-other',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.code).toBe('E_AUTHORIZATION');
+    expect(envelope.data.details?.reason).toBe('shared_memory_enable_admin_required');
+  });
+
+  it('returns an internal error before README checks when authenticated shared-memory enablement fails', async () => {
     const db = getDb();
     db.close();
     dbHolder.current = null;
 
-    const response = await handleSharedMemoryEnable({});
+    const response = await handleSharedMemoryEnable({
+      actorUserId: 'user-owner',
+    });
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);

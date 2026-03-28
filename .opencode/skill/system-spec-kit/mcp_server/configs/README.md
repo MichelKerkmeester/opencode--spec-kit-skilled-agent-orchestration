@@ -30,7 +30,7 @@ This section provides an overview of the MCP Server Configuration Files director
 `configs/` currently contains:
 
 - `search-weights.json` — scoring weights and document-type multipliers for memory search ranking. Partly active, partly reference. Inline notes are the source of truth for what is currently loaded at runtime.
-- `cognitive.ts` — cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` singleton and `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv` functions.
+- `cognitive.ts` — cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` plus `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv`; callers that need fresh environment values should prefer the loader functions over the import-time snapshot.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
@@ -51,6 +51,7 @@ Exports from `cognitive.ts`:
 - `safeParseCognitiveConfigFromEnv()` — returns result object with success/errors.
 
 Important: canonical scoring behavior lives in TypeScript modules (not this README), primarily `lib/scoring/composite-scoring.ts` and related handlers.
+Important: feature-flag and shared-memory enablement checks are resolved at runtime in helper functions such as `isSharedMemoryEnabled()` and the various `is*Enabled()` lookups under `lib/` and `handlers/`; do not treat this folder as a frozen startup snapshot of MCP behavior.
 
 
 <!-- /ANCHOR:implemented-state -->
@@ -61,6 +62,7 @@ Important: canonical scoring behavior lives in TypeScript modules (not this READ
 - Document-type multiplier coverage is aligned to schema/document-type indexing.
 - Dead/legacy config sections are documented to reduce ambiguity.
 - Treat this folder as config reference plus transition notes until legacy paths are fully removed.
+- Runtime behavior is source-of-truth in the resolver helpers, not in import-time constants. `search-weights.json` is read live where referenced, and environment-gated behavior should be documented against the resolver function that reads it.
 
 
 <!-- /ANCHOR:hardening-notes -->

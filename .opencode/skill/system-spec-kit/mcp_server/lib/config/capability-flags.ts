@@ -138,8 +138,8 @@ function getMemoryRoadmapCapabilityFlags(identity?: string): MemoryRoadmapCapabi
       [CAPABILITY_ENV.governanceGuardrails, LEGACY_CAPABILITY_ENV.governanceGuardrails],
       identity,
     ),
-    // M4 FIX: Default sharedMemory to false to match runtime gate behavior.
-    // The runtime in shared-spaces.ts defaults shared memory to off until env/config enablement.
+    // M4 FIX: Default sharedMemory to false to match runtime gate behavior and docs.
+    // The runtime in shared-spaces.ts keeps shared memory opt-in until env/config enablement.
     sharedMemory: isMemoryRoadmapCapabilityEnabled(
       [CAPABILITY_ENV.sharedMemory, LEGACY_CAPABILITY_ENV.sharedMemory],
       identity,

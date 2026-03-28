@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // TEST: Lazy Loading Startup Behavior (T016-T019)
@@ -31,6 +33,8 @@ async function loadEmbeddingsModule() {
   return import('../../shared/embeddings');
 }
 
+const HANDLERS_INDEX_FILE = path.resolve(__dirname, '..', 'handlers', 'index.ts');
+
 describe('Lazy Loading Startup Behavior (T016-T019)', () => {
   beforeEach(() => {
     resetEnv();
@@ -39,6 +43,7 @@ describe('Lazy Loading Startup Behavior (T016-T019)', () => {
 
   afterEach(() => {
     resetEnv();
+    vi.useRealTimers();
   });
 
   it('T016: shouldEagerWarmup() is false by default', async () => {
@@ -69,5 +74,15 @@ describe('Lazy Loading Startup Behavior (T016-T019)', () => {
     expect(stats.isInitialized).toBe(true);
     expect(stats.initStartTime).not.toBeNull();
     expect(stats.initCompleteTime).not.toBeNull();
+  });
+
+  it('T020: handlers barrel defers handler module loading until a specific export is invoked', async () => {
+    const sourceCode = fs.readFileSync(HANDLERS_INDEX_FILE, 'utf8');
+    const handlers = await import('../handlers/index');
+    expect(typeof handlers.handleMemorySearch).toBe('function');
+    expect(sourceCode).toContain("loadHandlerModule<MemorySearchModule>('memory-search')");
+    expect(sourceCode).toContain("loadHandlerModule<MemoryContextModule>('memory-context')");
+    expect(sourceCode).not.toContain("import * as memorySearch from './memory-search'");
+    expect(sourceCode).not.toContain("import * as memoryContext from './memory-context'");
   });
 });

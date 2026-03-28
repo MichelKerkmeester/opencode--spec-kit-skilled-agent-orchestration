@@ -19,6 +19,7 @@ export interface SignalDetection {
 
 /** Trigger cache entry for a single phrase-to-memory mapping */
 export interface TriggerCacheEntry {
+  triggerId: number;
   phrase: string;
   regex: RegExp;
   memoryId: number;
@@ -154,19 +155,116 @@ export function logExecutionTime(operation: string, durationMs: number, details:
 
 // In-memory cache of trigger phrases for fast matching
 let triggerCache: TriggerCacheEntry[] | null = null;
+let triggerCandidateIndex: Map<string, Set<number>> | null = null;
 let cacheTimestamp: number = 0;
 let lastDegradedState: TriggerMatcherDegradedState | null = null;
 
 // LRU cache for regex objects to prevent memory leaks
 const regexLruCache: Map<string, RegExp> = new Map();
+const UNICODE_WORD_CHAR_CLASS = '\\p{L}\\p{N}\\p{M}';
+const UNICODE_TOKEN_PATTERN = /[\p{L}\p{N}\p{M}]+/gu;
+const CJK_SCRIPT_PATTERN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
+const MIN_INDEX_NGRAM_SIZE = 2;
+const MAX_INDEX_NGRAM_SIZE = 3;
 const COMMON_TRIGGER_STOPWORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but',
   'is', 'am', 'are', 'was', 'were', 'be', 'been', 'being',
   'to', 'of', 'in', 'on', 'at', 'for', 'from', 'with', 'by',
 ]);
 
+export function normalizeTriggerText(text: string): string {
+  return normalizeUnicode(text, false)
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function buildBoundaryRegex(phrase: string): RegExp {
+  const normalizedPhrase = normalizeTriggerText(phrase);
+  const escaped = escapeRegex(normalizedPhrase);
+
+  // CJK text often appears in continuous sentence flow without whitespace-delimited
+  // word breaks. For pure CJK trigger phrases, prefer substring matching so valid
+  // phrases are not rejected by boundary checks on neighboring CJK characters.
+  if (CJK_SCRIPT_PATTERN.test(normalizedPhrase) && !/\s/u.test(normalizedPhrase)) {
+    return new RegExp(escaped, 'iu');
+  }
+
+  return new RegExp(
+    `(?:^|[^${UNICODE_WORD_CHAR_CLASS}])${escaped}(?:[^${UNICODE_WORD_CHAR_CLASS}]|$)`,
+    'iu'
+  );
+}
+
+function getUnicodeTokens(text: string): string[] {
+  const normalized = normalizeTriggerText(text);
+  if (!normalized) {
+    return [];
+  }
+
+  return Array.from(normalized.matchAll(UNICODE_TOKEN_PATTERN), (match) => match[0]);
+}
+
+function isSignificantIndexToken(token: string): boolean {
+  if (!token) {
+    return false;
+  }
+
+  return token.length >= CONFIG.MIN_PHRASE_LENGTH && !COMMON_TRIGGER_STOPWORDS.has(token);
+}
+
+function extractTriggerIndexKeys(text: string): string[] {
+  const normalized = normalizeTriggerText(text);
+  if (!normalized) {
+    return [];
+  }
+
+  const rawTokens = getUnicodeTokens(normalized);
+  const tokens = rawTokens.filter(isSignificantIndexToken);
+  const basis = tokens.length > 0 ? tokens : rawTokens;
+  const keys = new Set<string>();
+
+  for (const token of basis) {
+    if (token) {
+      keys.add(token);
+    }
+  }
+
+  for (let size = MIN_INDEX_NGRAM_SIZE; size <= MAX_INDEX_NGRAM_SIZE; size += 1) {
+    if (basis.length < size) {
+      continue;
+    }
+
+    for (let index = 0; index <= basis.length - size; index += 1) {
+      keys.add(basis.slice(index, index + size).join(' '));
+    }
+  }
+
+  if (keys.size === 0) {
+    keys.add(normalized);
+  }
+
+  return [...keys];
+}
+
+function indexTriggerEntry(entry: TriggerCacheEntry): void {
+  if (!triggerCandidateIndex) {
+    triggerCandidateIndex = new Map();
+  }
+
+  const keys = extractTriggerIndexKeys(entry.phrase);
+  for (const key of keys) {
+    const indexedIds = triggerCandidateIndex.get(key);
+    if (indexedIds) {
+      indexedIds.add(entry.triggerId);
+      continue;
+    }
+
+    triggerCandidateIndex.set(key, new Set([entry.triggerId]));
+  }
+}
+
 function isSpecificTriggerPhrase(phrase: string): boolean {
-  const normalized = normalizeUnicode(phrase, false).trim();
+  const normalized = normalizeTriggerText(phrase);
   if (normalized.length < CONFIG.MIN_PHRASE_LENGTH) {
     return false;
   }
@@ -185,23 +283,21 @@ function isSpecificTriggerPhrase(phrase: string): boolean {
 
 /** Get or create a cached regex for a trigger phrase. @param phrase - The trigger phrase @returns Compiled RegExp */
 export function getCachedRegex(phrase: string): RegExp {
+  const normalizedPhrase = normalizeTriggerText(phrase);
+
   // Check if already in cache
-  if (regexLruCache.has(phrase)) {
+  if (regexLruCache.has(normalizedPhrase)) {
     // Move to end (most recently used) by deleting and re-adding
-    const regex = regexLruCache.get(phrase);
+    const regex = regexLruCache.get(normalizedPhrase);
     if (regex) {
-      regexLruCache.delete(phrase);
-      regexLruCache.set(phrase, regex);
+      regexLruCache.delete(normalizedPhrase);
+      regexLruCache.set(normalizedPhrase, regex);
       return regex;
     }
   }
 
-  // Unicode-aware word boundary avoids false matches on accented characters (BUG-026 fix)
-  const escaped = escapeRegex(phrase);
-  const regex = new RegExp(
-    `(?:^|[^a-zA-Z0-9\u00C0-\u00FF])${escaped}(?:[^a-zA-Z0-9\u00C0-\u00FF]|$)`,
-    'iu'
-  );
+  // Unicode-aware word boundary avoids false matches across non-Latin scripts.
+  const regex = buildBoundaryRegex(normalizedPhrase);
 
   // Evict oldest entry if at capacity (T015: LRU eviction)
   if (regexLruCache.size >= CONFIG.MAX_REGEX_CACHE_SIZE) {
@@ -212,7 +308,7 @@ export function getCachedRegex(phrase: string): RegExp {
   }
 
   // Add to cache
-  regexLruCache.set(phrase, regex);
+  regexLruCache.set(normalizedPhrase, regex);
   return regex;
 }
 
@@ -258,6 +354,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
 
     // Build flat cache for fast iteration
     triggerCache = [];
+    triggerCandidateIndex = new Map();
     const failures: TriggerMatcherFailure[] = [];
     for (const row of rows) {
       let phrases: unknown;
@@ -284,19 +381,24 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
           continue;
         }
 
-        const phraseLower = normalizeUnicode(phrase, false);
-        if (!isSpecificTriggerPhrase(phraseLower)) {
+        const normalizedPhrase = normalizeTriggerText(phrase);
+        if (!isSpecificTriggerPhrase(normalizedPhrase)) {
           continue;
         }
-        triggerCache.push({
-          phrase: phraseLower,
-          regex: getCachedRegex(phraseLower),
+
+        const entry: TriggerCacheEntry = {
+          triggerId: triggerCache.length,
+          phrase: normalizedPhrase,
+          regex: getCachedRegex(normalizedPhrase),
           memoryId: row.id,
           specFolder: row.spec_folder,
           filePath: row.file_path,
           title: row.title,
           importanceWeight: row.importance_weight || 0.5,
-        });
+        };
+
+        triggerCache.push(entry);
+        indexTriggerEntry(entry);
       }
     }
 
@@ -326,6 +428,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
 /** Clear the trigger cache (useful for testing or after updates) */
 export function clearCache(): void {
   triggerCache = null;
+  triggerCandidateIndex = null;
   cacheTimestamp = 0;
   lastDegradedState = null;
   regexLruCache.clear();
@@ -361,7 +464,7 @@ export function normalizeUnicode(str: string, stripAccents: boolean = false): st
   if (stripAccents) {
     normalized = normalized
       .normalize('NFKD')
-      .replace(/[\u0300-\u036f]/g, '');
+      .replace(/\p{M}/gu, '');
   }
 
   // Step 3: Case-fold (locale-independent lowercase)
@@ -375,13 +478,9 @@ export function matchPhraseWithBoundary(text: string, phrase: string, precompile
   if (precompiledRegex) {
     return precompiledRegex.test(text);
   }
+
   // Fallback for direct calls without pre-compiled regex
-  const escaped = escapeRegex(phrase);
-  const regex = new RegExp(
-    `(?:^|[^a-zA-Z0-9\u00C0-\u00FF])${escaped}(?:[^a-zA-Z0-9\u00C0-\u00FF]|$)`,
-    'iu'
-  );
-  return regex.test(text);
+  return buildBoundaryRegex(phrase).test(normalizeUnicode(text, false));
 }
 
 /* --- 6. SIGNAL VOCABULARY DETECTION (SPECKIT_SIGNAL_VOCAB) --- */
@@ -531,10 +630,12 @@ export function matchTriggerPhrases(userPrompt: string, limit: number = CONFIG.D
     return [];
   }
 
+  const candidateEntries = getTriggerCandidates(promptNormalized, cache);
+
   // Match against all cached phrases
   const matchesByMemory = new Map<number, TriggerMatch>();
 
-  for (const entry of cache) {
+  for (const entry of candidateEntries) {
     if (matchPhraseWithBoundary(promptNormalized, entry.phrase, entry.regex)) {
       const key = entry.memoryId;
 
@@ -571,6 +672,7 @@ export function matchTriggerPhrases(userPrompt: string, limit: number = CONFIG.D
   logExecutionTime('match_trigger_phrases', elapsed, {
     promptLength: prompt.length,
     cacheSize: cache.length,
+    candidateCount: candidateEntries.length,
     matchCount: results.length,
     totalPhrases: results.reduce((sum, m) => sum + m.matchedPhrases.length, 0),
   });
@@ -615,16 +717,48 @@ export function getAllPhrases(): string[] {
   return [...new Set(cache.map(e => e.phrase))];
 }
 
+export function getTriggerCandidates(userPrompt: string, cache: TriggerCacheEntry[] = loadTriggerCache()): TriggerCacheEntry[] {
+  if (cache.length === 0 || !triggerCandidateIndex || triggerCandidateIndex.size === 0) {
+    return cache;
+  }
+
+  const promptKeys = extractTriggerIndexKeys(userPrompt);
+  if (promptKeys.length === 0) {
+    return cache;
+  }
+
+  const candidateIds = new Set<number>();
+  for (const key of promptKeys) {
+    const indexedIds = triggerCandidateIndex.get(key);
+    if (!indexedIds) {
+      continue;
+    }
+
+    for (const triggerId of indexedIds) {
+      candidateIds.add(triggerId);
+    }
+  }
+
+  if (candidateIds.size === 0) {
+    return cache;
+  }
+
+  return [...candidateIds]
+    .sort((left, right) => left - right)
+    .map((triggerId) => cache[triggerId])
+    .filter((entry): entry is TriggerCacheEntry => Boolean(entry));
+}
+
 /** Get memories by trigger phrase */
 export function getMemoriesByPhrase(phrase: string): MemoryByPhrase[] {
   const cache = loadTriggerCache();
-  const phraseLower = phrase.toLowerCase();
+  const normalizedPhrase = normalizeTriggerText(phrase);
 
   const memoryIds = new Set<number>();
   const results: MemoryByPhrase[] = [];
 
   for (const entry of cache) {
-    if (entry.phrase === phraseLower && !memoryIds.has(entry.memoryId)) {
+    if (entry.phrase === normalizedPhrase && !memoryIds.has(entry.memoryId)) {
       memoryIds.add(entry.memoryId);
       results.push({
         memoryId: entry.memoryId,

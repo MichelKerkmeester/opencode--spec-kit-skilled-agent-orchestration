@@ -584,6 +584,59 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(bm25Text).toContain('Reachable Existing');
       expect(bm25Text).toContain('/test/103.md');
     });
+
+    it('MP5: Attempts immediate BM25 repair and surfaces a warning if repair still fails', async () => {
+      const bm25RemoveDocument = vi.fn();
+      const bm25AddDocument = vi.fn()
+        .mockImplementationOnce(() => {
+          throw new Error('initial merge BM25 failure');
+        })
+        .mockImplementationOnce(() => {
+          throw new Error('repair merge BM25 failure');
+        });
+      vi.spyOn(bm25Index, 'isBm25Enabled').mockReturnValue(true);
+      vi.spyOn(bm25Index, 'getIndex').mockReturnValue({
+        removeDocument: bm25RemoveDocument,
+        addDocument: bm25AddDocument,
+      } as unknown as ReturnType<typeof bm25Index.getIndex>);
+
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, importance_weight,
+          embedding_status, created_at, updated_at
+        )
+        VALUES (
+          104, 'test-spec', '/test/104.md', 'BM25 Repair Existing', 'Original searchable content',
+          0.5, 'success', datetime('now'), datetime('now')
+        )
+      `).run();
+      testDb.prepare(`
+        INSERT INTO vec_memories (rowid, embedding) VALUES (104, ?)
+      `).run(Buffer.from(new Float32Array([1, 0, 0]).buffer));
+
+      const result = await executeMerge(
+        makeSimilarMemory({
+          id: 104,
+          file_path: '/test/104.md',
+          title: 'BM25 Repair Existing',
+          content_text: 'Original searchable content',
+          similarity: 0.93,
+        }),
+        makeNewMemory({
+          title: 'BM25 Repair Existing',
+          content: 'Merged addition that should trigger repair attempts',
+        }),
+        testDb,
+      );
+
+      expect(result.newMemoryId).toBeGreaterThan(104);
+      expect(bm25AddDocument).toHaveBeenCalledTimes(2);
+      expect(bm25RemoveDocument).toHaveBeenCalledWith('104');
+      expect(bm25RemoveDocument).toHaveBeenCalledWith(String(result.newMemoryId));
+      expect(result.warnings).toEqual([
+        `BM25 repair failed after reconsolidation merge for memory ${result.newMemoryId}: repair merge BM25 failure`,
+      ]);
+    });
   });
 
   /* ───────────────────────────────────────────────────────────────

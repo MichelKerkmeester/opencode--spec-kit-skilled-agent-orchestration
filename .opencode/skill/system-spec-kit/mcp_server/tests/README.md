@@ -1,688 +1,162 @@
 ---
 title: "MCP Server Test Suite"
-description: "Vitest-based test suite for cognitive memory and MCP handlers."
+description: "Vitest-based unit, integration, handler, eval, and regression coverage for the MCP server."
 trigger_phrases:
   - "test suite"
   - "vitest"
-  - "mcp tests"
+  - "regression tests"
 ---
 
 # MCP Server Test Suite
 
-> Vitest-based test suite for cognitive memory and MCP handlers.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
 - [2. QUICK START](#2--quick-start)
 - [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. TROUBLESHOOTING](#6--troubleshooting)
-- [7. RUNNING VERIFICATION](#7--running-verification)
-- [8. RELATED RESOURCES](#8--related-resources)
-
----
+- [4. NOTABLE COVERAGE](#4--notable-coverage)
+- [5. TROUBLESHOOTING](#5--troubleshooting)
+- [6. RUNNING VERIFICATION](#6--running-verification)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
-
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-### What are the MCP Server Tests?
+The `tests/` directory is the Vitest suite for the MCP server. As of this audit, the root inventory contains 329 `.vitest.ts` files plus the `fixtures/` support directory.
 
-The test suite validates all critical functionality of the Spec Kit Memory MCP server. Tests cover cognitive memory features (attention decay, working memory, co-activation and confidence tracking), tier classification, summary generation, search pipelines, MCP tool handlers and integration scenarios. All tests use **Vitest** as the test framework with `.vitest.ts` file extensions.
+What this suite covers:
 
-**TypeScript Migration:** The full JS-to-TS migration is complete. All test files are TypeScript (`.vitest.ts`). There are zero `.test.js`, `.test.ts` or standalone `.js` test files remaining.
+- Core cognitive behavior such as attention decay, working memory, co-activation, and tier handling.
+- Search, scoring, graph, and retrieval-pipeline behavior.
+- MCP handler dispatch, response envelopes, validation, and runtime startup behavior.
+- Save/index regressions including content-hash dedup, quality-loop behavior, and incremental-index edge cases.
+- Eval, shared-memory, governance, lineage, and public-API surfaces.
 
-### Key Statistics
+Use the current file inventory and Vitest output as the source of truth:
 
-| Category | Count | Details |
-|----------|-------|---------|
-| Test Files | 321 | All `.vitest.ts` format (snapshot of current root `tests/` inventory, excluding `README.md`) |
-| Total Tests | See `npx vitest run` | Use the current Vitest summary as the source of truth |
-| Test Framework | Vitest | TypeScript-native, no compilation step needed |
-| Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Coverage Snapshot** | 321 test files across cognitive, search, handlers, integration, eval, shared-memory, graph/community, learning and scoring suites |
-| **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
-| **Type Safety** | Full TypeScript with type checking at test level |
-| **Document-Type Indexing Tests** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
-| **Feature Eval Tests** | Graph Signals, Scoring Calibration, Query Intelligence feature evals, cross-feature integration, BM25 baseline, embedding cache |
-
-### Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| Node.js | 18+ | 20+ |
-| Vitest | Configured in project | Latest |
-| better-sqlite3 | 9+ | Latest |
-
----
+```bash
+rg --files tests -g '*.vitest.ts' | wc -l
+npx vitest run
+```
 
 <!-- /ANCHOR:overview -->
-
-## 2. QUICK START
 <!-- ANCHOR:quick-start -->
+## 2. QUICK START
 
 ```bash
-# 1. Navigate to the mcp_server directory
 cd .opencode/skill/system-spec-kit/mcp_server
 
-# 2. Run all tests
+# Full suite
 npx vitest run
 
-# 3. Run a specific test file
+# Single file
 npx vitest run tests/attention-decay.vitest.ts
 
-# 4. Run tests in watch mode
-npx vitest
+# Pattern
+npx vitest run tests/handler-*.vitest.ts
 ```
 
-### Verify Installation
+Representative focused runs:
 
 ```bash
-# Check that vitest is available
-npx vitest --version
+# Docs/config parity and public API
+npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/api-public-surfaces.vitest.ts
 
-# Run a quick sanity check
-npx vitest run tests/memory-types.vitest.ts
+# Save/index regressions
+npx vitest run tests/content-hash-dedup.vitest.ts tests/handler-memory-index-cooldown.vitest.ts tests/memory-save-pipeline-enforcement.vitest.ts
+
+# Shared-memory surface
+npx vitest run tests/shared-memory-handlers.vitest.ts tests/shared-spaces.vitest.ts
 ```
-
-### First Use
-
-```bash
-# Run a single feature test
-npx vitest run tests/working-memory.vitest.ts
-
-# Output (example):
-#  PASS  tests/working-memory.vitest.ts
-#   Working Memory
-#     > initializes correctly
-#     > adds memory to working memory
-#     > ...
-#  Tests: 51 passed
-```
-
----
 
 <!-- /ANCHOR:quick-start -->
-
-## 3. STRUCTURE
 <!-- ANCHOR:structure -->
+## 3. STRUCTURE
 
-The directory tree below is a representative catalog slice, not a byte-for-byte exhaustive listing of all 321 `.vitest.ts` files. For current inventory checks, treat `rg --files tests -g '*.vitest.ts'` and the latest Vitest summary as the source of truth. Notable additions beyond the representative tree now include Phase 016 retry coverage (`embedding-retry-stats.vitest.ts`, `retry-manager-health.vitest.ts`), handler edge-case suites (`handler-checkpoints-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`, `handler-memory-ingest-edge.vitest.ts`, `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`), shared-memory suites (`shared-memory-handlers.vitest.ts`, `shared-spaces.vitest.ts`), graph/community suites (`community-detection.vitest.ts`, `graph-calibration.vitest.ts`, `graph-lifecycle.vitest.ts`), feedback/learning suites (`batch-learning.vitest.ts`, `feedback-denylist.vitest.ts`, `feedback-ledger.vitest.ts`, `ground-truth-feedback.vitest.ts`, `learned-feedback.vitest.ts`), and scoring suites (`d5-confidence-scoring.vitest.ts`, `result-confidence-scoring.vitest.ts`, `score-resolution-consistency.vitest.ts`).
+This directory is too large for a byte-for-byte README listing, so treat the groups below as a live category map and rely on `rg --files` for the full inventory.
 
-```
-tests/
-├── # Core Cognitive Tests
-├── attention-decay.vitest.ts              # Multi-factor attention decay
-├── co-activation.vitest.ts                # Related memory activation
-├── cognitive-gaps.vitest.ts               # Cognitive coverage gaps
-├── confidence-tracker.vitest.ts           # Confidence tracking
-├── tier-classifier.vitest.ts              # 5-state classification
-├── working-memory.vitest.ts               # Session working memory
-├── temporal-contiguity.vitest.ts          # Temporal contiguity scoring
-├── fsrs-scheduler.vitest.ts               # FSRS algorithm unit tests
-├── prediction-error-gate.vitest.ts        # PE thresholds and contradiction
-├── corrections.vitest.ts                  # Learning from corrections
-├── importance-tiers.vitest.ts             # Importance tier logic
-│
-├── # Search & Scoring Tests
-├── composite-scoring.vitest.ts            # 5-factor scoring with retrievability
-├── five-factor-scoring.vitest.ts          # Five-factor scoring validation
-├── rrf-fusion.vitest.ts                   # RRF fusion with k=60
-├── bm25-index.vitest.ts                   # BM25 lexical indexing
-├── bm25-security.vitest.ts                # BM25 security hardening
-├── intent-classifier.vitest.ts            # 7 intent types
-├── cross-encoder.vitest.ts                # Cross-encoder reranking
-├── cross-encoder-extended.vitest.ts        # Extended cross-encoder tests
-├── hybrid-search.vitest.ts                # Hybrid search
-├── reranker.vitest.ts                     # Reranking logic
-├── scoring.vitest.ts                      # General scoring tests
-├── scoring-gaps.vitest.ts                 # Scoring coverage gaps
-├── folder-scoring.vitest.ts               # Folder scoring logic
-├── search-extended.vitest.ts              # Extended search tests
-├── search-results-format.vitest.ts        # Search result formatting
-├── vector-index-impl.vitest.ts            # Vector index implementation
-├── embeddings.vitest.ts                   # Embedding pipeline
-├── causal-boost.vitest.ts                 # Causal graph score boosting
-├── session-boost.vitest.ts                # Session-recency score boosting
-├── adaptive-fusion.vitest.ts              # 15 tests for adaptive fusion
-├── adaptive-fallback.vitest.ts            # Adaptive fallback behavior
-├── mmr-reranker.vitest.ts                 # MMR reranking
-├── query-expander.vitest.ts               # Query expansion
-├── sqlite-fts.vitest.ts                   # SQLite FTS5 search
-├── structure-aware-chunker.vitest.ts      # Structure-aware document chunking
-├── memory-search-quality-filter.vitest.ts # Memory search quality filtering
-├── retrieval-trace.vitest.ts              # 17 tests for typed retrieval-trace contracts
-├── retrieval-telemetry.vitest.ts          # Retrieval telemetry + architecture metadata coverage
-│
-├── # Session & Recovery Tests
-├── session-manager.vitest.ts              # Session deduplication
-├── session-manager-extended.vitest.ts     # Extended session manager tests
-├── continue-session.vitest.ts             # Session continuation
-├── crash-recovery.vitest.ts               # Crash recovery
-├── recovery-hints.vitest.ts               # Error code recovery hints
-├── session-lifecycle.vitest.ts            # Session open/close lifecycle
-├── working-memory-event-decay.vitest.ts   # Working memory event-driven decay
-│
-├── # Graph & Relations Tests
-├── causal-edges.vitest.ts                 # Causal graph edges
-├── causal-edges-unit.vitest.ts            # Causal edges unit tests
-│
-├── # MCP Handler Tests
-├── handler-memory-context.vitest.ts       # Memory context handler
-├── handler-memory-crud.vitest.ts          # Memory CRUD handler
-├── handler-memory-index-cooldown.vitest.ts # Index scan cooldown hardening
-├── handler-memory-save.vitest.ts          # Memory save handler
-├── handler-memory-search.vitest.ts        # Memory search handler
-├── handler-memory-triggers.vitest.ts      # Memory triggers handler
-├── handler-memory-index.vitest.ts         # Memory index handler
-├── handler-session-learning.vitest.ts     # Session learning handler
-├── handler-causal-graph.vitest.ts         # Causal graph handler
-├── handler-checkpoints.vitest.ts          # Checkpoints handler
-├── handler-helpers.vitest.ts              # Handler utilities
-├── intent-routing.vitest.ts              # Intent routing handler tests
-│
-├── # Infrastructure Tests
-├── schema-migration.vitest.ts             # Schema migrations
-├── modularization.vitest.ts               # Module structure
-├── preflight.vitest.ts                    # Preflight validation
-├── retry-manager.vitest.ts                # Retry manager
-├── incremental-index.vitest.ts            # Focused compatibility coverage
-├── incremental-index-v2.vitest.ts         # Incremental indexing v2
-├── interfaces.vitest.ts                   # Protocol interfaces
-├── layer-definitions.vitest.ts            # 7-layer architecture
-├── memory-types.vitest.ts                 # Memory types
-├── tool-cache.vitest.ts                   # Tool caching
-├── transaction-manager.vitest.ts          # Transaction management
-├── transaction-manager-extended.vitest.ts # Extended transaction tests
-├── api-key-validation.vitest.ts           # API key validation
-├── api-validation.vitest.ts               # API validation
-├── envelope.vitest.ts                     # Envelope handling
-├── lazy-loading.vitest.ts                 # Lazy loading
-├── channel.vitest.ts                      # Channel communication
-├── context-server.vitest.ts               # Context server
-├── errors-comprehensive.vitest.ts         # Error handling coverage
-├── history.vitest.ts                      # History module
-├── extraction-adapter.vitest.ts           # Extraction adapter pipeline
-├── redaction-gate.vitest.ts               # Redaction/safety gate
-├── pressure-monitor.vitest.ts             # Cognitive pressure monitoring
-├── rollout-policy.vitest.ts               # Feature rollout policy
-├── config-cognitive.vitest.ts             # Cognitive configuration
-├── anchor-id-simplification.vitest.ts     # Anchor ID simplification rules
-├── anchor-prefix-matching.vitest.ts       # Anchor prefix matching logic
-├── db-state-graph-reinit.vitest.ts        # DB state graph reinitialization
-├── evidence-gap-detector.vitest.ts        # Evidence gap detection
-├── graph-flags.vitest.ts                  # Graph feature flags
-├── memory-roadmap-flags.vitest.ts         # Memory-roadmap capability flags
-├── graph-regression-flag-off.vitest.ts    # Graph regression when flags off
-├── graph-search-fn.vitest.ts              # Graph search functions
-├── hybrid-search-flags.vitest.ts          # Hybrid search feature flags
-├── search-flags.vitest.ts                 # Search feature flags
-├── regression-010-index-large-files.vitest.ts # Large file indexing regression
-├── tool-input-schema.vitest.ts            # Tool input schema validation
-│
-├── # Memory Operations Tests
-├── memory-context.vitest.ts               # Unified context entry
-├── memory-parser.vitest.ts                # Memory file parsing
-├── memory-parser-extended.vitest.ts       # Extended memory parsing
-├── memory-crud-extended.vitest.ts         # Extended CRUD operations
-├── memory-save-extended.vitest.ts         # Extended save operations
-├── memory-save-integration.vitest.ts      # PE gate + save handler
-├── memory-search-integration.vitest.ts    # Testing effect integration
-├── archival-manager.vitest.ts             # Archival system
-├── access-tracker.vitest.ts               # Access tracking
-├── access-tracker-extended.vitest.ts      # Extended access tracking
-├── checkpoints-extended.vitest.ts         # Extended checkpoints
-├── checkpoints-storage.vitest.ts          # Checkpoint storage
-├── migration-checkpoint-scripts.vitest.ts # Raw migration checkpoint scripts
-├── artifact-routing.vitest.ts             # 35 tests for artifact-class routing
-├── mutation-ledger.vitest.ts              # 16 tests for append-only mutation ledger
-│
-├── # Trigger Tests
-├── trigger-matcher.vitest.ts              # Trigger phrase matching
-├── trigger-extractor.vitest.ts            # Trigger extraction
-├── trigger-config-extended.vitest.ts      # Extended trigger config
-│
-├── # MCP Protocol Tests
-├── mcp-error-format.vitest.ts             # MCP error formatting
-├── mcp-input-validation.vitest.ts         # MCP input validation
-├── mcp-response-envelope.vitest.ts        # MCP response envelopes
-├── mcp-tool-dispatch.vitest.ts            # MCP tool dispatch
-│
-├── # Integration Tests
-├── integration-causal-graph.vitest.ts     # Causal graph integration
-├── integration-checkpoint-lifecycle.vitest.ts # Checkpoint lifecycle
-├── integration-error-recovery.vitest.ts   # Error recovery integration
-├── integration-learning-history.vitest.ts # Learning history integration
-├── integration-save-pipeline.vitest.ts    # Save pipeline integration
-├── integration-search-pipeline.vitest.ts  # Search pipeline integration
-├── integration-session-dedup.vitest.ts    # Session dedup integration
-├── integration-trigger-pipeline.vitest.ts # Trigger pipeline integration
-├── phase2-integration.vitest.ts           # Phase 2 end-to-end integration
-├── integration-138-pipeline.vitest.ts    # Spec 138 pipeline integration
-├── pipeline-integration.vitest.ts        # General pipeline integration
-│
-├── # Targeted Bug Fix / Spec Tests
-├── safety.vitest.ts                       # Safety constraint tests
-├── tiered-injection-turnNumber.vitest.ts  # Tiered injection
-├── causal-fixes.vitest.ts                 # Causal fixes
-├── token-budget-enforcement.vitest.ts     # Token budget enforcement
-├── search-archival.vitest.ts             # Search archival
-├── protect-learning.vitest.ts             # Protect learning records
-├── trigger-setAttentionScore.vitest.ts    # Trigger attention score
-├── search-limits-scoring.vitest.ts        # Search limits/scoring
-├── checkpoint-limit.vitest.ts             # Checkpoint limits
-├── checkpoint-working-memory.vitest.ts    # Checkpoint working memory
-├── decay-delete-race.vitest.ts            # Decay delete race condition
-├── session-cleanup.vitest.ts              # Session cleanup
-├── learning-stats-filters.vitest.ts       # Learning stats filters
-├── full-spec-doc-indexing.vitest.ts      # Spec-doc indexing, schema v13, scoring, intent expansion
-├── content-hash-dedup.vitest.ts          # Content hash deduplication
-│
-├── # Sprint 0 Eval Tests (Measurement Foundation)
-├── eval-db.vitest.ts                     # Eval database infrastructure
-├── eval-logger.vitest.ts                 # Eval logging pipeline
-├── eval-metrics.vitest.ts                # Eval metrics computation
-├── memory-state-baseline.vitest.ts       # Memory-state baseline snapshot capture/persistence
-├── ceiling-quality.vitest.ts             # Ceiling quality proxy
-├── ground-truth.vitest.ts                # Ground truth dataset
-├── bm25-baseline.vitest.ts               # BM25 baseline measurement
-├── degree-computation.vitest.ts          # Degree computation
-├── rrf-degree-channel.vitest.ts          # RRF degree channel
-├── consumption-logger.vitest.ts          # Consumption logging
-├── scoring-observability.vitest.ts       # Scoring observability
-├── edge-density.vitest.ts                # Edge density measurement
-├── signal-vocab.vitest.ts                # Signal vocabulary
-├── eval-the-eval.vitest.ts               # Meta-evaluation
-├── token-budget.vitest.ts                # Token budget enforcement
-├── quality-loop.vitest.ts                # Quality feedback loop
-├── embedding-cache.vitest.ts             # Embedding cache
-├── cold-start.vitest.ts                  # Cold start handling
-├── intent-weighting.vitest.ts            # G2 intent classification
-├── score-normalization.vitest.ts         # Score normalization
-├── interference.vitest.ts                # Channel interference
-├── decay.vitest.ts                       # Decay mechanisms
-├── folder-relevance.vitest.ts            # Folder relevance scoring
-├── graph-scoring-integration.vitest.ts   # Cross-sprint integration
-├── query-classifier.vitest.ts            # Query classification
-├── rsf-fusion.vitest.ts                  # RSF fusion
-├── channel-representation.vitest.ts      # Channel representation
-├── folder-discovery.vitest.ts            # Folder discovery
-├── query-router.vitest.ts                # Query routing
-├── rsf-multi.vitest.ts                   # RSF multi-channel
-├── channel-enforcement.vitest.ts         # Channel enforcement
-├── confidence-truncation.vitest.ts       # Confidence truncation
-├── dynamic-token-budget.vitest.ts        # Dynamic token budget
-├── shadow-comparison.vitest.ts           # Shadow comparison
-├── rsf-vs-rrf-kendall.vitest.ts          # RSF vs RRF Kendall tau
-├── query-router-channel-interaction.vitest.ts # Query router channel interaction
-│
-├── # Feature Eval Tests
-├── feature-eval-graph-signals.vitest.ts  # Graph Signals feature evaluation
-├── feature-eval-scoring-calibration.vitest.ts # Scoring Calibration feature evaluation
-├── feature-eval-query-intelligence.vitest.ts  # Query Intelligence feature evaluation
-├── cross-feature-integration-eval.vitest.ts   # Cross-feature integration evaluation
-│
-├── # Unit Tests (Focused Type/Logic Validation)
-├── unit-composite-scoring-types.vitest.ts # Composite scoring types
-├── unit-folder-scoring-types.vitest.ts    # Folder scoring types
-├── unit-fsrs-formula.vitest.ts            # FSRS formula
-├── unit-normalization.vitest.ts           # Normalization
-├── unit-normalization-roundtrip.vitest.ts # Normalization roundtrip
-├── unit-path-security.vitest.ts           # Path security
-├── unit-rrf-fusion.vitest.ts              # RRF fusion unit
-├── unit-tier-classifier-types.vitest.ts   # Tier classifier types
-├── unit-transaction-metrics-types.vitest.ts # Transaction metrics types
-├── batch-processor.vitest.ts              # Batch processor
-├── vector-index-schema-compatibility.vitest.ts # Schema compatibility validator
-│
-├── # Test Support
-├── fixtures/                              # Test fixtures and sample data
-│
-├── # Documentation
-├── README.md                              # This file
-```
+| Category | Representative Files | Notes |
+|---|---|---|
+| Cognitive and memory state | `attention-decay.vitest.ts`, `working-memory.vitest.ts`, `co-activation.vitest.ts`, `tier-classifier.vitest.ts`, `temporal-contiguity.vitest.ts` | Human-memory-inspired retrieval behavior |
+| Search and ranking | `hybrid-search.vitest.ts`, `bm25-index.vitest.ts`, `query-router.vitest.ts`, `dynamic-token-budget.vitest.ts`, `result-confidence-scoring.vitest.ts` | Retrieval, ranking, and profile/trace behavior |
+| Handler and protocol surface | `handler-memory-search.vitest.ts`, `handler-memory-save.vitest.ts`, `mcp-input-validation.vitest.ts`, `mcp-response-envelope.vitest.ts`, `startup-checks.vitest.ts` | MCP entrypoints and server-facing responses |
+| Save/index regressions | `content-hash-dedup.vitest.ts`, `memory-save-dedup-order.vitest.ts`, `handler-memory-index-cooldown.vitest.ts`, `chunking-orchestrator-swap.vitest.ts`, `memory-save-ux-regressions.vitest.ts` | Refinement work covered by this audit family |
+| Eval and reporting | `ablation-framework.vitest.ts`, `bm25-baseline.vitest.ts`, `reporting-dashboard.vitest.ts`, `eval-logger.vitest.ts`, `memory-state-baseline.vitest.ts` | Baselines, ablations, dashboard, and telemetry |
+| Shared memory and governance | `shared-memory-handlers.vitest.ts`, `shared-spaces.vitest.ts`, `governance-e2e.vitest.ts`, `memory-governance.vitest.ts` | Scope enforcement, actor auth, and collab lifecycle |
+| Public API and docs parity | `api-public-surfaces.vitest.ts`, `feature-flag-reference-docs.vitest.ts`, `hydra-spec-pack-consistency.vitest.ts` | Public imports and documentation alignment |
+| Infrastructure and utilities | `batch-processor.vitest.ts`, `tool-input-schema.vitest.ts`, `transaction-manager.vitest.ts`, `retry-manager-health.vitest.ts`, `vector-index-store-remediation.vitest.ts` | Shared helpers and runtime hardening |
 
-### Key Files
+Support assets:
 
-| File | Purpose |
-|------|---------|
-| `attention-decay.vitest.ts` | Multi-factor attention decay with FSRS integration |
-| `composite-scoring.vitest.ts` | Weighted 5-factor scoring system |
-| `prediction-error-gate.vitest.ts` | PE thresholds and contradiction detection |
-| `fsrs-scheduler.vitest.ts` | FSRS algorithm calculations |
-| `schema-migration.vitest.ts` | Schema migrations |
-| `handler-memory-search.vitest.ts` | Memory search handler tests |
-| `handler-memory-save.vitest.ts` | Memory save handler tests |
-| `handler-memory-index-cooldown.vitest.ts` | memory_index_scan cooldown and rate-limit safety |
-| `handler-session-learning.vitest.ts` | Session learning handler tests |
-| `embedding-retry-stats.vitest.ts` | Phase 016 embedding retry statistics and telemetry coverage |
-| `retry-manager-health.vitest.ts` | Phase 016 retry-manager health, readiness, and degradation checks |
-| `file-watcher.vitest.ts` | Watcher metrics plus delete/rename lifecycle coverage |
-| `chunk-thinning.vitest.ts` | Tree-thinning and token-threshold merge logic |
-| `cli.vitest.ts` | Standalone admin CLI integration coverage |
-| `startup-checks.vitest.ts` | Runtime compatibility, marker creation, and SQLite startup diagnostics |
-| `integration-save-pipeline.vitest.ts` | Save pipeline integration |
-| `integration-search-pipeline.vitest.ts` | Search pipeline integration |
-| `memory-save-integration.vitest.ts` | PE gate + save handler integration |
-| `memory-search-integration.vitest.ts` | Testing effect integration |
-| `full-spec-doc-indexing.vitest.ts` | 3-source indexing expectations, v13 fields, document-type scoring, find_spec/find_decision |
-
----
+- `fixtures/` - sample documents and fixture data used by targeted suites.
 
 <!-- /ANCHOR:structure -->
+<!-- ANCHOR:notable-coverage -->
+## 4. NOTABLE COVERAGE
 
-## 4. FEATURES
-<!-- ANCHOR:features -->
+Recent/high-signal suites relevant to the memory database refinement work:
 
-### Test Framework
+- `content-hash-dedup.vitest.ts` - same-path and cross-path content-hash dedup behavior.
+- `interference.vitest.ts` - interference scoring and retrieval penalty behavior.
+- `batch-processor.vitest.ts` - retry-aware batch helper semantics used by ingestion/index flows.
+- `quality-loop.vitest.ts` - verify-fix-verify scoring and rejection behavior.
+- `handler-memory-index-cooldown.vitest.ts` - scan cooldown, stale-delete behavior, and partial-failure handling.
+- `shared-memory-handlers.vitest.ts` and `shared-spaces.vitest.ts` - shared-memory auth, lifecycle, and rollout behavior.
+- `api-public-surfaces.vitest.ts` - public `api/` export contract.
+- `context-server-error-envelope.vitest.ts`, `envelope.vitest.ts`, and `response-profile-formatters.vitest.ts` - serialized response and profile behavior.
 
-**Vitest**: Modern TypeScript-native test runner
-
-| Feature | Description |
-|---------|-------------|
-| `describe()` | Group related tests into suites |
-| `it()` / `test()` | Define individual test cases |
-| `expect()` | Built-in assertion library with rich matchers |
-| `beforeEach()` / `afterEach()` | Setup and teardown hooks |
-| `vi.fn()` / `vi.mock()` | Mocking and spying utilities |
-
-```typescript
-// Example test structure
-import { describe, it, expect, beforeEach } from 'vitest';
-import { calculate_decay } from '../lib/cognitive/attention-decay';
-
-describe('Attention Decay', () => {
-  it('calculates decay for normal tier', () => {
-    const result = calculate_decay({ tier: 'normal', daysSinceAccess: 7 });
-    expect(result.score).toBeGreaterThan(0.5);
-    expect(result.score).toBeLessThan(0.9);
-  });
-
-  it('preserves constitutional tier memories', () => {
-    const result = calculate_decay({ tier: 'constitutional', daysSinceAccess: 365 });
-    expect(result.score).toBe(1.0);
-  });
-});
-```
-
-### Test Organization
-
-**Category-Based Grouping**: Tests organized by functional domain
-
-| Category | Coverage |
-|----------|----------|
-| Cognitive | Attention decay, working memory, co-activation, tier classification |
-| Search & Scoring | Composite scoring, BM25, RRF fusion, cross-encoder, hybrid search |
-| Handlers | MCP tool handlers (CRUD, search, save, triggers, context) |
-| Integration | End-to-end pipelines (save, search, session, causal graph) |
-| Infrastructure | Schema migration, retry, incremental indexing, transactions |
-| Unit | Focused type/logic validation for specific modules |
-| Eval | Measurement foundation, Graph Signals / Scoring Calibration / Query Intelligence feature evals, cross-feature integration |
-
-### Running Tests
-
-**Run all tests:**
-```bash
-npx vitest run
-```
-
-**Run specific file:**
-```bash
-npx vitest run tests/attention-decay.vitest.ts
-```
-
-**Run tests matching a pattern:**
-```bash
-npx vitest run --reporter=verbose tests/handler-*.vitest.ts
-```
-
-**Watch mode (re-runs on file change):**
-```bash
-npx vitest
-```
-
----
-
-<!-- /ANCHOR:features -->
-
-## 5. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
-
-### Example 1: Run All Tests
-
-```bash
-npx vitest run
-
-# Output (example):
-#  PASS  tests/attention-decay.vitest.ts (137 tests)
-#  PASS  tests/composite-scoring.vitest.ts (101 tests)
-#  PASS  tests/working-memory.vitest.ts (51 tests)
-#  ...
-#  Use the Vitest summary as the source of truth for current file and test totals
-```
-
-### Example 2: Run Specific Feature Test
-
-```bash
-# Test attention decay module
-npx vitest run tests/attention-decay.vitest.ts
-
-# Output:
-#  PASS  tests/attention-decay.vitest.ts
-#   Attention Decay
-#     > calculates decay for normal tier
-#     > preserves constitutional tier
-#     > applies fast decay for temporary tier
-```
-
-### Example 3: Run Tests with Verbose Output
-
-```bash
-npx vitest run --reporter=verbose tests/composite-scoring.vitest.ts
-
-# Shows each individual test case with pass/fail status
-```
-
-### Example 4: Run Tests by Category
-
-```bash
-# All handler tests
-npx vitest run tests/handler-*.vitest.ts
-
-# All integration tests
-npx vitest run tests/integration-*.vitest.ts
-
-# All unit tests
-npx vitest run tests/unit-*.vitest.ts
-```
-
-### Common Patterns
-
-| Pattern | Command | When to Use |
-|---------|---------|-------------|
-| Full suite | `npx vitest run` | Before commits, full validation |
-| Single file | `npx vitest run tests/[name].vitest.ts` | Focused development |
-| Watch mode | `npx vitest` | Active development, auto re-run |
-| Pattern match | `npx vitest run tests/handler-*.vitest.ts` | Test a category |
-| Verbose | `npx vitest run --reporter=verbose` | Debug failures |
-
----
-
-<!-- /ANCHOR:usage-examples -->
-
-## 6. TROUBLESHOOTING
+<!-- /ANCHOR:notable-coverage -->
 <!-- ANCHOR:troubleshooting -->
+## 5. TROUBLESHOOTING
 
-### Common Issues
-
-#### Module not found errors
-
-**Symptom**: `Error: Cannot find module '../lib/cognitive/attention-decay'`
-
-**Cause**: TypeScript path resolution issue or missing build
-
-**Solution**:
-```bash
-# Ensure the project is built
-cd .opencode/skill/system-spec-kit/mcp_server
-npx tsc
-
-# Vitest uses ts-node/esbuild for TypeScript. Check vitest.config.ts
-```
-
-#### Database connection errors
-
-**Symptom**: `Error: unable to open database file`
-
-**Cause**: Database file missing or incorrect path
-
-**Solution**:
-```bash
-# Check database exists
-ls -la .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
-
-# Create database if missing (auto-created on first MCP server run)
-```
-
-#### Embedding API errors in tests
-
-**Symptom**: Tests fail with embedding-related errors
-
-**Solution**:
-```bash
-# Set API key for embedding tests
-export VOYAGE_API_KEY="your-key-here"
-npx vitest run
-```
-
-### Quick Fixes
-
-| Problem | Quick Fix |
-|---------|-----------|
-| Missing database | Run MCP server once to initialize |
-| Embedding API errors | Set `VOYAGE_API_KEY` environment variable |
-| Import errors | Run `npx tsc`, check vitest config |
-| Timeout errors | Increase timeout in vitest config or individual test |
-
-### Diagnostic Commands
+Common checks:
 
 ```bash
-# Verify vitest is available
+# Current test inventory
+rg --files tests -g '*.vitest.ts' | wc -l
+
+# Verify Vitest is available
 npx vitest --version
 
-# List test files
-find tests -name '*.vitest.ts' | wc -l
-# Expected: 265
-
-# Run tests with detailed output
-npx vitest run --reporter=verbose 2>&1 | head -50
+# macOS temp-dir workaround used elsewhere in this repo
+TMPDIR=.tmp/vitest-tmp npx vitest run
 ```
 
----
+Typical issues:
+
+- DB path problems: set `MEMORY_DB_PATH` to a writable location.
+- Provider-dependent tests: export the needed embedding API key or run targeted suites that mock providers.
+- Large-suite flakiness: prefer targeted file/pattern runs first, then full-suite verification.
 
 <!-- /ANCHOR:troubleshooting -->
-
-## 7. RUNNING VERIFICATION
 <!-- ANCHOR:verification -->
+## 6. RUNNING VERIFICATION
 
-### Full Verification Run
+Recommended documentation-adjacent verification for this README audit:
 
 ```bash
-# Navigate to mcp_server directory
 cd .opencode/skill/system-spec-kit/mcp_server
 
-# Run the complete test suite
-npx vitest run
-
-# Run with coverage
-npx vitest run --coverage
+npx vitest run tests/api-public-surfaces.vitest.ts
+npx vitest run tests/feature-flag-reference-docs.vitest.ts
 ```
 
-### Category-Specific Runs
+Broader confidence runs:
 
 ```bash
-# Cognitive tests
-npx vitest run tests/attention-decay.vitest.ts tests/co-activation.vitest.ts tests/working-memory.vitest.ts tests/tier-classifier.vitest.ts
-
-# Handler tests
-npx vitest run tests/handler-*.vitest.ts
-
-# Integration tests
-npx vitest run tests/integration-*.vitest.ts
-
-# Search & scoring tests
-npx vitest run tests/composite-scoring.vitest.ts tests/five-factor-scoring.vitest.ts tests/bm25-index.vitest.ts tests/rrf-fusion.vitest.ts
+npx vitest run tests/shared-memory-handlers.vitest.ts tests/shared-spaces.vitest.ts
+npx vitest run tests/content-hash-dedup.vitest.ts tests/quality-loop.vitest.ts tests/batch-processor.vitest.ts
 ```
 
-### Verification Notes
-
-This directory does not include a standalone `VERIFICATION_REPORT.md`.
-Use `npx vitest run` output and CI logs for current verification details.
-
----
-
 <!-- /ANCHOR:verification -->
-
-## 8. RELATED RESOURCES
 <!-- ANCHOR:related -->
+## 7. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [MCP Server README](../README.md) | Overview of the MCP server architecture |
-| [Library README](../lib/README.md) | Documentation for modules being tested |
-| [Handlers README](../handlers/README.md) | MCP handler implementation details |
-| [Utils README](../utils/README.md) | Utility functions used in tests |
-
-### Test Coverage
-
-| Module | Test File | Coverage Area |
-|--------|-----------|---------------|
-| FSRS Scheduler | `fsrs-scheduler.vitest.ts` | Retrievability, stability, difficulty |
-| Prediction Error Gate | `prediction-error-gate.vitest.ts` | Thresholds, contradiction, action logic |
-| Composite Scoring | `composite-scoring.vitest.ts` | Weight config, scoring calculations |
-| Schema Migration | `schema-migration.vitest.ts` | Column existence, defaults, migrations |
-| Memory Save | `memory-save-integration.vitest.ts` | PE gate + save handler integration |
-| Memory Search | `memory-search-integration.vitest.ts` | Testing effect, hybrid search |
-| Session Learning | `handler-session-learning.vitest.ts` | Preflight, postflight, learning history |
-| Memory Handlers | `handler-memory-crud.vitest.ts` | Search, triggers, CRUD, save, index |
-| Attention Decay | `attention-decay.vitest.ts` | Decay rates, FSRS integration, tier behavior |
-| Co-Activation | `co-activation.vitest.ts` | Related memory boosting, spreading activation |
-| Working Memory | `working-memory.vitest.ts` | Capacity limits, eviction, session management |
-| Tier Classifier | `tier-classifier.vitest.ts` | Six-tier classification, keyword detection |
-| Archival Manager | `archival-manager.vitest.ts` | Archival system lifecycle |
-| Spec Document Indexing | `full-spec-doc-indexing.vitest.ts` | Schema v13 fields (`document_type`, `spec_level`), 8 spec doc types, scoring multipliers, 7 intents |
-| Index Scan Hardening | `handler-memory-index-cooldown.vitest.ts` | Scan cooldown/rate-limit behavior for `memory_index_scan` |
-| Graph Signals Eval | `feature-eval-graph-signals.vitest.ts` | Graph Signals feature evaluation metrics |
-| Scoring Calibration Eval | `feature-eval-scoring-calibration.vitest.ts` | Scoring Calibration feature evaluation metrics |
-| Query Intelligence Eval | `feature-eval-query-intelligence.vitest.ts` | Query Intelligence feature evaluation metrics |
-| Cross-Feature Integration | `cross-feature-integration-eval.vitest.ts` | Cross-feature integration evaluation |
-| Embedding Cache | `embedding-cache.vitest.ts` | Embedding cache deduplication and hit rates |
-| BM25 Baseline | `bm25-baseline.vitest.ts` | BM25 lexical baseline measurement |
-
-### External Resources
-
-| Resource | Description |
-|----------|-------------|
-| [Vitest Documentation](https://vitest.dev/) | Vitest test framework reference |
-| [better-sqlite3 Testing](https://github.com/WiseLibs/better-sqlite3/wiki/Testing) | Database testing patterns |
-| [MCP Testing Guide](https://modelcontextprotocol.io/testing) | MCP protocol testing best practices |
-
----
+- `../README.md`
+- `../handlers/README.md`
+- `../api/README.md`
+- `../lib/README.md`
 
 <!-- /ANCHOR:related -->
-
-*Documentation version: 2.2 | Last updated: 2026-02-28*

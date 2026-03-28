@@ -62,8 +62,8 @@ If a script requires direct internal runtime access:
 | `check-no-mcp-lib-imports-ast.ts` | AST-based enforcement for prohibited internal runtime imports with transitive re-export traversal |
 | `collect-redaction-calibration-inputs.ts` | Collect input data for redaction calibration tuning |
 | `import-policy-rules.ts` | Shared detection rules for prohibited scripts-to-internal-runtime imports |
-| `map-ground-truth-ids.ts` | Map ground truth identifiers for evaluation datasets |
-| `run-ablation.ts` | Run channel ablation studies (disable channels to measure impact) |
+| `map-ground-truth-ids.ts` | Map ground truth identifiers for evaluation datasets; rerun after DB rebuilds or eval DB swaps before comparing baselines or ablation deltas |
+| `run-ablation.ts` | Run channel ablation studies (disable channels to measure impact), warn on missing `groundTruthQueryIds`, and surface truncated investigation-only runs when token budget overflow prevents a reliable Recall@K result |
 | `run-bm25-baseline.ts` | Run BM25 baseline benchmarks for search comparison |
 | `run-performance-benchmarks.ts` | Run performance benchmarks across memory operations |
 | `run-phase2-closure-metrics.mjs` | Collect Phase 2 closure metrics for evaluation reporting |

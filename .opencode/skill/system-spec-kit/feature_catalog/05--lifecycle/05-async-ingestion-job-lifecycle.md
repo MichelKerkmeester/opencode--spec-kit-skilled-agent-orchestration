@@ -21,6 +21,8 @@ When you need to import a large batch of files, this feature queues them up and 
 
 When extended telemetry is enabled, ingest-status responses also record lifecycle forecast diagnostics so ETA/risk behavior can be inspected without turning the forecast itself into a blocking dependency.
 
+`memory_ingest_start` now canonicalizes and deduplicates requested paths before queueing. Duplicate inputs no longer create redundant work items: the handler reports `duplicatePathCount`, emits a hint that duplicates were removed before queueing, and starts the job with only the unique normalized file paths that passed validation.
+
 ---
 
 ## 3. SOURCE FILES

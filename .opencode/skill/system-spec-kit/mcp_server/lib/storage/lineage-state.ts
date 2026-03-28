@@ -85,6 +85,8 @@ interface RecordLineageTransitionOptions {
   historyEvents?: HistoryLineageEvent[];
 }
 
+const MAX_LINEAGE_VERSION_RETRIES = 3;
+
 interface RecordedLineageTransition {
   logicalKey: string;
   versionNumber: number;
@@ -294,6 +296,23 @@ function getLatestLineageRowForLogicalKey(database: Database.Database, logicalKe
     LIMIT 1
   `).get(logicalKey) as MemoryLineageRow | undefined;
   return row ?? null;
+}
+
+function isLogicalVersionConflict(error: unknown): boolean {
+  const message = error instanceof Error
+    ? error.message
+    : typeof error === 'object' && error !== null && typeof Reflect.get(error, 'message') === 'string'
+      ? String(Reflect.get(error, 'message'))
+      : String(error);
+  const code = typeof error === 'object' && error !== null && typeof Reflect.get(error, 'code') === 'string'
+    ? String(Reflect.get(error, 'code'))
+    : '';
+
+  return (
+    (code.includes('SQLITE_CONSTRAINT') || message.includes('SQLITE_CONSTRAINT') || message.includes('UNIQUE constraint failed'))
+    && message.includes('memory_lineage.logical_key')
+    && message.includes('memory_lineage.version_number')
+  );
 }
 
 function buildMetadata(
@@ -612,108 +631,132 @@ export function recordLineageTransition(
   const cached = getExistingLineageTransition(database, memoryId);
   if (cached) return cached;
 
-  // A1/B14: Wrap predecessor UPDATE + lineage INSERT + projection UPSERT in a transaction.
-  const recordTransitionTx = database.transaction(() => {
-    const row = getMemoryRow(database, memoryId);
-    const rowLogicalKey = buildLogicalKey(row);
-    const actor = options.actor ?? 'system';
-    const transitionEvent = options.transitionEvent ?? 'CREATE';
-    const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
-    const predecessorMemoryId = options.predecessorMemoryId ?? null;
-    const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
+  for (let attempt = 0; attempt <= MAX_LINEAGE_VERSION_RETRIES; attempt += 1) {
+    // A1/B14: Wrap predecessor UPDATE + lineage INSERT + projection UPSERT in a transaction.
+    const recordTransitionTx = database.transaction(() => {
+      const row = getMemoryRow(database, memoryId);
+      const rowLogicalKey = buildLogicalKey(row);
+      const actor = options.actor ?? 'system';
+      const transitionEvent = options.transitionEvent ?? 'CREATE';
+      const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
+      const predecessorMemoryId = options.predecessorMemoryId ?? null;
+      const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
 
-    let logicalKey = rowLogicalKey;
-    let rootMemoryId = memoryId;
-    let versionNumber = 1;
-    let predecessor: LineageRow | null = null;
+      let logicalKey = rowLogicalKey;
+      let rootMemoryId = memoryId;
+      let versionNumber = 1;
+      let predecessor: LineageRow | null = null;
 
-    if (predecessorMemoryId != null) {
-      predecessor = getLineageRow(database, predecessorMemoryId);
-      if (predecessor) {
-        if (predecessor.logical_key !== rowLogicalKey) {
-          throw new Error(
-            `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${predecessor.logical_key} ` +
-            `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
-          );
-        }
-        logicalKey = predecessor.logical_key;
-        rootMemoryId = predecessor.root_memory_id;
-        versionNumber = predecessor.version_number + 1;
-      } else {
-        const seeded = seedLineageFromCurrentState(database, predecessorMemoryId, {
-          actor,
-          transitionEvent: 'BACKFILL',
-        });
-        if (seeded.logicalKey !== rowLogicalKey) {
-          throw new Error(
-            `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${seeded.logicalKey} ` +
-            `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
-          );
-        }
-        logicalKey = seeded.logicalKey;
-        rootMemoryId = seeded.rootMemoryId;
-        versionNumber = seeded.versionNumber + 1;
+      if (predecessorMemoryId != null) {
         predecessor = getLineageRow(database, predecessorMemoryId);
+        if (predecessor) {
+          if (predecessor.logical_key !== rowLogicalKey) {
+            throw new Error(
+              `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${predecessor.logical_key} ` +
+              `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
+            );
+          }
+          logicalKey = predecessor.logical_key;
+          rootMemoryId = predecessor.root_memory_id;
+          versionNumber = predecessor.version_number + 1;
+        } else {
+          const seeded = seedLineageFromCurrentState(database, predecessorMemoryId, {
+            actor,
+            transitionEvent: 'BACKFILL',
+          });
+          if (seeded.logicalKey !== rowLogicalKey) {
+            throw new Error(
+              `E_LINEAGE: predecessor ${predecessorMemoryId} logical identity ${seeded.logicalKey} ` +
+              `does not match memory ${memoryId} logical identity ${rowLogicalKey}`,
+            );
+          }
+          logicalKey = seeded.logicalKey;
+          rootMemoryId = seeded.rootMemoryId;
+          versionNumber = seeded.versionNumber + 1;
+          predecessor = getLineageRow(database, predecessorMemoryId);
+        }
       }
-    }
 
-    validateTransitionInput(transitionEvent, predecessorMemoryId, validFrom, predecessor);
-
-    if (predecessorMemoryId != null) {
-      if (predecessor && predecessor.valid_to) {
-        logger.warn(
-          `Predecessor ${predecessorMemoryId} already superseded (valid_to: ${predecessor.valid_to}). ` +
-          'COALESCE will preserve the existing valid_to.',
-        );
+      if (attempt > 0) {
+        const latest = getLatestLineageRowForLogicalKey(database, logicalKey);
+        if (latest) {
+          rootMemoryId = latest.root_memory_id;
+          versionNumber = latest.version_number + 1;
+        }
       }
+
+      validateTransitionInput(transitionEvent, predecessorMemoryId, validFrom, predecessor);
+
+      if (predecessorMemoryId != null) {
+        if (predecessor && predecessor.valid_to) {
+          logger.warn(
+            `Predecessor ${predecessorMemoryId} already superseded (valid_to: ${predecessor.valid_to}). ` +
+            'COALESCE will preserve the existing valid_to.',
+          );
+        }
+        database.prepare(`
+          UPDATE memory_lineage
+          SET valid_to = COALESCE(valid_to, ?),
+              superseded_by_memory_id = COALESCE(superseded_by_memory_id, ?)
+          WHERE memory_id = ?
+        `).run(validFrom, memoryId, predecessorMemoryId);
+        markHistoricalPredecessor(database, predecessorMemoryId, validFrom);
+      }
+
       database.prepare(`
-        UPDATE memory_lineage
-        SET valid_to = COALESCE(valid_to, ?),
-            superseded_by_memory_id = COALESCE(superseded_by_memory_id, ?)
-        WHERE memory_id = ?
-      `).run(validFrom, memoryId, predecessorMemoryId);
-      markHistoricalPredecessor(database, predecessorMemoryId, validFrom);
-    }
-
-    database.prepare(`
-      INSERT INTO memory_lineage (
-        memory_id,
-        logical_key,
-        version_number,
-        root_memory_id,
-        predecessor_memory_id,
-        superseded_by_memory_id,
-        valid_from,
-        valid_to,
-        transition_event,
+        INSERT INTO memory_lineage (
+          memory_id,
+          logical_key,
+          version_number,
+          root_memory_id,
+          predecessor_memory_id,
+          superseded_by_memory_id,
+          valid_from,
+          valid_to,
+          transition_event,
+          actor,
+          metadata
+        ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, ?)
+      `).run(
+        memoryId,
+        logicalKey,
+        versionNumber,
+        rootMemoryId,
+        predecessorMemoryId,
+        validFrom,
+        transitionEvent,
         actor,
-        metadata
-      ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, ?)
-    `).run(
-      memoryId,
-      logicalKey,
-      versionNumber,
-      rootMemoryId,
-      predecessorMemoryId,
-      validFrom,
-      transitionEvent,
-      actor,
-      buildMetadata(row, actor, historyEvents),
-    );
+        buildMetadata(row, actor, historyEvents),
+      );
 
-    upsertActiveProjection(database, logicalKey, rootMemoryId, memoryId, validFrom);
+      upsertActiveProjection(database, logicalKey, rootMemoryId, memoryId, validFrom);
 
-    return {
-      logicalKey,
-      versionNumber,
-      rootMemoryId,
-      activeMemoryId: memoryId,
-      predecessorMemoryId,
-      transitionEvent,
-    } as RecordedLineageTransition;
-  });
+      return {
+        logicalKey,
+        versionNumber,
+        rootMemoryId,
+        activeMemoryId: memoryId,
+        predecessorMemoryId,
+        transitionEvent,
+      } as RecordedLineageTransition;
+    });
 
-  return recordTransitionTx();
+    try {
+      return recordTransitionTx();
+    } catch (error: unknown) {
+      const shouldRetry = isLogicalVersionConflict(error) && attempt < MAX_LINEAGE_VERSION_RETRIES;
+      if (!shouldRetry) {
+        throw error;
+      }
+
+      logger.warn(
+        `Retrying lineage insert for memory ${memoryId} after logical_key/version_number conflict ` +
+        `(attempt ${attempt + 1}/${MAX_LINEAGE_VERSION_RETRIES})`,
+      );
+    }
+  }
+
+  throw new Error(`E_LINEAGE: exhausted retries while recording lineage for memory ${memoryId}`);
 }
 
 /**

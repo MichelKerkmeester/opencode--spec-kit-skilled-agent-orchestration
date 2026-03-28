@@ -105,6 +105,7 @@ describe('T037: Query Classifier', () => {
     expect(typeof result.confidence).toBe('number');
     expect(typeof result.scores).toBe('object');
     expect(Array.isArray(result.keywords)).toBe(true);
+    expect(Array.isArray(result.rankedIntents)).toBe(true);
   });
 
   it('classify_intent handles empty query', () => {
@@ -125,6 +126,19 @@ describe('T037: Query Classifier', () => {
     expect(typeof result).toBe('object');
     expect(typeof result.intent).toBe('string');
     expect(intentClassifier.isValidIntent(result.intent)).toBe(true);
+  });
+
+  it('preserves top-ranked secondary intents for multi-facet queries', () => {
+    const result = intentClassifier.classifyIntent(
+      'find the authentication spec requirements and plan, then show the decision record for why we chose this approach',
+    );
+
+    expect(result.rankedIntents.length).toBeGreaterThanOrEqual(2);
+    expect(result.rankedIntents.length).toBeLessThanOrEqual(3);
+    expect(result.rankedIntents.map((entry) => entry.intent)).toContain(result.intent);
+    expect(result.rankedIntents.map((entry) => entry.intent)).toContain('find_spec');
+    expect(result.rankedIntents.map((entry) => entry.intent)).toContain('find_decision');
+    expect(result.rankedIntents[0]!.score).toBeGreaterThanOrEqual(result.rankedIntents[1]!.score);
   });
 
   // Test detection accuracy for each intent type

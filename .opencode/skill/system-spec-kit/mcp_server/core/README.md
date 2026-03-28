@@ -1,12 +1,11 @@
 ---
 title: "MCP Server Core Modules"
-description: "Configuration, database-state coordination, and shared runtime guards for the Spec Kit Memory MCP server."
+description: "Runtime configuration, database-state coordination, and shared rebind hooks for the MCP server."
 trigger_phrases:
   - "core modules"
-  - "mcp config"
-  - "database state"
+  - "db state"
+  - "resolve database paths"
 ---
-
 
 # MCP Server Core Modules
 
@@ -15,51 +14,36 @@ trigger_phrases:
 
 - [1. OVERVIEW](#1--overview)
 - [2. IMPLEMENTED STATE](#2--implemented-state)
-- [3. HARDENING NOTES](#3--hardening-notes)
-- [4. RELATED](#4--related)
+- [3. RELATED](#3--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the MCP Server Core Modules directory.
+`core/` is the shared runtime foundation used by handlers, search modules, hooks, and formatters.
 
-`core/` is the shared runtime layer used by handlers, tools, and formatters.
+Files in this directory:
 
-- `config.ts`: path constants, input limits, batch config, cooldown values, and allowed base paths.
-- `db-state.ts`: external DB update detection, reinit lifecycle, readiness state, and cache accessors.
-- `index.ts`: barrel exports for `config.ts` and `db-state.ts`.
+- `config.ts` - runtime path resolution, input limits, batch settings, allowed-path policy, and lazy cognitive config access.
+- `db-state.ts` - current DB dependencies, readiness tracking, reconnect handling, cache state, and database rebind listeners.
+- `index.ts` - barrel exports for the public core surface.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
 ## 2. IMPLEMENTED STATE
 
-
-- Input limits are centralized in `INPUT_LIMITS` and `MAX_QUERY_LENGTH`.
-- File access boundaries are centralized in `ALLOWED_BASE_PATHS`.
-- Index-scan cooldown is enforced via `INDEX_SCAN_COOLDOWN`.
-- `checkDatabaseUpdated()` reads `.db-updated` and triggers safe reconnect.
-- `init()` supports `vectorIndex`, `checkpoints`, `accessTracker`, `hybridSearch`, `sessionManager`, and `incrementalIndex` dependencies.
-
+- `config.ts` exports `resolveDatabasePaths()` and the canonical `DATABASE_DIR`, `DATABASE_PATH`, and `DB_UPDATED_FILE` values.
+- Database-directory resolution honors runtime overrides through `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR`, then falls back to the shared-path default.
+- `config.ts` also exposes the lazily parsed `COGNITIVE_CONFIG` and `getCognitiveConfig()` bridge for `configs/cognitive.ts`.
+- `db-state.ts` owns `init()`, `checkDatabaseUpdated()`, `reinitializeDatabase()`, embedding-readiness state, constitutional cache accessors, and `registerDatabaseRebindListener()`.
+- Reconnect flows are mutex-protected so handlers and search modules can safely rebind their DB-backed dependencies after external updates.
 
 <!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:hardening-notes -->
-## 3. HARDENING NOTES
-
-
-- BUG-001: external update signal support (`.db-updated`).
-- HIGH-002: mutex around reinitialization to prevent concurrent reconnect races.
-- BUG-005: persistent scan timestamp in DB `config` table.
-- P4-12/P4-19: rebinds session and incremental modules after DB reconnect.
-- P4-13: mutex resolve order fixed to avoid double-reinit race windows.
-
-
-<!-- /ANCHOR:hardening-notes -->
 <!-- ANCHOR:related -->
-## 4. RELATED
-
+## 3. RELATED
 
 - `../database/README.md`
 - `../handlers/README.md`
-- `../utils/README.md`
+- `../configs/README.md`
+
 <!-- /ANCHOR:related -->

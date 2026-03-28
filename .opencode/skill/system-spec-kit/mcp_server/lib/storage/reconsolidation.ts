@@ -70,6 +70,7 @@ export interface MergeResult {
   importanceWeight: number;
   mergedContentLength: number;
   similarity: number;
+  warnings?: string[];
 }
 
 /** Result of a conflict (supersede) operation */
@@ -79,6 +80,7 @@ export interface ConflictResult {
   newMemoryId: number;
   causalEdgeId: number | null;
   similarity: number;
+  warnings?: string[];
 }
 
 /** Result of a complement (new) operation */
@@ -90,6 +92,7 @@ export interface ComplementResult {
    */
   newMemoryId: number;
   similarity: number | null;
+  warnings?: string[];
 }
 
 /** Combined reconsolidation result */
@@ -210,6 +213,7 @@ export async function executeMerge(
   // Boost importance_weight on merge (capped at 1.0)
   const currentWeight = existingMemory.importance_weight ?? 0.5;
   const boostedWeight = Math.min(1.0, currentWeight + 0.1);
+  let bm25RepairWarning: string | null = null;
 
   try {
     // Include content_hash in UPDATE so change-detection and dedup
@@ -250,6 +254,13 @@ export async function executeMerge(
     const mergedTriggerPhrases = buildMergedTriggerPhrases(existingRow, newMemory.triggerPhrases);
     const mergedTitle = newMemory.title ?? existingMemory.title ?? '';
     const mergedImportanceTier = newMemory.importanceTier ?? getOptionalString(existingRow, 'importance_tier');
+    const mergedBm25DocumentText = bm25Index.buildBm25DocumentText({
+      title: mergedTitle,
+      content_text: mergedContent,
+      trigger_phrases: mergedTriggerPhrases,
+      file_path: existingMemory.file_path,
+    });
+    let bm25RepairNeeded = false;
 
     // F04-001: Append-only merge — mark old as superseded, create new record
     db.transaction(() => {
@@ -325,15 +336,11 @@ export async function executeMerge(
         try {
           const bm25 = bm25Index.getIndex();
           bm25.removeDocument(String(existingMemory.id));
-          bm25.addDocument(String(newId), bm25Index.buildBm25DocumentText({
-            title: mergedTitle,
-            content_text: mergedContent,
-            trigger_phrases: mergedTriggerPhrases,
-            file_path: existingMemory.file_path,
-          }));
+          bm25.addDocument(String(newId), mergedBm25DocumentText);
         } catch (bm25Err: unknown) {
           const message = bm25Err instanceof Error ? bm25Err.message : String(bm25Err);
           console.warn('[reconsolidation] Failed to update BM25 index for merge:', message);
+          bm25RepairNeeded = true;
         }
       }
 
@@ -354,6 +361,18 @@ export async function executeMerge(
       }
     })();
 
+    if (bm25RepairNeeded) {
+      const repairResult = repairBm25Document({
+        previousMemoryId: existingMemory.id,
+        memoryId: newId,
+        documentText: mergedBm25DocumentText,
+      });
+      if (!repairResult.success) {
+        bm25RepairWarning =
+          `BM25 repair failed after reconsolidation merge for memory ${newId}: ${repairResult.error}`;
+      }
+    }
+
     return {
       action: 'merge',
       existingMemoryId: existingMemory.id,
@@ -361,6 +380,7 @@ export async function executeMerge(
       importanceWeight: boostedWeight,
       mergedContentLength: mergedContent.length,
       similarity: existingMemory.similarity,
+      warnings: bm25RepairWarning ? [bm25RepairWarning] : undefined,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -679,6 +699,33 @@ function embeddingToBuffer(embedding: Float32Array | number[]): Buffer {
     return Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
   }
   return Buffer.from(new Float32Array(embedding).buffer);
+}
+
+function repairBm25Document(args: {
+  previousMemoryId?: number;
+  memoryId: number;
+  documentText: string;
+}): { success: boolean; error?: string } {
+  if (!bm25Index.isBm25Enabled()) {
+    return { success: true };
+  }
+
+  try {
+    const bm25 = bm25Index.getIndex();
+    if (typeof args.previousMemoryId === 'number') {
+      bm25.removeDocument(String(args.previousMemoryId));
+    }
+    bm25.removeDocument(String(args.memoryId));
+    bm25.addDocument(String(args.memoryId), args.documentText);
+    return { success: true };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn('[reconsolidation] Immediate BM25 repair failed:', message);
+    return {
+      success: false,
+      error: message,
+    };
+  }
 }
 
 function getTableColumns(db: Database.Database, tableName: string): Set<string> {

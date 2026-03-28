@@ -369,11 +369,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
     runAfterToolCallbacks(name, callId, structuredClone(result));
 
-    // SK-004: Inject auto-surfaced context into successful responses before
-    // Token-budget enforcement so metadata reflects the final envelope.
+    // SK-004: Inject auto-surface hints before token-budget enforcement so
+    // The final envelope metadata reflects the fully decorated response.
     if (autoSurfacedContext && result && !result.isError) {
       appendAutoSurfaceHints(result, autoSurfacedContext);
-      result.autoSurfacedContext = autoSurfacedContext;
     }
 
     // Token Budget Hybrid: Inject tokenBudget into response metadata (CHK-072)
@@ -391,6 +390,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
             ? dataValue as Record<string, unknown>
             : null;
           envelope.meta = meta;
+          if (autoSurfacedContext && !result.isError) {
+            meta.autoSurfacedContext = autoSurfacedContext;
+          }
           const budget = getTokenBudget(name);
           meta.tokenBudget = budget;
           syncEnvelopeTokenCount(envelope);

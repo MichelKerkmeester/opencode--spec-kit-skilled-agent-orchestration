@@ -8,6 +8,7 @@ const bridgeMocks = vi.hoisted(() => ({
   isEncodingIntentEnabled: vi.fn(() => false),
   appendMutationLedgerSafe: vi.fn(() => true),
   vectorSearch: vi.fn(() => []),
+  indexMemory: vi.fn(() => 901),
   bm25RemoveDocument: vi.fn(() => true),
   bm25AddDocument: vi.fn(),
   bm25GetIndex: vi.fn(),
@@ -16,7 +17,7 @@ const bridgeMocks = vi.hoisted(() => ({
 
 vi.mock('../lib/search/vector-index', () => ({
   vectorSearch: bridgeMocks.vectorSearch,
-  indexMemory: vi.fn(),
+  indexMemory: bridgeMocks.indexMemory,
 }));
 
 vi.mock('../lib/providers/embeddings', () => ({
@@ -96,6 +97,8 @@ describe('Reconsolidation Bridge', () => {
     bridgeMocks.appendMutationLedgerSafe.mockReturnValue(true);
     bridgeMocks.vectorSearch.mockReset();
     bridgeMocks.vectorSearch.mockReturnValue([]);
+    bridgeMocks.indexMemory.mockReset();
+    bridgeMocks.indexMemory.mockReturnValue(901);
     bridgeMocks.bm25RemoveDocument.mockReset();
     bridgeMocks.bm25RemoveDocument.mockReturnValue(true);
     bridgeMocks.bm25AddDocument.mockReset();
@@ -188,5 +191,65 @@ describe('Reconsolidation Bridge', () => {
     expect(database.prepare).toHaveBeenCalled();
     expect(archiveRun).toHaveBeenCalledWith(55);
     expect(bridgeMocks.bm25RemoveDocument).toHaveBeenCalledWith('55');
+  });
+
+  it('attempts BM25 repair for recon conflict stores and surfaces the warning when repair fails', async () => {
+    bridgeMocks.bm25Enabled.mockReturnValue(true);
+    bridgeMocks.bm25AddDocument
+      .mockImplementationOnce(() => {
+        throw new Error('initial conflict-store bm25 failure');
+      })
+      .mockImplementationOnce(() => {
+        throw new Error('repair conflict-store bm25 failure');
+      });
+    bridgeMocks.reconsolidate.mockImplementation(async (_memory, _database, callbacks) => {
+      const storedId = callbacks.storeMemory({
+        title: 'Conflict survivor',
+        content: 'Conflict survivor body',
+        specFolder: 'test-spec',
+        filePath: '/tmp/test-memory.md',
+        embedding: new Float32Array([0.1, 0.2, 0.3]),
+        triggerPhrases: ['conflict'],
+      });
+
+      return {
+        action: 'conflict',
+        existingMemoryId: 12,
+        newMemoryId: storedId,
+        causalEdgeId: 77,
+        similarity: 0.82,
+      };
+    });
+
+    const result = await runReconsolidationIfEnabled(
+      {
+        transaction: (callback: () => number) => callback,
+      } as any,
+      {
+        title: 'Conflict survivor',
+        content: 'Conflict survivor body',
+        specFolder: 'test-spec',
+        triggerPhrases: ['conflict'],
+        importanceTier: 'normal',
+        contentHash: 'hash-789',
+        contextType: 'general',
+        memoryType: 'memory',
+        memoryTypeSource: 'test',
+        documentType: 'memory',
+        qualityScore: 1,
+        qualityFlags: [],
+      } as any,
+      '/tmp/test-memory.md',
+      false,
+      new Float32Array([0.1, 0.2, 0.3]),
+    );
+
+    expect(bridgeMocks.bm25AddDocument).toHaveBeenCalledTimes(2);
+    expect(bridgeMocks.bm25RemoveDocument).toHaveBeenCalledWith('901');
+    expect(result.earlyReturn?.warnings).toEqual(
+      expect.arrayContaining([
+        'BM25 repair failed after recon conflict store for memory 901: repair conflict-store bm25 failure',
+      ]),
+    );
   });
 });

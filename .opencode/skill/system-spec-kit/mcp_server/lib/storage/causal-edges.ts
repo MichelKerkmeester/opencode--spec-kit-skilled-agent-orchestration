@@ -72,6 +72,11 @@ interface CausalEdge {
   last_accessed: string | null;
 }
 
+type EdgeQueryResult = CausalEdge[] & {
+  truncated: boolean;
+  limit: number;
+};
+
 interface WeightHistoryEntry {
   id: number;
   edge_id: number;
@@ -97,6 +102,8 @@ interface CausalChainNode {
   relation: RelationType;
   strength: number;
   children: CausalChainNode[];
+  truncated?: boolean;
+  truncationLimit?: number | null;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -334,65 +341,83 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
   return { inserted, failed };
 }
 
-function getEdgesFrom(sourceId: string, limit: number = MAX_EDGES_LIMIT): CausalEdge[] {
-  if (!db) return [];
+function createEdgeQueryResult(
+  edges: CausalEdge[],
+  limit: number,
+  truncated: boolean,
+): EdgeQueryResult {
+  const result = edges as EdgeQueryResult;
+  result.truncated = truncated;
+  result.limit = limit;
+  return result;
+}
+
+function getEdgesFrom(sourceId: string, limit: number = MAX_EDGES_LIMIT): EdgeQueryResult {
+  if (!db) return createEdgeQueryResult([], limit, false);
 
   try {
-    const edges = (db.prepare(`
+    const rows = (db.prepare(`
       SELECT * FROM causal_edges
       WHERE source_id = ?
       ORDER BY strength DESC
       LIMIT ?
-    `) as Database.Statement).all(sourceId, limit) as CausalEdge[];
+    `) as Database.Statement).all(sourceId, limit + 1) as CausalEdge[];
+    const truncated = rows.length > limit;
+    const edges = truncated ? rows.slice(0, limit) : rows;
     for (const edge of edges) {
       try { touchEdgeAccess(edge.id); } catch (e: unknown) {
         console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
       }
     }
-    return edges;
+    return createEdgeQueryResult(edges, limit, truncated);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getEdgesFrom error: ${msg}`);
-    return [];
+    return createEdgeQueryResult([], limit, false);
   }
 }
 
-function getEdgesTo(targetId: string, limit: number = MAX_EDGES_LIMIT): CausalEdge[] {
-  if (!db) return [];
+function getEdgesTo(targetId: string, limit: number = MAX_EDGES_LIMIT): EdgeQueryResult {
+  if (!db) return createEdgeQueryResult([], limit, false);
 
   try {
-    const edges = (db.prepare(`
+    const rows = (db.prepare(`
       SELECT * FROM causal_edges
       WHERE target_id = ?
       ORDER BY strength DESC
       LIMIT ?
-    `) as Database.Statement).all(targetId, limit) as CausalEdge[];
+    `) as Database.Statement).all(targetId, limit + 1) as CausalEdge[];
+    const truncated = rows.length > limit;
+    const edges = truncated ? rows.slice(0, limit) : rows;
     for (const edge of edges) {
       try { touchEdgeAccess(edge.id); } catch (e: unknown) {
         console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
       }
     }
-    return edges;
+    return createEdgeQueryResult(edges, limit, truncated);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getEdgesTo error: ${msg}`);
-    return [];
+    return createEdgeQueryResult([], limit, false);
   }
 }
 
-function getAllEdges(limit: number = MAX_EDGES_LIMIT): CausalEdge[] {
-  if (!db) return [];
+function getAllEdges(limit: number = MAX_EDGES_LIMIT): EdgeQueryResult {
+  if (!db) return createEdgeQueryResult([], limit, false);
 
   try {
-    return (db.prepare(`
+    const rows = (db.prepare(`
       SELECT * FROM causal_edges
       ORDER BY extracted_at DESC
       LIMIT ?
-    `) as Database.Statement).all(limit) as CausalEdge[];
+    `) as Database.Statement).all(limit + 1) as CausalEdge[];
+    const truncated = rows.length > limit;
+    const edges = truncated ? rows.slice(0, limit) : rows;
+    return createEdgeQueryResult(edges, limit, truncated);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getAllEdges error: ${msg}`);
-    return [];
+    return createEdgeQueryResult([], limit, false);
   }
 }
 
@@ -403,7 +428,8 @@ function getAllEdges(limit: number = MAX_EDGES_LIMIT): CausalEdge[] {
 function getCausalChain(
   rootId: string,
   maxDepth: number = DEFAULT_MAX_DEPTH,
-  direction: 'forward' | 'backward' = 'forward'
+  direction: 'forward' | 'backward' = 'forward',
+  edgeLimit: number = MAX_EDGES_LIMIT,
 ): CausalChainNode {
   const root: CausalChainNode = {
     id: rootId,
@@ -411,6 +437,8 @@ function getCausalChain(
     relation: RELATION_TYPES.CAUSED,
     strength: 1.0,
     children: [],
+    truncated: false,
+    truncationLimit: null,
   };
 
   if (!db) return root;
@@ -419,8 +447,13 @@ function getCausalChain(
     if (depth >= maxDepth) return;
 
     const edges = direction === 'forward'
-      ? getEdgesFrom(node.id)
-      : getEdgesTo(node.id);
+      ? getEdgesFrom(node.id, edgeLimit)
+      : getEdgesTo(node.id, edgeLimit);
+
+    if (edges.truncated) {
+      root.truncated = true;
+      root.truncationLimit = edgeLimit;
+    }
 
     for (const edge of edges) {
       const nextId = direction === 'forward' ? edge.target_id : edge.source_id;
@@ -874,6 +907,7 @@ export {
 export type {
   RelationType,
   CausalEdge,
+  EdgeQueryResult,
   WeightHistoryEntry,
   GraphStats,
   CausalChainNode,

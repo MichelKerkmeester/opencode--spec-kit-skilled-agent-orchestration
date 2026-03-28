@@ -71,6 +71,8 @@ export interface DbStateDeps {
   dbConsumers?: DatabaseConsumerLike[];
 }
 
+type DatabaseRebindListener = (database: DatabaseLike) => void;
+
 // ────────────────────────────────────────────────────────────────
 // 2. STATE VARIABLES 
 
@@ -100,6 +102,25 @@ let dbConsumersRef: DatabaseConsumerLike[] = [];
 let vectorIndexListenerCleanup: (() => void) | null = null;
 let subscribedVectorIndex: VectorIndexLike | null = null;
 let suppressVectorIndexListener = false;
+const databaseRebindListeners = new Set<DatabaseRebindListener>();
+
+export function registerDatabaseRebindListener(listener: DatabaseRebindListener): () => void {
+  databaseRebindListeners.add(listener);
+  return () => {
+    databaseRebindListeners.delete(listener);
+  };
+}
+
+function notifyDatabaseRebindListeners(database: DatabaseLike): void {
+  for (const listener of databaseRebindListeners) {
+    try {
+      listener(database);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`[db-state] Database rebind listener failed: ${message}`);
+    }
+  }
+}
 
 function registerVectorIndexListener(nextVectorIndex: VectorIndexLike): void {
   if (subscribedVectorIndex === nextVectorIndex) {
@@ -151,6 +172,7 @@ function rebindDatabaseConsumers(database: DatabaseLike): boolean {
   for (const consumer of dbConsumersRef) {
     consumer.init(database);
   }
+  notifyDatabaseRebindListeners(database);
   return true;
 }
 

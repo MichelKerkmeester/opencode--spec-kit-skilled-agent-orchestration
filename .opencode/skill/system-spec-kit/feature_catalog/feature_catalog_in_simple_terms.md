@@ -88,7 +88,7 @@ This is the speed-first search option. Instead of doing a deep analysis of your 
 
 ### Hybrid search pipeline
 
-When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results. The last-resort SQL fallback now keeps archived memories out unless you explicitly ask for them, and score boosts from co-activation and session memory stay in sync so later ranking code sees the same boosted values.
+When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results. That widening no longer ignores your explicit routing choices: if you turned graph signals off, the fallback path keeps them off instead of quietly turning them back on. The last-resort SQL fallback also keeps archived memories out unless you explicitly ask for them, and score boosts from co-activation and session memory stay in sync so later ranking code sees the same boosted values.
 
 ### 4-stage pipeline architecture
 
@@ -104,7 +104,7 @@ This planned feature would let you pull out a single section from a large docume
 
 ### Quality-aware 3-tier search fallback
 
-If your search does not find good results on the first try, the system automatically tries again with wider criteria instead of giving up. Think of it like asking a store clerk for a specific item. If they cannot find it on the first shelf, they check the back room and then the warehouse. You almost never walk away empty-handed.
+If your search does not find good results on the first try, the system automatically tries again with wider criteria instead of giving up. Think of it like asking a store clerk for a specific item. If they cannot find it on the first shelf, they check the back room and then the warehouse. You almost never walk away empty-handed. The important refinement is that the wider search now stays inside the channels you still allowed, so a fallback run does not quietly re-enable graph or degree signals you explicitly turned off.
 
 ### Tool-result extraction to working memory
 
@@ -188,7 +188,7 @@ This is the system's self-check tool. It tells you whether the database is conne
 
 ### Workspace scanning and indexing (memory_index_scan)
 
-This tool scans your project folders for new or changed files and adds them to the searchable knowledge base. It is like a librarian walking through the stacks every day to catalog new arrivals and update records for books that have been revised. Files that have not changed are skipped to save time. If a file fails to process, the system remembers and retries it next time.
+This tool scans your project folders for new or changed files and adds them to the searchable knowledge base. It is like a librarian walking through the stacks every day to catalog new arrivals and update records for books that have been revised. Files that have not changed are skipped to save time. If a file fails to process, the system remembers and retries it next time. It now has two extra safeguards: it can catch content changes even when file timestamps did not move, and if someone requests an oversized batch it clamps to a safe maximum instead of trying to process an unbounded queue.
 
 Spec documents are still part of that indexing flow by default. When one has validation issues, the scan keeps it searchable and reports the problem as a warning instead of pretending the document does not exist.
 
@@ -218,7 +218,7 @@ This permanently removes a saved snapshot. You have to type the snapshot name to
 
 ### Async ingestion job lifecycle
 
-When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. Three tools handle the lifecycle: `memory_ingest_start` queues file paths for processing, `memory_ingest_status` checks how far along a job is, and `memory_ingest_cancel` stops a running job. All three live under `/memory:manage ingest`. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.
+When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. Three tools handle the lifecycle: `memory_ingest_start` queues file paths for processing, `memory_ingest_status` checks how far along a job is, and `memory_ingest_cancel` stops a running job. All three live under `/memory:manage ingest`. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things. If you accidentally submit the same file path twice, the queue now removes the duplicate up front and tells you how many duplicates it skipped.
 
 ### Startup pending-file recovery
 
@@ -266,11 +266,11 @@ This shows you a report card of learning across all completed tasks in a project
 
 ### Ablation studies (eval_run_ablation)
 
-This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality. Token-usage summaries now skip fake zeroes when a run did not actually collect token data.
+This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality. Token-usage summaries now skip fake zeroes when a run did not actually collect token data, and the report now calls out which requested query IDs were resolved versus missing before you trust the benchmark.
 
 ### Reporting dashboard (eval_reporting_dashboard)
 
-This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time. It also keeps using the evaluation database you already pointed the server at, and its `limit` setting counts sprint groups rather than raw runs.
+This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time. It also keeps using the evaluation database you already pointed the server at, its `limit` setting counts sprint groups rather than raw runs, and it picks the most recently updated sprint groups while still displaying them in chronological order.
 
 ---
 
@@ -468,7 +468,7 @@ Brand-new memories start with a disadvantage because the scoring system has not 
 
 ### Interference scoring
 
-If you have five nearly identical memories about the same thing, they can all crowd into the top results and push out something different that might actually be more helpful. This feature penalizes memories that look too similar to their neighbors, making room for a wider variety of results. It is like a rule that says "no more than one song per artist on a playlist" to keep things diverse.
+If you have five nearly identical memories about the same thing, they can all crowd into the top results and push out something different that might actually be more helpful. This feature penalizes memories that look too similar to their neighbors, making room for a wider variety of results. It is like a rule that says "no more than one song per artist on a playlist" to keep things diverse. Only live peer memories count toward that penalty now, so archived or deprecated copies do not unfairly drag down active search results.
 
 ### Classification-based decay
 
@@ -1028,7 +1028,7 @@ Phase folders are supposed to link to each other: each child links back to its p
 
 ### 1. Search Pipeline Features (SPECKIT_*)
 
-These flags are the main control panel for how search works. They turn major retrieval behaviors on or off, like fallback logic, reranking, telemetry, and rollout gates, so you can tune quality, speed, and safety without changing code.
+These flags are the main control panel for how search works. They turn major retrieval behaviors on or off, like fallback logic, reranking, telemetry, and rollout gates, so you can tune quality, speed, and safety without changing code. The graph-walk rollout ladder now has only three real states (`off`, `trace_only`, `bounded_runtime`), and the roadmap-related flags in this family are resolved live from the environment rather than frozen at import time.
 
 ### 2. Session and Cache
 
@@ -1048,7 +1048,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. One important example is the shared-memory roadmap flag, which now defaults to off in roadmap snapshots until rollout is explicitly enabled so telemetry does not claim sharing is live before runtime access allows it.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. Those roadmap flags are resolved live each time the helper runs, canonical `SPECKIT_MEMORY_*` keys override the older `SPECKIT_HYDRA_*` aliases, and shared memory stays off in roadmap snapshots until rollout is explicitly enabled so telemetry does not claim sharing is live before runtime access allows it.
 
 ### 7. CI and Build (informational)
 

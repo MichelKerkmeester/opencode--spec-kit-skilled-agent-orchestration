@@ -99,7 +99,7 @@ The framework adds three layers on top of the base platform:
          │  5-channel hybrid: Vector, BM25, FTS5,   │
          │  Causal Graph, Degree                    │
          │  FSRS decay ─ RRF fusion ─ query intel   │
-         │  PE gating ─ constitutional tiers        │
+         │  runtime flags ─ eval guardrails         │
          │  Voyage │ OpenAI │ HuggingFace Local     │
          └──────────────────────┬───────────────────┘
                                 │
@@ -872,34 +872,32 @@ The memory server reads configuration from environment variables:
 - **`OPENAI_API_KEY`** (optional) - OpenAI embeddings (alternative)
 - **`MEMORY_DB_PATH`** (optional) - Override default database path
 
-Default database path: `.opencode/skill/system-spec-kit/shared/mcp_server/database/context-index.sqlite`
+Default database path: `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite`
 
 > [!TIP]
 > If no API key is set, the memory engine auto-detects **HuggingFace Local** embeddings - free, no setup required.
 
 ### Memory Feature Flags
 
-26+ feature flags control search channels, scoring signals and infrastructure components. All default to sensible values.
+Feature flags control search channels, scoring signals, save-time enforcement, and evaluation behavior. The important retrieval/runtime flags are resolved at call time, so long-lived MCP processes do not depend on frozen import-time snapshots.
 
-- **Search Pipeline** - BM25, Graph channel, Reranker, MMR, Co-Activation, FSRS decay, Interference penalty. All enabled by default.
-- **Session/Cache** - Working memory, TTL cache, Session deduplication. All enabled by default.
-- **Memory/Storage** - Auto-promotion, Negative feedback, Content normalization. All enabled by default.
-- **Embedding/API** - Voyage AI, OpenAI, HuggingFace Local (auto-detected). Provider-dependent.
-- **Debug** - Trace mode, Scoring observability, Shadow evaluation. All disabled by default.
+- **Search Pipeline** - 5-channel retrieval, fallback routing, reranking, graph-walk rollout, confidence and token-budget policies.
+- **Session/Cache** - Working memory, cache invalidation on DB rebind, session deduplication, recovery helpers.
+- **Memory/Storage** - Save quality gate, reconsolidation, governed scopes, causal graph maintenance, projection cleanup.
+- **Embedding/API** - Startup provider resolution, fail-fast dimension checks, structured fallback metadata for effective vs requested provider.
+- **Evaluation/Debug** - Trace mode, eval logging, ablation/reporting guardrails, optional shadow-style diagnostics.
 
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 
 ### Database Schema
 
-The memory system uses a SQLite database with 25 tables:
+The runtime centers on a SQLite `memory_index` table with 56 columns plus companion FTS5/vector, lineage, checkpoint, working-memory, shared-memory, and eval tables.
 
-- **Core** (3) - `memories`, `embeddings`, `memory_sections`
-- **Search** (3) - `fts_memories`, `bm25_index`, `search_cache`
-- **Graph** (3) - `causal_edges`, `communities`, `co_activations`
-- **Lifecycle** (3) - `memory_states`, `validation_feedback`, `promotions`
-- **Session** (2) - `working_memory`, `session_events`
-- **Shared** (3) - `shared_spaces`, `memberships`, `kill_switches`
-- **Evaluation** (3) - `eval_runs`, `ablation_results`, `ground_truth`
+- **Primary store** - `memory_index` holds the searchable memory rows plus governance, quality, chunking, and retrieval metadata.
+- **Search companions** - FTS5 and vector tables support lexical and embedding retrieval alongside BM25 rebuild/index data.
+- **Graph/lifecycle** - Causal edges, lineage projection, checkpoints, working memory, and access tracking support decision tracing and session continuity.
+- **Evaluation** - Separate eval tables persist ablation/reporting metrics, with guards for missing query IDs and synthetic token-usage markers.
+- **Paths** - Canonical runtime DB path is `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite`; `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` is the compatibility symlink.
 
 ### opencode.json Structure
 
@@ -961,7 +959,7 @@ A: Gate 3 blocks file modifications until a spec folder answer is provided. You 
 
 **Q: How does the memory system know what is relevant to my current task?**
 
-A: Memory files have YAML frontmatter with tags and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search and returns the top matches, classified by intent and fused with RRF.
+A: Memory files use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. At session start, `memory_match_triggers()` does a fast trigger/cognitive pass for immediate surfacing, while `memory_context()` and `memory_search()` run the full hybrid retrieval pipeline with intent routing, reranking, and filtering when deeper context is needed.
 
 ---
 

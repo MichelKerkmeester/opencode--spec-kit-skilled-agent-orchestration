@@ -1,7 +1,9 @@
 // TEST: UNIFIED GRAPH SEARCH FUNCTION
 // Causal edge channel only
+import Database from 'better-sqlite3';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createUnifiedGraphSearchFn } from '../lib/search/graph-search-fn';
+import { init as initDbState, reinitializeDatabase } from '../core/db-state';
+import { createUnifiedGraphSearchFn, computeDegreeScores } from '../lib/search/graph-search-fn';
 
 const mockAll = vi.fn();
 const mockGet = vi.fn();
@@ -30,6 +32,55 @@ function makeCausalRow(
     fts_score: 1,
     ...overrides,
   };
+}
+
+function createDegreeCacheDb(): InstanceType<typeof Database> {
+  const db = new Database(':memory:');
+  db.exec(`
+    CREATE TABLE memory_index (
+      id INTEGER PRIMARY KEY,
+      spec_folder TEXT NOT NULL DEFAULT '',
+      file_path TEXT NOT NULL DEFAULT '',
+      title TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      importance_tier TEXT DEFAULT 'normal'
+    );
+  `);
+  db.exec(`
+    CREATE TABLE causal_edges (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source_id TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      relation TEXT NOT NULL CHECK(relation IN (
+        'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
+      )),
+      strength REAL DEFAULT 1.0 CHECK(strength >= 0.0 AND strength <= 1.0),
+      evidence TEXT,
+      extracted_at TEXT DEFAULT (datetime('now')),
+      created_by TEXT DEFAULT 'manual',
+      last_accessed TEXT,
+      UNIQUE(source_id, target_id, relation)
+    );
+  `);
+
+  const insertMemory = db.prepare(`
+    INSERT INTO memory_index (id, spec_folder, file_path, title, importance_tier)
+    VALUES (?, 'graph-test', ?, ?, 'normal')
+  `);
+  for (const id of [1, 2, 3, 4, 5, 6]) {
+    insertMemory.run(id, `/mem/${id}.md`, `Memory ${id}`);
+  }
+
+  const insertEdge = db.prepare(`
+    INSERT INTO causal_edges (source_id, target_id, relation, strength)
+    VALUES (?, ?, ?, ?)
+  `);
+  insertEdge.run('1', '2', 'supports', 1.0);
+  insertEdge.run('5', '2', 'caused', 1.0);
+  insertEdge.run('5', '3', 'caused', 1.0);
+  insertEdge.run('5', '6', 'enabled', 1.0);
+
+  return db;
 }
 
 describe('createUnifiedGraphSearchFn', () => {
@@ -239,6 +290,50 @@ describe('createUnifiedGraphSearchFn', () => {
     for (const s of scores) {
       expect(s).toBeGreaterThanOrEqual(0);
       expect(s).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('clears cached degree scores when db-state rebinds the database', async () => {
+    const db = createDegreeCacheDb();
+
+    try {
+      const before = computeDegreeScores(db, [1]).get('1');
+      expect(before).toBeTypeOf('number');
+
+      db.prepare(`
+        INSERT INTO causal_edges (source_id, target_id, relation, strength)
+        VALUES (?, ?, ?, ?)
+      `).run('1', '3', 'caused', 1.0);
+
+      const stale = computeDegreeScores(db, [1]).get('1');
+      expect(stale).toBe(before);
+
+      const vectorIndex = {
+        initializeDb: vi.fn(),
+        getDb: vi.fn(() => db),
+        closeDb: vi.fn(),
+        vectorSearch: vi.fn(),
+      };
+
+      initDbState({
+        vectorIndex,
+        checkpoints: { init: vi.fn() },
+        accessTracker: { init: vi.fn() },
+        hybridSearch: { init: vi.fn() },
+        sessionManager: { init: vi.fn(() => ({ success: true })) },
+        incrementalIndex: { init: vi.fn() },
+        graphSearchFn: null,
+      });
+
+      const rebound = await reinitializeDatabase();
+      expect(rebound).toBe(true);
+
+      const refreshed = computeDegreeScores(db, [1]).get('1');
+      expect(refreshed).toBeTypeOf('number');
+      expect(refreshed).toBeGreaterThan(before ?? 0);
+      expect(refreshed).not.toBe(stale);
+    } finally {
+      db.close();
     }
   });
 });

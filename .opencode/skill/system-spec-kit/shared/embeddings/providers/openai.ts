@@ -52,6 +52,13 @@ function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError';
 }
 
+function hasTimeoutCode(error: unknown): boolean {
+  return typeof error === 'object'
+    && error !== null
+    && 'code' in error
+    && (error as { code?: unknown }).code === 'ETIMEDOUT';
+}
+
 interface OpenAIErrorBody {
   error?: {
     message?: string;
@@ -256,13 +263,27 @@ export class OpenAIProvider implements IEmbeddingProvider {
   async warmup(): Promise<boolean> {
     try {
       console.error('[openai] Checking connectivity with OpenAI API...');
-      const result = await this.embedQuery('test warmup query');
+      const result = await Promise.race([
+        this.embedQuery('test warmup query'),
+        new Promise<Float32Array | null>((_, reject) => {
+          setTimeout(() => {
+            const timeoutError: ErrorWithStatus = new Error(`OpenAI warmup timed out after ${this.timeout}ms`);
+            timeoutError.code = 'ETIMEDOUT';
+            reject(timeoutError);
+          }, this.timeout);
+        }),
+      ]);
       this.isHealthy = result !== null;
       console.error('[openai] Connectivity verified successfully');
       return this.isHealthy;
     } catch (error: unknown) {
       if (error instanceof Error) {
         void error.message;
+      }
+      if (hasTimeoutCode(error)) {
+        console.warn(`[openai] Warmup timed out after ${this.timeout}ms; proceeding with cold provider state`);
+        this.isHealthy = true;
+        return true;
       }
       console.warn(`[openai] Warmup failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;

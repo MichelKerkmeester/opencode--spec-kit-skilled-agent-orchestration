@@ -1,12 +1,11 @@
 ---
 title: "Handlers"
-description: "MCP tool handler surface plus internal handler helpers for save/index orchestration."
+description: "MCP tool handlers, save/index orchestration helpers, and shared-memory auth utilities."
 trigger_phrases:
   - "MCP handlers"
   - "memory handlers"
-  - "request handlers"
+  - "shared-memory handler"
 ---
-
 
 # Handlers
 
@@ -16,89 +15,70 @@ trigger_phrases:
 - [1. OVERVIEW](#1--overview)
 - [2. IMPLEMENTED STATE](#2--implemented-state)
 - [3. HARDENING NOTES](#3--hardening-notes)
-- [4. TELEMETRY NOTES](#4--telemetry-notes)
-- [5. RELATED](#5--related)
+- [4. RELATED](#4--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the Handlers directory.
+`handlers/` is the MCP-facing handler layer. `handlers/index.ts` lazily loads these modules and re-exports the public handler functions used by the tool dispatch layer.
 
-`handlers/` contains both the MCP tool handler surface and internal helper modules used by those handlers.
+Primary MCP handler modules:
 
-Tool handler surface (wired through `handlers/index.ts` and `tools/memory-tools.ts`):
-- `memory-context.ts` — L1 orchestration handler (T061)
-- `memory-search.ts` — hybrid search with retrieval telemetry
-- `memory-triggers.ts` — trigger phrase matching
-- `memory-save.ts` — save orchestrator (delegates to `save/` pipeline)
-- `memory-ingest.ts` — batch ingest start/status/cancel handlers
-- `memory-crud.ts` — stable CRUD facade + snake_case aliases
-- `memory-bulk-delete.ts` — bulk delete handler
-- `memory-index.ts` — index scan, single-file indexing, constitutional file discovery
-- `checkpoints.ts` — checkpoint create/list/restore/delete and memory validate
-- `session-learning.ts` — task preflight/postflight and learning history
-- `causal-graph.ts` — causal link/unlink, drift-why, causal stats (T043-T047)
-- `eval-reporting.ts` — ablation runs and reporting dashboard (R13-S3)
-- `shared-memory.ts` — MCP handler for shared-space CRUD, membership, rollout status and `shared_memory_enable`
-- `index.ts` — barrel re-exports
+- `memory-context.ts` - L1 orchestration entry point for intent-aware context assembly.
+- `memory-search.ts` - L2 hybrid search handler with telemetry and profile support.
+- `memory-triggers.ts` - Trigger phrase matching, tiered content injection, and session-aware matching.
+- `memory-save.ts` - Save pipeline entry point delegating to `handlers/save/`.
+- `memory-ingest.ts` - Async ingestion job start, status, and cancel handlers.
+- `memory-crud.ts` - Stable CRUD facade backed by focused CRUD submodules.
+- `memory-bulk-delete.ts` - Bulk deletion by importance tier with checkpoint guardrails.
+- `memory-index.ts` - Scan, re-index, alias discovery, and spec-doc indexing entry point.
+- `checkpoints.ts` - Checkpoint lifecycle plus `memory_validate`.
+- `session-learning.ts` - Task preflight, postflight, and learning history handlers.
+- `causal-graph.ts` - Causal link, unlink, stats, and drift-why handlers.
+- `eval-reporting.ts` - Ablation, k-sensitivity, and dashboard handlers.
+- `shared-memory.ts` - Shared-memory lifecycle handlers plus caller/admin auth validation.
 
-Internal helper modules (not direct MCP tool endpoints):
-- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` — split CRUD internals behind `memory-crud.ts`; `memory-crud-health.ts` also calls `getEmbeddingRetryStats()` and includes `embeddingRetry` in health responses
-- `memory-crud-types.ts`, `memory-crud-utils.ts` — shared CRUD types and utilities
-- `memory-index-alias.ts`, `memory-index-discovery.ts` — indexing support helpers
-- `causal-links-processor.ts` — causal link extraction and processing
-- `chunking-orchestrator.ts` — document chunking orchestration
-- `handler-utils.ts`, `mutation-hooks.ts`, `types.ts` — shared handler helpers/types
-- `pe-gating.ts` — prediction-error decision utilities consumed by save/index flows
-- `v-rule-bridge.ts` — Runtime bridge to `validate-memory-quality` script (O2-5/O2-12)
-- `quality-loop.ts` — quality scoring/fix helpers consumed by `memory-save.ts` (not a standalone MCP handler)
-- `save/` — decomposed save pipeline (see `save/README.md`)
+Internal helpers in this folder:
+
+- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` - Focused CRUD implementations behind `memory-crud.ts`.
+- `memory-crud-types.ts`, `memory-crud-utils.ts` - Shared CRUD types and helpers.
+- `memory-index-alias.ts`, `memory-index-discovery.ts` - Alias conflict discovery, spec-doc discovery, and constitutional file detection.
+- `handler-utils.ts`, `types.ts` - Shared handler helpers and domain typing.
+- `mutation-hooks.ts` - Post-mutation cache invalidation and feedback wiring.
+- `pe-gating.ts` - Prediction-error save arbitration helpers, document weighting, and lineage-aware update paths.
+- `quality-loop.ts` - Verify-fix-verify scoring and auto-fix loop used by `memory-save.ts`.
+- `v-rule-bridge.ts` - Runtime bridge to validation scripts for memory quality checks.
+- `causal-links-processor.ts`, `chunking-orchestrator.ts` - Save/index support helpers.
+- `save/` - Decomposed save pipeline modules.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
 ## 2. IMPLEMENTED STATE
 
-
-- Handlers export camelCase primary APIs and snake_case compatibility aliases.
-- CRUD handlers are split into focused modules while keeping `memory-crud.ts` as the stable entry point.
-- Tool domains cover L1-L7 behavior through the dispatch layer in `tools/`.
-- Core persistence uses `memory_index` (not `memories`) with FTS/vector/checkpoint support.
-- `quality-loop.ts` is an internal save helper module invoked inside `memory-save.ts`; MCP does not expose a separate `quality_loop` tool.
-- Document-type indexing alignment:
-  - `memory-index` supports `includeSpecDocs` and indexes spec docs plus memory files.
-  - `memory-save` preserves `document_type` and `spec_level` across create/update/reinforce flows. Integrates with embedding cache for deduplication of unchanged content, persists accepted quality-loop metadata fixes, and carries rewritten body content in-memory until downstream hard-reject gates clear under lock.
-  - scan flow can build spec-document causal chains after indexing.
-
+- Public handlers expose camelCase functions plus snake_case compatibility aliases where the MCP surface still needs them.
+- `shared-memory.ts` exports `resolveAdminActor()` and `validateCallerAuth()` so shared-space mutations enforce explicit actor identity, tenant scope, and configured admin ownership.
+- `quality-loop.ts` supports `emitEvalMetrics` so callers can suppress eval-side writes while still using the quality loop itself.
+- `pe-gating.ts` now leans on `lib/storage/document-helpers.ts` for document-aware weights and keeps content-hash-aware update paths aligned with lineage and incremental-index state.
+- `memory-index.ts` and `mutation-hooks.ts` work together so index, update, and stale-delete flows clear trigger, constitutional, graph, co-activation, and degree caches.
+- `memory-crud-health.ts` surfaces embedding retry stats and FTS/index sync diagnostics as part of the health response.
 
 <!-- /ANCHOR:implemented-state -->
 <!-- ANCHOR:hardening-notes -->
 ## 3. HARDENING NOTES
 
-
-- Index mtime updates occur only after successful indexing (retry-safe behavior).
-- Spec-folder filtering in scan logic is boundary-safe (no prefix bleed).
-- File descriptor reads for spec-level detection are `finally`-closed.
-- Deferred embedding paths preserve indexability via BM25/FTS and retry manager handoff.
-- `memory-index` scan invalidation now uses the broader post-mutation hook behavior on indexed, updated, and stale-delete outcomes.
-
+- `handlers/index.ts` is intentionally lazy so startup stays lighter and optional modules do not load until the tool surface needs them.
+- Shared-memory enablement writes the documentation stub in `shared-spaces/` but the runtime implementation remains in `handlers/shared-memory.ts` and `lib/collab/shared-spaces.ts`.
+- Save-time fixes persist accepted metadata changes and carry rewritten body content in memory until later hard-reject gates finish under the spec-folder lock.
+- Post-mutation invalidation clears `clearDegreeCache()` alongside trigger and constitutional caches so graph-derived retrieval signals cannot serve stale data after mutations.
 
 <!-- /ANCHOR:hardening-notes -->
-<!-- ANCHOR:telemetry-notes -->
-## 4. TELEMETRY NOTES
-
-
-- `memory-search.ts` records retrieval telemetry through consumption/eval logging and can include `retrievalTrace` in response data when trace output is requested.
-- `memory-context.ts` captures mode selection, pressure override, and fallback detection in `extraMeta._telemetry`. This allows downstream consumers to observe how the context assembly path was chosen.
-
-
-<!-- /ANCHOR:telemetry-notes -->
 <!-- ANCHOR:related -->
-## 5. RELATED
-
+## 4. RELATED
 
 - `../tools/README.md`
 - `../core/README.md`
-- `../database/README.md`
-- `../../references/memory/memory_system.md`
+- `../hooks/README.md`
+- `../shared-spaces/README.md`
+
 <!-- /ANCHOR:related -->

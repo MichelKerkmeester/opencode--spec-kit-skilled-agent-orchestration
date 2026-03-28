@@ -15,7 +15,7 @@ If your search does not find good results on the first try, the system automatic
 
 ## 2. CURRENT REALITY
 
-Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhanced hybrid search (minSimilarity=0.3, standard channels). Quality check via `checkDegradation()`: fails if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3. On fail, Tier 2: widened search (minSimilarity=0.1, all channels forced). Same quality check. On fail, Tier 3: structural SQL fallback (ORDER BY importance_tier, importance_weight). Tier 3 scores are calibrated to max 50% of existing top score to prevent outranking semantic hits. Degradation events are attached as non-enumerable `_degradation` property on the result set. Gated by `SPECKIT_SEARCH_FALLBACK` (default: true, graduated).
+Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhanced hybrid search (minSimilarity=0.3, standard channels). Quality check via `checkDegradation()`: fails if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3. On fail, Tier 2: widened search (minSimilarity=0.1) inside the caller-allowed channel set rather than forcing previously disabled channels back on. That means explicit routing decisions such as `useGraph:false` still hold during degradation. On fail, Tier 3: structural SQL fallback (ORDER BY importance_tier, importance_weight), but only for lexical channels that are still allowed after routing. Tier 3 scores are calibrated to max 50% of existing top score to prevent outranking semantic hits, and archived rows stay excluded unless `includeArchived=true`. Degradation events are attached as non-enumerable `_degradation` property on the result set. Gated by `SPECKIT_SEARCH_FALLBACK` (default: true, graduated).
 
 ---
 

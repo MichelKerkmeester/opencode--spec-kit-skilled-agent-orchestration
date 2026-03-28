@@ -6,6 +6,7 @@
 
 import { sanitizeFTS5Query } from './bm25-index';
 import { queryHierarchyMemories } from './spec-folder-hierarchy';
+import { registerDatabaseRebindListener } from '../../core/db-state';
 
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from './search-types';
@@ -311,6 +312,7 @@ function queryCausalEdgesLikeFallback(
  */
 // H20 FIX: Scope degree cache per database instance to prevent cross-DB score leaks
 let degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
+let degreeCacheRebindRegistered = false;
 function getDegreeCacheForDb(database: Database.Database): Map<string, number> {
   let cache = degreeCachePerDb.get(database);
   if (!cache) {
@@ -509,6 +511,13 @@ function clearDegreeCache(): void {
 /** Clear degree cache for a specific database instance. */
 function clearDegreeCacheForDb(database: Database.Database): void {
   degreeCachePerDb.delete(database);
+}
+
+if (!degreeCacheRebindRegistered) {
+  registerDatabaseRebindListener(() => {
+    clearDegreeCache();
+  });
+  degreeCacheRebindRegistered = true;
 }
 
 // ───────────────────────────────────────────────────────────────

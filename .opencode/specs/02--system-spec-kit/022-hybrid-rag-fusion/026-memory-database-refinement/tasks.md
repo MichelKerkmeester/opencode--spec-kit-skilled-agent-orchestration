@@ -192,6 +192,72 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:phase-10 -->
+## Phase 10: Fix All 15 Deferred P2 Findings
+
+Previously deferred findings now fixed via 5 parallel GPT-5.4 agents (no fast mode).
+
+- [x] T130 [P] Fix P2-005: Wrap traversal reads in read transaction [Evidence: causal-graph handler wrapped in db.transaction(); integration test added]
+- [x] T131 [P] Fix P2-006: Return truncation flag from high-degree traversal [Evidence: truncated+limit metadata on edge arrays; propagated through getCausalChain; test added]
+- [x] T132 [P] Fix P2-027: Clear degree cache on DB reinit [Evidence: rebind listener in db-state.ts; clearDegreeCache() registered; test added]
+- [x] T133 [P] Fix P2-020: Make BM25 failure atomic in reconsolidation [Evidence: immediate repair attempt + warning in result; tests for both merge and conflict-store paths]
+- [x] T134 [P] Fix P2-010: Conflict-aware retry for concurrent supersedes [Evidence: 3-retry loop on UNIQUE violation; re-reads max version; test added]
+- [x] T135 [P] Fix P2-011: Remove unsupported `full` from graph walk rollout docs [Evidence: environment_variables.md + search-flags.ts updated]
+- [x] T136 [P] Fix P2-012: Fix shared-memory defaults documentation [Evidence: telemetry/README.md + capability-flags.ts comment corrected to false]
+- [x] T137 [P] Fix P2-015: Add auth check to shared-memory enablement [Evidence: validateCallerAuth() + admin check in handleSharedMemoryEnable; 2 tests added]
+- [x] T138 [P] Fix P2-019: Support ranked intents in classifier [Evidence: rankedIntents array (top-3) alongside backward-compat intent field; multi-facet test added]
+- [x] T139 [P] Fix P2-033: Fix spec folder discovery ordering [Evidence: auto-discovery reordered before saveSessionState(); session-state regression test added]
+- [x] T140 [P] Fix P2-034: Unicode-aware tokenization [Evidence: normalizeUnicode() + \p{L} boundary regex; CJK/Cyrillic tests added]
+- [x] T141 [P] Fix P2-035: Indexed candidate structure for trigger scan [Evidence: token/n-gram Map index; candidate narrowing before regex; 500+ trigger benchmark test]
+- [x] T142 [P] Fix P2-038: Embedding timeout handling [Evidence: withTimeout() for HF-local inference; Promise.race warmup deadline for OpenAI/Voyage; timeout tests]
+- [x] T143 [P] Fix P2-040: Move autoSurfacedContext into envelope [Evidence: meta.autoSurfacedContext instead of top-level sibling; context-server tests updated]
+- [x] T144 [P] Fix P2-041: Lazy handler imports [Evidence: cached lazy loaders replacing eager imports; lazy-loading.vitest.ts added]
+<!-- /ANCHOR:phase-10 -->
+
+---
+
+<!-- ANCHOR:phase-11 -->
+## Phase 11: Documentation Alignment Audit
+
+Full alignment check of all documentation, READMEs, references, and catalogs against the 102 fixes (80 P0/P1 + 22 P2 + 15 deferred P2).
+
+- [ ] T150 [P] Audit and update all mcp_server/ code READMEs (handlers/, lib/, tools/, utils/, core/, tests/)
+- [ ] T151 [P] Audit and update mcp_server/README.md (main descriptive README)
+- [ ] T152 [P] Audit and update system-spec-kit/README.md and SKILL.md
+- [ ] T153 [P] Audit and update system-spec-kit/references/ (quick_reference.md, structure, templates, workflows)
+- [ ] T154 [P] Audit and update feature catalog entries affected by fixes
+- [ ] T155 [P] Audit and update manual testing playbook entries affected by fixes
+- [ ] T156 [P] Audit and update memory commands documentation
+- [ ] T157 [P] Audit and update root README.md
+- [ ] T158 Run full test suite + typecheck after all updates
+- [ ] T159 Save final context to memory
+<!-- /ANCHOR:phase-11 -->
+
+---
+
+<!-- ANCHOR:phase-10-checklist -->
+## Phase 10 Checklist
+
+- [ ] CHK-070 [P0] All 15 deferred P2 findings fixed with passing tests
+- [ ] CHK-071 [P0] Build and typecheck clean after all fixes
+- [ ] CHK-072 [P1] No regressions in existing tests
+<!-- /ANCHOR:phase-10-checklist -->
+
+---
+
+<!-- ANCHOR:phase-11-checklist -->
+## Phase 11 Checklist
+
+- [ ] CHK-080 [P1] All mcp_server/ READMEs reflect current module structure and features
+- [ ] CHK-081 [P1] SKILL.md and system-spec-kit README aligned with current capabilities
+- [ ] CHK-082 [P1] Feature catalog entries match implemented code
+- [ ] CHK-083 [P1] Testing playbook entries match current test patterns
+- [ ] CHK-084 [P1] Root README aligned with current system description
+- [ ] CHK-085 [P1] Memory command documentation matches current tool schemas
+<!-- /ANCHOR:phase-11-checklist -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -201,6 +267,8 @@ contextType: "general"
 - [x] All P1 findings fixed (75/75 + 2 bonus fixes T088b)
 - [x] Cross-agent integration test failures reconciled (24 failures fixed in Phase 8)
 - [x] P2 findings triaged — 22 fixed, 16 deferred, 3 rejected (Phase 9)
+- [ ] All 15 deferred P2 findings fixed (Phase 10)
+- [ ] Documentation alignment audit complete (Phase 11)
 - [x] Full test suite green + typecheck clean (8771 pass, tsc clean, 1 pre-existing timeout)
 <!-- /ANCHOR:completion -->
 
@@ -214,4 +282,5 @@ contextType: "general"
 - **Verification**: See `checklist.md`
 - **Review Report**: See `review/review-report.md`
 - **Iteration Details**: See `review/iterations/iteration-001.md` through `iteration-030.md`
+- **P2 Triage Reports**: See `scratch/p2-triage-agent[1-5].md`
 <!-- /ANCHOR:cross-refs -->

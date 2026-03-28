@@ -51,6 +51,10 @@ interface HfLocalOptions {
   timeout?: number;
 }
 
+interface ErrorWithCode extends Error {
+  code?: string;
+}
+
 // Type for the HuggingFace pipeline extractor
 type FeatureExtractionPipeline = (text: string, options: { pooling: string; normalize: boolean }) => Promise<{ data: Float32Array | number[] }>;
 
@@ -68,6 +72,28 @@ function getErrorCode(error: unknown): string | undefined {
 
   const { code } = error as { code?: unknown };
   return typeof code === 'string' ? code : undefined;
+}
+
+function createTimeoutError(message: string): ErrorWithCode {
+  const error = new Error(message) as ErrorWithCode;
+  error.code = 'ETIMEDOUT';
+  return error;
+}
+
+async function withTimeout<T>(operation: Promise<T>, timeoutMs: number, message: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timeoutId = setTimeout(() => reject(createTimeoutError(message)), timeoutMs);
+
+    operation
+      .then((value: T) => {
+        clearTimeout(timeoutId);
+        resolve(value);
+      })
+      .catch((error: unknown) => {
+        clearTimeout(timeoutId);
+        reject(error);
+      });
+  });
 }
 
 /** Provides hf local provider. */
@@ -207,10 +233,14 @@ export class HfLocalProvider implements IEmbeddingProvider {
     try {
       const model = await this.getModel();
 
-      const output = await model(inputText, {
-        pooling: 'mean',
-        normalize: true,
-      });
+      const output = await withTimeout(
+        model(inputText, {
+          pooling: 'mean',
+          normalize: true,
+        }),
+        this.timeout,
+        `HF local inference timed out after ${this.timeout}ms`,
+      );
 
       const embedding = output.data instanceof Float32Array
         ? output.data

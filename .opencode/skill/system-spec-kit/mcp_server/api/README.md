@@ -1,13 +1,11 @@
 ---
 title: "MCP Server Public API"
-description: "Stable public surface for external consumers including scripts, evals, and automation."
+description: "Stable import surface for eval, indexing, search, providers, storage, and selected architecture helpers."
 trigger_phrases:
   - "public api"
   - "api surface"
-  - "eval api"
-  - "search api"
+  - "stable imports"
 ---
-
 
 # MCP Server Public API
 
@@ -17,54 +15,49 @@ trigger_phrases:
 - [1. OVERVIEW](#1--overview)
 - [2. AVAILABLE MODULES](#2--available-modules)
 - [3. CONSUMER POLICY](#3--consumer-policy)
-- [4. MIGRATION GUIDE](#4--migration-guide)
-- [5. RELATED](#5--related)
+- [4. RELATED](#4--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `api/` directory provides a stable, well-bounded interface to `mcp_server/` internals. External consumers (especially `scripts/` and `scripts/evals/`) should import from `api/` rather than directly from `lib/`, `core/`, or `handlers/`.
+`api/` is the supported import surface for external consumers such as scripts and eval tooling. The goal is to keep callers out of `lib/`, `handlers/`, and `core/` internals unless a deliberate exception is documented.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:available-modules -->
 ## 2. AVAILABLE MODULES
 
-| Module | Export | Purpose |
-|--------|--------|---------|
-| `index.ts` | Barrel export | Re-exports all public API modules |
-| `eval.ts` | Evaluation API | Ablation framework, BM25 baseline, ground-truth loader, eval DB init |
-| `indexing.ts` | Indexing bootstrap API | Runtime bootstrap + index-scan hooks for reindex orchestration |
-| `search.ts` | Search API | Hybrid search, FTS5/BM25, and vector index access |
-| `providers.ts` | Provider + retry API | Embedding generation, query embedding, profile access, and retry-queue |
-| `storage.ts` | Storage init API | Checkpoint and access-tracker initialization |
+| Module | Surface |
+|---|---|
+| `eval.ts` | Ablation helpers, BM25 baseline helpers, ground-truth loading, and eval DB init |
+| `indexing.ts` | Runtime bootstrap, embedding warmup, memory index scan, and shutdown helpers |
+| `search.ts` | Hybrid search init/search, FTS5 BM25 helpers, and `vectorIndex` namespace |
+| `providers.ts` | `generateEmbedding`, `generateQueryEmbedding`, `getEmbeddingProfile`, and `retryManager` |
+| `storage.ts` | `initCheckpoints` and `initAccessTracker` |
+| `index.ts` | Re-exports the modules above plus folder-discovery helpers, entity extraction, layer definitions, shared rollout metrics, and memory-roadmap capability flags |
+
+Important `index.ts` extras:
+
+- Folder-discovery helpers from `lib/search/folder-discovery`.
+- Entity extraction helpers from `lib/extraction/entity-extractor`.
+- Layer metadata from `lib/architecture/layer-definitions`.
+- Shared rollout metrics/types from `lib/collab/shared-spaces`.
+- Roadmap capability flags from `lib/config/capability-flags`.
 
 <!-- /ANCHOR:available-modules -->
 <!-- ANCHOR:consumer-policy -->
 ## 3. CONSUMER POLICY
 
-- **Preferred**: `import { ... } from '@spec-kit/mcp-server/api'`
-- **Preferred for targeted surfaces**: `import { ... } from '@spec-kit/mcp-server/api/<module>'`
-- **Prohibited**: `import { ... } from '@spec-kit/mcp-server/{lib,core,handlers}*'` (internal)
-- **Exception process**: Add to `scripts/evals/import-policy-allowlist.json` with owner and removal condition
+- Prefer `@spec-kit/mcp-server/api` or the narrow `@spec-kit/mcp-server/api/<module>` path.
+- Avoid direct imports from `lib/`, `handlers/`, or `core/` for script/runtime consumers.
+- If a needed export is missing, add it here or document a temporary exception in the import-policy allowlist.
 
 <!-- /ANCHOR:consumer-policy -->
-<!-- ANCHOR:migration-guide -->
-## 4. MIGRATION GUIDE
-
-To migrate from internal runtime imports to `api/*`:
-
-1. Identify the `lib/`, `core/`, or `handlers/` import in your file
-2. Check if the needed export exists in `api/` modules
-3. Replace the import path with the narrowest public surface, for example `@spec-kit/mcp-server/api/indexing`
-4. If the export is not available in `api/`, file a request to add it or register an exception
-
-<!-- /ANCHOR:migration-guide -->
 <!-- ANCHOR:related -->
-## 5. RELATED
+## 4. RELATED
 
-- [Architecture Boundaries](../../ARCHITECTURE.md)
-- [Import Policy Allowlist](../../scripts/evals/import-policy-allowlist.json)
-- `../core/README.md`
-- `../handlers/README.md`
+- `../README.md`
+- `../tests/README.md`
+- `../../scripts/evals/import-policy-allowlist.json`
+
 <!-- /ANCHOR:related -->

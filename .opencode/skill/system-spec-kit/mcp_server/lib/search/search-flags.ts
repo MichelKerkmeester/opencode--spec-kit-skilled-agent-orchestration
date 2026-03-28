@@ -189,6 +189,7 @@ export function isEncodingIntentEnabled(): boolean {
  * N2a+N2b: Graph momentum scoring and causal depth signals.
  * Default: TRUE (enabled). Set SPECKIT_GRAPH_SIGNALS=false to disable.
  */
+// Supported SPECKIT_GRAPH_WALK_ROLLOUT states: off, trace_only, bounded_runtime.
 export type GraphWalkRolloutState = 'off' | 'trace_only' | 'bounded_runtime';
 
 export function resolveGraphWalkRolloutState(): GraphWalkRolloutState {

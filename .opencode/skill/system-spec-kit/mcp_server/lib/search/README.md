@@ -630,7 +630,7 @@ The 5th RRF channel computes degree centrality with per-edge-type weights:
 
 Hub caps prevent high-degree nodes from dominating: `MAX_TYPED_DEGREE=15` (default max before normalization), `MAX_TOTAL_DEGREE=50` (hard cap on raw degree). Normalized boost capped at `DEGREE_BOOST_CAP=0.15`.
 
-**A7: Co-Activation Boost** (`causal-boost.ts`):
+**A7: Co-Activation Boost** (`../cognitive/co-activation.ts` + Stage 2 fusion):
 Top-ranked results seed a 2-hop BFS traversal over causal edges. Discovered neighbors receive a score boost with `SEED_FRACTION=0.25` strength. A `1/sqrt(neighbor_count)` fan-effect divisor (R17) prevents hub nodes from appearing in every co-activation result.
 
 **N2a: Graph Momentum** (`graph-signals.ts`):
@@ -693,6 +693,9 @@ NER + key-phrase rules extract entities at save time and populate the `memory_en
 **PI-A3: Token Budget Validation**:
 Pre-save check validates content fits within tier-specific token budgets. Greedy truncation strategy applied when content overflows.
 
+**Lexical Normalization + BM25 Document Text** (`bm25-index.ts`):
+`buildBm25DocumentText()` builds the canonical lexical document from title, content, trigger phrases, and folder metadata. `normalizeLexicalQueryTokens()` is shared by BM25 and SQLite FTS flows so lexical matching stays aligned across search channels.
+
 **Reindex Save Parity** (`ops/file-watcher.ts` / ingest reindex callers):
 Watcher- and ingest-triggered reindex paths now use the normal synchronous embedding cache-miss flow. Deferred embeddings remain opt-in via `asyncEmbedding` or failure fallback.
 
@@ -705,8 +708,11 @@ Watcher- and ingest-triggered reindex paths now use the normal synchronous embed
 **Score Normalization** (`composite-scoring.ts`):
 Min-max normalization maps composite scores to [0,1], fixing 15:1 magnitude mismatches between scoring dimensions. Gated via `SPECKIT_SCORE_NORMALIZATION` (default ON, graduated Sprint 4). Single-result sets normalize to 1.0; equal scores normalize to 1.0.
 
-**TM-01: Interference Scoring** (`interference-scoring.ts`):
+**TM-01: Interference Scoring** (`../scoring/interference-scoring.ts`):
 Counts similar memories in the same spec folder using Jaccard word-overlap similarity. Threshold: **0.75**. Penalty: **-0.08** per interfering memory (additive, clamped to [0,1]). Gated via `SPECKIT_INTERFERENCE_SCORE` (default ON).
+
+**Degree Cache Invalidation** (`graph-search-fn.ts`):
+Typed-degree ranking is cached per database connection and invalidated through `clearDegreeCache()` / `clearDegreeCacheForDb()` after causal-edge and mutation flows, so the degree channel stays in sync with recent graph writes.
 
 **TM-03: Classification-Based Decay** (`composite-scoring.ts`):
 FSRS stability is adjusted by a 2D multiplier matrix of context type x importance tier:

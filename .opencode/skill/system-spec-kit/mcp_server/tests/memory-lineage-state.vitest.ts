@@ -530,4 +530,78 @@ describe('Memory lineage state', () => {
     expect(predecessorRow.valid_to).toBe('2026-03-13T09:30:00.000Z');
     expect(predecessorRow.superseded_by_memory_id).toBe(53);
   });
+
+  it('retries version assignment when another supersede already claimed the next version', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/concurrent-supersede.md';
+    insertMemory(database, {
+      id: 91,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Concurrent v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 92,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Concurrent v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 93,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Concurrent v3',
+      createdAt: '2026-03-13T09:30:00.000Z',
+    });
+
+    recordLineageVersion(database, {
+      memoryId: 91,
+      actor: 'ops:lineage-retry',
+      effectiveAt: '2026-03-13T08:00:00.000Z',
+      transitionEvent: 'CREATE',
+    });
+    recordLineageVersion(database, {
+      memoryId: 92,
+      actor: 'ops:lineage-retry',
+      predecessorMemoryId: 91,
+      effectiveAt: '2026-03-13T09:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+
+    const warnSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const recorded = recordLineageVersion(database, {
+        memoryId: 93,
+        actor: 'ops:lineage-retry',
+        predecessorMemoryId: 91,
+        effectiveAt: '2026-03-13T09:30:00.000Z',
+        transitionEvent: 'SUPERSEDE',
+      });
+
+      expect(recorded.versionNumber).toBe(3);
+      expect(recorded.predecessorMemoryId).toBe(91);
+      expect(
+        warnSpy.mock.calls.some((call) => String(call[0]).includes('Retrying lineage insert for memory 93')),
+      ).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+    }
+
+    const versions = database.prepare(`
+      SELECT memory_id, version_number, predecessor_memory_id
+      FROM memory_lineage
+      WHERE logical_key = ?
+      ORDER BY version_number ASC
+    `).all('specs/015-memory-state::/tmp/specs/015-memory-state/memory/concurrent-supersede.md::_') as Array<{
+      memory_id: number;
+      version_number: number;
+      predecessor_memory_id: number | null;
+    }>;
+    expect(versions).toEqual([
+      { memory_id: 91, version_number: 1, predecessor_memory_id: null },
+      { memory_id: 92, version_number: 2, predecessor_memory_id: 91 },
+      { memory_id: 93, version_number: 3, predecessor_memory_id: 91 },
+    ]);
+  });
 });
