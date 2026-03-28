@@ -510,7 +510,7 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 
 ### 🤖 Agent Network
 
-10 custom specialist agents. Defined in `.opencode/agent/` (source of truth), adapted per runtime.
+10 custom specialist agents. Defined in `.opencode/agent/` (source of truth), adapted per runtime: Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), Gemini CLI (`.gemini/agents/`).
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -571,14 +571,6 @@ For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm p
 - Uses 5 reasoning lenses: Analytical, Creative, Critical, Pragmatic, and Holistic
 - Scores results via a 5-dimension rubric - each strategy uses a different lens and temperature
 - Plans only - never modifies files directly
-
-#### RUNTIME
-
-- **OpenCode** - `.opencode/agent/` (source of truth)
-- **Claude Code** - `.claude/agents/`
-- **Codex CLI** - `.codex/agents/`
-- **Gemini CLI** - `.gemini/agents/`
-
 
 ---
 
