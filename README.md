@@ -1,10 +1,12 @@
-# Skilled Agent Orchestration w/ The Best Custom Spec Kit Framework
+# Skilled Agent Orchestration w/ Custom Spec Kit Framework
 
 [![GitHub Stars](https://img.shields.io/github/stars/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&logo=github&color=fce566&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/stargazers)
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
 > Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 18 skills, 20 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+>
+> Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
 **🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 10 Specialized Agents** • **⚡ 4 Runtimes**
 
@@ -502,9 +504,6 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Voyage AI** - Set `VOYAGE_API_KEY` env var. Best quality, recommended.
 - **OpenAI** - Set `OPENAI_API_KEY` env var. Strong alternative.
 - **HuggingFace Local** - No setup needed. Free, auto-detected fallback.
-
-For the full 222-feature pipeline, per-signal weights, FSRS formula, algorithm parameters and 33-tool API reference, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
-
 
 ---
 
