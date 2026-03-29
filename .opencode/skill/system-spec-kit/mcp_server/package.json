@@ -1,6 +1,6 @@
 {
   "name": "@spec-kit/mcp-server",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "description": "Semantic Memory MCP Server - provides 33 tools for semantic search, memory management, validation, checkpoints, causal graphs, session learning, and auto-indexing",
   "main": "dist/context-server.js",
   "exports": {

@@ -326,52 +326,52 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 
 ### WS-1: Concurrency Fixes
 
-- [ ] T300 [P] Fix C-1: Add checkpoint restore maintenance barrier — set restore_in_progress flag, make mutation handlers fail-fast while barrier held (`lib/storage/checkpoints.ts`, `handlers/checkpoints.ts`, `handlers/memory-save.ts`, `handlers/memory-index.ts`)
-- [ ] T301 [P] Fix C-2: Shared-space create race — detect creation from write result, not pre-read snapshot; use INSERT DO NOTHING RETURNING (`handlers/shared-memory.ts`, `lib/collab/shared-spaces.ts`)
-- [ ] T302 [P] Fix C-3: Reconsolidation stale-merge guard — revalidate predecessor inside write transaction using content_hash/updated_at compare-and-swap (`lib/storage/reconsolidation.ts`)
-- [ ] T303 [P] Fix C-4: Scan cooldown atomic lease — reserve scan slot up front in transaction, convert to last_index_scan on completion (`handlers/memory-index.ts`, `core/db-state.ts`)
+- [x] T300 [P] Fix C-1: Add checkpoint restore maintenance barrier [Evidence: restore_in_progress flag; E_RESTORE_IN_PROGRESS fail-fast; 58 tests pass]
+- [x] T301 [P] Fix C-2: Shared-space create race [Evidence: INSERT DO NOTHING RETURNING; owner bootstrap on actual insert; 24 tests pass]
+- [x] T302 [P] Fix C-3: Reconsolidation stale-merge guard [Evidence: predecessor_changed/predecessor_gone abort; 50 tests pass]
+- [x] T303 [P] Fix C-4: Scan cooldown atomic lease [Evidence: acquireIndexScanLease/completeIndexScanLease; 7 tests pass]
 
 ### WS-2: Search Performance Optimization
 
-- [ ] T310 [P] Fix S-1: Split fallback into collect-fuse-decide-enrich — run enrichment/reranking/token-truncation only once on final tier (`lib/search/hybrid-search.ts`)
-- [ ] T311 [P] Fix S-2: Cache token estimates per result within request; replace JSON.stringify with field-based estimator in truncateToBudget (`lib/search/hybrid-search.ts`)
-- [ ] T312 [P] Fix S-3: Demote in-memory BM25 to fallback channel; use FTS5 as default lexical engine; replace synchronous full rebuild with incremental maintenance (`lib/search/bm25-index.ts`)
-- [ ] T313 [P] Fix S-4: Batch degree computation — single SQL with WHERE IN instead of per-candidate queries; cache global max (`lib/search/graph-search-fn.ts`)
-- [ ] T314 [P] Fix S-5: Rewrite graph FTS query as CTE + UNION ALL to avoid OR-based duplication; cache FTS table availability per connection (`lib/search/graph-search-fn.ts`)
-- [ ] T315 [P] Fix S-6: Expose getAdaptiveWeights() helper; avoid full fuse when only weights needed (`lib/search/hybrid-search.ts`, `shared/algorithms/adaptive-fusion.ts`)
-- [ ] T316 [P] Fix S-7: Pass embedding buffers from vector channel to MMR; replace reranked.find() with Map lookup (`lib/search/hybrid-search.ts`)
+- [x] T310 [P] Fix S-1: Fallback pipeline split [Evidence: enrichment once on final tier; 90 tests pass]
+- [x] T311 [P] Fix S-2: Token estimation cache [Evidence: Map-based cache; field-based estimator]
+- [x] T312 [P] Fix S-3: BM25 demoted to opt-in [Evidence: ENABLE_BM25 flag; FTS5 default; incremental sync]
+- [x] T313 [P] Fix S-4: Degree scoring batched [Evidence: single SQL; cached global max; 75 tests pass]
+- [x] T314 [P] Fix S-5: Graph FTS CTE rewrite [Evidence: CTE + UNION ALL; per-DB FTS cache]
+- [x] T315 [P] Fix S-6: Adaptive fusion weights [Evidence: getAdaptiveWeights() helper; single fusionList]
+- [x] T316 [P] Fix S-7: MMR embedding cache [Evidence: request-scoped cache; Map lookup]
 
 ### WS-3: SQLite Query Optimization
 
-- [ ] T320 [P] Fix Q-1: Rewrite save-path dedup as dynamic exact-match queries; add composite partial indexes for content-hash and exact-path dedup (`handlers/save/dedup.ts`, `lib/search/vector-index-schema.ts`)
-- [ ] T321 [P] Fix Q-2: Add partial index for trigger-cache source predicate; cache prepared loader statement per connection (`lib/parsing/trigger-matcher.ts`, `handlers/mutation-hooks.ts`, `lib/search/vector-index-schema.ts`)
-- [ ] T322 [P] Fix Q-3: Batch co-activation memory lookups with WHERE IN; remove per-row getRelatedMemories from stage-2 fusion (`lib/cognitive/co-activation.ts`, `lib/search/pipeline/stage2-fusion.ts`)
-- [ ] T323 [P] Fix Q-4: Rewrite temporal-contiguity as bounded range query + add composite (spec_folder, created_at DESC) index (`lib/cognitive/temporal-contiguity.ts`, `lib/search/vector-index-schema.ts`)
-- [ ] T324 [P] Fix Q-5: Causal-link resolution uses exact path match first, FTS5 fallback for fuzzy; batch reference resolution (`handlers/causal-links-processor.ts`)
-- [ ] T325 [P] Fix Q-6: Add working-memory LRU + attention indexes; remove UPSERT existence probe; cache prepared statements (`lib/cognitive/working-memory.ts`)
+- [x] T320 [P] Fix Q-1: Save-path dedup rewritten [Evidence: dynamic exact-match; two-probe; 2 new partial indexes]
+- [x] T321 [P] Fix Q-2: Trigger cache index [Evidence: idx_trigger_cache_source; per-connection stmt cache]
+- [x] T322 [P] Fix Q-3: Co-activation batched [Evidence: WHERE id IN; single SQL+JOIN; precomputed counts]
+- [x] T323 [P] Fix Q-4: Temporal-contiguity rewritten [Evidence: bounded range query; idx_spec_folder_created_at]
+- [x] T324 [P] Fix Q-5: Causal-link resolution optimized [Evidence: exact path first; batch resolution; LIKE fallback]
+- [x] T325 [P] Fix Q-6: Working-memory indexes [Evidence: 2 new indexes; ON CONFLICT; no COUNT probe]
 
 ### WS-4: Error Recovery Hardening
 
-- [ ] T330 [P] Fix E-1: Move chunked PE supersede into creation transaction; compensating cleanup if supersede fails (`handlers/memory-save.ts`)
-- [ ] T331 [P] Fix E-2: Move safe-swap old-child deletion into finalization transaction; detach via parent_id null before commit (`handlers/chunking-orchestrator.ts`)
-- [ ] T332 [P] Fix E-3: Delay parent BM25 mutation until chunk success; restore old parent BM25 payload on rollback (`handlers/chunking-orchestrator.ts`)
-- [ ] T333 [P] Fix E-4: Persist BM25 repair-needed flag on reconsolidation merge failure; add background reconciler or durable retry (`lib/storage/reconsolidation.ts`)
+- [x] T330 [P] Fix E-1: Chunked PE finalize transaction [Evidence: rollbackCreatedChunkTree on failure; 45 tests pass]
+- [x] T331 [P] Fix E-2: Safe-swap in-transaction deletion [Evidence: parent_id null + bulk delete; rollback-safe]
+- [x] T332 [P] Fix E-3: BM25 rollback on chunk failure [Evidence: delayed mutation; old payload preserved]
+- [x] T333 [P] Fix E-4: BM25 repair flag [Evidence: bm25_repair_needed column; set on failure]
 
 ### WS-5: Dead Code and Debt Cleanup
 
-- [ ] T340 [P] Fix D-1: Remove dead eager-warmup branch from context-server.ts and inert flag hook from embeddings.ts
-- [ ] T341 [P] Fix D-2: Remove orphaned MCPResponseWithContext and parseValidatedArgs from tools/types.ts
-- [ ] T342 [P] Fix D-3: Trim unused lazy proxy exports from handlers/index.ts
-- [ ] T343 [P] Fix D-4: Remove dead debug exports getLastDegradedState (trigger-matcher.ts) and _resetInitTracking (shadow-scoring.ts)
-- [ ] T344 [P] Fix D-5: Remove or inline orphaned type exports PipelineOrchestrator, InterferenceResult, SurrogateMatchResult
-- [ ] T345 [P] Fix D-6: Rename shared-memory-handlers.test-suite.ts to .vitest.ts; delete one-line shim
-- [ ] T346 [P] Fix D-7: Unify score-resolution helpers to one canonical resolveEffectiveScore() implementation
+- [x] T340 [P] Fix D-1: Dead eager-warmup removed [Evidence: if(eagerWarmup) block and shouldEagerWarmup() deleted]
+- [x] T341 [P] Fix D-2: Orphaned exports removed [Evidence: MCPResponseWithContext + parseValidatedArgs deleted]
+- [x] T342 [P] Fix D-3: Handler barrel exports trimmed [Evidence: 9 unused proxy exports removed]
+- [x] T343 [P] Fix D-4: Dead debug exports removed [Evidence: getLastDegradedState + _resetInitTracking deleted]
+- [x] T344 [P] Fix D-5: Orphaned types removed [Evidence: PipelineOrchestrator, InterferenceResult, SurrogateMatchResult]
+- [x] T345 [P] Fix D-6: Test file renamed [Evidence: .test-suite.ts -> .vitest.ts; shim deleted]
+- [x] T346 [P] Fix D-7: Score helpers unified [Evidence: canonical resolveEffectiveScore() in pipeline/types.ts]
 
 ### Phase 13 Verification
 
-- [ ] T350 Run full test suite + typecheck after all Phase 13 fixes
-- [ ] T351 Update implementation-summary.md with Phase 13 results
-- [ ] T352 Save final context to memory
+- [x] T350 Run full test suite + typecheck after all Phase 13 fixes [Evidence: 8892 pass, tsc clean, 2 pre-existing hydra only]
+- [x] T351 Update implementation-summary.md with Phase 13 results [Evidence: updated 2026-03-29]
+- [x] T352 Save final context to memory [Evidence: saved via generate-context.js]
 <!-- /ANCHOR:phase-13 -->
 
 ---
@@ -394,12 +394,12 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 - [x] Phase 12 P2 advisories triaged (T250-T253, T259-T260) [Evidence: 6 code P2s fixed via 6 parallel GPT-5.4 codex agents]
 - [x] Phase 12 verification complete (T270-T272) [Evidence: 8858 pass, tsc clean, spec docs updated]
 - [x] 5-iteration deep research complete (28 findings: 4 concurrency, 7 search perf, 6 SQLite, 4 error recovery, 7 dead code)
-- [ ] Phase 13 concurrency fixes (T300-T303)
-- [ ] Phase 13 search performance optimization (T310-T316)
-- [ ] Phase 13 SQLite query optimization (T320-T325)
-- [ ] Phase 13 error recovery hardening (T330-T333)
-- [ ] Phase 13 dead code cleanup (T340-T346)
-- [ ] Phase 13 verification complete (T350-T352)
+- [x] Phase 13 concurrency fixes (T300-T303) [Evidence: 4/4 complete]
+- [x] Phase 13 search performance optimization (T310-T316) [Evidence: 7/7 complete]
+- [x] Phase 13 SQLite query optimization (T320-T325) [Evidence: 6/6 complete]
+- [x] Phase 13 error recovery hardening (T330-T333) [Evidence: 4/4 complete]
+- [x] Phase 13 dead code cleanup (T340-T346) [Evidence: 7/7 complete]
+- [x] Phase 13 verification complete (T350-T352) [Evidence: 8892 pass, tsc clean, docs updated, context saved]
 <!-- /ANCHOR:completion -->
 
 ---

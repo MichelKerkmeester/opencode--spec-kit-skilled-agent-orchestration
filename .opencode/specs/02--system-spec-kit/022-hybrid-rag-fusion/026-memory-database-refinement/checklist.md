@@ -132,45 +132,45 @@ contextType: "general"
 5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities. See `research/research.md`.
 
 ### Concurrency (WS-1)
-- [ ] CHK-110 [P1] C-1 Checkpoint restore maintenance barrier implemented [Evidence: pending]
-- [ ] CHK-111 [P1] C-2 Shared-space create race fixed — creation detected from write result [Evidence: pending]
-- [ ] CHK-112 [P1] C-3 Reconsolidation stale-merge guard — compare-and-swap on predecessor [Evidence: pending]
-- [ ] CHK-113 [P2] C-4 Scan cooldown converted to atomic lease [Evidence: pending]
+- [x] CHK-110 [P1] C-1 Checkpoint restore maintenance barrier implemented [Evidence: restore_in_progress flag in checkpoints.ts; E_RESTORE_IN_PROGRESS fail-fast in memory-save/index/bulk-delete; 58 tests pass]
+- [x] CHK-111 [P1] C-2 Shared-space create race fixed — creation detected from write result [Evidence: INSERT DO NOTHING RETURNING in shared-spaces.ts; owner bootstrap only on actual insert; 24 tests pass]
+- [x] CHK-112 [P1] C-3 Reconsolidation stale-merge guard — compare-and-swap on predecessor [Evidence: content_hash/updated_at revalidation in executeMerge(); predecessor_changed/predecessor_gone abort statuses; 50 tests pass]
+- [x] CHK-113 [P2] C-4 Scan cooldown converted to atomic lease [Evidence: acquireIndexScanLease/completeIndexScanLease in db-state.ts; expiry for crashed scans; 7 cooldown tests pass]
 
 ### Search Performance (WS-2)
-- [ ] CHK-120 [P1] S-1 Fallback pipeline split into collect-fuse-decide-enrich [Evidence: pending]
-- [ ] CHK-121 [P1] S-2 Token estimation cached per result; JSON.stringify removed from hot path [Evidence: pending]
-- [ ] CHK-122 [P1] S-3 In-memory BM25 demoted to fallback; FTS5 as default lexical engine [Evidence: pending]
-- [ ] CHK-123 [P2] S-4 Degree scoring batched into single SQL statement [Evidence: pending]
-- [ ] CHK-124 [P2] S-5 Graph FTS query rewritten to avoid OR-based duplication [Evidence: pending]
-- [ ] CHK-125 [P2] S-6 Adaptive fusion weight-only path avoids redundant fuse [Evidence: pending]
-- [ ] CHK-126 [P2] S-7 MMR embedding cache from vector channel reused [Evidence: pending]
+- [x] CHK-120 [P1] S-1 Fallback pipeline split into collect-fuse-decide-enrich [Evidence: fusion-only collection separated; enrichment runs once on final tier; 90 tests pass]
+- [x] CHK-121 [P1] S-2 Token estimation cached per result; JSON.stringify removed from hot path [Evidence: Map-based cache in truncateToBudget(); field-based estimator; test verifies single content read]
+- [x] CHK-122 [P1] S-3 In-memory BM25 demoted to fallback; FTS5 as default lexical engine [Evidence: ENABLE_BM25 opt-in flag; syncChangedRows() incremental; deferred warmup]
+- [x] CHK-123 [P2] S-4 Degree scoring batched into single SQL statement [Evidence: WHERE source_id IN/target_id IN GROUP BY; cached global max; 75 graph tests pass]
+- [x] CHK-124 [P2] S-5 Graph FTS query rewritten to avoid OR-based duplication [Evidence: CTE matched_memories + UNION ALL; per-DB FTS availability cache]
+- [x] CHK-125 [P2] S-6 Adaptive fusion weight-only path avoids redundant fuse [Evidence: getAdaptiveWeights() in adaptive-fusion.ts; single fusionList build]
+- [x] CHK-126 [P2] S-7 MMR embedding cache from vector channel reused [Evidence: request-scoped embedding cache; Map lookup replaces reranked.find()]
 
 ### SQLite Optimization (WS-3)
-- [ ] CHK-130 [P1] Q-1 Save-path dedup queries rewritten with composite partial indexes [Evidence: pending]
-- [ ] CHK-131 [P1] Q-2 Trigger cache partial index added; prepared statement cached [Evidence: pending]
-- [ ] CHK-132 [P1] Q-3 Co-activation batched; per-row getRelatedMemories removed from stage-2 [Evidence: pending]
-- [ ] CHK-133 [P2] Q-4 Temporal-contiguity rewritten as bounded range query + composite index [Evidence: pending]
-- [ ] CHK-134 [P2] Q-5 Causal-link resolution uses exact path match first, FTS5 fallback [Evidence: pending]
-- [ ] CHK-135 [P2] Q-6 Working-memory indexes added; UPSERT existence probe removed [Evidence: pending]
+- [x] CHK-130 [P1] Q-1 Save-path dedup queries rewritten with composite partial indexes [Evidence: dynamic exact-match SQL; two-probe path lookup; idx_save_canonical_path + idx_save_parent_content_hash_scope]
+- [x] CHK-131 [P1] Q-2 Trigger cache partial index added; prepared statement cached [Evidence: idx_trigger_cache_source partial index; per-connection stmt cache in trigger-matcher.ts]
+- [x] CHK-132 [P1] Q-3 Co-activation batched; per-row getRelatedMemories removed from stage-2 [Evidence: WHERE id IN batch; getCausalNeighbors single SQL+JOIN; precomputed neighbor counts in stage2-fusion]
+- [x] CHK-133 [P2] Q-4 Temporal-contiguity rewritten as bounded range query + composite index [Evidence: bounded created_at range first; idx_spec_folder_created_at]
+- [x] CHK-134 [P2] Q-5 Causal-link resolution uses exact path match first, FTS5 fallback [Evidence: exact canonical_file_path/file_path equality; batch reference resolution; LIKE as fallback only]
+- [x] CHK-135 [P2] Q-6 Working-memory indexes added; UPSERT existence probe removed [Evidence: idx_wm_session_focus_lru + idx_wm_session_attention_focus; ON CONFLICT relied upon]
 
 ### Error Recovery (WS-4)
-- [ ] CHK-140 [P1] E-1 Chunked PE supersede moved into creation transaction [Evidence: pending]
-- [ ] CHK-141 [P2] E-2 Safe-swap old-child deletion moved into finalization transaction [Evidence: pending]
-- [ ] CHK-142 [P2] E-3 BM25 rollback restores old parent document on chunk failure [Evidence: pending]
-- [ ] CHK-143 [P2] E-4 Reconsolidation BM25 repair flag persisted for durable retry [Evidence: pending]
+- [x] CHK-140 [P1] E-1 Chunked PE supersede moved into creation transaction [Evidence: finalizeChunkedPeTx wraps supersede; rollbackCreatedChunkTree on failure; 45 tests pass]
+- [x] CHK-141 [P2] E-2 Safe-swap old-child deletion moved into finalization transaction [Evidence: parent_id nulled before bulk delete; rollback-safe in chunking-orchestrator.ts]
+- [x] CHK-142 [P2] E-3 BM25 rollback restores old parent document on chunk failure [Evidence: parent BM25 mutation delayed until chunk success; old payload preserved on all-chunks-failed]
+- [x] CHK-143 [P2] E-4 Reconsolidation BM25 repair flag persisted for durable retry [Evidence: bm25_repair_needed column; set to 1 on BM25 failure in reconsolidation.ts]
 
 ### Dead Code and Debt (WS-5)
-- [ ] CHK-150 [P2] D-1 Dead eager-warmup branch removed [Evidence: pending]
-- [ ] CHK-151 [P2] D-2 Orphaned tools/types.ts exports removed [Evidence: pending]
-- [ ] CHK-152 [P2] D-3 Unused handler barrel exports trimmed [Evidence: pending]
-- [ ] CHK-153 [P2] D-4 Dead debug exports removed (getLastDegradedState, _resetInitTracking) [Evidence: pending]
-- [ ] CHK-154 [P2] D-5 Orphaned type exports removed or inlined [Evidence: pending]
-- [ ] CHK-155 [P2] D-6 Shared-memory test suite renamed to normal Vitest naming [Evidence: pending]
-- [ ] CHK-156 [P2] D-7 Score-resolution helpers unified to one canonical implementation [Evidence: pending]
+- [x] CHK-150 [P2] D-1 Dead eager-warmup branch removed [Evidence: if(eagerWarmup) block and shouldEagerWarmup() removed from context-server.ts]
+- [x] CHK-151 [P2] D-2 Orphaned tools/types.ts exports removed [Evidence: MCPResponseWithContext and parseValidatedArgs deleted]
+- [x] CHK-152 [P2] D-3 Unused handler barrel exports trimmed [Evidence: 9 unused lazy proxy exports removed from handlers/index.ts]
+- [x] CHK-153 [P2] D-4 Dead debug exports removed (getLastDegradedState, _resetInitTracking) [Evidence: removed from trigger-matcher.ts and shadow-scoring.ts]
+- [x] CHK-154 [P2] D-5 Orphaned type exports removed or inlined [Evidence: PipelineOrchestrator, InterferenceResult, SurrogateMatchResult removed]
+- [x] CHK-155 [P2] D-6 Shared-memory test suite renamed to normal Vitest naming [Evidence: .test-suite.ts renamed to .vitest.ts; shim deleted]
+- [x] CHK-156 [P2] D-7 Score-resolution helpers unified to one canonical implementation [Evidence: confidence-scoring.ts and profile-formatters.ts import from pipeline/types.ts]
 
 ### Verification
-- [ ] CHK-160 [P1] Build and typecheck clean after Phase 13 fixes [Evidence: pending]
-- [ ] CHK-161 [P1] Full test suite passing after Phase 13 [Evidence: pending]
-- [ ] CHK-162 [P1] Context saved to memory after Phase 13 [Evidence: pending]
+- [x] CHK-160 [P1] Build and typecheck clean after Phase 13 fixes [Evidence: npx tsc --noEmit clean]
+- [x] CHK-161 [P1] Full test suite passing after Phase 13 [Evidence: 8892 pass, 332/335 files, 2 pre-existing hydra failures only]
+- [x] CHK-162 [P1] Context saved to memory after Phase 13 [Evidence: saved via generate-context.js]
 <!-- /ANCHOR:research-refinement -->

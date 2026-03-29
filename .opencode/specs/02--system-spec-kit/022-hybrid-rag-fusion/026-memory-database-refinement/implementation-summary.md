@@ -67,6 +67,22 @@ The final sprint addressed the remaining 22 classified P1s plus two bonus defect
 
 A 10-iteration meta-review (iterations 031-040) audited all prior work across correctness, security, traceability, and maintainability. It found 29 additional issues: 1 P0, 17 P1, 11 P2. Phase 12 fixed all 29 via 18 parallel GPT-5.4 Codex CLI agents. Key fixes: checkpoint restore now intersects spec_folder with tenant/user/agent/sharedSpace scope predicates (P0 F-001); token-budget truncation falls back to a summarized top result instead of returning empty; atomic save acquires the spec-folder mutex before promoting the pending file; PE filtering expands the vector search window until scoped matches are found; deferred chunk children receive their anchor identity; anchor extraction gates on validation before returning content; constitutional cache keys include the active DB path; schema DDL deduplicated through shared helpers; fallback policy consolidated into a single executor. Seven documentation drift P1s and five documentation P2s were fixed by updating spec.md, plan.md, checklist.md, implementation-summary.md, and tasks.md. Six code P2 advisories were fixed: embedding-cache dimension in PK, sessionId normalization, checkpoint tenantId trim guard, lineage row loader helper, structured rollback error metadata, and DB rebind error logging.
 
+### Phase 13 — Deep Research Refinement (28 Findings)
+
+A 5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities across concurrency, search performance, SQLite optimization, error recovery, and dead code. All 28 were fixed via 20 parallel Codex CLI agents (11 implementation + 10 doc updates + 4 test regression fixes) across 3 batches.
+
+**Concurrency (4 fixes):** Checkpoint restore maintenance barrier blocks mutations during restore lifecycle (T300). Shared-space upsert detects creation from INSERT result, not pre-read snapshot (T301). Reconsolidation validates predecessor unchanged after embedding await (T302). Scan cooldown converted from TOCTOU check to atomic lease with crash expiry (T303).
+
+**Search Performance (7 fixes):** Fallback pipeline split runs enrichment once on final tier (T310). Token estimation cached per-result in Map; JSON.stringify replaced with field estimator (T311). BM25 demoted to opt-in behind ENABLE_BM25; FTS5 is default lexical engine (T312). Degree scoring batched into single SQL (T313). Graph FTS rewritten as CTE + UNION ALL (T314). Adaptive fusion exposes getAdaptiveWeights() for single-pass fusionList (T315). MMR uses request-scoped embedding cache (T316).
+
+**SQLite Optimization (6 fixes):** Save-path dedup rewritten as dynamic exact-match queries with 2 new partial indexes (T320). Trigger cache uses partial index + cached prepared statement (T321). Co-activation batches lookups via WHERE IN; stage-2 precomputes neighbor counts (T322). Temporal-contiguity uses bounded range query + composite index (T323). Causal-link resolution prefers exact path match, LIKE as fallback (T324). Working-memory adds 2 indexes, removes existence probe (T325).
+
+**Error Recovery (4 fixes):** Chunked PE supersede runs in single finalize transaction with compensating cleanup (T330). Safe-swap old-child deletion moved into finalization transaction (T331). Parent BM25 mutation delayed until chunk success (T332). bm25_repair_needed flag persisted for durable retry (T333).
+
+**Dead Code (7 fixes):** Eager-warmup branch removed (T340). Orphaned exports MCPResponseWithContext/parseValidatedArgs deleted (T341). 9 unused handler barrel exports trimmed (T342). Dead debug exports removed (T343). Orphaned type exports removed (T344). Test file renamed from .test-suite.ts to .vitest.ts (T345). Score-resolution helpers unified to canonical resolveEffectiveScore() (T346).
+
+**Documentation:** 28 feature catalog entries and 22 manual testing playbook entries updated across all 10 functional areas.
+
 ### Files Changed
 
 | File | Action | Purpose |
@@ -151,6 +167,7 @@ All fixes were verified against the spec dimensions and sprint plan in `review/r
 | P2 findings triage (CHK-066) | PASS — 22 fixed, 16 deferred then fixed in Phase 10, 3 rejected |
 | Meta-review (10 iterations) | PASS — 29 findings all fixed in Phase 12 (1 P0, 17 P1, 11 P2) |
 | Phase 12 remediation | PASS — 18 parallel GPT-5.4 agents; 8,858 tests pass, 332/335 files, tsc clean |
+| Phase 13 deep research refinement | PASS — 20 parallel Codex agents; 28/28 findings fixed; 8,892 tests pass, tsc clean |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -168,7 +185,7 @@ All fixes were verified against the spec dimensions and sprint plan in `review/r
 
 5. ~~**Meta-review findings.**~~ **RESOLVED** — Phase 12 fixed all 29 meta-review findings (1 P0, 17 P1, 11 P2) via 18 parallel GPT-5.4 Codex CLI agents. 8,858 tests pass.
 
-6. **Test count progression.** Different phases report different test counts: 8,718+ (post-Sprint 4), 8,748 (post-Phase 8), 8,771 (post-Phase 10), 8,858 (post-Phase 12). The progression reflects tests added in later phases. The most current count is 8,858.
+6. **Test count progression.** Different phases report different test counts: 8,718+ (post-Sprint 4), 8,748 (post-Phase 8), 8,771 (post-Phase 10), 8,858 (post-Phase 12), 8,892 (post-Phase 13). The progression reflects tests added in later phases. The most current count is 8,892.
 
 7. **Pre-existing hydra consistency test failures.** Two documentation consistency test files (`hydra-spec-pack-consistency.vitest.ts`, `feature-flag-reference-docs.vitest.ts`) have pre-existing failures unrelated to this spec's work. They test spec-pack documentation alignment and predate Phase 12.
 <!-- /ANCHOR:limitations -->
