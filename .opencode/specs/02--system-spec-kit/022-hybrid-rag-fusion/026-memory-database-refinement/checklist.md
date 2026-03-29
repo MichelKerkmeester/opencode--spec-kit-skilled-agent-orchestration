@@ -123,3 +123,54 @@ contextType: "general"
 - [x] CHK-104 [P1] Full test suite passing after all Phase 12 code fixes [Evidence: 8858 pass, 332/335 files, tsc clean; 2 pre-existing hydra consistency failures, 1 pre-existing skip]
 - [x] CHK-105 [P1] Context saved to memory after Phase 12 [Evidence: pending final save]
 <!-- /ANCHOR:meta-review -->
+
+---
+
+<!-- ANCHOR:research-refinement -->
+## Research Refinement (Phase 13)
+
+5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities. See `research/research.md`.
+
+### Concurrency (WS-1)
+- [ ] CHK-110 [P1] C-1 Checkpoint restore maintenance barrier implemented [Evidence: pending]
+- [ ] CHK-111 [P1] C-2 Shared-space create race fixed — creation detected from write result [Evidence: pending]
+- [ ] CHK-112 [P1] C-3 Reconsolidation stale-merge guard — compare-and-swap on predecessor [Evidence: pending]
+- [ ] CHK-113 [P2] C-4 Scan cooldown converted to atomic lease [Evidence: pending]
+
+### Search Performance (WS-2)
+- [ ] CHK-120 [P1] S-1 Fallback pipeline split into collect-fuse-decide-enrich [Evidence: pending]
+- [ ] CHK-121 [P1] S-2 Token estimation cached per result; JSON.stringify removed from hot path [Evidence: pending]
+- [ ] CHK-122 [P1] S-3 In-memory BM25 demoted to fallback; FTS5 as default lexical engine [Evidence: pending]
+- [ ] CHK-123 [P2] S-4 Degree scoring batched into single SQL statement [Evidence: pending]
+- [ ] CHK-124 [P2] S-5 Graph FTS query rewritten to avoid OR-based duplication [Evidence: pending]
+- [ ] CHK-125 [P2] S-6 Adaptive fusion weight-only path avoids redundant fuse [Evidence: pending]
+- [ ] CHK-126 [P2] S-7 MMR embedding cache from vector channel reused [Evidence: pending]
+
+### SQLite Optimization (WS-3)
+- [ ] CHK-130 [P1] Q-1 Save-path dedup queries rewritten with composite partial indexes [Evidence: pending]
+- [ ] CHK-131 [P1] Q-2 Trigger cache partial index added; prepared statement cached [Evidence: pending]
+- [ ] CHK-132 [P1] Q-3 Co-activation batched; per-row getRelatedMemories removed from stage-2 [Evidence: pending]
+- [ ] CHK-133 [P2] Q-4 Temporal-contiguity rewritten as bounded range query + composite index [Evidence: pending]
+- [ ] CHK-134 [P2] Q-5 Causal-link resolution uses exact path match first, FTS5 fallback [Evidence: pending]
+- [ ] CHK-135 [P2] Q-6 Working-memory indexes added; UPSERT existence probe removed [Evidence: pending]
+
+### Error Recovery (WS-4)
+- [ ] CHK-140 [P1] E-1 Chunked PE supersede moved into creation transaction [Evidence: pending]
+- [ ] CHK-141 [P2] E-2 Safe-swap old-child deletion moved into finalization transaction [Evidence: pending]
+- [ ] CHK-142 [P2] E-3 BM25 rollback restores old parent document on chunk failure [Evidence: pending]
+- [ ] CHK-143 [P2] E-4 Reconsolidation BM25 repair flag persisted for durable retry [Evidence: pending]
+
+### Dead Code and Debt (WS-5)
+- [ ] CHK-150 [P2] D-1 Dead eager-warmup branch removed [Evidence: pending]
+- [ ] CHK-151 [P2] D-2 Orphaned tools/types.ts exports removed [Evidence: pending]
+- [ ] CHK-152 [P2] D-3 Unused handler barrel exports trimmed [Evidence: pending]
+- [ ] CHK-153 [P2] D-4 Dead debug exports removed (getLastDegradedState, _resetInitTracking) [Evidence: pending]
+- [ ] CHK-154 [P2] D-5 Orphaned type exports removed or inlined [Evidence: pending]
+- [ ] CHK-155 [P2] D-6 Shared-memory test suite renamed to normal Vitest naming [Evidence: pending]
+- [ ] CHK-156 [P2] D-7 Score-resolution helpers unified to one canonical implementation [Evidence: pending]
+
+### Verification
+- [ ] CHK-160 [P1] Build and typecheck clean after Phase 13 fixes [Evidence: pending]
+- [ ] CHK-161 [P1] Full test suite passing after Phase 13 [Evidence: pending]
+- [ ] CHK-162 [P1] Context saved to memory after Phase 13 [Evidence: pending]
+<!-- /ANCHOR:research-refinement -->

@@ -140,6 +140,16 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 - [x] Triage 11 P2 advisories (F-019 through F-029) — 6 code fixes, 5 doc fixes
 - [x] Run full test suite + typecheck — 8,858 pass, tsc clean
 - [x] Save context to memory
+
+### Phase 6: Deep Research Refinement (Phase 13 in tasks.md)
+- [ ] 5-iteration deep research complete — 28 findings across 5 dimensions
+- [ ] WS-1: Fix 3 concurrency P1s (C-1 restore barrier, C-2 shared-space race, C-3 stale merge) + 1 P2 (C-4 scan cooldown)
+- [ ] WS-2: Fix 3 high-impact search performance bottlenecks (S-1 fallback re-pipeline, S-2 token double-serialize, S-3 BM25 full scan) + 4 medium (S-4 degree N+1, S-5 graph FTS OR, S-6 fusion duplication, S-7 MMR re-fetch)
+- [ ] WS-3: Fix 3 high-impact SQLite optimizations (Q-1 dedup indexes, Q-2 trigger cache, Q-3 co-activation N+1) + 3 medium (Q-4 temporal index, Q-5 causal LIKE, Q-6 working-memory indexes)
+- [ ] WS-4: Fix 1 high error recovery gap (E-1 chunked PE partial commit) + 3 medium (E-2 safe-swap cleanup, E-3 BM25 rollback drift, E-4 reconsolidation BM25 repair)
+- [ ] WS-5: Clean up 7 dead code/debt items (D-1 through D-7)
+- [ ] Run full test suite + typecheck
+- [ ] Save context to memory
 <!-- /ANCHOR:phases -->
 
 ---

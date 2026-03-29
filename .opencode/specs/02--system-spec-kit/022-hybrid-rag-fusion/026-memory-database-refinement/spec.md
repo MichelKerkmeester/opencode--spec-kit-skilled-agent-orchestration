@@ -76,10 +76,9 @@ The review audit covers these dimensions, one per iteration or grouped as the re
 | 20 | **Cross-cutting: concurrency and state** | Global singletons, module-level state, race conditions |
 
 ### Out of Scope
-- Performance tuning or optimization (unless a logic error causes incorrect results)
 - UI/UX changes to MCP tool schemas
 
-**Note:** The original spec declared fix implementation out of scope. Scope was expanded during execution to include fix sprints (Phases 2-10), P2 triage (Phase 9), deferred P2 fixes (Phase 10), documentation alignment (Phase 11), and meta-review remediation (Phase 12).
+**Note:** The original spec declared fix implementation and performance tuning out of scope. Scope was expanded during execution to include fix sprints (Phases 2-10), P2 triage (Phase 9), deferred P2 fixes (Phase 10), documentation alignment (Phase 11), meta-review remediation (Phase 12), and deep research refinement implementation (Phase 13 covering concurrency, performance, SQLite optimization, error recovery, and dead code cleanup).
 
 ### Files to Review
 
@@ -110,7 +109,9 @@ All files under `.opencode/skill/system-spec-kit/mcp_server/` with focus on:
 | REQ-003a | Fix all P0 blockers. | DONE — All 5 P0 findings fixed with tests and build passing. |
 | REQ-003b | Fix all P1 required issues or get user-approved deferral. | DONE — 75 P1 findings fixed across 4 sprints. |
 | REQ-006 | Meta-review of audit + fix quality. | DONE — 10-iteration meta-review (031-040) produced 29 findings in `review/review-report.md`. |
-| REQ-007 | Remediate meta-review findings. | Phase 12 — 1 P0, 17 P1, 11 P2 from meta-review to be fixed. |
+| REQ-007 | Remediate meta-review findings. | DONE — Phase 12 fixed all 29 meta-review findings (1 P0, 17 P1, 11 P2). |
+| REQ-008 | Deep research for further refinement opportunities. | DONE — 5-iteration research found 28 findings (4 concurrency, 7 search perf, 6 SQLite, 4 error recovery, 7 dead code). |
+| REQ-009 | Implement research refinement findings. | Phase 13 — 28 findings to be fixed across 5 workstreams. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -130,7 +131,9 @@ All files under `.opencode/skill/system-spec-kit/mcp_server/` with focus on:
 - **SC-003**: Each P0 finding has a clear reproduction path or code citation. DONE.
 - **SC-004**: The findings report is actionable — each item can seed a follow-up fix spec. DONE.
 - **SC-005**: All original P0 and P1 findings fixed with passing tests. DONE.
-- **SC-006**: Meta-review findings (Phase 12) remediated — 0 active P0 blockers remaining. PENDING.
+- **SC-006**: Meta-review findings (Phase 12) remediated — 0 active P0 blockers remaining. DONE.
+- **SC-007**: 5-iteration deep research completed — 28 refinement opportunities identified. DONE.
+- **SC-008**: Research refinement findings (Phase 13) implemented — 28 findings fixed. PENDING.
 
 ### Acceptance Scenarios
 

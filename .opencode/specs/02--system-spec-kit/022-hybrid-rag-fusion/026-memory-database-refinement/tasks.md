@@ -319,6 +319,63 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 
 ---
 
+<!-- ANCHOR:phase-13 -->
+## Phase 13: Deep Research Refinement
+
+5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities across concurrency, search performance, SQLite optimization, error recovery, and dead code. See `research/research.md`.
+
+### WS-1: Concurrency Fixes
+
+- [ ] T300 [P] Fix C-1: Add checkpoint restore maintenance barrier — set restore_in_progress flag, make mutation handlers fail-fast while barrier held (`lib/storage/checkpoints.ts`, `handlers/checkpoints.ts`, `handlers/memory-save.ts`, `handlers/memory-index.ts`)
+- [ ] T301 [P] Fix C-2: Shared-space create race — detect creation from write result, not pre-read snapshot; use INSERT DO NOTHING RETURNING (`handlers/shared-memory.ts`, `lib/collab/shared-spaces.ts`)
+- [ ] T302 [P] Fix C-3: Reconsolidation stale-merge guard — revalidate predecessor inside write transaction using content_hash/updated_at compare-and-swap (`lib/storage/reconsolidation.ts`)
+- [ ] T303 [P] Fix C-4: Scan cooldown atomic lease — reserve scan slot up front in transaction, convert to last_index_scan on completion (`handlers/memory-index.ts`, `core/db-state.ts`)
+
+### WS-2: Search Performance Optimization
+
+- [ ] T310 [P] Fix S-1: Split fallback into collect-fuse-decide-enrich — run enrichment/reranking/token-truncation only once on final tier (`lib/search/hybrid-search.ts`)
+- [ ] T311 [P] Fix S-2: Cache token estimates per result within request; replace JSON.stringify with field-based estimator in truncateToBudget (`lib/search/hybrid-search.ts`)
+- [ ] T312 [P] Fix S-3: Demote in-memory BM25 to fallback channel; use FTS5 as default lexical engine; replace synchronous full rebuild with incremental maintenance (`lib/search/bm25-index.ts`)
+- [ ] T313 [P] Fix S-4: Batch degree computation — single SQL with WHERE IN instead of per-candidate queries; cache global max (`lib/search/graph-search-fn.ts`)
+- [ ] T314 [P] Fix S-5: Rewrite graph FTS query as CTE + UNION ALL to avoid OR-based duplication; cache FTS table availability per connection (`lib/search/graph-search-fn.ts`)
+- [ ] T315 [P] Fix S-6: Expose getAdaptiveWeights() helper; avoid full fuse when only weights needed (`lib/search/hybrid-search.ts`, `shared/algorithms/adaptive-fusion.ts`)
+- [ ] T316 [P] Fix S-7: Pass embedding buffers from vector channel to MMR; replace reranked.find() with Map lookup (`lib/search/hybrid-search.ts`)
+
+### WS-3: SQLite Query Optimization
+
+- [ ] T320 [P] Fix Q-1: Rewrite save-path dedup as dynamic exact-match queries; add composite partial indexes for content-hash and exact-path dedup (`handlers/save/dedup.ts`, `lib/search/vector-index-schema.ts`)
+- [ ] T321 [P] Fix Q-2: Add partial index for trigger-cache source predicate; cache prepared loader statement per connection (`lib/parsing/trigger-matcher.ts`, `handlers/mutation-hooks.ts`, `lib/search/vector-index-schema.ts`)
+- [ ] T322 [P] Fix Q-3: Batch co-activation memory lookups with WHERE IN; remove per-row getRelatedMemories from stage-2 fusion (`lib/cognitive/co-activation.ts`, `lib/search/pipeline/stage2-fusion.ts`)
+- [ ] T323 [P] Fix Q-4: Rewrite temporal-contiguity as bounded range query + add composite (spec_folder, created_at DESC) index (`lib/cognitive/temporal-contiguity.ts`, `lib/search/vector-index-schema.ts`)
+- [ ] T324 [P] Fix Q-5: Causal-link resolution uses exact path match first, FTS5 fallback for fuzzy; batch reference resolution (`handlers/causal-links-processor.ts`)
+- [ ] T325 [P] Fix Q-6: Add working-memory LRU + attention indexes; remove UPSERT existence probe; cache prepared statements (`lib/cognitive/working-memory.ts`)
+
+### WS-4: Error Recovery Hardening
+
+- [ ] T330 [P] Fix E-1: Move chunked PE supersede into creation transaction; compensating cleanup if supersede fails (`handlers/memory-save.ts`)
+- [ ] T331 [P] Fix E-2: Move safe-swap old-child deletion into finalization transaction; detach via parent_id null before commit (`handlers/chunking-orchestrator.ts`)
+- [ ] T332 [P] Fix E-3: Delay parent BM25 mutation until chunk success; restore old parent BM25 payload on rollback (`handlers/chunking-orchestrator.ts`)
+- [ ] T333 [P] Fix E-4: Persist BM25 repair-needed flag on reconsolidation merge failure; add background reconciler or durable retry (`lib/storage/reconsolidation.ts`)
+
+### WS-5: Dead Code and Debt Cleanup
+
+- [ ] T340 [P] Fix D-1: Remove dead eager-warmup branch from context-server.ts and inert flag hook from embeddings.ts
+- [ ] T341 [P] Fix D-2: Remove orphaned MCPResponseWithContext and parseValidatedArgs from tools/types.ts
+- [ ] T342 [P] Fix D-3: Trim unused lazy proxy exports from handlers/index.ts
+- [ ] T343 [P] Fix D-4: Remove dead debug exports getLastDegradedState (trigger-matcher.ts) and _resetInitTracking (shadow-scoring.ts)
+- [ ] T344 [P] Fix D-5: Remove or inline orphaned type exports PipelineOrchestrator, InterferenceResult, SurrogateMatchResult
+- [ ] T345 [P] Fix D-6: Rename shared-memory-handlers.test-suite.ts to .vitest.ts; delete one-line shim
+- [ ] T346 [P] Fix D-7: Unify score-resolution helpers to one canonical resolveEffectiveScore() implementation
+
+### Phase 13 Verification
+
+- [ ] T350 Run full test suite + typecheck after all Phase 13 fixes
+- [ ] T351 Update implementation-summary.md with Phase 13 results
+- [ ] T352 Save final context to memory
+<!-- /ANCHOR:phase-13 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -336,6 +393,13 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 - [x] Phase 12 code fixes complete (T200, T210-T215, T230-T231, T240-T241) [Evidence: all 12 code P1s fixed via 12 parallel GPT-5.4 codex agents]
 - [x] Phase 12 P2 advisories triaged (T250-T253, T259-T260) [Evidence: 6 code P2s fixed via 6 parallel GPT-5.4 codex agents]
 - [x] Phase 12 verification complete (T270-T272) [Evidence: 8858 pass, tsc clean, spec docs updated]
+- [x] 5-iteration deep research complete (28 findings: 4 concurrency, 7 search perf, 6 SQLite, 4 error recovery, 7 dead code)
+- [ ] Phase 13 concurrency fixes (T300-T303)
+- [ ] Phase 13 search performance optimization (T310-T316)
+- [ ] Phase 13 SQLite query optimization (T320-T325)
+- [ ] Phase 13 error recovery hardening (T330-T333)
+- [ ] Phase 13 dead code cleanup (T340-T346)
+- [ ] Phase 13 verification complete (T350-T352)
 <!-- /ANCHOR:completion -->
 
 ---
@@ -352,4 +416,7 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 - **Meta-Review Iterations**: See `review/iterations/iteration-031.md` through `iteration-040.md`
 - **P2 Triage Reports**: See `scratch/p2-triage-agent[1-5].md`
 - **Review State**: See `review/deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`
+- **Research Report**: See `research/research.md` (28 refinement findings)
+- **Research Iterations**: See `research/iterations/iteration-001.md` through `iteration-005.md`
+- **Research State**: See `research/deep-research-config.json`, `deep-research-state.jsonl`, `deep-research-strategy.md`
 <!-- /ANCHOR:cross-refs -->
