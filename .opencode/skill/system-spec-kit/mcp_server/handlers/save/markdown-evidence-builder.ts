@@ -123,12 +123,17 @@ function buildParsedMemoryEvidenceSnapshot(
       continue;
     }
 
-    if (heading === 'decisions' || /^decision\s+\d+:/i.test(section.heading)) {
-      decisions.push(stripMarkdownDecorators(section.body));
+    if (heading === 'decisions' || heading === 'key decisions' || /^decision\s+\d+:/i.test(section.heading)) {
+      decisions.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
       continue;
     }
 
-    if (heading.includes('next steps') || heading.includes('pending work') || heading.includes('follow-up actions')) {
+    if (
+      heading.includes('next steps')
+      || heading === 'next action'
+      || heading.includes('pending work')
+      || heading.includes('follow-up actions')
+    ) {
       nextActions.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
       continue;
     }
@@ -138,8 +143,16 @@ function buildParsedMemoryEvidenceSnapshot(
       continue;
     }
 
-    if (heading.includes('key outcomes') || heading === 'outcomes' || heading === 'outcome') {
+    if (heading.includes('key outcomes') || heading === 'outcomes' || heading === 'outcome' || heading === 'results') {
       outcomes.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
+      continue;
+    }
+
+    if (heading === 'implementation state') {
+      observations.push({
+        title: section.heading,
+        narrative: stripMarkdownDecorators(section.body),
+      });
       continue;
     }
 

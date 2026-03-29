@@ -479,6 +479,41 @@ function extractCurrentSpecId(specFolder: string): string | null {
   return matches ? matches[matches.length - 1] : null;
 }
 
+function resolveSpecFolderPath(specFolder: string): string | null {
+  const trimmedSpecFolder = specFolder.trim();
+  if (!trimmedSpecFolder) {
+    return null;
+  }
+
+  const candidatePaths = new Set<string>();
+  const cwd = process.cwd();
+  let currentDir = cwd;
+
+  while (true) {
+    candidatePaths.add(path.resolve(currentDir, trimmedSpecFolder));
+    candidatePaths.add(path.resolve(currentDir, 'specs', trimmedSpecFolder));
+    candidatePaths.add(path.resolve(currentDir, '.opencode', 'specs', trimmedSpecFolder));
+
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+  }
+
+  for (const candidatePath of candidatePaths) {
+    try {
+      if (fs.statSync(candidatePath).isDirectory()) {
+        return candidatePath;
+      }
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  return null;
+}
+
 /**
  * CG-07c: Extract all spec IDs from the full spec folder path.
  * Child specs (nested paths) legitimately reference parent spec IDs,
@@ -488,7 +523,35 @@ function extractCurrentSpecId(specFolder: string): string | null {
  */
 function extractAllowedSpecIds(specFolder: string): Set<string> {
   const matches = specFolder.match(SPEC_ID_REGEX) ?? [];
-  return new Set(matches);
+  const allowedSpecIds = new Set(matches);
+  const resolvedSpecFolder = resolveSpecFolderPath(specFolder);
+
+  if (!resolvedSpecFolder) {
+    return allowedSpecIds;
+  }
+
+  try {
+    const childEntries = fs.readdirSync(resolvedSpecFolder, { withFileTypes: true });
+    for (const entry of childEntries) {
+      if (!entry.isDirectory() || !/^\d{3}-/.test(entry.name)) {
+        continue;
+      }
+
+      const childSpecPath = path.resolve(resolvedSpecFolder, entry.name, 'spec.md');
+      if (fs.existsSync(childSpecPath)) {
+        allowedSpecIds.add(entry.name);
+      }
+    }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    structuredLog('warn', 'Failed to scan child phase folders during V8 allowlist extraction', {
+      specFolder,
+      resolvedSpecFolder,
+      error: message,
+    });
+  }
+
+  return allowedSpecIds;
 }
 
 function extractFirstHeading(content: string): string {
@@ -630,6 +693,34 @@ function validateMemoryQualityContent(content: string): ValidationResult {
   // Child spec memory files legitimately reference parent spec IDs, so ancestor
   // IDs must not be treated as foreign contamination.
   const allowedSpecIds = extractAllowedSpecIds(specFolder);
+  const resolvedSpecFolder = resolveSpecFolderPath(specFolder);
+  if (resolvedSpecFolder) {
+    const specMdPath = path.resolve(resolvedSpecFolder, 'spec.md');
+    if (fs.existsSync(specMdPath)) {
+      try {
+        const specContent = fs.readFileSync(specMdPath, 'utf-8');
+        const relatedSpecs = parseYamlListFromContent(specContent, 'related_specs');
+        for (const relatedSpec of relatedSpecs) {
+          const relatedSpecMatches = relatedSpec.match(SPEC_ID_REGEX) ?? [];
+          if (relatedSpecMatches.length > 0) {
+            relatedSpecMatches.forEach((specId) => allowedSpecIds.add(specId));
+            continue;
+          }
+
+          if (/^\d{3}-/.test(relatedSpec)) {
+            allowedSpecIds.add(relatedSpec.trim());
+          }
+        }
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
+        structuredLog('warn', 'Failed to read related_specs during V8 allowlist extraction', {
+          specFolder,
+          specMdPath,
+          error: message,
+        });
+      }
+    }
+  }
   const bodyContent = content.replace(/^---\n[\s\S]*?\n---\n?/, '');
   const specIdCounts = countDistinctSpecIds(bodyContent);
   const keyTopics = parseYamlListFromContent(content, 'key_topics');
@@ -720,30 +811,30 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     // T023: Normalize specFolder to an absolute path before resolving spec.md.
     // If specFolder is already absolute, use it as-is; otherwise resolve relative
     // to the current working directory.
-    const resolvedSpecFolder = path.isAbsolute(specFolder)
-      ? specFolder
-      : path.resolve(process.cwd(), specFolder);
+    const resolvedSpecFolder = resolveSpecFolderPath(specFolder);
 
     // Try to find and read the spec.md file
-    const specMdCandidates = [
-      path.resolve(resolvedSpecFolder, 'spec.md'),
-      // specFolder might be just a relative path or short name
-    ];
     let specTriggerPhrases: string[] = [];
-    for (const candidate of specMdCandidates) {
-      if (fs.existsSync(candidate)) {
-        try {
-          const specContent = fs.readFileSync(candidate, 'utf-8');
-          specTriggerPhrases = parseYamlListFromContent(specContent, 'trigger_phrases');
-        } catch (error: unknown) {
-          const message = error instanceof Error ? error.message : String(error);
-          structuredLog('warn', 'Failed to read spec.md during V12 topical coherence validation', {
-            candidate,
-            specFolder,
-            error: message,
-          });
+    if (resolvedSpecFolder) {
+      const specMdCandidates = [
+        path.resolve(resolvedSpecFolder, 'spec.md'),
+        // specFolder might be just a relative path or short name
+      ];
+      for (const candidate of specMdCandidates) {
+        if (fs.existsSync(candidate)) {
+          try {
+            const specContent = fs.readFileSync(candidate, 'utf-8');
+            specTriggerPhrases = parseYamlListFromContent(specContent, 'trigger_phrases');
+          } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : String(error);
+            structuredLog('warn', 'Failed to read spec.md during V12 topical coherence validation', {
+              candidate,
+              specFolder,
+              error: message,
+            });
+          }
+          break;
         }
-        break;
       }
     }
     if (specTriggerPhrases.length > 0) {

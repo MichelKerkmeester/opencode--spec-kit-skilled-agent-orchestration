@@ -57,7 +57,6 @@ import {
   extractFileChanges,
 } from '../lib/semantic-summarizer';
 import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
-import { retryManager } from '@spec-kit/mcp-server/api/providers';
 import {
   evaluateMemorySufficiency,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
@@ -176,6 +175,68 @@ function insertAfterFrontmatter(content: string, insertion: string): string {
   const afterClosing = content.indexOf('\n', closingIdx + 4);
   const insertionPoint = afterClosing === -1 ? content.length : afterClosing + 1;
   return content.slice(0, insertionPoint) + insertion + content.slice(insertionPoint);
+}
+
+type WorkflowRetryStats = {
+  queue_size: number;
+};
+
+type WorkflowRetryBatchResult = {
+  processed: number;
+  succeeded: number;
+  failed: number;
+};
+
+interface WorkflowRetryManagerAdapter {
+  getRetryStats(): WorkflowRetryStats;
+  processRetryQueue(limit?: number): Promise<WorkflowRetryBatchResult>;
+}
+
+const FALLBACK_RETRY_MANAGER: WorkflowRetryManagerAdapter = {
+  getRetryStats: () => ({ queue_size: 0 }),
+  processRetryQueue: async () => ({ processed: 0, succeeded: 0, failed: 0 }),
+};
+
+let workflowRetryManagerPromise: Promise<WorkflowRetryManagerAdapter> | null = null;
+let workflowRetryManagerLoadError: string | null = null;
+
+function isWorkflowRetryManagerAdapter(value: unknown): value is WorkflowRetryManagerAdapter {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Partial<WorkflowRetryManagerAdapter>;
+  return (
+    typeof candidate.getRetryStats === 'function' &&
+    typeof candidate.processRetryQueue === 'function'
+  );
+}
+
+async function loadWorkflowRetryManager(): Promise<WorkflowRetryManagerAdapter> {
+  if (!workflowRetryManagerPromise) {
+    workflowRetryManagerPromise = import('@spec-kit/mcp-server/api/providers')
+      .then((module) => {
+        const candidate = (module as { retryManager?: unknown }).retryManager;
+        if (isWorkflowRetryManagerAdapter(candidate)) {
+          return candidate;
+        }
+
+        workflowRetryManagerLoadError = 'Provider retryManager export is missing required methods';
+        return FALLBACK_RETRY_MANAGER;
+      })
+      .catch((error: unknown) => {
+        workflowRetryManagerLoadError = error instanceof Error ? error.message : String(error);
+        return FALLBACK_RETRY_MANAGER;
+      });
+  }
+
+  return workflowRetryManagerPromise;
+}
+
+function consumeWorkflowRetryManagerLoadError(): string | null {
+  const loadError = workflowRetryManagerLoadError;
+  workflowRetryManagerLoadError = null;
+  return loadError;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -1770,6 +1831,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 12: Opportunistic retry processing
   try {
+    const retryManager = await loadWorkflowRetryManager();
+    const retryManagerLoadIssue = consumeWorkflowRetryManagerLoadError();
+    if (retryManagerLoadIssue) {
+      warn(`   Warning: Retry manager unavailable; skipping retry queue processing (${retryManagerLoadIssue})`);
+    }
+
     const retryStats = retryManager.getRetryStats();
     if (retryStats.queue_size > 0) {
       log('Step 12: Processing retry queue...');

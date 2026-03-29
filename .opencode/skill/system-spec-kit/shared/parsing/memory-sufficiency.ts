@@ -84,6 +84,7 @@ export interface MemoryEvidenceSnapshot {
   title?: string | null;
   content?: string;
   triggerPhrases?: string[];
+  sourceClassification?: string;
   files?: MemoryEvidenceFile[];
   observations?: MemoryEvidenceObservation[];
   decisions?: string[];
@@ -111,6 +112,8 @@ export interface MemorySufficiencyResult {
   evidenceCounts: MemorySufficiencyEvidenceCounts;
   score: number;
 }
+
+export const MANUAL_FALLBACK_SOURCE = 'manual-fallback' as const;
 
 function stripFrontmatter(content: string): string {
   return content.replace(FRONTMATTER_RE, '');
@@ -301,6 +304,10 @@ function collectSupportContexts(snapshot: MemoryEvidenceSnapshot): string[] {
   return results;
 }
 
+function isManualFallbackSource(sourceClassification?: string | null): boolean {
+  return normalizeWhitespace(sourceClassification || '').toLowerCase() === MANUAL_FALLBACK_SOURCE;
+}
+
 export function evaluateMemorySufficiency(snapshot: MemoryEvidenceSnapshot): MemorySufficiencyResult {
   const primaryEvidenceTexts: string[] = [];
   const supportEvidenceTexts: string[] = [];
@@ -362,14 +369,21 @@ export function evaluateMemorySufficiency(snapshot: MemoryEvidenceSnapshot): Mem
     anchors,
     triggerPhrases: meaningfulTriggers,
   };
+  const manualFallbackEligible = isManualFallbackSource(snapshot.sourceClassification)
+    && counts.primary === 0
+    && counts.support >= 3
+    && counts.anchors >= 1;
 
   const reasons: string[] = [];
   const specificTitle = isSpecificTitle(snapshot.title);
   if (!specificTitle) {
     reasons.push('Memory title is too generic to stand alone later.');
   }
-  if (counts.primary < 1) {
+  if (counts.primary < 1 && !manualFallbackEligible) {
     reasons.push('No primary evidence was captured for this memory.');
+  }
+  if (counts.primary < 1 && isManualFallbackSource(snapshot.sourceClassification) && !manualFallbackEligible) {
+    reasons.push('Manual fallback requires at least three support evidence items and one anchor when primary evidence is absent.');
   }
   if (counts.total < 2) {
     reasons.push('Fewer than two spec-relevant evidence items were captured.');
@@ -380,9 +394,12 @@ export function evaluateMemorySufficiency(snapshot: MemoryEvidenceSnapshot): Mem
     );
   }
 
+  const primaryEvidenceScore = manualFallbackEligible
+    ? Math.min((counts.support / 3 + Math.min(counts.anchors, 1)) / 2, 1)
+    : Math.min(counts.primary / 2, 1);
   const score =
     (specificTitle ? 0.25 : 0) +
-    (Math.min(counts.primary / 2, 1) * 0.35) +
+    (primaryEvidenceScore * 0.35) +
     (Math.min(counts.total / 3, 1) * 0.15) +
     (Math.max(Math.min(counts.semanticChars / 400, 1), Math.min(counts.uniqueWords / 60, 1)) * 0.25);
 

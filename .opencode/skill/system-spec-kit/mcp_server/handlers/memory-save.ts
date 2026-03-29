@@ -108,6 +108,7 @@ import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor
 
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
+const MANUAL_FALLBACK_SOURCE_CLASSIFICATION = 'manual-fallback' as const;
 
 interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
@@ -117,6 +118,34 @@ interface PreparedParsedMemory {
   templateContract: MemoryTemplateContractResult;
   specDocHealth: SpecDocHealthResult | null;
   finalizedFileContent: string | null;
+  sourceClassification: 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
+}
+
+const STANDARD_MEMORY_TEMPLATE_MARKERS = [
+  '## continue session',
+  '## recovery hints',
+  '<!-- memory metadata -->',
+];
+
+function classifyMemorySaveSource(
+  content: string,
+): 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION {
+  const normalizedContent = content.toLowerCase();
+  const hasAnyStandardMarker = STANDARD_MEMORY_TEMPLATE_MARKERS.some((marker) => normalizedContent.includes(marker));
+  return hasAnyStandardMarker ? 'template-generated' : MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
+}
+
+function shouldBypassTemplateContract(
+  sourceClassification: PreparedParsedMemory['sourceClassification'],
+  sufficiencyResult: MemorySufficiencyResult,
+  templateContract: MemoryTemplateContractResult,
+): boolean {
+  return sourceClassification === MANUAL_FALLBACK_SOURCE_CLASSIFICATION
+    && sufficiencyResult.pass
+    && sufficiencyResult.evidenceCounts.primary === 0
+    && sufficiencyResult.evidenceCounts.support >= 3
+    && sufficiencyResult.evidenceCounts.anchors >= 1
+    && !templateContract.valid;
 }
 
 function buildQualityLoopMetadata(
@@ -182,6 +211,7 @@ function prepareParsedMemoryForIndexing(
         templateContract: { valid: false, violations: [], missingAnchors: [], unexpectedTemplateArtifacts: [] } as MemoryTemplateContractResult,
         specDocHealth: null,
         finalizedFileContent: null,
+        sourceClassification: 'template-generated',
       };
     }
     if (vRuleDisposition && vRuleDisposition.disposition === 'write_skip_index') {
@@ -210,8 +240,18 @@ function prepareParsedMemoryForIndexing(
     parsed.contentHash = memoryParser.computeContentHash(parsed.content);
   }
 
+  const sourceClassification = classifyMemorySaveSource(parsed.content);
+  if (sourceClassification === MANUAL_FALLBACK_SOURCE_CLASSIFICATION) {
+    const warning = 'Manual fallback save mode detected; standard generate-context template markers are missing.';
+    console.warn(`[memory-save] ${warning} ${path.basename(parsed.filePath)}`);
+    validation.warnings.push(warning);
+  }
+
   const sufficiencyResult = evaluateMemorySufficiency(
-    buildParsedMemoryEvidenceSnapshot(parsed),
+    {
+      ...buildParsedMemoryEvidenceSnapshot(parsed),
+      sourceClassification,
+    },
   );
   applyInsufficiencyMetadata(parsed, sufficiencyResult);
   const templateContract = validateMemoryTemplateContract(parsed.content);
@@ -245,6 +285,7 @@ function prepareParsedMemoryForIndexing(
     templateContract,
     specDocHealth,
     finalizedFileContent,
+    sourceClassification,
   };
 }
 
@@ -549,7 +590,9 @@ async function processPreparedMemory(
       qualityLoopResult,
       sufficiencyResult,
       templateContract,
+      sourceClassification,
     } = currentPrepared;
+    const templateContractBypassed = shouldBypassTemplateContract(sourceClassification, sufficiencyResult, templateContract);
 
     if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
       if (qualityGateMode === 'warn-only') {
@@ -581,7 +624,11 @@ async function processPreparedMemory(
     }
 
     if (!templateContract.valid) {
-      if (qualityGateMode === 'warn-only') {
+      if (templateContractBypassed) {
+        console.warn(
+          `[memory-save] Template contract bypassed in ${MANUAL_FALLBACK_SOURCE_CLASSIFICATION} mode for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
+        );
+      } else if (qualityGateMode === 'warn-only') {
         console.warn(
           `[memory-save] Template contract warn-only (spec doc) for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
         );
@@ -1106,12 +1153,24 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
       emitEvalMetrics: false,
     });
+    const templateContractPass = preparedDryRun.templateContract.valid
+      || shouldBypassTemplateContract(
+        preparedDryRun.sourceClassification,
+        preparedDryRun.sufficiencyResult,
+        preparedDryRun.templateContract,
+      );
     const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
-    const dryRunSummary = buildDryRunSummary(
+    const dryRunSummary = shouldBypassTemplateContract(
+      preparedDryRun.sourceClassification,
       preparedDryRun.sufficiencyResult,
-      preparedDryRun.qualityLoopResult,
       preparedDryRun.templateContract,
-    );
+    )
+      ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
+      : buildDryRunSummary(
+          preparedDryRun.sufficiencyResult,
+          preparedDryRun.qualityLoopResult,
+          preparedDryRun.templateContract,
+        );
 
     return createMCPSuccessResponse({
       tool: 'memory_save',
@@ -1120,7 +1179,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         status: 'dry_run',
         would_pass: preparedDryRun.validation.valid
           && preparedDryRun.qualityLoopResult.rejected !== true
-          && preparedDryRun.templateContract.valid
+          && templateContractPass
           && preparedDryRun.sufficiencyResult.pass,
         file_path: validatedPath,
         spec_folder: parsedForDryRun.specFolder,
@@ -1143,10 +1202,17 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
-      hints: preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
+      hints: templateContractPass && preparedDryRun.sufficiencyResult.pass
         ? [
             'Dry-run complete - no changes made',
             'Pre-flight checks were skipped because skipPreflight=true',
+            ...(shouldBypassTemplateContract(
+              preparedDryRun.sourceClassification,
+              preparedDryRun.sufficiencyResult,
+              preparedDryRun.templateContract,
+            )
+              ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
+              : []),
           ]
         : [
             'Dry-run complete - no changes made',
@@ -1195,14 +1261,26 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
         emitEvalMetrics: false,
       });
+      const templateContractPass = preparedDryRun.templateContract.valid
+        || shouldBypassTemplateContract(
+          preparedDryRun.sourceClassification,
+          preparedDryRun.sufficiencyResult,
+          preparedDryRun.templateContract,
+        );
       const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
       const dryRunSummary = !preflightResult.dry_run_would_pass
         ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
-        : buildDryRunSummary(
+        : shouldBypassTemplateContract(
+            preparedDryRun.sourceClassification,
             preparedDryRun.sufficiencyResult,
-            preparedDryRun.qualityLoopResult,
             preparedDryRun.templateContract,
-          );
+          )
+          ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
+          : buildDryRunSummary(
+              preparedDryRun.sufficiencyResult,
+              preparedDryRun.qualityLoopResult,
+              preparedDryRun.templateContract,
+            );
 
       return createMCPSuccessResponse({
         tool: 'memory_save',
@@ -1212,7 +1290,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           would_pass: preflightResult.dry_run_would_pass
             && preparedDryRun.validation.valid
             && preparedDryRun.qualityLoopResult.rejected !== true
-            && preparedDryRun.templateContract.valid
+            && templateContractPass
             && preparedDryRun.sufficiencyResult.pass,
           file_path: validatedPath,
           spec_folder: parsedForPreflight.specFolder,
@@ -1236,8 +1314,17 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         },
         hints: !preflightResult.dry_run_would_pass
           ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
-          : preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
-            ? ['Dry-run complete - no changes made']
+          : templateContractPass && preparedDryRun.sufficiencyResult.pass
+            ? [
+                'Dry-run complete - no changes made',
+                ...(shouldBypassTemplateContract(
+                  preparedDryRun.sourceClassification,
+                  preparedDryRun.sufficiencyResult,
+                  preparedDryRun.templateContract,
+                )
+                  ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
+                  : []),
+              ]
             : [
                 'Dry-run complete - no changes made',
                 ...(!preparedDryRun.templateContract.valid
