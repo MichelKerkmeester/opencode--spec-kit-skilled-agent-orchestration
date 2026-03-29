@@ -1,6 +1,6 @@
 ---
-description: Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a properly formatted changelog file - supports :auto and :confirm modes
-argument-hint: "<spec-folder-or-component> [--bump <major|minor|patch|build>] [:auto|:confirm]"
+description: Create a changelog entry and optionally publish a GitHub release — detects recent work, resolves component folder, generates formatted changelog, and creates git tag + release notes. Supports :auto and :confirm modes
+argument-hint: "<spec-folder-or-component> [--bump <major|minor|patch|build>] [--release] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, mcp__cocoindex_code__search
 ---
 
@@ -104,6 +104,10 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    ├─ IF --bump <type> present → version_bump = extracted type, omit Q1
    └─ IF no --bump flag → include Q1 in prompt
 
+3b. CHECK for --release flag:
+   ├─ IF --release present → publish_release = YES, omit Q3
+   └─ IF no --release flag → include Q3 in prompt
+
 4. Search for recent spec folders with implementation-summary.md:
    $ find .opencode/specs -name "implementation-summary.md" -mtime -7 2>/dev/null | head -5
 
@@ -130,7 +134,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    A) Autonomous - Execute without prompts (Recommended)           │
    │    B) Interactive - Confirm at each step                            │
    │                                                                    │
-   │ Reply with answers, e.g.: "A specs/01.../042..., E, A"             │
+   │ **Q3. Publish Release?** (if no --release flag):                    │
+   │    A) Yes - Create git tag + GitHub release after changelog         │
+   │    B) No - Only create the changelog file (default)                │
+   │                                                                    │
+   │ Reply with answers, e.g.: "A specs/01.../042..., E, A, A"          │
    └────────────────────────────────────────────────────────────────────┘
 
 6. WAIT for user response (DO NOT PROCEED)
@@ -141,6 +149,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - component_hint = [name or null]
    - version_bump = [major / minor / patch / build / auto]
    - execution_mode = [AUTONOMOUS / INTERACTIVE from suffix or Q2]
+   - publish_release = [YES / NO from --release flag or Q3]
 
 8. SET STATUS: ✅ PASSED
 
@@ -160,6 +169,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 - `component_hint = ________________`
 - `version_bump = ________________`
 - `execution_mode = ________________`
+- `publish_release = ________________`
 
 ---
 
@@ -175,6 +185,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 | component_hint       | Conditional | ______     | Q0 name or null   |
 | version_bump         | ✅ Yes       | ______     | --bump flag or Q1 |
 | execution_mode       | ✅ Yes       | ______     | Suffix or Q2      |
+| publish_release      | ✅ Yes       | ______     | --release or Q3   |
 
 ```
 VERIFICATION CHECK:
@@ -317,7 +328,13 @@ The YAML workflow (Step 2) scans this directory to build the component mapping. 
 ```
 /create:changelog
 ```
-→ Prompts: consolidated prompt with Q0-Q2, interactive workflow
+→ Prompts: consolidated prompt with Q0-Q3, interactive workflow
+
+**Example 5: Create changelog AND publish release**
+```
+/create:changelog .opencode/specs/01.../042... --release :auto
+```
+→ Creates changelog, creates annotated tag, pushes tag, creates GitHub release with formatted notes
 
 ---
 
@@ -330,6 +347,9 @@ The YAML workflow (Step 2) scans this directory to build the component mapping. 
 | Version conflict        | File with calculated version already exists   | Increment BUILD segment                              |
 | Empty changelog content | No work context detected                      | Prompt user for manual input                         |
 | Invalid version format  | Non-standard existing filenames               | Skip non-conforming files during scan                |
+| Tag already exists      | Version tag was already pushed                | Ask user: force-update or increment BUILD            |
+| gh auth failed          | GitHub CLI not authenticated                  | Run: `gh auth login`                                 |
+| Release already exists  | `gh release create` conflict                  | Ask user: update existing or skip                    |
 
 ---
 
@@ -375,24 +395,87 @@ FOR WORKFLOW VIOLATIONS:
 | Resource                  | Path                                                       |
 | ------------------------- | ---------------------------------------------------------- |
 | Changelog format examples | `.opencode/changelog/` (370+ existing files)               |
+| Release workflow          | `PUBLIC_RELEASE.md`                                        |
+| Git finish workflow       | `.opencode/skill/sk-git/references/finish_workflows.md`    |
 | Command template          | `.opencode/skill/sk-doc/assets/agents/command_template.md` |
 | sk-doc skill              | `.opencode/skill/sk-doc/SKILL.md`                          |
 | system-spec-kit skill     | `.opencode/skill/system-spec-kit/SKILL.md`                 |
 
 ---
 
-## 8. COMMAND CHAIN
+## 8. RELEASE CREATION PHASE (OPTIONAL)
 
-| Condition               | Suggested Command                       | Reason                            |
-| ----------------------- | --------------------------------------- | --------------------------------- |
-| After changelog created | `/create:folder_readme`                 | Generate a release summary or supporting documentation artifact |
-| Need spec folder first  | `/spec_kit:complete`                    | Create spec with implementation   |
-| Umbrella release        | Manual `00--opencode-environment` entry | Aggregates component changelogs   |
-| Save context            | `/memory:save`                          | Preserve decisions                |
+**Trigger:** `publish_release = YES` (from Q3 or `--release` flag)
+
+This phase runs AFTER the changelog file is created and validated. It follows the release workflow from `PUBLIC_RELEASE.md` and sk-git finish Step 6.
+
+### Pre-checks
+
+1. Verify changelog file exists at `.opencode/changelog/{component}/v{version}.md`
+2. Verify git working tree is clean (all changes committed)
+3. Verify `gh` CLI is authenticated: `gh auth status`
+
+### R1: Create Annotated Tag
+
+```bash
+git tag -a v{VERSION} -m "v{VERSION} -- {one-line summary from changelog}"
+git push origin v{VERSION}
+```
+
+### R2: Compose GitHub Release Notes
+
+Read the changelog file. Strip the local-only wrapper lines that must NOT appear in GitHub release notes:
+- Remove: `# v{VERSION}` (first H1 line)
+- Remove: `> Part of [OpenCode Dev Environment](...)`
+- Remove: `## [**{VERSION}**] - {YYYY-MM-DD}`
+
+The GitHub release body starts directly with the summary paragraph.
+
+Follow `PUBLIC_RELEASE.md` Section 7 writing style:
+- Plain English -- explain like "a smart person who is not a developer"
+- Every fix: what was broken + what we did + why it matters
+- No unexplained jargon
+- Technical details in Files Changed table, not in descriptions
+
+Append at the end:
+
+```
+Full changelog: `.opencode/changelog/{component}/v{VERSION}.md`
+```
+
+### R3: Create GitHub Release
+
+```bash
+gh release create v{VERSION} --title "v{VERSION} -- {one-line summary}" --notes "{composed notes}"
+```
+
+**CRITICAL:** Tag push alone does NOT create a GitHub release. You MUST run `gh release create`.
+
+### R4: Verify
+
+- Confirm: `gh release view v{VERSION}` shows the release
+- Report the release URL to the user
+
+### Error Recovery
+
+- If tag push fails: check remote permissions, report error
+- If `gh release create` fails: tag may already exist as release, check `gh release list`
+- NEVER delete tags to retry -- ask user first
 
 ---
 
-## 9. NEXT STEPS
+## 9. COMMAND CHAIN
+
+| Condition               | Suggested Command                       | Reason                            |
+| ----------------------- | --------------------------------------- | --------------------------------- |
+| After changelog created | Use `--release` flag                    | Publish as GitHub release         |
+| After release published | `/memory:save`                          | Preserve decisions                |
+| Need spec folder first  | `/spec_kit:complete`                    | Create spec with implementation   |
+| Umbrella release        | Manual `00--opencode-environment` entry | Aggregates component changelogs   |
+
+---
+
+## 10. NEXT STEPS
 
 What would you like to do next?
 
