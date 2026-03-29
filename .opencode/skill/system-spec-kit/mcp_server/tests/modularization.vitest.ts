@@ -94,18 +94,18 @@ describe('Module Line Counts (<300 lines)', () => {
 
 // 3. CONTEXT SERVER INTEGRATION (ACTIVE — pure fs.readFileSync check)
 describe('Context Server Integration', () => {
-  // The compiled JS uses double-quoted require() calls
+  // The compiled JS is ESM and emits explicit import specifiers.
   const imports = [
-    'require("./core")',
-    'require("./handlers")',
-    'require("./utils")',
-    'require("./hooks")',
-    'require("./tools")',
-    'require("./tool-schemas")',
+    { label: 'core barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/core\/index\.js['"]/ },
+    { label: 'handlers barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/handlers\/index\.js['"]/ },
+    { label: 'utils barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/utils\/index\.js['"]/ },
+    { label: 'hooks barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/hooks\/index\.js['"]/ },
+    { label: 'tools barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/tools\/index\.js['"]/ },
+    { label: 'tool schemas', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/tool-schemas\.js['"]/ },
   ];
 
   for (const imp of imports) {
-    it(`Import: ${imp} found in context-server.js`, () => {
+    it(`Import: ${imp.label} found in context-server.js`, () => {
       const contextServerPath = path.join(MCP_SERVER_PATH, 'dist', 'context-server.js');
       if (!fs.existsSync(contextServerPath)) {
         expect(fs.existsSync(contextServerPath)).toBe(true);
@@ -113,7 +113,7 @@ describe('Context Server Integration', () => {
       }
 
       const contextServer = fs.readFileSync(contextServerPath, 'utf8');
-      expect(contextServer).toContain(imp);
+      expect(contextServer).toMatch(imp.pattern);
     });
   }
 });
