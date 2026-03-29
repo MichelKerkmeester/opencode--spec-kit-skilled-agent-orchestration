@@ -2,9 +2,9 @@
 // MODULE: HF Local
 // ---------------------------------------------------------------
 
-import { EmbeddingProfile } from '../profile';
-import { semanticChunk, MAX_TEXT_LENGTH } from '../../chunking';
-import type { IEmbeddingProvider, ProviderMetadata, TaskPrefixMap } from '../../types';
+import { EmbeddingProfile } from '../profile.js';
+import { semanticChunk, MAX_TEXT_LENGTH } from '../../chunking.js';
+import type { IEmbeddingProvider, ProviderMetadata, TaskPrefixMap } from '../../types.js';
 
 // ---------------------------------------------------------------
 // 1. CONFIGURATION

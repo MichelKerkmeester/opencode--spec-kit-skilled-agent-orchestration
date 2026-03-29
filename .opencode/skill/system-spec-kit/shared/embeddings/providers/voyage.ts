@@ -2,9 +2,9 @@
 // MODULE: Voyage
 // ---------------------------------------------------------------
 
-import { EmbeddingProfile } from '../profile';
-import { retryWithBackoff } from '../../utils/retry';
-import type { IEmbeddingProvider, ModelDimensions, ProviderMetadata, UsageStats } from '../../types';
+import { EmbeddingProfile } from '../profile.js';
+import { retryWithBackoff } from '../../utils/retry.js';
+import type { IEmbeddingProvider, ModelDimensions, ProviderMetadata, UsageStats } from '../../types.js';
 
 // ---------------------------------------------------------------
 // 1. CONFIGURATION

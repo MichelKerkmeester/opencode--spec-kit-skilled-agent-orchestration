@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Feature catalog: Anchor-aware chunk thinning
 
-import type { PriorityPatterns, PriorityBuckets } from './types';
+import type { PriorityPatterns, PriorityBuckets } from './types.js';
 
 // ---------------------------------------------------------------
 // 1. CONFIGURATION

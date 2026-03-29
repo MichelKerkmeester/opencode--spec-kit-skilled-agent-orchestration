@@ -2,7 +2,7 @@
 // MODULE: Profile
 // ---------------------------------------------------------------
 
-import type { ParsedProfileSlug, ProfileJson } from '../types';
+import type { ParsedProfileSlug, ProfileJson } from '../types.js';
 
 // ---------------------------------------------------------------
 // 1. UTILITY FUNCTIONS

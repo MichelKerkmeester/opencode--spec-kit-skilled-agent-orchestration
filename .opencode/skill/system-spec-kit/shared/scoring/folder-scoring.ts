@@ -10,7 +10,7 @@ import type {
   Memory,
   ScoreWeights,
   TierWeights,
-} from '../types';
+} from '../types.js';
 
 // Feature catalog: Folder-level relevance scoring
 

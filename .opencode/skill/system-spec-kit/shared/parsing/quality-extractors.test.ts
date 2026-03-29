@@ -1,4 +1,4 @@
-import { extractQualityFlags, extractQualityScore } from './quality-extractors';
+import { extractQualityFlags, extractQualityScore } from './quality-extractors.js';
 
 function assertEqual(actual: unknown, expected: unknown, label: string): void {
   if (actual !== expected) {

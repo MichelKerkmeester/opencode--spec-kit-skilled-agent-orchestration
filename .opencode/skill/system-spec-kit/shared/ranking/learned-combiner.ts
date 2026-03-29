@@ -12,10 +12,10 @@
 
 // Feature catalog: Learned Stage 2 weight combiner
 
-import { transpose, matMul, matVecMul, addScaledIdentity, solveLinearSystem } from './matrix-math';
+import { transpose, matMul, matVecMul, addScaledIdentity, solveLinearSystem } from './matrix-math.js';
 
 // Re-export matrix-math for backward compatibility
-export { transpose, matMul, matVecMul, addScaledIdentity, solveLinearSystem } from './matrix-math';
+export { transpose, matMul, matVecMul, addScaledIdentity, solveLinearSystem } from './matrix-math.js';
 
 /* ---------------------------------------------------------------
    1. TYPES

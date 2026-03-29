@@ -2,16 +2,16 @@
 // MODULE: Factory
 // ---------------------------------------------------------------
 
-import { HfLocalProvider } from './providers/hf-local';
-import { OpenAIProvider, MODEL_DIMENSIONS as OPENAI_MODEL_DIMENSIONS } from './providers/openai';
-import { VoyageProvider, MODEL_DIMENSIONS as VOYAGE_MODEL_DIMENSIONS, resolveVoyageBaseUrl } from './providers/voyage';
+import { HfLocalProvider } from './providers/hf-local.js';
+import { OpenAIProvider, MODEL_DIMENSIONS as OPENAI_MODEL_DIMENSIONS } from './providers/openai.js';
+import { VoyageProvider, MODEL_DIMENSIONS as VOYAGE_MODEL_DIMENSIONS, resolveVoyageBaseUrl } from './providers/voyage.js';
 import type {
   IEmbeddingProvider,
   ProviderResolution,
   ProviderInfo,
   CreateProviderOptions,
   ApiKeyValidationResult,
-} from '../types';
+} from '../types.js';
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);

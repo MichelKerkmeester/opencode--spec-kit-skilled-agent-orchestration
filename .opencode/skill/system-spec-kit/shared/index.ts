@@ -65,16 +65,16 @@ export type {
   // Task prefix types
   TaskPrefixMap,
   TaskType,
-} from './types';
+} from './types.js';
 
-export type { WeightedDocumentSections } from './embeddings';
+export type { WeightedDocumentSections } from './embeddings.js';
 
 // DB normalization functions
 export {
   dbRowToMemory,
   memoryToDbRow,
   partialDbRowToMemory,
-} from './types';
+} from './types.js';
 
 // ---------------------------------------------------------------
 // 2. EMBEDDINGS MODULE
@@ -121,7 +121,7 @@ export {
   RESERVED_OVERVIEW,
   RESERVED_OUTCOME,
   MIN_SECTION_LENGTH,
-} from './embeddings';
+} from './embeddings.js';
 
 // ---------------------------------------------------------------
 // 3. EMBEDDINGS FACTORY
@@ -130,7 +130,7 @@ export {
   resolveProvider,
   createEmbeddingsProvider,
   getProviderInfo,
-} from './embeddings/factory';
+} from './embeddings/factory.js';
 
 // ---------------------------------------------------------------
 // 4. EMBEDDINGS PROFILE
@@ -138,14 +138,14 @@ export {
 export {
   parseProfileSlug,
   createProfileSlug,
-} from './embeddings/profile';
+} from './embeddings/profile.js';
 
 // ---------------------------------------------------------------
 // 5. CHUNKING MODULE
 // ---------------------------------------------------------------
 export {
   semanticChunk,
-} from './chunking';
+} from './chunking.js';
 
 // ---------------------------------------------------------------
 // 6. TRIGGER EXTRACTOR MODULE
@@ -154,18 +154,18 @@ export {
   extractTriggerPhrases,
   STOP_WORDS_ENGLISH,
   STOP_WORDS_TECH,
-} from './trigger-extractor';
+} from './trigger-extractor.js';
 
 // ---------------------------------------------------------------
 // 7. DATABASE CONFIG
 // ---------------------------------------------------------------
-export { DB_PATH } from './paths';
-export { getDbDir, DB_UPDATED_FILE } from './config';
+export { DB_PATH } from './paths.js';
+export { getDbDir, DB_UPDATED_FILE } from './config.js';
 
 // ---------------------------------------------------------------
 // 8. SHARED ALGORITHMS / CONTRACTS
 // ---------------------------------------------------------------
-export * from './algorithms';
+export * from './algorithms/index.js';
 export {
   createTrace,
   addTraceEntry,
@@ -179,7 +179,7 @@ export {
   type ContextEnvelope,
   // DegradedModeContract intentionally omitted — already exported by ./algorithms/adaptive-fusion
   // The retrieval-trace variant adds degradedStages; import directly from contracts/retrieval-trace if needed
-} from './contracts/retrieval-trace';
+} from './contracts/retrieval-trace.js';
 
 // ---------------------------------------------------------------
 // 9. UTILITIES
@@ -189,12 +189,12 @@ export {
 export {
   validateFilePath,
   escapeRegex,
-} from './utils/path-security';
+} from './utils/path-security.js';
 
 // JSONC utilities
 export {
   stripJsoncComments,
-} from './utils/jsonc-strip';
+} from './utils/jsonc-strip.js';
 
 // Retry utilities
 export {
@@ -207,7 +207,7 @@ export {
   TRANSIENT_NETWORK_ERRORS,
   TRANSIENT_ERROR_PATTERNS,
   PERMANENT_ERROR_PATTERNS,
-} from './utils/retry';
+} from './utils/retry.js';
 
 // ---------------------------------------------------------------
 // 10. SCORING MODULE
@@ -217,7 +217,7 @@ export {
   ARCHIVE_PATTERNS,
   TIER_WEIGHTS,
   SCORE_WEIGHTS,
-} from './scoring/folder-scoring';
+} from './scoring/folder-scoring.js';
 
 // ---------------------------------------------------------------
 // 11. LEARNED RANKING MODULE
@@ -227,4 +227,4 @@ export {
   trainRegularizedLinearRanker,
   predict,
   extractFeatureVector,
-} from './ranking/learned-combiner';
+} from './ranking/learned-combiner.js';

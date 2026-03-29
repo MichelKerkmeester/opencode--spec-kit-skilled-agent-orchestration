@@ -11,7 +11,7 @@ import type {
   ExtractionStats,
   ExtractionBreakdown,
   ExtractionResult,
-} from './types';
+} from './types.js';
 
 // ---------------------------------------------------------------
 // 1. STOP WORD LISTS

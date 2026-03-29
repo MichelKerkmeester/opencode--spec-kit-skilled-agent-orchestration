@@ -5,7 +5,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { getDbDir } from './config';
+import { getDbDir } from './config.js';
 
 function findUp(startDir: string, predicate: (dir: string) => boolean): string | undefined {
   let dir = startDir;
