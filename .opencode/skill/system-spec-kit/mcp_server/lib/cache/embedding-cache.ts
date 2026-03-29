@@ -42,7 +42,7 @@ function initEmbeddingCache(db: Database.Database): void {
       dimensions INTEGER NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       last_used_at TEXT NOT NULL DEFAULT (datetime('now')),
-      PRIMARY KEY (content_hash, model_id)
+      PRIMARY KEY (content_hash, model_id, dimensions)
     )
   `);
 }
@@ -91,8 +91,9 @@ const MAX_CACHE_ENTRIES = 10000;
 
 /**
  * Store an embedding in the cache.
- * Uses INSERT OR REPLACE so duplicate (content_hash, model_id) pairs
- * are overwritten with the latest embedding.
+ * Uses INSERT OR REPLACE so duplicate (content_hash, model_id, dimensions)
+ * rows are overwritten with the latest embedding, while allowing multiple
+ * dimension variants to coexist for the same content/model pair.
  *
  * NOTE: The count-then-delete below is a non-transactional read-then-update
  * pattern. Under concurrent writers the cache may briefly exceed

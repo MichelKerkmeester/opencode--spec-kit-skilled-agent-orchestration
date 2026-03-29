@@ -143,7 +143,10 @@ function registerVectorIndexListener(nextVectorIndex: VectorIndexLike): void {
     }
 
     try {
-      rebindDatabaseConsumers(database);
+      const rebound = rebindDatabaseConsumers(database);
+      if (!rebound) {
+        console.error('[db-state] Database consumer listener rebind returned false');
+      }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       console.error(`[db-state] Database consumer listener rebind failed: ${message}`);

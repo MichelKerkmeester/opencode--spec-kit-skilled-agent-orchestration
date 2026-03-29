@@ -1,209 +1,224 @@
 ---
-title: "Review Report: Memory Database Refinement"
-description: "30-iteration deep-research review audit of the Spec Kit Memory MCP server. 121 findings across 30 dimensions: 5 P0 blockers, 75 P1 required fixes, 41 P2 improvements."
+title: "Meta-Review Report: Memory Database Refinement (v2)"
+description: "10-iteration meta-review of the 026 spec folder and all work done there. Reviewed fix quality, spec consistency, checklist evidence, security, and maintainability across 27 modified source files and 5 spec artifacts."
 trigger_phrases:
-  - "review report"
-  - "memory database audit"
-  - "mcp server findings"
+  - "meta review report"
+  - "026 review v2"
+  - "memory database refinement review"
 importance_tier: "critical"
 contextType: "general"
 ---
-# Review Report: Memory Database Refinement
+# Meta-Review Report: Memory Database Refinement (v2)
 
-30-iteration code audit of the Spec Kit Memory MCP server (`mcp_server/`), executed via parallel GPT-5.4 Codex CLI agents. Each iteration reviewed one dimension with P0/P1/P2 severity classification. Iterations 001-020 covered primary modules; iterations 021-030 performed deep dives and cross-cutting second-pass reviews.
-
----
-
-## Executive Summary
-
-| Severity | Count | Description |
-|----------|-------|-------------|
-| **P0** | 5 | Blockers — data loss, security, or silent corruption |
-| **P1** | 75 | Required fixes — logic errors, integrity risks, incorrect behavior |
-| **P2** | 41 | Improvements — edge cases, documentation drift, hardening |
-| **Total** | **121** | |
+10-iteration meta-review of spec folder `026-memory-database-refinement` and all work done there: the original 30-iteration audit, 121 findings, 4 fix sprints via 13 parallel GPT-5.4 agents, P2 triage, and documentation. Previous report preserved as `review-report-v1-original-audit.md`.
 
 ---
 
-## P0 Findings (Blockers)
+## 1. Executive Summary
 
-| # | Finding | Dimension | File |
-|---|---------|-----------|------|
-| 1 | `get_embedding_dim()` can size the vector index for the wrong provider | 005 Embedding lifecycle | `vector-index-store.ts` |
-| 2 | Governed memories from different scopes collide into the same lineage key | 007 Lineage/versioning | `lineage-state.ts` |
-| 3 | Merge restore can wipe whole auxiliary tables before partial restore succeeds | 011 Checkpoints | `checkpoints.ts` |
-| 4 | Shared-space admin mutations run as global server admin with no caller authentication | 012 Shared memory | `shared-memory.ts` |
-| 5 | Merge reconsolidation can make the surviving memory unreachable and returns the wrong ID | 014 Reconsolidation | `reconsolidation.ts` |
+**Verdict: CONDITIONAL**
+hasAdvisories: true
 
----
+| Severity | Count |
+|----------|------:|
+| **P0** | 1 |
+| **P1** | 17 |
+| **P2** | 11 |
+| **Total** | **29** |
 
-## P1 Findings (Required Fixes)
-
-| # | Finding | Dim | File |
-|---|---------|-----|------|
-| 1 | Scoped PE filtering still matches unscoped rows | 001 | `pe-gating.ts` |
-| 2 | PE update short-circuit indexes auto-fixed content without rewriting file | 001 | `memory-save.ts` |
-| 3 | `atomicSaveMemory()` DB-first failure window | 001 | `memory-save.ts` |
-| 4 | Active projection failures downgraded to best-effort | 002 | `transaction-manager.ts` |
-| 5 | `SQLiteVectorStore` can switch another store onto wrong DB | 002 | `vector-index-store.ts` |
-| 6 | Startup recovery replays pending files in arbitrary order | 002 | `transaction-manager.ts` |
-| 7 | Global visited set drops valid edges in diamond traversals | 003 | `causal-edges.ts` |
-| 8 | `memory_drift_why` conflates incoming/outgoing semantics | 003 | `causal-graph.ts` |
-| 9 | Traversal strength math does not propagate cumulatively | 003 | `causal-edges.ts` |
-| 10 | Hybrid fallback thresholds use fractional values but vector search expects percentages | 004 | `hybrid-search.ts` |
-| 11 | Disabled lexical channels re-enabled in fallback chain | 004 | `hybrid-search.ts` |
-| 12 | `useGraph: false` does not disable degree channel | 004 | `hybrid-search.ts` |
-| 13 | Provider-specific DB isolation bypassed before init | 005 | `vector-index-store.ts` |
-| 14 | SQLite embedding cache replays stale vectors after dimension change | 005 | `embedding-cache.ts` |
-| 15 | Anchor-mode indexing drops all text outside matched anchors | 006 | `chunking-orchestrator.ts` |
-| 16 | Structure fallback splits fenced code blocks across chunks | 006 | `chunking-orchestrator.ts` |
-| 17 | Partial child-write failures leave orphaned chunk rows | 006 | `chunking-orchestrator.ts` |
-| 18 | PE SUPERSEDE splices unrelated files into same version chain | 007 | `lineage-state.ts` |
-| 19 | Retention expiry of active version drops active view and erases lineage | 007 | `lineage-state.ts` |
-| 20 | Migration warnings still mark DB as fully upgraded | 008 | `vector-index-schema.ts` |
-| 21 | Bootstrap backfills history with stale spec_folder values | 008 | `vector-index-schema.ts` |
-| 22 | Constitutional-tier migration is a no-op on legacy DBs | 008 | `vector-index-schema.ts` |
-| 23 | v12 destroys memory_conflicts audit history | 008 | `vector-index-schema.ts` |
-| 24 | SPECKIT_GRAPH_REFRESH_MODE=off doesn't disable enrichment | 009 | `search-flags.ts` |
-| 25 | SPECKIT_CONSUMPTION_LOG documented as inert but implemented as live | 009 | config |
-| 26 | YAML-looking body text can override parsed metadata | 010 | `memory-parser.ts` |
-| 27 | Anchor validation accepts malformed nesting | 010 | `memory-parser.ts` |
-| 28 | Normalization erases checklist state | 010 | `content-normalizer.ts` |
-| 29 | Checkpoint retention evicts another tenant's rollback point | 011 | `checkpoints.ts` |
-| 30 | Lineage disappears after "successful" restore | 011 | `checkpoints.ts` |
-| 31 | `shared_memory_status` trusts spoofable principal IDs | 012 | `shared-memory.ts` |
-| 32 | `task_postflight` overwrites another session's baseline | 013 | `session-learning.ts` |
-| 33 | Completed rows are write-once per task_id, losing later cycles | 013 | `session-learning.ts` |
-| 34 | Conflict-band saves lose lineage on same-path overwrite | 014 | `reconsolidation.ts` |
-| 35 | Auto-merge skips scope filtering and safety guards | 014 | `reconsolidation.ts` |
-| 36 | Failure-oriented queries misclassified away from fix_bug | 015 | `query-router.ts` |
-| 37 | Handler exceptions misreported as SEARCH_FAILED | 016 | `lib/errors.ts` |
-| 38 | Internal exception text returned to MCP clients | 016 | handlers |
-| 39 | Causal-graph handlers use unrelated canonical error codes | 016 | `causal-graph.ts` |
-| 40 | Incremental scan misses real file updates when mtimes don't move enough | 017 | `memory-index.ts` |
-| 41 | Stale rows deleted before replacement indexing completes | 017 | `memory-index.ts` |
-| 42 | Self-loop degrees snapshotted twice but measured once | 018 | `graph-signals.ts` |
-| 43 | Degree-cache invalidation covers only one mutation surface | 018 | `graph-signals.ts` |
-| 44 | Advertised 0.15 degree cap does not cap fusion influence | 018 | `graph-search-fn.ts` |
-| 45 | Dashboard metric summaries collapse distinct channels | 019 | `reporting-dashboard.ts` |
-| 46 | Ablation runs never enforce ground-truth alignment guard | 019 | `ablation-framework.ts` |
-| 47 | External DB rebind refreshes only subset of singleton consumers | 020 | global state |
-| 48 | Retrieval session state is global and not scope-bound | 020 | handlers |
-| 49 | Progressive-disclosure cursors replay without scope checks | 020 | handlers |
-| 50 | Access-tracker accumulators bleed across DB swaps | 020 | `vector-index-store.ts` |
+The original 121-finding audit and 80+ P0/P1 fix sprints represent substantial, well-organized work. However, this meta-review found **1 P0 blocker** (checkpoint restore can delete out-of-scope rows), **17 P1 issues** across code correctness, documentation drift, and spec inconsistency, and **11 P2 advisories**. The P0 blocks release readiness until addressed.
 
 ---
 
-## P2 Findings (Improvements)
+## 2. Planning Trigger
 
-| # | Finding | Dim |
-|---|---------|-----|
-| 1 | Dry-run not actually non-mutating when eval logging enabled | 001 |
-| 2 | Anchor auto-fix cannot repair repeated anchor-name mismatches | 001 |
-| 3 | Split-brain window where DB commits but file never reaches final path | 002 |
-| 4 | Delete paths commit even when secondary vector cleanup fails | 002 |
-| 5 | Traversal reads not snapshot-consistent under concurrent link/unlink | 003 |
-| 6 | Traversal silently truncates high-degree nodes after 100 edges | 003 |
-| 7 | FTS query sanitization preserves punctuation that BM25 splits | 004 |
-| 8 | Thinning cannot discard anchor-only noise under current weights | 006 |
-| 9 | Delimiter collisions warned but ambiguous keys still persisted | 007 |
-| 10 | Concurrent supersedes not serialized or retried | 007 |
-| 11 | SPECKIT_GRAPH_WALK_ROLLOUT docs advertise unsupported `full` state | 009 |
-| 12 | Shared-memory defaults documented as true but defaulted off | 009 |
-| 13 | Some SPECKIT flags frozen at import time | 009 |
-| 14 | Encoding detection misdecodes BOM-less UTF-16 as UTF-8 | 010 |
-| 15 | Global shared-memory enablement is unauthenticated | 012 |
-| 16 | Session learning file does not implement FSRS state | 013 |
-| 17 | Interference scoring counts archived/deprecated memories | 014 |
-| 18 | Router prunes channels for short spec/decision lookups | 015 |
-| 19 | Multi-facet queries collapsed to one dominant intent | 015 |
-| 20 | BM25 indexing failure swallowed during reconsolidation | 016 |
-| 21 | Scan batch concurrency effectively unbounded | 017 |
-| 22 | Ingest accepts duplicate paths as duplicate work | 017 |
-| 23 | Missing token-usage data persisted as measured zero | 019 |
-| 24 | Sprint ordering based on first-seen not most recent | 019 |
-| 25 | groundTruthQueryIds silently drops unknown IDs | 019 |
-| 26 | External DB reinitialization leaves stale in-process caches | 020 |
-| 27 | Stale degree cache after external reinitialization | 020 |
+```json
+{
+  "triggered": true,
+  "verdict": "CONDITIONAL",
+  "hasAdvisories": true,
+  "activeFindings": { "P0": 1, "P1": 17, "P2": 11 },
+  "remediationWorkstreams": [
+    "WS-1: Fix P0 checkpoint scope isolation",
+    "WS-2: Fix 7 code correctness P1s",
+    "WS-3: Fix 6 documentation/spec drift P1s",
+    "WS-4: Fix 4 security/governance P1s"
+  ],
+  "specSeed": "Scope must include checkpoint restore, save pipeline lock, PE filtering, graph cache invalidation, and spec document reconciliation",
+  "planSeed": "4 workstreams: 1 P0 immediate + 3 P1 clusters (code, docs, security)"
+}
+```
 
 ---
 
-## Findings by Dimension
+## 3. Active Finding Registry
 
-| Iter | Dimension | P0 | P1 | P2 | Total |
-|------|-----------|----|----|----|----|
-| 001 | Save pipeline integrity | 0 | 3 | 2 | 5 |
-| 002 | Transaction safety | 0 | 3 | 2 | 5 |
-| 003 | Causal graph correctness | 0 | 3 | 2 | 5 |
-| 004 | Hybrid search pipeline | 0 | 3 | 1 | 4 |
-| 005 | Embedding lifecycle | 1 | 2 | 0 | 3 |
-| 006 | Chunking and thinning | 0 | 3 | 1 | 4 |
-| 007 | Lineage and versioning | 1 | 2 | 2 | 5 |
-| 008 | Schema migrations | 0 | 4 | 0 | 4 |
-| 009 | Feature flag interactions | 0 | 2 | 3 | 5 |
-| 010 | Memory parsing | 0 | 3 | 1 | 4 |
-| 011 | Checkpoint lifecycle | 1 | 2 | 0 | 3 |
-| 012 | Shared memory | 1 | 1 | 1 | 3 |
-| 013 | Session learning | 0 | 2 | 1 | 3 |
-| 014 | Reconsolidation | 1 | 2 | 1 | 4 |
-| 015 | Query routing | 0 | 1 | 2 | 3 |
-| 016 | Error handling | 0 | 3 | 1 | 4 |
-| 017 | Index scan/ingest | 0 | 2 | 2 | 4 |
-| 018 | Graph signals | 0 | 3 | 0 | 3 |
-| 019 | Eval framework | 0 | 2 | 3 | 5 |
-| 020 | Concurrency/state | 0 | 4 | 1 | 5 |
-| 021 | Deep dive: memory-save.ts | 0 | 3 | 1 | 4 |
-| 022 | Deep dive: hybrid-search.ts | 0 | 4 | 0 | 4 |
-| 023 | API surface/tool schemas | 0 | 1 | 4 | 5 |
-| 024 | Memory context (L1) | 0 | 3 | 1 | 4 |
-| 025 | Trigger matching | 0 | 2 | 2 | 4 |
-| 026 | Content hash dedup | 0 | 2 | 2 | 4 |
-| 027 | BM25 index consistency | 0 | 3 | 0 | 3 |
-| 028 | Embedding provider chain | 0 | 3 | 1 | 4 |
-| 029 | Response envelope/MCP | 0 | 2 | 2 | 4 |
-| 030 | Cross-module state (2nd pass) | 0 | 2 | 2 | 4 |
-| **Total** | | **5** | **75** | **41** | **121** |
+### P0 Findings (Blockers)
 
----
+#### F-001: Scoped checkpoint restore deletes out-of-scope rows
+- **Severity:** P0
+- **Dimension:** Security / Governance
+- **File:** `lib/storage/checkpoints.ts:1563-1570`, `lib/storage/checkpoints.ts:861-863`
+- **Evidence:** `getCurrentMemoryIdsForSpecFolder(database, checkpointSpecFolder)` ignores caller scope when `spec_folder` is present. Clear path deletes by `spec_folder` alone with no scope predicate.
+- **Impact:** A tenant-scoped restore can erase or replace other tenants' data under the same spec folder. Data loss across governance boundaries.
+- **Fix:** Keep restore targeting scope-first even when `spec_folder` is set. Use `getCurrentScopedMemoryIds()` and intersect `spec_folder` with tenant/user/agent/shared-space predicates.
+- **Iterations:** 035, 036 (independent discovery, P0 in 036)
 
-## Recommended Fix Priority
+### P1 Findings (Required)
 
-### Immediate (P0 blockers)
-1. Scope-aware lineage keys — prevent cross-scope key collisions
-2. Embedding dimension guard — fail-fast on dimension mismatch before DB bootstrap
-3. Checkpoint merge restore — atomic auxiliary table handling
-4. Shared-memory auth — enforce caller authentication on admin mutations
-5. Reconsolidation merge — fix surviving memory reachability and return value
+#### Correctness — Code
 
-### Sprint 1: High-risk P1 clusters (search + data integrity)
-- **Hybrid search** (004, 022): fallback threshold units, disabled channel re-enabling, adaptive fusion conflicts, confidence truncation
-- **Save pipeline** (001, 021): PE filtering scope, DB-first failure window, write lock scope, chunking bypassing quality gate
-- **Transaction safety** (002): projection writes, DB handle switching, pending file recovery
-- **BM25 consistency** (027): reconsolidation merge not syncing BM25, archived docs lingering in index
+| ID | Title | File | Iter |
+|----|-------|------|------|
+| F-002 | Token-budget truncation can erase all matching results | `hybrid-search.ts:2136-2188` | 033 |
+| F-003 | Atomic save promotes file before write lock acquired | `memory-save.ts:1210-1219` | 033 |
+| F-004 | PE filtering recall-lossy after capped global search | `pe-gating.ts:79-96` | 033 |
+| F-005 | Deferred chunk inserts lose anchor identity | `chunking-orchestrator.ts:316-327` | 033 |
+| F-006 | Anchor extraction returns corrupted sections after malformed nesting | `memory-parser.ts:845-863` | 034 |
+| F-007 | Graph-signal cache invalidation incomplete for direct causal_edges writers | `graph-signals.ts:24-57` | 034 |
 
-### Sprint 2: Correctness + schema
-- **Causal graph** (003): diamond traversal, drift-why semantics, strength propagation
-- **Schema migrations** (008): migration warnings advancing version, history backfill ordering
-- **Embedding lifecycle** (005, 028): dimension mismatch guard, provider cascade reporting, API key validation timing
-- **Chunking** (006): anchor-mode text loss, code block splitting, orphaned chunk rows
+#### Correctness — Documentation Drift
 
-### Sprint 3: Security + governance
-- **Shared memory** (012): admin auth, spoofable principal IDs
-- **Error handling** (016, 029): wrong error codes, exception leakage, response envelope bypasses
-- **Concurrency** (020, 030): singleton rebind gaps, access tracker bleed, stale caches
+| ID | Title | File | Iter |
+|----|-------|------|------|
+| F-008 | Iteration count inconsistent across packet (spec says 20, actual 30) | `spec.md:126` | 032 |
+| F-009 | Spec declares fixes out of scope but packet records fix execution | `spec.md:79` | 032 |
+| F-010 | Phase 10 tasks [x] but checklist items unchecked | `tasks.md:241` | 032 |
+| F-011 | "Full test suite green" claim while 1 file still fails | `checklist.md:68` | 032 |
+| F-012 | Fallback threshold claim says "fractional" but code still uses percentage units | `implementation-summary.md:52` | 037 |
+| F-013 | CHK-012 detailed tables show 82 findings, not 121 | `review-report.md:32-127` | 038 |
+| F-014 | CHK-068 claims 8771 tests but tasks.md says 8748 | `checklist.md:68` vs `tasks.md:149` | 038 |
 
-### Sprint 4: Remaining P1s + P2 triage
-- **Lineage** (007): PE SUPERSEDE cross-file splicing, retention expiry
-- **Memory parsing** (010): YAML override, malformed anchors, checklist state loss
-- **Context handler** (024): focused mode ranking, resume keyword dependency
-- **Trigger matching** (025): common-word triggers, frontmatter extraction errors
-- **Dedup** (026): preflight rejection, chunked bypass, hash staleness
-- All P2 items triaged for inclusion or deferral
+#### Security / Governance
+
+| ID | Title | File | Iter |
+|----|-------|------|------|
+| F-015 | Shared-memory admin checks spoofable with caller-supplied actor IDs | `shared-memory.ts:143-212` | 035 |
+| F-016 | Constitutional cache leaks results across database switches | `vector-index-store.ts:381-571` | 036 |
+
+#### Maintainability
+
+| ID | Title | File | Iter |
+|----|-------|------|------|
+| F-017 | Schema contracts defined in multiple places in vector-index-schema.ts | `vector-index-schema.ts:178-1989` | 039 |
+| F-018 | Fallback policy duplicated in two orchestration paths | `hybrid-search.ts:1469-1603` | 039 |
+
+### P2 Findings (Advisories)
+
+| ID | Title | File | Iter |
+|----|-------|------|------|
+| F-019 | Embedding cache schema half-applied: dimension not in primary key | `embedding-cache.ts:37-133` | 033 |
+| F-020 | Learning-history sessionId not normalized on read path | `session-learning.ts:661-783` | 034 |
+| F-021 | Checkpoint scope accepts blank tenantId, weakening tenant guard | `checkpoints.ts:141-175` | 035 |
+| F-022 | Failed DB rebind leaves consumers split between old and new handles | `db-state.ts:154-280` | 036 |
+| F-023 | Savepoint-per-table attribution: handler vs lib mismatch in summary | `implementation-summary.md:46` | 037 |
+| F-024 | Embedding dimension resolution attributed to wrong file | `implementation-summary.md:45` | 037 |
+| F-025 | shared_memory_status auth claim only partially accurate | `implementation-summary.md:47` | 037 |
+| F-026 | "upserts" overstates reconsolidation merge operations | `implementation-summary.md:48` | 037 |
+| F-027 | CHK-067 reconciliation count (24 failures) not fully enumerated | `checklist.md` vs `tasks.md` | 038 |
+| F-028 | Lineage-resolution boilerplate repeated across read helpers | `lineage-state.ts:801-980` | 039 |
+| F-029 | Rollback-cleanup failures hidden behind catch-all handling | `memory-save.ts:275-380` | 039 |
 
 ---
 
-## Iteration Artifacts
+## 4. Remediation Workstreams
 
-All 30 iteration files: `review/iterations/iteration-001.md` through `iteration-030.md`
+### WS-1: P0 Immediate — Checkpoint Scope Isolation
+- F-001: Make restore targeting scope-first, not folder-first
+- Estimated: 1 file (`checkpoints.ts`), ~30 LOC change + tests
 
-Each contains detailed findings with file paths, code citations, and fix recommendations.
+### WS-2: Code Correctness P1s (6 findings)
+- F-002: Token-budget truncation fallback for empty results
+- F-003: Acquire lock before file promotion in atomic save
+- F-004: Push governance scope into vector query for PE filtering
+- F-005: Pass anchorId to indexMemoryDeferred for chunks
+- F-006: Gate anchor extraction on validation pass
+- F-007: Centralize causal_edges writes behind invalidation hooks
+
+### WS-3: Documentation/Spec Drift P1s (7 findings)
+- F-008 through F-014: Update spec.md, implementation-summary.md, checklist.md, review-report-v1 to match actual state
+
+### WS-4: Security/Governance P1s (2 findings)
+- F-015: Resolve caller identity from server-owned auth context
+- F-016: Key constitutional cache by database path, clear on DB switch
+
+---
+
+## 5. Spec Seed
+
+- Spec scope must be updated to include the fix sprints (currently says "findings only")
+- Iteration count should reflect actual 30 (not 20)
+- Test count evidence should be reconciled across checklist and tasks
+- Finding count in review report detailed tables should match summary (82 vs 121)
+- Implementation summary claims need 5 corrections (F-012, F-023-F-026)
+
+---
+
+## 6. Plan Seed
+
+1. **Fix P0 F-001** — Checkpoint restore scope isolation (~30 LOC + 3 tests)
+2. **Fix code P1s F-002 through F-007** — 6 targeted fixes across 5 files (~150 LOC + tests)
+3. **Reconcile documentation F-008 through F-014** — Update 4 spec artifacts to match reality
+4. **Fix security P1s F-015, F-016** — Auth context binding + cache keying (~80 LOC + tests)
+5. **Triage P2 advisories** — 11 items for fix/defer decision
+
+---
+
+## 7. Traceability Status
+
+| Protocol | Level | Status | Iteration | Notes |
+|----------|-------|--------|-----------|-------|
+| `spec_code` | core | partial | 037 | 2/7 claims fully verified, 4 partially verified, 1 not verified (F-012) |
+| `checklist_evidence` | core | partial | 038 | 3/6 items verified, 2 not verified (F-013, F-014), 1 verified with notes |
+| `skill_agent` | overlay | notApplicable | - | No skill/agent contracts in scope |
+| `agent_cross_runtime` | overlay | notApplicable | - | No cross-runtime agents in scope |
+| `feature_catalog_code` | overlay | notApplicable | - | |
+| `playbook_capability` | overlay | notApplicable | - | |
+
+---
+
+## 8. Deferred Items
+
+- F-019 through F-029 (11 P2 advisories) are non-blocking but recommended for a follow-on cleanup pass
+- The DB rebind split-brain issue (F-022) is low probability but architecturally concerning if multi-DB deployments are planned
+- Lineage resolution boilerplate (F-028) and rollback error suppression (F-029) are maintainability items that increase future regression risk
+
+---
+
+## 9. Audit Appendix
+
+### Convergence Summary
+- Iterations: 10 (1 inventory + 3 correctness + 2 security + 2 traceability + 2 maintainability)
+- Stop reason: max_iterations_reached
+- Dimensions covered: 4 of 4 (correctness, security, traceability, maintainability)
+- Agents used: 2 GPT-5.4 (codex exec), 7 Claude Sonnet, 1 orchestrator
+
+### Coverage Summary
+| Dimension | Iterations | Files Reviewed | Findings |
+|-----------|-----------|----------------|----------|
+| Correctness | 3 (032-034) | 19 | P0=0, P1=10, P2=2 |
+| Security | 2 (035-036) | 11 | P0=1, P1=3, P2=3 |
+| Traceability | 2 (037-038) | 12 | P0=0, P1=3, P2=5 |
+| Maintainability | 2 (039-040) | 8+ | P0=0, P1=2, P2=2 |
+
+### Cross-Reference Appendix
+
+#### Core Protocols
+- **spec_code**: Implementation summary claims vs actual code. 7 claims checked; 2 fully verified (SHA-256 prefix, per-path traversal), 4 partially verified (file attribution imprecise), 1 not verified (threshold units).
+- **checklist_evidence**: 6 key items checked; 3 verified, 2 have evidence mismatches (finding count, test count), 1 has scope notes.
+
+#### Overlay Protocols
+- Not applicable for this review target (no skill/agent/catalog/playbook contracts in scope).
+
+### Sources Reviewed
+- 5 spec artifacts (952 LOC)
+- 30 prior iteration files
+- 1 prior review report (209 LOC)
+- 27 MCP server source files (21,743 LOC)
+- 14 scratch work files
+- 4 memory files
+
+### Iteration Artifacts
+Iterations 031-040 in `review/iterations/`.
+Prior review (v1) iterations 001-030 also in `review/iterations/`.
+Original report backed up as `review/review-report-v1-original-audit.md`.

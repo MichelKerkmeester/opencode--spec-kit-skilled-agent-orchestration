@@ -15,10 +15,12 @@
 //   - TypeScript strict mode; zero external runtime deps beyond better-sqlite3
 
 import type Database from 'better-sqlite3';
+import { clearGraphSignalsCache } from '../graph/graph-signals';
 import { createLogger } from '../utils/logger';
 import { extractHeadings, extractAliases, extractRelationPhrases, extractCodeFenceTechnologies,
   createTypedEdges as _createTypedEdgesWithCallback, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor';
 import type { DeterministicEdge, WriteEdgePayload } from './deterministic-extractor';
+import { clearDegreeCacheForDb } from './graph-search-fn';
 
 // Re-export deterministic-extractor for backward compatibility
 export { extractHeadings, extractAliases, extractRelationPhrases, extractCodeFenceTechnologies, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor';
@@ -30,6 +32,20 @@ export function createTypedEdges(db: Database.Database, memoryId: number, edges:
 }
 
 const logger = createLogger('GraphLifecycle');
+
+function invalidateGraphCaches(db: Database.Database): void {
+  try {
+    clearDegreeCacheForDb(db);
+  } catch (_error: unknown) {
+    // Degree cache invalidation is best-effort for graph lifecycle mutations.
+  }
+
+  try {
+    clearGraphSignalsCache();
+  } catch (_error: unknown) {
+    // Graph signals cache invalidation is best-effort for graph lifecycle mutations.
+  }
+}
 
 // ───────────────────────────────────────────────────────────────
 // 1. FEATURE FLAGS
@@ -289,6 +305,9 @@ export function recomputeLocal(
       }
     });
     runTransaction();
+    if (updated > 0) {
+      invalidateGraphCaches(db);
+    }
 
     return updated;
   } catch (error: unknown) {

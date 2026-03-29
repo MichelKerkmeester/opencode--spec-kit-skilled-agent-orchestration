@@ -3,6 +3,7 @@
 // ComputeCausalDepthScores, applyGraphSignals, clearGraphSignalsCache
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
+import * as corrections from '../lib/learning/corrections';
 import {
   snapshotDegrees,
   computeMomentum,
@@ -12,6 +13,9 @@ import {
   clearGraphSignalsCache,
   __testables,
 } from '../lib/graph/graph-signals.js';
+import { computeDegreeScores } from '../lib/search/graph-search-fn';
+import { recomputeLocal } from '../lib/search/graph-lifecycle';
+import { delete_memory_from_database } from '../lib/search/vector-index-mutations';
 
 // TEST HELPERS
 function createTestDb(): Database.Database {
@@ -21,7 +25,12 @@ function createTestDb(): Database.Database {
       id INTEGER PRIMARY KEY,
       spec_folder TEXT,
       file_path TEXT,
-      title TEXT
+      title TEXT,
+      importance_tier TEXT DEFAULT 'normal',
+      stability REAL DEFAULT 1.0,
+      difficulty REAL DEFAULT 5.0,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE causal_edges (
@@ -31,6 +40,7 @@ function createTestDb(): Database.Database {
       relation TEXT NOT NULL,
       strength REAL DEFAULT 1.0,
       evidence TEXT,
+      extracted_at TEXT DEFAULT CURRENT_TIMESTAMP,
       created_by TEXT DEFAULT 'manual',
       last_accessed TEXT
     );
@@ -44,6 +54,18 @@ function createTestDb(): Database.Database {
     );
   `);
   return db;
+}
+
+function insertMemory(
+  db: Database.Database,
+  memoryId: number,
+  title = `Memory ${memoryId}`,
+  stability = 1.0,
+): void {
+  db.prepare(`
+    INSERT INTO memory_index (id, spec_folder, file_path, title, stability)
+    VALUES (?, 'specs/001-test', ?, ?, ?)
+  `).run(memoryId, `memory-${memoryId}.md`, title, stability);
 }
 
 /** Insert a causal edge into the test DB. */
@@ -71,6 +93,28 @@ function insertSnapshot(
     INSERT OR REPLACE INTO degree_snapshots (memory_id, degree_count, snapshot_date)
     VALUES (?, ?, ?)
   `).run(memoryId, degreeCount, snapshotDate);
+}
+
+function seedReferenceDegreePeak(db: Database.Database): void {
+  for (const memoryId of [4, 5, 6, 7]) {
+    insertMemory(db, memoryId);
+  }
+
+  insertEdge(db, 4, 5);
+  insertEdge(db, 6, 5);
+  insertEdge(db, 5, 7);
+}
+
+function populateGraphSignalCaches(db: Database.Database, memoryIds: number[]): void {
+  computeMomentumScores(db, memoryIds);
+  computeCausalDepthScores(db, memoryIds);
+  expect(__testables.momentumCache.size).toBeGreaterThan(0);
+  expect(__testables.depthCache.size).toBeGreaterThan(0);
+}
+
+function expectGraphSignalCachesCleared(): void {
+  expect(__testables.momentumCache.size).toBe(0);
+  expect(__testables.depthCache.size).toBe(0);
 }
 
 // TESTS
@@ -642,6 +686,112 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       clearGraphSignalsCache();
       expect(__testables.momentumCache.size).toBe(0);
       expect(__testables.depthCache.size).toBe(0);
+    });
+  });
+
+  describe('cache invalidation after causal edge mutations', () => {
+    it('invalidates graph and degree caches after memory deletion removes causal edges', () => {
+      for (const memoryId of [1, 2, 3]) {
+        insertMemory(db, memoryId);
+      }
+      seedReferenceDegreePeak(db);
+
+      insertEdge(db, 1, 2);
+      insertEdge(db, 3, 1);
+
+      const sevenDaysAgo = db
+        .prepare("SELECT date('now', '-7 days') AS d")
+        .get() as { d: string };
+      insertSnapshot(db, 1, 0, sevenDaysAgo.d);
+
+      populateGraphSignalCaches(db, [1, 2, 3, 4, 5, 6, 7]);
+      const degreeBefore = computeDegreeScores(db, [1]).get('1') ?? 0;
+      const momentumBefore = computeMomentumScores(db, [1]).get(1) ?? 0;
+
+      const deleted = delete_memory_from_database(db, 3);
+
+      expect(deleted).toBe(true);
+      expectGraphSignalCachesCleared();
+
+      const momentumAfter = computeMomentumScores(db, [1]).get(1) ?? 0;
+      const degreeAfter = computeDegreeScores(db, [1]).get('1') ?? 0;
+
+      expect(momentumBefore).toBe(2);
+      expect(momentumAfter).toBe(1);
+      expect(degreeAfter).toBeLessThan(degreeBefore);
+    });
+
+    it('invalidates graph and degree caches when correction edges are added and removed', () => {
+      insertMemory(db, 1, 'Original memory', 10);
+      insertMemory(db, 2, 'Correction memory', 8);
+      insertMemory(db, 3, 'Linked memory', 4);
+      seedReferenceDegreePeak(db);
+
+      insertEdge(db, 1, 3);
+
+      const sevenDaysAgo = db
+        .prepare("SELECT date('now', '-7 days') AS d")
+        .get() as { d: string };
+      insertSnapshot(db, 1, 0, sevenDaysAgo.d);
+
+      corrections.init(db);
+
+      populateGraphSignalCaches(db, [1, 2, 3, 4, 5, 6, 7]);
+      const degreeBefore = computeDegreeScores(db, [1]).get('1') ?? 0;
+      const momentumBefore = computeMomentumScores(db, [1]).get(1) ?? 0;
+
+      const recorded = corrections.recordCorrection({
+        original_memory_id: 1,
+        correction_memory_id: 2,
+        correction_type: 'superseded',
+        reason: 'Newer memory supersedes the original',
+        corrected_by: 'test',
+      });
+
+      expect(recorded.success).toBe(true);
+      expectGraphSignalCachesCleared();
+
+      const momentumAfterInsert = computeMomentumScores(db, [1]).get(1) ?? 0;
+      const degreeAfterInsert = computeDegreeScores(db, [1]).get('1') ?? 0;
+
+      expect(momentumBefore).toBe(1);
+      expect(momentumAfterInsert).toBe(2);
+      expect(degreeAfterInsert).toBeGreaterThan(degreeBefore);
+
+      populateGraphSignalCaches(db, [1, 2, 3, 4, 5, 6, 7]);
+
+      const undone = corrections.undoCorrection(Number(recorded.correction_id));
+
+      expect(undone.success).toBe(true);
+      expectGraphSignalCachesCleared();
+
+      const momentumAfterUndo = computeMomentumScores(db, [1]).get(1) ?? 0;
+      const degreeAfterUndo = computeDegreeScores(db, [1]).get('1') ?? 0;
+
+      expect(momentumAfterUndo).toBe(1);
+      expect(degreeAfterUndo).toBeCloseTo(degreeBefore, 5);
+    });
+
+    it('invalidates graph and degree caches after local graph lifecycle strength updates', () => {
+      for (const memoryId of [1, 2, 3]) {
+        insertMemory(db, memoryId);
+      }
+      seedReferenceDegreePeak(db);
+
+      insertEdge(db, 1, 2, 'caused', 0.5);
+      insertEdge(db, 3, 2, 'caused', 0.5);
+
+      populateGraphSignalCaches(db, [1, 2, 3, 4, 5, 6, 7]);
+      const degreeBefore = computeDegreeScores(db, [2]).get('2') ?? 0;
+
+      const updated = recomputeLocal(db, ['2']);
+
+      expect(updated).toBeGreaterThan(0);
+      expectGraphSignalCachesCleared();
+
+      const degreeAfter = computeDegreeScores(db, [2]).get('2') ?? 0;
+
+      expect(degreeAfter).toBeGreaterThan(degreeBefore);
     });
   });
 

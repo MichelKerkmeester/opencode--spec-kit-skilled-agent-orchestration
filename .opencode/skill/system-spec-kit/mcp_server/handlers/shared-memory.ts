@@ -143,10 +143,27 @@ export function resolveAdminActor(
 function validateSharedCallerIdentity(
   args: SharedCallerAuthArgs,
 ): SharedAdminActor {
+  const userIdProvided = typeof args.actorUserId === 'string';
+  const agentIdProvided = typeof args.actorAgentId === 'string';
   const normalizedUserId = typeof args.actorUserId === 'string' ? args.actorUserId.trim() : '';
   const normalizedAgentId = typeof args.actorAgentId === 'string' ? args.actorAgentId.trim() : '';
+  const hasBlankUser = userIdProvided && normalizedUserId.length === 0;
+  const hasBlankAgent = agentIdProvided && normalizedAgentId.length === 0;
   const hasUser = normalizedUserId.length > 0;
   const hasAgent = normalizedAgentId.length > 0;
+
+  if (hasBlankUser || hasBlankAgent) {
+    throwSharedMemoryAuthError(
+      'Actor identities must be non-empty, non-whitespace strings.',
+      createCallerAuthErrorResponse({
+        tool: args.tool,
+        error: 'Actor identities must be non-empty, non-whitespace strings.',
+        code: 'E_VALIDATION',
+        reason: 'actor_identity_blank',
+        hint: 'Provide exactly one non-empty actorUserId or actorAgentId value.',
+      }),
+    );
+  }
 
   if (hasUser && hasAgent) {
     throwSharedMemoryAuthError(
@@ -203,6 +220,12 @@ export function validateCallerAuth(
     throwSharedMemoryAuthError('Shared-memory admin validation failed.', adminResult.response);
   }
 
+  // SECURITY: Actor IDs are caller-supplied and not cryptographically bound to
+  // an authenticated session. In untrusted environments, wrap this handler
+  // behind authenticated transport middleware.
+  // Shared-memory tools do not currently receive a server-minted sessionId or
+  // transport principal, so the trusted-session validation used by
+  // memory_context/memory_match_triggers cannot be wired here yet.
   const actor = validateSharedCallerIdentity(args);
 
   return {

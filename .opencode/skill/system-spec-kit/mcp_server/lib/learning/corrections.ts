@@ -3,6 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // LEARNING: CORRECTIONS TRACKING
 import type Database from 'better-sqlite3';
+import { clearGraphSignalsCache } from '../graph/graph-signals';
+import { clearDegreeCacheForDb } from '../search/graph-search-fn';
 
 /* ───────────────────────────────────────────────────────────────
    TYPE DEFINITIONS
@@ -184,6 +186,20 @@ const MAX_CORRECTIONS_HISTORY: number = 10;
 ──────────────────────────────────────────────────────────────── */
 
 let db: Database.Database | null = null;
+
+function invalidateGraphCaches(database: Database.Database): void {
+  try {
+    clearDegreeCacheForDb(database);
+  } catch (_error: unknown) {
+    // Degree cache invalidation is best-effort for correction edge mutations.
+  }
+
+  try {
+    clearGraphSignalsCache();
+  } catch (_error: unknown) {
+    // Graph signals cache invalidation is best-effort for correction edge mutations.
+  }
+}
 
 function get_error_message(error: unknown): string {
   if (error instanceof Error) {
@@ -495,6 +511,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
           relation,
           edgeEvidence
         );
+        invalidateGraphCaches(db!);
       }
     } catch (e: unknown) {
       // Causal edge creation is optional, don't fail if it errors
@@ -612,6 +629,7 @@ export function undo_correction(correction_id: number): UndoResult {
           undoRelation,
           `${ownedEdgeEvidencePrefix}%`
         );
+        invalidateGraphCaches(db!);
 
         if ((deleteResult as { changes: number }).changes === 0) {
           const legacyEdgeEvidence = build_legacy_edge_evidence(correction.correction_type, correction.reason);
@@ -628,6 +646,7 @@ export function undo_correction(correction_id: number): UndoResult {
             undoRelation,
             legacyEdgeEvidence
           );
+          invalidateGraphCaches(db!);
 
           if ((legacyDeleteResult as { changes: number }).changes === 0) {
             console.warn(`[corrections] undo: no causal edge found for (${correction.correction_memory_id} → ${correction.original_memory_id}, relation=${undoRelation})`);

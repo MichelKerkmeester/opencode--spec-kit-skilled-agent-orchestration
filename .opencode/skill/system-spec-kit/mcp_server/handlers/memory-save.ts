@@ -360,24 +360,81 @@ function captureAtomicSaveOriginalState(filePath: string): { existed: boolean; c
   };
 }
 
+function getAtomicSaveErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function deleteAtomicSaveFile(filePath: string): { deleted: boolean; existed: boolean; error?: string } {
+  const existed = fs.existsSync(filePath);
+  if (!existed) {
+    return { deleted: false, existed: false };
+  }
+
+  try {
+    fs.unlinkSync(filePath);
+    return { deleted: true, existed: true };
+  } catch (error: unknown) {
+    return {
+      deleted: false,
+      existed: true,
+      error: getAtomicSaveErrorMessage(error),
+    };
+  }
+}
+
 function restoreAtomicSaveOriginalState(
   filePath: string,
   originalState: { existed: boolean; content: string | null },
-): boolean {
+): { restored: boolean; error?: string } {
   try {
     if (!originalState.existed) {
-      return !fs.existsSync(filePath) || transactionManager.deleteFileIfExists(filePath);
+      const deleteResult = deleteAtomicSaveFile(filePath);
+      if (!deleteResult.existed || deleteResult.deleted) {
+        return { restored: true };
+      }
+      return {
+        restored: false,
+        error: deleteResult.error ?? `Failed to remove promoted file at ${filePath}`,
+      };
     }
 
     if (typeof originalState.content !== 'string') {
-      return false;
+      return { restored: false, error: 'Original file content is unavailable for rollback' };
     }
 
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, originalState.content, 'utf-8');
-    return true;
-  } catch {
-    return false;
+    return { restored: true };
+  } catch (error: unknown) {
+    return {
+      restored: false,
+      error: getAtomicSaveErrorMessage(error),
+    };
+  }
+}
+
+function cleanupAtomicSavePendingFile(
+  pendingPath: string,
+): { cleaned: boolean; existed: boolean; error?: string } {
+  try {
+    const deleteResult = deleteAtomicSaveFile(pendingPath);
+    if (!deleteResult.existed || deleteResult.deleted) {
+      return {
+        cleaned: true,
+        existed: deleteResult.existed,
+      };
+    }
+    return {
+      cleaned: false,
+      existed: deleteResult.existed,
+      error: deleteResult.error ?? `Failed to remove pending file at ${pendingPath}`,
+    };
+  } catch (error: unknown) {
+    return {
+      cleaned: false,
+      existed: true,
+      error: getAtomicSaveErrorMessage(error),
+    };
   }
 }
 
@@ -389,6 +446,7 @@ async function processPreparedMemory(
     asyncEmbedding?: boolean;
     persistQualityLoopContent?: boolean;
     refreshFromDiskAfterLock?: boolean;
+    specFolderLockAlreadyHeld?: boolean;
     scope?: MemoryScopeMatch;
     qualityGateMode?: 'enforce' | 'warn-only';
   } = {},
@@ -398,6 +456,7 @@ async function processPreparedMemory(
     asyncEmbedding = false,
     persistQualityLoopContent = true,
     refreshFromDiskAfterLock = false,
+    specFolderLockAlreadyHeld = false,
     scope = {},
     qualityGateMode = 'enforce',
   } = options;
@@ -460,7 +519,7 @@ async function processPreparedMemory(
     }
   }
 
-  return withSpecFolderLock(prepared.parsed.specFolder, async () => {
+  const runWithinSpecFolderLock = async (): Promise<IndexResult> => {
     const database = requireDb();
     const activePrepared = refreshFromDiskAfterLock
       ? prepareParsedMemoryForIndexing(memoryParser.parseMemoryFile(filePath), database)
@@ -785,7 +844,13 @@ async function processPreparedMemory(
       enrichmentStatus,
       filePath,
     }), finalizeWarning);
-  });
+  };
+
+  if (specFolderLockAlreadyHeld) {
+    return runWithinSpecFolderLock();
+  }
+
+  return withSpecFolderLock(prepared.parsed.specFolder, runWithinSpecFolderLock);
 }
 
 /* --- 8. INDEX MEMORY FILE --- */
@@ -1166,10 +1231,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
 /**
  * Save memory content to disk with retry + rollback guarded indexing.
  *
- * The file write promotes a pending file before indexing so the database never
- * commits a new memory row while the final path still points at stale content.
- * If indexing later fails, the original file content is restored before the
- * error is returned.
+ * The file write promotes a pending file while holding the per-spec-folder
+ * mutex so concurrent saves cannot overwrite each other between disk
+ * promotion and indexing. If indexing later fails, the original file content
+ * is restored before the error is returned and before the lock is released.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
   const { file_path, content } = params;
@@ -1184,9 +1249,21 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   let indexError: Error | null = null;
   let validationError: ReturnType<typeof memoryParser.validateParsedMemory> | null = null;
   let restoredOriginalAfterFailure = false;
+  let errorMetadata: Record<string, string> | null = null;
+  const mergeErrorMetadata = (entry: Record<string, string> | null): void => {
+    if (!entry) {
+      return;
+    }
+    errorMetadata = {
+      ...(errorMetadata ?? {}),
+      ...entry,
+    };
+  };
   const maxIndexAttempts = 2;
   for (let attempt = 1; attempt <= maxIndexAttempts; attempt++) {
     let promotedToFinalPath = false;
+    let handledFailureWhileLocked = false;
+    let rollbackSucceededAfterRejectedSave = false;
     try {
       const prepared = prepareParsedMemoryForIndexing(
         memoryParser.parseMemoryContent(file_path, content),
@@ -1207,21 +1284,55 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         ? prepared.qualityLoopResult.fixedContent
         : content;
 
-      fs.mkdirSync(path.dirname(pendingPath), { recursive: true });
-      fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
-      fs.renameSync(pendingPath, file_path);
-      promotedToFinalPath = true;
+      indexResult = await withSpecFolderLock(prepared.parsed.specFolder, async () => {
+        try {
+          fs.mkdirSync(path.dirname(pendingPath), { recursive: true });
+          fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
+          fs.renameSync(pendingPath, file_path);
+          promotedToFinalPath = true;
 
-      indexResult = await processPreparedMemory(prepared, file_path, {
-        force,
-        asyncEmbedding: true,
-        persistQualityLoopContent: false,
+          const lockedIndexResult = await processPreparedMemory(prepared, file_path, {
+            force,
+            asyncEmbedding: true,
+            persistQualityLoopContent: false,
+            specFolderLockAlreadyHeld: true,
+          });
+
+          if (lockedIndexResult.status === 'rejected') {
+            handledFailureWhileLocked = true;
+            const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
+            rollbackSucceededAfterRejectedSave = rollbackResult.restored;
+            if (!rollbackResult.restored && rollbackResult.error) {
+              mergeErrorMetadata({ rollbackError: rollbackResult.error });
+            }
+          }
+
+          return lockedIndexResult;
+        } catch (lockedError: unknown) {
+          handledFailureWhileLocked = true;
+          const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
+          if (!pendingCleanupResult.cleaned && pendingCleanupResult.error) {
+            mergeErrorMetadata({ pendingCleanupError: pendingCleanupResult.error });
+          }
+          if (promotedToFinalPath) {
+            const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
+            restoredOriginalAfterFailure = rollbackResult.restored;
+            if (!rollbackResult.restored && rollbackResult.error) {
+              mergeErrorMetadata({ rollbackError: rollbackResult.error });
+            }
+            if (!restoredOriginalAfterFailure) {
+              const promoteMessage = lockedError instanceof Error ? lockedError.message : String(lockedError);
+              throw new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
+            }
+          }
+          throw lockedError;
+        }
       });
       if (indexResult.status === 'error') {
         throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
       }
       if (indexResult.status === 'rejected') {
-        const rollbackSucceeded = restoreAtomicSaveOriginalState(file_path, originalState);
+        const rollbackSucceeded = rollbackSucceededAfterRejectedSave;
         return {
           success: false,
           filePath: file_path,
@@ -1240,18 +1351,28 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
               : 'Original file rollback failed after rejection; manual recovery may be required',
           ],
           ...(rollbackSucceeded ? {} : { error: 'Original file rollback failed after rejected save' }),
+          ...(rollbackSucceeded || !errorMetadata ? {} : { errorMetadata }),
         };
       }
       indexError = null;
       break;
     } catch (err: unknown) {
-      transactionManager.deleteFileIfExists(pendingPath);
-      if (promotedToFinalPath) {
-        restoredOriginalAfterFailure = restoreAtomicSaveOriginalState(file_path, originalState);
-        if (!restoredOriginalAfterFailure) {
-          const promoteMessage = err instanceof Error ? err.message : String(err);
-          indexError = new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
-          break;
+      if (!handledFailureWhileLocked) {
+        const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
+        if (!pendingCleanupResult.cleaned && pendingCleanupResult.error) {
+          mergeErrorMetadata({ pendingCleanupError: pendingCleanupResult.error });
+        }
+        if (promotedToFinalPath) {
+          const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
+          restoredOriginalAfterFailure = rollbackResult.restored;
+          if (!rollbackResult.restored && rollbackResult.error) {
+            mergeErrorMetadata({ rollbackError: rollbackResult.error });
+          }
+          if (!restoredOriginalAfterFailure) {
+            const promoteMessage = err instanceof Error ? err.message : String(err);
+            indexError = new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
+            break;
+          }
         }
       }
       indexError = err instanceof Error ? err : new Error(String(err));
@@ -1273,9 +1394,15 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   }
 
   if (indexError || !indexResult) {
-    const pendingCleanupRemoved = transactionManager.deleteFileIfExists(pendingPath);
-    const rollbackSucceeded = restoredOriginalAfterFailure || pendingCleanupRemoved || !fs.existsSync(pendingPath);
+    const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
+    const rollbackSucceeded = restoredOriginalAfterFailure || pendingCleanupResult.cleaned;
     const rollbackError = rollbackSucceeded ? '' : ' (rollback failed)';
+    const finalErrorMetadata = {
+      ...(errorMetadata ?? {}),
+      ...(!pendingCleanupResult.cleaned && pendingCleanupResult.error
+        ? { pendingCleanupError: pendingCleanupResult.error }
+        : {}),
+    };
 
     return {
       success: false,
@@ -1294,6 +1421,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         'Retry memory_save({ filePath, force: true }) once dependencies are healthy',
       ],
       error: `Indexing failed after retry${rollbackError}: ${indexError?.message ?? 'unknown'}`,
+      ...(Object.keys(finalErrorMetadata).length > 0 ? { errorMetadata: finalErrorMetadata } : {}),
     };
   }
 

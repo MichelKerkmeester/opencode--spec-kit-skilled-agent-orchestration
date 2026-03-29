@@ -109,6 +109,7 @@ export interface AtomicSaveResult {
   success: boolean;
   filePath: string;
   error?: string;
+  errorMetadata?: Record<string, string>;
   dbCommitted?: boolean;
   status?: string;
   id?: number;

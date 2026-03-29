@@ -935,6 +935,30 @@ describe('P1 fallback threshold and channel gating regressions', () => {
     expect(seenThresholds).toEqual([30, 10]);
   });
 
+  it('T020: collectRawCandidates adaptive retry tags retry-stage candidates with fallbackRetry', async () => {
+    process.env.SPECKIT_SEARCH_FALLBACK = 'false';
+    const thresholdAwareVectorSearch: VectorSearchFn = (_embedding, options = {}) => {
+      if ((options.minSimilarity as number) <= 17) {
+        return [{ id: 777, similarity: 42, content: 'adaptive fallback candidate' }];
+      }
+      return [];
+    };
+
+    hybridSearch.init(createMockDb(), thresholdAwareVectorSearch, null);
+
+    const results = await hybridSearch.collectRawCandidates(
+      'authentication',
+      new Float32Array(384).fill(0.1),
+      { limit: 5, useFts: false, useBm25: false, useGraph: false }
+    );
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({
+      id: 777,
+      fallbackRetry: true,
+    });
+  });
+
   it('T021: disabled lexical channels stay disabled through the fallback chain', async () => {
     process.env.SPECKIT_SEARCH_FALLBACK = 'false';
     const emptyVectorSearch: VectorSearchFn = () => [];
@@ -1224,6 +1248,41 @@ describe('P1 post-ranking truncation and token budget regressions', () => {
 
     expect(truncated.truncated).toBe(true);
     expect(truncated.results.map((result) => result.id)).toEqual([2]);
+  });
+
+  it('T025: truncateToBudget keeps a summarized top result when every candidate exceeds the budget', () => {
+    const oversizedTop = {
+      id: 1,
+      score: 0.95,
+      source: 'vector',
+      title: 'Oversized top match',
+      content: 'top '.repeat(6000),
+      traceMetadata: {
+        stage4: { debug: 'a'.repeat(4000) },
+      },
+    } as HybridSearchResult;
+    const oversizedSecond = {
+      id: 2,
+      score: 0.9,
+      source: 'vector',
+      title: 'Oversized secondary match',
+      content: 'second '.repeat(5000),
+      traceMetadata: {
+        stage4: { debug: 'b'.repeat(3000) },
+      },
+    } as HybridSearchResult;
+
+    const truncated = hybridSearch.truncateToBudget([oversizedSecond, oversizedTop], 50, {
+      includeContent: true,
+      queryId: 'p1-token-fallback',
+    });
+
+    expect(truncated.truncated).toBe(true);
+    expect(truncated.results).toHaveLength(1);
+    expect(truncated.results[0]?.id).toBe(1);
+    expect(truncated.results[0]?.content).toContain('[Summary] Oversized top match:');
+    expect(truncated.results[0]?._summarized).toBe(true);
+    expect(truncated.overflow?.truncatedToCount).toBe(1);
   });
 });
 

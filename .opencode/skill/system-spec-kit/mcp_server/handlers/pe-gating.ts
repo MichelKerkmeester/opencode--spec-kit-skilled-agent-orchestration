@@ -76,36 +76,62 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
   };
 
   try {
-    // Fetch extra candidates then post-filter by governance scope
-    const results = vectorIndex.vectorSearch(embedding, {
-      limit: limit * 3, // Over-fetch to compensate for post-filter reduction
-      specFolder: specFolder,
-      minSimilarity: 50,
-      includeConstitutional: false
-    });
+    const scopedMatches: SimilarMemory[] = [];
+    const seenCandidateIds = new Set<number>();
+    const seenScopedIds = new Set<number>();
+    let fetchLimit = Math.max(limit * 3, limit);
 
-    // Post-filter by governance scope to prevent cross-tenant/session PE decisions
-    const scopeFiltered = results.filter((r: Record<string, unknown>) => {
-      if (!matchesScopedValue(tenantId, r.tenant_id)) return false;
-      if (!matchesScopedValue(userId, r.user_id)) return false;
-      if (!matchesScopedValue(agentId, r.agent_id)) return false;
-      // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
-      if (!matchesScopedValue(sessionId, r.session_id)) return false;
-      if (!matchesScopedValue(sharedSpaceId, r.shared_space_id)) return false;
-      return true;
-    }).slice(0, limit);
+    while (scopedMatches.length < limit) {
+      const previousCandidateCount = seenCandidateIds.size;
+      const results = vectorIndex.vectorSearch(embedding, {
+        limit: fetchLimit,
+        specFolder: specFolder,
+        minSimilarity: 50,
+        includeConstitutional: false
+      });
 
-    return scopeFiltered.map((r: Record<string, unknown>) => {
-      const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;
-      return {
-        id: r.id as number,
-        similarity: Number.isFinite(rawSim) ? Math.min(1, Math.max(0, rawSim)) : 0,
-        content: (r.content_text as string) || (r.content as string) || '',
-        stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-        file_path: r.file_path as string,
-      };
-    });
+      for (const r of results) {
+        if (typeof r.id === 'number') {
+          seenCandidateIds.add(r.id);
+        }
+
+        if (!matchesScopedValue(tenantId, r.tenant_id)) continue;
+        if (!matchesScopedValue(userId, r.user_id)) continue;
+        if (!matchesScopedValue(agentId, r.agent_id)) continue;
+        // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
+        if (!matchesScopedValue(sessionId, r.session_id)) continue;
+        if (!matchesScopedValue(sharedSpaceId, r.shared_space_id)) continue;
+        if (typeof r.id === 'number' && seenScopedIds.has(r.id)) continue;
+
+        const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;
+        scopedMatches.push({
+          id: r.id as number,
+          similarity: Number.isFinite(rawSim) ? Math.min(1, Math.max(0, rawSim)) : 0,
+          content: (r.content_text as string) || (r.content as string) || '',
+          stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+          difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+          file_path: r.file_path as string,
+        });
+
+        if (typeof r.id === 'number') {
+          seenScopedIds.add(r.id);
+        }
+
+        if (scopedMatches.length >= limit) {
+          break;
+        }
+      }
+
+      const candidatesExhausted = results.length < fetchLimit;
+      const sawNewCandidates = seenCandidateIds.size > previousCandidateCount;
+      if (candidatesExhausted || !sawNewCandidates) {
+        break;
+      }
+
+      fetchLimit *= 2;
+    }
+
+    return scopedMatches.slice(0, limit);
   } catch (err: unknown) {
     const message = toErrorMessage(err);
     console.warn('[PE-Gate] Vector search failed:', message);

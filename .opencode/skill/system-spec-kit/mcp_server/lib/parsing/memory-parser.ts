@@ -843,6 +843,11 @@ export function validateAnchors(content: string): AnchorValidation {
 
 /** Extract content from anchors */
 export function extractAnchors(content: string): Record<string, string> {
+  const anchorValidation = validateAnchors(content);
+  if (!anchorValidation.valid) {
+    return {};
+  }
+
   const anchors: Record<string, string> = {};
 
   const anchorRegex = /<!--\s*(?:ANCHOR|anchor):\s*([a-zA-Z0-9][a-zA-Z0-9-/]*)\s*-->/gi;

@@ -211,6 +211,14 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       expect(response.isError).toBe(true);
       expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_TENANT_REQUIRED');
     });
+
+    it('T521-C9: whitespace-only tenantId is rejected when actor scope is provided', async () => {
+      await expect(handler.handleCheckpointCreate({
+        name: 'blank-tenant',
+        tenantId: '   ',
+        userId: 'user-1',
+      })).rejects.toThrow(/tenantId must be a non-empty string/i);
+    });
   });
 
   // ───────────────────────────────────────────────────────────────

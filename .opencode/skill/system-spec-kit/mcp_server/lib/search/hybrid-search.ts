@@ -692,6 +692,89 @@ function applyAllowedChannelOverrides(
   };
 }
 
+type FallbackPlanKind = 'adaptive' | 'tiered';
+type FallbackStageName = 'primary' | 'retry';
+
+interface FallbackPlanStage {
+  stage: FallbackStageName;
+  options: HybridSearchOptions;
+  results: HybridSearchResult[];
+  trigger?: 'empty' | DegradationTrigger;
+}
+
+interface FallbackPlanExecution {
+  allowedChannels: Set<ChannelName>;
+  stages: FallbackPlanStage[];
+}
+
+function markFallbackRetry(results: HybridSearchResult[]): HybridSearchResult[] {
+  for (const result of results) {
+    (result as Record<string, unknown>).fallbackRetry = true;
+  }
+
+  return results;
+}
+
+async function executeFallbackPlan(
+  query: string,
+  embedding: Float32Array | number[] | null,
+  options: HybridSearchOptions = {},
+  planKind: FallbackPlanKind,
+  overrides: Partial<HybridSearchOptions> = {}
+): Promise<FallbackPlanExecution> {
+  const allowedChannels = getAllowedChannels(options);
+  const stages: FallbackPlanStage[] = [];
+
+  const primaryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+    minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
+    ...overrides,
+  });
+  const primaryResults = await hybridSearchEnhanced(query, embedding, primaryOptions);
+  stages.push({
+    stage: 'primary',
+    options: primaryOptions,
+    results: primaryResults,
+  });
+
+  if (planKind === 'tiered') {
+    const trigger = checkDegradation(primaryResults);
+    if (!trigger) {
+      return { allowedChannels, stages };
+    }
+
+    const retryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+      ...overrides,
+      minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
+      forceAllChannels: true,
+    });
+    const retryResults = await hybridSearchEnhanced(query, embedding, retryOptions);
+    stages.push({
+      stage: 'retry',
+      options: retryOptions,
+      results: retryResults,
+      trigger,
+    });
+    return { allowedChannels, stages };
+  }
+
+  const primaryMinSimilarity = primaryOptions.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY;
+  if (primaryResults.length === 0 && primaryMinSimilarity >= SECONDARY_FALLBACK_MIN_SIMILARITY) {
+    const retryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
+      ...overrides,
+      minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
+    });
+    const retryResults = await hybridSearchEnhanced(query, embedding, retryOptions);
+    stages.push({
+      stage: 'retry',
+      options: retryOptions,
+      results: retryResults.length > 0 ? markFallbackRetry(retryResults) : retryResults,
+      trigger: 'empty',
+    });
+  }
+
+  return { allowedChannels, stages };
+}
+
 // 11. HYBRID SEARCH
 
 /**
@@ -1471,52 +1554,25 @@ async function collectRawCandidates(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
-  const allowedChannels = getAllowedChannels(options);
+  const { allowedChannels, stages } = await executeFallbackPlan(
+    query,
+    embedding,
+    options,
+    isSearchFallbackEnabled() ? 'tiered' : 'adaptive',
+    { stopAfterFusion: true }
+  );
+
+  const primaryResults = stages[0]?.results ?? [];
+  const retryResults = stages[1]?.results ?? [];
 
   if (isSearchFallbackEnabled()) {
-    const tier1Options = applyAllowedChannelOverrides(options, allowedChannels, {
-      minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
-      stopAfterFusion: true,
-    });
-    let results = await hybridSearchEnhanced(query, embedding, tier1Options);
-    const tier1Trigger = checkDegradation(results);
-    if (!tier1Trigger) {
-      return applyResultLimit(results, options.limit);
-    }
-
-    const tier2Options: HybridSearchOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-      minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
-      forceAllChannels: true,
-      stopAfterFusion: true,
-    });
-    const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
-    results = mergeRawCandidateSets(results, tier2Results, options.limit);
-    if (results.length > 0) return results;
+    const mergedResults = retryResults.length > 0
+      ? mergeRawCandidateSets(primaryResults, retryResults, options.limit)
+      : primaryResults;
+    if (mergedResults.length > 0) return applyResultLimit(mergedResults, options.limit);
   } else {
-    const primaryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-      minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
-      stopAfterFusion: true,
-    });
-    let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
-
-    if (
-      results.length === 0
-      && (primaryOptions.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY) >= SECONDARY_FALLBACK_MIN_SIMILARITY
-    ) {
-      const fallbackOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-        minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
-        stopAfterFusion: true,
-      });
-      results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
-      if (results.length > 0) {
-        results = results.map((result) => ({
-          ...result,
-          fallbackRetry: true,
-        }));
-      }
-    }
-
-    if (results.length > 0) return applyResultLimit(results, options.limit);
+    const stagedResults = retryResults.length > 0 ? retryResults : primaryResults;
+    if (stagedResults.length > 0) return applyResultLimit(stagedResults, options.limit);
   }
 
   if (allowedChannels.has('fts')) {
@@ -1555,8 +1611,6 @@ async function searchWithFallback(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
-  const allowedChannels = getAllowedChannels(options);
-
   // PI-A2: Delegate to tiered fallback when flag is enabled
   if (isSearchFallbackEnabled()) {
     return searchWithFallbackTiered(query, embedding, options);
@@ -1566,24 +1620,15 @@ async function searchWithFallback(
   // Where no result exceeds the primary threshold — chosen empirically via eval.
   // P3-03 FIX: Use hybridSearchEnhanced (with RRF fusion) instead of
   // The naive hybridSearch that merges raw scores
-  const primaryOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-    minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
-  });
-  let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
-
-  // Two-pass adaptive fallback
-  if (results.length === 0 && (primaryOptions.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY) >= SECONDARY_FALLBACK_MIN_SIMILARITY) {
-    const fallbackOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-      minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
-    });
-    results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
-    if (results.length > 0) {
-      // Tag results with fallback metadata
-      for (const r of results) {
-        (r as Record<string, unknown>).fallbackRetry = true;
-      }
-    }
-  }
+  const { allowedChannels, stages } = await executeFallbackPlan(
+    query,
+    embedding,
+    options,
+    'adaptive'
+  );
+  const primaryResults = stages[0]?.results ?? [];
+  const retryResults = stages[1]?.results ?? [];
+  const results = retryResults.length > 0 ? retryResults : primaryResults;
 
   if (results.length > 0) return results;
 
@@ -2169,6 +2214,27 @@ function truncateToBudget(
     accepted.push(result);
     accumulated += tokens;
     if (accumulated >= effectiveBudget) break;
+  }
+
+  if (accepted.length === 0 && sorted.length > 0) {
+    const outputResult = includeContent
+      ? createSummaryFallback(sorted[0]!, effectiveBudget)
+      : sorted[0]!;
+    const overflow: OverflowLogEntry = {
+      queryId,
+      candidateCount: results.length,
+      totalTokens,
+      budgetLimit: effectiveBudget,
+      truncatedToCount: 1,
+      timestamp: new Date().toISOString(),
+    };
+
+    console.warn(
+      `[hybrid-search] Token budget overflow (top-result fallback): ` +
+      `${totalTokens} tokens > ${effectiveBudget} budget`
+    );
+
+    return { results: [outputResult], truncated: true, overflow };
   }
 
   const overflow: OverflowLogEntry = {

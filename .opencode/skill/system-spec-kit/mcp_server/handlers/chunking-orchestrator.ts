@@ -316,6 +316,7 @@ async function indexChunkedMemoryFile(
           childId = vectorIndex.indexMemoryDeferred({
             specFolder: parsed.specFolder,
             filePath,
+            anchorId: chunk.label,
             title: chunkTitle,
             triggerPhrases: [],
             importanceWeight,

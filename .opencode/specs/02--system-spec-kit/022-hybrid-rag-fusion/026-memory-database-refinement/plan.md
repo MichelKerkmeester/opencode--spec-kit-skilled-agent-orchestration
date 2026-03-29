@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Memory Database Refinement"
-description: "20-iteration deep-research --review audit plan for the Spec Kit Memory MCP server, covering save pipeline, transactions, causal graph, hybrid search, embeddings, chunking, lineage, schema, feature flags, parsing, checkpoints, shared memory, FSRS, reconsolidation, query routing, error handling, index scan, graph signals, eval framework, and cross-cutting concurrency."
+description: "30-iteration deep-research review audit + 4 fix sprints + P2 triage + meta-review for the Spec Kit Memory MCP server. 121 original findings fixed, 29 meta-review findings pending remediation in Phase 12."
 trigger_phrases:
   - "memory database refinement plan"
   - "deep research review plan"
@@ -28,7 +28,7 @@ contextType: "general"
 | **Testing** | Vitest, manual runtime probes |
 
 ### Overview
-This plan configures a 20-iteration `/spec_kit:deep-research:review:auto` run against the full `mcp_server/` surface. Each iteration reviews one dimension from the spec, produces P0/P1/P2 findings, and logs them to `review/iterations/iteration-NNN.md`. The final synthesis produces `review/review-report.md` with a ranked findings table.
+This plan covers the full lifecycle: a 30-iteration audit (20 primary + 10 deep dives), 4 fix sprints for 121 findings, P2 triage, deferred P2 fixes, a 10-iteration meta-review of fix quality, and Phase 12 remediation of 29 meta-review findings. Each review iteration produces P0/P1/P2 findings logged to `review/iterations/iteration-NNN.md`. Reports: `review/review-report-v1-original-audit.md` (original 121 findings) and `review/review-report.md` (v2 meta-review, 29 findings).
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,9 +42,13 @@ This plan configures a 20-iteration `/spec_kit:deep-research:review:auto` run ag
 - [x] Dependencies identified (CocoIndex MCP, repo DB)
 
 ### Definition of Done
-- [ ] All 20 iterations complete (or early convergence documented)
-- [ ] Final `review/review-report.md` exists with ranked findings
-- [ ] Each P0 finding has file path, code citation, and fix recommendation
+- [x] All 30 iterations complete (20 primary + 10 deep dives)
+- [x] Final `review/review-report-v1-original-audit.md` exists with ranked findings (121 total)
+- [x] Each P0 finding has file path, code citation, and fix recommendation
+- [x] All 5 P0 + 75 P1 findings fixed with tests passing
+- [x] P2 triage complete (22 fixed, 15 deferred then fixed, 3 rejected)
+- [x] 10-iteration meta-review complete with `review/review-report.md` (v2)
+- [x] Phase 12 meta-review remediation complete (1 P0, 17 P1, 11 P2)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,21 +60,22 @@ This plan configures a 20-iteration `/spec_kit:deep-research:review:auto` run ag
 Autonomous deep-research review loop with externalized state. Each iteration gets a fresh context window, reads the strategy and prior state, reviews one dimension, and appends findings to the JSONL state file.
 
 ### Key Components
-- **Review strategy** (`review/deep-research-strategy.md`): Maps 20 dimensions to iteration slots with priority ordering.
+- **Review strategy** (`review/deep-review-strategy.md`): Maps dimensions to iteration slots with priority ordering.
 - **State file** (`review/deep-research-state.jsonl`): Append-only log of iteration results, convergence signals, and findings counts.
-- **Iteration artifacts** (`review/iterations/iteration-NNN.md`): Per-iteration findings with severity, file paths, and fix recommendations.
-- **Final synthesis** (`review/review-report.md`): Ranked findings table grouped by severity and dimension.
+- **Iteration artifacts** (`review/iterations/iteration-NNN.md`): Per-iteration findings (001-030 original audit, 031-040 meta-review).
+- **Original audit report** (`review/review-report-v1-original-audit.md`): 121 findings from the 30-iteration audit.
+- **Meta-review report** (`review/review-report.md`): 29 findings from the 10-iteration meta-review (v2).
 
 ### Deep-Research Review Configuration
 
 | Parameter | Value |
 |-----------|-------|
 | **Mode** | `--review` |
-| **Iterations** | 20 |
+| **Iterations** | 30 (20 primary + 10 deep dives) |
 | **Execution** | `:auto` (autonomous) |
 | **Target** | `.opencode/skill/system-spec-kit/mcp_server/` |
 | **Spec folder** | `026-memory-database-refinement` |
-| **Convergence** | Disabled (force all 20 iterations for full coverage) |
+| **Convergence** | Disabled (force all iterations for full coverage) |
 
 ### Iteration-to-Dimension Mapping
 
@@ -109,15 +114,32 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 - [ ] Verify CocoIndex MCP is available for semantic code search
 
 ### Phase 2: Execute Review
-- [ ] Run `/spec_kit:deep-research:review:auto` with 20 iterations
-- [ ] Each iteration: read strategy, review assigned dimension, log findings to `review/iterations/iteration-NNN.md`, append state to JSONL
-- [ ] Monitor for early convergence (3+ consecutive clean iterations)
+- [x] Run 30 review iterations (20 primary + 10 deep dives)
+- [x] Each iteration: read strategy, review assigned dimension, log findings
+- [x] 121 findings classified: 5 P0, 75 P1, 41 P2
 
-### Phase 3: Synthesis
-- [ ] Generate `review/review-report.md` with ranked findings table
-- [ ] Classify all findings: P0 (blocker), P1 (required), P2 (improvement)
-- [ ] Identify test coverage gaps for each P0/P1 finding
-- [ ] Save context to memory
+### Phase 3: Synthesis + Fix Sprints
+- [x] Generate `review/review-report-v1-original-audit.md` with ranked findings
+- [x] Fix all 5 P0 blockers (Phase 2 in tasks.md)
+- [x] Fix all 75 P1 in 4 sprints (Phases 3-6 in tasks.md)
+- [x] Reconcile 24 cross-agent test failures (Phase 8)
+- [x] Triage 41 P2: 22 fixed, 16 deferred, 3 rejected (Phase 9)
+- [x] Fix all 15 deferred P2 findings (Phase 10)
+
+### Phase 4: Meta-Review
+- [x] Run 10-iteration meta-review (iterations 031-040)
+- [x] Found 29 new findings: 1 P0, 17 P1, 11 P2
+- [x] Report: `review/review-report.md` (v2)
+
+### Phase 5: Meta-Review Remediation (Phase 12 in tasks.md)
+- [x] Fix P0 F-001: checkpoint restore scope isolation
+- [x] Fix 6 code correctness P1s (F-002 through F-007)
+- [x] Fix 7 documentation drift P1s (F-008 through F-014)
+- [x] Fix 2 security P1s (F-015, F-016)
+- [x] Fix 2 maintainability P1s (F-017, F-018)
+- [x] Triage 11 P2 advisories (F-019 through F-029) — 6 code fixes, 5 doc fixes
+- [x] Run full test suite + typecheck — 8,858 pass, tsc clean
+- [x] Save context to memory
 <!-- /ANCHOR:phases -->
 
 ---
@@ -161,14 +183,16 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) --> Phase 2 (Execute Review, 20 iterations) --> Phase 3 (Synthesis)
+Phase 1 (Setup) --> Phase 2 (Review, 30 iters) --> Phase 3 (Synthesis + Fix Sprints) --> Phase 4 (Meta-Review) --> Phase 5 (Remediation)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | Spec approved | Execute Review |
-| Execute Review | Setup | Synthesis |
-| Synthesis | Execute Review | Follow-up fix specs |
+| Setup | Spec approved | Review |
+| Review (30 iterations) | Setup | Synthesis |
+| Synthesis + Fix Sprints | Review | Meta-Review |
+| Meta-Review (10 iterations) | Synthesis | Remediation |
+| Remediation (Phase 12) | Meta-Review | Release |
 <!-- /ANCHOR:phase-deps -->
 
 ---

@@ -105,6 +105,22 @@ describe('Embedding Cache (T015)', () => {
     expect(lookupEmbedding(db, hash, model, originalDims)).not.toBeNull();
   });
 
+  it('T015-04c: same hash and model can store multiple dimension variants', () => {
+    const hash = computeContentHash('same content different dims');
+    const model = 'model-A';
+    const dimsA = 768;
+    const dimsB = 1024;
+    const embA = makeEmbeddingBuffer(dimsA);
+    const embB = makeEmbeddingBuffer(dimsB);
+
+    storeEmbedding(db, hash, model, embA, dimsA);
+    storeEmbedding(db, hash, model, embB, dimsB);
+
+    expect(getCacheStats(db).totalEntries).toBe(2);
+    expect(Buffer.compare(lookupEmbedding(db, hash, model, dimsA)!, embA)).toBe(0);
+    expect(Buffer.compare(lookupEmbedding(db, hash, model, dimsB)!, embB)).toBe(0);
+  });
+
   // T015-05: lookupEmbedding updates last_used_at on hit
   it('T015-05: lookupEmbedding updates last_used_at on hit', () => {
     const hash = computeContentHash('track usage');
@@ -116,24 +132,24 @@ describe('Embedding Cache (T015)', () => {
 
     // Read initial last_used_at
     const before = db
-      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ?')
-      .get(hash, model) as { last_used_at: string };
+      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ? AND dimensions = ?')
+      .get(hash, model, dims) as { last_used_at: string };
 
     // Manually set last_used_at to an old value so we can detect the update
     db.prepare(
-      "UPDATE embedding_cache SET last_used_at = datetime('now', '-1 day') WHERE content_hash = ? AND model_id = ?",
-    ).run(hash, model);
+      "UPDATE embedding_cache SET last_used_at = datetime('now', '-1 day') WHERE content_hash = ? AND model_id = ? AND dimensions = ?",
+    ).run(hash, model, dims);
 
     const afterBackdate = db
-      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ?')
-      .get(hash, model) as { last_used_at: string };
+      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ? AND dimensions = ?')
+      .get(hash, model, dims) as { last_used_at: string };
 
     // Lookup triggers last_used_at refresh
     lookupEmbedding(db, hash, model, dims);
 
     const afterLookup = db
-      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ?')
-      .get(hash, model) as { last_used_at: string };
+      .prepare('SELECT last_used_at FROM embedding_cache WHERE content_hash = ? AND model_id = ? AND dimensions = ?')
+      .get(hash, model, dims) as { last_used_at: string };
 
     // After lookup, last_used_at should be more recent than the backdated value
     expect(afterLookup.last_used_at > afterBackdate.last_used_at).toBe(true);
@@ -150,8 +166,8 @@ describe('Embedding Cache (T015)', () => {
 
     // Backdate last_used_at to 10 days ago
     db.prepare(
-      "UPDATE embedding_cache SET last_used_at = datetime('now', '-10 days') WHERE content_hash = ? AND model_id = ?",
-    ).run(hash, model);
+      "UPDATE embedding_cache SET last_used_at = datetime('now', '-10 days') WHERE content_hash = ? AND model_id = ? AND dimensions = ?",
+    ).run(hash, model, dims);
 
     // Store a fresh entry that should survive
     const freshHash = computeContentHash('keep me');

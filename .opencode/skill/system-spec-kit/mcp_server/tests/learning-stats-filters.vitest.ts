@@ -178,6 +178,42 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
       expect(allMatch).toBe(true);
       expect(data.learningHistory.length).toBe(1);
     });
+
+    it('T503-01c: sessionId filter normalizes whitespace to match stored records', async () => {
+      requireDbOrThrow();
+
+      const sessionId = uniqueId('sess-trimmed');
+      const taskId = uniqueId('T-SESS-TRIM');
+
+      await handler.handleTaskPreflight({
+        specFolder: SPEC,
+        taskId,
+        knowledgeScore: 25,
+        uncertaintyScore: 75,
+        contextScore: 25,
+        sessionId: `  ${sessionId}  `,
+      });
+      await handler.handleTaskPostflight({
+        specFolder: SPEC,
+        taskId,
+        knowledgeScore: 65,
+        uncertaintyScore: 35,
+        contextScore: 65,
+        sessionId: `  ${sessionId}  `,
+      });
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        sessionId: `  ${sessionId}  `,
+        includeSummary: true,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      expect(data.learningHistory).toHaveLength(1);
+      expect(data.learningHistory[0].sessionId).toBe(sessionId);
+      const summary = expectSummary(data);
+      expect(summary.totalTasks).toBe(1);
+    });
   });
 
   // SUITE: Summary stats respect onlyComplete filter

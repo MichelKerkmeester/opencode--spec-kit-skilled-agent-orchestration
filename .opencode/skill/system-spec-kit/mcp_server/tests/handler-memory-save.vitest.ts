@@ -733,10 +733,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(true);
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
-      // Implementation now appends a content hash suffix to pending filenames
-      const deletedPaths = harness.deleteFileIfExistsMock.mock.calls.map((c: unknown[]) => c[0]);
-      expect(deletedPaths.some((p: string) => p.includes('retry-once_pending.md'))).toBe(true);
+      expect(
+        fs.readdirSync(path.dirname(filePath)).some((entry) => entry.includes('retry-once_pending.md'))
+      ).toBe(false);
     });
 
     it('rolls back written file when indexMemoryFile throws on both attempts', async () => {
@@ -759,10 +758,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.error).toContain('Indexing failed after retry');
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
-      expect(harness.deleteFileIfExistsMock.mock.calls.length).toBeGreaterThanOrEqual(2);
-      // Implementation now appends a content hash suffix to pending filenames
-      const deletedPaths = harness.deleteFileIfExistsMock.mock.calls.map((c: unknown[]) => c[0]);
-      expect(deletedPaths.some((p: string) => p.includes('throw-both_pending.md'))).toBe(true);
+      expect(
+        fs.readdirSync(path.dirname(filePath)).some((entry) => entry.includes('throw-both_pending.md'))
+      ).toBe(false);
       expect(fs.existsSync(filePath)).toBe(false);
     });
 
@@ -791,7 +789,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(true);
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(2);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(2);
+      expect(
+        fs.readdirSync(path.dirname(filePath)).some((entry) => entry.includes('status-error-then-success_pending.md'))
+      ).toBe(false);
     });
 
     it('treats indexMemoryFile status=rejected as non-retry rollback outcome', async () => {
@@ -819,8 +819,87 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.message).toContain('Quality gate rejected');
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(1);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
+      expect(
+        fs.readdirSync(path.dirname(filePath)).some((entry) => entry.includes('status-rejected_pending.md'))
+      ).toBe(false);
       expect(fs.existsSync(filePath)).toBe(false);
+    });
+
+    it('surfaces rollback error metadata when rejected save cannot restore the original file', async () => {
+      const checkExistingRowMock = vi.fn().mockReturnValue(
+        buildIndexResult({
+          status: 'rejected',
+          id: 0,
+          message: 'Quality gate rejected: signal density too low',
+          rejectionReason: 'Quality gate rejected: signal density too low',
+        })
+      );
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+        nodeFsModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
+          return {
+            ...actual,
+            writeFileSync: vi.fn((targetPath: fs.PathOrFileDescriptor, data: string | NodeJS.ArrayBufferView, options?: fs.WriteFileOptions) => {
+              if (String(targetPath).includes('rejected-rollback-metadata.md') && typeof data === 'string' && data === '# original on disk') {
+                throw new Error('simulated rollback write failure');
+              }
+              return actual.writeFileSync(targetPath, data as never, options as never);
+            }),
+          };
+        },
+      });
+
+      const filePath = createAtomicSaveTargetPath('rejected-rollback-metadata.md');
+      fs.writeFileSync(filePath, '# original on disk', 'utf8');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# rejected outcome' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(result.error).toContain('rollback failed');
+      expect(result.errorMetadata).toEqual({ rollbackError: 'simulated rollback write failure' });
+    });
+
+    it('preserves rollback delete error metadata when rejected save cannot remove a promoted new file', async () => {
+      const checkExistingRowMock = vi.fn().mockReturnValue(
+        buildIndexResult({
+          status: 'rejected',
+          id: 0,
+          message: 'Quality gate rejected: signal density too low',
+          rejectionReason: 'Quality gate rejected: signal density too low',
+        })
+      );
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+        nodeFsModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
+          return {
+            ...actual,
+            unlinkSync: vi.fn((targetPath: fs.PathLike) => {
+              if (String(targetPath).includes('rejected-rollback-delete-metadata.md')) {
+                throw new Error('simulated rollback unlink failure');
+              }
+              return actual.unlinkSync(targetPath);
+            }),
+          };
+        },
+      });
+
+      const filePath = createAtomicSaveTargetPath('rejected-rollback-delete-metadata.md');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# rejected outcome' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(result.error).toContain('rollback failed');
+      expect(result.errorMetadata).toEqual({ rollbackError: 'simulated rollback unlink failure' });
     });
 
     it('does not persist embedding cache writes before hard quality-gate rejection', async () => {
@@ -1358,6 +1437,97 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(renameSyncMock).toHaveBeenCalled();
       expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
       expect(fs.readFileSync(filePath, 'utf8')).toBe(originalContent);
+    });
+
+    it('serializes concurrent atomic saves before promoting the second pending file', async () => {
+      let embeddingCallCount = 0;
+      let signalFirstLockedSectionReady: (() => void) | null = null;
+      let releaseFirstLockedSection: (() => void) | null = null;
+      const firstLockedSectionReady = new Promise<void>((resolve) => {
+        signalFirstLockedSectionReady = resolve;
+      });
+      const firstLockedSectionReleased = new Promise<void>((resolve) => {
+        releaseFirstLockedSection = resolve;
+      });
+      const renameSyncMock = vi.fn((from: string | Buffer | URL, to: string | Buffer | URL) => {
+        fs.renameSync(from, to);
+      });
+      const generateOrCacheEmbeddingMock = vi.fn(async () => {
+        embeddingCallCount += 1;
+        if (embeddingCallCount === 1) {
+          signalFirstLockedSectionReady?.();
+          await firstLockedSectionReleased;
+        }
+        return {
+          embedding: new Float32Array(1024).fill(0.1),
+          status: 'success',
+          failureReason: null,
+          pendingCacheWrite: null,
+        };
+      });
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        checkContentHashDedupMock: vi.fn(() => null),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: generateOrCacheEmbeddingMock,
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        createRecordModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/create-record')>('../handlers/save/create-record');
+          return {
+            ...actual,
+            findSamePathExistingMemory: vi.fn(() => undefined),
+            createMemoryRecord: vi.fn(() => 955),
+          };
+        },
+        postInsertModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/post-insert')>('../handlers/save/post-insert');
+          return {
+            ...actual,
+            runPostInsertEnrichment: vi.fn(async () => ({
+              causalLinksResult: null,
+              enrichmentStatus: 'skipped',
+            })),
+          };
+        },
+        nodeFsModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
+          return {
+            ...actual,
+            renameSync: renameSyncMock,
+          };
+        },
+      });
+
+      const filePath = createAtomicSaveTargetPath('serialized-concurrent-save.md');
+      const firstContent = '# first serialized save';
+      const secondContent = '# second serialized save';
+
+      const firstSavePromise = harness.module.atomicSaveMemory(
+        { file_path: filePath, content: firstContent },
+        { force: true }
+      );
+      await firstLockedSectionReady;
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(firstContent);
+
+      const secondSavePromise = harness.module.atomicSaveMemory(
+        { file_path: filePath, content: secondContent },
+        { force: true }
+      );
+
+      expect(renameSyncMock).toHaveBeenCalledTimes(1);
+      expect(generateOrCacheEmbeddingMock).toHaveBeenCalledTimes(1);
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(firstContent);
+
+      releaseFirstLockedSection?.();
+
+      const [firstResult, secondResult] = await Promise.all([firstSavePromise, secondSavePromise]);
+
+      expect(firstResult.success).toBe(true);
+      expect(secondResult.success).toBe(true);
+      expect(renameSyncMock).toHaveBeenCalledTimes(2);
+      expect(generateOrCacheEmbeddingMock).toHaveBeenCalledTimes(2);
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(secondContent);
     });
 
     it('rejects insufficient context before embedding even when force=true', async () => {

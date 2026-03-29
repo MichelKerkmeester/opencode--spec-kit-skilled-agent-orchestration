@@ -343,17 +343,6 @@ function getMemoryIds(memories: Array<Record<string, unknown>>): number[] {
   return Array.from(ids);
 }
 
-function getCurrentMemoryIdsForSpecFolder(database: Database.Database, specFolder: string): number[] {
-  try {
-    const rows = database.prepare(
-      'SELECT id FROM memory_index WHERE spec_folder = ?'
-    ).all(specFolder) as Array<{ id: number | string }>;
-    return getMemoryIds(rows as Array<Record<string, unknown>>);
-  } catch (_error: unknown) {
-    return [];
-  }
-}
-
 function getSharedSpaceIdsFromMemories(memories: Array<Record<string, unknown>>): string[] {
   const ids = new Set<string>();
   for (const memory of memories) {
@@ -464,6 +453,42 @@ function getCurrentScopedMemoryIds(
   scope: ScopeContext = {},
 ): number[] {
   return getScopedMemories(database, specFolder, scope).memoryIds;
+}
+
+function buildRestoreScopeDeleteWhere(
+  columns: ReadonlySet<string>,
+  checkpointSpecFolder: string | null,
+  scope: ScopeContext = {},
+): {
+  clauses: string[];
+  params: string[];
+} {
+  const normalizedScope = normalizeScopeContext(scope);
+  const clauses: string[] = [];
+  const params: string[] = [];
+
+  if (checkpointSpecFolder && columns.has('spec_folder')) {
+    clauses.push('spec_folder = ?');
+    params.push(checkpointSpecFolder);
+  }
+  if (normalizedScope.tenantId && columns.has('tenant_id')) {
+    clauses.push('tenant_id = ?');
+    params.push(normalizedScope.tenantId);
+  }
+  if (normalizedScope.userId && columns.has('user_id')) {
+    clauses.push('user_id = ?');
+    params.push(normalizedScope.userId);
+  }
+  if (normalizedScope.agentId && columns.has('agent_id')) {
+    clauses.push('agent_id = ?');
+    params.push(normalizedScope.agentId);
+  }
+  if (normalizedScope.sharedSpaceId && columns.has('shared_space_id')) {
+    clauses.push('shared_space_id = ?');
+    params.push(normalizedScope.sharedSpaceId);
+  }
+
+  return { clauses, params };
 }
 
 function getEdgeIds(edges: Array<Record<string, unknown>>): number[] {
@@ -858,8 +883,17 @@ function clearTableForRestoreScope(
     return;
   }
 
+  const columns = new Set(getTableColumns(database, tableName));
+  const { clauses: scopedClauses, params: scopedParams } = buildRestoreScopeDeleteWhere(
+    columns,
+    checkpointSpecFolder,
+    normalizedScope,
+  );
+
   if (tableName === 'memory_index') {
-    database.prepare('DELETE FROM memory_index WHERE spec_folder = ?').run(checkpointSpecFolder);
+    if (scopedClauses.length > 0) {
+      database.prepare(`DELETE FROM memory_index WHERE ${scopedClauses.join(' AND ')}`).run(...scopedParams);
+    }
     return;
   }
 
@@ -908,32 +942,13 @@ function clearTableForRestoreScope(
     return;
   }
 
-  const columns = new Set(getTableColumns(database, tableName));
-  if (sharedSpaceIds.length > 0 && columns.has('shared_space_id')) {
-    deleteRowsByStringIds(database, tableName, 'shared_space_id', sharedSpaceIds);
+  if (scopedClauses.length > 0) {
+    database.prepare(`DELETE FROM ${tableName} WHERE ${scopedClauses.join(' AND ')}`).run(...scopedParams);
     return;
   }
 
-  const scopedClauses: string[] = [];
-  const scopedParams: Array<string> = [];
-  if (normalizedScope.tenantId && columns.has('tenant_id')) {
-    scopedClauses.push('tenant_id = ?');
-    scopedParams.push(normalizedScope.tenantId);
-  }
-  if (normalizedScope.userId && columns.has('user_id')) {
-    scopedClauses.push('user_id = ?');
-    scopedParams.push(normalizedScope.userId);
-  }
-  if (normalizedScope.agentId && columns.has('agent_id')) {
-    scopedClauses.push('agent_id = ?');
-    scopedParams.push(normalizedScope.agentId);
-  }
-  if (normalizedScope.sharedSpaceId && columns.has('shared_space_id')) {
-    scopedClauses.push('shared_space_id = ?');
-    scopedParams.push(normalizedScope.sharedSpaceId);
-  }
-  if (scopedClauses.length > 0) {
-    database.prepare(`DELETE FROM ${tableName} WHERE ${scopedClauses.join(' AND ')}`).run(...scopedParams);
+  if (sharedSpaceIds.length > 0 && columns.has('shared_space_id')) {
+    deleteRowsByStringIds(database, tableName, 'shared_space_id', sharedSpaceIds);
     return;
   }
 
@@ -1564,7 +1579,7 @@ function restoreCheckpoint(
     const snapshotMemoryIds = getMemoryIds(memoryRows);
     const { normalizedScope, allowedSharedSpaceIds } = getScopeFilterContext(database, scope);
     const currentScopedMemoryIds = checkpointSpecFolder
-      ? getCurrentMemoryIdsForSpecFolder(database, checkpointSpecFolder)
+      ? getCurrentScopedMemoryIds(database, checkpointSpecFolder, normalizedScope)
       : getCurrentScopedMemoryIds(database, null, normalizedScope);
     const scopedMemoryIdsToReplace = Array.from(
       new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])

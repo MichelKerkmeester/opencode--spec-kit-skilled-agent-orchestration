@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete — All 121 findings triaged: 5 P0 + 75 P1 + 22 P2 fixed, 16 P2 deferred, 3 P2 rejected; 8771 tests pass |
+| **Status** | Phase 12 in progress — 30-iteration audit + 4 fix sprints + P2 triage complete; 10-iteration meta-review found 29 new findings (1 P0 + 17 P1 + 11 P2); remediation pending |
 | **Created** | 2026-03-28 |
 | **Branch** | `main` |
 <!-- /ANCHOR:metadata -->
@@ -40,7 +40,7 @@ The Spec Kit Memory MCP server is a 70K+ LOC system with 31 MCP tools, a 57-colu
 No systematic review has been performed across the full runtime surface. Logic errors in causal graph traversal, transaction boundaries that do not cover file-system writes, race conditions in embedding generation, and edge cases in the chunking/thinning pipeline may exist undetected.
 
 ### Purpose
-Run a 30-iteration deep-research review audit across the full MCP server runtime, then fix all P0 blockers and P1 required fixes. The review phase (complete) produced 121 findings. The fix phase addresses them in 4 sprints organized by risk cluster.
+Run a 30-iteration deep-research review audit across the full MCP server runtime, then fix all P0 blockers and P1 required fixes. The review phase (complete) produced 121 findings. The fix phase addressed them in 4 sprints organized by risk cluster, plus P2 triage (22 fixed, 16 deferred then fixed, 3 rejected). A subsequent 10-iteration meta-review (iterations 031-040) assessed the quality of both the audit and the fixes, finding 29 additional issues that require remediation in Phase 12.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -76,10 +76,10 @@ The review audit covers these dimensions, one per iteration or grouped as the re
 | 20 | **Cross-cutting: concurrency and state** | Global singletons, module-level state, race conditions |
 
 ### Out of Scope
-- Implementing fixes (findings only; fixes go to follow-up specs)
-- Documentation-only changes (unless a doc error causes runtime misbehavior)
 - Performance tuning or optimization (unless a logic error causes incorrect results)
 - UI/UX changes to MCP tool schemas
+
+**Note:** The original spec declared fix implementation out of scope. Scope was expanded during execution to include fix sprints (Phases 2-10), P2 triage (Phase 9), deferred P2 fixes (Phase 10), documentation alignment (Phase 11), and meta-review remediation (Phase 12).
 
 ### Files to Review
 
@@ -106,9 +106,11 @@ All files under `.opencode/skill/system-spec-kit/mcp_server/` with focus on:
 |----|-------------|---------------------|
 | REQ-001 | Run 30-iteration deep-research review audit against the MCP server codebase. | DONE — 30 iterations complete with 121 findings in `review/iterations/`. |
 | REQ-002 | Each iteration must review a distinct dimension or cross-cutting concern. | DONE — 30 dimensions covered (20 primary + 10 deep dives). |
-| REQ-003 | Findings must be classified as P0/P1/P2 with fix recommendations. | DONE — 5 P0, 75 P1, 41 P2 classified in `review/review-report.md`. |
-| REQ-003a | Fix all P0 blockers. | All 5 P0 findings must be fixed with tests and build passing. |
-| REQ-003b | Fix all P1 required issues or get user-approved deferral. | 75 P1 findings organized into 4 fix sprints in tasks.md. |
+| REQ-003 | Findings must be classified as P0/P1/P2 with fix recommendations. | DONE — 5 P0, 75 P1, 41 P2 classified in `review/review-report-v1-original-audit.md`. |
+| REQ-003a | Fix all P0 blockers. | DONE — All 5 P0 findings fixed with tests and build passing. |
+| REQ-003b | Fix all P1 required issues or get user-approved deferral. | DONE — 75 P1 findings fixed across 4 sprints. |
+| REQ-006 | Meta-review of audit + fix quality. | DONE — 10-iteration meta-review (031-040) produced 29 findings in `review/review-report.md`. |
+| REQ-007 | Remediate meta-review findings. | Phase 12 — 1 P0, 17 P1, 11 P2 from meta-review to be fixed. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -123,16 +125,20 @@ All files under `.opencode/skill/system-spec-kit/mcp_server/` with focus on:
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: 20 review iterations complete with convergence or max-iterations reached.
-- **SC-002**: Final report contains a ranked findings list with zero unclassified findings.
-- **SC-003**: Each P0 finding has a clear reproduction path or code citation.
-- **SC-004**: The findings report is actionable — each item can seed a follow-up fix spec.
+- **SC-001**: 30 review iterations complete (20 primary + 10 deep dives). DONE.
+- **SC-002**: Final report contains a ranked findings list with zero unclassified findings. DONE.
+- **SC-003**: Each P0 finding has a clear reproduction path or code citation. DONE.
+- **SC-004**: The findings report is actionable — each item can seed a follow-up fix spec. DONE.
+- **SC-005**: All original P0 and P1 findings fixed with passing tests. DONE.
+- **SC-006**: Meta-review findings (Phase 12) remediated — 0 active P0 blockers remaining. PENDING.
 
 ### Acceptance Scenarios
 
-**Given** the review agent has access to the full `mcp_server/` source tree, **when** all 20 iterations complete, **then** a `review/review-report.md` exists with P0/P1/P2 classified findings covering all 20 dimensions.
+**Given** the review agent has access to the full `mcp_server/` source tree, **when** all 30 iterations complete, **then** `review/review-report-v1-original-audit.md` exists with P0/P1/P2 classified findings covering all 20+ dimensions.
 
 **Given** a P0 finding is reported, **when** the finding is reviewed, **then** it includes a file path, line range, code citation, and one-sentence fix recommendation.
+
+**Given** the meta-review completes, **when** new findings are reported, **then** `review/review-report.md` (v2) contains the deduplicated registry and `tasks.md` Phase 12 tracks remediation.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -143,7 +149,7 @@ All files under `.opencode/skill/system-spec-kit/mcp_server/` with focus on:
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Risk | Review iterations may surface false positives | Noise in findings report | Each finding must cite source code; ambiguous items marked P2 |
-| Risk | 20 iterations may not cover all dimensions equally | Shallow coverage on some areas | Strategy assigns priority dimensions to early iterations |
+| Risk | 30 iterations may not cover all dimensions equally | Shallow coverage on some areas | Strategy assigns priority dimensions to early iterations; deep dives 021-030 added for high-density areas |
 | Dependency | CocoIndex semantic search for code discovery | Required for concept-based exploration | Verify CocoIndex MCP is available before starting |
 | Risk | Context window limits per iteration | Agent may miss cross-file interactions | Cross-cutting dimensions (19-20) explicitly span multiple modules |
 <!-- /ANCHOR:risks -->
@@ -184,7 +190,7 @@ None at spec time. The review scope and iteration count are defined; findings wi
 - If an iteration finds zero new findings: mark as "clean" and advance to next dimension.
 
 ### State Transitions
-- If convergence is detected before iteration 20: the review may terminate early with a note in the final report.
+- If convergence is detected before iteration 30: the review may terminate early with a note in the final report.
 - If a single dimension yields 10+ findings: split across two iterations rather than producing an unreadable single report.
 <!-- /ANCHOR:edge-cases -->
 

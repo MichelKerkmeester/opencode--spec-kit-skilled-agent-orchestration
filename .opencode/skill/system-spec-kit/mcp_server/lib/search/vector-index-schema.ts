@@ -146,6 +146,51 @@ function getTableSql(database: Database.Database, tableName: string): string | n
   return typeof row?.sql === 'string' ? row.sql : null;
 }
 
+function hasEmbeddingCacheDimensionsPrimaryKey(database: Database.Database): boolean {
+  const tableSql = getTableSql(database, 'embedding_cache');
+  if (typeof tableSql !== 'string') {
+    return false;
+  }
+
+  return /PRIMARY\s+KEY\s*\(\s*content_hash\s*,\s*model_id\s*,\s*dimensions\s*\)/i.test(tableSql);
+}
+
+function ensureEmbeddingCacheSchema(database: Database.Database): void {
+  if (!hasTable(database, 'embedding_cache')) {
+    initEmbeddingCache(database);
+    return;
+  }
+
+  if (hasEmbeddingCacheDimensionsPrimaryKey(database)) {
+    return;
+  }
+
+  logger.info('Migrating embedding_cache primary key to include dimensions');
+  database.exec(`
+    ALTER TABLE embedding_cache RENAME TO embedding_cache_legacy_dimensions;
+  `);
+  initEmbeddingCache(database);
+  database.exec(`
+    INSERT OR REPLACE INTO embedding_cache (
+      content_hash,
+      model_id,
+      embedding,
+      dimensions,
+      created_at,
+      last_used_at
+    )
+    SELECT
+      content_hash,
+      model_id,
+      embedding,
+      dimensions,
+      created_at,
+      last_used_at
+    FROM embedding_cache_legacy_dimensions
+  `);
+  database.exec('DROP TABLE embedding_cache_legacy_dimensions');
+}
+
 function hasConstitutionalTierConstraint(database: Database.Database): boolean {
   const tableSql = getTableSql(database, 'memory_index');
   return typeof tableSql === 'string' && tableSql.includes("'constitutional'");
@@ -195,6 +240,24 @@ function createMemoryConflictsTable(database: Database.Database): void {
       FOREIGN KEY (existing_memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
     )
   `);
+}
+
+function createMemoryConflictIndexes(
+  database: Database.Database,
+  context: string,
+): void {
+  createRequiredIndex(
+    database,
+    'idx_conflicts_memory',
+    'CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id)',
+    context,
+  );
+  createRequiredIndex(
+    database,
+    'idx_conflicts_timestamp',
+    'CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC)',
+    context,
+  );
 }
 
 function getFirstAvailableColumnExpression(
@@ -398,27 +461,9 @@ export function run_migrations(database: Database.Database, from_version: number
         }
       }
 
-      // Create memory_conflicts table for prediction error gating audit
-      try {
-        database.exec(`
-          CREATE TABLE IF NOT EXISTS memory_conflicts (
-            id INTEGER PRIMARY KEY,
-            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
-            new_memory_hash TEXT NOT NULL,
-            existing_memory_id INTEGER,
-            similarity_score REAL,
-            action TEXT CHECK(action IN ('CREATE', 'CREATE_LINKED', 'UPDATE', 'SUPERSEDE', 'REINFORCE')),
-            contradiction_detected INTEGER DEFAULT 0,
-            notes TEXT,
-            FOREIGN KEY (existing_memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
-          )
-        `);
-        logger.info('Migration v4: Created memory_conflicts table');
-      } catch (e: unknown) {
-        if (!get_error_message(e).includes('already exists')) {
-          console.warn('[VectorIndex] Migration v4 warning (memory_conflicts):', get_error_message(e));
-        }
-      }
+      // Use the canonical helper so later schema refinements only update one DDL definition.
+      createMemoryConflictsTable(database);
+      logger.info('Migration v4: Ensured memory_conflicts table');
 
       // Create indexes for FSRS columns
       createRequiredIndex(
@@ -616,18 +661,7 @@ export function run_migrations(database: Database.Database, from_version: number
       migrateMemoryConflictsTable(database);
       logger.info('Migration v12: Unified memory_conflicts table (KL-1)');
 
-      createRequiredIndex(
-        database,
-        'idx_conflicts_memory',
-        'CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id)',
-        'Migration v12',
-      );
-      createRequiredIndex(
-        database,
-        'idx_conflicts_timestamp',
-        'CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC)',
-        'Migration v12',
-      );
+      createMemoryConflictIndexes(database, 'Migration v12');
       logger.info('Migration v12: Created memory_conflicts indexes');
     },
     13: () => {
@@ -1959,34 +1993,15 @@ export function ensureCompanionTables(database: Database.Database): void {
     )
   `);
 
-  database.exec(`
-    CREATE TABLE IF NOT EXISTS memory_conflicts (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
-      action TEXT CHECK(action IN ('CREATE', 'CREATE_LINKED', 'UPDATE', 'SUPERSEDE', 'REINFORCE')),
-      new_memory_hash TEXT,
-      new_memory_id INTEGER,
-      existing_memory_id INTEGER,
-      similarity REAL,
-      reason TEXT,
-      new_content_preview TEXT,
-      existing_content_preview TEXT,
-      contradiction_detected INTEGER DEFAULT 0,
-      contradiction_type TEXT,
-      spec_folder TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (existing_memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
-    )
-  `);
+  createMemoryConflictsTable(database);
 
   // Companion table indexes
   database.exec(`
     CREATE INDEX IF NOT EXISTS idx_history_memory ON memory_history(memory_id, timestamp);
     CREATE INDEX IF NOT EXISTS idx_history_timestamp ON memory_history(timestamp DESC);
     CREATE INDEX IF NOT EXISTS idx_checkpoints_spec ON checkpoints(spec_folder);
-    CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id);
-    CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC);
   `);
+  createMemoryConflictIndexes(database, 'ensureCompanionTables');
 }
 
 /**
@@ -2111,7 +2126,7 @@ export function create_schema(
     }
     // the rollout (REQ-S2-001) — embedding cache table must exist before any
     // Save/index operation so lookupEmbedding() can skip redundant provider calls.
-    initEmbeddingCache(database);
+    ensureEmbeddingCacheSchema(database);
     return;
   }
 
@@ -2239,7 +2254,7 @@ export function create_schema(
   ensureSharedSpaceTables(database);
 
   // the rollout (REQ-S2-001) — create embedding_cache table
-  initEmbeddingCache(database);
+  ensureEmbeddingCacheSchema(database);
 
   // Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)
   database.exec(`

@@ -150,6 +150,10 @@ function createIsolatedRestoreDb(label: string): { database: Database.Database; 
       difficulty REAL DEFAULT 5.0,
       last_review TEXT,
       review_count INTEGER DEFAULT 0,
+      tenant_id TEXT,
+      user_id TEXT,
+      agent_id TEXT,
+      session_id TEXT,
       shared_space_id TEXT
     );
 
@@ -250,6 +254,42 @@ function updateCheckpointSnapshot(
     zlib.gzipSync(Buffer.from(JSON.stringify(snapshot))),
     checkpointName,
   );
+}
+
+function seedTenantScopedRestoreFixture(database: Database.Database, now: string): void {
+  database.prepare(`
+    INSERT INTO memory_index (
+      id, spec_folder, file_path, title, created_at, updated_at, importance_tier, tenant_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    1, 'tenant-spec', '/tmp/tenant-a.md', 'Tenant A Snapshot', now, now, 'normal', 'tenant-a',
+    2, 'tenant-spec', '/tmp/tenant-b.md', 'Tenant B Snapshot', now, now, 'normal', 'tenant-b',
+  );
+  database.prepare(`
+    INSERT INTO working_memory (
+      session_id, memory_id, attention_score, added_at, last_focused, focus_count
+    ) VALUES (?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?)
+  `).run(
+    'session-a', 1, 1.0, now, now, 1,
+    'session-b', 2, 2.0, now, now, 1,
+  );
+  database.prepare(`
+    INSERT INTO session_state (
+      session_id, status, spec_folder, current_task, tenant_id, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    'session-a', 'active', 'tenant-spec', 'snapshot-task-a', 'tenant-a', now, now,
+    'session-b', 'active', 'tenant-spec', 'snapshot-task-b', 'tenant-b', now, now,
+  );
+}
+
+function applyTenantScopedLiveMutations(database: Database.Database): void {
+  database.prepare('UPDATE memory_index SET title = ? WHERE id = ?').run('Tenant A Live', 1);
+  database.prepare('UPDATE memory_index SET title = ? WHERE id = ?').run('Tenant B Live', 2);
+  database.prepare('UPDATE working_memory SET attention_score = ? WHERE memory_id = ?').run(9.0, 1);
+  database.prepare('UPDATE working_memory SET attention_score = ? WHERE memory_id = ?').run(8.0, 2);
+  database.prepare('UPDATE session_state SET current_task = ? WHERE session_id = ?').run('live-task-a', 'session-a');
+  database.prepare('UPDATE session_state SET current_task = ? WHERE session_id = ?').run('live-task-b', 'session-b');
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -779,6 +819,112 @@ describe('Checkpoints Storage (T503)', () => {
       expect(
         (database.prepare('SELECT COUNT(*) as cnt FROM shared_spaces WHERE space_id = ?').get('space-a') as { cnt: number }).cnt
       ).toBe(1);
+    });
+
+    it('T503-17: scoped clearExisting restore preserves same-folder rows outside the tenant scope', () => {
+      const database = requireValue(isolatedDb);
+      const now = new Date().toISOString();
+
+      seedTenantScopedRestoreFixture(database, now);
+
+      const checkpoint = mod.createCheckpoint({
+        name: 'scoped-tenant-clear-restore',
+        specFolder: 'tenant-spec',
+        scope: { tenantId: 'tenant-a' },
+      });
+      requireValue(checkpoint);
+
+      applyTenantScopedLiveMutations(database);
+
+      const result = mod.restoreCheckpoint('scoped-tenant-clear-restore', true, {
+        tenantId: 'tenant-a',
+      });
+
+      expect(result.errors).toEqual([]);
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(1)
+      ).toEqual({ title: 'Tenant A Snapshot' });
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(2)
+      ).toEqual({ title: 'Tenant B Live' });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(1)
+      ).toEqual({ attention_score: 1 });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(2)
+      ).toEqual({ attention_score: 8 });
+    });
+
+    it('T503-18: unscoped clearExisting restore still replaces the whole checkpoint folder', () => {
+      const database = requireValue(isolatedDb);
+      const now = new Date().toISOString();
+
+      seedTenantScopedRestoreFixture(database, now);
+
+      const checkpoint = mod.createCheckpoint({
+        name: 'unscoped-folder-clear-restore',
+        specFolder: 'tenant-spec',
+      });
+      requireValue(checkpoint);
+
+      applyTenantScopedLiveMutations(database);
+
+      const result = mod.restoreCheckpoint('unscoped-folder-clear-restore', true);
+
+      expect(result.errors).toEqual([]);
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(1)
+      ).toEqual({ title: 'Tenant A Snapshot' });
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(2)
+      ).toEqual({ title: 'Tenant B Snapshot' });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(1)
+      ).toEqual({ attention_score: 1 });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(2)
+      ).toEqual({ attention_score: 2 });
+      expect(
+        database.prepare('SELECT current_task FROM session_state WHERE session_id = ?').get('session-a')
+      ).toEqual({ current_task: 'snapshot-task-a' });
+      expect(
+        database.prepare('SELECT current_task FROM session_state WHERE session_id = ?').get('session-b')
+      ).toEqual({ current_task: 'snapshot-task-b' });
+    });
+
+    it('T503-19: scoped merge restore respects tenant scope for memory-linked and direct-scope rows', () => {
+      const database = requireValue(isolatedDb);
+      const now = new Date().toISOString();
+
+      seedTenantScopedRestoreFixture(database, now);
+
+      const checkpoint = mod.createCheckpoint({
+        name: 'scoped-tenant-merge-restore',
+        specFolder: 'tenant-spec',
+        scope: { tenantId: 'tenant-a' },
+      });
+      requireValue(checkpoint);
+
+      applyTenantScopedLiveMutations(database);
+
+      const result = mod.restoreCheckpoint('scoped-tenant-merge-restore', false, {
+        tenantId: 'tenant-a',
+      });
+
+      expect(result.errors).toEqual([]);
+      expect(result.partialFailure).toBe(false);
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(1)
+      ).toEqual({ title: 'Tenant A Snapshot' });
+      expect(
+        database.prepare('SELECT title FROM memory_index WHERE id = ?').get(2)
+      ).toEqual({ title: 'Tenant B Live' });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(1)
+      ).toEqual({ attention_score: 1 });
+      expect(
+        database.prepare('SELECT attention_score FROM working_memory WHERE memory_id = ?').get(2)
+      ).toEqual({ attention_score: 8 });
     });
   });
 });

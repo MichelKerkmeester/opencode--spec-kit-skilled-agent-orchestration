@@ -6,9 +6,11 @@
 // Index, update, delete, and status/confidence updates.
 
 import * as embeddingsProvider from '../providers/embeddings';
+import { clearGraphSignalsCache } from '../graph/graph-signals';
 import { recordHistory } from '../storage/history';
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { createLogger } from '../utils/logger';
+import { clearDegreeCacheForDb } from './graph-search-fn';
 import * as bm25Index from './bm25-index';
 import {
   clear_search_cache,
@@ -38,6 +40,20 @@ const logger = createLogger('VectorIndex');
 function isExpectedMissingVecMemoriesTable(error: unknown): boolean {
   const message = get_error_message(error).toLowerCase();
   return message.includes('no such table') && message.includes('vec_memories');
+}
+
+function invalidateGraphCaches(database: Database.Database): void {
+  try {
+    clearDegreeCacheForDb(database);
+  } catch (_error: unknown) {
+    // Degree cache invalidation is best-effort for legacy mutation paths.
+  }
+
+  try {
+    clearGraphSignalsCache();
+  } catch (_error: unknown) {
+    // Graph signal cache invalidation is best-effort for legacy mutation paths.
+  }
 }
 
 function deleteAncillaryMemoryRows(database: Database.Database, id: number): void {
@@ -77,6 +93,7 @@ function deleteAncillaryMemoryRows(database: Database.Database, id: number): voi
       WHERE source_id IN (?, ?)
          OR target_id IN (?, ?)
     `).run(id, memoryIdText, id, memoryIdText);
+    invalidateGraphCaches(database);
   } catch (_error: unknown) {
     // Best-effort for legacy databases that may not have causal edges yet.
   }

@@ -66,6 +66,12 @@ interface ActiveProjectionRow {
   updated_at: string;
 }
 
+interface LoadedLineageRows {
+  logicalKey: string;
+  projection: ActiveProjectionRow | null;
+  rows: MemoryLineageRow[];
+}
+
 interface LineageMetadata {
   contentHash: string | null;
   filePath: string;
@@ -298,6 +304,26 @@ function getLatestLineageRowForLogicalKey(database: Database.Database, logicalKe
   return row ?? null;
 }
 
+function loadLineageRowsForMemory(
+  database: Database.Database,
+  memoryId: number,
+): LoadedLineageRows | null {
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+
+  const projection = getActiveProjection(database, logicalKey);
+  const rows = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE logical_key = ?
+    ORDER BY version_number ASC, created_at ASC
+  `).all(logicalKey) as MemoryLineageRow[];
+
+  return { logicalKey, projection, rows };
+}
+
 function isLogicalVersionConflict(error: unknown): boolean {
   const message = error instanceof Error
     ? error.message
@@ -352,6 +378,23 @@ function parseMetadata(row: MemoryLineageRow): LineageMetadata | null {
     logger.warn(`Failed to parse lineage metadata for memory ${row.memory_id}: ${error instanceof Error ? error.message : String(error)}`);
     return null;
   }
+}
+
+function resolveSnapshotFromLineageRow(
+  database: Database.Database,
+  row: MemoryLineageRow,
+): ResolvedLineageSnapshot {
+  const metadata = parseMetadata(row);
+  return {
+    logicalKey: row.logical_key,
+    memoryId: row.memory_id,
+    versionNumber: row.version_number,
+    rootMemoryId: row.root_memory_id,
+    validFrom: row.valid_from,
+    validTo: row.valid_to,
+    transitionEvent: row.transition_event,
+    snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
+  };
 }
 
 function upsertActiveProjection(
@@ -801,31 +844,12 @@ function resolveLogicalKey(database: Database.Database, memoryId: number): strin
 export function inspectLineageChain(database: Database.Database, memoryId: number): ResolvedLineageSnapshot[] {
   bindHistory(database);
   ensureLineageTables(database);
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage) {
     return [];
   }
 
-  const rows = database.prepare(`
-    SELECT *
-    FROM memory_lineage
-    WHERE logical_key = ?
-    ORDER BY version_number ASC, created_at ASC
-  `).all(logicalKey) as MemoryLineageRow[];
-
-  return rows.map((row) => {
-    const metadata = parseMetadata(row);
-    return {
-      logicalKey: row.logical_key,
-      memoryId: row.memory_id,
-      versionNumber: row.version_number,
-      rootMemoryId: row.root_memory_id,
-      validFrom: row.valid_from,
-      validTo: row.valid_to,
-      transitionEvent: row.transition_event,
-      snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
-    };
-  });
+  return lineage.rows.map((row) => resolveSnapshotFromLineageRow(database, row));
 }
 
 /**
@@ -841,23 +865,16 @@ export function summarizeLineageInspection(
 ): LineageInspectionSummary | null {
   bindHistory(database);
   ensureLineageTables(database);
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage) {
     return null;
   }
-
-  const rows = database.prepare(`
-    SELECT *
-    FROM memory_lineage
-    WHERE logical_key = ?
-    ORDER BY version_number ASC, created_at ASC
-  `).all(logicalKey) as MemoryLineageRow[];
+  const { logicalKey, projection, rows } = lineage;
 
   if (rows.length === 0) {
     return null;
   }
 
-  const projection = getActiveProjection(database, logicalKey);
   const transitionCounts: Record<LineageTransitionEvent, number> = {
     CREATE: 0,
     UPDATE: 0,
@@ -924,32 +941,19 @@ export function resolveActiveLineageSnapshot(
   memoryId: number,
 ): ResolvedLineageSnapshot | null {
   ensureLineageTables(database);
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage) {
+    return null;
+  }
+  const { projection, rows } = lineage;
+  if (rows.length === 0) {
     return null;
   }
 
-  const projection = getActiveProjection(database, logicalKey);
-  if (!projection) {
-    return null;
-  }
-
-  const row = getLineageRow(database, projection.active_memory_id);
-  if (!row) {
-    return null;
-  }
-
-  const metadata = parseMetadata(row);
-  return {
-    logicalKey: row.logical_key,
-    memoryId: row.memory_id,
-    versionNumber: row.version_number,
-    rootMemoryId: row.root_memory_id,
-    validFrom: row.valid_from,
-    validTo: row.valid_to,
-    transitionEvent: row.transition_event,
-    snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
-  };
+  const row = projection
+    ? rows.find((candidate) => candidate.memory_id === projection.active_memory_id) ?? null
+    : rows.find((candidate) => candidate.valid_to == null) ?? null;
+  return row ? resolveSnapshotFromLineageRow(database, row) : null;
 }
 
 /**
@@ -966,37 +970,18 @@ export function resolveLineageAsOf(
   asOf: string | Date,
 ): ResolvedLineageSnapshot | null {
   ensureLineageTables(database);
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage) {
     return null;
   }
 
   const asOfTimestamp = typeof asOf === 'string' ? asOf : asOf.toISOString();
-  const row = database.prepare(`
-    SELECT *
-    FROM memory_lineage
-    WHERE logical_key = ?
-      AND valid_from <= ?
-      AND (valid_to IS NULL OR valid_to > ?)
-    ORDER BY version_number DESC, created_at DESC
-    LIMIT 1
-  `).get(logicalKey, asOfTimestamp, asOfTimestamp) as MemoryLineageRow | undefined;
+  const row = [...lineage.rows].reverse().find((candidate) => (
+    candidate.valid_from <= asOfTimestamp
+    && (candidate.valid_to == null || candidate.valid_to > asOfTimestamp)
+  )) ?? null;
 
-  if (!row) {
-    return null;
-  }
-
-  const metadata = parseMetadata(row);
-  return {
-    logicalKey: row.logical_key,
-    memoryId: row.memory_id,
-    versionNumber: row.version_number,
-    rootMemoryId: row.root_memory_id,
-    validFrom: row.valid_from,
-    validTo: row.valid_to,
-    transitionEvent: row.transition_event,
-    snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
-  };
+  return row ? resolveSnapshotFromLineageRow(database, row) : null;
 }
 
 /**
@@ -1240,11 +1225,11 @@ export function getActiveProjectionRow(
   database: Database.Database,
   memoryId: number,
 ): ActiveProjectionRow | null {
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage) {
     return null;
   }
-  return getActiveProjection(database, logicalKey);
+  return lineage.projection;
 }
 
 /**
@@ -1255,11 +1240,11 @@ export function getActiveProjectionRow(
  * @returns Latest lineage row when one exists.
  */
 export function getLatestLineageForMemory(database: Database.Database, memoryId: number): MemoryLineageRow | null {
-  const logicalKey = resolveLogicalKey(database, memoryId);
-  if (!logicalKey) {
+  const lineage = loadLineageRowsForMemory(database, memoryId);
+  if (!lineage || lineage.rows.length === 0) {
     return null;
   }
-  return getLatestLineageRowForLogicalKey(database, logicalKey);
+  return lineage.rows[lineage.rows.length - 1] ?? null;
 }
 
 /**

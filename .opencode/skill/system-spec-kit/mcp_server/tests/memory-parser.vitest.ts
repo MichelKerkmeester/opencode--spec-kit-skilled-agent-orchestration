@@ -296,6 +296,24 @@ Inner
       expect(validation.valid).toBe(false);
       expect(validation.warnings.some((warning) => warning.includes('out of order'))).toBe(true);
     });
+
+    it('T500-09d: extraction fails closed for crossed and unclosed anchors', () => {
+      const malformedContent = `<!-- ANCHOR:outer -->
+Outer
+<!-- ANCHOR:inner -->
+Inner
+<!-- /ANCHOR:outer -->
+
+<!-- ANCHOR:tail -->
+Tail without closing tag
+`;
+
+      const validation = memoryParser.validateAnchors(malformedContent);
+      const anchors = memoryParser.extractAnchors(malformedContent);
+
+      expect(validation.valid).toBe(false);
+      expect(anchors).toEqual({});
+    });
   });
 
   // ───────────────────────────────────────────────────────────────

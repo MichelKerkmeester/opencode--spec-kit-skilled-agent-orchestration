@@ -209,4 +209,50 @@ describe('vector-index schema migration refinements', () => {
       contradiction_detected: 1,
     });
   });
+
+  it('migrates legacy embedding_cache primary keys so dimension variants can coexist', () => {
+    const database = createTestDatabase();
+    openDatabases.add(database);
+
+    database.exec(`
+      DROP TABLE embedding_cache;
+      CREATE TABLE embedding_cache (
+        content_hash TEXT NOT NULL,
+        model_id TEXT NOT NULL,
+        embedding BLOB NOT NULL,
+        dimensions INTEGER NOT NULL,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        last_used_at TEXT NOT NULL DEFAULT (datetime('now')),
+        PRIMARY KEY (content_hash, model_id)
+      );
+    `);
+
+    database.prepare(`
+      INSERT INTO embedding_cache (content_hash, model_id, embedding, dimensions, created_at, last_used_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run('hash-1', 'model-A', Buffer.from([1, 2, 3]), 768, '2026-03-28T12:00:00.000Z', '2026-03-28T12:00:00.000Z');
+
+    createSchema(database, {
+      sqlite_vec_available: false,
+      get_embedding_dim: () => 4,
+    });
+
+    const tableSql = database.prepare(`
+      SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'embedding_cache'
+    `).get() as { sql: string };
+    expect(tableSql.sql).toMatch(/PRIMARY KEY \(content_hash, model_id, dimensions\)/);
+
+    database.prepare(`
+      INSERT INTO embedding_cache (content_hash, model_id, embedding, dimensions, created_at, last_used_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run('hash-1', 'model-A', Buffer.from([4, 5, 6]), 1024, '2026-03-28T12:01:00.000Z', '2026-03-28T12:01:00.000Z');
+
+    const rows = database.prepare(`
+      SELECT dimensions
+      FROM embedding_cache
+      WHERE content_hash = ? AND model_id = ?
+      ORDER BY dimensions ASC
+    `).all('hash-1', 'model-A') as Array<{ dimensions: number }>;
+    expect(rows).toEqual([{ dimensions: 768 }, { dimensions: 1024 }]);
+  });
 });

@@ -6,8 +6,12 @@ import { recordHistory } from '../lib/storage/history';
 import {
   benchmarkLineageWritePath,
   getActiveMemoryProjection,
+  getActiveProjectionRow,
+  getLatestLineageForMemory,
   inspectLineageChain,
   recordLineageVersion,
+  resolveActiveLineageSnapshot,
+  resolveLineageAsOf,
   resolveMemoryAsOf,
   summarizeLineageInspection,
   validateLineageIntegrity,
@@ -129,6 +133,13 @@ describe('Memory lineage state', () => {
     });
     expect(beforeSupersede?.memoryId).toBe(1);
     expect(afterSupersede?.memoryId).toBe(2);
+
+    const activeSnapshot = resolveActiveLineageSnapshot(database, 1);
+    const directAsOfSnapshot = resolveLineageAsOf(database, 2, '2026-03-13T09:30:00.000Z');
+    expect(activeSnapshot?.memoryId).toBe(2);
+    expect(activeSnapshot?.snapshot.id).toBe(2);
+    expect(directAsOfSnapshot?.memoryId).toBe(2);
+    expect(directAsOfSnapshot?.snapshot.id).toBe(2);
 
     const chain = inspectLineageChain(database, 2);
     expect(chain.map((version) => version.versionNumber)).toEqual([1, 2]);
@@ -312,6 +323,74 @@ describe('Memory lineage state', () => {
       hasVersionGaps: false,
       hasMultipleActiveVersions: false,
     });
+  });
+
+  it('resolves lineage reads from any chain member even when the active projection row is missing', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/projection-fallback.md';
+    insertMemory(database, {
+      id: 91,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Projection fallback v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 92,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Projection fallback v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 93,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Projection fallback v3',
+      createdAt: '2026-03-13T10:00:00.000Z',
+    });
+
+    recordLineageVersion(database, {
+      memoryId: 91,
+      actor: 'ops:projection-fallback',
+      effectiveAt: '2026-03-13T08:00:00.000Z',
+    });
+    recordLineageVersion(database, {
+      memoryId: 92,
+      actor: 'ops:projection-fallback',
+      predecessorMemoryId: 91,
+      effectiveAt: '2026-03-13T09:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+    recordLineageVersion(database, {
+      memoryId: 93,
+      actor: 'ops:projection-fallback',
+      predecessorMemoryId: 92,
+      effectiveAt: '2026-03-13T10:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+
+    database.prepare('DELETE FROM active_memory_projection WHERE root_memory_id = ?').run(91);
+
+    const chain = inspectLineageChain(database, 92);
+    const summary = summarizeLineageInspection(database, 92);
+    const projectionRow = getActiveProjectionRow(database, 92);
+    const latestRow = getLatestLineageForMemory(database, 92);
+    const activeSnapshot = resolveActiveLineageSnapshot(database, 92);
+    const asOfSnapshot = resolveLineageAsOf(database, 92, '2026-03-13T09:30:00.000Z');
+
+    expect(chain.map((version) => version.memoryId)).toEqual([91, 92, 93]);
+    expect(summary).toMatchObject({
+      rootMemoryId: 91,
+      activeMemoryId: 93,
+      activeVersionNumber: 3,
+      totalVersions: 3,
+    });
+    expect(projectionRow).toBeNull();
+    expect(latestRow?.memory_id).toBe(93);
+    expect(activeSnapshot?.memoryId).toBe(93);
+    expect(activeSnapshot?.snapshot.id).toBe(93);
+    expect(asOfSnapshot?.memoryId).toBe(92);
+    expect(asOfSnapshot?.snapshot.id).toBe(92);
   });
 
   it('benchmarks ordered lineage writes with final projection details', () => {

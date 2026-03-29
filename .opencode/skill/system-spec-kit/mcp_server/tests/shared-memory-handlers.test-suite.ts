@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// MODULE: Shared Memory Handler Tests
+// MODULE: Shared Memory Handler Test Suite
 // ───────────────────────────────────────────────────────────────
 import Database from 'better-sqlite3';
 import * as fsPromises from 'fs/promises';
@@ -274,6 +274,28 @@ describe('shared-memory admin handlers', () => {
     expect(response.isError).toBe(true);
     expect(envelope.data.code).toBe('E_AUTHENTICATION');
     expect(envelope.data.details?.reason).toBe('actor_identity_required');
+  });
+
+  it('rejects blank or whitespace-only actor identity values', async () => {
+    const cases = [
+      { actorUserId: '   ' },
+      { actorAgentId: '\t' },
+      { actorUserId: ' ', actorAgentId: 'agent-1' },
+    ];
+
+    for (const actorArgs of cases) {
+      const response = await handleSharedSpaceUpsert({
+        spaceId: 'space-1',
+        tenantId: 'tenant-a',
+        name: 'Alpha',
+        ...actorArgs,
+      });
+
+      const envelope = parseEnvelope(response);
+      expect(response.isError).toBe(true);
+      expect(envelope.data.code).toBe('E_VALIDATION');
+      expect(envelope.data.details?.reason).toBe('actor_identity_blank');
+    }
   });
 
   it('rejects ambiguous actor identity', async () => {

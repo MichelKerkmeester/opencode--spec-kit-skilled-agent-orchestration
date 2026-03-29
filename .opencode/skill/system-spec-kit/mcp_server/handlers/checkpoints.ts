@@ -139,21 +139,40 @@ function parseCheckpointMetadata(rawMetadata: unknown): Record<string, unknown> 
 }
 
 function validateCheckpointScope(args: CheckpointScopeArgs): CheckpointScopeArgs {
-  const validateValue = (value: string | undefined, field: keyof CheckpointScopeArgs): string | undefined => {
+  const validateValue = (
+    value: string | undefined,
+    field: keyof CheckpointScopeArgs,
+    options: { trim?: boolean } = {},
+  ): string | undefined => {
     if (value === undefined) {
       return undefined;
     }
     if (typeof value !== 'string') {
       throw new Error(`${field} must be a string`);
     }
-    return value;
+    return options.trim ? value.trim() : value;
   };
 
+  const tenantId = validateValue(args.tenantId, 'tenantId', { trim: true });
+  const userId = validateValue(args.userId, 'userId');
+  const agentId = validateValue(args.agentId, 'agentId');
+  const sharedSpaceId = validateValue(args.sharedSpaceId, 'sharedSpaceId');
+  const hasActorOrSharedSpaceScope =
+    userId !== undefined || agentId !== undefined || sharedSpaceId !== undefined;
+
+  if (
+    hasActorOrSharedSpaceScope
+    && tenantId !== undefined
+    && tenantId.trim().length === 0
+  ) {
+    throw new Error('tenantId must be a non-empty string when userId, agentId, or sharedSpaceId is provided');
+  }
+
   return {
-    tenantId: validateValue(args.tenantId, 'tenantId'),
-    userId: validateValue(args.userId, 'userId'),
-    agentId: validateValue(args.agentId, 'agentId'),
-    sharedSpaceId: validateValue(args.sharedSpaceId, 'sharedSpaceId'),
+    tenantId: tenantId && tenantId.length > 0 ? tenantId : undefined,
+    userId,
+    agentId,
+    sharedSpaceId,
   };
 }
 

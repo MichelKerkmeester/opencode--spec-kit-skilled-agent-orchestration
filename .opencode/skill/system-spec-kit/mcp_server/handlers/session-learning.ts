@@ -683,15 +683,16 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
   ensureSchema(database);
 
   try {
+    const normalizedSessionId = normalizeSessionId(session_id);
     let sql = `
       SELECT * FROM session_learning
       WHERE spec_folder = ?
     `;
     const params: unknown[] = [spec_folder];
 
-    if (session_id) {
+    if (normalizedSessionId) {
       sql += ' AND session_id = ?';
-      params.push(session_id);
+      params.push(normalizedSessionId);
     }
 
     if (only_complete) {
@@ -773,9 +774,9 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
       `;
       const summaryParams: unknown[] = [spec_folder];
 
-      if (session_id) {
+      if (normalizedSessionId) {
         summarySql += ' AND session_id = ?';
-        summaryParams.push(session_id);
+        summaryParams.push(normalizedSessionId);
       }
 
       if (only_complete) {

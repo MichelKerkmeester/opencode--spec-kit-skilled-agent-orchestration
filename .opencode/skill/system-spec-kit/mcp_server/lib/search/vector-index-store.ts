@@ -390,6 +390,8 @@ function set_active_database_connection(
   sqlite_vec_available_flag = vec_available;
 
   if (previousDb !== connection || previousPath !== target_path) {
+    clear_constitutional_cache();
+
     for (const listener of database_connection_listeners) {
       try {
         listener(connection, {
@@ -434,13 +436,49 @@ const CONSTITUTIONAL_CACHE_MAX_KEYS = 50;
 const constitutional_cache_loading = new Map<string, boolean>();
 
 let last_db_mod_time = 0;
+let last_constitutional_cache_db_path: string | null = null;
+
+function get_constitutional_cache_db_scope(): string {
+  if (db_path === ':memory:') {
+    return db_path;
+  }
+
+  return path.resolve(db_path);
+}
+
+function build_constitutional_cache_key(
+  spec_folder: string | null,
+  includeArchived: boolean,
+): string {
+  const db_scope = get_constitutional_cache_db_scope();
+  return `${db_scope}::${spec_folder || 'global'}:${includeArchived ? 'arch' : 'noarch'}`;
+}
+
+function refresh_constitutional_cache_db_state(): void {
+  const current_db_path = get_constitutional_cache_db_scope();
+  last_constitutional_cache_db_path = current_db_path;
+
+  if (current_db_path === ':memory:' || !fs.existsSync(current_db_path)) {
+    last_db_mod_time = 0;
+    return;
+  }
+
+  last_db_mod_time = fs.statSync(current_db_path).mtimeMs;
+}
 
 function is_constitutional_cache_valid() {
   if (constitutional_cache.size === 0) return false;
 
   try {
-    const current_db_path = resolve_database_path();
-    if (fs.existsSync(current_db_path)) {
+    const current_db_path = get_constitutional_cache_db_scope();
+    if (
+      last_constitutional_cache_db_path &&
+      last_constitutional_cache_db_path !== current_db_path
+    ) {
+      return false;
+    }
+
+    if (current_db_path !== ':memory:' && fs.existsSync(current_db_path)) {
       const stats = fs.statSync(current_db_path);
       if (stats.mtimeMs > last_db_mod_time) {
         last_db_mod_time = stats.mtimeMs;
@@ -563,8 +601,8 @@ export function get_constitutional_memories(
   spec_folder: string | null = null,
   includeArchived = false
 ): MemoryRow[] {
-  // H4 FIX: Include includeArchived in cache key to prevent cross-option cache leaks
-  const cache_key = `${spec_folder || 'global'}:${includeArchived ? 'arch' : 'noarch'}`;
+  // Scope cache entries to the active DB path as well as the archived filter.
+  const cache_key = build_constitutional_cache_key(spec_folder, includeArchived);
   const now = Date.now();
   const cached = constitutional_cache.get(cache_key);
 
@@ -612,6 +650,7 @@ export function get_constitutional_memories(
       }
     }
 
+    refresh_constitutional_cache_db_state();
     constitutional_cache.set(cache_key, { data: results, timestamp: now });
 
     return results;
@@ -627,20 +666,23 @@ export function get_constitutional_memories(
  */
 export function clear_constitutional_cache(spec_folder: string | null = null): void {
   if (spec_folder) {
-    const scoped_prefix = `${spec_folder}:`;
+    const scoped_suffix_archived = `::${spec_folder}:arch`;
+    const scoped_suffix_live = `::${spec_folder}:noarch`;
     for (const key of [...constitutional_cache.keys()]) {
-      if (key === spec_folder || key.startsWith(scoped_prefix)) {
+      if (key.endsWith(scoped_suffix_archived) || key.endsWith(scoped_suffix_live)) {
         constitutional_cache.delete(key);
       }
     }
     for (const key of [...constitutional_cache_loading.keys()]) {
-      if (key === spec_folder || key.startsWith(scoped_prefix)) {
+      if (key.endsWith(scoped_suffix_archived) || key.endsWith(scoped_suffix_live)) {
         constitutional_cache_loading.delete(key);
       }
     }
   } else {
     constitutional_cache.clear();
     constitutional_cache_loading.clear();
+    last_db_mod_time = 0;
+    last_constitutional_cache_db_path = null;
   }
 }
 
