@@ -150,17 +150,6 @@ const memorySearchSchema = getSchema({
   mode: z.enum(['auto', 'deep']).optional(),
   includeTrace: z.boolean().optional(),
   profile: z.enum(['quick', 'research', 'resume', 'debug']).optional(),
-}).superRefine((value, ctx) => {
-  const hasCursor = typeof value.cursor === 'string' && value.cursor.trim().length > 0;
-  const hasQuery = typeof value.query === 'string' && value.query.trim().length > 0;
-  const hasConcepts = Array.isArray(value.concepts) && value.concepts.length >= 2;
-  if (!hasCursor && !hasQuery && !hasConcepts) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Either "query" (string), "concepts" (array with 2-5 items), or "cursor" (string) is required.',
-      path: ['query'],
-    });
-  }
 });
 
 // E3: Simplified search schema — 3 params only
@@ -211,17 +200,11 @@ const memorySaveSchema = getSchema({
 // Branch 2 requires `specFolder` + `confirm: true` (bulk folder delete).
 // Codex fix: `confirm` accepts only `true` (not `false`) in both branches
 // To prevent semantically meaningless `confirm: false` from passing validation.
-const memoryDeleteSchema = z.union([
-  getSchema({
-    id: positiveInt,
-    specFolder: optionalPathString(),
-    confirm: z.literal(true).optional(),
-  }),
-  getSchema({
-    specFolder: pathString(1),
-    confirm: z.literal(true),
-  }),
-]);
+const memoryDeleteSchema = getSchema({
+  id: positiveInt.optional().describe('Memory ID to delete (required unless specFolder + confirm provided for bulk)'),
+  specFolder: optionalPathString().describe('Spec folder scope for bulk delete (requires confirm: true)'),
+  confirm: z.boolean().optional().describe('Must be true for spec-folder bulk delete'),
+});
 
 const memoryUpdateSchema = getSchema({
   id: positiveInt,
@@ -444,77 +427,26 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
     spaceId: z.string(),
     tenantId: z.string(),
     name: z.string(),
-    actorUserId: z.string().optional(),
-    actorAgentId: z.string().optional(),
+    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
     rolloutEnabled: z.boolean().optional(),
     rolloutCohort: z.string().optional(),
     killSwitch: z.boolean().optional(),
-  }).superRefine((value, ctx) => {
-    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
-    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
-    if (!hasActorUser && !hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorUserId'],
-      });
-    }
-    if (hasActorUser && hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorAgentId'],
-      });
-    }
-  }) as unknown as ToolInputSchema,
+  }),
   shared_space_membership_set: getSchema({
     spaceId: z.string(),
     tenantId: z.string(),
-    actorUserId: z.string().optional(),
-    actorAgentId: z.string().optional(),
+    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
     subjectType: z.enum(['user', 'agent']),
     subjectId: z.string(),
     role: z.enum(['owner', 'editor', 'viewer']),
-  }).superRefine((value, ctx) => {
-    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
-    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
-    if (!hasActorUser && !hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorUserId'],
-      });
-    }
-    if (hasActorUser && hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorAgentId'],
-      });
-    }
-  }) as unknown as ToolInputSchema,
+  }),
   shared_memory_status: getSchema({
     tenantId: z.string().optional(),
-    actorUserId: z.string().optional(),
-    actorAgentId: z.string().optional(),
-  }).superRefine((value, ctx) => {
-    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
-    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
-    if (!hasActorUser && !hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorUserId'],
-      });
-    }
-    if (hasActorUser && hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
-        path: ['actorAgentId'],
-      });
-    }
-  }) as unknown as ToolInputSchema,
+    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+  }),
   shared_memory_enable: getSchema({}) as unknown as ToolInputSchema,
 };
 

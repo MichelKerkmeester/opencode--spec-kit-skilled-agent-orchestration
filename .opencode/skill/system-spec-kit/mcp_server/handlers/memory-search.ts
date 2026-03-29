@@ -446,7 +446,15 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     sharedSpaceId: normalizedScope.sharedSpaceId ?? null,
   });
 
-  if (typeof cursor === 'string' && cursor.trim().length > 0) {
+  // Validate at least one search input is provided (moved from schema superRefine for GPT compatibility)
+  const hasCursor = typeof cursor === 'string' && cursor.trim().length > 0;
+  const hasQuery = typeof query === 'string' && query.trim().length > 0;
+  const hasConcepts = Array.isArray(concepts) && concepts.length >= 2;
+  if (!hasCursor && !hasQuery && !hasConcepts) {
+    return { content: [{ type: 'text', text: JSON.stringify({ error: 'Either "query" (string), "concepts" (array with 2-5 items), or "cursor" (string) is required.' }) }] };
+  }
+
+  if (hasCursor) {
     const resolved = resolveCursor(cursor.trim(), undefined, { scopeKey: progressiveScopeKey });
     if (!resolved) {
       return createMCPErrorResponse({
