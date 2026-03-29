@@ -46,7 +46,6 @@ import type {
   VectorSearchOptions,
 } from './vector-index-types.js';
 
-const search_weights_path = path.join(SERVER_DIR, 'configs', 'search-weights.json');
 type SearchWeightsConfig = {
   maxTriggersPerMemory?: number;
   smartRanking?: {
@@ -56,15 +55,23 @@ type SearchWeightsConfig = {
   };
 };
 
-let _search_weights: SearchWeightsConfig;
-try {
-  _search_weights = JSON.parse(
-    fs.readFileSync(search_weights_path, 'utf-8')
-  ) as SearchWeightsConfig;
-} catch (error: unknown) {
-  console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
-  _search_weights = {};
+function loadSearchWeights(): SearchWeightsConfig {
+  // SERVER_DIR points to dist/ at runtime; configs/ lives at the package root (dist/..)
+  const candidates = [
+    path.join(SERVER_DIR, 'configs', 'search-weights.json'),
+    path.join(SERVER_DIR, '..', 'configs', 'search-weights.json'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(fs.readFileSync(candidate, 'utf-8')) as SearchWeightsConfig;
+    } catch {
+      // Try next candidate
+    }
+  }
+  return {};
 }
+
+const _search_weights: SearchWeightsConfig = loadSearchWeights();
 /** Loaded search weight configuration for vector-index ranking. */
 export const search_weights = _search_weights;
 
