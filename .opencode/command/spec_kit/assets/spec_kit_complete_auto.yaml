@@ -66,6 +66,47 @@ optional_workflows:
       - { key: "n", action: "pause" }
       - { key: "review", action: "show_debug_report" }
 
+  phase_decomposition:
+    enabled: true
+    trigger:
+      flag: ":with-phases"
+      smart_detect: false
+    insert_point: "before_step_1"
+    pre_workflow_steps:
+      - id: P1
+        name: Analyze Scope
+        command: "bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --json --recommend-phases --phase-threshold {phase_threshold} --loc {estimated_loc} --files {estimated_files}"
+        output: phase_recommendation
+      - id: P2
+        name: Define Decomposition
+        activities: ["Generate phase names", "Define scope boundaries per phase", "Map dependencies between phases", "Define deliverables per phase"]
+        output: phase_plan
+      - id: P3
+        name: Create Folders
+        command: 'bash .opencode/skill/system-spec-kit/scripts/spec/create.sh "{feature_description}" --phase --phases {phase_count} --phase-names "{phase_names}" --level {parent_level}'
+        output: parent_and_child_folders
+      - id: P4
+        name: Populate Templates
+        activities: ["Load phase-parent-section.md addendum", "Fill parent Phase Documentation Map", "Load phase-child-header.md addendum", "Fill child back-references and scope boundaries"]
+        output: populated_specs
+    templates:
+      phase_parent_section: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md
+      phase_child_header: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-child-header.md
+    post_decomposition:
+      action: "Update spec_path to first child phase folder, continue with normal workflow"
+      validation: "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive {parent_folder}"
+    checkpoint:
+      enabled: true
+      prompt: |
+        WORKFLOW CHECKPOINT - Phase Decomposition Complete
+        Parent: {parent_folder} | Phases: {phase_count} children created
+        Continue with first child ({first_child_folder})? [Y/n/review]
+      options:
+        - { key: "Y", action: "continue_with_first_child" }
+        - { key: "n", action: "pause" }
+        - { key: "review", action: "show_folder_tree" }
+    defaults: { phase_count: 3, phase_names: "auto-generate", parent_level: "3+" }
+
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS
 # ─────────────────────────────────────────────────────────────────

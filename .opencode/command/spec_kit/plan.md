@@ -1,6 +1,6 @@
 ---
-description: Planning workflow (7 steps) - spec through plan only, no implementation. Supports :auto and :confirm modes
-argument-hint: "<feature-description> [:auto|:confirm] [--phase-folder=<path>]"
+description: Planning workflow (7 steps) - spec through plan only, no implementation. Supports :auto, :confirm, and :with-phases modes
+argument-hint: "<feature-description> [:auto|:confirm] [:with-phases] [--phases N] [--phase-names list] [--phase-folder=<path>]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
@@ -12,6 +12,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 >
 > **YOUR FIRST ACTION:**
 > 1. Determine execution mode from user input (`:auto` or `:confirm`)
+>    Note: `:with-phases` is a feature flag, not an execution mode. It modifies the workflow but does not change the base execution mode.
 > 2. Load the corresponding YAML file from `assets/`:
 >    - Auto mode → `spec_kit_plan_auto.yaml`
 >    - Confirm mode → `spec_kit_plan_confirm.yaml`
@@ -46,6 +47,12 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    ├─ ":auto"    → execution_mode = "AUTONOMOUS" (omit Q2)
    ├─ ":confirm" → execution_mode = "INTERACTIVE" (omit Q2)
    └─ No suffix  → execution_mode = "ASK" (include Q2)
+
+1a. CHECK :with-phases flag:
+   ├─ ":with-phases" present → phase_decomposition = TRUE (omit Q6)
+   │   Parse additional flags: --phases N (default 3), --phase-names "a,b,c" (optional)
+   │   Include Q7 (Phase Count) and Q8 (Phase Names) if not provided via flags
+   └─ Not present → phase_decomposition = "ASK" (include Q6)
 
 1b. CHECK --phase-folder flag:
    ├─ --phase-folder=<path> provided → auto-resolve spec_path to that child folder path
@@ -90,6 +97,18 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    Q5. Research Intent (required):
      A) add_feature  B) fix_bug  C) refactor  D) understand
 
+   Q6. Phase Decomposition (if :with-phases not in command):
+     Create phased spec structure (parent + N child folders)?
+     A) No — single spec folder (default)
+     B) Yes — decompose into phases before planning
+
+   Q7. Phase Count (if phase_decomposition == TRUE and --phases not provided):
+     How many phases? (Default: 3)
+
+   Q8. Phase Names (if phase_decomposition == TRUE and --phase-names not provided):
+     Provide phase names? (Optional — auto-generated if skipped)
+     Example: "data-model, api-layer, ui-components"
+
    Reply format: "B, A, A, C, A" or "Add auth, B, A, C, A"
 
 7. WAIT for user response (DO NOT PROCEED)
@@ -121,6 +140,7 @@ STOP HERE - Wait for user answers before continuing.
 **Phase Output:**
 - `feature_description` | `spec_choice` | `spec_path`
 - `execution_mode` | `dispatch_mode` | `memory_loaded` | `research_intent`
+- `phase_decomposition` | `phase_count` | `phase_names` (if `:with-phases`)
 
 > **Cross-reference**: Implements AGENTS.md Section 2 "Gate 3: Spec Folder Question" and "First Message Protocol".
 
@@ -341,12 +361,55 @@ Record results in decision-record.md for architectural changes.
 
 ---
 
-## 12. EXAMPLES
+## 12. PHASE DECOMPOSITION (`:with-phases`)
+
+### Overview
+
+When `:with-phases` is present, a phase decomposition pre-workflow runs before the normal 7-step planning workflow. This creates a parent spec folder with N child phase folders, then continues planning on the first child phase.
+
+### Trigger
+
+- **Flag:** `:with-phases` in command invocation
+- **Smart detect:** When `recommend-level.sh --recommend-phases` scores above threshold during Step 1, suggest `:with-phases` to user
+
+### Phase Decomposition Pre-Workflow (4 steps)
+
+Runs after setup, before Step 1:
+
+| Pre-Step | Name | Purpose | Outputs |
+|----------|------|---------|---------|
+| P1 | Analyze Scope | Run `recommend-level.sh --recommend-phases` | phase_recommendation |
+| P2 | Define Decomposition | Generate phase names, boundaries, dependencies | phase_plan |
+| P3 | Create Folders | Run `create.sh --phase --phases N` | parent + child folders |
+| P4 | Populate Templates | Fill parent Phase Documentation Map + child back-references | populated specs |
+
+### After Phase Creation
+
+- `spec_path` automatically updates to first child phase folder
+- Normal Steps 1-7 execute targeting that first child
+- Subsequent children: invoke `/spec_kit:plan --phase-folder=<child-path>` per child
+
+### Checkpoint
 
 ```
-/spec_kit:plan:auto Add dark mode toggle to the settings page
-/spec_kit:plan:confirm Redesign checkout flow with multi-step form and payment integration
-/spec_kit:plan "Build analytics dashboard" tech stack: React, Chart.js, existing API
+WORKFLOW CHECKPOINT - Phase Decomposition Complete
+Parent: specs/[NNN]-[name]/ | Phases: [N] children created
+Continue planning first child (001-[name]/)? [Y/n/review]
+```
+
+### Arguments
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--phases N` | Number of child phases | 3 |
+| `--phase-names "a,b,c"` | Comma-separated phase names | Auto-generated |
+
+### Examples
+
+```
+/spec_kit:plan:auto "Build hybrid RAG system" :with-phases --phases 3
+/spec_kit:plan:auto "Large platform migration" :with-phases --phase-names "data-layer,api,ui"
+/spec_kit:plan:confirm "OAuth2 implementation" :with-phases
 ```
 
 ---
@@ -354,7 +417,7 @@ Record results in decision-record.md for architectural changes.
 ## 13. COMMAND CHAIN
 
 ```
-[/spec_kit:deep-research] → /spec_kit:plan → [/spec_kit:implement]
+[/spec_kit:deep-research] → /spec_kit:plan [:with-phases] → [/spec_kit:implement]
 ```
 
 Next step: `/spec_kit:implement [spec-folder-path]`

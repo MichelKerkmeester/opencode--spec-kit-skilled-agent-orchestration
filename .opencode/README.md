@@ -167,7 +167,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:debug`: Debug delegation with model selection and task dispatch
 - `/spec_kit:handover`: Session continuation with context preservation
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
-- `/spec_kit:phase`: Phase decomposition workflow for complex multi-phase spec folders
+- `/spec_kit:plan :with-phases`: Phase decomposition pre-workflow (integrated into plan and complete commands)
 
 ### Memory Commands (`/memory:*`)
 

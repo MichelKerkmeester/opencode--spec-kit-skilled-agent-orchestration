@@ -3298,10 +3298,10 @@ Prompt: `Validate phase link integrity across parent and child folders. Capture 
 ### PHASE-005 | Phase command workflow
 
 #### Description
-Execute `/spec_kit:phase` command in auto mode and verify 7-step workflow.
+Execute `/spec_kit:plan :with-phases` command in auto mode and verify phase decomposition pre-workflow.
 
 #### Current Reality
-Prompt: `Run the spec_kit:phase command end-to-end and verify all 7 workflow steps complete. Capture the evidence needed to prove All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the spec_kit:plan :with-phases command end-to-end and verify phase decomposition pre-workflow steps complete. Capture the evidence needed to prove All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths
 

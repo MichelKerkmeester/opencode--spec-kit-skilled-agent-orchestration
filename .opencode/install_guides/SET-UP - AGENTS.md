@@ -623,7 +623,7 @@ Commands are slash-prefixed shortcuts for common workflows.
 | `/spec_kit:deep-research` | Iterative deep research workflow | Research findings and state |
 | `/spec_kit:handover`  | Session handover documentation        | Handover document           |
 | `/spec_kit:implement` | Execute pre-planned work              | Implementation from plan    |
-| `/spec_kit:phase`     | Decompose complex work into phases    | Parent and child spec packs |
+| `/spec_kit:plan :with-phases` | Phase decomposition (integrated into plan/complete) | Parent and child spec packs |
 | `/spec_kit:plan`      | Planning phase only                   | Plan without implementation |
 | `/spec_kit:resume`    | Resume previous session               | Continued work              |
 

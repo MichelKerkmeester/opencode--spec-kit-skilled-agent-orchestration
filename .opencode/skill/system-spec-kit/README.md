@@ -398,7 +398,7 @@ Spec Kit exposes 12 commands: 8 spec_kit + 4 memory operations. Each command ope
 | `/spec_kit:resume` | 4 | Resume a previous session on an existing spec folder |
 | `/spec_kit:handover` | 4 | Create a session handover document for the next AI |
 | `/spec_kit:debug` | 5 | Delegate debugging to a specialized sub-agent with fresh perspective |
-| `/spec_kit:phase` | N/A | Create and manage phase decomposition for complex work |
+| `/spec_kit:plan :with-phases` | N/A | Phase decomposition integrated into plan and complete commands |
 | `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection |
 | `/spec_kit:deep-review` | N/A | Autonomous code review loop with convergence detection |
 
@@ -773,7 +773,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh \
 # .opencode/specs/[project]/022-big-feature/001-phase/ (first child)
 ```
 
-Use the `/spec_kit:phase` command to manage additional phases, track progress across children and validate the entire hierarchy.
+Use `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` to create phase structures, track progress across children and validate the entire hierarchy.
 
 **Result**: A coordinated parent/child folder structure for multi-session work.
 

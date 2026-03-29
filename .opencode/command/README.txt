@@ -141,7 +141,7 @@ Structured workflows for the spec folder development lifecycle.
 | Plan | `/spec_kit:plan <description>` | Planning workflow (spec through plan only) |
 | Deep Research | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | Iterative technical investigation with convergence |
 | Deep Review | `/spec_kit:deep-review <target> [:auto\|:confirm]` | Iterative code review with severity-weighted findings |
-| Phase | `/spec_kit:phase <description> [--phases N]` | Parent/child phase decomposition for complex work |
+| Plan (with phases) | `/spec_kit:plan <description> :with-phases [--phases N]` | Phase decomposition integrated into plan workflow |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
 
 <!-- /ANCHOR:command-groups -->

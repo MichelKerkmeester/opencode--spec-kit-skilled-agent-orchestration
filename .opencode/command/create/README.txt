@@ -72,7 +72,7 @@ This document is a routing and reference surface only. Run the command entrypoin
 | **sk-skill** | `/create:sk-skill <name> <operation> [type] [--chained] [:auto\|:confirm]` | Unified skill workflow (full-create, full-update, reference-only, asset-only) |
 | **prompt** | `/create:prompt <prompt-text-or-flags> [:auto\|:confirm]` | Create or improve prompts through the `sk-prompt-improver` workflow |
 | **changelog** | `/create:changelog <spec-folder-or-component> [--bump <major\|minor\|patch\|build>] [:auto\|:confirm]` | Create a changelog entry by detecting recent work, resolving the target component folder, and generating a formatted changelog file |
-| **phase (via spec_kit)** | `/spec_kit:phase <feature> [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition used when create workflows detect large multi-domain scope |
+| **phase (via spec_kit)** | `/spec_kit:plan <feature> :with-phases [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition integrated into plan/complete workflows |
 
 ### README Types
 
@@ -249,6 +249,6 @@ A: The command reads the most recent changelog entry in the target component fol
 | [agent_template.md](../../skill/sk-doc/assets/agents/agent_template.md) | Agent creation template |
 | [command_template.md](../../skill/sk-doc/assets/agents/command_template.md) | Command creation template |
 | [skill_creation.md](../../skill/sk-doc/references/specific/skill_creation.md) | Skill creation workflow reference |
-| [spec_kit:phase](../spec_kit/phase.md) | Phase-aware spec setup workflow for complex features |
+| [spec_kit:plan :with-phases](../spec_kit/plan.md) | Phase decomposition integrated into plan workflow |
 
 <!-- /ANCHOR:related-documents -->

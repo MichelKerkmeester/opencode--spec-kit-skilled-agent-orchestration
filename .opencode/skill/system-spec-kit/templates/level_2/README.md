@@ -78,7 +78,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Consider phase decomposition for multi-sprint Level 2 tasks where work naturally divides into ordered stages. Use Gate 3 Option E to target a specific phase child and `/spec_kit:phase` to create the phase structure.
+Consider phase decomposition for multi-sprint Level 2 tasks where work naturally divides into ordered stages. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

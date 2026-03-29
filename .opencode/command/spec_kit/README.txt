@@ -52,14 +52,13 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 
 | Command | Invocation | Steps | Description |
 |---------|------------|-------|-------------|
-| **plan** | `/spec_kit:plan <description> [:auto\|:confirm]` | 7 | Create spec folder and plan without implementation |
+| **plan** | `/spec_kit:plan <description> [:auto\|:confirm] [:with-phases]` | 7 | Create spec folder and plan without implementation. `:with-phases` adds phase decomposition pre-workflow |
 | **implement** | `/spec_kit:implement <spec-folder> [:auto\|:confirm]` | 9 | Execute pre-planned work (requires existing plan.md) |
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
 | **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
-| **phase** | `/spec_kit:phase [description] [--phases N] [--phase-names list] [--parent specs/NNN-name/] [:auto\|:confirm]` | varies | Create and manage phase decomposition for complex spec folders |
-| **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:auto-debug]` | 14+ | Full end-to-end workflow combining all phases |
+| **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:with-phases] [:auto-debug]` | 14+ | Full end-to-end workflow combining all phases. `:with-phases` adds phase decomposition pre-workflow |
 
 ### Command Dependencies
 
@@ -71,7 +70,6 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `debug` | Existing spec folder with failing task |
 | `handover` | Existing spec folder with work history |
 | `resume` | Existing spec folder with saved state or recoverable session context |
-| `phase` | Nothing (creates parent and phase child spec folders) |
 | `complete` | Nothing (runs full lifecycle) |
 
 <!-- /ANCHOR:commands -->
@@ -90,7 +88,6 @@ spec_kit/
 ├── implement.md      # /spec_kit:implement - Execute planned work
 ├── plan.md           # /spec_kit:plan - Planning only
 ├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
-├── phase.md          # /spec_kit:phase - Phase decomposition
 ├── resume.md         # /spec_kit:resume - Resume existing work
 └── assets/           # YAML workflow definitions
     ├── spec_kit_complete_auto.yaml
@@ -100,8 +97,6 @@ spec_kit/
     ├── spec_kit_handover_full.yaml
     ├── spec_kit_implement_auto.yaml
     ├── spec_kit_implement_confirm.yaml
-    ├── spec_kit_phase_auto.yaml
-    ├── spec_kit_phase_confirm.yaml
     ├── spec_kit_plan_auto.yaml
     ├── spec_kit_plan_confirm.yaml
     ├── spec_kit_deep-research_auto.yaml
@@ -200,7 +195,7 @@ Each mode maps to a YAML workflow file in `assets/`:
 /spec_kit:deep-research "OAuth 2.0 token refresh patterns" :auto
 
 # Decompose a complex feature into phases
-/spec_kit:phase "Build hybrid RAG search system" --phases 3 :auto
+/spec_kit:plan:auto "Build hybrid RAG search system" :with-phases --phases 3
 
 # Delegate debugging after repeated failures
 /spec_kit:debug specs/012-rate-limiting
@@ -234,9 +229,9 @@ Use `/spec_kit:debug` after 3 or more failed fix attempts on the same task. The 
 
 Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder regardless of whether a handover document exists. It prefers a fresh `handover.md`, then uses resume-mode memory retrieval, `CONTINUE_SESSION.md`, and anchored search fallbacks when needed. If no saved state is found, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session improves the quality of what `resume` can recover, but it is not required.
 
-**Q: How does `/spec_kit:phase` relate to the parent spec folder?**
+**Q: How does `:with-phases` relate to the parent spec folder?**
 
-`/spec_kit:phase` creates a parent spec folder and one or more child phase folders under it (e.g., `specs/015-feature/001-phase/`, `specs/015-feature/002-phase/`). Each phase is a self-contained spec folder with its own plan.md, tasks.md, and checklist.md. The parent folder holds the top-level spec.md and coordinates the phases. Use `phase` for work that is too large for a single spec folder or that has clearly sequential milestones.
+The `:with-phases` flag on `/spec_kit:plan` or `/spec_kit:complete` creates a parent spec folder and one or more child phase folders under it (e.g., `specs/015-feature/001-phase/`, `specs/015-feature/002-phase/`). Each phase is a self-contained spec folder with its own plan.md, tasks.md, and checklist.md. The parent folder holds the top-level spec.md and coordinates the phases. Use `:with-phases` for work that is too large for a single spec folder or that has clearly sequential milestones.
 
 <!-- /ANCHOR:faq -->
 

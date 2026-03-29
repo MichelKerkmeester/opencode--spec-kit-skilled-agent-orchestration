@@ -1,6 +1,6 @@
 ---
-description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, and :auto-debug modes
-argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:auto-debug] [--phase-folder=<path>]"
+description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, :with-phases, and :auto-debug modes
+argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:with-phases] [:auto-debug] [--phases N] [--phase-names list] [--phase-folder=<path>]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
@@ -8,11 +8,11 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_k
 >
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
-> **Note:** This command uses an inline setup protocol rather than the standard Unified Setup Phase. The :auto/:confirm mode, :with-research flag, and :auto-debug flag are parsed directly from the command suffix.
+> **Ownership:** Markdown owns setup (resolves all inputs). YAML owns execution (dispatches steps). Setup values resolved here are passed to the YAML workflow.
 >
 > **YOUR FIRST ACTION:**
-> 1. Determine execution mode from user input (`:auto`, `:confirm`, `:with-research`, `:auto-debug`)
->    Note: :with-research and :auto-debug are feature flags, not execution modes. They modify the :auto or :confirm workflow but do not change the base execution mode.
+> 1. Determine execution mode from user input (`:auto` or `:confirm`)
+>    Note: :with-research, :with-phases, and :auto-debug are feature flags, not execution modes. They modify the :auto or :confirm workflow but do not change the base execution mode.
 > 2. Load the corresponding YAML file from `assets/`:
 >    - Auto mode → `spec_kit_complete_auto.yaml`
 >    - Confirm mode → `spec_kit_complete_confirm.yaml`
@@ -28,6 +28,130 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_k
 - **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 10)
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
+
+# SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION
+
+This workflow gathers ALL inputs in ONE prompt. Round-trip: 1 user interaction.
+
+---
+
+## 0. UNIFIED SETUP PHASE
+
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No analysis, no tool calls — ask ALL questions immediately, then wait.
+
+**STATUS: BLOCKED**
+
+```
+EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
+
+1. CHECK mode suffix:
+   ├─ ":auto"    → execution_mode = "AUTONOMOUS" (omit Q2)
+   ├─ ":confirm" → execution_mode = "INTERACTIVE" (omit Q2)
+   └─ No suffix  → execution_mode = "ASK" (include Q2)
+
+1a. CHECK feature flags:
+   ├─ ":with-research" present → research_integration = TRUE
+   ├─ ":with-phases" present → phase_decomposition = TRUE (omit Q6)
+   │   Parse additional flags: --phases N (default 3), --phase-names "a,b,c" (optional)
+   │   Include Q7 (Phase Count) and Q8 (Phase Names) if not provided via flags
+   ├─ ":auto-debug" present → auto_debug = TRUE
+   └─ None of above → respective flag = FALSE; phase_decomposition = "ASK" (include Q6)
+
+1b. CHECK --phase-folder flag:
+   ├─ --phase-folder=<path> provided → auto-resolve spec_path to that child folder path
+   │   Set spec_choice = "E", spec_path = <path>, omit Q1
+   │   Validate path matches pattern: specs/[###]-*/[0-9][0-9][0-9]-*/
+   │   Show parent context: "Phase folder: <path> (parent: <parent-folder>)"
+   └─ Not provided → continue normally
+
+2. CHECK $ARGUMENTS for feature description:
+   ├─ Has content (ignoring flags/suffix) → feature_description = $ARGUMENTS, omit Q0
+   └─ Empty → include Q0
+
+3. Search for related spec folders:
+   $ ls -d specs/*/ 2>/dev/null | tail -10
+
+4. Search for prior work (background):
+   - memory_context({ input: feature_description OR "complete", mode: "focused", includeContent: true })
+   > Gate 1 trigger matching handled at agent level (AGENTS.md).
+   - Store: prior_work_found = [yes/no], prior_work_count = [N]
+
+5. Memory loading question needed ONLY if user selects A or C for spec folder AND memory/ has files.
+
+6. ASK with SINGLE prompt (include only applicable questions):
+
+   Q0. Feature Description (if not in command): What feature to build?
+
+   Q1. Spec Folder (required):
+     A) Use existing [suggest if found]  B) Create new: specs/[###]-[slug]/
+     C) Update related [if match found]  D) Skip documentation
+     E) Phase folder — target a specific phase child (e.g., specs/NNN-name/001-phase/)
+
+   Q2. Execution Mode (if no suffix):
+     A) Autonomous - all 14 steps without approval
+     B) Interactive - pause at each step
+
+   Q3. Dispatch Mode (required):
+     A) Single Agent (Recommended)  B) Multi-Agent (1+2)  C) Multi-Agent (1+3)
+
+   Q4. Memory Context (if existing spec with memory/):
+     A) Load most recent  B) Load all recent (up to 3)  C) Skip
+
+   Q5. Research Intent (required):
+     A) add_feature  B) fix_bug  C) refactor  D) understand
+
+   Q6. Phase Decomposition (if :with-phases not in command):
+     Create phased spec structure (parent + N child folders)?
+     A) No — single spec folder (default)
+     B) Yes — decompose into phases before building
+
+   Q7. Phase Count (if phase_decomposition == TRUE and --phases not provided):
+     How many phases? (Default: 3)
+
+   Q8. Phase Names (if phase_decomposition == TRUE and --phase-names not provided):
+     Provide phase names? (Optional — auto-generated if skipped)
+     Example: "data-model, api-layer, ui-components"
+
+   Reply format: "B, A, A, C, A" or "Add auth, B, A, C, A"
+
+7. WAIT for user response (DO NOT PROCEED)
+
+8. Parse response and store ALL results:
+   - feature_description = [from Q0 or $ARGUMENTS]
+   - spec_choice = [A/B/C/D/E from Q1]
+   - spec_path = [derived path or null if D]
+   - execution_mode = [AUTONOMOUS/INTERACTIVE from suffix or Q2]
+   - dispatch_mode = [single/multi_small/multi_large from Q3]
+   - memory_choice = [A/B/C from Q4, or N/A]
+   - research_intent = [add_feature/fix_bug/refactor/understand from Q5]
+   - phase_decomposition = [TRUE/FALSE]
+   - phase_count = [from Q6 or --phases, default 3]
+   - phase_names = [from Q7 or --phase-names, or null for auto-generate]
+
+9. Execute background operations:
+   - IF memory_choice == A: Load most recent memory file
+   - IF memory_choice == B: Load up to 3 recent memory files
+   - IF dispatch_mode is multi_*: Note parallel dispatch will be used
+
+10. SET STATUS: PASSED
+
+STOP HERE - Wait for user answers before continuing.
+
+⛔ DO NOT proceed until user explicitly answers
+⛔ NEVER auto-create spec folders without confirmation
+⛔ NEVER auto-select execution mode without suffix or choice
+⛔ NEVER split questions into multiple prompts
+```
+
+**Phase Output:**
+- `feature_description` | `spec_choice` | `spec_path`
+- `execution_mode` | `dispatch_mode` | `memory_loaded` | `research_intent`
+- `phase_decomposition` | `phase_count` | `phase_names` (if `:with-phases`)
+- `research_integration` | `auto_debug`
+
+> **Cross-reference**: Implements AGENTS.md Section 2 "Gate 3: Spec Folder Question" and "First Message Protocol".
+
+---
 
 # SpecKit Complete
 
@@ -99,8 +223,9 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | `:auto` | `/spec_kit:complete :auto "feature"` | Execute all steps without approval gates |
 | `:confirm` | `/spec_kit:complete :confirm "feature"` | Pause at each step for approval |
 | `:with-research` | `/spec_kit:complete :with-research "feature"` | Insert research phase after Step 2 (before specification) |
+| `:with-phases` | `/spec_kit:complete :with-phases "feature"` | Insert phase decomposition before Step 1, then complete first child |
 | `:auto-debug` | `/spec_kit:complete :auto-debug "feature"` | Auto-delegate to debug agent on 3+ failures |
-| (combined) | `/spec_kit:complete :auto :with-research :auto-debug` | All options combined |
+| (combined) | `/spec_kit:complete :auto :with-research :with-phases :auto-debug` | All options combined |
 | (default) | `/spec_kit:complete "feature"` | Ask user to choose mode during setup |
 
 ---
@@ -135,6 +260,20 @@ When `:with-research` flag present or research_triggered == TRUE:
 - Display checkpoint with key findings summary
 - User responds: Y (continue) / n (pause) / review (see research/research.md first)
 - If research_triggered == FALSE, continue directly to Step 3 (Specification)
+
+### Optional Phase Decomposition
+
+When `:with-phases` flag present:
+- Execute phase decomposition pre-workflow before Step 1 (after setup):
+  1. Analyze scope via `recommend-level.sh --recommend-phases`
+  2. Define decomposition (names, boundaries, dependencies)
+  3. Create folders via `create.sh --phase --phases N --phase-names "a,b,c"`
+  4. Populate parent Phase Documentation Map + child back-references
+- Display checkpoint: "Phase decomposition complete. Continue with first child? [Y/n/review]"
+- After creation, `spec_path` updates to first child phase folder
+- Normal 14-step workflow executes targeting that first child
+- Subsequent children: invoke `/spec_kit:complete --phase-folder=<child-path>` per child
+- Arguments: `--phases N` (default 3), `--phase-names "a,b,c"` (optional, auto-generated if omitted)
 
 ---
 
@@ -333,9 +472,10 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 
 - **Standard**: `/spec_kit:complete "feature"` -- 14 steps
 - **With Research**: `/spec_kit:complete "feature" :with-research` -- Research + 14 steps
+- **With Phases**: `/spec_kit:complete "feature" :with-phases --phases 3` -- Phase decomposition + 14 steps on first child
 - **Auto-Debug**: `/spec_kit:complete "feature" :auto-debug` -- 14 steps with auto debug
-- **Full Options**: `/spec_kit:complete "feature" :auto :with-research :auto-debug`
-- **Split workflows**: `/spec_kit:deep-research` -> `/spec_kit:plan` -> `/spec_kit:implement`
+- **Full Options**: `/spec_kit:complete "feature" :auto :with-research :with-phases :auto-debug`
+- **Split workflows**: `/spec_kit:deep-research` -> `/spec_kit:plan [:with-phases]` -> `/spec_kit:implement`
 
 ---
 

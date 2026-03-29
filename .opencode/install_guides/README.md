@@ -1241,7 +1241,7 @@ You have completed the installation. Here is your roadmap for getting started.
 | -------- | ------------------------------------------------------------------------------------------------------- |
 | Create   | `/create:agent`, `/create:changelog`, `/create:feature-catalog`, `/create:folder_readme`, `/create:prompt`, `/create:sk-skill`, `/create:testing-playbook` |
 | Memory   | `/memory:search`, `/memory:learn`, `/memory:manage`, `/memory:save` |
-| SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:phase`, `/spec_kit:plan`, `/spec_kit:resume` |
+| SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:resume` |
 | Utility  | `/agent_router` |
 
 ### 16.4 Learning Resources

@@ -84,7 +84,7 @@
 | **React verification**    | `npm test` → `npx eslint .` → `npm run build`                                                                            |
 | **React Native verify**   | `npm test` → `npx eslint .` → `npx expo export`                                                                          |
 | **Swift verification**    | `swift test` → `swiftlint` → `swift build`                                                                               |
-| **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`                         |
+| **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → `create.sh --phase` → Populate → Plan first child  |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
 | **Deep review**           | `/spec_kit:deep-review` → Scope discovery → Loop (@deep-review iterations) → Review convergence → review-report.md → Memory save               |

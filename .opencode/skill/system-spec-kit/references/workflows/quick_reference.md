@@ -522,7 +522,7 @@ Only load root memory when updating coordination snapshots.
 
 | Command | Description |
 |---------|-------------|
-| `/spec_kit:phase` | Trigger phase decomposition assessment for current spec |
+| `/spec_kit:plan :with-phases` | Trigger phase decomposition as pre-workflow in plan or complete |
 | `create.sh --phase <parent> --topic <name>` | Create a new phase child folder under a parent spec |
 | `validate.sh <parent> --recursive` | Validate parent and all child phase folders |
 

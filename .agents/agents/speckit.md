@@ -90,7 +90,7 @@ Before starting the workflow:
 
 When a task requires multi-phase decomposition:
 
-1. **Invoke** via `/spec_kit:phase` or Gate 3 Option E
+1. **Invoke** via `/spec_kit:plan :with-phases` or Gate 3 Option E
 2. **Create parent** spec folder with `create.sh --phase`
 3. **Decompose** into child phase folders (e.g., `specs/NNN-name/001-phase/`, `002-phase/`)
 4. **Populate** parent and child spec documentation independently
@@ -510,7 +510,7 @@ Use this template for completion reports:
 | `/spec_kit:resume`    | Resume existing spec        | `.opencode/command/spec_kit/resume.md`    |
 | `/spec_kit:deep-research` | Deep research loop      | `.opencode/command/spec_kit/deep-research.md` |
 | `/spec_kit:implement` | Implementation workflow     | `.opencode/command/spec_kit/implement.md` |
-| `/spec_kit:phase`     | Phase decomposition         | `.opencode/command/spec_kit/phase.md`     |
+| `/spec_kit:plan :with-phases` | Phase decomposition (integrated) | `.opencode/command/spec_kit/plan.md` |
 | `/spec_kit:debug`     | Debug delegation            | `.opencode/command/spec_kit/debug.md`     |
 | `/spec_kit:handover`  | Session handover            | `.opencode/command/spec_kit/handover.md`  |
 | `/memory:search`     | Retrieval & analysis (unified) | `.opencode/command/memory/search.md`   |

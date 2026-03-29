@@ -214,7 +214,7 @@ COMMAND_BOOSTS = {
     "/spec_kit:debug": "DEBUG",
     "/spec_kit:complete": "COMPLETE",
     "/spec_kit:handover": "HANDOVER",
-    "/spec_kit:phase": "PHASE",
+    "/spec_kit:plan :with-phases": "PHASE",
     "/memory:search": "MEMORY",
     "/memory:save": "MEMORY",
     "/memory:manage": "MEMORY",
@@ -752,7 +752,7 @@ Automated validation of spec folder contents via `validate.sh`.
 13. **Create implementation-summary.md at end of implementation phase (Level 1+)** - Document what was built
 14. **Suggest /spec_kit:handover when session-end keywords detected OR after extended work (15+ tool calls)** - Proactive context preservation
 15. **Suggest /spec_kit:debug after 3+ failed fix attempts on same error** - Do not continue without offering debug delegation
-16. **Suggest /spec_kit:phase when task requires multi-phase decomposition** - Complex specs spanning multiple sessions or workstreams
+16. **Suggest /spec_kit:plan :with-phases when task requires multi-phase decomposition** - Complex specs spanning multiple sessions or workstreams
 17. **Route all code creation/updates through `sk-code--opencode`** - Full alignment is mandatory before claiming completion
 18. **Route all documentation creation/updates through `sk-doc`** - Full alignment is mandatory before claiming completion
 19. **Enforce ToC policy from validation rules** - Only `research/research.md` may include a Table of Contents section; remove ToC headings from standard spec artifacts
