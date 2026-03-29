@@ -1076,10 +1076,127 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       return arr;
     };
 
-    let vecMemId: number | null = null;
+    const toFloatArray = (value: Buffer | Uint8Array | null | undefined) => {
+      if (!value) {
+        return new Float32Array();
+      }
 
-    it.skipIf(!sqliteVecAvailable)('indexMemory creates vector memory with embedding', () => {
-      vecMemId = mod.indexMemory({
+      const bytes = value instanceof Uint8Array ? value : new Uint8Array(value);
+      return new Float32Array(
+        bytes.buffer,
+        bytes.byteOffset,
+        Math.floor(bytes.byteLength / Float32Array.BYTES_PER_ELEMENT),
+      );
+    };
+
+    const mockVecDistanceCosine = (left: Buffer | Uint8Array | null | undefined, right: Buffer | Uint8Array | null | undefined) => {
+      const lhs = toFloatArray(left);
+      const rhs = toFloatArray(right);
+      const dim = Math.min(lhs.length, rhs.length);
+
+      if (dim === 0) {
+        return 2;
+      }
+
+      let dot = 0;
+      let lhsNorm = 0;
+      let rhsNorm = 0;
+
+      for (let i = 0; i < dim; i++) {
+        const a = lhs[i];
+        const b = rhs[i];
+        dot += a * b;
+        lhsNorm += a * a;
+        rhsNorm += b * b;
+      }
+
+      if (lhsNorm === 0 || rhsNorm === 0) {
+        return 2;
+      }
+
+      const cosine = Math.max(-1, Math.min(1, dot / (Math.sqrt(lhsNorm) * Math.sqrt(rhsNorm))));
+      return 1 - cosine;
+    };
+
+    let vecMemId: number | null = null;
+    let vectorMod!: VectorIndexModule;
+    let vectorTmpDir: string | null = null;
+    let previousMemoryDbPath: string | undefined;
+    let previousAllowedPaths: string | undefined;
+
+    beforeAll(async () => {
+      if (sqliteVecAvailable) {
+        vectorMod = mod;
+        return;
+      }
+
+      vectorTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'vec-idx-mock-'));
+      const vectorDbPath = path.join(vectorTmpDir, 'test-context-index.sqlite');
+
+      previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+      previousAllowedPaths = process.env.MEMORY_ALLOWED_PATHS;
+      process.env.MEMORY_DB_PATH = vectorDbPath;
+      process.env.MEMORY_ALLOWED_PATHS = vectorTmpDir;
+
+      vi.resetModules();
+      vi.doMock('../lib/search/vector-index-store', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/search/vector-index-store')>();
+        return {
+          ...actual,
+          sqlite_vec_available: () => true,
+          isVectorSearchAvailable: () => true,
+          is_vector_search_available: () => true,
+        };
+      });
+
+      vectorMod = await import('../lib/search/vector-index-impl');
+      const db = vectorMod.initializeDb(vectorDbPath);
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS vec_memories (
+          rowid INTEGER PRIMARY KEY,
+          embedding BLOB
+        );
+        CREATE TABLE IF NOT EXISTS vec_metadata (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL,
+          created_at TEXT DEFAULT (datetime('now'))
+        );
+      `);
+      db.prepare(`
+        INSERT OR REPLACE INTO vec_metadata (key, value)
+        VALUES ('embedding_dim', ?)
+      `).run(String(vectorMod.getEmbeddingDim()));
+      db.function('vec_distance_cosine', mockVecDistanceCosine);
+    });
+
+    afterAll(() => {
+      if (!sqliteVecAvailable) {
+        try {
+          vectorMod?.closeDb();
+        } catch (_: unknown) {}
+        vi.doUnmock('../lib/search/vector-index-store');
+        vi.resetModules();
+      }
+
+      if (previousMemoryDbPath === undefined) {
+        delete process.env.MEMORY_DB_PATH;
+      } else {
+        process.env.MEMORY_DB_PATH = previousMemoryDbPath;
+      }
+
+      if (previousAllowedPaths === undefined) {
+        delete process.env.MEMORY_ALLOWED_PATHS;
+      } else {
+        process.env.MEMORY_ALLOWED_PATHS = previousAllowedPaths;
+      }
+
+      if (vectorTmpDir && fs.existsSync(vectorTmpDir)) {
+        fs.rmSync(vectorTmpDir, { recursive: true, force: true });
+      }
+    });
+
+    it('indexMemory creates vector memory with embedding', () => {
+      vecMemId = vectorMod.indexMemory({
         specFolder: 'specs/test-vec',
         filePath: path.join(TMP_DIR, 'vec-memory-1.md'),
         title: 'Vector Memory One',
@@ -1088,12 +1205,12 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         embedding: makeEmbedding(1),
       });
       expect(vecMemId).toBeGreaterThan(0);
-      const mem = mod.getMemory(vecMemId);
+      const mem = vectorMod.getMemory(vecMemId);
       expect(mem?.embedding_status).toBe('success');
     });
 
-    it.skipIf(!sqliteVecAvailable)('indexMemory creates additional vector memories for search', () => {
-      mod.indexMemory({
+    it('indexMemory creates additional vector memories for search', () => {
+      vectorMod.indexMemory({
         specFolder: 'specs/test-vec',
         filePath: path.join(TMP_DIR, 'vec-memory-2.md'),
         title: 'Vector Memory Two',
@@ -1101,7 +1218,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         importanceWeight: 0.5,
         embedding: makeEmbedding(2),
       });
-      mod.indexMemory({
+      vectorMod.indexMemory({
         specFolder: 'specs/test-vec-other',
         filePath: path.join(TMP_DIR, 'vec-memory-3.md'),
         title: 'Vector Memory Three (Other)',
@@ -1111,9 +1228,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       });
     });
 
-    it.skipIf(!sqliteVecAvailable)('indexMemory populates and maintains interference_score on insert/update paths', () => {
+    it('indexMemory populates and maintains interference_score on insert/update paths', () => {
 
-      const idA = mod.indexMemory({
+      const idA = vectorMod.indexMemory({
         specFolder: 'specs/test-interference',
         filePath: path.join(TMP_DIR, 'interference-a.md'),
         title: 'Cache Invalidation Strategy Alpha',
@@ -1122,7 +1239,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         embedding: makeEmbedding(11),
       });
 
-      const idB = mod.indexMemory({
+      const idB = vectorMod.indexMemory({
         specFolder: 'specs/test-interference',
         filePath: path.join(TMP_DIR, 'interference-b.md'),
         title: 'Cache Invalidation Strategy Beta',
@@ -1131,7 +1248,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         embedding: makeEmbedding(12),
       });
 
-      const db = mod.getDb();
+      const db = vectorMod.getDb();
       expect(db).toBeTruthy();
 
       const rowA = db!.prepare('SELECT interference_score FROM memory_index WHERE id = ?').get(idA) as { interference_score: number };
@@ -1139,7 +1256,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(rowA.interference_score).toBeGreaterThanOrEqual(1);
       expect(rowB.interference_score).toBeGreaterThanOrEqual(1);
 
-      mod.updateMemory({
+      vectorMod.updateMemory({
         id: idA,
         title: 'Cache Invalidation Strategy Alpha Updated',
         triggerPhrases: ['cache invalidation', 'stale cache'],
@@ -1150,9 +1267,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(rowAAfter.interference_score).toBeGreaterThanOrEqual(0);
     });
 
-    it.skipIf(!sqliteVecAvailable)('vectorSearch returns results', () => {
+    it('vectorSearch returns results', () => {
       const query = makeEmbedding(1);
-      const searchResults = mod.vectorSearch(query, { limit: 5 });
+      const searchResults = vectorMod.vectorSearch(query, { limit: 5 });
       expect(Array.isArray(searchResults)).toBe(true);
       expect(searchResults.length).toBeGreaterThan(0);
       if (searchResults.length > 0) {
@@ -1161,23 +1278,23 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }
     });
 
-    it.skipIf(!sqliteVecAvailable)('vectorSearch filters by specFolder', () => {
+    it('vectorSearch filters by specFolder', () => {
       const query = makeEmbedding(1);
-      const filtered = mod.vectorSearch(query, { limit: 10, specFolder: 'specs/test-vec' });
+      const filtered = vectorMod.vectorSearch(query, { limit: 10, specFolder: 'specs/test-vec' });
       expect(filtered.every(r => r.spec_folder === 'specs/test-vec' || r.isConstitutional)).toBe(true);
     });
 
-    it.skipIf(!sqliteVecAvailable)('vectorSearch respects minSimilarity', () => {
+    it('vectorSearch respects minSimilarity', () => {
       const query = makeEmbedding(1);
-      const strict = mod.vectorSearch(query, { limit: 10, minSimilarity: 99 });
+      const strict = vectorMod.vectorSearch(query, { limit: 10, minSimilarity: 99 });
       // Very high threshold should reduce results
       expect(Array.isArray(strict)).toBe(true);
     });
 
-    it.skipIf(!sqliteVecAvailable)('indexMemory rejects wrong embedding dimension', () => {
+    it('indexMemory rejects wrong embedding dimension', () => {
       const badEmbedding = new Float32Array(10); // Wrong dimension
       expect(() => {
-        mod.indexMemory({
+        vectorMod.indexMemory({
           specFolder: 'specs/test-vec',
           filePath: path.join(TMP_DIR, 'vec-bad.md'),
           title: 'Bad Dimension',
@@ -1186,9 +1303,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }).toThrow(/dimensions/);
     });
 
-    it.skipIf(!sqliteVecAvailable)('indexMemory rejects null embedding', () => {
+    it('indexMemory rejects null embedding', () => {
       expect(() => {
-        mod.indexMemory({
+        vectorMod.indexMemory({
           specFolder: 'specs/test-vec',
           filePath: path.join(TMP_DIR, 'vec-null.md'),
           title: 'Null Embedding',
@@ -1197,29 +1314,29 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }).toThrow(/required/);
     });
 
-    it.skipIf(!sqliteVecAvailable)('multiConceptSearch returns results for 2 concepts', () => {
+    it('multiConceptSearch returns results for 2 concepts', () => {
       const emb1 = makeEmbedding(1);
       const emb2 = makeEmbedding(2);
-      const mcResults = mod.multiConceptSearch([emb1, emb2], { limit: 5 });
+      const mcResults = vectorMod.multiConceptSearch([emb1, emb2], { limit: 5 });
       expect(Array.isArray(mcResults)).toBe(true);
     });
 
-    it.skipIf(!sqliteVecAvailable)('multiConceptSearch rejects fewer than 2 concepts', () => {
+    it('multiConceptSearch rejects fewer than 2 concepts', () => {
       expect(() => {
-        mod.multiConceptSearch([makeEmbedding(1)], { limit: 5 });
+        vectorMod.multiConceptSearch([makeEmbedding(1)], { limit: 5 });
       }).toThrow(/2-5/);
     });
 
     it('updateMemory updates title and embedding', () => {
-      if (!sqliteVecAvailable || !vecMemId) return;
+      if (!vecMemId) return;
       const newEmbedding = makeEmbedding(99);
-      const updatedId = mod.updateMemory({
+      const updatedId = vectorMod.updateMemory({
         id: vecMemId!,
         title: 'Updated Vector Memory',
         embedding: newEmbedding,
       });
       expect(updatedId).toBe(vecMemId);
-      const mem = mod.getMemory(vecMemId!);
+      const mem = vectorMod.getMemory(vecMemId!);
       expect(mem?.title).toBe('Updated Vector Memory');
       expect(mem?.embedding_status).toBe('success');
     });

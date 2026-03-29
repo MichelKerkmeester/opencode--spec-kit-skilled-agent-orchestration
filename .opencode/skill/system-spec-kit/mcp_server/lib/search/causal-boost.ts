@@ -40,6 +40,9 @@ const SPARSE_DENSITY_THRESHOLD = 0.5;
 /** Traversal depth used in sparse mode (1-hop typed expansion). */
 const SPARSE_MAX_HOPS = 1;
 
+/** Default traversal depth for typed traversal helper policies. */
+const DEFAULT_TYPED_TRAVERSAL_DEPTH = SPARSE_MAX_HOPS;
+
 // ───────────────────────────────────────────────────────────────
 // D3-002: INTENT-AWARE EDGE TRAVERSAL
 // ───────────────────────────────────────────────────────────────
@@ -174,6 +177,40 @@ function isSparseMode(graphDensity: number | undefined): boolean {
   if (!isTypedTraversalEnabled()) return false;
   if (typeof graphDensity !== 'number' || !Number.isFinite(graphDensity)) return false;
   return graphDensity < SPARSE_DENSITY_THRESHOLD;
+}
+
+interface SparseFirstTraversalPolicy {
+  sparseModeActive: boolean;
+  communityDetectionEnabled: boolean;
+}
+
+/**
+ * Resolve the sparse-first policy gate for callers that need a simple
+ * community-detection decision without running the full boost pipeline.
+ */
+function resolveSparseFirstTraversalPolicy(graphDensity: number | undefined): SparseFirstTraversalPolicy {
+  const sparseModeActive = isSparseMode(graphDensity);
+  return {
+    sparseModeActive,
+    communityDetectionEnabled: !sparseModeActive,
+  };
+}
+
+/**
+ * Resolve traversal depth for typed traversal helper callers.
+ * Typed traversal defaults to 1-hop and stays within the supported range.
+ * When the flag is off, preserve the legacy MAX_HOPS behavior.
+ */
+function resolveTraversalDepth(depth: number = DEFAULT_TYPED_TRAVERSAL_DEPTH): number {
+  if (!isTypedTraversalEnabled()) {
+    return MAX_HOPS;
+  }
+
+  if (!Number.isFinite(depth)) {
+    return DEFAULT_TYPED_TRAVERSAL_DEPTH;
+  }
+
+  return Math.max(DEFAULT_TYPED_TRAVERSAL_DEPTH, Math.min(MAX_HOPS, Math.trunc(depth)));
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -636,6 +673,7 @@ export {
   // D3 Phase A exports
   SPARSE_DENSITY_THRESHOLD,
   SPARSE_MAX_HOPS,
+  DEFAULT_TYPED_TRAVERSAL_DEPTH,
   INTENT_EDGE_PRIORITY,
   DEFAULT_EDGE_PRIORITY,
   DEFAULT_EDGE_PRIOR,
@@ -645,6 +683,8 @@ export {
   isEnabled,
   isTypedTraversalEnabled,
   isSparseMode,
+  resolveSparseFirstTraversalPolicy,
+  resolveTraversalDepth,
   resolveEdgePrior,
   computeHopDecay,
   computeIntentTraversalScore,
@@ -661,4 +701,5 @@ export type {
   RankedSearchResult,
   CausalBoostMetadata,
   CausalBoostOptions,
+  SparseFirstTraversalPolicy,
 };

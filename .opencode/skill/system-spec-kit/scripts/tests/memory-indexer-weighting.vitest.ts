@@ -39,9 +39,13 @@ vi.mock('fs', async () => {
   };
 });
 
-vi.mock('@spec-kit/shared/config', () => ({
-  DB_UPDATED_FILE: '/tmp/spec-kit-test-db-updated',
-}));
+vi.mock('@spec-kit/shared/config', async () => {
+  const actual = await vi.importActual<typeof import('@spec-kit/shared/config')>('@spec-kit/shared/config');
+  return {
+    ...actual,
+    DB_UPDATED_FILE: '/tmp/spec-kit-test-db-updated',
+  };
+});
 
 vi.mock('../lib/trigger-extractor', () => ({
   extractTriggerPhrases: extractTriggerPhrasesMock,

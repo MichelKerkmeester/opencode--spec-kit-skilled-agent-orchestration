@@ -8,8 +8,10 @@
   "specId": "023",
   "folderSlug": "esm-module-compliance",
   "parentChain": [],
-  "memorySequence": 1,
+  "memorySequence": 3,
   "memoryNameHistory": [
-    "29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec.md"
+    "29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec.md",
+    "29-03-26_17-43__playbook-verification-test-for-esm-migration-save.md",
+    "29-03-26_17-43__playbook-verification-test-for-esm-migration-save-1.md"
   ]
 }

@@ -637,7 +637,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - Routes by intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`
 
 **learn**
-- Constitutional memory manager for always-surface rules
+- `/memory:learn` constitutional memory manager for always-surface rules
 - Constitutional memories carry a 3.0x boost and never decay
 - Lifecycle operations: create, list, edit, remove, budget
 

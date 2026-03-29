@@ -8,6 +8,7 @@ import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 import {
   resolveGraphWalkRolloutState,
   type GraphWalkRolloutState,
+  isTypedTraversalEnabled as resolveTypedTraversalFlag,
 } from './search-flags.js';
 
 /**
@@ -39,4 +40,11 @@ export function isGraphWalkTraceEnabled(): boolean {
  */
 export function isGraphWalkRuntimeEnabled(): boolean {
   return getGraphWalkRolloutState() === 'bounded_runtime';
+}
+
+/**
+ * Legacy export shim for the typed traversal rollout flag.
+ */
+export function isTypedTraversalEnabled(): boolean {
+  return resolveTypedTraversalFlag();
 }
