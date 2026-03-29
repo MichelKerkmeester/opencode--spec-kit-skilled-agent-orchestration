@@ -62,7 +62,7 @@ This is **Phase 2** of the ESM Module Compliance specification.
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-`@spec-kit/mcp-server` has no `"type": "module"` in its `package.json`, inherits the root CommonJS compiler baseline, uses 1883 relative import/export statements with only 13 `.js`-suffixed, and has at least 16 non-test files using CommonJS-only globals (`__dirname`, `__filename`, `createRequire`, `require()`). The emitted `dist/context-server.js` still outputs `exports` and `require(...)`.
+`@spec-kit/mcp-server` has no `"type": "module"` in its `package.json`, inherits the root CommonJS compiler baseline, uses 839 relative import/export statements with only 3 `.js`-suffixed (all external SDK), and has 16 non-test files using CommonJS-only globals (`__dirname`, `__filename`, `createRequire`, `require()`). The emitted `dist/context-server.js` still outputs `exports` and `require(...)`.
 
 ### Purpose
 Make `@spec-kit/mcp-server` a truthful native ESM package so that its runtime entrypoint (`dist/context-server.js`) executes as real Node ESM and its imports from the now-ESM `@spec-kit/shared` resolve correctly.
@@ -141,8 +141,8 @@ Make `@spec-kit/mcp-server` a truthful native ESM package so that its runtime en
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Phase 1 complete (`shared` is ESM) | Blocker | Cannot start until `shared` emits ESM |
-| Risk | 1883 import statements need `.js` specifiers | High | Use automated rewrite tooling, verify with build |
-| Risk | 16+ files with CJS globals need manual replacement | Medium | `import.meta.dirname`/`import.meta.filename` are direct replacements in Node 21.2+ |
+| Risk | 839 relative import/export statements need `.js` specifiers | High | Use automated rewrite tooling, verify with build |
+| Risk | 16 files with CJS globals need manual replacement | Medium | `import.meta.dirname`/`import.meta.filename` are direct replacements (requires Node >=20.11.0; current runtime is v25.6.1). Update `engines` field to `>=20.11.0` as part of package metadata changes |
 | Risk | Cross-package relative hops break under ESM | High | Replace with package imports (`@spec-kit/shared/...`) |
 | Risk | `dist/context-server.js` startup regression | High | Runtime smoke test immediately after build |
 <!-- /ANCHOR:risks -->

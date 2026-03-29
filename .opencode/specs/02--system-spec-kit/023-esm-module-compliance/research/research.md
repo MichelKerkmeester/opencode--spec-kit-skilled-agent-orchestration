@@ -22,9 +22,9 @@ The repo is still CommonJS at the places that matter:
 | `@spec-kit/mcp-server` package | No `"type": "module"` in `mcp_server/package.json` | Node still treats emitted `.js` as CommonJS |
 | `@spec-kit/shared` package | No `"type": "module"` in `shared/package.json` | `mcp_server` depends on a sibling package that is also CJS-shaped |
 | Built server output | `mcp_server/dist/context-server.js` still emits `exports` and `require(...)` | Confirms runtime output is CommonJS, not just the source tree |
-| Relative import graph | `mcp_server` has `1883` relative import/export statements and only `13` `.js`-suffixed ones; `shared` still has `54` relative imports without Node-ESM specifiers | Native Node ESM requires explicit file extensions for relative imports |
+| Relative import graph | `mcp_server` has `839` relative import/export statements and only `3` `.js`-suffixed ones (all external SDK); `shared` still has `48` relative imports without Node-ESM specifiers | Native Node ESM requires explicit file extensions for relative imports |
 | CommonJS-only runtime assumptions | At least `16` non-test `mcp_server` files still use `__dirname`, `__filename`, `createRequire`, or `require(...)` | These need code-shape changes even after package metadata changes |
-| CommonJS sibling package | `scripts/package.json` explicitly declares `"type": "commonjs"` and still consumes `@spec-kit/shared` / `@spec-kit/mcp-server` in `38` files | A pure-ESM flip would break sibling runtime consumers under the current contract |
+| CommonJS sibling package | `scripts/package.json` explicitly declares `"type": "commonjs"` and still consumes `@spec-kit/shared` / `@spec-kit/mcp-server` in `20` files | A pure-ESM flip would break sibling runtime consumers under the current contract |
 
 The chosen recommendation is:
 
@@ -137,7 +137,7 @@ Use package-local native ESM for `shared` and `mcp_server`, keep `scripts` Commo
 
 ### 5.3 Scripts Interoperability Work
 
-- Audit the `38` `scripts` files that touch `@spec-kit/shared` and/or `@spec-kit/mcp-server`, including non-CLI internal modules that currently compile to CommonJS `require(...)` calls.
+- Audit the `20` `scripts` files that touch `@spec-kit/shared` and/or `@spec-kit/mcp-server`, including non-CLI internal modules that currently compile to CommonJS `require(...)` calls.
 - Prioritize runtime callers first:
   - `scripts/memory/rebuild-auto-entities.ts`
   - `scripts/core/memory-indexer.ts`

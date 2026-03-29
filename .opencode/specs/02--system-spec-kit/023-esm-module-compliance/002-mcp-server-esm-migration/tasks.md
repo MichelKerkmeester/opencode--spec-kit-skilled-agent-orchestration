@@ -32,7 +32,7 @@ contextType: "architecture"
 <!-- ANCHOR:phase-1 -->
 ## Step 1: Package Metadata
 
-- [ ] T001 Add `"type": "module"` to `mcp_server/package.json` - WHY: Node must know this package emits ESM - Acceptance: `"type": "module"` present
+- [ ] T001 Add `"type": "module"` to `mcp_server/package.json` and update `engines` to `>=20.11.0` - WHY: Node must know this package emits ESM; `import.meta.dirname`/`filename` requires Node >=20.11.0 - Acceptance: `"type": "module"` present, `engines.node` is `>=20.11.0`
 - [ ] T002 Update `main`, `exports`, and `bin` fields for ESM dist - WHY: consumers and CLI must resolve ESM entrypoints - Acceptance: fields reference `.js` ESM output in `dist/`
 <!-- /ANCHOR:phase-1 -->
 
@@ -62,8 +62,10 @@ contextType: "architecture"
 
 - [ ] T008 Replace `__dirname` with `import.meta.dirname` in production files - WHY: `__dirname` is not available in ESM - Acceptance: zero `__dirname` hits in non-test `mcp_server/` files
 - [ ] T009 [P] Replace `__filename` with `import.meta.filename` in production files - WHY: `__filename` is not available in ESM - Acceptance: zero `__filename` hits in non-test files
-- [ ] T010 Replace bare `require()` sites with `import()` or `createRequire` - WHY: `require()` is not available in ESM without explicit wrapper - Acceptance: zero bare `require()` in production files
-- [ ] T011 Audit dist-sensitive bridge files for hardcoded CJS path assumptions - WHY: path resolution changes under ESM - Acceptance: no hardcoded `.cjs` or `require.resolve` patterns remain
+- [ ] T010 Replace bare `require()` sites with `import()` or `createRequire(import.meta.url)` - WHY: `require()` is not available in ESM without explicit wrapper - Acceptance: zero bare `require()` in production files. Key files: `lib/cognitive/archival-manager.ts` (5 lazy loads), `lib/cognitive/tier-classifier.ts`, `lib/errors/core.ts`, `lib/scoring/composite-scoring.ts`, `lib/ops/file-watcher.ts`
+- [ ] T011 [P0] Migrate `handlers/v-rule-bridge.ts` to ESM-safe dynamic import - WHY: v-rule-bridge uses `createRequire(__filename)` to load scripts-side validator; this is a critical pipeline for memory save quality gates - Acceptance: bridge uses `import.meta.url` + dynamic `import()` instead of `createRequire`; V-rule validation works at runtime
+- [ ] T011b Migrate `handlers/index.ts` dynamic handler loader from `require()` to `import()` - WHY: handler barrel uses `require(basePath)` for lazy loading; must become async - Acceptance: dynamic `import()` replaces `require()`, handler registration handles async correctly
+- [ ] T011c Audit dist-sensitive bridge files for hardcoded CJS path assumptions - WHY: path resolution changes under ESM - Acceptance: no hardcoded `.cjs` or `require.resolve` patterns remain
 <!-- /ANCHOR:phase-4 -->
 
 ---

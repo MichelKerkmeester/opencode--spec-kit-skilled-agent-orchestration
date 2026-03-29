@@ -50,8 +50,8 @@ contextType: "architecture"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Import Specifier Rewrites
 
-- [ ] T005 Rewrite all relative imports in `shared/src/**/*.ts` to use `.js` extensions - WHY: Node ESM requires explicit file extensions for relative imports - Acceptance: no extensionless relative imports remain in non-test `shared/` files
-- [ ] T006 Rewrite all re-exports in `shared/src/**/*.ts` to use `.js` extensions - WHY: re-exports follow the same Node ESM specifier rules - Acceptance: no extensionless relative re-exports remain
+- [ ] T005 Rewrite all relative imports in `shared/**/*.ts` to use `.js` extensions - WHY: Node ESM requires explicit file extensions for relative imports (no `src/` dir — source at package root) - Acceptance: no extensionless relative imports remain in non-test `shared/` files
+- [ ] T006 Rewrite all re-exports in `shared/**/*.ts` to use `.js` extensions - WHY: re-exports follow the same Node ESM specifier rules - Acceptance: no extensionless relative re-exports remain
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -59,7 +59,7 @@ contextType: "architecture"
 <!-- ANCHOR:phase-4 -->
 ## Phase 4: Build Verification
 
-- [ ] T007 Run `npm run build --workspace=@spec-kit/shared` and verify success - WHY: compilation must pass with the new settings - Acceptance: exit code 0
+- [ ] T007 Update `shared/package.json` build script from no-op echo to `tsc --build`, then run `npm run build --workspace=@spec-kit/shared` - WHY: current build is `echo 'No build step needed'` which would pass on stale artifacts; need real TypeScript compilation - Acceptance: exit code 0, `dist/` contains freshly compiled ESM output
 - [ ] T008 Inspect `shared/dist/*.js` output for ESM syntax - WHY: runtime output must be truthful ESM, not CJS wrappers - Acceptance: emitted files use `import`/`export`, not `require()`/`exports`
 <!-- /ANCHOR:phase-4 -->
 
