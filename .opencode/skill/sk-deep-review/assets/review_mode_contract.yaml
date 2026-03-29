@@ -1,16 +1,16 @@
-# Canonical review-mode contract for sk-deep-research.
+# Canonical review-mode contract for sk-deep-review.
 # This file is the single source of truth for review-mode taxonomy,
 # convergence settings, cross-reference protocols, downstream render targets,
 # and validation expectations.
 
 meta:
-  ownerSkill: sk-deep-research
+  ownerSkill: sk-deep-review
   reviewModeVersion: 1
   generatedNotice:
     warning: "Generated from review_mode_contract.yaml. Do not manually edit generated sections."
     beginMarker: "<!-- BEGIN GENERATED: review-mode-contract -->"
     endMarker: "<!-- END GENERATED: review-mode-contract -->"
-  sourceOfTruth: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml
+  sourceOfTruth: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
 
 # Core contract definitions consumed by workflows, agents, docs, and validators.
 contract:
@@ -272,7 +272,7 @@ contract:
 render:
   artifacts:
     - id: workflow-auto
-      path: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml
+      path: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
       ownership: mixed
       format: yaml
       markers:
@@ -286,7 +286,7 @@ render:
         - convergence
         - cross-reference-protocols
     - id: workflow-confirm
-      path: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml
+      path: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
       ownership: mixed
       format: yaml
       markers:
@@ -352,7 +352,7 @@ render:
         - cross-reference-protocols
         - outputs
     - id: quick-reference-review-mode
-      path: .opencode/skill/sk-deep-research/references/quick_reference.md
+      path: .opencode/skill/sk-deep-review/references/quick_reference.md
       ownership: mixed
       format: markdown
       markers:
@@ -365,7 +365,7 @@ render:
         - quality-gates
         - outputs
     - id: review-contract-snapshot
-      path: .opencode/skill/sk-deep-research/assets/review_mode_contract_snapshot.md
+      path: .opencode/skill/sk-deep-review/assets/review_mode_contract_snapshot.md
       ownership: generated
       format: markdown
       markers:

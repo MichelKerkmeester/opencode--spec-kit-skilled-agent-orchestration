@@ -10,7 +10,7 @@ One-page cheat sheet for the autonomous deep research loop.
 ---
 
 <!-- ANCHOR:commands -->
-## Commands
+## 1. COMMANDS
 
 | Command | Description |
 |---------|-------------|
@@ -31,7 +31,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:commands -->
 <!-- ANCHOR:when-to-use -->
-## When to Use
+## 2. WHEN TO USE
 
 | Scenario | Use |
 |----------|-----|
@@ -44,7 +44,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:when-to-use -->
 <!-- ANCHOR:architecture -->
-## Architecture
+## 3. ARCHITECTURE
 
 ```
 /spec_kit:deep-research  -->  YAML workflow  -->  @deep-research agent (LEAF)
@@ -64,7 +64,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:architecture -->
 <!-- ANCHOR:state-files -->
-## State Files
+## 4. STATE FILES
 
 | File | Location | Format | Purpose |
 |------|----------|--------|---------|
@@ -74,18 +74,13 @@ One-page cheat sheet for the autonomous deep research loop.
 | Iterations | `research/iterations/iteration-NNN.md` | Markdown | Per-iteration findings |
 | Output | `research/research.md` | Markdown | Workflow-owned progressive synthesis output |
 
----
-
-## Reference-Only Notes
-
-- `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch are documented for reference, not assumed available at runtime.
-- `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
+> **Note:** `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch are documented for reference, not assumed available at runtime. `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
 
 ---
 
 <!-- /ANCHOR:state-files -->
 <!-- ANCHOR:iteration-status-legend -->
-## Iteration Status Legend
+## 5. ITERATION STATUS LEGEND
 
 | Status | Meaning |
 |--------|---------|
@@ -100,7 +95,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:iteration-status-legend -->
 <!-- ANCHOR:convergence-decision-tree -->
-## Convergence Decision Tree
+## 6. CONVERGENCE DECISION TREE
 
 ```
 Max iterations reached?
@@ -126,7 +121,7 @@ Quality guards (source diversity, focus alignment, no single-weak-source) must p
 
 <!-- /ANCHOR:convergence-decision-tree -->
 <!-- ANCHOR:agent-iteration-checklist -->
-## Agent Iteration Checklist
+## 7. AGENT ITERATION CHECKLIST
 
 Each @deep-research iteration:
 1. Read `deep-research-state.jsonl` and `deep-research-strategy.md`
@@ -141,7 +136,7 @@ Each @deep-research iteration:
 
 <!-- /ANCHOR:agent-iteration-checklist -->
 <!-- ANCHOR:tuning-guide -->
-## Tuning Guide
+## 8. TUNING GUIDE
 
 | Goal | Adjustment |
 |------|------------|
@@ -154,7 +149,7 @@ Each @deep-research iteration:
 
 <!-- /ANCHOR:tuning-guide -->
 <!-- ANCHOR:troubleshooting -->
-## Troubleshooting
+## 9. TROUBLESHOOTING
 
 | Problem | Fix |
 |---------|-----|
@@ -168,7 +163,7 @@ Each @deep-research iteration:
 
 <!-- /ANCHOR:troubleshooting -->
 <!-- ANCHOR:progress-visualization -->
-## Progress Visualization
+## 10. PROGRESS VISUALIZATION
 
 After each iteration, the orchestrator can display a text-based convergence summary:
 
@@ -204,7 +199,7 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 
 <!-- /ANCHOR:progress-visualization -->
 <!-- ANCHOR:related -->
-## Related
+## 11. RELATED
 
 | Resource | Purpose |
 |----------|---------|
@@ -218,82 +213,8 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 ---
 
 <!-- ANCHOR:review-mode -->
-## Review Mode
+## 12. REVIEW MODE
 
-### Review Commands
-
-| Command | Description |
-|---------|-------------|
-| `/spec_kit:deep-research:review "target"` | Run autonomous review (defaults to auto mode) |
-| `/spec_kit:deep-research:review:auto "target"` | Run autonomous review (no approval gates) |
-| `/spec_kit:deep-research:review:confirm "target"` | Run review with approval gates at each iteration |
-
-Review mode stores its packet under `{spec_folder}/review/`:
-
-- Config: `{spec_folder}/review/deep-research-config.json`
-- State log: `{spec_folder}/review/deep-research-state.jsonl`
-- Strategy: `{spec_folder}/review/deep-review-strategy.md`
-- Dashboard: `{spec_folder}/review/deep-review-dashboard.md`
-- Iterations: `{spec_folder}/review/iterations/iteration-NNN.md`
-- Pause sentinel: `{spec_folder}/review/.deep-research-pause`
-- Report: `{spec_folder}/review/review-report.md`
-
-### Review Parameters
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `--max-iterations` | 7 | Maximum review iterations |
-| `--convergence` | 0.10 | Base sensitivity for review convergence; STOP still uses the contract thresholds below |
-| `--spec-folder` | auto | Target spec folder path |
-| `--severity-threshold` | P2 | Minimum severity to report |
-
-### Review Dimensions
-
-| ID | Dimension | Description |
-|----|-----------|-------------|
-| D1 | Correctness | Logic errors, off-by-one, wrong return types, broken invariants |
-| D2 | Security | Injection, auth bypass, secrets exposure, unsafe deserialization |
-| D3 | Traceability | Spec/code alignment, checklist evidence, cross-reference integrity |
-| D4 | Maintainability | Patterns, clarity, documentation quality, ease of safe follow-on changes |
-
-### Review Verdicts
-
-| Verdict | Condition | Meaning | Next Command |
-|---------|-----------|---------|--------------|
-| FAIL | Active P0 findings remain OR any binary gate fails | Review target does not meet quality standards | `/spec_kit:plan` for remediation |
-| CONDITIONAL | No P0, but active P1 findings remain | Meets threshold but has required fixes | `/spec_kit:plan` for fixes |
-| PASS | No active P0/P1 findings | Review target is shippable; set `hasAdvisories=true` when P2 findings remain | `/create:changelog` |
-
-### Review Quality Guards
-
-| Gate | Rule |
-|------|------|
-| Evidence | Every active finding has file:line evidence and is not inference-only |
-| Scope | Findings and reviewed files stay within declared review scope |
-| Coverage | Configured dimensions plus required traceability protocols are covered before STOP |
-
-### Review Convergence
-
-| Signal | Weight | Description |
-|--------|--------|-------------|
-| Rolling Average | 0.30 | Last 2 severity-weighted `newFindingsRatio` values average below `0.08` |
-| MAD Noise Floor | 0.25 | Latest ratio within noise floor |
-| Dimension Coverage | 0.45 | All 4 dimensions plus required traceability protocols covered, with `minStabilizationPasses >= 1` |
-
-**Key defaults:** `maxIterations=7`, `convergenceThreshold=0.10`, `rollingStopThreshold=0.08`, `noProgressThreshold=0.05`, `stuckThreshold=2`, `minStabilizationPasses=1`
-
-### review-report.md Sections
-
-| # | Section | Purpose |
-|---|---------|---------|
-| 1 | Executive Summary | Verdict, active P0/P1/P2 counts, scope, `hasAdvisories` |
-| 2 | Planning Trigger | Why the verdict routes to planning or changelog follow-up |
-| 3 | Active Finding Registry | Deduped active findings with evidence and final severity |
-| 4 | Remediation Workstreams | Grouped action lanes derived from active findings |
-| 5 | Spec Seed | Minimal spec delta derived from review results |
-| 6 | Plan Seed | Action-ready plan starter for remediation |
-| 7 | Traceability Status | Core vs overlay protocol status and unresolved gaps |
-| 8 | Deferred Items | P2 advisories, blocked checks, and follow-up items |
-| 9 | Audit Appendix | Coverage, replay validation, and convergence evidence |
+Review mode has been split into a separate skill. See `sk-deep-review/references/quick_reference.md`.
 
 <!-- /ANCHOR:review-mode -->

@@ -101,10 +101,10 @@ All continuity across iterations comes from disk, not agent memory. The orchestr
 /spec_kit:deep-research:confirm "API performance optimization approaches"
 
 # Review: autonomous code quality audit of a skill
-/spec_kit:deep-research:review:auto "skill:sk-deep-research"
+/spec_kit:deep-review:auto "skill:sk-deep-research"
 
 # Review: interactive audit of a spec folder
-/spec_kit:deep-research:review:confirm "specs/03--commands-and-skills/030-sk-deep-research-review-mode/"
+/spec_kit:deep-review:confirm "specs/03--commands-and-skills/030-sk-deep-research-review-mode/"
 ```
 
 **Step 3: Monitor progress.** The skill auto-generates `{spec_folder}/review/deep-review-dashboard.md` after each review iteration. Read it to see current iteration count, newFindingsRatio trend, and dimension coverage.
@@ -144,7 +144,7 @@ Progressive synthesis lets the agent update `research/research.md` incrementally
 
 | Layer | Research Mode | Review Mode |
 |-------|--------------|-------------|
-| Command | `/spec_kit:deep-research[:auto or :confirm]` | `/spec_kit:deep-research:review[:auto or :confirm]` |
+| Command | `/spec_kit:deep-research[:auto or :confirm]` | `/spec_kit:deep-review[:auto or :confirm]` |
 | Workflow YAML | `spec_kit_deep-research_auto.yaml` | `spec_kit_deep-research_review_auto.yaml` |
 | Agent | `@deep-research` (LEAF) | `@deep-review` (LEAF) |
 
@@ -331,7 +331,7 @@ Expected progression:
 Run a full 4-dimension review of a skill package, producing a release readiness verdict.
 
 ```bash
-/spec_kit:deep-research:review:auto "skill:sk-deep-research"
+/spec_kit:deep-review:auto "skill:sk-deep-research"
 ```
 
 Expected progression:

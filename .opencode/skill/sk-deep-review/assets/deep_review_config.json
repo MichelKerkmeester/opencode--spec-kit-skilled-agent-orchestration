@@ -1,0 +1,41 @@
+{
+  "topic": "",
+  "maxIterations": 7,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 90,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": false,
+  "specFolder": "",
+  "createdAt": "",
+  "status": "initialized",
+  "executionMode": "auto",
+  "mode": "review",
+  "reviewTarget": "",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "spec-alignment",
+    "completeness",
+    "cross-ref-integrity",
+    "patterns",
+    "documentation-quality"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "spec": true,
+    "checklist": true,
+    "agentConsistency": true
+  },
+  "qualityGateThreshold": 70,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

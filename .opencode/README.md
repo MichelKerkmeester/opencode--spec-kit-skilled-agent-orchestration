@@ -54,7 +54,7 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
 | MCP Tools | 40 | 33 memory + 7 code mode tools |
 | Agents | 10 | Base agent definitions in `.opencode/agent/*.md` |
-| Skills | 18 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
+| Skills | 19 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 22 | Markdown command entry points in `.opencode/command/` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 27 | Command execution YAML files |
@@ -74,7 +74,7 @@ Together, these systems enable context-aware development with traceability, hard
 ├── command/         — 22 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
-├── skill/           — 18 domain expertise skill modules with bundled resources
+├── skill/           — 19 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for documentation and memory files
 ```
 
@@ -143,6 +143,7 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
 | `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.2.0) |
 | `sk-deep-research` | Autonomous deep-research loop protocol with iterative investigation and convergence handling (v1.0) |
+| `sk-deep-review` | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts (v1.0) |
 | `sk-prompt-improver` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
 
 **Skill Structure:** Each skill contains `SKILL.md` (entry point), `references/` (documentation), `scripts/` (automation) and `assets/` (templates/checklists).
@@ -162,6 +163,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:implement`: Implementation workflow with quality gates
 - `/spec_kit:complete`: Full 14+ step workflow from research to completion
 - `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking
+- `/spec_kit:deep-review`: Autonomous iterative code review workflow with convergence tracking
 - `/spec_kit:debug`: Debug delegation with model selection and task dispatch
 - `/spec_kit:handover`: Session continuation with context preservation
 - `/spec_kit:resume`: Resume existing spec folder work with context loading

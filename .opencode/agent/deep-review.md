@@ -1,6 +1,6 @@
 ---
 name: deep-review
-description: "LEAF review agent for sk-deep-research review mode. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
+description: "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
 mode: subagent
 temperature: 0.1
 permission:
@@ -24,7 +24,7 @@ Executes ONE review iteration within an autonomous review loop. Reads externaliz
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
-**CRITICAL**: This agent executes a SINGLE review iteration, not the full loop. The loop is managed by the `/spec_kit:deep-research:review` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what dimension to review.
+**CRITICAL**: This agent executes a SINGLE review iteration, not the full loop. The loop is managed by the `/spec_kit:deep-review` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what dimension to review.
 
 **IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and @deep-research (state protocol, JSONL, iteration lifecycle). It reviews code but does NOT modify it.
 
@@ -511,14 +511,14 @@ Return this summary to the dispatcher after completing the iteration:
 
 | Command | Purpose | Path |
 |---------|---------|------|
-| `/spec_kit:deep-research:review` | Autonomous review loop | `.opencode/command/spec_kit/deep-research.md` |
+| `/spec_kit:deep-review` | Autonomous review loop | `.opencode/command/spec_kit/deep-review.md` |
 | `/memory:save` | Save review context | `.opencode/command/memory/save.md` |
 
 ### Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `sk-deep-research` | Deep research/review loop orchestration |
+| `sk-deep-review` | Deep review loop orchestration |
 | `sk-code--review` | Shared review doctrine via `references/review_core.md` |
 | `system-spec-kit` | Spec folders, memory, docs |
 

@@ -17,7 +17,6 @@ Canonical package artifacts:
 - `04--convergence-and-recovery/`
 - `05--pause-resume-and-fault-tolerance/`
 - `06--synthesis-save-and-guardrails/`
-- `07--review-mode/`
 
 ---
 
@@ -35,15 +34,14 @@ Canonical package artifacts:
 - [10. CONVERGENCE AND RECOVERY](#10--convergence-and-recovery)
 - [11. PAUSE, RESUME, AND FAULT TOLERANCE](#11--pause-resume-and-fault-tolerance)
 - [12. SYNTHESIS, SAVE, AND GUARDRAILS](#12--synthesis-save-and-guardrails)
-- [13. REVIEW MODE](#13--review-mode)
-- [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
-- [15. FEATURE CATALOG CROSS-REFERENCE INDEX](#15--feature-catalog-cross-reference-index)
+- [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
+- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 41 deterministic scenarios across 8 categories validating the current `sk-deep-research` skill surface (including review mode). Each scenario maps to a dedicated feature file with a realistic user request, orchestrator prompt, expected process, desired user-facing outcome, one primary 9-column execution row, and source anchors into the live skill, command, YAML, and runtime docs.
+This playbook provides 30 deterministic scenarios across 6 categories validating the current `sk-deep-research` skill surface. Each scenario maps to a dedicated feature file with a realistic user request, orchestrator prompt, expected process, desired user-facing outcome, one primary 9-column execution row, and source anchors into the live skill, command, YAML, and runtime docs.
 
 Coverage note for 2026-03-24: no `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/`, and no dedicated automated test suite was found under the skill folder. This playbook therefore anchors directly to the live `sk-deep-research` docs plus the active command and runtime definitions.
 
@@ -93,7 +91,7 @@ Coverage note for 2026-03-24: no `feature_catalog/` package exists under `.openc
 ### INPUTS REQUIRED
 
 1. `MANUAL_TESTING_PLAYBOOK.md`
-2. All 41 referenced per-feature files in the numbered category folders
+2. All 30 referenced per-feature files in the numbered category folders
 3. Command transcripts or inspection output for each executed scenario
 4. Notes for any scenario that required interpretation because behavior is documentation-defined rather than fully executable
 5. Triage notes for every non-pass outcome
@@ -133,7 +131,6 @@ This section documents how manual test execution should mimic a real orchestrato
 | Wave 1 | DR-001..DR-006 | 1-3 | Entry-point and initialization checks are parallel-safe because they are document and workflow inspections |
 | Wave 2 | DR-007..DR-014 | 1-2 | Prefer tighter coordination because these scenarios reuse the same state-discipline and convergence anchors |
 | Wave 3 | DR-015..DR-019 | 1 | Run serially because pause, recovery, synthesis, and guardrail scenarios are easy to blur together |
-| Wave 4 | DR-031..DR-041 | 1-3 | Review mode scenarios are parallel-safe (document and workflow inspections) but share review YAML anchors |
 
 ### OPERATIONAL RULES
 
@@ -361,79 +358,11 @@ Feature file: [DR-026](06--synthesis-save-and-guardrails/026-ruled-out-direction
 
 ---
 
-## 13. REVIEW MODE
-
-These scenarios validate the review mode variant of sk-deep-research: how it accepts review targets, discovers scope, dispatches @deep-review agents, converges on review findings, and produces release-readiness verdicts.
-
-### DR-031 | Review mode kickoff via :review suffix
-
-Verify that `:review` suffix triggers review-specific setup questions (target, dimensions) and routes to review YAML.
-
-Feature file: [DR-031](07--review-mode/031-review-mode-kickoff-via-review-suffix.md)
-
-### DR-032 | Review scope discovery resolves target to file list
-
-Verify review mode resolves target type (spec folder / skill / agent / track / files) to a concrete file list.
-
-Feature file: [DR-032](07--review-mode/032-review-scope-discovery-resolves-target.md)
-
-### DR-033 | Review dimension ordering follows risk priority
-
-Verify inventory pass runs first, then Correctness → Security → Traceability → Maintainability.
-
-Feature file: [DR-033](07--review-mode/033-review-dimension-ordering-follows-risk-priority.md)
-
-### DR-034 | Review iteration produces P0/P1/P2 findings with file:line evidence
-
-Verify @deep-review agent writes iteration file with Scorecard, Findings (P0/P1/P2), Cross-Reference Results, and Assessment.
-
-Feature file: [DR-034](07--review-mode/034-review-iteration-produces-findings.md)
-
-### DR-035 | Review convergence uses severity-weighted newFindingsRatio
-
-Verify convergence uses adapted signals (rolling avg window=2, MAD weight=0.25, dimension coverage weight=0.45) with P0 override rule.
-
-Feature file: [DR-035](07--review-mode/035-review-convergence-severity-weighted.md)
-
-### DR-036 | Review quality guards block premature stop
-
-Verify 3 binary gates (evidence, scope, coverage) must pass before STOP.
-
-Feature file: [DR-036](07--review-mode/036-review-quality-guards-block-premature-stop.md)
-
-### DR-037 | Cross-reference verification detects spec-code misalignment
-
-Verify review iteration checks spec claims vs code, checklist [x] vs evidence, SKILL.md vs agent files.
-
-Feature file: [DR-037](07--review-mode/037-cross-reference-detects-misalignment.md)
-
-### DR-038 | Adversarial self-check runs on P0 findings
-
-Verify Hunter/Skeptic/Referee runs in-iteration for P0 candidates before writing to JSONL.
-
-Feature file: [DR-038](07--review-mode/038-adversarial-self-check-on-p0.md)
-
-### DR-039 | Review-report.md synthesis has all 9 sections
-
-Verify review-report.md includes Executive Summary, Planning Trigger, Active Finding Registry, Remediation Workstreams, Spec Seed, Plan Seed, Traceability Status, Deferred Items, and Audit Appendix.
-
-Feature file: [DR-039](07--review-mode/039-review-report-synthesis-has-all-sections.md)
-
-### DR-040 | Review verdict determines post-review workflow
-
-Verify FAIL / CONDITIONAL / PASS verdict is correct and next-command recommendation matches, with PASS carrying `hasAdvisories` when only P2 findings remain.
-
-Feature file: [DR-040](07--review-mode/040-review-verdict-determines-post-review-workflow.md)
-
-### DR-041 | Review dashboard shows findings and coverage
-
-Verify review dashboard includes Findings Summary (P0/P1/P2), Progress Table with dimensions, Coverage (files/dimensions/traceability protocols), and Trend.
-
-Feature file: [DR-041](07--review-mode/041-review-dashboard-shows-findings-and-coverage.md)
+Review mode scenarios have been moved to `sk-deep-review/manual_testing_playbook/`.
 
 ---
 
-## 14. AUTOMATED TEST CROSS-REFERENCE
+## 13. AUTOMATED TEST CROSS-REFERENCE
 
 No dedicated automated test suite was found under `.opencode/skill/sk-deep-research/` during this playbook creation pass. Operators should therefore treat the live docs, command entrypoint, YAML workflows, and runtime agent definition as the current testable contract.
 
@@ -441,7 +370,7 @@ If a future automated suite is added, this section should map scenario IDs to co
 
 ---
 
-## 15. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 No dedicated `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-24. This playbook intentionally does not fabricate catalog links or placeholder catalog IDs.
 

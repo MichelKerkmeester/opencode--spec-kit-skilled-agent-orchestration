@@ -1,10 +1,10 @@
 ---
 name: sk-deep-research
-description: "Autonomous deep research and review loop protocol with iterative investigation or code quality auditing, externalized state, convergence detection, and fresh context per iteration"
+description: "Autonomous deep research loop protocol with iterative investigation, externalized state, convergence detection, and fresh context per iteration"
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
-argument-hint: "[topic|target] [:auto|:confirm|:review|:review:auto|:review:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.2.2.0
+argument-hint: "[topic] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
+version: 1.3.0.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -38,18 +38,11 @@ Use this skill when:
 - Quick codebase searches (use `@context` or direct Grep/Glob)
 - Fewer than 3 sources needed (single-pass research suffices)
 
-### Review Mode Triggers
-
-Use the review mode variant when:
-- "review code quality" or "audit this code"
-- "audit spec folder" or "validate spec completeness"
-- "release readiness check" or "pre-release review"
-- "find misalignments" between spec and implementation
-- "verify cross-references" across documentation and code
-
 ### Keyword Triggers
 
-`autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`, `review code quality`, `audit spec folder`, `release readiness check`, `find misalignments`, `verify cross-references`
+`autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`
+
+For iterative code review and quality auditing, see `sk-deep-review`.
 
 ---
 
@@ -79,10 +72,6 @@ INTENT_SIGNALS = {
     "ITERATION": {"weight": 4, "keywords": ["iteration", "next round", "continue research", "research cycle"]},
     "CONVERGENCE": {"weight": 3, "keywords": ["convergence", "stop condition", "diminishing returns", "stuck"]},
     "STATE": {"weight": 3, "keywords": ["state file", "JSONL", "strategy", "resume", "auto-resume"]},
-    "REVIEW_SETUP": {"weight": 4, "keywords": ["deep review", "review mode", "code audit", "iterative review", ":review"]},
-    "REVIEW_ITERATION": {"weight": 4, "keywords": ["review iteration", "dimension review", "review findings", "P0", "P1"]},
-    "REVIEW_CONVERGENCE": {"weight": 3, "keywords": ["review convergence", "coverage gate", "verdict", "binary gate"]},
-    "REVIEW_REPORT": {"weight": 3, "keywords": ["review report", "planning packet", "remediation", "verdict"]},
 }
 
 NOISY_SYNONYMS = {
@@ -90,10 +79,6 @@ NOISY_SYNONYMS = {
     "ITERATION": {"another pass": 1.5, "keep searching": 1.4, "dig deeper": 1.6},
     "CONVERGENCE": {"good enough": 1.4, "stop when": 1.5, "diminishing": 1.6},
     "STATE": {"pick up where": 1.5, "continue from": 1.4, "resume": 1.8},
-    "REVIEW_SETUP": {"audit code": 2.0, "review spec folder": 1.8, "release readiness": 1.5},
-    "REVIEW_ITERATION": {"review dimension": 1.5, "check correctness": 1.4, "check security": 1.4},
-    "REVIEW_CONVERGENCE": {"all dimensions covered": 1.6, "coverage complete": 1.5},
-    "REVIEW_REPORT": {"review results": 1.5, "what to fix": 1.4, "ship decision": 1.6},
 }
 
 RESOURCE_MAP = {
@@ -101,10 +86,6 @@ RESOURCE_MAP = {
     "ITERATION": ["references/loop_protocol.md", "references/convergence.md"],
     "CONVERGENCE": ["references/convergence.md"],
     "STATE": ["references/state_format.md", "assets/deep_research_strategy.md"],
-    "REVIEW_SETUP": ["references/loop_protocol.md", "references/state_format.md", "assets/review_mode_contract.yaml", "assets/deep_review_strategy.md"],
-    "REVIEW_ITERATION": ["references/loop_protocol.md", "references/convergence.md", "assets/review_mode_contract.yaml"],
-    "REVIEW_CONVERGENCE": ["references/convergence.md", "assets/review_mode_contract.yaml"],
-    "REVIEW_REPORT": ["references/state_format.md", "assets/review_mode_contract.yaml"],
 }
 
 LOADING_LEVELS = {
@@ -134,13 +115,10 @@ Detect the current research phase from dispatch context to load appropriate reso
 
 | Phase | Signal | Resources to Load |
 |-------|--------|-------------------|
-| Init (research) | No JSONL exists, mode=research | Loop protocol, state format |
-| Init (review) | No JSONL exists, mode=review | Loop protocol, state format, review contract |
-| Iteration (research) | Dispatch context includes iteration number | Loop protocol, convergence |
-| Iteration (review) | Dispatch context includes dimension + iteration | Loop protocol, convergence, review contract |
+| Init | No JSONL exists | Loop protocol, state format |
+| Iteration | Dispatch context includes iteration number | Loop protocol, convergence |
 | Stuck | Dispatch context includes "RECOVERY" | Convergence, loop protocol |
-| Synthesis (research) | Convergence triggered STOP | Quick reference |
-| Synthesis (review) | Convergence triggered STOP, mode=review | Review contract, state format |
+| Synthesis | Convergence triggered STOP | Quick reference |
 
 ---
 
@@ -187,20 +165,6 @@ User invokes: /spec_kit:deep-research "topic"
     │  research/research.md (workflow-owned │
     │  progressive synthesis)         │
     └─────────────────────────────────┘
-```
-
-Review mode uses a separate packet under `{spec_folder}/review/`:
-
-```text
-review/
-  deep-research-config.json            # Immutable after init: review parameters
-  deep-research-state.jsonl            # Append-only review iteration log
-  deep-review-strategy.md              # Review dimensions, findings, next focus
-  deep-review-dashboard.md             # Auto-generated review dashboard
-  .deep-research-pause                 # Pause sentinel checked between review iterations
-  review-report.md                     # Final review report
-  iterations/
-    iteration-NNN.md                   # Write-once review findings
 ```
 
 ### Core Innovation: Fresh Context Per Iteration
@@ -265,10 +229,7 @@ Save --> generate-context.js --> verify memory artifact
 9. **Treat research/research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research/research.md`
 10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
 11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
-12. **Quality guards must pass before convergence** -- Research mode: source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger. Review mode: evidence completeness, scope alignment, no inference-only, severity coverage, and cross-reference checks must pass (see convergence.md Section 10.4)
-13. **Review target files are read-only** -- Never modify code under review; review mode is observation-only
-14. **Run adversarial self-check on P0 findings before recording** -- Re-read cited code to confirm P0 severity is genuine
-15. **Report severity counts (P0/P1/P2) in every review iteration JSONL record** -- `findingsSummary` and `findingsNew` are required fields
+12. **Quality guards must pass before convergence** -- Source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger
 
 ### NEVER
 
@@ -325,21 +286,6 @@ These concepts remain documented for future design work, but they are not part o
 | [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to `research/` during research init |
 | [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to `research/` during research init |
 | [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
-| [deep_review_strategy.md](assets/deep_review_strategy.md) | Review strategy file | Copied to `{spec_folder}/review/` during review init |
-| [deep_review_dashboard.md](assets/deep_review_dashboard.md) | Review dashboard template | Auto-generated each review iteration |
-
-### Review Mode Resources
-
-| Resource | Purpose |
-|----------|---------|
-| `@deep-review` agent | Single review iteration executor (LEAF) |
-| Review auto YAML | `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` |
-| Review confirm YAML | `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml` |
-
-Agent runtime paths:
-- OpenCode/Copilot: `.opencode/agent/deep-review.md`
-- Claude: `.claude/agents/deep-review.md`
-- Codex: `.codex/agents/deep-review.toml`
 
 ---
 
@@ -371,16 +317,6 @@ Every completed loop produces a convergence report:
 - Questions answered ratio
 - Average newInfoRatio trend
 
-### Review Mode Success Criteria
-
-| Criteria | Requirement |
-|----------|-------------|
-| Dimension coverage | All configured review dimensions reviewed with evidence |
-| Finding citations | P0/P1 findings include `file:line` citations |
-| Report completeness | `{spec_folder}/review/review-report.md` has all 9 sections |
-| Verdict justification | Release readiness verdict (PASS/CONDITIONAL/FAIL) is justified with findings; PASS includes hasAdvisories metadata when P2 findings exist |
-| Adversarial recheck | P0 findings confirmed via adversarial self-check before final report |
-
 ---
 
 <!-- /ANCHOR:success-criteria -->
@@ -408,11 +344,6 @@ During research (each iteration):
   Agent writes research/iterations/iteration-NNN.md
   Agent updates research/deep-research-strategy.md
   Agent appends research/deep-research-state.jsonl
-
-During review (each iteration):
-  Agent writes {spec_folder}/review/iterations/iteration-NNN.md
-  Agent updates {spec_folder}/review/deep-review-strategy.md
-  Agent appends {spec_folder}/review/deep-research-state.jsonl
 
 After research:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
@@ -484,4 +415,6 @@ After research:
 | `/memory:save` | Manual context preservation |
 
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
+
+For code review capabilities, see `sk-deep-review`.
 <!-- /ANCHOR:related-resources -->

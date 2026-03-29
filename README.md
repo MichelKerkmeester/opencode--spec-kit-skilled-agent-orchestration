@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 18 skills, 20 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 19 skills, 20 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -58,7 +58,7 @@ The framework adds three layers on top of the base platform:
 | | |
 |---|---|
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
-| **🎯 18 Skills** | Code, docs, git, prompts, MCP, research, cross-AI |
+| **🎯 19 Skills** | Code, docs, git, prompts, MCP, research, review, cross-AI |
 | **⌨️ 20 Commands** | 8 spec_kit + 4 memory + 7 create + 1 utility |
 | **🔧 42 MCP Tools** | 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
@@ -88,7 +88,7 @@ The framework adds three layers on top of the base platform:
                  ▼                             ▼
          ┌───────────────┐          ┌──────────────────┐
          │ AGENT NETWORK │          │  SKILLS LIBRARY  │
-         │ 12 specialized│          │ 18 domain skills │
+         │ 12 specialized│          │ 19 domain skills │
          │ agents with   │◄────────►│ auto-loaded by   │
          │ routing logic │          │ task keywords    │
          └───────┬───────┘          └────────┬─────────┘
@@ -542,6 +542,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 **Deep-Review**
 - Autonomous code quality auditor using LEAF architecture for single review iterations
 - Reviews code but NEVER modifies target files (read-only on code)
+- Loop orchestration managed by `/spec_kit:deep-review` command, not this agent
 - Produces P0/P1/P2 severity-ranked findings with `file:line` evidence across 7 review dimensions
 - Includes adversarial self-check on all findings before finalizing
 
@@ -611,7 +612,12 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 **Deep-Research**
 - Autonomous research loop dispatching deep-research agents iteratively until convergence
 - Externalized JSONL state enables pause/resume across sessions
-- Modes: `:auto` (research), `:review` (code quality audit via deep-review)
+- Modes: `:auto`, `:confirm`
+
+**Deep-Review**
+- Autonomous code review loop dispatching deep-review agents iteratively until convergence
+- Severity-weighted findings (P0/P1/P2) across 7 review dimensions with release readiness verdicts
+- Modes: `:auto`, `:confirm`
 
 **Handover**
 - Creates session handover document for continuing work in a new conversation
@@ -689,7 +695,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 ### 🎯 Skills Library
 
-18 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
+19 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
 #### DOCUMENTATION
 
@@ -778,9 +784,14 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 #### OTHER
 
 **sk-deep-research**
-- Dual-mode autonomous investigation system with iterative LEAF cycles
-- Research mode: fresh context per iteration, externalized JSONL state, convergence detection
-- Review mode: automated code quality auditing dispatching deep-review agents with P0/P1/P2 findings
+- Autonomous research investigation system with iterative LEAF cycles
+- Fresh context per iteration, externalized JSONL state, convergence detection
+- Dispatched by `/spec_kit:deep-research` command
+
+**sk-deep-review**
+- Autonomous code quality auditing system with iterative LEAF cycles
+- Dispatches deep-review agents with P0/P1/P2 severity-weighted findings across 7 review dimensions
+- Dispatched by `/spec_kit:deep-review` command
 
 **sk-git**
 - Git workflow orchestrator coordinating 3 sub-skills
@@ -939,7 +950,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 ## ❓ FAQ
 
-**Q: Do I need all 18 skills installed to use the framework?**
+**Q: Do I need all 19 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -`system-spec-kit` and `sk-doc` - cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
@@ -1015,7 +1026,7 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 - **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** - Spaces, roles, membership, kill switch
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
-- **[→ Skills Index](.opencode/skill/README.md)** - All 18 skills with invocation patterns
+- **[→ Skills Index](.opencode/skill/README.md)** - All 19 skills with invocation patterns
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 255-entry technical reference
 - **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** - Plain-language companion
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
@@ -1029,4 +1040,4 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.0 | Last updated: 2026-03-28 | Framework: 12 agents, 18 skills, 20 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.0 | Last updated: 2026-03-28 | Framework: 12 agents, 19 skills, 20 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

@@ -400,6 +400,7 @@ Spec Kit exposes 12 commands: 8 spec_kit + 4 memory operations. Each command ope
 | `/spec_kit:debug` | 5 | Delegate debugging to a specialized sub-agent with fresh perspective |
 | `/spec_kit:phase` | N/A | Create and manage phase decomposition for complex work |
 | `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection |
+| `/spec_kit:deep-review` | N/A | Autonomous code review loop with convergence detection |
 
 **Mode Suffixes** change how commands run:
 

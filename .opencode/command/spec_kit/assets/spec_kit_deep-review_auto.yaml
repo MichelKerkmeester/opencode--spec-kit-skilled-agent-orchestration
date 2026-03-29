@@ -1,16 +1,16 @@
 # ─────────────────────────────────────────────────────────────────
-# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (CONFIRM MODE)
+# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (AUTO MODE)
 # ─────────────────────────────────────────────────────────────────
-# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (CONFIRM MODE)
+# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (AUTO MODE)
 # ─────────────────────────────────────────────────────────────────
 role: Deep Review Loop Manager
-purpose: Iterative code/spec review with convergence detection and user approval gates
-action: Run deep-review loop with user confirmation at each phase transition
+purpose: Iterative code/spec review with convergence detection across review dimensions
+action: Run deep-review loop from initialization through synthesis
 operating_mode:
   workflow: iterative_loop
   workflow_compliance: MANDATORY
-  workflow_execution: interactive
-  approvals: multi_gate
+  workflow_execution: autonomous
+  approvals: none
   tracking: progressive_review_state
   validation: convergence_detection
 
@@ -19,8 +19,8 @@ operating_mode:
 # ─────────────────────────────────────────────────────────────────
 operating_principles:
   core: "Fresh context per iteration + externalized state = no context degradation"
-  approach: "Dispatch focused review agent per dimension, show results, get approval, repeat or stop"
-  mandate: "Never hold findings in memory; write everything to files. Pause for user at each gate. Review target is READ-ONLY."
+  approach: "Dispatch focused review agent per dimension, evaluate convergence, repeat or stop"
+  mandate: "Never hold findings in memory; write everything to files. Review target is READ-ONLY."
 
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS (from setup phase)
@@ -52,15 +52,15 @@ context_loading:
 # SKILL REFERENCE
 # ─────────────────────────────────────────────────────────────────
 skill_reference:
-  skill: sk-deep-research
-  skill_md: .opencode/skill/sk-deep-research/SKILL.md
+  skill: sk-deep-review
+  skill_md: .opencode/skill/sk-deep-review/SKILL.md
   references:
     loop_protocol: .opencode/skill/sk-deep-research/references/loop_protocol.md
     state_format: .opencode/skill/sk-deep-research/references/state_format.md
     convergence: .opencode/skill/sk-deep-research/references/convergence.md
   templates:
     config: .opencode/skill/sk-deep-research/assets/deep_research_config.json
-    strategy: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md
+    strategy: .opencode/skill/sk-deep-review/assets/deep_review_strategy.md
 
 # ─────────────────────────────────────────────────────────────────
 # AGENT CONFIGURATION
@@ -159,13 +159,10 @@ workflow:
         outputs:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
-          show_dashboard: "{spec_folder}/review/deep-review-dashboard.md"
-          ask: "Resume, restart (archive old state), or fork (new angle from current state)?"
-          options: [resume, restart, fork]
-          log: "Interactive resume: existing state is consistent. Review current files before restarting the loop."
-          skip_to: gate_init_approval
+          log: "Auto-resume: state artifacts are complete and consistent. Skip initialization writes and continue from phase_loop."
+          skip_to: phase_loop
         on_completed_session:
-          log: "Prior session already completed. Present synthesis/save choices rather than recreating state."
+          log: "Prior session already completed. Reuse existing artifacts unless the user starts a new session explicitly."
           skip_to: phase_synthesis
         on_invalid_state:
           halt: true
@@ -241,7 +238,7 @@ workflow:
           specFolder: "{spec_folder}"
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
-          executionMode: "confirm"
+          executionMode: "auto"
         output: "{spec_folder}/review/deep-research-config.json"
 
       step_create_state_log:
@@ -251,7 +248,7 @@ workflow:
 
       step_create_strategy:
         action: "Create review strategy file from deep_review_strategy.md template"
-        template: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md
+        template: .opencode/skill/sk-deep-review/assets/deep_review_strategy.md
         populate:
           review_target: "{review_target}"
           review_target_type: "{review_target_type}"
@@ -268,40 +265,15 @@ workflow:
         edit: "{spec_folder}/review/deep-review-strategy.md"
         note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
 
-      # ─── APPROVAL GATE: Post-Init ───
-      gate_init_approval:
-        type: approval_gate
-        purpose: "Show review scope, dimensions, and target files. Get approval to start loop."
-        present: |
-          ## Review Initialization Complete
-
-          **Review Target**: {review_target} ({review_target_type})
-          **Scope**: {review_scope_files_count} files
-          **Dimensions**: {dimension_queue}
-          **Max Iterations**: {max_iterations}
-          **Convergence Threshold**: {convergence_threshold}
-          **Known Context Summary**: {prior_context_summary}
-
-          **Files in scope:**
-          {review_scope_files_summary}
-
-          Review `{spec_folder}/review/deep-review-strategy.md` for the full scope and dimension ordering.
-          **State files located in**: {spec_folder}/review/
-
-          Options:
-          A) Start review loop
-          B) Adjust scope or dimensions
-          C) Cancel
-        wait_for: "User response"
-        on_A: { set: { current_iteration: 1, stuck_count: 0, p0_count: 0, p1_count: 0, p2_count: 0 }, proceed_to: phase_loop }
-        on_B: { action: "Apply user adjustments to strategy.md, scope, or dimensions", return_to: gate_init_approval }
-        on_C: { action: "Cancel workflow", status: "CANCELLED" }
+      step_init_complete:
+        log: "Initialization complete. Config, state, and strategy files created. Review scope: {review_scope_files_count} files, {dimension_queue_count} dimensions."
+        set: { current_iteration: 1, stuck_count: 0, p0_count: 0, p1_count: 0, p2_count: 0 }
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 2: ITERATION LOOP
   # ═══════════════════════════════════════════════════════════════
   phase_loop:
-    purpose: Dispatch review agent iterations with approval at each step
+    purpose: Dispatch review agent iterations until convergence
     repeat: true
     max_repeats: "{max_iterations}"
     steps:
@@ -379,7 +351,7 @@ workflow:
         action: "Act on convergence decision"
         if_stop:
           log: "Loop stopping. Reason: {reason}"
-          skip_to: gate_pre_synthesis
+          skip_to: phase_synthesis
         if_stuck_recovery:
           log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
           recovery_strategies:
@@ -389,50 +361,27 @@ workflow:
           set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}" }
           reset: { stuck_count: 0 }
         if_continue:
-          log: "Iteration {current_iteration}: Continuing."
+          log: "Iteration {current_iteration}: Continuing. Dimension: {next_dimension}"
 
-      # ─── APPROVAL GATE: Pre-Iteration ───
-      gate_pre_iteration:
-        type: approval_gate
-        purpose: "Show planned dimension focus and get approval before dispatching agent"
-        present: |
-          ## Review Iteration {current_iteration} of {max_iterations}
-
-          **Dimension**: {next_dimension}
-          **Dimensions Covered**: {dimensions_covered} ({dimension_coverage})
-          **Findings So Far**: P0={p0_count} P1={p1_count} P2={p2_count}
-          **Last newFindingsRatio**: {last_newFindingsRatio}
-          **Traceability**: core={core_protocol_status} overlay={overlay_protocol_status}
-          **Stuck Count**: {stuck_count}
-
-          Options:
-          A) Proceed with this dimension focus
-          B) Change focus to: [user provides new dimension or focus]
-          C) Stop loop and synthesize now
-          D) Cancel entirely
-        wait_for: "User response"
-        on_A: { proceed_to: step_dispatch_iteration }
-        on_B: { action: "Update next_dimension to user's choice", proceed_to: step_dispatch_iteration }
-        on_C: { proceed_to: gate_pre_synthesis }
-        on_D: { action: "Cancel workflow", status: "CANCELLED" }
+      step_generate_state_summary:
+        action: "Generate compact state summary for dispatch context (~200 tokens)"
+        generate: |
+          STATE SUMMARY (auto-generated):
+          Iteration: {current_iteration} of {max_iterations}
+          Dimension: {next_dimension}
+          Prior Findings: P0={p0_count} P1={p1_count} P2={p2_count}
+          Dimension Coverage: {dimensions_covered_list} ({dimension_coverage})
+          Traceability: core={core_protocol_status} overlay={overlay_protocol_status}
+          Coverage Age: {coverage_age}
+          Last 2 ratios: {ratio_prev} -> {ratio_latest}
+          Stuck count: {stuck_count}
+          Provisional Verdict: {PASS|CONDITIONAL|FAIL|PENDING} hasAdvisories={has_advisories}
 
       step_dispatch_iteration:
         action: "Dispatch @deep-review agent for one review iteration"
         dispatch:
           agent: deep-review
           model: opus
-          pre_dispatch:
-            generate_summary: |
-              STATE SUMMARY (auto-generated):
-              Iteration: {current_iteration} of {max_iterations}
-              Dimension: {next_dimension}
-              Prior Findings: P0={p0_count} P1={p1_count} P2={p2_count}
-              Dimension Coverage: {dimensions_covered_list} ({dimension_coverage})
-              Traceability: core={core_protocol_status} overlay={overlay_protocol_status}
-              Coverage Age: {coverage_age}
-              Last 2 ratios: {ratio_prev} -> {ratio_latest}
-              Stuck count: {stuck_count}
-              Provisional Verdict: {PASS|CONDITIONAL|FAIL|PENDING} hasAdvisories={has_advisories}
           context: |
             {state_summary}
 
@@ -482,6 +431,7 @@ workflow:
           - traceability_checks: "From latest JSONL iteration record when present"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
+          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
 
       step_post_iteration_claim_adjudication:
         action: "Validate typed claim-adjudication packets for any new P0/P1 findings"
@@ -493,36 +443,6 @@ workflow:
           set:
             claim_adjudication_passed: false
           log: "Claim adjudication incomplete for new P0/P1 findings. Continue loop until packets are present. Set claim_adjudication_passed = false. This flag MUST be checked in convergence evaluation — STOP is blocked while claim_adjudication_passed == false."
-
-      # ─── APPROVAL GATE: Post-Iteration ───
-      gate_post_iteration:
-        type: approval_gate
-        purpose: "Show iteration findings and get approval for next step"
-        present: |
-          ## Review Iteration {current_iteration} Results
-
-          **Dimensions**: {dimensions}
-          **New Findings**: {findings_count} (P0={severity_counts.P0} P1={severity_counts.P1} P2={severity_counts.P2})
-          **newFindingsRatio**: {newFindingsRatio}
-          **Status**: {status}
-          **Cumulative Findings**: P0={p0_count} P1={p1_count} P2={p2_count}
-          **Dimension Coverage**: {dimensions_covered} ({dimension_coverage})
-          **Traceability**: {traceability_checks.summary}
-          **Stuck Count**: {stuck_count}
-
-          **Recent Iteration Summary**:
-          {last_3_summaries}
-
-          Options:
-          A) Continue to next iteration
-          B) Continue with adjusted focus: [user provides]
-          C) Stop loop and synthesize
-          D) Cancel entirely
-        wait_for: "User response"
-        on_A: { proceed_to: step_generate_dashboard }
-        on_B: { action: "Set next_dimension to user's choice in strategy.md", proceed_to: step_generate_dashboard }
-        on_C: { proceed_to: gate_pre_synthesis }
-        on_D: { action: "Cancel workflow", status: "CANCELLED" }
 
       step_generate_dashboard:
         action: "Generate or refresh the review dashboard"
@@ -585,6 +505,7 @@ workflow:
             if status == 'insight': 0 (reset)
             if newFindingsRatio <= 0.05: stuck_count + 1
             else: 0
+        log: "Iteration {N} complete. Dimensions: {dimensions}. newFindingsRatio: {newFindingsRatio}. Findings: P0={severity_counts.P0} P1={severity_counts.P1} P2={severity_counts.P2}. Stuck count: {stuck_count}."
 
       step_loop_decision:
         action: "Return to step_read_state for next iteration"
@@ -598,7 +519,7 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis or completed-session review"
+        action: "Hydrate summary metrics before synthesis, including completed-session resume paths"
         read:
           - "{spec_folder}/review/deep-research-config.json"
           - "{spec_folder}/review/deep-research-state.jsonl"
@@ -612,30 +533,6 @@ workflow:
           - dimension_coverage: "covered / total"
           - last_3_summaries: "Summarize the latest 3 iteration records"
           - reason: "Use the latest stop reason if present, else 'completed_session_resume'"
-
-      # ─── APPROVAL GATE: Pre-Synthesis ───
-      gate_pre_synthesis:
-        type: approval_gate
-        purpose: "Show all accumulated findings and get approval to synthesize"
-        present: |
-          ## Review Loop Complete
-
-          **Total Iterations**: {iteration_count}
-          **Stop Reason**: {reason}
-          **Cumulative Findings**: P0={p0_count} P1={p1_count} P2={p2_count}
-          **Dimension Coverage**: {dimensions_covered} ({dimension_coverage})
-          **Recent Iteration Summary**: {last_3_summaries}
-
-          Review the iteration files in `{spec_folder}/review/iterations/` if you want more detail before synthesis.
-
-          Options:
-          A) Proceed to synthesis (compile review/review-report.md)
-          B) Run more iterations (increase max or focus on specific dimension)
-          C) Cancel (keep iteration files)
-        wait_for: "User response"
-        on_A: { proceed_to: step_read_all_iterations }
-        on_B: { action: "Increase max_iterations or adjust focus, return to loop", proceed_to: phase_loop }
-        on_C: { action: "Cancel synthesis, keep artifacts", status: "PARTIAL" }
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
@@ -722,31 +619,6 @@ workflow:
         edit: "{spec_folder}/review/deep-research-config.json"
         set_field: { status: "complete" }
 
-      # ─── APPROVAL GATE: Post-Synthesis ───
-      gate_post_synthesis:
-        type: approval_gate
-        purpose: "Show review/review-report.md summary and get approval"
-        present: |
-          ## Review Synthesis Complete
-
-          **review/review-report.md** has been compiled with findings from {iteration_count} iterations.
-          **Verdict**: {verdict} | **hasAdvisories**: {has_advisories}
-          **Active Findings**: P0={active_p0} P1={active_p1} P2={active_p2}
-          **Dimension Coverage**: {dimension_coverage}
-
-          Review `{spec_folder}/review/review-report.md` before deciding next steps.
-
-          Options:
-          A) Approve and save to memory
-          B) Generate remediation plan (creates action items for /spec_kit:plan)
-          C) Request revisions to review/review-report.md
-          D) Skip memory save
-        wait_for: "User response"
-        on_A: { proceed_to: phase_save }
-        on_B: { action: "Generate remediation plan section, then save to memory", proceed_to: phase_save }
-        on_C: { action: "Apply user revisions", return_to: gate_post_synthesis }
-        on_D: { proceed_to: completion }
-
   # ═══════════════════════════════════════════════════════════════
   # PHASE 4: SAVE
   # ═══════════════════════════════════════════════════════════════
@@ -788,8 +660,41 @@ workflow:
     next_steps:
       - "/spec_kit:plan [remediation] (if FAIL or CONDITIONAL verdict)"
       - "/create:changelog (if PASS, including PASS with hasAdvisories=true)"
-      - "/spec_kit:deep-research:review [target] (for another review)"
+      - "/spec_kit:deep-review [target] (for another review)"
       - "/memory:save {spec_folder} (manual memory save)"
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  agent_dispatch_timeout: "Retry once with reduced scope (fewer files per iteration). If second timeout, mark as 'timeout' and continue."
+  state_file_missing: "If JSONL missing during loop, reconstruct from iteration files. If strategy missing, create minimal version."
+  consecutive_failures: "After 3 consecutive errors, halt loop and enter synthesis with partial findings."
+  memory_save_failure: "Preserve the review packet in review/ as backup. Log warning."
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - follow_workflow_phases_in_order
+    - dispatch_deep_review_agent_per_iteration
+    - check_convergence_before_each_iteration
+    - write_all_state_to_files
+    - save_memory_context_after_synthesis
+    - respect_max_iterations_cap
+    - treat_review_target_as_read_only
+    - deduplicate_findings_before_synthesis
+    - run_adversarial_selfcheck_on_p0_p1
+  NEVER:
+    - skip_convergence_check
+    - dispatch_non_leaf_agents
+    - hold_iteration_findings_in_memory_only
+    - modify_config_after_initialization
+    - overwrite_jsonl_state_log
+    - proceed_without_state_file_verification
+    - modify_files_under_review
+    - report_p0_without_file_line_evidence
 
 # ─────────────────────────────────────────────────────────────────
 # REFERENCE-ONLY APPENDIX
@@ -825,39 +730,3 @@ reference_only_appendix:
       - { check: "Agent Cross-Runtime", source: ".claude", target: ".codex/.opencode/.agents/.gemini" }
       - { check: "Feature Catalog vs Code", source: "Catalog claims", target: "implementation" }
       - { check: "Playbook vs Capability", source: "Scenario preconditions", target: "actual capability" }
-
-# ─────────────────────────────────────────────────────────────────
-# ERROR RECOVERY
-# ─────────────────────────────────────────────────────────────────
-error_recovery:
-  agent_dispatch_timeout: "Retry once with reduced scope. If second timeout, mark as 'timeout' and show to user for decision."
-  state_file_missing: "If JSONL missing, reconstruct from iteration files. If strategy missing, create minimal version."
-  consecutive_failures: "After 3 consecutive errors, halt and present to user with options: Retry / Skip / Cancel."
-  memory_save_failure: "Preserve the review packet in review/ as backup. Inform user."
-
-# ─────────────────────────────────────────────────────────────────
-# RULES
-# ─────────────────────────────────────────────────────────────────
-rules:
-  ALWAYS:
-    - follow_workflow_phases_in_order
-    - dispatch_deep_review_agent_per_iteration
-    - check_convergence_before_each_iteration
-    - write_all_state_to_files
-    - save_memory_context_after_synthesis
-    - respect_max_iterations_cap
-    - pause_at_approval_gates
-    - present_clear_options_at_each_gate
-    - treat_review_target_as_read_only
-    - deduplicate_findings_before_synthesis
-    - run_adversarial_selfcheck_on_p0_p1
-  NEVER:
-    - skip_convergence_check
-    - dispatch_non_leaf_agents
-    - hold_iteration_findings_in_memory_only
-    - modify_config_after_initialization
-    - overwrite_jsonl_state_log
-    - proceed_past_approval_gate_without_user_response
-    - auto_approve_on_behalf_of_user
-    - modify_files_under_review
-    - report_p0_without_file_line_evidence
