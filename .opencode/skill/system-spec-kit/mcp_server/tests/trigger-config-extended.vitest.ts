@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, vi } from 'vitest';
 import type { MemoryTypeConfig, MemoryTypeName } from '../lib/config/memory-types';
 import type {
   CacheStats,
@@ -12,17 +12,11 @@ import type {
 
 // TEST: TRIGGER-MATCHER + MEMORY-TYPES + TYPE-INFERENCE (extended)
 // Covers previously untested exports across three modules.
-import * as path from 'path';
 
 /* ─────────────────────────────────────────────────────────────
    MODULE LOADING  (mock vector-index for trigger-matcher)
 ──────────────────────────────────────────────────────────────── */
 
-// Detect whether we're running from dist/tests/ (compiled JS) or tests/ (tsx)
-const isCompiledRun = __dirname.includes(`${path.sep}dist${path.sep}`) || __dirname.endsWith(`${path.sep}dist`);
-const DIST = isCompiledRun
-  ? path.resolve(__dirname, '..')       // dist/tests/ → dist/
-  : path.resolve(__dirname, '..', 'dist'); // tests/ → ../dist/
 type DatabaseModule = typeof import('better-sqlite3');
 type DatabaseInstance = import('better-sqlite3').Database;
 type TriggerMatcherModule = typeof import('../lib/parsing/trigger-matcher');
@@ -46,7 +40,7 @@ interface MockMemoryRow {
 
 interface VectorIndexMockExports {
   initializeDb: () => void;
-  getDb: () => DatabaseInstance;
+  getDb: () => DatabaseInstance | null;
 }
 
 interface HalfLifeValidationResult {
@@ -98,6 +92,20 @@ interface TypeInferenceModule {
   validateInferredType: (inferredType: string, filePath: string | null | undefined) => TypeValidationResult;
 }
 
+const { dbHolder, mockInitializeDb, mockGetDb } = vi.hoisted(() => {
+  const state = { current: null };
+  return {
+    dbHolder: state,
+    mockInitializeDb: vi.fn(() => {}),
+    mockGetDb: vi.fn(() => state.current),
+  };
+});
+
+vi.mock('../lib/search/vector-index.js', () => ({
+  initializeDb: mockInitializeDb,
+  getDb: mockGetDb,
+}));
+
 const Database = require('better-sqlite3') as DatabaseModule;
 
 // Create in-memory DB with the memory_index table trigger-matcher expects
@@ -124,32 +132,23 @@ function createMockDb(rows: MockMemoryRow[] = []): DatabaseInstance {
   return db;
 }
 
-// Pre-mock vector-index in require cache before loading trigger-matcher
 let mockDb: DatabaseInstance = createMockDb();
-const vectorIndexPath = require.resolve(path.join(DIST, 'lib', 'search', 'vector-index.js'));
-const vectorIndexMockExports: VectorIndexMockExports = {
-  initializeDb: () => {},
-  getDb: () => mockDb,
-};
-require.cache[vectorIndexPath] = {
-  id: vectorIndexPath,
-  filename: vectorIndexPath,
-  loaded: true,
-  exports: vectorIndexMockExports,
-} as unknown as NodeJS.Module;
+dbHolder.current = mockDb;
 
 let triggerMatcher: TriggerMatcherModule;
 let memoryTypes: MemoryTypesModule;
 let typeInference: TypeInferenceModule;
 
+function updateVectorIndexDb(db: DatabaseInstance): void {
+  mockDb = db;
+  dbHolder.current = mockDb;
+  mockInitializeDb.mockImplementation(() => {});
+  mockGetDb.mockImplementation(() => dbHolder.current as DatabaseInstance | null);
+}
+
 /** Helper: replace the mock DB and clear cache so trigger-matcher re-reads */
 function setMockDb(rows: MockMemoryRow[]): void {
-  mockDb = createMockDb(rows);
-  const cacheEntry = require.cache[vectorIndexPath] as (NodeJS.Module & { exports: VectorIndexMockExports }) | undefined;
-  if (!cacheEntry) {
-    throw new Error(`Missing mocked vector-index cache entry for ${vectorIndexPath}`);
-  }
-  cacheEntry.exports.getDb = () => mockDb;
+  updateVectorIndexDb(createMockDb(rows));
   if (triggerMatcher?.clearCache) triggerMatcher.clearCache();
 }
 
@@ -158,10 +157,16 @@ function setMockDb(rows: MockMemoryRow[]): void {
 ──────────────────────────────────────────────────────────────── */
 
 describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () => {
-  beforeAll(() => {
-    triggerMatcher = require(path.join(DIST, 'lib', 'parsing', 'trigger-matcher.js')) as TriggerMatcherModule;
-    memoryTypes = require(path.join(DIST, 'lib', 'config', 'memory-types.js')) as MemoryTypesModule;
-    typeInference = require(path.join(DIST, 'lib', 'config', 'type-inference.js')) as TypeInferenceModule;
+  beforeAll(async () => {
+    triggerMatcher = await import('../lib/parsing/trigger-matcher.js') as TriggerMatcherModule;
+    memoryTypes = await import('../lib/config/memory-types.js') as MemoryTypesModule;
+    typeInference = await import('../lib/config/type-inference.js') as TypeInferenceModule;
+    updateVectorIndexDb(mockDb);
+  });
+
+  beforeEach(() => {
+    updateVectorIndexDb(mockDb);
+    triggerMatcher?.clearCache?.();
   });
 
   // --- --- 3. TRIGGER-MATCHER TESTS --- ---
@@ -340,7 +345,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const newDb = createMockDb([
         { id: 2, spec_folder: 's', file_path: '/b.md', title: 'T2', trigger_phrases: '["different"]', importance_weight: 0.5 },
       ]);
-      require.cache[vectorIndexPath]!.exports.getDb = () => newDb;
+      updateVectorIndexDb(newDb);
       const cache2 = fn();
       expect(cache2.length).toBe(1);
       expect(cache2[0].phrase).toBe('hello');
@@ -521,7 +526,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const newDb = createMockDb([
         { id: 2, spec_folder: 's', file_path: '/b.md', title: 'T2', trigger_phrases: '["new phrase"]', importance_weight: 0.7 },
       ]);
-      require.cache[vectorIndexPath]!.exports.getDb = () => newDb;
+      updateVectorIndexDb(newDb);
 
       const entries = fn();
       expect(entries.length).toBe(1);

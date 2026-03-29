@@ -39,10 +39,14 @@ const VECTOR_INDEX_SCHEMA_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib',
 const STAGE1_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'pipeline', 'stage1-candidate-gen.ts'), 'utf-8');
 const STAGE2_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'pipeline', 'stage2-fusion.ts'), 'utf-8');
 const ACCESS_TRACKER_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'storage', 'access-tracker.ts'), 'utf-8');
+const HANDLER_INPUT_REQUIRED_ERROR = 'Either "query" (string), "concepts" (array with 2-5 items), or "cursor" (string) is required.';
 
 function parseResponseData(response: Awaited<ReturnType<typeof memorySearchHandler.handleMemorySearch>>): Record<string, unknown> {
-  const envelope = JSON.parse(response.content[0].text) as Record<string, unknown>;
-  return (envelope.data || {}) as Record<string, unknown>;
+  const payload = JSON.parse(response.content[0].text) as Record<string, unknown>;
+  const data = payload.data;
+  return (data && typeof data === 'object')
+    ? data as Record<string, unknown>
+    : payload;
 }
 
 describe('Memory Search Integration (T601-T650) [deferred - requires DB test fixtures]', () => {
@@ -177,25 +181,25 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     it('T627: Empty concepts array rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: [] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
+      expect(data.error).toBe(HANDLER_INPUT_REQUIRED_ERROR);
     });
 
     it('T628: Single concept rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: ['only-one'] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
+      expect(data.error).toBe(HANDLER_INPUT_REQUIRED_ERROR);
     });
 
     it('T629: Non-array concepts rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: 'bad-input' as unknown as string[] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
+      expect(data.error).toBe(HANDLER_INPUT_REQUIRED_ERROR);
     });
 
     it('T630: Null concepts handled', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: null as unknown as string[] });
       const data = parseResponseData(response);
-      expect(typeof data.error).toBe('string');
+      expect(data.error).toBe(HANDLER_INPUT_REQUIRED_ERROR);
     });
   });
 

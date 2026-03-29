@@ -2,18 +2,35 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 
+const { mockRequireDb } = vi.hoisted(() => ({
+  mockRequireDb: vi.fn(() => ({})),
+}));
+
+vi.mock('../utils', () => ({
+  requireDb: mockRequireDb,
+}));
+
+import { handleSharedMemoryStatus, validateCallerAuth } from '../handlers/shared-memory';
 import { TOOL_DEFINITIONS, getSchema, validateToolArgs } from '../tool-schemas';
 import { validateToolInputSchema } from '../utils/tool-input-schema';
 
 const ORIGINAL_STRICT_SCHEMAS_ENV = process.env.SPECKIT_STRICT_SCHEMAS;
 
+function parseEnvelope(response: Awaited<ReturnType<typeof handleSharedMemoryStatus>>): Record<string, unknown> {
+  return JSON.parse(response.content[0].text) as Record<string, unknown>;
+}
+
 afterEach(() => {
   vi.restoreAllMocks();
+  mockRequireDb.mockReset();
+  mockRequireDb.mockImplementation(() => ({}));
   if (ORIGINAL_STRICT_SCHEMAS_ENV === undefined) {
     delete process.env.SPECKIT_STRICT_SCHEMAS;
   } else {
     process.env.SPECKIT_STRICT_SCHEMAS = ORIGINAL_STRICT_SCHEMAS_ENV;
   }
+  delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
+  delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
 });
 
 /* ───────────────────────────────────────────────────────────────
@@ -400,36 +417,36 @@ describe('shared-memory admin actor schema', () => {
     }).not.toThrow();
   });
 
-  it('runtime rejects shared_space_upsert when actor identity is omitted', () => {
+  it('handler auth rejects shared_space_upsert when actor identity is omitted', () => {
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
     expect(() => {
-      validateToolArgs('shared_space_upsert', {
-        spaceId: 'space-1',
-        tenantId: 'tenant-a',
-        name: 'Alpha',
-      });
-    }).toThrow(/Provide one actor identity/);
+      validateCallerAuth({
+        tool: 'shared_space_upsert',
+      }, 'tenant-a');
+    }).toThrow(/Caller authentication is required/);
   });
 
-  it('runtime rejects shared_space_membership_set when both actor identities are provided', () => {
+  it('handler auth rejects shared_space_membership_set when both actor identities are provided', () => {
+    process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
     expect(() => {
-      validateToolArgs('shared_space_membership_set', {
-        spaceId: 'space-1',
-        tenantId: 'tenant-a',
+      validateCallerAuth({
+        tool: 'shared_space_membership_set',
         actorUserId: 'user-1',
         actorAgentId: 'agent-1',
-        subjectType: 'user',
-        subjectId: 'user-2',
-        role: 'viewer',
-      });
+      }, 'tenant-a');
     }).toThrow(/Provide only one actor identity/);
   });
 
-  it('runtime requires caller identity for shared_memory_status', () => {
-    expect(() => {
-      validateToolArgs('shared_memory_status', {
-        tenantId: 'tenant-a',
-      });
-    }).toThrow(/Provide one actor identity/);
+  it('handler requires caller identity for shared_memory_status', async () => {
+    const response = await handleSharedMemoryStatus({
+      tenantId: 'tenant-a',
+    });
+    const envelope = parseEnvelope(response);
+    const data = envelope.data as Record<string, unknown>;
+
+    expect(response.isError).toBe(true);
+    expect(data.error).toBe('Caller authentication is required for shared-memory operations.');
+    expect((data.details as Record<string, unknown>).reason).toBe('actor_identity_required');
   });
 
   it('runtime accepts shared_memory_status with one actor identity', () => {
