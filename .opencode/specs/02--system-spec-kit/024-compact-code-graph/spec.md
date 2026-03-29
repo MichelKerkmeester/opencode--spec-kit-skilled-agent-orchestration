@@ -2,62 +2,122 @@
 
 ## Summary
 
-Implement a hybrid context injection system that uses Claude Code hooks (PreCompact, SessionStart, Stop) for automated context preservation at lifecycle boundaries, with tool-based fallback for runtimes without hook support (OpenCode, Codex CLI, Copilot, Gemini CLI).
+Implement a hybrid context injection system that uses Claude Code hooks (PreCompact, SessionStart, Stop) for automated context preservation at lifecycle boundaries, with tool-based fallback for runtimes without hook support.
 
 ## Problem
 
-Context compaction in long AI coding sessions causes loss of critical knowledge. Currently, our system relies on AI-driven recovery (CLAUDE.md instructions telling the AI to re-read MEMORY.md after compaction). This approach:
-- Depends on the AI remembering to follow instructions after compaction
-- Doesn't work proactively — the AI only recovers context AFTER it starts reasoning
-- Provides no automated safeguard for non-Claude runtimes
+Context compaction in long AI coding sessions causes loss of critical knowledge. Currently our system relies on AI-driven recovery (CLAUDE.md instructions telling the AI to call `memory_context({ mode: "resume" })`). Analysis (iteration 012) confirmed five gaps:
+
+1. **No provider lifecycle hook** — `autoSurfaceAtCompaction()` only runs when the AI actively calls `memory_context(mode: "resume")`, not at the moment compaction happens
+2. **No private Claude recovery layer** — `.claude/CLAUDE.md` doesn't exist; compaction rules are only in the shared root CLAUDE.md
+3. **Envelope metadata is weaker than prompt injection** — auto-surface adds `hints` and `meta.autoSurface`, not guaranteed prompt-state restoration
+4. **Session-start is generic, not recovery-aware** — startup instructions only announce memory stats, not last task or spec folder
+5. **Archived hook design never graduated** — a `pre_compact.py` design existed in `z_archive` but was never implemented
 
 ## Solution: Hybrid Approach
 
-**Layer 1 — Hook-based (Claude Code only):**
-- PreCompact hook → **precomputes** critical context and caches to file (stdout NOT injected on PreCompact)
-- SessionStart(source=compact) hook → **injects** cached context into conversation via stdout
-- SessionStart(source=startup|resume) hook → primes session with relevant prior work
-- Stop hook → saves session context + tracks token usage
-- NOTE: Copilot CLI and Gemini CLI also have hooks — expand in future phases
+### Layer 1 — Hook-based (Claude Code)
 
-**Layer 2 — Tool-based (all runtimes):**
+Based on Claude Code hooks API (25 lifecycle events, 4 handler types — iteration 011):
+
+- **PreCompact** hook → **precomputes** critical context and caches to temp file
+  - stdout is NOT injected on PreCompact (confirmed by official docs)
+  - Receives: `session_id`, `transcript_path`, `trigger` (auto|manual), `custom_instructions`
+- **SessionStart(source=compact)** → **injects** cached context via stdout into conversation
+  - SessionStart supports matcher on `source`: `startup`, `resume`, `clear`, `compact`
+  - Plain stdout or `hookSpecificOutput.additionalContext` becomes model-visible context
+- **SessionStart(source=startup|resume)** → primes session with relevant prior work
+- **Stop** (async) → saves session context + tracks token usage
+  - Receives: `transcript_path`, `stop_hook_active`, `last_assistant_message`
+  - Token totals NOT in payload — must parse transcript JSONL
+
+### Layer 2 — Tool-based (all runtimes)
+
 - Gate 1 in CLAUDE.md triggers `memory_match_triggers()` on each user message
 - After compaction, CLAUDE.md instructions direct AI to call `memory_context({ mode: "resume" })`
 - Works on any runtime that reads CLAUDE.md/CODEX.md
 
+### Design Principle (iteration 013)
+
+**Hooks are transport reliability, not separate business logic.** Claude hooks call the same tools other runtimes call explicitly. Only two retrieval primitives:
+- Fast turn-start: `memory_match_triggers(prompt)`
+- Continuation/compaction: `memory_context({ mode: "resume" })`
+
 ## Architecture
 
 ```
-Claude Code Runtime:
-  PreCompact          → compact-precompute.js → precompute + cache to file
-  SessionStart(compact) → compact-inject.js → read cache → stdout injection
-  SessionStart(startup) → session-prime.js → memory_context(resume) → stdout injection
-  Stop                → session-stop.js → save context + log tokens
-
-All Runtimes (including Claude Code):
-  User Message → Gate 1 → memory_match_triggers() → auto-surface context
-  After Compact → CLAUDE.md rules → memory_context({ mode: "resume" })
+                          +----------------------------------+
+                          |     Runtime-Specific Adapter     |
+                          |----------------------------------|
+User/Session Event ------>| Claude: hooks (SessionStart,     |
+                          |   PreCompact, Stop)              |
+                          | Codex/OpenCode/Copilot/Gemini:   |
+                          |   Gate docs + wrapper prompts    |
+                          +----------------+-----------------+
+                                           |
+                                           v
+                          +----------------------------------+
+                          | Shared Context Orchestrator      |
+                          |   memory_match_triggers(prompt)  |
+                          |   memory_context(mode:"resume")  |
+                          +----------------+-----------------+
+                                           |
+                                           v
+                          +----------------------------------+
+                          | Spec Kit Memory MCP Server       |
+                          |   autoSurfaceAtCompaction()      |
+                          |   autoSurfaceAtToolDispatch()    |
+                          +----------------------------------+
 ```
 
-## Scope
+### Hook Script File Layout (iteration 014)
 
-- 4 phases, ~3-4 weeks total
-- Builds on existing infrastructure: `autoSurfaceAtCompaction()`, `memory_context()`, `memory_match_triggers()`
-- No changes to MCP server core — only new scripts + hook registration + CLAUDE.md updates
+```
+.opencode/skill/system-spec-kit/scripts/hooks/claude/
+  session-prime.ts      → SessionStart injection
+  compact-inject.ts     → PreCompact precompute + cache
+  session-stop.ts       → Stop: token tracking + save
+  shared.ts             → Common utilities
+  hook-state.ts         → Session ID mapping, cache management
+  claude-transcript.ts  → Transcript JSONL parsing
 
-## Research
+Compiled → scripts/dist/hooks/claude/*.js
+```
 
-Based on deep research (10+5 iterations) evaluating Codex-CLI-Compact (Dual-Graph):
-- Dual-Graph's hook pattern inspired this approach
-- Our MCP server already has `autoSurfaceAtCompaction()` (4000 token budget)
-- Research artifacts in `research/` directory
+### Hook State (iteration 014)
+
+Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json`:
+- `claudeSessionId` → `speckitSessionId` mapping
+- `lastSpecFolder` for continuity
+- `pendingCompactPrime` with cached context payload
+- `metrics` for token estimation
+
+## Key Findings from Research
+
+| Finding | Source | Impact |
+|---------|--------|--------|
+| PreCompact stdout NOT injected | iter 011 (Claude docs) | Redesigned to precompute+cache model |
+| SessionStart has `source=compact` matcher | iter 011 | Enables post-compact-specific injection |
+| `memory_context(resume)` returns search results, not compact brief | iter 012 | Must also pass `profile: "resume"` for brief format |
+| `autoSurfaceAtCompaction` only runs when AI calls it | iter 012 | Confirms need for hook trigger |
+| Copilot CLI and Gemini CLI have hook systems | iter 011, 015 | v1: tool-fallback by policy; future: hook adapters |
+| Existing `consumption_log` table for telemetry | iter 015 | Token tracking uses separate `session_token_snapshots` table |
+
+## Runtime Support Matrix
+
+| Runtime | Hook Support | v1 Policy | Future |
+|---------|-------------|-----------|--------|
+| Claude Code | 25 events, 4 handler types | Full hooks | Ship now |
+| Codex CLI | None confirmed | Tool fallback | Monitor |
+| Copilot CLI | Has hooks (guardrails focus) | Tool fallback by policy | Hook adapter candidate |
+| Gemini CLI | Has hooks (v0.33.1+) | Tool fallback by policy | Hook adapter candidate |
 
 ## Phases
 
 | Phase | Name | Effort | Priority |
 |-------|------|--------|----------|
-| 001 | PreCompact Hook | 2-3 days | P0 — highest impact |
-| 002 | SessionStart Hook | 1-2 days | P1 — session priming |
+| 001 | Compaction Context Injection | 2-3 days | P0 — highest impact |
+| 002 | SessionStart Priming | 1-2 days | P1 — session priming |
 | 003 | Stop Hook + Token Tracking | 2-3 days | P2 — observability |
 | 004 | Cross-Runtime Fallback | 1-2 days | P1 — universal support |
 
@@ -66,4 +126,4 @@ Based on deep research (10+5 iterations) evaluating Codex-CLI-Compact (Dual-Grap
 - Code graph channel (tree-sitter integration) — separate spec folder
 - Dual-Graph installation or graperoot integration — rejected per research
 - Token tracking dashboard UI — future work
-- Codex CLI / Gemini CLI hook support — not available in those runtimes
+- Copilot/Gemini hook adapters — v2 after v1 ships

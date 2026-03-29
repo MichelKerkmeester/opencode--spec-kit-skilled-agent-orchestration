@@ -2,21 +2,25 @@
 
 ## Steps
 
-1. **Implement `session-prime.js`:**
-   - Reuse shared utilities from Phase 1 (error handling, MCP connection)
-   - Import `memory_context` equivalent from compiled dist or call via MCP CLI
-   - Detect resume vs fresh start (check recent memory saves)
-   - Format output with constitutional memories + context
-2. **Register SessionStart hook in settings.local.json:**
-   - Extend Phase 1's merge-safe registration
-3. **Test:**
-   - Start new Claude Code session → verify priming output
-   - Resume after recent work → verify resume context
-   - Cold start (no prior work) → verify minimal but useful output
-4. **Shared utilities:**
-   - Extract common code between compact-inject.js and session-prime.js
-   - Create `scripts/hooks/lib/mcp-client.js` for shared MCP communication
+1. **Extend `session-prime.ts` with source routing:**
+   - `source=compact` → read Phase 1 cache, inject
+   - `source=startup` → constitutional + spec folder overview
+   - `source=resume` → `memory_context({ mode: "resume", profile: "resume" })`
+   - `source=clear` → constitutional only
+2. **Fix `profile: "resume"` gap (iter 012):**
+   - Ensure all resume paths pass `profile: "resume"` for brief format
+   - Consider updating `/spec_kit:resume` command to also pass profile
+3. **Token budget enforcement:**
+   - startup/resume: 2000 tokens max
+   - compact: 4000 tokens max (COMPACTION_TOKEN_BUDGET)
+4. **Register SessionStart hook:**
+   - Single hook with no matcher (handles all sources internally)
+   - Merge-safe with existing settings.local.json
+5. **Test by source:**
+   - `startup` → verify priming output
+   - `resume` → verify resume context with prior work
+   - `compact` → verify cache read + injection
+   - `clear` → verify minimal output
 
 ## Dependencies
-- Phase 1 (shared patterns and utilities)
-- Compiled dist of memory hooks
+- Phase 1 (shared `session-prime.ts`, `hook-state.ts`, `shared.ts`)
