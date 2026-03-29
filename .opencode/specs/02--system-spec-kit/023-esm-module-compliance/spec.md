@@ -233,11 +233,11 @@ contextType: "general"
 
 | Phase | Folder | Focus | Deps | Status |
 |-------|--------|-------|------|--------|
-| 1 | 001-shared-esm-migration/ | Package metadata, tsconfig, import rewrites for `@spec-kit/shared` | None | Pending |
-| 2 | 002-mcp-server-esm-migration/ | Package metadata, tsconfig, import rewrites, CJS cleanup for `@spec-kit/mcp-server` | Phase 1 | Pending |
-| 3 | 003-scripts-interop-refactor/ | Interop helpers, bridge/loader refactors, test rewrites for `@spec-kit/scripts` | Phase 2 | Pending |
-| 4 | 004-verification-and-standards/ | Highest-risk retests, full verification matrix, standards-doc sync | Phase 3 | Pending |
-
+| 1 | 001-shared-esm-migration/ | Package metadata, tsconfig, import rewrites for `@spec-kit/shared` | None | Complete |
+| 2 | 002-mcp-server-esm-migration/ | Package metadata, tsconfig, import rewrites, CJS cleanup for `@spec-kit/mcp-server` | Phase 1 | Complete |
+| 3 | 003-scripts-interop-refactor/ | CJS-to-ESM interop, memory save hardening, workflow decoupling | Phase 2 | Complete |
+| 4 | 004-verification-and-standards/ | ESM test updates, deep review, code standards, README alignment | Phase 3 | Complete |
+| 5 | 005-test-and-scenario-remediation/ | Fix pre-existing test failures, playbook scenario gaps, final test report | Phase 4 | Pending |
 ### Phase Transition Rules
 
 - Each phase MUST pass `validate.sh` independently before the next phase begins
@@ -252,4 +252,6 @@ contextType: "general"
 | 001-shared-esm-migration | 002-mcp-server-esm-migration | `shared` emits native ESM, `shared/package.json` has `"type": "module"`, all relative imports use `.js` specifiers | `npm run build --workspace=@spec-kit/shared` passes; emitted `dist/` contains ESM output |
 | 002-mcp-server-esm-migration | 003-scripts-interop-refactor | `mcp_server` emits native ESM, CJS globals removed, `node dist/context-server.js` starts | `npm run build --workspace=@spec-kit/mcp-server` passes; `node dist/context-server.js` smoke passes |
 | 003-scripts-interop-refactor | 004-verification-and-standards | Scripts interop helpers work, all scripts-side consumers cross explicit `import()` boundaries | `node scripts/dist/memory/generate-context.js --help` passes; scripts interop tests pass |
+| 004-verification-and-standards | 005-test-and-scenario-remediation | Deep review complete, all P1/P2 resolved, ESM-caused test failures fixed | 30-iteration review 0 open P0/P1; 3 ESM test files fixed |
+| 006-phase-6 | 007-phase-7 | [Criteria TBD] | [Verification TBD] |
 <!-- /ANCHOR:phase-map -->
