@@ -40,6 +40,10 @@ export interface SharedSpaceDefinition {
   metadata?: Record<string, unknown>;
 }
 
+export interface SharedSpaceWriteResult {
+  created: boolean;
+}
+
 /**
  * Membership assignment for a user or agent within a shared space.
  */
@@ -389,13 +393,66 @@ export function getSharedConflictStrategySummary(
  * @param database - Database connection that stores shared-space state.
  * @param definition - Shared-space values to persist.
  */
-export function upsertSharedSpace(database: Database.Database, definition: SharedSpaceDefinition): void {
+function assertValidSharedSpaceDefinition(definition: SharedSpaceDefinition): void {
   if (!definition.spaceId?.trim() || !definition.tenantId?.trim()) {
     throw new Error('E_VALIDATION: spaceId and tenantId must be non-empty strings');
   }
+}
+
+function getSharedSpaceWriteValues(definition: SharedSpaceDefinition): {
+  rolloutEnabledValue: number | null;
+  rolloutCohortValue: string | null;
+  killSwitchValue: number | null;
+  metadataValue: string | null;
+} {
+  return {
+    rolloutEnabledValue: definition.rolloutEnabled === undefined ? null : (definition.rolloutEnabled ? 1 : 0),
+    rolloutCohortValue: definition.rolloutCohort?.trim() || null,
+    killSwitchValue: definition.killSwitch === undefined ? null : (definition.killSwitch ? 1 : 0),
+    metadataValue: definition.metadata ? JSON.stringify(definition.metadata) : null,
+  };
+}
+
+export function createSharedSpaceIfAbsent(
+  database: Database.Database,
+  definition: SharedSpaceDefinition,
+): SharedSpaceWriteResult {
+  assertValidSharedSpaceDefinition(definition);
   ensureSharedCollabRuntime(database);
-  const rolloutEnabledValue = definition.rolloutEnabled === undefined ? null : (definition.rolloutEnabled ? 1 : 0);
-  const killSwitchValue = definition.killSwitch === undefined ? null : (definition.killSwitch ? 1 : 0);
+  const {
+    rolloutEnabledValue,
+    rolloutCohortValue,
+    killSwitchValue,
+    metadataValue,
+  } = getSharedSpaceWriteValues(definition);
+
+  const row = database.prepare(`
+    INSERT INTO shared_spaces (space_id, tenant_id, name, rollout_enabled, rollout_cohort, kill_switch, metadata, updated_at)
+    VALUES (?, ?, ?, COALESCE(?, 0), ?, COALESCE(?, 0), ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(space_id) DO NOTHING
+    RETURNING space_id
+  `).get(
+    definition.spaceId,
+    definition.tenantId,
+    definition.name,
+    rolloutEnabledValue,
+    rolloutCohortValue,
+    killSwitchValue,
+    metadataValue,
+  ) as { space_id: string } | undefined;
+
+  return { created: row !== undefined };
+}
+
+export function upsertSharedSpace(database: Database.Database, definition: SharedSpaceDefinition): void {
+  assertValidSharedSpaceDefinition(definition);
+  ensureSharedCollabRuntime(database);
+  const {
+    rolloutEnabledValue,
+    rolloutCohortValue,
+    killSwitchValue,
+    metadataValue,
+  } = getSharedSpaceWriteValues(definition);
   database.prepare(`
     INSERT INTO shared_spaces (space_id, tenant_id, name, rollout_enabled, rollout_cohort, kill_switch, metadata, updated_at)
     VALUES (?, ?, ?, COALESCE(?, 0), ?, COALESCE(?, 0), ?, CURRENT_TIMESTAMP)
@@ -412,9 +469,9 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
     definition.tenantId,
     definition.name,
     rolloutEnabledValue,
-    definition.rolloutCohort?.trim() || null,
+    rolloutCohortValue,
     killSwitchValue,
-    definition.metadata ? JSON.stringify(definition.metadata) : null,
+    metadataValue,
     rolloutEnabledValue,
     killSwitchValue,
   );

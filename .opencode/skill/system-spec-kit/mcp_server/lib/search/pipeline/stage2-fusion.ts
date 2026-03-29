@@ -56,7 +56,7 @@ import * as causalBoost from '../causal-boost';
 import {
   isEnabled as isCoActivationEnabled,
   spreadActivation,
-  getRelatedMemories,
+  getRelatedMemoryCounts,
   resolveCoActivationBoostFactor,
 } from '../../cognitive/co-activation';
 import type { SpreadResult } from '../../cognitive/co-activation';
@@ -792,6 +792,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
         const spreadResults: SpreadResult[] = spreadActivation(topIds);
         if (spreadResults.length > 0) {
           const spreadMap = new Map(spreadResults.map(sr => [sr.id, sr.activationScore]));
+          const relatedCounts = getRelatedMemoryCounts([...new Set(spreadResults.map((result) => result.id))]);
           results = results.map((row) => {
             const boost = spreadMap.get(row.id);
             if (boost !== undefined) {
@@ -799,7 +800,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
               // R17 fan-effect divisor: dampen hub nodes proportionally to their
               // fan-out degree so no single hub dominates the top-N results.
               // Uses the same sqrt scaling as co-activation.ts boostScore().
-              const relatedCount = typeof row.id === 'number' ? getRelatedMemories(row.id).length : 0;
+              const relatedCount = typeof row.id === 'number' ? (relatedCounts.get(row.id) ?? 0) : 0;
               const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
               const updated = withSyncedScoreAliases(row, baseScore + (boost * resolveCoActivationBoostFactor()) / fanDivisor);
               return withGraphContribution(updated, 'coActivationDelta', resolveBaseScore(updated) - baseScore, 'co-activation');

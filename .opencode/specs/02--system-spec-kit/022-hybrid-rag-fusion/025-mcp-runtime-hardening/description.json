@@ -1,21 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening",
-  "description": "MCP Runtime Hardening: DB dimension integrity tests, lifecycle coverage tests, provider log sanitization, and launcher doc consolidation",
+  "description": "Feature Specification: MCP Runtime Hardening",
   "keywords": [
+    "feature",
+    "specification",
     "mcp",
     "runtime",
-    "hardening",
-    "embedding",
-    "dimension",
-    "integrity",
-    "lifecycle",
-    "tool-cache",
-    "log",
-    "sanitization",
-    "codex",
-    "startup"
+    "hardening"
   ],
-  "lastUpdated": "2026-03-28T11:51:14.186Z",
+  "lastUpdated": "2026-03-29T09:08:38.827Z",
   "specId": "025",
   "folderSlug": "mcp-runtime-hardening",
   "parentChain": [

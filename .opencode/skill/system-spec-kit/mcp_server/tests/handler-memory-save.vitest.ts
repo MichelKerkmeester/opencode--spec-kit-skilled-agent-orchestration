@@ -373,6 +373,8 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       postInsertModuleFactory?: () => unknown;
       responseBuilderModuleFactory?: () => unknown | Promise<unknown>;
       chunkingModuleFactory?: () => unknown | Promise<unknown>;
+      causalEdgesModuleFactory?: () => unknown | Promise<unknown>;
+      vectorIndexMutationsModuleFactory?: () => unknown | Promise<unknown>;
       nodeFsModuleFactory?: () => unknown | Promise<unknown>;
     } = {}) {
       vi.resetModules();
@@ -496,6 +498,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doMock('../handlers/chunking-orchestrator', options.chunkingModuleFactory as any);
       }
 
+      if (options.causalEdgesModuleFactory) {
+        vi.doMock('../lib/storage/causal-edges', options.causalEdgesModuleFactory as any);
+      }
+
+      if (options.vectorIndexMutationsModuleFactory) {
+        vi.doMock('../lib/search/vector-index-mutations', options.vectorIndexMutationsModuleFactory as any);
+      }
+
       if (options.nodeFsModuleFactory) {
         vi.doMock('node:fs', options.nodeFsModuleFactory as any);
       }
@@ -610,16 +620,18 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       vi.doUnmock('../handlers/save/create-record');
       vi.doUnmock('../handlers/save/post-insert');
       vi.doUnmock('../handlers/save/response-builder');
-        vi.doUnmock('../handlers/chunking-orchestrator');
-        vi.doUnmock('node:fs');
-        vi.doUnmock('../lib/validation/save-quality-gate');
-        vi.doUnmock('../lib/search/search-flags');
-        vi.doUnmock('@spec-kit/shared/parsing/memory-sufficiency');
-        vi.doUnmock('../utils/validators');
-        vi.doUnmock('../utils');
-        vi.doUnmock('../core');
-        vi.restoreAllMocks();
-        vi.resetModules();
+      vi.doUnmock('../handlers/chunking-orchestrator');
+      vi.doUnmock('../lib/storage/causal-edges');
+      vi.doUnmock('../lib/search/vector-index-mutations');
+      vi.doUnmock('node:fs');
+      vi.doUnmock('../lib/validation/save-quality-gate');
+      vi.doUnmock('../lib/search/search-flags');
+      vi.doUnmock('@spec-kit/shared/parsing/memory-sufficiency');
+      vi.doUnmock('../utils/validators');
+      vi.doUnmock('../utils');
+      vi.doUnmock('../core');
+      vi.restoreAllMocks();
+      vi.resetModules();
     });
 
     it('T518-6b: indexMemoryFile calls runQualityLoop during behavioral save flow', async () => {
@@ -1828,6 +1840,108 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
       expect(result.status).toBe('error');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original chunked content');
+    });
+
+    it('cleans up a newly created chunk tree when chunked PE supersede finalize fails', async () => {
+      const deleteMemoryFromDatabaseMock = vi.fn(() => true);
+      const markMemorySupersededMock = vi.fn(() => false);
+      const metadataDb = {
+        prepare: vi.fn(() => ({
+          run: vi.fn(() => ({ changes: 1 })),
+        })),
+      };
+      const indexChunkedMemoryFileMock = vi.fn(async (_filePath: string, _parsed: unknown, options: { applyPostInsertMetadata?: (db: unknown, memoryId: number, fields: Record<string, unknown>) => void }) => {
+        const metadataWriter = options.applyPostInsertMetadata;
+        expect(typeof metadataWriter).toBe('function');
+        metadataWriter?.(metadataDb as never, 900, {
+          content_hash: 'fi-hash',
+          context_type: 'general',
+          importance_tier: 'normal',
+        });
+        metadataWriter?.(metadataDb as never, 901, {
+          parent_id: 900,
+          chunk_index: 0,
+          chunk_label: 'chunk-1',
+          content_hash: 'fi-hash',
+          context_type: 'general',
+          importance_tier: 'normal',
+        });
+        metadataWriter?.(metadataDb as never, 902, {
+          parent_id: 900,
+          chunk_index: 1,
+          chunk_label: 'chunk-2',
+          content_hash: 'fi-hash',
+          context_type: 'general',
+          importance_tier: 'normal',
+        });
+        return {
+          status: 'indexed',
+          id: 900,
+          specFolder: 'specs/999-atomic-save-fi',
+          title: 'Atomic Save FI',
+          message: 'Chunked indexed',
+        };
+      });
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        checkContentHashDedupMock: vi.fn(() => null),
+        embeddingPipelineModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/embedding-pipeline')>('../handlers/save/embedding-pipeline');
+          return {
+            ...actual,
+            persistPendingEmbeddingCacheWrite: vi.fn(),
+            generateOrCacheEmbedding: vi.fn(async () => new Float32Array(384).fill(0.1)),
+          };
+        },
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: vi.fn(() => ({
+            decision: { action: 'CREATE', similarity: 0.98, reason: 'contradiction across file paths' },
+            earlyReturn: null,
+            supersededId: 321,
+          })),
+        }),
+        peGatingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/pe-gating')>('../handlers/pe-gating');
+          return {
+            ...actual,
+            markMemorySuperseded: markMemorySupersededMock,
+          };
+        },
+        causalEdgesModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../lib/storage/causal-edges')>('../lib/storage/causal-edges');
+          return {
+            ...actual,
+            init: vi.fn(),
+            insertEdge: vi.fn(),
+          };
+        },
+        vectorIndexMutationsModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../lib/search/vector-index-mutations')>('../lib/search/vector-index-mutations');
+          return {
+            ...actual,
+            delete_memory_from_database: deleteMemoryFromDatabaseMock,
+          };
+        },
+        chunkingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
+          return {
+            ...actual,
+            needsChunking: vi.fn(() => true),
+            indexChunkedMemoryFile: indexChunkedMemoryFileMock,
+          };
+        },
+      });
+
+      const filePath = createAtomicSaveTargetPath('chunked-pe-finalize-failure.md');
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(indexChunkedMemoryFileMock).toHaveBeenCalledTimes(1);
+      expect(markMemorySupersededMock).toHaveBeenCalledWith(321);
+      expect(deleteMemoryFromDatabaseMock.mock.calls.map((call) => call[1])).toEqual([901, 902, 900]);
+      expect(result.status).toBe('error');
+      expect(result.error).toContain('Failed to mark predecessor 321 as superseded after chunked indexing');
+      expect(result.message).toContain('Rolled back the newly created chunk tree');
     });
 
     it('T-dedup-canonical: canonical-equivalent paths treated as same memory', () => {

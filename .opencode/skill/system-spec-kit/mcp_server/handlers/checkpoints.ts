@@ -374,6 +374,24 @@ async function handleCheckpointList(args: CheckpointListArgs): Promise<MCPRespon
 /** Handle checkpoint_restore tool - restores memory state from a named checkpoint */
 async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCPResponse> {
   const startTime = Date.now();
+  const restoreBarrier = checkpoints.getRestoreBarrierStatus();
+  if (restoreBarrier) {
+    return createMCPErrorResponse({
+      tool: 'checkpoint_restore',
+      error: restoreBarrier.message,
+      code: restoreBarrier.code,
+      details: {
+        name: args.name ?? null,
+      },
+      recovery: {
+        hint: 'Retry checkpoint_restore after the active restore maintenance window completes.',
+        actions: ['Wait for the current restore to finish', 'Retry the restore request'],
+        severity: 'warning',
+      },
+      startTime,
+    });
+  }
+
   await checkDatabaseUpdated();
   const { name, clearExisting: clear_existing = false } = args;
   const scope = validateCheckpointScope(args);

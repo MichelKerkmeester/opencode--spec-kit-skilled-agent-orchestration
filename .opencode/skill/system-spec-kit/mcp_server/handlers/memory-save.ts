@@ -29,6 +29,7 @@ import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
 import { createFilePathValidator } from '../utils/validators';
 import * as memoryParser from '../lib/parsing/memory-parser';
 import * as transactionManager from '../lib/storage/transaction-manager';
+import * as checkpoints from '../lib/storage/checkpoints';
 import * as preflight from '../lib/validation/preflight';
 import { requireDb } from '../utils';
 import type { MCPResponse } from './types';
@@ -83,6 +84,7 @@ import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
 import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
 import { runPostInsertEnrichment } from './save/post-insert';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder';
+import { createMCPErrorResponse } from '../lib/response/envelope';
 
 // Extracted sub-modules
 import { withSpecFolderLock } from './save/spec-folder-mutex';
@@ -347,6 +349,85 @@ function recordCrossPathPeSupersedes(
     true,
     'auto',
   );
+}
+
+interface ChunkedInsertTracker {
+  parentId: number | null;
+  childIds: Set<number>;
+}
+
+function createChunkedInsertTracker(): ChunkedInsertTracker {
+  return {
+    parentId: null,
+    childIds: new Set<number>(),
+  };
+}
+
+function trackChunkedInsert(
+  tracker: ChunkedInsertTracker,
+  memoryId: number,
+  fields: Record<string, unknown>,
+): void {
+  if (typeof fields.chunk_index === 'number') {
+    tracker.childIds.add(memoryId);
+    return;
+  }
+
+  if (tracker.parentId == null) {
+    tracker.parentId = memoryId;
+  }
+}
+
+function rollbackCreatedChunkTree(
+  database: ReturnType<typeof requireDb>,
+  tracker: ChunkedInsertTracker,
+): { attempted: boolean; cleaned: boolean; error?: string } {
+  if (tracker.parentId == null) {
+    return { attempted: false, cleaned: false };
+  }
+
+  const childIds = new Set<number>(tracker.childIds);
+  try {
+    const persistedChildRows = database.prepare(`
+      SELECT id
+      FROM memory_index
+      WHERE parent_id = ?
+    `).all(tracker.parentId) as Array<{ id: number }>;
+    for (const row of persistedChildRows) {
+      childIds.add(row.id);
+    }
+  } catch {
+    // Best-effort lookup only. Tracked IDs remain authoritative for cleanup.
+  }
+
+  const cleanupErrors: string[] = [];
+  for (const childId of childIds) {
+    try {
+      if (!delete_memory_from_database(database, childId)) {
+        cleanupErrors.push(`Chunk ${childId} was not deleted`);
+      }
+    } catch (error: unknown) {
+      cleanupErrors.push(`Chunk ${childId} cleanup failed: ${getAtomicSaveErrorMessage(error)}`);
+    }
+  }
+
+  try {
+    if (!delete_memory_from_database(database, tracker.parentId)) {
+      cleanupErrors.push(`Parent ${tracker.parentId} was not deleted`);
+    }
+  } catch (error: unknown) {
+    cleanupErrors.push(`Parent ${tracker.parentId} cleanup failed: ${getAtomicSaveErrorMessage(error)}`);
+  }
+
+  if (cleanupErrors.length > 0) {
+    return {
+      attempted: true,
+      cleaned: false,
+      error: cleanupErrors.join('; '),
+    };
+  }
+
+  return { attempted: true, cleaned: true };
 }
 
 function captureAtomicSaveOriginalState(filePath: string): { existed: boolean; content: string | null } {
@@ -665,27 +746,47 @@ async function processPreparedMemory(
 
     if (shouldChunkContent) {
       console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
-      const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
+      const chunkedInsertTracker = createChunkedInsertTracker();
+      const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, {
+        force,
+        applyPostInsertMetadata: (db, memoryId, fields) => {
+          applyPostInsertMetadata(db, memoryId, fields);
+          trackChunkedInsert(chunkedInsertTracker, memoryId, fields as Record<string, unknown>);
+        },
+      });
 
       if (
         peResult.supersededId != null
         && (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
       ) {
-        if (chunkedResult.id > 0) {
-          recordCrossPathPeSupersedes(
-            database,
-            chunkedResult.id,
-            peResult.supersededId,
-            samePathExisting?.id ?? null,
-            peResult.decision.reason,
-          );
-        }
-        if (!markMemorySuperseded(peResult.supersededId)) {
+        try {
+          const finalizeChunkedPeTx = database.transaction(() => {
+            if (chunkedResult.id > 0) {
+              recordCrossPathPeSupersedes(
+                database,
+                chunkedResult.id,
+                peResult.supersededId,
+                samePathExisting?.id ?? null,
+                peResult.decision.reason,
+              );
+            }
+            if (peResult.supersededId != null && !markMemorySuperseded(peResult.supersededId)) {
+              throw new Error(`Failed to mark predecessor ${peResult.supersededId} as superseded`);
+            }
+          });
+          finalizeChunkedPeTx.immediate();
+        } catch (supersedeErr: unknown) {
+          const cleanup = rollbackCreatedChunkTree(database, chunkedInsertTracker);
+          const cleanupSuffix = cleanup.cleaned
+            ? ' Rolled back the newly created chunk tree.'
+            : cleanup.attempted && cleanup.error
+              ? ` Cleanup failed: ${cleanup.error}`
+              : '';
           return {
             ...chunkedResult,
             status: 'error',
-            error: `Failed to mark predecessor ${peResult.supersededId} as superseded after chunked indexing`,
-            message: `Chunked indexing succeeded, but predecessor ${peResult.supersededId} could not be superseded`,
+            error: `Failed to mark predecessor ${peResult.supersededId} as superseded after chunked indexing: ${getAtomicSaveErrorMessage(supersedeErr)}`,
+            message: `Chunked indexing succeeded, but predecessor ${peResult.supersededId} could not be superseded.${cleanupSuffix}`,
           };
         }
       }
@@ -894,6 +995,23 @@ async function indexMemoryFile(
 async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   // A7-P2-1: Generate requestId for incident correlation in error responses
   const requestId = randomUUID();
+  const restoreBarrier = checkpoints.getRestoreBarrierStatus();
+
+  if (restoreBarrier) {
+    return createMCPErrorResponse({
+      tool: 'memory_save',
+      error: restoreBarrier.message,
+      code: restoreBarrier.code,
+      details: {
+        requestId,
+      },
+      recovery: {
+        hint: 'Retry memory_save after checkpoint_restore maintenance completes.',
+        actions: ['Wait for the restore to finish', 'Retry the save request'],
+        severity: 'warning',
+      },
+    });
+  }
 
   const {
     filePath: file_path,

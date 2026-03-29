@@ -207,11 +207,26 @@ interface CheckpointScopeOptions {
   scope?: ScopeContext;
 }
 
+interface RestoreBarrierStatus {
+  code: string;
+  message: string;
+}
+
+interface RestoreBarrierHooks {
+  afterAcquire?: (() => void) | null;
+  beforeRelease?: (() => void) | null;
+}
+
 /* ───────────────────────────────────────────────────────────────
    3. MODULE STATE
 ----------------------------------------------------------------*/
 
 let db: Database.Database | null = null;
+let restoreInProgress = false;
+let restoreBarrierHooks: RestoreBarrierHooks = {};
+
+const RESTORE_IN_PROGRESS_ERROR_CODE = 'E_RESTORE_IN_PROGRESS';
+const RESTORE_IN_PROGRESS_ERROR_MESSAGE = 'Checkpoint restore maintenance is in progress. Retry after the restore lifecycle completes.';
 
 /* ───────────────────────────────────────────────────────────────
    4. INITIALIZATION
@@ -224,6 +239,38 @@ function init(database: Database.Database): void {
 function getDatabase(): Database.Database {
   if (!db) throw new Error('Database not initialized. The checkpoints module requires the MCP server to be running. Restart the MCP server and retry.');
   return db;
+}
+
+function isRestoreInProgress(): boolean {
+  return restoreInProgress;
+}
+
+function getRestoreBarrierStatus(): RestoreBarrierStatus | null {
+  if (!restoreInProgress) {
+    return null;
+  }
+
+  return {
+    code: RESTORE_IN_PROGRESS_ERROR_CODE,
+    message: RESTORE_IN_PROGRESS_ERROR_MESSAGE,
+  };
+}
+
+function setRestoreBarrierHooks(hooks: RestoreBarrierHooks | null): void {
+  restoreBarrierHooks = hooks ?? {};
+}
+
+function acquireRestoreBarrier(): void {
+  restoreInProgress = true;
+  restoreBarrierHooks.afterAcquire?.();
+}
+
+function releaseRestoreBarrier(): void {
+  try {
+    restoreBarrierHooks.beforeRelease?.();
+  } finally {
+    restoreInProgress = false;
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -1556,6 +1603,8 @@ function restoreCheckpoint(
     rolledBackTables: [],
   };
 
+  let restoreBarrierHeld = false;
+
   try {
     const checkpoint = getCheckpoint(nameOrId, scope);
     if (!checkpoint || !checkpoint.memory_snapshot) {
@@ -1645,6 +1694,9 @@ function restoreCheckpoint(
     if (tableSnapshots.working_memory) {
       ensureWorkingMemorySchema(database);
     }
+
+    acquireRestoreBarrier();
+    restoreBarrierHeld = true;
 
     // T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
     // When clearExisting=true, the DELETE and all INSERTs must be atomic.
@@ -1853,6 +1905,10 @@ function restoreCheckpoint(
     const msg = toErrorMessage(error);
     result.errors.push(msg);
     console.warn(`[checkpoints] restoreCheckpoint error: ${msg}`);
+  } finally {
+    if (restoreBarrierHeld) {
+      releaseRestoreBarrier();
+    }
   }
 
   return result;
@@ -1889,12 +1945,17 @@ export {
   init,
   getDatabase,
   getGitBranch,
+  isRestoreInProgress,
+  getRestoreBarrierStatus,
+  setRestoreBarrierHooks,
   validateMemoryRow,
   createCheckpoint,
   listCheckpoints,
   getCheckpoint,
   restoreCheckpoint,
   deleteCheckpoint,
+  RESTORE_IN_PROGRESS_ERROR_CODE,
+  RESTORE_IN_PROGRESS_ERROR_MESSAGE,
 };
 
 /**

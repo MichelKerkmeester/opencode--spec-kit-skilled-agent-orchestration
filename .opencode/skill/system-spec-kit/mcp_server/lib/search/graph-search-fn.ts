@@ -23,6 +23,11 @@ interface CausalEdgeRow {
   strength: number;
 }
 
+interface DegreeCacheState {
+  perNodeBoost: Map<string, number>;
+  maxTypedDegree: number | null;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPED-DEGREE CONSTANTS
 
@@ -53,17 +58,29 @@ const DEGREE_CHANNEL_WEIGHT = DEGREE_BOOST_CAP;
 // 3. CAUSAL EDGE CHANNEL (FTS5-BACKED)
 
 // ───────────────────────────────────────────────────────────────
+let ftsTableAvailabilityPerDb = new WeakMap<Database.Database, boolean>();
+
 /**
  * Check whether the FTS5 table exists in the database.
  * Used to determine if FTS5 matching is available.
+ *
+ * Cache is scoped per bound DB instance to avoid repeated sqlite_master probes.
  */
 function isFtsTableAvailable(database: Database.Database): boolean {
+  const cached = ftsTableAvailabilityPerDb.get(database);
+  if (typeof cached === 'boolean') {
+    return cached;
+  }
+
   try {
     const result = (database.prepare(
       `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_fts'`
     ) as Database.Statement).get() as { name: string } | undefined;
-    return !!result;
-  } catch (_err: unknown) { // SQL parse failure — return empty degree map
+    const available = !!result;
+    ftsTableAvailabilityPerDb.set(database, available);
+    return available;
+  } catch (_err: unknown) {
+    ftsTableAvailabilityPerDb.set(database, false);
     return false;
   }
 }
@@ -143,34 +160,56 @@ function queryCausalEdgesFTS5(
   if (!sanitized) return [];
   const oversampleLimit = limit * 3;
 
-  // BM25-inspired weights: title(10) highest signal, content(5), triggers(2), folder(1)
-  // Find memory IDs matching the query via FTS5, then join to causal_edges
+  // BM25-inspired weights: title(10) highest signal, content(5), triggers(2), folder(1).
+  // Query shape:
+  // 1) Materialize matched memory rowids once (no OR join against memory_fts)
+  // 2) UNION ALL source-side and target-side edge lookups
+  // 3) Collapse duplicate edge hits in SQL (MAX fts_score per edge)
   const rows = (database.prepare(`
-    SELECT ce.id, ce.source_id, ce.target_id, ce.relation, ce.strength,
-           -bm25(memory_fts, 10.0, 5.0, 2.0, 1.0) AS fts_score
-    FROM causal_edges ce
-    JOIN memory_fts ON (
-      memory_fts.rowid = CAST(ce.source_id AS INTEGER)
-      OR memory_fts.rowid = CAST(ce.target_id AS INTEGER)
+    WITH matched_memories AS (
+      SELECT
+        rowid AS memory_id,
+        -bm25(memory_fts, 10.0, 5.0, 2.0, 1.0) AS fts_score
+      FROM memory_fts
+      WHERE memory_fts MATCH ?
+      ORDER BY fts_score DESC
+      LIMIT ?
+    ),
+    edge_hits AS (
+      SELECT ce.id, ce.source_id, ce.target_id, ce.relation, ce.strength, mm.fts_score
+      FROM matched_memories mm
+      JOIN causal_edges ce ON ce.source_id = CAST(mm.memory_id AS TEXT)
+      UNION ALL
+      SELECT ce.id, ce.source_id, ce.target_id, ce.relation, ce.strength, mm.fts_score
+      FROM matched_memories mm
+      JOIN causal_edges ce ON ce.target_id = CAST(mm.memory_id AS TEXT)
+    ),
+    scored_edges AS (
+      SELECT
+        id,
+        source_id,
+        target_id,
+        relation,
+        strength,
+        MAX(fts_score) AS fts_score
+      FROM edge_hits
+      GROUP BY id, source_id, target_id, relation, strength
     )
-    WHERE memory_fts MATCH ?
-    ORDER BY (ce.strength * (-bm25(memory_fts, 10.0, 5.0, 2.0, 1.0))) DESC
+    SELECT id, source_id, target_id, relation, strength, fts_score
+    FROM scored_edges
+    ORDER BY (strength * fts_score) DESC
     LIMIT ?
-  `) as Database.Statement).all(sanitized, oversampleLimit) as Array<CausalEdgeRow & { fts_score: number }>;
-
-  const seen = new Set<string>();
-  const dedupedRows = rows.filter((row) => {
-    const key = `${row.source_id}-${row.target_id}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  `) as Database.Statement).all(
+    sanitized,
+    oversampleLimit,
+    oversampleLimit,
+  ) as Array<CausalEdgeRow & { fts_score: number }>;
 
   // Return one candidate entry per memory node (source_id and target_id) with
   // Numeric IDs matching memory_index.id (INTEGER column) in the hybrid search
   // Pipeline (MMR reranking filters with typeof id === 'number').
   const candidates: Array<Record<string, unknown>> = [];
-  for (const row of dedupedRows) {
+  for (const row of rows) {
     const edgeStrength = typeof row.strength === 'number'
       ? Math.min(1, Math.max(0, row.strength))
       : 0;
@@ -289,7 +328,8 @@ function queryCausalEdgesLikeFallback(
 
 // ───────────────────────────────────────────────────────────────
 /**
- * In-memory degree cache. Keys are stringified memory IDs.
+ * In-memory degree cache scoped per bound DB instance.
+ * Stores both per-node boosted scores and cached global max typed degree.
  * Invalidated via clearDegreeCache() on causal edge mutations.
  *
  * A4-P2-1: Edge materialization optimization — investigated and found adequate.
@@ -301,25 +341,26 @@ function queryCausalEdgesLikeFallback(
  * is needed at this time.
  *
  * Cache warmup strategy:
- *   - The cache is populated lazily: entries are written on first access via
- *     computeDegreeScores() as each memory ID is encountered during a search.
- *   - Cold-start (empty cache): every ID in a batch triggers a DB query
- *     (computeTypedDegree SQL). The global max degree is recomputed per-batch
- *     since it is not cached separately.
- *   - Subsequent requests: hits are served from the Map without touching the DB.
+ *   - The cache is populated lazily with boosted per-node scores.
+ *   - Cold-start (empty cache): uncached node IDs are computed in one batched SQL.
+ *   - Global max typed degree is computed once and cached beside per-node scores.
+ *   - Subsequent requests: hits are served from cache without touching the DB.
  *   - Invalidation: clearDegreeCache() wipes all entries on causal edge
  *     insert/update/delete so the next batch recomputes from current DB state.
  */
-// H20 FIX: Scope degree cache per database instance to prevent cross-DB score leaks
-let degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
-let degreeCacheRebindRegistered = false;
-function getDegreeCacheForDb(database: Database.Database): Map<string, number> {
-  let cache = degreeCachePerDb.get(database);
-  if (!cache) {
-    cache = new Map<string, number>();
-    degreeCachePerDb.set(database, cache);
+let degreeCachePerDb = new WeakMap<Database.Database, DegreeCacheState>();
+let dbCacheRebindRegistered = false;
+
+function getDegreeCacheState(database: Database.Database): DegreeCacheState {
+  let state = degreeCachePerDb.get(database);
+  if (!state) {
+    state = {
+      perNodeBoost: new Map<string, number>(),
+      maxTypedDegree: null,
+    };
+    degreeCachePerDb.set(database, state);
   }
-  return cache;
+  return state;
 }
 
 /**
@@ -380,6 +421,11 @@ function normalizeDegreeToBoostedScore(
  * Falls back to DEFAULT_MAX_TYPED_DEGREE if no edges exist.
  */
 function computeMaxTypedDegree(database: Database.Database): number {
+  const cacheState = getDegreeCacheState(database);
+  if (typeof cacheState.maxTypedDegree === 'number') {
+    return cacheState.maxTypedDegree;
+  }
+
   try {
     const statement = database.prepare(`
       SELECT MAX(typed_degree) AS max_degree FROM (
@@ -410,7 +456,9 @@ function computeMaxTypedDegree(database: Database.Database): number {
 
     if (typeof statement.get === 'function') {
       const row = statement.get() as { max_degree: number | null } | undefined;
-      return row?.max_degree ?? DEFAULT_MAX_TYPED_DEGREE;
+      const resolved = row?.max_degree ?? DEFAULT_MAX_TYPED_DEGREE;
+      cacheState.maxTypedDegree = resolved;
+      return resolved;
     }
 
     // Test doubles may only expose .all() for the legacy distinct-node query shape.
@@ -418,7 +466,10 @@ function computeMaxTypedDegree(database: Database.Database): number {
       ? statement.all() as Array<{ node_id: string }>
       : [];
 
-    if (rows.length === 0) return DEFAULT_MAX_TYPED_DEGREE;
+    if (rows.length === 0) {
+      cacheState.maxTypedDegree = DEFAULT_MAX_TYPED_DEGREE;
+      return DEFAULT_MAX_TYPED_DEGREE;
+    }
 
     let maxDegree = 0;
     for (const row of rows) {
@@ -426,10 +477,70 @@ function computeMaxTypedDegree(database: Database.Database): number {
       if (degree > maxDegree) maxDegree = degree;
     }
 
-    return maxDegree > 0 ? maxDegree : DEFAULT_MAX_TYPED_DEGREE;
+    const resolved = maxDegree > 0 ? maxDegree : DEFAULT_MAX_TYPED_DEGREE;
+    cacheState.maxTypedDegree = resolved;
+    return resolved;
   } catch (_err: unknown) { // Subgraph computation failure — return default weights
+    cacheState.maxTypedDegree = DEFAULT_MAX_TYPED_DEGREE;
     return DEFAULT_MAX_TYPED_DEGREE;
   }
+}
+
+/**
+ * Batch-compute raw typed degrees for candidate nodes in a single SQL round-trip.
+ *
+ * SQL shape intentionally restricts edge scan to candidate-adjacent rows:
+ *   WHERE source_id IN (...) OR target_id IN (...)
+ * and then groups by candidate node_id.
+ */
+function computeTypedDegreesBatch(
+  database: Database.Database,
+  candidateIds: string[]
+): Map<string, number> {
+  const rawDegrees = new Map<string, number>();
+  if (candidateIds.length === 0) return rawDegrees;
+
+  const placeholders = candidateIds.map(() => '(?)').join(', ');
+  const params = [...candidateIds, MAX_TOTAL_DEGREE];
+
+  const rows = (database.prepare(`
+    WITH candidate_nodes(node_id) AS (
+      VALUES ${placeholders}
+    ),
+    candidate_edges AS (
+      SELECT ce.source_id AS node_id, ce.relation, COALESCE(ce.strength, 1.0) AS strength
+      FROM causal_edges ce
+      WHERE ce.source_id IN (SELECT node_id FROM candidate_nodes)
+         OR ce.target_id IN (SELECT node_id FROM candidate_nodes)
+      UNION ALL
+      SELECT ce.target_id AS node_id, ce.relation, COALESCE(ce.strength, 1.0) AS strength
+      FROM causal_edges ce
+      WHERE ce.source_id IN (SELECT node_id FROM candidate_nodes)
+         OR ce.target_id IN (SELECT node_id FROM candidate_nodes)
+    )
+    SELECT
+      node_id,
+      MIN(SUM(
+        CASE relation
+          WHEN 'caused' THEN 1.0
+          WHEN 'derived_from' THEN 0.9
+          WHEN 'enabled' THEN 0.8
+          WHEN 'contradicts' THEN 0.7
+          WHEN 'supersedes' THEN 0.6
+          WHEN 'supports' THEN 0.5
+          ELSE 0
+        END * strength
+      ), ?) AS typed_degree
+    FROM candidate_edges
+    WHERE node_id IN (SELECT node_id FROM candidate_nodes)
+    GROUP BY node_id
+  `) as Database.Statement).all(...params) as Array<{ node_id: string; typed_degree: number | null }>;
+
+  for (const row of rows) {
+    rawDegrees.set(row.node_id, typeof row.typed_degree === 'number' ? row.typed_degree : 0);
+  }
+
+  return rawDegrees;
 }
 
 /**
@@ -469,30 +580,44 @@ function computeDegreeScores(
     return results;
   }
 
-  // Compute global max for normalization (not cached — recomputed per batch)
+  const cacheState = getDegreeCacheState(database);
+  const nodeBoostCache = cacheState.perNodeBoost;
+
+  // Compute global max once per DB instance (cached)
   const maxDegree = computeMaxTypedDegree(database);
+
+  const uncachedCandidateIds: string[] = [];
+  for (const id of memoryIds) {
+    const key = String(id);
+    if (!constitutionalIds.has(key) && !nodeBoostCache.has(key)) {
+      uncachedCandidateIds.push(key);
+    }
+  }
+
+  if (uncachedCandidateIds.length > 0) {
+    try {
+      const rawDegrees = computeTypedDegreesBatch(database, uncachedCandidateIds);
+      for (const key of uncachedCandidateIds) {
+        const rawDegree = rawDegrees.get(key) ?? 0;
+        nodeBoostCache.set(key, normalizeDegreeToBoostedScore(rawDegree, maxDegree));
+      }
+    } catch (_err: unknown) {
+      for (const key of uncachedCandidateIds) {
+        const rawDegree = computeTypedDegree(database, key);
+        nodeBoostCache.set(key, normalizeDegreeToBoostedScore(rawDegree, maxDegree));
+      }
+    }
+  }
 
   for (const id of memoryIds) {
     const key = String(id);
 
-    // Constitutional memories always get 0
     if (constitutionalIds.has(key)) {
       results.set(key, 0);
       continue;
     }
 
-    // Check cache — H20 FIX: use per-DB cache
-    const dbDegreeCache = getDegreeCacheForDb(database);
-    if (dbDegreeCache.has(key)) {
-      results.set(key, dbDegreeCache.get(key)!);
-      continue;
-    }
-
-    // Compute, normalize, cache
-    const rawDegree = computeTypedDegree(database, key);
-    const boostedScore = normalizeDegreeToBoostedScore(rawDegree, maxDegree);
-    dbDegreeCache.set(key, boostedScore);
-    results.set(key, boostedScore);
+    results.set(key, nodeBoostCache.get(key) ?? 0);
   }
 
   return results;
@@ -505,19 +630,21 @@ function computeDegreeScores(
  */
 // H20 FIX: Clear degree cache — clears for all DB instances
 function clearDegreeCache(): void {
-  degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
+  degreeCachePerDb = new WeakMap<Database.Database, DegreeCacheState>();
+  ftsTableAvailabilityPerDb = new WeakMap<Database.Database, boolean>();
 }
 
 /** Clear degree cache for a specific database instance. */
 function clearDegreeCacheForDb(database: Database.Database): void {
   degreeCachePerDb.delete(database);
+  ftsTableAvailabilityPerDb.delete(database);
 }
 
-if (!degreeCacheRebindRegistered) {
+if (!dbCacheRebindRegistered) {
   registerDatabaseRebindListener(() => {
     clearDegreeCache();
   });
-  degreeCacheRebindRegistered = true;
+  dbCacheRebindRegistered = true;
 }
 
 // ───────────────────────────────────────────────────────────────

@@ -12,6 +12,7 @@ import {
 } from '../handlers/pe-gating';
 import {
   resolveMemoryReference,
+  resolveMemoryReferencesBatch,
   processCausalLinks,
   CAUSAL_LINK_MAPPINGS,
 } from '../handlers/causal-links-processor';
@@ -160,6 +161,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     const resolveFn = typeof resolveMemoryReference === 'function'
       ? resolveMemoryReference
       : null;
+    const resolveBatchFn = typeof resolveMemoryReferencesBatch === 'function'
+      ? resolveMemoryReferencesBatch
+      : null;
     type ResolveReferenceInput = Parameters<NonNullable<typeof resolveFn>>[1];
 
     it.skipIf(!resolveFn)('resolves numeric ID', () => {
@@ -251,6 +255,51 @@ describe('MEMORY SAVE EXTENDED', () => {
       seedTestMemories(db);
       const result = resolveFn!(db, 'memory/decision-auth.md');
       expect(result).toBe(2);
+      db.close();
+    });
+
+    it.skipIf(!resolveFn)('prefers exact path equality before fuzzy path fallback', () => {
+      const db = createTestDb();
+      db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
+      seedTestMemories(db);
+      db.prepare('UPDATE memory_index SET canonical_file_path = file_path').run();
+
+      db.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, canonical_file_path, title, content, content_hash, stability, difficulty
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        99,
+        'specs/099-shadow',
+        '/archive/specs/002-feature/memory/implementation-notes.md.bak',
+        '/archive/specs/002-feature/memory/implementation-notes.md.bak',
+        'Shadow Path',
+        'Shadow content',
+        'hash-shadow',
+        1.0,
+        5.0,
+      );
+
+      const result = resolveFn!(db, 'specs/002-feature/memory/implementation-notes.md');
+      expect(result).toBe(3);
+      db.close();
+    });
+
+    it.skipIf(!resolveBatchFn)('resolves multiple references in one batch call', () => {
+      const db = createTestDb();
+      seedTestMemories(db);
+
+      const resolved = resolveBatchFn!(db, [
+        '1',
+        'memory/decision-auth.md',
+        'Debug Log',
+        'non-existent-ref',
+      ]);
+
+      expect(resolved.get('1')).toBe(1);
+      expect(resolved.get('memory/decision-auth.md')).toBe(2);
+      expect(resolved.get('Debug Log')).toBe(4);
+      expect(resolved.get('non-existent-ref')).toBeNull();
       db.close();
     });
   });

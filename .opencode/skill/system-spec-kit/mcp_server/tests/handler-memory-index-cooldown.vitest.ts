@@ -4,8 +4,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
-  mockGetLastScanTime: vi.fn(),
-  mockSetLastScanTime: vi.fn(),
+  mockAcquireIndexScanLease: vi.fn(),
+  mockCompleteIndexScanLease: vi.fn(),
   mockCheckDatabaseUpdated: vi.fn(),
   mockProcessBatches: vi.fn(),
   mockFindMemoryFiles: vi.fn((): string[] => []),
@@ -40,17 +40,28 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('../core', () => ({
-  getLastScanTime: mocks.mockGetLastScanTime,
-  setLastScanTime: mocks.mockSetLastScanTime,
   checkDatabaseUpdated: mocks.mockCheckDatabaseUpdated,
 }));
 
-vi.mock('../core/config', () => ({
-  INDEX_SCAN_COOLDOWN: 60000,
-  DEFAULT_BASE_PATH: '/tmp/mock-workspace',
-  BATCH_SIZE: 5,
-  SERVER_DIR: '/tmp/mock-server',
-}));
+vi.mock('../core/db-state', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../core/db-state')>();
+  return {
+    ...actual,
+    acquireIndexScanLease: mocks.mockAcquireIndexScanLease,
+    completeIndexScanLease: mocks.mockCompleteIndexScanLease,
+  };
+});
+
+vi.mock('../core/config', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../core/config')>();
+  return {
+    ...actual,
+    INDEX_SCAN_COOLDOWN: 60000,
+    DEFAULT_BASE_PATH: '/tmp/mock-workspace',
+    BATCH_SIZE: 5,
+    SERVER_DIR: '/tmp/mock-server',
+  };
+});
 
 vi.mock('../utils', () => ({
   processBatches: mocks.mockProcessBatches,
@@ -102,8 +113,8 @@ import * as handler from '../handlers/memory-index';
 
 describe('handler-memory-index cooldown behavior', () => {
   beforeEach(() => {
-    mocks.mockGetLastScanTime.mockReset();
-    mocks.mockSetLastScanTime.mockReset();
+    mocks.mockAcquireIndexScanLease.mockReset();
+    mocks.mockCompleteIndexScanLease.mockReset();
     mocks.mockCheckDatabaseUpdated.mockReset();
     mocks.mockFindMemoryFiles.mockReset();
     mocks.mockProcessBatches.mockReset();
@@ -115,8 +126,16 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockGetDb.mockReset();
     mocks.mockRunPostMutationHooks.mockReset();
 
-    mocks.mockGetLastScanTime.mockResolvedValue(0);
-    mocks.mockSetLastScanTime.mockResolvedValue(undefined);
+    mocks.mockAcquireIndexScanLease.mockResolvedValue({
+      acquired: true,
+      reason: 'ok',
+      waitSeconds: 0,
+      lastIndexScan: 0,
+      scanStartedAt: 0,
+      leaseExpiryMs: 120000,
+      cooldownMs: 60000,
+    });
+    mocks.mockCompleteIndexScanLease.mockResolvedValue(undefined);
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
     mocks.mockFindMemoryFiles.mockReturnValue([]);
     mocks.mockProcessBatches.mockImplementation(async (files: string[], worker: (file: string) => Promise<unknown>) => Promise.all(files.map(worker)));
@@ -151,15 +170,22 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('does not set cooldown timestamp when request is rate-limited', async () => {
-    const now = Date.now();
-    mocks.mockGetLastScanTime.mockResolvedValue(now);
+    mocks.mockAcquireIndexScanLease.mockResolvedValue({
+      acquired: false,
+      reason: 'cooldown',
+      waitSeconds: 60,
+      lastIndexScan: Date.now(),
+      scanStartedAt: 0,
+      leaseExpiryMs: 120000,
+      cooldownMs: 60000,
+    });
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
       includeSpecDocs: false,
     });
 
-    expect(mocks.mockSetLastScanTime).not.toHaveBeenCalled();
+    expect(mocks.mockCompleteIndexScanLease).not.toHaveBeenCalled();
 
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.error).toBe('Rate limited');
@@ -171,8 +197,8 @@ describe('handler-memory-index cooldown behavior', () => {
       includeSpecDocs: false,
     });
 
-    expect(mocks.mockSetLastScanTime).toHaveBeenCalledTimes(1);
-    expect(typeof mocks.mockSetLastScanTime.mock.calls[0][0]).toBe('number');
+    expect(mocks.mockCompleteIndexScanLease).toHaveBeenCalledTimes(1);
+    expect(typeof mocks.mockCompleteIndexScanLease.mock.calls[0][0]).toBe('number');
 
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.summary).toBe('No memory files found');

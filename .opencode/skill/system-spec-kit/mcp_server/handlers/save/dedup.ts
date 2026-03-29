@@ -15,6 +15,13 @@ import type { IndexResult } from './types';
 const UNCHANGED_EMBEDDING_STATUSES = new Set(['success', 'pending', 'partial']);
 const DEDUP_ELIGIBLE_EMBEDDING_STATUSES = ['success', 'partial'] as const;
 const QUALITY_SCORE_EPSILON = 1e-9;
+const SCOPE_COLUMNS = [
+  ['tenant_id', 'tenantId'],
+  ['user_id', 'userId'],
+  ['agent_id', 'agentId'],
+  ['session_id', 'sessionId'],
+  ['shared_space_id', 'sharedSpaceId'],
+] as const;
 
 interface SamePathDedupExclusion {
   canonicalFilePath: string;
@@ -23,6 +30,79 @@ interface SamePathDedupExclusion {
 
 import type { MemoryScopeMatch } from './types';
 import { normalizeScopeMatchValue } from './types';
+
+type ScopeColumnName = typeof SCOPE_COLUMNS[number][0];
+
+interface LatestMemoryLookupRow {
+  id: number;
+  content_hash: string;
+  embedding_status: string | null;
+  trigger_phrases: string | null;
+  quality_score: number | null;
+  quality_flags: string | null;
+}
+
+interface DuplicateLookupRow {
+  id: number;
+  file_path: string;
+  title: string | null;
+  content_text?: string | null;
+}
+
+function buildScopedWhereClauses(scope: MemoryScopeMatch): {
+  clauses: string[];
+  params: Array<string>;
+} {
+  const normalizedScope: MemoryScopeMatch = {
+    tenantId: normalizeScopeMatchValue(scope.tenantId),
+    userId: normalizeScopeMatchValue(scope.userId),
+    agentId: normalizeScopeMatchValue(scope.agentId),
+    sessionId: normalizeScopeMatchValue(scope.sessionId),
+    sharedSpaceId: normalizeScopeMatchValue(scope.sharedSpaceId),
+  };
+  const clauses: string[] = [];
+  const params: string[] = [];
+
+  for (const [column, key] of SCOPE_COLUMNS) {
+    const value = normalizedScope[key];
+    if (value === null || value === undefined) {
+      clauses.push(`${column} IS NULL`);
+      continue;
+    }
+    clauses.push(`${column} = ?`);
+    params.push(value);
+  }
+
+  return { clauses, params };
+}
+
+function selectLatestExistingRow(
+  database: Database.Database,
+  parsed: ParsedMemory,
+  pathColumn: ScopeColumnName | 'canonical_file_path' | 'file_path',
+  pathValue: string,
+  scopeClauses: string[],
+  scopeParams: string[],
+): LatestMemoryLookupRow | undefined {
+  const whereClauses = [
+    'spec_folder = ?',
+    'parent_id IS NULL',
+    `${pathColumn} = ?`,
+    ...scopeClauses,
+  ];
+
+  return database.prepare(`
+    SELECT id, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags
+    FROM memory_index
+    WHERE ${whereClauses.join('\n      AND ')}
+    ORDER BY id DESC
+    LIMIT 1
+  `).get(
+    parsed.specFolder,
+    pathValue,
+    ...scopeParams,
+  ) as LatestMemoryLookupRow | undefined;
+}
 
 function parseJsonStringArray(raw: string | null): string[] {
   if (!raw) {
@@ -108,46 +188,34 @@ export function checkExistingRow(
   warnings: string[] | undefined,
   scope: MemoryScopeMatch = {},
 ): IndexResult | null {
-  const tenantId = normalizeScopeMatchValue(scope.tenantId);
-  const userId = normalizeScopeMatchValue(scope.userId);
-  const agentId = normalizeScopeMatchValue(scope.agentId);
-  const sessionId = normalizeScopeMatchValue(scope.sessionId);
-  const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
-  const existing = database.prepare(`
-    SELECT id, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags
-    FROM memory_index
-    WHERE spec_folder = ?
-      AND parent_id IS NULL
-      AND (canonical_file_path = ? OR file_path = ?)
-      AND ((? IS NULL AND tenant_id IS NULL) OR tenant_id = ?)
-      AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
-      AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
-      AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
-      AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
-    ORDER BY id DESC
-    LIMIT 1
-  `).get(
-    parsed.specFolder,
-    canonicalFilePath,
-    filePath,
-    tenantId,
-    tenantId,
-    userId,
-    userId,
-    agentId,
-    agentId,
-    sessionId,
-    sessionId,
-    sharedSpaceId,
-    sharedSpaceId,
-  ) as {
-    id: number;
-    content_hash: string;
-    embedding_status: string | null;
-    trigger_phrases: string | null;
-    quality_score: number | null;
-    quality_flags: string | null;
-  } | undefined;
+  const { clauses: scopeClauses, params: scopeParams } = buildScopedWhereClauses(scope);
+  const candidates = [
+    selectLatestExistingRow(
+      database,
+      parsed,
+      'canonical_file_path',
+      canonicalFilePath,
+      scopeClauses,
+      scopeParams,
+    ),
+  ];
+
+  if (filePath !== canonicalFilePath) {
+    candidates.push(
+      selectLatestExistingRow(
+        database,
+        parsed,
+        'file_path',
+        filePath,
+        scopeClauses,
+        scopeParams,
+      ),
+    );
+  }
+
+  const existing = candidates
+    .filter((candidate): candidate is LatestMemoryLookupRow => candidate !== undefined)
+    .sort((left, right) => right.id - left.id)[0];
 
   const existingStatus = existing?.embedding_status ?? null;
   const isUnchangedEligible = existingStatus !== null && UNCHANGED_EMBEDDING_STATUSES.has(existingStatus);
@@ -180,83 +248,35 @@ export function checkContentHashDedup(
   scope: MemoryScopeMatch = {},
 ): IndexResult | null {
   if (!force) {
-    const tenantId = normalizeScopeMatchValue(scope.tenantId);
-    const userId = normalizeScopeMatchValue(scope.userId);
-    const agentId = normalizeScopeMatchValue(scope.agentId);
-    const sessionId = normalizeScopeMatchValue(scope.sessionId);
-    const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
-    const duplicateQuery = samePathExclusion
-      ? `
-      SELECT id, file_path, title, content_text FROM memory_index
-      WHERE spec_folder = ?
-        AND content_hash = ?
-        AND parent_id IS NULL
-        AND embedding_status IN (?, ?)
-        AND ((? IS NULL AND tenant_id IS NULL) OR tenant_id = ?)
-        AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
-        AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
-        AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
-        AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
-        AND file_path != ?
-        AND (canonical_file_path IS NULL OR canonical_file_path != ?)
+    const { clauses: scopeClauses, params: scopeParams } = buildScopedWhereClauses(scope);
+    const whereClauses = [
+      'spec_folder = ?',
+      'content_hash = ?',
+      'parent_id IS NULL',
+      'embedding_status IN (?, ?)',
+      ...scopeClauses,
+    ];
+    const duplicateParams: Array<string> = [
+      parsed.specFolder,
+      parsed.contentHash,
+      ...DEDUP_ELIGIBLE_EMBEDDING_STATUSES,
+      ...scopeParams,
+    ];
+
+    if (samePathExclusion) {
+      whereClauses.push('file_path != ?');
+      duplicateParams.push(samePathExclusion.filePath);
+      whereClauses.push('(canonical_file_path IS NULL OR canonical_file_path != ?)');
+      duplicateParams.push(samePathExclusion.canonicalFilePath);
+    }
+
+    const duplicateByHash = database.prepare(`
+      SELECT id, file_path, title, content_text
+      FROM memory_index
+      WHERE ${whereClauses.join('\n        AND ')}
       ORDER BY id DESC
       LIMIT 1
-    `
-      : `
-      SELECT id, file_path, title, content_text FROM memory_index
-      WHERE spec_folder = ?
-        AND content_hash = ?
-        AND parent_id IS NULL
-        AND embedding_status IN (?, ?)
-        AND ((? IS NULL AND tenant_id IS NULL) OR tenant_id = ?)
-        AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
-        AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
-        AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
-        AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
-      ORDER BY id DESC
-      LIMIT 1
-    `;
-
-    const duplicateParams = samePathExclusion
-      ? [
-          parsed.specFolder,
-          parsed.contentHash,
-          ...DEDUP_ELIGIBLE_EMBEDDING_STATUSES,
-          tenantId,
-          tenantId,
-          userId,
-          userId,
-          agentId,
-          agentId,
-          sessionId,
-          sessionId,
-          sharedSpaceId,
-          sharedSpaceId,
-          samePathExclusion.filePath,
-          samePathExclusion.canonicalFilePath,
-        ]
-      : [
-          parsed.specFolder,
-          parsed.contentHash,
-          ...DEDUP_ELIGIBLE_EMBEDDING_STATUSES,
-          tenantId,
-          tenantId,
-          userId,
-          userId,
-          agentId,
-          agentId,
-          sessionId,
-          sessionId,
-          sharedSpaceId,
-          sharedSpaceId,
-        ];
-
-    const duplicateByHash = database.prepare(duplicateQuery).get(...duplicateParams) as {
-      id: number;
-      file_path: string;
-      title: string | null;
-      content_text?: string | null;
-    } | undefined;
+    `).get(...duplicateParams) as DuplicateLookupRow | undefined;
 
     if (duplicateByHash) {
       const verifiedMatch = verifyStoredContentMatch(

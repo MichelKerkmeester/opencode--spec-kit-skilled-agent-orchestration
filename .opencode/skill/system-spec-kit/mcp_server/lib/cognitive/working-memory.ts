@@ -65,7 +65,9 @@ const SCHEMA_SQL = `
 const INDEX_SQL = `
   CREATE INDEX IF NOT EXISTS idx_wm_session ON working_memory(session_id);
   CREATE INDEX IF NOT EXISTS idx_wm_attention ON working_memory(session_id, attention_score DESC);
-  CREATE INDEX IF NOT EXISTS idx_wm_added ON working_memory(added_at)
+  CREATE INDEX IF NOT EXISTS idx_wm_added ON working_memory(added_at);
+  CREATE INDEX IF NOT EXISTS idx_wm_session_focus_lru ON working_memory(session_id, last_focused ASC, id ASC);
+  CREATE INDEX IF NOT EXISTS idx_wm_session_attention_focus ON working_memory(session_id, attention_score DESC, last_focused DESC);
 `;
 
 /* --- 3. INTERFACES --- */
@@ -444,14 +446,6 @@ function upsertExtractedEntry(input: ExtractedEntryInput): boolean {
   try {
     const currentEventCounter = nextEventCounter(sessionId);
 
-    // Only enforce capacity when this will be a true INSERT, not an UPDATE
-    const existingCount = ((db.prepare(
-      'SELECT COUNT(*) as cnt FROM working_memory WHERE session_id = ? AND memory_id = ?'
-    ) as Database.Statement).get(sessionId, memoryId) as { cnt: number }).cnt;
-    if (existingCount === 0) {
-      enforceMemoryLimit(sessionId);
-    }
-
     (db.prepare(`
       INSERT INTO working_memory (
         session_id,
@@ -487,6 +481,15 @@ function upsertExtractedEntry(input: ExtractedEntryInput): boolean {
       extractionRuleId,
       redactionApplied ? 1 : 0
     );
+
+    // If focus_count is still 1 after the upsert, this row was newly inserted.
+    // Capacity checks should run only for new rows to avoid evicting on updates.
+    const currentRow = (db.prepare(
+      'SELECT focus_count FROM working_memory WHERE session_id = ? AND memory_id = ?'
+    ) as Database.Statement).get(sessionId, memoryId) as { focus_count?: number } | undefined;
+    if ((currentRow?.focus_count ?? 0) === 1) {
+      enforceMemoryLimit(sessionId);
+    }
 
     return true;
   } catch (error: unknown) {

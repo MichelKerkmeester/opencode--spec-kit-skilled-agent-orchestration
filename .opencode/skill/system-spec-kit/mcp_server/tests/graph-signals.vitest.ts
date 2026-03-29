@@ -795,6 +795,99 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
+  describe('search and degree performance regressions', () => {
+    it('reuses cached max typed degree across repeated lookups for the same DB', () => {
+      let maxDegreeQueryCount = 0;
+      let batchDegreeQueryCount = 0;
+
+      const mockDb = {
+        prepare(sql: string) {
+          return {
+            get() {
+              if (sql.includes('SELECT MAX(typed_degree) AS max_degree')) {
+                maxDegreeQueryCount += 1;
+                return { max_degree: 10 };
+              }
+              return undefined;
+            },
+            all(...params: unknown[]) {
+              if (sql.includes("importance_tier = 'constitutional'")) {
+                return [];
+              }
+              if (sql.includes('WITH candidate_nodes(node_id)')) {
+                batchDegreeQueryCount += 1;
+                const ids = params.slice(0, -1).map(String);
+                return ids.map((id) => ({ node_id: id, typed_degree: id === '1' ? 5 : 1 }));
+              }
+              return [];
+            },
+          };
+        },
+      } as unknown as Database.Database;
+
+      const first = computeDegreeScores(mockDb, [1]).get('1') ?? 0;
+      const second = computeDegreeScores(mockDb, [1]).get('1') ?? 0;
+
+      expect(first).toBeGreaterThan(0);
+      expect(second).toBe(first);
+      expect(maxDegreeQueryCount).toBe(1);
+      expect(batchDegreeQueryCount).toBe(1);
+    });
+
+    it('uses CTE-based FTS edge lookup and caches FTS table availability per DB', async () => {
+      let ftsProbeCount = 0;
+      const preparedSql: string[] = [];
+
+      const mockDb = {
+        prepare(sql: string) {
+          preparedSql.push(sql);
+          return {
+            get() {
+              if (sql.includes('sqlite_master') && sql.includes("name='memory_fts'")) {
+                ftsProbeCount += 1;
+                return { name: 'memory_fts' };
+              }
+              return undefined;
+            },
+            all() {
+              if (sql.includes('WITH matched_memories')) {
+                return [{
+                  id: '1',
+                  source_id: '1',
+                  target_id: '2',
+                  relation: 'caused',
+                  strength: 1,
+                  fts_score: 1.25,
+                }];
+              }
+              return [];
+            },
+          };
+        },
+      } as unknown as Database.Database;
+
+      const graphSearchModule = await import('../lib/search/graph-search-fn');
+      const createSearchFn = (
+        graphSearchModule as unknown as { createUnifiedGraphSearchFn?: unknown; default?: { createUnifiedGraphSearchFn?: unknown } }
+      ).createUnifiedGraphSearchFn
+        ?? (graphSearchModule as unknown as { default?: { createUnifiedGraphSearchFn?: unknown } }).default?.createUnifiedGraphSearchFn;
+
+      expect(typeof createSearchFn).toBe('function');
+      const search = (createSearchFn as (database: Database.Database) => (query: string, options: Record<string, unknown>) => Array<Record<string, unknown>>)(mockDb);
+      const first = search('authentication', { limit: 5 });
+      const second = search('authentication', { limit: 5 });
+
+      expect(first.length).toBeGreaterThan(0);
+      expect(second.length).toBeGreaterThan(0);
+      expect(ftsProbeCount).toBe(1);
+
+      const ftsSql = preparedSql.find((sql) => sql.includes('WITH matched_memories'));
+      expect(ftsSql).toBeDefined();
+      expect(ftsSql).toContain('UNION ALL');
+      expect(ftsSql).not.toContain('JOIN memory_fts ON (');
+    });
+  });
+
   // 8. Edge cases
   describe('Edge cases', () => {
     it('non-existent memoryId returns 0 for momentum signal', () => {

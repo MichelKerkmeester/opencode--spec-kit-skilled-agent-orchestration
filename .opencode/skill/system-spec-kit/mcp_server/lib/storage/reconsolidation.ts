@@ -73,6 +73,18 @@ export interface MergeResult {
   warnings?: string[];
 }
 
+export type MergeAbortStatus = 'predecessor_changed' | 'predecessor_gone';
+
+/** Result when a merge candidate becomes stale before commit */
+export interface MergeAbortedResult {
+  action: 'complement';
+  status: MergeAbortStatus;
+  existingMemoryId: number;
+  newMemoryId: number;
+  similarity: number;
+  warnings?: string[];
+}
+
 /** Result of a conflict (supersede) operation */
 export interface ConflictResult {
   action: 'conflict';
@@ -96,7 +108,7 @@ export interface ComplementResult {
 }
 
 /** Combined reconsolidation result */
-export type ReconsolidationResult = MergeResult | ConflictResult | ComplementResult;
+export type ReconsolidationResult = MergeResult | MergeAbortedResult | ConflictResult | ComplementResult;
 
 /** Callback for finding similar memories by embedding */
 type FindSimilarFn = (
@@ -195,43 +207,34 @@ export function determineAction(similarity: number): ReconsolidationAction {
  * @param newMemory - The new memory being saved
  * @param db - The database instance
  * @param generateEmbedding - Optional callback to regenerate embedding for merged content
- * @returns MergeResult with merge details
+ * @returns MergeResult when merged, or a complement-style abort result when the predecessor changed
  */
 export async function executeMerge(
   existingMemory: SimilarMemory,
   newMemory: NewMemoryData,
   db: Database.Database,
   generateEmbedding?: GenerateEmbeddingFn | null
-): Promise<MergeResult> {
-  const existingContent = existingMemory.content_text ?? '';
+): Promise<MergeResult | MergeAbortedResult> {
   const newContent = newMemory.content;
   let newId = 0;
-
-  // Merge content: append new unique sections
-  const mergedContent = mergeContent(existingContent, newContent);
-
-  // Boost importance_weight on merge (capped at 1.0)
-  const currentWeight = existingMemory.importance_weight ?? 0.5;
-  const boostedWeight = Math.min(1.0, currentWeight + 0.1);
   let bm25RepairWarning: string | null = null;
 
   try {
-    // Include content_hash in UPDATE so change-detection and dedup
-    // Use the merged content's hash, not the stale pre-merge value.
-    const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
-    const now = new Date().toISOString();
     const memoryIndexColumns = getTableColumns(db, 'memory_index');
+    ensureBm25RepairFlagColumn(db, memoryIndexColumns);
     const existingRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
 
-    if (!existingRow) {
-      throw new Error(`Existing memory ${existingMemory.id} not found`);
+    if (!existingRow || isArchivedRow(existingRow)) {
+      return buildMergeAbortResult(existingMemory, newMemory, 'predecessor_gone');
     }
 
-    const reusedEmbeddingRow = db.prepare(`
-      SELECT embedding
-      FROM vec_memories
-      WHERE rowid = ?
-    `).get(existingMemory.id) as { embedding?: Buffer } | undefined;
+    const predecessorVersion = capturePredecessorVersion(existingRow);
+    const existingContent = getOptionalString(existingRow, 'content_text') ?? '';
+    const mergedContent = mergeContent(existingContent, newContent);
+    const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
+    const currentWeight = getOptionalNumber(existingRow, 'importance_weight') ?? existingMemory.importance_weight ?? 0.5;
+    const boostedWeight = Math.min(1.0, currentWeight + 0.1);
+    const now = new Date().toISOString();
 
     // Generate embedding BEFORE transaction (async I/O cannot run inside
     // Better-sqlite3's synchronous transaction callback).
@@ -246,24 +249,43 @@ export async function executeMerge(
       }
     }
 
-    const mergedEmbeddingBuffer = newEmbedding
-      ? embeddingToBuffer(newEmbedding)
-      : (reusedEmbeddingRow?.embedding ?? null);
-    const mergedEmbeddingStatus = mergedEmbeddingBuffer ? 'success' : getOptionalString(existingRow, 'embedding_status') ?? 'pending';
-    const mergedCanonicalPath = getOptionalString(existingRow, 'canonical_file_path') ?? getCanonicalPathKey(existingMemory.file_path);
-    const mergedTriggerPhrases = buildMergedTriggerPhrases(existingRow, newMemory.triggerPhrases);
-    const mergedTitle = newMemory.title ?? existingMemory.title ?? '';
-    const mergedImportanceTier = newMemory.importanceTier ?? getOptionalString(existingRow, 'importance_tier');
-    const mergedBm25DocumentText = bm25Index.buildBm25DocumentText({
-      title: mergedTitle,
-      content_text: mergedContent,
-      trigger_phrases: mergedTriggerPhrases,
-      file_path: existingMemory.file_path,
-    });
     let bm25RepairNeeded = false;
+    let mergedBm25DocumentText = '';
 
     // F04-001: Append-only merge — mark old as superseded, create new record
-    db.transaction(() => {
+    const txResult = db.transaction((): { status: 'merged' } | { status: MergeAbortStatus } => {
+      const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+
+      if (!currentRow || isArchivedRow(currentRow)) {
+        return { status: 'predecessor_gone' };
+      }
+
+      if (hasPredecessorChanged(predecessorVersion, currentRow)) {
+        return { status: 'predecessor_changed' };
+      }
+
+      const currentFilePath = getOptionalString(currentRow, 'file_path') ?? existingMemory.file_path;
+      const reusedEmbeddingRow = db.prepare(`
+        SELECT embedding
+        FROM vec_memories
+        WHERE rowid = ?
+      `).get(existingMemory.id) as { embedding?: Buffer } | undefined;
+      const mergedEmbeddingBuffer = newEmbedding
+        ? embeddingToBuffer(newEmbedding)
+        : (reusedEmbeddingRow?.embedding ?? null);
+      const mergedEmbeddingStatus = mergedEmbeddingBuffer ? 'success' : getOptionalString(currentRow, 'embedding_status') ?? 'pending';
+      const mergedCanonicalPath = getOptionalString(currentRow, 'canonical_file_path') ?? getCanonicalPathKey(currentFilePath);
+      const mergedTriggerPhrases = buildMergedTriggerPhrases(currentRow, newMemory.triggerPhrases);
+      const mergedTitle = newMemory.title ?? getOptionalString(currentRow, 'title') ?? existingMemory.title ?? '';
+      const mergedImportanceTier = newMemory.importanceTier ?? getOptionalString(currentRow, 'importance_tier');
+
+      mergedBm25DocumentText = bm25Index.buildBm25DocumentText({
+        title: mergedTitle,
+        content_text: mergedContent,
+        trigger_phrases: mergedTriggerPhrases,
+        file_path: currentFilePath,
+      });
+
       // Mark existing memory as archived (superseded)
       db.prepare(`
         UPDATE memory_index
@@ -272,11 +294,11 @@ export async function executeMerge(
         WHERE id = ?
       `).run(existingMemory.id);
 
-      const insertValues = buildMergedMemoryInsertValues(existingRow, {
+      const insertValues = buildMergedMemoryInsertValues(currentRow, {
         spec_folder: existingMemory.spec_folder,
-        file_path: existingMemory.file_path,
+        file_path: currentFilePath,
         canonical_file_path: mergedCanonicalPath,
-        anchor_id: getOptionalString(existingRow, 'anchor_id'),
+        anchor_id: getOptionalString(currentRow, 'anchor_id'),
         title: mergedTitle,
         trigger_phrases: mergedTriggerPhrases,
         importance_weight: boostedWeight,
@@ -284,11 +306,12 @@ export async function executeMerge(
         content_text: mergedContent,
         content_hash: mergedHash,
         embedding_status: mergedEmbeddingStatus,
-        embedding_model: getOptionalString(existingRow, 'embedding_model'),
-        embedding_generated_at: mergedEmbeddingBuffer ? now : getOptionalString(existingRow, 'embedding_generated_at'),
-        encoding_intent: getOptionalString(existingRow, 'encoding_intent'),
-        document_type: getOptionalString(existingRow, 'document_type'),
-        spec_level: getOptionalNumber(existingRow, 'spec_level'),
+        embedding_model: getOptionalString(currentRow, 'embedding_model'),
+        embedding_generated_at: mergedEmbeddingBuffer ? now : getOptionalString(currentRow, 'embedding_generated_at'),
+        encoding_intent: getOptionalString(currentRow, 'encoding_intent'),
+        document_type: getOptionalString(currentRow, 'document_type'),
+        spec_level: getOptionalNumber(currentRow, 'spec_level'),
+        bm25_repair_needed: 0,
         created_at: now,
         updated_at: now,
       }, memoryIndexColumns);
@@ -308,12 +331,12 @@ export async function executeMerge(
         `).run(newId, mergedEmbeddingBuffer);
       }
 
-      const postInsertMetadata = buildMergePostInsertMetadata(existingRow, {
+      const postInsertMetadata = buildMergePostInsertMetadata(currentRow, {
         content_hash: mergedHash,
         importance_tier: mergedImportanceTier,
         embedding_status: mergedEmbeddingStatus,
-        document_type: getOptionalString(existingRow, 'document_type'),
-        spec_level: getOptionalNumber(existingRow, 'spec_level'),
+        document_type: getOptionalString(currentRow, 'document_type'),
+        spec_level: getOptionalNumber(currentRow, 'spec_level'),
       }, memoryIndexColumns);
 
       if (Object.keys(postInsertMetadata).length > 0) {
@@ -359,7 +382,12 @@ export async function executeMerge(
       } catch (_historyErr: unknown) {
         // Best-effort history tracking during reconsolidation merge
       }
+      return { status: 'merged' };
     })();
+
+    if (txResult.status !== 'merged') {
+      return buildMergeAbortResult(existingMemory, newMemory, txResult.status);
+    }
 
     if (bm25RepairNeeded) {
       const repairResult = repairBm25Document({
@@ -368,8 +396,11 @@ export async function executeMerge(
         documentText: mergedBm25DocumentText,
       });
       if (!repairResult.success) {
+        setBm25RepairNeededFlag(db, memoryIndexColumns, newId, true);
         bm25RepairWarning =
           `BM25 repair failed after reconsolidation merge for memory ${newId}: ${repairResult.error}`;
+      } else {
+        setBm25RepairNeededFlag(db, memoryIndexColumns, newId, false);
       }
     }
 
@@ -733,6 +764,47 @@ function getTableColumns(db: Database.Database, tableName: string): Set<string> 
   return new Set(rows.map((row) => row.name).filter((name): name is string => typeof name === 'string'));
 }
 
+function ensureBm25RepairFlagColumn(db: Database.Database, tableColumns: Set<string>): void {
+  if (tableColumns.has('bm25_repair_needed')) {
+    return;
+  }
+
+  try {
+    db.exec('ALTER TABLE memory_index ADD COLUMN bm25_repair_needed INTEGER DEFAULT 0');
+    tableColumns.add('bm25_repair_needed');
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.toLowerCase().includes('duplicate column')) {
+      tableColumns.add('bm25_repair_needed');
+      return;
+    }
+    console.warn('[reconsolidation] Failed to ensure bm25_repair_needed column:', message);
+  }
+}
+
+function setBm25RepairNeededFlag(
+  db: Database.Database,
+  tableColumns: Set<string>,
+  memoryId: number,
+  repairNeeded: boolean,
+): void {
+  if (!tableColumns.has('bm25_repair_needed')) {
+    return;
+  }
+
+  try {
+    db.prepare(`
+      UPDATE memory_index
+      SET bm25_repair_needed = ?,
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(repairNeeded ? 1 : 0, memoryId);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[reconsolidation] Failed to persist bm25_repair_needed=${repairNeeded ? 1 : 0} for memory ${memoryId}: ${message}`);
+  }
+}
+
 function getOptionalString(row: Record<string, unknown>, key: string): string | undefined {
   const value = row[key];
   return typeof value === 'string' && value.trim().length > 0 ? value : undefined;
@@ -741,6 +813,40 @@ function getOptionalString(row: Record<string, unknown>, key: string): string | 
 function getOptionalNumber(row: Record<string, unknown>, key: string): number | undefined {
   const value = row[key];
   return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+}
+
+function capturePredecessorVersion(row: Record<string, unknown>): { contentHash: string | null; updatedAt: string | null } {
+  return {
+    contentHash: getOptionalString(row, 'content_hash') ?? null,
+    updatedAt: getOptionalString(row, 'updated_at') ?? null,
+  };
+}
+
+function hasPredecessorChanged(
+  snapshot: { contentHash: string | null; updatedAt: string | null },
+  currentRow: Record<string, unknown>,
+): boolean {
+  return snapshot.contentHash !== (getOptionalString(currentRow, 'content_hash') ?? null)
+    || snapshot.updatedAt !== (getOptionalString(currentRow, 'updated_at') ?? null);
+}
+
+function isArchivedRow(row: Record<string, unknown>): boolean {
+  const value = row.is_archived;
+  return value === 1 || value === true;
+}
+
+function buildMergeAbortResult(
+  existingMemory: SimilarMemory,
+  newMemory: NewMemoryData,
+  status: MergeAbortStatus,
+): MergeAbortedResult {
+  return {
+    action: 'complement',
+    status,
+    existingMemoryId: existingMemory.id,
+    newMemoryId: newMemory.id ?? 0,
+    similarity: existingMemory.similarity,
+  };
 }
 
 function buildMergedTriggerPhrases(

@@ -117,6 +117,25 @@ describe('vector-index schema migration refinements', () => {
     ]);
   });
 
+  it('creates trigger-cache and temporal-contiguity indexes during the v24 upgrade', () => {
+    const database = createTestDatabase();
+    openDatabases.add(database);
+
+    database.exec('DROP INDEX IF EXISTS idx_trigger_cache_source');
+    database.exec('DROP INDEX IF EXISTS idx_spec_folder_created_at');
+    database.prepare('UPDATE schema_version SET version = 23 WHERE id = 1').run();
+
+    ensureSchemaVersion(database);
+
+    const indexNames = (database.prepare('PRAGMA index_list(memory_index)').all() as Array<{ name: string }>)
+      .map((row) => row.name);
+
+    expect(indexNames).toEqual(expect.arrayContaining([
+      'idx_trigger_cache_source',
+      'idx_spec_folder_created_at',
+    ]));
+  });
+
   it('fails fast on legacy memory_index schemas that cannot store constitutional tier values', () => {
     const database = new Database(':memory:');
     openDatabases.add(database);
@@ -254,5 +273,36 @@ describe('vector-index schema migration refinements', () => {
       ORDER BY dimensions ASC
     `).all('hash-1', 'model-A') as Array<{ dimensions: number }>;
     expect(rows).toEqual([{ dimensions: 768 }, { dimensions: 1024 }]);
+  });
+
+  it('creates save-path optimization indexes for canonical-path and scoped hash lookups', () => {
+    const database = createTestDatabase();
+    openDatabases.add(database);
+
+    const indexes = database.prepare(`
+      SELECT name, sql
+      FROM sqlite_master
+      WHERE type = 'index'
+        AND name IN ('idx_save_parent_content_hash_scope', 'idx_save_parent_canonical_path')
+      ORDER BY name
+    `).all() as Array<{ name: string; sql: string | null }>;
+
+    expect(indexes).toHaveLength(2);
+    expect(indexes).toEqual([
+      expect.objectContaining({
+        name: 'idx_save_parent_canonical_path',
+        sql: expect.stringContaining('WHERE parent_id IS NULL'),
+      }),
+      expect.objectContaining({
+        name: 'idx_save_parent_content_hash_scope',
+        sql: expect.stringContaining('WHERE parent_id IS NULL'),
+      }),
+    ]);
+    expect(indexes[0]?.sql).toContain('spec_folder, canonical_file_path, id DESC');
+    expect(indexes[1]?.sql).toContain('spec_folder');
+    expect(indexes[1]?.sql).toContain('content_hash');
+    expect(indexes[1]?.sql).toContain('embedding_status');
+    expect(indexes[1]?.sql).toContain('shared_space_id');
+    expect(indexes[1]?.sql).toContain('id DESC');
   });
 });

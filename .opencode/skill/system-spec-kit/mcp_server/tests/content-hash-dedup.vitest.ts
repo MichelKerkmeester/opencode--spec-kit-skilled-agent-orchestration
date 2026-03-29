@@ -350,6 +350,62 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
   });
 
   describe('Same-path unchanged gate', () => {
+    it('T320-1: Same-path lookup uses two direct probes without nullable OR scope predicates', () => {
+      const sqlCalls: string[] = [];
+      const dbSpy = {
+        prepare: (sql: string) => {
+          sqlCalls.push(sql);
+          return {
+            get: () => undefined,
+          };
+        },
+      } as unknown as Database.Database;
+
+      checkExistingRow(
+        dbSpy,
+        buildParsedMemory('specs/sql-shape', 'content', 'SQL Shape'),
+        '/specs/sql-shape/memory/canonical.md',
+        '/specs/sql-shape/memory/file.md',
+        false,
+        [],
+        { tenantId: 'tenant-a' },
+      );
+
+      expect(sqlCalls).toHaveLength(2);
+      expect(sqlCalls[0]).toContain('canonical_file_path = ?');
+      expect(sqlCalls[1]).toContain('file_path = ?');
+      expect(sqlCalls.join('\n')).not.toContain('canonical_file_path = ? OR file_path = ?');
+      expect(sqlCalls.join('\n')).not.toContain('? IS NULL');
+      expect(sqlCalls.join('\n')).toContain('tenant_id = ?');
+      expect(sqlCalls.join('\n')).toContain('user_id IS NULL');
+    });
+
+    it('T320-2: Content-hash dedup uses exact scope clauses instead of nullable OR predicates', () => {
+      let capturedSql = '';
+      const dbSpy = {
+        prepare: (sql: string) => {
+          capturedSql = sql;
+          return {
+            get: () => undefined,
+          };
+        },
+      } as unknown as Database.Database;
+
+      checkContentHashDedup(
+        dbSpy,
+        buildParsedMemory('specs/sql-shape', 'content', 'SQL Shape'),
+        false,
+        [],
+        undefined,
+        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+      );
+
+      expect(capturedSql).toContain('tenant_id = ?');
+      expect(capturedSql).toContain('shared_space_id = ?');
+      expect(capturedSql).toContain('user_id IS NULL');
+      expect(capturedSql).not.toContain('? IS NULL');
+    });
+
     it('T054-6d: Same-path unchanged does not short-circuit failed embeddings', () => {
       const content = 'Existing failed embedding should not be treated as unchanged.';
       const filePath = '/specs/failed-same-path/memory/doc.md';

@@ -6,9 +6,9 @@
 // 1. IMPORTS
 
 // Local
-import { getIndex } from './bm25-index';
+import { getIndex, isBm25Enabled } from './bm25-index';
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
-import { hybridAdaptiveFuse } from '@spec-kit/shared/algorithms/adaptive-fusion';
+import { getAdaptiveWeights, isAdaptiveFusionEnabled } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activation';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
@@ -327,6 +327,10 @@ function bm25Search(
   query: string,
   options: { limit?: number; specFolder?: string } = {}
 ): HybridSearchResult[] {
+  if (!isBm25Enabled()) {
+    return [];
+  }
+
   const { limit = DEFAULT_LIMIT, specFolder } = options;
 
   try {
@@ -400,6 +404,10 @@ function bm25Search(
  * @returns True if the BM25 index exists and contains at least one document.
  */
 function isBm25Available(): boolean {
+  if (!isBm25Enabled()) {
+    return false;
+  }
+
   try {
     const index = getIndex();
     return index.getStats().documentCount > 0;
@@ -664,7 +672,11 @@ function mergeRawCandidateSets(
 }
 
 function getAllowedChannels(options: HybridSearchOptions): Set<ChannelName> {
-  const allowed = new Set<ChannelName>(['vector', 'fts', 'bm25', 'graph', 'degree']);
+  const allowed = new Set<ChannelName>(['vector', 'fts', 'graph', 'degree']);
+
+  if (isBm25Enabled()) {
+    allowed.add('bm25');
+  }
 
   if (options.useVector === false) allowed.delete('vector');
   if (options.useBm25 === false) allowed.delete('bm25');
@@ -699,6 +711,7 @@ interface FallbackPlanStage {
   stage: FallbackStageName;
   options: HybridSearchOptions;
   results: HybridSearchResult[];
+  execution: HybridFusionExecution | null;
   trigger?: 'empty' | DegradationTrigger;
 }
 
@@ -707,12 +720,44 @@ interface FallbackPlanExecution {
   stages: FallbackPlanStage[];
 }
 
+interface HybridFusionExecution {
+  evaluationMode: boolean;
+  intent: string;
+  lists: Array<{
+    source: string;
+    results: Array<{ id: number | string; [key: string]: unknown }>;
+    weight?: number;
+  }>;
+  routeResult: ReturnType<typeof routeQuery>;
+  budgetResult: ReturnType<typeof getDynamicTokenBudget>;
+  s3meta: Sprint3PipelineMeta;
+  fusedResults: HybridSearchResult[];
+  vectorEmbeddingCache: Map<number, Float32Array>;
+}
+
 function markFallbackRetry(results: HybridSearchResult[]): HybridSearchResult[] {
   for (const result of results) {
     (result as Record<string, unknown>).fallbackRetry = true;
   }
 
   return results;
+}
+
+function toEmbeddingBufferView(value: unknown): Float32Array | null {
+  if (value instanceof Float32Array) {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    const asNumbers = value.every((entry) => typeof entry === 'number' && Number.isFinite(entry));
+    return asNumbers ? new Float32Array(value) : null;
+  }
+
+  if (Buffer.isBuffer(value)) {
+    return new Float32Array(value.buffer, value.byteOffset, value.byteLength / 4);
+  }
+
+  return null;
 }
 
 async function executeFallbackPlan(
@@ -729,11 +774,15 @@ async function executeFallbackPlan(
     minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
     ...overrides,
   });
-  const primaryResults = await hybridSearchEnhanced(query, embedding, primaryOptions);
+  const primaryExecution = await collectAndFuseHybridResults(query, embedding, primaryOptions);
+  const primaryResults = primaryExecution
+    ? applyResultLimit(primaryExecution.fusedResults, primaryOptions.limit)
+    : await hybridSearch(query, embedding, primaryOptions);
   stages.push({
     stage: 'primary',
     options: primaryOptions,
     results: primaryResults,
+    execution: primaryExecution,
   });
 
   if (planKind === 'tiered') {
@@ -747,11 +796,15 @@ async function executeFallbackPlan(
       minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
       forceAllChannels: true,
     });
-    const retryResults = await hybridSearchEnhanced(query, embedding, retryOptions);
+    const retryExecution = await collectAndFuseHybridResults(query, embedding, retryOptions);
+    const retryResults = retryExecution
+      ? applyResultLimit(retryExecution.fusedResults, retryOptions.limit)
+      : await hybridSearch(query, embedding, retryOptions);
     stages.push({
       stage: 'retry',
       options: retryOptions,
       results: retryResults,
+      execution: retryExecution,
       trigger,
     });
     return { allowedChannels, stages };
@@ -763,11 +816,18 @@ async function executeFallbackPlan(
       ...overrides,
       minSimilarity: SECONDARY_FALLBACK_MIN_SIMILARITY,
     });
-    const retryResults = await hybridSearchEnhanced(query, embedding, retryOptions);
+    const retryExecution = await collectAndFuseHybridResults(query, embedding, retryOptions);
+    const retryResultsBase = retryExecution
+      ? applyResultLimit(retryExecution.fusedResults, retryOptions.limit)
+      : await hybridSearch(query, embedding, retryOptions);
+    const retryResults = retryResultsBase.length > 0
+      ? markFallbackRetry(retryResultsBase)
+      : retryResultsBase;
     stages.push({
       stage: 'retry',
       options: retryOptions,
-      results: retryResults.length > 0 ? markFallbackRetry(retryResults) : retryResults,
+      results: retryResults,
+      execution: retryExecution,
       trigger: 'empty',
     });
   }
@@ -792,7 +852,7 @@ async function hybridSearch(
     limit = DEFAULT_LIMIT,
     specFolder,
     minSimilarity = 0,
-    useBm25 = true,
+    useBm25 = isBm25Enabled(),
     useFts = true,
     useVector = true,
     useGraph = true,
@@ -912,13 +972,26 @@ async function hybridSearchEnhanced(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
+  const execution = await collectAndFuseHybridResults(query, embedding, options);
+  if (execution) {
+    if (options.stopAfterFusion) {
+      return applyResultLimit(execution.fusedResults, options.limit);
+    }
+
+    return enrichFusedResults(query, execution, options);
+  }
+
+  return hybridSearch(query, embedding, options);
+}
+
+async function collectAndFuseHybridResults(
+  query: string,
+  embedding: Float32Array | number[] | null,
+  options: HybridSearchOptions = {}
+): Promise<HybridFusionExecution | null> {
   try {
     const evaluationMode = options.evaluationMode === true;
-    const lists: Array<{
-      source: string;
-      results: Array<{ id: number | string; [key: string]: unknown }>;
-      weight?: number;
-    }> = [];
+    const lists: HybridFusionExecution['lists'] = [];
 
     // Pipeline metadata collector (populated by flag-gated stages)
     const s3meta: Sprint3PipelineMeta = {};
@@ -973,6 +1046,7 @@ async function hybridSearchEnhanced(
     let semanticResults: Array<{ id: number | string; source: string; [key: string]: unknown }> = [];
     let ftsChannelResults: HybridSearchResult[] = [];
     let bm25ChannelResults: HybridSearchResult[] = [];
+    const vectorEmbeddingCache = new Map<number, Float32Array>();
 
     // All channels use synchronous better-sqlite3; sequential execution
     // Is correct — Promise.all adds overhead without parallelism.
@@ -986,12 +1060,23 @@ async function hybridSearchEnhanced(
           minSimilarity: options.minSimilarity || 0,
           includeConstitutional: false,
           includeArchived: options.includeArchived || false,
+          includeEmbeddings: true,
         });
         semanticResults = vectorResults.map((r: Record<string, unknown>): { id: number | string; source: string; [key: string]: unknown } => ({
           ...r,
           id: r.id as number | string,
           source: 'vector',
         }));
+        for (const result of semanticResults) {
+          if (typeof result.id !== 'number') continue;
+          const embeddingCandidate = toEmbeddingBufferView(
+            (result as Record<string, unknown>).embedding
+            ?? (result as Record<string, unknown>).embeddingBuffer
+          );
+          if (embeddingCandidate) {
+            vectorEmbeddingCache.set(result.id, embeddingCandidate);
+          }
+        }
         lists.push({ source: 'vector', results: semanticResults, weight: 1.0 });
       } catch (_err: unknown) {
         // Non-critical — vector channel failure does not block pipeline
@@ -1090,453 +1175,490 @@ async function hybridSearchEnhanced(
     ];
 
     if (options.skipFusion) {
-      return collectCandidatesFromLists(
-        lists.filter((list) => list.source !== 'degree'),
-        options.limit ?? DEFAULT_LIMIT
-      );
+      return {
+        evaluationMode,
+        intent: options.intent || classifyIntent(query).intent,
+        lists,
+        routeResult,
+        budgetResult,
+        s3meta,
+        vectorEmbeddingCache,
+        fusedResults: collectCandidatesFromLists(
+          lists.filter((list) => list.source !== 'degree'),
+          options.limit ?? DEFAULT_LIMIT
+        ),
+      };
     }
 
-    if (lists.length > 0) {
-      // Track multi-source and graph-only results
-      const sourceMap = new Map<string, Set<string>>();
-      for (const list of lists) {
-        for (const r of list.results) {
-          const key = canonicalResultId(r.id);
-          if (!sourceMap.has(key)) sourceMap.set(key, new Set());
-          sourceMap.get(key)!.add(list.source); // non-null safe: has() guard above guarantees entry exists
+    if (lists.length === 0) {
+      return null;
+    }
+
+    // Track multi-source and graph-only results
+    const sourceMap = new Map<string, Set<string>>();
+    for (const list of lists) {
+      for (const r of list.results) {
+        const key = canonicalResultId(r.id);
+        if (!sourceMap.has(key)) sourceMap.set(key, new Set());
+        sourceMap.get(key)!.add(list.source); // non-null safe: has() guard above guarantees entry exists
+      }
+    }
+    for (const [, sources] of sourceMap) {
+      if (sources.size > 1) graphMetrics.multiSourceResults++;
+      if (sources.size === 1 && sources.has('graph')) graphMetrics.graphOnlyResults++;
+    }
+
+    // C138/T315: Build weighted fusion lists once from lightweight adaptive
+    // weights, avoiding the heavier hybridAdaptiveFuse() standard-first path.
+    const intent = options.intent || classifyIntent(query).intent;
+    const adaptiveEnabled = isAdaptiveFusionEnabled();
+    const fusionWeights = adaptiveEnabled
+      ? getAdaptiveWeights(intent)
+      : { semanticWeight: 1.0, keywordWeight: 1.0, recencyWeight: 0 };
+    const { semanticWeight, keywordWeight, graphWeight: adaptiveGraphWeight } = fusionWeights;
+    const keywordFusionResults = keywordResults.map((result) => ({
+      ...result,
+      source: 'keyword',
+    }));
+    const fusionLists = lists
+      .filter((list) => list.source !== 'fts' && list.source !== 'bm25')
+      .map((list) => {
+        if (list.source === 'vector') {
+          return { ...list, weight: semanticWeight };
         }
-      }
-      for (const [, sources] of sourceMap) {
-        if (sources.size > 1) graphMetrics.multiSourceResults++;
-        if (sources.size === 1 && sources.has('graph')) graphMetrics.graphOnlyResults++;
-      }
-
-      // C138: Use adaptive fusion to get intent-aware weights replacing hardcoded [1.0, 0.8, 0.6]
-      const intent = options.intent || classifyIntent(query).intent;
-      const adaptiveResult = hybridAdaptiveFuse(semanticResults, keywordResults, intent);
-      const { semanticWeight, keywordWeight, graphWeight: adaptiveGraphWeight } = adaptiveResult.weights;
-      const keywordFusionResults = keywordResults.map((result) => ({
-        ...result,
-        source: 'keyword',
-      }));
-      const fusionLists = lists
-        .filter((list) => list.source !== 'fts' && list.source !== 'bm25')
-        .map((list) => {
-          if (list.source === 'vector') {
-            return { ...list, weight: semanticWeight };
-          }
-          if (list.source === 'graph' && typeof adaptiveGraphWeight === 'number') {
-            return { ...list, weight: adaptiveGraphWeight };
-          }
-          return { ...list };
-        });
-
-      if (keywordFusionResults.length > 0 && keywordWeight > 0) {
-        fusionLists.push({
-          source: 'keyword',
-          results: keywordFusionResults,
-          weight: keywordWeight,
-        });
-      }
-
-      // Only short-circuit to adaptive fusion when the live fusion set contains
-      // exactly the channels adaptive fusion already modeled. Extra channels like
-      // degree must still flow through fuseResultsMulti even when graph is absent.
-      const useAdaptiveResultsDirectly = adaptiveResult.results.length > 0
-        && fusionLists.every((list) => list.source === 'vector' || list.source === 'keyword');
-      const fused = useAdaptiveResultsDirectly
-        ? adaptiveResult.results
-        : fuseResultsMulti(fusionLists);
-
-      let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
-      const limit = options.limit || DEFAULT_LIMIT;
-
-      fusedHybridResults = fusedHybridResults.map((row) => {
-        const rowRecord = row as Record<string, unknown>;
-        if (rowRecord.parentMemoryId !== undefined) return row;
-        const normalizedParentMemoryId = rowRecord.parent_id ?? rowRecord.parentId;
-        if (normalizedParentMemoryId === undefined) return row;
-        return {
-          ...row,
-          parentMemoryId: normalizedParentMemoryId,
-        };
+        if (list.source === 'graph' && typeof adaptiveGraphWeight === 'number') {
+          return { ...list, weight: adaptiveGraphWeight };
+        }
+        return { ...list };
       });
 
-      if (options.stopAfterFusion) {
-        return applyResultLimit(fusedHybridResults, options.limit);
-      }
-
-      // -- Aggregation stage: MPAB chunk-to-memory aggregation (after fusion, before state filter) --
-      // When enabled, collapses chunk-level results back to their parent memory
-      // Documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
-      // Multiple chunks from the same document dominating the result list.
-      // MINOR-1 fix: isMpabEnabled() and isDocscoreAggregationEnabled() check the same env var
-      if (isDocscoreAggregationEnabled()) {
-        try {
-          const chunkResults = fusedHybridResults.filter(
-            r => (r as Record<string, unknown>).parentMemoryId != null && (r as Record<string, unknown>).chunkIndex != null
-          );
-          if (chunkResults.length > 0) {
-            const nonChunkResults = fusedHybridResults.filter(
-              r => (r as Record<string, unknown>).parentMemoryId == null || (r as Record<string, unknown>).chunkIndex == null
-            );
-            const collapsed = collapseAndReassembleChunkResults(
-              chunkResults.map(r => ({
-                id: r.id,
-                parentMemoryId: (r as Record<string, unknown>).parentMemoryId as number | string,
-                chunkIndex: (r as Record<string, unknown>).chunkIndex as number,
-                score: r.score,
-              }))
-            );
-            // Merge collapsed chunk results with non-chunk results
-            fusedHybridResults = [
-              ...collapsed.map(c => ({
-                id: c.parentMemoryId,
-                score: c.mpabScore,
-                source: 'mpab' as string,
-                _chunkHits: c._chunkHits,
-              } as HybridSearchResult)),
-              ...nonChunkResults,
-            ];
-          }
-        } catch (_mpabErr: unknown) {
-          // Non-critical — MPAB failure does not block pipeline
-          const msg = _mpabErr instanceof Error ? _mpabErr.message : String(_mpabErr);
-          console.error('[hybrid-search] MPAB error (non-fatal):', msg);
-        }
-      }
-
-      // -- Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) --
-      // Ensures every channel that returned results has at least one representative
-      // In the top-k window. Prevents single-channel dominance in fusion output.
-      // When disabled, passes results through unchanged.
-      try {
-        const channelResultSets = new Map<string, Array<{ id: number | string; score: number; [key: string]: unknown }>>();
-        for (const list of lists) {
-          channelResultSets.set(list.source, list.results.map(r => ({
-            ...r,
-            id: r.id,
-            score: typeof (r as Record<string, unknown>).score === 'number'
-              ? (r as Record<string, unknown>).score as number
-              : typeof (r as Record<string, unknown>).similarity === 'number'
-                ? ((r as Record<string, unknown>).similarity as number) / 100
-                : 0,
-          })));
-        }
-
-        const enforcementResult: EnforcementResult = enforceChannelRepresentation(
-          fusedHybridResults.map(r => ({ ...r, source: r.source || 'hybrid' })),
-          channelResultSets,
-          limit,
-        );
-
-        if (enforcementResult.enforcement.applied) {
-          fusedHybridResults = enforcementResult.results as HybridSearchResult[];
-          s3meta.enforcement = {
-            applied: true,
-            promotedCount: enforcementResult.enforcement.promotedCount,
-            underRepresentedChannels: enforcementResult.enforcement.underRepresentedChannels,
-          };
-        }
-      } catch (err: unknown) {
-        // Non-critical — enforcement failure does not block pipeline
-        console.warn('[hybrid-search] channel enforcement failed:', err instanceof Error ? err.message : String(err));
-      }
-
-      // C138: MMR reranking — retrieve embeddings from vec_memories for diversity pruning.
-      // Fused results don't carry embeddings through RRF, so we look them up from the
-      // Vec0 virtual table for the top-N numeric-ID results before running MMR.
-      let reranked: HybridSearchResult[] = fusedHybridResults.slice(0, limit);
-
-      // P1-5: Optional local GGUF reranking path (RERANKER_LOCAL=true).
-      // Preserve cross-encoder gate semantics: when SPECKIT_CROSS_ENCODER=false, skip reranking.
-      if (isCrossEncoderEnabled() && isLocalRerankerEnabled() && reranked.length >= MMR_MIN_CANDIDATES) {
-        const localReranked = await rerankLocal(query, reranked, limit);
-        if (localReranked !== reranked) {
-          reranked = localReranked as HybridSearchResult[];
-        }
-      }
-
-      if (db && isMMREnabled()) {
-        const numericIds = reranked
-          .map(r => r.id)
-          .filter((id): id is number => typeof id === 'number');
-
-        if (numericIds.length >= MMR_MIN_CANDIDATES) {
-          try {
-            const placeholders = numericIds.map(() => '?').join(', ');
-            const embRows = (db.prepare(
-              `SELECT rowid, embedding FROM vec_memories WHERE rowid IN (${placeholders})`
-            ) as Database.Statement).all(...numericIds) as Array<{ rowid: number; embedding: Buffer }>;
-
-            const embeddingMap = new Map<number, Float32Array>();
-            for (const row of embRows) {
-              if (Buffer.isBuffer(row.embedding)) {
-                embeddingMap.set(
-                  row.rowid,
-                  new Float32Array(row.embedding.buffer, row.embedding.byteOffset, row.embedding.byteLength / 4)
-                );
-              }
-            }
-
-            const mmrCandidates: MMRCandidate[] = [];
-            for (const r of reranked) {
-              const emb = embeddingMap.get(r.id as number);
-              if (emb) {
-                mmrCandidates.push({
-                  id: r.id as number,
-                  score: (r.score as number) ?? 0,
-                  embedding: emb,
-                });
-              }
-            }
-
-            if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
-              const mmrLambda = INTENT_LAMBDA_MAP[intent] ?? MMR_DEFAULT_LAMBDA;
-              const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit });
-
-              // FIX #6: Same fix as stage3-rerank FIX #5 — MMR can only diversify
-              // rows that have embeddings. Non-embedded rows (lexical-only hits,
-              // graph injections) must be preserved and merged back in their
-              // original relative order instead of being silently dropped.
-              const embeddedIdSet = new Set(mmrCandidates.map(c => c.id));
-              const nonEmbeddedRows = reranked.filter(r => !embeddedIdSet.has(r.id as number));
-
-              const diversifiedRows = diversified.map((candidate): HybridSearchResult => {
-                const existing = reranked.find(r => r.id === candidate.id);
-                if (existing) {
-                  return existing;
-                }
-
-                return {
-                  id: candidate.id,
-                  score: candidate.score,
-                  source: 'vector',
-                };
-              });
-
-              // Merge: diversified embedded rows first (MMR-ordered), then
-              // non-embedded rows in their original relative order.
-              reranked = [...diversifiedRows, ...nonEmbeddedRows];
-            }
-          } catch (embErr: unknown) {
-            const msg = embErr instanceof Error ? embErr.message : String(embErr);
-            console.warn(`[hybrid-search] MMR embedding retrieval failed: ${msg}`);
-          }
-        }
-      }
-
-      // C138: Co-activation spreading — enrich with temporal neighbors
-      const topIds = reranked
-        .slice(0, SPREAD_ACTIVATION_TOP_N)
-        .map(r => r.id)
-        .filter((id): id is number => typeof id === 'number');
-      if (topIds.length > 0) {
-        try {
-          const spreadResults: SpreadResult[] = spreadActivation(topIds);
-          // Boost scores of results that appear in co-activation graph
-          if (spreadResults.length > 0) {
-            const spreadMap = new Map(spreadResults.map(sr => [sr.id, sr.activationScore]));
-            for (const result of reranked) {
-              const boost = spreadMap.get(result.id as number);
-              if (boost !== undefined) {
-                // M10 FIX: Update all score aliases so downstream consumers see the boost
-              const boostedScore = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor;
-              (result as Record<string, unknown>).score = boostedScore;
-              if ('rrfScore' in result) (result as Record<string, unknown>).rrfScore = boostedScore;
-              if ('intentAdjustedScore' in result) (result as Record<string, unknown>).intentAdjustedScore = boostedScore;
-              }
-            }
-          }
-          // P1-2 FIX: Re-sort after co-activation boost to ensure boosted results
-          // Are promoted to their correct position in the ranking
-          reranked.sort((a, b) => ((b.score as number) ?? 0) - ((a.score as number) ?? 0));
-        } catch (err: unknown) {
-          // Non-critical enrichment — co-activation failure does not affect core ranking
-          console.warn('[hybrid-search] co-activation enrichment failed:', err instanceof Error ? err.message : String(err));
-        }
-      }
-
-      // Folder relevance / two-pass retrieval (SPECKIT_FOLDER_SCORING)
-      if (db && isFolderScoringEnabled() && reranked.length > 0) {
-        try {
-          const numericIds = reranked
-            .map(r => r.id)
-            .filter((id): id is number => typeof id === 'number');
-
-          if (numericIds.length > 0) {
-            const folderMap = lookupFolders(db, numericIds);
-            if (folderMap.size > 0) {
-              const folderScores = computeFolderRelevanceScores(reranked, folderMap);
-              const rawTopK = process.env.SPECKIT_FOLDER_TOP_K;
-              const parsedTopK = rawTopK ? parseInt(rawTopK, 10) : NaN;
-              const topK = Number.isFinite(parsedTopK) && parsedTopK > 0 ? parsedTopK : 5;
-
-              const twoPhaseResults = twoPhaseRetrieval(reranked, folderScores, folderMap, topK);
-              const postFolderResults = twoPhaseResults.length > 0 ? twoPhaseResults : reranked;
-              reranked = enrichResultsWithFolderScores(postFolderResults, folderScores, folderMap) as HybridSearchResult[];
-            }
-          }
-        } catch (_folderErr: unknown) {
-          // Folder scoring is optional and must not break retrieval
-        }
-      }
-
-      // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
-      // Run after the ranking pipeline so later boosts/promotions can rescue
-      // candidates before low-confidence tails are trimmed.
-      if (!evaluationMode) {
-        try {
-          const truncationResult: TruncationResult = truncateByConfidence(
-            reranked.map(r => ({ ...r, id: r.id, score: r.score })),
-          );
-
-          if (truncationResult.truncated) {
-            reranked = truncationResult.results.map(r => r as HybridSearchResult);
-            s3meta.truncation = {
-              truncated: true,
-              originalCount: truncationResult.originalCount,
-              truncatedCount: truncationResult.truncatedCount,
-              medianGap: truncationResult.medianGap,
-              cutoffGap: truncationResult.cutoffGap,
-              cutoffIndex: truncationResult.cutoffIndex,
-              thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
-              minResultsGuaranteed: DEFAULT_MIN_RESULTS,
-              featureFlagEnabled: isConfidenceTruncationEnabled(),
-            };
-          }
-        } catch (err: unknown) {
-          // Non-critical — truncation failure does not block pipeline
-          console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
-        }
-      }
-
-      // Preserve non-enumerable eval metadata across truncation reallocation.
-      const shadowMeta = reranked as HybridSearchResult[] & ShadowMetaArray;
-      const s4shadowMeta = shadowMeta._s4shadow;
-      const s4attributionMeta = shadowMeta._s4attribution;
-      const degradationMeta = shadowMeta._degradation;
-
-      // Preserve routing and Stage 4 trace metadata as explicit result fields so downstream
-      // Formatters can opt-in to provenance-rich envelopes without relying on
-      // Non-enumerable array shadow properties.
-      if (reranked.length > 0) {
-        reranked = reranked.map((row): HybridSearchResult => {
-          const existingTraceMetadata =
-            typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
-              ? row.traceMetadata
-              : {};
-
-          return {
-            ...row,
-            traceMetadata: {
-              ...existingTraceMetadata,
-              ...(s4shadowMeta !== undefined ? { stage4: s4shadowMeta } : {}),
-              ...(s4attributionMeta !== undefined ? { attribution: s4attributionMeta } : {}),
-              ...(degradationMeta !== undefined ? { degradation: degradationMeta } : {}),
-              evaluationMode,
-              // Wire queryComplexity from router classification into trace
-              queryComplexity: routeResult.tier,
-              // Wire confidence truncation metadata into per-result trace (036)
-              ...(s3meta.truncation ? {
-                confidenceTruncation: {
-                  truncated: s3meta.truncation.truncated,
-                  originalCount: s3meta.truncation.originalCount,
-                  truncatedCount: s3meta.truncation.truncatedCount,
-                  medianGap: s3meta.truncation.medianGap,
-                  cutoffGap: s3meta.truncation.cutoffGap,
-                  cutoffIndex: s3meta.truncation.cutoffIndex,
-                  thresholdMultiplier: s3meta.truncation.thresholdMultiplier,
-                  minResultsGuaranteed: s3meta.truncation.minResultsGuaranteed,
-                },
-              } : {}),
-            },
-          };
-        });
-      }
-
-      if (isContextHeadersEnabled() && reranked.length > 0) {
-        const descriptionCache = buildDescriptionTailMap();
-        if (descriptionCache.size > 0) {
-          reranked = reranked.map((row) => injectContextualTree(row, descriptionCache));
-        }
-      }
-
-      let budgetTruncated = false;
-      let budgetLimit: number | undefined;
-      if (evaluationMode) {
-        reranked = applyResultLimit(reranked, options.limit);
-      } else {
-        // Apply token budget truncation after trace/header enrichment so token
-        // estimates reflect the actual returned payload shape.
-        const headerOverhead = isContextHeadersEnabled()
-          ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
-          : 0;
-        const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
-
-        if (s3meta.tokenBudget) {
-          s3meta.tokenBudget.headerOverhead = headerOverhead;
-          s3meta.tokenBudget.adjustedBudget = adjustedBudget;
-        }
-
-        const budgeted = truncateToBudget(reranked, adjustedBudget, {
-          includeContent: options.includeContent ?? false,
-          queryId: `hybrid-${Date.now()}`,
-        });
-        reranked = budgeted.results;
-        budgetTruncated = budgeted.truncated;
-        budgetLimit = budgetResult.budget;
-      }
-
-      if (reranked.length > 0) {
-        reranked = reranked.map((row): HybridSearchResult => {
-          const existingTraceMetadata =
-            typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
-              ? row.traceMetadata
-              : {};
-
-          return {
-            ...row,
-            traceMetadata: {
-              ...existingTraceMetadata,
-              budgetTruncated,
-              ...(budgetLimit !== undefined ? { budgetLimit } : {}),
-            },
-          };
-        });
-      }
-
-      if (s4shadowMeta !== undefined && reranked.length > 0) {
-        Object.defineProperty(reranked, '_s4shadow', {
-          value: s4shadowMeta,
-          enumerable: false,
-          configurable: true,
-        });
-      }
-
-      if (s4attributionMeta !== undefined && reranked.length > 0) {
-        Object.defineProperty(reranked, '_s4attribution', {
-          value: s4attributionMeta,
-          enumerable: false,
-          configurable: true,
-        });
-      }
-
-      // Attach pipeline metadata to results for eval/debugging
-      // Metadata is attached as non-enumerable _s3meta property to avoid
-      // Polluting result serialization while remaining accessible for debugging.
-      if (Object.keys(s3meta).length > 0 && reranked.length > 0) {
-        Object.defineProperty(reranked, '_s3meta', { value: s3meta, enumerable: false, configurable: true });
-      }
-
-      return reranked;
+    if (keywordFusionResults.length > 0 && keywordWeight > 0) {
+      fusionLists.push({
+        source: 'keyword',
+        results: keywordFusionResults,
+        weight: keywordWeight,
+      });
     }
+
+    const fused = fuseResultsMulti(fusionLists);
+
+    const fusedResults = fused.map(toHybridResult).map((row) => {
+      const rowRecord = row as Record<string, unknown>;
+      if (rowRecord.parentMemoryId !== undefined) return row;
+      const normalizedParentMemoryId = rowRecord.parent_id ?? rowRecord.parentId;
+      if (normalizedParentMemoryId === undefined) return row;
+      return {
+        ...row,
+        parentMemoryId: normalizedParentMemoryId,
+      };
+    });
+
+    return {
+      evaluationMode,
+      intent,
+      lists,
+      routeResult,
+      budgetResult,
+      s3meta,
+      vectorEmbeddingCache,
+      fusedResults,
+    };
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[hybrid-search] Enhanced search failed, falling back: ${msg}`);
+    return null;
+  }
+}
+
+async function enrichFusedResults(
+  query: string,
+  execution: HybridFusionExecution,
+  options: HybridSearchOptions = {},
+  initialResults: HybridSearchResult[] = execution.fusedResults
+): Promise<HybridSearchResult[]> {
+  const {
+    evaluationMode,
+    intent,
+    lists,
+    routeResult,
+    budgetResult,
+    s3meta,
+    vectorEmbeddingCache,
+  } = execution;
+  let fusedHybridResults = initialResults;
+  const limit = options.limit || DEFAULT_LIMIT;
+
+  // -- Aggregation stage: MPAB chunk-to-memory aggregation (after fusion, before state filter) --
+  // When enabled, collapses chunk-level results back to their parent memory
+  // Documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
+  // Multiple chunks from the same document dominating the result list.
+  // MINOR-1 fix: isMpabEnabled() and isDocscoreAggregationEnabled() check the same env var
+  if (isDocscoreAggregationEnabled()) {
+    try {
+      const chunkResults = fusedHybridResults.filter(
+        r => (r as Record<string, unknown>).parentMemoryId != null && (r as Record<string, unknown>).chunkIndex != null
+      );
+      if (chunkResults.length > 0) {
+        const nonChunkResults = fusedHybridResults.filter(
+          r => (r as Record<string, unknown>).parentMemoryId == null || (r as Record<string, unknown>).chunkIndex == null
+        );
+        const collapsed = collapseAndReassembleChunkResults(
+          chunkResults.map(r => ({
+            id: r.id,
+            parentMemoryId: (r as Record<string, unknown>).parentMemoryId as number | string,
+            chunkIndex: (r as Record<string, unknown>).chunkIndex as number,
+            score: r.score,
+          }))
+        );
+        // Merge collapsed chunk results with non-chunk results
+        fusedHybridResults = [
+          ...collapsed.map(c => ({
+            id: c.parentMemoryId,
+            score: c.mpabScore,
+            source: 'mpab' as string,
+            _chunkHits: c._chunkHits,
+          } as HybridSearchResult)),
+          ...nonChunkResults,
+        ];
+      }
+    } catch (_mpabErr: unknown) {
+      // Non-critical — MPAB failure does not block pipeline
+      const msg = _mpabErr instanceof Error ? _mpabErr.message : String(_mpabErr);
+      console.error('[hybrid-search] MPAB error (non-fatal):', msg);
+    }
   }
 
-  return hybridSearch(query, embedding, options);
+  // -- Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) --
+  // Ensures every channel that returned results has at least one representative
+  // In the top-k window. Prevents single-channel dominance in fusion output.
+  // When disabled, passes results through unchanged.
+  try {
+    const channelResultSets = new Map<string, Array<{ id: number | string; score: number; [key: string]: unknown }>>();
+    for (const list of lists) {
+      channelResultSets.set(list.source, list.results.map(r => ({
+        ...r,
+        id: r.id,
+        score: typeof (r as Record<string, unknown>).score === 'number'
+          ? (r as Record<string, unknown>).score as number
+          : typeof (r as Record<string, unknown>).similarity === 'number'
+            ? ((r as Record<string, unknown>).similarity as number) / 100
+            : 0,
+      })));
+    }
+
+    const enforcementResult: EnforcementResult = enforceChannelRepresentation(
+      fusedHybridResults.map(r => ({ ...r, source: r.source || 'hybrid' })),
+      channelResultSets,
+      limit,
+    );
+
+    if (enforcementResult.enforcement.applied) {
+      fusedHybridResults = enforcementResult.results as HybridSearchResult[];
+      s3meta.enforcement = {
+        applied: true,
+        promotedCount: enforcementResult.enforcement.promotedCount,
+        underRepresentedChannels: enforcementResult.enforcement.underRepresentedChannels,
+      };
+    }
+  } catch (err: unknown) {
+    // Non-critical — enforcement failure does not block pipeline
+    console.warn('[hybrid-search] channel enforcement failed:', err instanceof Error ? err.message : String(err));
+  }
+
+  // Preserve non-enumerable eval metadata across later array reallocations.
+  const shadowMeta = initialResults as HybridSearchResult[] & ShadowMetaArray;
+  const s4shadowMeta = shadowMeta._s4shadow;
+  const s4attributionMeta = shadowMeta._s4attribution;
+  const degradationMeta = shadowMeta._degradation;
+
+  // C138/T316: MMR reranking with request-scoped embedding cache.
+  // Reuse embeddings already returned by the vector channel when present and
+  // only query vec_memories for missing IDs.
+  let reranked: HybridSearchResult[] = fusedHybridResults.slice(0, limit);
+
+  // P1-5: Optional local GGUF reranking path (RERANKER_LOCAL=true).
+  // Preserve cross-encoder gate semantics: when SPECKIT_CROSS_ENCODER=false, skip reranking.
+  if (isCrossEncoderEnabled() && isLocalRerankerEnabled() && reranked.length >= MMR_MIN_CANDIDATES) {
+    const localReranked = await rerankLocal(query, reranked, limit);
+    if (localReranked !== reranked) {
+      reranked = localReranked as HybridSearchResult[];
+    }
+  }
+
+  if (db && isMMREnabled()) {
+    const numericIds = reranked
+      .map(r => r.id)
+      .filter((id): id is number => typeof id === 'number');
+
+    if (numericIds.length >= MMR_MIN_CANDIDATES) {
+      try {
+        const embeddingMap = new Map<number, Float32Array>(vectorEmbeddingCache);
+        const missingIds = numericIds.filter((id) => !embeddingMap.has(id));
+
+        if (missingIds.length > 0) {
+          const placeholders = missingIds.map(() => '?').join(', ');
+          const embRows = (db.prepare(
+            `SELECT rowid, embedding FROM vec_memories WHERE rowid IN (${placeholders})`
+          ) as Database.Statement).all(...missingIds) as Array<{ rowid: number; embedding: Buffer }>;
+
+          for (const row of embRows) {
+            if (Buffer.isBuffer(row.embedding)) {
+              embeddingMap.set(
+                row.rowid,
+                new Float32Array(row.embedding.buffer, row.embedding.byteOffset, row.embedding.byteLength / 4)
+              );
+            }
+          }
+        }
+
+        const mmrCandidates: MMRCandidate[] = [];
+        for (const r of reranked) {
+          const emb = embeddingMap.get(r.id as number);
+          if (emb) {
+            mmrCandidates.push({
+              id: r.id as number,
+              score: (r.score as number) ?? 0,
+              embedding: emb,
+            });
+          }
+        }
+
+        if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
+          const mmrLambda = INTENT_LAMBDA_MAP[intent] ?? MMR_DEFAULT_LAMBDA;
+          const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit });
+
+          // FIX #6: Same fix as stage3-rerank FIX #5 — MMR can only diversify
+          // rows that have embeddings. Non-embedded rows (lexical-only hits,
+          // graph injections) must be preserved and merged back in their
+          // original relative order instead of being silently dropped.
+          const embeddedIdSet = new Set(mmrCandidates.map(c => c.id));
+          const nonEmbeddedRows = reranked.filter(r => !embeddedIdSet.has(r.id as number));
+          const rerankedById = new Map<string, HybridSearchResult>(
+            reranked.map((result) => [canonicalResultId(result.id), result])
+          );
+
+          const diversifiedRows = diversified.map((candidate): HybridSearchResult => {
+            const existing = rerankedById.get(canonicalResultId(candidate.id));
+            if (existing) {
+              return existing;
+            }
+
+            return {
+              id: candidate.id,
+              score: candidate.score,
+              source: 'vector',
+            };
+          });
+
+          // Merge: diversified embedded rows first (MMR-ordered), then
+          // non-embedded rows in their original relative order.
+          reranked = [...diversifiedRows, ...nonEmbeddedRows];
+        }
+      } catch (embErr: unknown) {
+        const msg = embErr instanceof Error ? embErr.message : String(embErr);
+        console.warn(`[hybrid-search] MMR embedding retrieval failed: ${msg}`);
+      }
+    }
+  }
+
+  // C138: Co-activation spreading — enrich with temporal neighbors
+  const topIds = reranked
+    .slice(0, SPREAD_ACTIVATION_TOP_N)
+    .map(r => r.id)
+    .filter((id): id is number => typeof id === 'number');
+  if (topIds.length > 0) {
+    try {
+      const spreadResults: SpreadResult[] = spreadActivation(topIds);
+      // Boost scores of results that appear in co-activation graph
+      if (spreadResults.length > 0) {
+        const spreadMap = new Map(spreadResults.map(sr => [sr.id, sr.activationScore]));
+        for (const result of reranked) {
+          const boost = spreadMap.get(result.id as number);
+          if (boost !== undefined) {
+            // M10 FIX: Update all score aliases so downstream consumers see the boost
+            const boostedScore = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor;
+            (result as Record<string, unknown>).score = boostedScore;
+            if ('rrfScore' in result) (result as Record<string, unknown>).rrfScore = boostedScore;
+            if ('intentAdjustedScore' in result) (result as Record<string, unknown>).intentAdjustedScore = boostedScore;
+          }
+        }
+      }
+      // P1-2 FIX: Re-sort after co-activation boost to ensure boosted results
+      // Are promoted to their correct position in the ranking
+      reranked.sort((a, b) => ((b.score as number) ?? 0) - ((a.score as number) ?? 0));
+    } catch (err: unknown) {
+      // Non-critical enrichment — co-activation failure does not affect core ranking
+      console.warn('[hybrid-search] co-activation enrichment failed:', err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  // Folder relevance / two-pass retrieval (SPECKIT_FOLDER_SCORING)
+  if (db && isFolderScoringEnabled() && reranked.length > 0) {
+    try {
+      const numericIds = reranked
+        .map(r => r.id)
+        .filter((id): id is number => typeof id === 'number');
+
+      if (numericIds.length > 0) {
+        const folderMap = lookupFolders(db, numericIds);
+        if (folderMap.size > 0) {
+          const folderScores = computeFolderRelevanceScores(reranked, folderMap);
+          const rawTopK = process.env.SPECKIT_FOLDER_TOP_K;
+          const parsedTopK = rawTopK ? parseInt(rawTopK, 10) : NaN;
+          const topK = Number.isFinite(parsedTopK) && parsedTopK > 0 ? parsedTopK : 5;
+
+          const twoPhaseResults = twoPhaseRetrieval(reranked, folderScores, folderMap, topK);
+          const postFolderResults = twoPhaseResults.length > 0 ? twoPhaseResults : reranked;
+          reranked = enrichResultsWithFolderScores(postFolderResults, folderScores, folderMap) as HybridSearchResult[];
+        }
+      }
+    } catch (_folderErr: unknown) {
+      // Folder scoring is optional and must not break retrieval
+    }
+  }
+
+  // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
+  // Run after the ranking pipeline so later boosts/promotions can rescue
+  // candidates before low-confidence tails are trimmed.
+  if (!evaluationMode) {
+    try {
+      const truncationResult: TruncationResult = truncateByConfidence(
+        reranked.map(r => ({ ...r, id: r.id, score: r.score })),
+      );
+
+      if (truncationResult.truncated) {
+        reranked = truncationResult.results.map(r => r as HybridSearchResult);
+        s3meta.truncation = {
+          truncated: true,
+          originalCount: truncationResult.originalCount,
+          truncatedCount: truncationResult.truncatedCount,
+          medianGap: truncationResult.medianGap,
+          cutoffGap: truncationResult.cutoffGap,
+          cutoffIndex: truncationResult.cutoffIndex,
+          thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
+          minResultsGuaranteed: DEFAULT_MIN_RESULTS,
+          featureFlagEnabled: isConfidenceTruncationEnabled(),
+        };
+      }
+    } catch (err: unknown) {
+      // Non-critical — truncation failure does not block pipeline
+      console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  // Preserve routing and Stage 4 trace metadata as explicit result fields so downstream
+  // Formatters can opt-in to provenance-rich envelopes without relying on
+  // Non-enumerable array shadow properties.
+  if (reranked.length > 0) {
+    reranked = reranked.map((row): HybridSearchResult => {
+      const existingTraceMetadata =
+        typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
+          ? row.traceMetadata
+          : {};
+
+      return {
+        ...row,
+        traceMetadata: {
+          ...existingTraceMetadata,
+          ...(s4shadowMeta !== undefined ? { stage4: s4shadowMeta } : {}),
+          ...(s4attributionMeta !== undefined ? { attribution: s4attributionMeta } : {}),
+          ...(degradationMeta !== undefined ? { degradation: degradationMeta } : {}),
+          evaluationMode,
+          // Wire queryComplexity from router classification into trace
+          queryComplexity: routeResult.tier,
+          // Wire confidence truncation metadata into per-result trace (036)
+          ...(s3meta.truncation ? {
+            confidenceTruncation: {
+              truncated: s3meta.truncation.truncated,
+              originalCount: s3meta.truncation.originalCount,
+              truncatedCount: s3meta.truncation.truncatedCount,
+              medianGap: s3meta.truncation.medianGap,
+              cutoffGap: s3meta.truncation.cutoffGap,
+              cutoffIndex: s3meta.truncation.cutoffIndex,
+              thresholdMultiplier: s3meta.truncation.thresholdMultiplier,
+              minResultsGuaranteed: s3meta.truncation.minResultsGuaranteed,
+            },
+          } : {}),
+        },
+      };
+    });
+  }
+
+  if (isContextHeadersEnabled() && reranked.length > 0) {
+    const descriptionCache = buildDescriptionTailMap();
+    if (descriptionCache.size > 0) {
+      reranked = reranked.map((row) => injectContextualTree(row, descriptionCache));
+    }
+  }
+
+  let budgetTruncated = false;
+  let budgetLimit: number | undefined;
+  if (evaluationMode) {
+    reranked = applyResultLimit(reranked, options.limit);
+  } else {
+    // Apply token budget truncation after trace/header enrichment so token
+    // estimates reflect the actual returned payload shape.
+    const headerOverhead = isContextHeadersEnabled()
+      ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
+      : 0;
+    const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
+
+    if (s3meta.tokenBudget) {
+      s3meta.tokenBudget.headerOverhead = headerOverhead;
+      s3meta.tokenBudget.adjustedBudget = adjustedBudget;
+    }
+
+    const budgeted = truncateToBudget(reranked, adjustedBudget, {
+      includeContent: options.includeContent ?? false,
+      queryId: `hybrid-${Date.now()}`,
+    });
+    reranked = budgeted.results;
+    budgetTruncated = budgeted.truncated;
+    budgetLimit = budgetResult.budget;
+  }
+
+  if (reranked.length > 0) {
+    reranked = reranked.map((row): HybridSearchResult => {
+      const existingTraceMetadata =
+        typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
+          ? row.traceMetadata
+          : {};
+
+      return {
+        ...row,
+        traceMetadata: {
+          ...existingTraceMetadata,
+          budgetTruncated,
+          ...(budgetLimit !== undefined ? { budgetLimit } : {}),
+        },
+      };
+    });
+  }
+
+  if (s4shadowMeta !== undefined && reranked.length > 0) {
+    Object.defineProperty(reranked, '_s4shadow', {
+      value: s4shadowMeta,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
+  if (s4attributionMeta !== undefined && reranked.length > 0) {
+    Object.defineProperty(reranked, '_s4attribution', {
+      value: s4attributionMeta,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
+  // Attach pipeline metadata to results for eval/debugging
+  // Metadata is attached as non-enumerable _s3meta property to avoid
+  // Polluting result serialization while remaining accessible for debugging.
+  if (Object.keys(s3meta).length > 0 && reranked.length > 0) {
+    Object.defineProperty(reranked, '_s3meta', { value: s3meta, enumerable: false, configurable: true });
+  }
+
+  return reranked;
 }
 
 /**
@@ -1626,11 +1748,14 @@ async function searchWithFallback(
     options,
     'adaptive'
   );
-  const primaryResults = stages[0]?.results ?? [];
-  const retryResults = stages[1]?.results ?? [];
-  const results = retryResults.length > 0 ? retryResults : primaryResults;
-
-  if (results.length > 0) return results;
+  const primaryStage = stages[0];
+  const retryStage = stages[1];
+  const finalStage = retryStage?.results.length ? retryStage : primaryStage;
+  if (finalStage?.results.length) {
+    return finalStage.execution
+      ? enrichFusedResults(query, finalStage.execution, finalStage.options, finalStage.results)
+      : finalStage.results;
+  }
 
   // Fallback to FTS only
   if (allowedChannels.has('fts')) {
@@ -1984,24 +2109,23 @@ async function searchWithFallbackTiered(
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
   const degradationEvents: DegradationEvent[] = [];
-  const allowedChannels = getAllowedChannels(options);
-
-  // TIER 1: Standard enhanced search
-  const tier1Options = applyAllowedChannelOverrides(options, allowedChannels, {
-    minSimilarity: options.minSimilarity ?? PRIMARY_FALLBACK_MIN_SIMILARITY,
-  });
-  let results = await hybridSearchEnhanced(query, embedding, tier1Options);
+  const { stages } = await executeFallbackPlan(query, embedding, options, 'tiered');
+  const tier1Stage = stages[0];
+  const tier2Stage = stages[1];
+  let results = tier1Stage?.results ?? [];
 
   const tier1Trigger = checkDegradation(results);
   if (!tier1Trigger) {
-    const limitedTier1 = applyResultLimit(results, options.limit);
+    const finalTier1 = tier1Stage?.execution
+      ? await enrichFusedResults(query, tier1Stage.execution, tier1Stage.options, results)
+      : applyResultLimit(results, options.limit);
     // Tier 1 passed quality thresholds — attach empty degradation metadata
-    Object.defineProperty(limitedTier1, '_degradation', {
+    Object.defineProperty(finalTier1, '_degradation', {
       value: degradationEvents,
       enumerable: false,
       configurable: true,
     });
-    return limitedTier1;
+    return finalTier1;
   }
 
   // TIER 2: Widen search — lower similarity, force all channels
@@ -2009,11 +2133,7 @@ async function searchWithFallbackTiered(
 
   console.error(`[hybrid-search] Tier 1→2 degradation: ${tier1Trigger.reason} (topScore=${tier1Trigger.topScore.toFixed(3)}, count=${tier1Trigger.resultCount})`);
 
-  const tier2Options: HybridSearchOptions = applyAllowedChannelOverrides(options, allowedChannels, {
-    minSimilarity: TIERED_FALLBACK_MIN_SIMILARITY,
-    forceAllChannels: true,
-  });
-  const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
+  const tier2Results = tier2Stage?.results ?? [];
   results = mergeResults(results, tier2Results);
   degradationEvents.push({
     tier: 1,
@@ -2024,13 +2144,15 @@ async function searchWithFallbackTiered(
 
   const tier2Trigger = checkDegradation(results);
   if (!tier2Trigger) {
-    const limitedTier2 = applyResultLimit(results, options.limit);
-    Object.defineProperty(limitedTier2, '_degradation', {
+    const finalTier2 = tier2Stage?.execution
+      ? await enrichFusedResults(query, tier2Stage.execution, tier2Stage.options, results)
+      : applyResultLimit(results, options.limit);
+    Object.defineProperty(finalTier2, '_degradation', {
       value: degradationEvents,
       enumerable: false,
       configurable: true,
     });
-    return limitedTier2;
+    return finalTier2;
   }
 
   // TIER 3: Structural search (pure SQL last-resort)
@@ -2048,15 +2170,17 @@ async function searchWithFallbackTiered(
     resultCountAfter: results.length,
   });
 
-  const limitedResults = applyResultLimit(results, options.limit);
+  const finalResults = tier2Stage?.execution
+    ? await enrichFusedResults(query, tier2Stage.execution, tier2Stage.options, results)
+    : applyResultLimit(results, options.limit);
 
-  Object.defineProperty(limitedResults, '_degradation', {
+  Object.defineProperty(finalResults, '_degradation', {
     value: degradationEvents,
     enumerable: false,
     configurable: true,
   });
 
-  return limitedResults;
+  return finalResults;
 }
 
 // 14. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007)
@@ -2094,27 +2218,71 @@ function estimateTokenCount(text: string): number {
   return Math.ceil(text.length / 4);
 }
 
+function estimateStructuredValueChars(value: unknown, seen: WeakSet<object>): number {
+  if (value == null) return 4;
+
+  if (typeof value === 'string') return value.length + 2;
+  if (typeof value === 'number' || typeof value === 'bigint') return String(value).length;
+  if (typeof value === 'boolean') return value ? 4 : 5;
+
+  if (Array.isArray(value)) {
+    let chars = 2;
+    for (const item of value) {
+      chars += estimateStructuredValueChars(item, seen) + 1;
+    }
+    return chars;
+  }
+
+  if (typeof value !== 'object') return 0;
+  if (seen.has(value)) return 8;
+  seen.add(value);
+
+  let chars = 2;
+  for (const [key, nestedValue] of Object.entries(value as Record<string, unknown>)) {
+    chars += key.length + 3;
+    chars += estimateStructuredValueChars(nestedValue, seen) + 1;
+  }
+  return chars;
+}
+
 /**
  * Estimate the token footprint of a single HybridSearchResult.
  * @param result - The search result to measure.
  * @returns Approximate token count based on serialized key-value lengths.
  */
 function estimateResultTokens(result: HybridSearchResult): number {
-  try {
-    const serialized = JSON.stringify(result);
-    if (typeof serialized === 'string') {
-      return estimateTokenCount(serialized);
-    }
-  } catch (_err: unknown) {
-    // Fall through to the shallow estimator if serialization fails.
-  }
+  const record = result as Record<string, unknown>;
+  const seen = new WeakSet<object>();
+  const handledKeys = new Set([
+    'id',
+    'score',
+    'source',
+    'title',
+    'content',
+    'sources',
+    'spec_folder',
+    'file_path',
+    'traceMetadata',
+    'parentMemoryId',
+    'chunkIndex',
+    'similarity',
+    'combined_lexical_score',
+  ]);
 
   let chars = 0;
-  for (const [key, value] of Object.entries(result)) {
-    chars += key.length;
-    if (typeof value === 'string') chars += value.length;
-    else if (typeof value === 'number' || typeof value === 'boolean') chars += String(value).length;
+  for (const key of handledKeys) {
+    if (!(key in record)) continue;
+    chars += key.length + 3;
+    chars += estimateStructuredValueChars(record[key], seen) + 1;
   }
+
+  for (const key of Object.keys(record)) {
+    if (handledKeys.has(key)) continue;
+    const value = record[key];
+    chars += key.length + 3;
+    chars += estimateStructuredValueChars(value, seen) + 1;
+  }
+
   return Math.ceil(chars / 4);
 }
 
@@ -2172,7 +2340,20 @@ function truncateToBudget(
   }
 
   const sorted = [...results].sort((a, b) => b.score - a.score);
-  const totalTokens = sorted.reduce((sum, r) => sum + estimateResultTokens(r), 0);
+  const tokenEstimateCache = new Map<string, number>();
+  const getTokenEstimate = (result: HybridSearchResult): number => {
+    const cacheKey = canonicalResultId(result.id);
+    const cached = tokenEstimateCache.get(cacheKey);
+    if (cached !== undefined) {
+      return cached;
+    }
+
+    const estimate = estimateResultTokens(result);
+    tokenEstimateCache.set(cacheKey, estimate);
+    return estimate;
+  };
+
+  const totalTokens = sorted.reduce((sum, result) => sum + getTokenEstimate(result), 0);
 
   if (totalTokens <= effectiveBudget) {
     return { results: sorted, truncated: false };
@@ -2204,7 +2385,7 @@ function truncateToBudget(
   let accumulated = 0;
 
   for (const result of sorted) {
-    const tokens = estimateResultTokens(result);
+    const tokens = getTokenEstimate(result);
     if (accumulated + tokens > effectiveBudget) {
       if (accepted.length > 0) {
         break;

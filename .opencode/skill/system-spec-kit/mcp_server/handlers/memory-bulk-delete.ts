@@ -41,6 +41,24 @@ interface BulkDeleteArgs {
 ──────────────────────────────────────────────────────────────── */
 
 async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse> {
+  const restoreBarrier = checkpoints.getRestoreBarrierStatus();
+  if (restoreBarrier) {
+    return createMCPErrorResponse({
+      tool: 'memory_bulk_delete',
+      error: restoreBarrier.message,
+      code: restoreBarrier.code,
+      details: {
+        tier: args.tier ?? null,
+        specFolder: args.specFolder ?? null,
+      },
+      recovery: {
+        hint: 'Retry memory_bulk_delete after checkpoint_restore maintenance completes.',
+        actions: ['Wait for the restore to finish', 'Retry the bulk delete request'],
+        severity: 'warning',
+      },
+    });
+  }
+
   await checkDatabaseUpdated();
 
   const { tier, specFolder, confirm, olderThanDays, skipCheckpoint = false } = args;

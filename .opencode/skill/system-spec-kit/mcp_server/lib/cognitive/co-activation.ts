@@ -65,6 +65,11 @@ interface SpreadResult {
   path: number[];
 }
 
+interface RelatedMemoryReference {
+  id: number;
+  similarity: number;
+}
+
 /* --- 3. MODULE STATE --- */
 
 let db: Database.Database | null = null;
@@ -84,6 +89,46 @@ function pruneRelatedCache(): void {
 /** Clear the getRelatedMemories cache (called on init to avoid stale data across DB reloads). */
 function clearRelatedCache(): void {
   RELATED_CACHE.clear();
+}
+
+function parseRelatedMemoryReferences(raw: string | null): RelatedMemoryReference[] {
+  if (!raw) return [];
+
+  let parsedRelated: unknown;
+  try {
+    parsedRelated = JSON.parse(raw);
+  } catch (_err: unknown) {
+    return [];
+  }
+
+  if (!Array.isArray(parsedRelated)) return [];
+
+  return parsedRelated.filter((rel): rel is RelatedMemoryReference => {
+    if (typeof rel !== 'object' || rel === null) return false;
+    const candidate = rel as { id?: unknown; similarity?: unknown };
+    return (
+      typeof candidate.id === 'number'
+      && Number.isFinite(candidate.id)
+      && typeof candidate.similarity === 'number'
+      && Number.isFinite(candidate.similarity)
+    );
+  });
+}
+
+function fetchMemoryDetails(memoryIds: number[]): Map<number, RelatedMemory> {
+  if (!db || memoryIds.length === 0) return new Map();
+
+  const uniqueIds = [...new Set(memoryIds.filter((id) => Number.isFinite(id)))];
+  if (uniqueIds.length === 0) return new Map();
+
+  const placeholders = uniqueIds.map(() => '?').join(',');
+  const rows = (db.prepare(
+    `SELECT id, title, spec_folder, file_path, importance_tier
+     FROM memory_index
+     WHERE id IN (${placeholders})`
+  ) as Database.Statement).all(...uniqueIds) as RelatedMemory[];
+
+  return new Map(rows.map((row) => [row.id, row]));
 }
 
 /* --- 4. INITIALIZATION --- */
@@ -151,44 +196,16 @@ function getRelatedMemories(
       return [];
     }
 
-    let parsedRelated: unknown;
-    try {
-      parsedRelated = JSON.parse(memory.related_memories);
-    } catch (_err: unknown) { // Malformed JSON in related_memories — return empty
-      return [];
-    }
-
-    if (!Array.isArray(parsedRelated)) return [];
-
-    const related = parsedRelated.filter((rel): rel is { id: number; similarity: number } => {
-      if (typeof rel !== 'object' || rel === null) return false;
-      const candidate = rel as { id?: unknown; similarity?: unknown };
-      return (
-        typeof candidate.id === 'number'
-        && Number.isFinite(candidate.id)
-        && typeof candidate.similarity === 'number'
-        && Number.isFinite(candidate.similarity)
-      );
+    const related = parseRelatedMemoryReferences(memory.related_memories).slice(0, limit);
+    const relatedDetails = fetchMemoryDetails(related.map((rel) => rel.id));
+    const results: RelatedMemory[] = related.flatMap((rel) => {
+      const fullMemory = relatedDetails.get(rel.id);
+      if (!fullMemory) return [];
+      return [{
+        ...fullMemory,
+        similarity: rel.similarity,
+      }];
     });
-
-    // Fetch full memory details for each related
-    const results: RelatedMemory[] = [];
-    for (const rel of related.slice(0, limit)) {
-      try {
-        const fullMemory = (db.prepare(
-          'SELECT id, title, spec_folder, file_path, importance_tier FROM memory_index WHERE id = ?'
-        ) as Database.Statement).get(rel.id) as Record<string, unknown> | undefined;
-
-        if (fullMemory) {
-          results.push({
-            ...(fullMemory as RelatedMemory),
-            similarity: rel.similarity,
-          });
-        }
-      } catch (_err: unknown) { // Individual relation lookup failure — skip
-        // Skip individual failures
-      }
-    }
 
     // Cache miss: store results before returning
     pruneRelatedCache();
@@ -199,6 +216,35 @@ function getRelatedMemories(
     console.warn(`[co-activation] getRelatedMemories error: ${msg}`);
     return [];
   }
+}
+
+function getRelatedMemoryCounts(
+  memoryIds: number[],
+  limit: number = CO_ACTIVATION_CONFIG.maxRelated,
+): Map<number, number> {
+  if (!db || memoryIds.length === 0) {
+    return new Map();
+  }
+
+  const uniqueIds = [...new Set(memoryIds.filter((id) => Number.isFinite(id)))];
+  if (uniqueIds.length === 0) {
+    return new Map();
+  }
+
+  const placeholders = uniqueIds.map(() => '?').join(',');
+  const rows = (db.prepare(
+    `SELECT id, related_memories
+     FROM memory_index
+     WHERE id IN (${placeholders})`
+  ) as Database.Statement).all(...uniqueIds) as Array<{
+    id: number;
+    related_memories: string | null;
+  }>;
+
+  return new Map(rows.map((row) => [
+    row.id,
+    parseRelatedMemoryReferences(row.related_memories).slice(0, limit).length,
+  ]));
 }
 
 /**
@@ -267,44 +313,30 @@ function getCausalNeighbors(
 
   try {
     const memIdStr = String(memoryId);
-    const rows = (db.prepare(`
+    return (db.prepare(`
+      WITH causal_neighbors AS (
+        SELECT
+          CASE
+            WHEN ce.source_id = ? THEN CAST(ce.target_id AS INTEGER)
+            ELSE CAST(ce.source_id AS INTEGER)
+          END AS neighbor_id,
+          ce.strength
+        FROM causal_edges ce
+        WHERE ce.source_id = ? OR ce.target_id = ?
+        ORDER BY ce.strength DESC
+        LIMIT ?
+      )
       SELECT
-        CASE WHEN ce.source_id = ? THEN CAST(ce.target_id AS INTEGER)
-             ELSE CAST(ce.source_id AS INTEGER)
-        END AS neighbor_id,
-        ce.strength,
-        ce.relation
-      FROM causal_edges ce
-      WHERE ce.source_id = ? OR ce.target_id = ?
-      ORDER BY ce.strength DESC
-      LIMIT ?
-    `) as Database.Statement).all(memIdStr, memIdStr, memIdStr, limit) as Array<{
-      neighbor_id: number;
-      strength: number;
-      relation: string;
-    }>;
-
-    const results: RelatedMemory[] = [];
-    for (const row of rows) {
-      if (row.neighbor_id == null || row.neighbor_id === memoryId) continue;
-      try {
-        const fullMemory = (db!.prepare( // non-null safe: guard on line 207 returns early if db is null
-          'SELECT id, title, spec_folder, file_path, importance_tier FROM memory_index WHERE id = ?'
-        ) as Database.Statement).get(row.neighbor_id) as Record<string, unknown> | undefined;
-
-        if (fullMemory) {
-          results.push({
-            ...(fullMemory as RelatedMemory),
-            // Map edge strength (0-1) to similarity scale (0-100) for consistent scoring
-            similarity: Math.round(row.strength * 100),
-          });
-        }
-      } catch (_err: unknown) { // Causal neighbor lookup failure — skip
-        // Skip individual failures
-      }
-    }
-
-    return results;
+        mi.id,
+        mi.title,
+        mi.spec_folder,
+        mi.file_path,
+        mi.importance_tier,
+        CAST(ROUND(causal_neighbors.strength * 100) AS INTEGER) AS similarity
+      FROM causal_neighbors
+      JOIN memory_index mi ON mi.id = causal_neighbors.neighbor_id
+      WHERE mi.id != ?
+    `) as Database.Statement).all(memIdStr, memIdStr, memIdStr, limit, memoryId) as RelatedMemory[];
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[co-activation] getCausalNeighbors error: ${msg}`);
@@ -407,6 +439,7 @@ export {
   resolveCoActivationBoostFactor,
   boostScore,
   getRelatedMemories,
+  getRelatedMemoryCounts,
   getCausalNeighbors,
   populateRelatedMemories,
   spreadActivation,

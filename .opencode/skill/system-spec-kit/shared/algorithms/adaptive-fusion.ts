@@ -359,19 +359,19 @@ export function hybridAdaptiveFuse(
 ): AdaptiveFusionResult {
   const { documentType, identity, darkRun = false } = options;
   const weights = getAdaptiveWeights(intent, documentType);
-
-  // Check feature flag
   const enabled = isAdaptiveFusionEnabled(identity);
 
-  // Standard fallback (always computed)
-  let standardResults: FusionResult[];
-  try {
-    standardResults = standardFuse(semanticResults, keywordResults);
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    return {
-      results: [],
-      weights,
+  const computeStandardSafe = (): AdaptiveFusionResult => {
+    try {
+      return {
+        results: standardFuse(semanticResults, keywordResults),
+        weights: { semanticWeight: 1.0, keywordWeight: 1.0, recencyWeight: 0 },
+      };
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      return {
+        results: [],
+        weights,
         degraded: {
           failureMode: `standard_fusion_error: ${msg}`,
           fallbackMode: 'empty_results',
@@ -379,49 +379,46 @@ export function hybridAdaptiveFuse(
           retryRecommendation: 'immediate',
         },
       };
-  }
+    }
+  };
 
-  // If flag is OFF and not a dark run, return standard
+  // Feature disabled: return deterministic standard RRF without adaptive work.
   if (!enabled && !darkRun) {
-    return {
-      results: standardResults,
-      weights: { semanticWeight: 1.0, keywordWeight: 1.0, recencyWeight: 0 },
-    };
+    return computeStandardSafe();
   }
 
-  // Compute adaptive results
   let adaptiveResults: FusionResult[];
   try {
     adaptiveResults = adaptiveFuse(semanticResults, keywordResults, weights);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
-    // Degraded mode: fall back to standard
+    const standardFallback = computeStandardSafe();
     return {
-      results: standardResults,
+      ...standardFallback,
       weights,
       degraded: {
         failureMode: `adaptive_fusion_error: ${msg}`,
-        fallbackMode: 'standard_rrf',
+        fallbackMode: standardFallback.results.length > 0 ? 'standard_rrf' : 'empty_results',
         confidenceImpact: 0.3,
-        retryRecommendation: 'none',
+        retryRecommendation: standardFallback.results.length > 0 ? 'none' : 'immediate',
       },
     };
   }
 
-  // Dark-run mode: always compute diff when darkRun is true
-  if (darkRun) {
-    const diff = computeDarkRunDiff(standardResults, adaptiveResults);
+  if (!darkRun) {
     return {
-      results: enabled ? adaptiveResults : standardResults,
+      results: adaptiveResults,
       weights,
-      darkRunDiff: diff,
     };
   }
 
-  // Adaptive enabled — return adaptive results
+  const standardForDiff = computeStandardSafe();
+  const diff = computeDarkRunDiff(standardForDiff.results, adaptiveResults);
   return {
-    results: adaptiveResults,
+    results: enabled ? adaptiveResults : standardForDiff.results,
     weights,
+    darkRunDiff: diff,
+    degraded: standardForDiff.degraded,
   };
 }
 

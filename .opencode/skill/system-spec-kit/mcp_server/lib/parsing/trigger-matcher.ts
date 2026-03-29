@@ -2,6 +2,7 @@
 // MODULE: Trigger Matcher
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Trigger phrase matching (memory_match_triggers)
+import type Database from 'better-sqlite3';
 import * as vectorIndex from '../search/vector-index';
 import { escapeRegex } from '../utils/path-security';
 
@@ -158,6 +159,7 @@ let triggerCache: TriggerCacheEntry[] | null = null;
 let triggerCandidateIndex: Map<string, Set<number>> | null = null;
 let cacheTimestamp: number = 0;
 let lastDegradedState: TriggerMatcherDegradedState | null = null;
+const triggerCacheLoaderStatementByConnection = new WeakMap<Database.Database, Database.Statement>();
 
 // LRU cache for regex objects to prevent memory leaks
 const regexLruCache: Map<string, RegExp> = new Map();
@@ -171,6 +173,26 @@ const COMMON_TRIGGER_STOPWORDS = new Set([
   'is', 'am', 'are', 'was', 'were', 'be', 'been', 'being',
   'to', 'of', 'in', 'on', 'at', 'for', 'from', 'with', 'by',
 ]);
+const TRIGGER_CACHE_LOADER_SQL = `
+  SELECT id, spec_folder, file_path, title, trigger_phrases, importance_weight
+  FROM memory_index
+  WHERE embedding_status = 'success'
+    AND trigger_phrases IS NOT NULL
+    AND trigger_phrases != '[]'
+    AND trigger_phrases != ''
+  ORDER BY id ASC
+`;
+
+function getTriggerCacheLoaderStatement(database: Database.Database): Database.Statement {
+  const cachedStatement = triggerCacheLoaderStatementByConnection.get(database);
+  if (cachedStatement) {
+    return cachedStatement;
+  }
+
+  const statement = database.prepare(TRIGGER_CACHE_LOADER_SQL) as Database.Statement;
+  triggerCacheLoaderStatementByConnection.set(database, statement);
+  return statement;
+}
 
 export function normalizeTriggerText(text: string): string {
   return normalizeUnicode(text, false)
@@ -336,14 +358,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
       return [];
     }
 
-    const rows = db.prepare(`
-      SELECT id, spec_folder, file_path, title, trigger_phrases, importance_weight
-      FROM memory_index
-      WHERE trigger_phrases IS NOT NULL
-        AND trigger_phrases != '[]'
-        AND trigger_phrases != ''
-        AND embedding_status = 'success'
-    `).all() as Array<{
+    const rows = getTriggerCacheLoaderStatement(db as Database.Database).all() as Array<{
       id: number;
       spec_folder: string;
       file_path: string;

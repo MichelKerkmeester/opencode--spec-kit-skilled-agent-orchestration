@@ -6,6 +6,9 @@ const mockRequireDb = vi.fn();
 const mockQueryLearnedTriggers = vi.fn();
 const mockApplyGraphSignals = vi.fn();
 const mockApplyCommunityBoost = vi.fn();
+const mockCoActivationEnabled = vi.fn(() => false);
+const mockSpreadActivation = vi.fn(() => []);
+const mockGetRelatedMemoryCounts = vi.fn(() => new Map<number, number>());
 
 vi.mock('../utils/db-helpers', () => ({
   requireDb: mockRequireDb,
@@ -24,9 +27,11 @@ vi.mock('../lib/graph/community-detection', () => ({
 }));
 
 vi.mock('../lib/cognitive/co-activation', () => ({
-  isEnabled: () => false,
-  spreadActivation: () => [],
-  CO_ACTIVATION_CONFIG: { boostFactor: 0 },
+  isEnabled: mockCoActivationEnabled,
+  spreadActivation: mockSpreadActivation,
+  getRelatedMemoryCounts: mockGetRelatedMemoryCounts,
+  resolveCoActivationBoostFactor: () => 0.25,
+  CO_ACTIVATION_CONFIG: { boostFactor: 0.25 },
 }));
 
 vi.mock('../lib/search/session-boost', () => ({
@@ -87,11 +92,17 @@ describe('Stage 2 fusion regression coverage', () => {
     mockQueryLearnedTriggers.mockReset();
     mockApplyGraphSignals.mockReset();
     mockApplyCommunityBoost.mockReset();
+    mockCoActivationEnabled.mockReset();
+    mockSpreadActivation.mockReset();
+    mockGetRelatedMemoryCounts.mockReset();
 
     mockRequireDb.mockReturnValue({} as Record<string, unknown>);
     mockQueryLearnedTriggers.mockReturnValue([]);
     mockApplyGraphSignals.mockImplementation((rows: Array<Record<string, unknown>>) => rows);
     mockApplyCommunityBoost.mockImplementation((rows: Array<Record<string, unknown>>) => rows);
+    mockCoActivationEnabled.mockReturnValue(false);
+    mockSpreadActivation.mockReturnValue([]);
+    mockGetRelatedMemoryCounts.mockReturnValue(new Map());
 
     process.env = {
       ...originalEnv,
@@ -286,5 +297,25 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(injected).toBeDefined();
     expect(injected?.memoryState).toBe('ARCHIVED');
     expect((injected?.graphContribution as Record<string, unknown>)?.injected).toBe(true);
+  });
+
+  it('precomputes co-activation neighbor counts once per boosted batch', async () => {
+    mockCoActivationEnabled.mockReturnValue(true);
+    mockSpreadActivation.mockReturnValue([
+      { id: 2, activationScore: 0.4, hop: 1, path: [1, 2] },
+    ]);
+    mockGetRelatedMemoryCounts.mockReturnValue(new Map([[2, 4]]));
+    process.env.SPECKIT_GRAPH_SIGNALS = 'false';
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const result = await executeStage2(createStage2Input([
+      { id: 1, score: 0.8, similarity: 80 },
+      { id: 2, score: 0.5, similarity: 50 },
+    ]));
+
+    expect(mockSpreadActivation).toHaveBeenCalledWith([1, 2]);
+    expect(mockGetRelatedMemoryCounts).toHaveBeenCalledWith([2]);
+    const boosted = result.scored.find((row) => row.id === 2);
+    expect(boosted?.score).toBeCloseTo(0.55, 9);
   });
 });

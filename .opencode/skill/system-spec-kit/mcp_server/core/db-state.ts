@@ -3,7 +3,7 @@
 // ────────────────────────────────────────────────────────────────
 
 import fs from 'fs/promises';
-import { resolveDatabasePaths } from './config';
+import { resolveDatabasePaths, INDEX_SCAN_COOLDOWN } from './config';
 import type { DatabaseExtended } from '@spec-kit/shared/types';
 import type { GraphSearchFn } from '../lib/search/search-types';
 
@@ -85,6 +85,9 @@ let embeddingModelReady: boolean = false;
 let constitutionalCache: unknown = null;
 let constitutionalCacheTime: number = 0;
 let configTableCreated: boolean = false;
+const CONFIG_KEY_LAST_INDEX_SCAN = 'last_index_scan';
+const CONFIG_KEY_SCAN_STARTED_AT = 'scan_started_at';
+const DEFAULT_SCAN_LEASE_EXPIRY_MS = INDEX_SCAN_COOLDOWN * 2;
 
 // ────────────────────────────────────────────────────────────────
 // 3. MODULE REFERENCES 
@@ -311,6 +314,189 @@ function ensureConfigTable(db: DatabaseLike): void {
   configTableCreated = true;
 }
 
+function parseConfigTimestamp(value: unknown): number {
+  if (typeof value !== 'string') {
+    return 0;
+  }
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function resolveScanLeaseExpiryMs(explicit?: number): number {
+  if (typeof explicit === 'number' && Number.isFinite(explicit) && explicit > 0) {
+    return explicit;
+  }
+
+  const envRaw = process.env.SPECKIT_INDEX_SCAN_LEASE_EXPIRY_MS;
+  const envParsed = envRaw ? Number.parseInt(envRaw, 10) : Number.NaN;
+  if (Number.isFinite(envParsed) && envParsed > 0) {
+    return envParsed;
+  }
+
+  return DEFAULT_SCAN_LEASE_EXPIRY_MS;
+}
+
+function clearStaleScanLease(db: DatabaseLike, now: number, scanStartedAt: number, leaseExpiryMs: number): number {
+  if (scanStartedAt <= 0 || now - scanStartedAt < leaseExpiryMs) {
+    return scanStartedAt;
+  }
+
+  db.prepare('DELETE FROM config WHERE key = ?').run(CONFIG_KEY_SCAN_STARTED_AT);
+  return 0;
+}
+
+export interface IndexScanLeaseResult {
+  acquired: boolean;
+  reason: 'ok' | 'cooldown' | 'lease_active';
+  waitSeconds: number;
+  lastIndexScan: number;
+  scanStartedAt: number;
+  leaseExpiryMs: number;
+  cooldownMs: number;
+}
+
+/**
+ * Acquire the index-scan lease atomically.
+ *
+ * The lease blocks overlapping scans via `scan_started_at` and preserves
+ * cooldown via `last_index_scan`. Stale leases are automatically expired.
+ */
+export async function acquireIndexScanLease(options?: {
+  now?: number;
+  cooldownMs?: number;
+  leaseExpiryMs?: number;
+}): Promise<IndexScanLeaseResult> {
+  if (!vectorIndex) {
+    throw new Error('db-state not initialized: vector_index is null');
+  }
+
+  const now = typeof options?.now === 'number' && Number.isFinite(options.now)
+    ? options.now
+    : Date.now();
+  const cooldownMs = typeof options?.cooldownMs === 'number' && Number.isFinite(options.cooldownMs) && options.cooldownMs > 0
+    ? options.cooldownMs
+    : INDEX_SCAN_COOLDOWN;
+  const leaseExpiryMs = resolveScanLeaseExpiryMs(options?.leaseExpiryMs);
+
+  try {
+    const db = vectorIndex.getDb();
+    if (!db) {
+      return {
+        acquired: true,
+        reason: 'ok',
+        waitSeconds: 0,
+        lastIndexScan: 0,
+        scanStartedAt: 0,
+        leaseExpiryMs,
+        cooldownMs,
+      };
+    }
+
+    ensureConfigTable(db);
+
+    const reserveLeaseTx = db.transaction((): IndexScanLeaseResult => {
+      const rows = db.prepare(`
+        SELECT key, value
+        FROM config
+        WHERE key IN (?, ?)
+      `).all(CONFIG_KEY_LAST_INDEX_SCAN, CONFIG_KEY_SCAN_STARTED_AT) as Array<{ key?: string; value?: string }>;
+
+      let lastIndexScan = 0;
+      let scanStartedAt = 0;
+
+      for (const row of rows) {
+        if (row.key === CONFIG_KEY_LAST_INDEX_SCAN) {
+          lastIndexScan = parseConfigTimestamp(row.value);
+        } else if (row.key === CONFIG_KEY_SCAN_STARTED_AT) {
+          scanStartedAt = parseConfigTimestamp(row.value);
+        }
+      }
+
+      scanStartedAt = clearStaleScanLease(db, now, scanStartedAt, leaseExpiryMs);
+
+      if (scanStartedAt > 0 && now - scanStartedAt < leaseExpiryMs) {
+        const waitSeconds = Math.ceil((leaseExpiryMs - (now - scanStartedAt)) / 1000);
+        return {
+          acquired: false,
+          reason: 'lease_active',
+          waitSeconds: Math.max(waitSeconds, 1),
+          lastIndexScan,
+          scanStartedAt,
+          leaseExpiryMs,
+          cooldownMs,
+        };
+      }
+
+      if (lastIndexScan > 0 && now - lastIndexScan < cooldownMs) {
+        const waitSeconds = Math.ceil((cooldownMs - (now - lastIndexScan)) / 1000);
+        return {
+          acquired: false,
+          reason: 'cooldown',
+          waitSeconds: Math.max(waitSeconds, 1),
+          lastIndexScan,
+          scanStartedAt,
+          leaseExpiryMs,
+          cooldownMs,
+        };
+      }
+
+      db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)').run(
+        CONFIG_KEY_SCAN_STARTED_AT,
+        String(now),
+      );
+
+      return {
+        acquired: true,
+        reason: 'ok',
+        waitSeconds: 0,
+        lastIndexScan,
+        scanStartedAt: now,
+        leaseExpiryMs,
+        cooldownMs,
+      };
+    });
+
+    return reserveLeaseTx();
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('[db-state] Error acquiring index scan lease:', message);
+    return {
+      acquired: true,
+      reason: 'ok',
+      waitSeconds: 0,
+      lastIndexScan: 0,
+      scanStartedAt: 0,
+      leaseExpiryMs,
+      cooldownMs,
+    };
+  }
+}
+
+/** Complete an index scan and convert active lease to last_index_scan timestamp. */
+export async function completeIndexScanLease(time: number): Promise<void> {
+  if (!vectorIndex) {
+    throw new Error('db-state not initialized: vector_index is null');
+  }
+
+  try {
+    const db = vectorIndex.getDb();
+    if (!db) return;
+
+    ensureConfigTable(db);
+    const completeLeaseTx = db.transaction(() => {
+      db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)').run(
+        CONFIG_KEY_LAST_INDEX_SCAN,
+        String(time),
+      );
+      db.prepare('DELETE FROM config WHERE key = ?').run(CONFIG_KEY_SCAN_STARTED_AT);
+    });
+    completeLeaseTx();
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('[db-state] Error completing index scan lease:', message);
+  }
+}
+
 /** Retrieve the timestamp of the last index scan from the config table. */
 export async function getLastScanTime(): Promise<number> {
   if (!vectorIndex) {
@@ -322,8 +508,8 @@ export async function getLastScanTime(): Promise<number> {
     if (!db) return 0;
 
     ensureConfigTable(db);
-    const row = db.prepare('SELECT value FROM config WHERE key = ?').get('last_index_scan') as { value: string } | undefined;
-    const parsed = row ? parseInt(row.value, 10) : 0;
+    const row = db.prepare('SELECT value FROM config WHERE key = ?').get(CONFIG_KEY_LAST_INDEX_SCAN) as { value: string } | undefined;
+    const parsed = row ? Number.parseInt(row.value, 10) : 0;
     return Number.isFinite(parsed) ? parsed : 0;
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e);
@@ -334,20 +520,7 @@ export async function getLastScanTime(): Promise<number> {
 
 /** Persist the timestamp of the last index scan to the config table. */
 export async function setLastScanTime(time: number): Promise<void> {
-  if (!vectorIndex) {
-    throw new Error('db-state not initialized: vector_index is null');
-  }
-
-  try {
-    const db = vectorIndex.getDb();
-    if (!db) return;
-
-    ensureConfigTable(db);
-    db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)').run('last_index_scan', time.toString());
-  } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : String(e);
-    console.error('[db-state] Error setting last scan time:', message);
-  }
+  await completeIndexScanLease(time);
 }
 
 // ────────────────────────────────────────────────────────────────

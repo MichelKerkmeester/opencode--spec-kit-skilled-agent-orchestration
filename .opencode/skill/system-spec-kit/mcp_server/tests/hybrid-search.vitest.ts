@@ -59,6 +59,8 @@ const mockGraphSearch: GraphSearchFn = (query, options = {}) => {
   }));
 };
 
+const ORIGINAL_ENABLE_BM25 = process.env.ENABLE_BM25;
+
 // Mock database with FTS5 table
 function createMockDb(): Database.Database {
   return {
@@ -94,6 +96,9 @@ function createDegreeAwareMockDb(): Database.Database {
           if (sql.includes('memory_fts')) {
             return { count: 1 };
           }
+          if (sql.includes('SELECT MAX(typed_degree) AS max_degree')) {
+            return { max_degree: 1 };
+          }
           return null;
         },
         all(...params: unknown[]) {
@@ -101,14 +106,10 @@ function createDegreeAwareMockDb(): Database.Database {
             return [];
           }
 
-          if (sql.includes('SELECT DISTINCT node_id')) {
-            return [{ node_id: '2' }];
-          }
-
-          if (sql.includes('SELECT relation, strength FROM causal_edges WHERE source_id = ?')) {
-            const id = String(params[0]);
-            if (id === '2') {
-              return [{ relation: 'caused', strength: 1 }];
+          if (sql.includes('WITH candidate_nodes(node_id)')) {
+            const ids = params.slice(0, -1).map(String);
+            if (ids.includes('2')) {
+              return [{ node_id: '2', typed_degree: 1 }];
             }
             return [];
           }
@@ -201,6 +202,17 @@ function isPromiseLike(
 ──────────────────────────────────────────────────────────────── */
 
 describe('Hybrid Search Unit Tests (T031+)', () => {
+  beforeEach(() => {
+    process.env.ENABLE_BM25 = 'true';
+  });
+
+  afterEach(() => {
+    if (ORIGINAL_ENABLE_BM25 === undefined) {
+      delete process.env.ENABLE_BM25;
+    } else {
+      process.env.ENABLE_BM25 = ORIGINAL_ENABLE_BM25;
+    }
+  });
 
   // 5.1 INITIALIZATION TESTS
 
@@ -978,6 +990,34 @@ describe('P1 fallback threshold and channel gating regressions', () => {
 
     expect(results).toEqual([]);
   });
+
+  it('T021: tiered fallback only runs enrichment once after the final tier is chosen', async () => {
+    process.env.SPECKIT_SEARCH_FALLBACK = 'true';
+    process.env.SPECKIT_COMPLEXITY_ROUTER = 'false';
+
+    const spreadSpy = vi.spyOn(coActivation, 'spreadActivation').mockReturnValue([]);
+    const thresholdAwareVectorSearch: VectorSearchFn = (_embedding, options = {}) => {
+      if ((options.minSimilarity as number) >= 30) {
+        return [{ id: 101, similarity: 95, title: 'tier one candidate' }];
+      }
+      return [{ id: 202, similarity: 94, title: 'tier two candidate' }];
+    };
+
+    hybridSearch.init(createMockDb(), thresholdAwareVectorSearch, null);
+
+    try {
+      const results = await hybridSearch.searchWithFallback(
+        'authentication',
+        new Float32Array(384).fill(0.1),
+        { limit: 1, useFts: false, useBm25: false, useGraph: false }
+      );
+
+      expect(results).toHaveLength(1);
+      expect(spreadSpy).toHaveBeenCalledTimes(1);
+    } finally {
+      spreadSpy.mockRestore();
+    }
+  });
 });
 
 describe('P1-002-1 raw candidate merge scoring', () => {
@@ -1142,6 +1182,71 @@ describe('Degree channel fusion regression coverage', () => {
       expect.arrayContaining(['fts', 'bm25'])
     );
   });
+
+  it('T316: MMR reuses vector-provided embeddings without querying vec_memories', async () => {
+    const originalMmr = process.env.SPECKIT_MMR;
+    const originalCrossEncoder = process.env.SPECKIT_CROSS_ENCODER;
+    process.env.SPECKIT_MMR = 'true';
+    process.env.SPECKIT_CROSS_ENCODER = 'false';
+
+    let vecEmbeddingQueryCount = 0;
+    const mmrDb = {
+      prepare(sql: string) {
+        return {
+          get() {
+            if (sql.includes('memory_fts')) {
+              return { count: 1 };
+            }
+            return null;
+          },
+          all() {
+            if (sql.includes('vec_memories')) {
+              vecEmbeddingQueryCount += 1;
+              return [];
+            }
+            return [];
+          },
+        };
+      },
+    } as unknown as Database.Database;
+
+    const vectorWithEmbeddings: VectorSearchFn = () => [
+      { id: 1, similarity: 0.99, title: 'doc-1', embedding: new Float32Array([1, 0, 0, 0]) },
+      { id: 2, similarity: 0.98, title: 'doc-2', embedding: new Float32Array([0, 1, 0, 0]) },
+    ];
+
+    try {
+      hybridSearch.init(mmrDb, vectorWithEmbeddings, null);
+      bm25Index.resetIndex();
+
+      const results = await hybridSearch.hybridSearchEnhanced(
+        'authentication',
+        new Float32Array(384).fill(0.1),
+        {
+          limit: 5,
+          useFts: false,
+          useBm25: false,
+          useGraph: false,
+          forceAllChannels: true,
+          intent: 'understand',
+        }
+      );
+
+      expect(results.length).toBeGreaterThan(0);
+      expect(vecEmbeddingQueryCount).toBe(0);
+    } finally {
+      if (originalMmr === undefined) {
+        delete process.env.SPECKIT_MMR;
+      } else {
+        process.env.SPECKIT_MMR = originalMmr;
+      }
+      if (originalCrossEncoder === undefined) {
+        delete process.env.SPECKIT_CROSS_ENCODER;
+      } else {
+        process.env.SPECKIT_CROSS_ENCODER = originalCrossEncoder;
+      }
+    }
+  });
 });
 
 describe('P1 post-ranking truncation and token budget regressions', () => {
@@ -1283,6 +1388,28 @@ describe('P1 post-ranking truncation and token budget regressions', () => {
     expect(truncated.results[0]?.content).toContain('[Summary] Oversized top match:');
     expect(truncated.results[0]?._summarized).toBe(true);
     expect(truncated.overflow?.truncatedToCount).toBe(1);
+  });
+
+  it('T311: truncateToBudget reuses the per-result token estimate during total and greedy passes', () => {
+    let contentReads = 0;
+    const resultWithGetter = {
+      id: 7,
+      score: 0.9,
+      source: 'vector',
+      title: 'Getter-backed result',
+      get content() {
+        contentReads += 1;
+        return 'x'.repeat(2000);
+      },
+    } as HybridSearchResult;
+
+    const truncated = hybridSearch.truncateToBudget([resultWithGetter], 1, {
+      includeContent: false,
+      queryId: 't311-cache',
+    });
+
+    expect(truncated.truncated).toBe(true);
+    expect(contentReads).toBe(1);
   });
 });
 

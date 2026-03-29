@@ -88,6 +88,15 @@ function getReachableVectorMemoryIds(database: Database.Database): number[] {
   return rows.map((row) => row.id);
 }
 
+function expectMergeResult(result: Awaited<ReturnType<typeof executeMerge>>) {
+  expect(result.action).toBe('merge');
+  if (result.action !== 'merge') {
+    const status = 'status' in result ? result.status : 'unknown';
+    throw new Error(`Expected merge result but received ${result.action}:${status}`);
+  }
+  return result;
+}
+
 describe('Reconsolidation-on-Save (TM-06)', () => {
   let testDb: Database.Database;
 
@@ -402,7 +411,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const newMem = makeNewMemory({ content: 'New unique content line B' });
 
-      const result = await executeMerge(existing, newMem, testDb);
+      const result = expectMergeResult(await executeMerge(existing, newMem, testDb));
 
       expect(result.action).toBe('merge');
       expect(result.existingMemoryId).toBe(100);
@@ -442,7 +451,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         similarity: 0.92,
       });
 
-      const result = await executeMerge(existing, makeNewMemory({ content: 'Extra content' }), testDb);
+      const result = expectMergeResult(await executeMerge(existing, makeNewMemory({ content: 'Extra content' }), testDb));
       expect(result.action).toBe('merge');
       expect(result.existingMemoryId).toBe(101);
       expect(result.newMemoryId).toBeGreaterThan(101);
@@ -480,8 +489,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       const generateEmbedding = vi.fn(async () => new Float32Array([0, 1, 0]));
 
-      const result = await executeMerge(existing, makeNewMemory({ content: 'Additional content' }), testDb, generateEmbedding);
-      expect(result.action).toBe('merge');
+      const result = expectMergeResult(await executeMerge(existing, makeNewMemory({ content: 'Additional content' }), testDb, generateEmbedding));
       expect(result.newMemoryId).toBeGreaterThan(102);
       expect(generateEmbedding).toHaveBeenCalledWith('Original\n\n<!-- Merged content -->\nAdditional content');
 
@@ -534,14 +542,14 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         similarity: 0.91,
       });
 
-      const result = await executeMerge(
+      const result = expectMergeResult(await executeMerge(
         existing,
         makeNewMemory({
           title: 'Reachable Existing',
           content: 'Merged addition that should stay searchable',
         }),
         testDb,
-      );
+      ));
 
       expect(result.newMemoryId).toBeGreaterThan(103);
 
@@ -614,7 +622,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         INSERT INTO vec_memories (rowid, embedding) VALUES (104, ?)
       `).run(Buffer.from(new Float32Array([1, 0, 0]).buffer));
 
-      const result = await executeMerge(
+      const result = expectMergeResult(await executeMerge(
         makeSimilarMemory({
           id: 104,
           file_path: '/test/104.md',
@@ -627,7 +635,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
           content: 'Merged addition that should trigger repair attempts',
         }),
         testDb,
-      );
+      ));
 
       expect(result.newMemoryId).toBeGreaterThan(104);
       expect(bm25AddDocument).toHaveBeenCalledTimes(2);
@@ -636,6 +644,109 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result.warnings).toEqual([
         `BM25 repair failed after reconsolidation merge for memory ${result.newMemoryId}: repair merge BM25 failure`,
       ]);
+
+      const repairFlagRow = testDb.prepare(`
+        SELECT bm25_repair_needed
+        FROM memory_index
+        WHERE id = ?
+      `).get(result.newMemoryId) as { bm25_repair_needed: number | null };
+      expect(repairFlagRow.bm25_repair_needed).toBe(1);
+    });
+
+    it('MP6: Aborts merge when predecessor changes during embedding generation', async () => {
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, content_hash, importance_weight, created_at, updated_at
+        )
+        VALUES (
+          105, 'test-spec', '/test/105.md', 'Race Existing', 'Original race content', 'hash-before', 0.5,
+          datetime('now'), '2026-03-29T10:00:00.000Z'
+        )
+      `).run();
+      testDb.prepare(`
+        INSERT INTO vec_memories (rowid, embedding) VALUES (105, ?)
+      `).run(Buffer.from(new Float32Array([1, 0, 0]).buffer));
+
+      const existing = makeSimilarMemory({
+        id: 105,
+        file_path: '/test/105.md',
+        title: 'Race Existing',
+        content_text: 'Original race content',
+        similarity: 0.94,
+      });
+
+      const generateEmbedding = vi.fn(async () => {
+        testDb.prepare(`
+          UPDATE memory_index
+          SET content_text = 'Concurrent writer content',
+              content_hash = 'hash-after',
+              updated_at = '2026-03-29T10:00:01.000Z'
+          WHERE id = 105
+        `).run();
+        return new Float32Array([0, 1, 0]);
+      });
+
+      const result = await executeMerge(
+        existing,
+        makeNewMemory({ content: 'Incoming content that should not be stale-merged' }),
+        testDb,
+        generateEmbedding,
+      );
+
+      expect(result.action).toBe('complement');
+      expect(result.status).toBe('predecessor_changed');
+      expect(result.newMemoryId).toBe(0);
+
+      const rows = testDb.prepare(`
+        SELECT id, is_archived, content_text
+        FROM memory_index
+        ORDER BY id ASC
+      `).all() as Array<{ id: number; is_archived: number; content_text: string | null }>;
+      expect(rows).toEqual([
+        { id: 105, is_archived: 0, content_text: 'Concurrent writer content' },
+      ]);
+    });
+
+    it('MP7: Completes merge when predecessor stays unchanged during embedding generation', async () => {
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, content_hash, importance_weight, created_at, updated_at
+        )
+        VALUES (
+          106, 'test-spec', '/test/106.md', 'Stable Existing', 'Stable base content', 'stable-hash', 0.5,
+          datetime('now'), '2026-03-29T10:05:00.000Z'
+        )
+      `).run();
+      testDb.prepare(`
+        INSERT INTO vec_memories (rowid, embedding) VALUES (106, ?)
+      `).run(Buffer.from(new Float32Array([1, 0, 0]).buffer));
+
+      const existing = makeSimilarMemory({
+        id: 106,
+        file_path: '/test/106.md',
+        title: 'Stable Existing',
+        content_text: 'Stable base content',
+        similarity: 0.95,
+      });
+
+      const generateEmbedding = vi.fn(async () => new Float32Array([0, 1, 1]));
+
+      const result = expectMergeResult(await executeMerge(
+        existing,
+        makeNewMemory({ content: 'Fresh content that should merge cleanly' }),
+        testDb,
+        generateEmbedding,
+      ));
+
+      expect(result.newMemoryId).toBeGreaterThan(106);
+      expect(generateEmbedding).toHaveBeenCalledTimes(1);
+
+      const archivedRow = testDb.prepare(`
+        SELECT is_archived
+        FROM memory_index
+        WHERE id = 106
+      `).get() as { is_archived: number };
+      expect(archivedRow.is_archived).toBe(1);
     });
   });
 
@@ -1060,8 +1171,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         importance_weight: 0.5,
       });
 
-      const result = await executeMerge(existing, makeNewMemory({ content: 'New content' }), testDb);
-      expect(result.action).toBe('merge');
+      const result = expectMergeResult(await executeMerge(existing, makeNewMemory({ content: 'New content' }), testDb));
       expect(result.newMemoryId).toBeGreaterThan(510);
       expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
 

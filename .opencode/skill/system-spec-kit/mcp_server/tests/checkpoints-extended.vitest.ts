@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, afterAll, vi } from 'vitest';
 
 // TEST: CHECKPOINTS EXTENDED
 // Covers handler happy-paths (with in-memory DB) and storage
@@ -12,6 +12,9 @@ import BetterSqlite3 from 'better-sqlite3';
 import * as checkpointStorage from '../lib/storage/checkpoints';
 import * as coreModule from '../core/db-state';
 import * as handler from '../handlers/checkpoints';
+import * as memorySaveHandler from '../handlers/memory-save';
+import * as memoryIndexHandler from '../handlers/memory-index';
+import * as memoryBulkDeleteHandler from '../handlers/memory-bulk-delete';
 
 type TestDatabase = InstanceType<typeof BetterSqlite3>;
 type VectorIndexModule = typeof import('../lib/search/vector-index');
@@ -54,6 +57,10 @@ function getCount(query: string, ...params: unknown[]): number {
 
 function parseHandlerResponse(response: CheckpointHandlerResponse): ParsedHandlerEnvelope {
   return JSON.parse(response.content[0]?.text ?? '{}') as ParsedHandlerEnvelope;
+}
+
+function parseMcpEnvelope<T = ParsedHandlerEnvelope>(response: { content: Array<{ text?: string }> }): T {
+  return JSON.parse(response.content[0]?.text ?? '{}') as T;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -129,6 +136,11 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
   beforeEach(() => {
     vi.spyOn(coreModule, 'checkDatabaseUpdated').mockResolvedValue(false);
+  });
+
+  afterEach(() => {
+    checkpointStorage.setRestoreBarrierHooks(null);
+    vi.restoreAllMocks();
   });
 
   afterAll(() => {
@@ -365,6 +377,109 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.restored).toBe(0);
 
       checkpointStorage.deleteCheckpoint('rollback-counter-test');
+    });
+
+    it('EXT-S13b: barrier clears after rollbacking restore failure', () => {
+      checkpointStorage.createCheckpoint({ name: 'rollback-barrier-test' });
+
+      const badSnapshot = {
+        manifest: {
+          snapshot: ['memory_index', 'working_memory'],
+          rebuild: [],
+          skip: ['checkpoints'],
+        },
+        tables: {
+          memory_index: {
+            columns: ['id', 'spec_folder', 'file_path', 'title', 'created_at', 'updated_at', 'importance_tier'],
+            rows: [
+              {
+                id: 9101,
+                spec_folder: 'rollback-spec',
+                file_path: '/test/rollback.md',
+                title: 'Rollback Barrier Test',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                importance_tier: 'normal',
+              },
+            ],
+          },
+          working_memory: {
+            columns: ['id', 'key', 'value', 'created_at'],
+            rows: [
+              {
+                id: 1,
+                key: null,
+                value: 'bad-row',
+                created_at: new Date().toISOString(),
+              },
+            ],
+          },
+        },
+        memories: [],
+        workingMemory: [],
+        timestamp: new Date().toISOString(),
+      };
+
+      testDb.prepare('UPDATE checkpoints SET memory_snapshot = ? WHERE name = ?').run(
+        zlib.gzipSync(Buffer.from(JSON.stringify(badSnapshot))),
+        'rollback-barrier-test',
+      );
+
+      const result = checkpointStorage.restoreCheckpoint('rollback-barrier-test', true);
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(checkpointStorage.isRestoreInProgress()).toBe(false);
+
+      checkpointStorage.deleteCheckpoint('rollback-barrier-test');
+    });
+  });
+
+  describe('Storage: Restore Maintenance Barrier', () => {
+    it('EXT-S13c: barrier blocks concurrent mutation handlers during restore', async () => {
+      checkpointStorage.createCheckpoint({ name: 'barrier-block-test' });
+
+      let savePromise: Promise<Awaited<ReturnType<typeof memorySaveHandler.handleMemorySave>>> | null = null;
+      let indexPromise: Promise<Awaited<ReturnType<typeof memoryIndexHandler.handleMemoryIndexScan>>> | null = null;
+      let bulkDeletePromise: Promise<Awaited<ReturnType<typeof memoryBulkDeleteHandler.handleMemoryBulkDelete>>> | null = null;
+
+      checkpointStorage.setRestoreBarrierHooks({
+        afterAcquire: () => {
+          expect(checkpointStorage.isRestoreInProgress()).toBe(true);
+          savePromise = memorySaveHandler.handleMemorySave({
+            filePath: '/tmp/restore-barrier-memory.md',
+          } as Parameters<typeof memorySaveHandler.handleMemorySave>[0]);
+          indexPromise = memoryIndexHandler.handleMemoryIndexScan({});
+          bulkDeletePromise = memoryBulkDeleteHandler.handleMemoryBulkDelete({
+            tier: 'deprecated',
+            confirm: true,
+          });
+        },
+      });
+
+      const restoreResult = checkpointStorage.restoreCheckpoint('barrier-block-test', false);
+      expect(restoreResult.errors).toEqual(
+        expect.not.arrayContaining([expect.stringContaining('Checkpoint not found')]),
+      );
+
+      const saveResponse = parseMcpEnvelope<{ data?: { code?: string; error?: string } }>(await savePromise!);
+      const indexResponse = parseMcpEnvelope<{ data?: { code?: string; error?: string } }>(await indexPromise!);
+      const bulkDeleteResponse = parseMcpEnvelope<{ data?: { code?: string; error?: string } }>(await bulkDeletePromise!);
+
+      for (const envelope of [saveResponse, indexResponse, bulkDeleteResponse]) {
+        expect(envelope.data?.code).toBe(checkpointStorage.RESTORE_IN_PROGRESS_ERROR_CODE);
+        expect(envelope.data?.error).toContain('Checkpoint restore maintenance is in progress');
+      }
+
+      checkpointStorage.deleteCheckpoint('barrier-block-test');
+    });
+
+    it('EXT-S13d: barrier clears after successful restore', () => {
+      checkpointStorage.createCheckpoint({ name: 'barrier-success-test' });
+
+      const result = checkpointStorage.restoreCheckpoint('barrier-success-test', false);
+      expect(result.errors).not.toContain('Checkpoint not found or empty');
+      expect(checkpointStorage.isRestoreInProgress()).toBe(false);
+
+      checkpointStorage.deleteCheckpoint('barrier-success-test');
     });
   });
 

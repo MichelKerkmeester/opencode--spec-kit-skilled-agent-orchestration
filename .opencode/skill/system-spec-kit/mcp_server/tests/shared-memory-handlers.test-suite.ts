@@ -118,6 +118,57 @@ describe('shared-memory admin handlers', () => {
     });
   });
 
+  it('treats stale create conflicts as updates and bootstraps only one owner', async () => {
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-race',
+      tenantId: 'tenant-a',
+      name: 'Alpha',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+
+    const db = getDb();
+    const originalPrepare = db.prepare.bind(db);
+    vi.spyOn(db, 'prepare').mockImplementation((sql: string) => {
+      if (sql.includes('SELECT tenant_id, rollout_enabled, kill_switch')
+        && sql.includes('FROM shared_spaces')
+        && sql.includes('WHERE space_id = ?')) {
+        return {
+          get: () => undefined,
+        } as unknown as ReturnType<typeof originalPrepare>;
+      }
+      return originalPrepare(sql);
+    });
+
+    const response = await handleSharedSpaceUpsert({
+      spaceId: 'space-race',
+      tenantId: 'tenant-a',
+      name: 'Alpha Updated',
+      actorUserId: 'user-owner',
+      killSwitch: true,
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(false);
+    expect(envelope.data.created).toBe(false);
+    expect(envelope.data.ownerBootstrap).toBe(false);
+    expect(db.prepare(`
+      SELECT COUNT(*) AS count
+      FROM shared_space_members
+      WHERE space_id = ?
+        AND role = 'owner'
+    `).get('space-race')).toEqual({ count: 1 });
+    expect(db.prepare(`
+      SELECT name, rollout_enabled, kill_switch
+      FROM shared_spaces
+      WHERE space_id = ?
+    `).get('space-race')).toEqual({
+      name: 'Alpha Updated',
+      rollout_enabled: 1,
+      kill_switch: 1,
+    });
+  });
+
   it('allows an owner to update an existing shared space', async () => {
     await handleSharedSpaceUpsert({
       spaceId: 'space-1',

@@ -1,0 +1,41 @@
+{
+  "topic": "Evaluate Codex-CLI-Compact (https://github.com/kunal12203/Codex-CLI-Compact) for upgrading our Spec Kit Memory MCP system vs installing/using theirs. Assess usefulness in our multi-skill, multi-agent repo context with system-spec-kit.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": "specs/02--system-spec-kit/024-compact-code-graph",
+  "createdAt": "2026-03-29T09:09:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "mode": "research",
+  "reviewTarget": null,
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "spec-alignment",
+    "completeness",
+    "cross-ref-integrity",
+    "patterns",
+    "documentation-quality"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "spec": true,
+    "checklist": true,
+    "agentConsistency": true
+  },
+  "qualityGateThreshold": 70,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  }
+}

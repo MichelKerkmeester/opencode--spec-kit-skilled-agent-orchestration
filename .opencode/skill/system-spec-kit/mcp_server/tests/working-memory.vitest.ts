@@ -398,6 +398,22 @@ describe('Tool-result extraction provenance', () => {
     `).get(sessionId, memoryId) as ExtractedRow | undefined;
   }
 
+  it('init creates order-aligned working_memory indexes', () => {
+    const database = createTestDb();
+    try {
+      workingMemory.init(database);
+      const indexNames = (database.prepare(`PRAGMA index_list(working_memory)`).all() as Array<{ name: string }>)
+        .map((row) => row.name);
+
+      expect(indexNames).toEqual(expect.arrayContaining([
+        'idx_wm_session_focus_lru',
+        'idx_wm_session_attention_focus',
+      ]));
+    } finally {
+      database.close();
+    }
+  });
+
   it('upsertExtractedEntry stores provenance fields', () => {
     const database = createTestDb();
     try {
@@ -425,6 +441,56 @@ describe('Tool-result extraction provenance', () => {
       expect(row?.source_call_id).toBe('call-001');
       expect(row?.extraction_rule_id).toBe('rule-provenance');
       expect(row?.redaction_applied).toBe(1);
+    } finally {
+      database.close();
+    }
+  });
+
+  it('upsertExtractedEntry avoids legacy COUNT existence probes and relies on conflict handling', () => {
+    const database = createTestDb();
+    try {
+      workingMemory.init(database);
+
+      const sessionId = 'wm-no-count-probe';
+      const memoryId = 1004;
+      seedMemory(database, memoryId);
+
+      const originalPrepare = database.prepare.bind(database);
+      (database as TestDatabase & { prepare: typeof database.prepare }).prepare = ((sql: string) => {
+        if (sql.includes('SELECT COUNT(*) as cnt FROM working_memory WHERE session_id = ? AND memory_id = ?')) {
+          throw new Error('legacy existence probe should not execute');
+        }
+        return originalPrepare(sql);
+      }) as typeof database.prepare;
+
+      const first = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.25,
+        sourceTool: 'first_tool',
+        sourceCallId: 'call-first',
+        extractionRuleId: 'rule-first',
+        redactionApplied: false,
+      });
+      const second = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.95,
+        sourceTool: 'second_tool',
+        sourceCallId: 'call-second',
+        extractionRuleId: 'rule-second',
+        redactionApplied: true,
+      });
+
+      expect(first).toBe(true);
+      expect(second).toBe(true);
+
+      const countRow = database.prepare(`
+        SELECT COUNT(*) as cnt
+        FROM working_memory
+        WHERE session_id = ? AND memory_id = ?
+      `).get(sessionId, memoryId) as { cnt: number };
+      expect(countRow.cnt).toBe(1);
     } finally {
       database.close();
     }

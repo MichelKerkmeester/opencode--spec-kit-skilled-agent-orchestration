@@ -192,13 +192,13 @@ describe('Co-Activation Module', () => {
           }
 
           return {
-            get: (id: number) => ({
+            all: (...ids: number[]) => ids.map((id) => ({
               id,
               title: `Memory ${id}`,
               spec_folder: 'specs/test',
               file_path: `specs/test/memory/${id}.md`,
               importance_tier: 'normal',
-            }),
+            })),
           };
         },
       };
@@ -209,6 +209,61 @@ describe('Co-Activation Module', () => {
       expect(result).toEqual([
         expect.objectContaining({ id: 2, similarity: 88.5 }),
       ]);
+    });
+
+    it('Batches related memory detail lookups with a single IN query', () => {
+      const prepare = vi.fn((sql: string) => {
+        if (sql.includes('SELECT related_memories')) {
+          return {
+            get: () => ({
+              related_memories: JSON.stringify([
+                { id: 2, similarity: 88.5 },
+                { id: 3, similarity: 81.1 },
+              ]),
+            }),
+          };
+        }
+
+        return {
+          all: (...ids: number[]) => ids.map((id) => ({
+            id,
+            title: `Memory ${id}`,
+            spec_folder: 'specs/test',
+            file_path: `specs/test/memory/${id}.md`,
+            importance_tier: 'normal',
+          })),
+        };
+      });
+
+      coActivation.init({ prepare } as unknown as CoActivationDb);
+      const result = coActivation.getRelatedMemories(1, 2);
+
+      expect(result.map((item) => item.id)).toEqual([2, 3]);
+      expect(prepare).toHaveBeenCalledTimes(2);
+      expect(prepare.mock.calls[1]?.[0]).toContain('WHERE id IN (?,?)');
+    });
+
+    it('Precomputes related memory counts with a single batched row fetch', () => {
+      const prepare = vi.fn((sql: string) => ({
+        all: (...ids: number[]) => ids.map((id) => ({
+          id,
+          related_memories: JSON.stringify([
+            { id: id + 10, similarity: 90 },
+            { id: id + 20, similarity: 85 },
+          ]),
+        })),
+      }));
+
+      coActivation.init({ prepare } as unknown as CoActivationDb);
+      const counts = coActivation.getRelatedMemoryCounts([1, 2, 2]);
+
+      expect(Array.from(counts.entries())).toEqual([
+        [1, 2],
+        [2, 2],
+      ]);
+      expect(prepare).toHaveBeenCalledTimes(1);
+      expect(prepare.mock.calls[0]?.[0]).toContain('SELECT id, related_memories');
+      expect(prepare.mock.calls[0]?.[0]).toContain('WHERE id IN (?,?)');
     });
   });
 
@@ -230,6 +285,33 @@ describe('Co-Activation Module', () => {
       const result = coActivation.spreadActivation([]);
       expect(Array.isArray(result)).toBe(true);
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('getCausalNeighbors()', () => {
+    it('hydrates causal neighbors with a single join query', () => {
+      const prepare = vi.fn((_sql: string) => ({
+        all: () => [
+          {
+            id: 9,
+            title: 'Neighbor',
+            spec_folder: 'specs/test',
+            file_path: 'specs/test/memory/neighbor.md',
+            importance_tier: 'important',
+            similarity: 84,
+          },
+        ],
+      }));
+
+      coActivation.init({ prepare } as unknown as CoActivationDb);
+      const result = coActivation.getCausalNeighbors(1);
+
+      expect(result).toEqual([
+        expect.objectContaining({ id: 9, similarity: 84 }),
+      ]);
+      expect(prepare).toHaveBeenCalledTimes(1);
+      expect(prepare.mock.calls[0]?.[0]).toContain('JOIN memory_index');
+      expect(prepare.mock.calls[0]?.[0]).toContain('WITH causal_neighbors');
     });
   });
 

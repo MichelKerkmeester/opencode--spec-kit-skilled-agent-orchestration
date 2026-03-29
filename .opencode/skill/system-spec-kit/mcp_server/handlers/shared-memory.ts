@@ -9,6 +9,7 @@ import type { MCPResponse } from './types';
 import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types';
 import {
   assertSharedSpaceAccess,
+  createSharedSpaceIfAbsent,
   enableSharedMemory,
   ensureSharedCollabRuntime,
   isSharedMemoryEnabled,
@@ -427,7 +428,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
     }, args.tenantId);
 
     const result = db.transaction((): (
-      | { success: true; created: boolean; rolloutEnabled: boolean; killSwitch: boolean }
+      | { success: true; created: boolean; ownerBootstrap: boolean; rolloutEnabled: boolean; killSwitch: boolean }
       | { error: string; msg: string; operationType: 'create' | 'update' }
     ) => {
       const existingSpace = db.prepare(`
@@ -491,30 +492,31 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         };
       }
 
-      const definition = existingSpace
-        ? {
-          spaceId: args.spaceId,
-          tenantId: args.tenantId,
-          name: args.name,
-          rolloutCohort: args.rolloutCohort,
-          ...(args.rolloutEnabled !== undefined ? { rolloutEnabled: args.rolloutEnabled } : {}),
-          ...(args.killSwitch !== undefined ? { killSwitch: args.killSwitch } : {}),
+      const definition = {
+        spaceId: args.spaceId,
+        tenantId: args.tenantId,
+        name: args.name,
+        rolloutEnabled: args.rolloutEnabled,
+        rolloutCohort: args.rolloutCohort,
+        killSwitch: args.killSwitch,
+      };
+
+      let created = false;
+      let ownerBootstrap = false;
+
+      if (existingSpace) {
+        upsertSharedSpace(db, definition);
+      } else {
+        const createResult = createSharedSpaceIfAbsent(db, definition);
+        created = createResult.created;
+        ownerBootstrap = createResult.created;
+
+        if (!createResult.created) {
+          upsertSharedSpace(db, definition);
         }
-        : {
-          spaceId: args.spaceId,
-          tenantId: args.tenantId,
-          name: args.name,
-          rolloutEnabled: args.rolloutEnabled,
-          rolloutCohort: args.rolloutCohort,
-          killSwitch: args.killSwitch,
-        };
+      }
 
-      upsertSharedSpace(db, {
-        ...definition,
-      });
-
-      const created = !existingSpace;
-      if (created) {
+      if (ownerBootstrap) {
         upsertSharedMembership(db, {
           spaceId: args.spaceId,
           subjectType: actor.subjectType,
@@ -541,7 +543,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
           operationType: created ? 'create' : 'update',
           actorAuthRole: isAdmin ? 'admin' : 'owner',
           created,
-          ownerBootstrap: created,
+          ownerBootstrap,
           rolloutEnabled: savedSpace?.rollout_enabled === 1,
           killSwitch: savedSpace?.kill_switch === 1,
         },
@@ -550,6 +552,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
       return {
         success: true,
         created,
+        ownerBootstrap,
         rolloutEnabled: savedSpace?.rollout_enabled === 1,
         killSwitch: savedSpace?.kill_switch === 1,
       };
@@ -568,7 +571,7 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         actorSubjectType: actor.subjectType,
         actorSubjectId: actor.subjectId,
         created: result.created,
-        ownerBootstrap: result.created,
+        ownerBootstrap: result.ownerBootstrap,
         rolloutEnabled: result.rolloutEnabled,
         killSwitch: result.killSwitch,
       },

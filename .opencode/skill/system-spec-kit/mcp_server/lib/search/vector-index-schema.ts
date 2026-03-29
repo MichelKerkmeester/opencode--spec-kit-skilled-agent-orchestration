@@ -57,6 +57,8 @@ const REQUIRED_INDEXES_BY_TABLE: Readonly<Record<string, readonly string[]>> = {
     'idx_document_type',
     'idx_doc_type_folder',
     'idx_quality_score',
+    'idx_save_parent_content_hash_scope',
+    'idx_save_parent_canonical_path',
   ],
   memory_conflicts: [
     'idx_conflicts_memory',
@@ -115,6 +117,26 @@ const REQUIRED_LINEAGE_COLUMNS: Readonly<Record<string, readonly string[]>> = {
     'updated_at',
   ],
 };
+const SAVE_PARENT_CONTENT_HASH_SCOPE_INDEX_SQL = `
+  CREATE INDEX IF NOT EXISTS idx_save_parent_content_hash_scope
+  ON memory_index(
+    spec_folder,
+    content_hash,
+    embedding_status,
+    tenant_id,
+    user_id,
+    agent_id,
+    session_id,
+    shared_space_id,
+    id DESC
+  )
+  WHERE parent_id IS NULL
+`;
+const SAVE_PARENT_CANONICAL_PATH_INDEX_SQL = `
+  CREATE INDEX IF NOT EXISTS idx_save_parent_canonical_path
+  ON memory_index(spec_folder, canonical_file_path, id DESC)
+  WHERE parent_id IS NULL
+`;
 
 function hasTable(database: Database.Database, tableName: string): boolean {
   const row = database.prepare(
@@ -400,8 +422,9 @@ function getMigrationAllowedBasePaths(): string[] {
 // V21: Add learned_triggers column (R11 learned feedback)
 // V22: Step 2 memory lineage tables + active projection support
 // V23: One-time spec_folder re-canonicalization + session_state migration
+// V24: Add trigger-cache source and temporal contiguity indexes
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 23;
+export const SCHEMA_VERSION = 24;
 
 // Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
@@ -1105,6 +1128,27 @@ export function run_migrations(database: Database.Database, from_version: number
     migrateHistorySpecFolders(database, updates);
   };
 
+  migrations[24] = () => {
+    createRequiredIndex(
+      database,
+      'idx_trigger_cache_source',
+      `CREATE INDEX IF NOT EXISTS idx_trigger_cache_source
+       ON memory_index(embedding_status, id)
+       WHERE embedding_status = 'success'
+         AND trigger_phrases IS NOT NULL
+         AND trigger_phrases != '[]'
+         AND trigger_phrases != ''`,
+      'Migration v24',
+    );
+    createRequiredIndex(
+      database,
+      'idx_spec_folder_created_at',
+      'CREATE INDEX IF NOT EXISTS idx_spec_folder_created_at ON memory_index(spec_folder, created_at DESC)',
+      'Migration v24',
+    );
+    logger.info('Migration v24: Created trigger-cache source and temporal contiguity indexes');
+  };
+
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
   const run_all_migrations = database.transaction(() => {
     for (let v = from_version + 1; v <= to_version; v++) {
@@ -1802,6 +1846,12 @@ export function ensure_canonical_file_path_support(database: Database.Database):
   try {
     database.exec('CREATE INDEX IF NOT EXISTS idx_canonical_file_path ON memory_index(canonical_file_path)');
     database.exec('CREATE INDEX IF NOT EXISTS idx_spec_canonical_path ON memory_index(spec_folder, canonical_file_path)');
+    createRequiredIndex(
+      database,
+      'idx_save_parent_canonical_path',
+      SAVE_PARENT_CANONICAL_PATH_INDEX_SQL,
+      'ensure_canonical_file_path_support',
+    );
   } catch (e: unknown) {
     console.warn('[vector-index] Canonical path index warning:', get_error_message(e));
   }
@@ -1889,21 +1939,33 @@ export function create_common_indexes(database: Database.Database): void {
   try {
     database.exec('CREATE INDEX IF NOT EXISTS idx_canonical_file_path ON memory_index(canonical_file_path)');
     database.exec('CREATE INDEX IF NOT EXISTS idx_spec_canonical_path ON memory_index(spec_folder, canonical_file_path)');
+    createRequiredIndex(
+      database,
+      'idx_save_parent_canonical_path',
+      SAVE_PARENT_CANONICAL_PATH_INDEX_SQL,
+      'create_common_indexes',
+    );
   } catch (err: unknown) {
     console.warn('[vector-index] Failed to create canonical path indexes', {
       operation: 'create_common_indexes',
-      indexes: ['idx_canonical_file_path', 'idx_spec_canonical_path'],
+      indexes: ['idx_canonical_file_path', 'idx_spec_canonical_path', 'idx_save_parent_canonical_path'],
       error: get_error_message(err),
     });
   }
 
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_content_hash ON memory_index(content_hash)`);
+    createRequiredIndex(
+      database,
+      'idx_save_parent_content_hash_scope',
+      SAVE_PARENT_CONTENT_HASH_SCOPE_INDEX_SQL,
+      'create_common_indexes',
+    );
     logger.info('Created idx_content_hash index');
   } catch (err: unknown) {
     console.warn('[vector-index] Failed to create index', {
       operation: 'create_common_indexes',
-      index: 'idx_content_hash',
+      index: 'idx_content_hash/idx_save_parent_content_hash_scope',
       error: get_error_message(err),
     });
   }
@@ -1926,6 +1988,35 @@ export function create_common_indexes(database: Database.Database): void {
     console.warn('[vector-index] Failed to create index', {
       operation: 'create_common_indexes',
       index: 'idx_importance_tier',
+      error: get_error_message(err),
+    });
+  }
+
+  try {
+    database.exec(`
+      CREATE INDEX IF NOT EXISTS idx_trigger_cache_source
+      ON memory_index(embedding_status, id)
+      WHERE embedding_status = 'success'
+        AND trigger_phrases IS NOT NULL
+        AND trigger_phrases != '[]'
+        AND trigger_phrases != ''
+    `);
+    logger.info('Created idx_trigger_cache_source index');
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create idx_trigger_cache_source', {
+      operation: 'create_common_indexes',
+      index: 'idx_trigger_cache_source',
+      error: get_error_message(err),
+    });
+  }
+
+  try {
+    database.exec('CREATE INDEX IF NOT EXISTS idx_spec_folder_created_at ON memory_index(spec_folder, created_at DESC)');
+    logger.info('Created idx_spec_folder_created_at index');
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create idx_spec_folder_created_at', {
+      operation: 'create_common_indexes',
+      index: 'idx_spec_folder_created_at',
       error: get_error_message(err),
     });
   }
@@ -2271,13 +2362,34 @@ export function create_schema(
     CREATE INDEX IF NOT EXISTS idx_memories_scope ON memory_index(spec_folder, session_id, context_type);
     CREATE INDEX IF NOT EXISTS idx_memories_governed_scope ON memory_index(tenant_id, user_id, agent_id, session_id, shared_space_id);
     CREATE INDEX IF NOT EXISTS idx_channel ON memory_index(channel);
+    CREATE INDEX IF NOT EXISTS idx_spec_folder_created_at ON memory_index(spec_folder, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_trigger_cache_source
+      ON memory_index(embedding_status, id)
+      WHERE embedding_status = 'success'
+        AND trigger_phrases IS NOT NULL
+        AND trigger_phrases != '[]'
+        AND trigger_phrases != '';
   `);
 
   database.exec(`
     CREATE INDEX IF NOT EXISTS idx_file_path ON memory_index(file_path);
     CREATE INDEX IF NOT EXISTS idx_canonical_file_path ON memory_index(canonical_file_path);
     CREATE INDEX IF NOT EXISTS idx_spec_canonical_path ON memory_index(spec_folder, canonical_file_path);
+    CREATE INDEX IF NOT EXISTS idx_save_parent_canonical_path ON memory_index(spec_folder, canonical_file_path, id DESC)
+      WHERE parent_id IS NULL;
     CREATE INDEX IF NOT EXISTS idx_content_hash ON memory_index(content_hash);
+    CREATE INDEX IF NOT EXISTS idx_save_parent_content_hash_scope ON memory_index(
+      spec_folder,
+      content_hash,
+      embedding_status,
+      tenant_id,
+      user_id,
+      agent_id,
+      session_id,
+      shared_space_id,
+      id DESC
+    )
+      WHERE parent_id IS NULL;
     CREATE INDEX IF NOT EXISTS idx_last_accessed ON memory_index(last_accessed DESC);
     CREATE INDEX IF NOT EXISTS idx_file_mtime ON memory_index(file_mtime_ms);
     CREATE INDEX IF NOT EXISTS idx_document_type ON memory_index(document_type);

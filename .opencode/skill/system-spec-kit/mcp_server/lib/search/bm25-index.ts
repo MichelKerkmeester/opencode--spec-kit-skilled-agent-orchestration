@@ -38,6 +38,8 @@ interface BM25DocumentSource {
 
 const DEFAULT_K1 = 1.2;
 const DEFAULT_B = 0.75;
+const BM25_WARMUP_BATCH_SIZE = 250;
+const BM25_ENABLED_VALUES = new Set(['1', 'true', 'yes', 'on', 'experimental', 'fallback']);
 
 /**
  * C138: Field weight multipliers for weighted BM25 scoring.
@@ -74,7 +76,8 @@ const BM25_FIELD_WEIGHTS: Record<string, number> = {
  * ```
  */
 function isBm25Enabled(): boolean {
-  return process.env.ENABLE_BM25 !== 'false';
+  const value = process.env.ENABLE_BM25?.trim().toLowerCase();
+  return value ? BM25_ENABLED_VALUES.has(value) : false;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -235,6 +238,8 @@ class BM25Index {
   private documents: Map<string, { tokens: string[]; termFreq: Map<string, number> }>;
   private documentFreq: Map<string, number>;
   private totalDocLength: number;
+  private warmupHandle: ReturnType<typeof setTimeout> | null;
+  private warmupGeneration: number;
 
   constructor(k1: number = DEFAULT_K1, b: number = DEFAULT_B) {
     this.k1 = k1;
@@ -242,6 +247,8 @@ class BM25Index {
     this.documents = new Map();
     this.documentFreq = new Map();
     this.totalDocLength = 0;
+    this.warmupHandle = null;
+    this.warmupGeneration = 0;
   }
 
   addDocument(id: string, text: string): void {
@@ -336,6 +343,7 @@ class BM25Index {
   }
 
   clear(): void {
+    this.cancelWarmup();
     this.documents.clear();
     this.documentFreq.clear();
     this.totalDocLength = 0;
@@ -348,18 +356,29 @@ class BM25Index {
   }
 
   /**
-   * P3-04: Rebuild BM25 index from all active memories in the database.
-   * Called on startup to restore the in-memory BM25 index from persisted data.
+   * Incrementally synchronize changed rows from the database into the in-memory index.
    */
-  rebuildFromDatabase(database: Database.Database): number {
-    this.clear();
+  syncChangedRows(database: Database.Database, rowIds: Array<number | string>): number {
+    const normalizedIds = Array.from(
+      new Set(
+        rowIds
+          .map((rowId) => Number(rowId))
+          .filter((rowId) => Number.isInteger(rowId) && rowId > 0)
+      )
+    );
+
+    if (normalizedIds.length === 0) {
+      return 0;
+    }
 
     try {
+      const placeholders = normalizedIds.map(() => '?').join(', ');
       const rows = (database.prepare(
         `SELECT id, title, content_text, trigger_phrases, file_path
          FROM memory_index
-         WHERE COALESCE(is_archived, 0) = 0`
-      ) as Database.Statement).all() as Array<{
+         WHERE id IN (${placeholders})
+           AND COALESCE(is_archived, 0) = 0`
+      ) as Database.Statement).all(...normalizedIds) as Array<{
         id: number;
         title: string | null;
         content_text: string | null;
@@ -367,21 +386,91 @@ class BM25Index {
         file_path: string | null;
       }>;
 
+      const activeRowMap = new Map<number, typeof rows[number]>();
       for (const row of rows) {
+        activeRowMap.set(row.id, row);
+      }
+
+      for (const rowId of normalizedIds) {
+        const row = activeRowMap.get(rowId);
+        if (!row) {
+          this.removeDocument(String(rowId));
+          continue;
+        }
+
         const text = buildBm25DocumentText(row);
         if (text.trim()) {
           this.addDocument(String(row.id), text);
+        } else {
+          this.removeDocument(String(row.id));
         }
       }
 
-      return rows.length;
+      return normalizedIds.length;
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : String(error);
-      console.warn(`[bm25-index] Failed to rebuild from database: ${msg}`);
+      console.warn(`[bm25-index] Failed to sync BM25 rows: ${msg}`);
       return 0;
     }
   }
 
+  /**
+   * P3-04/T312: Defer full startup warmup into batched row-ID syncs so process
+   * initialization is not blocked by a monolithic in-memory rebuild.
+   */
+  rebuildFromDatabase(database: Database.Database): number {
+    this.clear();
+
+    try {
+      const rows = (database.prepare(
+        `SELECT id
+         FROM memory_index
+         WHERE COALESCE(is_archived, 0) = 0
+         ORDER BY id`
+      ) as Database.Statement).all() as Array<{ id: number }>;
+
+      const pendingIds = rows.map((row) => row.id);
+      if (pendingIds.length === 0) {
+        return 0;
+      }
+
+      const warmupGeneration = ++this.warmupGeneration;
+      const processBatch = () => {
+        if (warmupGeneration !== this.warmupGeneration) {
+          return;
+        }
+
+        const batchIds = pendingIds.splice(0, BM25_WARMUP_BATCH_SIZE);
+        if (batchIds.length === 0) {
+          this.warmupHandle = null;
+          return;
+        }
+
+        this.syncChangedRows(database, batchIds);
+
+        if (pendingIds.length > 0) {
+          this.warmupHandle = setTimeout(processBatch, 0);
+        } else {
+          this.warmupHandle = null;
+        }
+      };
+
+      this.warmupHandle = setTimeout(processBatch, 0);
+      return pendingIds.length;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[bm25-index] Failed to schedule BM25 warmup: ${msg}`);
+      return 0;
+    }
+  }
+
+  cancelWarmup(): void {
+    this.warmupGeneration += 1;
+    if (this.warmupHandle) {
+      clearTimeout(this.warmupHandle);
+      this.warmupHandle = null;
+    }
+  }
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -417,6 +506,7 @@ function getIndex(): BM25Index {
  * ```
  */
 function resetIndex(): void {
+  indexInstance?.cancelWarmup();
   indexInstance = null;
 }
 

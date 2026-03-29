@@ -127,6 +127,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
         { title: 'mem-close-1', spec_folder: 'test', created_at: now.toISOString() },
         { title: 'mem-close-2', spec_folder: 'test', created_at: new Date(now.getTime() - 300 * 1000).toISOString() }, // 5 min
         { title: 'mem-close-3', spec_folder: 'test', created_at: new Date(now.getTime() - 600 * 1000).toISOString() }, // 10 min
+        { title: 'mem-other-spec-close', spec_folder: 'other-spec', created_at: new Date(now.getTime() - 120 * 1000).toISOString() }, // 2 min
         { title: 'mem-far-1', spec_folder: 'test', created_at: new Date(now.getTime() - 86400 * 2 * 1000).toISOString() }, // 2 days
       ]);
     });
@@ -139,6 +140,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
 
       const nearbyCount = neighbors.filter((n: { time_delta_seconds: number }) => n.time_delta_seconds <= 3600).length;
       expect(nearbyCount).toBeGreaterThan(0);
+      expect(neighbors.every((n: { spec_folder?: string }) => n.spec_folder === 'test')).toBe(true);
     });
 
     it('T502-06: Timestamp ordering (sorted by time_delta_seconds ASC)', () => {

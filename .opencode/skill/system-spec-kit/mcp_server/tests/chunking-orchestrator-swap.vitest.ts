@@ -101,6 +101,7 @@ vi.mock('../lib/search/search-flags', () => ({
 
 import { indexChunkedMemoryFile } from '../handlers/chunking-orchestrator';
 import * as vectorIndex from '../lib/search/vector-index';
+import * as bm25Index from '../lib/search/bm25-index';
 import * as embeddings from '../lib/providers/embeddings';
 import * as embeddingCache from '../lib/cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer';
@@ -442,6 +443,37 @@ describe('T013: staged swap regressions', () => {
     expect(deleteMemoryCalls).toEqual(rollbackDeletedIds);
   });
 
+  it('fails safe-swap finalization when old-child bulk delete fails and keeps old children linked', async () => {
+    const filePath = '/tmp/specs/test-safe-swap/memory-delete-fail.md';
+    const { parentId, oldChildIds } = seedExistingParentWithChildren(filePath, 2);
+    const parsed = createParsedMemory(filePath);
+
+    const realDelete = vi.mocked(vectorIndex.deleteMemory).getMockImplementation();
+    vi.mocked(vectorIndex.deleteMemory).mockImplementation((id: number) => {
+      if (oldChildIds.includes(id)) {
+        return false;
+      }
+      if (realDelete) {
+        return realDelete(id);
+      }
+      return false;
+    });
+
+    const result = await indexChunkedMemoryFile(filePath, parsed);
+    expect(result.status).toBe('error');
+    expect(result.message).toContain('failed to finalize safe swap');
+
+    const db = requireTestDb();
+    const oldChildren = db.prepare(`
+      SELECT id, parent_id
+      FROM memory_index
+      WHERE id IN (${oldChildIds.map(() => '?').join(', ')})
+      ORDER BY id ASC
+    `).all(...oldChildIds) as Array<{ id: number; parent_id: number | null }>;
+    expect(oldChildren.map((row) => row.id)).toEqual(oldChildIds);
+    expect(oldChildren.every((row) => row.parent_id === parentId)).toBe(true);
+  });
+
   it('partial embedding failures still swap successfully with mixed child statuses', async () => {
     mockChunks = [
       { content: 'partial chunk 1', anchorIds: ['p1'], label: 'partial-1', charCount: 15 },
@@ -520,6 +552,35 @@ describe('T013: staged swap regressions', () => {
       ORDER BY chunk_index ASC
     `).all(filePath) as Array<{ chunk_label: string | null }>;
     expect(survivingChildren.map((row) => row.chunk_label)).toEqual(['metadata-2']);
+  });
+
+  it('does not mutate parent BM25 document when all chunk inserts fail for an existing parent', async () => {
+    const filePath = '/tmp/specs/test-safe-swap/memory-bm25-rollback.md';
+    const { parentId } = seedExistingParentWithChildren(filePath, 1);
+    const parsed = createParsedMemory(filePath);
+
+    const bm25AddDocument = vi.fn();
+    const bm25RemoveDocument = vi.fn();
+    vi.mocked(bm25Index.isBm25Enabled).mockReturnValue(true);
+    vi.mocked(bm25Index.getIndex).mockReturnValue({
+      addDocument: bm25AddDocument,
+      removeDocument: bm25RemoveDocument,
+    } as unknown as ReturnType<typeof bm25Index.getIndex>);
+
+    const result = await indexChunkedMemoryFile(filePath, parsed, {
+      applyPostInsertMetadata: () => {
+        throw new Error('forced metadata failure for all chunks');
+      },
+    });
+
+    expect(result.status).toBe('error');
+    expect(result.message).toContain('existing parent retained');
+    expect(bm25AddDocument).not.toHaveBeenCalledWith(String(parentId), expect.any(String));
+    expect(bm25AddDocument).not.toHaveBeenCalled();
+
+    const db = requireTestDb();
+    const parentRow = db.prepare('SELECT content_text FROM memory_index WHERE id = ?').get(parentId) as { content_text: string | null };
+    expect(parentRow.content_text).toBe('Old parent summary');
   });
 
   it('uses normalized content hash for chunk embedding cache keys', async () => {

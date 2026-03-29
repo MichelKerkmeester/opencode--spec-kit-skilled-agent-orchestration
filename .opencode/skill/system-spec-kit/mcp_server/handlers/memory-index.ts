@@ -7,8 +7,9 @@ import path from 'path';
    1. CORE AND UTILS IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { getLastScanTime, setLastScanTime, checkDatabaseUpdated } from '../core';
+import { checkDatabaseUpdated } from '../core';
 import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config';
+import { acquireIndexScanLease, completeIndexScanLease } from '../core/db-state';
 import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
@@ -17,6 +18,7 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 ──────────────────────────────────────────────────────────────── */
 
 import { recordHistory } from '../lib/storage/history';
+import * as checkpoints from '../lib/storage/checkpoints';
 import * as memoryParser from '../lib/parsing/memory-parser';
 import * as embeddings from '../lib/providers/embeddings';
 import * as incrementalIndex from '../lib/storage/incremental-index';
@@ -145,6 +147,20 @@ async function indexSingleFile(filePath: string, force: boolean = false, options
 
 /** Handle memory_index_scan tool - scans and indexes memory files with incremental support */
 async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
+  const restoreBarrier = checkpoints.getRestoreBarrierStatus();
+  if (restoreBarrier) {
+    return createMCPErrorResponse({
+      tool: 'memory_index_scan',
+      error: restoreBarrier.message,
+      code: restoreBarrier.code,
+      recovery: {
+        hint: 'Retry memory_index_scan after checkpoint_restore maintenance completes.',
+        actions: ['Wait for the restore to finish', 'Retry the index scan'],
+        severity: 'warning',
+      },
+    });
+  }
+
   const {
     specFolder: spec_folder = null,
     force = false,
@@ -166,16 +182,23 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
   await checkDatabaseUpdated();
 
-  // L15: Rate limiting check
+  // L15/T303: Atomic scan lease check.
+  // Reserve scan_started_at up front to avoid check-then-set race windows.
   const now = Date.now();
-  const lastScanTime = await getLastScanTime();
-  if (now - lastScanTime < INDEX_SCAN_COOLDOWN) {
-    const waitTime = Math.ceil((INDEX_SCAN_COOLDOWN - (now - lastScanTime)) / 1000);
+  const lease = await acquireIndexScanLease({
+    now,
+    cooldownMs: INDEX_SCAN_COOLDOWN,
+  });
+  if (!lease.acquired) {
+    const waitTime = Math.max(lease.waitSeconds, 1);
     return createMCPErrorResponse({
       tool: 'memory_index_scan',
       error: 'Rate limited',
       code: 'E429',
-      details: { waitSeconds: waitTime },
+      details: {
+        waitSeconds: waitTime,
+        reason: lease.reason,
+      },
       recovery: {
         hint: `Please wait ${waitTime} seconds before scanning again`,
         actions: ['Wait for cooldown period', 'Consider using incremental=true for faster subsequent scans'],
@@ -284,7 +307,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       }
     }
 
-    await setLastScanTime(now);
+    await completeIndexScanLease(Date.now());
     return createMCPSuccessResponse({
       tool: 'memory_index_scan',
       summary: 'No memory files found',
@@ -598,7 +621,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     hints.push('All files already up-to-date. Use force: true to re-index');
   }
 
-  await setLastScanTime(now);
+  await completeIndexScanLease(Date.now());
 
   return createMCPSuccessResponse({
     tool: 'memory_index_scan',

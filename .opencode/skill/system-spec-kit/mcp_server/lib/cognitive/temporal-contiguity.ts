@@ -21,6 +21,14 @@ const BOOST_FACTOR = 0.15;
 // Many temporally-close memories cannot inflate a score unboundedly.
 const MAX_TOTAL_BOOST = 0.5;
 
+function formatBoundaryTimestamp(timestampMs: number, anchorTimestamp: string): string {
+  const iso = new Date(timestampMs).toISOString();
+  if (anchorTimestamp.includes('T')) {
+    return iso;
+  }
+  return iso.replace('T', ' ').replace('Z', '');
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. MODULE STATE
 ----------------------------------------------------------------*/
@@ -119,26 +127,61 @@ export function getTemporalNeighbors(
 
   try {
     const anchor = (db.prepare(
-      'SELECT created_at FROM memory_index WHERE id = ?',
-    ) as Database.Statement).get(memoryId) as { created_at: string } | undefined;
+      'SELECT created_at, spec_folder FROM memory_index WHERE id = ?',
+    ) as Database.Statement).get(memoryId) as { created_at: string; spec_folder: string } | undefined;
 
     if (!anchor) return [];
+    const anchorTimestampMs = Date.parse(anchor.created_at);
+    if (!Number.isFinite(anchorTimestampMs)) {
+      console.warn(`[temporal-contiguity] Invalid anchor timestamp for memory ${memoryId}: ${anchor.created_at}`);
+      return [];
+    }
 
-    const rows = (db.prepare(`
-      SELECT *,
-             ABS(CAST((julianday(created_at) - julianday(?)) * 86400 AS INTEGER)) AS time_delta_seconds
+    const lowerBound = formatBoundaryTimestamp(
+      anchorTimestampMs - clampedWindow * 1000,
+      anchor.created_at,
+    );
+    const upperBound = formatBoundaryTimestamp(
+      anchorTimestampMs + clampedWindow * 1000,
+      anchor.created_at,
+    );
+
+    const narrowedRows = (db.prepare(`
+      SELECT *
         FROM memory_index
        WHERE id != ?
-         AND ABS(CAST((julianday(created_at) - julianday(?)) * 86400 AS INTEGER)) <= ?
-       ORDER BY time_delta_seconds ASC
+         AND spec_folder = ?
+         AND created_at >= ?
+         AND created_at <= ?
+       ORDER BY created_at DESC
     `) as Database.Statement).all(
-      anchor.created_at,
       memoryId,
-      anchor.created_at,
-      clampedWindow,
-    ) as Array<{ time_delta_seconds: number; [key: string]: unknown }>;
+      anchor.spec_folder,
+      lowerBound,
+      upperBound,
+    ) as Array<{ created_at: string; [key: string]: unknown }>;
 
-    return rows;
+    const neighbors: Array<{ time_delta_seconds: number; [key: string]: unknown }> = [];
+    for (const row of narrowedRows) {
+      const createdAt = typeof row.created_at === 'string' ? row.created_at : String(row.created_at);
+      const createdAtMs = Date.parse(createdAt);
+      if (!Number.isFinite(createdAtMs)) {
+        continue;
+      }
+
+      const timeDeltaSeconds = Math.abs(Math.trunc((createdAtMs - anchorTimestampMs) / 1000));
+      if (timeDeltaSeconds > clampedWindow) {
+        continue;
+      }
+
+      neighbors.push({
+        ...row,
+        time_delta_seconds: timeDeltaSeconds,
+      });
+    }
+
+    neighbors.sort((left, right) => left.time_delta_seconds - right.time_delta_seconds);
+    return neighbors;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[temporal-contiguity] getTemporalNeighbors error: ${msg}`);

@@ -118,6 +118,25 @@ function applyPostInsertMetadataFallback(
   db.prepare(`UPDATE memory_index SET ${setClause} WHERE id = ?`).run(...values, memoryId);
 }
 
+function deleteMemoriesBulk(memoryIds: number[]): { deletedIds: number[]; failedIds: number[] } {
+  const deletedIds: number[] = [];
+  const failedIds: number[] = [];
+
+  for (const memoryId of memoryIds) {
+    try {
+      if (vectorIndex.deleteMemory(memoryId)) {
+        deletedIds.push(memoryId);
+      } else {
+        failedIds.push(memoryId);
+      }
+    } catch (_error: unknown) {
+      failedIds.push(memoryId);
+    }
+  }
+
+  return { deletedIds, failedIds };
+}
+
 /**
  * Index a large memory file by splitting it into chunks.
  * Creates a parent record (metadata only, no embedding) and child records
@@ -240,22 +259,6 @@ async function indexChunkedMemoryFile(
   // Use existingParentUpdated below for mutation ledger (replaces `existing` variable)
   const existing = existingParentUpdated;
   const useSafeSwap = existing;
-
-  // Index BM25 for parent with summary
-  if (bm25Index.isBm25Enabled()) {
-    try {
-      const bm25 = bm25Index.getIndex();
-      bm25.addDocument(String(parentId), bm25Index.buildBm25DocumentText({
-        title: parsed.title,
-        content_text: chunkResult.parentSummary,
-        trigger_phrases: parsed.triggerPhrases,
-        file_path: filePath,
-      }));
-    } catch (bm25_err: unknown) {
-      const message = toErrorMessage(bm25_err);
-      console.warn(`[memory-save] BM25 indexing failed for parent: ${message}`);
-    }
-  }
 
   // Index each chunk as a child record
   let successCount = 0;
@@ -529,23 +532,26 @@ async function indexChunkedMemoryFile(
         const archivePlaceholders = oldChildIds.map(() => '?').join(', ');
         database.prepare(`
           UPDATE memory_index
-          SET is_archived = 1,
+          SET parent_id = NULL,
               updated_at = datetime('now')
           WHERE id IN (${archivePlaceholders})
         `).run(...oldChildIds);
-      }
-    });
 
-    try {
-      finalizeSwapTx(childIds);
+        const deleteResult = deleteMemoriesBulk(oldChildIds);
+        if (deleteResult.failedIds.length > 0) {
+          throw new Error(`Failed to delete old chunk rows: ${deleteResult.failedIds.join(', ')}`);
+        }
 
-      for (const oldChildId of oldChildIds) {
-        if (vectorIndex.deleteMemory(oldChildId)) {
+        for (const oldChildId of deleteResult.deletedIds) {
           try {
             recordHistory(oldChildId, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex', parsed.specFolder);
           } catch (_histErr: unknown) { /* best-effort */ }
         }
       }
+    });
+
+    try {
+      finalizeSwapTx(childIds);
     } catch (swapErr: unknown) {
       const message = toErrorMessage(swapErr);
       console.error(`[memory-save] Re-chunk swap failed for parent ${parentId}: ${message}`);
@@ -578,6 +584,23 @@ async function indexChunkedMemoryFile(
         embeddingStatus: 'pending',
         message: `Chunked indexing aborted: failed to finalize safe swap (${message})`,
       };
+    }
+  }
+
+  // T332: Update parent BM25 only after at least one chunk succeeds and
+  // (for safe-swap) finalization completes.
+  if (bm25Index.isBm25Enabled()) {
+    try {
+      const bm25 = bm25Index.getIndex();
+      bm25.addDocument(String(parentId), bm25Index.buildBm25DocumentText({
+        title: parsed.title,
+        content_text: chunkResult.parentSummary,
+        trigger_phrases: parsed.triggerPhrases,
+        file_path: filePath,
+      }));
+    } catch (bm25_err: unknown) {
+      const message = toErrorMessage(bm25_err);
+      console.warn(`[memory-save] BM25 indexing failed for parent: ${message}`);
     }
   }
 

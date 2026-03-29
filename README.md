@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 19 skills, 20 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 19 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 

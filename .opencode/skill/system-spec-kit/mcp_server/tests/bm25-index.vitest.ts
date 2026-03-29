@@ -1,5 +1,5 @@
 // TEST: BM25 INDEX
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll, vi } from 'vitest';
 import type BetterSqlite3 from 'better-sqlite3';
 import {
   BM25Index,
@@ -17,6 +17,9 @@ import {
 type BetterSqliteDatabase = InstanceType<typeof BetterSqlite3>;
 type HybridSearchModule = typeof import('../lib/search/hybrid-search');
 
+const ORIGINAL_ENABLE_BM25 = process.env.ENABLE_BM25;
+process.env.ENABLE_BM25 = 'true';
+
 let hybridSearch: HybridSearchModule | null = null;
 try {
   // @ts-expect-error top-level await in test file
@@ -26,6 +29,17 @@ try {
 }
 
 describe('BM25 Index Tests (T031-T039)', () => {
+  beforeEach(() => {
+    process.env.ENABLE_BM25 = 'true';
+    resetIndex();
+  });
+
+  afterEach(() => {
+    resetIndex();
+    vi.useRealTimers();
+    process.env.ENABLE_BM25 = 'true';
+  });
+
   /* ═══════════════════════════════════════════════════════════
      T031: BM25Index class instantiation
   ════════════════════════════════════════════════════════════ */
@@ -383,12 +397,14 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(typeof isBm25Enabled()).toBe('boolean');
     });
 
-    it('T037.2: BM25 enabled by default', () => {
-      if (process.env.ENABLE_BM25 === 'false') {
-        expect(isBm25Enabled()).toBe(false);
-      } else {
-        expect(isBm25Enabled()).toBe(true);
-      }
+    it('T037.2: BM25 is disabled by default until explicitly enabled', () => {
+      delete process.env.ENABLE_BM25;
+      expect(isBm25Enabled()).toBe(false);
+    });
+
+    it('T037.2b: BM25 enables when the experimental flag is set', () => {
+      process.env.ENABLE_BM25 = 'true';
+      expect(isBm25Enabled()).toBe(true);
     });
 
     it('T037.3: getStats() reports valid structure', () => {
@@ -608,6 +624,71 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     expect(text).not.toContain('Hidden frontmatter');
   });
 
+  it('T312: rebuildFromDatabase defers warmup and hydrates documents in batches', async () => {
+    vi.useFakeTimers();
+
+    type WarmupRow = {
+      id: number;
+      title: string;
+      content_text: string;
+      trigger_phrases: string;
+      file_path: string;
+    };
+
+    const rows = new Map<number, WarmupRow>([
+      [1, { id: 1, title: 'Auth doc', content_text: 'authentication search memory body', trigger_phrases: 'auth', file_path: 'specs/auth/1.md' }],
+      [2, { id: 2, title: 'Cache doc', content_text: 'cache retrieval system body', trigger_phrases: 'cache', file_path: 'specs/cache/2.md' }],
+    ]);
+
+    const mockDb = {
+      prepare(sql: string) {
+        if (sql.includes('SELECT id') && sql.includes('ORDER BY id')) {
+          return {
+            all: () => Array.from(rows.values()).map((row) => ({ id: row.id })),
+          };
+        }
+
+        if (sql.includes('WHERE id IN')) {
+          return {
+            all: (...ids: Array<number>) => ids
+              .map((id) => rows.get(id))
+              .filter((row): row is WarmupRow => row != null),
+          };
+        }
+
+        throw new Error(`Unexpected SQL in test: ${sql}`);
+      },
+    } as unknown as BetterSqliteDatabase;
+
+    const index = new BM25Index();
+    const scheduled = index.rebuildFromDatabase(mockDb);
+
+    expect(scheduled).toBe(2);
+    expect(index.getStats().documentCount).toBe(0);
+
+    await vi.runAllTimersAsync();
+
+    expect(index.getStats().documentCount).toBe(2);
+  });
+
+  it('T312: syncChangedRows removes archived or missing documents incrementally', () => {
+    const index = new BM25Index();
+    index.addDocument('5', 'stale document that should be removed');
+
+    const mockDb = {
+      prepare() {
+        return {
+          all: () => [],
+        };
+      },
+    } as unknown as BetterSqliteDatabase;
+
+    const synced = index.syncChangedRows(mockDb, [5]);
+
+    expect(synced).toBe(1);
+    expect(index.getStats().documentCount).toBe(0);
+  });
+
   // MAINTENANCE: This harness mocks 10 modules. If any export signature
   // Changes upstream, update the corresponding vi.doMock below.
   async function setupMemoryUpdateHarness() {
@@ -739,4 +820,12 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
 
     expect(runInTransaction).toHaveBeenCalledTimes(1);
   });
+});
+
+afterAll(() => {
+  if (ORIGINAL_ENABLE_BM25 === undefined) {
+    delete process.env.ENABLE_BM25;
+  } else {
+    process.env.ENABLE_BM25 = ORIGINAL_ENABLE_BM25;
+  }
 });

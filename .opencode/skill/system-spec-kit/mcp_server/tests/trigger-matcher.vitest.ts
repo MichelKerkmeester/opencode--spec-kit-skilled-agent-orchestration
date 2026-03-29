@@ -15,17 +15,24 @@ interface MockMemoryRow {
 
 const mockDbState = vi.hoisted(() => ({
   rows: [] as MockMemoryRow[],
+  prepareCalls: 0,
+  preparedSql: [] as string[],
+}));
+const mockDb = vi.hoisted(() => ({
+  prepare: (sql: string) => {
+    mockDbState.prepareCalls += 1;
+    mockDbState.preparedSql.push(sql);
+    return {
+      all: () => mockDbState.rows,
+    };
+  },
 }));
 
 // Mock transitive DB dependencies so the module can load
 // without better-sqlite3 or vector-index wiring.
 vi.mock('../lib/search/vector-index', () => ({
   initializeDb: vi.fn(),
-  getDb: vi.fn(() => ({
-    prepare: vi.fn(() => ({
-      all: () => mockDbState.rows,
-    })),
-  })),
+  getDb: vi.fn(() => mockDb),
 }));
 
 import {
@@ -90,6 +97,8 @@ describe('Trigger Matcher (T501)', () => {
   beforeEach(() => {
     clearCache();
     setMockDbRows([]);
+    mockDbState.prepareCalls = 0;
+    mockDbState.preparedSql = [];
   });
 
   // 4.1 EXACT MATCH (T501-01)
@@ -370,6 +379,32 @@ describe('Trigger Matcher (T501)', () => {
       expect(candidates.length).toBeLessThan(cache.length);
       expect(candidates.some((entry) => entry.phrase === 'focused trigger benchmark')).toBe(true);
       expect(indexedElapsed).toBeLessThan(fullScanElapsed);
+    });
+  });
+
+  describe('Trigger loader statement caching (T501-15)', () => {
+    it('T501-15: refreshes reuse a prepared loader statement for the same DB connection', () => {
+      setMockDbRows([
+        {
+          id: 1,
+          spec_folder: 'specs/cache',
+          file_path: '/cache.md',
+          title: 'Cache Statement',
+          trigger_phrases: JSON.stringify(['prepared statement cache']),
+          importance_weight: 0.8,
+        },
+      ]);
+
+      const firstLoad = loadTriggerCache();
+      expect(firstLoad.length).toBeGreaterThan(0);
+      expect(mockDbState.prepareCalls).toBeLessThanOrEqual(1);
+      const prepareCallsAfterFirstLoad = mockDbState.prepareCalls;
+
+      clearCache();
+
+      const secondLoad = loadTriggerCache();
+      expect(secondLoad.length).toBeGreaterThan(0);
+      expect(mockDbState.prepareCalls).toBe(prepareCallsAfterFirstLoad);
     });
   });
 });
