@@ -13,19 +13,40 @@ import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 
 // Lazy-load tier-classifier to avoid circular dependencies
 let tierClassifierModule: Record<string, unknown> | null = null;
+let tierClassifierModulePromise: Promise<Record<string, unknown> | null> | null = null;
 
 async function loadTierClassifierModule(): Promise<Record<string, unknown> | null> {
+  if (tierClassifierModule !== null) {
+    return tierClassifierModule;
+  }
+  if (tierClassifierModulePromise !== null) {
+    return tierClassifierModulePromise;
+  }
+
+  const loadPromise = (async (): Promise<Record<string, unknown> | null> => {
+    try {
+      tierClassifierModule = await import('./tier-classifier.js');
+      return tierClassifierModule;
+    } catch (_error: unknown) {
+      return null;
+    }
+  })();
+
+  tierClassifierModulePromise = loadPromise;
   try {
-    return await import('./tier-classifier.js');
-  } catch (_error: unknown) {
-    return null;
+    return await loadPromise;
+  } finally {
+    if (tierClassifierModulePromise === loadPromise) {
+      tierClassifierModulePromise = null;
+    }
   }
 }
 
-tierClassifierModule = await loadTierClassifierModule();
-
 function getTierClassifier(): Record<string, unknown> | null {
   if (tierClassifierModule !== null) return tierClassifierModule;
+  if (tierClassifierModulePromise === null) {
+    void loadTierClassifierModule();
+  }
   return null;
 }
 
@@ -39,27 +60,49 @@ interface Bm25IndexModule {
 }
 
 let bm25IndexModule: Bm25IndexModule | null = null;
+let bm25IndexModulePromise: Promise<Bm25IndexModule | null> | null = null;
 
 async function loadBm25IndexModule(): Promise<Bm25IndexModule | null> {
+  if (bm25IndexModule !== null) {
+    return bm25IndexModule;
+  }
+  if (bm25IndexModulePromise !== null) {
+    return bm25IndexModulePromise;
+  }
+
   const primaryModulePath = '../search/bm25-index.js';
   const fallbackModulePath = '../../search/bm25-index.js';
 
-  try {
-    return await import(primaryModulePath) as Bm25IndexModule;
-  } catch (_error: unknown) {
+  const loadPromise = (async (): Promise<Bm25IndexModule | null> => {
     try {
-      // Support cognitive symlink import path in some runtime setups.
-      return await import(fallbackModulePath) as Bm25IndexModule;
+      bm25IndexModule = await import(primaryModulePath) as Bm25IndexModule;
+      return bm25IndexModule;
     } catch (_error: unknown) {
-      return null;
+      try {
+        // Support cognitive symlink import path in some runtime setups.
+        bm25IndexModule = await import(fallbackModulePath) as Bm25IndexModule;
+        return bm25IndexModule;
+      } catch (_error: unknown) {
+        return null;
+      }
+    }
+  })();
+
+  bm25IndexModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (bm25IndexModulePromise === loadPromise) {
+      bm25IndexModulePromise = null;
     }
   }
 }
 
-bm25IndexModule = await loadBm25IndexModule();
-
 function getBm25Index(): Bm25IndexModule | null {
   if (bm25IndexModule !== null) return bm25IndexModule;
+  if (bm25IndexModulePromise === null) {
+    void loadBm25IndexModule();
+  }
   return null;
 }
 
@@ -68,32 +111,55 @@ interface EmbeddingModule {
 }
 
 let embeddingsModule: EmbeddingModule | null = null;
+let embeddingsModulePromise: Promise<EmbeddingModule | null> | null = null;
 
 async function loadEmbeddingsModule(): Promise<EmbeddingModule | null> {
+  if (embeddingsModule !== null) {
+    return embeddingsModule;
+  }
+  if (embeddingsModulePromise !== null) {
+    return embeddingsModulePromise;
+  }
+
   const primaryModulePath = '../providers/embeddings.js';
   const fallbackModulePath = '../../providers/embeddings.js';
 
-  try {
-    return await import(primaryModulePath) as EmbeddingModule;
-  } catch (_error: unknown) {
+  const loadPromise = (async (): Promise<EmbeddingModule | null> => {
     try {
-      // Support cognitive symlink import path in some runtime setups.
-      return await import(fallbackModulePath) as EmbeddingModule;
+      embeddingsModule = await import(primaryModulePath) as EmbeddingModule;
+      return embeddingsModule;
     } catch (_error: unknown) {
-      return null;
+      try {
+        // Support cognitive symlink import path in some runtime setups.
+        embeddingsModule = await import(fallbackModulePath) as EmbeddingModule;
+        return embeddingsModule;
+      } catch (_error: unknown) {
+        return null;
+      }
+    }
+  })();
+
+  embeddingsModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (embeddingsModulePromise === loadPromise) {
+      embeddingsModulePromise = null;
     }
   }
 }
 
-embeddingsModule = await loadEmbeddingsModule();
-
 function _getEmbeddings(): EmbeddingModule | null {
   if (embeddingsModule !== null) return embeddingsModule;
+  if (embeddingsModulePromise === null) {
+    void loadEmbeddingsModule();
+  }
   return null;
 }
 
 function __setEmbeddingsModuleForTests(module: EmbeddingModule | null): void {
   embeddingsModule = module;
+  embeddingsModulePromise = null;
 }
 
 /* ───────────────────────────────────────────────────────────────

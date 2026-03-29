@@ -35,16 +35,44 @@ interface FsrsSchedulerModule {
 }
 
 let fsrsScheduler: FsrsSchedulerModule | null = null;
+let fsrsSchedulerPromise: Promise<FsrsSchedulerModule | null> | null = null;
 
 async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
+  if (fsrsScheduler !== null) {
+    return fsrsScheduler;
+  }
+  if (fsrsSchedulerPromise !== null) {
+    return fsrsSchedulerPromise;
+  }
+
+  const loadPromise = (async (): Promise<FsrsSchedulerModule | null> => {
+    try {
+      fsrsScheduler = await import('../cognitive/fsrs-scheduler.js') as FsrsSchedulerModule;
+      return fsrsScheduler;
+    } catch (_err: unknown) {
+      return null;
+    }
+  })();
+
+  fsrsSchedulerPromise = loadPromise;
   try {
-    return await import('../cognitive/fsrs-scheduler.js') as FsrsSchedulerModule;
-  } catch (_err: unknown) {
-    return null;
+    return await loadPromise;
+  } finally {
+    if (fsrsSchedulerPromise === loadPromise) {
+      fsrsSchedulerPromise = null;
+    }
   }
 }
 
-fsrsScheduler = await loadFsrsScheduler();
+function getFsrsScheduler(): FsrsSchedulerModule | null {
+  if (fsrsScheduler !== null) {
+    return fsrsScheduler;
+  }
+  if (fsrsSchedulerPromise === null) {
+    void loadFsrsScheduler();
+  }
+  return null;
+}
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -144,8 +172,8 @@ export const RECENCY_SCALE_DAYS: number = 1 / DECAY_RATE;
 
 // T301: FSRS constants imported from canonical source (fsrs-scheduler.ts)
 // Re-exported for backward compatibility — consumers may import from here
-export const FSRS_FACTOR: number = fsrsScheduler?.FSRS_FACTOR ?? 19 / 81;
-export const FSRS_DECAY: number = fsrsScheduler?.FSRS_DECAY ?? -0.5;
+export const FSRS_FACTOR: number = 19 / 81;
+export const FSRS_DECAY: number = -0.5;
 
 const RETRIEVABILITY_TIER_MULTIPLIER: Readonly<Record<string, number>> = {
   constitutional: 0.1,
@@ -260,6 +288,7 @@ function parseLastAccessed(value: number | string | undefined | null): number | 
  * Uses FSRS v4 power-law formula: R = (1 + 0.235 * t/S)^-0.5
  */
 export function calculateRetrievabilityScore(row: ScoringInput): number {
+  const scheduler = getFsrsScheduler();
   let stability = (row.stability as number | undefined) || 1.0;
   if (!isFinite(stability)) stability = 1.0;
   const lastReview = (row.lastReview as string | undefined) || (row.last_review as string | undefined) || row.updated_at || row.created_at;
@@ -290,8 +319,8 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
   // Additionally apply elapsed-time tier multipliers to avoid double decay.
   let adjustedStability = stability;
   if (classificationDecayEnabled) {
-    if (fsrsScheduler?.applyClassificationDecay) {
-      adjustedStability = fsrsScheduler.applyClassificationDecay(stability, contextType, tier);
+    if (scheduler?.applyClassificationDecay) {
+      adjustedStability = scheduler.applyClassificationDecay(stability, contextType, tier);
     } else {
       adjustedStability = applyClassificationDecayFallback(stability, contextType, tier);
     }
@@ -302,7 +331,7 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
 
   let adjustedElapsedDays = elapsedDays;
   if (!classificationDecayEnabled) {
-    const tierMultiplier = fsrsScheduler?.TIER_MULTIPLIER?.[tier]
+    const tierMultiplier = scheduler?.TIER_MULTIPLIER?.[tier]
       ?? RETRIEVABILITY_TIER_MULTIPLIER[tier]
       ?? RETRIEVABILITY_TIER_MULTIPLIER.normal;
     adjustedElapsedDays = elapsedDays * tierMultiplier;
@@ -310,8 +339,8 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
 
   adjustedStability = Math.max(0.001, adjustedStability);
 
-  if (fsrsScheduler && typeof fsrsScheduler.calculateRetrievability === 'function') {
-    const score = fsrsScheduler.calculateRetrievability(adjustedStability, adjustedElapsedDays);
+  if (scheduler && typeof scheduler.calculateRetrievability === 'function') {
+    const score = scheduler.calculateRetrievability(adjustedStability, adjustedElapsedDays);
     return Number.isFinite(score) ? score : 0;
   }
 

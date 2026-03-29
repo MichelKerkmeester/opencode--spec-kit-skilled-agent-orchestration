@@ -9,7 +9,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-const { default: chokidar } = await import('chokidar');
+import { createRequire } from 'node:module';
 
 // Feature catalog: Real-time filesystem watching with chokidar
 // Feature catalog: Watcher delete/rename cleanup
@@ -37,6 +37,12 @@ export interface FSWatcher {
   close: () => Promise<void>;
 }
 
+interface ChokidarModule {
+  default: {
+    watch: (paths: string[], options: Record<string, unknown>) => FSWatcher;
+  };
+}
+
 /* ───────────────────────────────────────────────────────────────
    3. CONSTANTS
 ──────────────────────────────────────────────────────────────── */
@@ -48,6 +54,9 @@ const MAX_BUSY_RETRIES = RETRY_DELAYS_MS.length;
 // CHK-087: Watcher metrics counters
 let filesReindexed = 0;
 let totalReindexTimeMs = 0;
+let chokidarModule: ChokidarModule | null = null;
+let chokidarModulePromise: Promise<ChokidarModule | null> | null = null;
+const require = createRequire(import.meta.url);
 
 /** Return accumulated watcher metrics for diagnostics. */
 export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs: number } {
@@ -68,6 +77,56 @@ export function resetWatcherMetrics(): void {
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function loadChokidarModule(): Promise<ChokidarModule | null> {
+  if (chokidarModule !== null) {
+    return chokidarModule;
+  }
+  if (chokidarModulePromise !== null) {
+    return chokidarModulePromise;
+  }
+
+  const loadPromise = (async (): Promise<ChokidarModule | null> => {
+    try {
+      chokidarModule = await import('chokidar') as ChokidarModule;
+      return chokidarModule;
+    } catch (_error: unknown) {
+      return null;
+    }
+  })();
+
+  chokidarModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (chokidarModulePromise === loadPromise) {
+      chokidarModulePromise = null;
+    }
+  }
+}
+
+function getWatchFactory(): (paths: string[], options: Record<string, unknown>) => FSWatcher {
+  if (chokidarModule?.default?.watch) {
+    return chokidarModule.default.watch;
+  }
+
+  try {
+    const requiredModule = require('chokidar') as
+      | ChokidarModule
+      | { watch: (paths: string[], options: Record<string, unknown>) => FSWatcher };
+    chokidarModule = 'default' in requiredModule
+      ? requiredModule
+      : { default: requiredModule };
+    return chokidarModule.default.watch;
+  } catch (_error: unknown) {
+    // Fall through to async ESM import path below.
+  }
+
+  if (chokidarModulePromise === null) {
+    void loadChokidarModule();
+  }
+  throw new Error('chokidar module is still loading; retry startFileWatcher once lazy import completes');
 }
 
 function isDotfilePath(filePath: string): boolean {
@@ -158,11 +217,7 @@ async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
  * Provides the startFileWatcher helper.
  */
 export function startFileWatcher(config: WatcherConfig): FSWatcher {
-  const watchFactory = config.watchFactory ?? (
-    chokidar as {
-      watch: (paths: string[], options: Record<string, unknown>) => FSWatcher;
-    }
-  ).watch;
+  const watchFactory = config.watchFactory ?? getWatchFactory();
 
   const debounceMs = config.debounceMs ?? DEFAULT_DEBOUNCE_MS;
   const watchRoots = config.paths.map((watchPath) => path.resolve(watchPath));

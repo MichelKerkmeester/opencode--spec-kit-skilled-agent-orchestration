@@ -210,18 +210,36 @@ interface RetryModule {
 }
 
 let retryModule: RetryModule | null = null;
+let retryModulePromise: Promise<RetryModule | null> | null = null;
 
 async function loadRetryModule(): Promise<RetryModule | null> {
+  if (retryModule !== null) {
+    return retryModule;
+  }
+  if (retryModulePromise !== null) {
+    return retryModulePromise;
+  }
+
   const retryModulePath = '../utils/retry.js';
 
+  const loadPromise = (async (): Promise<RetryModule | null> => {
+    try {
+      retryModule = await import(retryModulePath) as RetryModule;
+      return retryModule;
+    } catch {
+      return null;
+    }
+  })();
+
+  retryModulePromise = loadPromise;
   try {
-    return await import(retryModulePath) as RetryModule;
-  } catch {
-    return null;
+    return await loadPromise;
+  } finally {
+    if (retryModulePromise === loadPromise) {
+      retryModulePromise = null;
+    }
   }
 }
-
-retryModule = await loadRetryModule();
 
 /**
  * Check if an error is transient (worth retrying).
@@ -229,6 +247,10 @@ retryModule = await loadRetryModule();
  * when available, falls back to legacy patterns.
  */
 export function isTransientError(error: Error): boolean {
+  if (retryModule === null && retryModulePromise === null) {
+    void loadRetryModule();
+  }
+
   // Use retry module if available (REQ-032)
   if (retryModule && retryModule.isTransientError) {
     return retryModule.isTransientError(error);
@@ -253,6 +275,10 @@ export function isTransientError(error: Error): boolean {
  * REQ-032: Fail-fast for 401, 403, and other permanent errors.
  */
 export function isPermanentError(error: Error): boolean {
+  if (retryModule === null && retryModulePromise === null) {
+    void loadRetryModule();
+  }
+
   // Use retry module if available (REQ-032)
   if (retryModule && retryModule.isPermanentError) {
     return retryModule.isPermanentError(error);

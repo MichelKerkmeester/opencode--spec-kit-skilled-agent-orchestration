@@ -107,23 +107,45 @@ interface StateStats {
 
 // Lazy-load memory types to avoid circular dependencies
 let memoryTypesModule: Record<string, unknown> | false | null = null;
+let memoryTypesModulePromise: Promise<Record<string, unknown> | false> | null = null;
 
 async function loadMemoryTypesModule(): Promise<Record<string, unknown> | false> {
+  if (memoryTypesModule !== null) {
+    return memoryTypesModule;
+  }
+  if (memoryTypesModulePromise !== null) {
+    return memoryTypesModulePromise;
+  }
+
+  const loadPromise = (async (): Promise<Record<string, unknown> | false> => {
+    try {
+      memoryTypesModule = await import('../config/memory-types.js');
+      return memoryTypesModule;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn('[tier-classifier] memory-types module not available:', msg);
+      memoryTypesModule = false;
+      return false;
+    }
+  })();
+
+  memoryTypesModulePromise = loadPromise;
   try {
-    return await import('../config/memory-types.js');
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn('[tier-classifier] memory-types module not available:', msg);
-    return false;
+    return await loadPromise;
+  } finally {
+    if (memoryTypesModulePromise === loadPromise) {
+      memoryTypesModulePromise = null;
+    }
   }
 }
-
-memoryTypesModule = await loadMemoryTypesModule();
 
 /** Get memory types module (lazy loaded) */
 function getMemoryTypesModule(): Record<string, unknown> | null {
   if (memoryTypesModule !== null) {
     return memoryTypesModule || null;
+  }
+  if (memoryTypesModulePromise === null) {
+    void loadMemoryTypesModule();
   }
   return null;
 }
