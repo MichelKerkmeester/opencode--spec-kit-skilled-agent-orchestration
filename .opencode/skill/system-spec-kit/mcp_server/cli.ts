@@ -12,16 +12,16 @@
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js reindex [--force] [--eager-warmup]
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js schema-downgrade --to 15 --confirm
 // Core modules (resolved relative to this file's location)
-import * as vectorIndex from './lib/search/vector-index';
-import * as checkpointsLib from './lib/storage/checkpoints';
-import * as accessTracker from './lib/storage/access-tracker';
-import * as causalEdges from './lib/storage/causal-edges';
-import * as mutationLedger from './lib/storage/mutation-ledger';
-import * as triggerMatcher from './lib/parsing/trigger-matcher';
-import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade';
-import { DATABASE_PATH, init as initDbState } from './core';
-import { detectNodeVersionMismatch } from './startup-checks';
-import { recordHistory } from './lib/storage/history';
+import * as vectorIndex from './lib/search/vector-index.js';
+import * as checkpointsLib from './lib/storage/checkpoints.js';
+import * as accessTracker from './lib/storage/access-tracker.js';
+import * as causalEdges from './lib/storage/causal-edges.js';
+import * as mutationLedger from './lib/storage/mutation-ledger.js';
+import * as triggerMatcher from './lib/parsing/trigger-matcher.js';
+import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade.js';
+import { DATABASE_PATH, init as initDbState } from './core/index.js';
+import { detectNodeVersionMismatch } from './startup-checks.js';
+import { recordHistory } from './lib/storage/history.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. ARGUMENT PARSING
@@ -371,14 +371,14 @@ async function runReindex(): Promise<void> {
   console.log(`  Warmup: ${eagerWarmup ? 'eager (startup)' : 'lazy (on demand)'}`);
 
   // Dynamic import to avoid pulling in heavy modules unless needed.
-  const { handleMemoryIndexScan } = await import('./handlers/memory-index');
+  const { handleMemoryIndexScan } = await import('./handlers/memory-index.js');
 
   initDatabase();
 
   // Optional legacy warmup path.
   if (eagerWarmup) {
     console.log(`  Loading embedding model...`);
-    const embeddings = await import('./lib/providers/embeddings');
+    const embeddings = await import('./lib/providers/embeddings.js');
     try {
       await embeddings.generateEmbedding('warmup');
     } catch (err: unknown) {

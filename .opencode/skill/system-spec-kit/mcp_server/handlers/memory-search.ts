@@ -5,22 +5,22 @@
    1. DEPENDENCIES
 ──────────────────────────────────────────────────────────────── */
 
-import * as toolCache from '../lib/cache/tool-cache';
-import * as sessionManager from '../lib/session/session-manager';
-import * as intentClassifier from '../lib/search/intent-classifier';
+import * as toolCache from '../lib/cache/tool-cache.js';
+import * as sessionManager from '../lib/session/session-manager.js';
+import * as intentClassifier from '../lib/search/intent-classifier.js';
 // TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
-import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost';
-import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost';
+import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost.js';
+import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost.js';
 // 4-stage pipeline architecture
-import { executePipeline } from '../lib/search/pipeline';
-import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
-import type { IntentWeightsConfig } from '../lib/search/pipeline/types';
-import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
-import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
+import { executePipeline } from '../lib/search/pipeline/index.js';
+import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline/index.js';
+import type { IntentWeightsConfig } from '../lib/search/pipeline/types.js';
+import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger.js';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry.js';
 // Artifact-class routing (spec/plan/tasks/checklist/memory)
-import { getStrategyForQuery } from '../lib/search/artifact-routing';
+import { getStrategyForQuery } from '../lib/search/artifact-routing.js';
 // Chunk reassembly (extracted from this file)
-import { collapseAndReassembleChunkResults } from '../lib/search/chunk-reassembly';
+import { collapseAndReassembleChunkResults } from '../lib/search/chunk-reassembly.js';
 // Search utilities (extracted from this file)
 import {
   filterByMinQualityScore,
@@ -29,65 +29,65 @@ import {
   resolveRowContextType,
   resolveArtifactRoutingQuery,
   applyArtifactRouting,
-} from '../lib/search/search-utils';
+} from '../lib/search/search-utils.js';
 // CacheArgsInput used internally by buildCacheArgs (lib/search/search-utils.ts)
 // Eval channel tracking (extracted from this file)
 import {
   collectEvalChannelsFromRow,
   buildEvalChannelPayloads,
   summarizeGraphWalkDiagnostics,
-} from '../lib/telemetry/eval-channel-tracking';
-import type { EvalChannelPayload } from '../lib/telemetry/eval-channel-tracking';
+} from '../lib/telemetry/eval-channel-tracking.js';
+import type { EvalChannelPayload } from '../lib/telemetry/eval-channel-tracking.js';
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
-import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
+import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger.js';
 import {
   logFeedbackEvents,
   isImplicitFeedbackLogEnabled,
-} from '../lib/feedback/feedback-ledger';
-import type { FeedbackEvent } from '../lib/feedback/feedback-ledger';
+} from '../lib/feedback/feedback-ledger.js';
+import type { FeedbackEvent } from '../lib/feedback/feedback-ledger.js';
 
 // Core utilities
-import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core';
-import { validateQuery, requireDb, toErrorMessage } from '../utils';
+import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core/index.js';
+import { validateQuery, requireDb, toErrorMessage } from '../utils/index.js';
 
 // Response envelope + formatters
-import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
-import { formatSearchResults } from '../formatters';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope.js';
+import { formatSearchResults } from '../formatters/index.js';
 
 // Shared handler types
-import type { MCPResponse, IntentClassification } from './types';
+import type { MCPResponse, IntentClassification } from './types.js';
 
 // Retrieval trace contracts (C136-08)
 import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
-import { buildAdaptiveShadowProposal } from '../lib/cognitive/adaptive-ranking';
-import { normalizeScopeContext } from '../lib/governance/scope-governance';
+import { buildAdaptiveShadowProposal } from '../lib/cognitive/adaptive-ranking.js';
+import { normalizeScopeContext } from '../lib/governance/scope-governance.js';
 import {
   attachSessionTransitionTrace,
   type SessionTransitionTrace,
-} from '../lib/search/session-transition';
+} from '../lib/search/session-transition.js';
 
 // REQ-D5-003: Mode-Aware Response Shape
 import {
   applyProfileToEnvelope,
   isResponseProfileEnabled,
-} from '../lib/response/profile-formatters';
+} from '../lib/response/profile-formatters.js';
 import {
   buildProgressiveResponse,
   extractSnippets,
   isProgressiveDisclosureEnabled,
   resolveCursor,
-} from '../lib/search/progressive-disclosure';
+} from '../lib/search/progressive-disclosure.js';
 import {
   deduplicateResults as deduplicateWithSessionState,
   isSessionRetrievalStateEnabled,
   manager as retrievalSessionStateManager,
   refineForGoal,
-} from '../lib/search/session-state';
+} from '../lib/search/session-state.js';
 
 // Type imports for casting
-import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
-import type { RawSearchResult } from '../formatters';
+import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier.js';
+import type { RawSearchResult } from '../formatters/index.js';
 // RoutingResult, WeightedResult — now used internally by lib/search/search-utils.ts
 
 // Feature catalog: Semantic and lexical search (memory_search)

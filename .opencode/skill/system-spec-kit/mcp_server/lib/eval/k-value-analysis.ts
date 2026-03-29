@@ -6,7 +6,7 @@
 // This is a measurement/analysis tool, not production code.
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RankedList, FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
-import { isRrfKExperimentalEnabled as _isRrfKExperimentalEnabled } from '../search/search-flags';
+import { isRrfKExperimentalEnabled as _isRrfKExperimentalEnabled } from '../search/search-flags.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

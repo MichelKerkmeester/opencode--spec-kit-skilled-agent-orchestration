@@ -4,33 +4,33 @@
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
 
-import * as vectorIndex from '../../lib/search/vector-index';
-import * as embeddings from '../../lib/providers/embeddings';
-import * as bm25Index from '../../lib/search/bm25-index';
-import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler';
-import * as incrementalIndex from '../../lib/storage/incremental-index';
-import { reconsolidate } from '../../lib/storage/reconsolidation';
-import type { ReconsolidationResult } from '../../lib/storage/reconsolidation';
-import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
+import * as vectorIndex from '../../lib/search/vector-index.js';
+import * as embeddings from '../../lib/providers/embeddings.js';
+import * as bm25Index from '../../lib/search/bm25-index.js';
+import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler.js';
+import * as incrementalIndex from '../../lib/storage/incremental-index.js';
+import { reconsolidate } from '../../lib/storage/reconsolidation.js';
+import type { ReconsolidationResult } from '../../lib/storage/reconsolidation.js';
+import { classifyEncodingIntent } from '../../lib/search/encoding-intent.js';
 import {
   isEncodingIntentEnabled,
   isReconsolidationEnabled as isReconsolidationFlagEnabled,
   isAssistiveReconsolidationEnabled as _isAssistiveReconsolidationEnabled,
-} from '../../lib/search/search-flags';
-import type * as memoryParser from '../../lib/parsing/memory-parser';
-import { toErrorMessage } from '../../utils';
+} from '../../lib/search/search-flags.js';
+import type * as memoryParser from '../../lib/parsing/memory-parser.js';
+import { toErrorMessage } from '../../utils/index.js';
 
-import { recordHistory } from '../../lib/storage/history';
-import { appendMutationLedgerSafe } from '../memory-crud-utils';
-import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
-import { detectSpecLevelFromParsed } from '../handler-utils';
-import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers';
+import { recordHistory } from '../../lib/storage/history.js';
+import { appendMutationLedgerSafe } from '../memory-crud-utils.js';
+import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating.js';
+import { detectSpecLevelFromParsed } from '../handler-utils.js';
+import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers.js';
 import type {
   AssistiveRecommendation,
   IndexResult,
   ReconWarningList,
-} from './types';
-export type { AssistiveClassification, AssistiveRecommendation } from './types';
+} from './types.js';
+export type { AssistiveClassification, AssistiveRecommendation } from './types.js';
 
 // Feature catalog: Reconsolidation-on-save
 // Feature catalog: Memory indexing (memory_save)

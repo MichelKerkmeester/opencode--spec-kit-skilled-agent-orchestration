@@ -11,19 +11,19 @@ import * as zlib from 'zlib';
 import type Database from 'better-sqlite3';
 
 // Internal utils
-import { toErrorMessage } from '../../utils/db-helpers';
-import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
-import { rebuildAutoEntities } from '../extraction/entity-extractor';
+import { toErrorMessage } from '../../utils/db-helpers.js';
+import { getAllowedSharedSpaceIds } from '../collab/shared-spaces.js';
+import { rebuildAutoEntities } from '../extraction/entity-extractor.js';
 import {
   createScopeFilterPredicate,
   hasScopeConstraints,
   normalizeScopeContext,
   type ScopeContext,
-} from '../governance/scope-governance';
-import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection';
-import { snapshotDegrees } from '../graph/graph-signals';
-import { deleteEdgesForMemory } from './causal-edges';
-import { runLineageBackfill } from './lineage-state';
+} from '../governance/scope-governance.js';
+import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection.js';
+import { snapshotDegrees } from '../graph/graph-signals.js';
+import { deleteEdgesForMemory } from './causal-edges.js';
+import { runLineageBackfill } from './lineage-state.js';
 
 function batchedInQuery<T>(db: Database.Database, sql: string, ids: (number | string)[], batchSize = 500): T[] {
   const results: T[] = [];

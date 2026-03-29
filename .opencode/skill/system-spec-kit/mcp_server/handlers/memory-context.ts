@@ -5,52 +5,52 @@
 import { randomUUID } from 'crypto';
 
 // Layer definitions
-import * as layerDefs from '../lib/architecture/layer-definitions';
-import { checkDatabaseUpdated } from '../core';
-import { toErrorMessage } from '../utils';
+import * as layerDefs from '../lib/architecture/layer-definitions.js';
+import { checkDatabaseUpdated } from '../core/index.js';
+import { toErrorMessage } from '../utils/index.js';
 
 // Intent classifier
-import * as intentClassifier from '../lib/search/intent-classifier';
+import * as intentClassifier from '../lib/search/intent-classifier.js';
 
 // Core handlers for routing
-import { handleMemorySearch } from './memory-search';
-import { handleMemoryMatchTriggers } from './memory-triggers';
+import { handleMemorySearch } from './memory-search.js';
+import { handleMemoryMatchTriggers } from './memory-triggers.js';
 
 // Response envelope
-import { createMCPErrorResponse, createMCPResponse } from '../lib/response/envelope';
+import { createMCPErrorResponse, createMCPResponse } from '../lib/response/envelope.js';
 
 // Token estimation
-import { estimateTokens } from '../formatters/token-metrics';
+import { estimateTokens } from '../formatters/token-metrics.js';
 import {
   getPressureLevel,
   type RuntimeContextStats,
-} from '../lib/cognitive/pressure-monitor';
-import * as workingMemory from '../lib/cognitive/working-memory';
-import * as sessionManager from '../lib/session/session-manager';
+} from '../lib/cognitive/pressure-monitor.js';
+import * as workingMemory from '../lib/cognitive/working-memory.js';
+import * as sessionManager from '../lib/session/session-manager.js';
 
 // Telemetry
-import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
-import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry.js';
+import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger.js';
 import {
   attachSessionTransitionTrace,
   buildSessionTransitionTrace,
   type SessionTransitionTrace,
-} from '../lib/search/session-transition';
+} from '../lib/search/session-transition.js';
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
-import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
-import * as vectorIndex from '../lib/search/vector-index';
+import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
 
 // Shared handler types
-import type { MCPResponse, IntentClassification } from './types';
+import type { MCPResponse, IntentClassification } from './types.js';
 
 // PI-B3: Folder discovery integration
-import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery';
+import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery.js';
 import {
   isAutoResumeEnabled,
   isFolderDiscoveryEnabled,
   isPressurePolicyEnabled,
-} from '../lib/search/search-flags';
+} from '../lib/search/search-flags.js';
 
 // Feature catalog: Unified context retrieval (memory_context)
 // Feature catalog: Dual-scope memory auto-surface

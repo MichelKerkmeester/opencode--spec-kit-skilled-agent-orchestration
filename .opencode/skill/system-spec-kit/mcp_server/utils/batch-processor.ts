@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Batch Processor
 // ───────────────────────────────────────────────────────────────
-import { isTransientError, userFriendlyError } from '../lib/errors/core';
+import { isTransientError, userFriendlyError } from '../lib/errors/core.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -35,7 +35,7 @@ export type ItemProcessor<T, R> = (item: T) => Promise<R>;
 
 // ───────────────────────────────────────────────────────────────
 // Single source of truth for batch config — imported from core/config.ts
-import { BATCH_SIZE, BATCH_DELAY_MS } from '../core/config';
+import { BATCH_SIZE, BATCH_DELAY_MS } from '../core/config.js';
 export { BATCH_SIZE, BATCH_DELAY_MS };
 export const MAX_BATCH_SIZE = 100;
 

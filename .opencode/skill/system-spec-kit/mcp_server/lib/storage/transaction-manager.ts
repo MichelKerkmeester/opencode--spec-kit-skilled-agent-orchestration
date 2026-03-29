@@ -6,7 +6,7 @@
 import type Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
-import { resolveDatabasePaths } from '../../core/config';
+import { resolveDatabasePaths } from '../../core/config.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS

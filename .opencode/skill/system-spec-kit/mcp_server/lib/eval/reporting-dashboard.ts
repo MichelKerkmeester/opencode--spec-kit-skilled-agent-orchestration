@@ -16,7 +16,7 @@
 import type Database from 'better-sqlite3';
 
 // Internal modules
-import { getEvalDb, initEvalDb } from './eval-db';
+import { getEvalDb, initEvalDb } from './eval-db.js';
 
 // Feature catalog: Reporting dashboard (eval_reporting_dashboard)
 

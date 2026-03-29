@@ -10,14 +10,14 @@ export {
   parse_trigger_phrases,
   get_error_message,
   get_error_code,
-} from './vector-index-types';
+} from './vector-index-types.js';
 export type {
   MemoryIndexRow,
   IndexMemoryParams,
   UpdateMemoryParams,
   VectorSearchOptions,
   EnrichedSearchResult,
-} from './vector-index-types';
+} from './vector-index-types.js';
 export {
   SCHEMA_VERSION,
   run_migrations,
@@ -35,7 +35,7 @@ export {
   migrateConfidenceColumns,
   ensureCanonicalFilePathSupport,
   migrateConstitutionalTier,
-} from './vector-index-schema';
+} from './vector-index-schema.js';
 export {
   index_memory,
   index_memory_deferred,
@@ -53,7 +53,7 @@ export {
   deleteMemories,
   updateEmbeddingStatus,
   updateConfidence,
-} from './vector-index-mutations';
+} from './vector-index-mutations.js';
 export {
   get_memory,
   get_memories_by_folder,
@@ -105,7 +105,7 @@ export {
   findCleanupCandidates,
   getMemoryPreview,
   verifyIntegrity,
-} from './vector-index-queries';
+} from './vector-index-queries.js';
 export {
   LRUCache,
   get_query_cache,
@@ -123,7 +123,7 @@ export {
   recordAccess,
   enhancedSearch,
   getCacheKey,
-} from './vector-index-aliases';
+} from './vector-index-aliases.js';
 
 // Re-export store items that aren't re-exported by other modules
 export {
@@ -158,9 +158,9 @@ export {
   clear_prepared_statements,
   refresh_interference_scores_for_folder,
   sqlite_vec_available,
-} from './vector-index-store';
+} from './vector-index-store.js';
 
 // Snake_case aliases for store exports used by legacy callers
 export {
   isVectorSearchAvailable as is_vector_search_available_alias,
-} from './vector-index-store';
+} from './vector-index-store.js';

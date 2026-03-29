@@ -1,14 +1,14 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Mutation Hooks
 // ───────────────────────────────────────────────────────────────
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as toolCache from '../lib/cache/tool-cache';
-import { clearConstitutionalCache } from '../hooks/memory-surface';
-import { clearGraphSignalsCache } from '../lib/graph/graph-signals';
-import { clearRelatedCache } from '../lib/cognitive/co-activation';
-import { clearDegreeCache } from '../lib/search/graph-search-fn';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import * as toolCache from '../lib/cache/tool-cache.js';
+import { clearConstitutionalCache } from '../hooks/memory-surface.js';
+import { clearGraphSignalsCache } from '../lib/graph/graph-signals.js';
+import { clearRelatedCache } from '../lib/cognitive/co-activation.js';
+import { clearDegreeCache } from '../lib/search/graph-search-fn.js';
 
-import type { MutationHookResult } from './memory-crud-types';
+import type { MutationHookResult } from './memory-crud-types.js';
 
 // Feature catalog: Transaction wrappers on mutation handlers
 // Feature catalog: Shared post-mutation hook wiring

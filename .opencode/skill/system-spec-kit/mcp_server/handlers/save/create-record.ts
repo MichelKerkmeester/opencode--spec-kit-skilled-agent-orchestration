@@ -4,32 +4,32 @@
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
 
-import * as vectorIndex from '../../lib/search/vector-index';
-import * as bm25Index from '../../lib/search/bm25-index';
-import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
-import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler';
-import * as incrementalIndex from '../../lib/storage/incremental-index';
-import * as causalEdges from '../../lib/storage/causal-edges';
-import type * as memoryParser from '../../lib/parsing/memory-parser';
-import { sanitizeEmbeddingFailureMessage } from '../../lib/providers/retry-manager';
-import { getCanonicalPathKey } from '../../lib/utils/canonical-path';
-import { recordLineageTransition } from '../../lib/storage/lineage-state';
-import { toErrorMessage } from '../../utils';
+import * as vectorIndex from '../../lib/search/vector-index.js';
+import * as bm25Index from '../../lib/search/bm25-index.js';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate.js';
+import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler.js';
+import * as incrementalIndex from '../../lib/storage/incremental-index.js';
+import * as causalEdges from '../../lib/storage/causal-edges.js';
+import type * as memoryParser from '../../lib/parsing/memory-parser.js';
+import { sanitizeEmbeddingFailureMessage } from '../../lib/providers/retry-manager.js';
+import { getCanonicalPathKey } from '../../lib/utils/canonical-path.js';
+import { recordLineageTransition } from '../../lib/storage/lineage-state.js';
+import { toErrorMessage } from '../../utils/index.js';
 
-import { recordHistory } from '../../lib/storage/history';
-import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
-import { detectSpecLevelFromParsed } from '../handler-utils';
-import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
-import { isEncodingIntentEnabled } from '../../lib/search/search-flags';
-import { applyPostInsertMetadata } from './db-helpers';
+import { recordHistory } from '../../lib/storage/history.js';
+import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating.js';
+import { detectSpecLevelFromParsed } from '../handler-utils.js';
+import { classifyEncodingIntent } from '../../lib/search/encoding-intent.js';
+import { isEncodingIntentEnabled } from '../../lib/search/search-flags.js';
+import { applyPostInsertMetadata } from './db-helpers.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Per-memory history log
 // Feature catalog: Prediction-error save arbitration
 
 
-import type { PeDecision, MemoryScopeMatch } from './types';
-import { normalizeScopeMatchValue } from './types';
+import type { PeDecision, MemoryScopeMatch } from './types.js';
+import { normalizeScopeMatchValue } from './types.js';
 export type { MemoryScopeMatch };
 
 interface LineageRoutingDecision {

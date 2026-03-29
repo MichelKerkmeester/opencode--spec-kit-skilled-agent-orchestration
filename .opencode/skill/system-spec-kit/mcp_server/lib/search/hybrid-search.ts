@@ -6,14 +6,14 @@
 // 1. IMPORTS
 
 // Local
-import { getIndex, isBm25Enabled } from './bm25-index';
+import { getIndex, isBm25Enabled } from './bm25-index.js';
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import { getAdaptiveWeights, isAdaptiveFusionEnabled } from '@spec-kit/shared/algorithms/adaptive-fusion';
-import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activation';
+import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activation.js';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
-import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
-import { fts5Bm25Search } from './sqlite-fts';
-import { DEGREE_CHANNEL_WEIGHT } from './graph-search-fn';
+import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier.js';
+import { fts5Bm25Search } from './sqlite-fts.js';
+import { DEGREE_CHANNEL_WEIGHT } from './graph-search-fn.js';
 import {
   isMMREnabled,
   isCrossEncoderEnabled,
@@ -22,48 +22,48 @@ import {
   isDocscoreAggregationEnabled,
   isDegreeBoostEnabled,
   isContextHeadersEnabled,
-} from './search-flags';
-import { rerankLocal } from './local-reranker';
-import { computeDegreeScores } from './graph-search-fn';
-import type { GraphSearchFn } from './search-types';
+} from './search-flags.js';
+import { rerankLocal } from './local-reranker.js';
+import { computeDegreeScores } from './graph-search-fn.js';
+import type { GraphSearchFn } from './search-types.js';
 
 // Feature catalog: Hybrid search pipeline
 
-export type { GraphSearchFn } from './search-types';
+export type { GraphSearchFn } from './search-types.js';
 
-import { routeQuery } from './query-router';
-import { isComplexityRouterEnabled } from './query-classifier';
-import { enforceChannelRepresentation } from './channel-enforcement';
+import { routeQuery } from './query-router.js';
+import { isComplexityRouterEnabled } from './query-classifier.js';
+import { enforceChannelRepresentation } from './channel-enforcement.js';
 import {
   truncateByConfidence,
   isConfidenceTruncationEnabled,
   DEFAULT_MIN_RESULTS,
   GAP_THRESHOLD_MULTIPLIER,
-} from './confidence-truncation';
+} from './confidence-truncation.js';
 import {
   getDynamicTokenBudget,
   isDynamicTokenBudgetEnabled,
   DEFAULT_TOKEN_BUDGET_CONFIG,
-} from './dynamic-token-budget';
-import { ensureDescriptionCache, getSpecsBasePaths } from './folder-discovery';
+} from './dynamic-token-budget.js';
+import { ensureDescriptionCache, getSpecsBasePaths } from './folder-discovery.js';
 import {
   isFolderScoringEnabled,
   lookupFolders,
   computeFolderRelevanceScores,
   enrichResultsWithFolderScores,
   twoPhaseRetrieval,
-} from './folder-relevance';
+} from './folder-relevance.js';
 
-import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
+import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation.js';
 
 // Type-only
 import type Database from 'better-sqlite3';
-import type { SpreadResult } from '../cognitive/co-activation';
+import type { SpreadResult } from '../cognitive/co-activation.js';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
-import type { ChannelName } from './query-router';
-import type { EnforcementResult } from './channel-enforcement';
-import type { TruncationResult } from './confidence-truncation';
+import type { ChannelName } from './query-router.js';
+import type { EnforcementResult } from './channel-enforcement.js';
+import type { TruncationResult } from './confidence-truncation.js';
 
 // 2. INTERFACES
 

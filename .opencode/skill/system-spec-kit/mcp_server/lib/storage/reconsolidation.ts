@@ -14,18 +14,18 @@
 // REQUIRES: checkpoint created before first enable
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
-import { recordHistory } from './history';
-import * as causalEdges from './causal-edges';
-import * as bm25Index from '../search/bm25-index';
-import { clear_search_cache } from '../search/vector-index-aliases';
-import { refresh_interference_scores_for_folder } from '../search/vector-index-store';
-import { getCanonicalPathKey } from '../utils/canonical-path';
-import { delete_memory_from_database } from '../search/vector-index-mutations';
-import { recordLineageTransition } from './lineage-state';
+import { recordHistory } from './history.js';
+import * as causalEdges from './causal-edges.js';
+import * as bm25Index from '../search/bm25-index.js';
+import { clear_search_cache } from '../search/vector-index-aliases.js';
+import { refresh_interference_scores_for_folder } from '../search/vector-index-store.js';
+import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { delete_memory_from_database } from '../search/vector-index-mutations.js';
+import { recordLineageTransition } from './lineage-state.js';
 import {
   applyPostInsertMetadata,
   type PostInsertMetadataFields,
-} from './post-insert-metadata';
+} from './post-insert-metadata.js';
 
 // Feature catalog: Reconsolidation-on-save
 
@@ -141,7 +141,7 @@ const SIMILAR_MEMORY_LIMIT = 3;
 // ───────────────────────────────────────────────────────────────
 // Reconsolidation gate — canonical implementation in search-flags.ts.
 // Opt-in: requires explicit SPECKIT_RECONSOLIDATION=true.
-import { isReconsolidationEnabled } from '../search/search-flags';
+import { isReconsolidationEnabled } from '../search/search-flags.js';
 export { isReconsolidationEnabled };
 
 // ───────────────────────────────────────────────────────────────

@@ -9,7 +9,7 @@
 // Table: consumption_log
 // Feature flag: SPECKIT_CONSUMPTION_LOG (graduated, default ON)
 import Database from 'better-sqlite3';
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

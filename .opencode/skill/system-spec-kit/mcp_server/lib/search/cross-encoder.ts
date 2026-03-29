@@ -21,7 +21,7 @@
    1. CONFIGURATION
 ----------------------------------------------------------------*/
 
-import { isCrossEncoderEnabled } from './search-flags';
+import { isCrossEncoderEnabled } from './search-flags.js';
 
 interface ProviderConfigEntry {
   name: string;

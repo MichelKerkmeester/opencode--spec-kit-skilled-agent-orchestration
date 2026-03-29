@@ -2,9 +2,9 @@
 // MODULE: Memory Surface
 // ───────────────────────────────────────────────────────────────
 // Lib modules
-import * as vectorIndex from '../lib/search/vector-index';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 import type { Database } from '@spec-kit/shared/types';

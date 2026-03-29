@@ -23,12 +23,12 @@
 // Feature flag: SPECKIT_LEARN_FROM_SELECTION (graduated default ON;
 // Disabled only when explicitly set to "false")
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
-import { DENYLIST, isOnDenylist } from './feedback-denylist';
+import { DENYLIST, isOnDenylist } from './feedback-denylist.js';
 import {
   parseLearnedTriggers,
   serializeLearnedTriggers,
   type LearnedTriggerEntry,
-} from '../storage/learned-triggers-schema';
+} from '../storage/learned-triggers-schema.js';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES

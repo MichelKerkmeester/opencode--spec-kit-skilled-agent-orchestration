@@ -21,12 +21,12 @@
 ──────────────────────────────────────────────────────────────── */
 
 import type Database from 'better-sqlite3';
-import { storeSurrogates as _storeSurrogatesRaw } from './surrogate-storage';
-import type { StorableSurrogateMetadata } from './surrogate-storage';
+import { storeSurrogates as _storeSurrogatesRaw } from './surrogate-storage.js';
+import type { StorableSurrogateMetadata } from './surrogate-storage.js';
 
 // Re-export surrogate-storage for backward compatibility
-export { initSurrogateTable, loadSurrogates, loadSurrogatesBatch } from './surrogate-storage';
-export type { SurrogateRow, StorableSurrogateMetadata } from './surrogate-storage';
+export { initSurrogateTable, loadSurrogates, loadSurrogatesBatch } from './surrogate-storage.js';
+export type { SurrogateRow, StorableSurrogateMetadata } from './surrogate-storage.js';
 
 /** Backward-compatible wrapper preserving the original feature flag guard. */
 export function storeSurrogates(db: Database.Database, memoryId: number, surrogates: StorableSurrogateMetadata): void {
@@ -76,7 +76,7 @@ const MIN_MATCH_THRESHOLD = 0.15;
 
 // D2 REQ-D2-005: Query surrogates gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_QUERY_SURROGATES=false to disable.
-import { isQuerySurrogatesEnabled } from './search-flags';
+import { isQuerySurrogatesEnabled } from './search-flags.js';
 export { isQuerySurrogatesEnabled };
 
 /* ───────────────────────────────────────────────────────────────

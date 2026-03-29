@@ -2,7 +2,7 @@
 // MODULE: Confidence Truncation
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Confidence-based result truncation
-import { isConfidenceTruncationEnabled } from './search-flags';
+import { isConfidenceTruncationEnabled } from './search-flags.js';
 
 /* --- 1. TYPES & CONSTANTS --- */
 

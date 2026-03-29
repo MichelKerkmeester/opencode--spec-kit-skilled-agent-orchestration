@@ -17,16 +17,25 @@ import {
   handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,
-} from '../handlers';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
+} from '../handlers/index.js';
+import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
-import {
-  MCPResponse, parseArgs,
-  ScanArgs, PreflightArgs, PostflightArgs, LearningHistoryArgs,
-  EvalRunAblationArgs, EvalReportingDashboardArgs,
-  IngestStartArgs, IngestStatusArgs, IngestCancelArgs,
-  SharedSpaceMembershipArgs, SharedSpaceUpsertArgs, SharedMemoryStatusArgs,
-} from './types';
+import { parseArgs } from './types.js';
+import type {
+  MCPResponse,
+  ScanArgs,
+  PreflightArgs,
+  PostflightArgs,
+  LearningHistoryArgs,
+  EvalRunAblationArgs,
+  EvalReportingDashboardArgs,
+  IngestStartArgs,
+  IngestStatusArgs,
+  IngestCancelArgs,
+  SharedSpaceMembershipArgs,
+  SharedSpaceUpsertArgs,
+  SharedMemoryStatusArgs,
+} from './types.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([

@@ -7,20 +7,20 @@
 ──────────────────────────────────────────────────────────────── */
 
 // Lib modules
-import * as vectorIndex from '../lib/search/vector-index';
-import * as causalEdges from '../lib/storage/causal-edges';
-import type { CausalChainNode, CausalEdge } from '../lib/storage/causal-edges';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
+import type { CausalChainNode, CausalEdge } from '../lib/storage/causal-edges.js';
 
 // Core utilities
-import { checkDatabaseUpdated } from '../core';
-import { toErrorMessage } from '../utils';
-import { ErrorCodes, getRecoveryHint } from '../lib/errors';
+import { checkDatabaseUpdated } from '../core/index.js';
+import { toErrorMessage } from '../utils/index.js';
+import { ErrorCodes, getRecoveryHint } from '../lib/errors.js';
 
 // REQ-019: Standardized Response Structure
-import { createMCPSuccessResponse, createMCPErrorResponse, createMCPEmptyResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPErrorResponse, createMCPEmptyResponse } from '../lib/response/envelope.js';
 
 // Shared handler types
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 
 // Feature catalog: Causal graph statistics (memory_causal_stats)
 // Feature catalog: Causal chain tracing (memory_drift_why)

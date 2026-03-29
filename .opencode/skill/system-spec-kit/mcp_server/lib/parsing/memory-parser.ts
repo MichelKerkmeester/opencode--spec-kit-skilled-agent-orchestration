@@ -8,18 +8,18 @@ import path from 'path';
 import crypto from 'crypto';
 
 // Internal modules
-import { escapeRegex } from '../utils/path-security';
-import { getCanonicalPathKey, canonicalizeForSpecFolderExtraction } from '../utils/canonical-path';
-import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../scoring/importance-tiers';
+import { escapeRegex } from '../utils/path-security.js';
+import { getCanonicalPathKey, canonicalizeForSpecFolderExtraction } from '../utils/canonical-path.js';
+import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../scoring/importance-tiers.js';
 // Import type inference for memory_type classification
-import { inferMemoryType } from '../config/type-inference';
+import { inferMemoryType } from '../config/type-inference.js';
 import {
   canClassifyAsSpecDocument,
   extractSpecFolderFromSpecDocumentPath,
   isWorkingArtifactPath,
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
-} from '../config/spec-doc-paths';
+} from '../config/spec-doc-paths.js';
 
 export { getCanonicalPathKey };
 

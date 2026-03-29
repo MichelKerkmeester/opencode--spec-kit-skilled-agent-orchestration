@@ -6,20 +6,20 @@
 import { createHash } from 'node:crypto';
 import type Database from 'better-sqlite3';
 
-import * as bm25Index from '../search/bm25-index';
-import * as embeddingsProvider from '../providers/embeddings';
-import { getCanonicalPathKey } from '../utils/canonical-path';
-import { ensureLineageTables } from '../search/vector-index-schema';
-import { get_embedding_dim, refresh_interference_scores_for_folder, sqlite_vec_available } from '../search/vector-index-store';
-import { to_embedding_buffer } from '../search/vector-index-types';
-import type { ParsedMemory } from '../parsing/memory-parser';
-import { classifyEncodingIntent } from '../search/encoding-intent';
-import { isEncodingIntentEnabled } from '../search/search-flags';
-import { createLogger } from '../utils/logger';
-import { detectSpecLevelFromParsed } from '../spec/spec-level';
-import { getHistoryEventsForLineage, init as initHistory, recordHistory, type HistoryLineageEvent } from './history';
-import { calculateDocumentWeight, isSpecDocumentType } from './document-helpers';
-import { applyPostInsertMetadata } from './post-insert-metadata';
+import * as bm25Index from '../search/bm25-index.js';
+import * as embeddingsProvider from '../providers/embeddings.js';
+import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { ensureLineageTables } from '../search/vector-index-schema.js';
+import { get_embedding_dim, refresh_interference_scores_for_folder, sqlite_vec_available } from '../search/vector-index-store.js';
+import { to_embedding_buffer } from '../search/vector-index-types.js';
+import type { ParsedMemory } from '../parsing/memory-parser.js';
+import { classifyEncodingIntent } from '../search/encoding-intent.js';
+import { isEncodingIntentEnabled } from '../search/search-flags.js';
+import { createLogger } from '../utils/logger.js';
+import { detectSpecLevelFromParsed } from '../spec/spec-level.js';
+import { getHistoryEventsForLineage, init as initHistory, recordHistory, type HistoryLineageEvent } from './history.js';
+import { calculateDocumentWeight, isSpecDocumentType } from './document-helpers.js';
+import { applyPostInsertMetadata } from './post-insert-metadata.js';
 
 // Feature catalog: Lineage state active projection and asOf resolution
 const logger = createLogger('LineageState');

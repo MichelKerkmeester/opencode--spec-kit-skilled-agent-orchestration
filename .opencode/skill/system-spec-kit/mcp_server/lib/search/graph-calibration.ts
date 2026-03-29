@@ -165,7 +165,7 @@ export const AGGRESSIVE_PROFILE: CalibrationProfile = {
 
 // Graph calibration gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=false to disable.
-import { isGraphCalibrationProfileEnabled } from './search-flags';
+import { isGraphCalibrationProfileEnabled } from './search-flags.js';
 export const isGraphCalibrationEnabled = isGraphCalibrationProfileEnabled;
 
 /* ---------------------------------------------------------------

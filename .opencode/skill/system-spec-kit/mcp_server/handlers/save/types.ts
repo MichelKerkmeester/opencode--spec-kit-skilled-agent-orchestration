@@ -1,8 +1,8 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Types
 // ───────────────────────────────────────────────────────────────
-import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
-import type { ParsedMemory } from '../../lib/parsing/memory-parser';
+import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
+import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Memory indexing (memory_save)

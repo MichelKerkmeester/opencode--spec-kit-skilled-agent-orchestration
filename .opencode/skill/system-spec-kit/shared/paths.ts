@@ -29,7 +29,7 @@ function hasWorkspaceDirectories(dir: string): boolean {
 }
 
 export function resolvePackageRoot(): string {
-  const fromWorkspaceDirs = findUp(__dirname, hasWorkspaceDirectories);
+  const fromWorkspaceDirs = findUp(import.meta.dirname, hasWorkspaceDirectories);
   if (fromWorkspaceDirs) {
     return fromWorkspaceDirs;
   }
@@ -39,13 +39,13 @@ export function resolvePackageRoot(): string {
     return fromWorkspaceDirsCwd;
   }
 
-  const fromPackageJson = findUp(__dirname, hasPackageJson);
+  const fromPackageJson = findUp(import.meta.dirname, hasPackageJson);
   if (fromPackageJson) {
     return fromPackageJson;
   }
 
   const fromCwd = findUp(process.cwd(), hasPackageJson);
-  return fromCwd || path.resolve(__dirname, '..');
+  return fromCwd || path.resolve(import.meta.dirname, '..');
 }
 
 export function resolveDatabaseDir(): string {

@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import fs from 'fs';
-import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
+import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker.js';
 
 // Feature catalog: Dry-run preflight for memory_save
 

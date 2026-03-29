@@ -19,36 +19,36 @@ export type {
   SaveArgs,
   PostInsertMetadataFields,
   ParsedMemory,
-} from './types';
+} from './types.js';
 
 export {
   ALLOWED_POST_INSERT_COLUMNS,
   applyPostInsertMetadata,
   hasReconsolidationCheckpoint,
-} from './db-helpers';
+} from './db-helpers.js';
 
-export { checkExistingRow, checkContentHashDedup } from './dedup';
+export { checkExistingRow, checkContentHashDedup } from './dedup.js';
 
-export type { EmbeddingResult } from './embedding-pipeline';
+export type { EmbeddingResult } from './embedding-pipeline.js';
 export {
   generateOrCacheEmbedding,
   persistPendingEmbeddingCacheWrite,
-} from './embedding-pipeline';
+} from './embedding-pipeline.js';
 
-export type { PeOrchestrationResult } from './pe-orchestration';
-export { evaluateAndApplyPeDecision } from './pe-orchestration';
+export type { PeOrchestrationResult } from './pe-orchestration.js';
+export { evaluateAndApplyPeDecision } from './pe-orchestration.js';
 
-export type { ReconsolidationBridgeResult } from './reconsolidation-bridge';
-export { runReconsolidationIfEnabled } from './reconsolidation-bridge';
+export type { ReconsolidationBridgeResult } from './reconsolidation-bridge.js';
+export { runReconsolidationIfEnabled } from './reconsolidation-bridge.js';
 
-export { createMemoryRecord } from './create-record';
+export { createMemoryRecord } from './create-record.js';
 
-export type { PostInsertEnrichmentResult } from './post-insert';
-export { runPostInsertEnrichment } from './post-insert';
+export type { PostInsertEnrichmentResult } from './post-insert.js';
+export { runPostInsertEnrichment } from './post-insert.js';
 
-export { buildIndexResult, buildSaveResponse } from './response-builder';
+export { buildIndexResult, buildSaveResponse } from './response-builder.js';
 
-export { SPEC_FOLDER_LOCKS, withSpecFolderLock } from './spec-folder-mutex';
+export { SPEC_FOLDER_LOCKS, withSpecFolderLock } from './spec-folder-mutex.js';
 
 export {
   MARKDOWN_HEADING_RE,
@@ -58,11 +58,11 @@ export {
   extractMarkdownListItems,
   extractMarkdownTableFiles,
   buildParsedMemoryEvidenceSnapshot,
-} from './markdown-evidence-builder';
+} from './markdown-evidence-builder.js';
 
 export {
   applyInsufficiencyMetadata,
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,
-} from './validation-responses';
+} from './validation-responses.js';

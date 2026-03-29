@@ -20,8 +20,8 @@
 // Backward compatibility: when flag is OFF (or profile omitted), the
 // original full response is returned unchanged.
 
-import { estimateTokens } from '../../formatters/token-metrics';
-import { resolveEffectiveScore, type PipelineRow } from '../search/pipeline/types';
+import { estimateTokens } from '../../formatters/token-metrics.js';
+import { resolveEffectiveScore, type PipelineRow } from '../search/pipeline/types.js';
 
 // ── Types ──────────────────────────────────────────────────────
 
@@ -113,7 +113,7 @@ export type FormattedProfile =
 
 // ── Feature flag ──────────────────────────────────────────────
 
-import { isResponseProfileEnabled } from '../search/search-flags';
+import { isResponseProfileEnabled } from '../search/search-flags.js';
 
 /**
  * Returns true when SPECKIT_RESPONSE_PROFILE_V1 is enabled.

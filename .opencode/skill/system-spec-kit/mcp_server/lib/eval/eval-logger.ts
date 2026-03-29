@@ -8,7 +8,7 @@
 // CRITICAL: Logging must NEVER break production search.
 // Every public function is wrapped in try-catch and is a no-op
 // When SPECKIT_EVAL_LOGGING is not set to "true".
-import { initEvalDb } from './eval-db';
+import { initEvalDb } from './eval-db.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. FEATURE FLAG

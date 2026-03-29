@@ -3,9 +3,9 @@
 // ────────────────────────────────────────────────────────────────
 
 import fs from 'fs/promises';
-import { resolveDatabasePaths, INDEX_SCAN_COOLDOWN } from './config';
+import { resolveDatabasePaths, INDEX_SCAN_COOLDOWN } from './config.js';
 import type { DatabaseExtended } from '@spec-kit/shared/types';
-import type { GraphSearchFn } from '../lib/search/search-types';
+import type { GraphSearchFn } from '../lib/search/search-types.js';
 
 // ────────────────────────────────────────────────────────────────
 // 1. TYPES 

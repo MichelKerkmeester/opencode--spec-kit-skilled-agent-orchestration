@@ -7,8 +7,8 @@
 // Downstream. The returned BudgetResult is handed to callers who
 // Are solely responsible for respecting it (e.g. by trimming
 // Result sets or truncating content before sending to the LLM).
-import { type QueryComplexityTier } from './query-classifier';
-import { isDynamicTokenBudgetEnabled } from './search-flags';
+import { type QueryComplexityTier } from './query-classifier.js';
+import { isDynamicTokenBudgetEnabled } from './search-flags.js';
 
 // Feature catalog: Dynamic token budget allocation
 

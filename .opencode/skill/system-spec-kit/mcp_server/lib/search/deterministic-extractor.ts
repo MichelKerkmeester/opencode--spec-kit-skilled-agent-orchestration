@@ -7,7 +7,7 @@
 // All functions are deterministic — no LLM calls.
 
 import type Database from 'better-sqlite3';
-import { createLogger } from '../utils/logger';
+import { createLogger } from '../utils/logger.js';
 
 const logger = createLogger('DeterministicExtractor');
 

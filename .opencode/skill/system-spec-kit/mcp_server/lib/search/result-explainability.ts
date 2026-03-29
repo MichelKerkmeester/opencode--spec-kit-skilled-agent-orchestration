@@ -22,8 +22,8 @@
 //
 // The channelContribution map is only included when debug.enabled=true.
 
-import type { PipelineRow } from './pipeline/types';
-import { resolveEffectiveScore } from './pipeline/types';
+import type { PipelineRow } from './pipeline/types.js';
+import { resolveEffectiveScore } from './pipeline/types.js';
 
 // ── Types ──────────────────────────────────────────────────────
 
@@ -72,7 +72,7 @@ export interface ExplainabilityOptions {
 
 // ── Feature flag ──────────────────────────────────────────────
 
-import { isResultExplainEnabled } from './search-flags';
+import { isResultExplainEnabled } from './search-flags.js';
 
 /**
  * Returns true when SPECKIT_RESULT_EXPLAIN_V1 is enabled.

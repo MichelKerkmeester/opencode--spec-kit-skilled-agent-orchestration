@@ -10,20 +10,20 @@ import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import * as embeddings from '../lib/providers/embeddings';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as embeddings from '../lib/providers/embeddings.js';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import { isEmbeddingModelReady } from '../core';
-import { summarizeAliasConflicts } from './memory-index';
-import * as causalEdges from '../lib/storage/causal-edges';
-import { getEmbeddingRetryStats } from '../lib/providers/retry-manager';
+import { isEmbeddingModelReady } from '../core/index.js';
+import { summarizeAliasConflicts } from './memory-index.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
+import { getEmbeddingRetryStats } from '../lib/providers/retry-manager.js';
 
-import type { MCPResponse, EmbeddingProfile } from './types';
-import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
+import type { MCPResponse, EmbeddingProfile } from './types.js';
+import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types.js';
 
 // Feature catalog: Health diagnostics (memory_health)
 // Feature catalog: Validation feedback (memory_validate)
@@ -59,12 +59,12 @@ function redactPath(absolutePath: string): string {
    CONSTANTS
 ──────────────────────────────────────────────────────────────── */
 
-// Read version from package.json at module load time (CJS __dirname is available)
+// Read version from package.json at module load time using ESM-relative paths.
 // WHY try-catch: if package.json is missing or malformed, the server should still start
 const SERVER_VERSION: string = (() => {
   const packageCandidates = [
-    resolve(__dirname, '../package.json'),
-    resolve(__dirname, '../../package.json'),
+    resolve(import.meta.dirname, '../package.json'),
+    resolve(import.meta.dirname, '../../package.json'),
   ];
 
   try {

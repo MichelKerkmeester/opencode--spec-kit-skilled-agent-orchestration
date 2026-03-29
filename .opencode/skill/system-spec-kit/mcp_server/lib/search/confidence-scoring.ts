@@ -20,7 +20,7 @@
 //     "label": "good" | "weak" | "gap"
 //   }
 // }
-import { resolveEffectiveScore, type PipelineRow } from './pipeline/types';
+import { resolveEffectiveScore, type PipelineRow } from './pipeline/types.js';
 
 // -- Constants --
 
@@ -294,4 +294,4 @@ export function assessRequestQuality(
  * Check whether the per-result confidence feature flag is enabled.
  * Default: ON (graduated). Set SPECKIT_RESULT_CONFIDENCE_V1=false to disable.
  */
-export { isResultConfidenceEnabled } from './search-flags';
+export { isResultConfidenceEnabled } from './search-flags.js';

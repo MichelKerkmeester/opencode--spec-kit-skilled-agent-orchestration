@@ -6,11 +6,11 @@
    IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import * as mutationLedger from '../lib/storage/mutation-ledger';
-import { toErrorMessage } from '../utils';
+import * as mutationLedger from '../lib/storage/mutation-ledger.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import type { DatabaseExtended } from './types';
-import type { MemoryHashSnapshot, MutationLedgerInput } from './memory-crud-types';
+import type { DatabaseExtended } from './types.js';
+import type { MemoryHashSnapshot, MutationLedgerInput } from './memory-crud-types.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Memory metadata update (memory_update)

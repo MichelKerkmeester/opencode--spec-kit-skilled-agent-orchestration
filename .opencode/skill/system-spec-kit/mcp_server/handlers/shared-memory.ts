@@ -3,10 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 // MCP handler layer for shared-space CRUD, membership assignment,
 // and rollout status reporting with deny-by-default access.
-import { requireDb } from '../utils';
-import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
-import type { MCPResponse } from './types';
-import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types';
+import { requireDb } from '../utils/index.js';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope.js';
+import type { MCPResponse } from './types.js';
+import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types.js';
 import {
   assertSharedSpaceAccess,
   createSharedSpaceIfAbsent,
@@ -15,8 +15,8 @@ import {
   isSharedMemoryEnabled,
   upsertSharedMembership,
   upsertSharedSpace,
-} from '../lib/collab/shared-spaces';
-import { recordGovernanceAudit } from '../lib/governance/scope-governance';
+} from '../lib/collab/shared-spaces.js';
+import { recordGovernanceAudit } from '../lib/governance/scope-governance.js';
 
 import { access, mkdir, writeFile } from 'fs/promises';
 import * as path from 'path';
@@ -837,7 +837,7 @@ export async function handleSharedMemoryEnable(args: Record<string, unknown>): P
  * @returns `true` when the file already existed (no write needed).
  */
 async function createSharedSpacesReadme(): Promise<boolean> {
-  const dir = path.resolve(__dirname, '../../shared-spaces');
+  const dir = path.resolve(import.meta.dirname, '../../shared-spaces');
   const readmePath = path.join(dir, 'README.md');
   try {
     await access(readmePath);

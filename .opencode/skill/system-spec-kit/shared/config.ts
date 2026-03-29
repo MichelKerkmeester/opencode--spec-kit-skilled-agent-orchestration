@@ -21,7 +21,7 @@ function findUp(filename: string, startDir: string): string | undefined {
 }
 
 function resolvePackageRoot(): string {
-  const fromPackageJson = findUp('package.json', __dirname);
+  const fromPackageJson = findUp('package.json', import.meta.dirname);
   if (fromPackageJson && fs.existsSync(path.join(fromPackageJson, 'mcp_server', 'database'))) {
     return fromPackageJson;
   }
@@ -31,7 +31,7 @@ function resolvePackageRoot(): string {
     return fromCwd;
   }
 
-  return fromPackageJson || path.resolve(__dirname, '..');
+  return fromPackageJson || path.resolve(import.meta.dirname, '..');
 }
 
 const PACKAGE_ROOT = resolvePackageRoot();

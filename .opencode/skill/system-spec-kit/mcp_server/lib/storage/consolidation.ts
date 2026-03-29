@@ -5,7 +5,7 @@
 // Strengthening, staleness detection, edge bounds enforcement.
 // Behind SPECKIT_CONSOLIDATION flag.
 import type Database from 'better-sqlite3';
-import { isConsolidationEnabled } from '../search/search-flags';
+import { isConsolidationEnabled } from '../search/search-flags.js';
 import {
   updateEdge,
   getStaleEdges,
@@ -16,8 +16,8 @@ import {
   STALENESS_THRESHOLD_DAYS,
   DECAY_STRENGTH_AMOUNT,
   DECAY_PERIOD_DAYS,
-} from './causal-edges';
-import type { CausalEdge } from './causal-edges';
+} from './causal-edges.js';
+import type { CausalEdge } from './causal-edges.js';
 
 // Feature catalog: Lightweight consolidation
 

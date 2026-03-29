@@ -10,18 +10,18 @@ import type Database from 'better-sqlite3';
 import {
   parse_trigger_phrases,
   get_error_message,
-} from './vector-index-types';
+} from './vector-index-types.js';
 import {
   initialize_db,
   search_weights,
-} from './vector-index-store';
+} from './vector-index-store.js';
 import {
   vector_search,
   vector_search_enriched,
   apply_smart_ranking,
   apply_diversity,
   generate_query_embedding,
-} from './vector-index-queries';
+} from './vector-index-queries.js';
 
 type EnrichedSearchResult = {
   rank: number;

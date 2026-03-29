@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Envelope
 // ───────────────────────────────────────────────────────────────
-import { estimateTokens } from '../../formatters/token-metrics';
+import { estimateTokens } from '../../formatters/token-metrics.js';
 
 // Feature catalog: Provenance-rich response envelopes
 

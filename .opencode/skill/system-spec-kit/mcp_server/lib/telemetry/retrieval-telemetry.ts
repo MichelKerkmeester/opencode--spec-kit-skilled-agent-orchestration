@@ -7,20 +7,20 @@
 // Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
 import {
   sanitizeRetrievalTracePayload,
-} from './trace-schema';
+} from './trace-schema.js';
 import type {
   TelemetryTracePayload,
-} from './trace-schema';
+} from './trace-schema.js';
 // F6.06 fix: Import canonical quality proxy from eval module
-import { computeQualityProxy as computeQualityProxyCanonical } from '../eval/eval-quality-proxy';
+import { computeQualityProxy as computeQualityProxyCanonical } from '../eval/eval-quality-proxy.js';
 import {
   getMemoryRoadmapDefaults,
-} from '../config/capability-flags';
-import type { SessionTransitionTrace } from '../search/session-transition';
+} from '../config/capability-flags.js';
+import type { SessionTransitionTrace } from '../search/session-transition.js';
 import type {
   MemoryRoadmapCapabilityFlags,
   MemoryRoadmapPhase,
-} from '../config/capability-flags';
+} from '../config/capability-flags.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. FEATURE FLAG

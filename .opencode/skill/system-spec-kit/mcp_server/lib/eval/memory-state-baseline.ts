@@ -7,8 +7,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';
-import { getMemoryRoadmapDefaults } from '../config/capability-flags';
-import { DEFAULT_DB_DIR, initEvalDb, getEvalDbPath } from './eval-db';
+import { getMemoryRoadmapDefaults } from '../config/capability-flags.js';
+import { DEFAULT_DB_DIR, initEvalDb, getEvalDbPath } from './eval-db.js';
 
 const CONTEXT_DB_FILENAME = 'context-index.sqlite';
 

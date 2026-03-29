@@ -13,35 +13,35 @@ import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 ──────────────────────────────────────────────────────────────── */
 
 // Core utilities
-import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
-import { toErrorMessage } from '../utils';
-import { createFilePathValidator } from '../utils/validators';
+import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core/index.js';
+import { toErrorMessage } from '../utils/index.js';
+import { createFilePathValidator } from '../utils/validators.js';
 
 // Formatters
-import { calculateTokenMetrics, type TokenMetrics } from '../formatters';
+import { calculateTokenMetrics, type TokenMetrics } from '../formatters/index.js';
 
 // Lib modules
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as workingMemory from '../lib/cognitive/working-memory';
-import * as attentionDecay from '../lib/cognitive/attention-decay';
-import * as tierClassifier from '../lib/cognitive/tier-classifier';
-import type { TierInput, StateStats } from '../lib/cognitive/tier-classifier';
-import * as coActivation from '../lib/cognitive/co-activation';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import * as workingMemory from '../lib/cognitive/working-memory.js';
+import * as attentionDecay from '../lib/cognitive/attention-decay.js';
+import * as tierClassifier from '../lib/cognitive/tier-classifier.js';
+import type { TierInput, StateStats } from '../lib/cognitive/tier-classifier.js';
+import * as coActivation from '../lib/cognitive/co-activation.js';
 
 // REQ-019: Standardized Response Structure
-import { createMCPSuccessResponse, createMCPEmptyResponse, createMCPErrorResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPEmptyResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
 // T004: Consumption instrumentation
-import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
+import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger.js';
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
-import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
+import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger.js';
 
 // Shared handler types
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 // C2 FIX: Import DB access for scope filtering
-import { initialize_db } from '../lib/search/vector-index-store';
+import { initialize_db } from '../lib/search/vector-index-store.js';
 // T73: Import session manager for trusted session validation (IDOR prevention)
-import * as sessionManager from '../lib/session/session-manager';
+import * as sessionManager from '../lib/session/session-manager.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES

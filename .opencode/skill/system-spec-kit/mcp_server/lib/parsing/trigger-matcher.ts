@@ -3,8 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Trigger phrase matching (memory_match_triggers)
 import type Database from 'better-sqlite3';
-import * as vectorIndex from '../search/vector-index';
-import { escapeRegex } from '../utils/path-security';
+import * as vectorIndex from '../search/vector-index.js';
+import { escapeRegex } from '../utils/path-security.js';
 
 /* --- 1. TYPES --- */
 

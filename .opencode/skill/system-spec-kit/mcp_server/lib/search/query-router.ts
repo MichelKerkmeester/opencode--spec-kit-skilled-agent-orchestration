@@ -9,9 +9,9 @@ import {
   isComplexityRouterEnabled,
   type QueryComplexityTier,
   type ClassificationResult,
-} from './query-classifier';
-import { getStrategyForQuery } from './artifact-routing';
-import { classifyIntent } from './intent-classifier';
+} from './query-classifier.js';
+import { getStrategyForQuery } from './artifact-routing.js';
+import { classifyIntent } from './intent-classifier.js';
 
 // Feature catalog: Query complexity router
 

@@ -19,7 +19,7 @@ export {
   type AblationSearchFn,
   type AblationReport,
   type GroundTruthAlignmentSummary,
-} from '../lib/eval/ablation-framework';
+} from '../lib/eval/ablation-framework.js';
 
 export {
   runBM25Baseline,
@@ -27,7 +27,7 @@ export {
   type BM25SearchFn,
   type BM25SearchResult,
   type BM25BaselineResult,
-} from '../lib/eval/bm25-baseline';
+} from '../lib/eval/bm25-baseline.js';
 
-export { loadGroundTruth } from '../lib/eval/ground-truth-generator';
-export { initEvalDb } from '../lib/eval/eval-db';
+export { loadGroundTruth } from '../lib/eval/ground-truth-generator.js';
+export { initEvalDb } from '../lib/eval/eval-db.js';

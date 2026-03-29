@@ -20,8 +20,8 @@ import type Database from 'better-sqlite3';
 /* --- 1. DEPENDENCIES --- */
 
 // Internal modules
-import * as fsrsScheduler from './fsrs-scheduler';
-import type { ReviewResult } from './fsrs-scheduler';
+import * as fsrsScheduler from './fsrs-scheduler.js';
+import type { ReviewResult } from './fsrs-scheduler.js';
 import {
   calculateFiveFactorScore,
   calculateTemporalScore,
@@ -30,8 +30,8 @@ import {
   calculatePatternScore,
   calculateCitationScore,
   FIVE_FACTOR_WEIGHTS,
-} from '../scoring/composite-scoring';
-import type { FiveFactorWeights } from '../scoring/composite-scoring';
+} from '../scoring/composite-scoring.js';
+import type { FiveFactorWeights } from '../scoring/composite-scoring.js';
 
 /* --- 2. CONFIGURATION --- */
 

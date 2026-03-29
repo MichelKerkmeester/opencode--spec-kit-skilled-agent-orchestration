@@ -4,9 +4,9 @@
 // Feature catalog: Auto entity extraction
 import type Database from 'better-sqlite3';
 import path from 'path';
-import * as workingMemory from '../cognitive/working-memory';
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
-import { applyRedactionGate } from './redaction-gate';
+import * as workingMemory from '../cognitive/working-memory.js';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
+import { applyRedactionGate } from './redaction-gate.js';
 
 type SummarizerId = 'firstLast500' | 'matchCountSummary' | 'stdoutSummary';
 

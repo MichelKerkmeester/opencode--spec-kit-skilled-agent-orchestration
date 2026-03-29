@@ -5,9 +5,9 @@
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
-import { DB_PATH } from '../../shared/paths';
-import { loadCognitiveConfigFromEnv } from '../configs/cognitive';
-import type { CognitiveConfig } from '../configs/cognitive';
+import { DB_PATH } from '../../shared/paths.js';
+import { loadCognitiveConfigFromEnv } from '../configs/cognitive.js';
+import type { CognitiveConfig } from '../configs/cognitive.js';
 
 // ────────────────────────────────────────────────────────────────
 // 1. TYPES 
@@ -30,9 +30,9 @@ export interface InputLimitsConfig {
 
 // ────────────────────────────────────────────────────────────────
 
-export const SERVER_DIR: string = path.join(__dirname, '..');
+export const SERVER_DIR: string = path.join(import.meta.dirname, '..');
 export const NODE_MODULES: string = path.join(SERVER_DIR, 'node_modules');
-export const LIB_DIR: string = path.join(__dirname, '..', 'lib');
+export const LIB_DIR: string = path.join(import.meta.dirname, '..', 'lib');
 export const SHARED_DIR: string = path.join(SERVER_DIR, '..', 'shared');
 
 export interface DatabasePaths {

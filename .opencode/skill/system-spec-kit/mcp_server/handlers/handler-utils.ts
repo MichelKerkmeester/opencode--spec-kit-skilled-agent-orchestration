@@ -14,7 +14,7 @@
 // - escapeLikePattern: extracted from memory-save.ts
 // - detectSpecLevelFromParsed: re-exported from lib/spec/spec-level.ts
 
-export { detectSpecLevelFromParsed } from '../lib/spec/spec-level';
+export { detectSpecLevelFromParsed } from '../lib/spec/spec-level.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Single and folder delete (memory_delete)

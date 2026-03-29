@@ -6,24 +6,24 @@
 import fs from 'fs';
 
 // Internal modules
-import { estimateTokens } from './token-metrics';
+import { estimateTokens } from './token-metrics.js';
 
 // Import path security utilities (migrated from shared/utils.js)
-import { validateFilePath } from '../lib/utils/path-security';
+import { validateFilePath } from '../lib/utils/path-security.js';
 import {
   readSessionTransitionTrace,
   type SessionTransitionTrace,
-} from '../lib/search/session-transition';
+} from '../lib/search/session-transition.js';
 
 // Import memory parser for anchor extraction (SK-005)
-import * as memoryParser from '../lib/parsing/memory-parser';
+import * as memoryParser from '../lib/parsing/memory-parser.js';
 
 // REQ-019: Standardized Response Structure
 import {
   createMCPSuccessResponse,
   createMCPEmptyResponse,
   type MCPResponse,
-} from '../lib/response/envelope';
+} from '../lib/response/envelope.js';
 
 // REQ-D5-001: Empty/Weak Result Recovery UX
 import {
@@ -31,7 +31,7 @@ import {
   shouldTriggerRecovery,
   isEmptyResultRecoveryEnabled,
   type RecoveryPayload,
-} from '../lib/search/recovery-payload';
+} from '../lib/search/recovery-payload.js';
 
 // REQ-D5-004: Per-Result Calibrated Confidence
 import {
@@ -39,17 +39,17 @@ import {
   assessRequestQuality,
   isResultConfidenceEnabled,
   type ScoredResult,
-} from '../lib/search/confidence-scoring';
+} from '../lib/search/confidence-scoring.js';
 
 // REQ-D5-002: Two-Tier Explainability
 import {
   attachExplainabilityToResults,
   isResultExplainEnabled,
   type ExplainabilityOptions,
-} from '../lib/search/result-explainability';
+} from '../lib/search/result-explainability.js';
 
 // Consolidated path validation from core/config.js (single source of truth)
-import { ALLOWED_BASE_PATHS } from '../core/config';
+import { ALLOWED_BASE_PATHS } from '../core/config.js';
 
 // ────────────────────────────────────────────────────────────────
 // 1. TYPES 
@@ -158,7 +158,7 @@ export interface MemoryParserLike {
   extractAnchors(content: string): Record<string, string>;
 }
 
-// MCPResponse type is imported from '../lib/response/envelope'
+// MCPResponse type is imported from '../lib/response/envelope.js'
 export type { MCPResponse };
 
 // ────────────────────────────────────────────────────────────────

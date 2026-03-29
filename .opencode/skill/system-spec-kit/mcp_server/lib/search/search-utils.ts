@@ -6,8 +6,8 @@
 // quality filtering, threshold resolution, cache key building,
 // context type resolution, and artifact routing helpers.
 
-import { applyRoutingWeights } from './artifact-routing';
-import type { RoutingResult, WeightedResult } from './artifact-routing';
+import { applyRoutingWeights } from './artifact-routing.js';
+import type { RoutingResult, WeightedResult } from './artifact-routing.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

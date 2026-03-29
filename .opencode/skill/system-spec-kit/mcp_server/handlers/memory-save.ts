@@ -25,50 +25,50 @@ import {
 } from '@spec-kit/shared/parsing/spec-doc-health';
 
 // Internal modules
-import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
-import { createFilePathValidator } from '../utils/validators';
-import * as memoryParser from '../lib/parsing/memory-parser';
-import * as transactionManager from '../lib/storage/transaction-manager';
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as preflight from '../lib/validation/preflight';
-import { requireDb } from '../utils';
-import type { MCPResponse } from './types';
-import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state';
-import * as causalEdges from '../lib/storage/causal-edges';
+import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core/index.js';
+import { createFilePathValidator } from '../utils/validators.js';
+import * as memoryParser from '../lib/parsing/memory-parser.js';
+import * as transactionManager from '../lib/storage/transaction-manager.js';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as preflight from '../lib/validation/preflight.js';
+import { requireDb } from '../utils/index.js';
+import type { MCPResponse } from './types.js';
+import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
 
-import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
-import { isSaveQualityGateEnabled } from '../lib/search/search-flags';
+import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate.js';
+import { isSaveQualityGateEnabled } from '../lib/search/search-flags.js';
 
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
-import { findSimilarMemories } from './pe-gating';
-import { runPostMutationHooks } from './mutation-hooks';
-import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
-import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator';
-import { applyPostInsertMetadata } from './save/db-helpers';
-import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { findSimilarMemories } from './pe-gating.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
+import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator.js';
+import { applyPostInsertMetadata } from './save/db-helpers.js';
+import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record.js';
 import {
   buildGovernancePostInsertFields,
   ensureGovernanceRuntime,
   recordGovernanceAudit,
   validateGovernedIngest,
-} from '../lib/governance/scope-governance';
+} from '../lib/governance/scope-governance.js';
 import {
   assertSharedSpaceAccess,
   recordSharedConflict,
-} from '../lib/collab/shared-spaces';
-import { delete_memory_from_database } from '../lib/search/vector-index-mutations';
+} from '../lib/collab/shared-spaces.js';
+import { delete_memory_from_database } from '../lib/search/vector-index-mutations.js';
 import {
   runQualityLoop,
-} from './quality-loop';
+} from './quality-loop.js';
 import type {
   QualityLoopResult,
-} from './quality-loop';
+} from './quality-loop.js';
 
 // O2-5/O2-12: V-rule validation (previously only in workflow path)
 import {
   validateMemoryQualityContent,
   determineValidationDisposition,
-} from './v-rule-bridge';
+} from './v-rule-bridge.js';
 
 // Save pipeline modules (CR-P2-4 decomposition)
 import type {
@@ -77,28 +77,28 @@ import type {
   AtomicSaveParams,
   AtomicSaveOptions,
   AtomicSaveResult,
-} from './save';
-import { checkExistingRow, checkContentHashDedup } from './save/dedup';
-import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline';
-import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
-import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
-import { runPostInsertEnrichment } from './save/post-insert';
-import { buildIndexResult, buildSaveResponse } from './save/response-builder';
-import { createMCPErrorResponse } from '../lib/response/envelope';
+} from './save/index.js';
+import { checkExistingRow, checkContentHashDedup } from './save/dedup.js';
+import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline.js';
+import { evaluateAndApplyPeDecision } from './save/pe-orchestration.js';
+import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge.js';
+import { runPostInsertEnrichment } from './save/post-insert.js';
+import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
+import { createMCPErrorResponse } from '../lib/response/envelope.js';
 
 // Extracted sub-modules
-import { withSpecFolderLock } from './save/spec-folder-mutex';
-import { buildParsedMemoryEvidenceSnapshot } from './save/markdown-evidence-builder';
+import { withSpecFolderLock } from './save/spec-folder-mutex.js';
+import { buildParsedMemoryEvidenceSnapshot } from './save/markdown-evidence-builder.js';
 import {
   applyInsufficiencyMetadata,
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,
-} from './save/validation-responses';
+} from './save/validation-responses.js';
 
-import { markMemorySuperseded } from './pe-gating';
-import { resolveMemoryReference } from './causal-links-processor';
-import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor';
+import { markMemorySuperseded } from './pe-gating.js';
+import { resolveMemoryReference } from './causal-links-processor.js';
+import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Verify-fix-verify memory quality loop
@@ -1106,7 +1106,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
       emitEvalMetrics: false,
     });
-    const { createMCPSuccessResponse } = await import('../lib/response/envelope');
+    const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
     const dryRunSummary = buildDryRunSummary(
       preparedDryRun.sufficiencyResult,
       preparedDryRun.qualityLoopResult,
@@ -1195,7 +1195,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
         emitEvalMetrics: false,
       });
-      const { createMCPSuccessResponse } = await import('../lib/response/envelope');
+      const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
       const dryRunSummary = !preflightResult.dry_run_would_pass
         ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
         : buildDryRunSummary(
@@ -1550,7 +1550,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate' && indexResult.status !== 'unchanged';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {
-    let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+    let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('atomic-save', {
         filePath: file_path,

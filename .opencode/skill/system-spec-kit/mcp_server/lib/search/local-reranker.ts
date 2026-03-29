@@ -15,7 +15,7 @@
 import os from 'os';
 import path from 'path';
 import { access } from 'fs/promises';
-import { toErrorMessage } from '../../utils';
+import { toErrorMessage } from '../../utils/index.js';
 
 // Feature catalog: Local GGUF reranker via node-llama-cpp
 

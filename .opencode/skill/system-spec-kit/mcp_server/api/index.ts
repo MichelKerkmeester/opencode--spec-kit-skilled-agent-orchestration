@@ -2,7 +2,7 @@
 // MODULE: Index
 // ────────────────────────────────────────────────────────────────
 // @public — single entry point for all public API surfaces.
-// ARCH-1 consumer scripts import from '../../mcp_server/api'
+// ARCH-1 consumer scripts import from '../../mcp_server/api/index.js'
 // Instead of reaching into lib/ internals.
 
 export {
@@ -25,7 +25,7 @@ export {
   type BM25BaselineResult,
   loadGroundTruth,
   initEvalDb,
-} from './eval';
+} from './eval.js';
 
 export {
   initializeIndexingRuntime,
@@ -33,7 +33,7 @@ export {
   runMemoryIndexScan,
   closeIndexingRuntime,
   type MemoryIndexScanArgs,
-} from './indexing';
+} from './indexing.js';
 
 export {
   initHybridSearch,
@@ -43,19 +43,19 @@ export {
   fts5Bm25Search,
   isFts5Available,
   vectorIndex,
-} from './search';
+} from './search.js';
 
 export {
   generateEmbedding,
   generateQueryEmbedding,
   getEmbeddingProfile,
   retryManager,
-} from './providers';
+} from './providers.js';
 
 export {
   initCheckpoints,
   initAccessTracker,
-} from './storage';
+} from './storage.js';
 
 // --- Folder discovery (used by scripts/spec-folder, scripts/core) ---
 export {
@@ -64,25 +64,25 @@ export {
   loadPerFolderDescription,
   extractKeywords,
   slugifyFolderName,
-} from '../lib/search/folder-discovery';
-export type { PerFolderDescription } from '../lib/search/folder-discovery';
+} from '../lib/search/folder-discovery.js';
+export type { PerFolderDescription } from '../lib/search/folder-discovery.js';
 
 // --- Entity extraction (used by scripts/memory) ---
 export {
   extractEntities,
   rebuildAutoEntities,
-} from '../lib/extraction/entity-extractor';
+} from '../lib/extraction/entity-extractor.js';
 
 // --- Performance benchmarking support (used by scripts/evals) ---
-export * as sessionBoost from '../lib/search/session-boost';
-export * as causalBoost from '../lib/search/causal-boost';
-export * as workingMemory from '../lib/cognitive/working-memory';
+export * as sessionBoost from '../lib/search/session-boost.js';
+export * as causalBoost from '../lib/search/causal-boost.js';
+export * as workingMemory from '../lib/cognitive/working-memory.js';
 export {
   initExtractionAdapter,
   getExtractionMetrics,
   resetExtractionMetrics,
-} from '../lib/extraction/extraction-adapter';
-export type { ExtractionMetrics } from '../lib/extraction/extraction-adapter';
+} from '../lib/extraction/extraction-adapter.js';
+export type { ExtractionMetrics } from '../lib/extraction/extraction-adapter.js';
 
 // --- Hybrid RAG Fusion rollout metadata and architecture surfaces ---
 export {
@@ -90,13 +90,13 @@ export {
   TOOL_LAYER_MAP,
   getLayerForTool,
   getLayerTokenBudget,
-} from '../lib/architecture/layer-definitions';
-export type { LayerDefinition, LayerId } from '../lib/architecture/layer-definitions';
+} from '../lib/architecture/layer-definitions.js';
+export type { LayerDefinition, LayerId } from '../lib/architecture/layer-definitions.js';
 
 export {
   getSharedRolloutMetrics,
   getSharedRolloutCohortSummary,
-} from '../lib/collab/shared-spaces';
+} from '../lib/collab/shared-spaces.js';
 export type {
   SharedMembership,
   SharedRole,
@@ -104,11 +104,11 @@ export type {
   SharedRolloutMetrics,
   SharedSpaceDefinition,
   SharedSubjectType,
-} from '../lib/collab/shared-spaces';
+} from '../lib/collab/shared-spaces.js';
 
 export {
   getMemoryRoadmapCapabilityFlags,
   getMemoryRoadmapDefaults,
   getMemoryRoadmapPhase,
-} from '../lib/config/capability-flags';
-export type { MemoryRoadmapCapabilityFlags } from '../lib/config/capability-flags';
+} from '../lib/config/capability-flags.js';
+export type { MemoryRoadmapCapabilityFlags } from '../lib/config/capability-flags.js';

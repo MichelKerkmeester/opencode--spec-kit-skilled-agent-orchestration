@@ -8,15 +8,15 @@
 
 import { randomUUID } from 'node:crypto';
 
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import { safeJsonParseTyped } from '../utils/json-helpers';
+import { safeJsonParseTyped } from '../utils/json-helpers.js';
 
-import type { MCPResponse } from './types';
-import type { ListArgs } from './memory-crud-types';
+import type { MCPResponse } from './types.js';
+import type { ListArgs } from './memory-crud-types.js';
 
 // Feature catalog: Memory browser (memory_list)
 // Feature catalog: Validation feedback (memory_validate)

@@ -13,8 +13,8 @@
 //   to edge-type priority orderings; computes traversal score as:
 //   score = seedScore * edgePrior * hopDecay * freshness
 // Both requirements are gated behind SPECKIT_TYPED_TRAVERSAL (default ON, graduated).
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
-import { isTypedTraversalEnabled as _isTypedTraversalEnabled } from './search-flags';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
+import { isTypedTraversalEnabled as _isTypedTraversalEnabled } from './search-flags.js';
 
 import type Database from 'better-sqlite3';
 

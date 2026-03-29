@@ -1,14 +1,14 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Composite Scoring
 // ───────────────────────────────────────────────────────────────
-import { getTierConfig } from './importance-tiers';
-import { calculatePopularityScore } from '../storage/access-tracker';
+import { getTierConfig } from './importance-tiers.js';
+import { calculatePopularityScore } from '../storage/access-tracker.js';
 // HIGH-003 FIX: Import unified recency scoring from folder-scoring
-import { computeRecencyScore, DECAY_RATE } from './folder-scoring';
+import { computeRecencyScore, DECAY_RATE } from './folder-scoring.js';
 // Interference scoring penalty
-import { applyInterferencePenalty, INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
+import { applyInterferencePenalty, INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring.js';
 // Scoring observability (N4 + TM-01 logging, 5% sampled)
-import { shouldSample, logScoringObservation } from '../telemetry/scoring-observability';
+import { shouldSample, logScoringObservation } from '../telemetry/scoring-observability.js';
 
 import type { MemoryDbRow } from '@spec-kit/shared/types';
 
@@ -35,12 +35,16 @@ interface FsrsSchedulerModule {
 }
 
 let fsrsScheduler: FsrsSchedulerModule | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  fsrsScheduler = require('../cognitive/fsrs-scheduler') as FsrsSchedulerModule;
-} catch (_err: unknown) {
-  /* fsrs-scheduler optional dep — fallback to inline FSRS formula */
+
+async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
+  try {
+    return await import('../cognitive/fsrs-scheduler.js') as FsrsSchedulerModule;
+  } catch (_err: unknown) {
+    return null;
+  }
 }
+
+fsrsScheduler = await loadFsrsScheduler();
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -221,7 +225,7 @@ export const PATTERN_ALIGNMENT_BONUSES: PatternAlignmentBonuses = {
 };
 
 // TM-01: Re-export interference penalty coefficient for test access
-export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
+export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. SCORE CALCULATIONS

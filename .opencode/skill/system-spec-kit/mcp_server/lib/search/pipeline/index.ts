@@ -9,7 +9,7 @@
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: 4-stage pipeline refactor
 
-export { executePipeline } from './orchestrator';
+export { executePipeline } from './orchestrator.js';
 /**
  * Public pipeline data contracts.
  */
@@ -29,8 +29,8 @@ export type {
   ScoreSnapshot,
   IntentWeightsConfig,
   ArtifactRoutingConfig,
-} from './types';
+} from './types.js';
 /**
  * Score snapshot helpers for Stage 4 invariants.
  */
-export { captureScoreSnapshot, verifyScoreInvariant } from './types';
+export { captureScoreSnapshot, verifyScoreInvariant } from './types.js';

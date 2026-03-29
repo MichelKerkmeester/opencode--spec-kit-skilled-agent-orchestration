@@ -4,14 +4,14 @@
 import path from 'path';
 import type Database from 'better-sqlite3';
 
-import * as embeddings from '../../lib/providers/embeddings';
+import * as embeddings from '../../lib/providers/embeddings.js';
 import {
   sanitizeAndLogEmbeddingFailure,
   sanitizeEmbeddingFailureMessage,
-} from '../../lib/providers/retry-manager';
-import { computeContentHash, lookupEmbedding, storeEmbedding } from '../../lib/cache/embedding-cache';
-import { normalizeContentForEmbedding } from '../../lib/parsing/content-normalizer';
-import type { ParsedMemory } from '../../lib/parsing/memory-parser';
+} from '../../lib/providers/retry-manager.js';
+import { computeContentHash, lookupEmbedding, storeEmbedding } from '../../lib/cache/embedding-cache.js';
+import { normalizeContentForEmbedding } from '../../lib/parsing/content-normalizer.js';
+import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
 import type { WeightedDocumentSections } from '@spec-kit/shared/index';
 
 // Feature catalog: Memory indexing (memory_save)

@@ -13,7 +13,7 @@
 // CRITICAL: Shadow scoring must NEVER affect production search results.
 // Every public function is wrapped in try-catch. The legacy compatibility flag
 // SPECKIT_SHADOW_SCORING is retained for tests/docs, but the write path remains disabled.
-import { initEvalDb, getEvalDb } from './eval-db';
+import { initEvalDb, getEvalDb } from './eval-db.js';
 
 // Feature catalog: Shadow scoring
 

@@ -9,10 +9,10 @@ import {
   getDefaultType,
   isValidType,
   resolveSpecDocumentType,
-} from './memory-types';
-import { isWorkingArtifactPath } from './spec-doc-paths';
+} from './memory-types.js';
+import { isWorkingArtifactPath } from './spec-doc-paths.js';
 
-import type { MemoryTypeName, MemoryTypeConfig } from './memory-types';
+import type { MemoryTypeName, MemoryTypeConfig } from './memory-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

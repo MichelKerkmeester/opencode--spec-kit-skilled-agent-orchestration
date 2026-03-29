@@ -1,16 +1,16 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Session Learning
 // ───────────────────────────────────────────────────────────────
-import * as vectorIndex from '../lib/search/vector-index';
-import { checkDatabaseUpdated } from '../core';
-import { MemoryError, ErrorCodes } from '../lib/errors';
-import { toErrorMessage } from '../utils';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import { checkDatabaseUpdated } from '../core/index.js';
+import { MemoryError, ErrorCodes } from '../lib/errors.js';
+import { toErrorMessage } from '../utils/index.js';
 
 // REQ-019: Standardized Response Structure
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse } from '../lib/response/envelope.js';
 
 // Shared handler types
-import type { MCPResponse, DatabaseExtended as Database } from './types';
+import type { MCPResponse, DatabaseExtended as Database } from './types.js';
 
 // Feature catalog: Post-task learning measurement (task_postflight)
 // Feature catalog: Learning history (memory_get_learning_history)

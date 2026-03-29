@@ -2,8 +2,8 @@
 // MODULE: Ranking Contract
 // ───────────────────────────────────────────────────────────────
 
-import { resolveEffectiveScore } from './types';
-import type { PipelineRow } from './types';
+import { resolveEffectiveScore } from './types.js';
+import type { PipelineRow } from './types.js';
 
 /**
  * Stage 2 graph-walk additive bonus cap.

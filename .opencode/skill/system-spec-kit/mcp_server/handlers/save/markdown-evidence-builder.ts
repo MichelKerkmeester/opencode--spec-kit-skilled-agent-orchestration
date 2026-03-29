@@ -5,7 +5,7 @@
 // markdown memory files for the sufficiency evaluator.
 
 import type { MemoryEvidenceSnapshot } from '@spec-kit/shared/parsing/memory-sufficiency';
-import type { ParsedMemory } from './types';
+import type { ParsedMemory } from './types.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Dry-run preflight for memory_save

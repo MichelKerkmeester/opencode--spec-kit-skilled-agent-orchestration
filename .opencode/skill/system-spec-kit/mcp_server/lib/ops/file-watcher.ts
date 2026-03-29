@@ -9,6 +9,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
+const { default: chokidar } = await import('chokidar');
 
 // Feature catalog: Real-time filesystem watching with chokidar
 // Feature catalog: Watcher delete/rename cleanup
@@ -158,8 +159,7 @@ async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
  */
 export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const watchFactory = config.watchFactory ?? (
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('chokidar') as {
+    chokidar as {
       watch: (paths: string[], options: Record<string, unknown>) => FSWatcher;
     }
   ).watch;

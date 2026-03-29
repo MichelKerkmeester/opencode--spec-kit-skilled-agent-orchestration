@@ -80,7 +80,7 @@ function parseSqliteVersion(version: string): { major: number; minor: number } |
 /** Logs a warning when the active Node.js version differs from the project marker. */
 export function detectNodeVersionMismatch(): void {
   try {
-    const markerPath = path.resolve(__dirname, '../.node-version-marker');
+    const markerPath = path.resolve(import.meta.dirname, '../.node-version-marker');
 
     if (fs.existsSync(markerPath)) {
       const raw = fs.readFileSync(markerPath, 'utf8');

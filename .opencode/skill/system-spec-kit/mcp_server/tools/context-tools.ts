@@ -2,9 +2,10 @@
 // MODULE: Context Tools
 // ───────────────────────────────────────────────────────────────
 // Dispatch for L1 Orchestration tool: memory_context (T303).
-import { handleMemoryContext } from '../handlers';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
-import { MCPResponse, parseArgs, ContextArgs } from './types';
+import { handleMemoryContext } from '../handlers/index.js';
+import { validateToolArgs } from '../schemas/tool-input-schemas.js';
+import { parseArgs } from './types.js';
+import type { MCPResponse, ContextArgs } from './types.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set(['memory_context']);

@@ -14,8 +14,8 @@
 //   - enrichWithRetrievalDirectives is a map over results; it never filters or reorders.
 
 import * as fs from 'fs';
-import { ALLOWED_BASE_PATHS } from '../../core/config';
-import { validateFilePath } from '../utils/path-security';
+import { ALLOWED_BASE_PATHS } from '../../core/config.js';
+import { validateFilePath } from '../utils/path-security.js';
 
 // Feature catalog: Constitutional memory as expert knowledge injection
 

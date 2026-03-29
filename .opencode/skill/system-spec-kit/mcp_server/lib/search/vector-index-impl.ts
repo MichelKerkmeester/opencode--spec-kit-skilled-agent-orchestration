@@ -11,4 +11,4 @@
 // - vector-index-aliases.ts
 // Keep this file for backward compatibility with direct imports.
 
-export * from './vector-index';
+export * from './vector-index.js';

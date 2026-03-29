@@ -2,12 +2,12 @@
 // MODULE: Memory Crud
 // ────────────────────────────────────────────────────────────────
 
-import { handleMemoryDelete } from './memory-crud-delete';
-import { handleMemoryUpdate } from './memory-crud-update';
-import { handleMemoryList } from './memory-crud-list';
-import { handleMemoryStats } from './memory-crud-stats';
-import { handleMemoryHealth } from './memory-crud-health';
-import { setEmbeddingModelReady, isEmbeddingModelReady } from '../core';
+import { handleMemoryDelete } from './memory-crud-delete.js';
+import { handleMemoryUpdate } from './memory-crud-update.js';
+import { handleMemoryList } from './memory-crud-list.js';
+import { handleMemoryStats } from './memory-crud-stats.js';
+import { handleMemoryHealth } from './memory-crud-health.js';
+import { setEmbeddingModelReady, isEmbeddingModelReady } from '../core/index.js';
 
 // Feature catalog: Memory browser (memory_list)
 // Feature catalog: System statistics (memory_stats)

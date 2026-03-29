@@ -23,8 +23,8 @@ import type Database from 'better-sqlite3';
 import {
   initFeedbackLedger,
   getFeedbackEvents,
-} from './feedback-ledger';
-import type { FeedbackConfidence } from './feedback-ledger';
+} from './feedback-ledger.js';
+import type { FeedbackConfidence } from './feedback-ledger.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS
@@ -121,7 +121,7 @@ export interface BatchLearningResult {
    3. FEATURE FLAG
 ----------------------------------------------------------------*/
 
-import { isBatchLearnedFeedbackEnabled } from '../search/search-flags';
+import { isBatchLearnedFeedbackEnabled } from '../search/search-flags.js';
 
 /**
  * Check whether the batch learned feedback feature is enabled.

@@ -5,22 +5,22 @@
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // Index, update, delete, and status/confidence updates.
 
-import * as embeddingsProvider from '../providers/embeddings';
-import { clearGraphSignalsCache } from '../graph/graph-signals';
-import { recordHistory } from '../storage/history';
-import { getCanonicalPathKey } from '../utils/canonical-path';
-import { createLogger } from '../utils/logger';
-import { clearDegreeCacheForDb } from './graph-search-fn';
-import * as bm25Index from './bm25-index';
+import * as embeddingsProvider from '../providers/embeddings.js';
+import { clearGraphSignalsCache } from '../graph/graph-signals.js';
+import { recordHistory } from '../storage/history.js';
+import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { createLogger } from '../utils/logger.js';
+import { clearDegreeCacheForDb } from './graph-search-fn.js';
+import * as bm25Index from './bm25-index.js';
 import {
   clear_search_cache,
-} from './vector-index-aliases';
+} from './vector-index-aliases.js';
 import {
   get_error_message,
   to_embedding_buffer,
   VectorIndexError,
   VectorIndexErrorCode,
-} from './vector-index-types';
+} from './vector-index-types.js';
 import {
   clear_constitutional_cache,
   get_embedding_dim,
@@ -28,11 +28,11 @@ import {
   init_prepared_statements,
   refresh_interference_scores_for_folder,
   sqlite_vec_available as get_sqlite_vec_available,
-} from './vector-index-store';
+} from './vector-index-store.js';
 import type {
   IndexMemoryParams as SharedIndexMemoryParams,
   UpdateMemoryParams as SharedUpdateMemoryParams,
-} from './vector-index-types';
+} from './vector-index-types.js';
 import type Database from 'better-sqlite3';
 
 const logger = createLogger('VectorIndex');

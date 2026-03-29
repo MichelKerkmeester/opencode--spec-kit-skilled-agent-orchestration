@@ -14,16 +14,23 @@ import {
   handleMemoryUpdate,
   handleMemoryValidate,
   handleMemoryBulkDelete,
-} from '../handlers';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
+} from '../handlers/index.js';
+import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
-import {
-  MCPResponse, parseArgs,
-  SearchArgs, TriggerArgs, SaveArgs,
-  ListArgs, StatsArgs, HealthArgs,
-  DeleteArgs, UpdateArgs, MemoryValidateArgs,
+import { parseArgs } from './types.js';
+import type {
+  MCPResponse,
+  SearchArgs,
+  TriggerArgs,
+  SaveArgs,
+  ListArgs,
+  StatsArgs,
+  HealthArgs,
+  DeleteArgs,
+  UpdateArgs,
+  MemoryValidateArgs,
   BulkDeleteArgs,
-} from './types';
+} from './types.js';
 
 function relabelResponseTool(response: MCPResponse, toolName: string): MCPResponse {
   const firstEntry = response?.content?.[0];

@@ -8,7 +8,7 @@
 // T304: Consolidated database access and error-coercion utilities
 // To eliminate duplicate getDb()+null-check and instanceof Error
 // Patterns across handler files.
-import * as vectorIndex from '../lib/search/vector-index';
+import * as vectorIndex from '../lib/search/vector-index.js';
 
 /**
  * T304: Get the database instance, throwing if not initialized.

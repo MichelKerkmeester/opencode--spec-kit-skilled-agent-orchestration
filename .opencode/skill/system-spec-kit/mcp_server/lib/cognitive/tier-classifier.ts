@@ -8,7 +8,7 @@
 import {
   FSRS_HALF_LIFE_FACTOR,
   calculateRetrievability as calculateFsrsRetrievability
-} from './fsrs-scheduler';
+} from './fsrs-scheduler.js';
 import type { MemoryDbRow } from '@spec-kit/shared/types';
 
 /**
@@ -108,22 +108,24 @@ interface StateStats {
 // Lazy-load memory types to avoid circular dependencies
 let memoryTypesModule: Record<string, unknown> | false | null = null;
 
+async function loadMemoryTypesModule(): Promise<Record<string, unknown> | false> {
+  try {
+    return await import('../config/memory-types.js');
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn('[tier-classifier] memory-types module not available:', msg);
+    return false;
+  }
+}
+
+memoryTypesModule = await loadMemoryTypesModule();
+
 /** Get memory types module (lazy loaded) */
 function getMemoryTypesModule(): Record<string, unknown> | null {
   if (memoryTypesModule !== null) {
     return memoryTypesModule || null;
   }
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    memoryTypesModule = require('../config/memory-types');
-    return memoryTypesModule as Record<string, unknown>;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn('[tier-classifier] memory-types module not available:', msg);
-    memoryTypesModule = false;
-    return null;
-  }
+  return null;
 }
 
 /**

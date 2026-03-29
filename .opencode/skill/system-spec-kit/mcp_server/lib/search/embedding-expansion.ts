@@ -15,9 +15,9 @@
 // Set to 'false' to disable. If disabled, expandQueryWithEmbeddings()
 // Returns immediately with an identity result (original query only,
 // No expanded terms).
-import { isEmbeddingExpansionEnabled } from './search-flags';
-import { classifyQueryComplexity } from './query-classifier';
-import * as vectorIndex from './vector-index';
+import { isEmbeddingExpansionEnabled } from './search-flags.js';
+import { classifyQueryComplexity } from './query-classifier.js';
+import * as vectorIndex from './vector-index.js';
 
 // Feature catalog: Query expansion
 

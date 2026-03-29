@@ -3,8 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // LEARNING: CORRECTIONS TRACKING
 import type Database from 'better-sqlite3';
-import { clearGraphSignalsCache } from '../graph/graph-signals';
-import { clearDegreeCacheForDb } from '../search/graph-search-fn';
+import { clearGraphSignalsCache } from '../graph/graph-signals.js';
+import { clearDegreeCacheForDb } from '../search/graph-search-fn.js';
 
 /* ───────────────────────────────────────────────────────────────
    TYPE DEFINITIONS

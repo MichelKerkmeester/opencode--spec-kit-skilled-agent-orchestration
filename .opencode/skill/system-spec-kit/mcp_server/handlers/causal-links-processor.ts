@@ -8,11 +8,11 @@
 
 import type BetterSqlite3 from 'better-sqlite3';
 
-import type { CausalLinks } from '../lib/parsing/memory-parser';
-import * as causalEdges from '../lib/storage/causal-edges';
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
-import { toErrorMessage } from '../utils';
-import { escapeLikePattern } from './handler-utils';
+import type { CausalLinks } from '../lib/parsing/memory-parser.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { toErrorMessage } from '../utils/index.js';
+import { escapeLikePattern } from './handler-utils.js';
 
 // Feature catalog: Causal edge creation (memory_causal_link)
 // Feature catalog: Causal edge deletion (memory_causal_unlink)
@@ -429,7 +429,7 @@ export {
 };
 
 // Re-export from handler-utils for backward compatibility
-export { detectSpecLevelFromParsed } from './handler-utils';
+export { detectSpecLevelFromParsed } from './handler-utils.js';
 
 export type {
   CausalLinkMapping,

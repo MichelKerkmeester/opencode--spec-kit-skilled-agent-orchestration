@@ -10,9 +10,9 @@ import {
   getRecoveryHint,
   hasSpecificHint,
   getAvailableHints,
-} from './recovery-hints';
+} from './recovery-hints.js';
 
-import type { RecoveryHint, Severity } from './recovery-hints';
+import type { RecoveryHint, Severity } from './recovery-hints.js';
 
 // Feature catalog: Stage 3 effectiveScore fallback chain
 
@@ -210,17 +210,18 @@ interface RetryModule {
 }
 
 let retryModule: RetryModule | null = null;
-// NOTE: Using require() for optional runtime-only module loading.
-// The retry module source lives in shared/utils/retry.ts but compiles to
-// Dist/lib/utils/retry.js. TypeScript cannot resolve this cross-workspace
-// Path at compile time, so dynamic import() would cause TS2307. The require()
-// Try/catch pattern is appropriate here since the project is CommonJS.
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  retryModule = require('../utils/retry.js') as RetryModule;
-} catch {
-  /* Retry module not available, use legacy detection */
+
+async function loadRetryModule(): Promise<RetryModule | null> {
+  const retryModulePath = '../utils/retry.js';
+
+  try {
+    return await import(retryModulePath) as RetryModule;
+  } catch {
+    return null;
+  }
 }
+
+retryModule = await loadRetryModule();
 
 /**
  * Check if an error is transient (worth retrying).

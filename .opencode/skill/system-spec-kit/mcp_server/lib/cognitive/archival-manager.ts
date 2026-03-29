@@ -4,8 +4,8 @@
 // Feature catalog: Automatic archival subsystem
 // Background archival job for dormant/archived memories
 import type Database from 'better-sqlite3';
-import { clearDegreeCache } from '../search/graph-search-fn';
-import { clearGraphSignalsCache } from '../graph/graph-signals';
+import { clearDegreeCache } from '../search/graph-search-fn.js';
+import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES (lazy-loaded)
@@ -14,15 +14,19 @@ import { clearGraphSignalsCache } from '../graph/graph-signals';
 // Lazy-load tier-classifier to avoid circular dependencies
 let tierClassifierModule: Record<string, unknown> | null = null;
 
-function getTierClassifier(): Record<string, unknown> | null {
-  if (tierClassifierModule !== null) return tierClassifierModule;
+async function loadTierClassifierModule(): Promise<Record<string, unknown> | null> {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    tierClassifierModule = require('./tier-classifier');
-    return tierClassifierModule;
+    return await import('./tier-classifier.js');
   } catch (_error: unknown) {
     return null;
   }
+}
+
+tierClassifierModule = await loadTierClassifierModule();
+
+function getTierClassifier(): Record<string, unknown> | null {
+  if (tierClassifierModule !== null) return tierClassifierModule;
+  return null;
 }
 
 interface Bm25IndexModule {
@@ -36,23 +40,27 @@ interface Bm25IndexModule {
 
 let bm25IndexModule: Bm25IndexModule | null = null;
 
-function getBm25Index(): Bm25IndexModule | null {
-  if (bm25IndexModule !== null) return bm25IndexModule;
+async function loadBm25IndexModule(): Promise<Bm25IndexModule | null> {
+  const primaryModulePath = '../search/bm25-index.js';
+  const fallbackModulePath = '../../search/bm25-index.js';
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    bm25IndexModule = require('../search/bm25-index') as Bm25IndexModule;
-    return bm25IndexModule;
+    return await import(primaryModulePath) as Bm25IndexModule;
   } catch (_error: unknown) {
     try {
       // Support cognitive symlink import path in some runtime setups.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      bm25IndexModule = require('../../search/bm25-index') as Bm25IndexModule;
-      return bm25IndexModule;
+      return await import(fallbackModulePath) as Bm25IndexModule;
     } catch (_error: unknown) {
       return null;
     }
   }
+}
+
+bm25IndexModule = await loadBm25IndexModule();
+
+function getBm25Index(): Bm25IndexModule | null {
+  if (bm25IndexModule !== null) return bm25IndexModule;
+  return null;
 }
 
 interface EmbeddingModule {
@@ -61,23 +69,27 @@ interface EmbeddingModule {
 
 let embeddingsModule: EmbeddingModule | null = null;
 
-function _getEmbeddings(): EmbeddingModule | null {
-  if (embeddingsModule !== null) return embeddingsModule;
+async function loadEmbeddingsModule(): Promise<EmbeddingModule | null> {
+  const primaryModulePath = '../providers/embeddings.js';
+  const fallbackModulePath = '../../providers/embeddings.js';
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    embeddingsModule = require('../providers/embeddings') as EmbeddingModule;
-    return embeddingsModule;
+    return await import(primaryModulePath) as EmbeddingModule;
   } catch (_error: unknown) {
     try {
       // Support cognitive symlink import path in some runtime setups.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      embeddingsModule = require('../../providers/embeddings') as EmbeddingModule;
-      return embeddingsModule;
+      return await import(fallbackModulePath) as EmbeddingModule;
     } catch (_error: unknown) {
       return null;
     }
   }
+}
+
+embeddingsModule = await loadEmbeddingsModule();
+
+function _getEmbeddings(): EmbeddingModule | null {
+  if (embeddingsModule !== null) return embeddingsModule;
+  return null;
 }
 
 function __setEmbeddingsModuleForTests(module: EmbeddingModule | null): void {

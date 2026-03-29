@@ -19,7 +19,7 @@
 //   - Selections are persisted to the eval DB for durability.
 //   - LLM-judge interface is deterministic (non-stub fallback).
 //   - Agreement rate target: >= 80% between LLM-judge and manual labels.
-import { initEvalDb, getEvalDb } from './eval-db';
+import { initEvalDb, getEvalDb } from './eval-db.js';
 
 /* --- 1. TYPES --- */
 

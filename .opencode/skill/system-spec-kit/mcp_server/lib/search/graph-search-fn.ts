@@ -4,12 +4,12 @@
 // Feature catalog: Unified graph retrieval, deterministic ranking, explainability, and rollback
 // Causal graph search channel — uses FTS5 for node matching
 
-import { sanitizeFTS5Query } from './bm25-index';
-import { queryHierarchyMemories } from './spec-folder-hierarchy';
-import { registerDatabaseRebindListener } from '../../core/db-state';
+import { sanitizeFTS5Query } from './bm25-index.js';
+import { queryHierarchyMemories } from './spec-folder-hierarchy.js';
+import { registerDatabaseRebindListener } from '../../core/db-state.js';
 
 import type Database from 'better-sqlite3';
-import type { GraphSearchFn } from './search-types';
+import type { GraphSearchFn } from './search-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

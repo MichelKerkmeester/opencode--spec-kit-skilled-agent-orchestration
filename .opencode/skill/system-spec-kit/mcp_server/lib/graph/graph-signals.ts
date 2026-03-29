@@ -11,7 +11,7 @@ import type Database from 'better-sqlite3';
 import {
   STAGE2_GRAPH_BONUS_CAP,
   clampStage2GraphBonus,
-} from '../search/pipeline/ranking-contract';
+} from '../search/pipeline/ranking-contract.js';
 
 // ───────────────────────────────────────────────────────────────
 // 2. SESSION CACHE
