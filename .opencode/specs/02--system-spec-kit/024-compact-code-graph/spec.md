@@ -120,6 +120,9 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | 002 | SessionStart Priming | 1-2 days | P1 — session priming |
 | 003 | Stop Hook + Token Tracking | 2-3 days | P2 — observability |
 | 004 | Cross-Runtime Fallback | 1-2 days | P1 — universal support |
+| 005 | Command & Agent Alignment | 1-2 days | P1 — integration |
+| 006 | Documentation Alignment | 1-2 days | P1 — docs |
+| 007 | Testing & Validation | 2-3 days | P1 — quality assurance |
 
 ## Out of Scope
 

@@ -1,19 +1,15 @@
 {
-  "specFolder": "02--system-spec-kit/023-esm-module-compliance",
-  "description": "Feature Specification: ESM Module Compliance",
+  "specFolder": "023-esm-module-compliance",
+  "description": "ESM Module Compliance",
   "keywords": [
-    "feature",
-    "specification",
     "esm",
     "module",
     "compliance"
   ],
-  "lastUpdated": "2026-03-28T11:04:46.051Z",
+  "lastUpdated": "2026-03-29T10:21:42.186Z",
   "specId": "023",
   "folderSlug": "esm-module-compliance",
-  "parentChain": [
-    "02--system-spec-kit"
-  ],
+  "parentChain": [],
   "memorySequence": 0,
   "memoryNameHistory": []
 }

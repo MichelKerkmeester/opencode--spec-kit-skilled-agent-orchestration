@@ -1,0 +1,16 @@
+{
+  "specFolder": "023-esm-module-compliance/001-shared-esm-migration",
+  "description": "Phase 1: shared-esm-migration",
+  "keywords": [
+    "phase",
+    "shared-esm-migration"
+  ],
+  "lastUpdated": "2026-03-29T10:21:42.370Z",
+  "specId": "001",
+  "folderSlug": "shared-esm-migration",
+  "parentChain": [
+    "023-esm-module-compliance"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -208,3 +208,48 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
+
+---
+title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
+description: "Template document for addendum/phase/phase-parent-section.md."
+trigger_phrases:
+  - "phase"
+  - "parent"
+  - "section"
+  - "template"
+  - "phase parent section"
+importance_tier: "normal"
+contextType: "general"
+---
+<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
+<!-- Append to parent spec.md after SCOPE section -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+
+| Phase | Folder | Focus | Deps | Status |
+|-------|--------|-------|------|--------|
+| 1 | 001-shared-esm-migration/ | Package metadata, tsconfig, import rewrites for `@spec-kit/shared` | None | Pending |
+| 2 | 002-mcp-server-esm-migration/ | Package metadata, tsconfig, import rewrites, CJS cleanup for `@spec-kit/mcp-server` | Phase 1 | Pending |
+| 3 | 003-scripts-interop-refactor/ | Interop helpers, bridge/loader refactors, test rewrites for `@spec-kit/scripts` | Phase 2 | Pending |
+| 4 | 004-verification-and-standards/ | Highest-risk retests, full verification matrix, standards-doc sync | Phase 3 | Pending |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 001-shared-esm-migration | 002-mcp-server-esm-migration | `shared` emits native ESM, `shared/package.json` has `"type": "module"`, all relative imports use `.js` specifiers | `npm run build --workspace=@spec-kit/shared` passes; emitted `dist/` contains ESM output |
+| 002-mcp-server-esm-migration | 003-scripts-interop-refactor | `mcp_server` emits native ESM, CJS globals removed, `node dist/context-server.js` starts | `npm run build --workspace=@spec-kit/mcp-server` passes; `node dist/context-server.js` smoke passes |
+| 003-scripts-interop-refactor | 004-verification-and-standards | Scripts interop helpers work, all scripts-side consumers cross explicit `import()` boundaries | `node scripts/dist/memory/generate-context.js --help` passes; scripts interop tests pass |
+<!-- /ANCHOR:phase-map -->
