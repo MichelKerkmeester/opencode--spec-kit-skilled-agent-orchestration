@@ -78,6 +78,9 @@ __pycache__/
 # Temporary files
 # ───────────────────────────────────────────
 tmp/
+.tmp/
+**/vitest-tmp/
+**/node-compile-cache/
 
 # Non-dev AI systems specs (project-specific, not framework)
 # ───────────────────────────────────────────
