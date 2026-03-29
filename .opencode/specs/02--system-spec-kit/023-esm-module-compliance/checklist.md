@@ -41,9 +41,9 @@ contextType: "architecture"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare truthful native ESM runtime contracts
-- [ ] CHK-003 [P0] Package-local compiler settings emit native ESM for `shared` and `mcp_server`
-- [ ] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings
+- [x] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare truthful native ESM runtime contracts [EVIDENCE: `.opencode/skill/system-spec-kit/shared/package.json` and `.opencode/skill/system-spec-kit/mcp_server/package.json` both set `"type": "module"` with ESM `main` and `exports` entrypoints]
+- [x] CHK-003 [P0] Package-local compiler settings emit native ESM for `shared` and `mcp_server` [EVIDENCE: `.opencode/skill/system-spec-kit/shared/tsconfig.json` and `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json` both set `"module": "nodenext"` and `"moduleResolution": "nodenext"`]
+- [x] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/package.json` keeps `"type": "commonjs"` while `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` uses `await import('@spec-kit/mcp-server/api/providers')` and `await import('@spec-kit/mcp-server/api')` for the package boundary]
 - [ ] CHK-021 [P2] Guardrails exist to prevent new extensionless ESM-breaking imports
 <!-- /ANCHOR:code-quality -->
 
@@ -94,9 +94,9 @@ contextType: "architecture"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 1/8 |
-| P1 Items | 8 | 6/8 |
-| P2 Items | 2 | 0/2 |
+| P0 Items | 9 | 4/9 |
+| P1 Items | 8 | 5/8 |
+| P2 Items | 3 | 0/3 |
 
-**Verification Date**: 2026-03-28
+**Verification Date**: 2026-03-29
 <!-- /ANCHOR:summary -->

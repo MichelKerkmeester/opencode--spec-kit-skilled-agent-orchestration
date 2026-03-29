@@ -742,6 +742,42 @@ describe('memory quality lint gate', () => {
     );
   });
 
+  it('allows child phase ids when the target spec folder contains a child spec.md', () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-v8-child-phase-'));
+    const specFolder = path.join(tempRoot, '023-parent-phase');
+    const childSpecFolder = path.join(specFolder, '001-child');
+
+    try {
+      fs.mkdirSync(childSpecFolder, { recursive: true });
+      fs.writeFileSync(
+        path.join(childSpecFolder, 'spec.md'),
+        [
+          '---',
+          'title: "Child Phase"',
+          'description: "V8 allowlist fixture"',
+          '---',
+          '# Child Phase',
+          '',
+          'Child phase fixture.',
+        ].join('\n'),
+        'utf8',
+      );
+
+      const result = validateMemoryQualityContent(buildMemoryContent({
+        specFolder,
+        body: [
+          'Validated the 001-child phase memory save path during the follow-up audit.',
+          'The 001-child folder remains an allowed descendant reference for V8.',
+        ],
+      }));
+
+      expect(result.failedRules).not.toContain('V8');
+      expect(result.valid).toBe(true);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it('fails when template instructional text leaks into the title', () => {
     const result = validateMemoryQualityContent(buildMemoryContent({
       title: 'To promote a memory to constitutional tier (always surfaced)',

@@ -5,7 +5,7 @@
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
-import { DB_PATH } from '../../shared/paths.js';
+import { DB_PATH } from '@spec-kit/shared/paths';
 import { loadCognitiveConfigFromEnv } from '../configs/cognitive.js';
 import type { CognitiveConfig } from '../configs/cognitive.js';
 

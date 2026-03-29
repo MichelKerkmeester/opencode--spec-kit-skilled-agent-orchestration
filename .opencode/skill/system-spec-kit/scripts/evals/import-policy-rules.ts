@@ -15,7 +15,8 @@ const PROHIBITED_PACKAGE_IMPORTS = [
   '@spec-kit/mcp-server/handlers',
 ];
 
-const RELATIVE_INTERNAL_RUNTIME_IMPORT_RE = /^\.\.(?:\/\.\.)*\/mcp_server\/(?:lib|core|handlers)(?:$|\/)/;
+const RELATIVE_INTERNAL_RUNTIME_IMPORT_RE =
+  /^\.\.(?:\/\.\.)*\/(?:mcp_server\/(?:lib|core|handlers)|shared)(?:$|\/)/;
 
 function normalizeRelativeImportPath(importPath: string): string {
   if (!importPath.startsWith('.')) {

@@ -7,8 +7,7 @@
   "exports": {
     ".": "./dist/context-server.js",
     "./api": "./dist/api/index.js",
-    "./*.js": "./dist/*.js",
-    "./*": "./dist/*.js"
+    "./api/*": "./dist/api/*.js"
   },
   "bin": {
     "context-server": "./dist/context-server.js",

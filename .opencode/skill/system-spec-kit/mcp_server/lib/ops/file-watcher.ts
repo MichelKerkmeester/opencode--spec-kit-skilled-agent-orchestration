@@ -114,20 +114,6 @@ function getWatchFactory(): (paths: string[], options: Record<string, unknown>) 
     return chokidarModule.default.watch;
   }
 
-  try {
-    const requiredModule = require('chokidar') as
-      | ChokidarModule
-      | { watch: (paths: string[], options: Record<string, unknown>) => FSWatcher };
-    chokidarModule = 'default' in requiredModule
-      ? requiredModule
-      : { default: requiredModule };
-    chokidarModuleLoadError = null;
-    return chokidarModule.default.watch;
-  } catch (error: unknown) {
-    // Fall through to async ESM import path below.
-    chokidarModuleLoadError = error instanceof Error ? error.message : String(error);
-  }
-
   if (chokidarModulePromise === null) {
     void loadChokidarModule();
   }

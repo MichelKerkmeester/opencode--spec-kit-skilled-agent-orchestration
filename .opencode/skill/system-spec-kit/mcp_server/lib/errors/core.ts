@@ -229,7 +229,9 @@ async function loadRetryModule(): Promise<RetryModule | null> {
       retryModuleLoadError = null;
       return retryModule;
     } catch (error: unknown) {
-      retryModuleLoadError = error instanceof Error ? error.message : String(error);
+      const msg = error instanceof Error ? error.message : String(error);
+      retryModuleLoadError = msg;
+      console.warn('[errors/core] Retry module lazy import failed:', msg);
       return null;
     }
   })();

@@ -52,7 +52,9 @@ async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
       fsrsSchedulerLoadError = null;
       return fsrsScheduler;
     } catch (error: unknown) {
-      fsrsSchedulerLoadError = error instanceof Error ? error.message : String(error);
+      const msg = error instanceof Error ? error.message : String(error);
+      fsrsSchedulerLoadError = msg;
+      console.warn('[composite-scoring] FSRS scheduler lazy import failed:', msg);
       return null;
     }
   })();
