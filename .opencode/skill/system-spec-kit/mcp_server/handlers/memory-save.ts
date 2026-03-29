@@ -185,6 +185,9 @@ function prepareParsedMemoryForIndexing(
 
   // O2-5/O2-12: Run V-rule validation (previously only in workflow path)
   const vRuleResult = validateMemoryQualityContent(parsed.content);
+  if (vRuleResult && '_unavailable' in vRuleResult) {
+    validation.warnings.push('V-rule validator module unavailable — quality gate bypassed. Save proceeds without V-rule enforcement.');
+  }
   if (vRuleResult && !vRuleResult.valid) {
     const vRuleDisposition = determineValidationDisposition(
       vRuleResult.failedRules,

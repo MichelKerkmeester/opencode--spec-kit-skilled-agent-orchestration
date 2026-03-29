@@ -67,12 +67,16 @@ function loadModule(): void {
 export function validateMemoryQualityContent(content: string): ValidationResult | null {
   loadModule();
   if (!_validateMemoryQualityContent) {
-    // Return a structured "unavailable" signal instead of null so callers can distinguish
-    // "no validation issues" from "validator not loaded"
-    console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded');
-    return null;
+    console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded — V-rule validation bypassed');
+    return { valid: true, failedRules: [], ruleResults: [], _unavailable: true } as ValidationResult & { _unavailable: boolean };
   }
   return _validateMemoryQualityContent(content);
+}
+
+/** Check whether the V-rule validator module is loaded and operational. */
+export function isVRuleBridgeAvailable(): boolean {
+  loadModule();
+  return _validateMemoryQualityContent !== null;
 }
 
 export function determineValidationDisposition(
