@@ -1701,8 +1701,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log();
 
-  // Step 10: Success confirmation
-  log('Context saved successfully!\n');
+  // Step 10: Success confirmation (file written; indexing runs in Step 11)
+  log('Context file written.\n');
   log(`Location: ${contextDir}\n`);
   log('Files created:');
   for (const [filename, content] of Object.entries(files)) {
@@ -1828,7 +1828,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         errMsg
       );
       warn(`   Warning: Embedding failed: ${errMsg}`);
-      warn('   Context saved successfully without semantic indexing');
+      warn('   Context file saved without semantic indexing');
       warn('   Run "npm run rebuild" to retry indexing later');
     }
   }
