@@ -21,6 +21,7 @@
 // original full response is returned unchanged.
 
 import { estimateTokens } from '../../formatters/token-metrics';
+import { resolveEffectiveScore, type PipelineRow } from '../search/pipeline/types';
 
 // ── Types ──────────────────────────────────────────────────────
 
@@ -31,6 +32,8 @@ export type ResponseProfile = 'quick' | 'research' | 'resume' | 'debug';
 export interface SearchResultEntry extends Record<string, unknown> {
   id?: number | string;
   score?: number;
+  rrfScore?: number;
+  intentAdjustedScore?: number;
   similarity?: number;
   content?: string;
   file_path?: string;
@@ -121,11 +124,18 @@ export { isResponseProfileEnabled };
 // ── Internal helpers ──────────────────────────────────────────
 
 function resolveScore(result: SearchResultEntry): number {
-  if (typeof result.score === 'number' && Number.isFinite(result.score)) return result.score;
-  if (typeof result.similarity === 'number' && Number.isFinite(result.similarity)) {
-    return result.similarity > 1 ? result.similarity / 100 : result.similarity;
-  }
-  return 0;
+  const row: PipelineRow = {
+    id: typeof result.id === 'number' ? result.id : 0,
+    score: typeof result.score === 'number' ? result.score : undefined,
+    rrfScore: typeof result.rrfScore === 'number' ? result.rrfScore : undefined,
+    intentAdjustedScore: typeof result.intentAdjustedScore === 'number'
+      ? result.intentAdjustedScore
+      : undefined,
+    similarity: typeof result.similarity === 'number'
+      ? (result.similarity > 1 ? result.similarity : result.similarity * 100)
+      : undefined,
+  };
+  return resolveEffectiveScore(row);
 }
 
 function getOneLineWhy(result: SearchResultEntry, rank: number): string {

@@ -5,15 +5,6 @@
 // Re-export canonical MCPResponse from shared
 export type { MCPResponse } from '@spec-kit/shared/types';
 
-// Import for extension
-import type { MCPResponse } from '@spec-kit/shared/types';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
-
-/** Extended MCP response with auto-surfaced context (SK-004) */
-export interface MCPResponseWithContext extends MCPResponse {
-  autoSurfacedContext?: unknown;
-}
-
 /** Narrow pre-validated MCP tool args to a specific handler arg type.
  *  Centralises the single protocol-boundary cast so call sites stay clean. */
 export function parseArgs<T>(args: Record<string, unknown>): T {
@@ -23,14 +14,6 @@ export function parseArgs<T>(args: Record<string, unknown>): T {
     return {} as T;
   }
   return args as unknown as T;
-}
-
-/** Parse and validate tool arguments using Zod schema definitions. */
-export function parseValidatedArgs<T>(toolName: string, args: Record<string, unknown>): T {
-  if (args == null || typeof args !== 'object') {
-    return parseArgs<T>(validateToolArgs(toolName, {}));
-  }
-  return parseArgs<T>(validateToolArgs(toolName, args));
 }
 
 /* ───────────────────────────────────────────────────────────────

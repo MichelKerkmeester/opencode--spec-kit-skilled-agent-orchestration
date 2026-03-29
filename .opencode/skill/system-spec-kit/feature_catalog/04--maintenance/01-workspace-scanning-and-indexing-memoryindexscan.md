@@ -21,7 +21,9 @@ Spec documents are still indexed by default. When a scan touches `spec.md`, `pla
 
 The scanner discovers files from three sources: spec folder memory files under both `.opencode/**/memory/` and `specs/**/memory/` (including `.md` and `.txt` memory files), constitutional files under `.opencode/skill/*/constitutional/` (currently `.md`, excluding `README.md`/`README.txt`), and spec documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research/research.md`, `handover.md`). Canonical path deduplication prevents the same file from being indexed twice under different paths (the `specs/` vs `.opencode/specs/` alias problem).
 
-In incremental mode (the default), the scanner categorizes every discovered file into one of four buckets: to-index (new files), to-update (changed mtime or content hash), to-skip (unchanged mtime and matching content hash) and to-delete (files that disappeared from disk). The content-hash secondary check catches timestamp-preserving rewrites that would otherwise look unchanged from mtime alone. Batch processing with configurable `BATCH_SIZE` handles large workspaces, but oversized requests are clamped to the hard runtime maximum with a warning instead of exploding fan-out. A rate limiter with `INDEX_SCAN_COOLDOWN` prevents rapid repeated scans from exhausting resources, returning an E429 error with a wait time if you scan too frequently.
+In incremental mode (the default), the scanner categorizes every discovered file into one of four buckets: to-index (new files), to-update (changed mtime or content hash), to-skip (unchanged mtime and matching content hash) and to-delete (files that disappeared from disk). The content-hash secondary check catches timestamp-preserving rewrites that would otherwise look unchanged from mtime alone. Batch processing with configurable `BATCH_SIZE` handles large workspaces, but oversized requests are clamped to the hard runtime maximum with a warning instead of exploding fan-out. Scan throttling now uses an atomic lease instead of a check-then-set cooldown gate: `acquireIndexScanLease()` reads `last_index_scan` and `scan_started_at` in one transaction, expires stale leases left behind by crashed scans, reserves a fresh run by writing `scan_started_at`, rejects overlapping fresh scans with `reason: 'lease_active'`, and still enforces `INDEX_SCAN_COOLDOWN` after completed runs with `reason: 'cooldown'`. The handler returns an E429 response with the computed wait time whenever either guard rejects the request.
+
+Completion is a separate step. `completeIndexScanLease()` runs after the scan response is assembled, converts the active `scan_started_at` lease into `last_index_scan`, and clears the active lease row. That keeps the cooldown clock tied to completed scans instead of request start time while still protecting the database from concurrent scans and stale crash leftovers.
 
 Each file that passes through to indexing is handed off to `memory_save` for the save pipeline, so content normalization, quality gating, reconsolidation, chunk thinning and encoding-intent capture still apply automatically. The `memory_save` sub-modules are documented in that feature's own catalog entry rather than duplicated here. Large files are split into chunks, and anchor-aware chunk thinning drops low-scoring chunks before they enter the index.
 
@@ -40,6 +42,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | File | Role |
 |------|------|
 | `mcp_server/handlers/memory-index.ts` | Index scan handler: file discovery, incremental bucketing, batch orchestration, causal chain creation, divergence hooks |
+| `mcp_server/core/db-state.ts` | Atomic lease persistence for `scan_started_at` and `last_index_scan`, including stale-lease expiry and completion handoff |
 | `mcp_server/handlers/memory-index-discovery.ts` | Spec document and constitutional file discovery from filesystem |
 | `mcp_server/handlers/memory-index-alias.ts` | Alias conflict detection and summarization during scan |
 | `mcp_server/handlers/causal-links-processor.ts` | Causal link creation called by scan for spec document chains |
@@ -60,7 +63,8 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
-| `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown and rate-limit validation |
+| `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Handler lease rejection and post-scan completion validation |
+| `mcp_server/tests/db-state.vitest.ts` | Atomic lease acquisition, stale-lease expiry, and completion handoff validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (fast-path assertions) |
 | `mcp_server/tests/full-spec-doc-indexing.vitest.ts` | Full spec document indexing |

@@ -3,7 +3,7 @@
 import Database from 'better-sqlite3';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { init as initDbState, reinitializeDatabase } from '../core/db-state';
-import { createUnifiedGraphSearchFn, computeDegreeScores } from '../lib/search/graph-search-fn';
+import { createUnifiedGraphSearchFn, computeDegreeScores, clearDegreeCache } from '../lib/search/graph-search-fn';
 
 const mockAll = vi.fn();
 const mockGet = vi.fn();
@@ -86,6 +86,7 @@ function createDegreeCacheDb(): InstanceType<typeof Database> {
 describe('createUnifiedGraphSearchFn', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    clearDegreeCache();
     // Default: FTS table not available so fallback path is used
     mockGet.mockReturnValue(undefined);
     mockPrepare.mockReturnValue(mockStatement);

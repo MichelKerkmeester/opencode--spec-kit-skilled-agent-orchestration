@@ -294,16 +294,7 @@ export const handleSharedSpaceMembershipSet = lazyFunction(getSharedMemoryModule
 export const handleSharedSpaceUpsert = lazyFunction(getSharedMemoryModule, 'handleSharedSpaceUpsert');
 
 // Sub-module references
-export const memorySearch = lazyModule(getMemorySearchModule);
-export const memoryTriggers = lazyModule(getMemoryTriggersModule);
 export const memorySave = lazyModule(getMemorySaveModule);
-export const memoryCrud = lazyModule(getMemoryCrudModule);
 export const memoryIndex = lazyModule(getMemoryIndexModule);
 export const memoryBulkDelete = lazyModule(getMemoryBulkDeleteModule);
 export const checkpoints = lazyModule(getCheckpointsModule);
-export const sessionLearning = lazyModule(getSessionLearningModule);
-export const causalGraph = lazyModule(getCausalGraphModule);
-export const evalReporting = lazyModule(getEvalReportingModule);
-export const memoryContext = lazyModule(getMemoryContextModule);
-export const memoryIngest = lazyModule(getMemoryIngestModule);
-export const sharedMemory = lazyModule(getSharedMemoryModule);

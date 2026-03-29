@@ -19,6 +19,10 @@ After embedding generation, the save pipeline checks the top-3 most similar memo
 
 **Sprint 8 update:** The original merge logic referenced a non-existent `frequency_counter` column, which would have caused runtime crashes on reconsolidation. This was replaced with `importance_weight` merge logic that properly uses an existing column.
 
+**T302 stale-merge guard:** `executeMerge()` now snapshots the predecessor row before awaiting merged-embedding generation, then reloads that predecessor inside the transaction and compares both `content_hash` and `updated_at`. If the predecessor was edited by another writer during the async embedding wait, the merge aborts with complement-style status `predecessor_changed`. If the predecessor was deleted or archived before commit, the merge aborts with `predecessor_gone`. This prevents stale append-only merges against an out-of-date predecessor.
+
+**T333 BM25 repair debt persistence:** If the append-only merge commits but post-commit BM25 repair still fails, reconsolidation now persists `bm25_repair_needed=1` on the newly merged row and returns a warning. Successful repair leaves the flag at `0`. This preserves the merged lineage while giving a future reconciler an explicit retry marker for search-index repair.
+
 A checkpoint must exist for the spec folder before reconsolidation can run. When no checkpoint is found, the system logs a warning and skips reconsolidation rather than risking destructive merges without a safety net. Runs behind the `SPECKIT_RECONSOLIDATION` flag (default OFF, opt-in). Set `SPECKIT_RECONSOLIDATION=true` to enable.
 
 ---

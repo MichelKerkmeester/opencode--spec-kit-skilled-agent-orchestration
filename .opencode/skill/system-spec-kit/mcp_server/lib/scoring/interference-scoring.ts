@@ -12,16 +12,6 @@ import Database from 'better-sqlite3';
 
 
 // ───────────────────────────────────────────────────────────────
-// 1. TYPES
-
-// ───────────────────────────────────────────────────────────────
-export interface InterferenceResult {
-  memoryId: number;
-  interferenceScore: number; // count of similar memories in same folder
-  specFolder: string;
-}
-
-// ───────────────────────────────────────────────────────────────
 // 2. CONFIGURATION
 
 // ───────────────────────────────────────────────────────────────

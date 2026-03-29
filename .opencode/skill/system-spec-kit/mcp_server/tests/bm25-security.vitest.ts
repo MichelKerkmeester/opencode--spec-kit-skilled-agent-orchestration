@@ -1,5 +1,5 @@
 // TEST: BM25 SECURITY
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import type BetterSqlite3 from 'better-sqlite3';
 import {
   BM25Index,
@@ -11,6 +11,34 @@ import {
 } from '../lib/search/bm25-index';
 
 type BetterSqliteDatabase = InstanceType<typeof BetterSqlite3>;
+
+type RebuildRow = {
+  id: number;
+  title: string | null;
+  content_text: string | null;
+  trigger_phrases: string | null;
+  file_path: string | null;
+};
+
+function createRebuildMockDb(rows: RebuildRow[]): BetterSqliteDatabase {
+  return {
+    prepare: vi.fn((sql: string) => {
+      if (sql.includes('SELECT id, title, content_text, trigger_phrases, file_path')) {
+        return {
+          all: (...ids: number[]) => rows.filter((row) => ids.includes(row.id)),
+        };
+      }
+
+      if (sql.includes('SELECT id')) {
+        return {
+          all: () => rows.map((row) => ({ id: row.id })),
+        };
+      }
+
+      throw new Error(`Unexpected SQL in BM25 rebuild test: ${sql}`);
+    }),
+  } as unknown as BetterSqliteDatabase;
+}
 
 describe('BM25 Security & Coverage Gap Tests', () => {
   /* ═══════════════════════════════════════════════════════════
@@ -360,69 +388,89 @@ describe('BM25 Security & Coverage Gap Tests', () => {
     });
 
     it('RD03: Rows indexed successfully', () => {
+      vi.useFakeTimers();
       const index = new BM25Index();
-      const mockDb = {
-        prepare: () => ({
-          all: () => [
-            { id: 1, title: 'Memory System', content_text: 'Semantic search retrieval', trigger_phrases: 'memory,search', file_path: 'specs/001/spec.md' },
-            { id: 2, title: 'Index Management', content_text: 'BM25 indexing pipeline', trigger_phrases: 'index,bm25', file_path: 'specs/002/spec.md' },
-          ],
-        }),
-      };
-      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
-      const stats = index.getStats();
-      expect(count).toBe(2);
-      expect(stats.documentCount).toBe(2);
+      const mockDb = createRebuildMockDb([
+        { id: 1, title: 'Memory System', content_text: 'Semantic search retrieval', trigger_phrases: 'memory,search', file_path: 'specs/001/spec.md' },
+        { id: 2, title: 'Index Management', content_text: 'BM25 indexing pipeline', trigger_phrases: 'index,bm25', file_path: 'specs/002/spec.md' },
+      ]);
+
+      try {
+        const count = index.rebuildFromDatabase(mockDb);
+        expect(count).toBe(2);
+        expect(index.getStats().documentCount).toBe(0);
+
+        vi.runAllTimers();
+
+        expect(index.getStats().documentCount).toBe(2);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('RD04: Null fields handled', () => {
+      vi.useFakeTimers();
       const index = new BM25Index();
-      const mockDb = {
-        prepare: () => ({
-          all: () => [
-            { id: 10, title: 'Title Only', content_text: null, trigger_phrases: null, file_path: null },
-            { id: 11, title: null, content_text: 'Content only text here', trigger_phrases: null, file_path: null },
-          ],
-        }),
-      };
-      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
-      const stats = index.getStats();
-      expect(count).toBe(2);
-      expect(stats.documentCount).toBe(2);
+      const mockDb = createRebuildMockDb([
+        { id: 10, title: 'Title Only', content_text: null, trigger_phrases: null, file_path: null },
+        { id: 11, title: null, content_text: 'Content only text here', trigger_phrases: null, file_path: null },
+      ]);
+
+      try {
+        const count = index.rebuildFromDatabase(mockDb);
+        expect(count).toBe(2);
+        expect(index.getStats().documentCount).toBe(0);
+
+        vi.runAllTimers();
+
+        expect(index.getStats().documentCount).toBe(2);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('RD05: Empty rows skipped, valid rows indexed', () => {
+      vi.useFakeTimers();
       const index = new BM25Index();
-      const mockDb = {
-        prepare: () => ({
-          all: () => [
-            { id: 20, title: null, content_text: null, trigger_phrases: null, file_path: null },
-            { id: 21, title: '', content_text: '', trigger_phrases: '', file_path: '' },
-            { id: 22, title: 'Valid', content_text: 'Valid content here', trigger_phrases: null, file_path: null },
-          ],
-        }),
-      };
-      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
-      const stats = index.getStats();
-      expect(count).toBe(3);
-      expect(stats.documentCount).toBe(1);
+      const mockDb = createRebuildMockDb([
+        { id: 20, title: null, content_text: null, trigger_phrases: null, file_path: null },
+        { id: 21, title: '', content_text: '', trigger_phrases: '', file_path: '' },
+        { id: 22, title: 'Valid', content_text: 'Valid content here', trigger_phrases: null, file_path: null },
+      ]);
+
+      try {
+        const count = index.rebuildFromDatabase(mockDb);
+        expect(count).toBe(3);
+        expect(index.getStats().documentCount).toBe(0);
+
+        vi.runAllTimers();
+
+        expect(index.getStats().documentCount).toBe(1);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('RD06: Pre-existing docs cleared before rebuild', () => {
+      vi.useFakeTimers();
       const index = new BM25Index();
       index.addDocument('pre-existing-1', 'this should be cleared before rebuild');
       index.addDocument('pre-existing-2', 'another doc to be cleared');
-      const mockDb = {
-        prepare: () => ({
-          all: () => [
-            { id: 100, title: 'Fresh', content_text: 'Fresh content only', trigger_phrases: null, file_path: null },
-          ],
-        }),
-      };
-      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
-      const stats = index.getStats();
-      expect(count).toBe(1);
-      expect(stats.documentCount).toBe(1);
+      const mockDb = createRebuildMockDb([
+        { id: 100, title: 'Fresh', content_text: 'Fresh content only', trigger_phrases: null, file_path: null },
+      ]);
+
+      try {
+        const count = index.rebuildFromDatabase(mockDb);
+        expect(count).toBe(1);
+        expect(index.getStats().documentCount).toBe(0);
+
+        vi.runAllTimers();
+
+        expect(index.getStats().documentCount).toBe(1);
+      } finally {
+        vi.useRealTimers();
+      }
     });
   });
 

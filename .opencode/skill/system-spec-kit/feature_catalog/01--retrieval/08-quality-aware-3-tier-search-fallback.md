@@ -17,6 +17,8 @@ If your search does not find good results on the first try, the system automatic
 
 Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhanced hybrid search (minSimilarity=0.3, standard channels). Quality check via `checkDegradation()`: fails if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3. On fail, Tier 2: widened search (minSimilarity=0.1) inside the caller-allowed channel set rather than forcing previously disabled channels back on. That means explicit routing decisions such as `useGraph:false` still hold during degradation. On fail, Tier 3: structural SQL fallback (ORDER BY importance_tier, importance_weight), but only for lexical channels that are still allowed after routing. Tier 3 scores are calibrated to max 50% of existing top score to prevent outranking semantic hits, and archived rows stay excluded unless `includeArchived=true`. Degradation events are attached as non-enumerable `_degradation` property on the result set. Gated by `SPECKIT_SEARCH_FALLBACK` (default: true, graduated).
 
+T310 split the fallback path into fusion-only collection followed by a single post-fusion enrichment pass. `executeFallbackPlan()` now collects per-tier fused candidates first, then `searchWithFallbackTiered()` merges Tier 1, Tier 2, and calibrated Tier 3 candidates before calling `enrichFusedResults()` once on the final tier execution context. As a result, reranking, MMR, co-activation spreading, folder scoring, confidence truncation, contextual headers, and token-budget truncation run once on the final merged candidate set instead of re-running for every fallback tier.
+
 ---
 
 ## 3. SOURCE FILES
@@ -25,7 +27,7 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration: `searchWithFallbackTiered()`, `checkDegradation()`, 3-tier fallback chain |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration: `executeFallbackPlan()`, `searchWithFallbackTiered()`, `enrichFusedResults()`, `checkDegradation()`, 3-tier fallback chain |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry (`SPECKIT_SEARCH_FALLBACK` gate) |
 
 ### Tests

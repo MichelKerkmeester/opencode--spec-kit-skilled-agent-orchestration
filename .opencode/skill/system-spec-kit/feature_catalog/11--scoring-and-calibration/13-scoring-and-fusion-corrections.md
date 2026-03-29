@@ -1,13 +1,13 @@
 ---
 title: "Scoring and fusion corrections"
-description: "Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RRF ID canonicalization."
+description: "Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, RRF ID canonicalization, and a later single-pass fusion refinement."
 ---
 
 # Scoring and fusion corrections
 
 ## 1. OVERVIEW
 
-Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RRF ID canonicalization.
+Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RRF ID canonicalization, plus a later single-pass fusion refinement.
 
 These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
 
@@ -27,6 +27,8 @@ Nine scoring issues were fixed:
 - **Configurable interference threshold (#12):** `computeInterferenceScoresBatch()` now accepts an optional `threshold` parameter (defaults to `INTERFERENCE_SIMILARITY_THRESHOLD`).
 - **RRF ID canonicalization (#13):** `fuseResultsMulti()` and `fuseResultsCrossVariant()` now use `canonicalRrfId()` for map keys and variant appearance tracking, preventing numeric/string ID splits such as `42` vs "42" from surfacing as duplicate fused items.
 
+A later performance follow-up (T315) now keeps the live hybrid fusion path single-pass. `mcp_server/lib/search/hybrid-search.ts` computes the active channel weights once, using `getAdaptiveWeights(intent, documentType)` as the shared helper surface and fixed 1.0/1.0 weights when adaptive fusion is disabled, then builds the weighted `fusionLists` directly for `fuseResultsMulti(...)`. This avoids running a standard fuse first just to recover weight information for the live merge.
+
 In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals, session boost, and causal boost) can mutate `score`. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now flat-overwrites the score aliases by clamping the current value and writing the same number into `score`, `rrfScore`, and `intentAdjustedScore` via `withSyncedScoreAliases()` and `syncScoreAliasesInPlace()`. This keeps downstream ranking consistent with the latest pipeline score; it does not preserve the prior value with `Math.max(...)`.
 
 ---
@@ -39,6 +41,8 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 |------|-------|------|
 | `mcp_server/lib/scoring/mpab-aggregation.ts` | Lib | MPAB chunk aggregation |
 | ~~`mcp_server/lib/search/rsf-fusion.ts`~~ | ~~Lib~~ | Deleted — RSF module removed as dead code |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Builds the live weighted `fusionLists` once before `fuseResultsMulti(...)` |
+| `shared/algorithms/adaptive-fusion.ts` | Shared | Exposes `getAdaptiveWeights(...)` for the single-pass live fusion weighting path |
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm |
 
 ### Tests
@@ -64,6 +68,7 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `pipeline/stage2-fusion.ts` and `pipeline/stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
 | #12 Configurable interference threshold | `mcp_server/lib/scoring/interference-scoring.ts` (`computeInterferenceScoresBatch`) | `mcp_server/tests/interference.vitest.ts` |
 | #13 RRF ID canonicalization | `shared/algorithms/rrf-fusion.ts` (`canonicalRrfId`, `fuseResultsMulti`, `fuseResultsCrossVariant`) | `mcp_server/tests/unit-rrf-fusion.vitest.ts` |
+| T315 Single-pass fusion precomputation | `mcp_server/lib/search/hybrid-search.ts` (`fusionLists`, `fuseResultsMulti(...)`), `shared/algorithms/adaptive-fusion.ts` (`getAdaptiveWeights`) | `mcp_server/tests/hybrid-search.vitest.ts`, `mcp_server/tests/adaptive-fusion.vitest.ts` |
 
 ---
 

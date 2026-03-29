@@ -14,6 +14,10 @@ type MockFusionResult = Record<string, unknown> & {
   id: string | number;
   score: number;
   source: string;
+  rrfScore: number;
+  sources: string[];
+  sourceScores: Record<string, number>;
+  convergenceBonus: number;
 };
 
 /* ───────────────────────────────────────────────────────────────
@@ -27,6 +31,7 @@ vi.mock('../lib/search/bm25-index', () => ({
     search: vi.fn(() => []),
     getStats: vi.fn(() => ({ documentCount: 0 })),
   })),
+  isBm25Enabled: vi.fn(() => true),
   sanitizeFTS5Query: vi.fn((q: string) => q),
 }));
 
@@ -38,7 +43,16 @@ vi.mock('../../shared/algorithms/rrf-fusion', () => ({
     for (const list of lists) {
       for (const r of list.results) {
         if (!seen.has(r.id)) {
-          seen.set(r.id, { ...r, score: r.score ?? 0.5, source: list.source });
+          const score = r.score ?? 0.5;
+          seen.set(r.id, {
+            ...r,
+            score,
+            rrfScore: score,
+            source: list.source,
+            sources: [list.source],
+            sourceScores: { [list.source]: score },
+            convergenceBonus: 0,
+          });
         }
       }
     }
@@ -46,13 +60,15 @@ vi.mock('../../shared/algorithms/rrf-fusion', () => ({
   }),
 }));
 
-// Mock adaptive fusion to return fixed weights.
+// Mock adaptive fusion using the current public export surface.
 vi.mock('../../shared/algorithms/adaptive-fusion', () => ({
-  hybridAdaptiveFuse: vi.fn(() => ({
-    results: [],
-    weights: { semanticWeight: 1.0, keywordWeight: 0.8 },
-    intent: 'understand',
+  getAdaptiveWeights: vi.fn(() => ({
+    semanticWeight: 0.7,
+    keywordWeight: 0.2,
+    recencyWeight: 0.1,
+    graphWeight: 0.15,
   })),
+  isAdaptiveFusionEnabled: vi.fn(() => true),
 }));
 
 // Mock co-activation spreading so it never touches the DB.

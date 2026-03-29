@@ -23,6 +23,8 @@ Edge bounds are enforced at insert time. Auto-generated edges (those with `creat
 
 A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during spec document indexing. The `createSpecDocumentChain()` function auto-links spec folder documents in a standard chain: spec causes plan, plan causes tasks, tasks cause implementation-summary. Checklist, decision-record and research documents get support relationships to the primary chain.
 
+Reference resolution for auto-extracted causal links now batches all references from the memory file before insertion begins. The resolver tries numeric IDs first, then exact `canonical_file_path`/`file_path` equality using normalized path candidates, then exact title matches, and only falls back to fuzzy `LIKE` lookups for unresolved path or title references. That exact-first order reduces false-positive fuzzy resolutions and avoids rerunning separate lookup queries for each edge candidate.
+
 ---
 
 ## 3. SOURCE FILES
@@ -32,7 +34,7 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 | File | Role |
 |------|------|
 | `mcp_server/handlers/causal-graph.ts` | MCP handler for `memory_causal_link` |
-| `mcp_server/handlers/causal-links-processor.ts` | Causal link mutation handler: upsert, batch insert, spec document chain creation |
+| `mcp_server/handlers/causal-links-processor.ts` | Causal link mutation handler: exact-first batched reference resolution, upsert, batch insert, spec document chain creation |
 | `mcp_server/handlers/memory-index.ts` | Spec document indexing flow that calls `createSpecDocumentChain()` |
 | `mcp_server/lib/storage/causal-edges.ts` | Causal edge storage: insert, upsert, weight_history logging, MAX_EDGES_PER_NODE enforcement |
 | `mcp_server/lib/graph/graph-signals.ts` | Graph momentum and depth signals used by causal edge scoring |

@@ -54,18 +54,6 @@ export interface SurrogateMetadata {
   generatedAt: number;
 }
 
-/**
- * Result of matching a query against stored surrogates.
- */
-export interface SurrogateMatchResult {
-  /** Memory ID that was matched. */
-  memoryId: number;
-  /** Combined match score in [0, 1]. */
-  score: number;
-  /** Which surrogates were matched (for explainability). */
-  matchedSurrogates: string[];
-}
-
 /* ───────────────────────────────────────────────────────────────
    3. CONSTANTS
 ──────────────────────────────────────────────────────────────── */

@@ -474,6 +474,8 @@ The system keeps the index accurate and performant as your project evolves.
 
 **Atomic write-then-index** -- writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
 
+**Phase 13 chunked-save finalization hardening** -- chunked saves now track the created parent and child IDs so finalization can stay transactional. Prediction-error supersede finalization records cross-path `supersedes` edges and marks predecessors superseded inside one transaction. Safe-swap updates now null old-child `parent_id` values before bulk delete inside that same finalization step, and any finalize failure triggers compensating cleanup that removes the staged replacement chunk tree. Parent BM25 mutation is delayed until at least one chunk succeeds and, for safe-swap updates, until finalization completes, which preserves the old parent BM25 state when all chunks fail.
+
 **Dynamic server instructions** -- at startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
 
 ---
@@ -1071,6 +1073,7 @@ mcp_server/
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
+| `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, rollout, and discovery helpers. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 

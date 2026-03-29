@@ -349,15 +349,6 @@ export type Stage3Fn = (input: Stage3Input) => Promise<Stage3Output>;
  */
 export type Stage4Fn = (input: Stage4Input) => Promise<Stage4Output>;
 
-// -- Pipeline Orchestrator --
-
-/**
- * Contract implemented by pipeline orchestrators.
- */
-export interface PipelineOrchestrator {
-  execute(config: PipelineConfig): Promise<PipelineResult>;
-}
-
 // -- Score Snapshot Utility (Runtime assertion for Stage 4 invariant) --
 
 /**

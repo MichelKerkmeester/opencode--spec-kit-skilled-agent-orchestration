@@ -889,52 +889,12 @@ async function main(): Promise<void> {
     ],
   });
 
-  // T016-T019: Lazy Embedding Model Loading
-  // Default: Skip warmup at startup for <500ms cold start
-  // Set SPECKIT_EAGER_WARMUP=true for legacy eager warmup behavior
-  const eagerWarmup: boolean = embeddings.shouldEagerWarmup();
-
-  if (eagerWarmup) {
-    // Legacy behavior: Warm up embedding model synchronously at startup
-    const WARMUP_TIMEOUT = 60000;
-    let warmupCompleted = false;
-
-    const warmupEmbedding = async (): Promise<boolean> => {
-      try {
-        console.error('[context-server] Warming up embedding model (eager mode)...');
-        const startTime = Date.now();
-        await embeddings.generateEmbedding('warmup test');
-        warmupCompleted = true;
-        setEmbeddingModelReady(true);
-        console.error(`[context-server] Embedding model ready (${Date.now() - startTime}ms)`);
-        return true;
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.error('[context-server] Embedding warmup failed:', message);
-        warmupCompleted = true;
-        setEmbeddingModelReady(false);
-        return false;
-      }
-    };
-
-    await Promise.race([
-      warmupEmbedding(),
-      new Promise<void>(resolve => setTimeout(() => {
-        if (!warmupCompleted) {
-          console.warn('[context-server] Warmup timeout — marking embedding as ready to avoid undefined state');
-          // P1-08 FIX: Mark embedding ready even on timeout so the system is usable
-          setEmbeddingModelReady(true);
-        }
-        resolve();
-      }, WARMUP_TIMEOUT))
-    ]);
-  } else {
-    // T016-T019: Lazy loading - skip warmup, model loads on first use
-    console.error('[context-server] Lazy loading enabled - embedding model will initialize on first use');
-    console.error('[context-server] SPECKIT_EAGER_WARMUP and SPECKIT_LAZY_LOADING are deprecated compatibility flags');
-    // Mark embedding as "ready" since it will self-initialize on first use
-    setEmbeddingModelReady(true);
-  }
+  // T016-T019: Lazy loading only. The eager warmup gate remains hard-disabled
+  // in shared embeddings, so startup no longer branches on shouldEagerWarmup().
+  console.error('[context-server] Lazy loading enabled - embedding model will initialize on first use');
+  console.error('[context-server] SPECKIT_EAGER_WARMUP and SPECKIT_LAZY_LOADING are deprecated compatibility flags');
+  // Mark embedding as "ready" since it will self-initialize on first use
+  setEmbeddingModelReady(true);
 
   // Integrity check and module initialization
   try {

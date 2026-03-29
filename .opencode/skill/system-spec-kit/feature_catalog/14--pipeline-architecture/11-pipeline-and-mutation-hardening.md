@@ -1,15 +1,15 @@
 ---
 title: "Pipeline and mutation hardening"
-description: "Pipeline and mutation hardening applies ten fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup."
+description: "Pipeline and mutation hardening applies baseline fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality, data cleanup and checkpoint restore mutation safety."
 ---
 
 # Pipeline and mutation hardening
 
 ## 1. OVERVIEW
 
-Pipeline and mutation hardening applies ten fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup.
+Pipeline and mutation hardening applies baseline fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality, data cleanup and checkpoint restore mutation safety.
 
-Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
+Ten small but important baseline fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Later hardening passes added more guardrails on top of that baseline, including a checkpoint restore maintenance barrier that blocks mutation traffic while restore and rebuild work is in flight.
 
 ---
 
@@ -34,6 +34,16 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 - **Constitutional scope parity (H12):** Constitutional injection now uses `shouldApplyScopeFiltering`, so global scope enforcement applies even when callers omit explicit governance scope fields.
 - **CamelCase chunk metadata support (H14):** Chunk reassembly now accepts `parentId`, `chunkIndex` and `chunkLabel` aliases in addition to snake_case fields, preventing silent bypass of parent collapse.
 
+A later mutation-safety pass added a checkpoint restore barrier to the same runtime surface:
+
+- **Checkpoint restore maintenance barrier (T300):** `restoreCheckpoint()` now flips a module-level restore-in-progress flag before restore mutations begin and holds it through post-restore rebuilds. Concurrent `checkpoint_restore` calls plus mutation traffic from `memory_save`, `memory_index_scan` and `memory_bulk_delete` fail fast with `E_RESTORE_IN_PROGRESS` instead of racing restore-side rebuilds. The barrier is cleared in a `finally` path, so both successful and failed restores reopen mutation traffic.
+
+Phase 13 added three chunking and mutation hardening follow-ups to the same save pipeline:
+
+- **Chunked PE finalize transaction (T330):** chunked saves now track the created parent/child IDs and finalize `markMemorySuperseded()` plus cross-path `supersedes` edge creation inside one transaction. If that finalize step fails, compensating cleanup deletes the newly created chunk tree before the error is returned.
+- **Rollback-safe safe-swap deletion (T331):** safe-swap finalization now moves old-child unlink and delete into the same transaction, first nulling `parent_id` on the old children and only then bulk-deleting them. A failed finalize leaves the old child set linked and queryable.
+- **Parent BM25 rollback guard (T332):** parent BM25 mutation now waits until at least one chunk has indexed successfully and, for safe-swap updates, until finalization completes. All-chunks-failed rollback therefore preserves the old parent BM25 document instead of replacing it with an empty or stale summary.
+
 ---
 
 ## 3. SOURCE FILES
@@ -56,9 +66,14 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/handlers/memory-crud-update.ts` | Handler | Re-embeds title + content_text on memory updates |
+| `mcp_server/lib/storage/checkpoints.ts` | Lib | Restore maintenance barrier state, `E_RESTORE_IN_PROGRESS` status and post-restore rebuild lifecycle |
+| `mcp_server/handlers/checkpoints.ts` | Handler | Rejects concurrent `checkpoint_restore` calls during active restore maintenance |
 | `mcp_server/lib/search/vector-index-mutations.ts` | Lib | Ancillary table cleanup and BM25 removeDocument on delete |
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | dbCommitted tracking for rename-failure partial commits |
-| `mcp_server/handlers/memory-save.ts` | Handler | Uses first preflight error code dynamically in failure response |
+| `mcp_server/handlers/memory-save.ts` | Handler | Uses first preflight error code dynamically in failure response and blocks save traffic during restore maintenance |
+| `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Safe-swap finalization transaction, rollback-safe old-child deletion, and delayed parent BM25 mutation |
+| `mcp_server/handlers/memory-index.ts` | Handler | Blocks `memory_index_scan` during active checkpoint restore maintenance |
+| `mcp_server/handlers/memory-bulk-delete.ts` | Handler | Blocks `memory_bulk_delete` during active checkpoint restore maintenance |
 
 ### Tests — Pipeline hardening
 
@@ -79,6 +94,8 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 | `mcp_server/tests/deferred-features-integration.vitest.ts` | Cross-table cleanup checks for mutation-side delete paths |
 | `mcp_server/tests/transaction-manager.vitest.ts` | Atomic-save and pending-file transaction behavior |
 | `mcp_server/tests/preflight.vitest.ts` | Preflight error-code contract used by save handler responses |
+| `mcp_server/tests/chunking-orchestrator-swap.vitest.ts` | Safe-swap finalization success/failure, staged-chunk cleanup, and old-child rollback coverage |
+| `mcp_server/tests/handler-memory-save.vitest.ts` | Chunked PE finalize rollback and compensating chunk-tree cleanup coverage |
 
 ---
 

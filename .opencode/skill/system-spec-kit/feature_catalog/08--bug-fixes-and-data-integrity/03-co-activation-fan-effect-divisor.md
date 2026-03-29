@@ -19,6 +19,8 @@ Hub memories with many connections dominated co-activation results no matter wha
 
 A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts` `boostScore()`. The same divisor is now also applied in the Stage 2 hot-path co-activation scoring (`stage2-fusion.ts`). When spreading activation boosts are applied to search results, the boost is divided by `sqrt(relatedCount)` where `relatedCount` is the number of pre-computed related memories for the target result. This ensures hub nodes with many connections receive proportionally dampened boosts, preventing any single hub from monopolizing top-N results.
 
+The divisor path is now batched end to end. Related-memory detail hydration is fetched in one `WHERE id IN (...)` query, causal neighbors are hydrated with one CTE + join query, and Stage 2 asks for related counts once per boosted batch instead of calling back into per-row relationship lookups. That keeps the hub-dampening math intact while removing the N+1 read pattern from the hot scoring path.
+
 ---
 
 ## 3. SOURCE FILES
@@ -34,9 +36,9 @@ A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activatio
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests |
+| `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests, including batched lookup coverage for related-memory and causal-neighbor hydration |
 | `mcp_server/tests/rrf-degree-channel.vitest.ts` | Fan-effect divisor behavior in `boostScore()` and co-activation boost interactions |
-| `mcp_server/tests/stage2-fusion.vitest.ts` | Stage 2 adjacent scoring-path coverage (learned-feedback weighting surface) |
+| `mcp_server/tests/stage2-fusion.vitest.ts` | Stage 2 adjacent scoring-path coverage, including one-shot co-activation neighbor-count precomputation |
 
 ---
 

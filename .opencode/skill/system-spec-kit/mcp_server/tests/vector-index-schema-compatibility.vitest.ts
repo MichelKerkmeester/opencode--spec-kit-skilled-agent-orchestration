@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
-import { validateBackwardCompatibility } from '../lib/search/vector-index-schema';
+import { SCHEMA_VERSION, validateBackwardCompatibility } from '../lib/search/vector-index-schema';
 
 describe('Vector index schema compatibility validator', () => {
   it('reports missing core tables on an empty database', () => {
@@ -24,7 +24,7 @@ describe('Vector index schema compatibility validator', () => {
           version INTEGER NOT NULL,
           updated_at TEXT
         );
-        INSERT INTO schema_version (id, version, updated_at) VALUES (1, 21, datetime('now'));
+        INSERT INTO schema_version (id, version, updated_at) VALUES (1, ${SCHEMA_VERSION}, datetime('now'));
 
         CREATE TABLE memory_index (
           id INTEGER PRIMARY KEY,
@@ -33,6 +33,14 @@ describe('Vector index schema compatibility validator', () => {
           importance_tier TEXT CHECK(importance_tier IN ('constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated')),
           context_type TEXT,
           session_id TEXT,
+          content_hash TEXT,
+          embedding_status TEXT,
+          tenant_id TEXT,
+          user_id TEXT,
+          agent_id TEXT,
+          shared_space_id TEXT,
+          parent_id INTEGER,
+          canonical_file_path TEXT,
           created_at TEXT,
           updated_at TEXT,
           stability REAL,
@@ -47,6 +55,22 @@ describe('Vector index schema compatibility validator', () => {
         CREATE INDEX idx_document_type ON memory_index(document_type);
         CREATE INDEX idx_doc_type_folder ON memory_index(document_type, spec_folder);
         CREATE INDEX idx_quality_score ON memory_index(quality_score);
+        CREATE INDEX idx_save_parent_content_hash_scope
+          ON memory_index(
+            spec_folder,
+            content_hash,
+            embedding_status,
+            tenant_id,
+            user_id,
+            agent_id,
+            session_id,
+            shared_space_id,
+            id DESC
+          )
+          WHERE parent_id IS NULL;
+        CREATE INDEX idx_save_parent_canonical_path
+          ON memory_index(spec_folder, canonical_file_path, id DESC)
+          WHERE parent_id IS NULL;
 
         CREATE TABLE memory_history (
           id INTEGER PRIMARY KEY,
@@ -82,7 +106,7 @@ describe('Vector index schema compatibility validator', () => {
 
       const report = validateBackwardCompatibility(db);
       expect(report.compatible).toBe(true);
-      expect(report.schemaVersion).toBe(21);
+      expect(report.schemaVersion).toBe(SCHEMA_VERSION);
       expect(report.missingTables).toEqual([]);
       expect(report.missingColumns).toEqual({});
       expect(report.missingIndexes).toEqual([]);

@@ -29,6 +29,8 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 `shared_space_upsert()` also preserves rollout cohort and metadata on partial updates. The UPSERT keeps existing values via `COALESCE(excluded.rollout_cohort, rollout_cohort)` and the same pattern for `metadata`, so renaming a space or toggling rollout flags no longer clears previously stored cohort labels or structured metadata.
 
+Concurrent create safety is now explicit in the same governance path. `handleSharedSpaceUpsert()` no longer trusts the pre-read existence snapshot to decide whether a request created the space. Instead, the create branch uses `INSERT ... ON CONFLICT(space_id) DO NOTHING RETURNING`, and only the request whose insert actually returns a row reports `created: true` and bootstraps the initial `owner` membership. A losing concurrent create for the same `space_id` is reclassified as an update and skips owner bootstrap, which keeps deny-by-default membership intact and guarantees exactly one owner row after the race resolves.
+
 Admin identity governance, including server-configured admin actor resolution and deny-on-ambiguous-config behavior, is documented separately in `06-shared-memory-admin-identity-governance.md`.
 
 ---
@@ -39,8 +41,8 @@ Admin identity governance, including server-configured admin actor resolution an
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/collab/shared-spaces.ts` | Lib | Shared-space definitions, membership checks, rollout/kill-switch controls, `isSharedMemoryEnabled()` two-tier check, `enableSharedMemory()` DB persistence |
-| `mcp_server/handlers/shared-memory.ts` | Handler | Shared-memory status/enable/upsert/membership handlers, README generation |
+| `mcp_server/lib/collab/shared-spaces.ts` | Lib | Shared-space definitions, race-safe create-if-absent plus update persistence, membership checks, rollout/kill-switch controls, `isSharedMemoryEnabled()` two-tier check, `enableSharedMemory()` DB persistence |
+| `mcp_server/handlers/shared-memory.ts` | Handler | Shared-memory status/enable/upsert/membership handlers, concurrent-create owner-bootstrap gating, README generation |
 | `mcp_server/handlers/memory-save.ts` | Handler | Enforces editor-level shared-space access before governed shared-memory saves and records deny decisions in the governance audit trail |
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies allowed shared-space filtering during retrieval so search results stay within the caller's shared-space membership and rollout state |
 | `mcp_server/tools/lifecycle-tools.ts` | Tool | Shared-space lifecycle operations including `shared_memory_enable` dispatch |
@@ -53,7 +55,7 @@ Admin identity governance, including server-configured admin actor resolution an
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/shared-memory-e2e.vitest.ts` | End-to-end enablement, deny-by-default membership and env kill-switch behavior |
-| `mcp_server/tests/shared-memory-handlers.vitest.ts` | Handler-level enable, upsert, membership mutation and governance-audit coverage |
+| `mcp_server/tests/shared-memory-handlers.vitest.ts` | Handler-level enable, upsert, concurrent-create single-owner behavior, membership mutation and governance-audit coverage |
 | `mcp_server/tests/shared-spaces.vitest.ts` | Deny-by-default membership, kill-switch enforcement, default-off verification, DB enablement persistence, env-var override, idempotent enable |
 
 ---

@@ -460,10 +460,6 @@ export function getCacheStats(): CacheStats {
   };
 }
 
-export function getLastDegradedState(): TriggerMatcherDegradedState | null {
-  return lastDegradedState;
-}
-
 /* --- 5. STRING MATCHING --- */
 
 /** Normalize string for Unicode-safe comparison */

@@ -26,6 +26,8 @@ The `classifyAssistiveSimilarity()` function returns the tier, and `classifySupe
 
 The bridge result (`ReconsolidationBridgeResult`) includes an `assistiveRecommendation` field populated when the feature is enabled and a borderline pair is detected.
 
+The companion core reconsolidation merge path now validates predecessor freshness before any append-only merge completes. `executeMerge()` snapshots the predecessor row's `content_hash` and `updated_at`, reloads the row inside the transaction after the embedding await, and aborts with `predecessor_changed` or `predecessor_gone` if the predecessor changed, was deleted, or was archived mid-flight. Assistive reconsolidation still remains non-destructive at its own layer, but adjacent merge handling is now protected from stale predecessor state.
+
 Default ON (graduated), controlled by `SPECKIT_ASSISTIVE_RECONSOLIDATION` (updated 2026-03-25 per deep review).
 
 ---

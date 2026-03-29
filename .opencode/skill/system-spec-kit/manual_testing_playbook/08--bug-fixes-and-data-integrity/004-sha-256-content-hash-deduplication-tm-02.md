@@ -15,10 +15,10 @@ This scenario validates SHA-256 content-hash deduplication (TM-02) for `004`. It
 
 Operators run the exact prompt and command sequence for `004` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm identical re-save skips embedding
-- Prompt: `Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Second save returns skip/no-op status; no new embedding row created; content hash matches
-- Pass/fail: PASS: Re-save skips embedding and reports duplicate; FAIL: Duplicate embedding created or hash mismatch
+- Objective: Confirm identical re-save skips embedding and the save-path SQL stays on exact-match predicates
+- Prompt: `Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches; and the save-path/content-hash queries use exact-match scope clauses rather than nullable OR predicates. Return a concise user-facing pass/fail verdict with the main reason.`
+- Expected signals: Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`
+- Pass/fail: PASS: Re-save skips embedding, reports duplicate, and emits exact-match SQL without nullable OR scope predicates; FAIL: Duplicate embedding created, hash mismatch, or SQL still depends on nullable OR predicates
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `004` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 004 | SHA-256 content-hash deduplication (TM-02) | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save once 2) Save identical payload 3) Verify embedding skipped | Second save returns skip/no-op status; no new embedding row created; content hash matches | Save output for both calls + DB query showing single embedding row | PASS: Re-save skips embedding and reports duplicate; FAIL: Duplicate embedding created or hash mismatch | Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query |
+| 004 | SHA-256 content-hash deduplication (TM-02) | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches; and the save-path/content-hash queries use exact-match scope clauses rather than nullable OR predicates. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save once 2) Save identical payload 3) Verify embedding skipped 4) Capture SQL-shape evidence for the unchanged-save and content-hash probes | Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL` | Save output for both calls + DB query showing single embedding row + SQL/test evidence showing no `(canonical_file_path = ? OR file_path = ?)` and no `? IS NULL` predicates | PASS: Re-save skips embedding, reports duplicate, and emits exact-match SQL without nullable OR scope predicates; FAIL: Duplicate embedding created, hash mismatch, or SQL still depends on nullable OR predicates | Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query shape (`T320-1`, `T320-2`) |
 
 ---
 

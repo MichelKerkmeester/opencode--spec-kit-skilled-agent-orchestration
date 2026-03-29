@@ -199,12 +199,6 @@ export function initShadowScoringLog(db: Database.Database): void {
   initializedDbs.add(db);
 }
 
-/** Reset the init tracking (for tests only). */
-export function _resetInitTracking(): void {
-  // WeakSet does not have a clear method; we replace the reference.
-  // This is a test-only helper — production code never calls this.
-}
-
 /* ───────────────────────────────────────────────────────────────
    6. SEEDED PRNG
 ----------------------------------------------------------------*/

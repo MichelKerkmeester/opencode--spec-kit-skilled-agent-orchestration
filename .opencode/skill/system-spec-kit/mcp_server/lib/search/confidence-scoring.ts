@@ -20,6 +20,7 @@
 //     "label": "good" | "weak" | "gap"
 //   }
 // }
+import { resolveEffectiveScore, type PipelineRow } from './pipeline/types';
 
 // -- Constants --
 
@@ -103,20 +104,8 @@ export interface ScoredResult extends Record<string, unknown> {
 
 // -- Internal helpers --
 
-/**
- * Resolve the best available composite score from a result.
- * Mirrors the resolveEffectiveScore fallback chain in pipeline/types.ts.
- */
 function resolveScore(result: ScoredResult): number {
-  if (typeof result.intentAdjustedScore === 'number' && Number.isFinite(result.intentAdjustedScore))
-    return Math.max(0, Math.min(1, result.intentAdjustedScore));
-  if (typeof result.rrfScore === 'number' && Number.isFinite(result.rrfScore))
-    return Math.max(0, Math.min(1, result.rrfScore));
-  if (typeof result.score === 'number' && Number.isFinite(result.score))
-    return Math.max(0, Math.min(1, result.score));
-  if (typeof result.similarity === 'number' && Number.isFinite(result.similarity))
-    return Math.max(0, Math.min(1, result.similarity / 100));
-  return 0;
+  return resolveEffectiveScore(result as PipelineRow);
 }
 
 /**

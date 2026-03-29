@@ -17,6 +17,8 @@ This is the speed-first search option. Instead of doing a deep analysis of your 
 
 When you need speed over depth, trigger matching delivers. Rather than generating embeddings and running multi-channel search, it performs direct string matching of your prompt against stored trigger phrases. The performance target is under 100ms. Think of it as the "fast path" that sacrifices recall for latency.
 
+A trigger-cache source optimization now tightens the reload path. Cache reload reads from a partial source index (`idx_trigger_cache_source`) that only covers memories with `embedding_status = 'success'` and non-empty `trigger_phrases`, so reload scans skip rows that can never contribute trigger hits. The loader SQL itself is prepared once per SQLite connection and cached in a `WeakMap`, which means repeated cache refreshes on the same DB connection reuse the compiled statement instead of recompiling the loader query each time.
+
 A governed-scope pass now runs immediately after raw trigger matching. `TriggerArgs` accepts optional `tenantId`, `userId`, `agentId`, and `sharedSpaceId` fields, and when any are supplied the handler imports `initialize_db()`, looks up the matched rows in `memory_index`, and post-filters the candidate set before cognitive enrichment begins. That closes the cross-tenant or cross-user leak where trigger phrases could previously surface out-of-scope memories before the broader retrieval stack had a chance to enforce boundaries.
 
 Where this tool gets interesting is the cognitive pipeline. When you provide a session ID with `include_cognitive=true`, the system applies FSRS-based attention decay (scores degrade each turn via `0.98^(turn-1)` exponential decay), memory activation (matched memories get their attention score set to 1.0), co-activation spreading (each activated memory spreads activation to related memories through the co-occurrence graph), tier classification (maps effective retrievability to HOT, WARM, COLD, DORMANT or ARCHIVED) and tiered content injection.
@@ -35,6 +37,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 |------|-------|------|
 | `mcp_server/handlers/memory-triggers.ts` | Handler | Trigger matching handler: prompt matching, governed-scope filtering, cognitive enrichment, tiered content injection |
 | `mcp_server/lib/parsing/trigger-matcher.ts` | Lib | Core trigger phrase matching engine |
+| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Schema migrations and common index creation for the trigger-cache source partial index |
 | `mcp_server/lib/cognitive/attention-decay.ts` | Lib | FSRS-based attention decay (0.98^turn) |
 | `mcp_server/lib/cognitive/co-activation.ts` | Lib | Co-activation spreading through co-occurrence graph |
 | `mcp_server/lib/cognitive/tier-classifier.ts` | Lib | Memory tier classification (HOT/WARM/COLD/DORMANT/ARCHIVED) |

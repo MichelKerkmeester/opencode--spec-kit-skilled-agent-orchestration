@@ -64,8 +64,30 @@ function createMockDb(edges: Array<{
   relation: string;
   strength: number;
 }>) {
+  const computeTypedDegreeForNode = (nodeId: string) => {
+    let total = 0;
+    for (const edge of edges) {
+      if (edge.source_id !== nodeId && edge.target_id !== nodeId) continue;
+      const weight = EDGE_TYPE_WEIGHTS[edge.relation] ?? 0;
+      total += weight * edge.strength;
+    }
+    return Math.min(total, MAX_TOTAL_DEGREE);
+  };
+
   return {
     prepare(sql: string) {
+      // computeTypedDegreesBatch: candidate_nodes CTE with batched degree aggregation
+      if (sql.includes('WITH candidate_nodes(node_id) AS') && sql.includes('candidate_edges')) {
+        return {
+          all: (...args: unknown[]) => {
+            const candidateIds = args.slice(0, -1).map((value) => String(value));
+            return candidateIds.map((node_id) => ({
+              node_id,
+              typed_degree: computeTypedDegreeForNode(node_id),
+            }));
+          },
+        };
+      }
       // ComputeTypedDegree: UNION ALL of source and target
       if (sql.includes('UNION ALL') && sql.includes('causal_edges')) {
         return {
