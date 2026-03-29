@@ -2477,17 +2477,17 @@ Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are sync
 > **Feature File:** [124](05--lifecycle/124-automatic-archival-lifecycle-coverage.md)
 > **Catalog:** [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md)
 
-### 125 | Memory roadmap capability flags
+### 125 | Hydra roadmap capability flags
 
 #### Description
-Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping shared memory and adaptive ranking default-off until explicitly enabled.
+Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping shared memory and dormant adaptive ranking default-off until explicitly enabled.
 
 #### Current Reality
 Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true, capabilities.adaptiveRanking:false, and capabilities.sharedMemory:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses canonical SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false while capabilities.sharedMemory stays false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot uses SPECKIT_MEMORY_SHARED_MEMORY=true and reports capabilities.sharedMemory:true; fifth snapshot sets SPECKIT_MEMORY_SHARED_MEMORY=false plus SPECKIT_HYDRA_SHARED_MEMORY=true and still reports capabilities.sharedMemory:false because the canonical key wins. Return a concise user-facing pass/fail verdict with the main reason.`
 
 First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`, `capabilities.adaptiveRanking:false`, and `capabilities.sharedMemory:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` while `capabilities.sharedMemory:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot reports `capabilities.sharedMemory:true`; fifth snapshot confirms canonical `SPECKIT_MEMORY_*` precedence over the legacy Hydra alias
 
-Shared-memory roadmap metadata now stays default-off until explicitly enabled, keeping roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in behavior and canonical-over-legacy resolver precedence
+Shared-memory roadmap metadata now stays default-off until explicitly enabled, and dormant adaptive ranking default-off stays intact until a roadmap env var opts it in. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in behavior and canonical-over-legacy resolver precedence
 
 #### Test Execution
 > **Feature File:** [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md)

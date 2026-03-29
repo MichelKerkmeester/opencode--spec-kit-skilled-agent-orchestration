@@ -1,5 +1,5 @@
 // TEST: LEARNING STATS FILTERS
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
 import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
@@ -60,13 +60,28 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
 
     try {
-      const db = vectorIndex.getDb();
+      try {
+        vectorIndex.closeDb();
+      } catch {
+        // Ignore already-closed shared connections.
+      }
+
+      const db = vectorIndex.initializeDb(':memory:');
       if (db) {
         dbAvailable = true;
         handler.ensureSchema(db);
       }
     } catch {
       // DB not available
+    }
+  });
+
+  afterAll(() => {
+    dbAvailable = false;
+    try {
+      vectorIndex.closeDb();
+    } catch {
+      // Best-effort cleanup only.
     }
   });
 

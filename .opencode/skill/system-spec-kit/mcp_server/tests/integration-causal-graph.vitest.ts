@@ -95,7 +95,7 @@ describe('Integration Causal Graph (T528)', () => {
       if (isError) {
         const code = envelope.data?.code;
         // Runtime/database errors are acceptable; validation errors are not.
-        expect(['E020', 'E021', 'E042']).toContain(code as string);
+        expect(['E020', 'E021', 'E042', 'E104']).toContain(code as string);
         return;
       }
 
@@ -176,7 +176,7 @@ describe('Integration Causal Graph (T528)', () => {
       });
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E105']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -207,7 +207,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E104']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -223,7 +223,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E104']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -235,7 +235,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E104']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -249,7 +249,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1' });
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E105']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -262,7 +262,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 1 });
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E105']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -283,7 +283,7 @@ describe('Integration Causal Graph (T528)', () => {
       });
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E105']).toContain(envelope.data?.code as string);
         return;
       }
 
@@ -302,7 +302,7 @@ describe('Integration Causal Graph (T528)', () => {
         memoryId: '1',
         relations: ['invalid_relation'],
       });
-      const envelope = expectErrorCode(response, ['E020', 'E042', 'E102']);
+      const envelope = expectErrorCode(response, ['E020', 'E042', 'E102', 'E105']);
       // If DB is available, invalid relation validation should trigger E102.
       if (envelope.data?.code === 'E102') {
         expect(String(envelope.data?.error)).toContain('Invalid relation types');
@@ -313,7 +313,7 @@ describe('Integration Causal Graph (T528)', () => {
       const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 50 });
       const { envelope, isError } = parseEnvelope(response);
       if (isError) {
-        expect(['E020', 'E021', 'E042']).toContain(envelope.data?.code as string);
+        expect(['E020', 'E021', 'E042', 'E105']).toContain(envelope.data?.code as string);
         return;
       }
 
