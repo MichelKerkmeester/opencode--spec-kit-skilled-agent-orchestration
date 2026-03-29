@@ -236,48 +236,55 @@ version_bump_rules:
 # ─────────────────────────────────────────────────────────────────
 # CHANGELOG CONTENT TEMPLATE
 # ─────────────────────────────────────────────────────────────────
-changelog_template: |
-  # v{VERSION}
-
-  > Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
-
-  ---
-
-  ## [**{VERSION_NO_V}**] - {DATE}
-
-  {SUMMARY}
-
-  > Spec folder: `{SPEC_FOLDER}` ({LEVEL})
-
-  ---
-
-  ## Highlights
-
-  {HIGHLIGHTS}
-
-  ## Files Changed
-
-  {FILES_CHANGED}
-
-  ## Upgrade
-
-  {UPGRADE_NOTE}
+changelog_template:
+  # ─────────────────────────────────────────────────────────────────
+  # TEMPLATE FILE: .opencode/command/create/assets/changelog_template.md
+  # ─────────────────────────────────────────────────────────────────
+  # The canonical changelog and release notes template lives in:
+  #   .opencode/command/create/assets/changelog_template.md
+  #
+  # It defines TWO formats:
+  #   1. COMPACT — for releases with fewer than 10 changes
+  #      Uses: ## What Changed → bullet points with bold labels
+  #   2. EXPANDED — for releases with 10+ changes or major releases
+  #      Uses: ### Numbered titles → Problem/Fix paragraphs per item
+  #
+  # FORMAT SELECTION:
+  #   - Count the changes in work_context
+  #   - < 10 changes → use compact format
+  #   - >= 10 changes or major release → use expanded format
+  #
+  # WRITING STYLE (from PUBLIC_RELEASE.md Section 7):
+  #   - Plain English for a smart non-developer
+  #   - Every fix: what was broken + what we did + why it matters
+  #   - No jargon without parenthetical definition
+  #   - Technical details in Files Changed table, not in descriptions
+  #
+  # Read the template file at Step 4 before generating content.
+  # ─────────────────────────────────────────────────────────────────
+  template_file: ".opencode/command/create/assets/changelog_template.md"
+  style_reference: "PUBLIC_RELEASE.md Section 7"
 
 # ─────────────────────────────────────────────────────────────────
 # HIGHLIGHT CATEGORIES
 # ─────────────────────────────────────────────────────────────────
 highlight_categories:
-  new: "### New"
-  changed: "### Changed"
-  fixed: "### Fixed"
+  # Use plain category names from PUBLIC_RELEASE.md Section 7.2:
+  search: "### Search"
+  saving: "### Saving Memories"
+  security: "### Security"
+  documentation: "### Documentation"
+  testing: "### Testing"
+  commands: "### Commands"
+  new_features: "### New Features"
+  bug_fixes: "### Bug Fixes"
   architecture: "### Architecture"
-  removed: "### Removed"
-  deprecated: "### Deprecated"
-  category_named: "### Category: {name}"
+  breaking: "### Breaking Changes"
+  category_named: "### {name}"
   note: |
-    Use "### Category: {name}" for domain-specific groupings.
-    Use standard categories (New/Changed/Fixed) for general changes.
-    Match the style used in recent changelogs of the target component.
+    Use plain category names from PUBLIC_RELEASE.md vocabulary.
+    For expanded format: use numbered ### titles with Problem/Fix paragraphs.
+    Read .opencode/command/create/assets/changelog_template.md for full format reference.
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW ENFORCEMENT
@@ -429,36 +436,47 @@ workflow:
   step_4_content_generation:
     purpose: Generate changelog content following established format
     activities:
+    - "Read the template: .opencode/command/create/assets/changelog_template.md"
     - "Set DATE to today's date in YYYY-MM-DD format"
     - |
-      Generate SUMMARY:
+      SELECT FORMAT based on change count and release type:
+        IF change_count < 10 AND change_type != major -> COMPACT format
+        IF change_count >= 10 OR change_type == major -> EXPANDED format
+        See template file Section 4 (Format Selection Guide) for full rules
+    - |
+      Generate SUMMARY (both formats):
         IF source_type = spec_folder:
           Use spec.md title + implementation-summary.md first paragraph
         IF source_type = component or git_history:
           Synthesize from commit messages and changed files
-        Keep to 1-3 sentences
+        Keep to 1-3 sentences. Lead with WHY, not technical stats.
     - |
-      Generate HIGHLIGHTS:
-        Group changes by category (New/Changed/Fixed/Architecture)
-        Format: "- **{Name}** -- {Description}"
-        Pull from:
-          spec_folder: tasks.md completed items, implementation-summary.md sections
-          component/git: commit messages grouped by type
+      Generate BODY using selected format:
+
+        COMPACT FORMAT:
+          ## What Changed
+          ### {Category Name}
+          - **{Name}** -- {What was broken}. {What we did}. {Why it matters}.
+
+        EXPANDED FORMAT:
+          ## {Category Name} ({count})
+          ### 1. {Short descriptive title}
+          **Problem:** {Plain English explanation for a smart non-developer}
+          **Fix:** {Behavior change, not implementation details}
+
+      Pull content from:
+        spec_folder: tasks.md completed items, implementation-summary.md sections
+        component/git: commit messages grouped by type
     - |
       Generate FILES_CHANGED:
-        IF implementation-summary.md has file list -> use it
-        ELSE IF git diff available -> extract from diff
-        Format as markdown table:
-          | File | Action | Description |
+        COMPACT: Simple table with File | Action | Description
+        EXPANDED: Collapsible <details> with Source/Tests/Documentation subsections
     - |
-      Generate SPEC_FOLDER reference:
-        IF source_type = spec_folder -> include spec folder path with level
-        ELSE -> omit spec folder line
-    - |
-      Generate UPGRADE_NOTE:
+      Generate UPGRADE section:
         IF change_type = major -> "Review breaking changes before upgrading."
         ELSE -> "No migration required."
-    - "Assemble full content using changelog_template"
+        Always list behavioral changes users should be aware of.
+    - "Assemble full content per template format (compact or expanded)"
     outputs:
     - changelog_content: "Complete formatted changelog markdown"
     - section_count: "Number of highlight sections generated"

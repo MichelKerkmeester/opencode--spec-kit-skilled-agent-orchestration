@@ -135,8 +135,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    B) Interactive - Confirm at each step                            │
    │                                                                    │
    │ **Q3. Publish Release?** (if no --release flag):                    │
-   │    A) Yes - Create git tag + GitHub release after changelog         │
-   │    B) No - Only create the changelog file (default)                │
+   │    A) Yes - Create git tag + GitHub release after changelog        │
+   │    B) No - Only create the changelog file (default)                 │
    │                                                                    │
    │ Reply with answers, e.g.: "A specs/01.../042..., E, A, A"          │
    └────────────────────────────────────────────────────────────────────┘
@@ -254,43 +254,25 @@ $ARGUMENTS
 
 ## 3. CHANGELOG FORMAT REFERENCE
 
-### Established Format
+**Canonical template:** `.opencode/command/create/assets/changelog_template.md`
+**Writing style rules:** `PUBLIC_RELEASE.md` Section 7
 
-```markdown
-# v{VERSION}
+The template defines two formats:
 
-> Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
+| Format | When to Use | Style |
+|--------|-------------|-------|
+| **Compact** | < 10 changes, non-major | `## What Changed` with bullet points |
+| **Expanded** | 10+ changes or major | Numbered titles with **Problem/Fix** paragraphs |
 
----
+### Format Selection
 
-## [**{VERSION}**] - {YYYY-MM-DD}
-
-{One-sentence or one-paragraph summary of the release.}
-
-> Spec folder: `{path}` (optional)
-
----
-
-## Highlights
-
-### {Category Heading}
-
-- **{Feature/Fix name}** — {Description}
-
-## Files Changed
-
-| File           | Action                   | Description       |
-| -------------- | ------------------------ | ----------------- |
-| `path/to/file` | Created/Modified/Deleted | Brief description |
-
-## Upgrade
-
-No migration required.
-```
+- Count the changes in the work context
+- Fewer than 10 changes AND not a major release: use **compact** format
+- 10 or more changes OR a major release: use **expanded** format with full Problem/Fix paragraphs per item
 
 ### Version Format
 
-`v{MAJOR}.{MINOR}.{PATCH}.{BUILD}` — 4-segment, all numeric, prefixed with `v`.
+`v{MAJOR}.{MINOR}.{PATCH}.{BUILD}` -- 4-segment, all numeric, prefixed with `v`.
 
 ### Component Folders
 
@@ -301,6 +283,12 @@ $ ls -d .opencode/changelog/*/  # Lists all component folders
 ```
 
 The YAML workflow (Step 2) scans this directory to build the component mapping. Folder names follow the `NN--component-name` convention where `NN` is a zero-padded index.
+
+### Real Examples
+
+- **Compact:** `.opencode/changelog/04--commands/v3.0.1.4.md`
+- **Expanded:** `.opencode/changelog/01--system-spec-kit/v3.0.1.3.md` (28 fixes)
+- **Expanded:** `.opencode/changelog/01--system-spec-kit/v3.0.1.0.md` (117 fixes)
 
 ---
 

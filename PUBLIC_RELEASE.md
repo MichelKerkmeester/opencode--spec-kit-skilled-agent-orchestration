@@ -245,6 +245,9 @@ echo ".opencode-local/" >> .gitignore
 
 Release notes should read like a brief written for a smart person who is not necessarily a developer. Lead with why the release matters, explain each change in plain English, and keep technical details in the Files Changed table.
 
+**Canonical template file:** `.opencode/command/create/assets/changelog_template.md`
+**Automated workflow:** `/create:changelog --release :auto` (creates changelog + git tag + GitHub release)
+
 ### 7.1 Format
 
 ```markdown
@@ -324,6 +327,7 @@ Before publishing:
 - [ ] `## Files Changed` table present with File and What changed columns
 - [ ] `## Upgrade` section last
 - [ ] Bullet points are short (1-3 sentences each)
+- [ ] For 10+ changes: expanded format with Problem/Fix paragraphs (see `.opencode/command/create/assets/changelog_template.md`)
 
 ---
 
