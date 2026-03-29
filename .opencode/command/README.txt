@@ -43,7 +43,7 @@ Commands are organized into three groups:
 |-------|------|----------|---------|
 | **create** | `command/create/` | 7 | Scaffold OpenCode components, documentation packages, prompt artifacts, and changelogs |
 | **memory** | `command/memory/` | 4 | Memory system operations (search, save, learn, manage with shared lifecycle) |
-| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, debug, handover, resume, complete, phase) |
+| **spec_kit** | `command/spec_kit/` | 9 | Spec folder workflows (plan, implement, deep-research, deep-review, debug, handover, resume, complete, phase) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -89,6 +89,7 @@ command/
     ├── handover.md           # Session handover
     ├── implement.md          # Execute pre-planned work
     ├── deep-research.md      # Iterative deep research workflow
+    ├── deep-review.md        # Iterative code review workflow
     ├── phase.md              # Parent/child phase decomposition
     ├── plan.md               # Spec through plan only
     ├── resume.md             # Resume existing spec work
@@ -138,7 +139,8 @@ Structured workflows for the spec folder development lifecycle.
 | Handover | `/spec_kit:handover [spec-folder]` | Create session handover for continuation |
 | Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
 | Plan | `/spec_kit:plan <description>` | Planning workflow (spec through plan only) |
-| Deep Research | `/spec_kit:deep-research <topic>` | Technical investigation with iterative convergence |
+| Deep Research | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | Iterative technical investigation with convergence |
+| Deep Review | `/spec_kit:deep-review <target> [:auto\|:confirm]` | Iterative code review with severity-weighted findings |
 | Phase | `/spec_kit:phase <description> [--phases N]` | Parent/child phase decomposition for complex work |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
 
