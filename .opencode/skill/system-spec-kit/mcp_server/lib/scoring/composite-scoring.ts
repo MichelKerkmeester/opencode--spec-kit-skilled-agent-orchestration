@@ -36,6 +36,7 @@ interface FsrsSchedulerModule {
 
 let fsrsScheduler: FsrsSchedulerModule | null = null;
 let fsrsSchedulerPromise: Promise<FsrsSchedulerModule | null> | null = null;
+let fsrsSchedulerLoadError: string | null = null;
 
 async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
   if (fsrsScheduler !== null) {
@@ -48,8 +49,10 @@ async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
   const loadPromise = (async (): Promise<FsrsSchedulerModule | null> => {
     try {
       fsrsScheduler = await import('../cognitive/fsrs-scheduler.js') as FsrsSchedulerModule;
+      fsrsSchedulerLoadError = null;
       return fsrsScheduler;
-    } catch (_err: unknown) {
+    } catch (error: unknown) {
+      fsrsSchedulerLoadError = error instanceof Error ? error.message : String(error);
       return null;
     }
   })();
@@ -67,6 +70,10 @@ async function loadFsrsScheduler(): Promise<FsrsSchedulerModule | null> {
 function getFsrsScheduler(): FsrsSchedulerModule | null {
   if (fsrsScheduler !== null) {
     return fsrsScheduler;
+  }
+  if (fsrsSchedulerLoadError) {
+    console.warn(`[composite-scoring] fsrs-scheduler unavailable; using inline fallback: ${fsrsSchedulerLoadError}`);
+    fsrsSchedulerLoadError = null;
   }
   if (fsrsSchedulerPromise === null) {
     void loadFsrsScheduler();

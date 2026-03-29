@@ -56,6 +56,7 @@ let filesReindexed = 0;
 let totalReindexTimeMs = 0;
 let chokidarModule: ChokidarModule | null = null;
 let chokidarModulePromise: Promise<ChokidarModule | null> | null = null;
+let chokidarModuleLoadError: string | null = null;
 const require = createRequire(import.meta.url);
 
 /** Return accumulated watcher metrics for diagnostics. */
@@ -90,8 +91,10 @@ async function loadChokidarModule(): Promise<ChokidarModule | null> {
   const loadPromise = (async (): Promise<ChokidarModule | null> => {
     try {
       chokidarModule = await import('chokidar') as ChokidarModule;
+      chokidarModuleLoadError = null;
       return chokidarModule;
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
+      chokidarModuleLoadError = error instanceof Error ? error.message : String(error);
       return null;
     }
   })();
@@ -118,15 +121,20 @@ function getWatchFactory(): (paths: string[], options: Record<string, unknown>) 
     chokidarModule = 'default' in requiredModule
       ? requiredModule
       : { default: requiredModule };
+    chokidarModuleLoadError = null;
     return chokidarModule.default.watch;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
     // Fall through to async ESM import path below.
+    chokidarModuleLoadError = error instanceof Error ? error.message : String(error);
   }
 
   if (chokidarModulePromise === null) {
     void loadChokidarModule();
   }
-  throw new Error('chokidar module is still loading; retry startFileWatcher once lazy import completes');
+  const loadErrorSuffix = chokidarModuleLoadError
+    ? ` Last module resolution error: ${chokidarModuleLoadError}`
+    : '';
+  throw new Error(`chokidar module is still loading or unavailable; retry startFileWatcher once lazy import completes.${loadErrorSuffix}`);
 }
 
 function isDotfilePath(filePath: string): boolean {

@@ -101,6 +101,10 @@ The memory system exposes 33 tools through 4 memory slash commands plus the borr
 | Memory | 512 MB | 1 GB+ |
 | Disk | 100 MB | 500 MB (grows with index size) |
 
+Module/runtime profile in this package:
+- `package.json` sets `"type": "module"` (ESM runtime output from `dist/`).
+- `tsconfig.json` uses `"module": "nodenext"` and `"moduleResolution": "nodenext"`.
+
 <!-- /ANCHOR:overview -->
 
 ---
@@ -1455,7 +1459,7 @@ Restore if needed:
 ```bash
 cd .opencode/skill/system-spec-kit/mcp_server
 npm run build
-node -e "require('./dist/context-server.js')" 2>&1 | head -20
+node --input-type=module -e "await import('./dist/context-server.js')" 2>&1 | head -20
 ```
 
 ---

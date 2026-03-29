@@ -9,7 +9,6 @@
 // Node stdlib
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
-
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
 import {
@@ -212,22 +211,26 @@ function isWorkflowRetryManagerAdapter(value: unknown): value is WorkflowRetryMa
   );
 }
 
+async function loadWorkflowRetryManagerModule(): Promise<WorkflowRetryManagerAdapter> {
+  try {
+    const module = await import('@spec-kit/mcp-server/api/providers');
+    const candidate = (module as { retryManager?: unknown }).retryManager;
+    if (isWorkflowRetryManagerAdapter(candidate)) {
+      workflowRetryManagerLoadError = null;
+      return candidate;
+    }
+
+    workflowRetryManagerLoadError = 'Provider retryManager export is missing required methods';
+    return FALLBACK_RETRY_MANAGER;
+  } catch (error: unknown) {
+    workflowRetryManagerLoadError = error instanceof Error ? error.message : String(error);
+    return FALLBACK_RETRY_MANAGER;
+  }
+}
+
 async function loadWorkflowRetryManager(): Promise<WorkflowRetryManagerAdapter> {
   if (!workflowRetryManagerPromise) {
-    workflowRetryManagerPromise = import('@spec-kit/mcp-server/api/providers')
-      .then((module) => {
-        const candidate = (module as { retryManager?: unknown }).retryManager;
-        if (isWorkflowRetryManagerAdapter(candidate)) {
-          return candidate;
-        }
-
-        workflowRetryManagerLoadError = 'Provider retryManager export is missing required methods';
-        return FALLBACK_RETRY_MANAGER;
-      })
-      .catch((error: unknown) => {
-        workflowRetryManagerLoadError = error instanceof Error ? error.message : String(error);
-        return FALLBACK_RETRY_MANAGER;
-      });
+    workflowRetryManagerPromise = loadWorkflowRetryManagerModule();
   }
 
   return workflowRetryManagerPromise;
@@ -304,7 +307,8 @@ export interface WorkflowResult {
 let workflowRunQueue: Promise<void> = Promise.resolve();
 
 /** Filesystem lock directory for cross-process serialization. */
-const WORKFLOW_LOCK_DIR = path.resolve(__dirname, '../../.workflow-lock');
+const WORKFLOW_MODULE_DIR = __dirname;
+const WORKFLOW_LOCK_DIR = path.resolve(WORKFLOW_MODULE_DIR, '../../.workflow-lock');
 const WORKFLOW_LOCK_OWNER_PATH = path.join(WORKFLOW_LOCK_DIR, 'owner.json');
 const LEGACY_LOCK_STALE_MS = 5_000;
 

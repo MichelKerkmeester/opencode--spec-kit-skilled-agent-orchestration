@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Shared Library Modules
 
-> Consolidated TypeScript modules shared between CLI scripts and MCP server for embeddings, scoring, normalization, and utility logic. Source files are `.ts`. `shared/dist/` is generated CommonJS build output.
+> Consolidated TypeScript modules shared between CLI scripts and MCP server for embeddings, scoring, normalization, and utility logic. Source files are `.ts`. `shared/` builds as ESM (`package.json` sets `"type": "module"` and `tsconfig.json` uses NodeNext), with generated output in `shared/dist/`.
 
 ---
 
@@ -70,8 +70,8 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 │    └─────────────┘                 │ from shared │               │
 │                                    └─────────────┘               │
 │                                                                  │
-│  Note: Source is TypeScript (.ts); compiled output is            │
-│  CommonJS (.js) in shared/dist via `tsc -b`.                    │
+│  Note: Source is TypeScript (.ts); compiled output is ESM (.js)  │
+│  in shared/dist via `tsc -b` with NodeNext module resolution.    │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
@@ -524,11 +524,11 @@ echo "EMBEDDINGS_PROVIDER: $EMBEDDINGS_PROVIDER"
 # Run from shared/ so Node resolves compiled modules in dist/
 cd .opencode/skill/system-spec-kit/shared
 
-# Test embedding generation (runs compiled .js output)
-node -e "require('./dist/embeddings').generateDocumentEmbedding('test').then(e => console.log('Dims:', e.length))"
+# Test embedding generation (runs compiled ESM .js output)
+node --input-type=module -e "const { generateDocumentEmbedding } = await import('./dist/embeddings.js'); const e = await generateDocumentEmbedding('test'); console.log('Dims:', e.length)"
 
-# Test trigger extraction (runs compiled .js output)
-node -e "console.log(require('./dist/trigger-extractor').extractTriggerPhrases('memory search trigger extraction'))"
+# Test trigger extraction (runs compiled ESM .js output)
+node --input-type=module -e "const { extractTriggerPhrases } = await import('./dist/trigger-extractor.js'); console.log(extractTriggerPhrases('memory search trigger extraction'))"
 ```
 
 <!-- /ANCHOR:troubleshooting -->

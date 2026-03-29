@@ -27,7 +27,9 @@ async function loadTierClassifierModule(): Promise<Record<string, unknown> | nul
     try {
       tierClassifierModule = await import('./tier-classifier.js');
       return tierClassifierModule;
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(`[archival-manager] tier-classifier module unavailable: ${message}`);
       return null;
     }
   })();
@@ -77,12 +79,17 @@ async function loadBm25IndexModule(): Promise<Bm25IndexModule | null> {
     try {
       bm25IndexModule = await import(primaryModulePath) as Bm25IndexModule;
       return bm25IndexModule;
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
+      const primaryError = error instanceof Error ? error.message : String(error);
       try {
         // Support cognitive symlink import path in some runtime setups.
         bm25IndexModule = await import(fallbackModulePath) as Bm25IndexModule;
         return bm25IndexModule;
-      } catch (_error: unknown) {
+      } catch (fallbackError: unknown) {
+        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        console.warn(
+          `[archival-manager] bm25-index module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
+        );
         return null;
       }
     }
@@ -128,12 +135,17 @@ async function loadEmbeddingsModule(): Promise<EmbeddingModule | null> {
     try {
       embeddingsModule = await import(primaryModulePath) as EmbeddingModule;
       return embeddingsModule;
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
+      const primaryError = error instanceof Error ? error.message : String(error);
       try {
         // Support cognitive symlink import path in some runtime setups.
         embeddingsModule = await import(fallbackModulePath) as EmbeddingModule;
         return embeddingsModule;
-      } catch (_error: unknown) {
+      } catch (fallbackError: unknown) {
+        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        console.warn(
+          `[archival-manager] embeddings module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
+        );
         return null;
       }
     }
@@ -468,7 +480,9 @@ function getMemoryIndexColumns(): Set<string> {
   try {
     const columns = (db.prepare('PRAGMA table_info(memory_index)') as Database.Statement).all() as Array<{ name: string }>;
     return new Set(columns.map(column => column.name));
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[archival-manager] getMemoryIndexColumns failed: ${message}`);
     return new Set();
   }
 }

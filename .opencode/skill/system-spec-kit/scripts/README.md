@@ -90,6 +90,8 @@ Phase workflow additions (specs 138-139):
 ## 4. BUILD AND RUNTIME
 
 
+`scripts/` remains CommonJS at runtime (`package.json` sets `"type": "commonjs"`). It interoperates with the ESM `@spec-kit/shared` and `@spec-kit/mcp-server` packages through the current CJS/ESM loader paths (including dynamic `import()` where needed).
+
 TypeScript sources compile to `dist/` (generated build output; do not edit or commit by hand):
 
 ```bash

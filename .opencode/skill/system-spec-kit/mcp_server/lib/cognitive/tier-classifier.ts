@@ -175,8 +175,8 @@ function getEffectiveHalfLife(memory: TierInput | null | undefined): number | nu
       const getHalfLife = (typesModule as Record<string, unknown>).getHalfLifeForType;
       if (typeof getHalfLife === 'function') {
         const halfLife = getHalfLife(memoryType);
-        if (halfLife !== null && halfLife !== undefined) {
-          return halfLife as number;
+        if (typeof halfLife === 'number' && Number.isFinite(halfLife) && halfLife > 0) {
+          return halfLife;
         }
       }
     }
@@ -387,13 +387,17 @@ function filterAndLimitByState<T extends TierInput>(
   targetState: TierState | null = null,
   limit: number = 20
 ): T[] {
-  let classified = memories.map(m => ({
-    ...m,
-    _classification: classifyTier(m),
+  type ClassifiedEntry = {
+    memory: T;
+    classification: ReturnType<typeof classifyTier>;
+  };
+  let classified: ClassifiedEntry[] = memories.map((memory) => ({
+    memory,
+    classification: classifyTier(memory),
   }));
 
   if (targetState) {
-    classified = classified.filter(m => m._classification.state === targetState);
+    classified = classified.filter((entry) => entry.classification.state === targetState);
   }
 
   // Apply per-tier limits with overflow redistribution
@@ -402,9 +406,9 @@ function filterAndLimitByState<T extends TierInput>(
     const byTier: Record<TierState, typeof classified> = {
       HOT: [], WARM: [], COLD: [], DORMANT: [], ARCHIVED: [],
     };
-    for (const m of classified) {
-      const state = m._classification.state;
-      byTier[state].push(m);
+    for (const entry of classified) {
+      const state = entry.classification.state;
+      byTier[state].push(entry);
     }
 
     // Calculate surplus slots from under-filled tiers
@@ -437,7 +441,7 @@ function filterAndLimitByState<T extends TierInput>(
     classified = result;
   }
 
-  return classified.slice(0, limit).map(({ _classification, ...rest }) => rest as unknown as T);
+  return classified.slice(0, limit).map((entry) => entry.memory);
 }
 
 /**

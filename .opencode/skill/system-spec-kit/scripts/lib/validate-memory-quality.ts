@@ -13,12 +13,12 @@
 
 import fs from 'fs';
 import path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { load: loadYaml } = require('js-yaml') as { load: (input: string) => unknown };
 import { structuredLog } from '../utils/logger';
 import type { ContaminationAuditRecord } from './content-filter';
 import type { DataSource } from '../utils/input-normalizer';
 import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
-
-const yaml = require('js-yaml') as { load: (input: string) => unknown };
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12' | 'V13' | 'V14';
 
@@ -218,7 +218,7 @@ function describeYamlParseError(error: unknown): string {
 }
 
 function loadYamlValue(raw: string): unknown {
-  return yaml.load(raw);
+  return loadYaml(raw);
 }
 
 function parseYamlMapping(raw: string): Record<string, unknown> | null {
@@ -229,7 +229,7 @@ function parseYamlMapping(raw: string): Record<string, unknown> | null {
   try {
     const parsed = loadYamlValue(raw);
     return isYamlMapping(parsed) ? parsed : null;
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }
@@ -506,7 +506,7 @@ function resolveSpecFolderPath(specFolder: string): string | null {
       if (fs.statSync(candidatePath).isDirectory()) {
         return candidatePath;
       }
-    } catch {
+    } catch (_error: unknown) {
       // Try the next candidate.
     }
   }

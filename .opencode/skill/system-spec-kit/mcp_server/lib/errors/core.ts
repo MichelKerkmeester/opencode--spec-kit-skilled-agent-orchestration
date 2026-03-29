@@ -144,7 +144,7 @@ export function getDefaultErrorCodeForTool(toolName: string): string {
  * Provides the withTimeout helper.
  */
 export function withTimeout<T>(promise: Promise<T>, ms: number, operation: string): Promise<T> {
-  let timeoutId: ReturnType<typeof setTimeout>;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(() => reject(new MemoryError(
@@ -154,15 +154,15 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, operation: strin
     )), ms);
   });
 
-  return Promise.race([promise, timeoutPromise])
-    .then(result => {
-      clearTimeout(timeoutId);
-      return result;
-    })
-    .catch(error => {
-      clearTimeout(timeoutId);
-      throw error;
-    });
+  return (async (): Promise<T> => {
+    try {
+      return await Promise.race([promise, timeoutPromise]);
+    } finally {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+    }
+  })();
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -211,6 +211,7 @@ interface RetryModule {
 
 let retryModule: RetryModule | null = null;
 let retryModulePromise: Promise<RetryModule | null> | null = null;
+let retryModuleLoadError: string | null = null;
 
 async function loadRetryModule(): Promise<RetryModule | null> {
   if (retryModule !== null) {
@@ -225,8 +226,10 @@ async function loadRetryModule(): Promise<RetryModule | null> {
   const loadPromise = (async (): Promise<RetryModule | null> => {
     try {
       retryModule = await import(retryModulePath) as RetryModule;
+      retryModuleLoadError = null;
       return retryModule;
-    } catch {
+    } catch (error: unknown) {
+      retryModuleLoadError = error instanceof Error ? error.message : String(error);
       return null;
     }
   })();
@@ -249,6 +252,10 @@ async function loadRetryModule(): Promise<RetryModule | null> {
 export function isTransientError(error: Error): boolean {
   if (retryModule === null && retryModulePromise === null) {
     void loadRetryModule();
+  }
+  if (retryModule === null && retryModuleLoadError) {
+    console.warn(`[errors] Retry module unavailable; using legacy transient patterns: ${retryModuleLoadError}`);
+    retryModuleLoadError = null;
   }
 
   // Use retry module if available (REQ-032)
@@ -277,6 +284,10 @@ export function isTransientError(error: Error): boolean {
 export function isPermanentError(error: Error): boolean {
   if (retryModule === null && retryModulePromise === null) {
     void loadRetryModule();
+  }
+  if (retryModule === null && retryModuleLoadError) {
+    console.warn(`[errors] Retry module unavailable; using legacy permanent patterns: ${retryModuleLoadError}`);
+    retryModuleLoadError = null;
   }
 
   // Use retry module if available (REQ-032)

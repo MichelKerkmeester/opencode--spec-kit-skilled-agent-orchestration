@@ -121,6 +121,11 @@ interface PreparedParsedMemory {
   sourceClassification: 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
 }
 
+type ParsedMemoryWithIndexHints = ReturnType<typeof memoryParser.parseMemoryFile> & {
+  _skipIndex?: boolean;
+  _vRuleIndexBlockIds?: string[];
+};
+
 const STANDARD_MEMORY_TEMPLATE_MARKERS = [
   '## continue session',
   '## recovery hints',
@@ -218,8 +223,9 @@ function prepareParsedMemoryForIndexing(
       console.warn(`[memory-save] V-rule index block for ${path.basename(parsed.filePath)}: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
       validation.warnings.push(`V-rule index block: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
       // F07-002: Flag to skip indexing for write_skip_index disposition
-      (parsed as unknown as Record<string, unknown>)._skipIndex = true;
-      (parsed as unknown as Record<string, unknown>)._vRuleIndexBlockIds = vRuleDisposition.indexBlockingRuleIds;
+      const parsedWithIndexHints = parsed as ParsedMemoryWithIndexHints;
+      parsedWithIndexHints._skipIndex = true;
+      parsedWithIndexHints._vRuleIndexBlockIds = vRuleDisposition.indexBlockingRuleIds;
     }
   }
 
@@ -272,8 +278,10 @@ function prepareParsedMemoryForIndexing(
         specDocHealth = evaluateSpecDocHealth(parentDir);
       }
     } catch (error: unknown) {
-      void error;
-      /* spec-doc-health check failure is non-fatal */
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(
+        `[memory-save] spec-doc-health annotation skipped for ${path.basename(parsed.filePath)}: ${message}`
+      );
     }
   }
 
