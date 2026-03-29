@@ -341,6 +341,8 @@ echo "No worktree cleanup needed."
    - If found: use as release notes source
    - If not found: ask user whether to create one or use commit log
 
+**Guided workflow available:** For a structured changelog + release workflow, use the `/create:changelog --release :auto` command. It handles changelog creation, tag creation, and GitHub release publishing in one guided flow. Step 6 below is the manual alternative.
+
 3. **Create annotated tag**:
    ```bash
    git tag -a vX.X.X.X -m "vX.X.X.X: Release description"
@@ -419,6 +421,7 @@ echo "No worktree cleanup needed."
 | Hotfix for production | Option 1 or 2 (Merge/PR) | Never discard or keep hotfixes |
 | Spike/research | Option 4 (Discard) | Research doesn't need to be merged |
 | Release requested by user | Step 6 (Create Release) | Creates annotated tag + GitHub release with formatted notes |
+| Release with changelog | `/create:changelog --release :auto` | Guided changelog + tag + release workflow |
 
 ---
 
