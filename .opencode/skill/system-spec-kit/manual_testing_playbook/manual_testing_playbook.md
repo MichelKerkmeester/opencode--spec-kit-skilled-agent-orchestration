@@ -3105,9 +3105,9 @@ Calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized
 Verify per-intent K optimization selects best K from sweep grid {10,20,40,60,80,100,120} using NDCG@10.
 
 #### Current Reality
-Prompt: `Test the default-on SPECKIT_RRF_K_EXPERIMENTAL behavior. Run a per-intent K sweep and verify the system evaluates candidate K values {10,20,40,60,80,100,120} using NDCG@10 and MRR@5, selecting the best K per intent. Confirm fallback to K=60 when the flag is OFF. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Test the default-on SPECKIT_RRF_K_EXPERIMENTAL behavior. Run a per-intent K sweep and verify the system evaluates candidate K values {10,20,40,60,80,100,120} using NDCG@10 and MRR@5, selecting the best K per intent. Confirm fallback to K=40 when the flag is OFF. Return a concise user-facing pass/fail verdict with the main reason.`
 
-perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; falls back to DEFAULT_K=60 when OFF
+perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; falls back to DEFAULT_K=40 when OFF
 
 #### Test Execution
 > **Feature File:** [172](11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md)
