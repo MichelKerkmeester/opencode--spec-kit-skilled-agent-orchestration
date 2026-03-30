@@ -590,8 +590,8 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 | Mode | Token Budget | When `mode=auto`: Intent Routing |
 | --- | --- | --- |
 | `quick` | 800 | — |
-| `deep` | 2000 | `add_feature`, `refactor`, `security_audit` |
-| `focused` | 1500 | `fix_bug`, `understand` |
+| `deep` | 3500 | `add_feature`, `refactor`, `security_audit` |
+| `focused` | 3000 | `fix_bug`, `understand` |
 | `resume` | 1200 | — |
 
 **memory_search() — Key Rules:**
@@ -690,19 +690,19 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Canonical capability flag for the lineage-state milestone |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Canonical capability flag for the unified-graph milestone |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Canonical capability flag for adaptive-ranking experiments; remains dormant unless explicitly enabled |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Canonical capability flag for scope-enforcement rollout tracking |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Canonical capability flag for governance-guardrail rollout tracking |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Canonical capability flag for scope-enforcement rollout tracking |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Canonical capability flag for governance-guardrail rollout tracking |
 | `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:manage shared` or explicit env enablement |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY`; default OFF |
 
 > **47 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 
-> **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/4` approximation).
+> **Token budgets per layer:** L1:3500, L2:3500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/4` approximation).
 
 **Full documentation:** See [memory_system.md](./references/memory/memory_system.md) for tool behavior, importance tiers, and configuration.
 

@@ -39,7 +39,7 @@ The search subsystem provides production-grade hybrid search capabilities with m
 
 **Core Capabilities:**
 - **5-Channel Hybrid Search**: Vector (semantic) + BM25/FTS5 (lexical) + Graph (relationship-based) + Graph Structure (structural)
-- **RRF Score Fusion**: Industry-standard k=60 with convergence bonuses
+- **RRF Score Fusion**: Industry-standard k=40 with convergence bonuses
 - **Intent Classification**: 7 intent types route to task-specific retrieval weights
 - **Query Enhancement**: Fuzzy matching (Levenshtein) + acronym expansions (via hybrid-search.ts inline logic)
 - **Reranking Pipeline**: Optional cross-encoder with length penalties
@@ -59,7 +59,7 @@ Parallel Search (5 channels)
 |---> Graph (Co-activation)     -> Relationship matches
 |---> Graph Structure           -> Structural matches
     |
-RRF Fusion (k=60) + Adaptive Fusion -> Unified scores
+RRF Fusion (k=40) + Adaptive Fusion -> Unified scores
     |
 MMR Diversity Reranking -> Redundancy reduction
     |
@@ -126,7 +126,7 @@ Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memo
 
 ### Reciprocal Rank Fusion (RRF)
 
-**Formula**: `score = Sum 1/(k + rank_i)` where k=60 (industry standard)
+**Formula**: `score = Sum 1/(k + rank_i)` where k=40 (tuned for ~1000-memory corpus)
 
 **Why RRF?**
 - Parameter-free fusion (no weight tuning required)
@@ -144,9 +144,9 @@ Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memo
 **Example:**
 ```javascript
 // Vector rank: 2, BM25 rank: 5, Graph rank: 1
-// RRF score = 1/(60+2) + 1/(60+5) + 1.5/(60+1)
-//           = 0.0161 + 0.0154 + 0.0246 = 0.0561
-// Convergence bonus: 0.0561 * 1.10 = 0.0617 (final)
+// RRF score = 1/(40+2) + 1/(40+5) + 1.5/(40+1)
+//           = 0.0238 + 0.0222 + 0.0366 = 0.0826
+// Convergence bonus: 0.0826 * 1.10 = 0.0909 (final)
 ```
 
 ### BM25 (Best Matching 25)
@@ -282,7 +282,7 @@ vector-index-impl.ts     (14 LOC)
 | `channel-representation.ts`| -      | TypeScript | Ensures minimum channel representation in top-k results (QUALITY_FLOOR=0.005) (Sprint 3) |
 | `channel-enforcement.ts`   | -      | TypeScript | Pipeline-ready wrapper around channel min-representation check (Sprint 3) |
 | `confidence-truncation.ts` | -      | TypeScript | Removes low-confidence tail using 2x median gap heuristic (min 3 results) (Sprint 3) |
-| `dynamic-token-budget.ts`  | -      | TypeScript | Per-tier token budgets: simple=1500, moderate=2500, complex=4000 (Sprint 3) |
+| `dynamic-token-budget.ts`  | -      | TypeScript | Per-tier token budgets: simple=3500, moderate=3500, complex=4000 (Sprint 3) |
 | `folder-discovery.ts`      | -      | TypeScript | Spec folder description discovery: per-folder `description.json` CRUD, centralized cache aggregation, staleness detection, `slugifyFolderName()` helper, keyword-overlap relevance scoring (PI-B3) |
 | `folder-relevance.ts`      | -      | TypeScript | Folder-level relevance scoring via damped DocScore aggregation |
 | `evidence-gap-detector.ts` | -      | TypeScript | Z-score confidence check on RRF scores to detect low-confidence retrieval |
@@ -350,7 +350,7 @@ vector-index-impl.ts     (14 LOC)
          v
 
 3. SCORE FUSION
-   rrf-fusion.ts -> RRF with k=60, convergence bonus
+   rrf-fusion.ts -> RRF with k=40, convergence bonus
    adaptive-fusion.ts -> Intent-aware weighted fusion
    hybrid-search.ts -> Orchestrate multi-source fusion
 
@@ -407,7 +407,7 @@ vector-index-impl.ts     (14 LOC)
 
 **RRF Parameters** (hardcoded, REQ-011):
 ```javascript
-const DEFAULT_K = 60;              // Industry standard
+const DEFAULT_K = 40;              // Tuned for ~1000-memory corpus
 const CONVERGENCE_BONUS = 0.10;    // 10% boost for multi-source
 const GRAPH_WEIGHT_BOOST = 1.5;    // 1.5x for graph discoveries
 ```
