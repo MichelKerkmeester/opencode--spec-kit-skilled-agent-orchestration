@@ -3,9 +3,10 @@
   "version": "1.7.2",
   "private": true,
   "type": "module",
-  "main": "dist/embeddings.js",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./dist/embeddings.js",
+    ".": "./dist/index.js",
+    "./embeddings": "./dist/embeddings.js",
     "./*.js": "./dist/*.js",
     "./*": "./dist/*.js"
   },

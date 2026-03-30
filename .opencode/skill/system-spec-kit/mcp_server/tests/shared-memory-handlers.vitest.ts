@@ -79,6 +79,33 @@ describe('shared-memory admin handlers', () => {
     dbHolder.current = null;
   });
 
+  it('emits the trusted-transport warning only once across admin operations', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-warn-1',
+      tenantId: 'tenant-a',
+      name: 'Warn Once',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+    await handleSharedSpaceMembershipSet({
+      spaceId: 'space-warn-1',
+      tenantId: 'tenant-a',
+      actorUserId: 'user-owner',
+      subjectType: 'user',
+      subjectId: 'user-2',
+      role: 'viewer',
+    });
+    await handleSharedMemoryEnable({
+      actorUserId: 'user-owner',
+    });
+
+    const warningMessage = '[shared-memory] Admin operation using caller-supplied identity — assumes trusted transport';
+    expect(warnSpy).toHaveBeenCalledWith(warningMessage);
+    expect(warnSpy.mock.calls.filter(([message]) => message === warningMessage)).toHaveLength(1);
+  });
+
   it('rejects shared-space admin mutations when no configured admin identity exists', async () => {
     delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
 
@@ -669,6 +696,9 @@ describe('shared-memory admin handlers', () => {
     const db = getDb();
     db.close();
     dbHolder.current = null;
+    const readmeExistedBefore = await fsPromises.access(sharedSpacesReadmePath)
+      .then(() => true)
+      .catch(() => false);
 
     const response = await handleSharedMemoryEnable({
       actorUserId: 'user-owner',
@@ -678,6 +708,9 @@ describe('shared-memory admin handlers', () => {
     expect(response.isError).toBe(true);
     expect(envelope.data.error).toContain('Shared memory enable failed');
     expect(envelope.data.code).toBe('E_INTERNAL');
-    await expect(fsPromises.access(sharedSpacesReadmePath)).rejects.toThrow();
+    const readmeExistsAfter = await fsPromises.access(sharedSpacesReadmePath)
+      .then(() => true)
+      .catch(() => false);
+    expect(readmeExistsAfter).toBe(readmeExistedBefore);
   });
 });

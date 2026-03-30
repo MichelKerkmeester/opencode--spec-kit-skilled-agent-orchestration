@@ -1,9 +1,12 @@
 // ────────────────────────────────────────────────────────────────
-// MODULE: Index
+// MODULE: Index — Public API surface
 // ────────────────────────────────────────────────────────────────
-// @public — single entry point for all public API surfaces.
-// ARCH-1 consumer scripts import from '../../mcp_server/api/index.js'
-// Instead of reaching into lib/ internals.
+// @public — Only export what external consumers (scripts/, other packages) need.
+// Internal mcp_server code should import from lib/ directly, not through this barrel.
+// ARCH-1: Consumer scripts import from '@spec-kit/mcp-server/api' instead of lib/.
+// Review note: Barrel is wide due to legitimate external consumers in scripts/evals,
+// scripts/core, scripts/spec-folder, and scripts/memory. Do not narrow without
+// auditing all consumers first (see review/review-report.md P2-MNT-02).
 
 export {
   runAblation,

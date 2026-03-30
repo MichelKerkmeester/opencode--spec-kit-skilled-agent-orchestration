@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "dist/memory/generate-context.js",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.11.0"
   },
   "scripts": {
     "build": "tsc --build",

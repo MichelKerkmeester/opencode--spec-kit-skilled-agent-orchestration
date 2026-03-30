@@ -368,6 +368,16 @@ function createSharedMemoryInternalError(
   });
 }
 
+let hasWarnedTrustedAdminIdentity = false;
+
+function warnTrustedAdminIdentityAssumption(): void {
+  if (hasWarnedTrustedAdminIdentity) {
+    return;
+  }
+  hasWarnedTrustedAdminIdentity = true;
+  console.warn('[shared-memory] Admin operation using caller-supplied identity — assumes trusted transport');
+}
+
 function getAllowedSharedSpaceIdsForCaller(
   database: ReturnType<typeof requireDb>,
   actor: SharedAdminActor,
@@ -409,6 +419,8 @@ function getAllowedSharedSpaceIdsForCaller(
  */
 export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Promise<MCPResponse> {
   try {
+    // WARNING: Admin mutations trust caller-supplied actor identity until transport-auth binding is added.
+    warnTrustedAdminIdentityAssumption();
     const db = requireDb();
     ensureSharedCollabRuntime(db);
 
@@ -598,6 +610,8 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
  */
 export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembershipArgs): Promise<MCPResponse> {
   try {
+    // WARNING: Admin mutations trust caller-supplied actor identity until transport-auth binding is added.
+    warnTrustedAdminIdentityAssumption();
     const db = requireDb();
     ensureSharedCollabRuntime(db);
 
@@ -761,6 +775,8 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
  */
 export async function handleSharedMemoryEnable(args: Record<string, unknown>): Promise<MCPResponse> {
   try {
+    // WARNING: Admin mutations trust caller-supplied actor identity until transport-auth binding is added.
+    warnTrustedAdminIdentityAssumption();
     const { actor, isAdmin } = validateCallerAuth({
       tool: 'shared_memory_enable',
       actorUserId: typeof args.actorUserId === 'string' ? args.actorUserId : undefined,

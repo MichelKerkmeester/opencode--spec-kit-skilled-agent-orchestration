@@ -196,6 +196,19 @@ const FALLBACK_RETRY_MANAGER: WorkflowRetryManagerAdapter = {
   processRetryQueue: async () => ({ processed: 0, succeeded: 0, failed: 0 }),
 };
 
+/**
+ * Shared helper for dynamic MCP-server API imports with consistent degradation.
+ * All call sites log warnings on failure and return the provided fallback.
+ */
+async function tryImportMcpApi(specifier: string): Promise<any | null> {
+  try {
+    return await import(specifier);
+  } catch (err: unknown) {
+    console.warn(`[workflow] Failed to import ${specifier}: ${err instanceof Error ? err.message : String(err)}`);
+    return null;
+  }
+}
+
 let workflowRetryManagerPromise: Promise<WorkflowRetryManagerAdapter> | null = null;
 let workflowRetryManagerLoadError: string | null = null;
 
@@ -1136,15 +1149,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   );
   // F-26: Load description.json to include memoryNameHistory in slug candidates
   let memoryNameHistoryForSlug: readonly string[] = [];
-  try {
-    const { loadPerFolderDescription: loadPFDForSlug } = await import(
-      '@spec-kit/mcp-server/api'
-    );
-    const pfDesc = loadPFDForSlug(path.resolve(specFolder));
+  const slugApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
+  if (slugApiModule) {
+    const pfDesc = slugApiModule.loadPerFolderDescription(path.resolve(specFolder));
     if (pfDesc?.memoryNameHistory) {
       memoryNameHistoryForSlug = pfDesc.memoryNameHistory;
     }
-  } catch (_error: unknown) { /* Expected: description.json may not exist yet */ }
+  }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   let ctxFilename: string = rawCtxFilename;
@@ -1630,9 +1641,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Update per-folder description.json memory tracking (only if file was written)
   if (ctxFileWritten) {
     try {
-      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = await import(
-        '@spec-kit/mcp-server/api'
-      );
+      const descApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
+      if (!descApiModule) throw new Error('MCP server API unavailable for description update');
+      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = descApiModule;
       const specFolderAbsolute = path.resolve(specFolder);
       let existing = loadPFD(specFolderAbsolute);
 

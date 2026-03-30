@@ -132,6 +132,29 @@ const STANDARD_MEMORY_TEMPLATE_MARKERS = [
   '<!-- memory metadata -->',
 ];
 
+class VRuleUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'VRuleUnavailableError';
+  }
+}
+
+function isVRuleUnavailableResult(value: unknown): value is {
+  passed: false;
+  status: 'error' | 'warning';
+  message: string;
+  _unavailable: true;
+} {
+  return typeof value === 'object'
+    && value !== null
+    && 'passed' in value
+    && (value as { passed?: unknown }).passed === false
+    && 'status' in value
+    && typeof (value as { status?: unknown }).status === 'string'
+    && 'message' in value
+    && typeof (value as { message?: unknown }).message === 'string';
+}
+
 function classifyMemorySaveSource(
   content: string,
 ): 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION {
@@ -185,10 +208,13 @@ function prepareParsedMemoryForIndexing(
 
   // O2-5/O2-12: Run V-rule validation (previously only in workflow path)
   const vRuleResult = validateMemoryQualityContent(parsed.content);
+  if (isVRuleUnavailableResult(vRuleResult) && vRuleResult.status === 'error') {
+    throw new VRuleUnavailableError(vRuleResult.message);
+  }
   if (vRuleResult && '_unavailable' in vRuleResult) {
     validation.warnings.push('V-rule validator module unavailable — quality gate bypassed. Save proceeds without V-rule enforcement.');
   }
-  if (vRuleResult && !vRuleResult.valid) {
+  if (vRuleResult && !isVRuleUnavailableResult(vRuleResult) && !vRuleResult.valid) {
     const vRuleDisposition = determineValidationDisposition(
       vRuleResult.failedRules,
       parsed.memoryTypeSource || null,
@@ -958,7 +984,7 @@ async function processPreparedMemory(
       try {
         await finalizeMemoryFileContent(filePath, finalizedFileContent);
       } catch (finalizeErr: unknown) {
-        finalizeWarning = `Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}`;
+        finalizeWarning = `[file-persistence-failed] Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}. DB row committed — manual file recovery may be needed.`;
         console.warn(`[memory-save] ${finalizeWarning}`);
       }
     }
@@ -1256,6 +1282,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         spec_folder: parsedForPreflight.specFolder,
         database: database,
         find_similar: findSimilarMemories as Parameters<typeof preflight.runPreflight>[0]['find_similar'],
+        tenantId: saveScope.tenantId ?? undefined,
+        userId: saveScope.userId ?? undefined,
+        agentId: saveScope.agentId ?? undefined,
+        sharedSpaceId: saveScope.sharedSpaceId ?? undefined,
       },
       {
         dry_run: dryRun,
@@ -1269,9 +1299,27 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     );
 
     if (dryRun) {
-      const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
-        emitEvalMetrics: false,
-      });
+      let preparedDryRun: PreparedParsedMemory;
+      try {
+        preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
+          emitEvalMetrics: false,
+        });
+      } catch (error: unknown) {
+        if (error instanceof VRuleUnavailableError) {
+          return createMCPErrorResponse({
+            tool: 'memory_save',
+            error: error.message,
+            code: 'E_RUNTIME',
+            details: { requestId },
+            recovery: {
+              hint: 'Build the Spec Kit scripts workspace and retry the save.',
+              actions: ['Run npm run build --workspace=@spec-kit/scripts', 'Retry memory_save'],
+              severity: 'warning',
+            },
+          });
+        }
+        throw error;
+      }
       const templateContractPass = preparedDryRun.templateContract.valid
         || shouldBypassTemplateContract(
           preparedDryRun.sourceClassification,
@@ -1379,12 +1427,30 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
-  const result = await indexMemoryFile(validatedPath, {
-    force,
-    parsedOverride: parsedForPreflight,
-    asyncEmbedding,
-    scope: saveScope,
-  });
+  let result: IndexResult;
+  try {
+    result = await indexMemoryFile(validatedPath, {
+      force,
+      parsedOverride: parsedForPreflight,
+      asyncEmbedding,
+      scope: saveScope,
+    });
+  } catch (error: unknown) {
+    if (error instanceof VRuleUnavailableError) {
+      return createMCPErrorResponse({
+        tool: 'memory_save',
+        error: error.message,
+        code: 'E_RUNTIME',
+        details: { requestId },
+        recovery: {
+          hint: 'Build the Spec Kit scripts workspace and retry the save.',
+          actions: ['Run npm run build --workspace=@spec-kit/scripts', 'Retry memory_save'],
+          severity: 'warning',
+        },
+      });
+    }
+    throw error;
+  }
 
   if (typeof result.id === 'number' && result.id > 0 && result.status !== 'unchanged' && result.status !== 'duplicate') {
     // B13 + H5 FIX: Wrap governance metadata in a transaction with rollback on failure.

@@ -368,8 +368,23 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
   }
 
   if (result.warnings && result.warnings.length > 0) {
+    // Preserve typed warnings with categories for programmatic consumers
     response.warnings = result.warnings;
-    response.message = `${response.message} (with ${result.warnings.length} warning(s) - anchor issues detected)`;
+    const typedWarnings: Array<{ category: string; message: string }> = result.warnings.map(
+      (w: string | { category: string; message: string }) => {
+        if (typeof w === 'string' && w.startsWith('[file-persistence-failed]')) {
+          return { category: 'file-persistence-failed', message: w.slice('[file-persistence-failed] '.length) };
+        }
+        return typeof w === 'string' ? { category: 'anchor-issues', message: w } : w;
+      }
+    );
+    (response as any).typedWarnings = typedWarnings;
+    const persistenceWarnings = typedWarnings.filter(w => w.category === 'file-persistence-failed');
+    const anchorWarnings = typedWarnings.filter(w => w.category !== 'file-persistence-failed');
+    const parts: string[] = [];
+    if (anchorWarnings.length > 0) parts.push(`${anchorWarnings.length} anchor issue(s)`);
+    if (persistenceWarnings.length > 0) parts.push(`${persistenceWarnings.length} file-persistence warning(s)`);
+    response.message = `${response.message} (with ${parts.join(', ')})`;
   }
 
   if (result.embeddingStatus) {

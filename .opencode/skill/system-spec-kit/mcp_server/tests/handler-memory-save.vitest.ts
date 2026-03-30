@@ -1715,6 +1715,69 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       );
     });
 
+    it('returns an MCP error response when V-rule validation is unavailable in fail-closed mode', async () => {
+      vi.resetModules();
+
+      const filePath = createAtomicSaveTargetPath('vrule-unavailable.md');
+      fs.writeFileSync(filePath, '# vrule unavailable', 'utf8');
+
+      vi.doMock('../lib/parsing/memory-parser', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/parsing/memory-parser')>();
+        return {
+          ...actual,
+          isMemoryFile: vi.fn(() => true),
+          parseMemoryFile: vi.fn((targetPath: string) => buildParsedMemory(targetPath)),
+        };
+      });
+
+      vi.doMock('../utils/validators', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../utils/validators')>();
+        return {
+          ...actual,
+          createFilePathValidator: vi.fn(() => ((candidatePath: string) => candidatePath)),
+        };
+      });
+
+      vi.doMock('../core/index.js', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../core/index.js')>();
+        return {
+          ...actual,
+          checkDatabaseUpdated: vi.fn().mockResolvedValue(undefined),
+        };
+      });
+
+      vi.doMock('../utils', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../utils')>();
+        return {
+          ...actual,
+          requireDb: vi.fn(() => createInMemoryDb()),
+        };
+      });
+
+      vi.doMock('../handlers/v-rule-bridge', () => ({
+        validateMemoryQualityContent: vi.fn(() => ({
+          passed: false,
+          status: 'error',
+          message: 'V-rule validation unavailable — run npm run build --workspace=@spec-kit/scripts',
+          _unavailable: true,
+        })),
+        determineValidationDisposition: vi.fn(),
+      }));
+
+      const module = await import('../handlers/memory-save');
+      const response = await module.handleMemorySave({
+        filePath,
+        skipPreflight: true,
+      });
+      const payload = JSON.parse(String(response?.content?.[0]?.text ?? '{}'));
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toBe('V-rule validation unavailable — run npm run build --workspace=@spec-kit/scripts');
+      expect(payload.data.code).toBe('E_RUNTIME');
+
+      vi.doUnmock('../handlers/v-rule-bridge');
+    });
+
     it('reparses from disk after the spec-folder lock when parsedOverride is supplied', async () => {
       const harness = await loadBehavioralIndexHarness({
         existingSamePathMemory: undefined,

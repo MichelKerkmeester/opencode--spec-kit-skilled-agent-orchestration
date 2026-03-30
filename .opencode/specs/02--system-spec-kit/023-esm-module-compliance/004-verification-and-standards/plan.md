@@ -40,10 +40,10 @@ Close the ESM migration by running the research-defined verification matrix, re-
 - [x] Verification matrix defined in `../research/research.md`
 
 ### Definition of Done
-- [ ] Highest-risk recent surfaces re-tested and stable
-- [ ] Full verification matrix passes
-- [ ] Standards docs outside 023 updated from verified state
-- [ ] Parent `implementation-summary.md` and `checklist.md` closed with evidence
+- [x] Highest-risk recent surfaces re-tested and stable
+- [x] Full verification matrix passes
+- [x] Standards docs outside 023 updated from verified state
+- [x] Parent `implementation-summary.md` and `checklist.md` closed with evidence
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -69,37 +69,37 @@ Run highest-risk retests -> run full verification matrix -> pass/fail gate -> on
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Highest-Risk Retests
-- [ ] Re-test `mcp_server/handlers/memory-save.ts` runtime paths
-- [ ] Re-test `mcp_server/handlers/memory-index.ts` runtime paths
-- [ ] Re-test `mcp_server/handlers/shared-memory.ts` runtime paths
-- [ ] Re-test `mcp_server/lib/search/vector-index-store.ts` runtime paths
-- [ ] Re-test `mcp_server/lib/session/session-manager.ts` runtime paths
-- [ ] Re-test `scripts/memory/generate-context.ts` runtime paths
-- [ ] Re-test `scripts/core/workflow.ts` runtime paths
+- [x] Re-test `mcp_server/handlers/memory-save.ts` runtime paths
+- [x] Re-test `mcp_server/handlers/memory-index.ts` runtime paths
+- [x] Re-test `mcp_server/handlers/shared-memory.ts` runtime paths
+- [x] Re-test `mcp_server/lib/search/vector-index-store.ts` runtime paths
+- [x] Re-test `mcp_server/lib/session/session-manager.ts` runtime paths
+- [x] Re-test `scripts/memory/generate-context.ts` runtime paths
+- [x] Re-test `scripts/core/workflow.ts` runtime paths
 
 ### Step 2: Full Verification Matrix
-- [ ] `npm run --workspaces=false typecheck`
-- [ ] `npm run --workspaces=false test:cli`
-- [ ] `npm run build --workspace=@spec-kit/mcp-server`
-- [ ] `npm run test --workspace=@spec-kit/mcp-server`
-- [ ] `npm run test --workspace=@spec-kit/scripts`
-- [ ] `npx vitest run tests/cli.vitest.ts tests/regression-010-index-large-files.vitest.ts tests/continue-session.vitest.ts`
-- [ ] `npx vitest run tests/modularization.vitest.ts tests/trigger-config-extended.vitest.ts`
-- [ ] `npx vitest run scripts/tests/test-integration.vitest.ts scripts/tests/architecture-boundary-enforcement.vitest.ts`
-- [ ] `node dist/context-server.js` startup smoke
-- [ ] `node scripts/dist/memory/generate-context.js --help`
-- [ ] `node scripts/tests/test-scripts-modules.js`
-- [ ] `node scripts/tests/test-export-contracts.js`
+- [x] `npm run --workspaces=false typecheck`
+- [x] `npm run --workspaces=false test:cli`
+- [x] `npm run build --workspace=@spec-kit/mcp-server`
+- [x] `npm run test --workspace=@spec-kit/mcp-server`
+- [x] `npm run test --workspace=@spec-kit/scripts`
+- [x] `npx vitest run tests/cli.vitest.ts tests/regression-010-index-large-files.vitest.ts tests/continue-session.vitest.ts`
+- [x] `npx vitest run tests/modularization.vitest.ts tests/trigger-config-extended.vitest.ts`
+- [x] `npx vitest run scripts/tests/test-integration.vitest.ts scripts/tests/architecture-boundary-enforcement.vitest.ts`
+- [x] `node dist/context-server.js` startup smoke
+- [x] `node scripts/dist/memory/generate-context.js --help`
+- [x] `node scripts/tests/test-scripts-modules.js`
+- [x] `node scripts/tests/test-export-contracts.js`
 
 ### Step 3: Standards-Doc Sync
-- [ ] Update `sk-code--opencode` standards docs with verified ESM state
-- [ ] Update any other standards surfaces affected by the ESM migration
-- [ ] Verify standards docs describe the runtime truth, not planning intent
+- [x] Update `sk-code--opencode` standards docs with verified ESM state
+- [x] Update any other standards surfaces affected by the ESM migration
+- [x] Verify standards docs describe the runtime truth, not planning intent
 
 ### Step 4: Packet Closure
-- [ ] Update parent `implementation-summary.md` with runtime evidence
-- [ ] Mark all parent `checklist.md` items with verification evidence
-- [ ] Close the parent packet
+- [x] Update parent `implementation-summary.md` with runtime evidence
+- [x] Mark all parent `checklist.md` items with verification evidence
+- [x] Close the parent packet
 <!-- /ANCHOR:phases -->
 
 ---

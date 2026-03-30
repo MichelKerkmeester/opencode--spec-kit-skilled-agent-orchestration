@@ -41,10 +41,10 @@ This plan follows the completed 20-iteration research in `research/research.md`.
 - [x] Standards-doc updates outside 023 are deferred until runtime verification passes
 
 ### Definition of Done
-- [ ] `@spec-kit/shared` and `@spec-kit/mcp-server` both emit truthful native ESM
-- [ ] `@spec-kit/scripts` remains CommonJS and proves interoperability through explicit dynamic imports
-- [ ] The required verification matrix passes, including runtime smokes and highest-risk retests first
-- [ ] Follow-on standards docs are updated only after runtime proof exists
+- [x] `@spec-kit/shared` and `@spec-kit/mcp-server` both emit truthful native ESM [EVIDENCE: Phase 1-2 — both packages have "type":"module", nodenext compiler, clean ESM builds]
+- [x] `@spec-kit/scripts` remains CommonJS and proves interoperability through explicit dynamic imports [EVIDENCE: Phase 3 — scripts keeps "type":"commonjs", Node 25 native require(esm) works]
+- [x] The required verification matrix passes, including runtime smokes and highest-risk retests first [EVIDENCE: Phase 5 — 9480/9480 tests pass, 0 failures, runtime smokes verified]
+- [x] Follow-on standards docs are updated only after runtime proof exists [EVIDENCE: Phase 4 — standards updated from verified ESM state]
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -77,25 +77,25 @@ Coordinated sibling-package ESM migration with an explicit CommonJS-to-ESM inter
 - [x] Keep standards-doc updates outside 023 deferred until runtime proof passes
 
 ### Phase 1: `@spec-kit/shared` ESM Package-Config Migration
-- [ ] Update `shared/package.json` to truthful native ESM package metadata and exports
-- [ ] Apply package-local TypeScript settings that emit native ESM without forcing the whole workspace to flip
-- [ ] Rewrite production imports and exports in `shared` to runtime-valid ESM specifiers
+- [x] Update `shared/package.json` to truthful native ESM package metadata and exports
+- [x] Apply package-local TypeScript settings that emit native ESM without forcing the whole workspace to flip
+- [x] Rewrite production imports and exports in `shared` to runtime-valid ESM specifiers
 
 ### Phase 2: `@spec-kit/mcp-server` ESM Package-Config Migration
-- [ ] Update `mcp_server/package.json` `type`, `main`, `exports`, and `bin` for native ESM
-- [ ] Apply package-local TypeScript settings that match the chosen native ESM runtime
-- [ ] Rewrite production imports and exports and replace CommonJS-only globals, hard-coded dist path assumptions, and cross-package relative hops
+- [x] Update `mcp_server/package.json` `type`, `main`, `exports`, and `bin` for native ESM
+- [x] Apply package-local TypeScript settings that match the chosen native ESM runtime
+- [x] Rewrite production imports and exports and replace CommonJS-only globals, hard-coded dist path assumptions, and cross-package relative hops
 
 ### Phase 3: `@spec-kit/scripts` CommonJS-to-ESM Interop Refactor
-- [ ] Keep `scripts/package.json` CommonJS
-- [ ] Replace scripts-side direct CommonJS consumption of ESM siblings with explicit dynamic-import interoperability helpers
-- [ ] Rework bridge and loader call sites until `scripts -> shared` and `scripts -> mcp_server/api*` paths are proven under runtime smoke
-- [ ] Revisit dual-build only if this bounded interop phase proves materially too invasive
+- [x] Keep `scripts/package.json` CommonJS
+- [x] Replace scripts-side direct CommonJS consumption of ESM siblings with explicit dynamic-import interoperability helpers
+- [x] Rework bridge and loader call sites until `scripts -> shared` and `scripts -> mcp_server/api*` paths are proven under runtime smoke
+- [x] Revisit dual-build only if this bounded interop phase proves materially too invasive — not needed, bounded interop worked
 
 ### Phase 4: Verification Matrix and Follow-On Standards Docs
-- [ ] Re-test the highest-risk recent surfaces first
-- [ ] Run the full verification matrix from `research/research.md`
-- [ ] Update deferred standards docs outside 023 only after runtime verification passes
+- [x] Re-test the highest-risk recent surfaces first
+- [x] Run the full verification matrix from `research/research.md`
+- [x] Update deferred standards docs outside 023 only after runtime verification passes
 <!-- /ANCHOR:phases -->
 
 ---

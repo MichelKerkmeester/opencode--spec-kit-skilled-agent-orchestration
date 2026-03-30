@@ -21,7 +21,7 @@ contextType: "architecture"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 023-esm-module-compliance |
-| **Completed** | 2026-03-29 |
+| **Completed** | 2026-03-30 |
 | **Level** | 2 |
 | **Runtime Migration Status** | Complete |
 <!-- /ANCHOR:metadata -->
@@ -31,7 +31,7 @@ contextType: "architecture"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet shipped a full 5-phase ESM migration across 3 packages: `@spec-kit/shared`, `@spec-kit/mcp-server`, and `@spec-kit/scripts`. The final result is a truthful native ESM runtime for `shared` and `mcp_server`, a preserved CommonJS contract for `scripts`, hardened memory-save behavior across the module boundary, standards and README alignment after review, and a final test sweep that closed every remaining failure, skip, and todo.
+This packet shipped a full 6-phase ESM migration across 3 packages: `@spec-kit/shared`, `@spec-kit/mcp-server`, and `@spec-kit/scripts`. The final result is a truthful native ESM runtime for `shared` and `mcp_server`, a preserved CommonJS contract for `scripts`, hardened memory-save behavior across the module boundary, standards and README alignment after review, a final test sweep that closed every remaining failure, and a 10-iteration GPT-5.4 deep review with all 18 findings remediated.
 
 ### Phase 1: `@spec-kit/shared` migrated to native ESM
 
@@ -52,6 +52,17 @@ Phase 4 finished the migration as a release-quality change rather than stopping 
 ### Phase 5: final test and scenario remediation
 
 Phase 5 closed the verification gap left after the runtime migration. The first sweep fixed the 8 pre-existing failures that were still masking closure, including error-code drift, structured error response expectations, per-test DB fixtures, source-walk symlink handling, modularization limits, and manual playbook truth-sync. The final sweep then removed the last skipped and todo coverage gaps, converting them into real passing tests and bringing the workspace to 9480 passing tests with 0 failures and 0 skipped.
+
+### Phase 6: deep review remediation
+
+Phase 6 ran a 10-iteration deep review using GPT-5.4 agents via codex CLI, producing 18 findings across 7 dimensions (14 P1, 4 P2). All findings were remediated in 4 parallel implementation workstreams:
+
+- **Runtime correctness (P1-COR-01/02/03, P2-COR-01)**: Replaced residual `__dirname` in 2 ESM scripts, guarded `main()` in `context-server.ts` behind an entrypoint check, aligned `engines.node >= 20.11.0` across all 4 packages, fixed `shared` root export to `dist/index.js`
+- **Security hardening (P1-SEC-01/02/03, P1-CMP-03)**: Added trusted-transport warnings for shared-memory admin ops, made V-rule bridge fail-closed, added workspace boundary validation to `shared/paths.ts`, threaded governed scope into duplicate preflight queries with cross-scope metadata redaction
+- **Reliability and maintainability (P1-REL-01, P1-MNT-01, P2-MNT-02)**: Typed warnings in response-builder for file-persistence failures, consolidated 3 dynamic-import patterns in `workflow.ts` into `tryImportMcpApi` helper, documented barrel width in `api/index.ts`
+- **Performance (P2-PRF-01/02)**: Module-level cached lazy loader for hot-path vector-index imports, deferred heavy imports in `cli.ts` behind per-command handlers
+
+Total changes: 632 insertions, 91 deletions across 20 files.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -88,7 +99,10 @@ The work shipped as a phase-sequenced migration instead of one large package fli
 | `@spec-kit/scripts` build | PASS, packet memory records scripts build green after the interop hardening work |
 | Runtime smoke: `node dist/context-server.js` | PASS, recorded in Phase 2 and Phase 4 verification notes |
 | Runtime smoke: `node scripts/dist/memory/generate-context.js --help` | PASS, recorded in Phase 3 and Phase 4 verification notes |
-| Final test sweep | PASS, `mcp_server` 8997/8997 and `scripts` 483/483, totaling 9480/9480 with 0 failed and 0 skipped |
+| Final test sweep (Phase 5) | PASS, `mcp_server` 8997/8997 and `scripts` 483/483, totaling 9480/9480 with 0 failed and 0 skipped |
+| Phase 6 deep review | PASS, 10 iterations, 18 findings (14 P1 + 4 P2), all remediated |
+| Phase 6 post-fix build | PASS, all 3 packages build clean |
+| Phase 6 post-fix tests | PASS, mcp-server 8998+ passed (new regression tests added), scripts 483/483 |
 <!-- /ANCHOR:verification -->
 
 ---

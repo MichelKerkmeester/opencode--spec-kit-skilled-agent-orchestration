@@ -83,6 +83,12 @@ type EnhancedSearchOptions = {
 };
 type JsonObject = Record<string, unknown>;
 
+let _cached_queries: Awaited<typeof import('./vector-index-queries.js')> | null = null;
+
+async function getQueriesModule() {
+  return _cached_queries ??= await import('./vector-index-queries.js');
+}
+
 /* ───────────────────────────────────────────────────────────────
    1. CONFIGURATION — Embedding Dimension
 ----------------------------------------------------------------*/
@@ -939,8 +945,7 @@ export class SQLiteVectorStore extends IVectorStore {
       includeArchived: options.includeArchived === true
     };
 
-    // Lazy import to avoid circular dependency at module load time
-    const { vector_search } = await import('./vector-index-queries.js');
+    const { vector_search } = await getQueriesModule();
     return vector_search(embedding, search_options, database);
   }
 
@@ -1033,14 +1038,14 @@ export class SQLiteVectorStore extends IVectorStore {
   async get(id: number): Promise<MemoryRow | null> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_memory } = await import('./vector-index-queries.js');
+    const { get_memory } = await getQueriesModule();
     return get_memory(id, database);
   }
 
   async getStats(): Promise<{ total: number; pending: number; success: number; failed: number; retry: number }> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_stats } = await import('./vector-index-queries.js');
+    const { get_stats } = await getQueriesModule();
     return get_stats(database);
   }
 
@@ -1069,7 +1074,7 @@ export class SQLiteVectorStore extends IVectorStore {
   async getByFolder(specFolder: string): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_memories_by_folder } = await import('./vector-index-queries.js');
+    const { get_memories_by_folder } = await getQueriesModule();
     return get_memories_by_folder(specFolder, database);
   }
 
@@ -1079,7 +1084,7 @@ export class SQLiteVectorStore extends IVectorStore {
   ): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { vector_search_enriched } = await import('./vector-index-queries.js');
+    const { vector_search_enriched } = await getQueriesModule();
     return vector_search_enriched(embedding, undefined, options, database);
   }
 
@@ -1095,7 +1100,7 @@ export class SQLiteVectorStore extends IVectorStore {
   ): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_constitutional_memories_public } = await import('./vector-index-queries.js');
+    const { get_constitutional_memories_public } = await getQueriesModule();
     return get_constitutional_memories_public(options, database);
   }
 
@@ -1113,7 +1118,7 @@ export class SQLiteVectorStore extends IVectorStore {
   }> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { verify_integrity } = await import('./vector-index-queries.js');
+    const { verify_integrity } = await getQueriesModule();
     return verify_integrity(options, database);
   }
 }
