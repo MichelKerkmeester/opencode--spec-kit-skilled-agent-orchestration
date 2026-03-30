@@ -44,7 +44,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L1',
     name: 'Orchestration',
     description: 'Unified entry points with intent-aware routing. Start here for most tasks.',
-    tokenBudget: 2000,
+    tokenBudget: 3500,  // Raised from 2000 — memory_context modes override with their own budgets
     priority: 1,
     useCase: 'Default entry point for context retrieval. Automatically routes based on intent.',
     tools: ['memory_context']
@@ -53,7 +53,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L2',
     name: 'Core',
     description: 'Primary memory operations. Use when you need specific search or save functionality.',
-    tokenBudget: 2500,
+    tokenBudget: 3500,  // Raised from 2500 — includeContent=true can produce 2500+ per result
     priority: 2,
     useCase: 'Direct access to search, save, and trigger matching when L1 routing is not needed.',
     tools: ['memory_search', 'memory_quick_search', 'memory_save', 'memory_match_triggers']
