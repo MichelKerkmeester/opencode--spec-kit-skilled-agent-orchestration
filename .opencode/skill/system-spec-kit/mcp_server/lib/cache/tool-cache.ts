@@ -406,7 +406,6 @@ async function withCache<T>(
     inFlight.delete(key);
   }
 
-  let pending: Promise<T>;
   const pendingEntry = {
     promise: undefined as unknown as Promise<T>,
     toolName: tool_name,
@@ -414,7 +413,7 @@ async function withCache<T>(
     toolGeneration: toolGenerationAtStart,
   };
 
-  pending = (async () => {
+  const pending = (async () => {
     const result = await fn();
     if (
       generationAtStart === cacheGeneration

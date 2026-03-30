@@ -378,7 +378,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
         return typeof w === 'string' ? { category: 'anchor-issues', message: w } : w;
       }
     );
-    (response as any).typedWarnings = typedWarnings;
+    (response as Record<string, unknown>).typedWarnings = typedWarnings;
     const persistenceWarnings = typedWarnings.filter(w => w.category === 'file-persistence-failed');
     const anchorWarnings = typedWarnings.filter(w => w.category !== 'file-persistence-failed');
     const parts: string[] = [];

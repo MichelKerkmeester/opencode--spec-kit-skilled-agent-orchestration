@@ -70,7 +70,7 @@ import {
 
 // Lib modules (for initialization only)
 import * as vectorIndex from './lib/search/vector-index.js';
-import * as embeddings from './lib/providers/embeddings.js';
+import * as _embeddings from './lib/providers/embeddings.js';
 import * as checkpointsLib from './lib/storage/checkpoints.js';
 import * as accessTracker from './lib/storage/access-tracker.js';
 import * as hybridSearch from './lib/search/hybrid-search.js';
@@ -304,6 +304,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
    5. TOOL DISPATCH (T303: routed through tools/*.ts)
 ──────────────────────────────────────────────────────────────── */
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown): Promise<any> => {
   const requestParams = request.params as { name: string; arguments?: Record<string, unknown> };
   const { name } = requestParams;
@@ -442,6 +443,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     const err = error instanceof Error ? error : new Error(String(error));
     try {
       const errorResponse = buildErrorResponse(name, err, args);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return wrapForMCP(errorResponse as any, true);
     } catch (wrapError: unknown) {
       const fallbackError = wrapError instanceof Error ? wrapError.message : String(wrapError);
@@ -669,6 +671,7 @@ const SHUTDOWN_DEADLINE_MS = 5000;
 export const __testables = {
   runCleanupStep,
   runAsyncCleanupStep,
+  main: () => main(),
 };
 
 async function fatalShutdown(reason: string, exitCode: number): Promise<void> {

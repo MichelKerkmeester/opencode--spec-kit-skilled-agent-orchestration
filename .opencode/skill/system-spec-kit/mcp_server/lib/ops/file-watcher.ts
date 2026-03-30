@@ -9,7 +9,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-import { createRequire } from 'node:module';
 
 // Feature catalog: Real-time filesystem watching with chokidar
 // Feature catalog: Watcher delete/rename cleanup
@@ -57,7 +56,6 @@ let totalReindexTimeMs = 0;
 let chokidarModule: ChokidarModule | null = null;
 let chokidarModulePromise: Promise<ChokidarModule | null> | null = null;
 let chokidarModuleLoadError: string | null = null;
-const require = createRequire(import.meta.url);
 
 /** Return accumulated watcher metrics for diagnostics. */
 export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs: number } {

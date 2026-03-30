@@ -101,7 +101,7 @@ let hybridSearch: HybridSearchLike | null = null;
 let sessionManagerRef: SessionManagerLike | null = null;
 let incrementalIndexRef: IncrementalIndexLike | null = null;
 let graphSearchFnRef: GraphSearchFn | null | undefined = undefined;
-let dbConsumersRef: DatabaseConsumerLike[] = [];
+const dbConsumersRef: DatabaseConsumerLike[] = [];
 let vectorIndexListenerCleanup: (() => void) | null = null;
 let subscribedVectorIndex: VectorIndexLike | null = null;
 let suppressVectorIndexListener = false;

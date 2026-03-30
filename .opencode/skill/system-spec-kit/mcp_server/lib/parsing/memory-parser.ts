@@ -358,7 +358,7 @@ export function extractSpecFolder(filePath: string): string {
       return segments.slice(specsIndex + 1, memoryIndex).join('/');
     }
     // If no memory/ dir exists, check for a spec document at the leaf.
-    const fileName = segments[segments.length - 1].toLowerCase();
+    const _fileName = segments[segments.length - 1].toLowerCase();
     const specDocumentFolderFromLeaf = extractSpecFolderFromSpecDocumentPath(normalizedPath);
     if (specDocumentFolderFromLeaf) {
       return specDocumentFolderFromLeaf;

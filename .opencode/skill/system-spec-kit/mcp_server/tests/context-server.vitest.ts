@@ -710,6 +710,17 @@ describe('Context Server', () => {
       })
 
       const module = await import('../context-server')
+      // The entrypoint guard (isMain) prevents main() from running on import.
+      // Explicitly call main() so startup-time side effects (dim validation,
+      // dynamic instructions, file watcher) are exercised by the test harness.
+      const testables = (module as { __testables?: { main?: () => Promise<void> } }).__testables
+      if (testables?.main) {
+        await testables.main().catch((err: unknown) => {
+          // Mirror production: main().catch → console.error + process.exit(1)
+          console.error('[context-server] Fatal error:', err);
+          process.exit(1);
+        })
+      }
       const callToolHandler = handlers.get(callToolSchema)
       expect(typeof callToolHandler).toBe('function')
       await Promise.resolve()

@@ -203,10 +203,6 @@ interface CheckpointSnapshot {
   timestamp: string;
 }
 
-interface CheckpointScopeOptions {
-  scope?: ScopeContext;
-}
-
 interface RestoreBarrierStatus {
   code: string;
   message: string;

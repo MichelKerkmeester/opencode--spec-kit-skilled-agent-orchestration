@@ -1,7 +1,6 @@
 import {
   canClassifyAsSpecDocument,
   matchesSpecDocumentPath,
-  SPEC_DOCUMENT_FILENAMES,
 } from './spec-doc-paths.js';
 
 export { SPEC_DOCUMENT_FILENAMES } from './spec-doc-paths.js';

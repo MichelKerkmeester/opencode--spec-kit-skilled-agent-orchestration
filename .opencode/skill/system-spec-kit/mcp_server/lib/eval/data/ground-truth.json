@@ -1104,1472 +1104,1452 @@
   "relevances": [
     {
       "queryId": 1,
-      "memoryId": 26104,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 1,
-      "memoryId": 26176,
+      "memoryId": 361,
       "relevance": 2
     },
     {
       "queryId": 1,
-      "memoryId": 27258,
+      "memoryId": 960,
       "relevance": 1
     },
     {
       "queryId": 2,
-      "memoryId": 26103,
+      "memoryId": 781,
       "relevance": 3
     },
     {
       "queryId": 2,
-      "memoryId": 26104,
+      "memoryId": 780,
       "relevance": 2
     },
     {
       "queryId": 2,
-      "memoryId": 26176,
+      "memoryId": 778,
       "relevance": 1
     },
     {
       "queryId": 3,
-      "memoryId": 26180,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 3,
-      "memoryId": 27260,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 3,
-      "memoryId": 27472,
+      "memoryId": 887,
       "relevance": 1
     },
     {
       "queryId": 4,
-      "memoryId": 26107,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 4,
-      "memoryId": 26108,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 4,
-      "memoryId": 26109,
+      "memoryId": 887,
       "relevance": 1
     },
     {
       "queryId": 5,
-      "memoryId": 27401,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 5,
-      "memoryId": 26105,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 5,
-      "memoryId": 26113,
+      "memoryId": 350,
       "relevance": 1
     },
     {
       "queryId": 6,
-      "memoryId": 26104,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 6,
-      "memoryId": 26103,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 6,
-      "memoryId": 24937,
+      "memoryId": 327,
       "relevance": 1
     },
     {
       "queryId": 7,
-      "memoryId": 26104,
+      "memoryId": 887,
       "relevance": 3
     },
     {
       "queryId": 7,
-      "memoryId": 26277,
+      "memoryId": 39,
+      "relevance": 2
+    },
+    {
+      "queryId": 7,
+      "memoryId": 363,
       "relevance": 1
     },
     {
       "queryId": 8,
-      "memoryId": 27404,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 8,
-      "memoryId": 27161,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 8,
-      "memoryId": 26180,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 9,
-      "memoryId": 26384,
+      "memoryId": 138,
       "relevance": 3
     },
     {
       "queryId": 9,
-      "memoryId": 26379,
+      "memoryId": 887,
       "relevance": 2
     },
     {
       "queryId": 9,
-      "memoryId": 26176,
+      "memoryId": 99,
       "relevance": 1
     },
     {
       "queryId": 10,
-      "memoryId": 27157,
+      "memoryId": 334,
       "relevance": 3
     },
     {
       "queryId": 10,
-      "memoryId": 25973,
+      "memoryId": 138,
       "relevance": 2
     },
     {
       "queryId": 10,
-      "memoryId": 26118,
+      "memoryId": 981,
       "relevance": 1
     },
     {
       "queryId": 11,
-      "memoryId": 25856,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 11,
-      "memoryId": 26098,
+      "memoryId": 560,
       "relevance": 2
     },
     {
       "queryId": 11,
-      "memoryId": 27096,
+      "memoryId": 325,
       "relevance": 1
     },
     {
       "queryId": 12,
-      "memoryId": 25864,
+      "memoryId": 11,
       "relevance": 3
     },
     {
       "queryId": 12,
-      "memoryId": 24937,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 12,
-      "memoryId": 25634,
+      "memoryId": 960,
       "relevance": 1
     },
     {
       "queryId": 13,
-      "memoryId": 26176,
+      "memoryId": 840,
       "relevance": 3
     },
     {
       "queryId": 13,
-      "memoryId": 26104,
+      "memoryId": 610,
       "relevance": 2
     },
     {
       "queryId": 13,
-      "memoryId": 27398,
+      "memoryId": 98,
       "relevance": 1
     },
     {
       "queryId": 14,
-      "memoryId": 27003,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 14,
-      "memoryId": 26176,
+      "memoryId": 361,
       "relevance": 2
     },
     {
       "queryId": 14,
-      "memoryId": 26104,
+      "memoryId": 321,
       "relevance": 1
     },
     {
       "queryId": 15,
-      "memoryId": 25674,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 15,
-      "memoryId": 24761,
+      "memoryId": 45,
       "relevance": 2
     },
     {
       "queryId": 15,
-      "memoryId": 25024,
+      "memoryId": 265,
       "relevance": 1
     },
     {
       "queryId": 16,
-      "memoryId": 26104,
+      "memoryId": 887,
       "relevance": 3
     },
     {
       "queryId": 16,
-      "memoryId": 27003,
+      "memoryId": 327,
       "relevance": 2
     },
     {
       "queryId": 16,
-      "memoryId": 26176,
+      "memoryId": 363,
       "relevance": 1
     },
     {
       "queryId": 22,
-      "memoryId": 26224,
+      "memoryId": 379,
       "relevance": 3
     },
     {
       "queryId": 22,
-      "memoryId": 26201,
+      "memoryId": 834,
       "relevance": 2
     },
     {
       "queryId": 22,
-      "memoryId": 26204,
+      "memoryId": 377,
       "relevance": 1
     },
     {
       "queryId": 23,
-      "memoryId": 25900,
+      "memoryId": 279,
       "relevance": 3
     },
     {
       "queryId": 23,
-      "memoryId": 25888,
+      "memoryId": 6,
       "relevance": 2
     },
     {
       "queryId": 23,
-      "memoryId": 25610,
+      "memoryId": 75,
       "relevance": 1
     },
     {
       "queryId": 24,
-      "memoryId": 26103,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 24,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 24,
-      "memoryId": 26102,
+      "memoryId": 961,
       "relevance": 1
     },
     {
       "queryId": 25,
-      "memoryId": 26100,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 25,
-      "memoryId": 26103,
+      "memoryId": 989,
       "relevance": 2
     },
     {
       "queryId": 25,
-      "memoryId": 26102,
+      "memoryId": 933,
       "relevance": 1
     },
     {
       "queryId": 26,
-      "memoryId": 26152,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 26,
-      "memoryId": 27260,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 26,
-      "memoryId": 27384,
+      "memoryId": 989,
       "relevance": 1
     },
     {
       "queryId": 27,
-      "memoryId": 26733,
+      "memoryId": 858,
       "relevance": 3
     },
     {
       "queryId": 27,
-      "memoryId": 26237,
+      "memoryId": 291,
       "relevance": 2
     },
     {
       "queryId": 27,
-      "memoryId": 24727,
+      "memoryId": 962,
       "relevance": 1
     },
     {
       "queryId": 28,
-      "memoryId": 26180,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 28,
-      "memoryId": 26113,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 28,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 29,
-      "memoryId": 27720,
+      "memoryId": 923,
       "relevance": 3
     },
     {
       "queryId": 29,
-      "memoryId": 27718,
+      "memoryId": 270,
       "relevance": 2
     },
     {
       "queryId": 29,
-      "memoryId": 27734,
+      "memoryId": 920,
       "relevance": 1
     },
     {
       "queryId": 30,
-      "memoryId": 25864,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 30,
-      "memoryId": 25933,
+      "memoryId": 976,
       "relevance": 2
     },
     {
       "queryId": 30,
-      "memoryId": 26104,
+      "memoryId": 303,
       "relevance": 1
     },
     {
       "queryId": 31,
-      "memoryId": 26103,
+      "memoryId": 961,
       "relevance": 3
     },
     {
       "queryId": 31,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 31,
-      "memoryId": 26181,
+      "memoryId": 327,
       "relevance": 1
     },
     {
       "queryId": 32,
-      "memoryId": 27070,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 32,
-      "memoryId": 26193,
+      "memoryId": 63,
       "relevance": 2
     },
     {
       "queryId": 32,
-      "memoryId": 26870,
+      "memoryId": 363,
       "relevance": 1
     },
     {
       "queryId": 33,
-      "memoryId": 26107,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 33,
-      "memoryId": 26635,
+      "memoryId": 784,
       "relevance": 2
     },
     {
       "queryId": 33,
-      "memoryId": 26109,
+      "memoryId": 776,
       "relevance": 1
     },
     {
       "queryId": 34,
-      "memoryId": 27480,
+      "memoryId": 215,
       "relevance": 3
     },
     {
       "queryId": 34,
-      "memoryId": 27459,
+      "memoryId": 220,
       "relevance": 2
     },
     {
       "queryId": 34,
-      "memoryId": 26867,
+      "memoryId": 917,
       "relevance": 1
     },
     {
       "queryId": 35,
-      "memoryId": 26104,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 35,
-      "memoryId": 26100,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 35,
-      "memoryId": 26109,
+      "memoryId": 327,
       "relevance": 1
     },
     {
       "queryId": 36,
-      "memoryId": 26103,
+      "memoryId": 961,
       "relevance": 3
     },
     {
       "queryId": 36,
-      "memoryId": 26181,
+      "memoryId": 327,
       "relevance": 2
     },
     {
       "queryId": 36,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 37,
-      "memoryId": 27157,
+      "memoryId": 966,
       "relevance": 3
     },
     {
       "queryId": 37,
-      "memoryId": 25866,
+      "memoryId": 834,
       "relevance": 2
     },
     {
       "queryId": 37,
-      "memoryId": 26102,
+      "memoryId": 779,
       "relevance": 1
     },
     {
       "queryId": 38,
-      "memoryId": 26156,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 38,
-      "memoryId": 26506,
+      "memoryId": 791,
       "relevance": 2
     },
     {
       "queryId": 38,
-      "memoryId": 26176,
+      "memoryId": 39,
       "relevance": 1
     },
     {
       "queryId": 39,
-      "memoryId": 26103,
+      "memoryId": 326,
       "relevance": 3
     },
     {
       "queryId": 39,
-      "memoryId": 26100,
+      "memoryId": 85,
       "relevance": 2
     },
     {
       "queryId": 39,
-      "memoryId": 26102,
+      "memoryId": 526,
       "relevance": 1
     },
     {
       "queryId": 40,
-      "memoryId": 26180,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 40,
-      "memoryId": 27260,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 40,
-      "memoryId": 26113,
+      "memoryId": 350,
       "relevance": 1
     },
     {
       "queryId": 41,
-      "memoryId": 26095,
+      "memoryId": 334,
       "relevance": 3
     },
     {
       "queryId": 41,
-      "memoryId": 27390,
+      "memoryId": 323,
       "relevance": 2
     },
     {
       "queryId": 41,
-      "memoryId": 26201,
+      "memoryId": 989,
       "relevance": 1
     },
     {
       "queryId": 42,
-      "memoryId": 26519,
+      "memoryId": 368,
       "relevance": 3
     },
     {
       "queryId": 42,
-      "memoryId": 26187,
+      "memoryId": 769,
       "relevance": 2
     },
     {
       "queryId": 42,
-      "memoryId": 26963,
+      "memoryId": 636,
       "relevance": 1
     },
     {
       "queryId": 43,
-      "memoryId": 26571,
+      "memoryId": 982,
       "relevance": 3
     },
     {
       "queryId": 43,
-      "memoryId": 27592,
+      "memoryId": 760,
       "relevance": 2
     },
     {
       "queryId": 43,
-      "memoryId": 26586,
+      "memoryId": 762,
       "relevance": 1
     },
     {
       "queryId": 44,
-      "memoryId": 26327,
+      "memoryId": 780,
       "relevance": 3
     },
     {
       "queryId": 44,
-      "memoryId": 25002,
+      "memoryId": 781,
       "relevance": 2
     },
     {
       "queryId": 44,
-      "memoryId": 24787,
+      "memoryId": 841,
       "relevance": 1
     },
     {
       "queryId": 45,
-      "memoryId": 26367,
+      "memoryId": 353,
       "relevance": 3
     },
     {
       "queryId": 45,
-      "memoryId": 26387,
+      "memoryId": 359,
       "relevance": 2
     },
     {
       "queryId": 45,
-      "memoryId": 26161,
+      "memoryId": 520,
       "relevance": 1
     },
     {
       "queryId": 46,
-      "memoryId": 26152,
+      "memoryId": 350,
       "relevance": 3
     },
     {
       "queryId": 46,
-      "memoryId": 26108,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 46,
-      "memoryId": 26104,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 47,
-      "memoryId": 27157,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 47,
-      "memoryId": 26201,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 47,
-      "memoryId": 26387,
+      "memoryId": 877,
       "relevance": 1
     },
     {
       "queryId": 48,
-      "memoryId": 27404,
+      "memoryId": 843,
       "relevance": 3
     },
     {
       "queryId": 48,
-      "memoryId": 27480,
+      "memoryId": 990,
       "relevance": 2
     },
     {
       "queryId": 48,
-      "memoryId": 27401,
+      "memoryId": 220,
       "relevance": 1
     },
     {
       "queryId": 49,
-      "memoryId": 26104,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 49,
-      "memoryId": 26103,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 49,
-      "memoryId": 26100,
+      "memoryId": 326,
       "relevance": 1
     },
     {
       "queryId": 50,
-      "memoryId": 27135,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 50,
-      "memoryId": 27125,
+      "memoryId": 98,
       "relevance": 2
     },
     {
       "queryId": 50,
-      "memoryId": 27123,
+      "memoryId": 960,
       "relevance": 1
     },
     {
       "queryId": 51,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 51,
-      "memoryId": 26867,
+      "memoryId": 648,
       "relevance": 2
     },
     {
       "queryId": 51,
-      "memoryId": 26105,
+      "memoryId": 607,
       "relevance": 1
     },
     {
       "queryId": 52,
-      "memoryId": 27135,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 52,
-      "memoryId": 26193,
-      "relevance": 2
-    },
-    {
-      "queryId": 52,
-      "memoryId": 27472,
+      "memoryId": 368,
       "relevance": 1
     },
     {
       "queryId": 53,
-      "memoryId": 27141,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 53,
-      "memoryId": 26103,
+      "memoryId": 784,
       "relevance": 2
     },
     {
       "queryId": 53,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 54,
-      "memoryId": 26183,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 54,
-      "memoryId": 26189,
+      "memoryId": 784,
       "relevance": 2
     },
     {
       "queryId": 54,
-      "memoryId": 27171,
+      "memoryId": 370,
       "relevance": 1
     },
     {
       "queryId": 55,
-      "memoryId": 26704,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 55,
-      "memoryId": 26700,
+      "memoryId": 813,
       "relevance": 2
     },
     {
       "queryId": 55,
-      "memoryId": 27338,
+      "memoryId": 982,
       "relevance": 1
     },
     {
       "queryId": 56,
-      "memoryId": 27344,
+      "memoryId": 321,
       "relevance": 3
     },
     {
       "queryId": 56,
-      "memoryId": 26387,
+      "memoryId": 559,
       "relevance": 2
     },
     {
       "queryId": 56,
-      "memoryId": 25599,
+      "memoryId": 784,
       "relevance": 1
     },
     {
       "queryId": 57,
-      "memoryId": 26103,
+      "memoryId": 780,
       "relevance": 3
     },
     {
       "queryId": 57,
-      "memoryId": 26102,
+      "memoryId": 934,
       "relevance": 2
     },
     {
       "queryId": 57,
-      "memoryId": 26100,
+      "memoryId": 85,
       "relevance": 1
     },
     {
       "queryId": 58,
-      "memoryId": 26193,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 58,
-      "memoryId": 27070,
+      "memoryId": 45,
       "relevance": 2
     },
     {
       "queryId": 58,
-      "memoryId": 26871,
+      "memoryId": 265,
       "relevance": 1
     },
     {
       "queryId": 59,
-      "memoryId": 27404,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 59,
-      "memoryId": 26180,
-      "relevance": 2
-    },
-    {
-      "queryId": 59,
-      "memoryId": 27141,
+      "memoryId": 781,
       "relevance": 1
     },
     {
       "queryId": 60,
-      "memoryId": 27190,
+      "memoryId": 960,
       "relevance": 3
     },
     {
       "queryId": 60,
-      "memoryId": 27157,
+      "memoryId": 161,
       "relevance": 2
     },
     {
       "queryId": 60,
-      "memoryId": 26963,
+      "memoryId": 368,
       "relevance": 1
     },
     {
       "queryId": 61,
-      "memoryId": 25856,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 61,
-      "memoryId": 26108,
+      "memoryId": 350,
       "relevance": 2
     },
     {
       "queryId": 61,
-      "memoryId": 26107,
+      "memoryId": 363,
       "relevance": 1
     },
     {
       "queryId": 62,
-      "memoryId": 24727,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 62,
-      "memoryId": 24761,
+      "memoryId": 990,
       "relevance": 2
     },
     {
       "queryId": 62,
-      "memoryId": 24945,
+      "memoryId": 46,
       "relevance": 1
     },
     {
       "queryId": 63,
-      "memoryId": 27123,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 63,
-      "memoryId": 27127,
-      "relevance": 2
-    },
-    {
-      "queryId": 63,
-      "memoryId": 26193,
+      "memoryId": 368,
       "relevance": 1
     },
     {
       "queryId": 64,
-      "memoryId": 27240,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 64,
-      "memoryId": 26556,
+      "memoryId": 981,
       "relevance": 2
     },
     {
       "queryId": 64,
-      "memoryId": 27205,
+      "memoryId": 197,
       "relevance": 1
     },
     {
       "queryId": 65,
-      "memoryId": 27141,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 65,
-      "memoryId": 27404,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 65,
-      "memoryId": 27123,
+      "memoryId": 784,
       "relevance": 1
     },
     {
       "queryId": 66,
-      "memoryId": 27472,
+      "memoryId": 834,
       "relevance": 3
     },
     {
       "queryId": 66,
-      "memoryId": 25866,
+      "memoryId": 966,
       "relevance": 2
     },
     {
       "queryId": 66,
-      "memoryId": 26256,
+      "memoryId": 836,
       "relevance": 1
     },
     {
       "queryId": 67,
-      "memoryId": 27161,
+      "memoryId": 784,
       "relevance": 3
     },
     {
       "queryId": 67,
-      "memoryId": 27157,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 67,
-      "memoryId": 26635,
+      "memoryId": 776,
       "relevance": 1
     },
     {
       "queryId": 68,
-      "memoryId": 26095,
+      "memoryId": 917,
       "relevance": 3
     },
     {
       "queryId": 68,
-      "memoryId": 26098,
+      "memoryId": 323,
       "relevance": 2
     },
     {
       "queryId": 68,
-      "memoryId": 27084,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 69,
-      "memoryId": 25856,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 69,
-      "memoryId": 25683,
+      "memoryId": 334,
+      "relevance": 2
+    },
+    {
+      "queryId": 69,
+      "memoryId": 989,
       "relevance": 1
     },
     {
       "queryId": 70,
-      "memoryId": 26384,
+      "memoryId": 138,
       "relevance": 3
     },
     {
       "queryId": 70,
-      "memoryId": 26379,
+      "memoryId": 568,
       "relevance": 2
     },
     {
       "queryId": 70,
-      "memoryId": 26372,
+      "memoryId": 99,
       "relevance": 1
     },
     {
       "queryId": 71,
-      "memoryId": 26193,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 71,
-      "memoryId": 26256,
+      "memoryId": 966,
       "relevance": 2
     },
     {
       "queryId": 71,
-      "memoryId": 26254,
+      "memoryId": 518,
       "relevance": 1
     },
     {
       "queryId": 72,
-      "memoryId": 27403,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 72,
-      "memoryId": 25874,
+      "memoryId": 887,
       "relevance": 2
     },
     {
       "queryId": 72,
-      "memoryId": 27344,
+      "memoryId": 46,
       "relevance": 1
     },
     {
       "queryId": 73,
-      "memoryId": 27260,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 73,
-      "memoryId": 26571,
+      "memoryId": 46,
       "relevance": 2
     },
     {
       "queryId": 73,
-      "memoryId": 24727,
+      "memoryId": 345,
       "relevance": 1
     },
     {
       "queryId": 74,
-      "memoryId": 26104,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 74,
-      "memoryId": 26108,
+      "memoryId": 46,
       "relevance": 2
     },
     {
       "queryId": 74,
-      "memoryId": 24727,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 75,
-      "memoryId": 27135,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 75,
-      "memoryId": 26180,
+      "memoryId": 363,
       "relevance": 2
     },
     {
       "queryId": 75,
-      "memoryId": 26189,
+      "memoryId": 960,
       "relevance": 1
     },
     {
       "queryId": 76,
-      "memoryId": 26183,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 76,
-      "memoryId": 26180,
+      "memoryId": 368,
       "relevance": 2
     },
     {
       "queryId": 76,
-      "memoryId": 27061,
+      "memoryId": 366,
       "relevance": 1
     },
     {
       "queryId": 77,
-      "memoryId": 26845,
+      "memoryId": 321,
       "relevance": 3
     },
     {
       "queryId": 77,
-      "memoryId": 27157,
+      "memoryId": 858,
       "relevance": 2
     },
     {
       "queryId": 77,
-      "memoryId": 26048,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 78,
-      "memoryId": 27472,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 78,
-      "memoryId": 26193,
-      "relevance": 2
-    },
-    {
-      "queryId": 78,
-      "memoryId": 27672,
+      "memoryId": 45,
       "relevance": 1
     },
     {
       "queryId": 79,
-      "memoryId": 27260,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 79,
-      "memoryId": 27259,
+      "memoryId": 960,
       "relevance": 2
     },
     {
       "queryId": 79,
-      "memoryId": 27338,
+      "memoryId": 887,
       "relevance": 1
     },
     {
       "queryId": 80,
-      "memoryId": 26176,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 80,
-      "memoryId": 26104,
+      "memoryId": 327,
       "relevance": 2
     },
     {
       "queryId": 80,
-      "memoryId": 26180,
+      "memoryId": 361,
       "relevance": 1
     },
     {
       "queryId": 81,
-      "memoryId": 26184,
+      "memoryId": 767,
       "relevance": 3
     },
     {
       "queryId": 81,
-      "memoryId": 26479,
+      "memoryId": 648,
       "relevance": 2
     },
     {
       "queryId": 81,
-      "memoryId": 24764,
+      "memoryId": 617,
       "relevance": 1
     },
     {
       "queryId": 82,
-      "memoryId": 26104,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 82,
-      "memoryId": 26105,
+      "memoryId": 784,
       "relevance": 2
     },
     {
       "queryId": 82,
-      "memoryId": 26107,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 83,
-      "memoryId": 26519,
+      "memoryId": 634,
       "relevance": 3
     },
     {
       "queryId": 83,
-      "memoryId": 26963,
+      "memoryId": 368,
       "relevance": 2
     },
     {
       "queryId": 83,
-      "memoryId": 26514,
+      "memoryId": 636,
       "relevance": 1
     },
     {
       "queryId": 84,
-      "memoryId": 26367,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 84,
-      "memoryId": 26675,
+      "memoryId": 368,
       "relevance": 2
     },
     {
       "queryId": 84,
-      "memoryId": 27061,
+      "memoryId": 780,
       "relevance": 1
     },
     {
       "queryId": 85,
-      "memoryId": 26193,
-      "relevance": 3
-    },
-    {
-      "queryId": 85,
-      "memoryId": 27135,
-      "relevance": 1
-    },
-    {
-      "queryId": 86,
-      "memoryId": 26103,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 86,
-      "memoryId": 26374,
+      "memoryId": 98,
+      "relevance": 3
+    },
+    {
+      "queryId": 86,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 86,
-      "memoryId": 26104,
+      "memoryId": 340,
       "relevance": 1
     },
     {
       "queryId": 87,
-      "memoryId": 26103,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 87,
-      "memoryId": 26100,
+      "memoryId": 326,
       "relevance": 2
     },
     {
       "queryId": 87,
-      "memoryId": 26176,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 88,
-      "memoryId": 27157,
+      "memoryId": 933,
       "relevance": 3
     },
     {
       "queryId": 88,
-      "memoryId": 26102,
+      "memoryId": 363,
       "relevance": 2
     },
     {
       "queryId": 88,
-      "memoryId": 26769,
+      "memoryId": 161,
       "relevance": 1
     },
     {
       "queryId": 89,
-      "memoryId": 27213,
+      "memoryId": 962,
       "relevance": 3
     },
     {
       "queryId": 89,
-      "memoryId": 26192,
+      "memoryId": 767,
       "relevance": 2
     },
     {
       "queryId": 89,
-      "memoryId": 26184,
+      "memoryId": 345,
       "relevance": 1
     },
     {
       "queryId": 90,
-      "memoryId": 24727,
+      "memoryId": 39,
       "relevance": 3
     },
     {
       "queryId": 90,
-      "memoryId": 24761,
+      "memoryId": 46,
       "relevance": 2
     },
     {
       "queryId": 90,
-      "memoryId": 24945,
+      "memoryId": 215,
       "relevance": 1
     },
     {
       "queryId": 91,
-      "memoryId": 26181,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 91,
-      "memoryId": 26178,
+      "memoryId": 961,
       "relevance": 2
     },
     {
       "queryId": 91,
-      "memoryId": 26101,
+      "memoryId": 960,
       "relevance": 1
     },
     {
       "queryId": 92,
-      "memoryId": 27541,
+      "memoryId": 887,
       "relevance": 3
     },
     {
       "queryId": 92,
-      "memoryId": 25864,
-      "relevance": 2
-    },
-    {
-      "queryId": 92,
-      "memoryId": 24738,
+      "memoryId": 7,
       "relevance": 1
     },
     {
       "queryId": 93,
-      "memoryId": 26104,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 93,
-      "memoryId": 26103,
+      "memoryId": 961,
       "relevance": 2
     },
     {
       "queryId": 93,
-      "memoryId": 26181,
+      "memoryId": 330,
       "relevance": 1
     },
     {
       "queryId": 94,
-      "memoryId": 26103,
+      "memoryId": 327,
       "relevance": 3
     },
     {
       "queryId": 94,
-      "memoryId": 26100,
+      "memoryId": 330,
       "relevance": 2
     },
     {
       "queryId": 94,
-      "memoryId": 26104,
+      "memoryId": 334,
       "relevance": 1
     },
     {
       "queryId": 95,
-      "memoryId": 26103,
+      "memoryId": 823,
       "relevance": 3
     },
     {
       "queryId": 95,
-      "memoryId": 26102,
+      "memoryId": 327,
       "relevance": 2
     },
     {
       "queryId": 95,
-      "memoryId": 26100,
+      "memoryId": 933,
       "relevance": 1
     },
     {
       "queryId": 96,
-      "memoryId": 26108,
+      "memoryId": 330,
       "relevance": 3
     },
     {
       "queryId": 96,
-      "memoryId": 26867,
+      "memoryId": 334,
       "relevance": 2
     },
     {
       "queryId": 96,
-      "memoryId": 26963,
+      "memoryId": 363,
       "relevance": 1
     },
     {
       "queryId": 97,
-      "memoryId": 26113,
+      "memoryId": 960,
       "relevance": 3
     },
     {
       "queryId": 97,
-      "memoryId": 27141,
+      "memoryId": 363,
       "relevance": 2
     },
     {
       "queryId": 97,
-      "memoryId": 27135,
+      "memoryId": 785,
       "relevance": 1
     },
     {
       "queryId": 98,
-      "memoryId": 25599,
+      "memoryId": 370,
       "relevance": 3
     },
     {
       "queryId": 98,
-      "memoryId": 26945,
+      "memoryId": 368,
       "relevance": 2
     },
     {
       "queryId": 98,
-      "memoryId": 26183,
+      "memoryId": 366,
       "relevance": 1
     },
     {
       "queryId": 99,
-      "memoryId": 25599,
+      "memoryId": 843,
       "relevance": 3
     },
     {
       "queryId": 99,
-      "memoryId": 26225,
+      "memoryId": 102,
       "relevance": 2
     },
     {
       "queryId": 99,
-      "memoryId": 26189,
+      "memoryId": 370,
       "relevance": 1
     },
     {
       "queryId": 100,
-      "memoryId": 27404,
+      "memoryId": 370,
       "relevance": 3
     },
     {
       "queryId": 100,
-      "memoryId": 27374,
+      "memoryId": 368,
       "relevance": 2
     },
     {
       "queryId": 100,
-      "memoryId": 27373,
+      "memoryId": 369,
       "relevance": 1
     },
     {
       "queryId": 101,
-      "memoryId": 26176,
+      "memoryId": 361,
       "relevance": 3
     },
     {
       "queryId": 101,
-      "memoryId": 26103,
+      "memoryId": 327,
       "relevance": 2
     },
     {
       "queryId": 101,
-      "memoryId": 26100,
+      "memoryId": 933,
       "relevance": 1
     },
     {
       "queryId": 102,
-      "memoryId": 27161,
+      "memoryId": 363,
       "relevance": 3
     },
     {
       "queryId": 102,
-      "memoryId": 26189,
+      "memoryId": 858,
       "relevance": 2
     },
     {
       "queryId": 102,
-      "memoryId": 27398,
+      "memoryId": 369,
       "relevance": 1
     },
     {
       "queryId": 109,
-      "memoryId": 26596,
+      "memoryId": 765,
       "relevance": 3
     },
     {
       "queryId": 109,
-      "memoryId": 26591,
+      "memoryId": 984,
       "relevance": 2
     },
     {
       "queryId": 109,
-      "memoryId": 26242,
+      "memoryId": 515,
       "relevance": 1
     },
     {
       "queryId": 110,
-      "memoryId": 25864,
+      "memoryId": 776,
       "relevance": 3
     },
     {
       "queryId": 110,
-      "memoryId": 27116,
+      "memoryId": 962,
       "relevance": 2
     },
     {
       "queryId": 110,
-      "memoryId": 26193,
+      "memoryId": 45,
       "relevance": 1
     }
   ]
