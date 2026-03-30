@@ -73,8 +73,11 @@ const STATE_LIMITS: Record<string, number> = {
   ARCHIVED: 5,
 };
 
-/** Fallback priority for unknown/missing memoryState values. */
-const UNKNOWN_STATE_PRIORITY = 0;
+/** Fallback priority for unknown/missing memoryState values.
+ * Set above HOT (5) so UNKNOWN memories always pass state filters.
+ * memoryState column doesn't exist yet — all memories are UNKNOWN.
+ * Reset to 0 when the TRM state column is implemented. */
+const UNKNOWN_STATE_PRIORITY = 6;
 
 function normalizeStateValue(state: unknown): string | null {
   if (typeof state !== 'string') {
