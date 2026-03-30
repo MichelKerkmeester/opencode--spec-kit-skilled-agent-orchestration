@@ -1,0 +1,23 @@
+{
+  "name": "@spec-kit/shared",
+  "version": "1.7.2",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./embeddings": "./dist/embeddings.js",
+    "./*.js": "./dist/*.js",
+    "./*": "./dist/*.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "test": "echo 'No tests in shared workspace'"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1"
+  }
+}

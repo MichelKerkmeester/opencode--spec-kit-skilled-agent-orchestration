@@ -16,7 +16,7 @@
 // Fields (score, rrfScore, similarity, intentAdjustedScore). It only
 // Adds the `validationMetadata` key to enriched rows.
 
-import type { PipelineRow } from './pipeline/types';
+import type { PipelineRow } from './pipeline/types.js';
 
 // -- Constants --
 

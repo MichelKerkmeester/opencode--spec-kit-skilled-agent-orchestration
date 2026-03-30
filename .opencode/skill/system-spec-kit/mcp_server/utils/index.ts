@@ -17,7 +17,7 @@ export {
   validateInputLengths,
   createFilePathValidator,
   getDefaultAllowedPaths,
-} from './validators';
+} from './validators.js';
 
 export {
   // Types
@@ -27,7 +27,7 @@ export {
   safeJsonParse,
   safeJsonStringify,
   safeJsonParseTyped,
-} from './json-helpers';
+} from './json-helpers.js';
 
 export {
   // Types
@@ -45,15 +45,15 @@ export {
   processWithRetry,
   processBatches,
   processSequentially,
-} from './batch-processor';
+} from './batch-processor.js';
 
 export {
   // Functions
   requireDb,
   toErrorMessage,
-} from './db-helpers';
+} from './db-helpers.js';
 
 export {
   // Functions
   validateToolInputSchema,
-} from './tool-input-schema';
+} from './tool-input-schema.js';

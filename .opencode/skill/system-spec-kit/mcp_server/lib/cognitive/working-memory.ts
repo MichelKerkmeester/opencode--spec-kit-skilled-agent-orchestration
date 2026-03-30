@@ -10,7 +10,7 @@
 // The T214/T008 decay/delete separation (floor=0.05, deleteThreshold=0.01)
 // Ensures stable resting state and explicit low-score eviction.
 import type Database from 'better-sqlite3';
-import { isFeatureEnabled } from './rollout-policy';
+import { isFeatureEnabled } from './rollout-policy.js';
 
 // Feature catalog: Tool-result extraction to working memory
 // Feature catalog: Working Memory Session Cleanup Timestamp Fix

@@ -37,12 +37,12 @@ Migrate `@spec-kit/shared` from inherited CommonJS to package-local native ESM. 
 
 ### Definition of Ready
 - [x] Research locked the strategy in `../research/research.md`
-- [x] `shared` baseline confirmed: no `"type"` field, inherits root CJS compiler settings, 54 extensionless relative imports
+- [x] `shared` baseline confirmed: no `"type"` field, inherits root CJS compiler settings, 48 extensionless relative imports
 
 ### Definition of Done
 - [ ] `shared/package.json` declares `"type": "module"` with valid `exports`
 - [ ] `shared/tsconfig.json` uses `nodenext` module/resolution settings
-- [ ] All relative imports in `shared/src/**/*.ts` use `.js` specifiers
+- [ ] All relative imports in `shared/**/*.ts` use `.js` specifiers (no `src/` dir — source at package root)
 - [ ] `npm run build --workspace=@spec-kit/shared` exits 0
 - [ ] Emitted `shared/dist/*.js` contains ESM syntax (not CJS wrappers)
 <!-- /ANCHOR:quality-gates -->
@@ -58,10 +58,10 @@ Package-local ESM override within an npm workspace that still has a CommonJS roo
 ### Key Components
 - **`shared/package.json`**: Package metadata declaring ESM contract
 - **`shared/tsconfig.json`**: Compiler settings emitting native ESM
-- **`shared/src/**/*.ts`**: Source files with runtime-valid ESM specifiers
+- **`shared/**/*.ts`**: Source files with runtime-valid ESM specifiers
 
 ### Data Flow
-`shared/src/*.ts` (ESM imports with `.js` specifiers) -> TypeScript compiler (nodenext) -> `shared/dist/*.js` (native ESM output) -> consumed by `mcp_server` (Phase 2) and `scripts` (Phase 3)
+`shared/*.ts` (ESM imports with `.js` specifiers) -> TypeScript compiler (nodenext) -> `shared/dist/*.js` (native ESM output) -> consumed by `mcp_server` (Phase 2) and `scripts` (Phase 3)
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -80,7 +80,7 @@ Package-local ESM override within an npm workspace that still has a CommonJS roo
 - [ ] Verify the config overrides root CJS baseline correctly
 
 ### Step 3: Import Specifier Rewrites
-- [ ] Rewrite all relative imports in `shared/src/**/*.ts` to use `.js` extensions
+- [ ] Rewrite all relative imports in `shared/**/*.ts` to use `.js` extensions
 - [ ] Rewrite all re-exports to use `.js` extensions
 - [ ] Verify no extensionless relative imports remain in non-test files
 
@@ -99,7 +99,7 @@ Package-local ESM override within an npm workspace that still has a CommonJS roo
 |-----------|-------|-----------------|
 | Build | `shared` package compiles | `npm run build --workspace=@spec-kit/shared` |
 | Output inspection | Emitted JS is ESM | Manual check of `shared/dist/*.js` for `import`/`export` syntax |
-| Specifier audit | No extensionless relative imports | `grep -rn "from '\.\." shared/src/ --include="*.ts"` shows all use `.js` |
+| Specifier audit | No extensionless relative imports | `grep -rn "from '\.\." shared/ --include="*.ts"` shows all use `.js` |
 <!-- /ANCHOR:testing -->
 
 ---

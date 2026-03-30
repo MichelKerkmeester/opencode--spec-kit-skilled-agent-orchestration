@@ -9,15 +9,15 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
-import { getCanonicalPathKey } from '../utils/canonical-path';
-import { extractSpecFolder } from '../parsing/memory-parser';
-import { createLogger } from '../utils/logger';
-import { initEmbeddingCache } from '../cache/embedding-cache';
+import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { extractSpecFolder } from '../parsing/memory-parser.js';
+import { createLogger } from '../utils/logger.js';
+import { initEmbeddingCache } from '../cache/embedding-cache.js';
 import {
   get_error_message,
-} from './vector-index-types';
-import { init as initHistory } from '../storage/history';
-import { getSpecsBasePaths } from './folder-discovery';
+} from './vector-index-types.js';
+import { init as initHistory } from '../storage/history.js';
+import { getSpecsBasePaths } from './folder-discovery.js';
 
 // Feature catalog: Database and schema safety
 // Feature catalog: Lineage state active projection and asOf resolution

@@ -1,4 +1,4 @@
-import { isWorkingArtifactPath } from '../config/spec-doc-paths';
+import { isWorkingArtifactPath } from '../config/spec-doc-paths.js';
 
 // ───────────────────────────────────────────────────────────────
 // MODULE: Document Helpers

@@ -8,14 +8,17 @@ import {
   handleCheckpointList,
   handleCheckpointRestore,
   handleCheckpointDelete,
-} from '../handlers';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
+} from '../handlers/index.js';
+import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
-import {
-  MCPResponse, parseArgs,
-  CheckpointCreateArgs, CheckpointListArgs,
-  CheckpointRestoreArgs, CheckpointDeleteArgs,
-} from './types';
+import { parseArgs } from './types.js';
+import type {
+  MCPResponse,
+  CheckpointCreateArgs,
+  CheckpointListArgs,
+  CheckpointRestoreArgs,
+  CheckpointDeleteArgs,
+} from './types.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([

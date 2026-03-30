@@ -6,24 +6,24 @@
    1. LIB MODULE IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as vectorIndex from '../lib/search/vector-index';
-import * as bm25Index from '../lib/search/bm25-index';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as confidenceTracker from '../lib/scoring/confidence-tracker';
-import { executeAutoPromotion } from '../lib/search/auto-promotion';
-import { recordSelection } from '../lib/search/learned-feedback';
-import { recordUserSelection } from '../lib/eval/ground-truth-feedback';
-import { recordNegativeFeedbackEvent } from '../lib/scoring/negative-feedback';
-import { recordAdaptiveSignal } from '../lib/cognitive/adaptive-ranking';
-import { checkDatabaseUpdated } from '../core';
-import { requireDb, toErrorMessage } from '../utils';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as bm25Index from '../lib/search/bm25-index.js';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import * as confidenceTracker from '../lib/scoring/confidence-tracker.js';
+import { executeAutoPromotion } from '../lib/search/auto-promotion.js';
+import { recordSelection } from '../lib/search/learned-feedback.js';
+import { recordUserSelection } from '../lib/eval/ground-truth-feedback.js';
+import { recordNegativeFeedbackEvent } from '../lib/scoring/negative-feedback.js';
+import { recordAdaptiveSignal } from '../lib/cognitive/adaptive-ranking.js';
+import { checkDatabaseUpdated } from '../core/index.js';
+import { requireDb, toErrorMessage } from '../utils/index.js';
 
 // REQ-019: Standardized Response Structure
-import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope.js';
 
 // Shared handler types
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 
 // Feature catalog: Checkpoint creation (checkpoint_create)
 // Feature catalog: Checkpoint listing (checkpoint_list)

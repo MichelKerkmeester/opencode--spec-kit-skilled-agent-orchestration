@@ -9,16 +9,16 @@
 import { randomUUID } from 'node:crypto';
 import * as fs from 'fs';
 
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import * as folderScoring from '../lib/scoring/folder-scoring';
-import type { FolderMemoryInput } from '../lib/scoring/folder-scoring';
-import { getGraphMetrics } from '../lib/search/hybrid-search';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as folderScoring from '../lib/scoring/folder-scoring.js';
+import type { FolderMemoryInput } from '../lib/scoring/folder-scoring.js';
+import { getGraphMetrics } from '../lib/search/hybrid-search.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import type { MCPResponse } from './types';
-import type { StatsArgs } from './memory-crud-types';
+import type { MCPResponse } from './types.js';
+import type { StatsArgs } from './memory-crud-types.js';
 
 // Feature catalog: System statistics (memory_stats)
 

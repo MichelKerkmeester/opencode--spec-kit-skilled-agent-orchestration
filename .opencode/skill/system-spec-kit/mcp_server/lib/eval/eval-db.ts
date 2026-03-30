@@ -20,7 +20,7 @@ import Database from 'better-sqlite3';
 const DEFAULT_DB_DIR: string =
   process.env.SPEC_KIT_DB_DIR ||
   process.env.MEMORY_DB_DIR ||
-  path.resolve(__dirname, '../../database');
+  path.resolve(import.meta.dirname, '../../database');
 
 const EVAL_DB_FILENAME = 'speckit-eval.db';
 

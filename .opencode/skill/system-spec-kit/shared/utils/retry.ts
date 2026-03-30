@@ -4,7 +4,7 @@
 // Canonical location (moved from mcp_server/lib/utils/retry.js)
 // ---------------------------------------------------------------
 
-import type { RetryConfig, ErrorClassification, RetryOptions, RetryAttemptLogEntry } from '../types';
+import type { RetryConfig, ErrorClassification, RetryOptions, RetryAttemptLogEntry } from '../types.js';
 
 // ---------------------------------------------------------------
 // 1. CONFIGURATION

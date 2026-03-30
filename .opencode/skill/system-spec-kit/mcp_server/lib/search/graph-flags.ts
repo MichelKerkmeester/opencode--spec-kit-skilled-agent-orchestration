@@ -4,11 +4,12 @@
 // Feature catalog: Typed-weighted degree channel
 // Legacy compatibility shim retained for test/runtime imports.
 
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 import {
   resolveGraphWalkRolloutState,
   type GraphWalkRolloutState,
-} from './search-flags';
+  isTypedTraversalEnabled as resolveTypedTraversalFlag,
+} from './search-flags.js';
 
 /**
  * Unified graph channel gate (default-on, explicit opt-out with `'false'`).
@@ -39,4 +40,11 @@ export function isGraphWalkTraceEnabled(): boolean {
  */
 export function isGraphWalkRuntimeEnabled(): boolean {
   return getGraphWalkRolloutState() === 'bounded_runtime';
+}
+
+/**
+ * Legacy export shim for the typed traversal rollout flag.
+ */
+export function isTypedTraversalEnabled(): boolean {
+  return resolveTypedTraversalFlag();
 }

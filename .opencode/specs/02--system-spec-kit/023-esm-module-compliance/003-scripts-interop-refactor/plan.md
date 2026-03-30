@@ -57,9 +57,9 @@ Refactor `@spec-kit/scripts` to cross the CJS-to-ESM boundary with explicit `imp
 CommonJS package with explicit async `import()` bridges to ESM sibling packages.
 
 ### Key Components
-- **`scripts/src/lib/esm-interop.ts`**: Central interop helper providing typed `import()` wrappers
-- **`scripts/src/memory/generate-context.ts`**: Primary CLI consumer of shared/mcp-server APIs
-- **`scripts/src/core/workflow.ts`**: Core workflow engine consuming shared utilities
+- **`scripts/lib/esm-interop.ts`**: Central interop helper providing typed `import()` wrappers
+- **`scripts/memory/generate-context.ts`**: Primary CLI consumer of shared/mcp-server APIs
+- **`scripts/core/workflow.ts`**: Core workflow engine consuming shared utilities
 - **`scripts/tests/`**: Module-sensitive and interop-specific test suites
 
 ### Data Flow
@@ -72,12 +72,12 @@ CommonJS package with explicit async `import()` bridges to ESM sibling packages.
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Create Interop Helper
-- [ ] Create `scripts/src/lib/esm-interop.ts` with typed dynamic `import()` wrappers
+- [ ] Create `scripts/lib/esm-interop.ts` with typed dynamic `import()` wrappers
 - [ ] Export helper functions for `@spec-kit/shared` and `@spec-kit/mcp-server/api*` surfaces
 - [ ] Handle async loading pattern (Promise-based)
 
 ### Step 2: Refactor Scripts-Side Consumers
-- [ ] Audit all 38 scripts files that consume ESM siblings
+- [ ] Audit all 20 scripts files that consume ESM siblings
 - [ ] Replace `require('@spec-kit/shared/...')` with interop helper calls
 - [ ] Replace `require('@spec-kit/mcp-server/api...')` with interop helper calls
 - [ ] Ensure all call sites correctly `await` the async import results

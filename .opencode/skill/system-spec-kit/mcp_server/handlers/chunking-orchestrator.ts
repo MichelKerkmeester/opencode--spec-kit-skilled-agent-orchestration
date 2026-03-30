@@ -4,25 +4,25 @@
 
 import type BetterSqlite3 from 'better-sqlite3';
 
-import * as vectorIndex from '../lib/search/vector-index';
-import * as embeddings from '../lib/providers/embeddings';
-import * as bm25Index from '../lib/search/bm25-index';
-import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler';
-import * as incrementalIndex from '../lib/storage/incremental-index';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as toolCache from '../lib/cache/tool-cache';
-import { classifyEncodingIntent } from '../lib/search/encoding-intent';
-import { isEncodingIntentEnabled } from '../lib/search/search-flags';
-import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache';
-import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer';
-import { needsChunking, chunkLargeFile } from '../lib/chunking/anchor-chunker';
-import { thinChunks } from '../lib/chunking/chunk-thinning';
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
-import { requireDb, toErrorMessage } from '../utils';
-import { recordHistory } from '../lib/storage/history';
-import { appendMutationLedgerSafe } from './memory-crud-utils';
-import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating';
-import { detectSpecLevelFromParsed } from './handler-utils';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as embeddings from '../lib/providers/embeddings.js';
+import * as bm25Index from '../lib/search/bm25-index.js';
+import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler.js';
+import * as incrementalIndex from '../lib/storage/incremental-index.js';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
+import * as toolCache from '../lib/cache/tool-cache.js';
+import { classifyEncodingIntent } from '../lib/search/encoding-intent.js';
+import { isEncodingIntentEnabled } from '../lib/search/search-flags.js';
+import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache.js';
+import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer.js';
+import { needsChunking, chunkLargeFile } from '../lib/chunking/anchor-chunker.js';
+import { thinChunks } from '../lib/chunking/chunk-thinning.js';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { requireDb, toErrorMessage } from '../utils/index.js';
+import { recordHistory } from '../lib/storage/history.js';
+import { appendMutationLedgerSafe } from './memory-crud-utils.js';
+import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating.js';
+import { detectSpecLevelFromParsed } from './handler-utils.js';
 
 // Feature catalog: Chunking Orchestrator Safe Swap
 // Feature catalog: Memory indexing (memory_save)

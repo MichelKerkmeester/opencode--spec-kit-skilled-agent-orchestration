@@ -25,20 +25,20 @@
 //
 // Score changes: YES
 
-import { resolveEffectiveScore } from './types';
-import type { Stage3Input, Stage3Output, PipelineRow } from './types';
-import * as crossEncoder from '../cross-encoder';
-import { rerankLocal } from '../local-reranker';
-import { isCrossEncoderEnabled, isMMREnabled, isLocalRerankerEnabled } from '../search-flags';
-import { computeMPAB } from '../../scoring/mpab-aggregation';
+import { resolveEffectiveScore } from './types.js';
+import type { Stage3Input, Stage3Output, PipelineRow } from './types.js';
+import * as crossEncoder from '../cross-encoder.js';
+import { rerankLocal } from '../local-reranker.js';
+import { isCrossEncoderEnabled, isMMREnabled, isLocalRerankerEnabled } from '../search-flags.js';
+import { computeMPAB } from '../../scoring/mpab-aggregation.js';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
-import { INTENT_LAMBDA_MAP } from '../intent-classifier';
+import { INTENT_LAMBDA_MAP } from '../intent-classifier.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
-import { requireDb } from '../../../utils';
-import { toErrorMessage } from '../../../utils';
+import { requireDb } from '../../../utils/index.js';
+import { toErrorMessage } from '../../../utils/index.js';
 import type Database from 'better-sqlite3';
-import { compareDeterministicRows, sortDeterministicRows } from './ranking-contract';
+import { compareDeterministicRows, sortDeterministicRows } from './ranking-contract.js';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline

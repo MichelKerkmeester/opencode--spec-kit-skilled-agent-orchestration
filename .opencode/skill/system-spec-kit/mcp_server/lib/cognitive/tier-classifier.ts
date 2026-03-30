@@ -8,7 +8,7 @@
 import {
   FSRS_HALF_LIFE_FACTOR,
   calculateRetrievability as calculateFsrsRetrievability
-} from './fsrs-scheduler';
+} from './fsrs-scheduler.js';
 import type { MemoryDbRow } from '@spec-kit/shared/types';
 
 /**
@@ -107,23 +107,47 @@ interface StateStats {
 
 // Lazy-load memory types to avoid circular dependencies
 let memoryTypesModule: Record<string, unknown> | false | null = null;
+let memoryTypesModulePromise: Promise<Record<string, unknown> | false> | null = null;
+
+async function loadMemoryTypesModule(): Promise<Record<string, unknown> | false> {
+  if (memoryTypesModule !== null) {
+    return memoryTypesModule;
+  }
+  if (memoryTypesModulePromise !== null) {
+    return memoryTypesModulePromise;
+  }
+
+  const loadPromise = (async (): Promise<Record<string, unknown> | false> => {
+    try {
+      memoryTypesModule = await import('../config/memory-types.js');
+      return memoryTypesModule;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn('[tier-classifier] memory-types module not available:', msg);
+      memoryTypesModule = false;
+      return false;
+    }
+  })();
+
+  memoryTypesModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (memoryTypesModulePromise === loadPromise) {
+      memoryTypesModulePromise = null;
+    }
+  }
+}
 
 /** Get memory types module (lazy loaded) */
 function getMemoryTypesModule(): Record<string, unknown> | null {
   if (memoryTypesModule !== null) {
     return memoryTypesModule || null;
   }
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    memoryTypesModule = require('../config/memory-types');
-    return memoryTypesModule as Record<string, unknown>;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn('[tier-classifier] memory-types module not available:', msg);
-    memoryTypesModule = false;
-    return null;
+  if (memoryTypesModulePromise === null) {
+    void loadMemoryTypesModule();
   }
+  return null;
 }
 
 /**
@@ -151,8 +175,8 @@ function getEffectiveHalfLife(memory: TierInput | null | undefined): number | nu
       const getHalfLife = (typesModule as Record<string, unknown>).getHalfLifeForType;
       if (typeof getHalfLife === 'function') {
         const halfLife = getHalfLife(memoryType);
-        if (halfLife !== null && halfLife !== undefined) {
-          return halfLife as number;
+        if (typeof halfLife === 'number' && Number.isFinite(halfLife) && halfLife > 0) {
+          return halfLife;
         }
       }
     }
@@ -363,13 +387,17 @@ function filterAndLimitByState<T extends TierInput>(
   targetState: TierState | null = null,
   limit: number = 20
 ): T[] {
-  let classified = memories.map(m => ({
-    ...m,
-    _classification: classifyTier(m),
+  type ClassifiedEntry = {
+    memory: T;
+    classification: ReturnType<typeof classifyTier>;
+  };
+  let classified: ClassifiedEntry[] = memories.map((memory) => ({
+    memory,
+    classification: classifyTier(memory),
   }));
 
   if (targetState) {
-    classified = classified.filter(m => m._classification.state === targetState);
+    classified = classified.filter((entry) => entry.classification.state === targetState);
   }
 
   // Apply per-tier limits with overflow redistribution
@@ -378,9 +406,9 @@ function filterAndLimitByState<T extends TierInput>(
     const byTier: Record<TierState, typeof classified> = {
       HOT: [], WARM: [], COLD: [], DORMANT: [], ARCHIVED: [],
     };
-    for (const m of classified) {
-      const state = m._classification.state;
-      byTier[state].push(m);
+    for (const entry of classified) {
+      const state = entry.classification.state;
+      byTier[state].push(entry);
     }
 
     // Calculate surplus slots from under-filled tiers
@@ -413,7 +441,7 @@ function filterAndLimitByState<T extends TierInput>(
     classified = result;
   }
 
-  return classified.slice(0, limit).map(({ _classification, ...rest }) => rest as unknown as T);
+  return classified.slice(0, limit).map((entry) => entry.memory);
 }
 
 /**

@@ -11,7 +11,7 @@
  * compatible with both raw RRF scores and normalized [0,1] scores. */
 
 // Feature catalog: Channel min-representation
-import { isChannelMinRepEnabled } from './search-flags';
+import { isChannelMinRepEnabled } from './search-flags.js';
 
 export const QUALITY_FLOOR = 0.005;
 

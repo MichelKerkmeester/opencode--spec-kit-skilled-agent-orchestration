@@ -6,10 +6,10 @@
 import * as fsPromises from 'fs/promises';
 
 // Internal modules
-import * as vectorIndex from '../search/vector-index';
-import { computeContentHash, lookupEmbedding, storeEmbedding } from '../cache/embedding-cache';
-import { normalizeContentForEmbedding } from '../parsing/content-normalizer';
-import { generateDocumentEmbedding, getEmbeddingDimension, getModelName } from './embeddings';
+import * as vectorIndex from '../search/vector-index.js';
+import { computeContentHash, lookupEmbedding, storeEmbedding } from '../cache/embedding-cache.js';
+import { normalizeContentForEmbedding } from '../parsing/content-normalizer.js';
+import { generateDocumentEmbedding, getEmbeddingDimension, getModelName } from './embeddings.js';
 
 // Type imports
 import type { MemoryDbRow } from '@spec-kit/shared/types';

@@ -2,15 +2,15 @@
 // MODULE: Index
 // ───────────────────────────────────────────────────────────────
 // Re-exports all tool dispatch modules for context-server (T303).
-import * as contextTools from './context-tools';
-import * as memoryTools from './memory-tools';
-import * as causalTools from './causal-tools';
-import * as checkpointTools from './checkpoint-tools';
-import * as lifecycleTools from './lifecycle-tools';
+import * as contextTools from './context-tools.js';
+import * as memoryTools from './memory-tools.js';
+import * as causalTools from './causal-tools.js';
+import * as checkpointTools from './checkpoint-tools.js';
+import * as lifecycleTools from './lifecycle-tools.js';
 
 export { contextTools, memoryTools, causalTools, checkpointTools, lifecycleTools };
 
-export type { MCPResponse } from './types';
+export type { MCPResponse } from './types.js';
 
 /** All tool dispatch modules in priority order */
 export const ALL_DISPATCHERS = [
@@ -25,7 +25,7 @@ export const ALL_DISPATCHERS = [
 export async function dispatchTool(
   name: string,
   args: Record<string, unknown>,
-): Promise<import('./types').MCPResponse | null> {
+): Promise<import('./types.js').MCPResponse | null> {
   for (const dispatcher of ALL_DISPATCHERS) {
     if (dispatcher.TOOL_NAMES.has(name)) {
       return dispatcher.handleTool(name, args);

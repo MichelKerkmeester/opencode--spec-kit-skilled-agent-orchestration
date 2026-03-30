@@ -490,6 +490,37 @@ More content follows.
       expect(result.content_hash).toBeTruthy();
     });
 
+    it('filters exact duplicates by governed scope when scope values are provided', () => {
+      const testContent = 'Tenant scoped duplicate';
+      const contentHash = preflight.computeContentHash(testContent);
+      const mockDatabase = {
+        prepare: (sql: string) => ({
+          get: (...params: unknown[]) => {
+            expect(sql).toContain('tenant_id = ?');
+            expect(sql).toContain('user_id = ?');
+            expect(params).toEqual([contentHash, 'tenant-a', 'user-a']);
+            return {
+              id: 51,
+              file_path: '/specs/test/memory/scoped.md',
+              tenant_id: 'tenant-a',
+              user_id: 'user-a',
+              agent_id: null,
+              shared_space_id: null,
+            };
+          }
+        })
+      };
+
+      const result = preflight.checkDuplicate(
+        { content: testContent, database: mockDatabase, tenantId: 'tenant-a', userId: 'user-a' } as unknown as DuplicateParams,
+        { check_exact: true }
+      );
+
+      expect(result.isDuplicate).toBe(true);
+      expect(result.existing_path).toBe('/specs/test/memory/scoped.md');
+      expect(result.redactedForScope).toBe(false);
+    });
+
     it('T164: similar duplicate match via vector', () => {
       const testContent = 'Test memory content for similarity detection';
       const mockEmbedding = new Float32Array([0.1, 0.2, 0.3, 0.4, 0.5]);
@@ -534,6 +565,39 @@ More content follows.
 
       expect(result.isDuplicate).toBe(false);
       expect(result.duplicate_type).toBeNull();
+    });
+
+    it('redacts duplicate metadata when similar match belongs to a different scope', () => {
+      const result = preflight.checkDuplicate(
+        {
+          content: 'Cross-scope similar memory',
+          embedding: new Float32Array([0.1, 0.2, 0.3]),
+          tenantId: 'tenant-a',
+          find_similar: () => [
+            {
+              id: 101,
+              file_path: '/specs/test/memory/other-scope.md',
+              similarity: 0.96,
+              tenant_id: 'tenant-b',
+              user_id: null,
+              agent_id: null,
+              shared_space_id: null,
+            }
+          ],
+        },
+        { check_exact: false, check_similar: true, similarity_threshold: 0.95 }
+      );
+
+      expect(result.isDuplicate).toBe(true);
+      expect(result.duplicate_type).toBe('similar');
+      expect(result.existing_path).toBeNull();
+      expect(result.redactedForScope).toBe(true);
+      expect(result.existing_scope).toEqual({
+        tenantId: 'tenant-b',
+        userId: null,
+        agentId: null,
+        sharedSpaceId: null,
+      });
     });
   });
 

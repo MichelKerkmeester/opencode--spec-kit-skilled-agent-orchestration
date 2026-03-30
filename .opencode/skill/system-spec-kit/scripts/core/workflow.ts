@@ -9,7 +9,6 @@
 // Node stdlib
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
-
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
 import {
@@ -57,7 +56,6 @@ import {
   extractFileChanges,
 } from '../lib/semantic-summarizer';
 import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
-import { retryManager } from '@spec-kit/mcp-server/api/providers';
 import {
   evaluateMemorySufficiency,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
@@ -178,6 +176,85 @@ function insertAfterFrontmatter(content: string, insertion: string): string {
   return content.slice(0, insertionPoint) + insertion + content.slice(insertionPoint);
 }
 
+type WorkflowRetryStats = {
+  queue_size: number;
+};
+
+type WorkflowRetryBatchResult = {
+  processed: number;
+  succeeded: number;
+  failed: number;
+};
+
+interface WorkflowRetryManagerAdapter {
+  getRetryStats(): WorkflowRetryStats;
+  processRetryQueue(limit?: number): Promise<WorkflowRetryBatchResult>;
+}
+
+const FALLBACK_RETRY_MANAGER: WorkflowRetryManagerAdapter = {
+  getRetryStats: () => ({ queue_size: 0 }),
+  processRetryQueue: async () => ({ processed: 0, succeeded: 0, failed: 0 }),
+};
+
+/**
+ * Shared helper for dynamic MCP-server API imports with consistent degradation.
+ * All call sites log warnings on failure and return the provided fallback.
+ */
+async function tryImportMcpApi(specifier: string): Promise<any | null> {
+  try {
+    return await import(specifier);
+  } catch (err: unknown) {
+    console.warn(`[workflow] Failed to import ${specifier}: ${err instanceof Error ? err.message : String(err)}`);
+    return null;
+  }
+}
+
+let workflowRetryManagerPromise: Promise<WorkflowRetryManagerAdapter> | null = null;
+let workflowRetryManagerLoadError: string | null = null;
+
+function isWorkflowRetryManagerAdapter(value: unknown): value is WorkflowRetryManagerAdapter {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Partial<WorkflowRetryManagerAdapter>;
+  return (
+    typeof candidate.getRetryStats === 'function' &&
+    typeof candidate.processRetryQueue === 'function'
+  );
+}
+
+async function loadWorkflowRetryManagerModule(): Promise<WorkflowRetryManagerAdapter> {
+  try {
+    const module = await import('@spec-kit/mcp-server/api/providers');
+    const candidate = (module as { retryManager?: unknown }).retryManager;
+    if (isWorkflowRetryManagerAdapter(candidate)) {
+      workflowRetryManagerLoadError = null;
+      return candidate;
+    }
+
+    workflowRetryManagerLoadError = 'Provider retryManager export is missing required methods';
+    return FALLBACK_RETRY_MANAGER;
+  } catch (error: unknown) {
+    workflowRetryManagerLoadError = error instanceof Error ? error.message : String(error);
+    return FALLBACK_RETRY_MANAGER;
+  }
+}
+
+async function loadWorkflowRetryManager(): Promise<WorkflowRetryManagerAdapter> {
+  if (!workflowRetryManagerPromise) {
+    workflowRetryManagerPromise = loadWorkflowRetryManagerModule();
+  }
+
+  return workflowRetryManagerPromise;
+}
+
+function consumeWorkflowRetryManagerLoadError(): string | null {
+  const loadError = workflowRetryManagerLoadError;
+  workflowRetryManagerLoadError = null;
+  return loadError;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFACES
 // ───────────────────────────────────────────────────────────────
@@ -243,7 +320,8 @@ export interface WorkflowResult {
 let workflowRunQueue: Promise<void> = Promise.resolve();
 
 /** Filesystem lock directory for cross-process serialization. */
-const WORKFLOW_LOCK_DIR = path.resolve(__dirname, '../../.workflow-lock');
+const WORKFLOW_MODULE_DIR = __dirname;
+const WORKFLOW_LOCK_DIR = path.resolve(WORKFLOW_MODULE_DIR, '../../.workflow-lock');
 const WORKFLOW_LOCK_OWNER_PATH = path.join(WORKFLOW_LOCK_DIR, 'owner.json');
 const LEGACY_LOCK_STALE_MS = 5_000;
 
@@ -1071,15 +1149,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   );
   // F-26: Load description.json to include memoryNameHistory in slug candidates
   let memoryNameHistoryForSlug: readonly string[] = [];
-  try {
-    const { loadPerFolderDescription: loadPFDForSlug } = await import(
-      '@spec-kit/mcp-server/api'
-    );
-    const pfDesc = loadPFDForSlug(path.resolve(specFolder));
+  const slugApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
+  if (slugApiModule) {
+    const pfDesc = slugApiModule.loadPerFolderDescription(path.resolve(specFolder));
     if (pfDesc?.memoryNameHistory) {
       memoryNameHistoryForSlug = pfDesc.memoryNameHistory;
     }
-  } catch (_error: unknown) { /* Expected: description.json may not exist yet */ }
+  }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   let ctxFilename: string = rawCtxFilename;
@@ -1565,9 +1641,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Update per-folder description.json memory tracking (only if file was written)
   if (ctxFileWritten) {
     try {
-      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = await import(
-        '@spec-kit/mcp-server/api'
-      );
+      const descApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
+      if (!descApiModule) throw new Error('MCP server API unavailable for description update');
+      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = descApiModule;
       const specFolderAbsolute = path.resolve(specFolder);
       let existing = loadPFD(specFolderAbsolute);
 
@@ -1636,8 +1712,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log();
 
-  // Step 10: Success confirmation
-  log('Context saved successfully!\n');
+  // Step 10: Success confirmation (file written; indexing runs in Step 11)
+  log('Context file written.\n');
   log(`Location: ${contextDir}\n`);
   log('Files created:');
   for (const [filename, content] of Object.entries(files)) {
@@ -1763,13 +1839,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         errMsg
       );
       warn(`   Warning: Embedding failed: ${errMsg}`);
-      warn('   Context saved successfully without semantic indexing');
+      warn('   Context file saved without semantic indexing');
       warn('   Run "npm run rebuild" to retry indexing later');
     }
   }
 
   // Step 12: Opportunistic retry processing
   try {
+    const retryManager = await loadWorkflowRetryManager();
+    const retryManagerLoadIssue = consumeWorkflowRetryManagerLoadError();
+    if (retryManagerLoadIssue) {
+      warn(`   Warning: Retry manager unavailable; skipping retry queue processing (${retryManagerLoadIssue})`);
+    }
+
     const retryStats = retryManager.getRetryStats();
     if (retryStats.queue_size > 0) {
       log('Step 12: Processing retry queue...');

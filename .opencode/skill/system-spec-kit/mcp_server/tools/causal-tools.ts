@@ -8,13 +8,17 @@ import {
   handleMemoryCausalLink,
   handleMemoryCausalStats,
   handleMemoryCausalUnlink,
-} from '../handlers';
-import { validateToolArgs } from '../schemas/tool-input-schemas';
+} from '../handlers/index.js';
+import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
-import {
-  MCPResponse, parseArgs,
-  DriftWhyArgs, CausalLinkArgs, CausalStatsArgs, CausalUnlinkArgs,
-} from './types';
+import { parseArgs } from './types.js';
+import type {
+  MCPResponse,
+  DriftWhyArgs,
+  CausalLinkArgs,
+  CausalStatsArgs,
+  CausalUnlinkArgs,
+} from './types.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([

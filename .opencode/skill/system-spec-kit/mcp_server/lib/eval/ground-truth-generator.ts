@@ -19,7 +19,7 @@ import {
   type GroundTruthRelevance,
   type IntentType,
   type ComplexityTier,
-} from './ground-truth-data';
+} from './ground-truth-data.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. PUBLIC TYPES

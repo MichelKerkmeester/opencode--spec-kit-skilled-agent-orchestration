@@ -11,17 +11,59 @@
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js bulk-delete --tier deprecated
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js reindex [--force] [--eager-warmup]
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js schema-downgrade --to 15 --confirm
-// Core modules (resolved relative to this file's location)
-import * as vectorIndex from './lib/search/vector-index';
-import * as checkpointsLib from './lib/storage/checkpoints';
-import * as accessTracker from './lib/storage/access-tracker';
-import * as causalEdges from './lib/storage/causal-edges';
-import * as mutationLedger from './lib/storage/mutation-ledger';
-import * as triggerMatcher from './lib/parsing/trigger-matcher';
-import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade';
-import { DATABASE_PATH, init as initDbState } from './core';
-import { detectNodeVersionMismatch } from './startup-checks';
-import { recordHistory } from './lib/storage/history';
+import { createRequire } from 'node:module';
+
+import * as causalEdges from './lib/storage/causal-edges.js';
+import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade.js';
+import { recordHistory } from './lib/storage/history.js';
+import { DATABASE_PATH } from './core/index.js';
+
+const require = createRequire(import.meta.url);
+const { version: CLI_VERSION } = require('../package.json') as { version: string };
+
+type VectorIndexModule = Awaited<typeof import('./lib/search/vector-index.js')>;
+type CheckpointsModule = Awaited<typeof import('./lib/storage/checkpoints.js')>;
+type AccessTrackerModule = Awaited<typeof import('./lib/storage/access-tracker.js')>;
+type MutationLedgerModule = Awaited<typeof import('./lib/storage/mutation-ledger.js')>;
+type TriggerMatcherModule = Awaited<typeof import('./lib/parsing/trigger-matcher.js')>;
+type CoreIndexModule = Awaited<typeof import('./core/index.js')>;
+type StartupChecksModule = Awaited<typeof import('./startup-checks.js')>;
+
+let _vector_index: VectorIndexModule | null = null;
+let _checkpoints: CheckpointsModule | null = null;
+let _access_tracker: AccessTrackerModule | null = null;
+let _mutation_ledger: MutationLedgerModule | null = null;
+let _trigger_matcher: TriggerMatcherModule | null = null;
+let _core_index: CoreIndexModule | null = null;
+let _startup_checks: StartupChecksModule | null = null;
+
+async function getVectorIndex() {
+  return _vector_index ??= await import('./lib/search/vector-index.js');
+}
+
+async function getCheckpointsLib() {
+  return _checkpoints ??= await import('./lib/storage/checkpoints.js');
+}
+
+async function getAccessTracker() {
+  return _access_tracker ??= await import('./lib/storage/access-tracker.js');
+}
+
+async function getMutationLedger() {
+  return _mutation_ledger ??= await import('./lib/storage/mutation-ledger.js');
+}
+
+async function getTriggerMatcher() {
+  return _trigger_matcher ??= await import('./lib/parsing/trigger-matcher.js');
+}
+
+async function getCoreIndex() {
+  return _core_index ??= await import('./core/index.js');
+}
+
+async function getStartupChecks() {
+  return _startup_checks ??= await import('./startup-checks.js');
+}
 
 /* ───────────────────────────────────────────────────────────────
    1. ARGUMENT PARSING
@@ -61,6 +103,7 @@ Commands:
 
 Options:
   --help                         Show this help message
+  --version                      Show CLI version
 
 Examples:
   spec-kit-cli stats
@@ -78,7 +121,14 @@ Examples:
    2. DATABASE INITIALIZATION (minimal — no MCP, no embeddings)
 ──────────────────────────────────────────────────────────────── */
 
-function initDatabase(): void {
+async function initDatabase(): Promise<void> {
+  const [vectorIndex, checkpointsLib, accessTracker, coreIndex] = await Promise.all([
+    getVectorIndex(),
+    getCheckpointsLib(),
+    getAccessTracker(),
+    getCoreIndex(),
+  ]);
+
   vectorIndex.initializeDb();
   const db = vectorIndex.getDb();
   if (!db) {
@@ -86,7 +136,7 @@ function initDatabase(): void {
     process.exit(1);
   }
   // Keep CLI and MCP handlers aligned: handlers invoked from CLI rely on db-state wiring.
-  initDbState({ vectorIndex, checkpoints: checkpointsLib, accessTracker });
+  coreIndex.init({ vectorIndex, checkpoints: checkpointsLib, accessTracker });
   checkpointsLib.init(db);
   accessTracker.init(db);
 }
@@ -95,8 +145,9 @@ function initDatabase(): void {
    3. STATS COMMAND
 ──────────────────────────────────────────────────────────────── */
 
-function runStats(): void {
-  initDatabase();
+async function runStats(): Promise<void> {
+  await initDatabase();
+  const vectorIndex = await getVectorIndex();
   const db = vectorIndex.getDb()!;
 
   // Total count
@@ -170,7 +221,7 @@ function runStats(): void {
    4. BULK DELETE COMMAND
 ──────────────────────────────────────────────────────────────── */
 
-function runBulkDelete(): void {
+async function runBulkDelete(): Promise<void> {
   const tier = getOption('tier');
   if (!tier) {
     console.error('ERROR: --tier is required. Example: spec-kit-cli bulk-delete --tier deprecated');
@@ -207,7 +258,13 @@ function runBulkDelete(): void {
     process.exit(1);
   }
 
-  initDatabase();
+  await initDatabase();
+  const [vectorIndex, checkpointsLib, mutationLedger, triggerMatcher] = await Promise.all([
+    getVectorIndex(),
+    getCheckpointsLib(),
+    getMutationLedger(),
+    getTriggerMatcher(),
+  ]);
   const db = vectorIndex.getDb()!;
 
   // Count affected
@@ -371,14 +428,14 @@ async function runReindex(): Promise<void> {
   console.log(`  Warmup: ${eagerWarmup ? 'eager (startup)' : 'lazy (on demand)'}`);
 
   // Dynamic import to avoid pulling in heavy modules unless needed.
-  const { handleMemoryIndexScan } = await import('./handlers/memory-index');
+  const { handleMemoryIndexScan } = await import('./handlers/memory-index.js');
 
-  initDatabase();
+  await initDatabase();
 
   // Optional legacy warmup path.
   if (eagerWarmup) {
     console.log(`  Loading embedding model...`);
-    const embeddings = await import('./lib/providers/embeddings');
+    const embeddings = await import('./lib/providers/embeddings.js');
     try {
       await embeddings.generateEmbedding('warmup');
     } catch (err: unknown) {
@@ -428,7 +485,7 @@ async function runReindex(): Promise<void> {
    6. SCHEMA DOWNGRADE COMMAND
 ──────────────────────────────────────────────────────────────── */
 
-function runSchemaDowngrade(): void {
+async function runSchemaDowngrade(): Promise<void> {
   const toVersion = getOption('to');
   const confirm = getFlag('confirm');
   const specFolder = getOption('folder');
@@ -443,7 +500,8 @@ function runSchemaDowngrade(): void {
     process.exit(1);
   }
 
-  initDatabase();
+  await initDatabase();
+  const vectorIndex = await getVectorIndex();
   const db = vectorIndex.getDb();
   if (!db) {
     console.error('ERROR: Database not available.');
@@ -476,22 +534,26 @@ async function main(): Promise<void> {
     printUsage();
     process.exit(0);
   }
+  if (command === '--version' || command === '-v') {
+    console.log(CLI_VERSION);
+    process.exit(0);
+  }
 
   // Non-blocking startup hint for native-module ABI mismatches.
-  detectNodeVersionMismatch();
+  (await getStartupChecks()).detectNodeVersionMismatch();
 
   switch (command) {
     case 'stats':
-      runStats();
+      await runStats();
       break;
     case 'bulk-delete':
-      runBulkDelete();
+      await runBulkDelete();
       break;
     case 'reindex':
       await runReindex();
       break;
     case 'schema-downgrade':
-      runSchemaDowngrade();
+      await runSchemaDowngrade();
       break;
     default:
       console.error(`Unknown command: ${command}`);
@@ -500,12 +562,14 @@ async function main(): Promise<void> {
   }
 
   // Close DB cleanly
-  vectorIndex.closeDb();
+  (await getVectorIndex()).closeDb();
 }
 
 main().catch((err: unknown) => {
   const message = err instanceof Error ? err.message : String(err);
   console.error(`FATAL: ${message}`);
-  try { vectorIndex.closeDb(); } catch { /* ignore */ }
+  void getVectorIndex()
+    .then(vectorIndex => { vectorIndex.closeDb(); })
+    .catch(() => { /* ignore */ });
   process.exit(1);
 });

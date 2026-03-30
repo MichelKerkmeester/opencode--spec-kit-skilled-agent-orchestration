@@ -32,7 +32,7 @@ The finished 20-iteration research in `research/research.md` confirms that this 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Complete — all 6 phases finished |
 | **Created** | 2026-03-23 |
 | **Branch** | `main` |
 | **Parent Spec** | None (top-level spec folder) |
@@ -209,20 +209,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 
----
-title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
-description: "Template document for addendum/phase/phase-parent-section.md."
-trigger_phrases:
-  - "phase"
-  - "parent"
-  - "section"
-  - "template"
-  - "phase parent section"
-importance_tier: "normal"
-contextType: "general"
----
 <!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
-<!-- Append to parent spec.md after SCOPE section -->
 
 ---
 
@@ -233,10 +220,12 @@ contextType: "general"
 
 | Phase | Folder | Focus | Deps | Status |
 |-------|--------|-------|------|--------|
-| 1 | 001-shared-esm-migration/ | Package metadata, tsconfig, import rewrites for `@spec-kit/shared` | None | Pending |
-| 2 | 002-mcp-server-esm-migration/ | Package metadata, tsconfig, import rewrites, CJS cleanup for `@spec-kit/mcp-server` | Phase 1 | Pending |
-| 3 | 003-scripts-interop-refactor/ | Interop helpers, bridge/loader refactors, test rewrites for `@spec-kit/scripts` | Phase 2 | Pending |
-| 4 | 004-verification-and-standards/ | Highest-risk retests, full verification matrix, standards-doc sync | Phase 3 | Pending |
+| 1 | 001-shared-esm-migration/ | Package metadata, tsconfig, import rewrites for `@spec-kit/shared` | None | Complete |
+| 2 | 002-mcp-server-esm-migration/ | Package metadata, tsconfig, import rewrites, CJS cleanup for `@spec-kit/mcp-server` | Phase 1 | Complete |
+| 3 | 003-scripts-interop-refactor/ | CJS-to-ESM interop, memory save hardening, workflow decoupling | Phase 2 | Complete |
+| 4 | 004-verification-and-standards/ | ESM test updates, deep review, code standards, README alignment | Phase 3 | Complete |
+| 5 | 005-test-and-scenario-remediation/ | Fix pre-existing test failures, playbook scenario gaps, final test report | Phase 4 | Complete |
+| 6 | 006-review-remediation/ | Fix all 18 findings (14 P1 + 4 P2) from 10-iteration GPT-5.4 deep review | Phase 5 | Complete |
 
 ### Phase Transition Rules
 
@@ -252,4 +241,6 @@ contextType: "general"
 | 001-shared-esm-migration | 002-mcp-server-esm-migration | `shared` emits native ESM, `shared/package.json` has `"type": "module"`, all relative imports use `.js` specifiers | `npm run build --workspace=@spec-kit/shared` passes; emitted `dist/` contains ESM output |
 | 002-mcp-server-esm-migration | 003-scripts-interop-refactor | `mcp_server` emits native ESM, CJS globals removed, `node dist/context-server.js` starts | `npm run build --workspace=@spec-kit/mcp-server` passes; `node dist/context-server.js` smoke passes |
 | 003-scripts-interop-refactor | 004-verification-and-standards | Scripts interop helpers work, all scripts-side consumers cross explicit `import()` boundaries | `node scripts/dist/memory/generate-context.js --help` passes; scripts interop tests pass |
+| 004-verification-and-standards | 005-test-and-scenario-remediation | Deep review complete, all P1/P2 resolved, ESM-caused test failures fixed | 30-iteration review 0 open P0/P1; 3 ESM test files fixed |
+| 005-test-and-scenario-remediation | 006-review-remediation | All tests green, test sweep complete | 9480/9480 passing, 0 failures, 0 skipped |
 <!-- /ANCHOR:phase-map -->

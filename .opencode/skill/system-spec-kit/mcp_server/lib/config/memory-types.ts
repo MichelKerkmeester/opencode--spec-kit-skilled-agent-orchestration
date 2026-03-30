@@ -2,9 +2,9 @@ import {
   canClassifyAsSpecDocument,
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
-} from './spec-doc-paths';
+} from './spec-doc-paths.js';
 
-export { SPEC_DOCUMENT_FILENAMES } from './spec-doc-paths';
+export { SPEC_DOCUMENT_FILENAMES } from './spec-doc-paths.js';
 
 // ───────────────────────────────────────────────────────────────
 // MODULE: Memory Types

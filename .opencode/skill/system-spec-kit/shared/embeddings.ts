@@ -13,8 +13,8 @@ import {
   getStartupEmbeddingDimension,
   validateApiKey,
   VALIDATION_TIMEOUT_MS,
-} from './embeddings/factory';
-import { semanticChunk, MAX_TEXT_LENGTH, RESERVED_OVERVIEW, RESERVED_OUTCOME, MIN_SECTION_LENGTH } from './chunking';
+} from './embeddings/factory.js';
+import { semanticChunk, MAX_TEXT_LENGTH, RESERVED_OVERVIEW, RESERVED_OUTCOME, MIN_SECTION_LENGTH } from './chunking.js';
 import type {
   IEmbeddingProvider,
   EmbeddingCacheStats,
@@ -26,7 +26,7 @@ import type {
   TaskPrefixMap,
   TaskType,
   EmbeddingProfileData,
-} from './types';
+} from './types.js';
 
 export interface WeightedDocumentSections {
   title?: string | null;

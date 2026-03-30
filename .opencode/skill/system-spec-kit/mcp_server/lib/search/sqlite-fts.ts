@@ -6,7 +6,7 @@
 // Extracted from hybrid-search.ts ftsSearch() for independent
 // Testing and future delegation.
 
-import { BM25_FTS5_WEIGHTS, normalizeLexicalQueryTokens } from './bm25-index';
+import { BM25_FTS5_WEIGHTS, normalizeLexicalQueryTokens } from './bm25-index.js';
 import type Database from 'better-sqlite3';
 
 // ───────────────────────────────────────────────────────────────

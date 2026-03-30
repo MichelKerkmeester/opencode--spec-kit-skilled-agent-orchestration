@@ -23,26 +23,26 @@ import {
   checkDatabaseUpdated,
   setEmbeddingModelReady, waitForEmbeddingModel,
   init as initDbState
-} from './core';
+} from './core/index.js';
 
 // T303: Tool schemas and dispatch
-import { TOOL_DEFINITIONS } from './tool-schemas';
-import { dispatchTool } from './tools';
+import { TOOL_DEFINITIONS } from './tool-schemas.js';
+import { dispatchTool } from './tools/index.js';
 
 // Handler modules (only indexSingleFile needed directly for startup scan)
 import {
   indexSingleFile,
   handleMemoryStats,
-} from './handlers';
-import * as memoryIndexDiscovery from './handlers/memory-index-discovery';
-import { runPostMutationHooks } from './handlers/mutation-hooks';
+} from './handlers/index.js';
+import * as memoryIndexDiscovery from './handlers/memory-index-discovery.js';
+import { runPostMutationHooks } from './handlers/mutation-hooks.js';
 
 // Utils
-import { validateInputLengths } from './utils';
+import { validateInputLengths } from './utils/index.js';
 
 // History (audit trail for file-watcher deletes)
-import { recordHistory } from './lib/storage/history';
-import * as historyStore from './lib/storage/history';
+import { recordHistory } from './lib/storage/history.js';
+import * as historyStore from './lib/storage/history.js';
 
 // Hooks
 import {
@@ -54,14 +54,14 @@ import {
   appendAutoSurfaceHints,
   syncEnvelopeTokenCount,
   serializeEnvelopeWithTokenCount,
-} from './hooks';
+} from './hooks/index.js';
 
 // Architecture
-import { getTokenBudget } from './lib/architecture/layer-definitions';
-import { createMCPErrorResponse, wrapForMCP } from './lib/response/envelope';
+import { getTokenBudget } from './lib/architecture/layer-definitions.js';
+import { createMCPErrorResponse, wrapForMCP } from './lib/response/envelope.js';
 
 // T303: Startup checks (extracted from this file)
-import { detectNodeVersionMismatch, checkSqliteVersion } from './startup-checks';
+import { detectNodeVersionMismatch, checkSqliteVersion } from './startup-checks.js';
 import {
   getStartupEmbeddingDimension,
   resolveStartupEmbeddingConfig,
@@ -69,51 +69,51 @@ import {
 } from '@spec-kit/shared/embeddings/factory';
 
 // Lib modules (for initialization only)
-import * as vectorIndex from './lib/search/vector-index';
-import * as embeddings from './lib/providers/embeddings';
-import * as checkpointsLib from './lib/storage/checkpoints';
-import * as accessTracker from './lib/storage/access-tracker';
-import * as hybridSearch from './lib/search/hybrid-search';
-import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn';
-import { isGraphUnifiedEnabled } from './lib/search/graph-flags';
-import * as sessionBoost from './lib/search/session-boost';
-import * as causalBoost from './lib/search/causal-boost';
-import * as bm25Index from './lib/search/bm25-index';
-import * as memoryParser from './lib/parsing/memory-parser';
-import { getSpecsBasePaths } from './lib/search/folder-discovery';
+import * as vectorIndex from './lib/search/vector-index.js';
+import * as embeddings from './lib/providers/embeddings.js';
+import * as checkpointsLib from './lib/storage/checkpoints.js';
+import * as accessTracker from './lib/storage/access-tracker.js';
+import * as hybridSearch from './lib/search/hybrid-search.js';
+import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
+import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
+import * as sessionBoost from './lib/search/session-boost.js';
+import * as causalBoost from './lib/search/causal-boost.js';
+import * as bm25Index from './lib/search/bm25-index.js';
+import * as memoryParser from './lib/parsing/memory-parser.js';
+import { getSpecsBasePaths } from './lib/search/folder-discovery.js';
 import {
   isDegreeBoostEnabled,
   isDynamicInitEnabled,
   isFileWatcherEnabled,
-} from './lib/search/search-flags';
-import { runCleanupStep, runAsyncCleanupStep } from './lib/utils/cleanup-helpers';
-import { disposeLocalReranker } from './lib/search/local-reranker';
-import * as workingMemory from './lib/cognitive/working-memory';
-import * as attentionDecay from './lib/cognitive/attention-decay';
-import * as coActivation from './lib/cognitive/co-activation';
-import { initScoringObservability } from './lib/telemetry/scoring-observability';
+} from './lib/search/search-flags.js';
+import { runCleanupStep, runAsyncCleanupStep } from './lib/utils/cleanup-helpers.js';
+import { disposeLocalReranker } from './lib/search/local-reranker.js';
+import * as workingMemory from './lib/cognitive/working-memory.js';
+import * as attentionDecay from './lib/cognitive/attention-decay.js';
+import * as coActivation from './lib/cognitive/co-activation.js';
+import { initScoringObservability } from './lib/telemetry/scoring-observability.js';
 // T059: Archival manager for automatic archival of ARCHIVED state memories
-import * as archivalManager from './lib/cognitive/archival-manager';
+import * as archivalManager from './lib/cognitive/archival-manager.js';
 // T099: Retry manager for background embedding retry job (REQ-031, CHK-179)
-import * as retryManager from './lib/providers/retry-manager';
-import { buildErrorResponse, getDefaultErrorCodeForTool, getRecoveryHint } from './lib/errors';
+import * as retryManager from './lib/providers/retry-manager.js';
+import { buildErrorResponse, getDefaultErrorCodeForTool, getRecoveryHint } from './lib/errors.js';
 // T001-T004: Session deduplication
-import * as sessionManager from './lib/session/session-manager';
-import * as shadowEvaluationRuntime from './lib/feedback/shadow-evaluation-runtime';
+import * as sessionManager from './lib/session/session-manager.js';
+import * as shadowEvaluationRuntime from './lib/feedback/shadow-evaluation-runtime.js';
 
 // P4-12/P4-19: Incremental index (passed to db-state for stale handle refresh)
-import * as incrementalIndex from './lib/storage/incremental-index';
+import * as incrementalIndex from './lib/storage/incremental-index.js';
 // T107: Transaction manager for pending file recovery on startup (REQ-033)
-import * as transactionManager from './lib/storage/transaction-manager';
+import * as transactionManager from './lib/storage/transaction-manager.js';
 // KL-4: Tool cache cleanup on shutdown
-import * as toolCache from './lib/cache/tool-cache';
-import { initExtractionAdapter } from './lib/extraction/extraction-adapter';
-import { migrateLearnedTriggers, verifyFts5Isolation } from './lib/storage/learned-triggers-schema';
-import { isLearnedFeedbackEnabled } from './lib/search/learned-feedback';
-import { initIngestJobQueue } from './lib/ops/job-queue';
-import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher';
-import { getCanonicalPathKey } from './lib/utils/canonical-path';
-import { runBatchLearning } from './lib/feedback/batch-learning';
+import * as toolCache from './lib/cache/tool-cache.js';
+import { initExtractionAdapter } from './lib/extraction/extraction-adapter.js';
+import { migrateLearnedTriggers, verifyFts5Isolation } from './lib/storage/learned-triggers-schema.js';
+import { isLearnedFeedbackEnabled } from './lib/search/learned-feedback.js';
+import { initIngestJobQueue } from './lib/ops/job-queue.js';
+import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher.js';
+import { getCanonicalPathKey } from './lib/utils/canonical-path.js';
+import { runBatchLearning } from './lib/feedback/batch-learning.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -268,7 +268,7 @@ async function invalidateReinitializedDbCaches(): Promise<void> {
   const invalidatedEntries = toolCache.clear();
 
   try {
-    const triggerMatcher = await import('./lib/parsing/trigger-matcher');
+    const triggerMatcher = await import('./lib/parsing/trigger-matcher.js');
     if (typeof triggerMatcher.clearCache === 'function') {
       triggerMatcher.clearCache();
     }
@@ -1161,4 +1161,8 @@ async function main(): Promise<void> {
   setImmediate(() => startupScan(DEFAULT_BASE_PATH));
 }
 
-main().catch((err: unknown) => { console.error('[context-server] Fatal error:', err); process.exit(1); });
+const isMain = process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'));
+
+if (isMain) {
+  main().catch((err: unknown) => { console.error('[context-server] Fatal error:', err); process.exit(1); });
+}

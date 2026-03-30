@@ -4,8 +4,8 @@
 
 /* ------- 1. DEPENDENCIES ------- */
 
-import { requireDb, toErrorMessage } from '../utils';
-import * as mutationLedger from '../lib/storage/mutation-ledger';
+import { requireDb, toErrorMessage } from '../utils/index.js';
+import * as mutationLedger from '../lib/storage/mutation-ledger.js';
 
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 

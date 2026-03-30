@@ -5,7 +5,7 @@
 // Phase-gated capability switches for the memory roadmap.
 // Defaults reflect the shipped rollout unless explicitly opted out, except for
 // roadmap phases that remain intentionally dormant in production.
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 
 // R6: Derive phase type from the canonical array to keep them in sync.
 const SUPPORTED_PHASES_ARRAY = ['baseline', 'lineage', 'graph', 'adaptive', 'scope-governance', 'shared-rollout'] as const;

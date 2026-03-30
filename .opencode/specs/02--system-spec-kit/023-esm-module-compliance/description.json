@@ -1,15 +1,21 @@
 {
   "specFolder": "023-esm-module-compliance",
-  "description": "ESM Module Compliance",
+  "description": "005-test-and-scenario-remediation",
   "keywords": [
-    "esm",
-    "module",
-    "compliance"
+    "005-test-and-scenario-remediation"
   ],
-  "lastUpdated": "2026-03-29T10:21:42.186Z",
+  "lastUpdated": "2026-03-29T16:32:47.736Z",
   "specId": "023",
   "folderSlug": "esm-module-compliance",
   "parentChain": [],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 7,
+  "memoryNameHistory": [
+    "29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec.md",
+    "29-03-26_17-43__playbook-verification-test-for-esm-migration-save.md",
+    "29-03-26_17-43__playbook-verification-test-for-esm-migration-save-1.md",
+    "29-03-26_18-36__completed-the-full-023-esm-module-compliance.md",
+    "29-03-26_18-36__completed-the-full-023-esm-module-compliance-1.md",
+    "29-03-26_18-36__completed-the-full-023-esm-module-compliance-2.md",
+    "30-03-26_10-55__completed-10-iteration-deep-review-of-spec-023.md"
+  ]
 }

@@ -1,8 +1,8 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Quality Loop (T008)
 // ───────────────────────────────────────────────────────────────
-import { initEvalDb } from '../lib/eval/eval-db';
-import { isQualityLoopEnabled } from '../lib/search/search-flags';
+import { initEvalDb } from '../lib/eval/eval-db.js';
+import { isQualityLoopEnabled } from '../lib/search/search-flags.js';
 
 // Feature catalog: Verify-fix-verify memory quality loop
 // Feature catalog: Pre-storage quality gate

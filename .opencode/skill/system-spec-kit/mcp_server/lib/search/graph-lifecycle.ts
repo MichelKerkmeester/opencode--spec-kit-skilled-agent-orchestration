@@ -15,16 +15,16 @@
 //   - TypeScript strict mode; zero external runtime deps beyond better-sqlite3
 
 import type Database from 'better-sqlite3';
-import { clearGraphSignalsCache } from '../graph/graph-signals';
-import { createLogger } from '../utils/logger';
+import { clearGraphSignalsCache } from '../graph/graph-signals.js';
+import { createLogger } from '../utils/logger.js';
 import { extractHeadings, extractAliases, extractRelationPhrases, extractCodeFenceTechnologies,
-  createTypedEdges as _createTypedEdgesWithCallback, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor';
-import type { DeterministicEdge, WriteEdgePayload } from './deterministic-extractor';
-import { clearDegreeCacheForDb } from './graph-search-fn';
+  createTypedEdges as _createTypedEdgesWithCallback, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor.js';
+import type { DeterministicEdge, WriteEdgePayload } from './deterministic-extractor.js';
+import { clearDegreeCacheForDb } from './graph-search-fn.js';
 
 // Re-export deterministic-extractor for backward compatibility
-export { extractHeadings, extractAliases, extractRelationPhrases, extractCodeFenceTechnologies, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor';
-export type { DeterministicEdgeType, DeterministicEdge, WriteEdgePayload } from './deterministic-extractor';
+export { extractHeadings, extractAliases, extractRelationPhrases, extractCodeFenceTechnologies, EXPLICIT_ONLY_EVIDENCE } from './deterministic-extractor.js';
+export type { DeterministicEdgeType, DeterministicEdge, WriteEdgePayload } from './deterministic-extractor.js';
 
 /** Backward-compatible wrapper for createTypedEdges that auto-binds onWrite. */
 export function createTypedEdges(db: Database.Database, memoryId: number, edges: DeterministicEdge[]): number {
@@ -83,7 +83,7 @@ export function isGraphRefreshEnabled(): boolean {
 import {
   isGraphRefreshDisabled,
   isLlmGraphBackfillEnabled,
-} from './search-flags';
+} from './search-flags.js';
 export { isLlmGraphBackfillEnabled };
 
 // ───────────────────────────────────────────────────────────────

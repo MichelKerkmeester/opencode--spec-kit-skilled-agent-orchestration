@@ -4,7 +4,7 @@
 // Scores chunks by anchor presence + content density, then
 // Applies a thinning threshold to drop low-quality chunks.
 // Used BEFORE indexing to filter out low-value chunks.
-import type { AnchorChunk } from './anchor-chunker';
+import type { AnchorChunk } from './anchor-chunker.js';
 
 // Feature catalog: Anchor-aware chunk thinning
 

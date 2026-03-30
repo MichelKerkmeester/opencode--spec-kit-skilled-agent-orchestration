@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Tool-result extraction to working memory
 import type Database from 'better-sqlite3';
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 
 const SESSION_BOOST_MULTIPLIER = 0.15;
 const MAX_COMBINED_BOOST = 0.20;

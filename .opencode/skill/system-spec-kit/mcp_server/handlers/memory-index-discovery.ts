@@ -7,12 +7,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import { toErrorMessage } from '../utils';
+import { toErrorMessage } from '../utils/index.js';
 import {
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
-} from '../lib/config/spec-doc-paths';
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
+} from '../lib/config/spec-doc-paths.js';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 // Feature catalog: Spec folder description discovery

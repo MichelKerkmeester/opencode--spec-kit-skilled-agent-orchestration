@@ -18,8 +18,8 @@
 //
 // Activation timestamp is persisted to SQLite config table so
 // The 14-day graduation countdown survives server restarts.
-import { isSaveQualityGateEnabled } from '../search/search-flags';
-import * as vectorIndex from '../search/vector-index';
+import { isSaveQualityGateEnabled } from '../search/search-flags.js';
+import * as vectorIndex from '../search/vector-index.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

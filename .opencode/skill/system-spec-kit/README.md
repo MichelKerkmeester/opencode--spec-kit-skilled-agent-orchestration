@@ -103,6 +103,10 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | Bash | 4.0+ | Spec management shell scripts |
 | Embedding API | None (HuggingFace local) | Voyage AI recommended for best quality |
 
+Workspace module profile:
+- `shared/` and `mcp_server/` are ESM packages (`"type": "module"`) using NodeNext TypeScript settings.
+- `scripts/` remains CommonJS (`"type": "commonjs"`) with explicit ESM interop where runtime cross-package loading is required.
+
 <!-- /ANCHOR:overview -->
 
 ---

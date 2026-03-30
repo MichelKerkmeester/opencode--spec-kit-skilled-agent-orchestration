@@ -33,32 +33,32 @@
 //     - Generates query embeddings via the embeddings provider (external call)
 //     - Reads from the vector index and FTS5 / BM25 index (DB reads only)
 //
-import type { Stage1Input, Stage1Output, PipelineRow } from './types';
-import { resolveEffectiveScore } from './types';
-import * as vectorIndex from '../vector-index';
-import * as embeddings from '../../providers/embeddings';
-import * as hybridSearch from '../hybrid-search';
-import { vectorSearchWithContiguity } from '../../cognitive/temporal-contiguity';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled, isTemporalContiguityEnabled } from '../search-flags';
-import { expandQuery } from '../query-expander';
-import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
-import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
+import type { Stage1Input, Stage1Output, PipelineRow } from './types.js';
+import { resolveEffectiveScore } from './types.js';
+import * as vectorIndex from '../vector-index.js';
+import * as embeddings from '../../providers/embeddings.js';
+import * as hybridSearch from '../hybrid-search.js';
+import { vectorSearchWithContiguity } from '../../cognitive/temporal-contiguity.js';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled, isTemporalContiguityEnabled } from '../search-flags.js';
+import { expandQuery } from '../query-expander.js';
+import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion.js';
+import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
-import { requireDb } from '../../../utils/db-helpers';
-import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance';
-import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
-import { withTimeout } from '../../errors/core';
+import { requireDb } from '../../../utils/db-helpers.js';
+import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance.js';
+import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces.js';
+import { withTimeout } from '../../errors/core.js';
 import {
   isMultiFacet,
   decompose,
   mergeByFacetCoverage as mergeFacetCoveragePools,
   MAX_FACETS,
-} from '../query-decomposer';
-import { routeQueryConcepts } from '../entity-linker';
-import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation';
-import { runHyDE } from '../hyde';
-import { matchSurrogates } from '../query-surrogates';
-import { loadSurrogatesBatch } from '../surrogate-storage';
+} from '../query-decomposer.js';
+import { routeQueryConcepts } from '../entity-linker.js';
+import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation.js';
+import { runHyDE } from '../hyde.js';
+import { matchSurrogates } from '../query-surrogates.js';
+import { loadSurrogatesBatch } from '../surrogate-storage.js';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline

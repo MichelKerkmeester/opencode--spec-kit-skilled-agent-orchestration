@@ -11,14 +11,14 @@ export {
   buildErrorResponse,
   getDefaultErrorCodeForTool,
   createErrorWithHint,
-} from './core';
+} from './core.js';
 
 export type {
   ErrorResponseData,
   ErrorResponseMeta,
   ErrorResponse,
   LegacyErrorCodeKey,
-} from './core';
+} from './core.js';
 
 export {
   ERROR_CODES,
@@ -29,7 +29,7 @@ export {
   hasSpecificHint,
   getAvailableHints,
   getErrorCodes,
-} from './recovery-hints';
+} from './recovery-hints.js';
 
 export type {
   Severity,
@@ -38,4 +38,4 @@ export type {
   ToolSpecificHintMap,
   ErrorCodeKey,
   ErrorCodeValue,
-} from './recovery-hints';
+} from './recovery-hints.js';

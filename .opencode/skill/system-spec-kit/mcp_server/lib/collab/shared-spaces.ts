@@ -8,14 +8,14 @@ import type Database from 'better-sqlite3';
 
 import {
   ensureSharedSpaceTables,
-} from '../search/vector-index-schema';
+} from '../search/vector-index-schema.js';
 
 import {
   isGovernanceGuardrailsEnabled,
   normalizeScopeContext,
   recordGovernanceAudit,
   type ScopeContext,
-} from '../governance/scope-governance';
+} from '../governance/scope-governance.js';
 
 /**
  * Supported membership subject kinds for shared spaces.

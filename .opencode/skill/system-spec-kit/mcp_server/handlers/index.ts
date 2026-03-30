@@ -4,181 +4,186 @@
 
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'node:url';
 
-type ModuleLoader<TModule extends object> = () => TModule;
+type ModuleLoader<TModule extends object> = () => Promise<TModule>;
 
-function loadHandlerModule<TModule extends object>(moduleName: string): TModule {
-  const basePath = path.join(__dirname, moduleName);
+async function loadHandlerModule<TModule extends object>(moduleName: string): Promise<TModule> {
+  const basePath = path.join(import.meta.dirname, moduleName);
   const candidatePaths = [`${basePath}.js`, `${basePath}.ts`, basePath];
 
   for (const candidatePath of candidatePaths) {
     if (fs.existsSync(candidatePath)) {
-      return require(candidatePath) as TModule;
+      return await import(pathToFileURL(candidatePath).href) as TModule;
     }
   }
 
-  return require(basePath) as TModule;
+  return await import(pathToFileURL(basePath).href) as TModule;
 }
 
 function lazyFunction<
   TModule extends Record<string, unknown>,
   TKey extends keyof TModule,
 >(load: ModuleLoader<TModule>, key: TKey): TModule[TKey] {
-  return ((...args: unknown[]) => {
-    const fn = load()[key];
+  return (async (...args: unknown[]) => {
+    const module = await load();
+    const fn = module[key];
     if (typeof fn !== 'function') {
       throw new Error(`Lazy export '${String(key)}' is not callable`);
     }
-    return (fn as (...fnArgs: unknown[]) => unknown)(...args);
+    return await (fn as (...fnArgs: unknown[]) => unknown)(...args);
   }) as TModule[TKey];
 }
 
 function lazyModule<TModule extends object>(load: ModuleLoader<TModule>): TModule {
   return new Proxy({} as TModule, {
     get(_target, property, receiver) {
-      return Reflect.get(load() as object, property, receiver);
+      return async (...args: unknown[]) => {
+        const module = await load();
+        const loadedValue = Reflect.get(module as object, property, receiver);
+        if (typeof loadedValue === 'function') {
+          return await (loadedValue as (...fnArgs: unknown[]) => unknown)(...args);
+        }
+        return loadedValue;
+      };
     },
     has(_target, property) {
-      return property in load();
+      return typeof property === 'string';
     },
     ownKeys() {
-      return Reflect.ownKeys(load());
+      return [];
     },
-    getOwnPropertyDescriptor(_target, property) {
-      const descriptor = Object.getOwnPropertyDescriptor(load(), property);
-      if (!descriptor) {
-        return undefined;
-      }
+    getOwnPropertyDescriptor(_target, _property) {
       return {
-        ...descriptor,
         configurable: true,
+        enumerable: true,
       };
     },
   });
 }
 
-type MemorySearchModule = typeof import('./memory-search');
-type MemoryTriggersModule = typeof import('./memory-triggers');
-type MemorySaveModule = typeof import('./memory-save');
-type PeGatingModule = typeof import('./pe-gating');
-type MemoryIngestModule = typeof import('./memory-ingest');
-type MemoryCrudModule = typeof import('./memory-crud');
-type MemoryIndexModule = typeof import('./memory-index');
-type MemoryBulkDeleteModule = typeof import('./memory-bulk-delete');
-type CheckpointsModule = typeof import('./checkpoints');
-type SessionLearningModule = typeof import('./session-learning');
-type EvalReportingModule = typeof import('./eval-reporting');
-type CausalGraphModule = typeof import('./causal-graph');
-type MemoryContextModule = typeof import('./memory-context');
-type SharedMemoryModule = typeof import('./shared-memory');
+type MemorySearchModule = typeof import('./memory-search.js');
+type MemoryTriggersModule = typeof import('./memory-triggers.js');
+type MemorySaveModule = typeof import('./memory-save.js');
+type PeGatingModule = typeof import('./pe-gating.js');
+type MemoryIngestModule = typeof import('./memory-ingest.js');
+type MemoryCrudModule = typeof import('./memory-crud.js');
+type MemoryIndexModule = typeof import('./memory-index.js');
+type MemoryBulkDeleteModule = typeof import('./memory-bulk-delete.js');
+type CheckpointsModule = typeof import('./checkpoints.js');
+type SessionLearningModule = typeof import('./session-learning.js');
+type EvalReportingModule = typeof import('./eval-reporting.js');
+type CausalGraphModule = typeof import('./causal-graph.js');
+type MemoryContextModule = typeof import('./memory-context.js');
+type SharedMemoryModule = typeof import('./shared-memory.js');
 
-let memorySearchModule: MemorySearchModule | null = null;
-let memoryTriggersModule: MemoryTriggersModule | null = null;
-let memorySaveModule: MemorySaveModule | null = null;
-let peGatingModule: PeGatingModule | null = null;
-let memoryIngestModule: MemoryIngestModule | null = null;
-let memoryCrudModule: MemoryCrudModule | null = null;
-let memoryIndexModule: MemoryIndexModule | null = null;
-let memoryBulkDeleteModule: MemoryBulkDeleteModule | null = null;
-let checkpointsModule: CheckpointsModule | null = null;
-let sessionLearningModule: SessionLearningModule | null = null;
-let evalReportingModule: EvalReportingModule | null = null;
-let causalGraphModule: CausalGraphModule | null = null;
-let memoryContextModule: MemoryContextModule | null = null;
-let sharedMemoryModule: SharedMemoryModule | null = null;
+let memorySearchModule: Promise<MemorySearchModule> | null = null;
+let memoryTriggersModule: Promise<MemoryTriggersModule> | null = null;
+let memorySaveModule: Promise<MemorySaveModule> | null = null;
+let peGatingModule: Promise<PeGatingModule> | null = null;
+let memoryIngestModule: Promise<MemoryIngestModule> | null = null;
+let memoryCrudModule: Promise<MemoryCrudModule> | null = null;
+let memoryIndexModule: Promise<MemoryIndexModule> | null = null;
+let memoryBulkDeleteModule: Promise<MemoryBulkDeleteModule> | null = null;
+let checkpointsModule: Promise<CheckpointsModule> | null = null;
+let sessionLearningModule: Promise<SessionLearningModule> | null = null;
+let evalReportingModule: Promise<EvalReportingModule> | null = null;
+let causalGraphModule: Promise<CausalGraphModule> | null = null;
+let memoryContextModule: Promise<MemoryContextModule> | null = null;
+let sharedMemoryModule: Promise<SharedMemoryModule> | null = null;
 
-function getMemorySearchModule(): MemorySearchModule {
+function getMemorySearchModule(): Promise<MemorySearchModule> {
   if (!memorySearchModule) {
     memorySearchModule = loadHandlerModule<MemorySearchModule>('memory-search');
   }
   return memorySearchModule;
 }
 
-function getMemoryTriggersModule(): MemoryTriggersModule {
+function getMemoryTriggersModule(): Promise<MemoryTriggersModule> {
   if (!memoryTriggersModule) {
     memoryTriggersModule = loadHandlerModule<MemoryTriggersModule>('memory-triggers');
   }
   return memoryTriggersModule;
 }
 
-function getMemorySaveModule(): MemorySaveModule {
+function getMemorySaveModule(): Promise<MemorySaveModule> {
   if (!memorySaveModule) {
     memorySaveModule = loadHandlerModule<MemorySaveModule>('memory-save');
   }
   return memorySaveModule;
 }
 
-function getPeGatingModule(): PeGatingModule {
+function getPeGatingModule(): Promise<PeGatingModule> {
   if (!peGatingModule) {
     peGatingModule = loadHandlerModule<PeGatingModule>('pe-gating');
   }
   return peGatingModule;
 }
 
-function getMemoryIngestModule(): MemoryIngestModule {
+function getMemoryIngestModule(): Promise<MemoryIngestModule> {
   if (!memoryIngestModule) {
     memoryIngestModule = loadHandlerModule<MemoryIngestModule>('memory-ingest');
   }
   return memoryIngestModule;
 }
 
-function getMemoryCrudModule(): MemoryCrudModule {
+function getMemoryCrudModule(): Promise<MemoryCrudModule> {
   if (!memoryCrudModule) {
     memoryCrudModule = loadHandlerModule<MemoryCrudModule>('memory-crud');
   }
   return memoryCrudModule;
 }
 
-function getMemoryIndexModule(): MemoryIndexModule {
+function getMemoryIndexModule(): Promise<MemoryIndexModule> {
   if (!memoryIndexModule) {
     memoryIndexModule = loadHandlerModule<MemoryIndexModule>('memory-index');
   }
   return memoryIndexModule;
 }
 
-function getMemoryBulkDeleteModule(): MemoryBulkDeleteModule {
+function getMemoryBulkDeleteModule(): Promise<MemoryBulkDeleteModule> {
   if (!memoryBulkDeleteModule) {
     memoryBulkDeleteModule = loadHandlerModule<MemoryBulkDeleteModule>('memory-bulk-delete');
   }
   return memoryBulkDeleteModule;
 }
 
-function getCheckpointsModule(): CheckpointsModule {
+function getCheckpointsModule(): Promise<CheckpointsModule> {
   if (!checkpointsModule) {
     checkpointsModule = loadHandlerModule<CheckpointsModule>('checkpoints');
   }
   return checkpointsModule;
 }
 
-function getSessionLearningModule(): SessionLearningModule {
+function getSessionLearningModule(): Promise<SessionLearningModule> {
   if (!sessionLearningModule) {
     sessionLearningModule = loadHandlerModule<SessionLearningModule>('session-learning');
   }
   return sessionLearningModule;
 }
 
-function getEvalReportingModule(): EvalReportingModule {
+function getEvalReportingModule(): Promise<EvalReportingModule> {
   if (!evalReportingModule) {
     evalReportingModule = loadHandlerModule<EvalReportingModule>('eval-reporting');
   }
   return evalReportingModule;
 }
 
-function getCausalGraphModule(): CausalGraphModule {
+function getCausalGraphModule(): Promise<CausalGraphModule> {
   if (!causalGraphModule) {
     causalGraphModule = loadHandlerModule<CausalGraphModule>('causal-graph');
   }
   return causalGraphModule;
 }
 
-function getMemoryContextModule(): MemoryContextModule {
+function getMemoryContextModule(): Promise<MemoryContextModule> {
   if (!memoryContextModule) {
     memoryContextModule = loadHandlerModule<MemoryContextModule>('memory-context');
   }
   return memoryContextModule;
 }
 
-function getSharedMemoryModule(): SharedMemoryModule {
+function getSharedMemoryModule(): Promise<SharedMemoryModule> {
   if (!sharedMemoryModule) {
     sharedMemoryModule = loadHandlerModule<SharedMemoryModule>('shared-memory');
   }

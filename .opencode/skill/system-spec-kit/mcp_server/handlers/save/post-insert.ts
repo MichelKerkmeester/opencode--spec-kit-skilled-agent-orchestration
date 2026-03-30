@@ -2,24 +2,24 @@
 // MODULE: Post Insert
 // ───────────────────────────────────────────────────────────────
 import type BetterSqlite3 from 'better-sqlite3';
-import type * as memoryParser from '../../lib/parsing/memory-parser';
+import type * as memoryParser from '../../lib/parsing/memory-parser.js';
 
-import * as embeddings from '../../lib/providers/embeddings';
-import { processCausalLinks } from '../causal-links-processor';
+import * as embeddings from '../../lib/providers/embeddings.js';
+import { processCausalLinks } from '../causal-links-processor.js';
 import {
   isAutoEntitiesEnabled,
   isMemorySummariesEnabled,
   isEntityLinkingEnabled,
-} from '../../lib/search/search-flags';
+} from '../../lib/search/search-flags.js';
 import {
   extractEntities,
   filterEntities,
   refreshAutoEntitiesForMemory,
-} from '../../lib/extraction/entity-extractor';
-import { generateAndStoreSummary } from '../../lib/search/memory-summaries';
-import { runEntityLinking } from '../../lib/search/entity-linker';
-import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle';
-import { toErrorMessage } from '../../utils';
+} from '../../lib/extraction/entity-extractor.js';
+import { generateAndStoreSummary } from '../../lib/search/memory-summaries.js';
+import { runEntityLinking } from '../../lib/search/entity-linker.js';
+import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle.js';
+import { toErrorMessage } from '../../utils/index.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Duplicate-save no-op feedback hardening

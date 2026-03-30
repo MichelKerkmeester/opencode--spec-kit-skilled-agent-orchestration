@@ -9,9 +9,9 @@
 // scoring (step 9). It attaches metadata to rows without changing any
 // score fields.
 
-import type { PipelineRow } from './types';
-import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';
-import { enrichResultsWithValidationMetadata } from '../validation-metadata';
+import type { PipelineRow } from './types.js';
+import { enrichResultsWithAnchorMetadata } from '../anchor-metadata.js';
+import { enrichResultsWithValidationMetadata } from '../validation-metadata.js';
 
 /**
  * Execute Stage 2b: Enrichment (annotation-only, no score changes).

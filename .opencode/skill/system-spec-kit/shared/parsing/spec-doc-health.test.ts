@@ -6,7 +6,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
-import { evaluateSpecDocHealth } from './spec-doc-health';
+import { evaluateSpecDocHealth } from './spec-doc-health.js';
 
 function assertEqual(actual: unknown, expected: unknown, label: string): void {
   if (actual !== expected) {

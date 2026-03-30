@@ -9,8 +9,8 @@
 // Gated via SPECKIT_GRAPH_CONCEPT_ROUTING
 // Extracts noun phrases from a query and matches them against a concept alias
 // table, returning the matched canonical concept names for graph channel routing.
-import { isEntityLinkingEnabled } from './search-flags';
-import { createLogger } from '../utils/logger';
+import { isEntityLinkingEnabled } from './search-flags.js';
+import { createLogger } from '../utils/logger.js';
 import type Database from 'better-sqlite3';
 
 // ───────────────────────────────────────────────────────────────

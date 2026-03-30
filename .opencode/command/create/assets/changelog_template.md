@@ -67,13 +67,13 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 {Optional 1-2 sentence introduction for the category.}
 
-### 1. {Short descriptive title}
+### {Short descriptive title}
 
 **Problem:** {Explain what was broken or missing in plain English. Write for a smart person who is not a developer. Use analogies if they help. No unexplained jargon -- first use of a technical term includes a parenthetical definition like "BM25 (exact word matching)" or "CTE (a reusable SQL subquery)."}
 
 **Fix:** {Explain what was done to fix it. Focus on the behavior change, not the implementation details. What does the system do differently now? What does the user experience? Technical specifics (file paths, function names, SQL syntax) go in the Files Changed table, not here.}
 
-### 2. {Next title}
+### {Next title}
 
 **Problem:** {Same pattern...}
 

@@ -20,7 +20,7 @@ export {
   getAvailableHints,
   getErrorCodes,
   getDefaultErrorCodeForTool,
-} from './errors/index';
+} from './errors/index.js';
 
 export type {
   ErrorResponseData,
@@ -33,4 +33,4 @@ export type {
   ToolSpecificHintMap,
   ErrorCodeKey,
   ErrorCodeValue,
-} from './errors/index';
+} from './errors/index.js';

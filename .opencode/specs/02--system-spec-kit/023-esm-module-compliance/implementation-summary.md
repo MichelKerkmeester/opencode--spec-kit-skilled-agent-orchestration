@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: ESM Module Compliance Packet Sync"
-description: "Two-stage packet summary: the first pass corrected scope, and the second pass on 2026-03-28 locked the implementation-pending strategy from the finished 20-iteration research."
+title: "Implementation Summary: ESM Module Compliance"
+description: "Final packet summary for the completed 5-phase ESM migration across shared, mcp_server, and scripts, including runtime proof, deep-review follow-through, and the final zero-failure test sweep."
 trigger_phrases:
   - "implementation summary"
-  - "esm packet sync"
-  - "mcp_server esm analysis"
+  - "esm migration final summary"
+  - "phase 5 test closure"
 importance_tier: "standard"
 contextType: "architecture"
 ---
@@ -21,9 +21,9 @@ contextType: "architecture"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 023-esm-module-compliance |
-| **Last Synced** | 2026-03-28 |
+| **Completed** | 2026-03-30 |
 | **Level** | 2 |
-| **Runtime Migration Status** | Pending |
+| **Runtime Migration Status** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,25 +31,38 @@ contextType: "architecture"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet has now gone through two documentation-sync stages, but the runtime migration itself is still not implemented.
+This packet shipped a full 6-phase ESM migration across 3 packages: `@spec-kit/shared`, `@spec-kit/mcp-server`, and `@spec-kit/scripts`. The final result is a truthful native ESM runtime for `shared` and `mcp_server`, a preserved CommonJS contract for `scripts`, hardened memory-save behavior across the module boundary, standards and README alignment after review, a final test sweep that closed every remaining failure, and a 10-iteration GPT-5.4 deep review with all 18 findings remediated.
 
-### Stage 1: Scope Correction
+### Phase 1: `@spec-kit/shared` migrated to native ESM
 
-The earlier pass corrected the packet away from a standards-only framing and re-established that this feature is a real runtime migration problem. That first stage made the packet honest about the current CommonJS reality and stopped treating ESM compliance as a docs-only cleanup.
+Phase 1 established the package-local ESM baseline for `shared`. The migration added package metadata, switched the package build to real TypeScript output, moved the compiler to `nodenext`, and rewrote every runtime-sensitive relative path to explicit `.js` specifiers. The commit-level proof for this phase records 20 files changed and 48 relative import or export rewrites, which gave the downstream phases a clean ESM dependency surface.
 
-### Stage 2: Research-Locked Strategy Sync on 2026-03-28
+### Phase 2: `@spec-kit/mcp-server` migrated to native ESM
 
-The second pass incorporated the finished 20-iteration `research/research.md` outcome and locked the implementation strategy. The packet now states clearly that `@spec-kit/shared` and `@spec-kit/mcp-server` migrate together to package-local native ESM, `@spec-kit/scripts` stays CommonJS as a package, scripts-side interoperability refactors are in scope, dual-build is rejected as the first pass, and standards docs outside 023 stay deferred until runtime verification passes.
+Phase 2 moved the server package itself to truthful native ESM. That pass updated package metadata and compiler settings, rewrote the server's import graph, and replaced CommonJS-only globals and loader assumptions with ESM-safe runtime behavior. The migration touched 181 files and rewrote 839 relative imports, while also replacing `__dirname` and `__filename`, converting the remaining `require()` holdouts, and fixing JSON import attributes so the built server starts cleanly as ESM.
 
-### Files Updated In This Packet
+### Phase 3: `scripts` interop and memory-save hardening
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Modified | Locked the top-level strategy, scope boundary, and migration risks to the finished research |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Modified | Reordered the work into the research-backed phase sequence and captured the exact verification matrix and fallback rule |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Modified | Regrouped pending work by `shared`, `mcp_server`, scripts interop, test rewrites, high-risk retests, and deferred standards docs |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Modified | Distinguished completed strategy-lock items from still-pending runtime proof requirements |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Modified | Replaced the stale refresh-only story with the two-stage packet history |
+Phase 3 kept `@spec-kit/scripts` on CommonJS while proving the package can consume the migrated ESM siblings without a dual-build fallback. The key decision was to rely on Node 25 native `require(esm)` support instead of building a permanent helper layer, then remove the top-level-await blockers that broke that path. The same phase also hardened the memory-save pipeline by decoupling `scripts/core/workflow.ts` from direct runtime imports, fixing the V8 descendant phase-detection chain, and adding `manual-fallback` save handling so context capture still has a recovery path when the primary save pipeline is blocked.
+
+### Phase 4: review follow-through, standards alignment, and schema cleanup
+
+Phase 4 finished the migration as a release-quality change rather than stopping at "builds now." The repo absorbed a 30-iteration deep review, aligned the codebase to the active OpenCode standards, updated ESM-facing README surfaces, and fixed the MCP tool schema compatibility issue by removing `superRefine` from the affected schemas and moving that validation into handlers. That kept GPT-style function calling compatible while preserving the runtime checks.
+
+### Phase 5: final test and scenario remediation
+
+Phase 5 closed the verification gap left after the runtime migration. The first sweep fixed the 8 pre-existing failures that were still masking closure, including error-code drift, structured error response expectations, per-test DB fixtures, source-walk symlink handling, modularization limits, and manual playbook truth-sync. The final sweep then removed the last skipped and todo coverage gaps, converting them into real passing tests and bringing the workspace to 9480 passing tests with 0 failures and 0 skipped.
+
+### Phase 6: deep review remediation
+
+Phase 6 ran a 10-iteration deep review using GPT-5.4 agents via codex CLI, producing 18 findings across 7 dimensions (14 P1, 4 P2). All findings were remediated in 4 parallel implementation workstreams:
+
+- **Runtime correctness (P1-COR-01/02/03, P2-COR-01)**: Replaced residual `__dirname` in 2 ESM scripts, guarded `main()` in `context-server.ts` behind an entrypoint check, aligned `engines.node >= 20.11.0` across all 4 packages, fixed `shared` root export to `dist/index.js`
+- **Security hardening (P1-SEC-01/02/03, P1-CMP-03)**: Added trusted-transport warnings for shared-memory admin ops, made V-rule bridge fail-closed, added workspace boundary validation to `shared/paths.ts`, threaded governed scope into duplicate preflight queries with cross-scope metadata redaction
+- **Reliability and maintainability (P1-REL-01, P1-MNT-01, P2-MNT-02)**: Typed warnings in response-builder for file-persistence failures, consolidated 3 dynamic-import patterns in `workflow.ts` into `tryImportMcpApi` helper, documented barrel width in `api/index.ts`
+- **Performance (P2-PRF-01/02)**: Module-level cached lazy loader for hot-path vector-index imports, deferred heavy imports in `cli.ts` behind per-command handlers
+
+Total changes: 632 insertions, 91 deletions across 20 files.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -57,7 +70,7 @@ The second pass incorporated the finished 20-iteration `research/research.md` ou
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-I used `research/research.md` as the source of truth and synchronized only the packet markdown around it. The update was intentionally documentation-only: it locked decisions, phase ordering, task grouping, checklist gates, and deferral rules without claiming that any runtime package metadata, imports, loaders, or tests were already migrated.
+The work shipped as a phase-sequenced migration instead of one large package flip. `shared` moved first, `mcp_server` moved second, the `scripts` boundary was proven under Node 25 third, and only then did the repo absorb the review-driven cleanups and test closure work. Verification stayed grounded in runtime proof: all three package builds were recorded as green, `node dist/context-server.js` started successfully, and `node scripts/dist/memory/generate-context.js --help` passed as the scripts-side smoke.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -67,11 +80,11 @@ I used `research/research.md` as the source of truth and synchronized only the p
 
 | Decision | Why |
 |----------|-----|
-| Keep the packet implementation-pending | The research is complete, but the runtime migration and verification matrix are not |
-| Migrate `shared` and `mcp_server` together | The research concluded that a one-package flip would leave an unsafe boundary |
-| Keep `scripts` CommonJS and refactor interoperability instead of flipping the package | That is the smallest first-pass change that preserves the scripts package contract |
-| Reject dual-build as the first pass | The research only allows it as fallback if scripts interop proves materially too invasive |
-| Defer standards docs outside 023 | Standards should be updated from verified runtime behavior, not from planning intent |
+| Use `import.meta.dirname` instead of `fileURLToPath` wrappers | The runtime already targets Node `>=20.11.0`, so the native API is simpler and keeps ESM path handling readable |
+| Rely on Node 25 native `require(esm)` for the `scripts` boundary | That kept `scripts` on CommonJS without forcing a dual-build or permanent interop abstraction, and the real blocker turned out to be top-level await in 5 server modules |
+| Keep dual-build as fallback-only, not the primary migration path | The bounded interop fix was smaller and kept the package contracts cleaner |
+| Remove `superRefine` from the affected MCP tool schemas | GPT function-calling compatibility was breaking on the generated schema shape, so handler-level validation preserved behavior without the schema incompatibility |
+| Fold memory-save hardening into the migration instead of treating it as follow-up | The workflow and save pipeline were part of the runtime boundary that actually broke during the ESM transition, so closure required fixing them in-flight |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -81,11 +94,15 @@ I used `research/research.md` as the source of truth and synchronized only the p
 
 | Check | Result |
 |-------|--------|
-| Source-of-truth alignment | PASS: packet content now follows `research/research.md` rather than the earlier refresh-only framing |
-| Scope boundary | PASS: runtime migration remains pending and standards docs outside 023 remain deferred |
-| Strategy lock | PASS: the packet now records the coordinated `shared` plus `mcp_server` ESM migration, required scripts interop, and fallback-only dual-build rule |
-| Runtime migration evidence | PENDING: no runtime package, loader, or test changes were implemented in this packet sync |
-| Strict spec validation | PASS: the packet validates cleanly after the markdown sync |
+| `@spec-kit/shared` build | PASS, Phase 1 commit recorded native ESM output and zero `require()` calls in emitted `dist/` |
+| `@spec-kit/mcp-server` build | PASS, Phase 2 commit recorded clean build plus native ESM startup proof |
+| `@spec-kit/scripts` build | PASS, packet memory records scripts build green after the interop hardening work |
+| Runtime smoke: `node dist/context-server.js` | PASS, recorded in Phase 2 and Phase 4 verification notes |
+| Runtime smoke: `node scripts/dist/memory/generate-context.js --help` | PASS, recorded in Phase 3 and Phase 4 verification notes |
+| Final test sweep (Phase 5) | PASS, `mcp_server` 8997/8997 and `scripts` 483/483, totaling 9480/9480 with 0 failed and 0 skipped |
+| Phase 6 deep review | PASS, 10 iterations, 18 findings (14 P1 + 4 P2), all remediated |
+| Phase 6 post-fix build | PASS, all 3 packages build clean |
+| Phase 6 post-fix tests | PASS, mcp-server 8998+ passed (new regression tests added), scripts 483/483 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -93,7 +110,5 @@ I used `research/research.md` as the source of truth and synchronized only the p
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Runtime code changes are still pending** This packet now describes the implementation strategy accurately, but it does not claim the migration has shipped.
-2. **Standards docs outside 023 remain deferred** Those updates should only happen after the verification matrix passes against the real runtime changes.
-3. **This summary is packet-local** `research/research.md` remains unchanged and continues to carry the full 20-iteration evidence set.
+1. **Packet follow-through remains separate from code completion.** This summary reflects the shipped runtime state, but other packet surfaces still need their own truth-sync if they are expected to match the final completion state line-for-line.
 <!-- /ANCHOR:limitations -->

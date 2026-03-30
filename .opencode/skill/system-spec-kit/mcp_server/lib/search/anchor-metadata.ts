@@ -22,7 +22,7 @@
 // Anchor metadata here keeps Stage 3 (rerank) and Stage 4
 // (filter/annotate) aware of anchor structure without any score
 // Side-effects.
-import type { PipelineRow } from './pipeline/types';
+import type { PipelineRow } from './pipeline/types.js';
 
 // Feature catalog: Template anchor optimization
 

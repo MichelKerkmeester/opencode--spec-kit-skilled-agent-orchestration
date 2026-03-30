@@ -8,6 +8,6 @@ export {
   generateEmbedding,
   generateQueryEmbedding,
   getEmbeddingProfile,
-} from '../lib/providers/embeddings';
+} from '../lib/providers/embeddings.js';
 
-export * as retryManager from '../lib/providers/retry-manager';
+export * as retryManager from '../lib/providers/retry-manager.js';

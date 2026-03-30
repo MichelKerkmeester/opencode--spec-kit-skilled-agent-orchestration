@@ -1,22 +1,22 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Prediction Error Gating Helpers
 // ───────────────────────────────────────────────────────────────
-import * as vectorIndex from '../lib/search/vector-index';
-import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler';
-import * as incrementalIndex from '../lib/storage/incremental-index';
-import { recordHistory } from '../lib/storage/history';
-import { recordLineageTransition } from '../lib/storage/lineage-state';
-import { classifyEncodingIntent } from '../lib/search/encoding-intent';
-import { isEncodingIntentEnabled } from '../lib/search/search-flags';
-import { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers';
-import { applyPostInsertMetadata } from '../lib/storage/post-insert-metadata';
-import { detectSpecLevelFromParsed } from '../lib/spec/spec-level';
-import { requireDb, toErrorMessage } from '../utils';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler.js';
+import * as incrementalIndex from '../lib/storage/incremental-index.js';
+import { recordHistory } from '../lib/storage/history.js';
+import { recordLineageTransition } from '../lib/storage/lineage-state.js';
+import { classifyEncodingIntent } from '../lib/search/encoding-intent.js';
+import { isEncodingIntentEnabled } from '../lib/search/search-flags.js';
+import { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers.js';
+import { applyPostInsertMetadata } from '../lib/storage/post-insert-metadata.js';
+import { detectSpecLevelFromParsed } from '../lib/spec/spec-level.js';
+import { requireDb, toErrorMessage } from '../utils/index.js';
 
 // Feature catalog: Prediction-error save arbitration
 // Feature catalog: Memory indexing (memory_save)
 
-export { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers';
+export { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers.js';
 
 
 interface ParsedMemory {
@@ -43,7 +43,7 @@ interface SimilarMemory {
   [key: string]: unknown;
 }
 
-import type { PeDecision } from './save/types';
+import type { PeDecision } from './save/types.js';
 
 interface IndexResult extends Record<string, unknown> {
   status: string;

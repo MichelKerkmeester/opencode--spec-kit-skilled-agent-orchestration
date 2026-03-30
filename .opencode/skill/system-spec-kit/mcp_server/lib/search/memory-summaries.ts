@@ -5,8 +5,8 @@
 // Gated via SPECKIT_MEMORY_SUMMARIES
 
 import type Database from 'better-sqlite3';
-import { generateSummary } from './tfidf-summarizer';
-import { isMemorySummariesEnabled } from './search-flags';
+import { generateSummary } from './tfidf-summarizer.js';
+import { isMemorySummariesEnabled } from './search-flags.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFACES

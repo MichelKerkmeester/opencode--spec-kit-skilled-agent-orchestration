@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: BM25 trigger phrase re-index gate
 import type Database from 'better-sqlite3';
-import { normalizeContentForBM25 } from '../parsing/content-normalizer';
+import { normalizeContentForBM25 } from '../parsing/content-normalizer.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFACES

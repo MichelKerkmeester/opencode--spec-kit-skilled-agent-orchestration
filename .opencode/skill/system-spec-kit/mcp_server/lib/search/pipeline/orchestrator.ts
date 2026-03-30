@@ -28,13 +28,13 @@ import type {
   Stage4Output,
   Stage4ReadonlyRow,
   SignalStatus,
-} from './types';
+} from './types.js';
 
-import { executeStage1 } from './stage1-candidate-gen';
-import { executeStage2 } from './stage2-fusion';
-import { executeStage3 } from './stage3-rerank';
-import { executeStage4 } from './stage4-filter';
-import { MemoryError, withTimeout } from '../../errors/core';
+import { executeStage1 } from './stage1-candidate-gen.js';
+import { executeStage2 } from './stage2-fusion.js';
+import { executeStage3 } from './stage3-rerank.js';
+import { executeStage4 } from './stage4-filter.js';
+import { MemoryError, withTimeout } from '../../errors/core.js';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: 4-stage pipeline refactor

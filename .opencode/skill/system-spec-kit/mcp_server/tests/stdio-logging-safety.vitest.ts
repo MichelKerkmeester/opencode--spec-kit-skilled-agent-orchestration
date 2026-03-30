@@ -17,7 +17,18 @@ function collectRuntimeSources(root: string): string[] {
   const results: string[] = [];
 
   function walk(currentPath: string): void {
-    const stat = fs.statSync(currentPath);
+    let stat: fs.Stats;
+    try {
+      stat = fs.statSync(currentPath);
+    } catch (error: unknown) {
+      const code = typeof error === 'object' && error !== null && 'code' in error
+        ? String((error as { code?: unknown }).code)
+        : '';
+      if (code === 'ENOENT') {
+        return;
+      }
+      throw error;
+    }
     if (stat.isDirectory()) {
       const basename = path.basename(currentPath);
       if (EXCLUDED_SEGMENTS.has(basename)) {

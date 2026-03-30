@@ -3,16 +3,16 @@
 // ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
-import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
-import type { ParsedMemory } from '../../lib/parsing/memory-parser';
-import { getMemoryHashSnapshot, appendMutationLedgerSafe } from '../memory-crud-utils';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate.js';
+import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
+import { getMemoryHashSnapshot, appendMutationLedgerSafe } from '../memory-crud-utils.js';
 import {
   findSimilarMemories,
   reinforceExistingMemory,
   updateExistingMemory,
   logPeDecision,
-} from '../pe-gating';
-import type { PeDecision, SimilarMemory, IndexResult } from './types';
+} from '../pe-gating.js';
+import type { PeDecision, SimilarMemory, IndexResult } from './types.js';
 
 // Feature catalog: Prediction-error save arbitration
 // Feature catalog: Memory indexing (memory_save)

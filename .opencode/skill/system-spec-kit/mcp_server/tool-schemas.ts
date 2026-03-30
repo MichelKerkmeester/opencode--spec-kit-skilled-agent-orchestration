@@ -6,7 +6,7 @@
 import {
   MAX_INGEST_PATHS,
   MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS,
-} from './schemas/tool-input-schemas';
+} from './schemas/tool-input-schemas.js';
 
 /**
  * Re-export schema validation helpers used by the MCP tool entry points.
@@ -17,7 +17,7 @@ export {
   getToolSchema,
   validateToolArgs,
   getSchema,
-} from './schemas/tool-input-schemas';
+} from './schemas/tool-input-schemas.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

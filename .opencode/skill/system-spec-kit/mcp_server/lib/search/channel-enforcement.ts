@@ -11,7 +11,7 @@
 import {
   analyzeChannelRepresentation,
   isChannelMinRepEnabled,
-} from './channel-representation';
+} from './channel-representation.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFACES

@@ -226,7 +226,7 @@ const manager = new SessionStateManager();
 
 // Session retrieval state gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=false to disable.
-import { isSessionRetrievalStateEnabled } from './search-flags';
+import { isSessionRetrievalStateEnabled } from './search-flags.js';
 
 // -- Cross-Turn Deduplication --
 

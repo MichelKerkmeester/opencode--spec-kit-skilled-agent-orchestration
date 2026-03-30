@@ -10,7 +10,7 @@
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 
 // Feature catalog: Quality-aware 3-tier search fallback
 // Feature catalog: Verify-fix-verify memory quality loop

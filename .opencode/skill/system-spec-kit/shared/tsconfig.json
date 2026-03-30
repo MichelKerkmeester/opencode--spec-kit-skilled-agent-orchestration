@@ -3,7 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "rootDir": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]

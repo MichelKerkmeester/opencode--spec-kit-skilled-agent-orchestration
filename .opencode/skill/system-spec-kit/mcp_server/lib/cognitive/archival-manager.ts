@@ -4,8 +4,8 @@
 // Feature catalog: Automatic archival subsystem
 // Background archival job for dormant/archived memories
 import type Database from 'better-sqlite3';
-import { clearDegreeCache } from '../search/graph-search-fn';
-import { clearGraphSignalsCache } from '../graph/graph-signals';
+import { clearDegreeCache } from '../search/graph-search-fn.js';
+import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES (lazy-loaded)
@@ -13,16 +13,43 @@ import { clearGraphSignalsCache } from '../graph/graph-signals';
 
 // Lazy-load tier-classifier to avoid circular dependencies
 let tierClassifierModule: Record<string, unknown> | null = null;
+let tierClassifierModulePromise: Promise<Record<string, unknown> | null> | null = null;
+
+async function loadTierClassifierModule(): Promise<Record<string, unknown> | null> {
+  if (tierClassifierModule !== null) {
+    return tierClassifierModule;
+  }
+  if (tierClassifierModulePromise !== null) {
+    return tierClassifierModulePromise;
+  }
+
+  const loadPromise = (async (): Promise<Record<string, unknown> | null> => {
+    try {
+      tierClassifierModule = await import('./tier-classifier.js');
+      return tierClassifierModule;
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(`[archival-manager] tier-classifier module unavailable: ${message}`);
+      return null;
+    }
+  })();
+
+  tierClassifierModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (tierClassifierModulePromise === loadPromise) {
+      tierClassifierModulePromise = null;
+    }
+  }
+}
 
 function getTierClassifier(): Record<string, unknown> | null {
   if (tierClassifierModule !== null) return tierClassifierModule;
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    tierClassifierModule = require('./tier-classifier');
-    return tierClassifierModule;
-  } catch (_error: unknown) {
-    return null;
+  if (tierClassifierModulePromise === null) {
+    void loadTierClassifierModule();
   }
+  return null;
 }
 
 interface Bm25IndexModule {
@@ -35,24 +62,55 @@ interface Bm25IndexModule {
 }
 
 let bm25IndexModule: Bm25IndexModule | null = null;
+let bm25IndexModulePromise: Promise<Bm25IndexModule | null> | null = null;
+
+async function loadBm25IndexModule(): Promise<Bm25IndexModule | null> {
+  if (bm25IndexModule !== null) {
+    return bm25IndexModule;
+  }
+  if (bm25IndexModulePromise !== null) {
+    return bm25IndexModulePromise;
+  }
+
+  const primaryModulePath = '../search/bm25-index.js';
+  const fallbackModulePath = '../../search/bm25-index.js';
+
+  const loadPromise = (async (): Promise<Bm25IndexModule | null> => {
+    try {
+      bm25IndexModule = await import(primaryModulePath) as Bm25IndexModule;
+      return bm25IndexModule;
+    } catch (error: unknown) {
+      const primaryError = error instanceof Error ? error.message : String(error);
+      try {
+        // Support cognitive symlink import path in some runtime setups.
+        bm25IndexModule = await import(fallbackModulePath) as Bm25IndexModule;
+        return bm25IndexModule;
+      } catch (fallbackError: unknown) {
+        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        console.warn(
+          `[archival-manager] bm25-index module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
+        );
+        return null;
+      }
+    }
+  })();
+
+  bm25IndexModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (bm25IndexModulePromise === loadPromise) {
+      bm25IndexModulePromise = null;
+    }
+  }
+}
 
 function getBm25Index(): Bm25IndexModule | null {
   if (bm25IndexModule !== null) return bm25IndexModule;
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    bm25IndexModule = require('../search/bm25-index') as Bm25IndexModule;
-    return bm25IndexModule;
-  } catch (_error: unknown) {
-    try {
-      // Support cognitive symlink import path in some runtime setups.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      bm25IndexModule = require('../../search/bm25-index') as Bm25IndexModule;
-      return bm25IndexModule;
-    } catch (_error: unknown) {
-      return null;
-    }
+  if (bm25IndexModulePromise === null) {
+    void loadBm25IndexModule();
   }
+  return null;
 }
 
 interface EmbeddingModule {
@@ -60,28 +118,60 @@ interface EmbeddingModule {
 }
 
 let embeddingsModule: EmbeddingModule | null = null;
+let embeddingsModulePromise: Promise<EmbeddingModule | null> | null = null;
 
-function _getEmbeddings(): EmbeddingModule | null {
-  if (embeddingsModule !== null) return embeddingsModule;
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    embeddingsModule = require('../providers/embeddings') as EmbeddingModule;
+async function loadEmbeddingsModule(): Promise<EmbeddingModule | null> {
+  if (embeddingsModule !== null) {
     return embeddingsModule;
-  } catch (_error: unknown) {
+  }
+  if (embeddingsModulePromise !== null) {
+    return embeddingsModulePromise;
+  }
+
+  const primaryModulePath = '../providers/embeddings.js';
+  const fallbackModulePath = '../../providers/embeddings.js';
+
+  const loadPromise = (async (): Promise<EmbeddingModule | null> => {
     try {
-      // Support cognitive symlink import path in some runtime setups.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      embeddingsModule = require('../../providers/embeddings') as EmbeddingModule;
+      embeddingsModule = await import(primaryModulePath) as EmbeddingModule;
       return embeddingsModule;
-    } catch (_error: unknown) {
-      return null;
+    } catch (error: unknown) {
+      const primaryError = error instanceof Error ? error.message : String(error);
+      try {
+        // Support cognitive symlink import path in some runtime setups.
+        embeddingsModule = await import(fallbackModulePath) as EmbeddingModule;
+        return embeddingsModule;
+      } catch (fallbackError: unknown) {
+        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        console.warn(
+          `[archival-manager] embeddings module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
+        );
+        return null;
+      }
+    }
+  })();
+
+  embeddingsModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (embeddingsModulePromise === loadPromise) {
+      embeddingsModulePromise = null;
     }
   }
 }
 
+function _getEmbeddings(): EmbeddingModule | null {
+  if (embeddingsModule !== null) return embeddingsModule;
+  if (embeddingsModulePromise === null) {
+    void loadEmbeddingsModule();
+  }
+  return null;
+}
+
 function __setEmbeddingsModuleForTests(module: EmbeddingModule | null): void {
   embeddingsModule = module;
+  embeddingsModulePromise = null;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -390,7 +480,9 @@ function getMemoryIndexColumns(): Set<string> {
   try {
     const columns = (db.prepare('PRAGMA table_info(memory_index)') as Database.Statement).all() as Array<{ name: string }>;
     return new Set(columns.map(column => column.name));
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[archival-manager] getMemoryIndexColumns failed: ${message}`);
     return new Set();
   }
 }

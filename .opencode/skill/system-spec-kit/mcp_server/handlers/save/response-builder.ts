@@ -2,25 +2,25 @@
 // MODULE: Response Builder
 // ───────────────────────────────────────────────────────────────
 import type BetterSqlite3 from 'better-sqlite3';
-import type * as memoryParser from '../../lib/parsing/memory-parser';
+import type * as memoryParser from '../../lib/parsing/memory-parser.js';
 
-import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
-import * as retryManager from '../../lib/providers/retry-manager';
-import { runConsolidationCycleIfEnabled } from '../../lib/storage/consolidation';
-import { createMCPErrorResponse, createMCPSuccessResponse } from '../../lib/response/envelope';
-import { requireDb, toErrorMessage } from '../../utils';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate.js';
+import * as retryManager from '../../lib/providers/retry-manager.js';
+import { runConsolidationCycleIfEnabled } from '../../lib/storage/consolidation.js';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../../lib/response/envelope.js';
+import { requireDb, toErrorMessage } from '../../utils/index.js';
 
-import { appendMutationLedgerSafe } from '../memory-crud-utils';
-import { runPostMutationHooks } from '../mutation-hooks';
-import type { MCPResponse } from '../types';
-import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
+import { appendMutationLedgerSafe } from '../memory-crud-utils.js';
+import { runPostMutationHooks } from '../mutation-hooks.js';
+import type { MCPResponse } from '../types.js';
+import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
 import type {
   AssistiveRecommendation,
   IndexResult,
   PeDecision,
   ReconWarningList,
-} from './types';
-import type { EnrichmentStatus } from './post-insert';
+} from './types.js';
+import type { EnrichmentStatus } from './post-insert.js';
 import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Mutation response UX payload exposure
@@ -312,7 +312,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
   const shouldEmitPostMutationFeedback = result.status !== 'duplicate' && result.status !== 'unchanged';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {
-    let postMutationHooks: import('../mutation-hooks').MutationHookResult;
+    let postMutationHooks: import('../mutation-hooks.js').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('save', { specFolder: result.specFolder, filePath });
     } catch (hookError: unknown) {
@@ -368,8 +368,23 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
   }
 
   if (result.warnings && result.warnings.length > 0) {
+    // Preserve typed warnings with categories for programmatic consumers
     response.warnings = result.warnings;
-    response.message = `${response.message} (with ${result.warnings.length} warning(s) - anchor issues detected)`;
+    const typedWarnings: Array<{ category: string; message: string }> = result.warnings.map(
+      (w: string | { category: string; message: string }) => {
+        if (typeof w === 'string' && w.startsWith('[file-persistence-failed]')) {
+          return { category: 'file-persistence-failed', message: w.slice('[file-persistence-failed] '.length) };
+        }
+        return typeof w === 'string' ? { category: 'anchor-issues', message: w } : w;
+      }
+    );
+    (response as any).typedWarnings = typedWarnings;
+    const persistenceWarnings = typedWarnings.filter(w => w.category === 'file-persistence-failed');
+    const anchorWarnings = typedWarnings.filter(w => w.category !== 'file-persistence-failed');
+    const parts: string[] = [];
+    if (anchorWarnings.length > 0) parts.push(`${anchorWarnings.length} anchor issue(s)`);
+    if (persistenceWarnings.length > 0) parts.push(`${persistenceWarnings.length} file-persistence warning(s)`);
+    response.message = `${response.message} (with ${parts.join(', ')})`;
   }
 
   if (result.embeddingStatus) {

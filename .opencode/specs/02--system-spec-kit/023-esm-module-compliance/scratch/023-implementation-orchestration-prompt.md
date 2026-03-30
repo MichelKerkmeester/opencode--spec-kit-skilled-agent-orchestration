@@ -100,7 +100,7 @@ codex exec -p review -c model_reasoning_effort="high" \
 | Batch | Agent Tier | File Scope | Task |
 |-------|-----------|------------|------|
 | 1 (sequential) | high | `shared/package.json`, `shared/tsconfig.json` | T001-T004: Update metadata and compiler settings |
-| 2 (parallel) | xhigh | `shared/src/**/*.ts` (split by subdirectory if >20 files) | T005-T006: Rewrite all relative imports/exports to `.js` specifiers |
+| 2 (parallel) | xhigh | `shared/**/*.ts` (no `src/` dir — source at package root; split by subdirectory if >20 files) | T005-T006: Rewrite all relative imports/exports to `.js` specifiers |
 | 3 (sequential) | YOU | Build verification | T007-T008: `npm run build --workspace=@spec-kit/shared`, inspect dist output |
 
 #### Handoff Gate (must pass before Phase 2)
@@ -126,7 +126,7 @@ feat(shared): migrate @spec-kit/shared to native ESM (Phase 1/4)
 
 #### Parallelization Strategy
 
-This is the **largest phase** (1883 imports, 16+ CJS globals). Use all 10 agents across 4 batches.
+This is the **largest phase** (839 relative import/exports across 253 source files, 16 CJS global sites). Use all 10 agents across 4 batches.
 
 | Batch | Agents | Tier | File Scope | Task |
 |-------|--------|------|------------|------|
@@ -137,28 +137,24 @@ This is the **largest phase** (1883 imports, 16+ CJS globals). Use all 10 agents
 
 **Batch 2 Directory Split (5 xhigh agents):**
 
+Note: `mcp_server/` has 253 source files across many subdirectories. All must be covered.
+
 | Agent | Exclusive Scope | Approx Files |
 |-------|----------------|--------------|
-| A | `mcp_server/lib/search/**/*.ts` | ~15 files |
-| B | `mcp_server/lib/scoring/**/*.ts`, `mcp_server/lib/feedback/**/*.ts` | ~10 files |
-| C | `mcp_server/lib/parsing/**/*.ts`, `mcp_server/lib/response/**/*.ts`, `mcp_server/lib/session/**/*.ts` | ~10 files |
-| D | `mcp_server/handlers/**/*.ts` | ~15 files |
-| E | `mcp_server/tools/**/*.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/*.ts` (root lib files) | ~10 files |
+| A | `mcp_server/lib/search/**/*.ts` | ~70 files |
+| B | `mcp_server/lib/scoring/**/*.ts`, `mcp_server/lib/feedback/**/*.ts`, `mcp_server/lib/eval/**/*.ts`, `mcp_server/lib/cognitive/**/*.ts` | ~37 files |
+| C | `mcp_server/lib/storage/**/*.ts`, `mcp_server/lib/parsing/**/*.ts`, `mcp_server/lib/response/**/*.ts`, `mcp_server/lib/session/**/*.ts`, `mcp_server/lib/graph/**/*.ts`, `mcp_server/lib/cache/**/*.ts`, `mcp_server/lib/chunking/**/*.ts`, `mcp_server/lib/learning/**/*.ts`, `mcp_server/lib/providers/**/*.ts`, `mcp_server/lib/validation/**/*.ts`, `mcp_server/lib/ops/**/*.ts`, `mcp_server/lib/*.ts` (root lib files) | ~40 files |
+| D | `mcp_server/handlers/**/*.ts`, `mcp_server/hooks/**/*.ts`, `mcp_server/formatters/**/*.ts` | ~50 files |
+| E | `mcp_server/tools/**/*.ts`, `mcp_server/api/**/*.ts`, `mcp_server/core/**/*.ts`, `mcp_server/schemas/**/*.ts`, `mcp_server/scripts/**/*.ts`, `mcp_server/lib/errors/**/*.ts`, `mcp_server/lib/config/**/*.ts`, `mcp_server/lib/extraction/**/*.ts`, `mcp_server/lib/telemetry/**/*.ts`, `mcp_server/lib/utils/**/*.ts`, `mcp_server/lib/governance/**/*.ts`, `mcp_server/lib/collab/**/*.ts`, `mcp_server/lib/interfaces/**/*.ts`, `mcp_server/lib/architecture/**/*.ts`, `mcp_server/context-server.ts`, `mcp_server/cli.ts`, `mcp_server/startup-checks.ts` | ~56 files |
 
 **IMPORTANT**: Before Batch 2, identify barrel/index files (e.g., `handlers/index.ts`, `lib/search/index.ts`) that re-export from multiple subdirectories. These are **shared entry points** — assign each to the agent that owns that directory, and ensure dependent agents run AFTER.
 
 **Batch 3 CJS Global Split (4 high agents):**
 
-First, audit CJS global locations:
-```bash
-grep -rn "__dirname\|__filename\|require(" \
-  .opencode/skill/system-spec-kit/mcp_server/lib/ \
-  .opencode/skill/system-spec-kit/mcp_server/handlers/ \
-  .opencode/skill/system-spec-kit/mcp_server/tools/ \
-  --include="*.ts" | grep -v "test\|spec\|\.d\.ts"
-```
+The 16 files with CJS globals are:
+`cli.ts`, `core/config.ts`, `handlers/index.ts`, `handlers/memory-crud-health.ts`, `handlers/shared-memory.ts`, `handlers/v-rule-bridge.ts`, `lib/cognitive/archival-manager.ts`, `lib/cognitive/tier-classifier.ts`, `lib/errors/core.ts`, `lib/eval/eval-db.ts`, `lib/ops/file-watcher.ts`, `lib/scoring/composite-scoring.ts`, `lib/search/vector-index-store.ts`, `scripts/map-ground-truth-ids.ts`, `scripts/reindex-embeddings.ts`, `startup-checks.ts`
 
-Then split the resulting files across 4 agents by directory, maintaining the same exclusive scopes from Batch 2.
+Split these across 4 agents by directory, maintaining the same exclusive scopes from Batch 2.
 
 #### Handoff Gate (must pass before Phase 3)
 ```bash
@@ -183,36 +179,50 @@ feat(mcp-server): migrate @spec-kit/mcp-server to native ESM (Phase 2/4)
 
 #### Parallelization Strategy
 
-Medium scope (38 files), but the interop helper must be created FIRST. 3 batches.
+Medium scope (20 consumer files), but the interop helper must be created FIRST. 3 batches.
 
 | Batch | Agents | Tier | File Scope | Task |
 |-------|--------|------|------------|------|
-| 1 | 1 | xhigh | `scripts/src/lib/esm-interop.ts` (new file) | T001-T002: Create interop helper with typed `import()` wrappers |
+| 1 | 1 | xhigh | `scripts/lib/esm-interop.ts` (new file) | T001-T002: Create interop helper with typed `import()` wrappers |
 | 2 | 4 (parallel) | xhigh+high mix | Split scripts consumers by directory | T003-T006: Refactor all `require()` -> interop helper calls |
-| 3a | 3 (parallel) | high | Split test files | T008-T011: Rewrite module-sensitive tests |
-| 3b | 1 | YOU | Runtime verification | T012-T014: `generate-context.js --help`, test suite, Vitest |
+| 3 | 1 | xhigh | `scripts/core/workflow.ts` | T012 [P0]: Decouple workflow.ts from direct mcp-server runtime imports (use script-local adapters) |
+| 4 | 3 (parallel) | xhigh+high mix | Memory save hardening files | T013-T017: V8 descendant detection, manual-fallback mode, evidence parser, related_specs, JSON v2 schema |
+| 5a | 3 (parallel) | high | Split test files | T008-T011: Rewrite module-sensitive tests |
+| 5b | 1 | YOU | Runtime verification | T018-T021: `generate-context.js --help`, test suite, Vitest, memory save e2e |
 
 **Batch 2 Consumer Split:**
 
 First, audit which scripts files consume ESM siblings:
 ```bash
 grep -rn "require.*@spec-kit/shared\|require.*@spec-kit/mcp-server" \
-  .opencode/skill/system-spec-kit/scripts/src/ --include="*.ts"
+  .opencode/skill/system-spec-kit/scripts/ --include="*.ts"
 ```
 
 Split the results into 4 non-overlapping groups by directory. Assign 2 xhigh agents for complex files (workflow.ts, generate-context.ts) and 2 high agents for simpler consumer files.
 
 **DUAL-BUILD DECISION GATE**: After Batch 2, evaluate: if >50% of files needed deep restructuring beyond simple `require()` -> `import()` swaps, STOP and document the escalation. Per parent research, dual-build becomes the fallback. Report to the user before proceeding.
 
+**Batch 4 Memory Save Hardening Split (3 agents):**
+
+| Agent | Tier | File Scope | Task |
+|-------|------|------------|------|
+| F | xhigh | `scripts/lib/validate-memory-quality.ts` | T013: V8 descendant phase detection + T016: related_specs allowlist |
+| G | xhigh | `shared/parsing/memory-sufficiency.ts`, `mcp_server/handlers/save/markdown-evidence-builder.ts` | T014-T015: manual-fallback mode + primary evidence expansion |
+| H | high | `scripts/memory/generate-context.ts`, `scripts/utils/input-normalizer.ts` | T017: JSON v2 schema freeze + contract tests |
+
+**IMPORTANT**: Batch 3 (workflow.ts decoupling) MUST complete before Batch 5b runtime verification, because `generate-context.js` depends on workflow.ts which currently imports mcp-server directly.
+
 #### Handoff Gate (must pass before Phase 4)
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --help
 npm run test --workspace=@spec-kit/scripts
+# NEW: Memory save end-to-end test
+echo '{"specFolder":"023-esm-module-compliance","sessionSummary":"test save"}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin
 ```
 
 #### Commit
 ```
-feat(scripts): add CJS-to-ESM interop for @spec-kit/scripts (Phase 3/4)
+feat(scripts): add CJS-to-ESM interop + memory save hardening for @spec-kit/scripts (Phase 3/4)
 ```
 
 ---

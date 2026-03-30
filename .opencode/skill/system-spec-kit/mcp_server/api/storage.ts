@@ -5,5 +5,5 @@
 // ARCH-1 exposes minimal storage initialization hooks needed by
 // Operational scripts without importing mcp_server/lib/storage directly.
 
-export { init as initCheckpoints } from '../lib/storage/checkpoints';
-export { init as initAccessTracker } from '../lib/storage/access-tracker';
+export { init as initCheckpoints } from '../lib/storage/checkpoints.js';
+export { init as initAccessTracker } from '../lib/storage/access-tracker.js';

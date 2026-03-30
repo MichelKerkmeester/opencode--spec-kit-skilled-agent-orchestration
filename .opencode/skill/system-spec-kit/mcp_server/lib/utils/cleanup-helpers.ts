@@ -1,4 +1,4 @@
-import { get_error_message } from '../search/vector-index-types';
+import { get_error_message } from '../search/vector-index-types.js';
 
 /** Run a shutdown cleanup step and log failures without aborting the sequence. */
 export function runCleanupStep(label: string, cleanupFn: () => void): void {

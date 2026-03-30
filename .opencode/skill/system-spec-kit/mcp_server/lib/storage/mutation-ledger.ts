@@ -6,7 +6,7 @@
 // SQLite triggers enforce immutability (no UPDATE/DELETE on ledger)
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
-import { runInTransaction } from './transaction-manager';
+import { runInTransaction } from './transaction-manager.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

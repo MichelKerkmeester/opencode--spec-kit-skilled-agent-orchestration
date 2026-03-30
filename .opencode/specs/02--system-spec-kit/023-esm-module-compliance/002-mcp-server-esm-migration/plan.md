@@ -27,7 +27,7 @@ contextType: "architecture"
 | **Testing** | `npm run build --workspace=@spec-kit/mcp-server`, `node dist/context-server.js` smoke |
 
 ### Overview
-Migrate `@spec-kit/mcp-server` from inherited CommonJS to package-local native ESM. This is the largest phase by file count (1883 import statements, 16+ CJS global sites) and depends on Phase 1 having already flipped `shared` to ESM.
+Migrate `@spec-kit/mcp-server` from inherited CommonJS to package-local native ESM. This is the largest phase by file count (839 relative import/export statements, 16 CJS global sites across 253 source files) and depends on Phase 1 having already flipped `shared` to ESM.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -122,7 +122,7 @@ Package-local ESM override with CommonJS global cleanup and cross-package import
 |------------|------|--------|-------------------|
 | Phase 1 (`shared` ESM) | Internal | Must be complete | Server imports from `shared` would fail |
 | Parent research | Internal | Green | Strategy source of truth |
-| Node 21.2+ | External | Green | Required for `import.meta.dirname`/`filename` |
+| Node >=20.11.0 | External | Green | Required for `import.meta.dirname`/`filename` (current runtime: v25.6.1). Update `engines` field in package.json from `>=18.0.0` to `>=20.11.0` |
 <!-- /ANCHOR:dependencies -->
 
 ---

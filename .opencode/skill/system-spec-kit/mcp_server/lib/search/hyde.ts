@@ -27,11 +27,11 @@
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import * as embeddings from '../providers/embeddings';
-import * as vectorIndex from './vector-index';
-import { getLlmCache, type LlmCacheKey } from './llm-cache';
-import { normalizeQuery } from './llm-reformulation';
-import type { PipelineRow } from './pipeline/types';
+import * as embeddings from '../providers/embeddings.js';
+import * as vectorIndex from './vector-index.js';
+import { getLlmCache, type LlmCacheKey } from './llm-cache.js';
+import { normalizeQuery } from './llm-reformulation.js';
+import type { PipelineRow } from './pipeline/types.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -101,7 +101,7 @@ const HYDE_TIMEOUT_MS = 8000;
 
 // D2 REQ-D2-004: HyDE feature gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_HYDE=false to disable.
-import { isHyDEEnabled } from './search-flags';
+import { isHyDEEnabled } from './search-flags.js';
 export { isHyDEEnabled };
 
 /**

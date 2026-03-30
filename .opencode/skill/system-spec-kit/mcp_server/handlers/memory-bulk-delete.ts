@@ -4,21 +4,21 @@
 // Tier-based bulk deletion of memories with safety gates.
 // Eliminates the need for direct DB scripts when cleaning up
 // Deprecated/temporary memories at scale.
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as mutationLedger from '../lib/storage/mutation-ledger';
-import * as causalEdges from '../lib/storage/causal-edges';
-import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as mutationLedger from '../lib/storage/mutation-ledger.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import { recordHistory } from '../lib/storage/history';
-import { MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS } from '../schemas/tool-input-schemas';
-import { appendMutationLedgerSafe } from './memory-crud-utils';
-import { runPostMutationHooks } from './mutation-hooks';
-import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
+import { recordHistory } from '../lib/storage/history.js';
+import { MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS } from '../schemas/tool-input-schemas.js';
+import { appendMutationLedgerSafe } from './memory-crud-utils.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
 
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 
 // Feature catalog: Tier-based bulk deletion (memory_bulk_delete)
 // Feature catalog: Per-memory history log
@@ -259,7 +259,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   // Invalidate caches
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (deletedCount > 0) {
-    let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+    let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('bulk-delete', { specFolder, tier, deletedCount });
     } catch (hookError: unknown) {

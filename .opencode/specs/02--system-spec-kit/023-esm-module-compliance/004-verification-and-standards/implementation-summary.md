@@ -1,19 +1,17 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Verification and Standards Sync"
+description: "Completion summary for Phase 4 — highest-risk retests, full verification matrix, standards doc sync, and parent packet closure."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "phase 4 summary"
+  - "verification summary"
+  - "023 phase 4 implementation"
+importance_tier: "standard"
+contextType: "architecture"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,9 +20,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 023-esm-module-compliance/004-verification-and-standards |
+| **Completed** | 2026-03-30 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +30,23 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Phase 4 closed the ESM migration by running the research-defined verification matrix against all high-risk runtime surfaces, then syncing standards docs from the verified ESM state.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Highest-Risk Retests
 
-### [Feature Name]
+All 7 surfaces identified by research as highest regression risk were retested and confirmed passing: `memory-save.ts`, `memory-index.ts`, `shared-memory.ts`, `vector-index-store.ts`, `session-manager.ts`, `generate-context.ts`, and `workflow.ts`.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Verification Matrix
 
-### Files Changed
+The full verification matrix passed: root gates (typecheck, test:cli), workspace builds and tests (mcp-server 8997+, scripts 483/483), module-sensitive Vitest suites, runtime smokes (`node dist/context-server.js`, `node scripts/dist/memory/generate-context.js --help`), and scripts interop tests.
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+### Standards-Doc Sync
 
-| File | Action | Purpose |
-|------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+Updated `sk-code--opencode` and related standards surfaces to describe the verified ESM runtime state. README surfaces aligned. The 30-iteration deep review findings were absorbed, and MCP tool schema compatibility was fixed by removing `superRefine` from affected schemas.
+
+### Packet Closure
+
+Parent `implementation-summary.md` updated with all phase verification results. All P0 (9/9) and P1 (8/8) checklist items marked with evidence. Parent spec status set to Complete.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +54,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Verification was run in the research-prescribed order: highest-risk surfaces first, then the full matrix, then standards docs. No verification was claimed before runtime proof existed.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +62,10 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Retest high-risk surfaces before the full matrix | Research identified these 7 surfaces as the most likely regression zones under ESM path changes |
+| Update standards docs only after full verification | Standards should describe verified runtime truth, not planning intent |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +73,13 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| Highest-risk retests (7 surfaces) | PASS |
+| Full verification matrix | PASS — mcp-server 8997+, scripts 483/483 |
+| Runtime smokes | PASS |
+| Standards doc alignment | PASS |
+| Parent packet closure | PASS — all P0/P1 checked with evidence |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +87,5 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **P2 items deferred.** Three P2 checklist items (CHK-020, CHK-021, CHK-022) remain unchecked as optional items.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

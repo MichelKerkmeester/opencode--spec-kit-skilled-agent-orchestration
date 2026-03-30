@@ -32,7 +32,7 @@ export {
 
   // Cache
   CONSTITUTIONAL_CACHE_TTL,
-} from './config';
+} from './config.js';
 
 export {
   // Types
@@ -64,4 +64,4 @@ export {
   setConstitutionalCache,
   getConstitutionalCacheTime,
   clearConstitutionalCache,
-} from './db-state';
+} from './db-state.js';

@@ -12,11 +12,24 @@ import {
 } from '../lib/storage/transaction-manager';
 
 const tempDirs: string[] = [];
+const originalSpecKitDbDir = process.env.SPEC_KIT_DB_DIR;
+const originalSpeckitDbDir = process.env.SPECKIT_DB_DIR;
+
+function ensureDefaultRecoveryDb(rootDir: string): string {
+  const dbDir = path.join(rootDir, 'db-fixture');
+  const dbPath = path.join(dbDir, 'context-index.sqlite');
+  fs.mkdirSync(dbDir, { recursive: true });
+  fs.writeFileSync(dbPath, '', 'utf-8');
+  process.env.SPEC_KIT_DB_DIR = dbDir;
+  delete process.env.SPECKIT_DB_DIR;
+  return dbPath;
+}
 
 function createTempDir(label: string): string {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `txn-mgr-recovery-${label}-`));
   tempDirs.push(dir);
   resetMetrics();
+  ensureDefaultRecoveryDb(dir);
   return dir;
 }
 
@@ -41,6 +54,18 @@ afterEach(() => {
     } catch {
       // Best-effort cleanup
     }
+  }
+
+  if (originalSpecKitDbDir === undefined) {
+    delete process.env.SPEC_KIT_DB_DIR;
+  } else {
+    process.env.SPEC_KIT_DB_DIR = originalSpecKitDbDir;
+  }
+
+  if (originalSpeckitDbDir === undefined) {
+    delete process.env.SPECKIT_DB_DIR;
+  } else {
+    process.env.SPECKIT_DB_DIR = originalSpeckitDbDir;
   }
 });
 

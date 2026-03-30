@@ -9,10 +9,10 @@ export {
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
   MEMORY_AWARE_TOOLS,
-} from './memory-surface';
-export { buildMutationHookFeedback } from './mutation-feedback';
+} from './memory-surface.js';
+export { buildMutationHookFeedback } from './mutation-feedback.js';
 export {
   appendAutoSurfaceHints,
   syncEnvelopeTokenCount,
   serializeEnvelopeWithTokenCount,
-} from './response-hints';
+} from './response-hints.js';

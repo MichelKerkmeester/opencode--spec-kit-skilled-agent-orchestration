@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Tool Input Schema
 // ───────────────────────────────────────────────────────────────
-import type { ToolDefinition } from '../tool-schemas';
+import type { ToolDefinition } from '../tool-schemas.js';
 
 interface JsonSchemaProperty {
   type?: string;

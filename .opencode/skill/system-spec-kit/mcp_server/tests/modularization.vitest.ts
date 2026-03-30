@@ -3,9 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Source: modularization.test.js (442 lines)
 // Active tests: directory structure, module line counts, context-server imports
-// Skipped tests: index exports, core/handler/formatter/utils/hooks exports,
-// Validator functions, token metrics (all require dist/ with DB dependencies)
-import { describe, it, expect } from 'vitest';
+// DB-dependent barrel checks use mocked vector-index imports so we can validate
+// the export surface without bootstrapping a real database.
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 
@@ -20,6 +20,7 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 const EXTENDED_LIMITS: Record<string, number> = {
   'context-server.js': 1065,        // actual: 1050 — Main entry point wiring for tools, hooks, startup lifecycle, startup root discovery, and remediation hooks
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
+  'core/db-state.js': 500,          // actual: 449 — Database state tracking and rebinding lifecycle remain centralized pending deeper decomposition
   'formatters/search-results.js': 536, // actual: 536 — Search result formatting + Sprint 019/020 trace and session-transition envelope support
   'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration
   'handlers/memory-triggers.js': 470, // actual: 454 — Trigger matching with cognitive features + governance/scope wiring
@@ -29,9 +30,54 @@ const EXTENDED_LIMITS: Record<string, number> = {
   'handlers/checkpoints.js': 600,   // actual: 582 — Checkpoint operations plus scoped metadata guards, restore/delete safety checks, SEC-002 scope enforcement, and T012 follow-up fixes
 };
 
+type CoreIndexModule = typeof import('../core/index');
+type HandlersIndexModule = typeof import('../handlers/index');
+type FormattersIndexModule = typeof import('../formatters/index');
+type UtilsIndexModule = typeof import('../utils/index');
+type HooksIndexModule = typeof import('../hooks/index');
+type ToolsIndexModule = typeof import('../tools/index');
+
+const mockedDbDeps = vi.hoisted(() => ({
+  getDb: vi.fn(() => null),
+  get_db: vi.fn(() => null),
+  onDatabaseConnectionChange: vi.fn(() => () => {}),
+}));
+
+vi.mock('../lib/search/vector-index.js', () => mockedDbDeps);
+
 function countLines(filePath: string): number {
   const content = fs.readFileSync(filePath, 'utf8');
   return content.split('\n').length;
+}
+
+beforeEach(() => {
+  vi.resetModules();
+  mockedDbDeps.getDb.mockReturnValue(null);
+  mockedDbDeps.get_db.mockReturnValue(null);
+});
+
+async function loadCoreIndex(): Promise<CoreIndexModule> {
+  return await import('../core/index');
+}
+
+async function loadHandlersIndex(): Promise<HandlersIndexModule> {
+  return await import('../handlers/index');
+}
+
+async function loadFormattersIndex(): Promise<FormattersIndexModule> {
+  return await import('../formatters/index');
+}
+
+async function loadUtilsIndex(): Promise<UtilsIndexModule> {
+  return await import('../utils/index');
+}
+
+async function loadHooksIndex(): Promise<HooksIndexModule> {
+  return await import('../hooks/index');
+}
+
+async function loadToolsIndex(): Promise<ToolsIndexModule> {
+  return await import('../tools/index');
 }
 
 // 1. DIRECTORY STRUCTURE (ACTIVE — pure fs.existsSync checks)
@@ -94,18 +140,18 @@ describe('Module Line Counts (<300 lines)', () => {
 
 // 3. CONTEXT SERVER INTEGRATION (ACTIVE — pure fs.readFileSync check)
 describe('Context Server Integration', () => {
-  // The compiled JS uses double-quoted require() calls
+  // The compiled JS is ESM and emits explicit import specifiers.
   const imports = [
-    'require("./core")',
-    'require("./handlers")',
-    'require("./utils")',
-    'require("./hooks")',
-    'require("./tools")',
-    'require("./tool-schemas")',
+    { label: 'core barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/core\/index\.js['"]/ },
+    { label: 'handlers barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/handlers\/index\.js['"]/ },
+    { label: 'utils barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/utils\/index\.js['"]/ },
+    { label: 'hooks barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/hooks\/index\.js['"]/ },
+    { label: 'tools barrel', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/tools\/index\.js['"]/ },
+    { label: 'tool schemas', pattern: /import\s*\{[\s\S]*?\}\s*from\s*['"]\.\/tool-schemas\.js['"]/ },
   ];
 
   for (const imp of imports) {
-    it(`Import: ${imp} found in context-server.js`, () => {
+    it(`Import: ${imp.label} found in context-server.js`, () => {
       const contextServerPath = path.join(MCP_SERVER_PATH, 'dist', 'context-server.js');
       if (!fs.existsSync(contextServerPath)) {
         expect(fs.existsSync(contextServerPath)).toBe(true);
@@ -113,27 +159,50 @@ describe('Context Server Integration', () => {
       }
 
       const contextServer = fs.readFileSync(contextServerPath, 'utf8');
-      expect(contextServer).toContain(imp);
+      expect(contextServer).toMatch(imp.pattern);
     });
   }
 });
 
-// 4. INDEX EXPORTS (SKIPPED — require() loads DB-dependent modules)
-describe('Index Re-exports (DB-dependent)', () => {
-  // Original: testIndexExports() — requires dist/{core,handlers,formatters,utils,hooks,tools}/index.js
-  // Each require() loads modules that import Database/better-sqlite3
+// 4. INDEX EXPORTS
+describe('Index Re-exports (mocked DB)', () => {
+  const moduleLoaders = {
+    core: async () => await loadCoreIndex(),
+    handlers: async () => await loadHandlersIndex(),
+    formatters: async () => await loadFormattersIndex(),
+    utils: async () => await loadUtilsIndex(),
+    hooks: async () => await loadHooksIndex(),
+    tools: async () => await loadToolsIndex(),
+  } as const;
 
-  const directories = ['core', 'handlers', 'formatters', 'utils', 'hooks', 'tools'];
+  const barrelSentinels: Record<keyof typeof moduleLoaders, string> = {
+    core: 'DATABASE_PATH',
+    handlers: 'handleMemorySearch',
+    formatters: 'estimateTokens',
+    utils: 'validateQuery',
+    hooks: 'extractContextHint',
+    tools: 'dispatchTool',
+  };
 
-  for (const dir of directories) {
-    it.skip(`${dir}/index.js exports items`, () => {
+  for (const [dir, loadModule] of Object.entries(moduleLoaders) as Array<[keyof typeof moduleLoaders, (typeof moduleLoaders)[keyof typeof moduleLoaders]]>) {
+    it(`${dir}/index.js exports items`, async () => {
+      const mod = await loadModule();
+      expect(Object.keys(mod)).not.toHaveLength(0);
+      expect(mod).toHaveProperty(barrelSentinels[dir]);
     });
   }
 });
 
-// 5. CORE EXPORTS (SKIPPED — DB-dependent)
-describe('Core Module Exports (DB-dependent)', () => {
-  // Original: testCoreExports() — requires dist/core which imports DB modules
+// 5. CORE EXPORTS
+describe('Core Module Exports', () => {
+  const functionExports = new Set([
+    'checkDatabaseUpdated',
+    'reinitializeDatabase',
+    'getLastScanTime',
+    'setLastScanTime',
+    'init',
+    'isEmbeddingModelReady',
+  ]);
   const required = [
     'DATABASE_PATH', 'LIB_DIR', 'SHARED_DIR',
     'BATCH_SIZE', 'BATCH_DELAY_MS', 'INDEX_SCAN_COOLDOWN',
@@ -143,14 +212,23 @@ describe('Core Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it.skip(`core.${fn} is exported`, () => {
+    it(`core.${fn} is exported`, async () => {
+      const core = await loadCoreIndex();
+      expect(core).toHaveProperty(fn);
+
+      const exported = core[fn as keyof CoreIndexModule];
+      if (functionExports.has(fn)) {
+        expect(exported).toBeTypeOf('function');
+        return;
+      }
+
+      expect(exported).not.toBeUndefined();
     });
   }
 });
 
-// 6. HANDLER EXPORTS (SKIPPED — DB-dependent)
-describe('Handler Module Exports (DB-dependent)', () => {
-  // Original: testHandlerExports() — requires dist/handlers
+// 6. HANDLER EXPORTS
+describe('Handler Module Exports', () => {
   const required = [
     'handleMemorySearch',
     'handleMemoryMatchTriggers',
@@ -164,28 +242,32 @@ describe('Handler Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it.skip(`handlers.${fn} is exported as function`, () => {
+    it(`handlers.${fn} is exported as function`, async () => {
+      const handlers = await loadHandlersIndex();
+      expect(handlers).toHaveProperty(fn);
+      expect(handlers[fn as keyof HandlersIndexModule]).toBeTypeOf('function');
     });
   }
 });
 
-// 7. FORMATTER EXPORTS (SKIPPED — DB-dependent)
-describe('Formatter Module Exports (DB-dependent)', () => {
-  // Original: testFormatterExports() — requires dist/formatters
+// 7. FORMATTER EXPORTS
+describe('Formatter Module Exports (mocked DB)', () => {
   const required = [
     'estimateTokens', 'calculateTokenMetrics',
     'formatSearchResults',
   ];
 
   for (const fn of required) {
-    it.skip(`formatters.${fn} is exported as function`, () => {
+    it(`formatters.${fn} is exported as function`, async () => {
+      const formatters = await loadFormattersIndex();
+      expect(formatters).toHaveProperty(fn);
+      expect(formatters[fn as keyof FormattersIndexModule]).toBeTypeOf('function');
     });
   }
 });
 
-// 8. UTILS EXPORTS (SKIPPED — DB-dependent)
-describe('Utils Module Exports (DB-dependent)', () => {
-  // Original: testUtilsExports() — requires dist/utils
+// 8. UTILS EXPORTS
+describe('Utils Module Exports (mocked DB)', () => {
   const required = [
     'validateQuery', 'validateInputLengths', 'INPUT_LIMITS',
     'safeJsonParse', 'safeJsonStringify',
@@ -193,51 +275,100 @@ describe('Utils Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it.skip(`utils.${fn} is exported`, () => {
+    it(`utils.${fn} is exported`, async () => {
+      const utils = await loadUtilsIndex();
+      expect(utils).toHaveProperty(fn);
+
+      const exported = utils[fn as keyof UtilsIndexModule];
+      if (fn === 'INPUT_LIMITS') {
+        expect(exported).toEqual(expect.objectContaining({
+          query: expect.any(Number),
+          title: expect.any(Number),
+        }));
+        return;
+      }
+
+      expect(exported).toBeTypeOf('function');
     });
   }
 });
 
-// 9. HOOKS EXPORTS (SKIPPED — DB-dependent)
-describe('Hooks Module Exports (DB-dependent)', () => {
-  // Original: testHooksExports() — requires dist/hooks
+// 9. HOOKS EXPORTS
+describe('Hooks Module Exports (mocked DB)', () => {
+  // The barrel exports the live camelCase API surface from hooks/index.ts.
   const required = [
-    'extract_context_hint',
-    'get_constitutional_memories',
-    'auto_surface_memories',
+    'extractContextHint',
+    'getConstitutionalMemories',
+    'autoSurfaceMemories',
     'MEMORY_AWARE_TOOLS',
   ];
 
   for (const fn of required) {
-    it.skip(`hooks.${fn} is exported`, () => {
+    it(`hooks.${fn} is exported`, async () => {
+      const hooks = await loadHooksIndex();
+      expect(hooks).toHaveProperty(fn);
+
+      const exported = hooks[fn as keyof HooksIndexModule];
+      if (fn === 'MEMORY_AWARE_TOOLS') {
+        expect(exported).toBeInstanceOf(Set);
+        return;
+      }
+
+      expect(exported).toBeTypeOf('function');
     });
   }
 });
 
-// 10. VALIDATOR FUNCTIONS (SKIPPED — requires dist/utils, DB-dependent)
-describe('Validator Function Tests (DB-dependent)', () => {
-  // Original: testValidatorFunctions() — requires dist/utils which has DB deps
-
-  it.skip('validateQuery(null) throws', () => {
+// 10. VALIDATOR FUNCTIONS
+describe('Validator Function Tests (mocked DB)', () => {
+  it('validateQuery(null) throws', async () => {
+    const utils = await loadUtilsIndex();
+    expect(() => utils.validateQuery(null)).toThrow('Query cannot be null or undefined');
   });
 
-  it.skip('validateQuery("   ") throws', () => {
+  it('validateQuery("   ") throws', async () => {
+    const utils = await loadUtilsIndex();
+    expect(() => utils.validateQuery('   ')).toThrow('Query cannot be empty or whitespace-only');
   });
 
-  it.skip('validateQuery("test query") returns trimmed', () => {
+  it('validateQuery("test query") returns trimmed', async () => {
+    const utils = await loadUtilsIndex();
+    expect(utils.validateQuery('  test query  ')).toBe('test query');
   });
 
-  it.skip('validateInputLengths with valid input does not throw', () => {
+  it('validateInputLengths with valid input does not throw', async () => {
+    const utils = await loadUtilsIndex();
+    expect(() => utils.validateInputLengths({
+      query: 'test query',
+      title: 'Short title',
+      specFolder: '023-esm-module-compliance/005-test-and-scenario-remediation',
+    })).not.toThrow();
   });
 });
 
-// 11. TOKEN METRICS (SKIPPED — requires dist/formatters, DB-dependent)
-describe('Token Metrics Tests (DB-dependent)', () => {
-  // Original: testTokenMetrics() — requires dist/formatters
-
-  it.skip('estimateTokens("Hello world") returns positive number', () => {
+// 11. TOKEN METRICS
+describe('Token Metrics Tests (mocked DB)', () => {
+  it('estimateTokens("Hello world") returns positive number', async () => {
+    const formatters = await loadFormattersIndex();
+    expect(formatters.estimateTokens('Hello world')).toBeGreaterThan(0);
   });
 
-  it.skip('calculateTokenMetrics returns object with actualTokens', () => {
+  it('calculateTokenMetrics returns object with actualTokens', async () => {
+    const formatters = await loadFormattersIndex();
+    const metrics = formatters.calculateTokenMetrics(
+      [{ id: 1 }, { id: 2 }, { id: 3 }],
+      [
+        { tier: 'HOT', content: 'Full content for the hot result.' },
+        { tier: 'WARM', content: 'Warm summary.' },
+      ],
+    );
+
+    expect(metrics).toEqual(expect.objectContaining({
+      actualTokens: expect.any(Number),
+      hotTokens: expect.any(Number),
+      warmTokens: expect.any(Number),
+      coldExcluded: 1,
+    }));
+    expect(metrics.actualTokens).toBeGreaterThan(0);
   });
 });

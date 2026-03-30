@@ -7,13 +7,13 @@ import {
   isEmbeddingModelReady,
   waitForEmbeddingModel,
   checkDatabaseUpdated,
-} from '../../core';
-import { buildAdaptiveShadowProposal } from '../cognitive/adaptive-ranking';
-import { isEnabled as isSessionBoostEnabled } from '../search/session-boost';
-import { isEnabled as isCausalBoostEnabled } from '../search/causal-boost';
-import { executePipeline, type PipelineConfig } from '../search/pipeline';
-import { initConsumptionLog } from '../telemetry/consumption-logger';
-import type { RankedItem } from './rank-metrics';
+} from '../../core/index.js';
+import { buildAdaptiveShadowProposal } from '../cognitive/adaptive-ranking.js';
+import { isEnabled as isSessionBoostEnabled } from '../search/session-boost.js';
+import { isEnabled as isCausalBoostEnabled } from '../search/causal-boost.js';
+import { executePipeline, type PipelineConfig } from '../search/pipeline/index.js';
+import { initConsumptionLog } from '../telemetry/consumption-logger.js';
+import type { RankedItem } from './rank-metrics.js';
 import {
   DEFAULT_HOLDOUT_PERCENT,
   EVALUATION_WINDOW_MS,
@@ -22,7 +22,7 @@ import {
   runShadowEvaluation,
   selectHoldoutQueries,
   type ShadowEvaluationReport,
-} from './shadow-scoring';
+} from './shadow-scoring.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

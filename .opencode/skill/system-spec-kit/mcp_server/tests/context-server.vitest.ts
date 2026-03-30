@@ -246,7 +246,9 @@ describe('Context Server', () => {
     }
 
     it('T15b: context-server imports scoring observability init', () => {
-      expect(sourceCode).toMatch(/initScoringObservability\s*}\s*from\s*'\.\/lib\/telemetry\/scoring-observability'/)
+      expect(sourceCode).toMatch(
+        /initScoringObservability\s*}\s*from\s*['"]\.\/lib\/telemetry\/scoring-observability\.js['"]/
+      )
     })
 
     it('T15c: context-server initializes scoring observability at startup', () => {
@@ -281,7 +283,7 @@ describe('Context Server', () => {
     })
 
     it('T16c: dispatchTool imported from ./tools', () => {
-      expect(sourceCode).toMatch(/import\s+\{[^}]*dispatchTool[^}]*\}\s*from\s+['"]\.\/tools['"]/)
+      expect(sourceCode).toMatch(/import\s+\{[^}]*dispatchTool[^}]*\}\s*from\s+['"]\.\/tools\/index\.js['"]/)
     })
 
     // T17: All tools dispatched via tool modules
@@ -1524,7 +1526,7 @@ describe('Context Server', () => {
   describe('Group 7: Hooks Integration', () => {
     // T29: Source imports MEMORY_AWARE_TOOLS
     it('T29: Imports MEMORY_AWARE_TOOLS from hooks', () => {
-      expect(sourceCode).toMatch(/import\s*\{[^}]*MEMORY_AWARE_TOOLS[^}]*\}\s*from\s*'\.\/hooks'/)
+      expect(sourceCode).toMatch(/import\s*\{[^}]*MEMORY_AWARE_TOOLS[^}]*\}\s*from\s*['"]\.\/hooks\/index\.js['"]/)
     })
 
     // T30: Source checks MEMORY_AWARE_TOOLS.has(name)
@@ -2077,32 +2079,32 @@ describe('Context Server', () => {
       { module: '@modelcontextprotocol/sdk/server/index.js', name: 'MCP SDK Server' },
       { module: '@modelcontextprotocol/sdk/server/stdio.js', name: 'MCP SDK Stdio' },
       { module: '@modelcontextprotocol/sdk/types.js', name: 'MCP SDK Types' },
-      { module: './core', name: 'Core module' },
-      { module: './tool-schemas', name: 'Tool schemas (T303)' },
-      { module: './tools', name: 'Tool dispatch (T303)' },
-      { module: './handlers', name: 'Handlers module' },
-      { module: './handlers/memory-index-discovery', name: 'Memory index discovery helpers' },
-      { module: './utils', name: 'Utils module' },
-      { module: './hooks', name: 'Hooks module' },
-      { module: './startup-checks', name: 'Startup checks (T303)' },
-      { module: './lib/architecture/layer-definitions', name: 'Layer definitions' },
-      { module: './lib/search/vector-index', name: 'Vector index' },
-      { module: './lib/providers/embeddings', name: 'Embeddings' },
-      { module: './lib/storage/checkpoints', name: 'Checkpoints' },
-      { module: './lib/storage/access-tracker', name: 'Access tracker' },
-      { module: './lib/search/hybrid-search', name: 'Hybrid search' },
-      { module: './lib/search/bm25-index', name: 'BM25 index' },
-      { module: './lib/parsing/memory-parser', name: 'Memory parser' },
-      { module: './lib/cognitive/working-memory', name: 'Working memory' },
-      { module: './lib/cognitive/attention-decay', name: 'Attention decay' },
-      { module: './lib/cognitive/co-activation', name: 'Co-activation' },
-      { module: './lib/cognitive/archival-manager', name: 'Archival manager' },
-      { module: './lib/providers/retry-manager', name: 'Retry manager' },
-      { module: './lib/errors', name: 'Error utilities' },
-      { module: './lib/session/session-manager', name: 'Session manager' },
-      { module: './lib/storage/incremental-index', name: 'Incremental index' },
-      { module: './lib/storage/transaction-manager', name: 'Transaction manager' },
-      { module: './lib/cache/tool-cache', name: 'Tool cache' },
+      { module: './core/index.js', name: 'Core module' },
+      { module: './tool-schemas.js', name: 'Tool schemas (T303)' },
+      { module: './tools/index.js', name: 'Tool dispatch (T303)' },
+      { module: './handlers/index.js', name: 'Handlers module' },
+      { module: './handlers/memory-index-discovery.js', name: 'Memory index discovery helpers' },
+      { module: './utils/index.js', name: 'Utils module' },
+      { module: './hooks/index.js', name: 'Hooks module' },
+      { module: './startup-checks.js', name: 'Startup checks (T303)' },
+      { module: './lib/architecture/layer-definitions.js', name: 'Layer definitions' },
+      { module: './lib/search/vector-index.js', name: 'Vector index' },
+      { module: './lib/providers/embeddings.js', name: 'Embeddings' },
+      { module: './lib/storage/checkpoints.js', name: 'Checkpoints' },
+      { module: './lib/storage/access-tracker.js', name: 'Access tracker' },
+      { module: './lib/search/hybrid-search.js', name: 'Hybrid search' },
+      { module: './lib/search/bm25-index.js', name: 'BM25 index' },
+      { module: './lib/parsing/memory-parser.js', name: 'Memory parser' },
+      { module: './lib/cognitive/working-memory.js', name: 'Working memory' },
+      { module: './lib/cognitive/attention-decay.js', name: 'Attention decay' },
+      { module: './lib/cognitive/co-activation.js', name: 'Co-activation' },
+      { module: './lib/cognitive/archival-manager.js', name: 'Archival manager' },
+      { module: './lib/providers/retry-manager.js', name: 'Retry manager' },
+      { module: './lib/errors.js', name: 'Error utilities' },
+      { module: './lib/session/session-manager.js', name: 'Session manager' },
+      { module: './lib/storage/incremental-index.js', name: 'Incremental index' },
+      { module: './lib/storage/transaction-manager.js', name: 'Transaction manager' },
+      { module: './lib/cache/tool-cache.js', name: 'Tool cache' },
     ]
 
     for (const imp of EXPECTED_IMPORTS) {

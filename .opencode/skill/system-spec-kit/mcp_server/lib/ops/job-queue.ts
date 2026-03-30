@@ -10,7 +10,7 @@
 ──────────────────────────────────────────────────────────────── */
 
 import path from 'node:path';
-import { requireDb, toErrorMessage } from '../../utils';
+import { requireDb, toErrorMessage } from '../../utils/index.js';
 
 // Feature catalog: Async ingestion job lifecycle
 

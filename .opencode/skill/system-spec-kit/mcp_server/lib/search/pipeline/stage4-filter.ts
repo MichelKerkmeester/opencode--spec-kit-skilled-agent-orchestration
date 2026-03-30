@@ -34,10 +34,10 @@
 // NOT in Stage 4: session dedup — that happens after cache in the
 // Main handler to avoid double-counting and cache pollution.
 
-import type { Stage4Input, Stage4Output, Stage4ReadonlyRow, PipelineRow } from './types';
-import { captureScoreSnapshot, verifyScoreInvariant, resolveEffectiveScore } from './types';
-import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
-import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
+import type { Stage4Input, Stage4Output, Stage4ReadonlyRow, PipelineRow } from './types.js';
+import { captureScoreSnapshot, verifyScoreInvariant, resolveEffectiveScore } from './types.js';
+import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags.js';
+import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // Feature catalog: 4-stage pipeline architecture

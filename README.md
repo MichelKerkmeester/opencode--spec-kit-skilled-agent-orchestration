@@ -579,42 +579,37 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 #### SPEC KIT
 
-**complete**
+**Complete**
 - End-to-end workflow: research → plan → implement → verify → save memory
 - The primary entry point for new features - creates spec folder and runs everything
 - Modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research), `:auto-debug` (auto-delegates failures)
 
-**plan**
+**Plan**
 - Planning-only workflow that creates spec.md, plan.md and tasks.md without implementing
 - Dispatches up to 4 parallel context agents for codebase exploration during planning
 - Use when you need stakeholder review before coding. Modes: `:auto`, `:confirm`
 
-**implement**
+**Implement**
 - Executes an existing plan - requires plan.md to already exist
 - 9-step workflow covering task breakdown, implementation, testing and verification
 - Modes: `:auto`, `:confirm`
-
-**phase**
-- Decomposes large features into parent and child spec folders
-- Creates parent with `create.sh --phase`, populates phase metadata
-- Sets up parent/child navigation links for multi-phase work
 
 **Debug**
 - Delegates debugging to the debug agent with structured context handoff (not conversation history)
 - Fresh-perspective approach avoids confirmation bias from failed prior attempts
 - Writes `debug-delegation.md` with root cause analysis
 
-**resume**
+**Resume**
 - Continues a previous session by auto-loading memory from the spec folder
 - Presents session summary, shows progress against tasks.md
 - Works after crashes, compactions, or new sessions
 
-**Deep-Research**
+**Deep Research**
 - Autonomous research loop dispatching deep-research agents iteratively until convergence
 - Externalized JSONL state enables pause/resume across sessions
 - Modes: `:auto`, `:confirm`
 
-**Deep-Review**
+**Deep Review**
 - Autonomous code review loop dispatching deep-review agents iteratively until convergence
 - Severity-weighted findings (P0/P1/P2) across 7 review dimensions with release readiness verdicts
 - Modes: `:auto`, `:confirm`
@@ -626,66 +621,66 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 #### MEMORY
 
-**save**
+**Save**
 - Saves current session context to a timestamped memory file via `generate-context.js`
 - AI composes structured JSON with session summary, key decisions and findings
 - Indexes immediately for future retrieval via `memory_save()` or `memory_index_scan()`
 
-**search**
+**Search**
 - Unified retrieval and analysis entry point with intent-aware routing
 - Supports epistemic baselines, causal graph traversal, ablation studies, and dashboards
 - Routes by intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`
 
-**learn**
-- Constitutional memory manager for always-surface rules
+**Learn**
+- `/memory:learn` constitutional memory manager for always-surface rules
 - Constitutional memories carry a 3.0x boost and never decay
 - Lifecycle operations: create, list, edit, remove, budget
 
-**manage**
+**Manage**
 - Database admin: stats (memory counts, index health), health checks, cleanup (orphaned vectors)
 - Checkpoint management: create, list, restore, delete
 - Bulk operations, ingestion (start/status/cancel), and shared-memory lifecycle
 
 #### CREATE
 
-**sk-skill**
+**Skill**
 - Unified skill creation and update workflow
 - Creates SKILL.md with 8-section structure, README.md, references and assets directories
 - Registers in skill catalog. Modes: `:auto`, `:confirm`
 
-**agent**
+**Agent**
 - Scaffolds a new agent definition with proper frontmatter, behavioral rules and tool permissions
 - Creates source-of-truth file in `.opencode/agent/` and mirrors for Claude, Codex, Gemini runtimes
 - Modes: `:auto`, `:confirm`
 
-**folder_readme**
+**Readme**
 - Unified README and install guide creation using sk-doc quality standards
 - Auto-detects folder type, loads appropriate template, validates via DQI scoring
 - Structure 40%, Content 35%, Style 25%. Modes: `:auto`, `:confirm`
 
-**changelog**
+**Changelog**
 - Auto-detects recent work from spec folder artifacts or git history
 - Resolves correct component folder, calculates next version number
 - Generates formatted changelog file matching 370+ existing entries. Modes: `:auto`, `:confirm`
 
-**prompt**
+**Prompt**
 - Creates or improves AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
 - Applies DEPTH thinking methodology (3-10 iteration rounds)
 - CLEAR quality scoring with 40+/50 pass threshold. 5 output formats.
 
-**feature-catalog**
+**Feature Catalog**
 - Creates or updates feature catalog packages with category routing
 - Generates both technical reference entries and simple-terms companion entries
 - Validates against the 255-entry catalog structure across 21 categories
 
-**testing-playbook**
+**Testing Playbook**
 - Creates or updates manual testing playbook packages
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
 
 #### UTILITY
 
-**agent_router**
+**Agent Router**
 - Routes requests to external AI systems (Gemini CLI, Codex CLI, Claude Code, Copilot CLI)
 - The receiving AI operates under its own system prompt - full identity adoption
 - Use for cross-AI delegation where the target AI needs to behave as itself

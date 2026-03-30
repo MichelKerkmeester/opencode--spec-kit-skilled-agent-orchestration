@@ -49,7 +49,7 @@ This is **Phase 3** of the ESM Module Compliance specification.
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Pending |
+| **Status** | Complete |
 | **Created** | 2026-03-29 |
 | **Branch** | `main` |
 | **Parent Spec** | 023-esm-module-compliance |
@@ -61,7 +61,7 @@ This is **Phase 3** of the ESM Module Compliance specification.
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-`@spec-kit/scripts` is intentionally pinned to CommonJS (`"type": "commonjs"`) and owns 38 files that consume `@spec-kit/shared` and `@spec-kit/mcp-server`. After Phases 1-2, those sibling packages emit native ESM, so direct `require()` of them will fail. The scripts-side call sites must be adapted to use explicit `import()` interoperability helpers. Additionally, existing tests that assert CommonJS emit details must be rewritten.
+`@spec-kit/scripts` is intentionally pinned to CommonJS (`"type": "commonjs"`) and owns 20 files that consume `@spec-kit/shared` and `@spec-kit/mcp-server`. After Phases 1-2, those sibling packages emit native ESM, so direct `require()` of them will fail. The scripts-side call sites must be adapted to use explicit `import()` interoperability helpers. Additionally, existing tests that assert CommonJS emit details must be rewritten.
 
 ### Purpose
 Prove that `@spec-kit/scripts` can remain CommonJS while safely consuming ESM siblings through explicit dynamic-import boundaries, and that the test suite reflects runtime truth rather than old CJS-emit assumptions.
@@ -79,6 +79,13 @@ Prove that `@spec-kit/scripts` can remain CommonJS while safely consuming ESM si
 - Rewrite module-sensitive tests that assert old CommonJS output details
 - Add or update scripts interop tests
 - If this phase proves materially too invasive, escalate to dual-build fallback decision
+- **Memory save pipeline hardening** (discovered during Phase 1-2 execution):
+  - Decouple `workflow.ts` from direct mcp-server runtime imports (P0 — blocks generate-context.js during migration)
+  - Fix V8 foreign-spec detection for child phase folders (P0 — blocks saving memory for phased specs)
+  - Add manual-fallback save mode with deferred indexing (P1 — zero fallback when generate-context.js breaks)
+  - Expand primary evidence parser for manually-written files (P1)
+  - Add `related_specs` allowlist for cross-spec research (P1)
+  - Freeze canonical JSON v2 schema for generate-context input (P1)
 
 ### Out of Scope
 - Converting `scripts` itself to ESM
@@ -89,8 +96,12 @@ Prove that `@spec-kit/scripts` can remain CommonJS while safely consuming ESM si
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/src/**/*.ts` | Modify | Replace `require()` of ESM siblings with `import()` interop |
-| `scripts/src/lib/esm-interop.ts` | Create | Explicit dynamic-import helper module |
+| `scripts/**/*.ts` | Modify | Replace `require()` of ESM siblings with `import()` interop |
+| `scripts/lib/esm-interop.ts` | Create | Explicit dynamic-import helper module |
+| `scripts/core/workflow.ts` | Modify | Decouple from direct mcp-server runtime imports (P0) |
+| `scripts/lib/validate-memory-quality.ts` | Modify | Fix V8 descendant phase detection + related_specs allowlist |
+| `shared/parsing/memory-sufficiency.ts` | Modify | Expand primary evidence recognition for manual files |
+| `mcp_server/handlers/save/markdown-evidence-builder.ts` | Modify | Parse primary evidence from standard anchor sections |
 | `scripts/tests/**/*.ts` | Modify | Rewrite tests asserting CJS output to ESM-truth assertions |
 | Module-sensitive Vitest suites | Modify | Update `modularization.vitest.ts`, `trigger-config-extended.vitest.ts`, etc. |
 <!-- /ANCHOR:scope -->
@@ -136,7 +147,7 @@ Prove that `@spec-kit/scripts` can remain CommonJS while safely consuming ESM si
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Phases 1-2 complete (both siblings emit ESM) | Blocker | Cannot test interop until ESM packages exist |
-| Risk | 38 scripts files need interop changes | High | Bounded audit first; if too invasive, escalate to dual-build |
+| Risk | 20 scripts files need interop changes | High | Bounded audit first; if too invasive, escalate to dual-build |
 | Risk | Dynamic `import()` from CJS is async (returns Promise) | Medium | Interop helper wraps async loading; test call sites for correct `await` usage |
 | Risk | Tests hide real breakage by asserting old CJS patterns | High | Rewrite tests before claiming interop is proven |
 <!-- /ANCHOR:risks -->

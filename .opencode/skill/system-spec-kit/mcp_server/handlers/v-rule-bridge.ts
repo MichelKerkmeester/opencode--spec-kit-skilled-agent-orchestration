@@ -37,6 +37,13 @@ interface ValidationDispositionResult {
   softRuleIds: QualityRuleId[];
 }
 
+type VRuleUnavailableResult = {
+  passed: false;
+  status: 'error' | 'warning';
+  message: string;
+  _unavailable: true;
+};
+
 // ───────────────────────────────────────────────────────────────
 // 2. MODULE LOADING
 // ───────────────────────────────────────────────────────────────
@@ -44,16 +51,30 @@ interface ValidationDispositionResult {
 let _validateMemoryQualityContent: ((content: string) => ValidationResult) | null = null;
 let _determineValidationDisposition: ((failedRules: readonly QualityRuleId[], source?: string | null) => ValidationDispositionResult) | null = null;
 let _loadAttempted = false;
-const runtimeRequire = createRequire(__filename);
+const runtimeRequire = createRequire(import.meta.filename);
 
 function loadModule(): void {
   if (_loadAttempted) return;
   _loadAttempted = true;
   try {
-    const distPath = path.resolve(__dirname, '../../../scripts/dist/memory/validate-memory-quality.js');
-    const mod = runtimeRequire(distPath);
-    _validateMemoryQualityContent = mod.validateMemoryQualityContent;
-    _determineValidationDisposition = mod.determineValidationDisposition;
+    const candidatePaths = [
+      path.resolve(import.meta.dirname, '../../scripts/dist/memory/validate-memory-quality.js'),
+      path.resolve(import.meta.dirname, '../../../scripts/dist/memory/validate-memory-quality.js'),
+    ];
+
+    let lastError: unknown;
+    for (const distPath of candidatePaths) {
+      try {
+        const mod = runtimeRequire(distPath);
+        _validateMemoryQualityContent = mod.validateMemoryQualityContent;
+        _determineValidationDisposition = mod.determineValidationDisposition;
+        return;
+      } catch (error: unknown) {
+        lastError = error;
+      }
+    }
+
+    throw lastError instanceof Error ? lastError : new Error(String(lastError));
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error(`[v-rule-bridge] Failed to load validate-memory-quality: ${msg} — V-rule checks unavailable`);
@@ -64,15 +85,28 @@ function loadModule(): void {
 // 3. EXPORTS
 // ───────────────────────────────────────────────────────────────
 
-export function validateMemoryQualityContent(content: string): ValidationResult | null {
+export function validateMemoryQualityContent(content: string): ValidationResult | VRuleUnavailableResult | null {
   loadModule();
   if (!_validateMemoryQualityContent) {
-    // Return a structured "unavailable" signal instead of null so callers can distinguish
-    // "no validation issues" from "validator not loaded"
-    console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded');
-    return null;
+    if (process.env.SPECKIT_VRULE_OPTIONAL === 'true') {
+      console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded — V-rule validation bypassed');
+      return { valid: true, failedRules: [], ruleResults: [], _unavailable: true } as ValidationResult & { _unavailable: boolean };
+    }
+    console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded — V-rule validation unavailable');
+    return {
+      passed: false,
+      status: 'error',
+      message: 'V-rule validation unavailable — run npm run build --workspace=@spec-kit/scripts',
+      _unavailable: true,
+    } as VRuleUnavailableResult;
   }
   return _validateMemoryQualityContent(content);
+}
+
+/** Check whether the V-rule validator module is loaded and operational. */
+export function isVRuleBridgeAvailable(): boolean {
+  loadModule();
+  return _validateMemoryQualityContent !== null;
 }
 
 export function determineValidationDisposition(

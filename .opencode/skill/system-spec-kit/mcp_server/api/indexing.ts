@@ -7,12 +7,12 @@
 
 import type { EmbeddingProfile, MCPResponse } from '@spec-kit/shared/types';
 
-import { init as initDbState, setEmbeddingModelReady } from '../core';
-import { handleMemoryIndexScan } from '../handlers';
+import { init as initDbState, setEmbeddingModelReady } from '../core/index.js';
+import { handleMemoryIndexScan } from '../handlers/index.js';
 
-import { generateEmbedding, getEmbeddingProfile } from './providers';
-import { initHybridSearch, vectorIndex } from './search';
-import { initAccessTracker, initCheckpoints } from './storage';
+import { generateEmbedding, getEmbeddingProfile } from './providers.js';
+import { initHybridSearch, vectorIndex } from './search.js';
+import { initAccessTracker, initCheckpoints } from './storage.js';
 
 /** Arguments for memory index scan requests. */
 export interface MemoryIndexScanArgs {

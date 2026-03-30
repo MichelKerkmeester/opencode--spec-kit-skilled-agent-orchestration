@@ -7,28 +7,28 @@ import path from 'path';
    1. CORE AND UTILS IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { checkDatabaseUpdated } from '../core';
-import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config';
-import { acquireIndexScanLease, completeIndexScanLease } from '../core/db-state';
-import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils';
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
+import { checkDatabaseUpdated } from '../core/index.js';
+import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config.js';
+import { acquireIndexScanLease, completeIndexScanLease } from '../core/db-state.js';
+import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils/index.js';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. LIB MODULE IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { recordHistory } from '../lib/storage/history';
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as memoryParser from '../lib/parsing/memory-parser';
-import * as embeddings from '../lib/providers/embeddings';
-import * as incrementalIndex from '../lib/storage/incremental-index';
-import * as vectorIndex from '../lib/search/vector-index';
-import { runPostMutationHooks } from './mutation-hooks';
+import { recordHistory } from '../lib/storage/history.js';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as memoryParser from '../lib/parsing/memory-parser.js';
+import * as embeddings from '../lib/providers/embeddings.js';
+import * as incrementalIndex from '../lib/storage/incremental-index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
 import {
   findConstitutionalFiles,
   findSpecDocuments,
   detectSpecLevel,
-} from './memory-index-discovery';
+} from './memory-index-discovery.js';
 import {
   EMPTY_ALIAS_CONFLICT_SUMMARY,
   createDefaultDivergenceReconcileSummary,
@@ -37,13 +37,13 @@ import {
   runDivergenceReconcileHooks,
   type AliasConflictSummary,
   type DivergenceReconcileSummary,
-} from './memory-index-alias';
+} from './memory-index-alias.js';
 
 // REQ-019: Standardized Response Structure
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
 
 // Shared handler types
-import type { MCPResponse, EmbeddingProfile } from './types';
+import type { MCPResponse, EmbeddingProfile } from './types.js';
 
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 // Feature catalog: Async ingestion job lifecycle
@@ -134,7 +134,7 @@ interface ScanArgs {
    5. SHARED INDEXING LOGIC
 ──────────────────────────────────────────────────────────────── */
 
-import { indexMemoryFile } from './memory-save';
+import { indexMemoryFile } from './memory-save.js';
 
 /** Index a single memory file, delegating to the shared indexMemoryFile logic */
 async function indexSingleFile(filePath: string, force: boolean = false, options?: { qualityGateMode?: 'enforce' | 'warn-only' }): Promise<IndexResult> {
@@ -527,7 +527,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
       if (affectedSpecFolders.size > 0) {
         const database = requireDb();
-        const { createSpecDocumentChain, init: initCausalEdges } = await import('../lib/storage/causal-edges');
+        const { createSpecDocumentChain, init: initCausalEdges } = await import('../lib/storage/causal-edges.js');
         initCausalEdges(database);
 
         // Build full per-folder document map from DB (not just this scan's files).

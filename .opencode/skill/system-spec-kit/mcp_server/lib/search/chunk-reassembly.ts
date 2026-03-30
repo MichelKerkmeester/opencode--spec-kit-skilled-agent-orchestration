@@ -5,7 +5,7 @@
 // Collapses chunk-level search results into parent-level results,
 // reassembling content from sibling chunks stored in memory_index.
 
-import { requireDb, toErrorMessage } from '../../utils';
+import { requireDb, toErrorMessage } from '../../utils/index.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

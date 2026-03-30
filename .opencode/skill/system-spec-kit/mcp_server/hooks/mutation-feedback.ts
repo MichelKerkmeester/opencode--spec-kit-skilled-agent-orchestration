@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Mutation Feedback
 // ───────────────────────────────────────────────────────────────
-import type { MutationHookResult } from '../handlers/memory-crud-types';
+import type { MutationHookResult } from '../handlers/memory-crud-types.js';
 
 function buildMutationHookFeedback(operation: string, hookResult: MutationHookResult): {
   data: {

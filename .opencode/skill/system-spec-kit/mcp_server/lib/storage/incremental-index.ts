@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import type Database from 'better-sqlite3';
 
 // Internal modules
-import { getCanonicalPathKey } from '../utils/canonical-path';
+import { getCanonicalPathKey } from '../utils/canonical-path.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS

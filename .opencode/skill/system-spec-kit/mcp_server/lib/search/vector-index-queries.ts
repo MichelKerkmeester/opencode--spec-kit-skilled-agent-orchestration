@@ -8,17 +8,17 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import type Database from 'better-sqlite3';
-import { formatAgeString as format_age_string } from '../utils/format-helpers';
-import { createLogger } from '../utils/logger';
-import { recordHistory } from '../storage/history';
-import * as embeddingsProvider from '../providers/embeddings';
+import { formatAgeString as format_age_string } from '../utils/format-helpers.js';
+import { createLogger } from '../utils/logger.js';
+import { recordHistory } from '../storage/history.js';
+import * as embeddingsProvider from '../providers/embeddings.js';
 import {
   get_error_message,
   parse_trigger_phrases,
   to_embedding_buffer,
   VectorIndexError,
   VectorIndexErrorCode,
-} from './vector-index-types';
+} from './vector-index-types.js';
 import {
   initialize_db,
   get_embedding_dim,
@@ -29,14 +29,14 @@ import {
   safe_parse_json,
   search_weights,
   sqlite_vec_available as get_sqlite_vec_available,
-} from './vector-index-store';
-import { delete_memory_from_database } from './vector-index-mutations';
+} from './vector-index-store.js';
+import { delete_memory_from_database } from './vector-index-mutations.js';
 import type {
   EmbeddingInput,
   EnrichedSearchResult,
   MemoryRow,
   VectorSearchOptions,
-} from './vector-index-types';
+} from './vector-index-types.js';
 
 const logger = createLogger('VectorIndex');
 

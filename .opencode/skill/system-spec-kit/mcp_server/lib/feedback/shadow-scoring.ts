@@ -14,12 +14,12 @@
 //   - Promotion requires 2+ consecutive weeks of stable improvement
 //   - All results logged to shadow_scoring_log for auditability
 import type Database from 'better-sqlite3';
-import { compareRanks } from './rank-metrics';
-import type { RankComparisonResult, RankedItem } from './rank-metrics';
+import { compareRanks } from './rank-metrics.js';
+import type { RankComparisonResult, RankedItem } from './rank-metrics.js';
 
 // Re-export rank-metrics for backward compatibility
-export { classifyDirection, computeKendallTau, computeNDCG, computeMRR, compareRanks } from './rank-metrics';
-export type { RankDirection, RankDelta, RankComparisonMetrics, RankComparisonResult, RankedItem } from './rank-metrics';
+export { classifyDirection, computeKendallTau, computeNDCG, computeMRR, compareRanks } from './rank-metrics.js';
+export type { RankDirection, RankDelta, RankComparisonMetrics, RankComparisonResult, RankedItem } from './rank-metrics.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS

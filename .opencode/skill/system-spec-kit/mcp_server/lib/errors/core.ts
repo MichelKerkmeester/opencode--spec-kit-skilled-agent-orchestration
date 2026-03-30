@@ -10,9 +10,9 @@ import {
   getRecoveryHint,
   hasSpecificHint,
   getAvailableHints,
-} from './recovery-hints';
+} from './recovery-hints.js';
 
-import type { RecoveryHint, Severity } from './recovery-hints';
+import type { RecoveryHint, Severity } from './recovery-hints.js';
 
 // Feature catalog: Stage 3 effectiveScore fallback chain
 
@@ -144,7 +144,7 @@ export function getDefaultErrorCodeForTool(toolName: string): string {
  * Provides the withTimeout helper.
  */
 export function withTimeout<T>(promise: Promise<T>, ms: number, operation: string): Promise<T> {
-  let timeoutId: ReturnType<typeof setTimeout>;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(() => reject(new MemoryError(
@@ -154,15 +154,15 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, operation: strin
     )), ms);
   });
 
-  return Promise.race([promise, timeoutPromise])
-    .then(result => {
-      clearTimeout(timeoutId);
-      return result;
-    })
-    .catch(error => {
-      clearTimeout(timeoutId);
-      throw error;
-    });
+  return (async (): Promise<T> => {
+    try {
+      return await Promise.race([promise, timeoutPromise]);
+    } finally {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+    }
+  })();
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -210,16 +210,40 @@ interface RetryModule {
 }
 
 let retryModule: RetryModule | null = null;
-// NOTE: Using require() for optional runtime-only module loading.
-// The retry module source lives in shared/utils/retry.ts but compiles to
-// Dist/lib/utils/retry.js. TypeScript cannot resolve this cross-workspace
-// Path at compile time, so dynamic import() would cause TS2307. The require()
-// Try/catch pattern is appropriate here since the project is CommonJS.
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  retryModule = require('../utils/retry.js') as RetryModule;
-} catch {
-  /* Retry module not available, use legacy detection */
+let retryModulePromise: Promise<RetryModule | null> | null = null;
+let retryModuleLoadError: string | null = null;
+
+async function loadRetryModule(): Promise<RetryModule | null> {
+  if (retryModule !== null) {
+    return retryModule;
+  }
+  if (retryModulePromise !== null) {
+    return retryModulePromise;
+  }
+
+  const retryModulePath = '../utils/retry.js';
+
+  const loadPromise = (async (): Promise<RetryModule | null> => {
+    try {
+      retryModule = await import(retryModulePath) as RetryModule;
+      retryModuleLoadError = null;
+      return retryModule;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      retryModuleLoadError = msg;
+      console.warn('[errors/core] Retry module lazy import failed:', msg);
+      return null;
+    }
+  })();
+
+  retryModulePromise = loadPromise;
+  try {
+    return await loadPromise;
+  } finally {
+    if (retryModulePromise === loadPromise) {
+      retryModulePromise = null;
+    }
+  }
 }
 
 /**
@@ -228,6 +252,14 @@ try {
  * when available, falls back to legacy patterns.
  */
 export function isTransientError(error: Error): boolean {
+  if (retryModule === null && retryModulePromise === null) {
+    void loadRetryModule();
+  }
+  if (retryModule === null && retryModuleLoadError) {
+    console.warn(`[errors] Retry module unavailable; using legacy transient patterns: ${retryModuleLoadError}`);
+    retryModuleLoadError = null;
+  }
+
   // Use retry module if available (REQ-032)
   if (retryModule && retryModule.isTransientError) {
     return retryModule.isTransientError(error);
@@ -252,6 +284,14 @@ export function isTransientError(error: Error): boolean {
  * REQ-032: Fail-fast for 401, 403, and other permanent errors.
  */
 export function isPermanentError(error: Error): boolean {
+  if (retryModule === null && retryModulePromise === null) {
+    void loadRetryModule();
+  }
+  if (retryModule === null && retryModuleLoadError) {
+    console.warn(`[errors] Retry module unavailable; using legacy permanent patterns: ${retryModuleLoadError}`);
+    retryModuleLoadError = null;
+  }
+
   // Use retry module if available (REQ-032)
   if (retryModule && retryModule.isPermanentError) {
     return retryModule.isPermanentError(error);

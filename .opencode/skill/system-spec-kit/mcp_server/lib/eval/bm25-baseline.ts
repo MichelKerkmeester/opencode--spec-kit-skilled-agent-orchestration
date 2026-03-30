@@ -26,12 +26,12 @@ import {
   computeHitRate,
   type EvalResult,
   type GroundTruthEntry,
-} from './eval-metrics';
+} from './eval-metrics.js';
 import {
   GROUND_TRUTH_QUERIES,
   GROUND_TRUTH_RELEVANCES,
   type GroundTruthQuery,
-} from './ground-truth-data';
+} from './ground-truth-data.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. PUBLIC TYPES

@@ -15,7 +15,7 @@ export type {
   RecordCorrectionParams,
   UndoResult,
   SchemaResult,
-} from './corrections';
+} from './corrections.js';
 
 export {
   CORRECTION_TYPES,
@@ -48,4 +48,4 @@ export {
   isEnabled,
   ensureSchema,
   getDb,
-} from './corrections';
+} from './corrections.js';

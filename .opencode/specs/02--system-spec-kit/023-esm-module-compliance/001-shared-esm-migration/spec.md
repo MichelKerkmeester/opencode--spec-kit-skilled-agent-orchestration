@@ -47,7 +47,7 @@ This is **Phase 1** of the ESM Module Compliance specification.
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Pending |
+| **Status** | Complete |
 | **Created** | 2026-03-29 |
 | **Branch** | `main` |
 | **Parent Spec** | 023-esm-module-compliance |
@@ -59,7 +59,7 @@ This is **Phase 1** of the ESM Module Compliance specification.
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-`@spec-kit/shared` has no `"type": "module"` in its `package.json`, its `tsconfig.json` inherits the root CommonJS baseline (`module: "commonjs"`, `moduleResolution: "node"`), and its 54 relative imports lack the `.js` extension specifiers that Node ESM requires. This means `shared` emits CommonJS output and must be migrated before `mcp_server` can safely flip to ESM.
+`@spec-kit/shared` has no `"type": "module"` in its `package.json`, its `tsconfig.json` inherits the root CommonJS baseline (`module: "commonjs"`, `moduleResolution: "node"`), and its 48 relative imports lack the `.js` extension specifiers that Node ESM requires. This means `shared` emits CommonJS output and must be migrated before `mcp_server` can safely flip to ESM.
 
 ### Purpose
 Make `@spec-kit/shared` a truthful native ESM package so that `mcp_server` (Phase 2) can consume it as a real ESM sibling rather than relying on CommonJS interop heuristics.
@@ -88,7 +88,7 @@ Make `@spec-kit/shared` a truthful native ESM package so that `mcp_server` (Phas
 |-----------|-------------|-------------|
 | `shared/package.json` | Modify | Add `"type": "module"`, update `exports` field |
 | `shared/tsconfig.json` | Modify | Set `module`/`moduleResolution` to `nodenext`, add `verbatimModuleSyntax` |
-| `shared/src/**/*.ts` | Modify | Rewrite relative imports/exports to `.js` specifiers |
+| `shared/**/*.ts` | Modify | Rewrite relative imports/exports to `.js` specifiers (no `src/` directory — source files are at package root) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -119,7 +119,7 @@ Make `@spec-kit/shared` a truthful native ESM package so that `mcp_server` (Phas
 
 - **SC-001**: `shared/package.json` has `"type": "module"` and valid `exports` map
 - **SC-002**: `shared/dist/` emits native ESM (no CommonJS wrappers)
-- **SC-003**: All relative imports in `shared/src/**/*.ts` use `.js` specifiers
+- **SC-003**: All relative imports in `shared/**/*.ts` use `.js` specifiers
 <!-- /ANCHOR:success-criteria -->
 
 ---

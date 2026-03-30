@@ -2,7 +2,7 @@
 // MODULE: Ground Truth Data Loader
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Synthetic ground truth corpus
-import groundTruthData from './data/ground-truth.json';
+import groundTruthData from './data/ground-truth.json' with { type: 'json' };
 
 export type IntentType =
   | 'add_feature'

@@ -4,8 +4,8 @@
 // Feature catalog: Auto entity extraction
 // Feature-flagged via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
-import { isEntityDenied } from './entity-denylist';
-import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker';
+import { isEntityDenied } from './entity-denylist.js';
+import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker.js';
 
 import type Database from 'better-sqlite3';
 

@@ -25,50 +25,50 @@ import {
 } from '@spec-kit/shared/parsing/spec-doc-health';
 
 // Internal modules
-import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
-import { createFilePathValidator } from '../utils/validators';
-import * as memoryParser from '../lib/parsing/memory-parser';
-import * as transactionManager from '../lib/storage/transaction-manager';
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as preflight from '../lib/validation/preflight';
-import { requireDb } from '../utils';
-import type { MCPResponse } from './types';
-import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state';
-import * as causalEdges from '../lib/storage/causal-edges';
+import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core/index.js';
+import { createFilePathValidator } from '../utils/validators.js';
+import * as memoryParser from '../lib/parsing/memory-parser.js';
+import * as transactionManager from '../lib/storage/transaction-manager.js';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as preflight from '../lib/validation/preflight.js';
+import { requireDb } from '../utils/index.js';
+import type { MCPResponse } from './types.js';
+import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
 
-import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
-import { isSaveQualityGateEnabled } from '../lib/search/search-flags';
+import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate.js';
+import { isSaveQualityGateEnabled } from '../lib/search/search-flags.js';
 
-import { getCanonicalPathKey } from '../lib/utils/canonical-path';
-import { findSimilarMemories } from './pe-gating';
-import { runPostMutationHooks } from './mutation-hooks';
-import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
-import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator';
-import { applyPostInsertMetadata } from './save/db-helpers';
-import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { findSimilarMemories } from './pe-gating.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
+import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator.js';
+import { applyPostInsertMetadata } from './save/db-helpers.js';
+import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record.js';
 import {
   buildGovernancePostInsertFields,
   ensureGovernanceRuntime,
   recordGovernanceAudit,
   validateGovernedIngest,
-} from '../lib/governance/scope-governance';
+} from '../lib/governance/scope-governance.js';
 import {
   assertSharedSpaceAccess,
   recordSharedConflict,
-} from '../lib/collab/shared-spaces';
-import { delete_memory_from_database } from '../lib/search/vector-index-mutations';
+} from '../lib/collab/shared-spaces.js';
+import { delete_memory_from_database } from '../lib/search/vector-index-mutations.js';
 import {
   runQualityLoop,
-} from './quality-loop';
+} from './quality-loop.js';
 import type {
   QualityLoopResult,
-} from './quality-loop';
+} from './quality-loop.js';
 
 // O2-5/O2-12: V-rule validation (previously only in workflow path)
 import {
   validateMemoryQualityContent,
   determineValidationDisposition,
-} from './v-rule-bridge';
+} from './v-rule-bridge.js';
 
 // Save pipeline modules (CR-P2-4 decomposition)
 import type {
@@ -77,28 +77,28 @@ import type {
   AtomicSaveParams,
   AtomicSaveOptions,
   AtomicSaveResult,
-} from './save';
-import { checkExistingRow, checkContentHashDedup } from './save/dedup';
-import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline';
-import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
-import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
-import { runPostInsertEnrichment } from './save/post-insert';
-import { buildIndexResult, buildSaveResponse } from './save/response-builder';
-import { createMCPErrorResponse } from '../lib/response/envelope';
+} from './save/index.js';
+import { checkExistingRow, checkContentHashDedup } from './save/dedup.js';
+import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline.js';
+import { evaluateAndApplyPeDecision } from './save/pe-orchestration.js';
+import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge.js';
+import { runPostInsertEnrichment } from './save/post-insert.js';
+import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
+import { createMCPErrorResponse } from '../lib/response/envelope.js';
 
 // Extracted sub-modules
-import { withSpecFolderLock } from './save/spec-folder-mutex';
-import { buildParsedMemoryEvidenceSnapshot } from './save/markdown-evidence-builder';
+import { withSpecFolderLock } from './save/spec-folder-mutex.js';
+import { buildParsedMemoryEvidenceSnapshot } from './save/markdown-evidence-builder.js';
 import {
   applyInsufficiencyMetadata,
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,
-} from './save/validation-responses';
+} from './save/validation-responses.js';
 
-import { markMemorySuperseded } from './pe-gating';
-import { resolveMemoryReference } from './causal-links-processor';
-import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor';
+import { markMemorySuperseded } from './pe-gating.js';
+import { resolveMemoryReference } from './causal-links-processor.js';
+import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Verify-fix-verify memory quality loop
@@ -108,6 +108,7 @@ import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor
 
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
+const MANUAL_FALLBACK_SOURCE_CLASSIFICATION = 'manual-fallback' as const;
 
 interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
@@ -117,6 +118,62 @@ interface PreparedParsedMemory {
   templateContract: MemoryTemplateContractResult;
   specDocHealth: SpecDocHealthResult | null;
   finalizedFileContent: string | null;
+  sourceClassification: 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
+}
+
+type ParsedMemoryWithIndexHints = ReturnType<typeof memoryParser.parseMemoryFile> & {
+  _skipIndex?: boolean;
+  _vRuleIndexBlockIds?: string[];
+};
+
+const STANDARD_MEMORY_TEMPLATE_MARKERS = [
+  '## continue session',
+  '## recovery hints',
+  '<!-- memory metadata -->',
+];
+
+class VRuleUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'VRuleUnavailableError';
+  }
+}
+
+function isVRuleUnavailableResult(value: unknown): value is {
+  passed: false;
+  status: 'error' | 'warning';
+  message: string;
+  _unavailable: true;
+} {
+  return typeof value === 'object'
+    && value !== null
+    && 'passed' in value
+    && (value as { passed?: unknown }).passed === false
+    && 'status' in value
+    && typeof (value as { status?: unknown }).status === 'string'
+    && 'message' in value
+    && typeof (value as { message?: unknown }).message === 'string';
+}
+
+function classifyMemorySaveSource(
+  content: string,
+): 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION {
+  const normalizedContent = content.toLowerCase();
+  const hasAnyStandardMarker = STANDARD_MEMORY_TEMPLATE_MARKERS.some((marker) => normalizedContent.includes(marker));
+  return hasAnyStandardMarker ? 'template-generated' : MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
+}
+
+function shouldBypassTemplateContract(
+  sourceClassification: PreparedParsedMemory['sourceClassification'],
+  sufficiencyResult: MemorySufficiencyResult,
+  templateContract: MemoryTemplateContractResult,
+): boolean {
+  return sourceClassification === MANUAL_FALLBACK_SOURCE_CLASSIFICATION
+    && sufficiencyResult.pass
+    && sufficiencyResult.evidenceCounts.primary === 0
+    && sufficiencyResult.evidenceCounts.support >= 3
+    && sufficiencyResult.evidenceCounts.anchors >= 1
+    && !templateContract.valid;
 }
 
 function buildQualityLoopMetadata(
@@ -151,7 +208,13 @@ function prepareParsedMemoryForIndexing(
 
   // O2-5/O2-12: Run V-rule validation (previously only in workflow path)
   const vRuleResult = validateMemoryQualityContent(parsed.content);
-  if (vRuleResult && !vRuleResult.valid) {
+  if (isVRuleUnavailableResult(vRuleResult) && vRuleResult.status === 'error') {
+    throw new VRuleUnavailableError(vRuleResult.message);
+  }
+  if (vRuleResult && '_unavailable' in vRuleResult) {
+    validation.warnings.push('V-rule validator module unavailable — quality gate bypassed. Save proceeds without V-rule enforcement.');
+  }
+  if (vRuleResult && !isVRuleUnavailableResult(vRuleResult) && !vRuleResult.valid) {
     const vRuleDisposition = determineValidationDisposition(
       vRuleResult.failedRules,
       parsed.memoryTypeSource || null,
@@ -182,14 +245,16 @@ function prepareParsedMemoryForIndexing(
         templateContract: { valid: false, violations: [], missingAnchors: [], unexpectedTemplateArtifacts: [] } as MemoryTemplateContractResult,
         specDocHealth: null,
         finalizedFileContent: null,
+        sourceClassification: 'template-generated',
       };
     }
     if (vRuleDisposition && vRuleDisposition.disposition === 'write_skip_index') {
       console.warn(`[memory-save] V-rule index block for ${path.basename(parsed.filePath)}: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
       validation.warnings.push(`V-rule index block: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
       // F07-002: Flag to skip indexing for write_skip_index disposition
-      (parsed as unknown as Record<string, unknown>)._skipIndex = true;
-      (parsed as unknown as Record<string, unknown>)._vRuleIndexBlockIds = vRuleDisposition.indexBlockingRuleIds;
+      const parsedWithIndexHints = parsed as ParsedMemoryWithIndexHints;
+      parsedWithIndexHints._skipIndex = true;
+      parsedWithIndexHints._vRuleIndexBlockIds = vRuleDisposition.indexBlockingRuleIds;
     }
   }
 
@@ -210,8 +275,18 @@ function prepareParsedMemoryForIndexing(
     parsed.contentHash = memoryParser.computeContentHash(parsed.content);
   }
 
+  const sourceClassification = classifyMemorySaveSource(parsed.content);
+  if (sourceClassification === MANUAL_FALLBACK_SOURCE_CLASSIFICATION) {
+    const warning = 'Manual fallback save mode detected; standard generate-context template markers are missing.';
+    console.warn(`[memory-save] ${warning} ${path.basename(parsed.filePath)}`);
+    validation.warnings.push(warning);
+  }
+
   const sufficiencyResult = evaluateMemorySufficiency(
-    buildParsedMemoryEvidenceSnapshot(parsed),
+    {
+      ...buildParsedMemoryEvidenceSnapshot(parsed),
+      sourceClassification,
+    },
   );
   applyInsufficiencyMetadata(parsed, sufficiencyResult);
   const templateContract = validateMemoryTemplateContract(parsed.content);
@@ -232,8 +307,10 @@ function prepareParsedMemoryForIndexing(
         specDocHealth = evaluateSpecDocHealth(parentDir);
       }
     } catch (error: unknown) {
-      void error;
-      /* spec-doc-health check failure is non-fatal */
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(
+        `[memory-save] spec-doc-health annotation skipped for ${path.basename(parsed.filePath)}: ${message}`
+      );
     }
   }
 
@@ -245,6 +322,7 @@ function prepareParsedMemoryForIndexing(
     templateContract,
     specDocHealth,
     finalizedFileContent,
+    sourceClassification,
   };
 }
 
@@ -549,7 +627,9 @@ async function processPreparedMemory(
       qualityLoopResult,
       sufficiencyResult,
       templateContract,
+      sourceClassification,
     } = currentPrepared;
+    const templateContractBypassed = shouldBypassTemplateContract(sourceClassification, sufficiencyResult, templateContract);
 
     if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
       if (qualityGateMode === 'warn-only') {
@@ -581,7 +661,11 @@ async function processPreparedMemory(
     }
 
     if (!templateContract.valid) {
-      if (qualityGateMode === 'warn-only') {
+      if (templateContractBypassed) {
+        console.warn(
+          `[memory-save] Template contract bypassed in ${MANUAL_FALLBACK_SOURCE_CLASSIFICATION} mode for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
+        );
+      } else if (qualityGateMode === 'warn-only') {
         console.warn(
           `[memory-save] Template contract warn-only (spec doc) for ${path.basename(filePath)}: ${templateContract.violations.map((v: { message?: string; rule?: string }) => v.message || v.rule).join('; ')}`,
         );
@@ -900,7 +984,7 @@ async function processPreparedMemory(
       try {
         await finalizeMemoryFileContent(filePath, finalizedFileContent);
       } catch (finalizeErr: unknown) {
-        finalizeWarning = `Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}`;
+        finalizeWarning = `[file-persistence-failed] Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}. DB row committed — manual file recovery may be needed.`;
         console.warn(`[memory-save] ${finalizeWarning}`);
       }
     }
@@ -1106,12 +1190,24 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
       emitEvalMetrics: false,
     });
-    const { createMCPSuccessResponse } = await import('../lib/response/envelope');
-    const dryRunSummary = buildDryRunSummary(
+    const templateContractPass = preparedDryRun.templateContract.valid
+      || shouldBypassTemplateContract(
+        preparedDryRun.sourceClassification,
+        preparedDryRun.sufficiencyResult,
+        preparedDryRun.templateContract,
+      );
+    const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
+    const dryRunSummary = shouldBypassTemplateContract(
+      preparedDryRun.sourceClassification,
       preparedDryRun.sufficiencyResult,
-      preparedDryRun.qualityLoopResult,
       preparedDryRun.templateContract,
-    );
+    )
+      ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
+      : buildDryRunSummary(
+          preparedDryRun.sufficiencyResult,
+          preparedDryRun.qualityLoopResult,
+          preparedDryRun.templateContract,
+        );
 
     return createMCPSuccessResponse({
       tool: 'memory_save',
@@ -1120,7 +1216,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         status: 'dry_run',
         would_pass: preparedDryRun.validation.valid
           && preparedDryRun.qualityLoopResult.rejected !== true
-          && preparedDryRun.templateContract.valid
+          && templateContractPass
           && preparedDryRun.sufficiencyResult.pass,
         file_path: validatedPath,
         spec_folder: parsedForDryRun.specFolder,
@@ -1143,10 +1239,17 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
-      hints: preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
+      hints: templateContractPass && preparedDryRun.sufficiencyResult.pass
         ? [
             'Dry-run complete - no changes made',
             'Pre-flight checks were skipped because skipPreflight=true',
+            ...(shouldBypassTemplateContract(
+              preparedDryRun.sourceClassification,
+              preparedDryRun.sufficiencyResult,
+              preparedDryRun.templateContract,
+            )
+              ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
+              : []),
           ]
         : [
             'Dry-run complete - no changes made',
@@ -1179,6 +1282,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         spec_folder: parsedForPreflight.specFolder,
         database: database,
         find_similar: findSimilarMemories as Parameters<typeof preflight.runPreflight>[0]['find_similar'],
+        tenantId: saveScope.tenantId ?? undefined,
+        userId: saveScope.userId ?? undefined,
+        agentId: saveScope.agentId ?? undefined,
+        sharedSpaceId: saveScope.sharedSpaceId ?? undefined,
       },
       {
         dry_run: dryRun,
@@ -1192,17 +1299,47 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     );
 
     if (dryRun) {
-      const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
-        emitEvalMetrics: false,
-      });
-      const { createMCPSuccessResponse } = await import('../lib/response/envelope');
+      let preparedDryRun: PreparedParsedMemory;
+      try {
+        preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
+          emitEvalMetrics: false,
+        });
+      } catch (error: unknown) {
+        if (error instanceof VRuleUnavailableError) {
+          return createMCPErrorResponse({
+            tool: 'memory_save',
+            error: error.message,
+            code: 'E_RUNTIME',
+            details: { requestId },
+            recovery: {
+              hint: 'Build the Spec Kit scripts workspace and retry the save.',
+              actions: ['Run npm run build --workspace=@spec-kit/scripts', 'Retry memory_save'],
+              severity: 'warning',
+            },
+          });
+        }
+        throw error;
+      }
+      const templateContractPass = preparedDryRun.templateContract.valid
+        || shouldBypassTemplateContract(
+          preparedDryRun.sourceClassification,
+          preparedDryRun.sufficiencyResult,
+          preparedDryRun.templateContract,
+        );
+      const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
       const dryRunSummary = !preflightResult.dry_run_would_pass
         ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
-        : buildDryRunSummary(
+        : shouldBypassTemplateContract(
+            preparedDryRun.sourceClassification,
             preparedDryRun.sufficiencyResult,
-            preparedDryRun.qualityLoopResult,
             preparedDryRun.templateContract,
-          );
+          )
+          ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
+          : buildDryRunSummary(
+              preparedDryRun.sufficiencyResult,
+              preparedDryRun.qualityLoopResult,
+              preparedDryRun.templateContract,
+            );
 
       return createMCPSuccessResponse({
         tool: 'memory_save',
@@ -1212,7 +1349,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           would_pass: preflightResult.dry_run_would_pass
             && preparedDryRun.validation.valid
             && preparedDryRun.qualityLoopResult.rejected !== true
-            && preparedDryRun.templateContract.valid
+            && templateContractPass
             && preparedDryRun.sufficiencyResult.pass,
           file_path: validatedPath,
           spec_folder: parsedForPreflight.specFolder,
@@ -1236,8 +1373,17 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         },
         hints: !preflightResult.dry_run_would_pass
           ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
-          : preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
-            ? ['Dry-run complete - no changes made']
+          : templateContractPass && preparedDryRun.sufficiencyResult.pass
+            ? [
+                'Dry-run complete - no changes made',
+                ...(shouldBypassTemplateContract(
+                  preparedDryRun.sourceClassification,
+                  preparedDryRun.sufficiencyResult,
+                  preparedDryRun.templateContract,
+                )
+                  ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
+                  : []),
+              ]
             : [
                 'Dry-run complete - no changes made',
                 ...(!preparedDryRun.templateContract.valid
@@ -1281,12 +1427,30 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
-  const result = await indexMemoryFile(validatedPath, {
-    force,
-    parsedOverride: parsedForPreflight,
-    asyncEmbedding,
-    scope: saveScope,
-  });
+  let result: IndexResult;
+  try {
+    result = await indexMemoryFile(validatedPath, {
+      force,
+      parsedOverride: parsedForPreflight,
+      asyncEmbedding,
+      scope: saveScope,
+    });
+  } catch (error: unknown) {
+    if (error instanceof VRuleUnavailableError) {
+      return createMCPErrorResponse({
+        tool: 'memory_save',
+        error: error.message,
+        code: 'E_RUNTIME',
+        details: { requestId },
+        recovery: {
+          hint: 'Build the Spec Kit scripts workspace and retry the save.',
+          actions: ['Run npm run build --workspace=@spec-kit/scripts', 'Retry memory_save'],
+          severity: 'warning',
+        },
+      });
+    }
+    throw error;
+  }
 
   if (typeof result.id === 'number' && result.id > 0 && result.status !== 'unchanged' && result.status !== 'duplicate') {
     // B13 + H5 FIX: Wrap governance metadata in a transaction with rollback on failure.
@@ -1550,7 +1714,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate' && indexResult.status !== 'unchanged';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {
-    let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+    let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('atomic-save', {
         filePath: file_path,

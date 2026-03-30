@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import fs from 'fs';
-import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
+import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker.js';
 
 // Feature catalog: Dry-run preflight for memory_save
 
@@ -65,6 +65,13 @@ export interface DuplicateCheckResult {
   existing_path: string | null;
   similarity: number | null;
   content_hash: string | null;
+  existing_scope?: {
+    tenantId?: string | null;
+    userId?: string | null;
+    agentId?: string | null;
+    sharedSpaceId?: string | null;
+  };
+  redactedForScope?: boolean;
 }
 
 /** Result of token budget check */
@@ -93,6 +100,10 @@ export interface DuplicateCheckParams {
   database?: DatabaseLike;
   find_similar?: FindSimilarFn;
   embedding?: Float32Array | number[];
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
 }
 
 /** Options for duplicate checking */
@@ -110,6 +121,10 @@ export interface PreflightParams {
   database?: DatabaseLike;
   find_similar?: FindSimilarFn;
   embedding?: Float32Array | number[];
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
 }
 
 /** Options for the unified preflight check */
@@ -182,7 +197,19 @@ function verifyStoredContentMatch(
 type FindSimilarFn = (embedding: Float32Array | number[], options: {
   limit: number;
   specFolder?: string;
-}) => Array<{ id: number; file_path: string; similarity: number }>;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
+}) => Array<{
+  id: number;
+  file_path: string;
+  similarity: number;
+  tenant_id?: string | null;
+  user_id?: string | null;
+  agent_id?: string | null;
+  shared_space_id?: string | null;
+}>;
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONFIGURATION
@@ -395,6 +422,10 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
     database,
     find_similar,
     embedding,
+    tenantId,
+    userId,
+    agentId,
+    sharedSpaceId,
   } = params;
 
   const {
@@ -412,6 +443,67 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
     content_hash: null,
   };
 
+  const normalizeScopeValue = (value?: string): string | null => {
+    if (typeof value !== 'string') return null;
+    const normalized = value.trim();
+    return normalized.length > 0 ? normalized : null;
+  };
+
+  const requestedScope = {
+    tenantId: normalizeScopeValue(tenantId),
+    userId: normalizeScopeValue(userId),
+    agentId: normalizeScopeValue(agentId),
+    sharedSpaceId: normalizeScopeValue(sharedSpaceId),
+  };
+
+  const scopeFilters = [
+    ['tenant_id', requestedScope.tenantId],
+    ['user_id', requestedScope.userId],
+    ['agent_id', requestedScope.agentId],
+    ['shared_space_id', requestedScope.sharedSpaceId],
+  ] as const;
+
+  const redactDuplicateForScope = (
+    duplicate: {
+      tenant_id?: string | null;
+      user_id?: string | null;
+      agent_id?: string | null;
+      shared_space_id?: string | null;
+      file_path?: string | null;
+    },
+    similarity?: number | null,
+  ): void => {
+    const existingScope = {
+      tenantId: duplicate.tenant_id ?? null,
+      userId: duplicate.user_id ?? null,
+      agentId: duplicate.agent_id ?? null,
+      sharedSpaceId: duplicate.shared_space_id ?? null,
+    };
+    const existingValues = [
+      existingScope.tenantId,
+      existingScope.userId,
+      existingScope.agentId,
+      existingScope.sharedSpaceId,
+    ];
+    const isDifferentScope = scopeFilters.some(([_, value], index) => {
+      if (value === null) return false;
+      return existingValues[index] !== value;
+    });
+
+    result.existing_scope = existingScope;
+    result.redactedForScope = isDifferentScope;
+    result.similarity = similarity ?? result.similarity;
+
+    if (isDifferentScope) {
+      result.existing_path = null;
+      return;
+    }
+
+    if (typeof duplicate.file_path === 'string') {
+      result.existing_path = duplicate.file_path;
+    }
+  };
+
   // Compute content hash if not provided
   const content_hash = provided_hash || computeContentHash(content);
   result.content_hash = content_hash;
@@ -419,15 +511,32 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
   // Check 1: Exact duplicate via content hash (fast)
   if (check_exact && database) {
     try {
-      const sql = spec_folder
-        ? 'SELECT id, file_path, content_text FROM memory_index WHERE content_hash = ? AND spec_folder = ? LIMIT 1'
-        : 'SELECT id, file_path, content_text FROM memory_index WHERE content_hash = ? LIMIT 1';
-
-      const paramsArray: unknown[] = spec_folder ? [content_hash, spec_folder] : [content_hash];
+      const whereClauses = ['content_hash = ?'];
+      const paramsArray: unknown[] = [content_hash];
+      if (spec_folder) {
+        whereClauses.push('spec_folder = ?');
+        paramsArray.push(spec_folder);
+      }
+      for (const [column, value] of scopeFilters) {
+        if (value !== null) {
+          whereClauses.push(`${column} = ?`);
+          paramsArray.push(value);
+        }
+      }
+      const sql = `
+        SELECT id, file_path, content_text, tenant_id, user_id, agent_id, shared_space_id
+        FROM memory_index
+        WHERE ${whereClauses.join(' AND ')}
+        LIMIT 1
+      `;
       const existing = database.prepare(sql).get(...paramsArray) as {
         id: number;
         file_path: string;
         content_text?: string | null;
+        tenant_id?: string | null;
+        user_id?: string | null;
+        agent_id?: string | null;
+        shared_space_id?: string | null;
       } | undefined;
 
       if (existing) {
@@ -442,8 +551,7 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         result.isDuplicate = true;
         result.duplicate_type = 'exact';
         result.existingId = existing.id;
-        result.existing_path = existing.file_path;
-        result.similarity = 1.0;
+        redactDuplicateForScope(existing, 1.0);
         return result;
       }
     } catch (err: unknown) {
@@ -459,18 +567,29 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
       const candidates = find_similar(embedding, {
         limit: 1,
         specFolder: spec_folder,
+        tenantId: requestedScope.tenantId ?? undefined,
+        userId: requestedScope.userId ?? undefined,
+        agentId: requestedScope.agentId ?? undefined,
+        sharedSpaceId: requestedScope.sharedSpaceId ?? undefined,
       });
 
       if (candidates && candidates.length > 0) {
-        const bestMatch = candidates[0];
+        const bestMatch = candidates[0] as {
+          id: number;
+          file_path?: string | null;
+          similarity: number;
+          tenant_id?: string | null;
+          user_id?: string | null;
+          agent_id?: string | null;
+          shared_space_id?: string | null;
+        };
         const similarity = bestMatch.similarity;
 
         if (similarity >= similarity_threshold) {
           result.isDuplicate = true;
           result.duplicate_type = 'similar';
           result.existingId = bestMatch.id;
-          result.existing_path = bestMatch.file_path;
-          result.similarity = similarity;
+          redactDuplicateForScope(bestMatch, similarity);
           return result;
         }
       }
@@ -635,6 +754,10 @@ export function runPreflight(params: PreflightParams, options: PreflightOptions 
     database,
     find_similar,
     embedding,
+    tenantId,
+    userId,
+    agentId,
+    sharedSpaceId,
   } = params;
 
   const {
@@ -725,7 +848,7 @@ export function runPreflight(params: PreflightParams, options: PreflightOptions 
   // 4. Duplicate detection
   if (check_duplicates && content) {
     const dupResult = checkDuplicate(
-      { content, spec_folder, database, find_similar, embedding },
+      { content, spec_folder, database, find_similar, embedding, tenantId, userId, agentId, sharedSpaceId },
       { check_exact: true, check_similar }
     );
     addCheck('duplicate_check', dupResult);

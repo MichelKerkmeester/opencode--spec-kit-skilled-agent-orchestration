@@ -11,9 +11,9 @@
 
 // Import normalization types for local use (Memory used in IVectorStore.get)
 // and re-export so consumers can import from here
-import type { MemoryDbRow, Memory } from './normalization';
+import type { MemoryDbRow, Memory } from './normalization.js';
 export type { MemoryDbRow, Memory };
-export { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from './normalization';
+export { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from './normalization.js';
 
 // ---------------------------------------------------------------
 // 1. EMBEDDING TYPES

@@ -32,13 +32,13 @@ contextType: "architecture"
 <!-- ANCHOR:phase-1 -->
 ## Step 1: Highest-Risk Retests
 
-- [ ] T001 [P] Re-test `memory-save.ts` runtime paths - WHY: research identified as highest-risk recent surface - Acceptance: targeted smoke or regression passes
-- [ ] T002 [P] Re-test `memory-index.ts` runtime paths - WHY: high-risk recent surface - Acceptance: targeted test passes
-- [ ] T003 [P] Re-test `shared-memory.ts` runtime paths - WHY: high-risk recent surface - Acceptance: targeted test passes
-- [ ] T004 [P] Re-test `vector-index-store.ts` runtime paths - WHY: high-risk recent surface - Acceptance: targeted test passes
-- [ ] T005 [P] Re-test `session-manager.ts` runtime paths - WHY: high-risk recent surface - Acceptance: targeted test passes
-- [ ] T006 [P] Re-test `scripts/memory/generate-context.ts` - WHY: primary CLI surface - Acceptance: `node scripts/dist/memory/generate-context.js --help` passes
-- [ ] T007 [P] Re-test `scripts/core/workflow.ts` - WHY: core workflow engine - Acceptance: targeted test passes
+- [x] T001 [P] Re-test `memory-save.ts` runtime paths [EVIDENCE: handler-memory-save.vitest.ts passes]
+- [x] T002 [P] Re-test `memory-index.ts` runtime paths [EVIDENCE: memory-index tests pass]
+- [x] T003 [P] Re-test `shared-memory.ts` runtime paths [EVIDENCE: shared-memory-handlers.vitest.ts passes]
+- [x] T004 [P] Re-test `vector-index-store.ts` runtime paths [EVIDENCE: vector-index tests pass]
+- [x] T005 [P] Re-test `session-manager.ts` runtime paths [EVIDENCE: session-manager tests pass]
+- [x] T006 [P] Re-test `scripts/memory/generate-context.ts` [EVIDENCE: generate-context.js --help passes]
+- [x] T007 [P] Re-test `scripts/core/workflow.ts` [EVIDENCE: scripts 483/483 tests pass]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,11 +46,11 @@ contextType: "architecture"
 <!-- ANCHOR:phase-2 -->
 ## Step 2: Full Verification Matrix
 
-- [ ] T008 Run root gates: `npm run --workspaces=false typecheck` and `npm run --workspaces=false test:cli` - WHY: workspace-level proof - Acceptance: both exit 0
-- [ ] T009 Run workspace builds and tests - WHY: package-level proof - Acceptance: `npm run build` and `npm run test` for `mcp-server` and `scripts` workspaces exit 0
-- [ ] T010 Run module-sensitive Vitest suites - WHY: high-signal module boundary verification - Acceptance: all listed suites pass
-- [ ] T011 Run runtime smokes - WHY: entrypoint behavior proof - Acceptance: `node dist/context-server.js` and `node scripts/dist/memory/generate-context.js --help` pass
-- [ ] T012 Run scripts interop tests - WHY: interop proof required - Acceptance: `test-scripts-modules.js` and `test-export-contracts.js` pass
+- [x] T008 Run root gates [EVIDENCE: typecheck and test:cli pass]
+- [x] T009 Run workspace builds and tests [EVIDENCE: all 3 packages build clean, mcp-server 8997+ pass, scripts 483/483 pass]
+- [x] T010 Run module-sensitive Vitest suites [EVIDENCE: all module-sensitive suites pass]
+- [x] T011 Run runtime smokes [EVIDENCE: node dist/context-server.js starts, generate-context.js --help passes]
+- [x] T012 Run scripts interop tests [EVIDENCE: scripts interop tests pass]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -58,8 +58,8 @@ contextType: "architecture"
 <!-- ANCHOR:phase-3 -->
 ## Step 3: Standards-Doc Sync
 
-- [ ] T013 Update `sk-code--opencode` standards docs with verified ESM state - WHY: standards must describe verified runtime, not planning intent - Acceptance: docs reflect actual ESM package configuration
-- [ ] T014 Update any other affected standards surfaces - WHY: consistency across documentation - Acceptance: no standards doc references stale CJS patterns for migrated packages
+- [x] T013 Update `sk-code--opencode` standards docs with verified ESM state [EVIDENCE: Standards updated in Phase 4 session]
+- [x] T014 Update any other affected standards surfaces [EVIDENCE: README surfaces aligned in Phase 4]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +67,9 @@ contextType: "architecture"
 <!-- ANCHOR:phase-4 -->
 ## Step 4: Packet Closure
 
-- [ ] T015 Update parent `implementation-summary.md` with final runtime evidence - WHY: summary must record what shipped - Acceptance: summary includes verification results and migration evidence
-- [ ] T016 Mark all parent `checklist.md` P0/P1 items with evidence - WHY: packet cannot close with pending items - Acceptance: all P0 items have `[x]` with `[EVIDENCE: ...]`
-- [ ] T017 Close the parent packet - WHY: no implementation-pending caveats should remain - Acceptance: parent status set to Complete
+- [x] T015 Update parent `implementation-summary.md` with final runtime evidence [EVIDENCE: implementation-summary.md updated with all 6 phases]
+- [x] T016 Mark all parent `checklist.md` P0/P1 items with evidence [EVIDENCE: all P0 9/9 and P1 8/8 checked with evidence]
+- [x] T017 Close the parent packet [EVIDENCE: parent status set to Complete in spec.md]
 <!-- /ANCHOR:phase-4 -->
 
 ---
@@ -77,10 +77,10 @@ contextType: "architecture"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks T001-T017 marked `[x]`
-- [ ] Full verification matrix passes
-- [ ] Standards docs updated from verified runtime state
-- [ ] Parent packet closed
+- [x] All tasks T001-T017 marked `[x]`
+- [x] Full verification matrix passes
+- [x] Standards docs updated from verified runtime state
+- [x] Parent packet closed
 <!-- /ANCHOR:completion -->
 
 ---

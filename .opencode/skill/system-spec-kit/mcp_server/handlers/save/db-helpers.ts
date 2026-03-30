@@ -9,7 +9,7 @@ import type Database from 'better-sqlite3';
 export {
   ALLOWED_POST_INSERT_COLUMNS,
   applyPostInsertMetadata,
-} from '../../lib/storage/post-insert-metadata';
+} from '../../lib/storage/post-insert-metadata.js';
 
 /**
  * TM-06 safety gate: verify a pre-reconsolidation checkpoint exists.

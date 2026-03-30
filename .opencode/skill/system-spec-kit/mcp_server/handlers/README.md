@@ -21,7 +21,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`handlers/` is the MCP-facing handler layer. `handlers/index.ts` lazily loads these modules and re-exports the public handler functions used by the tool dispatch layer.
+`handlers/` is the MCP-facing handler layer. `handlers/index.ts` lazily loads these modules via async `import()` resolution and re-exports the public handler functions used by the tool dispatch layer.
 
 Primary MCP handler modules:
 

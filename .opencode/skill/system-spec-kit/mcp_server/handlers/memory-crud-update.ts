@@ -7,25 +7,25 @@
 ──────────────────────────────────────────────────────────────── */
 
 import { randomUUID } from 'node:crypto';
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import type { UpdateMemoryParams } from '../lib/search/vector-index';
-import * as embeddings from '../lib/providers/embeddings';
-import * as bm25Index from '../lib/search/bm25-index';
-import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers';
-import { MemoryError, ErrorCodes } from '../lib/errors';
-import * as mutationLedger from '../lib/storage/mutation-ledger';
-import { runInTransaction } from '../lib/storage/transaction-manager';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import type { UpdateMemoryParams } from '../lib/search/vector-index.js';
+import * as embeddings from '../lib/providers/embeddings.js';
+import * as bm25Index from '../lib/search/bm25-index.js';
+import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers.js';
+import { MemoryError, ErrorCodes } from '../lib/errors.js';
+import * as mutationLedger from '../lib/storage/mutation-ledger.js';
+import { runInTransaction } from '../lib/storage/transaction-manager.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import { recordHistory } from '../lib/storage/history';
-import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
-import { runPostMutationHooks } from './mutation-hooks';
-import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
+import { recordHistory } from '../lib/storage/history.js';
+import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
 
-import type { MCPResponse } from './types';
-import type { UpdateArgs } from './memory-crud-types';
+import type { MCPResponse } from './types.js';
+import type { UpdateArgs } from './memory-crud-types.js';
 
 // Feature catalog: Memory metadata update (memory_update)
 // Feature catalog: Validation feedback (memory_validate)
@@ -240,7 +240,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     });
   }
 
-  let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+  let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
   try {
     postMutationHooks = runPostMutationHooks('update', { memoryId: id });
   } catch (hookError: unknown) {

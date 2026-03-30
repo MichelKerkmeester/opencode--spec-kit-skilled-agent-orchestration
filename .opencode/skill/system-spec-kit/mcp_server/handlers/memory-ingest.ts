@@ -10,9 +10,9 @@ import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ALLOWED_BASE_PATHS, DATABASE_PATH, checkDatabaseUpdated } from '../core';
-import { MAX_INGEST_PATHS } from '../schemas/tool-input-schemas';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
+import { ALLOWED_BASE_PATHS, DATABASE_PATH, checkDatabaseUpdated } from '../core/index.js';
+import { MAX_INGEST_PATHS } from '../schemas/tool-input-schemas.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
 import {
   createIngestJob,
   enqueueIngestJob,
@@ -21,10 +21,10 @@ import {
   getIngestProgressPercent,
   getIngestForecast,
   type IngestJob,
-} from '../lib/ops/job-queue';
-import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
+} from '../lib/ops/job-queue.js';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry.js';
 
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 
 // Feature catalog: Async ingestion job lifecycle
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)

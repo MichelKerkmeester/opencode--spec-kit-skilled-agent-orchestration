@@ -6,22 +6,22 @@
    IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
-import * as checkpoints from '../lib/storage/checkpoints';
-import * as mutationLedger from '../lib/storage/mutation-ledger';
-import * as causalEdges from '../lib/storage/causal-edges';
-import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
-import { toErrorMessage } from '../utils';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
+import * as checkpoints from '../lib/storage/checkpoints.js';
+import * as mutationLedger from '../lib/storage/mutation-ledger.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { toErrorMessage } from '../utils/index.js';
 
-import { recordHistory } from '../lib/storage/history';
-import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
-import { runPostMutationHooks } from './mutation-hooks';
-import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
-import { clearDegreeCacheForDb } from '../lib/search/graph-search-fn';
+import { recordHistory } from '../lib/storage/history.js';
+import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils.js';
+import { runPostMutationHooks } from './mutation-hooks.js';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
+import { clearDegreeCacheForDb } from '../lib/search/graph-search-fn.js';
 
-import type { MCPResponse } from './types';
-import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
+import type { MCPResponse } from './types.js';
+import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types.js';
 
 // Feature catalog: Single and folder delete (memory_delete)
 // Feature catalog: Validation feedback (memory_validate)
@@ -241,7 +241,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (deletedCount > 0) {
-    let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+    let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('delete', { specFolder, deletedCount });
     } catch (hookError: unknown) {

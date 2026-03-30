@@ -221,4 +221,4 @@ export function shouldTriggerRecovery(ctx: RecoveryContext): boolean {
  * Check whether the empty-result recovery feature flag is enabled.
  * Default: ON (graduated). Set SPECKIT_EMPTY_RESULT_RECOVERY_V1=false to disable.
  */
-export { isEmptyResultRecoveryEnabled } from './search-flags';
+export { isEmptyResultRecoveryEnabled } from './search-flags.js';

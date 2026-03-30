@@ -4,17 +4,17 @@
 
 import path from 'path';
 
-import { checkDatabaseUpdated } from '../core';
-import * as vectorIndex from '../lib/search/vector-index';
+import { checkDatabaseUpdated } from '../core/index.js';
+import * as vectorIndex from '../lib/search/vector-index.js';
 import {
   init as initHybridSearch,
   hybridSearchEnhanced,
   bm25Search,
   ftsSearch,
-} from '../lib/search/hybrid-search';
-import { generateQueryEmbedding } from '../lib/providers/embeddings';
-import { MemoryError, ErrorCodes } from '../lib/errors';
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+} from '../lib/search/hybrid-search.js';
+import { generateQueryEmbedding } from '../lib/providers/embeddings.js';
+import { MemoryError, ErrorCodes } from '../lib/errors.js';
+import { createMCPSuccessResponse } from '../lib/response/envelope.js';
 import {
   ALL_CHANNELS,
   isAblationEnabled,
@@ -25,25 +25,25 @@ import {
   toHybridSearchFlags,
   type AblationChannel,
   type AblationSearchFn,
-} from '../lib/eval/ablation-framework';
+} from '../lib/eval/ablation-framework.js';
 import {
   generateDashboardReport,
   formatReportJSON,
   formatReportText,
-} from '../lib/eval/reporting-dashboard';
+} from '../lib/eval/reporting-dashboard.js';
 import {
   analyzeKValueSensitivityBatch,
   formatKValueReport,
-} from '../lib/eval/k-value-analysis';
+} from '../lib/eval/k-value-analysis.js';
 import {
   createUnifiedGraphSearchFn,
   computeDegreeScores,
   DEGREE_CHANNEL_WEIGHT,
-} from '../lib/search/graph-search-fn';
-import { isDegreeBoostEnabled } from '../lib/search/search-flags';
+} from '../lib/search/graph-search-fn.js';
+import { isDegreeBoostEnabled } from '../lib/search/search-flags.js';
 import type { RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-import type { MCPResponse } from './types';
+import type { MCPResponse } from './types.js';
 
 // Feature catalog: Reporting dashboard (eval_reporting_dashboard)
 // Feature catalog: Ablation studies (eval_run_ablation)

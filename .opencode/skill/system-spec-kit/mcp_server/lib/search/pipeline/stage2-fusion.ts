@@ -48,21 +48,21 @@ import type Database from 'better-sqlite3';
 import path from 'path';
 import { readFile } from 'fs/promises';
 
-import { resolveEffectiveScore } from './types';
-import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, ArtifactRoutingConfig } from './types';
+import { resolveEffectiveScore } from './types.js';
+import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, ArtifactRoutingConfig } from './types.js';
 
-import * as sessionBoost from '../session-boost';
-import * as causalBoost from '../causal-boost';
+import * as sessionBoost from '../session-boost.js';
+import * as causalBoost from '../causal-boost.js';
 import {
   isEnabled as isCoActivationEnabled,
   spreadActivation,
   getRelatedMemoryCounts,
   resolveCoActivationBoostFactor,
-} from '../../cognitive/co-activation';
-import type { SpreadResult } from '../../cognitive/co-activation';
-import * as fsrsScheduler from '../../cognitive/fsrs-scheduler';
-import { queryLearnedTriggers } from '../learned-feedback';
-import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback';
+} from '../../cognitive/co-activation.js';
+import type { SpreadResult } from '../../cognitive/co-activation.js';
+import * as fsrsScheduler from '../../cognitive/fsrs-scheduler.js';
+import { queryLearnedTriggers } from '../learned-feedback.js';
+import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback.js';
 import {
   isNegativeFeedbackEnabled,
   isCommunityDetectionEnabled,
@@ -70,21 +70,21 @@ import {
   isGraphSignalsEnabled,
   resolveGraphWalkRolloutState,
   isLearnedStage2CombinerEnabled,
-} from '../search-flags';
-import { applyCalibrationProfile } from '../graph-calibration';
+} from '../search-flags.js';
+import { applyCalibrationProfile } from '../graph-calibration.js';
 import { shadowScore, extractFeatureVector, loadModel } from '@spec-kit/shared/ranking/learned-combiner';
 import type { LearnedModel } from '@spec-kit/shared/ranking/learned-combiner';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
-import { requireDb } from '../../../utils/db-helpers';
-import { computeRecencyScore } from '../../scoring/folder-scoring';
-import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';
-import { enrichResultsWithValidationMetadata } from '../validation-metadata';
+import { requireDb } from '../../../utils/db-helpers.js';
+import { computeRecencyScore } from '../../scoring/folder-scoring.js';
+import { enrichResultsWithAnchorMetadata } from '../anchor-metadata.js';
+import { enrichResultsWithValidationMetadata } from '../validation-metadata.js';
 // B4: Stage 2b enrichment extracted for decomposition clarity
-import { executeStage2bEnrichment } from './stage2b-enrichment';
-import { applyCommunityBoost } from '../../graph/community-detection';
-import { applyGraphSignals } from '../../graph/graph-signals';
-import { isGraphUnifiedEnabled } from '../graph-flags';
-import { sortDeterministicRows } from './ranking-contract';
+import { executeStage2bEnrichment } from './stage2b-enrichment.js';
+import { applyCommunityBoost } from '../../graph/community-detection.js';
+import { applyGraphSignals } from '../../graph/graph-signals.js';
+import { isGraphUnifiedEnabled } from '../graph-flags.js';
+import { sortDeterministicRows } from './ranking-contract.js';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: MPAB chunk-to-memory aggregation

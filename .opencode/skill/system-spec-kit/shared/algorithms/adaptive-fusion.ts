@@ -2,10 +2,10 @@
 // MODULE: Adaptive Fusion
 // ---------------------------------------------------------------
 // Local
-import { fuseResultsMulti } from './rrf-fusion';
+import { fuseResultsMulti } from './rrf-fusion.js';
 
 // Type-only
-import type { RrfItem, FusionResult, RankedList } from './rrf-fusion';
+import type { RrfItem, FusionResult, RankedList } from './rrf-fusion.js';
 
 // Feature catalog: Hybrid search pipeline
 // Feature catalog: Adaptive shadow ranking, bounded proposals, and rollback

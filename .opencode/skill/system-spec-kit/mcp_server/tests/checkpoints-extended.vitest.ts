@@ -179,23 +179,66 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
   // 4.2 getGitBranch
   describe('Storage: getGitBranch', () => {
-    it.skip('EXT-S3: getGitBranch returns string or null', () => {
-      if (!checkpointStorage.getGitBranch) return;
-      const branch = checkpointStorage.getGitBranch();
-      expect(branch === null || (typeof branch === 'string' && branch.length > 0)).toBe(true);
+    it('EXT-S3: getGitBranch returns string or null', () => {
+      const originalEnv = {
+        GIT_BRANCH: process.env.GIT_BRANCH,
+        BRANCH_NAME: process.env.BRANCH_NAME,
+        CI_COMMIT_REF_NAME: process.env.CI_COMMIT_REF_NAME,
+        VERCEL_GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF,
+      };
+
+      delete process.env.GIT_BRANCH;
+      delete process.env.BRANCH_NAME;
+      delete process.env.CI_COMMIT_REF_NAME;
+      delete process.env.VERCEL_GIT_COMMIT_REF;
+
+      try {
+        expect(checkpointStorage.getGitBranch()).toBeNull();
+
+        process.env.GIT_BRANCH = 'feature/ext-s3-branch';
+        expect(checkpointStorage.getGitBranch()).toBe('feature/ext-s3-branch');
+      } finally {
+        for (const [key, value] of Object.entries(originalEnv)) {
+          if (value === undefined) {
+            delete process.env[key];
+          } else {
+            process.env[key] = value;
+          }
+        }
+      }
     });
 
-    it.skip('EXT-S4: checkpoint records git branch', () => {
-      if (!checkpointStorage.getGitBranch) return;
-      const cp = checkpointStorage.createCheckpoint({ name: 'git-branch-test' });
-      expect(cp).toBeDefined();
-      if (!cp) return;
+    it('EXT-S4: checkpoint records git branch', () => {
+      const originalEnv = {
+        GIT_BRANCH: process.env.GIT_BRANCH,
+        BRANCH_NAME: process.env.BRANCH_NAME,
+        CI_COMMIT_REF_NAME: process.env.CI_COMMIT_REF_NAME,
+        VERCEL_GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF,
+      };
 
-      const branch = checkpointStorage.getGitBranch();
-      // Both should be either string or null
-      expect(cp.gitBranch === branch || (typeof cp.gitBranch === 'string' && typeof branch === 'string')).toBe(true);
+      delete process.env.BRANCH_NAME;
+      delete process.env.CI_COMMIT_REF_NAME;
+      delete process.env.VERCEL_GIT_COMMIT_REF;
+      process.env.GIT_BRANCH = 'feature/git-branch-test';
 
-      checkpointStorage.deleteCheckpoint('git-branch-test');
+      try {
+        const cp = checkpointStorage.createCheckpoint({ name: 'git-branch-test' });
+        expect(cp).toBeDefined();
+        expect(cp?.gitBranch).toBe('feature/git-branch-test');
+
+        const stored = checkpointStorage.getCheckpoint('git-branch-test');
+        expect(stored).toBeDefined();
+        expect(stored?.git_branch).toBe('feature/git-branch-test');
+      } finally {
+        checkpointStorage.deleteCheckpoint('git-branch-test');
+        for (const [key, value] of Object.entries(originalEnv)) {
+          if (value === undefined) {
+            delete process.env[key];
+          } else {
+            process.env[key] = value;
+          }
+        }
+      }
     });
   });
 
@@ -788,8 +831,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       checkpointStorage.deleteCheckpoint('t107-no-mutation');
     });
 
-    it.skip('T107-09: validateMemoryRow accepts valid row', () => {
-      if (typeof checkpointStorage.validateMemoryRow !== 'function') return;
+    it('T107-09: validateMemoryRow accepts valid row', () => {
+      expect(checkpointStorage.validateMemoryRow).toBeTypeOf('function');
       expect(() => {
         checkpointStorage.validateMemoryRow({
           id: 1, file_path: '/x.md', spec_folder: 'sp',
@@ -798,8 +841,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       }).not.toThrow();
     });
 
-    it.skip('T107-10: validateMemoryRow rejects invalid id', () => {
-      if (typeof checkpointStorage.validateMemoryRow !== 'function') return;
+    it('T107-10: validateMemoryRow rejects invalid id', () => {
+      expect(checkpointStorage.validateMemoryRow).toBeTypeOf('function');
       expect(() => {
         checkpointStorage.validateMemoryRow({ id: 'not-a-number', file_path: '/x.md', spec_folder: 'sp' }, 0);
       }).toThrow(/id/);

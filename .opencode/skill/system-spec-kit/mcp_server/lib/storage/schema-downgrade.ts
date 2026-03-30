@@ -8,7 +8,7 @@
 //   - chunk_label
 // This intentionally supports ONLY v16 -> v15.
 import type Database from 'better-sqlite3';
-import * as checkpoints from './checkpoints';
+import * as checkpoints from './checkpoints.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

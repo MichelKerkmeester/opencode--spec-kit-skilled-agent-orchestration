@@ -2,12 +2,12 @@
   "name": "@spec-kit/mcp-server",
   "version": "1.8.0",
   "description": "Semantic Memory MCP Server - provides 33 tools for semantic search, memory management, validation, checkpoints, causal graphs, session learning, and auto-indexing",
+  "type": "module",
   "main": "dist/context-server.js",
   "exports": {
     ".": "./dist/context-server.js",
     "./api": "./dist/api/index.js",
-    "./*.js": "./dist/*.js",
-    "./*": "./dist/*.js"
+    "./api/*": "./dist/api/*.js"
   },
   "bin": {
     "context-server": "./dist/context-server.js",
@@ -35,7 +35,7 @@
   "author": "Michel Kerkmeester",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.11.0"
   },
   "dependencies": {
     "@spec-kit/shared": "file:../shared",

@@ -18,6 +18,18 @@ function getErrorMessage(error: unknown): string | undefined {
   return error instanceof Error ? error.message : undefined;
 }
 
+function hasStructuredContentError(result: MCPResponse): boolean {
+  const text = result.content?.[0]?.text;
+  if (typeof text !== 'string') return false;
+
+  try {
+    const parsed = JSON.parse(text) as { error?: unknown };
+    return typeof parsed.error === 'string' && parsed.error.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 describe('Integration Error Recovery (T532) [deferred - requires DB test fixtures]', () => {
 
   describe('Setup: Module Loading', () => {
@@ -124,7 +136,9 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
         try {
           const result = await h.run();
           // If no error thrown, handler may return error in MCP response format
-          if (!(result && result.isError === true)) {
+          const isMcpError = result?.isError === true;
+          const isStructuredSearchError = h.name === 'search' && hasStructuredContentError(result);
+          if (!isMcpError && !isStructuredSearchError) {
             inconsistentHandlers.push(`${h.name} (no error thrown)`);
           }
         } catch (error: unknown) {

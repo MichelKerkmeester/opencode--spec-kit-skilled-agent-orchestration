@@ -22,31 +22,30 @@ import * as sqliteVec from 'sqlite-vec';
 
 import { getStartupEmbeddingDimension } from '@spec-kit/shared/embeddings/factory';
 
-import { DATABASE_DIR, DATABASE_PATH, SERVER_DIR } from '../../core/config';
-import { IVectorStore } from '../interfaces/vector-store';
-import * as embeddingsProvider from '../providers/embeddings';
-import { computeInterferenceScoresBatch } from '../scoring/interference-scoring';
-import { validateFilePath } from '../utils/path-security';
+import { DATABASE_DIR, DATABASE_PATH, SERVER_DIR } from '../../core/config.js';
+import { IVectorStore } from '../interfaces/vector-store.js';
+import * as embeddingsProvider from '../providers/embeddings.js';
+import { computeInterferenceScoresBatch } from '../scoring/interference-scoring.js';
+import { validateFilePath } from '../utils/path-security.js';
 import {
   get_error_code,
   get_error_message,
   parse_trigger_phrases,
   VectorIndexError,
   VectorIndexErrorCode,
-} from './vector-index-types';
+} from './vector-index-types.js';
 import {
   create_schema,
   ensure_schema_version,
-} from './vector-index-schema';
+} from './vector-index-schema.js';
 import type {
   EmbeddingInput,
   EnrichedSearchResult,
   IndexMemoryParams,
   MemoryRow,
   VectorSearchOptions,
-} from './vector-index-types';
+} from './vector-index-types.js';
 
-const search_weights_path = path.join(SERVER_DIR, 'configs', 'search-weights.json');
 type SearchWeightsConfig = {
   maxTriggersPerMemory?: number;
   smartRanking?: {
@@ -56,15 +55,23 @@ type SearchWeightsConfig = {
   };
 };
 
-let _search_weights: SearchWeightsConfig;
-try {
-  _search_weights = JSON.parse(
-    fs.readFileSync(search_weights_path, 'utf-8')
-  ) as SearchWeightsConfig;
-} catch (error: unknown) {
-  console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
-  _search_weights = {};
+function loadSearchWeights(): SearchWeightsConfig {
+  // SERVER_DIR points to dist/ at runtime; configs/ lives at the package root (dist/..)
+  const candidates = [
+    path.join(SERVER_DIR, 'configs', 'search-weights.json'),
+    path.join(SERVER_DIR, '..', 'configs', 'search-weights.json'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(fs.readFileSync(candidate, 'utf-8')) as SearchWeightsConfig;
+    } catch {
+      // Try next candidate
+    }
+  }
+  return {};
 }
+
+const _search_weights: SearchWeightsConfig = loadSearchWeights();
 /** Loaded search weight configuration for vector-index ranking. */
 export const search_weights = _search_weights;
 
@@ -75,6 +82,12 @@ type EnhancedSearchOptions = {
   noDiversity?: boolean;
 };
 type JsonObject = Record<string, unknown>;
+
+let _cached_queries: Awaited<typeof import('./vector-index-queries.js')> | null = null;
+
+async function getQueriesModule() {
+  return _cached_queries ??= await import('./vector-index-queries.js');
+}
 
 /* ───────────────────────────────────────────────────────────────
    1. CONFIGURATION — Embedding Dimension
@@ -764,7 +777,7 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
       console.error(`[vector-index] ${errMsg}`);
       console.error(`[vector-index] Running: Node ${process.version} (MODULE_VERSION ${process.versions.modules})`);
       try {
-        const marker_path = path.resolve(__dirname, '../../../.node-version-marker');
+        const marker_path = path.resolve(import.meta.dirname, '../../../.node-version-marker');
         if (fs.existsSync(marker_path)) {
           const marker = JSON.parse(fs.readFileSync(marker_path, 'utf8'));
           console.error(`[vector-index] Marker recorded: Node ${marker.nodeVersion} (MODULE_VERSION ${marker.moduleVersion})`);
@@ -932,8 +945,7 @@ export class SQLiteVectorStore extends IVectorStore {
       includeArchived: options.includeArchived === true
     };
 
-    // Lazy import to avoid circular dependency at module load time
-    const { vector_search } = await import('./vector-index-queries');
+    const { vector_search } = await getQueriesModule();
     return vector_search(embedding, search_options, database);
   }
 
@@ -992,7 +1004,7 @@ export class SQLiteVectorStore extends IVectorStore {
       );
     }
 
-    const { index_memory } = await import('./vector-index-mutations');
+    const { index_memory } = await import('./vector-index-mutations.js');
     return index_memory(params, database);
   }
 
@@ -1009,7 +1021,7 @@ export class SQLiteVectorStore extends IVectorStore {
   async delete(id: number): Promise<boolean> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { delete_memory } = await import('./vector-index-mutations');
+    const { delete_memory } = await import('./vector-index-mutations.js');
     return delete_memory(id, database);
   }
 
@@ -1026,14 +1038,14 @@ export class SQLiteVectorStore extends IVectorStore {
   async get(id: number): Promise<MemoryRow | null> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_memory } = await import('./vector-index-queries');
+    const { get_memory } = await getQueriesModule();
     return get_memory(id, database);
   }
 
   async getStats(): Promise<{ total: number; pending: number; success: number; failed: number; retry: number }> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_stats } = await import('./vector-index-queries');
+    const { get_stats } = await getQueriesModule();
     return get_stats(database);
   }
 
@@ -1055,14 +1067,14 @@ export class SQLiteVectorStore extends IVectorStore {
   async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null): Promise<boolean> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { delete_memory_by_path } = await import('./vector-index-mutations');
+    const { delete_memory_by_path } = await import('./vector-index-mutations.js');
     return delete_memory_by_path(specFolder, filePath, anchorId, database);
   }
 
   async getByFolder(specFolder: string): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_memories_by_folder } = await import('./vector-index-queries');
+    const { get_memories_by_folder } = await getQueriesModule();
     return get_memories_by_folder(specFolder, database);
   }
 
@@ -1072,14 +1084,14 @@ export class SQLiteVectorStore extends IVectorStore {
   ): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { vector_search_enriched } = await import('./vector-index-queries');
+    const { vector_search_enriched } = await getQueriesModule();
     return vector_search_enriched(embedding, undefined, options, database);
   }
 
   async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { enhanced_search } = await import('./vector-index-aliases');
+    const { enhanced_search } = await import('./vector-index-aliases.js');
     return enhanced_search(embedding, undefined, options, database);
   }
 
@@ -1088,7 +1100,7 @@ export class SQLiteVectorStore extends IVectorStore {
   ): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { get_constitutional_memories_public } = await import('./vector-index-queries');
+    const { get_constitutional_memories_public } = await getQueriesModule();
     return get_constitutional_memories_public(options, database);
   }
 
@@ -1106,7 +1118,7 @@ export class SQLiteVectorStore extends IVectorStore {
   }> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { verify_integrity } = await import('./vector-index-queries');
+    const { verify_integrity } = await getQueriesModule();
     return verify_integrity(options, database);
   }
 }

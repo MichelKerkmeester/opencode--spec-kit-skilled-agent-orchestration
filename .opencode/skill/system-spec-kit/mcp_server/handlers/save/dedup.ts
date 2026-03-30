@@ -4,8 +4,8 @@
 import fs from 'fs';
 import type Database from 'better-sqlite3';
 
-import type { ParsedMemory } from '../../lib/parsing/memory-parser';
-import type { IndexResult } from './types';
+import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
+import type { IndexResult } from './types.js';
 
 // Feature catalog: SHA-256 content-hash deduplication
 // Feature catalog: Canonical ID dedup hardening
@@ -28,8 +28,8 @@ interface SamePathDedupExclusion {
   filePath: string;
 }
 
-import type { MemoryScopeMatch } from './types';
-import { normalizeScopeMatchValue } from './types';
+import type { MemoryScopeMatch } from './types.js';
+import { normalizeScopeMatchValue } from './types.js';
 
 type ScopeColumnName = typeof SCOPE_COLUMNS[number][0];
 

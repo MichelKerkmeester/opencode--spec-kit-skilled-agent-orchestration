@@ -19,7 +19,7 @@
 // CRITICAL: Ablation studies are experimental and gated behind
 // SPECKIT_ABLATION=true. Every public function is wrapped in try-catch
 // And is a no-op when the flag is not set.
-import { initEvalDb, getEvalDb } from './eval-db';
+import { initEvalDb, getEvalDb } from './eval-db.js';
 import {
   computeRecall,
   computeMRR,
@@ -27,13 +27,13 @@ import {
   computePrecision,
   computeMAP,
   computeHitRate,
-} from './eval-metrics';
-import type { EvalResult, GroundTruthEntry } from './eval-metrics';
+} from './eval-metrics.js';
+import type { EvalResult, GroundTruthEntry } from './eval-metrics.js';
 import {
   GROUND_TRUTH_QUERIES,
   GROUND_TRUTH_RELEVANCES,
-} from './ground-truth-data';
-import type { GroundTruthQuery } from './ground-truth-data';
+} from './ground-truth-data.js';
+import type { GroundTruthQuery } from './ground-truth-data.js';
 import type Database from 'better-sqlite3';
 
 /* --- 1. FEATURE FLAG --- */
