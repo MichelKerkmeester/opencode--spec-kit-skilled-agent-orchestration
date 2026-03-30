@@ -49,6 +49,16 @@ Fix the hybrid search pipeline in the Spec Kit Memory MCP server which returns 0
 - [x] Stage 1 trace shows candidateCount > 0 (5 candidates)
 - [x] memory_health reports healthy
 - [x] Diagnostic logging removed
+- [ ] RRF k-value updated to 40 in rrf-fusion.ts (REQ-006)
+- [ ] Token budget updated to 2500 in memory-search.ts and layer-definitions.ts (REQ-007)
+- [ ] Deprecated tier filter unified across sqlite-fts.ts and bm25-index.ts (REQ-008)
+- [ ] R12 expansion gate relaxed to 0.72 (REQ-009)
+- [ ] Cross-encoder metadata split + MMR diversity applied in stage3-rerank.ts (REQ-010)
+- [ ] Compound-term FTS5 phrase expansion added to bm25-index.ts (REQ-011)
+- [ ] Co-activation format fixed and Stage 2 injection wired (REQ-012)
+- [ ] Quality score backfill implemented for 520 zero-score memories (REQ-013)
+- [ ] Chunk children lineage parent_id written by chunking-orchestrator.ts (REQ-014)
+- [ ] Per-stage timing persisted + cache hit/miss counters active (REQ-015)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -95,38 +105,47 @@ All channels except BM25 depend on `db` or `vectorSearchFn` being non-null.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Diagnose (confirm root cause)
-- [ ] Add diagnostic `console.error` to `ftsSearch()` logging `db` truthiness
-- [ ] Add diagnostic `console.error` to `collectAndFuseHybridResults()` logging `vectorSearchFn` truthiness
-- [ ] Add module identity marker (random ID) to `init()` and `ftsSearch()` to detect ESM duplication
-- [ ] Restart MCP server, trigger search, check stderr output
-- [ ] Record whether: (a) db is null, (b) vectorSearchFn is null, (c) module IDs differ
+### Phase 1: Diagnose (confirm root cause) — COMPLETE
+- [x] Add diagnostic `console.error` to `ftsSearch()` logging `db` truthiness
+- [x] Add diagnostic `console.error` to `collectAndFuseHybridResults()` logging `vectorSearchFn` truthiness
+- [x] Add module identity marker (random ID) to `init()` and `ftsSearch()` to detect ESM duplication
+- [x] Restart MCP server, trigger search, check stderr output
+- [x] Record whether: (a) db is null, (b) vectorSearchFn is null, (c) module IDs differ
+- **Finding:** ESM duplication ruled out; Bug 1 = scope enforcement opt-out (shouldApplyScope=true, 5→0 candidates); Bug 2 = TRM state filter minState='WARM' excluded all UNKNOWN-state memories
 
-### Phase 2: Fix (based on Phase 1 findings)
+### Phase 2: Fix (based on Phase 1 findings) — COMPLETE
 
-**If ESM module duplication confirmed (different MODULE_IDs):**
-- [ ] Check `package.json` exports/imports maps for path aliasing
-- [ ] Check `tsconfig.json` for path mappings that could cause double resolution
-- [ ] Ensure single canonical import path for hybrid-search module
-- [ ] Alternatively: move `db`/`vectorSearchFn` to a shared state module (db-state.js)
+**Scope enforcement fix (Bug 1):**
+- [x] `scope-governance.ts` — changed `isScopeEnforcementEnabled()` to opt-in
+- [x] `scope-governance.js` (dist) — same change
 
-**If stale reference (same MODULE_ID, db was set then became null):**
-- [ ] Check if `reinitializeDatabase()` is called and fails to rebind
-- [ ] Add guard in `ftsSearch()`: recover db from `requireDb()` if null
-- [ ] Add guard in `collectAndFuseHybridResults()`: recover vectorSearchFn
+**TRM state filter fix (Bug 2):**
+- [x] `memory-search.ts` — removed `minState='WARM'` default
+- [x] `memory-search.js` (dist) — same change
+- [x] `memory-context.ts` — removed `minState='WARM'` hardcode (2 occurrences)
+- [x] `memory-context.js` (dist) — same change
 
-**If init() never called (db was never set):**
-- [ ] Check initialization order in context-server.js
-- [ ] Ensure `hybridSearch.init()` runs before first search request
-- [ ] Add initialization check with explicit error if search called before init
+### Phase 3: Verify & Cleanup — COMPLETE
+- [x] Run `memory_search("semantic search")` — 4 results returned (CocoIndex #893 included)
+- [x] Run `memory_search("SpecKit Phase System")` — 5 results returned (#325 included)
+- [x] Run `memory_search("compact code graph")` — 5 results returned (#45 included)
+- [x] Verify Stage 1 trace: candidateCount > 0, channelCount >= 2
+- [x] Run `memory_health` — reports healthy
+- [x] Remove all diagnostic `console.error` statements from hybrid-search.js
+- [x] Remove all diagnostic `console.error` statements from stage1-candidate-gen.js
+- [x] Kill MCP server processes to apply fixes
 
-### Phase 3: Verify & Cleanup
-- [ ] Run `memory_search("semantic search")` — expect CocoIndex results
-- [ ] Run `memory_search("SpecKit Phase System")` — expect phase system results
-- [ ] Verify Stage 1 trace: candidateCount > 0, channelCount >= 2
-- [ ] Run `memory_health` — expect healthy
-- [ ] Remove all diagnostic `console.error` statements
-- [ ] If dist was edited directly, apply changes to TS source and rebuild
+### Phase 4: Search Engine Optimization (10 findings from deep research)
+- [ ] T024 RRF k-value 60 → 40 (`shared/algorithms/rrf-fusion.ts`)
+- [ ] T025 Token budget 1500 → 2500 (`handlers/memory-search.ts`, `architecture/layer-definitions.ts`)
+- [ ] T026 Deprecated tier filter symmetry (`sqlite-fts.ts`, `bm25-index.ts`)
+- [ ] T027 R12 expansion gate relaxation: threshold 0.82 → 0.72 (`embedding-expansion.ts`, `stage1-candidate-gen.ts`)
+- [ ] T028 Cross-encoder metadata split + MMR diversity pass (`stage3-rerank.ts`)
+- [ ] T029 Compound-term FTS5 phrase expansion (`bm25-index.ts`)
+- [ ] T030 related_memories format fix + Stage 2 co-activation injection (`stage2-fusion.ts`, `co-activation.ts`)
+- [ ] T031 Quality score backfill for 520 zero-score memories (`save-quality-gate.ts`)
+- [ ] T032 Lineage parent_id for chunk children (`chunking-orchestrator.ts`)
+- [ ] T033 Per-stage timing persistence + cache hit/miss counters (`hybrid-search.ts`, `embedding-cache.ts`)
 <!-- /ANCHOR:phases -->
 
 ---

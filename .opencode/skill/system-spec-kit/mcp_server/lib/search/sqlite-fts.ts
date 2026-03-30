@@ -64,6 +64,8 @@ function fts5Bm25Search(
   const archivalFilter = !includeArchived
     ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)'
     : '';
+  const deprecatedTierFilter =
+    "AND (m.importance_tier IS NULL OR m.importance_tier != 'deprecated')";
 
   const params: (string | number)[] = specFolder
     ? [sanitized, specFolder, limit]
@@ -79,6 +81,7 @@ function fts5Bm25Search(
     WHERE memory_fts MATCH ?
       ${folderFilter}
       ${archivalFilter}
+      ${deprecatedTierFilter}
     ORDER BY fts_score DESC
     LIMIT ?
   `;

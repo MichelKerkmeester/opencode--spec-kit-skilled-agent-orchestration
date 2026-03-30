@@ -25,6 +25,15 @@ interface EmbeddingCacheStats {
   newestEntry: string | null;
 }
 
+interface EmbeddingCacheHitStats {
+  hits: number;
+  misses: number;
+  hitRate: number;
+}
+
+let cacheHits = 0;
+let cacheMisses = 0;
+
 /* --- 2. TABLE INITIALIZATION --- */
 
 /**
@@ -72,7 +81,12 @@ function lookupEmbedding(
     | { embedding: Buffer }
     | undefined;
 
-  if (!row) return null;
+  if (!row) {
+    cacheMisses += 1;
+    return null;
+  }
+
+  cacheHits += 1;
 
   // Update last_used_at on cache hit
   (db.prepare(
@@ -155,12 +169,30 @@ function evictOldEntries(db: Database.Database, maxAgeDays: number): number {
 /* --- 6. STATISTICS --- */
 
 /**
+ * Return runtime hit/miss statistics for the embedding cache.
+ *
+ * @returns Cache hit/miss counters and derived hit rate
+ */
+function getCacheStats(): EmbeddingCacheHitStats;
+
+/**
  * Return aggregate statistics about the embedding cache.
  *
  * @param db - better-sqlite3 database instance
  * @returns Cache statistics including total entries, size, oldest/newest timestamps
  */
-function getCacheStats(db: Database.Database): EmbeddingCacheStats {
+function getCacheStats(db: Database.Database): EmbeddingCacheStats;
+function getCacheStats(db?: Database.Database): EmbeddingCacheStats | EmbeddingCacheHitStats {
+  if (!db) {
+    const totalLookups = cacheHits + cacheMisses;
+
+    return {
+      hits: cacheHits,
+      misses: cacheMisses,
+      hitRate: totalLookups > 0 ? cacheHits / totalLookups : 0,
+    };
+  }
+
   const row = (db.prepare(`
     SELECT
       COUNT(*) AS total_entries,
@@ -226,4 +258,5 @@ export {
 export type {
   EmbeddingCacheEntry,
   EmbeddingCacheStats,
+  EmbeddingCacheHitStats,
 };

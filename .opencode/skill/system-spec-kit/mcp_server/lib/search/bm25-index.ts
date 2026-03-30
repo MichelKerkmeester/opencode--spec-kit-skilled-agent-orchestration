@@ -562,9 +562,12 @@ interface NormalizedLexicalQueryTokens {
 function normalizeLexicalQueryTokens(query: string): NormalizedLexicalQueryTokens {
   const sharedTokens = sanitizeQueryTokens(query)
     .flatMap((token) => splitLexicalFragments(token));
+  const phraseToken = sharedTokens.length >= 2
+    ? [`"${sharedTokens.join(' ')}"`]
+    : [];
 
   return {
-    fts: sharedTokens,
+    fts: [...sharedTokens, ...phraseToken],
     bm25: sharedTokens
       .filter((token) => token.length >= 2 && !STOP_WORDS.has(token))
       .map(simpleStem),

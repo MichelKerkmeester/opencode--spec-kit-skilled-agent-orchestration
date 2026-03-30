@@ -53,7 +53,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L2',
     name: 'Core',
     description: 'Primary memory operations. Use when you need specific search or save functionality.',
-    tokenBudget: 1500,
+    tokenBudget: 2500,
     priority: 2,
     useCase: 'Direct access to search, save, and trigger matching when L1 routing is not needed.',
     tools: ['memory_search', 'memory_quick_search', 'memory_save', 'memory_match_triggers']

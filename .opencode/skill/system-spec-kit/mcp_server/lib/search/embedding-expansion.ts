@@ -300,5 +300,6 @@ export async function expandQueryWithEmbeddings(
 export function isExpansionActive(query: string): boolean {
   if (!isEmbeddingExpansionEnabled()) return false;
   const result = classifyQueryComplexity(query);
-  return result.tier !== 'simple';
+  if (result.features.termCount <= 2) return false;
+  return result.tier !== 'simple' || result.features.termCount === 3;
 }

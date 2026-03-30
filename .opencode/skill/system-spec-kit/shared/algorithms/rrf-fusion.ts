@@ -23,6 +23,7 @@ const SOURCE_TYPES = {
  *
  * Origin: Cormack, Clarke, and Buettcher (SIGIR 2009), where Reciprocal Rank
  * Fusion is introduced with `k = 60` as a robust default for rank aggregation.
+ * This implementation defaults to `k = 40` for the current ~1000-memory corpus.
  *
  * Behavior:
  * - Lower `k` increases sensitivity to early ranks (top results dominate more).
@@ -33,7 +34,8 @@ const SOURCE_TYPES = {
  * - Runtime override `SPECKIT_RRF_K` is accepted only when parseable as a
  *   finite positive number (`> 0`).
  */
-const DEFAULT_K = 60;
+// k=40 optimized for ~1000-memory corpus.
+const DEFAULT_K = 40;
 const CONVERGENCE_BONUS = 0.10;
 // AI-WHY: Graph channel gets 1.5x boost when no explicit weight is supplied because
 // graph edges encode curated human decisions (causal links) that are high-signal.
@@ -187,7 +189,7 @@ function clamp(value: number, min: number, max: number): number {
  * Fuse two ranked result lists using Reciprocal Rank Fusion.
  * @param listA - First ranked result list.
  * @param listB - Second ranked result list.
- * @param k - RRF smoothing constant (default 60).
+ * @param k - RRF smoothing constant (default 40).
  * @param sourceA - Source label for listA (default 'vector').
  * @param sourceB - Source label for listB (default 'fts').
  * @returns Fused results sorted by descending RRF score.
