@@ -6,6 +6,18 @@ Phased approach: each phase is independently deployable and testable. Phase 1 (C
 
 **CORRECTED (iteration 011, 014):** PreCompact stdout is NOT injected into model context. The design uses PreCompact for precomputation and SessionStart(source=compact) for injection.
 
+## Implementation Order
+
+1. **Immediate**: Fix `/spec_kit:resume` `profile: "resume"` (1 hour)
+2. **Phase 1+2**: Hook scripts (PreCompact + SessionStart) with hook-state bridge (1 week)
+3. **Phase 4**: `.claude/CLAUDE.md` + CLAUDE.md compaction section (2 days)
+4. **Phase 008**: tree-sitter structural indexer for JS/TS/Python/Shell (3-4 days)
+5. **Phase 009**: SQLite storage + code_graph_scan/query/status tools (2-3 days)
+6. **Phase 010**: code_graph_context + CocoIndex bridge (3-4 days)
+7. **Phase 011**: Working-set tracking + 3-source compaction merge (2-3 days)
+8. **Phase 3**: Stop hook + token tracking (1 week)
+9. **Phase 5-7**: Agent/command alignment, documentation, testing (2 weeks)
+
 ## Phase Overview
 
 ### Phase 1: Compaction Context Injection (P0 — 2-3 days)
@@ -89,6 +101,56 @@ CREATE TABLE session_token_snapshots (
 
 **Validation (iteration 015):** 7-scenario test matrix across 4 runtimes
 
+### Phase 008: Structural Indexer (P2 — 3-4 days)
+**Goal:** Extract structural symbols from JS/TS/Python/Shell via tree-sitter.
+
+**What to build:**
+- tree-sitter parser with standardized capture vocabulary (@definition.function, @definition.class, etc.)
+- Normalized node/edge extraction pipeline
+- Content-hash-based incremental re-indexing
+- Parser health metadata (clean parse vs recovered tree)
+
+**LOC estimate:** 300-420 lines
+
+### Phase 009: Code Graph Storage + Query (P2 — 2-3 days)
+**Goal:** SQLite schema and MCP query tools for structural relationships.
+
+**What to build:**
+- `code-graph.sqlite` with `code_files`, `code_nodes`, `code_edges` tables
+- Edge vocabulary: CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS
+- `code_graph_scan` MCP tool (build/refresh index)
+- `code_graph_query` MCP tool (outline, calls_from, calls_to, imports_from, imports_to)
+- `code_graph_status` MCP tool (freshness, coverage, errors)
+- Directional indexes for hot queries
+
+**LOC estimate:** 220-320 lines
+
+### Phase 010: CocoIndex Bridge + code_graph_context (P2 — 3-4 days)
+**Goal:** LLM-oriented compact graph neighborhoods with CocoIndex seed support.
+
+**What to build:**
+- `code_graph_context` MCP tool with 3 query modes (neighborhood, outline, impact)
+- CocoIndex seed normalization (file:line → graph node resolution)
+- Seed resolution: exact symbol → enclosing symbol → file anchor
+- Reverse semantic augmentation (graph neighborhoods → scoped CocoIndex queries)
+- Budget enforcement within tool (accept budgetTokens parameter)
+- Compact repo-map style output with CocoIndex-boosted ranking
+
+**LOC estimate:** 330-460 lines
+
+### Phase 011: Compaction Working-Set Integration (P2 — 2-3 days)
+**Goal:** Wire code graph + CocoIndex into the compaction pipeline.
+
+**What to build:**
+- Session working-set tracker (files/symbols touched during session)
+- 3-source merge: Memory + CocoIndex + Code Graph under 4000-token budget
+- Token budget allocator: floors + overflow pool (constitutional 700, graph 1200, CocoIndex 900, triggered 400, overflow 800)
+- Priority order: constitutional > code graph > CocoIndex > triggered
+- Structured output sections for merged compact brief
+- Mixed-freshness coordination and metadata
+
+**LOC estimate:** 200-300 lines
+
 ## File Locations (iteration 014)
 
 ```
@@ -117,6 +179,8 @@ CLAUDE.md                ← Phase 4 updates
 - Phase 2 shares `session-prime.ts` with Phase 1 (tight coupling)
 - Phase 3 depends on Phase 1 patterns + transcript parsing
 - Phase 4 can run in parallel with Phases 1-3
+- Code Graph MVP depends on Phases 1-2 patterns; can start after Phase 2
+- CocoIndex bridge is independent — CocoIndex already deployed as MCP server
 
 ## Risk Mitigation
 
@@ -129,3 +193,4 @@ CLAUDE.md                ← Phase 4 updates
 | Settings.local.json conflict | Merge-safe registration (user already has hooks at `~/.claude/settings.json`) |
 | `profile: "resume"` not passed | Explicitly pass in all hook scripts (gap found in iter 012) |
 | Session ID mismatch | Hook-state maps Claude `session_id` → Spec Kit `effectiveSessionId` |
+| CocoIndex unavailable | Code graph still provides structural context independently; graceful degradation |

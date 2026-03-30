@@ -37,6 +37,14 @@ Based on Claude Code hooks API (25 lifecycle events, 4 handler types — iterati
 - After compaction, CLAUDE.md instructions direct AI to call `memory_context({ mode: "resume" })`
 - Works on any runtime that reads CLAUDE.md/CODEX.md
 
+### Layer 3 — Code Graph + CocoIndex (structural + semantic)
+
+Based on deep research (iterations 036-045) and existing CocoIndex deployment:
+
+- **CocoIndex** (existing): Semantic code search via vector embeddings — finds code by concept/intent ("what resembles what"). Deployed as MCP server with `search` tool, supports 28+ languages, function-level chunking, incremental index updates.
+- **Code Graph** (planned, phases 008+): Structural relationship index via tree-sitter + SQLite — maps imports, calls, hierarchy, containment ("what connects to what"). Designed in iterations 036-045.
+- **Complementary, not competing**: CocoIndex finds semantic candidates, code graph expands structurally. Neither duplicates the other.
+
 ### Design Principle (iteration 013)
 
 **Hooks are transport reliability, not separate business logic.** Claude hooks call the same tools other runtimes call explicitly. Only two retrieval primitives:
@@ -62,12 +70,15 @@ User/Session Event ------>| Claude: hooks (SessionStart,     |
                           |   memory_context(mode:"resume")  |
                           +----------------+-----------------+
                                            |
-                                           v
-                          +----------------------------------+
-                          | Spec Kit Memory MCP Server       |
-                          |   autoSurfaceAtCompaction()      |
-                          |   autoSurfaceAtToolDispatch()    |
-                          +----------------------------------+
+                          +----------------+-----------------+
+                          |                |                 |
+                          v                v                 v
+                  +-------------+  +---------------+  +-----------+
+                  | Spec Kit    |  | Code Graph    |  | CocoIndex |
+                  | Memory MCP  |  | (structural)  |  | Code MCP  |
+                  | autoSurface |  | tree-sitter   |  | semantic  |
+                  | triggers    |  | SQLite edges  |  | search    |
+                  +-------------+  +---------------+  +-----------+
 ```
 
 ### Hook Script File Layout (iteration 014)
@@ -92,6 +103,14 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 - `pendingCompactPrime` with cached context payload
 - `metrics` for token estimation
 
+## Related Systems
+
+| System | Role | Status | Integration |
+|--------|------|--------|-------------|
+| **CocoIndex Code MCP** | Semantic code search via embeddings | Deployed | `mcp__cocoindex_code__search` tool, 28+ languages |
+| **Spec Kit Memory MCP** | Memory search, auto-surface, constitutional memories | Deployed | `memory_context`, `memory_match_triggers` |
+| **Code Graph** | Structural relationship index (imports, calls, hierarchy) | Designed (phases 008+) | tree-sitter + SQLite, `code_graph_query` tool |
+
 ## Key Findings from Research
 
 | Finding | Source | Impact |
@@ -102,6 +121,11 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | `autoSurfaceAtCompaction` only runs when AI calls it | iter 012 | Confirms need for hook trigger |
 | Copilot CLI and Gemini CLI have hook systems | iter 011, 015 | v1: tool-fallback by policy; future: hook adapters |
 | Existing `consumption_log` table for telemetry | iter 015 | Token tracking uses separate `session_token_snapshots` table |
+| CocoIndex covers semantic code search | iter 036-045 | Code graph focuses purely on structural relationships; no embeddings/chunking needed |
+| code_graph_context accepts file-range seeds from CocoIndex | iter 046 | Bridge uses native CocoIndex format; no intermediate symbol resolution needed |
+| Token budget: floors + overflow pool across 3 sources | iter 049 | Constitutional 700, Graph 1200, CocoIndex 900, Triggered 400, Overflow 800 = 4000 total |
+| Query-intent router separates structural vs semantic | iter 048 | Keyword heuristics for v1; structural→code_graph, semantic→CocoIndex, session→Memory |
+| Code graph integrates into existing MCP server | iter 055 | Same process, separate code-graph.sqlite; CocoIndex stays external |
 
 ## Runtime Support Matrix
 
@@ -123,10 +147,14 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | 005 | Command & Agent Alignment | 1-2 days | P1 — integration |
 | 006 | Documentation Alignment | 1-2 days | P1 — docs |
 | 007 | Testing & Validation | 2-3 days | P1 — quality assurance |
+| 008 | Structural Indexer (tree-sitter JS/TS/Python/Shell) | 3-4 days | P2 — graph foundation |
+| 009 | Code Graph Storage + Query (SQLite + MCP tools) | 2-3 days | P2 — structural query |
+| 010 | CocoIndex Bridge + code_graph_context | 3-4 days | P2 — bridge integration |
+| 011 | Compaction Working-Set Integration | 2-3 days | P2 — 3-source merge |
 
 ## Out of Scope
 
-- Code graph channel (tree-sitter integration) — separate spec folder
+- Code graph implementation (phases 008+) — architecture designed in this spec (iterations 036-045), implementation follows hook phases
 - Dual-Graph installation or graperoot integration — rejected per research
 - Token tracking dashboard UI — future work
 - Copilot/Gemini hook adapters — v2 after v1 ships

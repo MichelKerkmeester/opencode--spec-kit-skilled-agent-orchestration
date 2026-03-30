@@ -35,6 +35,12 @@ Implement automated tests and run manual testing playbook scenarios for the enti
 | 5 | Context compaction recovery (Claude only) | claude-code | enabled | PreCompact -> SessionStart(compact) | Surfaced payload truncates, constitutional ordering stable |
 | 6 | Session resume after crash/exit | any | varies | resetInterruptedSessions + resume | Interrupted sessions recoverable, session IDs reused |
 | 7 | Multi-session context continuity | any | varies | Session lifecycle + working memory | Event counters continue, no cross-session bleed |
+| 8 | CocoIndex + code graph complementary queries | any | varies | Semantic query → CocoIndex, structural query → code_graph | Correct routing, no duplication |
+| 9 | Code graph expansion from CocoIndex seeds | any | varies | CocoIndex search → feed results to code_graph_context | Structural expansion produces connected symbols |
+| 10 | Compaction with CocoIndex enrichment | claude-code | enabled | PreCompact queries CocoIndex for active symbol neighbors | Cached context includes semantic neighbors within budget |
+| 11 | Token budget allocator floors + overflow | any | varies | 3-source budget allocation with empty sources | Overflow redistribution works, floors respected, total ≤ 4000 |
+| 12 | PreCompact latency within 2s cap | claude-code | enabled | Full pipeline: CocoIndex + graph + memory + merge | Total time < 2s, graceful skip of reverse augmentation if slow |
+| 13 | Seed-to-node resolution accuracy | any | varies | CocoIndex hit at various line ranges → graph node mapping | Exact, enclosing, and file-anchor resolution all work correctly |
 
 ## RuntimeFixture Contract Interface
 
@@ -68,6 +74,13 @@ function createRuntimeFixture(runtime: RuntimeFixture['runtime']): RuntimeFixtur
 - Token snapshots: write/read/query `session_token_snapshots` table
 - Session resume: reconstruct session state from snapshot + memory search
 - Cross-session continuity: verify event counters, no bleed between sessions
+- CocoIndex routing: verify semantic queries go to CocoIndex, structural to code graph
+- CocoIndex + code graph enrichment: verify bidirectional seed → expansion flow
+- Compaction with CocoIndex: verify PreCompact queries CocoIndex and includes results in cached context
+- Token budget allocator: verify floors + overflow pool distribution across 3 sources
+- PreCompact latency: verify pipeline completes within 2s hard cap with graceful degradation
+- Seed resolution: verify CocoIndex file:line hits resolve correctly to tree-sitter nodes
+- Working-set tracking: verify files accessed during session appear in compaction priority
 
 ### Runtime Smoke Tests
 - Claude hook fixture: simulate PreCompact -> cache -> SessionStart(compact) -> inject

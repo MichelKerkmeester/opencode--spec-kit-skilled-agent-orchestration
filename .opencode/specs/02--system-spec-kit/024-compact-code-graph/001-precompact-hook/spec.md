@@ -12,6 +12,46 @@ Implement a two-step compaction context injection: PreCompact **precomputes** cr
 - `autoSurfaceMemories()` core function with trigger matching + embedding search
 - SessionStart hook supports `source` matcher: `startup`, `resume`, `clear`, `compact`
 
+## CocoIndex Integration
+
+CocoIndex Code MCP (existing, deployed) can enrich the PreCompact precomputation:
+- **Semantic neighbors**: Query CocoIndex for code semantically related to active symbols/files from the session
+- **Complements structural context**: While Memory MCP provides session/constitutional context, CocoIndex provides code-relevance context
+- **Optional enrichment**: If CocoIndex is available, query `mcp__cocoindex_code__search` with active file/symbol context; if unavailable, proceed without (graceful degradation)
+- **Budget impact**: CocoIndex results share the 4000-token compaction budget with memory results
+
+## Token Budget Allocation (Iteration 049)
+
+The PreCompact pipeline must allocate the 4000-token compaction budget across 3 sources using a floors + overflow pool model:
+
+| Source | Floor | Priority | Trim Order |
+|---|---:|---|---|
+| Constitutional Memory | 700 | Highest — trim last | 6th (last) |
+| Code Graph | 1200 | High — structural working set | 4th |
+| CocoIndex | 900 | Medium — semantic neighbors | 3rd |
+| Triggered Memory | 400 | Lower — session-relevant | 2nd |
+| Overflow Pool | 800 | Redistributed from empty sources | — |
+
+**Rules:**
+- If a source returns nothing, its floor flows to the overflow pool
+- Trim order (first dropped): second-hop graph → semantic analogs → triggered → graph neighbors → session state → constitutional
+- CocoIndex snippets trimmed to ≤600 chars (~175-225 tokens each)
+- Code graph projected to compact brief (~700-1000 tokens for 1-root, 5-neighbor, 8-edge)
+
+## Latency Budget (Iteration 046)
+
+PreCompact has a 2-second hard cap. Recommended warm-cache allocation:
+
+| Phase | Time | Hard Cap |
+|---|---|---|
+| Parse + cache lookup | 50-75ms | — |
+| CocoIndex search | 450-700ms | 800ms |
+| Graph expansion (1-hop) | 250-450ms | 500ms |
+| Reverse semantic augment | 250-350ms | Skip if <400ms remain |
+| Merge + format | 150-250ms | — |
+| Slack | 150-250ms | — |
+| **Total** | **1.3-1.8s** | **2.0s** |
+
 ## Architecture (Corrected)
 
 ```
@@ -19,6 +59,7 @@ Auto-compact triggered by Claude Code:
   1. PreCompact hook fires → compact-precompute.js
      - Reads transcript tail for session context
      - Calls autoSurfaceAtCompaction(context)
+     - Optionally queries CocoIndex for semantic neighbors of active symbols
      - Writes result to .claude/compact-context-cache.json
      - Output: nothing (PreCompact stdout is NOT injected)
 

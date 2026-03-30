@@ -42,6 +42,32 @@ Updates needed:
 - Keep manual recovery as fallback for runtimes without hooks
 - Ensure `@handover` and `@context` agents reference hook state when available
 
+### 4. Query-Intent Routing
+
+Agents should route queries to the appropriate system based on intent:
+
+| Query Intent | Primary Source | Secondary |
+|---|---|---|
+| "Find code related to X" | CocoIndex (semantic) | Code graph (expand neighbors) |
+| "What calls this function?" | Code graph (structural) | — |
+| "What imports this file?" | Code graph (structural) | — |
+| "How does retry logic work?" | CocoIndex (semantic) | Code graph (trace call chain) |
+| "What changed recently?" | Memory (session) | Code graph (impact analysis) |
+| "Show file structure/outline" | Code graph (structural) | — |
+
+**Agent update guidance:**
+- Use CocoIndex (`mcp__cocoindex_code__search`) for "find code that...", "how is X implemented", semantic discovery
+- Use Code Graph (`code_graph_query`, when available) for "what calls/imports/extends...", structural navigation
+- Use Memory (`memory_search`, `memory_context`) for session continuity, prior decisions, compaction recovery
+
+### 5. Working-Set Awareness (Iteration 053)
+
+Agents should be aware of the session working set when available:
+- After compaction, the working set identifies which files/symbols were actively touched
+- Agents receiving compaction-recovery context should prioritize working-set files over generic search results
+- The `@context` agent should check for working-set data before doing broad codebase exploration
+- Working-set data includes: file paths, symbol names, access type (read/write/reference), structural role
+
 ## Acceptance Criteria
 - [ ] `/spec_kit:resume` passes `profile: "resume"` to `memory_context()`
 - [ ] `/memory:save` detects Stop hook auto-save and avoids double-save

@@ -23,6 +23,12 @@
 - [ ] Constitutional memories surface on both hook and tool paths
 - [ ] Hook-state bridges Claude `session_id` → Spec Kit `effectiveSessionId`
 - [ ] Runtime detection outputs both `runtime` and `hookPolicy` (iter 015)
+- [ ] CocoIndex integration tested alongside hook injection (structural + semantic context)
+- [ ] Code graph queries complement (not duplicate) CocoIndex semantic search
+- [ ] Architecture diagrams show 3-system integration (Hooks + Code Graph + CocoIndex)
+- [ ] Token budget allocator implements floors + overflow pool (constitutional 700, graph 1200, CocoIndex 900, triggered 400, overflow 800)
+- [ ] code_graph_context accepts CocoIndex file-range seeds and resolves to graph nodes
+- [ ] Phase 008-011 child spec folders created within 024-compact-code-graph
 
 ## P2 — Nice to Have
 
@@ -33,3 +39,12 @@
 - [ ] MCP-level compaction detection (time gap analysis, `SPECKIT_AUTO_COMPACT_DETECT`)
 - [ ] Copilot/Gemini hook adapters planned for v2
 - [ ] Cost estimates accurate per model (Opus/Sonnet/Haiku pricing)
+- [ ] Query-intent routing distinguishes structural (code_graph) vs semantic (CocoIndex) queries
+- [ ] CocoIndex ↔ Code Graph bidirectional enrichment bridge designed
+- [ ] Code graph expansion accepts CocoIndex search results as seeds
+- [ ] Compaction pipeline includes CocoIndex semantic neighbors as context source
+- [ ] Query-intent router distinguishes structural/semantic/session/hybrid intents
+- [ ] Reverse semantic augmentation: graph neighborhoods generate scoped CocoIndex queries
+- [ ] Session working-set tracker feeds compaction priority ranking
+- [ ] Allocator is observable: per-source tokens requested, granted, dropped in metadata
+- [ ] Latency budget for PreCompact pipeline stays under 2s hard cap

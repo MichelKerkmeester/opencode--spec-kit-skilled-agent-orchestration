@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/024-compact-code-graph",
+  "description": "Spec: Hybrid Context Injection — Hook + Tool Architecture",
+  "keywords": [
+    "spec",
+    "hybrid",
+    "context",
+    "injection",
+    "hook",
+    "tool",
+    "architecture"
+  ],
+  "lastUpdated": "2026-03-30T16:18:34.933Z",
+  "specId": "024",
+  "folderSlug": "compact-code-graph",
+  "parentChain": [
+    "02--system-spec-kit"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "30-03-26_16-53__updated-all-15-spec-documentation-files-in-024.md"
+  ]
+}

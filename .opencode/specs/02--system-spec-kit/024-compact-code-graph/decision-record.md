@@ -90,3 +90,43 @@
 **Context:** Iteration 011 found Copilot CLI has hooks (guardrails focus) and Gemini CLI v0.33.1+ has a first-class hook system. Iteration 015 recommends a two-field runtime model: `runtime` + `hookPolicy`.
 **Rationale:** Don't hardcode "no hooks" when hooks exist — use policy to control v1 scope
 **Impact:** Runtime detector outputs `hookPolicy: "disabled_by_scope"` for Copilot/Gemini; promotes to `enabled` when adapters are built
+
+## DR-010: CocoIndex as Complementary Semantic Layer
+**Decision:** Use CocoIndex for all semantic code search; code graph handles structural relationships only
+**Date:** 2026-03-30
+**Context:** Research iterations 036-045 designed a code graph covering both structural and semantic capabilities. Analysis revealed CocoIndex (already deployed) provides semantic search via vector embeddings, 28+ languages, function-level chunking, and an MCP `search` tool.
+**Rationale:**
+- CocoIndex covers: embedding generation, vector similarity, code chunking, incremental index updates
+- Code graph should NOT duplicate: no embeddings, no chunking, no vector search needed
+- Clean separation: CocoIndex = "what resembles what", Code Graph = "what connects to what"
+- Code graph becomes purely structural: tree-sitter parsing, SQLite storage, import/call/hierarchy edges
+- Complementary enrichment: CocoIndex seeds → code graph structural expansion → richer context
+**Alternatives Considered:** Build semantic search into code graph (rejected: duplicates CocoIndex), replace CocoIndex with code graph embeddings (rejected: CocoIndex already deployed and working)
+**Impact:** Code graph implementation is significantly simpler — no embedding model selection, no chunking strategy, no vector index needed
+
+## DR-011: Code Graph Research Scope Revised
+**Decision:** Code graph research and architecture design stays in spec folder 024-compact-code-graph; implementation as phases 008+
+**Date:** 2026-03-30
+**Context:** DR-005 deferred code graph to a separate spec folder. However, 10 deep research iterations (036-045) were completed within this spec folder, producing a complete architecture design including SQLite schema, tree-sitter query patterns, MCP tool API design, incremental update strategy, and CocoIndex integration.
+**Rationale:**
+- Folder name is `024-compact-code-graph` — code graph is in the name
+- Research is already embedded in this spec's `research/` directory
+- Unified architecture vision (Part IV of research.md) integrates hooks + code graph + CocoIndex
+- Splitting would orphan research from implementation
+- Implementation phases (008+) naturally extend the existing 001-007 hook phases
+**Alternatives Considered:** Create separate spec folder for code graph (rejected: orphans research, breaks unified architecture)
+**Impact:** DR-005's "separate spec folder" decision is superseded; code graph phases extend this spec folder
+
+## DR-012: Token Budget Allocation — Floors + Overflow Pool
+**Decision:** Split the 4000-token compaction budget across 3 sources using reserved floors with a shared overflow pool
+**Date:** 2026-03-30
+**Context:** Research iteration 049 analyzed the current fixed 4000-token budget (100% to Memory) and designed a multi-source allocation strategy. The budget must now serve Memory, CocoIndex, and Code Graph without wasting tokens when a source is empty.
+**Rationale:**
+- Fixed splits waste budget when a source has nothing; pure pooling risks starving high-priority sources
+- Floors + overflow gives minimum guarantees with dynamic redistribution
+- Compaction allocation: constitutional 700, graph 1200, CocoIndex 900, triggered 400, overflow 800
+- SessionStart allocation: constitutional 500, graph 700, CocoIndex 400, triggered 200, overflow 200
+- Priority order: constitutional > code graph > CocoIndex > triggered
+- When a source returns nothing, its floor flows to the overflow pool
+**Alternatives Considered:** Fixed per-source splits (rejected: wastes budget), pure pooled allocation (rejected: starves constitutional), dynamic tier-based (rejected: adds complexity without clear benefit for v1)
+**Impact:** Enables 3-source compaction while preserving constitutional-first semantics; allocator must be observable (per-source tokens requested/granted/dropped)

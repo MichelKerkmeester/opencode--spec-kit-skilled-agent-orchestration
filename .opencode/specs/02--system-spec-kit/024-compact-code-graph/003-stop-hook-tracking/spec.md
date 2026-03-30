@@ -135,5 +135,9 @@ CREATE INDEX IF NOT EXISTS idx_sts_runtime ON session_token_snapshots (runtime, 
 - EDIT: `.claude/settings.local.json` (add Stop hook)
 - EDIT: MCP database schema (add `session_token_snapshots` table)
 
+## Observability Note
+
+The Stop hook can optionally log whether CocoIndex was queried during the session for cross-system observability. This is informational — the Stop hook does not query CocoIndex itself.
+
 ## LOC Estimate
 ~200-250 lines (session-stop.ts + claude-transcript.ts) + ~20 lines (schema)

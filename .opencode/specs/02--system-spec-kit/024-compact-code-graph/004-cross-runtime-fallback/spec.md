@@ -35,7 +35,28 @@ interface RuntimeCapability {
 | Copilot CLI | Has hooks (guardrails focus) | `disabled_by_scope` (v1 policy) |
 | Gemini CLI | Has hooks (v0.33.1+, `/hooks` UI) | `disabled_by_scope` (v1 policy) |
 
+**Note:** CocoIndex Code MCP is available across all runtimes as a shared semantic search capability.
+
 **Key finding (iter 015):** Don't hardcode "all other runtimes lack hooks" — frame as v1 policy, not ecosystem truth. Copilot and Gemini hook adapters can be added later by updating the fixture.
+
+## Shared Cross-Runtime Capabilities
+
+CocoIndex Code MCP is available across **all runtimes** as an MCP server, providing a shared semantic search capability regardless of hook support:
+
+| Capability | Availability | Notes |
+|------------|-------------|-------|
+| CocoIndex semantic search | All runtimes | MCP server, not runtime-specific |
+| Memory MCP (auto-surface, triggers) | All runtimes | MCP server, not runtime-specific |
+| Hook-based injection | Claude Code only (v1) | Runtime-specific |
+| Tool-based fallback | All runtimes | Via CLAUDE.md/CODEX.md instructions |
+
+This means the semantic code search layer works identically whether the session uses hooks (Claude Code) or tool-based fallback (Codex, Copilot, Gemini). The structural code graph (planned, phases 008+) will similarly be MCP-based and runtime-agnostic.
+
+**Query-Intent Routing** (Iteration 048): All runtimes benefit from intent-based routing regardless of hook support:
+- Structural queries → `code_graph_query` / `code_graph_context` (MCP, runtime-agnostic)
+- Semantic queries → `mcp__cocoindex_code__search` (MCP, runtime-agnostic)
+- Session queries → `memory_context` / `memory_match_triggers` (MCP, runtime-agnostic)
+- The router is an MCP-level concern, not a hook-level concern — works identically across all runtimes
 
 ## What to Update
 

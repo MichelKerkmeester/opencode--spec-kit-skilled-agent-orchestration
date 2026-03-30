@@ -40,7 +40,8 @@ SessionStart(source=compact):
 SessionStart(source=startup):
   1. Call primeCompactionContext() with empty session context
   2. Surface constitutional memories + recent spec folder overview
-  3. Output concise context (~2000 tokens)
+  3. Optionally query CocoIndex for code related to detected spec folder or recent work
+  4. Output concise context (~2000 tokens)
 
 SessionStart(source=resume):
   1. Call memory_context({ mode: "resume", profile: "resume" })
@@ -81,6 +82,22 @@ No matcher filter — script handles all sources internally with source-aware ro
 - [ ] `profile: "resume"` passed for compact brief format (fixes gap from iter 012)
 - [ ] Output includes constitutional memories
 - [ ] Output ≤ 2000 tokens (startup/resume) or ≤ 4000 tokens (compact)
+
+## SessionStart Budget Profile (Iteration 049)
+
+For `source=startup` and `source=resume`, the 2000-token budget should include all 3 sources in a slimmer profile:
+
+| Source | Floor | Notes |
+|---|---:|---|
+| Constitutional Memory | 500 | Durable rules |
+| Code Graph | 700 | Structural context for current work |
+| CocoIndex | 400 | Semantic code neighbors |
+| Triggered Memory | 200 | Session-relevant |
+| Overflow Pool | 200 | From empty sources |
+
+For `source=clear`: constitutional only (current behavior).
+For `source=compact`: use full 4000-token compaction profile from Phase 001.
+
 - [ ] Script completes in < 3 seconds
 - [ ] Graceful degradation when MCP unavailable
 - [ ] Shared with Phase 1 compact-inject (no code duplication)

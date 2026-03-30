@@ -8,6 +8,7 @@
    - Parse stdin JSON for transcript path
    - Extract recent context from transcript (tail ~50 lines)
    - Call `autoSurfaceAtCompaction(context)`
+   - Optionally query CocoIndex for semantic neighbors of active files/symbols (if MCP available)
    - Format and output to stdout
    - Add error handling (try/catch, timeout, fallback)
 3. **Register hook in settings.local.json:**
@@ -26,3 +27,12 @@
 ## Dependencies
 - Compiled dist of memory-surface.ts must be up to date
 - `.claude/settings.local.json` must be writable
+
+## Budget Allocation (from iteration 049)
+- Implement floors + overflow pool allocator
+- Constitutional: 700 tokens floor
+- Code graph: 1200 tokens floor
+- CocoIndex: 900 tokens floor (snippets trimmed to ≤600 chars)
+- Triggered: 400 tokens floor
+- Overflow: 800 tokens redistributed from empty sources
+- Make allocator observable in metadata (per-source requested/granted/dropped)

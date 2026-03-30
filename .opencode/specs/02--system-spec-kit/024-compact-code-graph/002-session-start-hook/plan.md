@@ -5,6 +5,7 @@
 1. **Extend `session-prime.ts` with source routing:**
    - `source=compact` → read Phase 1 cache, inject
    - `source=startup` → constitutional + spec folder overview
+   - Optionally query CocoIndex for code context related to current spec folder
    - `source=resume` → `memory_context({ mode: "resume", profile: "resume" })`
    - `source=clear` → constitutional only
 2. **Fix `profile: "resume"` gap (iter 012):**

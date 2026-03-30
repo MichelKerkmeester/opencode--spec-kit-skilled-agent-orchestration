@@ -16,6 +16,7 @@ New feature entries needed:
 | Stop Token Tracking | Observability | Tracks token usage via transcript parsing and saves snapshots |
 | Cross-Runtime Fallback | Compatibility | Tool-based context injection for runtimes without hook support |
 | Runtime Detection | Infrastructure | Capability-based runtime identification with hook policy classification |
+| CocoIndex Integration | Context Enrichment | CocoIndex provides semantic code search complementing structural code graph and memory context |
 
 ### 2. Manual Testing Playbook (`.opencode/skill/system-spec-kit/manual_testing_playbook/`)
 
@@ -39,6 +40,9 @@ Add section covering:
 - Relationship between hooks and existing MCP tools
 - Design principle: hooks are transport, not separate business logic
 
+- Reference CocoIndex Code MCP as companion system for semantic code search
+- Document the complementary architecture: CocoIndex (semantic) + Code Graph (structural) + Memory (session)
+
 ### 4. ARCHITECTURE.md Updates (`.opencode/skill/system-spec-kit/ARCHITECTURE.md`)
 
 Add hook architecture:
@@ -46,6 +50,8 @@ Add hook architecture:
 - Hook state management (temp files, session ID mapping)
 - Runtime adapter pattern (hooks vs tool fallback)
 - Token tracking data flow (transcript -> parse -> snapshot table)
+- Three-system integration diagram showing CocoIndex, Code Graph, and Memory as parallel context sources
+- Query-intent routing documentation
 
 ### 5. README Updates
 
