@@ -644,7 +644,7 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     profile: options.profile,
     autoDetectIntent: true,
     useDecay: true,
-    minState: 'COLD'
+    // minState omitted — memoryState column not yet in schema
   });
 
   return {
