@@ -414,13 +414,8 @@ const sharedSpaceUpsert: ToolDefinition = {
       rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
       killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
     },
-    oneOf: [
-      { required: ['actorUserId'] },
-      { required: ['actorAgentId'] },
-    ],
-    not: {
-      required: ['actorUserId', 'actorAgentId'],
-    },
+    // oneOf/not removed — Claude Code MCP client rejects top-level oneOf/anyOf/allOf/not
+    // Runtime handler validates exactly-one-of actorUserId/actorAgentId
     required: ['spaceId', 'tenantId', 'name'],
   },
 };
@@ -436,16 +431,9 @@ const sharedSpaceMembershipSet: ToolDefinition = {
       tenantId: { type: 'string', description: 'Tenant boundary for the membership mutation.' },
       actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
       actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-      subjectType: { type: 'string', enum: ['user', 'agent'], description: 'Membership subject type.' },
+      subjectType: { type: 'string', description: 'Membership subject type: "user" or "agent".' },
       subjectId: { type: 'string', description: 'Membership subject identifier.' },
-      role: { type: 'string', enum: ['owner', 'editor', 'viewer'], description: 'Access role inside the shared space.' },
-    },
-    oneOf: [
-      { required: ['actorUserId'] },
-      { required: ['actorAgentId'] },
-    ],
-    not: {
-      required: ['actorUserId', 'actorAgentId'],
+      role: { type: 'string', description: 'Access role inside the shared space: "owner", "editor", or "viewer".' },
     },
     required: ['spaceId', 'tenantId', 'subjectType', 'subjectId', 'role'],
   },
@@ -461,13 +449,6 @@ const sharedMemoryStatus: ToolDefinition = {
       tenantId: { type: 'string', description: 'Optional tenant filter applied to the authenticated caller scope.' },
       actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
       actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-    },
-    oneOf: [
-      { required: ['actorUserId'] },
-      { required: ['actorAgentId'] },
-    ],
-    not: {
-      required: ['actorUserId', 'actorAgentId'],
     },
     required: [],
   },
@@ -501,13 +482,14 @@ const taskPostflight: ToolDefinition = {
 const memoryDriftWhy: ToolDefinition = {
   name: 'memory_drift_why',
   description: '[L6:Analysis] Trace causal chain for a memory to answer "why was this decision made?" Traverses causal edges up to maxDepth hops, grouping results by relationship type (caused, enabled, supersedes, contradicts, derived_from, supports). Use to understand decision lineage and memory relationships. Token Budget: 1200.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { memoryId: { oneOf: [{ type: 'number', minimum: 1 }, { type: 'string', minLength: 1 }], description: 'Memory ID to trace causal lineage for (required)' }, maxDepth: { type: 'number', default: 3, minimum: 1, maximum: 10, description: 'Maximum traversal depth (default: 3, max: 10)' }, direction: { type: 'string', enum: ['outgoing', 'incoming', 'both'], default: 'both', description: 'Traversal direction: outgoing (what this caused), incoming (what caused this), or both' }, relations: { type: 'array', items: { type: 'string', enum: ['caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'] }, description: 'Filter to specific relationship types' }, includeMemoryDetails: { type: 'boolean', default: true, description: 'Include full memory details in results' } }, required: ['memoryId'] },
+  // oneOf removed from property definitions — Claude Code MCP client rejects nested oneOf in some cases
+  inputSchema: { type: 'object', additionalProperties: false, properties: { memoryId: { type: 'string', description: 'Memory ID to trace causal lineage for (number or string, required)' }, maxDepth: { type: 'number', default: 3, minimum: 1, maximum: 10, description: 'Maximum traversal depth (default: 3, max: 10)' }, direction: { type: 'string', description: 'Traversal direction: outgoing, incoming, or both (default: both)' }, relations: { type: 'array', items: { type: 'string' }, description: 'Filter to specific relationship types: caused, enabled, supersedes, contradicts, derived_from, supports' }, includeMemoryDetails: { type: 'boolean', default: true, description: 'Include full memory details in results' } }, required: ['memoryId'] },
 };
 
 const memoryCausalLink: ToolDefinition = {
   name: 'memory_causal_link',
   description: '[L6:Analysis] Create a causal relationship between two memories. Links represent decision lineage (caused, enabled), versioning (supersedes), contradictions, derivation, or support. Token Budget: 1200.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { sourceId: { oneOf: [{ type: 'number', minimum: 1 }, { type: 'string', minLength: 1 }], description: 'Source memory ID (the cause/enabler/superseder)' }, targetId: { oneOf: [{ type: 'number', minimum: 1 }, { type: 'string', minLength: 1 }], description: 'Target memory ID (the effect/superseded)' }, relation: { type: 'string', enum: ['caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'], description: 'Relationship type' }, strength: { type: 'number', default: 1.0, minimum: 0, maximum: 1, description: 'Relationship strength (0.0-1.0)' }, evidence: { type: 'string', description: 'Evidence or reason for this relationship' } }, required: ['sourceId', 'targetId', 'relation'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { sourceId: { type: 'string', description: 'Source memory ID (the cause/enabler/superseder, number or string)' }, targetId: { type: 'string', description: 'Target memory ID (the effect/superseded, number or string)' }, relation: { type: 'string', description: 'Relationship type: caused, enabled, supersedes, contradicts, derived_from, or supports' }, strength: { type: 'number', default: 1.0, minimum: 0, maximum: 1, description: 'Relationship strength (0.0-1.0)' }, evidence: { type: 'string', description: 'Evidence or reason for this relationship' } }, required: ['sourceId', 'targetId', 'relation'] },
 };
 
 const memoryCausalStats: ToolDefinition = {
