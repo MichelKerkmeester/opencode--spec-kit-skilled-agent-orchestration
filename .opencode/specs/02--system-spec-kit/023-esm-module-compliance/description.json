@@ -1,10 +1,17 @@
 {
   "specFolder": "023-esm-module-compliance",
-  "description": "005-test-and-scenario-remediation",
+  "description": "Fix hybrid search pipeline null db reference causing 0 results",
   "keywords": [
-    "005-test-and-scenario-remediation"
+    "fix",
+    "hybrid",
+    "search",
+    "pipeline",
+    "null",
+    "reference",
+    "causing",
+    "results"
   ],
-  "lastUpdated": "2026-03-29T16:32:47.736Z",
+  "lastUpdated": "2026-03-30T15:54:47.593Z",
   "specId": "023",
   "folderSlug": "esm-module-compliance",
   "parentChain": [],

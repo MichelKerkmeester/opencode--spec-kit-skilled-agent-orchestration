@@ -674,7 +674,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     intent: intent ?? undefined,
     autoDetectIntent: intent ? false : true,
     useDecay: true,
-    minState: 'WARM'
+    // minState omitted — memoryState column not yet in schema
   });
 
   return {
@@ -706,7 +706,7 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     profile: options.profile,
     autoDetectIntent: true,
     useDecay: false,
-    minState: 'WARM'
+    // minState omitted — memoryState column not yet in schema
   });
 
   return {

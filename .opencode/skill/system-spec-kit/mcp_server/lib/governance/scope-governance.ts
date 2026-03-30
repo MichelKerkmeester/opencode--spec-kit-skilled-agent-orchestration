@@ -182,14 +182,17 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
 
 /**
  * Resolve whether scope filtering is active for the current process.
+ * Default: OFF — scope enforcement is opt-in via SPECKIT_MEMORY_SCOPE_ENFORCEMENT=true.
+ * When enabled without scope constraints in the query, all results are rejected
+ * (empty scope + enforcement = no access). Only enable when multi-tenant governance
+ * is configured with tenantId/userId/agentId/sharedSpaceId in queries.
  *
  * @returns `true` when scope enforcement is enabled.
  */
 export function isScopeEnforcementEnabled(): boolean {
-  return isDefaultOnFlagEnabled(
-    'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
-    'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
-  );
+  const flagValue = process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT?.trim().toLowerCase()
+    ?? process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT?.trim().toLowerCase();
+  return flagValue === 'true' || flagValue === '1';
 }
 
 /**

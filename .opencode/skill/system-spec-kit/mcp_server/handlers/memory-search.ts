@@ -420,7 +420,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     enableDedup: enableDedup = true,
     intent: explicitIntent,
     autoDetectIntent: autoDetectIntent = true,
-    minState: minState = 'WARM',
+    minState,  // No default — memoryState column not yet in schema; defaulting to 'WARM' filters all rows
     applyStateLimits: applyStateLimits = false,
     rerank = true, // Enable reranking by default for better result quality
     applyLengthPenalty: applyLengthPenalty = true,

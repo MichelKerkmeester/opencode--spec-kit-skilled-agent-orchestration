@@ -227,6 +227,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 5 | 005-test-and-scenario-remediation/ | Fix pre-existing test failures, playbook scenario gaps, final test report | Phase 4 | Complete |
 | 6 | 006-review-remediation/ | Fix all 18 findings (14 P1 + 4 P2) from 10-iteration GPT-5.4 deep review | Phase 5 | Complete |
 
+| 7 | 007-hybrid-search-null-db-fix/ | [Phase 7 scope] | [deps] | Pending |
 ### Phase Transition Rules
 
 - Each phase MUST pass `validate.sh` independently before the next phase begins
@@ -243,4 +244,5 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 003-scripts-interop-refactor | 004-verification-and-standards | Scripts interop helpers work, all scripts-side consumers cross explicit `import()` boundaries | `node scripts/dist/memory/generate-context.js --help` passes; scripts interop tests pass |
 | 004-verification-and-standards | 005-test-and-scenario-remediation | Deep review complete, all P1/P2 resolved, ESM-caused test failures fixed | 30-iteration review 0 open P0/P1; 3 ESM test files fixed |
 | 005-test-and-scenario-remediation | 006-review-remediation | All tests green, test sweep complete | 9480/9480 passing, 0 failures, 0 skipped |
+| 006-review-remediation | 007-hybrid-search-null-db-fix | [Criteria TBD] | [Verification TBD] |
 <!-- /ANCHOR:phase-map -->
