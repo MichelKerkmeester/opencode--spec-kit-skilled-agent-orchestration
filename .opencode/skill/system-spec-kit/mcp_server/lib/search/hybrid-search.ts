@@ -1080,6 +1080,7 @@ async function collectAndFuseHybridResults(
         lists.push({ source: 'vector', results: semanticResults, weight: 1.0 });
       } catch (_err: unknown) {
         // Non-critical — vector channel failure does not block pipeline
+        console.warn('[hybrid-search] Channel error:', _err instanceof Error ? _err.message : String(_err));
       }
     }
 
@@ -1122,6 +1123,7 @@ async function collectAndFuseHybridResults(
         }
       } catch (_err: unknown) {
         // Non-critical — graph channel failure does not block pipeline
+        console.warn('[hybrid-search] Channel error:', _err instanceof Error ? _err.message : String(_err));
       }
     }
 
@@ -1165,6 +1167,7 @@ async function collectAndFuseHybridResults(
         }
       } catch (_err: unknown) {
         // Non-critical — degree channel failure does not block pipeline
+        console.warn('[hybrid-search] Channel error:', _err instanceof Error ? _err.message : String(_err));
       }
     }
 

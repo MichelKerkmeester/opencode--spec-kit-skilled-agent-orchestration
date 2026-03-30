@@ -67,7 +67,7 @@ function isFeatureEnabled(flagName: string, identity?: string): boolean {
 
   const normalizedIdentity = identity?.trim();
   if (!normalizedIdentity) {
-    return false;
+    return true;
   }
 
   return isIdentityInRollout(normalizedIdentity);

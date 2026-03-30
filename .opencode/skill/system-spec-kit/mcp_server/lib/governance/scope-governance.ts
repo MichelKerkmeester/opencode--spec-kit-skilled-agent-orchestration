@@ -197,14 +197,14 @@ export function isScopeEnforcementEnabled(): boolean {
 
 /**
  * Resolve whether governance guardrails are active for the current process.
+ * Default: OFF — governance guardrails are opt-in via SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS=true.
  *
  * @returns `true` when governance guardrails are enabled.
  */
 export function isGovernanceGuardrailsEnabled(): boolean {
-  return isDefaultOnFlagEnabled(
-    'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-    'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
-  );
+  const flagValue = process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS?.trim().toLowerCase()
+    ?? process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS?.trim().toLowerCase();
+  return flagValue === 'true' || flagValue === '1';
 }
 
 /**
