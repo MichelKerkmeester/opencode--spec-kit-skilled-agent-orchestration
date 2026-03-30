@@ -1164,7 +1164,7 @@ async function main(): Promise<void> {
   setImmediate(() => startupScan(DEFAULT_BASE_PATH));
 }
 
-const isMain = process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'));
+const isMain = process.argv[1] && decodeURIComponent(import.meta.url).endsWith(process.argv[1].replace(/\\/g, '/'));
 
 if (isMain) {
   main().catch((err: unknown) => { console.error('[context-server] Fatal error:', err); process.exit(1); });
