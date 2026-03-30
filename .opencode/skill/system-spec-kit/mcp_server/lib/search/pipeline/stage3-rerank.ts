@@ -113,6 +113,8 @@ interface ChunkGroup {
   parentScore: number;
 }
 
+type RerankProvider = 'cross-encoder' | 'local-gguf' | 'fallback-sort' | 'none';
+
 // -- Stage 3 Entry Point ----------------------------------------
 
 /**
@@ -133,6 +135,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
 
   let results = scored;
   let rerankApplied = false;
+  let rerankProvider: RerankProvider = 'none';
 
   // -- Step 1: Cross-encoder reranking ---------------------------
   const rerankStart = Date.now();
@@ -147,6 +150,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   });
   results = rerankResult.rows;
   rerankApplied = rerankResult.applied;
+  rerankProvider = rerankResult.provider;
 
   if (config.trace) {
     addTraceEntry(
@@ -155,7 +159,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
       beforeRerank,
       results.length,
       Date.now() - rerankStart,
-      { rerankApplied, provider: rerankApplied ? 'cross-encoder' : 'none' }
+      { rerankApplied, provider: rerankProvider }
     );
   }
 
@@ -267,13 +271,16 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     );
   }
 
+  const metadata = {
+    rerankApplied,
+    rerankProvider,
+    chunkReassemblyStats: chunkStats,
+    durationMs: Date.now() - stageStart,
+  };
+
   return {
     reranked: results,
-    metadata: {
-      rerankApplied,
-      chunkReassemblyStats: chunkStats,
-      durationMs: Date.now() - stageStart,
-    },
+    metadata,
   };
 }
 
@@ -293,7 +300,8 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
  * @param query       - The user's search query string.
  * @param results     - Pipeline rows from Stage 2 fusion.
  * @param options     - Rerank configuration flags.
- * @returns Object with reranked rows and boolean indicating whether reranking was applied.
+ * @returns Object with reranked rows, whether reranking was applied, and the
+ * reranker path that executed.
  */
 async function applyCrossEncoderReranking(
   query: string,
@@ -303,15 +311,15 @@ async function applyCrossEncoderReranking(
     applyLengthPenalty: boolean;
     limit: number;
   }
-): Promise<{ rows: PipelineRow[]; applied: boolean }> {
+): Promise<{ rows: PipelineRow[]; applied: boolean; provider: RerankProvider }> {
   // Feature-flag guard
   if (!options.rerank || !isCrossEncoderEnabled()) {
-    return { rows: results, applied: false };
+    return { rows: results, applied: false, provider: 'none' };
   }
 
   // Minimum-document guard
   if (results.length < MIN_RESULTS_FOR_RERANK) {
-    return { rows: results, applied: false };
+    return { rows: results, applied: false, provider: 'none' };
   }
 
   // Build a lookup map so we can restore all original PipelineRow fields
@@ -327,7 +335,7 @@ async function applyCrossEncoderReranking(
     try {
       const localReranked = await rerankLocal(query, results, options.limit);
       if (localReranked === results) {
-        return { rows: results, applied: false };
+        return { rows: results, applied: false, provider: 'local-gguf' };
       }
 
       const localRows: PipelineRow[] = localReranked.map((row) => {
@@ -352,12 +360,12 @@ async function applyCrossEncoderReranking(
         };
       });
 
-      return { rows: localRows, applied: true };
+      return { rows: localRows, applied: true, provider: 'local-gguf' };
     } catch (err: unknown) {
       console.warn(
         `[stage3-rerank] Local reranking failed: ${toErrorMessage(err)} — returning original results`
       );
-      return { rows: results, applied: false };
+      return { rows: results, applied: false, provider: 'local-gguf' };
     }
   }
 
@@ -381,6 +389,12 @@ async function applyCrossEncoderReranking(
         applyLengthPenalty: options.applyLengthPenalty,
       }
     );
+
+    const rerankProvider: RerankProvider = reranked.some(
+      (result) => result.scoringMethod === 'fallback'
+    )
+      ? 'fallback-sort'
+      : 'cross-encoder';
 
     // Re-map reranked results back to PipelineRow, preserving all original
     // Fields and updating only the score-related values from the reranker.
@@ -410,13 +424,13 @@ async function applyCrossEncoderReranking(
       });
     }
 
-    return { rows: rerankedRows, applied: true };
+    return { rows: rerankedRows, applied: true, provider: rerankProvider };
   } catch (err: unknown) {
     // Graceful degradation — return original results on any reranker failure
     console.warn(
       `[stage3-rerank] Cross-encoder reranking failed: ${toErrorMessage(err)} — returning original results`
     );
-    return { rows: results, applied: false };
+    return { rows: results, applied: false, provider: 'cross-encoder' };
   }
 }
 

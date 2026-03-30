@@ -157,6 +157,7 @@ export function index_memory(
   const {
     specFolder,
     filePath,
+    parentId = null,
     anchorId = null,
     title = null,
     triggerPhrases = [],
@@ -221,12 +222,12 @@ export function index_memory(
         spec_folder, file_path, canonical_file_path, anchor_id, title, trigger_phrases,
         importance_weight, created_at, updated_at, embedding_model,
         embedding_generated_at, embedding_status, encoding_intent, document_type, spec_level,
-        content_text, quality_score, quality_flags
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        content_text, quality_score, quality_flags, parent_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       specFolder, filePath, canonicalFilePath, anchorId, title, triggers_json,
       importanceWeight, now, now, embeddingsProvider.getModelName(), now, embedding_status,
-      encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags)
+      encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), parentId
     );
 
     const row_id = BigInt(result.lastInsertRowid);
@@ -265,6 +266,7 @@ export function index_memory_deferred(
   const {
     specFolder,
     filePath,
+    parentId = null,
     anchorId = null,
     title = null,
     triggerPhrases = [],
@@ -319,11 +321,11 @@ export function index_memory_deferred(
         spec_folder, file_path, canonical_file_path, anchor_id, title, trigger_phrases,
         importance_weight, created_at, updated_at, embedding_status,
         failure_reason, retry_count, encoding_intent, document_type, spec_level,
-        content_text, quality_score, quality_flags
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, 0, ?, ?, ?, ?, ?, ?)
+        content_text, quality_score, quality_flags, parent_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, 0, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       specFolder, filePath, canonicalFilePath, anchorId, title, triggers_json,
-      importanceWeight, now, now, failureReason, encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags)
+      importanceWeight, now, now, failureReason, encodingIntent ?? 'document', documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), parentId
     );
 
     const row_id = BigInt(result.lastInsertRowid);

@@ -256,6 +256,7 @@ async function indexChunkedMemoryFile(
   });
 
   const { parentId, isUpdate: existingParentUpdated } = setupParent();
+  const parentMemoryId = parentId;
   // Use existingParentUpdated below for mutation ledger (replaces `existing` variable)
   const existing = existingParentUpdated;
   const useSafeSwap = existing;
@@ -306,6 +307,7 @@ async function indexChunkedMemoryFile(
           childId = vectorIndex.indexMemory({
             specFolder: parsed.specFolder,
             filePath,
+            ...(useSafeSwap ? {} : { parentId: parentMemoryId }),
             anchorId: chunk.label,
             title: chunkTitle,
             triggerPhrases: [],
@@ -319,6 +321,7 @@ async function indexChunkedMemoryFile(
           childId = vectorIndex.indexMemoryDeferred({
             specFolder: parsed.specFolder,
             filePath,
+            ...(useSafeSwap ? {} : { parentId: parentMemoryId }),
             anchorId: chunk.label,
             title: chunkTitle,
             triggerPhrases: [],

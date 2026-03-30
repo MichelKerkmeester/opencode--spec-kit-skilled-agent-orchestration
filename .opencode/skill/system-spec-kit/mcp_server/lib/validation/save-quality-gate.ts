@@ -559,6 +559,36 @@ export function scoreMetadataQuality(content: string): number {
 }
 
 /**
+ * Compute a lightweight quality score for backfilled rows.
+ *
+ * @param row - Backfilled memory row fields
+ * @returns Score between 0.1 and 1.0
+ */
+export function computeBackfillQualityScore(row: {
+  content_text?: string;
+  trigger_phrases?: string;
+  title?: string;
+  importance_tier?: string;
+}): number {
+  let score = 0.1;
+
+  if ((row.content_text?.length ?? 0) > 100) {
+    score += 0.2;
+  }
+  if ((row.trigger_phrases?.trim().length ?? 0) > 0) {
+    score += 0.2;
+  }
+  if ((row.title?.trim().length ?? 0) > 0) {
+    score += 0.1;
+  }
+  if ((row.importance_tier?.trim().toLowerCase() ?? 'normal') !== 'normal') {
+    score += 0.1;
+  }
+
+  return Math.min(score, 1.0);
+}
+
+/**
  * Layer 2: Compute content quality score across all dimensions.
  *
  * Signal density is the weighted average of all dimension scores.

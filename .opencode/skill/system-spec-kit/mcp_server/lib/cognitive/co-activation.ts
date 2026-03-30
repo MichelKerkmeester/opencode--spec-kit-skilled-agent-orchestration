@@ -70,6 +70,8 @@ interface RelatedMemoryReference {
   similarity: number;
 }
 
+const DEFAULT_RELATED_MEMORY_SIMILARITY = 0.5;
+
 /* --- 3. MODULE STATE --- */
 
 let db: Database.Database | null = null;
@@ -103,15 +105,24 @@ function parseRelatedMemoryReferences(raw: string | null): RelatedMemoryReferenc
 
   if (!Array.isArray(parsedRelated)) return [];
 
-  return parsedRelated.filter((rel): rel is RelatedMemoryReference => {
-    if (typeof rel !== 'object' || rel === null) return false;
+  return parsedRelated.flatMap((rel): RelatedMemoryReference[] => {
+    if (typeof rel === 'number' && Number.isFinite(rel)) {
+      return [{ id: rel, similarity: DEFAULT_RELATED_MEMORY_SIMILARITY }];
+    }
+
+    if (typeof rel !== 'object' || rel === null) return [];
+
     const candidate = rel as { id?: unknown; similarity?: unknown };
-    return (
+    if (
       typeof candidate.id === 'number'
       && Number.isFinite(candidate.id)
       && typeof candidate.similarity === 'number'
       && Number.isFinite(candidate.similarity)
-    );
+    ) {
+      return [{ id: candidate.id, similarity: candidate.similarity }];
+    }
+
+    return [];
   });
 }
 

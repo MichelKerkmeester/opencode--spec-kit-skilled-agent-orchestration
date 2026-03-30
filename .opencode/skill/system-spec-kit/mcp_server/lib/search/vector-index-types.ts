@@ -99,6 +99,7 @@ export interface MemoryRow {
 export interface IndexMemoryParams {
   specFolder: string;
   filePath: string;
+  parentId?: number | null;
   anchorId?: string | null;
   title?: string | null;
   triggerPhrases?: string[];
