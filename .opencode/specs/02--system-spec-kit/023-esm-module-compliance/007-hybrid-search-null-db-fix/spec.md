@@ -51,7 +51,7 @@ This is **Phase 7** of the ESM Module Compliance specification — fixing a crit
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-30 |
 | **Branch** | `main` (phase of 023-esm-module-compliance) |
 <!-- /ANCHOR:metadata -->

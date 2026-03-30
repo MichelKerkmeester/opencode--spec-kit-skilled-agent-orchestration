@@ -48,6 +48,7 @@ import { requireDb } from '../../../utils/db-helpers.js';
 import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance.js';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces.js';
 import { withTimeout } from '../../errors/core.js';
+import { computeBackfillQualityScore } from '../../validation/save-quality-gate.js';
 import {
   isMultiFacet,
   decompose,
@@ -113,6 +114,19 @@ function filterByMinQualityScore(
     const score =
       typeof rawScore === 'number' && Number.isFinite(rawScore) ? rawScore : 0;
     return score >= clampedThreshold;
+  });
+}
+
+function backfillMissingQualityScores(results: PipelineRow[]): PipelineRow[] {
+  return results.map((row) => {
+    if (row.quality_score !== 0 && row.quality_score != null) {
+      return row;
+    }
+
+    return {
+      ...row,
+      quality_score: computeBackfillQualityScore(row),
+    };
   });
 }
 
@@ -990,6 +1004,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   // -- Quality Score Filtering ------------------------------------------------
 
+  candidates = backfillMissingQualityScores(candidates);
   candidates = filterByMinQualityScore(candidates, qualityThreshold);
 
   // -- D2 REQ-D2-003: Corpus-Grounded LLM Reformulation ----------------------
@@ -1045,6 +1060,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               if (tier) {
                 rows = applyTierFilter(rows, tier);
               }
+              rows = backfillMissingQualityScores(rows);
               rows = filterByMinQualityScore(rows, qualityThreshold);
               return {
                 label: allQueries[index] ?? `d2-reform-${index}`,
@@ -1102,6 +1118,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         if (tier) {
           newHydeCandidates = applyTierFilter(newHydeCandidates, tier);
         }
+        newHydeCandidates = backfillMissingQualityScores(newHydeCandidates);
         newHydeCandidates = filterByMinQualityScore(newHydeCandidates, qualityThreshold);
         candidates = mergeCandidateBatches([
           { label: 'hyde', rows: newHydeCandidates },
@@ -1180,7 +1197,8 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               : contextFilteredSummaryHits;
 
             // Apply the same quality threshold that other candidates go through
-            const filteredSummaryHits = filterByMinQualityScore(scopeFilteredSummaryHits, qualityThreshold);
+            const backfilledSummaryHits = backfillMissingQualityScores(scopeFilteredSummaryHits);
+            const filteredSummaryHits = filterByMinQualityScore(backfilledSummaryHits, qualityThreshold);
 
             if (filteredSummaryHits.length > 0) {
               candidates = [...candidates, ...filteredSummaryHits];

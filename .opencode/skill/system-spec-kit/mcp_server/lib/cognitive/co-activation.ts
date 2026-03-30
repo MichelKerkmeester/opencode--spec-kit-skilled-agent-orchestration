@@ -70,7 +70,7 @@ interface RelatedMemoryReference {
   similarity: number;
 }
 
-const DEFAULT_RELATED_MEMORY_SIMILARITY = 0.5;
+const DEFAULT_RELATED_MEMORY_SIMILARITY = 50;
 
 /* --- 3. MODULE STATE --- */
 

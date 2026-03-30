@@ -141,7 +141,7 @@ function buildReplayPipelineConfig(query: string, searchLimit: number): Pipeline
     includeArchived: false,
     includeConstitutional: true,
     includeContent: false,
-    minState: 'WARM',
+    // minState omitted — memoryState column not yet in schema
     applyStateLimits: false,
     useDecay: true,
     rerank: true,

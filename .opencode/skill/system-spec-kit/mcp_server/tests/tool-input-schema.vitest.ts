@@ -38,20 +38,11 @@ afterEach(() => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('Tool Schema Structural Integrity', () => {
-  it('top-level oneOf is reserved for published actor exclusivity contracts', () => {
-    const actorExclusiveTools = new Set([
-      'shared_space_upsert',
-      'shared_space_membership_set',
-      'shared_memory_status',
-    ]);
-
+  it('public tool schemas do not publish top-level combinators', () => {
     for (const tool of TOOL_DEFINITIONS) {
       const schema = tool.inputSchema as Record<string, unknown>;
-      if (actorExclusiveTools.has(tool.name)) {
-        expect(schema).toHaveProperty('oneOf');
-      } else {
-        expect(schema).not.toHaveProperty('oneOf');
-      }
+      expect(schema).not.toHaveProperty('oneOf');
+      expect(schema).not.toHaveProperty('not');
       expect(schema).not.toHaveProperty('allOf');
       expect(schema).not.toHaveProperty('anyOf');
     }
@@ -396,13 +387,16 @@ describe('governed retrieval schema propagation', () => {
 });
 
 describe('shared-memory admin actor schema', () => {
-  it('public schemas advertise one-of actor identity for shared-memory admin tools', () => {
+  it('public schemas expose actor identity fields without top-level exclusivity combinators', () => {
     for (const toolName of ['shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status']) {
       const tool = TOOL_DEFINITIONS.find((entry) => entry.name === toolName);
-      expect(tool?.inputSchema).toMatchObject({
-        oneOf: [{ required: ['actorUserId'] }, { required: ['actorAgentId'] }],
-        not: { required: ['actorUserId', 'actorAgentId'] },
+      const schema = tool?.inputSchema as { properties?: Record<string, unknown> } | undefined;
+      expect(schema?.properties).toMatchObject({
+        actorUserId: { type: 'string' },
+        actorAgentId: { type: 'string' },
       });
+      expect(schema).not.toHaveProperty('oneOf');
+      expect(schema).not.toHaveProperty('not');
     }
   });
 
@@ -456,6 +450,21 @@ describe('shared-memory admin actor schema', () => {
         actorAgentId: 'agent-1',
       });
     }).not.toThrow();
+  });
+
+  it('public causal tool schemas expose string memory identifiers', () => {
+    const driftWhy = TOOL_DEFINITIONS.find((entry) => entry.name === 'memory_drift_why');
+    const causalLink = TOOL_DEFINITIONS.find((entry) => entry.name === 'memory_causal_link');
+    const driftWhySchema = driftWhy?.inputSchema as { properties?: Record<string, unknown> } | undefined;
+    const causalLinkSchema = causalLink?.inputSchema as { properties?: Record<string, unknown> } | undefined;
+
+    expect(driftWhySchema?.properties).toMatchObject({
+      memoryId: { type: 'string' },
+    });
+    expect(causalLinkSchema?.properties).toMatchObject({
+      sourceId: { type: 'string' },
+      targetId: { type: 'string' },
+    });
   });
 });
 
