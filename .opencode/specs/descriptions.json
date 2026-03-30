@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-30T17:07:07.265Z",
+  "generated": "2026-03-30T18:01:46.146Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -743,7 +743,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -755,7 +755,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -766,7 +766,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -778,7 +778,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -790,7 +790,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1143,7 +1143,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -2011,7 +2011,7 @@
         "indexing",
         "bypass"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
@@ -2023,7 +2023,7 @@
         "benchmark",
         "integrity"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
@@ -2146,7 +2146,7 @@
         "null",
         "fix"
       ],
-      "lastUpdated": "2026-03-30T16:09:14.487Z"
+      "lastUpdated": "2026-03-30T18:01:44.482Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph",
@@ -2173,7 +2173,7 @@
         "precompact",
         "sessionstart"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/002-session-start-hook",
@@ -2185,7 +2185,7 @@
         "session",
         "priming"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/003-stop-hook-tracking",
@@ -2197,7 +2197,7 @@
         "token",
         "tracking"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback",
@@ -2207,7 +2207,7 @@
         "cross-runtime",
         "fallback"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
@@ -2218,7 +2218,7 @@
         "agent",
         "alignment"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/006-documentation-alignment",
@@ -2228,7 +2228,7 @@
         "documentation",
         "alignment"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/007-testing-validation",
@@ -2238,7 +2238,7 @@
         "testing",
         "validation"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/008-structural-indexer",
@@ -2250,7 +2250,7 @@
         "indexer",
         "tree-sitter"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/009-code-graph-storage-query",
@@ -2263,7 +2263,7 @@
         "storage",
         "query"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
@@ -2274,7 +2274,7 @@
         "cocoindex",
         "bridge"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/011-compaction-working-set",
@@ -2286,7 +2286,7 @@
         "working-set",
         "integration"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "02--system-spec-kit/999-sqlite-to-turso",
@@ -4256,7 +4256,7 @@
         "path",
         "migration"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "03--commands-and-skills/037-cmd-merge-spec-kit-phase",
@@ -4284,7 +4284,7 @@
         "release",
         "creation"
       ],
-      "lastUpdated": "2026-03-30T17:07:07.265Z"
+      "lastUpdated": "2026-03-30T18:01:46.146Z"
     },
     {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",
