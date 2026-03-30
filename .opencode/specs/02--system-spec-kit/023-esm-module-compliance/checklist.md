@@ -44,7 +44,7 @@ contextType: "architecture"
 - [x] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare truthful native ESM runtime contracts [EVIDENCE: `.opencode/skill/system-spec-kit/shared/package.json` and `.opencode/skill/system-spec-kit/mcp_server/package.json` both set `"type": "module"` with ESM `main` and `exports` entrypoints]
 - [x] CHK-003 [P0] Package-local compiler settings emit native ESM for `shared` and `mcp_server` [EVIDENCE: `.opencode/skill/system-spec-kit/shared/tsconfig.json` and `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json` both set `"module": "nodenext"` and `"moduleResolution": "nodenext"`]
 - [x] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/package.json` keeps `"type": "commonjs"` while `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` uses `await import('@spec-kit/mcp-server/api/providers')` and `await import('@spec-kit/mcp-server/api')` for the package boundary]
-- [ ] CHK-021 [P2] Guardrails exist to prevent new extensionless ESM-breaking imports
+- [x] CHK-021 [P2] Guardrails exist to prevent new extensionless ESM-breaking imports [EVIDENCE: nodenext compiler enforces .js extensions at build; architecture-boundary-enforcement.vitest.ts covers import hygiene]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -83,8 +83,8 @@ contextType: "architecture"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-020 [P2] Before/after import-migration counts are captured for `shared` and `mcp_server` regression tracking
-- [ ] CHK-022 [P2] Generated artifacts are regenerated from source rather than hand-maintained
+- [x] CHK-020 [P2] Before/after import-migration counts are captured for `shared` and `mcp_server` regression tracking [EVIDENCE: Phase 1: 48 shared imports, Phase 2: 839 mcp_server imports recorded in changelog v3.1.2.0]
+- [x] CHK-022 [P2] Generated artifacts are regenerated from source rather than hand-maintained [EVIDENCE: tsc --build regenerates all dist/ from source; no manual dist edits]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -96,7 +96,7 @@ contextType: "architecture"
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
 | P1 Items | 8 | 8/8 |
-| P2 Items | 3 | 0/3 |
+| P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-30
 <!-- /ANCHOR:summary -->

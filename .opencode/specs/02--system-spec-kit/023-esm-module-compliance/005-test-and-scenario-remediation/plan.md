@@ -41,9 +41,9 @@ Remediate all test failures and playbook scenario gaps discovered during the ESM
 - [x] 3 ESM-caused test failures already fixed
 
 ### Definition of Done
-- [ ] Pre-existing test failures reduced to <=3
-- [ ] All 10 playbook scenarios pass
-- [ ] Final test report with evidence
+- [x] Pre-existing test failures reduced to <=3
+- [x] All 10 playbook scenarios pass
+- [x] Final test report with evidence
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -52,25 +52,25 @@ Remediate all test failures and playbook scenario gaps discovered during the ESM
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Fix Actionable Pre-Existing Tests (T001-T006)
-- [ ] Fix integration-causal-graph error codes
-- [ ] Fix integration-error-recovery error format
-- [ ] Fix learning-stats-filters DB fixture
-- [ ] Fix transaction-manager-recovery DB check
-- [ ] Fix stdio-logging-safety symlink issue
-- [ ] Fix modularization line count limit
+- [x] Fix integration-causal-graph error codes
+- [x] Fix integration-error-recovery error format
+- [x] Fix learning-stats-filters DB fixture
+- [x] Fix transaction-manager-recovery DB check
+- [x] Fix stdio-logging-safety symlink issue
+- [x] Fix modularization line count limit
 
 ### Step 2: Triage Doc Consistency Tests (T007-T008)
-- [ ] Triage hydra-spec-pack-consistency
-- [ ] Triage feature-flag-reference-docs
+- [x] Triage hydra-spec-pack-consistency
+- [x] Triage feature-flag-reference-docs
 
 ### Step 3: Fix Playbook Scenarios (T009-T011)
-- [ ] Create proper save test fixture JSON
-- [ ] Document playbook test setup requirements
-- [ ] Verify all 10 scenarios
+- [x] Create proper save test fixture JSON
+- [x] Document playbook test setup requirements
+- [x] Verify all 10 scenarios
 
 ### Step 4: Final Report (T012-T013)
-- [ ] Run full suite, document counts
-- [ ] Update implementation-summary
+- [x] Run full suite, document counts
+- [x] Update implementation-summary
 <!-- /ANCHOR:phases -->
 
 ---

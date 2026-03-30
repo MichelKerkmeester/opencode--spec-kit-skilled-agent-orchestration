@@ -40,11 +40,11 @@ Migrate `@spec-kit/shared` from inherited CommonJS to package-local native ESM. 
 - [x] `shared` baseline confirmed: no `"type"` field, inherits root CJS compiler settings, 48 extensionless relative imports
 
 ### Definition of Done
-- [ ] `shared/package.json` declares `"type": "module"` with valid `exports`
-- [ ] `shared/tsconfig.json` uses `nodenext` module/resolution settings
-- [ ] All relative imports in `shared/**/*.ts` use `.js` specifiers (no `src/` dir — source at package root)
-- [ ] `npm run build --workspace=@spec-kit/shared` exits 0
-- [ ] Emitted `shared/dist/*.js` contains ESM syntax (not CJS wrappers)
+- [x] `shared/package.json` declares `"type": "module"` with valid `exports`
+- [x] `shared/tsconfig.json` uses `nodenext` module/resolution settings
+- [x] All relative imports in `shared/**/*.ts` use `.js` specifiers (no `src/` dir — source at package root)
+- [x] `npm run build --workspace=@spec-kit/shared` exits 0
+- [x] Emitted `shared/dist/*.js` contains ESM syntax (not CJS wrappers)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -70,24 +70,24 @@ Package-local ESM override within an npm workspace that still has a CommonJS roo
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Package Metadata
-- [ ] Add `"type": "module"` to `shared/package.json`
-- [ ] Update `exports` field to point at ESM dist output
-- [ ] Remove or update any `main`/`types` fields that assume CJS
+- [x] Add `"type": "module"` to `shared/package.json`
+- [x] Update `exports` field to point at ESM dist output
+- [x] Remove or update any `main`/`types` fields that assume CJS
 
 ### Step 2: Compiler Settings
-- [ ] Set `shared/tsconfig.json` to `module: "nodenext"`, `moduleResolution: "nodenext"`
-- [ ] Add `verbatimModuleSyntax: true`
-- [ ] Verify the config overrides root CJS baseline correctly
+- [x] Set `shared/tsconfig.json` to `module: "nodenext"`, `moduleResolution: "nodenext"`
+- [x] Add `verbatimModuleSyntax: true`
+- [x] Verify the config overrides root CJS baseline correctly
 
 ### Step 3: Import Specifier Rewrites
-- [ ] Rewrite all relative imports in `shared/**/*.ts` to use `.js` extensions
-- [ ] Rewrite all re-exports to use `.js` extensions
-- [ ] Verify no extensionless relative imports remain in non-test files
+- [x] Rewrite all relative imports in `shared/**/*.ts` to use `.js` extensions
+- [x] Rewrite all re-exports to use `.js` extensions
+- [x] Verify no extensionless relative imports remain in non-test files
 
 ### Step 4: Build Verification
-- [ ] Run `npm run build --workspace=@spec-kit/shared`
-- [ ] Inspect `shared/dist/*.js` for ESM output (imports/exports, no require/exports wrappers)
-- [ ] Spot-check the main entrypoint resolves correctly
+- [x] Run `npm run build --workspace=@spec-kit/shared`
+- [x] Inspect `shared/dist/*.js` for ESM output (imports/exports, no require/exports wrappers)
+- [x] Spot-check the main entrypoint resolves correctly
 <!-- /ANCHOR:phases -->
 
 ---

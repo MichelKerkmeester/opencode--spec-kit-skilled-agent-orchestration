@@ -40,13 +40,13 @@ Migrate `@spec-kit/mcp-server` from inherited CommonJS to package-local native E
 - [x] Research locked the strategy in `../research/research.md`
 
 ### Definition of Done
-- [ ] `mcp_server/package.json` declares `"type": "module"` with valid `main`/`exports`/`bin`
-- [ ] `mcp_server/tsconfig.json` uses `nodenext` module/resolution settings
-- [ ] All relative imports in `mcp_server/**/*.ts` use `.js` specifiers
-- [ ] No CJS globals (`__dirname`, `__filename`, bare `require()`) in production files
-- [ ] No cross-package relative hops to `../../shared/`
-- [ ] `npm run build --workspace=@spec-kit/mcp-server` exits 0
-- [ ] `node dist/context-server.js` starts without module errors
+- [x] `mcp_server/package.json` declares `"type": "module"` with valid `main`/`exports`/`bin`
+- [x] `mcp_server/tsconfig.json` uses `nodenext` module/resolution settings
+- [x] All relative imports in `mcp_server/**/*.ts` use `.js` specifiers
+- [x] No CJS globals (`__dirname`, `__filename`, bare `require()`) in production files
+- [x] No cross-package relative hops to `../../shared/`
+- [x] `npm run build --workspace=@spec-kit/mcp-server` exits 0
+- [x] `node dist/context-server.js` starts without module errors
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -74,30 +74,30 @@ Package-local ESM override with CommonJS global cleanup and cross-package import
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Package Metadata
-- [ ] Add `"type": "module"` to `mcp_server/package.json`
-- [ ] Update `main`, `exports`, and `bin` fields for ESM dist output
-- [ ] Keep `@spec-kit/mcp-server/api*` as the supported cross-package surface
+- [x] Add `"type": "module"` to `mcp_server/package.json`
+- [x] Update `main`, `exports`, and `bin` fields for ESM dist output
+- [x] Keep `@spec-kit/mcp-server/api*` as the supported cross-package surface
 
 ### Step 2: Compiler Settings
-- [ ] Set `mcp_server/tsconfig.json` to `module: "nodenext"`, `moduleResolution: "nodenext"`
-- [ ] Add `verbatimModuleSyntax: true`
-- [ ] Verify override of root CJS baseline
+- [x] Set `mcp_server/tsconfig.json` to `module: "nodenext"`, `moduleResolution: "nodenext"`
+- [x] Add `verbatimModuleSyntax: true`
+- [x] Verify override of root CJS baseline
 
 ### Step 3: Import Specifier Rewrites
-- [ ] Rewrite all relative imports in `mcp_server/**/*.ts` to use `.js` extensions
-- [ ] Rewrite all re-exports to use `.js` extensions
-- [ ] Replace cross-package relative hops (`../../shared/...`) with `@spec-kit/shared/...` package imports
+- [x] Rewrite all relative imports in `mcp_server/**/*.ts` to use `.js` extensions
+- [x] Rewrite all re-exports to use `.js` extensions
+- [x] Replace cross-package relative hops (`../../shared/...`) with `@spec-kit/shared/...` package imports
 
 ### Step 4: CommonJS Global Cleanup
-- [ ] Replace `__dirname` with `import.meta.dirname`
-- [ ] Replace `__filename` with `import.meta.filename`
-- [ ] Replace bare `require()` with `import()` or `createRequire(import.meta.url)`
-- [ ] Audit dist-sensitive bridge files for hardcoded CJS path assumptions
+- [x] Replace `__dirname` with `import.meta.dirname`
+- [x] Replace `__filename` with `import.meta.filename`
+- [x] Replace bare `require()` with `import()` or `createRequire(import.meta.url)`
+- [x] Audit dist-sensitive bridge files for hardcoded CJS path assumptions
 
 ### Step 5: Build and Runtime Verification
-- [ ] Run `npm run build --workspace=@spec-kit/mcp-server`
-- [ ] Run `node dist/context-server.js` startup smoke
-- [ ] Inspect emitted dist for ESM syntax
+- [x] Run `npm run build --workspace=@spec-kit/mcp-server`
+- [x] Run `node dist/context-server.js` startup smoke
+- [x] Inspect emitted dist for ESM syntax
 <!-- /ANCHOR:phases -->
 
 ---

@@ -40,12 +40,12 @@ Refactor `@spec-kit/scripts` to cross the CJS-to-ESM boundary with explicit `imp
 - [x] Research locked the scripts interop strategy
 
 ### Definition of Done
-- [ ] `scripts/package.json` still declares `"type": "commonjs"`
-- [ ] All scripts-side consumers of ESM siblings use explicit `import()` interop
-- [ ] `node scripts/dist/memory/generate-context.js --help` passes
-- [ ] Module-sensitive tests rewritten for ESM runtime truth
-- [ ] Scripts interop tests pass
-- [ ] Dual-build decision documented if interop was too invasive
+- [x] `scripts/package.json` still declares `"type": "commonjs"`
+- [x] All scripts-side consumers of ESM siblings use explicit `import()` interop
+- [x] `node scripts/dist/memory/generate-context.js --help` passes
+- [x] Module-sensitive tests rewritten for ESM runtime truth
+- [x] Scripts interop tests pass
+- [x] Dual-build decision documented if interop was too invasive
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,31 +72,31 @@ CommonJS package with explicit async `import()` bridges to ESM sibling packages.
 ## 4. IMPLEMENTATION PHASES
 
 ### Step 1: Create Interop Helper
-- [ ] Create `scripts/lib/esm-interop.ts` with typed dynamic `import()` wrappers
-- [ ] Export helper functions for `@spec-kit/shared` and `@spec-kit/mcp-server/api*` surfaces
-- [ ] Handle async loading pattern (Promise-based)
+- [x] Create `scripts/lib/esm-interop.ts` with typed dynamic `import()` wrappers
+- [x] Export helper functions for `@spec-kit/shared` and `@spec-kit/mcp-server/api*` surfaces
+- [x] Handle async loading pattern (Promise-based)
 
 ### Step 2: Refactor Scripts-Side Consumers
-- [ ] Audit all 20 scripts files that consume ESM siblings
-- [ ] Replace `require('@spec-kit/shared/...')` with interop helper calls
-- [ ] Replace `require('@spec-kit/mcp-server/api...')` with interop helper calls
-- [ ] Ensure all call sites correctly `await` the async import results
-- [ ] If >50% of files need deep restructuring, escalate to dual-build decision
+- [x] Audit all 20 scripts files that consume ESM siblings
+- [x] Replace `require('@spec-kit/shared/...')` with interop helper calls
+- [x] Replace `require('@spec-kit/mcp-server/api...')` with interop helper calls
+- [x] Ensure all call sites correctly `await` the async import results
+- [x] If >50% of files need deep restructuring, escalate to dual-build decision
 
 ### Step 3: Rewrite Module-Sensitive Tests
-- [ ] Rewrite tests asserting CommonJS output details to ESM-truth assertions
-- [ ] Update `modularization.vitest.ts`, `trigger-config-extended.vitest.ts`
-- [ ] Update `scripts/tests/test-integration.vitest.ts`, `architecture-boundary-enforcement.vitest.ts`
+- [x] Rewrite tests asserting CommonJS output details to ESM-truth assertions
+- [x] Update `modularization.vitest.ts`, `trigger-config-extended.vitest.ts`
+- [x] Update `scripts/tests/test-integration.vitest.ts`, `architecture-boundary-enforcement.vitest.ts`
 
 ### Step 4: Add Scripts Interop Tests
-- [ ] Add or update `scripts/tests/test-scripts-modules.js`
-- [ ] Add or update `scripts/tests/test-export-contracts.js`
-- [ ] Test failing paths (missing modules, version mismatches)
+- [x] Add or update `scripts/tests/test-scripts-modules.js`
+- [x] Add or update `scripts/tests/test-export-contracts.js`
+- [x] Test failing paths (missing modules, version mismatches)
 
 ### Step 5: Runtime Verification
-- [ ] Run `node scripts/dist/memory/generate-context.js --help`
-- [ ] Run `npm run test --workspace=@spec-kit/scripts`
-- [ ] Run module-sensitive Vitest suites
+- [x] Run `node scripts/dist/memory/generate-context.js --help`
+- [x] Run `npm run test --workspace=@spec-kit/scripts`
+- [x] Run module-sensitive Vitest suites
 <!-- /ANCHOR:phases -->
 
 ---
