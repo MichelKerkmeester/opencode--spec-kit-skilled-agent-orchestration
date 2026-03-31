@@ -133,7 +133,7 @@ function buildMetrics(evalDb: Database.Database, contextDb: Database.Database | 
   );
   metrics['isolation.unknown_context_type_rows'] = safeScalarMetric(
     contextDb,
-    "SELECT COUNT(*) AS value FROM memory_index WHERE context_type IS NULL OR TRIM(context_type) = '' OR context_type NOT IN ('research','implementation','decision','discovery','general')",
+    "SELECT COUNT(*) AS value FROM memory_index WHERE context_type IS NULL OR TRIM(context_type) = '' OR context_type NOT IN ('research','implementation','planning','general','decision','discovery')",
   );
   metrics['schema.version'] = safeScalarMetric(
     contextDb,
