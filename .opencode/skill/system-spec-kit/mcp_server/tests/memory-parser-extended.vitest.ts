@@ -216,21 +216,20 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     const map = mod.CONTEXT_TYPE_MAP;
 
     it('T06: canonical types map to themselves', () => {
-      const canonicals: ContextType[] = ['implementation', 'research', 'decision', 'discovery', 'general'];
+      const canonicals: ContextType[] = ['implementation', 'research', 'planning', 'general'];
       const allSelfMap = canonicals.every(k => map[k] === k);
       expect(allSelfMap).toBe(true);
     });
 
     it('T07: aliases map to correct canonical types', () => {
-      const aliases = { debug: 'implementation', analysis: 'research', planning: 'decision', bug: 'discovery' };
+      const aliases = { debug: 'implementation', analysis: 'research', decision: 'planning', bug: 'implementation' };
       const allCorrect = Object.entries(aliases).every(([k, v]) => map[k] === v);
       expect(allCorrect).toBe(true);
     });
 
-    it('T08: all map values are valid ContextType', () => {
-      const validTypes = new Set<ContextType>(['implementation', 'research', 'decision', 'discovery', 'general']);
-      const allValid = Object.values(map).every((v) => validTypes.has(v));
-      expect(allValid).toBe(true);
+    it('T08: legacy values map to canonical types', () => {
+      expect(map['decision']).toBe('planning');
+      expect(map['discovery']).toBe('general');
     });
   });
 

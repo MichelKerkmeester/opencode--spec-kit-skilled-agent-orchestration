@@ -631,7 +631,7 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
   // the spec_folder frontmatter field — without it, V8 sees current_spec as unknown
   // and treats all cross-references as foreign contamination.
   if (!specFolder && options?.filePath) {
-    const specsMatch = options.filePath.match(/[/\\]specs[/\\](.+?[/\\](?:\d{3}-[^/\\]+))/);
+    const specsMatch = options.filePath.match(/[/\\]specs[/\\]((?:[^/\\]+[/\\])*\d{3}-[^/\\]+)/);
     if (specsMatch) {
       specFolder = specsMatch[1];
     }
