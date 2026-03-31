@@ -28,7 +28,7 @@ export interface AllocationResult {
   allocations: SourceAllocation[];
 }
 
-/** Default budget floors per source (total = 4000) */
+/** Default floor layout for the 4000-token compact brief budget */
 export const DEFAULT_FLOORS = {
   constitutional: 700,
   codeGraph: 1200,
@@ -38,7 +38,7 @@ export const DEFAULT_FLOORS = {
 } as const;
 
 /** Priority order for overflow redistribution (highest first) */
-const PRIORITY_ORDER = ['constitutional', 'codeGraph', 'cocoIndex', 'triggered'] as const;
+const PRIORITY_ORDER = ['constitutional', 'codeGraph', 'cocoIndex', 'sessionState', 'triggered'] as const;
 
 /**
  * Allocate token budget across sources.
@@ -54,7 +54,8 @@ export function allocateBudget(
   totalBudget: number = 4000,
 ): AllocationResult {
   const allocations: SourceAllocation[] = [];
-  let overflowPool = DEFAULT_FLOORS.overflow;
+  const floorTotal = sources.reduce((sum, source) => sum + source.floor, 0);
+  let overflowPool = Math.max(totalBudget - floorTotal, 0);
 
   // Step 1: Assign floors, collect overflow from empty sources
   for (const source of sources) {
@@ -121,11 +122,13 @@ export function createDefaultSources(
   codeGraphSize: number,
   cocoIndexSize: number,
   triggeredSize: number,
+  sessionStateSize: number = 0,
 ): SourceBudget[] {
   return [
     { name: 'constitutional', floor: DEFAULT_FLOORS.constitutional, actualSize: constitutionalSize },
     { name: 'codeGraph', floor: DEFAULT_FLOORS.codeGraph, actualSize: codeGraphSize },
     { name: 'cocoIndex', floor: DEFAULT_FLOORS.cocoIndex, actualSize: cocoIndexSize },
+    { name: 'sessionState', floor: 0, actualSize: sessionStateSize },
     { name: 'triggered', floor: DEFAULT_FLOORS.triggered, actualSize: triggeredSize },
   ];
 }

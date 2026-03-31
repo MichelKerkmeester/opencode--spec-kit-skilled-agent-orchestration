@@ -187,15 +187,123 @@ Compiled → scripts/dist/hooks/claude/*.js
 CLAUDE.md                ← Phase 4 updates
 ```
 
+---
+
+## v2 Remediation Phases (013-016)
+
+Post-implementation review (30 iterations across Codex CLI + Copilot CLI, GPT-5.4) and research (95 iterations, 3 AI systems) identified 45 issues organized into 4 remediation phases. **Implementation completed 2026-03-31** via 16 parallel Codex CLI agents (GPT-5.4, high reasoning) in 5 waves. 41/45 items shipped; 4 deferred (external dependencies).
+
+### Phase 013: Correctness & Boundary Repair (P0/P1/P2 — 3-4 days)
+**Goal:** Fix all critical bugs, DB safety issues, and security boundaries before new feature work.
+
+**Items (15):**
+1. endLine fix in structural-indexer.ts — brace-counting heuristic for JS/TS, indentation for Python, marker for Bash
+2. Resume profile:"resume" fix
+3. Seed identity preservation in code_graph_context handler
+4. Tool arg validation via schema validators (widened from rootDir-only) [F010]
+5. Exception string sanitization in handlers
+6. Orphan edge cleanup wiring in replaceNodes()
+7. Budget allocator 4000-token ceiling removal + sessionState budgeting [F011, F020]
+8. Merger zero-budget section rendering fix
+9. **NEW:** DB init guard — code_graph_scan must not throw on fresh runtime [F021]
+10. **NEW:** initDb() schema migration guard — prevent poisoned singleton on failure [F023]
+11. **NEW:** Wrap replaceNodes/Edges in transaction — atomic delete+insert [F024]
+12. **NEW:** Fix transitive query maxDepth leak + deduplicate convergent paths [F026]
+13. **NEW:** Implement or remove includeTrace from schema + handler [F033]
+14. **NEW:** Fix working-set-tracker maxFiles overshoot [F013]
+15. **NEW:** Validate ccc_feedback schema length bounds before disk write [F031]
+
+**LOC estimate:** 190-265 | **Dependencies:** None | **Risk:** LOW-MEDIUM | **Status:** COMPLETE (15/15)
+
+### Phase 014: Hook Durability & Auto-Enrichment (P1/P2 — 5-6 days)
+**Goal:** Fix hook reliability and security bugs, add automatic context loading.
+
+**Items (14):**
+16. Fix pendingCompactPrime delete-before-read race [F001]
+17. Propagate saveState() errors [F002]
+18. **NEW:** Fence recovered context with provenance markers (injection safety) [F009]
+19. **NEW:** Wire Claude hook path through memory-surface.ts (constitutional/triggered survive compaction) [F022]
+20. **NEW:** Collision-resistant session_id hashing or exact-match on state load [F027]
+21. **NEW:** Set 0700/0600 permissions on hook-state temp directory and files [F028]
+22. MCP first-call priming (T1.5 universal session detection)
+23. Tool-dispatch auto-enrichment (GRAPH_AWARE_TOOLS interceptor)
+24. Stale-on-read mechanism (ensureFreshFiles with mtime fast-path)
+25. Cache freshness validation (cachedAt TTL check) [F003]
+26. Stop-hook surrogate save redesign
+27. Cache-token bucket accounting
+28. **NEW:** Remove dead workingSet branch [F004]
+29. **NEW:** Consolidate duplicated token-count sync logic [F019]
+30. **NEW:** Replace drifted pressure-budget helper with shared tested helper [F032]
+
+**LOC estimate:** 371-499 | **Dependencies:** Phase 013 | **Risk:** MEDIUM | **Status:** COMPLETE (14/14)
+
+### Phase 015: Tree-Sitter WASM Migration (P2/P3 — 3-4 days)
+**Goal:** Replace regex parser with tree-sitter WASM for 99% parse accuracy. Clean up dead code paths.
+
+**Items (8):**
+31. Parser adapter interface (ParseResult stays parser-agnostic)
+32. Tree-sitter WASM implementation (~1.5MB bundle: JS, TS, Python, Bash grammars)
+33. New edge types: DECORATES, OVERRIDES, TYPE_OF
+34. Extract ghost SymbolKinds (variable, module, parameter, **method**) [F008 adds method]
+35. Regex removal (after tree-sitter stable, keep as fallback initially)
+36. **NEW:** Remove dead per-file TESTED_BY branch [F015]
+37. **NEW:** Wire or remove excludeGlobs option [F016]
+38. **NEW:** Fix .zsh language mapping — globs never discover .zsh files [F017]
+
+**LOC estimate:** 220-345 | **Dependencies:** Phase 013 (endLine fix) | **Risk:** HIGH | **Status:** PARTIAL (6/8 done; Items 32, 35 deferred)
+
+### Phase 016: Cross-Runtime UX & Documentation (P2/P3 — 2-3 days)
+**Goal:** Achieve ~85-90% context preservation parity across all 5 runtimes. Fix spec/settings mismatches.
+
+**Items (8):**
+39. Near-exact seed resolution + CocoIndex score propagation
+40. Query-intent pre-classification with confidence fallback
+41. Auto-reindex triggers (branch switch, session start, debounced save)
+42. Cross-runtime agent instruction updates (CODEX.md, AGENTS.md, OpenCode agents, Gemini)
+43. Recovery documentation consolidation (single source of truth) [F018]
+44. **NEW:** Fix seed-resolver silent DB failure → placeholder anchor [F014]
+45. **NEW:** Fix spec/settings SessionStart scope mismatch [F030]
+46. **TRUTH-SYNC:** Downgrade checklist claims for phases 005/006/008/011/012 per review findings
+
+**LOC estimate:** 130-208 | **Dependencies:** Phase 014 (MCP first-call priming) | **Risk:** LOW | **Status:** PARTIAL (6/8 done; Items 40, 45 deferred)
+
+### v2 Dependency Graph
+
+```
+Phase 013 (P0/P1 fixes, no deps)
+    ├── Phase 014 (hook durability + auto-enrichment)
+    │       └── Phase 016 (cross-runtime UX)
+    └── Phase 015 (tree-sitter migration, independent of 014)
+```
+
+**Critical path:** 013 → 014 → 016
+**Parallel path:** 015 can run alongside 014
+
+### v2 Deferred Items (4)
+
+| Item | Phase | Dependency | Estimated LOC |
+|------|-------|------------|---------------|
+| 32: Tree-sitter WASM | 015 | `web-tree-sitter` npm package + WASM grammars | 200-280 |
+| 35: Regex removal | 015 | Item 32 stable in production | -120 to -150 |
+| 40: Intent pre-classifier | 016 | CocoIndex API relevance scoring | 60-100 |
+| 45: SessionStart scope | 016 | settings.local.json schema investigation | 5-20 |
+
 <!-- ANCHOR:dependencies -->
 ## Dependencies
 
+### v1 Phases (001-012) — Complete
 - Phase 1 has no dependencies — can start immediately
 - Phase 2 shares `session-prime.ts` with Phase 1 (tight coupling)
 - Phase 3 depends on Phase 1 patterns + transcript parsing
 - Phase 4 can run in parallel with Phases 1-3
 - Code Graph MVP depends on Phases 1-2 patterns; can start after Phase 2
 - CocoIndex bridge is independent — CocoIndex already deployed as MCP server
+
+### v2 Phases (013-016) — Pending
+- Phase 013 has no dependencies — can start immediately (all P0/P1 fixes)
+- Phase 014 depends on Phase 013 (correctness fixes first)
+- Phase 015 depends on Phase 013 (endLine fix enables tree-sitter comparison testing)
+- Phase 016 depends on Phase 014 (MCP first-call priming enables cross-runtime UX)
 <!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation

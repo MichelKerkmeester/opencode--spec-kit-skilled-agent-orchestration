@@ -1,6 +1,7 @@
 ---
 title: "Deep Research Report: Compact Code Graph — Complete Findings [02--system-spec-kit/024-compact-code-graph/research]"
 description: "This research addresses two interconnected problems"
+iterations: 95
 trigger_phrases:
   - "deep"
   - "research"
@@ -13,7 +14,7 @@ contextType: "research"
 ---
 # Deep Research Report: Compact Code Graph — Complete Findings
 
-> **75 iterations across 6 segments** | 10 orchestrator + 40 GPT-5.4 agents + 20 Claude Opus deep-research + 5 skipped | ~12,000+ lines of research
+> **95 iterations across 7 segments** | final synthesis updated through Segment 7 verification via Copilot CLI (GPT-5.4)
 
 ---
 
@@ -428,10 +429,13 @@ session transcript + working-set tracker
 | 4 | 036-045 | Code graph research (GPT-5.4) | 0.73-0.88 |
 | 5 | 046-055 | CocoIndex + Code Graph integration | 0.49-0.76 |
 | 6 | 056-075 | Feature improvements + UX | 0.10-0.80 |
+| 7 | 076-095 | Verification + cross-runtime deepening (GPT-5.4 via Copilot CLI) | 0.18-0.83* |
 
-**Total**: 75 iterations (73 completed, 2 skipped), ~12,000+ lines across iteration files.
+**Total**: 95 iterations across 7 segments, with the program now extended by Segment 7 verification and truth-sync work.
 
-**Method**: Segments 1-2 mixed orchestrator + codex agents. Segments 3-5 GPT-5.4 agents via `codex exec -m gpt-5.4 -c model_reasoning_effort="high" --full-auto`, dispatched in parallel waves. Segment 6 Claude Opus deep-research iterations.
+**Method**: Segments 1-2 mixed orchestrator + codex agents. Segments 3-5 GPT-5.4 agents via `codex exec -m gpt-5.4 -c model_reasoning_effort="high" --full-auto`, dispatched in parallel waves. Segment 6 used Claude Opus deep-research iterations. Segment 7 used GPT-5.4 via Copilot CLI for verification, runtime deep dives, and review revalidation.
+
+*Segment 7 local artifacts available at final synthesis time span iterations `076-089`, `091`, and the canonical `deep-research-state.jsonl`; standalone markdown files for `090`, `092`, `093`, and `094` were not present in the working tree, so their outputs are reconstructed in Part XI from the available evidence.*
 
 ---
 
@@ -840,13 +844,13 @@ Estimated: ~50 LOC (40 in initDb + 10 in scan handler).
 
 ---
 
-## Part X: Final Synthesis -- Complete Research Program Summary (75 Iterations)
+## Part X: Final Synthesis -- Complete Research Program Summary (95 Iterations)
 
-> **75 iterations across 6 segments** | 10 Claude orchestrator + 40 GPT-5.4 agent + 20 Claude Opus deep-research + 5 skipped/pending | 16 research questions answered | ~12,000+ lines of research output
+> **95 iterations across 7 segments** | Segment 7 adds verification and cross-runtime truth-sync via Copilot CLI (GPT-5.4)
 
 ### Executive Summary
 
-This research program evaluated, designed, and specified a comprehensive upgrade to the Spec Kit Memory MCP system's context preservation and code understanding capabilities. The program spanned 75 iterations across 6 segments, using three execution methods (orchestrator-driven, parallel GPT-5.4 agents, and Claude Opus deep-research iterations).
+This research program evaluated, designed, specified, and then revalidated a comprehensive upgrade to the Spec Kit Memory MCP system's context preservation and code understanding capabilities. The program spanned 95 iterations across 7 segments, using four execution modes (orchestrator-driven research, parallel GPT-5.4 Codex agents, Claude Opus deep-research iterations, and GPT-5.4 verification passes via Copilot CLI).
 
 **Key decisions:**
 1. **REJECT** Codex-CLI-Compact (Dual-Graph) -- proprietary graperoot core, CLAUDE.md conflicts, workflow collisions
@@ -854,7 +858,8 @@ This research program evaluated, designed, and specified a comprehensive upgrade
 3. **BUILD** clean-room structural code graph using tree-sitter + SQLite, integrated into existing MCP search pipeline
 4. **USE** CocoIndex as complementary semantic layer -- no overlap with structural code graph
 5. **BUILD** 4-tier cross-runtime fallback for non-hook CLI runtimes (hooks -> MCP priming -> instruction files -> Gate 1)
-6. **FIX** critical endLine bug that renders CALLS edge detection non-functional (P0, zero dependencies)
+6. **FIX** critical endLine bug that renders normal multi-line `CALLS` extraction severely degraded (P0, zero dependencies)
+7. **VERIFY BEFORE IMPLEMENTING** -- Segment 7 showed that several auto-enrichment and runtime-parity ideas are still design work, not shipped behavior, until explicitly implemented
 
 ### Segment 6 Summary (Iterations 56-75, Feature Improvements + UX)
 
@@ -975,8 +980,72 @@ Universal mechanism across all runtimes: MCP first-call priming (T1.5) detects n
 | 4 | 036-045 | 0.73-0.88 | Converged (code graph specified) |
 | 5 | 046-055 | 0.49-0.76 | Converged (integration designed) |
 | 6 | 056-075 | 0.10-0.80 | Converged (implementation phased) |
+| 7 | 076-095 | 0.18-0.83* | Verification complete; design claims truth-synced against live code |
 
-All 16 research questions answered. Zero productive research avenues remain. The program is ready for implementation.
+All 16 research questions remain answered. Segment 7 converted the remaining uncertainty into a concrete verification and hardening backlog. The program is ready for implementation, but only with truth-sync and P1 hardening at the front of the queue.
+
+*Segment 7 range is derived from the locally available verification artifacts plus this final synthesis iteration; standalone markdown files for `090`, `092`, `093`, and `094` were not present in the final-synthesis workspace.*
+
+---
+
+## Part XI: Segment 7 -- Verification via Copilot CLI (GPT-5.4)
+
+> **Segment 7 scope:** 20 planned verification iterations via `copilot -p` (GPT-5.4, high reasoning) across 5 waves of 4. The local workspace used for this final synthesis contains direct artifacts for iterations `076-089` and `091` plus the canonical `deep-research-state.jsonl`; standalone markdown files for `090`, `092`, `093`, and `094` were not present, so the scorecard, roadmap, and parity outputs below are reconstructed from the available segment evidence rather than quoted from absent files.
+
+### Executive Summary
+
+Segment 7 changed the program from design expansion into source-level truth-sync. The verification tranche:
+- **confirmed** the core structural and hook-state correctness issues from Segment 6;
+- **modified** several claims that had drifted from "design proposal" into "sounds implemented";
+- **refuted** one reviewed P1 and a smaller set of stale runtime assumptions.
+
+Confirmed items included the still-live `endLine` range collapse, the missing edge and symbol coverage, the pre-dispatch interception seam in `context-server.ts`, the need for instruction-led startup recovery outside Claude hooks, and multiple active review findings around stale compact recovery, surrogate stop-time auto-save, seed-identity stripping, and unvalidated scan roots.
+
+Modified items included the exact wording of the `CALLS` failure mode (severely degraded, not universal zero), Phase B ownership (`context-server.ts` is mandatory and `code-graph-db.ts` belongs to stale-on-read/B1 rather than the minimal Phase A fix), and the status of the performance and auto-enrichment work (useful design budgets, but not yet live measured pipeline behavior). Several Q14/Q16 items -- `GRAPH_AWARE_TOOLS`, first-call priming, near-exact seed resolution, auto-reindex triggers, and hybrid query execution -- were reaffirmed as **recommended future work**, not shipped behavior.
+
+Refuted items were smaller but important: the reviewed P1-3 stop-hook recursion finding does not match current code, Copilot startup behavior is instruction-file-driven rather than agent-profile-driven, and upstream Gemini can no longer be treated as simply "hookless."
+
+### Updated Implementation Roadmap
+
+| Order | Workstream | Verification outcome | Recommended scope |
+|---|---|---|---|
+| **0** | Truth-sync + boundary hardening | New precondition surfaced by Segment 7 | Centralize and actually enforce tool arg validation, workspace-bound `rootDir`, sanitize MCP error text, and reopen overstated phase/checklist claims |
+| **1** | Hook/cache correctness | Still release-blocking | Fix `pendingCompactPrime` lifecycle, save-failure signaling, stale `cachedAt` reuse, and stop-time surrogate auto-save |
+| **2** | Structural graph correctness | Still foundational | Land the `endLine` fix, preserve seed identity through the public handler, initialize DB safely on first scan, and keep JS/TS method coverage on the near path |
+| **3** | Budget integrity + stale-on-read | Promote ahead of feature growth | Remove allocator ceiling assumptions, suppress zero-budget sections, budget `sessionState`, then add stale-on-read once DB init is reliable |
+| **4** | Cross-runtime startup protocol | Still worth doing, but docs/workflows first | Standardize a runtime-neutral Session Start Protocol across `AGENTS.md`/`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, OpenCode agents, and resume workflows |
+| **5** | Auto-enrichment features | Keep as post-hardening work | First-call priming, `GRAPH_AWARE_TOOLS`, auto-reindex triggers, and hybrid query patterns remain design-only until the earlier correctness/security work lands |
+| **6** | Tree-sitter / richer edges | Still attractive, not first | Parser adapter, WASM migration, `DECORATES`/`OVERRIDES`/`TYPE_OF`, and regex retirement |
+
+**Roadmap change from Segment 6:** the earlier 4-phase build plan remains structurally useful, but Segment 7 moves correctness, security, and truth-sync work **ahead of** richer automation. The first executable slice now starts with hardening and verification cleanup rather than jumping straight to transparent auto-enrichment.
+
+### Cross-Runtime UX Parity Matrix
+
+| Runtime | Primary startup surface | Hook reality | Recommended session-start pattern | Practical parity |
+|---|---|---|---|---|
+| **Claude Code** | `SessionStart` / `PreCompact` / `Stop` hooks | Full hook lifecycle | Keep hook-driven recovery, but harden stale-cache, provenance, and stop-save behavior | **100% ceiling / current leader** |
+| **OpenCode** | `AGENTS.md`, `.opencode/agent/*.md`, `spec_kit_resume_auto.yaml` | No native hooks | Add reusable Session Start Protocol + `code_graph_status()` in the earliest context-loading step; keep graph expansion query-driven | **~90%** |
+| **Codex CLI** | `CODEX.md`, `.codex/agents/context.toml` | No native hooks | Force first-turn `memory_context(...)` + `code_graph_status()` via instructions; do not rely on hook-style implicit warmup | **~85%** |
+| **Copilot CLI** | `AGENTS.md`, `.github/copilot-instructions.md`, `.github/instructions/**/*.instructions.md` | Instruction-first in this repo; optional agent profiles are not the startup contract | Put global startup priming in shared instruction files; gate graph work on structural intent and freshness, not every turn | **~80%** |
+| **Gemini CLI** | `GEMINI.md`, `.gemini/settings.json` | Upstream hooks exist, but repo parity is not wired today | Support instruction-first parity now; optionally add Gemini-native hooks later for near-Claude behavior | **~75% instruction-only / ~88% with hooks** |
+
+### Revised P1 Verification Status
+
+| Bucket | Count | Notes |
+|---|---:|---|
+| **Confirmed active** | **6** | P1-1, P1-2, P1-4, P1-5, P1-6, and P1-10 remained live in the locally available verification set |
+| **False positive** | **1** | P1-3 did not match current `session-stop.ts` behavior |
+| **Not recoverable as local standalone artifacts** | **3** | The expected remaining wave-4 and scorecard artifacts were not present as standalone markdown files in the final-synthesis workspace |
+
+This tally is intentionally conservative: it reflects only the Segment 7 verification evidence present locally (`076-089`, `091`, and `deep-research-state.jsonl`) rather than inventing results for missing standalone artifacts.
+
+### Final Recommendations
+
+1. Treat Segment 6 auto-enrichment and cross-runtime material as a **validated design backlog**, not as shipped behavior.
+2. Start implementation with **truth-sync + P1 hardening**: hook cache lifecycle, stale reuse, validation boundaries, budget integrity, and error sanitization.
+3. Keep the **endLine / range / seed-identity** fixes near the front of the queue because they unblock both correctness and future structural retrieval quality.
+4. Standardize a **Session Start Protocol** across Claude/OpenCode/Codex/Copilot/Gemini docs before attempting transparent priming features.
+5. Re-run deep review and a shorter verification wave after remediation; Segment 7 showed that design claims drift unless they are periodically revalidated against live code.
 
 ---
 
@@ -1044,3 +1113,14 @@ All 16 research questions answered. Zero productive research avenues remain. The
 | 071 | ~240 | Error recovery: 4-level degradation, DB auto-rebuild |
 | 072-074 | -- | Skipped (convergence achieved) |
 | 075 | ~120 | FINAL SYNTHESIS: complete program summary and convergence report |
+| 076 | 78 | Q13 verification: endLine, edge coverage, ghost SymbolKinds, allocator limits |
+| 077 | 94 | Q14 verification: pre-dispatch seam confirmed; graph auto-enrichment still design-only |
+| 078-083 | -- | JSONL-only verification passes: runtime UX, Q16 design-vs-shipped status, phasing, tests, performance, and error recovery |
+| 084 | 183 | OpenCode Session Start Protocol, agent insertion map, and resume injection point |
+| 085-087 | -- | JSONL-only runtime deep dives: Codex, Copilot, and Gemini startup/parity surfaces |
+| 088 | 64 | Review P1 1-3 verification -- P1-3 became false positive |
+| 089 | 123 | Review P1 4-6 verification -- all three remained active |
+| 090 | -- | Expected review-wave artifact not present locally at final synthesis time |
+| 091 | 109 | Review P1-10 plus key P2 verification |
+| 092-094 | -- | Expected verification scorecard, updated roadmap, and parity-matrix artifacts not present locally; reconstructed in Part XI from the available Segment 7 evidence |
+| 095 | -- | FINAL SYNTHESIS: Segment 7 verification summary, updated roadmap, parity matrix, and revised P1 tally |

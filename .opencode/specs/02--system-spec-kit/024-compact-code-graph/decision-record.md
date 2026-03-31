@@ -50,15 +50,17 @@ contextType: "planning"
 **Alternatives Considered:** MCP stdio call, HTTP endpoint like Dual-Graph
 **Impact:** Simpler implementation, faster execution, tighter coupling to build output
 
-## DR-004: Phase Decomposition
-**Decision:** 4 phases, independently deployable
-**Date:** 2026-03-29
-**Context:** Minimize risk, deliver highest-value feature first
+## DR-004: Phase Decomposition (Superseded)
+**Decision:** ~~4 phases, independently deployable~~ → Expanded to 16 phases (12 v1 + 4 v2 remediation)
+**Date:** 2026-03-29 (original) | 2026-03-31 (superseded by DR-011, DR-016)
+**Context:** Originally 4 phases; expanded to 12 during v1 implementation, then to 16 with v2 remediation phases 013-016.
 **Rationale:**
 - Phase 1 (PreCompact) delivers 80% of the value immediately
 - Each phase can be tested and deployed independently
 - Parallel execution possible (Phase 4 alongside Phases 2-3)
-**Impact:** ~3-4 weeks total, but Phase 1 deployable in 2-3 days
+- v2 phases 013-016 address 45 issues found by 95 research + 30 review iterations
+**Impact:** ~3-4 weeks total for v1; v2 remediation adds ~2 weeks. See DR-011 for scope revision, DR-016 for expanded review.
+**Status:** SUPERSEDED — see DR-011 for 12-phase expansion, DR-016 for 16-phase expansion
 
 ## DR-005: Build Clean-Room Code Graph (Deferred)
 **Decision:** Defer code graph channel (tree-sitter) to separate spec folder
@@ -145,3 +147,57 @@ contextType: "planning"
 - When a source returns nothing, its floor flows to the overflow pool
 **Alternatives Considered:** Fixed per-source splits (rejected: wastes budget), pure pooled allocation (rejected: starves constitutional), dynamic tier-based (rejected: adds complexity without clear benefit for v1)
 **Impact:** Enables 3-source compaction while preserving constitutional-first semantics; allocator must be observable (per-source tokens requested/granted/dropped)
+
+## DR-013: endLine Fix via Brace-Counting Heuristic (Not Tree-Sitter Yet)
+**Decision:** Fix the endLine bug in Phase 013 using regex brace-counting, not tree-sitter
+**Date:** 2026-03-31
+**Context:** Research iterations 056, 060, 076 confirmed the structural-indexer.ts always sets endLine = startLine, breaking CALLS edge detection for multi-line functions. Tree-sitter WASM would also fix this but requires Phase 015 (larger migration).
+**Rationale:**
+- Brace-counting heuristic is 60-80 LOC, low risk, zero dependencies
+- Tree-sitter is 200-315 LOC, HIGH risk, requires WASM grammar bundles
+- Fix now with heuristic, upgrade to tree-sitter later via adapter interface
+- Python uses indentation-based detection, Bash uses marker-based (fi/done/esac)
+- Verified: zero existing tests depend on broken endLine behavior (iteration 073)
+**Alternatives Considered:** Wait for tree-sitter (rejected: P0 bug blocks graph utility), AST-based parsing without tree-sitter (rejected: no Node.js AST parser for all 4 languages)
+**Impact:** Unblocks CALLS edge detection, fixes contentHash, enables enclosing-symbol resolution. Phase A prerequisite for all subsequent phases.
+
+## DR-014: Tree-Sitter WASM with Regex Fallback (Adapter Pattern)
+**Decision:** Implement tree-sitter WASM in Phase 015 with permanent regex fallback via adapter interface
+**Date:** 2026-03-31
+**Context:** Research iterations 060, 066, 073 designed a 4-phase migration from regex to tree-sitter. The ParseResult interface is already parser-agnostic. Bundle size revised to ~1.5MB (JS ~200KB, TS ~500KB, Python ~150KB, Bash ~100KB, core ~300KB).
+**Rationale:**
+- 99% parse accuracy vs ~70% with regex
+- Enables 3 new edge types (DECORATES, OVERRIDES, TYPE_OF) only possible with AST
+- Adapter interface means extractEdges() needs zero changes
+- Regex stays as permanent fallback for environments where WASM fails
+- Migration path: C1 (adapter) → C2 (tree-sitter impl) → C3 (flip default) → C4 (remove regex, optional)
+**Alternatives Considered:** Native tree-sitter bindings (rejected: portability issues), LSP-based parsing (rejected: per-language server overhead)
+**Impact:** Major accuracy improvement; enables richer graph relationships; ~1.5MB bundle size addition
+
+## DR-015: MCP First-Call Priming as Universal Session Detection
+**Decision:** Implement session detection via MCP tool first-call tracking, not hook-dependent mechanisms
+**Date:** 2026-03-31
+**Context:** Research iterations 057, 062, 065 designed a "T1.5" universal mechanism. Hook-based session detection only works on Claude Code. Non-hook runtimes (OpenCode, Codex CLI, Copilot CLI, Gemini CLI) need a different approach. The `resolveTrustedSession()` function already detects new sessions via `trusted:false + requestedSessionId:null`.
+**Rationale:**
+- Works on ALL 5 runtimes without any hook support
+- Detects first MCP tool call in a session → triggers context loading
+- Achieves ~85-90% parity with Claude Code hooks
+- Latency: <250ms for priming (within tool call budget)
+- No external dependencies — uses existing session management infrastructure
+**Alternatives Considered:** Instruction-file-only triggers (rejected: unreliable, AI may skip), custom MCP lifecycle events (rejected: not supported by MCP protocol), file-watcher daemon (rejected: heavy, platform-dependent)
+**Impact:** Makes code graph and context preservation work automatically on all runtimes; biggest UX improvement for cross-runtime support
+
+## DR-016: Expanded Review Scope — 30 Iterations, 45 Remediation Items
+**Decision:** Expand v2 remediation from 26 to 45 items based on 30-iteration deep review
+**Date:** 2026-03-31
+**Context:** Initial remediation plan was based on 10-iteration Codex CLI review (verdict: FAIL, 10 P1). A second 20-iteration review via Copilot CLI (GPT-5.4) re-verified all original findings and explored previously unexamined code areas (DB safety, session aliasing, transaction atomicity, test coverage, dead code).
+**Rationale:**
+- All 19 original findings from Phase 1 (iters 1-10) were CONFIRMED by Phase 2 (iters 11-18)
+- Phase 2 fresh dives (iters 19-25) found 8 new issues in previously unexamined code
+- Phase 2 convergence (iters 26-30) found 4 more issues before approaching saturation
+- 7 new P1 findings: F021 (DB init), F022 (hook bypass), F023 (migration guard), F024 (transaction atomicity), F026 (maxDepth leak), F027 (session aliasing), F028 (file permissions), F033 (includeTrace ghost)
+- 12 new P2 findings across dead code, config mismatches, test coverage, duplicated logic
+- 4 partially-covered findings widened in scope (F010: all tool args, F020: sessionState bypass, F008: method nodes, F009: injection fencing)
+- Verdict upgraded from FAIL to CONDITIONAL (0 P0, 16 P1, 16 P2)
+**Alternatives Considered:** Keep 26-item scope (rejected: misses 7 P1 blockers), create Phase 017 for new findings (rejected: findings naturally fit existing phases)
+**Impact:** Phases 013-016 expanded from 26 to 45 items. LOC estimate: 911-1,317 (up from 711-1,037). Phase 013 grows most (8→15 items) due to DB safety findings.

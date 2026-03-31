@@ -35,6 +35,10 @@ import {
   closeDb,
   getStats,
   cleanupOrphans,
+  ensureFreshFiles,
+  getLastGitHead,
+  isFileStale,
+  setLastGitHead,
   upsertFile,
   replaceNodes,
 } from '../lib/code-graph/code-graph-db.js';
@@ -885,7 +889,7 @@ describe('code-graph SQLite recovery', () => {
     expect(db).toBe(getDb());
 
     const stats = getStats();
-    expect(stats.schemaVersion).toBe(1);
+    expect(stats.schemaVersion).toBe(SCHEMA_VERSION);
 
     closeDb();
   });
@@ -896,6 +900,56 @@ describe('code-graph SQLite recovery', () => {
     const stats = getStats();
     expect(stats.schemaVersion).toBe(SCHEMA_VERSION);
     expect(stats.totalFiles).toBe(0);
+  });
+
+  it('stores file mtimes and reports stale files via mtime checks', () => {
+    initDb(tempDir);
+
+    const trackedFile = path.join(tempDir, 'tracked.ts');
+    fs.writeFileSync(trackedFile, 'export const value = 1;\n');
+
+    upsertFile(
+      trackedFile,
+      'typescript',
+      'hash-abc',
+      0,
+      0,
+      'clean',
+      5,
+    );
+
+    const row = getDb().prepare(
+      'SELECT file_mtime_ms FROM code_files WHERE file_path = ?',
+    ).get(trackedFile) as { file_mtime_ms: number } | undefined;
+
+    expect(row?.file_mtime_ms).toBeGreaterThan(0);
+    expect(isFileStale(trackedFile)).toBe(false);
+    expect(ensureFreshFiles([trackedFile])).toEqual({
+      stale: [],
+      fresh: [trackedFile],
+    });
+
+    const futureTime = new Date(Date.now() + 5_000);
+    fs.utimesSync(trackedFile, futureTime, futureTime);
+
+    expect(isFileStale(trackedFile)).toBe(true);
+    expect(ensureFreshFiles([trackedFile])).toEqual({
+      stale: [trackedFile],
+      fresh: [],
+    });
+  });
+
+  it('stores code graph metadata for git HEAD tracking and creates the file-line index', () => {
+    initDb(tempDir);
+
+    expect(getLastGitHead()).toBeNull();
+
+    setLastGitHead('abc123');
+
+    expect(getLastGitHead()).toBe('abc123');
+
+    const indexes = getDb().prepare('PRAGMA index_list(code_nodes)').all() as Array<{ name: string }>;
+    expect(indexes.some((index) => index.name === 'idx_file_line')).toBe(true);
   });
 
   it('recovery after corrupted DB file', () => {

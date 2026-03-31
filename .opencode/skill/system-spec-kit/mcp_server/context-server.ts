@@ -55,6 +55,7 @@ import {
   syncEnvelopeTokenCount,
   serializeEnvelopeWithTokenCount,
 } from './hooks/index.js';
+import { primeSessionIfNeeded } from './hooks/memory-surface.js';
 
 // Architecture
 import { getTokenBudget } from './lib/architecture/layer-definitions.js';
@@ -76,6 +77,7 @@ import * as accessTracker from './lib/storage/access-tracker.js';
 import * as hybridSearch from './lib/search/hybrid-search.js';
 import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
 import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
+import * as graphDb from './lib/code-graph/code-graph-db.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';
@@ -143,7 +145,19 @@ interface ApiKeyValidation {
   networkError?: boolean;
 }
 
-interface AutoSurfaceResult { constitutional: unknown[]; triggered: unknown[]; }
+interface AutoSurfaceResult {
+  constitutional: unknown[];
+  triggered: unknown[];
+  codeGraphStatus?: {
+    status: 'ok' | 'error';
+    data?: Record<string, unknown>;
+    error?: string;
+  };
+  sessionPrimed?: boolean;
+  primedTool?: string;
+  surfaced_at?: string;
+  latencyMs?: number;
+}
 
 interface ToolCallResponse {
   content: Array<{ type: string; text: string }>;
@@ -167,6 +181,50 @@ const EMBEDDING_MODEL_TIMEOUT_MS = 30_000;
 
 /** Timeout (ms) for API key validation during startup. */
 const API_KEY_VALIDATION_TIMEOUT_MS = 5_000;
+
+const GRAPH_ENRICHMENT_TIMEOUT_MS = 250;
+const GRAPH_ENRICHMENT_OUTLINE_LIMIT = 6;
+const GRAPH_ENRICHMENT_NEIGHBOR_LIMIT = 6;
+const GRAPH_ENRICHMENT_SYMBOL_LIMIT = 4;
+const GRAPH_CONTEXT_EXCLUDED_TOOLS = new Set<string>([
+  ...MEMORY_AWARE_TOOLS,
+  'code_graph_query',
+  'code_graph_context',
+  'code_graph_scan',
+  'code_graph_status',
+]);
+
+interface GraphContextNeighborSummary {
+  filePath: string;
+  relationTypes: string[];
+  symbols: Array<{
+    name: string;
+    kind: string;
+    line: number;
+    direction: 'incoming' | 'outgoing';
+    relation: string;
+  }>;
+}
+
+interface GraphContextFileSummary {
+  filePath: string;
+  outline: Array<{
+    name: string;
+    kind: string;
+    line: number;
+  }>;
+  neighbors: GraphContextNeighborSummary[];
+}
+
+interface DispatchGraphContextMeta {
+  status: 'ok' | 'timeout' | 'unavailable';
+  source: 'tool-dispatch';
+  fileCount: number;
+  filePaths: string[];
+  latencyMs: number;
+  files?: GraphContextFileSummary[];
+  error?: string;
+}
 
 function isMutationStatus(status: string | undefined): boolean {
   return status === 'indexed' || status === 'updated' || status === 'reinforced' || status === 'deferred';
@@ -196,6 +254,291 @@ function runAfterToolCallbacks(tool: string, callId: string, result: unknown): v
       });
     }
   });
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function looksLikeGraphableFilePath(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.includes('*') || trimmed.includes('?')) {
+    return false;
+  }
+
+  if (
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('app://') ||
+    trimmed.startsWith('plugin://')
+  ) {
+    return false;
+  }
+
+  return (
+    trimmed.startsWith('/') ||
+    trimmed.startsWith('./') ||
+    trimmed.startsWith('../') ||
+    trimmed.includes('/') ||
+    trimmed.includes('\\') ||
+    path.extname(trimmed).length > 0
+  );
+}
+
+function normalizeGraphFilePath(value: string): string | null {
+  if (!looksLikeGraphableFilePath(value)) {
+    return null;
+  }
+
+  const normalized = path.isAbsolute(value)
+    ? path.normalize(value)
+    : path.resolve(process.cwd(), value);
+
+  try {
+    if (!fs.existsSync(normalized) || !fs.statSync(normalized).isFile()) {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+
+  return normalized;
+}
+
+function extractFilePathsFromToolArgs(args: unknown): string[] {
+  const results = new Set<string>();
+  const visited = new WeakSet<object>();
+
+  const visit = (value: unknown, keyHint?: string): void => {
+    if (typeof value === 'string') {
+      const normalized = normalizeGraphFilePath(value);
+      const keyLooksPathLike = keyHint
+        ? /(^|_)(path|file|target|subject|seed)s?$/i.test(keyHint) || /path|file/i.test(keyHint)
+        : false;
+      if (normalized && (keyLooksPathLike || looksLikeGraphableFilePath(value))) {
+        results.add(normalized);
+      }
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        visit(item, keyHint);
+      }
+      return;
+    }
+
+    if (!isRecord(value)) {
+      return;
+    }
+
+    if (visited.has(value)) {
+      return;
+    }
+    visited.add(value);
+
+    for (const [nestedKey, nestedValue] of Object.entries(value)) {
+      visit(nestedValue, nestedKey);
+    }
+  };
+
+  visit(args);
+  return Array.from(results).slice(0, GRAPH_ENRICHMENT_NEIGHBOR_LIMIT);
+}
+
+function buildDispatchGraphContext(
+  filePaths: string[],
+  deadlineMs: number,
+): Omit<DispatchGraphContextMeta, 'latencyMs'> {
+  const files: GraphContextFileSummary[] = [];
+
+  for (const filePath of filePaths) {
+    if (Date.now() >= deadlineMs) {
+      break;
+    }
+
+    const outline = graphDb.queryOutline(filePath).slice(0, GRAPH_ENRICHMENT_OUTLINE_LIMIT);
+    const neighbors = new Map<string, {
+      relationTypes: Set<string>;
+      symbols: GraphContextNeighborSummary['symbols'];
+    }>();
+
+    for (const node of outline) {
+      if (Date.now() >= deadlineMs) {
+        break;
+      }
+
+      for (const entry of graphDb.queryEdgesFrom(node.symbolId)) {
+        if (Date.now() >= deadlineMs) {
+          break;
+        }
+
+        const neighborNode = entry.targetNode;
+        if (!neighborNode || neighborNode.filePath === filePath) {
+          continue;
+        }
+
+        let bucket = neighbors.get(neighborNode.filePath);
+        if (!bucket) {
+          bucket = { relationTypes: new Set<string>(), symbols: [] };
+          neighbors.set(neighborNode.filePath, bucket);
+        }
+
+        bucket.relationTypes.add(entry.edge.edgeType);
+        if (bucket.symbols.length < GRAPH_ENRICHMENT_SYMBOL_LIMIT) {
+          bucket.symbols.push({
+            name: neighborNode.fqName,
+            kind: neighborNode.kind,
+            line: neighborNode.startLine,
+            direction: 'outgoing',
+            relation: entry.edge.edgeType,
+          });
+        }
+      }
+
+      for (const entry of graphDb.queryEdgesTo(node.symbolId)) {
+        if (Date.now() >= deadlineMs) {
+          break;
+        }
+
+        const neighborNode = entry.sourceNode;
+        if (!neighborNode || neighborNode.filePath === filePath) {
+          continue;
+        }
+
+        let bucket = neighbors.get(neighborNode.filePath);
+        if (!bucket) {
+          bucket = { relationTypes: new Set<string>(), symbols: [] };
+          neighbors.set(neighborNode.filePath, bucket);
+        }
+
+        bucket.relationTypes.add(entry.edge.edgeType);
+        if (bucket.symbols.length < GRAPH_ENRICHMENT_SYMBOL_LIMIT) {
+          bucket.symbols.push({
+            name: neighborNode.fqName,
+            kind: neighborNode.kind,
+            line: neighborNode.startLine,
+            direction: 'incoming',
+            relation: entry.edge.edgeType,
+          });
+        }
+      }
+    }
+
+    files.push({
+      filePath,
+      outline: outline.map((node) => ({
+        name: node.fqName,
+        kind: node.kind,
+        line: node.startLine,
+      })),
+      neighbors: Array.from(neighbors.entries())
+        .map(([neighborPath, summary]) => ({
+          filePath: neighborPath,
+          relationTypes: Array.from(summary.relationTypes).sort(),
+          symbols: summary.symbols,
+        }))
+        .sort((left, right) => right.symbols.length - left.symbols.length)
+        .slice(0, GRAPH_ENRICHMENT_NEIGHBOR_LIMIT),
+    });
+  }
+
+  return {
+    status: 'ok',
+    source: 'tool-dispatch',
+    fileCount: files.length,
+    filePaths,
+    files,
+  };
+}
+
+async function resolveDispatchGraphContext(
+  toolName: string,
+  args: Record<string, unknown>,
+): Promise<DispatchGraphContextMeta | null> {
+  if (GRAPH_CONTEXT_EXCLUDED_TOOLS.has(toolName)) {
+    return null;
+  }
+
+  const filePaths = extractFilePathsFromToolArgs(args);
+  if (filePaths.length === 0) {
+    return null;
+  }
+
+  const startedAt = Date.now();
+  let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
+
+  const buildPromise = new Promise<DispatchGraphContextMeta>((resolve) => {
+    queueMicrotask(() => {
+      try {
+        const context = buildDispatchGraphContext(
+          filePaths,
+          startedAt + GRAPH_ENRICHMENT_TIMEOUT_MS,
+        );
+
+        if (Date.now() - startedAt >= GRAPH_ENRICHMENT_TIMEOUT_MS) {
+          return;
+        }
+
+        resolve({
+          ...context,
+          latencyMs: Date.now() - startedAt,
+        });
+      } catch (error: unknown) {
+        resolve({
+          status: 'unavailable',
+          source: 'tool-dispatch',
+          fileCount: filePaths.length,
+          filePaths,
+          latencyMs: Date.now() - startedAt,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    });
+  });
+
+  const timeoutPromise = new Promise<DispatchGraphContextMeta>((resolve) => {
+    timeoutHandle = setTimeout(() => {
+      resolve({
+        status: 'timeout',
+        source: 'tool-dispatch',
+        fileCount: filePaths.length,
+        filePaths,
+        latencyMs: Date.now() - startedAt,
+      });
+    }, GRAPH_ENRICHMENT_TIMEOUT_MS);
+  });
+
+  const graphContext = await Promise.race([buildPromise, timeoutPromise]);
+  if (timeoutHandle) {
+    clearTimeout(timeoutHandle);
+  }
+  return graphContext;
+}
+
+function injectSessionPrimeHints(
+  envelope: Record<string, unknown>,
+  meta: Record<string, unknown>,
+  sessionPrimeContext: AutoSurfaceResult,
+): void {
+  const hints = Array.isArray(envelope.hints)
+    ? envelope.hints.filter((hint): hint is string => typeof hint === 'string')
+    : [];
+  envelope.hints = hints;
+
+  const constitutionalCount = Array.isArray(sessionPrimeContext.constitutional)
+    ? sessionPrimeContext.constitutional.length
+    : 0;
+  const codeGraphStatus = sessionPrimeContext.codeGraphStatus;
+  const codeGraphState = codeGraphStatus?.status === 'ok'
+    ? 'loaded code graph status'
+    : 'code graph status unavailable';
+
+  hints.push(
+    `Session priming: loaded ${constitutionalCount} constitutional memories and ${codeGraphState}`
+  );
+
+  meta.sessionPriming = sessionPrimeContext;
 }
 
 async function getMemoryStats(): Promise<DynamicMemoryStats> {
@@ -322,6 +665,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       await invalidateReinitializedDbCaches();
     }
 
+    let sessionPrimeContext: AutoSurfaceResult | null = null;
+    try {
+      sessionPrimeContext = await primeSessionIfNeeded(name, args);
+    } catch (primeErr: unknown) {
+      const msg = primeErr instanceof Error ? primeErr.message : String(primeErr);
+      console.error(`[context-server] Session priming failed (non-fatal): ${msg}`);
+    }
+
     // SK-004/TM-05: Auto-surface memories before dispatch (after validation)
     let autoSurfacedContext: AutoSurfaceResult | null = null;
     const isCompactionLifecycleCall =
@@ -368,6 +719,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       throw new Error(`Unknown tool: ${name}`);
     }
 
+    let dispatchGraphContext: DispatchGraphContextMeta | null = null;
+    if (!result.isError) {
+      dispatchGraphContext = await resolveDispatchGraphContext(name, args);
+    }
+
     runAfterToolCallbacks(name, callId, structuredClone(result));
 
     // SK-004: Inject auto-surface hints before token-budget enforcement so
@@ -383,16 +739,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
         const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
         if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
           const metaValue = envelope.meta;
-          const meta = (metaValue && typeof metaValue === 'object' && !Array.isArray(metaValue))
+          const meta = isRecord(metaValue)
             ? metaValue as Record<string, unknown>
             : {};
           const dataValue = envelope.data;
-          const data = (dataValue && typeof dataValue === 'object' && !Array.isArray(dataValue))
+          const data = isRecord(dataValue)
             ? dataValue as Record<string, unknown>
             : null;
           envelope.meta = meta;
+          if (sessionPrimeContext && !result.isError) {
+            injectSessionPrimeHints(envelope, meta, sessionPrimeContext);
+          }
           if (autoSurfacedContext && !result.isError) {
             meta.autoSurfacedContext = autoSurfacedContext;
+          }
+          if (dispatchGraphContext && !result.isError) {
+            meta.graphContext = dispatchGraphContext;
           }
           const budget = getTokenBudget(name);
           meta.tokenBudget = budget;

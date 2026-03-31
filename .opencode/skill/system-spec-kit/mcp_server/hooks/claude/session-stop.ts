@@ -147,10 +147,10 @@ async function main(): Promise<void> {
   const state = loadState(sessionId);
 
   // Skip auto-save if a recent save already exists (prevents double-saves)
-  if (state?.pendingCompactPrime?.cachedAt) {
-    const cachedAge = Date.now() - new Date(state.pendingCompactPrime.cachedAt).getTime();
+  if (state?.pendingStopSave?.cachedAt) {
+    const cachedAge = Date.now() - new Date(state.pendingStopSave.cachedAt).getTime();
     if (cachedAge < RECENT_SAVE_WINDOW_MS) {
-      hookLog('info', 'session-stop', `Recent auto-save exists (cached at ${state.pendingCompactPrime.cachedAt}), skipping duplicate`);
+      hookLog('info', 'session-stop', `Recent auto-save exists (cached at ${state.pendingStopSave.cachedAt}), skipping duplicate`);
       hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
       return;
     }
@@ -159,7 +159,7 @@ async function main(): Promise<void> {
   if (state?.metrics?.estimatedCompletionTokens && state.metrics.estimatedCompletionTokens > AUTO_SAVE_TOKEN_THRESHOLD) {
     hookLog('info', 'session-stop', `Completion tokens (${state.metrics.estimatedCompletionTokens}) exceed threshold (${AUTO_SAVE_TOKEN_THRESHOLD}) — auto-save recommended`);
     updateState(sessionId, {
-      pendingCompactPrime: {
+      pendingStopSave: {
         payload: `Session had ${state.metrics.estimatedCompletionTokens} completion tokens. Use memory_context({ mode: "resume", profile: "resume" }) to recover full context.`,
         cachedAt: new Date().toISOString(),
       },

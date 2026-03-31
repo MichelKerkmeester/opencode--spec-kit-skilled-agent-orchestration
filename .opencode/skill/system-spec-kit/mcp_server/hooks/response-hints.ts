@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Response Hints
 // ───────────────────────────────────────────────────────────────
-import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+import { serializeEnvelopeWithTokenCount, syncEnvelopeTokenCount } from '../lib/response/envelope.js';
 
 interface HookResult {
   content?: Array<{ type?: string; text?: string }>;
@@ -27,33 +27,60 @@ function ensureEnvelopeMeta(envelope: EnvelopeRecord): EnvelopeRecord {
   return meta;
 }
 
-function syncEnvelopeTokenCount(envelope: EnvelopeRecord): number {
-  const meta = ensureEnvelopeMeta(envelope);
-  const currentTokenCount = meta.tokenCount;
-  let previousCount = typeof currentTokenCount === 'number' && Number.isFinite(currentTokenCount)
-    ? currentTokenCount
-    : -1;
-
-  // Converges in 2-3 iterations: token count changes the serialized length,
-  // Which changes the count. The 5-iteration cap is a safety bound.
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const nextTokenCount = estimateTokenCount(JSON.stringify(envelope, null, 2));
-    meta.tokenCount = nextTokenCount;
-    if (nextTokenCount === previousCount) {
-      return nextTokenCount;
+function readNumericField(record: Record<string, unknown>, keys: string[]): number | null {
+  for (const key of keys) {
+    const value = record[key];
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
     }
-    previousCount = nextTokenCount;
   }
-
-  return typeof meta.tokenCount === 'number' ? meta.tokenCount : 0;
+  return null;
 }
 
-// Extra JSON.stringify is intentional: syncEnvelopeTokenCount mutates the
-// Envelope in place and returns a number. Keeping that return type stable
-// Avoids a breaking API change across 10+ call sites.
-function serializeEnvelopeWithTokenCount(envelope: EnvelopeRecord): string {
-  syncEnvelopeTokenCount(envelope);
-  return JSON.stringify(envelope, null, 2);
+function extractSurfacedTokenCount(result: HookResult, meta: EnvelopeRecord): number | null {
+  const candidates = [
+    result.usage,
+    result,
+    meta.usage,
+    meta,
+  ].filter(isRecord);
+
+  const promptTokens = candidates
+    .map((candidate) => readNumericField(candidate, ['promptTokens', 'prompt_tokens', 'inputTokens', 'input_tokens']))
+    .find((value): value is number => value !== null) ?? null;
+  const completionTokens = candidates
+    .map((candidate) => readNumericField(candidate, ['completionTokens', 'completion_tokens', 'outputTokens', 'output_tokens']))
+    .find((value): value is number => value !== null) ?? null;
+  const cacheCreationTokens = candidates
+    .map((candidate) => readNumericField(candidate, [
+      'cacheCreationTokens',
+      'cache_creation_tokens',
+      'cacheCreationInputTokens',
+      'cache_creation_input_tokens',
+    ]))
+    .find((value): value is number => value !== null) ?? null;
+  const cacheReadTokens = candidates
+    .map((candidate) => readNumericField(candidate, [
+      'cacheReadTokens',
+      'cache_read_tokens',
+      'cacheReadInputTokens',
+      'cache_read_input_tokens',
+    ]))
+    .find((value): value is number => value !== null) ?? null;
+  const totalTokens = candidates
+    .map((candidate) => readNumericField(candidate, ['totalTokens', 'total_tokens']))
+    .find((value): value is number => value !== null) ?? null;
+
+  if (
+    promptTokens !== null ||
+    completionTokens !== null ||
+    cacheCreationTokens !== null ||
+    cacheReadTokens !== null
+  ) {
+    return (promptTokens ?? 0) + (completionTokens ?? 0) + (cacheCreationTokens ?? 0) + (cacheReadTokens ?? 0);
+  }
+
+  return totalTokens;
 }
 
 function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSurfacedContext): void {
@@ -81,6 +108,7 @@ function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSur
     const triggeredCount = Array.isArray(autoSurfacedContext?.triggered)
       ? autoSurfacedContext.triggered.length
       : 0;
+    const surfacedTokenCount = extractSurfacedTokenCount(result, meta);
 
     if (constitutionalCount > 0 || triggeredCount > 0) {
       const latency = typeof autoSurfacedContext?.latencyMs === 'number'
@@ -96,6 +124,7 @@ function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSur
       triggeredCount,
       surfaced_at: autoSurfacedContext?.surfaced_at ?? null,
       latencyMs: typeof autoSurfacedContext?.latencyMs === 'number' ? autoSurfacedContext.latencyMs : 0,
+      ...(typeof surfacedTokenCount === 'number' ? { tokenCount: surfacedTokenCount } : {}),
     };
 
     const firstContent = result.content?.[0];

@@ -6,12 +6,16 @@
 // Tree-sitter WASM integration planned as future enhancement.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 import type {
   CodeNode, CodeEdge, ParseResult, SupportedLanguage,
   IndexerConfig, SymbolKind,
 } from './indexer-types.js';
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
+
+interface ParserAdapter {
+  parse(content: string, language: SupportedLanguage): ParseResult;
+}
 
 interface RawCapture {
   name: string;
@@ -24,27 +28,278 @@ interface RawCapture {
   parentName?: string;
   extendsName?: string;
   implementsNames?: string[];
+  decoratorNames?: string[];
+  typeRefs?: string[];
+}
+
+function findBraceBlockEndLine(lines: string[], startIndex: number): number {
+  const startLine = lines[startIndex];
+  const firstBraceIndex = startLine.indexOf('{');
+  if (firstBraceIndex === -1) return startIndex + 1;
+
+  let depth = 0;
+  for (let i = startIndex; i < lines.length; i++) {
+    const line = lines[i];
+    const columnStart = i === startIndex ? firstBraceIndex : 0;
+
+    for (let j = columnStart; j < line.length; j++) {
+      if (line[j] === '{') depth++;
+      if (line[j] === '}') {
+        depth--;
+        if (depth === 0) return i + 1;
+      }
+    }
+  }
+
+  return startIndex + 1;
+}
+
+function getIndentLevel(line: string): number {
+  return line.match(/^\s*/)?.[0].length ?? 0;
+}
+
+function findPythonBlockEndLine(lines: string[], startIndex: number): number {
+  const baseIndent = getIndentLevel(lines[startIndex]);
+  let endLine = startIndex + 1;
+
+  for (let i = startIndex + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim().length === 0) continue;
+
+    const indent = getIndentLevel(line);
+    if (indent <= baseIndent) break;
+    endLine = i + 1;
+  }
+
+  return endLine;
+}
+
+function getCaptureFqName(capture: Pick<RawCapture, 'name' | 'parentName'>): string {
+  return capture.parentName ? `${capture.parentName}.${capture.name}` : capture.name;
+}
+
+function splitTopLevel(text: string, delimiter: string): string[] {
+  const parts: string[] = [];
+  let current = '';
+  let angleDepth = 0;
+  let parenDepth = 0;
+  let bracketDepth = 0;
+  let braceDepth = 0;
+
+  for (const ch of text) {
+    if (
+      ch === delimiter &&
+      angleDepth === 0 &&
+      parenDepth === 0 &&
+      bracketDepth === 0 &&
+      braceDepth === 0
+    ) {
+      const part = current.trim();
+      if (part) parts.push(part);
+      current = '';
+      continue;
+    }
+
+    current += ch;
+
+    if (ch === '<') angleDepth++;
+    else if (ch === '>') angleDepth = Math.max(0, angleDepth - 1);
+    else if (ch === '(') parenDepth++;
+    else if (ch === ')') parenDepth = Math.max(0, parenDepth - 1);
+    else if (ch === '[') bracketDepth++;
+    else if (ch === ']') bracketDepth = Math.max(0, bracketDepth - 1);
+    else if (ch === '{') braceDepth++;
+    else if (ch === '}') braceDepth = Math.max(0, braceDepth - 1);
+  }
+
+  const tail = current.trim();
+  if (tail) parts.push(tail);
+  return parts;
+}
+
+function splitTopLevelOnce(text: string, delimiter: string): [string, string | undefined] {
+  let angleDepth = 0;
+  let parenDepth = 0;
+  let bracketDepth = 0;
+  let braceDepth = 0;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (
+      ch === delimiter &&
+      angleDepth === 0 &&
+      parenDepth === 0 &&
+      bracketDepth === 0 &&
+      braceDepth === 0
+    ) {
+      return [text.slice(0, i).trim(), text.slice(i + 1).trim()];
+    }
+
+    if (ch === '<') angleDepth++;
+    else if (ch === '>') angleDepth = Math.max(0, angleDepth - 1);
+    else if (ch === '(') parenDepth++;
+    else if (ch === ')') parenDepth = Math.max(0, parenDepth - 1);
+    else if (ch === '[') bracketDepth++;
+    else if (ch === ']') bracketDepth = Math.max(0, bracketDepth - 1);
+    else if (ch === '{') braceDepth++;
+    else if (ch === '}') braceDepth = Math.max(0, braceDepth - 1);
+  }
+
+  return [text.trim(), undefined];
+}
+
+function extractTypeReferences(typeExpression?: string): string[] | undefined {
+  if (!typeExpression) return undefined;
+
+  const excludedNames = new Set([
+    'string', 'number', 'boolean', 'void', 'any', 'unknown', 'never',
+    'object', 'undefined', 'null', 'true', 'false', 'keyof', 'typeof',
+    'infer', 'extends', 'readonly', 'in', 'out', 'is', 'as',
+  ]);
+
+  const matches = typeExpression.match(/\b[A-Za-z_][A-Za-z0-9_]*\b/g) ?? [];
+  const refs = matches.filter(name => !excludedNames.has(name));
+  if (refs.length === 0) return undefined;
+  return [...new Set(refs)];
+}
+
+function extractDecoratorNames(line: string): string[] {
+  const matches = line.matchAll(/@([A-Za-z_][A-Za-z0-9_]*)/g);
+  const names = [...matches].map(match => match[1]);
+  return [...new Set(names)];
+}
+
+function consumeDecorators(pendingDecorators: string[]): string[] | undefined {
+  if (pendingDecorators.length === 0) return undefined;
+  const names = [...new Set(pendingDecorators)];
+  pendingDecorators.length = 0;
+  return names;
+}
+
+function countBraces(line: string): number {
+  let depth = 0;
+  for (const ch of line) {
+    if (ch === '{') depth++;
+    else if (ch === '}') depth--;
+  }
+  return depth;
+}
+
+function extractParameterCaptures(
+  paramsText: string,
+  parentName: string,
+  lineNum: number,
+  lineLength: number,
+): RawCapture[] {
+  if (!paramsText.trim()) return [];
+
+  const parameterCaptures: RawCapture[] = [];
+  for (const param of splitTopLevel(paramsText, ',')) {
+    let segment = param.trim();
+    if (!segment || segment.startsWith('{') || segment.startsWith('[')) continue;
+
+    segment = segment.replace(/^@\w+\s+/, '').trim();
+    segment = segment.replace(/^(?:public|private|protected|readonly)\s+/, '').trim();
+    segment = segment.replace(/^\.\.\./, '').trim();
+
+    const [namePart, typePart] = splitTopLevelOnce(segment, ':');
+    const [rawName] = splitTopLevelOnce(namePart, '=');
+    const name = rawName.replace(/\?$/, '').trim();
+    if (!name) continue;
+
+    const typeText = typePart ? splitTopLevelOnce(typePart, '=')[0] : undefined;
+    parameterCaptures.push({
+      name,
+      kind: 'parameter',
+      startLine: lineNum,
+      endLine: lineNum,
+      startColumn: 0,
+      endColumn: lineLength,
+      parentName,
+      signature: segment,
+      typeRefs: extractTypeReferences(typeText),
+    });
+  }
+
+  return parameterCaptures;
+}
+
+function getModuleName(filePath: string): string {
+  const fileName = filePath.split('/').pop() ?? filePath;
+  return fileName.replace(/\.[^.]+$/, '') || fileName || 'module';
 }
 
 /** Parse JavaScript/TypeScript source for structural symbols */
 function parseJsTs(content: string): RawCapture[] {
   const captures: RawCapture[] = [];
   const lines = content.split('\n');
+  let currentClass: RawCapture | null = null;
+  let braceDepth = 0;
+  const pendingDecorators: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const lineNum = i + 1;
+    const trimmedLine = line.trim();
 
-    // Functions
-    const funcMatch = line.match(/(?:export\s+)?(?:async\s+)?function\s+(\w+)/);
-    if (funcMatch) {
-      captures.push({ name: funcMatch[1], kind: 'function', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length, signature: line.trim() });
+    if (currentClass && lineNum > currentClass.endLine) {
+      currentClass = null;
     }
 
-    // Arrow functions assigned to const
-    const arrowMatch = line.match(/(?:export\s+)?const\s+(\w+)\s*=\s*(?:async\s+)?\(/);
+    if (trimmedLine.startsWith('@')) {
+      pendingDecorators.push(...extractDecoratorNames(trimmedLine));
+      braceDepth += countBraces(line);
+      continue;
+    }
+
+    if (trimmedLine.length === 0) {
+      pendingDecorators.length = 0;
+      braceDepth += countBraces(line);
+      continue;
+    }
+
+    // Functions
+    const funcMatch = line.match(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(([^)]*)\)\s*(?::\s*([^{]+))?/);
+    if (funcMatch) {
+      const functionCapture: RawCapture = {
+        name: funcMatch[1], kind: 'function', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length, signature: line.trim(),
+        decoratorNames: consumeDecorators(pendingDecorators),
+        typeRefs: extractTypeReferences(funcMatch[3]),
+      };
+      captures.push(functionCapture);
+      captures.push(
+        ...extractParameterCaptures(
+          funcMatch[2] ?? '',
+          getCaptureFqName(functionCapture),
+          lineNum,
+          line.length,
+        ),
+      );
+    }
+
+    // Arrow functions assigned to const/let/var
+    const arrowMatch = line.match(
+      /(?:export\s+)?(?:const|let|var)\s+(\w+)\s*=\s*(?:async\s+)?\(([^)]*)\)\s*(?::\s*([^=]+?))?\s*=>/,
+    );
     if (arrowMatch && !funcMatch) {
-      captures.push({ name: arrowMatch[1], kind: 'function', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length, signature: line.trim() });
+      const functionCapture: RawCapture = {
+        name: arrowMatch[1], kind: 'function', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length, signature: line.trim(),
+        decoratorNames: consumeDecorators(pendingDecorators),
+        typeRefs: extractTypeReferences(arrowMatch[3]),
+      };
+      captures.push(functionCapture);
+      captures.push(
+        ...extractParameterCaptures(
+          arrowMatch[2] ?? '',
+          getCaptureFqName(functionCapture),
+          lineNum,
+          line.length,
+        ),
+      );
     }
 
     // Classes (with extends and implements)
@@ -53,55 +308,136 @@ function parseJsTs(content: string): RawCapture[] {
       const implNames = classMatch[3]
         ? classMatch[3].split(',').map(s => s.trim()).filter(Boolean)
         : undefined;
-      captures.push({
-        name: classMatch[1], kind: 'class', startLine: lineNum, endLine: lineNum,
+      currentClass = {
+        name: classMatch[1], kind: 'class', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i),
         startColumn: 0, endColumn: line.length, signature: line.trim(),
         extendsName: classMatch[2] || undefined,
         implementsNames: implNames,
-      });
+        decoratorNames: consumeDecorators(pendingDecorators),
+      };
+      captures.push(currentClass);
+    }
+
+    // Class methods
+    const methodMatch = currentClass
+      ? line.match(
+        /^\s*(?:(?:public|private|protected|static|readonly|abstract|async|override|get|set)\s+)*(#?\w+)\s*\(([^)]*)\)\s*(?::\s*([^{]+))?\s*\{?/,
+      )
+      : null;
+    if (methodMatch && currentClass) {
+      const methodName = methodMatch[1];
+      if (methodName !== 'constructor') {
+        const methodCapture: RawCapture = {
+          name: methodName.replace(/^#/, ''),
+          kind: 'method',
+          startLine: lineNum,
+          endLine: findBraceBlockEndLine(lines, i),
+          startColumn: 0,
+          endColumn: line.length,
+          signature: line.trim(),
+          parentName: currentClass.name,
+          decoratorNames: consumeDecorators(pendingDecorators),
+          typeRefs: extractTypeReferences(methodMatch[3]),
+        };
+        captures.push(methodCapture);
+        captures.push(
+          ...extractParameterCaptures(
+            methodMatch[2] ?? '',
+            getCaptureFqName(methodCapture),
+            lineNum,
+            line.length,
+          ),
+        );
+      }
     }
 
     // Interfaces
     const ifaceMatch = line.match(/(?:export\s+)?interface\s+(\w+)/);
     if (ifaceMatch) {
-      captures.push({ name: ifaceMatch[1], kind: 'interface', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+      captures.push({
+        name: ifaceMatch[1], kind: 'interface', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+      });
     }
 
     // Type aliases
     const typeMatch = line.match(/(?:export\s+)?type\s+(\w+)\s*=/);
     if (typeMatch) {
-      captures.push({ name: typeMatch[1], kind: 'type_alias', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+      captures.push({
+        name: typeMatch[1], kind: 'type_alias', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+      });
     }
 
     // Enums
     const enumMatch = line.match(/(?:export\s+)?enum\s+(\w+)/);
     if (enumMatch) {
-      captures.push({ name: enumMatch[1], kind: 'enum', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+      captures.push({
+        name: enumMatch[1], kind: 'enum', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+      });
     }
 
     // Imports
-    const importMatch = line.match(/import\s+(?:\{([^}]+)\}|(\w+))\s+from\s+['"](.+?)['"]/);
+    const importMatch = braceDepth === 0
+      ? line.match(/import\s+(?:\{([^}]+)\}|(\w+))\s+from\s+['"](.+?)['"]/)
+      : null;
     if (importMatch) {
       const names = importMatch[1]
         ? importMatch[1].split(',').map(s => s.trim().split(/\s+as\s+/)[0].trim())
         : [importMatch[2]];
       for (const name of names) {
         if (name) {
-          captures.push({ name, kind: 'import', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+          captures.push({
+            name, kind: 'import', startLine: lineNum,
+            endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+            endColumn: line.length,
+          });
         }
       }
     }
 
     // Exports
-    const exportMatch = line.match(/export\s+\{([^}]+)\}/);
+    const exportMatch = braceDepth === 0 ? line.match(/export\s+\{([^}]+)\}/) : null;
     if (exportMatch) {
       const names = exportMatch[1].split(',').map(s => s.trim().split(/\s+as\s+/)[0].trim());
       for (const name of names) {
         if (name) {
-          captures.push({ name, kind: 'export', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+          captures.push({
+            name, kind: 'export', startLine: lineNum,
+            endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+            endColumn: line.length,
+          });
         }
       }
     }
+
+    // Variables
+    const variableMatch = braceDepth === 0
+      ? line.match(/(?:export\s+)?(?:const|let|var)\s+(\w+)(?:\s*:\s*([^=;]+))?/)
+      : null;
+    if (variableMatch) {
+      captures.push({
+        name: variableMatch[1],
+        kind: 'variable',
+        startLine: lineNum,
+        endLine: lineNum,
+        startColumn: 0,
+        endColumn: line.length,
+        signature: line.trim(),
+        typeRefs: extractTypeReferences(variableMatch[2]),
+      });
+    }
+
+    if (pendingDecorators.length > 0 && !funcMatch && !arrowMatch && !classMatch && !methodMatch) {
+      pendingDecorators.length = 0;
+    }
+
+    braceDepth += countBraces(line);
   }
   return captures;
 }
@@ -110,28 +446,81 @@ function parseJsTs(content: string): RawCapture[] {
 function parsePython(content: string): RawCapture[] {
   const captures: RawCapture[] = [];
   const lines = content.split('\n');
-  let currentClass: string | null = null;
+  let currentClass: RawCapture | null = null;
+  const pendingDecorators: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const lineNum = i + 1;
+    const trimmedLine = line.trim();
 
-    const classMatch = line.match(/^class\s+(\w+)/);
-    if (classMatch) {
-      currentClass = classMatch[1];
-      captures.push({ name: classMatch[1], kind: 'class', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+    if (currentClass && lineNum > currentClass.endLine) {
+      currentClass = null;
+    }
+
+    if (trimmedLine.startsWith('@')) {
+      pendingDecorators.push(...extractDecoratorNames(trimmedLine));
       continue;
     }
 
-    const funcMatch = line.match(/^(\s*)def\s+(\w+)/);
+    const classMatch = line.match(/^class\s+(\w+)(?:\(([^)]*)\))?/);
+    if (classMatch) {
+      const bases = classMatch[2]
+        ? classMatch[2].split(',').map(base => base.trim()).filter(Boolean)
+        : [];
+      currentClass = {
+        name: classMatch[1], kind: 'class', startLine: lineNum,
+        endLine: findPythonBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+        extendsName: bases[0],
+        signature: line.trim(),
+        decoratorNames: consumeDecorators(pendingDecorators),
+      };
+      captures.push(currentClass);
+      continue;
+    }
+
+    const funcMatch = line.match(/^(\s*)def\s+(\w+)\s*\(([^)]*)\)\s*(?:->\s*([^:]+))?/);
     if (funcMatch) {
       const indent = funcMatch[1].length;
       const name = funcMatch[2];
       if (indent > 0 && currentClass) {
-        captures.push({ name, kind: 'method', startLine: lineNum, endLine: lineNum, startColumn: indent, endColumn: line.length, parentName: currentClass });
+        const methodCapture: RawCapture = {
+          name, kind: 'method', startLine: lineNum,
+          endLine: findPythonBlockEndLine(lines, i), startColumn: indent,
+          endColumn: line.length, parentName: currentClass.name,
+          signature: line.trim(),
+          decoratorNames: consumeDecorators(pendingDecorators),
+          typeRefs: extractTypeReferences(funcMatch[4]),
+        };
+        captures.push(methodCapture);
+        captures.push(
+          ...extractParameterCaptures(
+            funcMatch[3] ?? '',
+            getCaptureFqName(methodCapture),
+            lineNum,
+            line.length,
+          ),
+        );
       } else {
         currentClass = null;
-        captures.push({ name, kind: 'function', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+        const functionCapture: RawCapture = {
+          name, kind: 'function', startLine: lineNum,
+          endLine: findPythonBlockEndLine(lines, i), startColumn: 0,
+          endColumn: line.length,
+          signature: line.trim(),
+          decoratorNames: consumeDecorators(pendingDecorators),
+          typeRefs: extractTypeReferences(funcMatch[4]),
+        };
+        captures.push(functionCapture);
+        captures.push(
+          ...extractParameterCaptures(
+            funcMatch[3] ?? '',
+            getCaptureFqName(functionCapture),
+            lineNum,
+            line.length,
+          ),
+        );
       }
     }
 
@@ -145,7 +534,11 @@ function parsePython(content: string): RawCapture[] {
       }
     }
 
-    if (line.trim().length > 0 && !line.startsWith(' ') && !line.startsWith('\t') && !classMatch) {
+    if (pendingDecorators.length > 0 && trimmedLine.length > 0 && !funcMatch) {
+      pendingDecorators.length = 0;
+    }
+
+    if (trimmedLine.length > 0 && !line.startsWith(' ') && !line.startsWith('\t') && !classMatch) {
       currentClass = null;
     }
   }
@@ -162,10 +555,92 @@ function parseBash(content: string): RawCapture[] {
     const lineNum = i + 1;
     const funcMatch = line.match(/^(?:function\s+)?(\w+)\s*\(\s*\)/);
     if (funcMatch) {
-      captures.push({ name: funcMatch[1], kind: 'function', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length });
+      captures.push({
+        name: funcMatch[1], kind: 'function', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+      });
     }
   }
   return captures;
+}
+
+class RegexParser implements ParserAdapter {
+  parse(content: string, language: SupportedLanguage): ParseResult {
+    const startTime = Date.now();
+    const contentHash = generateContentHash(content);
+
+    try {
+      let captures: RawCapture[];
+      switch (language) {
+        case 'javascript':
+        case 'typescript':
+          captures = parseJsTs(content);
+          break;
+        case 'python':
+          captures = parsePython(content);
+          break;
+        case 'bash':
+          captures = parseBash(content);
+          break;
+        default:
+          captures = [];
+      }
+
+      const nodes = capturesToNodes(captures, '', language, content);
+      const contentLines = content.split('\n');
+      const edges = extractEdges(nodes, contentLines, captures);
+
+      return {
+        filePath: '',
+        language,
+        nodes,
+        edges,
+        contentHash,
+        parseHealth: captures.length > 0 ? 'clean' : 'recovered',
+        parseErrors: [],
+        parseDurationMs: Date.now() - startTime,
+      };
+    } catch (err: unknown) {
+      return {
+        filePath: '',
+        language,
+        nodes: [],
+        edges: [],
+        contentHash,
+        parseHealth: 'error',
+        parseErrors: [err instanceof Error ? err.message : String(err)],
+        parseDurationMs: Date.now() - startTime,
+      };
+    }
+  }
+}
+
+export function getParser(): ParserAdapter {
+  if (process.env.SPECKIT_PARSER === 'treesitter') {
+    throw new Error('SPECKIT_PARSER=treesitter is not implemented yet');
+  }
+
+  return new RegexParser();
+}
+
+function attachFilePath(result: ParseResult, filePath: string): ParseResult {
+  const symbolIdMap = new Map<string, string>();
+  const nodes = result.nodes.map(node => {
+    const fqName = node.kind === 'module' ? getModuleName(filePath) : node.fqName;
+    const name = node.kind === 'module' ? getModuleName(filePath) : node.name;
+    const symbolId = generateSymbolId(filePath, fqName, node.kind);
+    symbolIdMap.set(node.symbolId, symbolId);
+    return { ...node, filePath, symbolId, fqName, name };
+  });
+
+  const edges = result.edges.map(edge => ({
+    ...edge,
+    sourceId: symbolIdMap.get(edge.sourceId) ?? edge.sourceId,
+    targetId: symbolIdMap.get(edge.targetId) ?? edge.targetId,
+  }));
+
+  return { ...result, filePath, nodes, edges };
 }
 
 /** Convert raw captures to CodeNode[] */
@@ -175,20 +650,44 @@ function capturesToNodes(
   language: SupportedLanguage,
   content: string,
 ): CodeNode[] {
-  return captures.map(c => ({
-    symbolId: generateSymbolId(filePath, c.parentName ? c.parentName + '.' + c.name : c.name, c.kind),
+  const lines = content.split('\n');
+  const moduleNode: CodeNode = {
+    symbolId: generateSymbolId(filePath, getModuleName(filePath), 'module'),
     filePath,
-    fqName: c.parentName ? c.parentName + '.' + c.name : c.name,
-    kind: c.kind,
-    name: c.name,
-    startLine: c.startLine,
-    endLine: c.endLine,
-    startColumn: c.startColumn,
-    endColumn: c.endColumn,
+    fqName: getModuleName(filePath),
+    kind: 'module',
+    name: getModuleName(filePath),
+    startLine: 1,
+    endLine: Math.max(lines.length, 1),
+    startColumn: 0,
+    endColumn: lines[lines.length - 1]?.length ?? 0,
     language,
-    signature: c.signature,
-    contentHash: generateContentHash(content.split('\n').slice(c.startLine - 1, c.endLine).join('\n')),
-  }));
+    contentHash: generateContentHash(content),
+  };
+
+  const symbolNodes = captures.map(c => {
+    const rangeText = lines.slice(c.startLine - 1, c.endLine).join('\n');
+    return {
+      symbolId: generateSymbolId(filePath, getCaptureFqName(c), c.kind),
+      filePath,
+      fqName: getCaptureFqName(c),
+      kind: c.kind,
+      name: c.name,
+      startLine: c.startLine,
+      endLine: c.endLine,
+      startColumn: c.startColumn,
+      endColumn: c.endColumn,
+      language,
+      signature: c.signature,
+      contentHash: generateContentHash(rangeText),
+    };
+  });
+
+  if (content.trim().length === 0) {
+    return symbolNodes;
+  }
+
+  return [moduleNode, ...symbolNodes];
 }
 
 /** Extract edges from nodes, source content, and raw captures */
@@ -198,14 +697,35 @@ export function extractEdges(
   captures?: RawCapture[],
 ): CodeEdge[] {
   const edges: CodeEdge[] = [];
-  const nodesByName = new Map<string, CodeNode>();
-  for (const n of nodes) nodesByName.set(n.name, n);
+  const nodesByName = new Map<string, CodeNode[]>();
+  const nodesByFqName = new Map<string, CodeNode>();
+  for (const node of nodes) {
+    const group = nodesByName.get(node.name) ?? [];
+    group.push(node);
+    nodesByName.set(node.name, group);
+    nodesByFqName.set(node.fqName, node);
+  }
 
   // Build capture lookup by name for extends/implements data
-  const captureByName = new Map<string, RawCapture>();
+  const captureByFqName = new Map<string, RawCapture>();
   if (captures) {
-    for (const c of captures) captureByName.set(c.name, c);
+    for (const capture of captures) {
+      captureByFqName.set(getCaptureFqName(capture), capture);
+    }
   }
+
+  const preferredKinds = (
+    name: string,
+    kinds: SymbolKind[],
+    excludeId?: string,
+  ): CodeNode | undefined => {
+    const candidates = nodesByName.get(name) ?? [];
+    for (const kind of kinds) {
+      const match = candidates.find(candidate => candidate.kind === kind && candidate.symbolId !== excludeId);
+      if (match) return match;
+    }
+    return candidates.find(candidate => candidate.symbolId !== excludeId);
+  };
 
   // CONTAINS: class -> method (confidence 1.0)
   const classes = nodes.filter(n => n.kind === 'class');
@@ -224,7 +744,7 @@ export function extractEdges(
   // IMPORTS (confidence 1.0)
   const imports = nodes.filter(n => n.kind === 'import');
   for (const imp of imports) {
-    const target = nodesByName.get(imp.name);
+    const target = preferredKinds(imp.name, ['function', 'class', 'interface', 'type_alias', 'enum', 'variable', 'module'], imp.symbolId);
     if (target && target.symbolId !== imp.symbolId) {
       edges.push({
         sourceId: imp.symbolId, targetId: target.symbolId,
@@ -237,7 +757,7 @@ export function extractEdges(
   // EXPORTS (confidence 1.0)
   const exports = nodes.filter(n => n.kind === 'export');
   for (const exp of exports) {
-    const target = nodesByName.get(exp.name);
+    const target = preferredKinds(exp.name, ['function', 'class', 'interface', 'type_alias', 'enum', 'variable', 'module'], exp.symbolId);
     if (target && target.symbolId !== exp.symbolId) {
       edges.push({
         sourceId: target.symbolId, targetId: exp.symbolId,
@@ -249,9 +769,9 @@ export function extractEdges(
 
   // EXTENDS: class -> parent class (confidence 0.95)
   for (const cls of classes) {
-    const cap = captureByName.get(cls.name);
+    const cap = captureByFqName.get(cls.fqName);
     if (cap?.extendsName) {
-      const parent = nodesByName.get(cap.extendsName);
+      const parent = preferredKinds(cap.extendsName, ['class'], cls.symbolId);
       if (parent) {
         edges.push({
           sourceId: cls.symbolId, targetId: parent.symbolId,
@@ -264,10 +784,10 @@ export function extractEdges(
 
   // IMPLEMENTS: class -> interface (confidence 0.95)
   for (const cls of classes) {
-    const cap = captureByName.get(cls.name);
+    const cap = captureByFqName.get(cls.fqName);
     if (cap?.implementsNames) {
       for (const ifaceName of cap.implementsNames) {
-        const iface = nodesByName.get(ifaceName);
+        const iface = preferredKinds(ifaceName, ['interface', 'type_alias', 'import'], cls.symbolId);
         if (iface) {
           edges.push({
             sourceId: cls.symbolId, targetId: iface.symbolId,
@@ -300,7 +820,7 @@ export function extractEdges(
         if (['if', 'for', 'while', 'switch', 'catch', 'return', 'throw', 'new', 'typeof', 'await', 'async', 'function', 'class', 'const', 'let', 'var'].includes(calledName)) continue;
         seen.add(calledName);
 
-        const target = nodesByName.get(calledName);
+        const target = preferredKinds(calledName, ['function', 'method', 'class', 'variable'], caller.symbolId);
         if (target && target.symbolId !== caller.symbolId) {
           edges.push({
             sourceId: caller.symbolId, targetId: target.symbolId,
@@ -312,28 +832,72 @@ export function extractEdges(
     }
   }
 
-  // TESTED_BY: test file nodes -> tested module nodes (confidence 0.6)
-  const testPattern = /[./](?:test|spec|vitest)\./;
-  const fileGroups = new Map<string, CodeNode[]>();
-  for (const n of nodes) {
-    const group = fileGroups.get(n.filePath) ?? [];
-    group.push(n);
-    fileGroups.set(n.filePath, group);
+  // DECORATES: decorator symbol -> decorated class/function/method (confidence 0.9)
+  if (captures) {
+    for (const capture of captures) {
+      if (!capture.decoratorNames?.length) continue;
+      const decoratedNode = nodesByFqName.get(getCaptureFqName(capture));
+      if (!decoratedNode) continue;
+
+      for (const decoratorName of capture.decoratorNames) {
+        const decoratorNode = preferredKinds(decoratorName, ['function', 'class', 'import', 'variable', 'method'], decoratedNode.symbolId);
+        if (!decoratorNode) continue;
+
+        edges.push({
+          sourceId: decoratorNode.symbolId,
+          targetId: decoratedNode.symbolId,
+          edgeType: 'DECORATES',
+          weight: 0.9,
+          metadata: { confidence: '0.9' },
+        });
+      }
+    }
   }
 
-  for (const [filePath, fileNodes] of fileGroups) {
-    if (!testPattern.test(filePath)) continue;
-    // Derive tested module path: foo.test.ts -> foo.ts, foo.spec.js -> foo.js
-    const testedPath = filePath.replace(/\.(test|spec|vitest)\./, '.');
-    const testedNodes = fileGroups.get(testedPath);
-    if (!testedNodes) continue;
+  // OVERRIDES: method -> parent class method (confidence 0.9)
+  for (const method of methods) {
+    const ownerCapture = captureByFqName.get(method.fqName);
+    if (!ownerCapture?.parentName) continue;
 
-    for (const testNode of fileNodes) {
-      for (const testedNode of testedNodes) {
+    let parentClassCapture = captureByFqName.get(ownerCapture.parentName);
+    let parentClassName = parentClassCapture?.extendsName;
+
+    while (parentClassName) {
+      const parentMethod = nodesByFqName.get(`${parentClassName}.${method.name}`);
+      if (parentMethod?.kind === 'method') {
         edges.push({
-          sourceId: testNode.symbolId, targetId: testedNode.symbolId,
-          edgeType: 'TESTED_BY', weight: 0.6,
-          metadata: { confidence: '0.6' },
+          sourceId: method.symbolId,
+          targetId: parentMethod.symbolId,
+          edgeType: 'OVERRIDES',
+          weight: 0.9,
+          metadata: { confidence: '0.9' },
+        });
+        break;
+      }
+
+      parentClassCapture = captureByFqName.get(parentClassName);
+      parentClassName = parentClassCapture?.extendsName;
+    }
+  }
+
+  // TYPE_OF: symbol -> referenced type symbol (confidence 0.85)
+  if (captures) {
+    for (const capture of captures) {
+      if (!capture.typeRefs?.length) continue;
+
+      const sourceNode = nodesByFqName.get(getCaptureFqName(capture));
+      if (!sourceNode) continue;
+
+      for (const typeName of capture.typeRefs) {
+        const typeNode = preferredKinds(typeName, ['class', 'interface', 'type_alias', 'enum', 'import'], sourceNode.symbolId);
+        if (!typeNode) continue;
+
+        edges.push({
+          sourceId: sourceNode.symbolId,
+          targetId: typeNode.symbolId,
+          edgeType: 'TYPE_OF',
+          weight: 0.85,
+          metadata: { confidence: '0.85' },
         });
       }
     }
@@ -352,32 +916,8 @@ export async function parseFile(
   const contentHash = generateContentHash(content);
 
   try {
-    let captures: RawCapture[];
-    switch (language) {
-      case 'javascript':
-      case 'typescript':
-        captures = parseJsTs(content);
-        break;
-      case 'python':
-        captures = parsePython(content);
-        break;
-      case 'bash':
-        captures = parseBash(content);
-        break;
-      default:
-        captures = [];
-    }
-
-    const nodes = capturesToNodes(captures, filePath, language, content);
-    const contentLines = content.split('\n');
-    const edges = extractEdges(nodes, contentLines, captures);
-
-    return {
-      filePath, language, nodes, edges, contentHash,
-      parseHealth: captures.length > 0 ? 'clean' : 'recovered',
-      parseErrors: [],
-      parseDurationMs: Date.now() - startTime,
-    };
+    const parserResult = getParser().parse(content, language);
+    return attachFilePath(parserResult, filePath);
   } catch (err: unknown) {
     return {
       filePath, language,
@@ -389,11 +929,70 @@ export async function parseFile(
   }
 }
 
+function normalizeGlobPath(pathValue: string): string {
+  return pathValue.replace(/\\/g, '/').replace(/^\.\//, '');
+}
+
+function globToRegExp(glob: string): RegExp {
+  const normalized = normalizeGlobPath(glob);
+  let pattern = '^';
+
+  for (let i = 0; i < normalized.length; i++) {
+    const char = normalized[i];
+    const next = normalized[i + 1];
+    const nextThree = normalized.slice(i, i + 3);
+
+    if (nextThree === '**/') {
+      pattern += '(?:.*/)?';
+      i += 2;
+      continue;
+    }
+
+    if (char === '*' && next === '*') {
+      pattern += '.*';
+      i += 1;
+      continue;
+    }
+
+    if (char === '*') {
+      pattern += '[^/]*';
+      continue;
+    }
+
+    if (char === '?') {
+      pattern += '[^/]';
+      continue;
+    }
+
+    if ('\\.^$+{}()|[]'.includes(char)) {
+      pattern += `\\${char}`;
+      continue;
+    }
+
+    pattern += char;
+  }
+
+  pattern += '$';
+  return new RegExp(pattern);
+}
+
+function shouldExcludePath(
+  rootDir: string,
+  fullPath: string,
+  excludePatterns: RegExp[],
+  isDirectory: boolean,
+): boolean {
+  const relativePath = normalizeGlobPath(relative(rootDir, fullPath));
+  const candidatePath = isDirectory ? `${relativePath}/` : relativePath;
+  return excludePatterns.some(pattern => pattern.test(candidatePath));
+}
+
 /** Recursive file finder matching extension from glob pattern */
-function findFiles(dir: string, pattern: string, excludeGlobs: string[], maxSize: number): string[] {
+function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], maxSize: number): string[] {
   const extMatch = pattern.match(/\*\.(\w+)$/);
   const targetExt = extMatch ? '.' + extMatch[1] : null;
   const results: string[] = [];
+  const excludePatterns = excludeGlobs.map(globToRegExp);
 
   function walk(currentDir: string): void {
     let entries;
@@ -403,8 +1002,9 @@ function findFiles(dir: string, pattern: string, excludeGlobs: string[], maxSize
 
     for (const entry of entries) {
       const fullPath = resolve(currentDir, entry.name);
+      if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory())) continue;
+
       if (entry.isDirectory()) {
-        if (entry.name === 'node_modules' || entry.name === 'dist' || entry.name === '.git') continue;
         walk(fullPath);
       } else if (entry.isFile()) {
         if (targetExt && !entry.name.endsWith(targetExt)) continue;
@@ -420,7 +1020,7 @@ function findFiles(dir: string, pattern: string, excludeGlobs: string[], maxSize
     }
   }
 
-  walk(dir);
+  walk(rootDir);
   return results;
 }
 

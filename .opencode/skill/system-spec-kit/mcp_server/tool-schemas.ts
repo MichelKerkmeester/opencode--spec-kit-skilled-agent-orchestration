@@ -687,7 +687,6 @@ const codeGraphContext: ToolDefinition = {
       },
       budgetTokens: { type: 'number', minimum: 100, maximum: 4000, default: 1200, description: 'Token budget for response' },
       profile: { type: 'string', enum: ['quick', 'research', 'debug'], description: 'Output density profile' },
-      includeTrace: { type: 'boolean', default: false, description: 'Include resolution trace metadata' },
     },
     required: [],
   },

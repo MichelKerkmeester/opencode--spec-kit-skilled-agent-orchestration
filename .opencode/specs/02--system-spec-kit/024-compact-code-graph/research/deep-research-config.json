@@ -1,6 +1,6 @@
 {
   "topic": "Evaluate Codex-CLI-Compact (https://github.com/kunal12203/Codex-CLI-Compact) for upgrading our Spec Kit Memory MCP system vs installing/using theirs. Assess usefulness in our multi-skill, multi-agent repo context with system-spec-kit.",
-  "maxIterations": 75,
+  "maxIterations": 95,
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,

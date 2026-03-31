@@ -12,7 +12,8 @@ export type SymbolKind =
 /** Edge types for relationships between symbols */
 export type EdgeType =
   | 'CONTAINS' | 'CALLS' | 'IMPORTS' | 'EXPORTS'
-  | 'EXTENDS' | 'IMPLEMENTS' | 'TESTED_BY';
+  | 'EXTENDS' | 'IMPLEMENTS' | 'TESTED_BY'
+  | 'DECORATES' | 'OVERRIDES' | 'TYPE_OF';
 
 /** Languages supported by the structural indexer */
 export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'bash';
@@ -98,7 +99,7 @@ export function detectLanguage(filePath: string): SupportedLanguage | null {
 export function getDefaultConfig(rootDir: string): IndexerConfig {
   return {
     rootDir,
-    includeGlobs: ['**/*.ts', '**/*.js', '**/*.mjs', '**/*.py', '**/*.sh'],
+    includeGlobs: ['**/*.ts', '**/*.js', '**/*.mjs', '**/*.py', '**/*.sh', '**/*.zsh'],
     excludeGlobs: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/vendor/**'],
     maxFileSizeBytes: 102_400,
     languages: ['javascript', 'typescript', 'python', 'bash'],

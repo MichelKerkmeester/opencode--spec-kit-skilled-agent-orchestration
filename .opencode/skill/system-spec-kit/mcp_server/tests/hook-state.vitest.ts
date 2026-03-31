@@ -2,9 +2,10 @@
 // TEST: Hook State Management
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdirSync, rmSync, existsSync } from 'node:fs';
+import { mkdirSync, rmSync, existsSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import {
   getProjectHash,
   getStatePath,
@@ -47,17 +48,37 @@ describe('hook state management', () => {
       expect(path).toContain('speckit-claude-hooks');
     });
 
-    it('sanitizes unsafe characters', () => {
-      const path = getStatePath('ses/sion/../bad');
+    it('hashes session ids into fixed-length filenames', () => {
+      const sessionId = 'ses/sion/../bad';
+      const path = getStatePath(sessionId);
       expect(path).not.toContain('..');
-      // The filename part should have slashes replaced with underscores
-      expect(path).toMatch(/ses_sion____bad\.json$/);
+      expect(path).toMatch(/[a-f0-9]{16}\.json$/);
+      expect(path).toContain(createHash('sha256').update(sessionId).digest('hex').slice(0, 16));
     });
   });
 
   describe('ensureStateDir', () => {
     it('creates directory without error', () => {
       expect(() => ensureStateDir()).not.toThrow();
+    });
+
+    it('uses restrictive directory permissions', () => {
+      const originalCwd = process.cwd();
+      const projectCwd = join(tmpdir(), `speckit-state-perms-${Date.now()}`);
+      mkdirSync(projectCwd, { recursive: true });
+
+      let stateDir = '';
+      try {
+        process.chdir(projectCwd);
+        ensureStateDir();
+        stateDir = join(tmpdir(), 'speckit-claude-hooks', getProjectHash());
+        const mode = statSync(stateDir).mode & 0o777;
+        expect(mode).toBe(0o700);
+      } finally {
+        process.chdir(originalCwd);
+        if (stateDir) rmSync(stateDir, { recursive: true, force: true });
+        rmSync(projectCwd, { recursive: true, force: true });
+      }
     });
   });
 
@@ -83,6 +104,7 @@ describe('hook state management', () => {
       expect(loaded!.claudeSessionId).toBe(testSessionId);
       expect(loaded!.speckitSessionId).toBe('sk-123');
       expect(loaded!.lastSpecFolder).toBe('specs/test');
+      expect(statSync(getStatePath(testSessionId)).mode & 0o777).toBe(0o600);
     });
   });
 

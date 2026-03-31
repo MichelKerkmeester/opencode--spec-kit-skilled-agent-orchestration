@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Hook State Management
 // ───────────────────────────────────────────────────────────────
-// Per-session state at ${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json
+// Per-session state at ${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-hash>.json
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -18,6 +18,7 @@ export interface HookState {
   lastSpecFolder: string | null;
   sessionSummary: { text: string; extractedAt: string } | null;
   pendingCompactPrime: { payload: string; cachedAt: string } | null;
+  pendingStopSave?: { payload: string; cachedAt: string } | null;
   metrics: {
     estimatedPromptTokens: number;
     estimatedCompletionTokens: number;
@@ -39,14 +40,14 @@ function getStateDir(): string {
 
 /** Get the state file path for a session */
 export function getStatePath(sessionId: string): string {
-  const safe = sessionId.replace(/[^a-zA-Z0-9_-]/g, '_');
+  const safe = createHash('sha256').update(sessionId).digest('hex').slice(0, 16);
   return join(getStateDir(), `${safe}.json`);
 }
 
 /** Ensure the state directory exists */
 export function ensureStateDir(): void {
   try {
-    mkdirSync(getStateDir(), { recursive: true });
+    mkdirSync(getStateDir(), { recursive: true, mode: 0o700 });
   } catch (err: unknown) {
     hookLog('error', 'state', `Failed to create state dir: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -63,16 +64,38 @@ export function loadState(sessionId: string): HookState | null {
 }
 
 /** Save state atomically (write to .tmp then rename) */
-export function saveState(sessionId: string, state: HookState): void {
+export function saveState(sessionId: string, state: HookState): boolean {
   const filePath = getStatePath(sessionId);
   const tmpPath = filePath + '.tmp';
   try {
     state.updatedAt = new Date().toISOString();
-    writeFileSync(tmpPath, JSON.stringify(state, null, 2), 'utf-8');
+    writeFileSync(tmpPath, JSON.stringify(state, null, 2), { encoding: 'utf-8', mode: 0o600 });
     renameSync(tmpPath, filePath);
+    return true;
   } catch (err: unknown) {
     hookLog('error', 'state', `Failed to save state: ${err instanceof Error ? err.message : String(err)}`);
+    return false;
   }
+}
+
+/** Read pending compact prime, clear it from state, and return the cached value */
+export function readAndClearCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
+  const state = loadState(sessionId);
+  const pendingCompactPrime = state?.pendingCompactPrime ?? null;
+  if (!state || !pendingCompactPrime) {
+    return null;
+  }
+
+  const nextState: HookState = {
+    ...state,
+    pendingCompactPrime: null,
+  };
+
+  if (!saveState(sessionId, nextState)) {
+    hookLog('warn', 'state', `Failed to clear pending compact payload for session ${sessionId}`);
+  }
+
+  return pendingCompactPrime;
 }
 
 /** Load, merge patch, save, and return updated state */
@@ -85,13 +108,16 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
     lastSpecFolder: null,
     sessionSummary: null,
     pendingCompactPrime: null,
+    pendingStopSave: null,
     metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
     createdAt: now,
     updatedAt: now,
     ...existing,
     ...patch,
   };
-  saveState(sessionId, state);
+  if (!saveState(sessionId, state)) {
+    hookLog('warn', 'state', `State update was not persisted for session ${sessionId}`);
+  }
   return state;
 }
 

@@ -100,22 +100,42 @@ function serializeEnvelope<T>(envelope: MCPEnvelope<T>): string {
   return JSON.stringify(envelope, null, 2);
 }
 
-function syncEnvelopeTokenCount<T>(envelope: MCPEnvelope<T>): number {
-  let nextTokenCount = 0;
+type EnvelopeRecord = Record<string, unknown> & { meta?: Record<string, unknown> };
 
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    envelope.meta.tokenCount = nextTokenCount;
-    const serialized = serializeEnvelope(envelope);
-    const estimated = estimateTokens(serialized);
-    if (estimated === nextTokenCount) {
-      envelope.meta.tokenCount = estimated;
-      return estimated;
-    }
-    nextTokenCount = estimated;
+function ensureEnvelopeMeta(envelope: EnvelopeRecord): Record<string, unknown> {
+  const meta = envelope.meta;
+  if (typeof meta === 'object' && meta !== null && !Array.isArray(meta)) {
+    return meta;
   }
 
-  envelope.meta.tokenCount = nextTokenCount;
-  return nextTokenCount;
+  const nextMeta: Record<string, unknown> = {};
+  envelope.meta = nextMeta;
+  return nextMeta;
+}
+
+export function syncEnvelopeTokenCount<T>(envelope: MCPEnvelope<T> | EnvelopeRecord): number {
+  const meta = ensureEnvelopeMeta(envelope as EnvelopeRecord);
+  const currentTokenCount = meta.tokenCount;
+  let previousCount = typeof currentTokenCount === 'number' && Number.isFinite(currentTokenCount)
+    ? currentTokenCount
+    : -1;
+
+  // Converges in 2-3 iterations; the 5-iteration cap is a safety bound.
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const nextTokenCount = estimateTokens(JSON.stringify(envelope, null, 2));
+    meta.tokenCount = nextTokenCount;
+    if (nextTokenCount === previousCount) {
+      return nextTokenCount;
+    }
+    previousCount = nextTokenCount;
+  }
+
+  return typeof meta.tokenCount === 'number' ? meta.tokenCount : 0;
+}
+
+export function serializeEnvelopeWithTokenCount<T>(envelope: MCPEnvelope<T> | EnvelopeRecord): string {
+  syncEnvelopeTokenCount(envelope);
+  return JSON.stringify(envelope, null, 2);
 }
 
 // ───────────────────────────────────────────────────────────────

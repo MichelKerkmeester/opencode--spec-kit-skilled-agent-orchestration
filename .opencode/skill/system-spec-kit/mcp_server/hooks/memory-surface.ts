@@ -5,6 +5,7 @@
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives.js';
+import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 import type { Database } from '@spec-kit/shared/types';
@@ -31,6 +32,24 @@ interface AutoSurfaceResult {
     title: string;
     matched_phrases: string[];
   }[];
+  codeGraphStatus?: {
+    status: 'ok' | 'error';
+    data?: {
+      totalFiles: number;
+      totalNodes: number;
+      totalEdges: number;
+      staleFiles: number;
+      lastScanAt: string | null;
+      dbFileSize: number | null;
+      schemaVersion: number;
+      nodesByKind: Record<string, number>;
+      edgesByType: Record<string, number>;
+      parseHealth: Record<string, number>;
+    };
+    error?: string;
+  };
+  sessionPrimed?: boolean;
+  primedTool?: string;
   surfaced_at: string;
   latencyMs: number;
 }
@@ -59,6 +78,7 @@ const COMPACTION_TOKEN_BUDGET = 4000;
 let constitutionalCache: ConstitutionalMemory[] | null = null;
 let constitutionalCacheTime = 0;
 const CONSTITUTIONAL_CACHE_TTL = 60000; // 1 minute
+let sessionPrimed = false;
 
 /* ───────────────────────────────────────────────────────────────
    3. CONTEXT EXTRACTION
@@ -127,6 +147,37 @@ async function getConstitutionalMemories(): Promise<ConstitutionalMemory[]> {
 function clearConstitutionalCache(): void {
   constitutionalCache = null;
   constitutionalCacheTime = 0;
+}
+
+function getCodeGraphStatusSnapshot(): NonNullable<AutoSurfaceResult['codeGraphStatus']> {
+  try {
+    const stats = graphDb.getStats();
+    const staleCount = (graphDb.getDb().prepare(`
+      SELECT COUNT(*) as c FROM code_files
+      WHERE parse_health = 'error' OR parse_health = 'recovered'
+    `).get() as { c: number }).c;
+
+    return {
+      status: 'ok',
+      data: {
+        totalFiles: stats.totalFiles,
+        totalNodes: stats.totalNodes,
+        totalEdges: stats.totalEdges,
+        staleFiles: staleCount,
+        lastScanAt: stats.lastScanTimestamp,
+        dbFileSize: stats.dbFileSize,
+        schemaVersion: stats.schemaVersion,
+        nodesByKind: stats.nodesByKind,
+        edgesByType: stats.edgesByType,
+        parseHealth: stats.parseHealthSummary,
+      },
+    };
+  } catch (err: unknown) {
+    return {
+      status: 'error',
+      error: `Code graph not initialized: ${err instanceof Error ? err.message : String(err)}`,
+    };
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -226,6 +277,51 @@ async function autoSurfaceMemories(
     console.warn('[SK-004] Auto-surface failed:', message);
     return null;
   }
+}
+
+async function primeSessionIfNeeded(
+  toolName: string,
+  toolArgs: Record<string, unknown>
+): Promise<AutoSurfaceResult | null> {
+  if (sessionPrimed) {
+    return null;
+  }
+
+  sessionPrimed = true;
+  const startTime = Date.now();
+  const contextHint = extractContextHint(toolArgs);
+
+  try {
+    const constitutional = await getConstitutionalMemories();
+    const enrichedConstitutional = enrichWithRetrievalDirectives(constitutional);
+    const codeGraphStatus = getCodeGraphStatusSnapshot();
+    const latencyMs = Date.now() - startTime;
+
+    if (enrichedConstitutional.length === 0 && codeGraphStatus.status !== 'ok') {
+      return null;
+    }
+
+    return enforceAutoSurfaceTokenBudget({
+      constitutional: enrichedConstitutional,
+      triggered: [],
+      codeGraphStatus,
+      sessionPrimed: true,
+      primedTool: toolName,
+      surfaced_at: new Date().toISOString(),
+      latencyMs,
+    }, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(
+      `[SK-004] Session priming failed on first tool call '${toolName}'` +
+      `${contextHint ? ' with extracted context hint' : ''}: ${message}`
+    );
+    return null;
+  }
+}
+
+function resetSessionPrimed(): void {
+  sessionPrimed = false;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -332,6 +428,8 @@ export {
   getConstitutionalMemories,
   clearConstitutionalCache,
   autoSurfaceMemories,
+  primeSessionIfNeeded,
+  resetSessionPrimed,
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
 };

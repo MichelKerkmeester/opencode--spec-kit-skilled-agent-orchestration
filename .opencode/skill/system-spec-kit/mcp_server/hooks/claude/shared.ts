@@ -88,6 +88,27 @@ export function truncateToTokenBudget(text: string, maxTokens: number): string {
   return text.slice(0, maxChars) + '\n[...truncated to fit token budget]';
 }
 
+const RECOVERED_TRANSCRIPT_SYSTEM_LINE = /^\s*(?:you are\b|system:|important:|<system\b|<\/system>)/i;
+
+/** Remove obvious system-instruction lines from recovered transcript text */
+export function sanitizeRecoveredPayload(payload: string): string {
+  return payload
+    .split(/\r?\n/)
+    .filter(line => !RECOVERED_TRANSCRIPT_SYSTEM_LINE.test(line))
+    .join('\n')
+    .trim();
+}
+
+/** Add explicit provenance markers around recovered compact context */
+export function wrapRecoveredCompactPayload(payload: string, cachedAt: string): string {
+  const sanitizedPayload = sanitizeRecoveredPayload(payload);
+  return [
+    `[SOURCE: hook-cache, cachedAt: ${cachedAt}]`,
+    sanitizedPayload,
+    '[/SOURCE]',
+  ].join('\n');
+}
+
 /** Calculate pressure-adjusted budget based on context window usage */
 export function calculatePressureAdjustedBudget(
   currentTokens: number | undefined,

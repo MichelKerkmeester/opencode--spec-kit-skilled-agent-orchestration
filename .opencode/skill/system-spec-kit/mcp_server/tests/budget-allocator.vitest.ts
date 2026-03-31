@@ -43,6 +43,13 @@ describe('budget allocator', () => {
       expect(result.totalUsed).toBeLessThanOrEqual(4000);
     });
 
+    it('uses caller budgets above the default 4000-token layout', () => {
+      const sources = createDefaultSources(10_000, 10_000, 10_000, 10_000, 10_000);
+      const result = allocateBudget(sources, 8000);
+      expect(result.totalUsed).toBe(8000);
+      expect(result.totalBudget).toBe(8000);
+    });
+
     it('handles all sources empty', () => {
       const sources = createDefaultSources(0, 0, 0, 0);
       const result = allocateBudget(sources, 4000);
@@ -58,10 +65,17 @@ describe('budget allocator', () => {
   });
 
   describe('createDefaultSources', () => {
-    it('creates 4 sources with correct names', () => {
+    it('creates 5 sources with correct names', () => {
       const sources = createDefaultSources(100, 200, 300, 400);
-      expect(sources.length).toBe(4);
-      expect(sources.map(s => s.name)).toEqual(['constitutional', 'codeGraph', 'cocoIndex', 'triggered']);
+      expect(sources.length).toBe(5);
+      expect(sources.map(s => s.name)).toEqual([
+        'constitutional',
+        'codeGraph',
+        'cocoIndex',
+        'sessionState',
+        'triggered',
+      ]);
+      expect(sources.find(s => s.name === 'sessionState')).toMatchObject({ floor: 0, actualSize: 0 });
     });
   });
 });

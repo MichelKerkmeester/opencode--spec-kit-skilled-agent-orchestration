@@ -32,13 +32,38 @@ function toMCP(result: { content: Array<{ type: string; text: string }> }): MCPR
   };
 }
 
+function getMissingRequiredStringArgs(args: Record<string, unknown>, requiredKeys: string[]): string[] {
+  return requiredKeys.filter((key) => {
+    const value = args[key];
+    return typeof value !== 'string' || value.trim().length === 0;
+  });
+}
+
+function validationError(tool: string, missingKeys: string[]): MCPResponse {
+  return {
+    content: [{
+      type: 'text',
+      text: JSON.stringify({
+        status: 'error',
+        error: `Missing required field${missingKeys.length === 1 ? '' : 's'}: ${missingKeys.join(', ')}`,
+        tool,
+      }),
+    }],
+  };
+}
+
 /** Dispatch a tool call. Returns null if tool name not handled. */
 export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
   switch (name) {
     case 'code_graph_scan':
       return toMCP(await handleCodeGraphScan(args as Parameters<typeof handleCodeGraphScan>[0]));
-    case 'code_graph_query':
+    case 'code_graph_query': {
+      const missingKeys = getMissingRequiredStringArgs(args, ['operation', 'subject']);
+      if (missingKeys.length > 0) {
+        return validationError(name, missingKeys);
+      }
       return toMCP(await handleCodeGraphQuery(args as unknown as Parameters<typeof handleCodeGraphQuery>[0]));
+    }
     case 'code_graph_status':
       return toMCP(await handleCodeGraphStatus());
     case 'code_graph_context':
@@ -47,8 +72,13 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
       return toMCP(await handleCccStatus());
     case 'ccc_reindex':
       return toMCP(await handleCccReindex(args as Parameters<typeof handleCccReindex>[0]));
-    case 'ccc_feedback':
+    case 'ccc_feedback': {
+      const missingKeys = getMissingRequiredStringArgs(args, ['query', 'rating']);
+      if (missingKeys.length > 0) {
+        return validationError(name, missingKeys);
+      }
       return toMCP(await handleCccFeedback(args as unknown as Parameters<typeof handleCccFeedback>[0]));
+    }
     default:
       return null;
   }

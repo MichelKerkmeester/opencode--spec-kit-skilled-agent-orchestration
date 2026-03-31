@@ -3,10 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 // MCP tool handler for code_graph_scan — indexes workspace files.
 
-import { readFileSync } from 'node:fs';
-import type { ParseResult } from '../../lib/code-graph/indexer-types.js';
-import { generateContentHash, detectLanguage, getDefaultConfig } from '../../lib/code-graph/indexer-types.js';
-import { parseFile, indexFiles } from '../../lib/code-graph/structural-indexer.js';
+import { execSync } from 'node:child_process';
+import { resolve, sep } from 'node:path';
+import { getDefaultConfig } from '../../lib/code-graph/indexer-types.js';
+import { indexFiles } from '../../lib/code-graph/structural-indexer.js';
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 
 export interface ScanArgs {
@@ -24,6 +24,23 @@ export interface ScanResult {
   totalEdges: number;
   errors: string[];
   durationMs: number;
+  fullReindexTriggered?: boolean;
+  currentGitHead?: string | null;
+  previousGitHead?: string | null;
+}
+
+function getCurrentGitHead(rootDir: string): string | null {
+  try {
+    return execSync('git rev-parse HEAD', {
+      cwd: rootDir,
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[code-graph-scan] Failed to read git HEAD for ${rootDir}: ${message}`);
+    return null;
+  }
 }
 
 /** Handle code_graph_scan tool call */
@@ -31,10 +48,37 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   const startTime = Date.now();
   const rootDir = args.rootDir ?? process.cwd();
   const incremental = args.incremental !== false;
+  const workspaceRoot = resolve(process.cwd());
+  const resolvedRootDir = resolve(rootDir);
+  const workspacePrefix = workspaceRoot.endsWith(sep) ? workspaceRoot : `${workspaceRoot}${sep}`;
 
-  const config = getDefaultConfig(rootDir);
+  if (resolvedRootDir !== workspaceRoot && !resolvedRootDir.startsWith(workspacePrefix)) {
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'error',
+          error: `rootDir must stay within the workspace root: ${workspaceRoot}`,
+        }),
+      }],
+    };
+  }
+
+  const config = getDefaultConfig(resolvedRootDir);
   if (args.includeGlobs) config.includeGlobs = args.includeGlobs;
   if (args.excludeGlobs) config.excludeGlobs = [...config.excludeGlobs, ...args.excludeGlobs];
+
+  const previousGitHead = graphDb.getLastGitHead();
+  const currentGitHead = getCurrentGitHead(resolvedRootDir);
+  const fullReindexTriggered = incremental
+    && previousGitHead !== null
+    && currentGitHead !== null
+    && previousGitHead !== currentGitHead;
+  const effectiveIncremental = incremental && !fullReindexTriggered;
+
+  if (fullReindexTriggered) {
+    console.error(`[code-graph-scan] Git HEAD changed (${previousGitHead} -> ${currentGitHead}); forcing full reindex`);
+  }
 
   const results = await indexFiles(config);
 
@@ -44,9 +88,19 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   let totalEdges = 0;
   const errors: string[] = [];
 
+  if (!effectiveIncremental) {
+    const indexedPaths = new Set(results.map((result) => result.filePath));
+    const existingRows = graphDb.getDb().prepare('SELECT file_path FROM code_files').all() as Array<{ file_path: string }>;
+    for (const row of existingRows) {
+      if (!indexedPaths.has(row.file_path)) {
+        graphDb.removeFile(row.file_path);
+      }
+    }
+  }
+
   for (const result of results) {
     // Skip unchanged files in incremental mode
-    if (incremental && !graphDb.isFileStale(result.filePath, result.contentHash)) {
+    if (effectiveIncremental && !graphDb.isFileStale(result.filePath)) {
       filesSkipped++;
       continue;
     }
@@ -73,6 +127,10 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     }
   }
 
+  if (currentGitHead) {
+    graphDb.setLastGitHead(currentGitHead);
+  }
+
   const scanResult: ScanResult = {
     filesScanned: results.length,
     filesIndexed,
@@ -81,6 +139,9 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     totalEdges,
     errors: errors.slice(0, 10),
     durationMs: Date.now() - startTime,
+    fullReindexTriggered,
+    currentGitHead,
+    previousGitHead,
   };
 
   return {

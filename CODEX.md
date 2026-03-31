@@ -11,6 +11,14 @@ Codex CLI does not have hook-based context injection. After context compaction, 
 3. Re-read this CODEX.md and the root CLAUDE.md
 4. Present a summary to the user and WAIT for confirmation before proceeding
 
+## Session Start Protocol
+
+On the first turn of each Codex CLI session:
+
+1. Call `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume" })`
+2. Call `code_graph_status({})`
+3. Use the recovered task/spec context plus code-graph health to decide whether structural retrieval can rely on code graph tools immediately or should fall back to CocoIndex plus file reads first
+
 ## Context Retrieval Primitives
 
 Two retrieval primitives work across all runtimes:

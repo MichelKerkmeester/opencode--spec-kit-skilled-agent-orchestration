@@ -44,12 +44,13 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 1. **RECEIVE** → Parse exploration request (topic, focus area)
 2. **MEMORY FIRST** → Check memory before codebase (memory_match_triggers → memory_context → memory_search)
-3. **CODEBASE SCAN** → Glob (5-10 patterns) → Grep (3-5 patterns) → Read (5-8 key files)
-4. **DEEPEN** → Expand direct retrieval depth when gaps remain (no sub-agent dispatch)
-5. **SYNTHESIZE** → Combine memory + codebase findings into structured Context Package
-6. **DELIVER** → Return Context Package to the calling agent
+3. **GRAPH HEALTH** → Call `code_graph_status()` once per session before structural exploration so the agent knows whether code graph tools are usable or whether CocoIndex/filesystem fallbacks are required
+4. **CODEBASE SCAN** → Prefer `code_graph_query` / `code_graph_context` for structural questions, then CocoIndex, Glob, Grep, and Read as needed
+5. **DEEPEN** → Expand direct retrieval depth when gaps remain (no sub-agent dispatch)
+6. **SYNTHESIZE** → Combine memory + codebase findings into structured Context Package
+7. **DELIVER** → Return Context Package to the calling agent
 
-**Key Principle**: Memory ALWAYS comes first. Prior decisions and saved context prevent redundant work. Nested sub-agent dispatch is illegal in this Copilot profile.
+**Key Principle**: Memory ALWAYS comes first. Prior decisions and saved context prevent redundant work. Probe code-graph health once per session before trusting structural tools. Nested sub-agent dispatch is illegal in this Copilot profile.
 
 ---
 
@@ -67,6 +68,9 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 | `memory_match_triggers` | Memory (L2) | Trigger phrase matching   | Quick context surfacing (Layer 1)    |
 | `memory_context`        | Memory (L1) | Unified context retrieval | Intent-aware routing (Layer 1/3)     |
 | `memory_search`         | Memory (L2) | 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion | Deep memory retrieval (Layer 3) |
+| `code_graph_status`     | Structure   | Code graph health check   | First session probe before structural retrieval |
+| `code_graph_query`      | Structure   | Graph traversal           | Structural questions: calls, imports, impact |
+| `code_graph_context`    | Structure   | Compact graph context     | Neighborhood/outline context around structural seeds |
 | `memory_list`           | Memory (L3) | Browse stored memories    | Discover what memories exist         |
 | `memory_stats`          | Memory (L3) | Memory system statistics  | Check memory health and coverage     |
 
@@ -114,7 +118,7 @@ This agent operates in **thorough mode only** — every exploration uses all 3 r
 
 > **Nesting Rule:** Nested sub-agent dispatch is illegal for this profile.
 
-**Tool Sequence**: `memory_match_triggers` → `memory_context(deep)` → `memory_search(includeContent)` → `CocoIndex search` (1-3 concept queries) → `Glob` (5-10 patterns) → `Grep` (3-5 patterns) → `Read` (5-8 key files) → spec folder analysis → `memory_list(specFolder)`
+**Tool Sequence**: `memory_match_triggers` → `memory_context(deep)` → `code_graph_status()` → `memory_search(includeContent)` → `code_graph_query/context` for structural questions → `CocoIndex search` (1-3 concept queries) → `Glob` (5-10 patterns) → `Grep` (3-5 patterns) → `Read` (5-8 key files) → spec folder analysis → `memory_list(specFolder)`
 
 **Returns**: Full memory context (prior decisions, patterns, session history), comprehensive file map with dependency relationships, detailed code pattern analysis, spec folder status (documentation state, task completion), related spec folders, cross-references between memory and codebase findings.
 
@@ -140,9 +144,10 @@ Every exploration traverses all 3 layers for comprehensive context.
 
 ### Layer 2 — Codebase Discovery
 
-**Tools**: `Glob`, `Grep`, `Read`
+**Tools**: `code_graph_status`, `code_graph_query`, `code_graph_context`, `Glob`, `Grep`, `Read`
 
 **Strategy**: Start broad, narrow progressively:
+- **Code graph** — Run `code_graph_status()` once per session, then use `code_graph_query` / `code_graph_context` for structural questions when the index is healthy.
 - **CocoIndex** — Semantic search for concept-based discovery. Use 1-3 short queries (3-5 words). Examples: `ccc search "authentication middleware"`, `ccc search "error handling patterns"`. Set `refresh_index=false` after first query.
 - **Glob** — Cast a wide net for file discovery. Use 5-10 patterns. Examples: `src/**/*auth*`, `**/*.config.*`, `*.md`
 - **Grep** — Find specific usage within discovered paths. Use file paths from Glob to narrow search scope. Examples: `authenticate(`, `import.*auth`

@@ -16,6 +16,7 @@ import {
 import { ensureStateDir, updateState } from './hook-state.js';
 import { mergeCompactBrief } from '../../lib/code-graph/compact-merger.js';
 import type { MergeInput } from '../../lib/code-graph/compact-merger.js';
+import { autoSurfaceAtCompaction } from '../../hooks/memory-surface.js';
 
 /** Extract the last N lines from a file */
 function tailFile(filePath: string, lines: number): string[] {
@@ -133,12 +134,40 @@ function buildCompactContext(transcriptLines: string[]): string {
   return sections.join('\n\n');
 }
 
+type AutoSurfaceAtCompactionResult = Awaited<ReturnType<typeof autoSurfaceAtCompaction>>;
+
+function renderConstitutionalMemories(
+  autoSurfaced: AutoSurfaceAtCompactionResult,
+): string {
+  const constitutional = autoSurfaced?.constitutional ?? [];
+  if (constitutional.length === 0) {
+    return '';
+  }
+
+  const lines = constitutional.map((memory) => {
+    const details: string[] = [`- ${memory.title}`];
+
+    if (memory.retrieval_directive) {
+      details.push(`  ${memory.retrieval_directive}`);
+    }
+
+    const provenance = [memory.specFolder, memory.filePath].filter(Boolean).join(' | ');
+    if (provenance) {
+      details.push(`  ${provenance}`);
+    }
+
+    return details.join('\n');
+  });
+
+  return `## Constitutional Rules\n${lines.join('\n')}`;
+}
+
 /**
  * Build merged context using the 3-source merge pipeline.
  * Extracts session state from transcript, then delegates budget allocation
  * and section rendering to mergeCompactBrief.
  */
-function buildMergedContext(transcriptLines: string[]): string {
+async function buildMergedContext(transcriptLines: string[]): Promise<string> {
   const filePaths = extractFilePaths(transcriptLines);
   const topics = extractTopics(transcriptLines);
 
@@ -199,7 +228,25 @@ function buildMergedContext(transcriptLines: string[]): string {
     hookLog('info', 'compact-inject', `Merge pipeline completed in ${elapsed.toFixed(0)}ms (${merged.metadata.sourceCount} sections, ~${merged.metadata.totalTokenEstimate} tokens)`);
   }
 
-  return merged.text;
+  const autoSurfaced = await autoSurfaceAtCompaction(sessionState);
+  if (!autoSurfaced) {
+    return merged.text;
+  }
+
+  hookLog(
+    'info',
+    'compact-inject',
+    `Compaction auto-surface returned ${autoSurfaced.constitutional.length} constitutional and ${autoSurfaced.triggered.length} triggered memories (${autoSurfaced.latencyMs}ms)`,
+  );
+
+  const constitutionalSection = renderConstitutionalMemories(autoSurfaced);
+  if (!constitutionalSection) {
+    return merged.text;
+  }
+
+  return merged.text
+    ? `${constitutionalSection}\n\n${merged.text}`
+    : constitutionalSection;
 }
 
 async function main(): Promise<void> {
@@ -223,7 +270,7 @@ async function main(): Promise<void> {
   // Use the 3-source merge pipeline, falling back to legacy on error
   let payload: string;
   try {
-    const mergedContext = buildMergedContext(transcriptLines);
+    const mergedContext = await buildMergedContext(transcriptLines);
     payload = truncateToTokenBudget(mergedContext, COMPACTION_TOKEN_BUDGET);
   } catch (err: unknown) {
     hookLog('warn', 'compact-inject', `Merge pipeline failed, falling back to legacy: ${err instanceof Error ? err.message : String(err)}`);

@@ -10,9 +10,12 @@ import { resolve } from 'node:path';
 import {
   parseHookStdin, hookLog, formatHookOutput, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
-  type HookInput, type OutputSection,
+  calculatePressureAdjustedBudget, sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
+  type OutputSection,
 } from './shared.js';
-import { ensureStateDir, loadState, updateState } from './hook-state.js';
+import { ensureStateDir, loadState, readAndClearCompactPrime } from './hook-state.js';
+
+const CACHE_TTL_MS = 30 * 60 * 1000;
 
 // Dynamic import for code-graph-db — may not be available
 let getStats: (() => { lastScanTimestamp: string | null; [key: string]: unknown }) | null = null;
@@ -23,22 +26,11 @@ try {
   // Code graph module not available — skip stale index detection
 }
 
-/** Calculate token budget adjusted for context window pressure */
-function calculatePressureBudget(input: HookInput, baseBudget: number): number {
-  const usage = input.context_window_tokens as number | undefined;
-  const max = input.context_window_max as number | undefined;
-  if (usage == null || max == null || max <= 0) return baseBudget;
-
-  const ratio = usage / max;
-  if (ratio > 0.9) return 200;
-  if (ratio > 0.7) return Math.max(200, Math.floor(baseBudget * (1 - ratio) * 2));
-  return baseBudget;
-}
-
 /** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
 function handleCompact(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
-  if (!state?.pendingCompactPrime) {
+  const pendingCompactPrime = readAndClearCompactPrime(sessionId);
+  if (!pendingCompactPrime) {
     hookLog('warn', 'session-prime', `No cached compact payload for session ${sessionId}`);
     return [{
       title: 'Context Recovery',
@@ -46,14 +38,23 @@ function handleCompact(sessionId: string): OutputSection[] {
     }];
   }
 
-  const { payload, cachedAt } = state.pendingCompactPrime;
-  hookLog('info', 'session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
+  const { payload, cachedAt } = pendingCompactPrime;
+  const cachedAtMs = new Date(cachedAt).getTime();
+  const cacheAgeMs = Date.now() - cachedAtMs;
+  if (Number.isNaN(cachedAtMs) || cacheAgeMs >= CACHE_TTL_MS) {
+    hookLog('warn', 'session-prime', `Rejecting stale compact cache for session ${sessionId} (cached at ${cachedAt})`);
+    return [{
+      title: 'Context Recovery',
+      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    }];
+  }
 
-  // Clear the pending payload after injection
-  updateState(sessionId, { pendingCompactPrime: null });
+  const sanitizedPayload = sanitizeRecoveredPayload(payload);
+  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt);
+  hookLog('info', 'session-prime', `Injecting cached compact brief (${sanitizedPayload.length} chars after sanitization, cached at ${cachedAt})`);
 
   const sections: OutputSection[] = [
-    { title: 'Recovered Context (Post-Compaction)', content: payload },
+    { title: 'Recovered Context (Post-Compaction)', content: wrappedPayload },
     {
       title: 'Recovery Instructions',
       content: 'Context was compacted and auto-recovered via 3-source merge (Memory + Code Graph + CocoIndex). For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
@@ -61,7 +62,7 @@ function handleCompact(sessionId: string): OutputSection[] {
   ];
 
   // Add last spec folder if known
-  if (state.lastSpecFolder) {
+  if (state?.lastSpecFolder) {
     sections.push({
       title: 'Active Spec Folder',
       content: `Last active: ${state.lastSpecFolder}`,
@@ -81,7 +82,7 @@ function checkCocoIndexAvailable(): string {
 }
 
 /** Handle source=startup: prime new session with constitutional memories + overview */
-function handleStartup(sessionId?: string): OutputSection[] {
+function handleStartup(): OutputSection[] {
   const cocoStatus = checkCocoIndexAvailable();
   const sections: OutputSection[] = [
     {
@@ -114,22 +115,6 @@ function handleStartup(sessionId?: string): OutputSection[] {
     }
   } catch {
     // DB not initialized or not available — skip silently
-  }
-
-  // Working memory attention signals
-  if (sessionId) {
-    try {
-      const state = loadState(sessionId);
-      const workingSet = (state as Record<string, unknown> | null)?.workingSet;
-      if (workingSet && Array.isArray(workingSet) && workingSet.length > 0) {
-        sections.push({
-          title: 'Working Memory',
-          content: `Recently active files:\n${workingSet.map((f: unknown) => `- ${String(f)}`).join('\n')}`,
-        });
-      }
-    } catch {
-      // No working set data — skip
-    }
   }
 
   return sections;
@@ -187,7 +172,7 @@ async function main(): Promise<void> {
       budget = COMPACTION_TOKEN_BUDGET;
       break;
     case 'startup':
-      sections = handleStartup(sessionId);
+      sections = handleStartup();
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     case 'resume':
@@ -199,12 +184,16 @@ async function main(): Promise<void> {
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     default:
-      sections = handleStartup(sessionId);
+      sections = handleStartup();
       budget = SESSION_PRIME_TOKEN_BUDGET;
   }
 
   // Apply token pressure awareness — reduce budget when context window is filling up
-  const adjustedBudget = calculatePressureBudget(input, budget);
+  const adjustedBudget = calculatePressureAdjustedBudget(
+    input.context_window_tokens as number | undefined,
+    input.context_window_max as number | undefined,
+    budget,
+  );
   if (adjustedBudget !== budget) {
     hookLog('info', 'session-prime', `Token pressure: budget ${budget} → ${adjustedBudget} (window ${input.context_window_tokens}/${input.context_window_max})`);
   }

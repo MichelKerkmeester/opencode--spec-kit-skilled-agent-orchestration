@@ -2,10 +2,10 @@
 // MODULE: Seed Resolver
 // ───────────────────────────────────────────────────────────────
 // Resolves CocoIndex search results (file:line) to code graph nodes.
-// Resolution chain: exact symbol → enclosing symbol → file anchor.
+// Resolution chain: exact symbol → near-exact symbol → enclosing symbol → file anchor.
 
 import * as graphDb from './code-graph-db.js';
-import type { CodeNode, SymbolKind } from './indexer-types.js';
+import type { SymbolKind } from './indexer-types.js';
 
 /** A seed from CocoIndex or other providers */
 export interface CodeGraphSeed {
@@ -51,21 +51,34 @@ export interface ArtifactRef {
   fqName: string | null;
   kind: string | null;
   confidence: number; // 0.0 - 1.0
-  resolution: 'exact' | 'enclosing' | 'file_anchor';
+  resolution: 'exact' | 'near_exact' | 'enclosing' | 'file_anchor';
 }
 
 // ── Type guards ──────────────────────────────────────────────
 
+function hasProvider(seed: unknown, provider: string): boolean {
+  if (typeof seed !== 'object' || seed === null) {
+    return false;
+  }
+  return (seed as { provider?: unknown }).provider === provider;
+}
+
 function isCocoIndexSeed(seed: unknown): seed is CocoIndexSeed {
-  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'cocoindex';
+  return hasProvider(seed, 'cocoindex');
 }
 
 function isManualSeed(seed: unknown): seed is ManualSeed {
-  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'manual';
+  return hasProvider(seed, 'manual');
 }
 
 function isGraphSeed(seed: unknown): seed is GraphSeed {
-  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'graph';
+  return hasProvider(seed, 'graph');
+}
+
+function throwResolutionError(operation: string, seed: unknown, err: unknown): never {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(`[seed-resolver] ${operation} failed`, { seed, error: message });
+  throw new Error(`[seed-resolver] ${operation} failed: ${message}`);
 }
 
 // ── Seed resolvers ───────────────────────────────────────────
@@ -111,8 +124,8 @@ export function resolveManualSeed(seed: ManualSeed): ArtifactRef {
         resolution: 'exact',
       };
     }
-  } catch {
-    // DB not available — fall through
+  } catch (err: unknown) {
+    throwResolutionError('resolveManualSeed', seed, err);
   }
 
   return {
@@ -148,8 +161,8 @@ export function resolveGraphSeed(seed: GraphSeed): ArtifactRef {
         resolution: 'exact',
       };
     }
-  } catch {
-    // DB not available — fall through
+  } catch (err: unknown) {
+    throwResolutionError('resolveGraphSeed', seed, err);
   }
 
   return {
@@ -191,6 +204,27 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
         };
       }
 
+      const nearExact = d.prepare(`
+        SELECT * FROM code_nodes
+        WHERE file_path = ? AND ABS(start_line - ?) <= 5
+        ORDER BY ABS(start_line - ?) ASC, kind != 'function', start_line ASC
+        LIMIT 1
+      `).get(seed.filePath, seed.startLine, seed.startLine) as Record<string, unknown> | undefined;
+
+      if (nearExact) {
+        const distance = Math.abs((nearExact.start_line as number) - seed.startLine);
+        return {
+          filePath: seed.filePath,
+          startLine: nearExact.start_line as number,
+          endLine: nearExact.end_line as number,
+          symbolId: nearExact.symbol_id as string,
+          fqName: nearExact.fq_name as string,
+          kind: nearExact.kind as string,
+          confidence: Math.max(0, 0.95 - (distance * 0.02)),
+          resolution: 'near_exact',
+        };
+      }
+
       // Try enclosing symbol (symbol whose range contains the line)
       const enclosing = d.prepare(`
         SELECT * FROM code_nodes
@@ -224,18 +258,8 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
       confidence: 0.3,
       resolution: 'file_anchor',
     };
-  } catch {
-    // DB not available — return file anchor
-    return {
-      filePath: seed.filePath,
-      startLine: seed.startLine ?? 1,
-      endLine: seed.endLine ?? 1,
-      symbolId: null,
-      fqName: null,
-      kind: null,
-      confidence: 0.1,
-      resolution: 'file_anchor',
-    };
+  } catch (err: unknown) {
+    throwResolutionError('resolveSeed', seed, err);
   }
 }
 

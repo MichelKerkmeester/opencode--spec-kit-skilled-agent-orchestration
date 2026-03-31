@@ -167,11 +167,75 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | 011 | Compaction Working-Set Integration | 2-3 days | P2 — 3-source merge |
 | 012 | CocoIndex UX, Utilization & Usefulness | 2-3 days | P1 — semantic search integration |
 
+### v2 Remediation Phases (013-016)
+
+Deep research (95 iterations, segments 1-7) and deep review (30 iterations across Codex CLI + Copilot CLI, GPT-5.4) identified **45 issues** (2 P0, 15 P1, 24 P2, 4 P3). Review verdict: **CONDITIONAL** (16 active P1 findings). These are organized into 4 remediation phases:
+
+| Phase | Name | Items | Severity | Est. LOC | Depends On |
+|-------|------|-------|----------|----------|------------|
+| 013 | Correctness & Boundary Repair | 15 | P0/P1/P2 | 190-265 | None |
+| 014 | Hook Durability & Auto-Enrichment | 14 | P1/P2 | 371-499 | 013 |
+| 015 | Tree-Sitter WASM Migration | 8 | P2/P3 | 220-345 | 013 |
+| 016 | Cross-Runtime UX & Documentation | 8 | P2/P3 | 130-208 | 014 |
+
+**Total estimated LOC: 911-1,317**
+
+#### 45-Item Summary
+
+| # | Item | Sev | Phase | Target File(s) | Review Finding |
+|---|------|-----|-------|-----------------|----------------|
+| 1 | Fix endLine bug (always equals startLine) | P0 | 013 | structural-indexer.ts | F005 |
+| 2 | Fix resume profile:"resume" | P0 | 013 | Resume config | — |
+| 3 | Preserve seed identity in handler | P1 | 013 | code_graph_context handler | F006 |
+| 4 | Validate all tool args via schema validators (not just rootDir) | P1 | 013 | scan.ts, code-graph-tools.ts | F010 |
+| 5 | Sanitize exception strings in handlers | P1 | 013 | memory-context.ts, code_graph_context.ts | — |
+| 6 | Wire orphan edge cleanup on re-index | P1 | 013 | scan.ts, code-graph-db.ts | F007 |
+| 7 | Remove budget allocator 4000-token ceiling; budget sessionState | P1 | 013 | budget-allocator.ts, compact-merger.ts | F011, F020 |
+| 8 | Fix merger zero-budget section rendering | P1 | 013 | compact-merger.ts | F012 |
+| 9 | Fix code_graph_scan DB init on fresh runtime | P1 | 013 | code-graph-db.ts, scan.ts | F021 |
+| 10 | Add initDb() schema migration guard (prevent poisoned singleton) | P1 | 013 | code-graph-db.ts | F023 |
+| 11 | Wrap replaceNodes/Edges in transaction (atomic delete+insert) | P1 | 013 | code-graph-db.ts | F024 |
+| 12 | Fix transitive query maxDepth leak + duplicate convergent paths | P1 | 013 | query handler | F026 |
+| 13 | Implement or remove includeTrace from schema + handler | P1 | 013 | code_graph_context handler | F033 |
+| 14 | Fix working-set-tracker maxFiles overshoot (2x capacity) | P2 | 013 | working-set-tracker.ts | F013 |
+| 15 | Validate ccc_feedback schema length bounds before disk write | P2 | 013 | ccc_feedback handler | F031 |
+| 16 | Fix pendingCompactPrime delete-before-read race | P1 | 014 | hook-state.ts, compact-inject.ts | F001 |
+| 17 | Propagate saveState() errors | P1 | 014 | hook-state.ts | F002 |
+| 18 | Fence recovered context with provenance markers (injection safety) | P1 | 014 | session-prime.ts | F009 |
+| 19 | Wire Claude hook path through memory-surface.ts (constitutional/triggered) | P1 | 014 | compact-inject.ts, session-prime.ts | F022 |
+| 20 | Use collision-resistant session_id hashing or verify on load | P1 | 014 | hook-state.ts | F027 |
+| 21 | Set 0700/0600 permissions on hook-state temp directory and files | P1 | 014 | hook-state.ts | F028 |
+| 22 | MCP first-call priming (T1.5) | P2 | 014 | memory-surface.ts, memory-context.ts | — |
+| 23 | Tool-dispatch auto-enrichment (Tier 2) | P2 | 014 | memory-surface.ts, context-server.ts | — |
+| 24 | Stale-on-read mechanism | P2 | 014 | code-graph-db.ts, query.ts | — |
+| 25 | Cache freshness validation | P2 | 014 | hook-state.ts | F003 |
+| 26 | Stop-hook surrogate save redesign | P2 | 014 | session-stop.ts | — |
+| 27 | Cache-token bucket accounting | P2 | 014 | response-hints.ts | — |
+| 28 | Remove dead workingSet branch in session-prime.ts | P2 | 014 | session-prime.ts | F004 |
+| 29 | Consolidate duplicated token-count sync logic | P2 | 014 | response-hints.ts, envelope.ts | F019 |
+| 30 | Replace drifted pressure-budget helper with shared tested helper | P2 | 014 | session-prime.ts | F032 |
+| 31 | Parser adapter interface | P2 | 015 | structural-indexer.ts | — |
+| 32 | Tree-sitter WASM parser | P2 | 015 | tree-sitter-parser.ts (new) | — |
+| 33 | DECORATES + OVERRIDES + TYPE_OF edges | P2 | 015 | structural-indexer.ts, indexer-types.ts | — |
+| 34 | Extract ghost SymbolKinds (variable, module, parameter, method) | P3 | 015 | indexer-types.ts | F008 |
+| 35 | Regex removal (after tree-sitter stable) | P3 | 015 | structural-indexer.ts | — |
+| 36 | Remove dead per-file TESTED_BY branch | P2 | 015 | structural-indexer.ts | F015 |
+| 37 | Wire or remove excludeGlobs option | P2 | 015 | structural-indexer.ts | F016 |
+| 38 | Fix .zsh language mapping (mapped but globs never discover) | P2 | 015 | indexer-types.ts | F017 |
+| 39 | Near-exact seed resolution + score propagation | P2 | 016 | seed-resolver.ts | — |
+| 40 | Query-intent pre-classification | P2 | 016 | Intent router | — |
+| 41 | Auto-reindex triggers | P2 | 016 | code_graph_scan, ccc_reindex | — |
+| 42 | Cross-runtime agent instruction updates | P3 | 016 | CODEX.md, AGENTS.md, agent configs | — |
+| 43 | Recovery documentation consolidation | P2 | 016 | CLAUDE.md files | F018 |
+| 44 | Fix seed-resolver silent DB failure → placeholder anchor | P2 | 016 | seed-resolver.ts | F014 |
+| 45 | Fix spec/settings SessionStart scope mismatch | P2 | 016 | spec.md, settings.local.json | F030 |
+
+**Evidence base:** Research iterations 056-095, review iterations 001-030. Cross-validated by 3 AI systems (Claude Opus, GPT-5.4 via Codex CLI, GPT-5.4 via Copilot CLI). Review verdict: CONDITIONAL (0 P0, 16 P1, 16 P2 active findings).
+
 <!-- ANCHOR:scope -->
 ## Out of Scope
 
-- Code graph implementation (phases 008+) — architecture designed in this spec (iterations 036-045), implementation follows hook phases
-- Dual-Graph installation or graperoot integration — rejected per research
+- Dual-Graph installation or graperoot integration — rejected per research (DR-001)
 - Token tracking dashboard UI — future work
-- Copilot/Gemini hook adapters — v2 after v1 ships
+- Copilot/Gemini native hook adapters — deferred until runtime SDK changes
 <!-- /ANCHOR:scope -->

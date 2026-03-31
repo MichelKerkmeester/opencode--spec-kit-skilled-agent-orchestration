@@ -42,42 +42,53 @@ function transitiveTraversal(
   limit: number,
 ): Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> {
   const visited = new Set<string>();
+  const resultSymbolIds = new Set<string>();
   const results: Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> = [];
   let frontier = [{ id: startId, depth: 0 }];
 
   while (frontier.length > 0 && results.length < limit) {
     const next: typeof frontier = [];
     for (const item of frontier) {
-      if (visited.has(item.id) || item.depth > maxDepth) continue;
+      if (visited.has(item.id) || item.depth >= maxDepth) continue;
       visited.add(item.id);
 
       if (direction === 'from') {
         for (const { edge, targetNode } of graphDb.queryEdgesFrom(item.id, edgeType)) {
           if (!visited.has(edge.targetId)) {
-            results.push({
-              symbolId: edge.targetId,
-              fqName: targetNode?.fqName ?? null,
-              filePath: targetNode?.filePath ?? null,
-              line: targetNode?.startLine ?? null,
-              depth: item.depth + 1,
-            });
+            if (!resultSymbolIds.has(edge.targetId)) {
+              resultSymbolIds.add(edge.targetId);
+              results.push({
+                symbolId: edge.targetId,
+                fqName: targetNode?.fqName ?? null,
+                filePath: targetNode?.filePath ?? null,
+                line: targetNode?.startLine ?? null,
+                depth: item.depth + 1,
+              });
+            }
+            if (results.length >= limit) break;
             next.push({ id: edge.targetId, depth: item.depth + 1 });
           }
         }
       } else {
         for (const { edge, sourceNode } of graphDb.queryEdgesTo(item.id, edgeType)) {
           if (!visited.has(edge.sourceId)) {
-            results.push({
-              symbolId: edge.sourceId,
-              fqName: sourceNode?.fqName ?? null,
-              filePath: sourceNode?.filePath ?? null,
-              line: sourceNode?.startLine ?? null,
-              depth: item.depth + 1,
-            });
+            if (!resultSymbolIds.has(edge.sourceId)) {
+              resultSymbolIds.add(edge.sourceId);
+              results.push({
+                symbolId: edge.sourceId,
+                fqName: sourceNode?.fqName ?? null,
+                filePath: sourceNode?.filePath ?? null,
+                line: sourceNode?.startLine ?? null,
+                depth: item.depth + 1,
+              });
+            }
+            if (results.length >= limit) break;
             next.push({ id: edge.sourceId, depth: item.depth + 1 });
           }
         }
       }
+
+      if (results.length >= limit) break;
     }
     frontier = next;
   }

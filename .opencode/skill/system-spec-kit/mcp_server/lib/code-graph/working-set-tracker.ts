@@ -42,7 +42,7 @@ export class WorkingSetTracker {
     }
 
     // Evict least-recent if over capacity
-    if (this.files.size > this.maxFiles * 2) {
+    if (this.files.size > this.maxFiles) {
       this.evictOldest();
     }
   }

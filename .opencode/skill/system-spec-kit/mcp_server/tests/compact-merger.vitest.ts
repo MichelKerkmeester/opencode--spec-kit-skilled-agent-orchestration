@@ -41,13 +41,42 @@ describe('compact merger', () => {
       const result = mergeCompactBrief(createInput());
       expect(result.allocation).toBeDefined();
       expect(result.allocation.totalBudget).toBe(4000);
-      expect(result.allocation.allocations.length).toBe(4);
+      expect(result.allocation.allocations.length).toBe(5);
     });
 
     it('includes merge timestamp', () => {
       const result = mergeCompactBrief(createInput());
       expect(result.metadata.mergedAt).toBeDefined();
       expect(new Date(result.metadata.mergedAt).getTime()).toBeGreaterThan(0);
+    });
+
+    it('keeps sessionState inside the caller budget', () => {
+      const result = mergeCompactBrief(createInput({
+        constitutional: '',
+        codeGraph: '',
+        cocoIndex: '',
+        triggered: '',
+        sessionState: 'S'.repeat(4000),
+      }), 1);
+
+      expect(result.metadata.totalTokenEstimate).toBeLessThanOrEqual(1);
+      expect(result.sections).toHaveLength(1);
+      expect(result.sections[0]?.name).toBe('Session State / Next Steps');
+    });
+
+    it('skips zero-budget sections instead of rendering headers only', () => {
+      const result = mergeCompactBrief(createInput({
+        constitutional: '',
+        codeGraph: 'A'.repeat(100),
+        cocoIndex: 'B'.repeat(100),
+        triggered: '',
+        sessionState: '',
+      }), 1);
+
+      expect(result.metadata.totalTokenEstimate).toBeLessThanOrEqual(1);
+      expect(result.text).toContain('Active Files & Structural Context');
+      expect(result.text).not.toContain('Semantic Neighbors');
+      expect(result.sections.every(section => section.tokenEstimate > 0)).toBe(true);
     });
   });
 });

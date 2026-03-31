@@ -1,25 +1,16 @@
-# Claude Code — Context Recovery
+# Claude Code — Hook-Aware Recovery Additions
 
-> Claude-specific compaction recovery layer. This file supplements the root CLAUDE.md with hook-aware recovery instructions.
+> Claude-specific additions only. Universal recovery instructions live in the root CLAUDE.md.
 
-## After Context Compaction
+## Hook-Aware Recovery
 
-When context is compacted, Claude Code hooks automatically inject recovered context. If hook-injected context appears in the conversation, use it directly.
+When context is compacted, Claude Code hooks automatically inject recovered context. If hook-injected context appears in the conversation, use it directly and avoid repeating the manual recovery flow unless the injected payload is missing, stale, or clearly incomplete.
 
-If no hook context is present (hooks may be disabled or unavailable), manually recover:
-
-1. **FIRST ACTION** after compaction — call: `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`
-2. Review the recovered state: current task, spec folder, blockers, next steps
-3. Re-read this CLAUDE.md and the root CLAUDE.md
-4. Present a summary to the user and WAIT for confirmation before proceeding
-
-## After /clear
-
-Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session context.
+If no hook context is present (hooks may be disabled or unavailable), follow the root `CLAUDE.md` recovery protocol.
 
 ## Session Start
 
-On fresh sessions, `memory_match_triggers()` fires automatically via Gate 1. Hook-based session priming provides additional context when available.
+On fresh sessions, SessionStart hooks may inject startup or resume context before the first user turn. Treat that payload as additive context; if no hook payload appears, fall back to the normal first-turn protocol defined by the active runtime instructions.
 
 ## Hook System
 

@@ -96,6 +96,18 @@ Evaluate Codex-CLI-Compact (Dual-Graph) for upgrading our Spec Kit Memory MCP sy
 - Key deliverables: Prioritized 18-item backlog, 4-phase implementation plan (654-932 LOC), performance budget, error recovery design, testing strategy
 - Stop reason: All 16 questions answered, convergence achieved at iteration 075
 
+### Segment 7 (iterations 76-95): Verification + Cross-Runtime Deepening via Copilot CLI
+- Status: COMPLETE
+- Method: GPT-5.4 via Copilot CLI (copilot -p), high reasoning, 5 waves of 4 parallel
+- Focus: Verify segment 6 findings against current code, deepen cross-runtime UX, validate review P1 findings
+  1. Verify core findings Q13-Q16 against current code (wave 1)
+  2. Verify implementation plans, testing, performance, error recovery (wave 2)
+  3. Deepen cross-runtime UX per runtime: OpenCode, Codex, Copilot, Gemini (wave 3)
+  4. Verify deep review P1 findings 1-10 against code (wave 4)
+  5. Synthesis, updated roadmap, parity matrix (wave 5)
+- Outcome: Segment 6 design claims were truth-synced against live code; the final roadmap now puts hardening ahead of transparent auto-enrichment, the cross-runtime startup surfaces were clarified per runtime, and the locally available P1 verification set ended with 6 confirmed active items and 1 false positive.
+- Stop reason: Final synthesis completed at iteration 095. The local workspace contained direct Segment 7 artifacts for 076-089 and 091 plus the canonical state log; expected standalone 090/092/093/094 markdown files were absent and were reconstructed from the available evidence.
+
 ---
 
 ## 7. WHAT WORKED
@@ -147,14 +159,27 @@ Evaluate Codex-CLI-Compact (Dual-Graph) for upgrading our Spec Kit Memory MCP sy
 ---
 
 ## 10b. NEXT FOCUS
-RESEARCH COMPLETE (iteration 075). All 16 questions answered across 6 segments. Next action: implementation, starting with Phase A (endLine fix, 60-80 LOC, zero dependencies). See research.md Part X for the complete implementation roadmap.
+RESEARCH COMPLETE (iteration 095). All 16 questions remain answered across 7 segments. Next action: implementation, starting with truth-sync and P1 hardening (hook cache lifecycle, stale reuse, validation boundaries, budget integrity), then the Phase A endLine fix as the first structural correction. See research.md Parts X-XI for the revised roadmap.
 
 ## 10c. WHAT WORKED (iteration 74)
 - Direct file reading of 3 runtimes' agent definitions + settings revealed format differences (TOML vs YAML frontmatter vs plain markdown) and exact tool registration patterns
 - Cross-runtime comparison of instruction files (CODEX.md vs AGENTS.md/GEMINI.md vs CLAUDE.md) exposed the gap: code graph is listed as available but never auto-triggered
+- Official Copilot CLI docs plus repo scans cleanly separated auto-loaded instruction files from optional custom-agent profiles, correcting older assumptions that repo-local markdown agent files alone described Copilot startup behavior (iteration 86)
 
 ## 10d. WHAT FAILED (iteration 74)
 - Expected COPILOT.md to exist by analogy with CODEX.md -- it does not; Copilot CLI uses the universal AGENTS.md instead
+- Treating repo-local markdown agent layouts as the authoritative Copilot CLI startup surface overfit to local structure; current docs place universal Copilot startup behavior in AGENTS.md / `.github/copilot-instructions.md` / `.github/instructions/**/*.instructions.md`, with `.github/agents/*.agent.md` as optional custom-agent profiles (iteration 86)
+
+## 10e. WHAT WORKED (iteration 87)
+- Combining repo-local evidence with official Gemini CLI docs cleanly separated **current repo configuration** from **upstream Gemini runtime capability**, which corrected the stale assumption that Gemini is just another hookless runtime.
+- Verifying official Gemini MCP configuration against the repo's shared `.mcp.json` avoided over-claiming direct `.mcp.json` compatibility and clarified that parity requires a `.gemini/settings.json` bridge.
+
+## 10f. WHAT FAILED (iteration 87)
+- The older "non-Claude runtimes lack hooks" framing no longer holds for upstream Gemini CLI; future parity analysis must treat Gemini separately from OpenCode and Codex.
+
+## 10g. NEXT FOCUS (iteration 87)
+- Choose whether Phase D should target **instruction-only Gemini parity** (`GEMINI.md` + `.gemini/settings.json` + shared MCP mirroring) or **near-Claude Gemini parity** by also wiring Gemini hooks (`SessionStart` + `PreCompress`).
+- If Gemini remains in scope for implementation, define whether `.mcp.json` should be mirrored/generated into `.gemini/settings.json` as part of the cross-runtime setup.
 
 ---
 
@@ -167,3 +192,35 @@ RESEARCH COMPLETE (iteration 075). All 16 questions answered across 6 segments. 
 - Started: 2026-03-29T09:09:00.000Z
 - Segment 3 started: 2026-03-30T10:00:00.000Z
 - Segment 6 started: 2026-03-31T12:00:00.000Z
+## 10h. WHAT WORKED (iteration 91)
+- Tracing `scan.ts` into `structural-indexer.ts` confirmed the P1-10 boundary issue quickly because the caller-controlled `rootDir` stays unvalidated all the way into the recursive walker.
+- Pairing source reads with targeted tests (`edge-cases.vitest.ts`, `hook-stop-token-tracking.vitest.ts`) helped distinguish still-live behavior from stale review prose.
+- A repo-wide search for `workingSet` was the fastest way to verify that the startup Working Memory branch has no in-repo producer.
+
+## 10i. WHAT FAILED (iteration 91)
+- Prior markdown artifacts for iterations 088-090 were not present locally, so direct prose-to-prose comparison was not possible; the verification had to rely on current source plus the JSONL state log.
+
+## 10j. NEXT FOCUS (iteration 91)
+- Continue the verification wave by checking remaining caller-controlled boundaries, stale-data paths, and error-sanitization gaps directly against handlers, hook-state producers, and tests.
+
+## 10k. WHAT WORKED (iteration 094)
+- Cross-reading iterations 078 and 084-087 produced a much cleaner separation between **current repo wiring** and **runtime capability ceiling**, which is the key distinction behind the parity matrix.
+- Verifying the live Copilot hook file (`.github/hooks/superset-notify.json`) alongside official Copilot instruction docs prevented classifying Copilot as purely instruction-only.
+
+## 10l. WHAT FAILED (iteration 094)
+- Earlier parity shorthand blurred "the runtime can support this" with "the repo already wires this today," which especially distorted Gemini and, to a lesser extent, Copilot.
+
+## 10m. NEXT FOCUS (iteration 094)
+- Final iteration 095 should convert the parity matrix into one prioritized Phase D rollout: shared Session Start Protocol first, MCP first-call priming second, runtime-specific glue third.
+
+## 10n. WHAT WORKED (iteration 093)
+- Re-reading the original roadmap (iteration 068) and the review adjustment pass (iteration 072) **after** the verification wave made it possible to separate mandatory stabilization work from deferred feature work.
+- The strongest roadmap signal came from convergence across multiple verification passes: the same themes (boundary enforcement, seed identity, hook durability, instruction-first runtime parity) recurred independently in iterations 076, 088, 089, and 091.
+
+## 10o. WHAT FAILED (iteration 093)
+- The local artifact set is incomplete for the requested verification window: `iteration-090.md` is absent and `deep-research-state.jsonl` has no local `run: 90` entry, so one slot in the 076-091 range cannot be cited directly.
+- Earlier roadmap language blurred "current seam" and "future feature," which forced this iteration to spend time de-mixing proposal work from verified defects.
+
+## 10p. NEXT FOCUS (iteration 093)
+- Use this revised phase ordering as the basis for the final synthesis: stabilization path (Phases 1-3) first, deferred feature path (Phase 4) second.
+- Keep the final parity matrix aligned to verified runtime surfaces: shared docs/config first, server-side priming only as an explicitly deferred enhancement.

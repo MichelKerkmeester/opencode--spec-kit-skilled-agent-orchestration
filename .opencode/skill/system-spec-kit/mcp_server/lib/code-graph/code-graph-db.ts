@@ -13,7 +13,7 @@ let db: Database.Database | null = null;
 let dbPath: string | null = null;
 
 /** Schema version for migration tracking */
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 3;
 
 /** SQL schema for code graph tables */
 const SCHEMA_SQL = `
@@ -22,6 +22,7 @@ const SCHEMA_SQL = `
     file_path TEXT NOT NULL UNIQUE,
     language TEXT NOT NULL,
     content_hash TEXT NOT NULL,
+    file_mtime_ms INTEGER NOT NULL DEFAULT 0,
     node_count INTEGER DEFAULT 0,
     edge_count INTEGER DEFAULT 0,
     parse_health TEXT DEFAULT 'clean',
@@ -56,10 +57,21 @@ const SCHEMA_SQL = `
     metadata TEXT
   );
 
+  CREATE TABLE IF NOT EXISTS schema_version (
+    version INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS code_graph_metadata (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+
   CREATE INDEX IF NOT EXISTS idx_nodes_file_id ON code_nodes(file_id);
   CREATE INDEX IF NOT EXISTS idx_nodes_symbol_id ON code_nodes(symbol_id);
   CREATE INDEX IF NOT EXISTS idx_nodes_kind ON code_nodes(kind);
   CREATE INDEX IF NOT EXISTS idx_nodes_name ON code_nodes(name);
+  CREATE INDEX IF NOT EXISTS idx_file_line ON code_nodes(file_path, start_line);
   CREATE INDEX IF NOT EXISTS idx_edges_source ON code_edges(source_id, edge_type);
   CREATE INDEX IF NOT EXISTS idx_edges_target ON code_edges(target_id, edge_type);
   CREATE INDEX IF NOT EXISTS idx_edges_type ON code_edges(edge_type);
@@ -67,16 +79,62 @@ const SCHEMA_SQL = `
   CREATE INDEX IF NOT EXISTS idx_files_hash ON code_files(content_hash);
 `;
 
+function getCurrentFileMtimeMs(filePath: string): number | null {
+  try {
+    return Math.trunc(statSync(filePath).mtimeMs);
+  } catch {
+    return null;
+  }
+}
+
+function hasColumn(database: Database.Database, tableName: string, columnName: string): boolean {
+  const rows = database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>;
+  return rows.some((row) => row.name === columnName);
+}
+
+function ensureSchemaMigrations(database: Database.Database): void {
+  if (!hasColumn(database, 'code_files', 'file_mtime_ms')) {
+    database.exec('ALTER TABLE code_files ADD COLUMN file_mtime_ms INTEGER NOT NULL DEFAULT 0');
+  }
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS code_graph_metadata (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_file_line ON code_nodes(file_path, start_line);
+  `);
+}
+
 /** Initialize (or get) the code graph database */
 export function initDb(dbDir: string): Database.Database {
   if (db) return db;
 
-  dbPath = join(dbDir, 'code-graph.sqlite');
-  db = new Database(dbPath);
-  db.pragma('journal_mode = WAL'); // WAL enables concurrent readers without locks
-  db.pragma('foreign_keys = ON');
-  db.exec(SCHEMA_SQL);
-  return db;
+  try {
+    dbPath = join(dbDir, 'code-graph.sqlite');
+    db = new Database(dbPath);
+    db.pragma('journal_mode = WAL'); // WAL enables concurrent readers without locks
+    db.pragma('foreign_keys = ON');
+    db.exec(SCHEMA_SQL);
+    ensureSchemaMigrations(db);
+
+    const versionRow = db.prepare('SELECT version FROM schema_version LIMIT 1').get() as { version: number } | undefined;
+    if (!versionRow) {
+      db.prepare('INSERT INTO schema_version (version) VALUES (?)').run(SCHEMA_VERSION);
+    } else if (versionRow.version < SCHEMA_VERSION) {
+      db.prepare('UPDATE schema_version SET version = ?').run(SCHEMA_VERSION);
+    }
+
+    return db;
+  } catch (err) {
+    if (db) {
+      try { db.close(); } catch { /* best effort cleanup for failed init */ }
+    }
+    db = null;
+    dbPath = null;
+    throw err;
+  }
 }
 
 /** Get the current database instance (throws if not initialized) */
@@ -93,6 +151,30 @@ export function closeDb(): void {
   }
 }
 
+function getMetadata(key: string): string | null {
+  const d = getDb();
+  const row = d.prepare('SELECT value FROM code_graph_metadata WHERE key = ?').get(key) as { value: string } | undefined;
+  return row?.value ?? null;
+}
+
+function setMetadata(key: string, value: string): void {
+  const d = getDb();
+  const now = new Date().toISOString();
+  d.prepare(`
+    INSERT INTO code_graph_metadata (key, value, updated_at)
+    VALUES (?, ?, ?)
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+  `).run(key, value, now);
+}
+
+export function getLastGitHead(): string | null {
+  return getMetadata('last_git_head');
+}
+
+export function setLastGitHead(head: string): void {
+  setMetadata('last_git_head', head);
+}
+
 /** Insert or update a file record, returning the file ID */
 export function upsertFile(
   filePath: string,
@@ -105,29 +187,30 @@ export function upsertFile(
 ): number {
   const d = getDb();
   const now = new Date().toISOString();
+  const fileMtimeMs = getCurrentFileMtimeMs(filePath) ?? 0;
 
   const existing = d.prepare('SELECT id FROM code_files WHERE file_path = ?').get(filePath) as { id: number } | undefined;
   if (existing) {
     d.prepare(`
       UPDATE code_files SET language = ?, content_hash = ?, node_count = ?, edge_count = ?,
-        parse_health = ?, indexed_at = ?, parse_duration_ms = ?
+        file_mtime_ms = ?, parse_health = ?, indexed_at = ?, parse_duration_ms = ?
       WHERE id = ?
-    `).run(language, contentHash, nodeCount, edgeCount, parseHealth, now, parseDurationMs, existing.id);
+    `).run(language, contentHash, nodeCount, edgeCount, fileMtimeMs, parseHealth, now, parseDurationMs, existing.id);
     return existing.id;
   }
 
   const result = d.prepare(`
-    INSERT INTO code_files (file_path, language, content_hash, node_count, edge_count, parse_health, indexed_at, parse_duration_ms)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(filePath, language, contentHash, nodeCount, edgeCount, parseHealth, now, parseDurationMs);
+    INSERT INTO code_files (
+      file_path, language, content_hash, file_mtime_ms, node_count, edge_count, parse_health, indexed_at, parse_duration_ms
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(filePath, language, contentHash, fileMtimeMs, nodeCount, edgeCount, parseHealth, now, parseDurationMs);
   return Number(result.lastInsertRowid);
 }
 
 /** Batch insert nodes for a file (deletes existing first) */
 export function replaceNodes(fileId: number, nodes: CodeNode[]): void {
   const d = getDb();
-  d.prepare('DELETE FROM code_nodes WHERE file_id = ?').run(fileId);
-
   const insert = d.prepare(`
     INSERT INTO code_nodes (symbol_id, file_id, file_path, fq_name, kind, name,
       start_line, end_line, start_column, end_column, language, signature, docstring, content_hash)
@@ -135,6 +218,19 @@ export function replaceNodes(fileId: number, nodes: CodeNode[]): void {
   `);
 
   const tx = d.transaction(() => {
+    const oldSymbolRows = d.prepare('SELECT symbol_id FROM code_nodes WHERE file_id = ?').all(fileId) as { symbol_id: string }[];
+    const oldSymbolIds = oldSymbolRows.map(row => row.symbol_id);
+
+    d.prepare('DELETE FROM code_nodes WHERE file_id = ?').run(fileId);
+
+    if (oldSymbolIds.length > 0) {
+      const placeholders = oldSymbolIds.map(() => '?').join(',');
+      d.prepare(`
+        DELETE FROM code_edges
+        WHERE source_id IN (${placeholders}) OR target_id IN (${placeholders})
+      `).run(...oldSymbolIds, ...oldSymbolIds);
+    }
+
     for (const n of nodes) {
       insert.run(
         n.symbolId, fileId, n.filePath, n.fqName, n.kind, n.name,
@@ -150,17 +246,17 @@ export function replaceNodes(fileId: number, nodes: CodeNode[]): void {
 export function replaceEdges(sourceIds: string[], edges: CodeEdge[]): void {
   const d = getDb();
 
-  if (sourceIds.length > 0) {
-    const placeholders = sourceIds.map(() => '?').join(',');
-    d.prepare(`DELETE FROM code_edges WHERE source_id IN (${placeholders})`).run(...sourceIds);
-  }
-
   const insert = d.prepare(`
     INSERT INTO code_edges (source_id, target_id, edge_type, weight, metadata)
     VALUES (?, ?, ?, ?, ?)
   `);
 
   const tx = d.transaction(() => {
+    if (sourceIds.length > 0) {
+      const placeholders = sourceIds.map(() => '?').join(',');
+      d.prepare(`DELETE FROM code_edges WHERE source_id IN (${placeholders})`).run(...sourceIds);
+    }
+
     for (const e of edges) {
       insert.run(e.sourceId, e.targetId, e.edgeType, e.weight, e.metadata ? JSON.stringify(e.metadata) : null);
     }
@@ -168,12 +264,46 @@ export function replaceEdges(sourceIds: string[], edges: CodeEdge[]): void {
   tx();
 }
 
-/** Check if a file needs re-indexing based on content hash */
-export function isFileStale(filePath: string, currentHash: string): boolean {
+/** Check if a file needs re-indexing based on stored mtime */
+export function isFileStale(filePath: string): boolean {
   const d = getDb();
-  const row = d.prepare('SELECT content_hash FROM code_files WHERE file_path = ?').get(filePath) as { content_hash: string } | undefined;
+  const row = d.prepare('SELECT file_mtime_ms FROM code_files WHERE file_path = ?').get(filePath) as { file_mtime_ms: number } | undefined;
   if (!row) return true;
-  return row.content_hash !== currentHash;
+  const currentMtimeMs = getCurrentFileMtimeMs(filePath);
+  if (currentMtimeMs === null) return true;
+  return row.file_mtime_ms !== currentMtimeMs;
+}
+
+/** Batch stale check for a set of file paths */
+export function ensureFreshFiles(filePaths: string[]): { stale: string[]; fresh: string[] } {
+  const uniquePaths = [...new Set(filePaths)];
+  if (uniquePaths.length === 0) {
+    return { stale: [], fresh: [] };
+  }
+
+  const d = getDb();
+  const placeholders = uniquePaths.map(() => '?').join(',');
+  const rows = d.prepare(`
+    SELECT file_path, file_mtime_ms
+    FROM code_files
+    WHERE file_path IN (${placeholders})
+  `).all(...uniquePaths) as Array<{ file_path: string; file_mtime_ms: number }>;
+  const storedMtimes = new Map(rows.map((row) => [row.file_path, row.file_mtime_ms]));
+
+  const stale: string[] = [];
+  const fresh: string[] = [];
+
+  for (const filePath of uniquePaths) {
+    const storedMtimeMs = storedMtimes.get(filePath);
+    const currentMtimeMs = getCurrentFileMtimeMs(filePath);
+    if (storedMtimeMs === undefined || currentMtimeMs === null || storedMtimeMs !== currentMtimeMs) {
+      stale.push(filePath);
+      continue;
+    }
+    fresh.push(filePath);
+  }
+
+  return { stale, fresh };
 }
 
 /** Remove a file and its nodes/edges from the graph */
@@ -243,6 +373,7 @@ export function getStats(): {
   nodesByKind: Record<string, number>; edgesByType: Record<string, number>;
   parseHealthSummary: Record<string, number>;
   lastScanTimestamp: string | null;
+  lastGitHead: string | null;
   dbFileSize: number | null;
   schemaVersion: number;
 } {
@@ -266,6 +397,7 @@ export function getStats(): {
   // Last scan timestamp
   const lastScan = d.prepare('SELECT MAX(indexed_at) as last FROM code_files').get() as { last: string | null } | undefined;
   const lastScanTimestamp = lastScan?.last ?? null;
+  const lastGitHead = getLastGitHead();
 
   // DB file size
   let dbFileSize: number | null = null;
@@ -275,7 +407,7 @@ export function getStats(): {
 
   return {
     totalFiles, totalNodes, totalEdges, nodesByKind, edgesByType, parseHealthSummary,
-    lastScanTimestamp, dbFileSize, schemaVersion: SCHEMA_VERSION,
+    lastScanTimestamp, lastGitHead, dbFileSize, schemaVersion: SCHEMA_VERSION,
   };
 }
 

@@ -66,6 +66,15 @@ Full details: `.opencode/skill/sk-git/`
 | **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
 | **Shared memory**         | `/memory:manage shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                             |
 
+### Session Start Protocol (Copilot CLI + Gemini CLI)
+
+For Copilot CLI agents and Gemini CLI sessions, treat the first turn of every session as a recovery and graph-health check:
+
+1. Call `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume" })`
+2. Call `code_graph_status({})` before structural exploration or implementation planning
+3. If the graph is stale, empty, or unavailable, fall back to CocoIndex plus direct file reads until graph-backed tools are trustworthy
+4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+
 ### Code Search Protocol
 
 **When exploring code by concept or intent, ALWAYS try CocoIndex BEFORE falling back to Grep/Glob.**

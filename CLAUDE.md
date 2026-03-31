@@ -66,6 +66,17 @@ Full details: `.opencode/skill/sk-git/`
 | **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
 | **Shared memory**         | `/memory:manage shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                    |
 
+## Context Recovery
+
+These recovery steps are universal across Claude Code, OpenCode, Codex CLI, Copilot CLI, and Gemini CLI.
+
+### After Context Compaction Or `/clear`
+
+1. **FIRST ACTION** — call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`
+2. Review the recovered state: current task, spec folder, blockers, and next steps
+3. Re-read the active runtime-specific instructions if they exist (`CODEX.md`, `GEMINI.md`, `.claude/CLAUDE.md`, runtime agent docs)
+4. Present a concise recovered summary and WAIT for confirmation before proceeding
+
 ### Coding Analysis Lenses 
 
 | Lens               | Focus            | Detection Questions                                                                |

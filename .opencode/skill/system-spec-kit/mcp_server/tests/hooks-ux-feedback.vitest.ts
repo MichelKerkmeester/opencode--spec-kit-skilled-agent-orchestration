@@ -62,6 +62,12 @@ describe('Hooks UX feedback', () => {
 
   it('appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON', () => {
     const result = {
+      usage: {
+        prompt_tokens: 100,
+        completion_tokens: 50,
+        cache_creation_tokens: 25,
+        cache_read_tokens: 10,
+      },
       content: [
         {
           type: 'text',
@@ -90,6 +96,7 @@ describe('Hooks UX feedback', () => {
       triggeredCount: 1,
       surfaced_at: '2026-03-05T10:00:00.000Z',
       latencyMs: 6,
+      tokenCount: 185,
     });
     expect(finalText).toBe(JSON.stringify(parsed, null, 2));
     expect(parsed.meta.tokenCount).not.toBe(12);

@@ -1,0 +1,95 @@
+---
+title: "Plan: Hook Durability & Auto-Enrichment [024/014]"
+description: "Implementation order: fix reliability + security bugs first, then add auto-enrichment features, then clean up dead code."
+---
+# Plan: Phase 014 — Hook Durability & Auto-Enrichment
+
+## Implementation Order
+
+### Sub-phase B0: Hook Reliability + Security (items 16-21, 25-26)
+
+1. **Item 16: Cache race fix** (10-15 LOC)
+   - In hook-state.ts: add readAndClear() that returns payload then nulls
+   - In session-prime.ts: use readAndClear(), verify stdout success before clear
+
+2. **Item 17: saveState() error propagation** (15-20 LOC)
+   - Change return type to boolean
+   - Wrap atomic write in try/catch, return false on failure
+   - Update callers to check return value
+
+3. **Item 18: Injection fencing for recovered context** (15-20 LOC)
+   - Wrap recovered context with `[SOURCE: hook-cache]` provenance markers
+   - Sanitize embedded instruction-like patterns in transcript text
+   - Verify: malformed transcript text does not escape provenance boundary
+
+4. **Item 19: Wire hook path through memory-surface.ts** (20-30 LOC)
+   - Route compact-inject.ts output through memory-surface.ts surface pipeline
+   - Or replicate constitutional + triggered payload injection in hook path
+   - Verify: constitutional memories appear in post-compaction recovery
+
+5. **Item 20: Session_id collision resistance** (15-20 LOC)
+   - Replace naive sanitization with SHA-256 hash for state filenames
+   - Or: store full session_id inside state file and verify on load
+   - Verify: two sessions with similar IDs get separate state files
+
+6. **Item 21: Restrictive file permissions** (10-15 LOC)
+   - `fs.mkdirSync(dir, { mode: 0o700 })` for temp directory
+   - `fs.writeFileSync(path, data, { mode: 0o600 })` for state files
+   - Verify: state files not world-readable on shared systems
+
+7. **Item 25: Cache freshness** (20-30 LOC)
+   - Add `CACHE_TTL_MS = 30 * 60 * 1000` constant
+   - In session-prime.ts: check `Date.now() - cachedAt < CACHE_TTL_MS`
+
+8. **Item 26: Stop-hook save redesign** (15-25 LOC)
+   - Add `pendingStopSave` field to HookState (separate from pendingCompactPrime)
+   - Update session-stop.ts to use new field
+
+### Sub-phase B1: Token + Stale-on-Read (items 24, 27)
+
+9. **Item 27: Token accounting** (20-30 LOC)
+   - Include cache bucket in token summation
+
+10. **Item 24: ensureFreshFiles()** (76-104 LOC)
+    - Add `file_mtime_ms` column to code_files schema
+    - Implement `isFileStale(filePath)`: compare stored mtime vs fs.statSync mtime
+    - Implement `ensureFreshFiles(paths)`: batch stale check + conditional reindex
+    - Wire into query and context handlers
+
+### Sub-phase B2: MCP First-Call Priming (item 22)
+
+11. **Item 22: First-call detection + priming** (110-150 LOC)
+    - Track `sessionPrimed` flag in MCP server state
+    - On first tool call: detect via resolveTrustedSession()
+    - Auto-load: constitutional memories, code graph status, working set
+    - Wire into memory-surface.ts tool dispatch
+
+### Sub-phase B3: Auto-Enrichment (item 23)
+
+12. **Item 23: GRAPH_AWARE_TOOLS interceptor** (105-135 LOC)
+    - Define GRAPH_AWARE_TOOLS set (exclude recursive tools)
+    - Extract file path hint from tool arguments
+    - Query code graph for 1-hop neighbors of referenced file
+    - Inject as `meta.graphContext` in response envelope
+    - Respect 250ms latency budget via Promise.allSettled
+
+### Sub-phase B4: Dead Code Cleanup (items 28-30)
+
+13. **Item 28: Remove dead workingSet branch** (5-10 LOC, net negative)
+    - Delete unreachable workingSet branch in session-prime.ts
+
+14. **Item 29: Consolidate token-count sync** (15-20 LOC)
+    - Extract shared helper from response-hints.ts and envelope.ts
+
+15. **Item 30: Replace drifted pressure-budget helper** (5-10 LOC)
+    - Import shared tested helper instead of private copy
+
+## Testing
+- Verify cache race: simulate inject failure, check payload preserved
+- Verify stale detection: modify file, query, check auto-reindex
+- Verify first-call priming: new session, first tool call loads context
+- Verify injection fencing: inject instruction-like text in transcript, check it's fenced
+- Verify constitutional payloads survive compaction via hook path
+- Verify distinct session IDs produce separate state files
+- Verify state files have 0600 permissions on creation
+- Verify dead workingSet branch removal doesn't break session-prime

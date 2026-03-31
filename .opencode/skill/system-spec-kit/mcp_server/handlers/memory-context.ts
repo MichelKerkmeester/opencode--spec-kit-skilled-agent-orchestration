@@ -982,6 +982,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const requestId = randomUUID();
 
   try {
+  try {
     await checkDatabaseUpdated();
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -1352,6 +1353,18 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   }
 
   return _contextResponse;
+  } catch (error: unknown) {
+    console.error(`[memory-context] Unexpected failure [requestId=${requestId}]:`, error);
+    return createMCPErrorResponse({
+      tool: 'memory_context',
+      error: 'memory_context failed due to an internal error',
+      code: 'E_INTERNAL',
+      details: { requestId, layer: 'L1:Orchestration' },
+      recovery: {
+        hint: 'Retry the request. If the problem persists, inspect stderr logs for the full error details.',
+      },
+    });
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────

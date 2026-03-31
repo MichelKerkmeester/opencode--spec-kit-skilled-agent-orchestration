@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Compact Merger
 // ───────────────────────────────────────────────────────────────
-// Merges context from 3 sources (Memory, Code Graph, CocoIndex)
+// Merges context from multiple sources (Memory, Code Graph, CocoIndex, Session)
 // into a unified compact brief for compaction injection.
 
 import { allocateBudget, createDefaultSources, type AllocationResult } from './budget-allocator.js';
@@ -49,9 +49,17 @@ function estimateTokens(text: string): number {
 
 /** Truncate text to fit within a token budget */
 function truncateToTokens(text: string, maxTokens: number): string {
+  if (maxTokens <= 0) return '';
   if (estimateTokens(text) <= maxTokens) return text;
+
+  const marker = '\n[...truncated]';
   const maxChars = maxTokens * 4;
-  return text.slice(0, maxChars) + '\n[...truncated]';
+  if (marker.length >= maxChars) {
+    return text.slice(0, maxChars);
+  }
+
+  const contentChars = Math.max(0, maxChars - marker.length);
+  return text.slice(0, contentChars) + marker;
 }
 
 /** Extract file paths from a text section for deduplication */
@@ -115,42 +123,47 @@ export function mergeCompactBrief(
   const codeGraphSize = estimateTokens(input.codeGraph);
   const cocoIndexSize = estimateTokens(input.cocoIndex);
   const triggeredSize = estimateTokens(input.triggered);
+  const sessionStateSize = estimateTokens(input.sessionState);
 
-  const sources = createDefaultSources(constitutionalSize, codeGraphSize, cocoIndexSize, triggeredSize);
+  const sources = createDefaultSources(
+    constitutionalSize,
+    codeGraphSize,
+    cocoIndexSize,
+    triggeredSize,
+    sessionStateSize,
+  );
   const allocation = allocateBudget(sources, totalBudget);
 
   // Build sections with granted budgets
   const sections: MergedBrief['sections'] = [];
   const allocationMap = new Map(allocation.allocations.map(a => [a.name, a]));
+  const pushSection = (
+    inputText: string,
+    allocationName: string,
+    sectionName: string,
+    source: string,
+  ): void => {
+    if (!inputText.trim()) return;
 
-  if (input.constitutional.trim()) {
-    const alloc = allocationMap.get('constitutional');
-    const content = truncateToTokens(input.constitutional, alloc?.granted ?? 700);
-    sections.push({ name: 'Constitutional Rules', content, tokenEstimate: estimateTokens(content), source: 'memory' });
-  }
+    const granted = allocationMap.get(allocationName)?.granted ?? 0;
+    if (granted <= 0) return;
 
-  if (input.codeGraph.trim()) {
-    const alloc = allocationMap.get('codeGraph');
-    const content = truncateToTokens(input.codeGraph, alloc?.granted ?? 1200);
-    sections.push({ name: 'Active Files & Structural Context', content, tokenEstimate: estimateTokens(content), source: 'code-graph' });
-  }
+    const content = truncateToTokens(inputText, granted);
+    if (!content.trim()) return;
 
-  if (input.cocoIndex.trim()) {
-    const alloc = allocationMap.get('cocoIndex');
-    const content = truncateToTokens(input.cocoIndex, alloc?.granted ?? 900);
-    sections.push({ name: 'Semantic Neighbors', content, tokenEstimate: estimateTokens(content), source: 'cocoindex' });
-  }
+    sections.push({
+      name: sectionName,
+      content,
+      tokenEstimate: estimateTokens(content),
+      source,
+    });
+  };
 
-  // Session state always gets included (from overhead budget)
-  if (input.sessionState.trim()) {
-    sections.push({ name: 'Session State / Next Steps', content: input.sessionState, tokenEstimate: estimateTokens(input.sessionState), source: 'session' });
-  }
-
-  if (input.triggered.trim()) {
-    const alloc = allocationMap.get('triggered');
-    const content = truncateToTokens(input.triggered, alloc?.granted ?? 400);
-    sections.push({ name: 'Triggered Memories', content, tokenEstimate: estimateTokens(content), source: 'memory' });
-  }
+  pushSection(input.constitutional, 'constitutional', 'Constitutional Rules', 'memory');
+  pushSection(input.codeGraph, 'codeGraph', 'Active Files & Structural Context', 'code-graph');
+  pushSection(input.cocoIndex, 'cocoIndex', 'Semantic Neighbors', 'cocoindex');
+  pushSection(input.sessionState, 'sessionState', 'Session State / Next Steps', 'session');
+  pushSection(input.triggered, 'triggered', 'Triggered Memories', 'memory');
 
   // File-level deduplication across sections
   const deduplicatedFiles = deduplicateFilePaths(sections);
