@@ -99,12 +99,18 @@ All issues resolved. Changes made:
 3. **Template contract** — `memory-index.ts`: force reindex uses `warn-only` mode for all files
 4. **File path threading** — `v-rule-bridge.ts` + `memory-save.ts`: pass `filePath` through validation bridge
 5. **Frontmatter defaults** — `frontmatter-migration.ts`: add `"planning"` to valid types, fix DOC_DEFAULT_CONTEXT (spec→implementation, plan→planning, decision_record→planning), reverse alias (decision→planning), override existing "decision" values
-6. **Retroactive backfill** — 354 files updated across all specs
+6. **MCP parser** — `memory-parser.ts`: fix CONTEXT_TYPE_MAP (decision→planning, discovery→general), add "planning" to ContextType union
+7. **DB schema** — `vector-index-schema.ts` + `schema-downgrade.ts`: add "planning" to CHECK constraint on context_type column
+8. **Retroactive backfill** — 828 files updated across all specs including z_archive (0 "decision" remaining on disk)
+9. **DB migration** — direct UPDATE: 2006 decision→planning, 3 discovery→general
+10. **DB dedup** — removed 13,211 duplicate rows from force reindex accumulation (1,200 unique entries remain)
+11. **context_template.md** — updated contextType comment from "decision|discovery" to "planning"
 
 ## Success Criteria — All Met
 
 - Force reindex: 0 V-rule blocks, 0 failures (was 1106 blocks + 90 failures)
-- Main database: 12,140 entries, 95 memory-dir files (all 93 on disk accounted for)
-- Spec docs indexed with correct document_type: plan (2319), spec (2319), checklist (1943), etc.
-- contextType distribution: implementation (186), planning (27), research (11), general (44)
-- Only 2 files with legacy "decision" remain (malformed frontmatter, cannot be auto-processed)
+- Main database: 1,200 unique entries after dedup (95 memories, 1,104 spec docs, 1 constitutional)
+- Spec docs indexed with correct document_type: spec (221), plan (221), tasks (207), implementation_summary (201), checklist (186), decision_record (41), research (19), handover (8)
+- contextType distribution across DB: implementation (6204→deduped), planning (2006→deduped), research, general
+- 0 files with "decision" contextType on disk or in DB
+- 0 duplicates, 0 test files, 0 orphaned entries
