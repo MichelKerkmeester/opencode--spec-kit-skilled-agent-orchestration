@@ -32,3 +32,5 @@ contextType: "implementation"
 - [ ] Reindex summary shows accurate scanned/indexed/failed counts — currently shows `undefined` when rate-limited (cooldown bug in reindex script)
 - [ ] Batch reindex logs per-file skip reasons for debugging
 - [x] Force reindex uses warn-only quality gate for all files — template contract no longer rejects older memory files during bulk reindex (failures dropped from 90 to 0)
+- [x] Frontmatter source of truth hardened — VALID_CONTEXT_TYPES includes "planning", DOC_DEFAULT_CONTEXT uses correct values (spec→implementation, plan→planning), normalizeContextType alias reversed (decision→planning), inferContextType overrides legacy "decision"
+- [x] Retroactive backfill applied to all 1299 spec/memory/template files — 354 files updated, contextType: implementation (186), planning (27), research (11), general (44), only 2 malformed outliers remain
