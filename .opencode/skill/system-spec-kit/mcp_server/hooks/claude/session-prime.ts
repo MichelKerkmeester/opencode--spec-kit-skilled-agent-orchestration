@@ -217,7 +217,7 @@ async function main(): Promise<void> {
 }
 
 // Run — exit cleanly even on error
-main().catch((err) => {
+main().catch((err: unknown) => {
   hookLog('error', 'session-prime', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
 }).finally(() => {
   process.exit(0);

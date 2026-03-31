@@ -33,3 +33,34 @@ describe('query-intent routing', () => {
     it('prior decisions', () => { expect(routeQuery('what was the prior decision about auth')).toBe('memory'); });
   });
 });
+
+describe('agent routing validates CocoIndex-first behavior', () => {
+  describe('semantic queries default to CocoIndex', () => {
+    it('explain error handling patterns', () => { expect(routeQuery('explain error handling patterns')).toBe('cocoindex'); });
+    it('find similar authentication code', () => { expect(routeQuery('find similar authentication code')).toBe('cocoindex'); });
+    it('what does the budget allocator do', () => { expect(routeQuery('what does the budget allocator do')).toBe('cocoindex'); });
+  });
+
+  describe('structural queries go to code_graph, not CocoIndex', () => {
+    it('what calls allocateBudget', () => { expect(routeQuery('what calls allocateBudget')).toBe('code_graph'); });
+    it('show outline of session-prime.ts', () => { expect(routeQuery('show outline of session-prime.ts')).toBe('code_graph'); });
+    it('what implements the RuntimeInfo interface', () => { expect(routeQuery('what implements the RuntimeInfo interface')).toBe('code_graph'); });
+  });
+
+  describe('session queries bypass both CocoIndex and code_graph', () => {
+    it('resume my previous work', () => { expect(routeQuery('resume my previous work')).toBe('memory'); });
+    it('what was I doing last session', () => { expect(routeQuery('what was I doing last session')).toBe('memory'); });
+  });
+
+  describe('ambiguous queries favor CocoIndex', () => {
+    it('how does the hook system work', () => { expect(routeQuery('how does the hook system work')).toBe('cocoindex'); });
+    it('tell me about the token budget', () => { expect(routeQuery('tell me about the token budget')).toBe('cocoindex'); });
+    it('where is authentication handled', () => { expect(routeQuery('where is authentication handled')).toBe('cocoindex'); });
+  });
+
+  describe('routing is case-insensitive', () => {
+    it('WHAT CALLS parseFile → code_graph', () => { expect(routeQuery('WHAT CALLS parseFile')).toBe('code_graph'); });
+    it('Find Similar Code → cocoindex', () => { expect(routeQuery('Find Similar Code')).toBe('cocoindex'); });
+    it('Resume My Session → memory', () => { expect(routeQuery('Resume My Session')).toBe('memory'); });
+  });
+});

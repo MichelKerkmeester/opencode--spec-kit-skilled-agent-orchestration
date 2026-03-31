@@ -55,7 +55,7 @@ export async function handleCccReindex(args: ReindexArgs): Promise<{ content: Ar
           }, null, 2),
         }],
       };
-    } catch (execErr) {
+    } catch (execErr: unknown) {
       return {
         content: [{
           type: 'text',
@@ -66,7 +66,7 @@ export async function handleCccReindex(args: ReindexArgs): Promise<{ content: Ar
         }],
       };
     }
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       content: [{
         type: 'text',

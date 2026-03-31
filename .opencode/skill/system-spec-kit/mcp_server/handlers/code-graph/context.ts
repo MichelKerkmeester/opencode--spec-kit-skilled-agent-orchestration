@@ -82,7 +82,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
         }, null, 2),
       }],
     };
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       content: [{
         type: 'text',

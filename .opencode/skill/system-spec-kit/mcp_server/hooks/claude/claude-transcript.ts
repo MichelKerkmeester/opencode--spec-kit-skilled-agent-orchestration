@@ -110,7 +110,7 @@ export function parseTranscript(
     }
 
     return { usage, newOffset: currentOffset };
-  } catch (err) {
+  } catch (err: unknown) {
     hookLog('warn', 'transcript', `Failed to parse transcript: ${err instanceof Error ? err.message : String(err)}`);
     return { usage, newOffset: startOffset };
   }

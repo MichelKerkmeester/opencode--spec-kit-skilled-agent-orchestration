@@ -378,7 +378,7 @@ export async function parseFile(
       parseErrors: [],
       parseDurationMs: Date.now() - startTime,
     };
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       filePath, language,
       nodes: [], edges: [], contentHash,

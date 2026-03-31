@@ -120,7 +120,7 @@ async function main(): Promise<void> {
         hookLog('info', 'session-stop',
           `Parsed ${usage.messageCount} messages: ${usage.promptTokens} prompt + ${usage.completionTokens} completion = ${usage.totalTokens} total tokens`);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       hookLog('warn', 'session-stop', `Transcript parsing failed: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
@@ -193,7 +193,7 @@ function detectSpecFolder(transcriptPath: string): string | null {
 }
 
 // Run — exit cleanly even on error (async hook, but still must not crash)
-main().catch((err) => {
+main().catch((err: unknown) => {
   hookLog('error', 'session-stop', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
 }).finally(() => {
   process.exit(0);

@@ -37,7 +37,7 @@ export async function parseHookStdin(): Promise<HookInput | null> {
     const raw = Buffer.concat(chunks).toString('utf-8').trim();
     if (!raw) return null;
     return JSON.parse(raw) as HookInput;
-  } catch (err) {
+  } catch (err: unknown) {
     hookLog('warn', 'stdin', `Failed to parse hook stdin: ${err instanceof Error ? err.message : String(err)}`);
     return null;
   }

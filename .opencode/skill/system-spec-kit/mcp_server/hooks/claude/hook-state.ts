@@ -47,7 +47,7 @@ export function getStatePath(sessionId: string): string {
 export function ensureStateDir(): void {
   try {
     mkdirSync(getStateDir(), { recursive: true });
-  } catch (err) {
+  } catch (err: unknown) {
     hookLog('error', 'state', `Failed to create state dir: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
@@ -70,7 +70,7 @@ export function saveState(sessionId: string, state: HookState): void {
     state.updatedAt = new Date().toISOString();
     writeFileSync(tmpPath, JSON.stringify(state, null, 2), 'utf-8');
     renameSync(tmpPath, filePath);
-  } catch (err) {
+  } catch (err: unknown) {
     hookLog('error', 'state', `Failed to save state: ${err instanceof Error ? err.message : String(err)}`);
   }
 }

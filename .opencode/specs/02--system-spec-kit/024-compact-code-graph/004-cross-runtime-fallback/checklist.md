@@ -22,10 +22,10 @@ contextType: "implementation"
 ## P1
 - [x] `.claude/CLAUDE.md` created with Claude-specific recovery (closes Gap B)
 - [x] CODEX.md created with recovery instructions
-- [ ] Copilot runtime tested (tool fallback by policy)
-- [ ] Gemini runtime tested (tool fallback by policy)
+- [x] Copilot runtime tested (tool fallback by policy) — verified via 7-scenario test matrix: detectRuntime() returns copilot-cli/disabled_by_scope, getRecoveryApproach() returns tool_fallback
+- [x] Gemini runtime tested (tool fallback by policy) — verified via 7-scenario test matrix: detectRuntime() returns gemini-cli/disabled_by_scope, getRecoveryApproach() returns tool_fallback
 - [x] Cross-runtime behavior documented
-- [ ] 7-scenario test matrix from iter 015 implemented
+- [x] 7-scenario test matrix from iter 015 implemented — cross-runtime-fallback.vitest.ts: 7 named scenarios (claude hooks enabled, hooks disabled, codex, copilot, gemini, unknown, graceful degradation)
 
 ## P2
 - [x] MCP-level compaction detection (time gap analysis) — DEFERRED v2: not implementable without runtime SDK changes

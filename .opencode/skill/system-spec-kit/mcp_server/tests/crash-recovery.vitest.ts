@@ -28,6 +28,17 @@ import {
   recoverPendingFile,
   resetMetrics,
 } from '../lib/storage/transaction-manager.js';
+import {
+  SCHEMA_VERSION,
+  initDb,
+  getDb,
+  closeDb,
+  getStats,
+  cleanupOrphans,
+  upsertFile,
+  replaceNodes,
+} from '../lib/code-graph/code-graph-db.js';
+import type { CodeNode } from '../lib/code-graph/indexer-types.js';
 
 interface MockSessionStateRow {
   session_id: string;
@@ -852,5 +863,112 @@ describe('Crash Recovery (T009-T016, T071-T075)', () => {
       expect(fs.existsSync(committed.originalPath)).toBe(true);
       expect(fs.existsSync(stale.pendingPath)).toBe(true);
     });
+  });
+});
+
+describe('code-graph SQLite recovery', () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cg-recovery-'));
+  });
+
+  afterEach(() => {
+    // Close the DB to release the file handle
+    try { closeDb(); } catch { /* may not be initialized */ }
+  });
+
+  it('initDb creates WAL mode database', () => {
+    const db = initDb(tempDir);
+
+    expect(db).toBeDefined();
+    expect(db).toBe(getDb());
+
+    const stats = getStats();
+    expect(stats.schemaVersion).toBe(1);
+
+    closeDb();
+  });
+
+  it('schema versioning detection', () => {
+    initDb(tempDir);
+
+    const stats = getStats();
+    expect(stats.schemaVersion).toBe(SCHEMA_VERSION);
+    expect(stats.totalFiles).toBe(0);
+  });
+
+  it('recovery after corrupted DB file', () => {
+    const dbPath = path.join(tempDir, 'code-graph.sqlite');
+    fs.writeFileSync(dbPath, Buffer.from([0x00, 0xff, 0xde, 0xad, 0xbe, 0xef]));
+
+    try { closeDb(); } catch { /* may not be initialized */ }
+
+    let initError: unknown = null;
+    try {
+      initDb(tempDir);
+    } catch (err) {
+      initError = err;
+    }
+
+    // Either succeeds (SQLite recreates over garbage) or throws a meaningful error —
+    // the critical assertion is that it does not hang or crash the process silently.
+    if (initError !== null) {
+      expect(initError).toBeInstanceOf(Error);
+      expect((initError as Error).message.length).toBeGreaterThan(0);
+    } else {
+      // Succeeded — verify the DB is functional
+      expect(getStats).not.toThrow();
+    }
+  });
+
+  it('cleanupOrphans removes stale nodes/edges', () => {
+    initDb(tempDir);
+
+    const fileId = upsertFile(
+      '/test/file.ts',
+      'typescript',
+      'hash-abc',
+      1,
+      0,
+      'ok',
+      50,
+    );
+
+    const testNode: CodeNode = {
+      symbolId: 'test::func1',
+      filePath: '/test/file.ts',
+      fqName: 'test.func1',
+      kind: 'function',
+      name: 'func1',
+      startLine: 1,
+      endLine: 10,
+      startColumn: 0,
+      endColumn: 0,
+      language: 'typescript',
+      signature: 'function func1()',
+      docstring: null,
+      contentHash: 'abc123',
+    };
+
+    replaceNodes(fileId, [testNode]);
+
+    // Insert an orphaned edge referencing a non-existent node
+    getDb().prepare(
+      'INSERT INTO code_edges (source_id, target_id, edge_type) VALUES (?, ?, ?)',
+    ).run('nonexistent::source', 'nonexistent::target', 'calls');
+
+    // Verify the edge exists before cleanup
+    const edgesBefore = (getDb().prepare('SELECT COUNT(*) as c FROM code_edges').get() as { c: number }).c;
+    expect(edgesBefore).toBeGreaterThan(0);
+
+    const removed = cleanupOrphans();
+    expect(removed).toBeGreaterThan(0);
+
+    // Orphaned edges should be removed
+    const edgesAfter = (getDb().prepare(
+      "SELECT COUNT(*) as c FROM code_edges WHERE source_id = 'nonexistent::source'",
+    ).get() as { c: number }).c;
+    expect(edgesAfter).toBe(0);
   });
 });

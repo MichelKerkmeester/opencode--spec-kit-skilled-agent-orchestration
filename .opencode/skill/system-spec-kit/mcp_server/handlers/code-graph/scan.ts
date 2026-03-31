@@ -64,7 +64,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
       filesIndexed++;
       totalNodes += result.nodes.length;
       totalEdges += result.edges.length;
-    } catch (err) {
+    } catch (err: unknown) {
       errors.push(`${result.filePath}: ${err instanceof Error ? err.message : String(err)}`);
     }
 

@@ -5,8 +5,12 @@
 // - Token budget constants (4000 max per point)
 // - Config flag disabling both hooks
 // - No regression in existing autoSurfaceMemories behaviour
+// - Compaction pipeline integration (mergeCompactBrief)
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { performance } from 'node:perf_hooks';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+import { mergeCompactBrief } from '../lib/code-graph/compact-merger.js';
+import type { MergeInput } from '../lib/code-graph/compact-merger.js';
 
 // Mock transitive DB dependencies before importing the module under test
 vi.mock('../lib/search/vector-index', () => ({
@@ -729,5 +733,78 @@ describe('TM-05: Module exports verification', () => {
     expect(typeof extractContextHint).toBe('function');
     expect(typeof autoSurfaceMemories).toBe('function');
     expect(typeof clearConstitutionalCache).toBe('function');
+  });
+});
+
+/* ───────────────────────────────────────────────────────────────
+   14. COMPACTION PIPELINE INTEGRATION
+──────────────────────────────────────────────────────────────── */
+
+describe('compaction pipeline integration', () => {
+  it('mergeCompactBrief produces valid brief with sections', () => {
+    const input: MergeInput = {
+      constitutional: '## Rules\nAlways cite sources.',
+      codeGraph: '## Structure\nauth.ts → middleware.ts',
+      cocoIndex: '## Semantic\nAuthentication patterns found in 3 files.',
+      triggered: '## Triggered\nRecent auth memory surfaced.',
+      sessionState: '## Session\nWorking on auth refactor.',
+    };
+
+    const brief = mergeCompactBrief(input, 4000);
+
+    expect(typeof brief.text).toBe('string');
+    expect(brief.text.length).toBeGreaterThan(0);
+    expect(brief.sections.length).toBeGreaterThan(0);
+    for (const section of brief.sections) {
+      expect(typeof section.name).toBe('string');
+      expect(typeof section.content).toBe('string');
+      expect(typeof section.tokenEstimate).toBe('number');
+      expect(typeof section.source).toBe('string');
+    }
+    expect(brief.metadata.sourceCount).toBeGreaterThan(0);
+    expect(brief.metadata.mergeDurationMs).toBeGreaterThanOrEqual(0);
+  });
+
+  it('3-source merge produces valid brief and only includes non-empty sources', () => {
+    const input: MergeInput = {
+      constitutional: 'Rules text',
+      codeGraph: 'Graph text',
+      cocoIndex: '',
+      triggered: '',
+      sessionState: 'Session text',
+    };
+
+    const brief = mergeCompactBrief(input, 4000);
+
+    expect(typeof brief.text).toBe('string');
+    expect(brief.sections.length).toBeGreaterThan(0);
+
+    // Sections with empty sources should not appear
+    const sources = brief.sections.map(s => s.source);
+    // cocoIndex and triggered were empty — their section sources ('cocoindex', 'memory') should not
+    // appear unless constitutional also uses 'memory'. Filter more specifically by name.
+    const sectionNames = brief.sections.map(s => s.name);
+    expect(sectionNames).not.toContain('Semantic Neighbors');
+    expect(sectionNames).not.toContain('Triggered Memories');
+
+    expect(brief.metadata.totalTokenEstimate).toBeGreaterThan(0);
+  });
+
+  it('pipeline timeout enforcement — mergeCompactBrief completes within 2s under large input', () => {
+    const repeat = (text: string, n: number) => Array(n).fill(text).join('\n');
+    const largeInput: MergeInput = {
+      constitutional: repeat('## Rules\nAlways cite sources. Follow the spec.', 100),
+      codeGraph: repeat('## Structure\nauth.ts → middleware.ts → session.ts', 100),
+      cocoIndex: repeat('## Semantic\nAuthentication patterns found in 3 files.', 100),
+      triggered: repeat('## Triggered\nRecent auth memory surfaced from specs/007.', 100),
+      sessionState: repeat('## Session\nWorking on auth refactor. Next: update tests.', 100),
+    };
+
+    const start = performance.now();
+    const brief = mergeCompactBrief(largeInput, 4000);
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(2000); // 2s hard cap
+    expect(brief.sections.length).toBeGreaterThan(0);
   });
 });

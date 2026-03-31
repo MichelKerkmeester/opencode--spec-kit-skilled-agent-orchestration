@@ -57,7 +57,7 @@ export async function handleCccFeedback(args: FeedbackArgs): Promise<{ content: 
         }, null, 2),
       }],
     };
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       content: [{
         type: 'text',

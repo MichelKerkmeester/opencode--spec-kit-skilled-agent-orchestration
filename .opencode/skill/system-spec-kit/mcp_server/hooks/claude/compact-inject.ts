@@ -225,7 +225,7 @@ async function main(): Promise<void> {
   try {
     const mergedContext = buildMergedContext(transcriptLines);
     payload = truncateToTokenBudget(mergedContext, COMPACTION_TOKEN_BUDGET);
-  } catch (err) {
+  } catch (err: unknown) {
     hookLog('warn', 'compact-inject', `Merge pipeline failed, falling back to legacy: ${err instanceof Error ? err.message : String(err)}`);
     const rawContext = buildCompactContext(transcriptLines);
     payload = truncateToTokenBudget(rawContext, COMPACTION_TOKEN_BUDGET);
@@ -242,7 +242,7 @@ async function main(): Promise<void> {
 }
 
 // Run — exit cleanly even on error (hooks must never block Claude)
-main().catch((err) => {
+main().catch((err: unknown) => {
   hookLog('error', 'compact-inject', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
 }).finally(() => {
   process.exit(0);

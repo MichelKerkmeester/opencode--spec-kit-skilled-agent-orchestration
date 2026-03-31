@@ -41,7 +41,7 @@ export async function handleCccStatus(): Promise<{ content: Array<{ type: string
         }, null, 2),
       }],
     };
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       content: [{
         type: 'text',

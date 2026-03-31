@@ -37,4 +37,4 @@ contextType: "implementation"
 - [x] `ccc_feedback` MCP tool accepts result quality feedback — handlers/code-graph/ccc-feedback.ts
 - [x] SessionStart auto-detects stale index (>24h) and triggers background re-index — handleStartup checks getStats().lastScanTimestamp, adds warning section
 - [x] Freshness strategy documented in search_patterns.md — section 8b added with re-index triggers, refresh_index guidance, freshness signals, feedback loop
-- [ ] Agent routing tests validate CocoIndex-first behavior
+- [x] Agent routing tests validate CocoIndex-first behavior — runtime-routing.vitest.ts: 12 tests in 5 groups (semantic→cocoindex, structural→code_graph, session→memory, ambiguous→cocoindex, case-insensitive)
