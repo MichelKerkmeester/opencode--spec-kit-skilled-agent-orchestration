@@ -10,7 +10,7 @@ trigger_phrases:
   - "template"
   - "spec level3 suffix"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 

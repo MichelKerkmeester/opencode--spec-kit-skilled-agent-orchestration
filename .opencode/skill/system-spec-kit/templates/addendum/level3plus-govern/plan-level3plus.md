@@ -8,7 +8,7 @@ trigger_phrases:
   - "template"
   - "plan level3plus"
 importance_tier: "normal"
-contextType: "general"
+contextType: "planning"
 ---
 <!-- SPECKIT_ADDENDUM: Level 3+ - Governance -->
 <!-- Append after L3 plan sections -->

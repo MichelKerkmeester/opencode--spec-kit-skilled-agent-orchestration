@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "impl summary core"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Implementation Summary
 

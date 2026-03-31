@@ -5,7 +5,7 @@ trigger_phrases:
   - "template"
   - "plan level3"
 importance_tier: "normal"
-contextType: "general"
+contextType: "planning"
 ---
 <!-- SPECKIT_ADDENDUM: Level 3 - Architecture -->
 <!-- Append after L2 plan sections -->

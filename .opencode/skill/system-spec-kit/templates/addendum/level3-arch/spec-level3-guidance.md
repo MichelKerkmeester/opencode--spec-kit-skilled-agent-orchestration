@@ -9,7 +9,7 @@ trigger_phrases:
   - "template"
   - "spec level3 guidance"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- WHEN TO USE THIS TEMPLATE:
 Level 3 (+Arch) is appropriate when:

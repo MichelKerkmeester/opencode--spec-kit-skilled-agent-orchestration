@@ -9,7 +9,7 @@ trigger_phrases:
   - "here"
   - "template"
 importance_tier: "normal"
-contextType: "general"
+contextType: "research"
 ---
 # Feature Research: [YOUR_VALUE_HERE: feature-name] - Comprehensive Technical Investigation
 

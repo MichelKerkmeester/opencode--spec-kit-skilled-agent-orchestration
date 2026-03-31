@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "spec level3plus"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- SPECKIT_ADDENDUM: Level 3+ - Governance -->
 <!-- Append after L3 spec sections -->

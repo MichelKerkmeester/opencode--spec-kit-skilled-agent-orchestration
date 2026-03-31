@@ -8,7 +8,7 @@ trigger_phrases:
   - "template"
   - "spec core"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Feature Specification: [NAME]
 

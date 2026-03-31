@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "tasks core"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Tasks: [NAME]
 

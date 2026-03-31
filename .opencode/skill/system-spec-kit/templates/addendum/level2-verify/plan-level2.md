@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "plan level2"
 importance_tier: "normal"
-contextType: "general"
+contextType: "planning"
 ---
 <!-- SPECKIT_ADDENDUM: Level 2 - Verification -->
 <!-- Append after CORE plan.md Section 6 -->

@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "spec level2"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- SPECKIT_ADDENDUM: Level 2 - Verification -->
 <!-- Append after CORE spec.md Section 6 -->

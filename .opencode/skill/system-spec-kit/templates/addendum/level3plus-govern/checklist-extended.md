@@ -7,7 +7,7 @@ trigger_phrases:
   - "template"
   - "checklist extended"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- SPECKIT_ADDENDUM: Level 3+ - Extended Checklist -->
 <!-- Append to Level 2 checklist.md -->

@@ -754,7 +754,7 @@ is_detached_head: {{IS_DETACHED_HEAD}}
 
 # Classification
 importance_tier: "{{IMPORTANCE_TIER}}"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "{{CONTEXT_TYPE}}"        # research|implementation|decision|discovery|general
+context_type: "{{CONTEXT_TYPE}}"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:

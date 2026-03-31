@@ -5,7 +5,7 @@ trigger_phrases:
   - "template"
   - "spec level3"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- SPECKIT_ADDENDUM: Level 3 - Architecture -->
 <!-- Insert after CORE spec.md Section 1 METADATA -->

@@ -7,7 +7,7 @@ trigger_phrases:
   - "name"
   - "template"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Verification Checklist: [NAME]
 

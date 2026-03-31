@@ -8,7 +8,7 @@ trigger_phrases:
   - "template"
   - "decision record"
 importance_tier: "normal"
-contextType: "general"
+contextType: "planning"
 ---
 # Decision Record: [NAME]
 

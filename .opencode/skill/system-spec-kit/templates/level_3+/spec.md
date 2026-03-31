@@ -8,7 +8,7 @@ trigger_phrases:
   - "template"
   - "spec core"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: [NAME]

@@ -8,7 +8,7 @@ trigger_phrases:
   - "template"
   - "plan core"
 importance_tier: "normal"
-contextType: "general"
+contextType: "planning"
 ---
 # Implementation Plan: [NAME]
 
