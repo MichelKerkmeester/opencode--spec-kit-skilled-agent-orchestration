@@ -101,9 +101,10 @@ const VALID_IMPORTANCE_TIERS = new Set([
 const VALID_CONTEXT_TYPES = new Set([
   'implementation',
   'research',
-  'decision',
-  'discovery',
+  'planning',
   'general',
+  'decision',   // legacy — accepted but not assigned as default
+  'discovery',  // legacy — accepted but not assigned as default
 ]);
 
 const SPEC_DOC_BASENAMES = new Set([
@@ -132,11 +133,11 @@ const DOC_DEFAULT_IMPORTANCE: Record<string, string> = {
 };
 
 const DOC_DEFAULT_CONTEXT: Record<string, string> = {
-  spec: 'decision',
-  plan: 'decision',
+  spec: 'implementation',
+  plan: 'planning',
   tasks: 'implementation',
   checklist: 'implementation',
-  decision_record: 'decision',
+  decision_record: 'planning',
   implementation_summary: 'implementation',
   research: 'research',
   handover: 'general',
@@ -830,7 +831,7 @@ function normalizeContextType(rawValue: string | null | undefined): string | nul
   const aliasMap: Record<string, string> = {
     debug: 'implementation',
     analysis: 'research',
-    planning: 'decision',
+    decision: 'planning',   // legacy "decision" migrates to "planning"
     bug: 'discovery',
     feature: 'implementation',
   };
@@ -1027,7 +1028,10 @@ function inferContextType(
   existingContext: string | null,
   classification: ClassifiedDocument
 ): string {
-  if (existingContext) {
+  // For spec docs, override legacy "decision" contextType with the correct default.
+  // "decision" was previously the default for spec/plan/decision-record docs but
+  // is not a valid consumer value — downstream indexers expect implementation/planning/research/general.
+  if (existingContext && existingContext !== 'decision') {
     return existingContext;
   }
 
