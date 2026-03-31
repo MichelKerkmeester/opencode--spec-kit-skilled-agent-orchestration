@@ -398,7 +398,11 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   if (filesToIndex.length > 0) {
     const batchResults = await processBatches(filesToIndex, async (filePath: string) => {
       const isSpecDoc = specDocKeySet.has(getCachedKey(filePath));
-      return await indexSingleFile(filePath, force, isSpecDoc ? { qualityGateMode: 'warn-only' } : undefined);
+      // During force reindex, use warn-only for all files — the goal is to index
+      // everything that has valid frontmatter, not to enforce template contracts on
+      // older files created before current templates were established.
+      const useWarnOnly = force || isSpecDoc;
+      return await indexSingleFile(filePath, force, useWarnOnly ? { qualityGateMode: 'warn-only' } : undefined);
     });
 
     for (let i = 0; i < batchResults.length; i++) {
