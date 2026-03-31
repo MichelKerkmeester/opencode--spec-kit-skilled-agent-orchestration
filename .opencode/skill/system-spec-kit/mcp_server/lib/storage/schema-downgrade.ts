@@ -134,7 +134,7 @@ function createMemoryIndexV15(database: Database.Database): void {
       last_accessed INTEGER DEFAULT 0,
       importance_tier TEXT DEFAULT 'normal' CHECK(importance_tier IN ('constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated')),
       session_id TEXT,
-      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'decision', 'discovery', 'general')),
+      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general', 'decision', 'discovery')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,
       expires_at DATETIME,
