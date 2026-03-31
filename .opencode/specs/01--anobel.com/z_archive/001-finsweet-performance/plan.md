@@ -1,101 +1,121 @@
 ---
-title: "Implementation Plan: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/plan]"
-description: "Defer Finsweet Attributes loading to improve PageSpeed by 10-20 points."
+title: "Implementation Plan: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/plan]"
+description: "Finsweet Performance Optimization"
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "finsweet"
   - "performance"
   - "optimization"
-  - "001"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Finsweet Performance Optimization
 
-<!-- ANCHOR:overview -->
-## Overview
-Defer Finsweet Attributes loading to improve PageSpeed by 10-20 points.
-<!-- /ANCHOR:overview -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Finsweet Performance Optimization
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
 
 <!-- ANCHOR:architecture -->
-## Architecture
+## 3. ARCHITECTURE
 
-### Before (Blocking Pattern)
-```html
-<!-- HEADER -->
-<script async type="module" src="https://cdn.jsdelivr.net/npm/@finsweet/attributes@2/attributes.js" fs-list></script>
-```
+### Pattern
+Archived documentation normalization
 
-### After (Deferred Pattern)
-```html
-<!-- FOOTER -->
-<script>
-window.addEventListener("load", () => {
-  const script = document.createElement("script");
-  script.type = "module";
-  script.src = "https://cdn.jsdelivr.net/npm/@finsweet/attributes@2/attributes.js";
-  script.setAttribute("fs-list", "");
-  document.body.appendChild(script);
-});
-</script>
-```
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
 <!-- /ANCHOR:architecture -->
 
-<!-- ANCHOR:implementation-steps -->
-## Implementation Steps
+---
 
-### Phase 1: Attributes@2 Scripts (4 files)
-Files using `@finsweet/attributes@2/attributes.js`:
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-1. **blog_template.html** - `fs-socialshare`
-2. **vacature.html** - `fs-socialshare`
-3. **blog.html** - `fs-list`
-4. **n4_het_team.html** - `fs-list`
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-Pattern:
-```javascript
-window.addEventListener("load", () => {
-  const script = document.createElement("script");
-  script.type = "module";
-  script.src = "https://cdn.jsdelivr.net/npm/@finsweet/attributes@2/attributes.js";
-  script.setAttribute("fs-{attribute}", "");
-  document.body.appendChild(script);
-});
-```
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
-### Phase 2: CMS Nest Scripts (2 files)
-Files using `@finsweet/attributes-cmsnest@1/cmsnest.js`:
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
-1. **werken_bij.html**
-2. **home.html**
-
-Pattern:
-```javascript
-window.addEventListener("load", () => {
-  const script = document.createElement("script");
-  script.src = "https://cdn.jsdelivr.net/npm/@finsweet/attributes-cmsnest@1/cmsnest.js";
-  document.body.appendChild(script);
-});
-```
-<!-- /ANCHOR:implementation-steps -->
-
-<!-- ANCHOR:key-corrections-from-dmytro-bala -->
-## Key Corrections (from Dmytro Bala)
-- Each `fs-*` attribute needs its own `setAttribute()` call
-- Value should be empty string: `script.setAttribute("fs-list", "");`
-- WRONG: `script.setAttribute("fs-list", "fs-toc", "fs-scrolldisable");`
-<!-- /ANCHOR:key-corrections-from-dmytro-bala -->
+---
 
 <!-- ANCHOR:testing -->
-## Testing
-1. Verify Finsweet functionality works after changes
-2. Test PageSpeed scores before/after
-3. Check that LCP improves
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
 <!-- /ANCHOR:testing -->
 
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
 <!-- ANCHOR:rollback -->
-## Rollback
-If issues occur, revert to original `<script async>` pattern in HEADER.
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
 <!-- /ANCHOR:rollback -->
+
+---

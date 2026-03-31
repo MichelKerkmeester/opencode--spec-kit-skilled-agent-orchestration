@@ -1,110 +1,121 @@
 ---
-title: "Plan: Multi-Agent Dispatch Implementation [04--agent-orchestration/z_archive/004-multi-agent-dispatch/plan]"
-description: "User selects dispatch mode (A/B/C)"
+title: "Implementation Plan: Multi-Agent Dispatch [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
-  - "plan"
-  - "multi"
-  - "agent"
-  - "dispatch"
   - "implementation"
-  - "004"
-importance_tier: "important"
-contextType: "decision"
+  - "plan"
+  - "multi-agent dispatch"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
+# Implementation Plan: Multi-Agent Dispatch
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Multi-Agent Dispatch Implementation
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
+
+### Overview
+This archive fix rewrites the required Level 1 documents for multi-agent dispatch. The plan favors structural compliance, concise historical context, and clean validation over recreating every superseded planning artifact.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
 
 <!-- ANCHOR:architecture -->
-## Architecture
+## 3. ARCHITECTURE
 
-```
-User selects dispatch mode (A/B/C)
-         │
-         ├─► A) Single Agent: Current behavior (1 Opus)
-         │
-         └─► B/C) Multi-Agent:
-                 │
-                 ├─► OPUS Orchestrator (coordinator mode)
-                 │        │
-                 │        ├─► SONNET Worker 1 (focused domain)
-                 │        ├─► SONNET Worker 2 (focused domain)
-                 │        └─► SONNET Worker 3 (Option C only)
-                 │
-                 └─► Orchestrator synthesizes → Returns result
-```
+### Pattern
+Documentation archive normalization
 
+### Key Components
+- **Core Level 1 docs**: Preserve the historical topic in a compliant structure.
+- **Supplemental archive notes**: Remain brief and avoid broken markdown references.
+
+### Data Flow
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable and easy to inspect.
 <!-- /ANCHOR:architecture -->
 
+---
 
-<!-- ANCHOR:implementation-steps -->
-## Implementation Steps
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Command Updates
+### Phase 1: Setup
+- [x] Review archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
 
-1. **Update research/research.md command**
-   - Add Phase 2.5: DISPATCH MODE SELECTION
-   - Present A/B/C options
-   - Store dispatch_mode variable
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md and archive notes
 
-2. **Update debug.md command**
-   - Extend Phase 2 to include dispatch mode
-   - Present combined model + dispatch selection
-   - Store both selected_model and dispatch_mode
+### Phase 3: Verification
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
+<!-- /ANCHOR:phases -->
 
-### Phase 2: YAML Configuration
+---
 
-3. **Add multi_agent_config to research YAMLs**
-   - Define dispatch modes (single, multi_small, multi_large)
-   - Configure worker roles for research
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-4. **Add multi_agent_config to debug YAMLs**
-   - Define dispatch modes
-   - Configure worker roles for debugging
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
 
-### Phase 3: Agent Updates
+---
 
-5. **Update research agent**
-   - Add Section 6.5: Coordinator Mode
-   - Add Section 6.6: Worker Mode
-   - Define work division for research
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-6. **Update debug agent**
-   - Add Section 3.5: Coordinator Mode
-   - Add Section 3.6: Worker Mode
-   - Define work division for debugging
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
+<!-- /ANCHOR:dependencies -->
 
-<!-- /ANCHOR:implementation-steps -->
+---
 
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-<!-- ANCHOR:work-division -->
-## Work Division
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
+<!-- /ANCHOR:rollback -->
 
-### Research Workers (Options B/C)
-
-| Worker | Model | Focus | Steps |
-|--------|-------|-------|-------|
-| Orchestrator | Opus | Coordinate + synthesize | 6, 7, 8, 9 |
-| Codebase Explorer | Sonnet | Existing patterns | Step 3 |
-| External Researcher | Sonnet | Documentation, APIs | Step 4 |
-| Technical Analyzer | Sonnet | Feasibility, risks | Step 5 (Option C only) |
-
-### Debug Workers (Options B/C)
-
-| Worker | Model | Focus | Phase |
-|--------|-------|-------|-------|
-| Orchestrator | Opus | Observe + Fix | OBSERVE, FIX |
-| Call Path Tracer | Sonnet | Execution path analysis | ANALYZE |
-| Pattern Searcher | Sonnet | Similar working code | ANALYZE |
-| Edge Case Hunter | Sonnet | Boundary conditions | HYPOTHESIZE (Option C only) |
-
-<!-- /ANCHOR:work-division -->
-
-
-<!-- ANCHOR:fallback-behavior -->
-## Fallback Behavior
-
-- If worker times out (60s): Continue with available outputs
-- If all workers fail: Fall back to single-agent mode
-- If orchestrator fails: Save partial results to scratch/
-
-<!-- /ANCHOR:fallback-behavior -->
+---

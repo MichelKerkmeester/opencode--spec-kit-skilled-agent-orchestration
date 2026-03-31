@@ -28,7 +28,7 @@ contextType: "general"
 | **Testing** | Vitest, manual runtime probes |
 
 ### Overview
-This plan covers the full lifecycle: a 30-iteration audit (20 primary + 10 deep dives), 4 fix sprints for 121 findings, P2 triage, deferred P2 fixes, a 10-iteration meta-review of fix quality, and Phase 12 remediation of 29 meta-review findings. Each review iteration produces P0/P1/P2 findings logged to `review/iterations/iteration-NNN.md`. Reports: `review/review-report-v1-original-audit.md` (original 121 findings) and `review/review-report.md` (v2 meta-review, 29 findings).
+This plan covers the full lifecycle: a 30-iteration audit (20 primary + 10 deep dives), 4 fix sprints for 121 findings, P2 triage, deferred P2 fixes, a 10-iteration meta-review of fix quality, and Phase 12 remediation of 29 meta-review findings. Each review iteration produces P0/P1/P2 findings logged to `review/iterations/iteration-001.md` through `review/iterations/iteration-040.md`. Reports: `review/review-report-v1-original-audit.md` (original 121 findings) and `review/review-report.md` (v2 meta-review, 29 findings).
 <!-- /ANCHOR:summary -->
 
 ---
@@ -62,7 +62,7 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 ### Key Components
 - **Review strategy** (`review/deep-review-strategy.md`): Maps dimensions to iteration slots with priority ordering.
 - **State file** (`review/deep-research-state.jsonl`): Append-only log of iteration results, convergence signals, and findings counts.
-- **Iteration artifacts** (`review/iterations/iteration-NNN.md`): Per-iteration findings (001-030 original audit, 031-040 meta-review).
+- **Iteration artifacts** (`review/iterations/iteration-001.md` through `review/iterations/iteration-040.md`): Per-iteration findings (001-030 original audit, 031-040 meta-review).
 - **Original audit report** (`review/review-report-v1-original-audit.md`): 121 findings from the 30-iteration audit.
 - **Meta-review report** (`review/review-report.md`): 29 findings from the 10-iteration meta-review (v2).
 
@@ -110,7 +110,7 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 
 ### Phase 1: Setup
 - [ ] Validate spec folder structure and create `review/` directory
-- [ ] Initialize deep-research state files (`deep-research-config.json`, `deep-research-strategy.md`, `deep-research-state.jsonl`)
+- [ ] Initialize deep-research state files (`deep-research-config.json`, `review/deep-review-strategy.md`, `deep-research-state.jsonl`)
 - [ ] Verify CocoIndex MCP is available for semantic code search
 
 ### Phase 2: Execute Review
@@ -222,7 +222,7 @@ Phase 1 (Setup) --> Phase 2 (Review, 30 iters) --> Phase 3 (Synthesis + Fix Spri
 
 ---
 
-## EXECUTION COMMAND
+### EXECUTION COMMAND
 
 ```
 /spec_kit:deep-research:review:auto .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement

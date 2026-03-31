@@ -1,19 +1,20 @@
 ---
-title: "Implementation Summary [04--agent-orchestration/z_archive/009-claude-code-subagents/implementation-summary]"
-description: "[To be completed after implementation]"
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for claude code subagents."
 trigger_phrases:
   - "implementation"
   - "summary"
-  - "implementation summary"
-  - "009"
-  - "claude"
+  - "archive"
+  - "claude code subagents"
+  - "impl summary core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -23,9 +24,8 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 009-claude-code-subagents |
-| **Completed** | [YYYY-MM-DD] |
+| **Completed** | 2026-03-31 |
 | **Level** | 1 |
-
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,25 +33,39 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-[To be completed after implementation]
+This archive fix replaced drifted planning documents with a concise Level 1 record for claude code subagents. You can now inspect the folder without running into broken structure, stale metadata, or invalid top-level references.
+
+### Archival Normalization
+
+The spec, plan, tasks, and implementation summary now follow the current system-spec-kit template contract. Where extra top-level markdown files existed, they were reduced to short archival notes so the folder keeps its historical context without pretending to be active work.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [Brief purpose] |
-
+| spec.md | Modified | Captures the archived feature intent in a compliant specification. |
+| plan.md | Modified | Documents the archive-fix approach and validation method. |
+| tasks.md | Modified | Records the normalization work in the standard task format. |
+| implementation-summary.md | Modified | Summarizes the completed archive cleanup and result. |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The archive was normalized by copying the current Level 1 structure, replacing every placeholder with folder-specific content, simplifying extra notes, and validating the result with strict spec checks.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| [What was decided] | [Why this choice] |
-
+| Decision | Why |
+|----------|-----|
+| Normalize this folder to Level 1 | The archive needed the smallest compliant structure that still preserved the historical record. |
+| Keep extra notes brief | Archived folders should remain readable without keeping validation-breaking draft structures. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -59,10 +73,10 @@ contextType: "implementation"
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Manual | [Pass/Fail/Skip] | [Notes] |
-
+| Check | Result |
+|-------|--------|
+| Strict spec validation | PASS after the archive normalization updates |
+| Manual archive review | PASS, the folder now reads as a stable historical summary |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -70,8 +84,7 @@ contextType: "implementation"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-[To be completed after implementation]
-
+1. **Condensed archive** This summary does not reproduce every earlier draft detail. Repository history remains the source for superseded notes.
 <!-- /ANCHOR:limitations -->
 
 ---

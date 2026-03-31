@@ -287,3 +287,4 @@ Restore discriminative power to quality_score by removing the bonus system and r
 - **Decision Records**: See `decision-record.md`
 - **Research Source**: `../research/research.md` (Round 2, Domains C + E)
 - **Sibling Phase**: `../001-initial-enrichment/spec.md` (Complete)
+<!-- /ANCHOR:questions -->

@@ -175,7 +175,7 @@ All channels except BM25 depend on `db` or `vectorSearchFn` being non-null.
 ---
 
 <!-- ANCHOR:critical-files -->
-## 7. CRITICAL FILES
+### Critical Files
 
 | File | Role | Edit Type |
 |------|------|-----------|

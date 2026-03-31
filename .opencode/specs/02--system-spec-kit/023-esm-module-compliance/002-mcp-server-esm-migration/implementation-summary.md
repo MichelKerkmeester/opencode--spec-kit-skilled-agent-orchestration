@@ -22,9 +22,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 002-mcp-server-esm-migration |
+| **Completed** | 2026-03-29 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---

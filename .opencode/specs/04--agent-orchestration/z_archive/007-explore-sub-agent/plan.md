@@ -1,154 +1,121 @@
 ---
-title: "Plan: Context Loader Sub-Agent (@context_loader) [04--agent-orchestration/z_archive/007-explore-sub-agent/plan]"
-description: "Create a single agent definition file following the established agent structural patterns. The file defines the @context_loader agent as a fast, read-only context scout with thr..."
+title: "Implementation Plan: Explore Sub-Agent [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
+  - "implementation"
   - "plan"
-  - "context"
-  - "loader"
-  - "sub"
-  - "agent"
-  - "007"
-  - "explore"
-importance_tier: "important"
-contextType: "decision"
+  - "explore sub-agent"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Context Loader Sub-Agent (@context_loader)
+# Implementation Plan: Explore Sub-Agent
 
-> **Spec Folder:** `.opencode/specs/04--agent-orchestration/z_archive/007-explore-sub-agent/`
-> **Created:** 2026-02-10
-> **Note:** Originally scoped as `@explore`, renamed to `@context_loader` during implementation.
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:summary -->
-## 1. Approach
+## 1. SUMMARY
 
-Create a single agent definition file following the established agent structural patterns. The file defines the @context_loader agent as a fast, read-only context scout with three thoroughness levels, structured output format, and Active Dispatch capability.
+### Technical Context
 
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
+
+### Overview
+This archive fix rewrites the required Level 1 documents for explore sub-agent. The plan favors structural compliance, concise historical context, and clean validation over recreating every superseded planning artifact.
 <!-- /ANCHOR:summary -->
 
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
 <!-- ANCHOR:architecture -->
-### Architecture Decision
+## 3. ARCHITECTURE
 
-**Decision**: Create `context_loader.md` as an ENHANCEMENT of the built-in `explore` subagent_type, not a replacement.
+### Pattern
+Documentation archive normalization
 
-**Rationale**: The built-in `subagent_type: "explore"` provides fast Glob/Grep/Read access. The agent definition file adds an INTELLIGENCE LAYER on top: memory retrieval, structured output, thoroughness levels, pattern analysis, and Active Dispatch capability.
+### Key Components
+- **Core Level 1 docs**: Preserve the historical topic in a compliant structure.
+- **Supplemental archive notes**: Remain brief and avoid broken markdown references.
 
-**Alternative Considered**: Creating a new subagent_type — rejected because the existing "explore" type already provides the right tool access (fast search without write permissions).
-
+### Data Flow
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable and easy to inspect.
 <!-- /ANCHOR:architecture -->
 
+---
+
 <!-- ANCHOR:phases -->
-## 2. Implementation Strategy
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Agent Definition (Single File)
+### Phase 1: Setup
+- [x] Review archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
 
-Create `.opencode/agent/context_loader.md` with these sections (following peer agent patterns):
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md and archive notes
 
-| Section | Content | Based On |
-|---------|---------|----------|
-| Frontmatter | YAML config with model, permissions, mode | All existing agents |
-| §1 Core Identity | Agent mission, model, key properties | research/research.md §1 |
-| §2 Core Workflow | 6-step retrieval workflow (RECEIVE→MEMORY→CODEBASE→DISPATCH→SYNTHESIZE→DELIVER) | research/research.md §1 |
-| §3 Capability Scan | Available tools and MCP integrations | research/research.md §2, write.md §3 |
-| §4 Retrieval Modes | quick/medium/thorough definitions | Custom (new) |
-| §5 Agent Dispatch Protocol | Active Dispatch: @explore + @research sub-delegation | Custom (new, added during T5) |
-| §6 Retrieval Strategy | 3-layer approach (Memory→Codebase→Deep) | Custom (new) |
-| §7 Output Format | Context Package template | research/research.md output format |
-| §8 Integration with Orchestrator | Dispatch patterns, CWB compliance, Two-Tier Model | orchestrate.md §27-28 |
-| §9 Rules & Constraints | READ-ONLY enforcement, boundaries | review.md rules |
-| §10 Anti-Patterns | What NOT to do | All existing agents |
-| §11 Related Resources | Links to skills, tools, agents | All existing agents |
-
-### Phase 2: Verification
-
-- Validate structural consistency with peer agents
-- Confirm frontmatter follows the permission pattern
-- Verify all Memory MCP tool references are correct
-- Check orchestrator compatibility
-
-### Phase 3: Ecosystem Integration (Added During Implementation)
-
-- Update `orchestrate.md` with @context_loader references and Two-Tier Dispatch Model
-- Update all 3 `AGENTS.md` files with @context_loader row
-- Audit all skill directories for agent references
-- Audit all command/YAML files for agent references
-- Update `SET-UP - Opencode Agents.md` install guide
-- Create symlink at `.claude/agents/context_loader.md`
-- Update spec folder documentation (tasks.md, checklist.md, spec.md, plan.md)
-
+### Phase 3: Verification
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
 <!-- /ANCHOR:phases -->
 
-## 3. Technical Details
-
-### Frontmatter Configuration
-
-```yaml
 ---
-name: explore
-description: Fast, read-only context retrieval agent for codebase exploration and memory surfacing
-model: github-copilot/gpt-5.2-think-medium
-mode: subagent
-temperature: 0.1
-permission:
-  read: allow
-  write: deny      # READ-ONLY — critical safety property
-  edit: deny        # READ-ONLY — critical safety property
-  bash: deny        # No shell access needed
-  grep: allow
-  glob: allow
-  webfetch: deny
-  memory: allow     # Spec Kit Memory MCP access
-  chrome_devtools: deny
-  task: allow       # Active Dispatch (§5) — dispatches @explore and @research only
-  list: allow
-  patch: deny
-  external_directory: allow
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
+
 ---
-```
 
-**Implementation Note**: Model was changed from `claude-sonnet-4.5` to `github-copilot/gpt-5.2-think-medium` during implementation because the context retrieval role benefits from reasoning capabilities.
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-### Three Retrieval Layers
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
+<!-- /ANCHOR:dependencies -->
 
-**Layer 1 — Memory Check (ALWAYS first)**
-- `memory_match_triggers(prompt)` → Quick trigger phrase matching
-- `memory_context({ input, mode: "quick" })` → Fast context surfacing
-
-**Layer 2 — Codebase Discovery**
-- `Glob(pattern)` → File structure discovery
-- `Grep(pattern)` → Code pattern search
-- `Read(file)` → File content inspection
-
-**Layer 3 — Deep Memory (if needed)**
-- `memory_search({ query, includeContent: true })` → Semantic vector search
-- `memory_context({ input, mode: "deep" })` → Comprehensive retrieval
-
-### Thoroughness Levels
-
-| Level | Layers Used | Time Budget | Output Size | Use Case |
-|-------|------------|-------------|-------------|----------|
-| `quick` | Layer 1 only | ~30 seconds | ~500 tokens | Quick fact check, trigger matching |
-| `medium` | Layers 1+2 | ~2 minutes | ~2K tokens | Standard pre-implementation scan |
-| `thorough` | All 3 layers | ~5 minutes | ~4K tokens | Comprehensive context before complex work |
-
-## 4. Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Overlap with @research | Medium | Medium | Clear differentiation table in spec.md §6 |
-| Output too verbose | Low | High | Strict output format with token limits per thoroughness level |
-| Memory MCP unavailable | Low | Medium | Graceful fallback to codebase-only retrieval |
-| Inconsistent with peer agents | Low | Medium | Structural pattern analysis completed before creation |
-| Active Dispatch misuse | Low | High | Strict allowlist (@explore, @research only), hard dispatch limits (quick=0, medium=2, thorough=3) |
+---
 
 <!-- ANCHOR:rollback -->
-## 5. Rollback Plan
+## 7. ROLLBACK PLAN
 
-If the agent definition causes issues:
-1. Delete `.opencode/agent/context_loader.md` and `.claude/agents/context_loader.md` symlink
-2. Orchestrator falls back to built-in `subagent_type: "explore"` (no breakage)
-3. Revert orchestrate.md, AGENTS.md files, agent_template.md, and install guide changes
-
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
 <!-- /ANCHOR:rollback -->
+
+---

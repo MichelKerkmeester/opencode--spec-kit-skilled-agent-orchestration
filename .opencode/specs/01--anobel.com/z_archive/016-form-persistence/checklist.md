@@ -1,64 +1,106 @@
 ---
-title: "Form Persistence Checklist [017-form-persistence/checklist] [01--anobel.com/z_archive/016-form-persistence/checklist]"
-description: "checklist document for 017-form-persistence."
+title: "Verification Checklist: Form Data Persistence [.opencode/specs/01--anobel.com/z_archive/016-form-persistence/checklist]"
+description: "Archived verification checklist for Form Data Persistence."
 trigger_phrases:
   - "form"
+  - "data"
   - "persistence"
-  - "checklist"
-  - "017"
+  - "anobel"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Verification Checklist: Form Data Persistence
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Form Persistence Checklist
 
-<!-- ANCHOR:implementation -->
-## Implementation
-- [x] Create `form_persistence.js` script
-- [x] Implement localStorage save/restore
-- [x] Handle text inputs and textareas
-- [x] Handle checkboxes and radio buttons
-- [x] Handle native select elements
-- [x] Handle custom select (data-select)
-- [x] Handle file upload URL (data-file-upload="url")
-- [x] Implement debounced auto-save on input
-- [x] Implement restore on page load
-- [x] Implement clear on form submit success
-- [x] Implement clear on form reset
-- [x] Implement 24-hour expiry
-- [x] Copy to staging folder
-- [x] Run minification
-- [x] Verify code quality standards (header, IIFE, snake_case)
-<!-- /ANCHOR:implementation -->
+---
 
-<!-- ANCHOR:html-integration -->
-## HTML Integration
-- [x] Add script to `contact.html` (line 60)
-- [x] Add script to `werken_bij.html` (line 82)
-- [x] Add script to `cms/vacature.html` (line 59)
-<!-- /ANCHOR:html-integration -->
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
+
+---
 
 <!-- ANCHOR:testing -->
 ## Testing
-- [ ] Test text input persistence
-- [ ] Test textarea persistence
-- [ ] Test checkbox persistence
-- [ ] Test radio button persistence
-- [ ] Test native select persistence
-- [ ] Test custom select persistence
-- [ ] Test file upload URL persistence
-- [ ] Test clear on submission
-- [ ] Test clear on reset
-- [ ] Test expiry after 24 hours
-- [ ] Test no conflicts with validation
-- [ ] Test no conflicts with submission
+
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
 <!-- /ANCHOR:testing -->
 
-<!-- ANCHOR:webflow-deployment -->
-## Webflow Deployment
-- [ ] Upload minified `form_persistence.js` to R2 CDN
-- [ ] Update Webflow page custom code (copy from HTML files)
-- [ ] Add `data-persist-form` attribute to forms in Webflow Designer
-- [ ] Test in Webflow preview
-- [ ] Publish to production
-<!-- /ANCHOR:webflow-deployment -->
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

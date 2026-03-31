@@ -27,8 +27,9 @@ contextType: "decision"
 | **Status** | In Progress |
 | **Created** | 2026-03-27 |
 | **Branch** | `main` |
-| **Parent** | 022-hybrid-rag-fusion |
-| **Predecessor** | v3.0.0.1 (spec doc quality gate bypass — incomplete fix) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../021-ground-truth-id-remapping/spec.md |
+| **Successor** | ../023-ablation-benchmark-integrity/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

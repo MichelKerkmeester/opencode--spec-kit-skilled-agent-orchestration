@@ -1,28 +1,122 @@
 ---
-title: "Implementation Plan: CSS Performance Upgrade [01--anobel.com/z_archive/010-css-performance-cv/plan]"
-description: "plan document for 011-css-performance-cv."
+title: "Implementation Plan: Specification: CSS Performance Upgrade (Content Visibility) [.opencode/specs/01--anobel.com/z_archive/010-css-performance-cv/plan]"
+description: "Specification: CSS Performance Upgrade (Content Visibility)"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "specification"
   - "css"
   - "performance"
   - "upgrade"
-  - "011"
+  - "content"
+  - "visibility"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Specification: CSS Performance Upgrade (Content Visibility)
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan: CSS Performance Upgrade
 
-<!-- ANCHOR:phase-1-setup--implementation -->
-## Phase 1: Setup & Implementation
-- [ ] Initialize spec folder `011-css-performance-cv` <!-- id: 1 -->
-- [ ] Create `src/1_css/global/performance.css` <!-- id: 2 -->
-- [ ] Verify file syntax and location <!-- id: 3 -->
-<!-- /ANCHOR:phase-1-setup--implementation -->
+---
 
-<!-- ANCHOR:phase-2-documentation--handoff -->
-## Phase 2: Documentation & Handoff
-- [ ] Document usage instructions for Webflow <!-- id: 4 -->
-- [ ] Close spec <!-- id: 5 -->
-<!-- /ANCHOR:phase-2-documentation--handoff -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Specification: CSS Performance Upgrade (Content Visibility)
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

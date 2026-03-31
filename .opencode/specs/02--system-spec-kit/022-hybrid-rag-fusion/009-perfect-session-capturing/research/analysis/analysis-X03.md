@@ -808,3 +808,4 @@ Mapped 55 `try/catch` blocks across the 37 requested files. This is a source aud
 - Total findings: 10
 - Critical: 2, High: 4, Medium: 4, Low: 0
 - Top 3 recommendations: 1. Make explicit inputs authoritative and fail fast on malformed JSON/timestamps/storage corruption instead of falling back to capture/simulation. 2. Replace per-file writes with a transactional multi-file write path plus cross-process locking/no-clobber semantics. 3. Harden validation up front: canonicalize spec-folder paths, reject symlinks/escaped realpaths, cap payload sizes, and carry epochs instead of reparsing display timestamps.
+<!-- /ANCHOR:when-to-use -->

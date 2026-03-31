@@ -1,73 +1,119 @@
 ---
-title: "Specification: Font Performance Optimization [01--anobel.com/z_archive/013-font-performance/spec]"
-description: "This specification outlines the implementation of font performance optimizations for anobel.com. The goal is to improve the site's Core Web Vitals (specifically LCP) and user ex..."
+title: "Feature Specification: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/spec]"
+description: "Specification: Font Performance Optimization"
 trigger_phrases:
   - "specification"
   - "font"
   - "performance"
   - "optimization"
-  - "spec"
-  - "013"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Specification: Font Performance Optimization
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Specification: Font Performance Optimization
 
-<!-- ANCHOR:overview -->
-## 1. Overview
-This specification outlines the implementation of font performance optimizations for anobel.com. The goal is to improve the site's Core Web Vitals (specifically LCP) and user experience by eliminating "Flash of Invisible Text" (FOIT) and ensuring smoother font loading.
+---
 
-The optimizations include:
-1.  **font-display: swap**: Ensuring text remains visible during font loading.
-2.  **Font Preloading**: Prioritizing the loading of critical font files.
-<!-- /ANCHOR:overview -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- ANCHOR:goals -->
-## 2. Goals
-- Eliminate FOIT (Flash of Invisible Text) during page load.
-- Improve Largest Contentful Paint (LCP) score.
-- Enhance perceived performance for users.
-- Provide a clear guide for the Webflow user to configure Adobe Fonts correctly.
-<!-- /ANCHOR:goals -->
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `013-font-performance` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:implementation-details -->
-## 3. Implementation Details
+---
 
-### 3.1 Font Loading Strategy
-The site uses Adobe Fonts (Typekit) to load the "Silka Webfont" family.
-- **Kit ID:** `grw1wnt`
-- **Current Script:** `<script src="https://use.typekit.net/grw1wnt.js" type="text/javascript"></script>`
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-### 3.2 `font-display: swap`
-Since Adobe Fonts controls the `@font-face` CSS generation, we cannot directly modify the CSS to add `font-display: swap`.
-- **Solution:** Configure "Font Display: Swap" within the Adobe Fonts Project settings.
-- **Action:** Provide a detailed "Webflow User Guide" for the site administrator to perform this one-time configuration.
+### Problem Statement
+Specification: Font Performance Optimization
 
-### 3.3 Font Preloading
-We need to preload the critical `.woff2` font file to ensure it starts downloading immediately.
-- **File:** `src/0_html/global.html`
-- **Change:** Add `<link rel="preload">` to the `<head>` section.
-- **Attribute:** `crossorigin` is required as fonts are fetched via CORS.
-- **URL Strategy:** Since the Typekit URL is dynamic/managed by Adobe, we will ask the user for the specific URL or use a placeholder if they cannot provide it immediately.
-<!-- /ANCHOR:implementation-details -->
+### Purpose
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
+<!-- /ANCHOR:problem -->
 
-<!-- ANCHOR:verification-plan -->
-## 4. Verification Plan
-- **Manual Verification:** Inspect network waterfall to confirm font is preloaded.
-- **Visual Verification:** Confirm text is visible immediately (system font) before swapping to custom font (simulated slow connection).
-- **Lighthouse/DevTools:** Measure LCP impact.
-<!-- /ANCHOR:verification-plan -->
+---
 
-<!-- ANCHOR:constraints-risks -->
-## 5. Constraints & Risks
-- **Adobe Fonts URL Stability:** If Adobe changes the font URL schema, the preload link might break (404). We should document how to update this.
-- **CDN Caching:** Changes might take time to propagate if heavily cached.
-<!-- /ANCHOR:constraints-risks -->
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-<!-- ANCHOR:resources -->
-## 6. Resources
-- [MDN: font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)
-- [web.dev: Optimize WebFont loading](https://web.dev/optimize-webfont-loading/)
-<!-- /ANCHOR:resources -->
+### In Scope
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
+
+### Out of Scope
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
+
+---

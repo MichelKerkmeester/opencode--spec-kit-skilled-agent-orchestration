@@ -1,20 +1,18 @@
 ---
-title: "Implementation Plan: Command Agent Utilization [04--agent-orchestration/z_archive/014-command-agent-utilization/plan]"
-description: "Audit all 18 create command files (12 YAML workflows + 6 MD references) to ensure compliance with AGENTS.md routing rules. Route spec folder creation through @speckit (Rule 5), ..."
+title: "Implementation Plan: Command Agent Utilization [template:level_1/plan.md]"
+description: "Normalize the archived agent orchestration archive folder for Command Agent Utilization so current validation passes without reopening implementation scope."
 trigger_phrases:
-  - "implementation"
+  - "014-command-agent-utilization"
   - "plan"
-  - "command"
-  - "agent"
-  - "utilization"
-  - "014"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Plan: Command Agent Utilization Audit
+# Implementation Plan: Command Agent Utilization
 
-<!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
@@ -25,15 +23,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | YAML (workflow definitions) + Markdown (reference files) |
-| **Framework** | OpenCode command system (.opencode/command/create/) |
-| **Storage** | N/A |
-| **Testing** | Grep verification + review agent validation |
+| **Language/Stack** | Markdown, Bash, Node.js validation tooling |
+| **Framework** | system-spec-kit template and validator workflow |
+| **Storage** | Git-tracked archive files only |
+| **Testing** | validate.sh --verbose |
 
 ### Overview
-
-Audit all 18 create command files (12 YAML workflows + 6 MD references) to ensure compliance with AGENTS.md routing rules. Route spec folder creation through @speckit (Rule 5), codebase discovery through @context (Rule 4), and add @review quality gates (§3) to all create workflows.
-
+This plan keeps the archived record for Command Agent Utilization readable while bringing the folder back to current validation standards. The work focuses on template alignment, metadata cleanup, and reference-safe archival notes rather than reopening the original feature scope.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,15 +38,14 @@ Audit all 18 create command files (12 YAML workflows + 6 MD references) to ensur
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear — three AGENTS.md violations identified
-- [x] Success criteria measurable — grep-based verification for all changes
-- [x] Dependencies identified — AGENTS.md rules stable, agent files exist
+- [x] Archived topic is identifiable from the folder name and existing docs.
+- [x] Current Level 1 templates are available as the normalization source.
+- [x] Validation rules for structure, anchors, and integrity are understood.
 
 ### Definition of Done
-- [x] All acceptance criteria met (REQ-001 through REQ-006)
-- [x] Verification passed (204/204 checks across Phase 1+2+3)
-- [x] All 18 files modified with correct agent routing
-
+- [x] Core archive docs use current template structure.
+- [x] Top-level markdown no longer produces validator errors.
+- [x] Folder validation completes with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -59,25 +54,14 @@ Audit all 18 create command files (12 YAML workflows + 6 MD references) to ensur
 ## 3. ARCHITECTURE
 
 ### Pattern
-YAML workflow definitions consumed by AI agents at command invocation time.
+Archival normalization using Level 1 template compliance.
 
 ### Key Components
-- **12 YAML workflow files**: Define step-by-step activities for create commands (6 command types x 2 modes each)
-- **6 MD reference files**: Entry points that load YAML workflows, contain Agent Routing documentation
-- **AGENTS.md (orchestrate.md)**: Defines routing rules that YAML workflows must comply with
+- **Core spec docs**: spec.md, plan.md, tasks.md, and implementation-summary.md hold the validator-critical archive record.
+- **Compatibility stubs**: Existing checklist.md, decision-record.md, and other top-level markdown files are simplified so they remain readable without breaking validation.
 
 ### Data Flow
-```
-User invokes /create:* command
-  -> MD file loads (entry point)
-  -> YAML workflow executes step-by-step
-    -> Step 1b: @context dispatched for discovery (skill/agent only)
-    -> Step 2/1c: @speckit dispatched for spec folder (skill/agent only)
-    -> Steps 3-8: Core creation workflow
-    -> Step 5b/8b: @review dispatched for quality scoring (all commands)
-    -> Step 6/9: Save context
-```
-
+Folder name and surviving archive context inform the rewritten markdown, then validate.sh confirms the archive is structurally sound.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -85,36 +69,20 @@ User invokes /create:* command
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Route spec folder creation through @speckit (4 YAML)
+### Phase 1: Setup
+- [x] Review the archived folder and note top-level markdown files.
+- [x] Load the current Level 1 templates that govern validator expectations.
+- [x] Decide to normalize to Level 1 unless an existing compatibility file must remain.
 
-Scope narrowed from plan's 12 files to 4 — only `create_skill` and `create_agent` have `spec_folder_setup` steps.
+### Phase 2: Core Implementation
+- [x] Rewrite the core archive docs into current template-shaped content.
+- [x] Create any missing required Level 1 files.
+- [x] Simplify extra top-level markdown into archival notes with safe references.
 
-- [x] T001 Update `create_skill_auto.yaml` step_2_spec_folder_setup with @speckit routing
-- [x] T002 Update `create_skill_confirm.yaml` step_2_spec_folder_setup with @speckit routing
-- [x] T003 Update `create_agent_auto.yaml` step_1c_spec_folder_setup with @speckit routing
-- [x] T004 Update `create_agent_confirm.yaml` step_1c_spec_folder_setup with @speckit routing
-
-### Phase 2: Route discovery through @context (4 YAML)
-
-- [x] T005 Update `create_skill_auto.yaml` step_1b_skill_discovery with @context routing
-- [x] T006 Update `create_skill_confirm.yaml` step_1b_skill_discovery with @context routing
-- [x] T007 Update `create_agent_auto.yaml` step_1b_agent_discovery with @context routing
-- [x] T008 Update `create_agent_confirm.yaml` step_1b_agent_discovery with @context routing
-
-### Phase 3: Add @review quality gate (12 YAML + 6 MD)
-
-- [x] T009 Add quality_review step to all 6 auto YAML files
-- [x] T010 Add quality_review step with checkpoint to all 6 confirm YAML files
-- [x] T011 Add Agent Routing section to `skill.md` (3 agents: @context, @speckit, @review)
-- [x] T012 Add Agent Routing section to `agent.md` (3 agents: @context, @speckit, @review)
-- [x] T013 Add Agent Routing section to 4 remaining MD files (1 agent: @review each)
-
-### Phase 4: Verification
-
-- [x] T014 Grep verification: no inline patterns remain
-- [x] T015 Review agent verification: Phase 1+2 (72/72 checks)
-- [x] T016 Review agent verification: Phase 3 (132/132 checks)
-
+### Phase 3: Verification
+- [x] Run validate.sh for the archived folder.
+- [x] Repair any remaining error-level issues.
+- [x] Confirm the folder ends with zero validation errors.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -124,11 +92,9 @@ Scope narrowed from plan's 12 files to 4 — only `create_skill` and `create_age
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Grep | No inline Write/Glob/Grep in modified steps | `grep -r` across all YAML files |
-| Review agent | Phase 1+2: 72 structural checks | @review agent with line-level evidence |
-| Review agent | Phase 3: 132 structural checks | @review agent with line-level evidence |
-| Manual | MD file Agent Routing sections | Visual verification of all 6 files |
-
+| Structural | Template headers, anchors, level markers | validate.sh --verbose |
+| Integrity | Markdown references and metadata consistency | validate.sh --verbose |
+| Manual | Archived topic readability and folder identity | Direct markdown review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -138,10 +104,8 @@ Scope narrowed from plan's 12 files to 4 — only `create_skill` and `create_age
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| AGENTS.md routing rules | Internal | Green | Defines required routing patterns |
-| Agent definition files | Internal | Green | @speckit, @context, @review must exist |
-| Symlink mirroring | Internal | Green | .claude/commands/ auto-propagates |
-
+| system-spec-kit templates | Internal | Green | Without them the archive cannot be normalized safely. |
+| validate.sh rule set | Internal | Green | Validation evidence would be incomplete if unavailable. |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -149,169 +113,8 @@ Scope narrowed from plan's 12 files to 4 — only `create_skill` and `create_age
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Agent routing causes workflow failures or incorrect dispatch
-- **Procedure**: `git checkout -- .opencode/command/create/` restores all files
-
+- **Trigger**: The normalized archive removes essential historical meaning or introduces new validation errors.
+- **Procedure**: Restore the affected files from git history, then repeat normalization with the active templates as the baseline.
 <!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:phase-deps -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (@speckit) ──┐
-                     ├──► Phase 3 (@review + MD) ──► Phase 4 (Verify)
-Phase 2 (@context) ──┘
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Phase 1 | None | Phase 4 |
-| Phase 2 | None | Phase 4 |
-| Phase 3 | None | Phase 4 |
-| Phase 4 | Phase 1, 2, 3 | None |
-
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Phase 1: @speckit routing | Medium | 4 files, ~20 lines each |
-| Phase 2: @context routing | Medium | 4 files, ~15 lines each |
-| Phase 3: @review quality gate | Medium | 12 YAML + 6 MD files |
-| Phase 4: Verification | Low | Grep + review agents |
-| **Total** | **Medium** | **18 file modifications** |
-
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [x] Current YAML files reviewed for existing structure
-- [x] Plan scope verified against actual file contents
-
-### Rollback Procedure
-1. `git checkout -- .opencode/command/create/assets/` (all 12 YAML files)
-2. `git checkout -- .opencode/command/create/*.md` (all 6 MD files)
-3. Verify with grep that inline patterns are restored
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-<!-- ANCHOR:dependency-graph -->
-## L3: DEPENDENCY GRAPH
-
-```
-┌───────────────┐     ┌───────────────┐
-│   Phase 1     │     │   Phase 2     │
-│   @speckit    │     │   @context    │
-│   (4 YAML)    │     │   (4 YAML)    │
-└───────┬───────┘     └───────┬───────┘
-        │                     │
-        │  ┌───────────────┐  │
-        └──│   Phase 3     │──┘
-           │   @review     │
-           │ (12 YAML+6 MD)│
-           └───────┬───────┘
-                   │
-           ┌───────▼───────┐
-           │   Phase 4     │
-           │  Verification │
-           │  (204 checks) │
-           └───────────────┘
-```
-
-### Dependency Matrix
-
-| Component | Depends On | Produces | Blocks |
-|-----------|------------|----------|--------|
-| Phase 1 (@speckit) | None | 4 YAML with agent_routing | Phase 4 |
-| Phase 2 (@context) | None | 4 YAML with agent_routing | Phase 4 |
-| Phase 3 (@review) | None | 12 YAML + 6 MD with routing | Phase 4 |
-| Phase 4 (Verify) | Phase 1, 2, 3 | Verification report | None |
-
-<!-- /ANCHOR:dependency-graph -->
-
----
-
-<!-- ANCHOR:critical-path -->
-## L3: CRITICAL PATH
-
-1. **Phase 1+2** (parallel) - 8 YAML files modified - CRITICAL
-2. **Phase 3** (parallel with 1+2) - 18 files modified - CRITICAL
-3. **Phase 4** - Verification via review agents - CRITICAL
-
-**Total Critical Path**: Phases 1-3 parallel, then Phase 4 sequential
-
-**Parallel Opportunities**:
-- Phase 1, 2, and 3 are fully independent
-- Within Phase 3: auto and confirm files can be edited in parallel
-
-<!-- /ANCHOR:critical-path -->
-
----
-
-<!-- ANCHOR:milestones -->
-## L3: MILESTONES
-
-| Milestone | Description | Success Criteria | Status |
-|-----------|-------------|------------------|--------|
-| M1 | Spec folder routing complete | 4 YAML files have @speckit in spec_folder_setup | Complete |
-| M2 | Discovery routing complete | 4 YAML files have @context in discovery steps | Complete |
-| M3 | Quality gates complete | 12 YAML + 6 MD files have @review routing | Complete |
-| M4 | Verification passed | 204/204 checks pass | Complete |
-
-<!-- /ANCHOR:milestones -->
-
----
-
-<!-- ANCHOR:architecture -->
-## L3: ARCHITECTURE DECISION RECORD
-
-### ADR-001: Scope Reduction from 12 to 4 Files for Phase 1
-
-**Status**: Accepted
-
-**Context**: The original plan stated "All 12 create YAML files have a spec_folder_setup step." Grep analysis proved only 4 files have this step.
-
-**Decision**: Apply Phase 1 changes to only the 4 applicable files (create_skill and create_agent, auto and confirm variants).
-
-**Consequences**:
-- Prevented incorrect modifications to 8 files that don't create spec folders
-- Aligned changes with actual workflow structure
-
-### ADR-002: Non-Blocking @review Gate
-
-**Status**: Accepted
-
-**Context**: @review quality scoring could block or advise. Blocking would prevent workflow completion on low scores.
-
-**Decision**: Set `blocking: false` with `on_low_score` advisory at threshold 70.
-
-**Consequences**:
-- Workflows always complete regardless of score
-- Low-quality artifacts still get flagged with improvement suggestions
-
-See `decision-record.md` for full ADR details.
-
----
-
-<!--
-LEVEL 3 PLAN — Retroactive documentation for completed implementation
--->
-<!-- /ANCHOR:architecture -->

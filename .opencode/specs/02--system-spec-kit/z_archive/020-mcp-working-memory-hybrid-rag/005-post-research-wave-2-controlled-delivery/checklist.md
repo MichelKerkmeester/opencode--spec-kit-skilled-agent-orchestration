@@ -1,76 +1,102 @@
 ---
-title: "...--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/checklist]"
-description: "checklist document for 005-post-research-wave-2-controlled-delivery."
+title: "Verification Checklist: Post Research Wave 2 Controlled Delivery [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"
-  - "checklist"
-  - "post"
-  - "research"
-  - "wave"
-  - "005"
+  - "phase"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Verification Checklist: Post-Research Wave 2 Package
+# Verification Checklist: Post Research Wave 2 Controlled Delivery
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-checklist | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:verification-protocol -->
 <!-- ANCHOR:protocol -->
 ## Verification Protocol
 
-| Priority | Handling |
-|----------|----------|
-| P0 | Hard blocker |
-| P1 | Required unless explicitly deferred |
-| P2 | Optional optimization |
-<!-- /ANCHOR:verification-protocol -->
-
----
-
-<!-- ANCHOR:p0-blockers -->
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
 <!-- /ANCHOR:protocol -->
-## P0 - Blockers
-
-- [x] W2-CHK-001 Root checks `CHK-223-224` mapped and verifiable in this package. [Evidence: `scratch/c136-04-dark-launch-evidence.md`, `scratch/c136-05-staged-rollout-evidence.md`]
-- [x] W2-CHK-002 Wave 1 dependency and handoff inputs are explicit (`../004-post-research-wave-1-governance-foundations/`). [Evidence: Wave 1 package complete, handoff W1-020 delivered]
-- [x] W2-CHK-003 Sync/async operationalization contract is explicit for rollout evidence (foreground deterministic response, durable async workers). [Evidence: `scratch/c136-05-staged-rollout-evidence.md` covers sync/async separation]
-- [x] W2-CHK-004 Wave 1 typed contract bundle (trace envelope + degraded-mode schema + routing policy) version-pinned and available before Wave 2 execution (Definition of Ready pre-condition from plan.md). [Evidence: Wave 1 contract artifacts delivered via W1-020]
-- [x] W2-CHK-005 `C136-12` telemetry expansion outputs confirmed available from Wave 1 before Wave 2 stage-gate interpretation. [Evidence: `mcp_server/lib/telemetry/retrieval-telemetry.ts` from Wave 1]
-<!-- /ANCHOR:p0-blockers -->
 
 ---
 
-<!-- ANCHOR:p1-required -->
-## P1 - Required
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] W2-CHK-010 Root check `CHK-225` mapped and verifiable in this package. [Evidence: `mcp_server/lib/storage/mutation-ledger.ts` + tests]
-- [x] W2-CHK-011 Backlog IDs `C136-04`, `C136-05`, and `C136-11` are mapped in `../tasks.md`. [Evidence: root tasks.md references all IDs]
-- [x] W2-CHK-012 Wave 3 handoff is explicit in package and root docs. [Evidence: W2-030 handoff task complete]
-- [x] W2-CHK-013 Execution status is explicit and synchronized with root completion claims. [Evidence: all W2 tasks marked complete with evidence]
-- [x] W2-CHK-014 Deterministic exact-operation tooling evidence is present (count/status/dependency checks separated from semantic retrieval). [Evidence: `scratch/c136-04-dark-launch-evidence.md` deterministic gate-check outputs]
-- [x] W2-CHK-015 Append-only mutation ledger evidence includes required fields (`reason`, `prior_hash`, `new_hash`, `linked_memory_ids`, `decision_meta`). [Evidence: `mcp_server/lib/storage/mutation-ledger.ts` + tests verify all metadata fields]
-- [x] W2-CHK-016 This package's documentation set (spec.md, plan.md, tasks.md, checklist.md) confirmed referenced by root CHK-230. [Evidence: root checklist cross-reference verified]
-<!-- /ANCHOR:p1-required -->
+- [ ] CHK-001 [P0] Archived phase topic documented in spec.md
+- [ ] CHK-002 [P0] Normalization approach documented in plan.md
+- [ ] CHK-003 [P1] Existing compatibility files reviewed before rewrite
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-<!-- ANCHOR:p2-optional -->
-## P2 - Optional
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] W2-CHK-020 Package-level risk notes stay aligned with root `../plan.md`. [Evidence: risk notes consistent with root plan]
-<!-- /ANCHOR:p2-optional -->
+- [ ] CHK-010 [P0] Core phase docs match current templates
+- [ ] CHK-011 [P0] Anchors are valid in retained spec docs
+- [ ] CHK-012 [P1] Compatibility stubs remain readable and concise
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-<!-- ANCHOR:evidence -->
-## Evidence
+<!-- ANCHOR:testing -->
+## Testing
 
-- Root tasks: `../tasks.md`
-- Root verification: `../checklist.md`
-- Backlog source: `../research/136 - prioritized-implementation-backlog-post-research.md`
-- Execution artifacts: `../scratch/`
-<!-- /ANCHOR:evidence -->
+- [ ] CHK-020 [P0] Child phase validates with zero errors
+- [ ] CHK-021 [P0] Top-level markdown integrity checks pass
+- [ ] CHK-022 [P1] Manual review confirms the phase remains recognizable
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No sensitive data was introduced during archive repair
+- [ ] CHK-031 [P1] No misleading execution instructions remain in retained notes
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Core docs describe the same archived phase state
+- [ ] CHK-041 [P1] implementation-summary.md uses the correct folder metadata
+- [ ] CHK-042 [P2] Compatibility docs avoid broken markdown references
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Required Level 1 files are present
+- [ ] CHK-051 [P1] Optional compatibility stubs remain top-level only
+- [ ] CHK-052 [P2] No new archive clutter was introduced
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 0/7 |
+| P1 Items | 8 | 0/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

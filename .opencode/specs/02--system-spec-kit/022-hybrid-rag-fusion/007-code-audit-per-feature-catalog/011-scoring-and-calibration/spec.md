@@ -271,3 +271,4 @@ Behavioral drift is limited but real: F19 and F20 document capabilities that exi
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

@@ -254,3 +254,4 @@ Verify that all 16 Graph Signal Activation features are accurately documented in
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

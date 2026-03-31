@@ -37,13 +37,13 @@ Close the ESM migration by running the research-defined verification matrix, re-
 
 ### Definition of Ready
 - [x] Phases 1-3 complete: all runtime migration work landed
-- [x] Verification matrix defined in `../research/research.md`
+- [x] Verification matrix defined in `../review/deep-review-strategy.md`
 
 ### Definition of Done
 - [x] Highest-risk recent surfaces re-tested and stable
 - [x] Full verification matrix passes
 - [x] Standards docs outside 023 updated from verified state
-- [x] Parent `implementation-summary.md` and `checklist.md` closed with evidence
+- [x] Parent `implementation-summary.md` closed with evidence
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -98,7 +98,7 @@ Run highest-risk retests -> run full verification matrix -> pass/fail gate -> on
 
 ### Step 4: Packet Closure
 - [x] Update parent `implementation-summary.md` with runtime evidence
-- [x] Mark all parent `checklist.md` items with verification evidence
+- [x] Mark all parent verification evidence items in the packet
 - [x] Close the parent packet
 <!-- /ANCHOR:phases -->
 
@@ -125,7 +125,7 @@ Run highest-risk retests -> run full verification matrix -> pass/fail gate -> on
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Phases 1-3 complete | Internal | Must be complete | Cannot verify incomplete migration |
-| `../research/research.md` | Internal | Green | Defines the exact verification matrix |
+| `../review/deep-review-strategy.md` | Internal | Green | Defines the exact verification matrix |
 <!-- /ANCHOR:dependencies -->
 
 ---

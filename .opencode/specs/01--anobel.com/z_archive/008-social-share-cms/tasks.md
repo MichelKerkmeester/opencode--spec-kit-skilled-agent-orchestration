@@ -1,22 +1,83 @@
 ---
-title: "Tasks [008-social-share-cms/tasks] [01--anobel.com/z_archive/008-social-share-cms/tasks]"
-description: "tasks document for 008-social-share-cms."
+title: "Tasks: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/tasks]"
+description: "Archived normalization task list for Social Share CMS Integration."
 trigger_phrases:
-  - "tasks"
-  - "008"
   - "social"
+  - "share"
+  - "cms"
+  - "integration"
+  - "reference"
 importance_tier: "normal"
 contextType: "implementation"
 ---
+# Tasks: Social Share CMS Integration
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
-# Tasks
 
-<!-- ANCHOR:tasks -->
-## Tasks
+---
 
-- [x] Create spec folder and documentation
-- [x] Add new attribute constants (ATTR_URL, ATTR_SLUG)
-- [x] Add join_url_slug() helper function
-- [x] Refactor get_share_context() with priority logic
-- [ ] Test implementation in Webflow
-<!-- /ANCHOR:tasks -->
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

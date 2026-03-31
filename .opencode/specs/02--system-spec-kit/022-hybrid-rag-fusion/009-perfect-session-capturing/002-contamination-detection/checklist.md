@@ -93,7 +93,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [Evidence: no new temp artifacts were introduced outside the generated phase memory output.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [Evidence: this implementation did not leave scratch artifacts behind.]
-- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection` completed on 2026-03-17, wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4371.]
+- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection` completed on 2026-03-17, refreshed `memory/metadata.json`, and indexed memory #4371.]
 <!-- /ANCHOR:file-org -->
 
 ---

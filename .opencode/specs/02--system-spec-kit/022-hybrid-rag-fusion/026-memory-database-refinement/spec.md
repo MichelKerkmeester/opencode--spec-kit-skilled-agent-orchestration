@@ -27,6 +27,8 @@ contextType: "general"
 | **Status** | Phase 12 in progress — 30-iteration audit + 4 fix sprints + P2 triage complete; 10-iteration meta-review found 29 new findings (1 P0 + 17 P1 + 11 P2); remediation pending |
 | **Created** | 2026-03-28 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../025-mcp-runtime-hardening/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

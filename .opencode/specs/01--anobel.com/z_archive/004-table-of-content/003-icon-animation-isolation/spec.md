@@ -1,70 +1,118 @@
 ---
-title: "Spec: Icon Animation Isolation for [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/spec]"
-description: "Refactor btn_download.css to isolate only the icon animation logic, removing all button-level hover/focus/active styling so the download icon can be embedded inside another butt..."
+title: "Feature Specification: Icon Animation Isolation for Download Button [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/spec]"
+description: "Spec: Icon Animation Isolation for Download Button"
 trigger_phrases:
   - "spec"
   - "icon"
   - "animation"
   - "isolation"
-  - "for"
-  - "003"
+  - "download"
+  - "button"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Icon Animation Isolation for Download Button
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Icon Animation Isolation for Download Button
 
-<!-- ANCHOR:overview -->
-## Overview
-Refactor `btn_download.css` to isolate only the icon animation logic, removing all button-level hover/focus/active styling so the download icon can be embedded inside another button component.
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
-The current download button CSS includes:
-- Button wrapper styling (background-color transitions)
-- Hover state animations (arrow lift, base expand, background change)
-- Focus state animations (mirrors hover)
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-When the download icon is embedded inside another button, these styles conflict with or duplicate the parent button's interaction states.
-<!-- /ANCHOR:problem-statement -->
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `003-icon-animation-isolation` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:goal -->
-## Goal
-Extract **only the icon animation** (the download state machine: idle → downloading → ready) and remove all button chrome/interaction styling.
-<!-- /ANCHOR:goal -->
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Spec: Icon Animation Isolation for Download Button
+
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- Remove button wrapper transitions
-- Remove entire hover state section
-- Remove entire focus state section
-- Keep icon element transitions
-- Keep download state management
-- Keep success state animations
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
 ### Out of Scope
-- Parent button styling (handled separately)
-- JavaScript logic changes
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:user-stories -->
-## User Stories
+---
 
-### US-1: Clean Icon Animation
-**As a** developer embedding the download icon
-**I want** only the icon's state machine animation in CSS
-**So that** the parent button can control all hover/focus/active states
-<!-- /ANCHOR:user-stories -->
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-<!-- ANCHOR:acceptance-criteria -->
-## Acceptance Criteria
-- [ ] No `background-color` properties in the CSS
-- [ ] No `:hover` selectors in the CSS
-- [ ] No `:focus` selectors in the CSS
-- [ ] Icon state animations (downloading, ready) still work
-- [ ] Transitions for icon elements preserved
-<!-- /ANCHOR:acceptance-criteria -->
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

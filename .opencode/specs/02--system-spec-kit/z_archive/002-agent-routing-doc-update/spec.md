@@ -1,20 +1,16 @@
 ---
-title: "Feature Specification: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/spec]"
-description: "Spec 014 (Command Agent Utilization Audit) added formal agent routing to all spec_kit commands — @debug at failure >= 3, @research at confidence < 60%, dual-phase @review (Mode ..."
+title: "Feature Specification: Agent Routing Documentation Update [archive]"
+description: "Archived record for the Agent Routing Documentation Update work, normalized to the current Level 1 template."
 trigger_phrases:
-  - "feature"
-  - "specification"
-  - "agent"
-  - "routing"
-  - "documentation"
-  - "spec"
-  - "002"
+  - "agent routing documentation update"
+  - "agent routing"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
 # Feature Specification: Agent Routing Documentation Update
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -24,13 +20,11 @@ contextType: "decision"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
+| **Level** | 1 |
 | **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-02-14 |
-| **Parent** | 02--system-spec-kit |
-| **Related** | `anobel.com.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/` |
-
+| **Created** | 2026-03-31 |
+| **Branch** | `002-agent-routing-doc-update` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -39,13 +33,10 @@ contextType: "decision"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-
-Spec 014 (Command Agent Utilization Audit) added formal agent routing to all spec_kit commands — @debug at failure >= 3, @research at confidence < 60%, dual-phase @review (Mode 2 + Mode 4), and @handover at session end. The SKILL.md and README.md for system-spec-kit were not updated to reflect these routing changes, leaving the authoritative skill documentation incomplete.
+This archived folder captures work that updated system-spec-kit documentation for agent routing behavior. The prior archive content no longer matched the current template contract, which caused validation failures and weakened the archived record.
 
 ### Purpose
-
-Update SKILL.md agent exclusivity section, README.md command mode suffixes, and create a changelog entry so that system-spec-kit documentation accurately reflects the current agent routing architecture.
-
+Keep a concise archival summary of the agent routing documentation update in a format that passes the current validator.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -54,27 +45,22 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 ## 3. SCOPE
 
 ### In Scope
-
-- Update SKILL.md Agent Exclusivity section to include @debug and @review
-- Add Agent Dispatch subsection documenting which agents are dispatched during spec_kit commands
-- Update README.md Mode Suffixes table to include `:with-research` and `:auto-debug`
-- Create changelog entry v2.2.9.0
+- Preserve the archived topic and folder identity for the agent routing documentation update.
+- Normalize the core archive documents to the current Level 1 structure.
+- Keep top-level archive markdown free of broken markdown references.
 
 ### Out of Scope
-
-- Template files (debug-delegation.md, handover.md, etc.) — fill-in forms, not routing docs
-- Reference files (quick_reference.md, phase_checklists.md) — already accurate
-- Asset files (parallel_dispatch_config.md, complexity_decision_matrix.md) — unaffected
-- YAML command files — already updated in spec 014
+- Reconstructing every former verification detail from the older Level 2 package.
+- Editing live product documentation outside this archived folder.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Agent Exclusivity exceptions + Agent Dispatch subsection |
-| `.opencode/skill/system-spec-kit/README.md` | Modify | Mode Suffixes table + Recent Changes section |
-| `.opencode/changelog/01--system-spec-kit/v2.2.9.0.md` | Create | Changelog entry |
-
+| spec.md | Create | Restore a compliant archive specification. |
+| plan.md | Create | Record the archive normalization approach. |
+| tasks.md | Create | Capture the cleanup and verification work. |
+| implementation-summary.md | Create | Summarize the repaired archive state. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -86,17 +72,18 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | SKILL.md lists all agents dispatched in spec_kit commands | @debug, @review, @research, @handover all documented with their trigger conditions |
-| REQ-002 | SKILL.md Agent Exclusivity exceptions include debug-delegation.md | `debug-delegation.md` listed with `@debug agent only` |
-| REQ-003 | README.md documents `:with-research` and `:auto-debug` flags | Mode Suffixes table includes both flags with behavior descriptions |
+| REQ-001 | The archive must clearly state that the folder documents an agent routing documentation update. | A maintainer can identify the archived topic from spec.md alone. |
+| REQ-002 | Core archive documents must follow the current Level 1 template structure. | Strict validation reports no TEMPLATE_HEADERS or ANCHORS_VALID errors. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Changelog v2.2.9.0 created | File exists at `.opencode/changelog/01--system-spec-kit/v2.2.9.0.md` |
-| REQ-005 | README.md Recent Changes section updated | Section 10 references spec 014 agent routing work |
+| REQ-003 | Top-level archive markdown must validate without error-level integrity issues. | Strict validation reports zero errors for the folder. |
 
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core documents, **then** they can understand that the archived work updated agent routing documentation.
+- **Given** strict validation scans this folder, **when** it checks required files, structure, anchors, and references, **then** it reports zero errors.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -104,10 +91,8 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: SKILL.md contains complete agent dispatch documentation matching actual command YAML routing
-- **SC-002**: README.md Mode Suffixes table includes `:with-research` and `:auto-debug`
-- **SC-003**: Changelog entry created documenting the documentation update
-
+- **SC-001**: The archived feature purpose remains clear.
+- **SC-002**: The folder validates with zero errors under strict mode.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -117,58 +102,16 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Spec 014 implementation complete | Changes reference spec 014 routing | Verified complete — 33 files modified |
-| Risk | SKILL.md edits misrepresent routing | Low | Cross-reference against actual YAML files |
-
+| Dependency | Current Level 1 templates | Archive compliance depends on the active template contract. | Rewrite directly from the current templates and validate after edits. |
+| Risk | Historical detail is condensed | Some original verification detail is no longer in top-level docs. | Preserve the feature summary here and rely on git history for deeper reconstruction. |
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-<!-- ANCHOR:requirements -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Consistency
-
-- **NFR-C01**: Agent naming consistent across SKILL.md, README.md, and command files (@debug not "debug agent")
-- **NFR-C02**: Trigger conditions match actual YAML thresholds (failure >= 3, confidence < 60%)
-
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-<!-- /ANCHOR:requirements -->
-## L2: EDGE CASES
-
-### Documentation Scope
-
-- @review has dual-phase behavior (Mode 2 advisory + Mode 4 blocking) — document both clearly
-- `:with-research` and `:auto-debug` are `/spec_kit:complete`-specific flags, not universal mode suffixes
-
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 8/25 | 3 files, documentation-only changes |
-| Risk | 3/25 | No code, no breaking changes |
-| Research | 5/20 | Context agents already identified gaps |
-| **Total** | **16/70** | **Level 2 (minimal)** |
-
-<!-- /ANCHOR:complexity -->
-
----
-
 <!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 7. OPEN QUESTIONS
 
-- None — gaps identified by context agents, changes scoped.
-
+- None. This folder now serves as a concise archival record.
 <!-- /ANCHOR:questions -->
 
 ---

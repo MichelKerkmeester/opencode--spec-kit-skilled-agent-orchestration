@@ -43,7 +43,6 @@ The runtime prompt side now matches the validator. The shared `.agents` runtime 
 | .opencode/skill/system-spec-kit/scripts/spec/validate.sh | Modified | Promote `TEMPLATE_HEADERS` structural failures to errors |
 | `.agents/agents/speckit.md` | Modified | Inline scaffold and strict post-write validation guidance |
 | `.opencode/agent/speckit.md` | Modified | Inline scaffold and strict post-write validation guidance |
-| `.opencode/agent/chatgpt/speckit.md` | Modified | Inline scaffold and strict post-write validation guidance |
 | `.claude/agents/speckit.md` | Modified | Inline scaffold and strict post-write validation guidance |
 | `.gemini/agents/speckit.md` | Modified | Inline scaffold and strict post-write validation guidance |
 | .opencode/command/spec_kit/assets/spec_kit_{plan,implement,complete}_{auto,confirm}.yaml | Modified | Embed scaffold contracts and strict validation steps |

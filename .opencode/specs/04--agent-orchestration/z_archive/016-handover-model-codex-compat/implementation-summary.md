@@ -1,105 +1,89 @@
 ---
-title: "Implementation Summary: [04--agent-orchestration/z_archive/016-handover-model-codex-compat/implementation-summary]"
-description: "Added to .codex/config.toml"
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for Handover Model Codex Compat."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "spec"
-  - "016"
-  - "handover"
+  - "016-handover-model-codex-compat"
   - "implementation summary"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-# Implementation Summary: Spec 016 — Handover Haiku + Codex Agent Conversion
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 016-handover-model-codex-compat |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:what-built -->
-## Changes Made
+## What Was Built
 
-### Phase 1: Handover Model Change (2 files)
+This archived folder now has a current-template Level 1 documentation set for Handover Model Codex Compat. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
 
-| File | Change |
-|------|--------|
-| `.opencode/agent/handover.md` | `model: github-copilot/claude-sonnet-4.5` -> `model: github-copilot/claude-haiku-4.5` |
-| `.claude/agents/handover.md` | `model: sonnet` -> `model: haiku` |
+### Archive Normalization
 
-### Phase 2: Codex config.toml (1 file)
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
-Added to `.codex/config.toml`:
+### Files Changed
 
-**4 profiles** (all gpt-5.3 family, differentiated by variant and reasoning effort):
-
-| Profile | Model | Reasoning Effort | Sandbox |
-|---------|-------|-----------------|---------|
-| `fast` | `gpt-5.3-codex-spark` | high | workspace-write |
-| `balanced` | `gpt-5.3-codex` | high | workspace-write |
-| `powerful` | `gpt-5.3-codex` | extra_high | workspace-write |
-| `readonly` | `gpt-5.3-codex` | extra_high | read-only |
-
-**MCP server**: `codex-specialized-subagents` for sub-agent dispatch via `delegate` tool.
-
-### Phase 3: Codex Agent Frontmatter (8 files)
-
-All `.codex/agents/*.md` files converted from Claude Code format to Codex-native:
-
-| Agent | Profile | Sandbox |
-|-------|---------|---------|
-| context | `fast` | read-only |
-| handover | `fast` | workspace-write |
-| speckit | `balanced` | workspace-write |
-| write | `balanced` | workspace-write |
-| debug | `powerful` | workspace-write |
-| research | `powerful` | workspace-write |
-| review | `readonly` | read-only |
-| orchestrate | `powerful` | workspace-write |
-
-Removed fields: `name`, `description`, `tools`, `model`, `mcpServers`
-Added fields: `profile`, `approval_policy`, `sandbox_mode`
-
-## Files Modified
-
-| File | Action |
-|------|--------|
-| `.opencode/agent/handover.md` | Model field changed |
-| `.claude/agents/handover.md` | Model field changed |
-| `.codex/config.toml` | Profiles + MCP added |
-| `.codex/agents/context.md` | Frontmatter replaced |
-| `.codex/agents/handover.md` | Frontmatter replaced |
-| `.codex/agents/speckit.md` | Frontmatter replaced |
-| `.codex/agents/write.md` | Frontmatter replaced |
-| `.codex/agents/debug.md` | Frontmatter replaced |
-| `.codex/agents/research/research/research.md` | Frontmatter replaced |
-| `.codex/agents/review.md` | Frontmatter replaced |
-| `.codex/agents/orchestrate.md` | Frontmatter replaced |
-
-**Total: 11 files modified**
-
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
 
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
 <!-- ANCHOR:decisions -->
-## Design Decisions
-
-1. **Uniform gpt-5.3 family**: All profiles use gpt-5.3 (no 5.1 or 5.2). `fast` uses the spark variant for speed.
-2. **Reasoning effort differentiation**: fast/balanced = high, powerful/readonly = extra_high.
-3. **Handover to Haiku**: Validated by spec 012/013 for structured template-filling tasks.
-
-<!-- /ANCHOR:decisions -->
-
-<!-- ANCHOR:limitations -->
 ## Key Decisions
 
-- Codex CLI has no native sub-agent system; profile-based dispatch via MCP is the viable path
-- Claude Code YAML frontmatter fields are completely ignored by Codex (no partial parsing)
-- Agent body content is platform-agnostic; only frontmatter needs per-platform adaptation
-- Model differentiation is better achieved via reasoning effort and model variants than entirely separate model families
-
-<!-- /ANCHOR:limitations -->
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
+<!-- /ANCHOR:verification -->
+
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
+
+---

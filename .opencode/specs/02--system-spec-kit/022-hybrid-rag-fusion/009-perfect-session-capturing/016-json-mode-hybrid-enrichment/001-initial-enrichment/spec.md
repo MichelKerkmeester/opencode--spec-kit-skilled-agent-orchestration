@@ -282,3 +282,4 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
+<!-- /ANCHOR:questions -->

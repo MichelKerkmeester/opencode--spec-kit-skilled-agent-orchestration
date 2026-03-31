@@ -274,3 +274,4 @@ Manual coverage lives in `M-007` and is expected to explicitly cover:
 - Source feature title: Session capturing pipeline quality
 - Source spec: `009-perfect-session-capturing`
 - Manual playbook cross-reference: `M-007`
+<!-- /ANCHOR:id -->

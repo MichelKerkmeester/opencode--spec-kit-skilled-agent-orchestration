@@ -103,7 +103,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [Evidence: this phase did not add scratch artifacts outside the normal build/test outputs.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [Evidence: no `scratch/` artifacts were required for this implementation.]
-- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification` created `memory/16-03-26_20-16__phase-classification.md` and refreshed `memory/metadata.json`.]
+- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification` refreshed `memory/metadata.json` for this phase.]
 <!-- /ANCHOR:file-org -->
 
 ---

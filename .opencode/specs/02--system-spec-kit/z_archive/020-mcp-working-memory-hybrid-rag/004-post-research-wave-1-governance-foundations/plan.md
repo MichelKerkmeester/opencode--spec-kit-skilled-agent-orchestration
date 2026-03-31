@@ -1,186 +1,120 @@
 ---
-title: "P [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/plan]"
-description: "Deliver deterministic runtime foundations and governance evidence required to unlock controlled post-research delivery waves."
+title: "Implementation Plan: Post Research Wave 1 Governance Foundations [template:level_1/plan.md]"
+description: "Normalize archived phase folder 004-post-research-wave-1-governance-foundations so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
+  - "004-post-research-wave-1-governance-foundations"
   - "phase"
-  - "package"
-  - "plan"
-  - "post"
-  - "research"
-  - "004"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Phase Package Plan: Post-Research Wave 1 (Governance Foundations)
+# Implementation Plan: Post Research Wave 1 Governance Foundations
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-plan | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. Objective
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Deliver deterministic runtime foundations and governance evidence required to unlock controlled post-research delivery waves.
-<!-- /ANCHOR:objective -->
+### Technical Context
 
----
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, Bash, Node.js validator tooling |
+| **Framework** | system-spec-kit template compliance |
+| **Storage** | Git-tracked archived phase files |
+| **Testing** | validate.sh --verbose --no-recursive |
 
-<!-- ANCHOR:technical-context -->
-## Technical Context
-
-This wave operates on the MCP Spec Kit Memory server (`mcp_server/`). The existing architecture includes session-attention boosting, event-based decay, pressure monitoring, extraction pipeline, and causal-neighbor boosting (Phases 0-3 complete). Wave 1 extends this with typed contracts, deterministic routing, and adaptive fusion policy. See parent `../plan.md` §3 for full architecture.
-<!-- /ANCHOR:technical-context -->
-
----
-
-<!-- ANCHOR:architecture -->
-## Architecture
-
-Wave 1 focuses on contract and policy layers rather than broad structural rewrites:
-
-- `lib/contracts/` defines typed runtime envelopes for retrieval traces and degraded-mode behavior.
-- `lib/search/` receives deterministic artifact-routing and adaptive-fusion policy hooks.
-- `lib/telemetry/` captures review-quality dimensions required for governance sign-off.
-- Existing handler boundaries remain unchanged; this package hardens behavior contracts and observability.
-<!-- /ANCHOR:architecture -->
-
----
-
-<!-- ANCHOR:implementation -->
-## Implementation
-
-Implementation is executed in two gated phases with explicit handoff artifacts for Wave 2.
-
-## Phase 1 - Contract and Routing Foundations
-
-- Implement typed `ContextEnvelope` and `RetrievalTrace` contracts with compile-time and test validation.
-- Implement deterministic artifact-class routing policies for `spec`, `plan`, `tasks`, and `checklist`.
-- Verify fallback-safe behavior with typed degraded-mode schema fields.
-
-## Phase 2 - Fusion, Telemetry, and Governance Closure
-
-- Enable adaptive fusion policy behind feature flags with intent/document-type weighting.
-- Expand telemetry capture to latency/mode/fallback/quality-proxy dimensions.
-- Prepare and archive Tech Lead, Data Reviewer, and Product Owner closure artifacts.
-<!-- /ANCHOR:implementation -->
-
----
-
-<!-- ANCHOR:ai-execution-protocol -->
-## AI Execution Protocol
-
-### Pre-Task Checklist
-
-1. Confirm wave scope is limited to `C136-08`, `C136-09`, `C136-10`, `C136-12`, `C136-01`, `C136-02`, `C136-03`.
-2. Confirm dependency artifacts from `../002-extraction-rollout-phases-2-3/` are available.
-3. Confirm no root-level requirement text is rewritten in this package.
-4. Confirm evidence destinations for contracts, telemetry, and approvals are defined before edits.
-
-### Execution Rules
-
-| Rule ID | Rule |
-|---------|------|
-| TASK-SEQ-01 | Complete Phase 1 contract/routing tasks before Phase 2 fusion and governance tasks. |
-| TASK-SCOPE-01 | Keep changes limited to Wave 1 package scope and mapped backlog IDs. |
-| TASK-EVID-01 | Attach evidence references for every completed checklist or task claim. |
-
-### Status Reporting Format
-
-Use: `Status: <in-progress|blocked|complete> | Workstream: <id> | Evidence: <path or pending> | Next: <next action>`
-
-### Blocked Task Protocol
-
-When blocked, mark item as `[B]`, record blocker cause, list dependency owner, and define an unblock check before resuming execution.
-<!-- /ANCHOR:ai-execution-protocol -->
+### Overview
+This plan keeps the archived child phase readable while replacing outdated phase-package formatting with current Level 1 template structure. The work focuses on compliance, concise archival context, and safe integrity cleanup.
+<!-- /ANCHOR:summary -->
 
 ---
 
 <!-- ANCHOR:quality-gates -->
-## 2. Quality Gates
+## 2. QUALITY GATES
 
 ### Definition of Ready
-- Root post-research backlog mapping is synchronized in `../spec.md`, `../plan.md`, `../tasks.md`, and `../checklist.md`.
-- Phase 2/3 closure artifacts from package `../002-extraction-rollout-phases-2-3/` are available.
-- Wave sequencing is explicit (`004` -> `005` -> `006`).
+- [x] Current Level 1 templates reviewed.
+- [x] Existing child phase docs inspected before rewrite.
+- [x] Validation targets understood.
 
 ### Definition of Done
-- `C136-08`, `C136-09`, `C136-10`, and `C136-12` implementation evidence is published.
-- `C136-01`, `C136-02`, and `C136-03` approval artifacts are finalized and archived.
-- Handoff notes for Wave 2 are published to package `../005-post-research-wave-2-controlled-delivery/`.
-- Wave 2 handoff includes typed contracts and policy artifacts required for controlled delivery (no unresolved contract ambiguity).
+- [x] Phase docs use current Level 1 template structure.
+- [x] Retained compatibility docs are simplified.
+- [x] Child phase validates with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:execution-model -->
-## 3. Execution Model
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-| Workstream | Backlog IDs | Duration | Output |
-|------------|-------------|----------|--------|
-| Contract and routing foundations | `C136-08`, `C136-09` | 2-3 days | Typed contracts (`ContextEnvelope`, `RetrievalTrace`) with mandatory trace stages + deterministic artifact routing baseline (`spec`, `plan`, `tasks`, `checklist`) |
-| Fusion and fallback safety | `C136-10` | 2-3 days | Feature-flagged adaptive fusion with dynamic intent/document-type weighting + deterministic fallback + typed degraded-mode contract |
-| Telemetry and governance closure | `C136-12`, `C136-01`, `C136-02`, `C136-03` | 3-4 days | Expanded telemetry + triad approval artifacts |
-<!-- /ANCHOR:execution-model -->
+### Pattern
+Archival phase normalization using Level 1 compliance.
 
----
+### Key Components
+- **Core docs**: spec.md, plan.md, tasks.md, and implementation-summary.md explain the archived phase state.
+- **Compatibility docs**: checklist.md and decision-record.md remain as lightweight stubs because they already exist in the folder.
 
-<!-- ANCHOR:milestones -->
-## 4. Milestones
-
-| Milestone | Exit Criteria |
-|-----------|---------------|
-| W1-M1 | `C136-08` and `C136-09` complete with passing contract/routing tests |
-| W1-M2 | `C136-10` complete with feature-flag fallback parity evidence and typed degraded-mode contract validation |
-| W1-M3 | `C136-12`, `C136-01`, `C136-02`, and `C136-03` complete with archived evidence |
-<!-- /ANCHOR:milestones -->
+### Data Flow
+The phase folder name informs the rewritten markdown, then validate.sh confirms the normalized archive is structurally sound.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:risk-register -->
-## 5. Risk Register
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Contract ambiguity persists across modules | Integration drift and brittle rollout gates | Enforce compile-time type checks plus contract tests before fusion enablement |
-| Fixed global fusion weighting leaks into production | Irrelevant ranking behavior under mixed intents/document types | Require dynamic weighting by intent + document type and fail review if static profile is used |
-| Deterministic fallback parity gaps | Unstable behavior under guard mode | Keep fallback default-ready and require dark-run parity report before closure |
-| Approval latency for triad reviews | Blocks Wave 2 start and closure confidence | Prepare pre-read packets early and schedule fixed review windows |
-| Telemetry schema gaps | Weak evidence quality for downstream gates | Treat `C136-12` as Wave 1 blocker and require threshold-check report |
-<!-- /ANCHOR:risk-register -->
+### Phase 1: Setup
+- [x] Review the archived phase docs
+- [x] Load active Level 1 templates
+- [x] Decide to normalize instead of preserving phase-package structure
+
+### Phase 2: Core Implementation
+- [x] Rewrite the core docs
+- [x] Simplify retained compatibility files
+- [x] Remove broken markdown references from top-level notes
+
+### Phase 3: Verification
+- [x] Run validate.sh on the child phase folder
+- [x] Repair any remaining error-level issues
+- [x] Confirm zero validation errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Headers, anchors, level markers | validate.sh --verbose --no-recursive |
+| Integrity | Metadata and markdown references | validate.sh --verbose --no-recursive |
+| Manual | Archived phase readability | Direct markdown review |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## 6. Dependencies
+## 6. DEPENDENCIES
 
-- Consumes closure evidence from package `../002-extraction-rollout-phases-2-3/`.
-- Consumes backlog sequencing from `../research/136 - prioritized-implementation-backlog-post-research.md`.
-- Unblocks package `../005-post-research-wave-2-controlled-delivery/` once Wave 1 gates pass.
-
-### Wave 1 Output Contract for Wave 2
-
-Wave 2 may not start until Wave 1 publishes these artifacts:
-- Typed retrieval envelope schema package (including trace stage completeness and degraded-mode contract schema).
-- Artifact-aware routing policy document + deterministic tests.
-- Adaptive fusion weighting policy with explicit intent/document-type behavior and fallback parity report.
-- Telemetry schema extension and reviewer-approved interpretation packet.
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit templates | Internal | Green | Safe normalization would be blocked. |
+| validate.sh | Internal | Green | Final verification evidence would be incomplete. |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:governance -->
-## 7. Governance Notes
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-- Level 3+ package planning is maintained here.
-- `decision-record.md` remains root-only at `../decision-record.md`.
-- `implementation-summary.md` present as compliance normalization record; substantive summary at `../implementation-summary.md`.
-<!-- /ANCHOR:governance -->
+- **Trigger**: The normalized child phase loses essential meaning or introduces fresh validation errors.
+- **Procedure**: Restore the prior files from git history and repeat normalization using the active templates as the baseline.
+<!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:status -->
-## 8. Planning Status
-
-Planned package. No implementation has started.
-<!-- /ANCHOR:status -->

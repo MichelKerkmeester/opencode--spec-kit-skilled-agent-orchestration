@@ -24,7 +24,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `026-review-debug-agent-improvement` |
+| **Spec Folder** | 026-review-debug-agent-improvement |
 | **Completed** | 2026-03-05 |
 | **Level** | 2 |
 | **Status** | Partially Reverted |

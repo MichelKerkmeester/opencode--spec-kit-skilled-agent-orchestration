@@ -1,44 +1,83 @@
 ---
-title: "Tasks — 002-skill-review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/tasks]"
-description: "title: Tasks — 002-skill-review-post-022"
+title: "Tasks: Post-022 Skill Review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/tasks]"
+description: "Task history for the post-022 documentation review, remediation, and verification pass."
 trigger_phrases:
-  - "tasks"
-  - "002"
-  - "skill"
-  - "review"
+  - "post-022 review tasks"
+  - "002 skill review tasks"
+  - "skill remediation tasks"
 importance_tier: "normal"
 contextType: "implementation"
-status: Complete
 ---
-# Tasks
+# Tasks: Post-022 Skill Review and Remediation
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Deep Review
-- [x] Initialize spec folder and state files (config, JSONL, strategy)
-- [x] Wave 1: A1 (SKILL.md correctness) + A2 (structure traceability)
-- [x] Wave 2: A3 (template refs correctness) + A4 (validation traceability)
-- [x] Wave 3: A5 (memory/config security) + A6 (workflows maintainability)
-- [x] Wave 4: A7 (templates + assets traceability/maintainability)
-- [x] Synthesize review-report.md (CONDITIONAL: 21 P1, 12 P2)
-- [x] Save memory context
+## Phase 1: Setup
+
+- [x] T001 Review the existing child packet docs and compare them to the active Level 2 templates
+- [x] T002 Read `review-report.md` and capture the remediation workstreams that still mattered to this child phase
+- [x] T003 Verify the live parent and root packet paths that this child packet must reference
 <!-- /ANCHOR:phase-1 -->
 
+---
+
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Remediation
-- [x] WS-1: SKILL.md core fixes (3 findings)
-- [x] WS-2: Structure references normalization (5 findings)
-- [x] WS-3: Template references Level 3+ coordination (4 findings)
-- [x] WS-4: Validation references modernization (5 findings)
-- [x] WS-5: Security hardening (5 findings)
-- [x] WS-6: Workflow references phase-aware update (4 findings)
-- [x] WS-7: Templates + assets normalization (7 findings)
+## Phase 2: Implementation
+
+- [x] T004 Rewrite `spec.md` onto the Level 2 template while preserving the review/remediation story
+- [x] T005 Rewrite `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` onto their template contracts
+- [x] T006 Fix stale markdown references in root-level artifacts, including `review-report.md`
+- [x] T007 Preserve the deep-review detail in `review-report.md` and `research/` instead of custom headings in canonical docs
 <!-- /ANCHOR:phase-2 -->
+
+---
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
-- [x] GPT 5.4 review agent verification — found 5 consistency issues
-- [x] Rework sweep: Gate 3 A/B/C/D→E, decision-record filename, YAML phase example, workspace-root fallback
-- [x] Commit remediation (b72f78571)
-- [x] Commit rework (70c078acc)
-- [x] Bump SKILL.md version to 2.2.27.0
+
+- [x] T008 Re-run recursive validation on `011-skill-alignment`
+- [x] T009 Confirm the child packet contributes zero blocking errors
+- [x] T010 Keep the packet cross-references readable and resolvable after the rewrite
 <!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Recursive validation passes with zero errors for the assigned parent folder
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Verification Checklist**: See `checklist.md`
+- **Review Ledger**: See `review-report.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

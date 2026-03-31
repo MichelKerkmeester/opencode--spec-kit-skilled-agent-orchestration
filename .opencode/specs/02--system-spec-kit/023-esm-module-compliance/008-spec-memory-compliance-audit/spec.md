@@ -11,37 +11,25 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 ---
-<!-- SPECKIT_ADDENDUM: Phase - Child Header -->
+# Feature Specification: Spec & Memory Compliance Audit
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+
+---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
 
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 8 of 8 |
 | **Predecessor** | 007-hybrid-search-null-db-fix |
 | **Successor** | None |
-| **Handoff Criteria** | All 186 spec folders pass validate.sh; all surviving memories pass V-rule validation; database reindex completes with memory_health() healthy |
+| **Handoff Criteria** | All surviving docs in this assigned scope validate cleanly, surviving memories pass V-rule validation, and the rebuilt database reports healthy |
 
-<!-- ANCHOR:phase-context -->
-### Phase Context
-
-This is **Phase 8** of the ESM Module Compliance specification — a cross-cutting quality and compliance sweep across the entire spec and memory ecosystem.
-
-**Scope Boundary**: Documentation and database hygiene only. No runtime code changes.
-
-**Dependencies**:
-- Phases 001-007 (ESM migration and search pipeline fixes complete)
-
-**Deliverables**:
-- All 186 spec folders compliant with CORE + ADDENDUM v2.2 templates
-- All memory files passing V-rule quality validation
-- Clean database re-indexed from zero with no dead or test entries
+This is **Phase 8** of the ESM Module Compliance specification. It is the final cross-cutting documentation and database hygiene sweep after the runtime migration and search fixes completed.
 <!-- /ANCHOR:phase-context -->
-
----
-
-# Feature Specification: Spec & Memory Compliance Audit
-
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
@@ -390,12 +378,7 @@ Bring the entire spec and memory ecosystem to 100% template compliance, remove b
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
 <!-- ANCHOR:nfr -->
-<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -414,7 +397,6 @@ Bring the entire spec and memory ecosystem to 100% template compliance, remove b
 ---
 
 <!-- ANCHOR:edge-cases -->
-<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

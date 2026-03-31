@@ -1,78 +1,82 @@
 ---
-title: "Tasks: Spec 016 — Handover Haiku + Codex [04--agent-orchestration/z_archive/016-handover-model-codex-compat/tasks]"
-description: "tasks document for 016-handover-model-codex-compat."
+title: "Tasks: Handover Model Codex Compat [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "016-handover-model-codex-compat"
   - "tasks"
-  - "spec"
-  - "016"
-  - "handover"
-  - "haiku"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Tasks: Handover Model Codex Compat
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
-# Tasks: Spec 016 — Handover Haiku + Codex Agent Conversion
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Handover Model Change
+## Phase 1: Setup
 
-| ID | Task | File | Status |
-|----|------|------|--------|
-| T001 | Change model to `github-copilot/claude-haiku-4.5` | `.opencode/agent/handover.md` | [x] Complete |
-| T002 | Change model to `haiku` | `.claude/agents/handover.md` | [x] Complete |
-
+- [x] T001 Review the archived folder contents (top-level markdown)
+- [x] T002 Load the current Level 1 templates (templates/level_1)
+- [x] T003 [P] Identify compatibility files that must remain in place (checklist.md or decision-record.md)
 <!-- /ANCHOR:phase-1 -->
 
+---
+
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Codex config.toml
+## Phase 2: Implementation
 
-| ID | Task | File | Status |
-|----|------|------|--------|
-| T003 | Add 4 profiles (fast/balanced/powerful/readonly) with gpt-5.3 family | `.codex/config.toml` | [x] Complete |
-| T004 | Add codex-specialized-subagents MCP server | `.codex/config.toml` | [x] Complete |
-| T003a | Set fast profile to gpt-5.3-codex-spark | `.codex/config.toml` | [x] Complete |
-| T003b | Set reasoning effort: fast/balanced=high, powerful/readonly=extra_high | `.codex/config.toml` | [x] Complete |
-
+- [x] T004 Rewrite spec.md with validator-compliant archival context
+- [x] T005 Rewrite or create plan.md and tasks.md for archive maintenance
+- [x] T006 Rewrite or create implementation-summary.md with correct folder metadata
+- [x] T007 Add compatibility stubs for any retained checklist.md or decision-record.md files
 <!-- /ANCHOR:phase-2 -->
 
+---
+
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Codex Agent Frontmatter Conversion
+## Phase 3: Verification
 
-| ID | Agent | Profile | Sandbox | Status |
-|----|-------|---------|---------|--------|
-| T005 | context | `fast` | read-only | [x] Complete |
-| T006 | handover | `fast` | workspace-write | [x] Complete |
-| T007 | speckit | `balanced` | workspace-write | [x] Complete |
-| T008 | write | `balanced` | workspace-write | [x] Complete |
-| T009 | debug | `powerful` | workspace-write | [x] Complete |
-| T010 | research | `powerful` | workspace-write | [x] Complete |
-| T011 | review | `readonly` | read-only | [x] Complete |
-| T012 | orchestrate | `powerful` | workspace-write | [x] Complete |
-
+- [x] T008 Remove broken top-level markdown references from auxiliary notes
+- [x] T009 Run validate.sh for 016-handover-model-codex-compat
+- [x] T010 Confirm the folder ends with zero validation errors
 <!-- /ANCHOR:phase-3 -->
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Spec Folder
+---
 
-| ID | Task | File | Status |
-|----|------|------|--------|
-| T013 | Create spec.md | `016-handover-model-codex-compat/spec.md` | [x] Complete |
-| T014 | Create plan.md | `016-handover-model-codex-compat/plan.md` | [x] Complete |
-| T015 | Create tasks.md | `016-handover-model-codex-compat/tasks.md` | [x] Complete |
-| T016 | Create checklist.md | `016-handover-model-codex-compat/checklist.md` | [x] Complete |
-| T017 | Create decision-record.md | `016-handover-model-codex-compat/decision-record.md` | [x] Complete |
-| T018 | Create implementation-summary.md | `016-handover-model-codex-compat/implementation-summary.md` | [x] Complete |
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-<!-- /ANCHOR:phase-4 -->
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Verification
+---
 
-| ID | Check | Status |
-|----|-------|--------|
-| T019 | Handover uses haiku in .opencode/agent/ and .claude/agents/ | [x] Complete |
-| T020 | All 8 .codex/agents/ files use profile: frontmatter | [x] Complete |
-| T021 | config.toml has 4 profiles (all gpt-5.3) + sub-agents MCP | [x] Complete |
-| T022 | Spec folder has all 6 Level 3 files | [x] Complete |
+<!-- ANCHOR:cross-refs -->
+## Cross-References
 
-<!-- /ANCHOR:phase-5 -->
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

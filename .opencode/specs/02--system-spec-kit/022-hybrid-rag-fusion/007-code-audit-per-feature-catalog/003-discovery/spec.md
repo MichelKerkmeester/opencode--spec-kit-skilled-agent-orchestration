@@ -230,3 +230,4 @@ Audit completed 2026-03-22. Results per feature:
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

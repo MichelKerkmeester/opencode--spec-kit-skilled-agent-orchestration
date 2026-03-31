@@ -103,15 +103,15 @@ Each feature was verified by:
 
 ### Phase 5 Audit Additions (2026-03-26)
 
-#### T032: Session Recovery via /memory:continue (Catalog 01/11)
+#### T032: Session Recovery via /spec_kit:resume (Catalog 01/11)
 
 | Field | Value |
 |-------|-------|
-| **Catalog Entry** | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` |
+| **Catalog Entry** | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` |
 | **Verdict** | MATCH |
-| **Source Files** | `.opencode/command/memory/continue.md`, `mcp_server/handlers/memory-context.ts`, `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-crud-list.ts`, `mcp_server/lib/session/session-manager.ts` |
+| **Source Files** | `.opencode/command/spec_kit/resume.md`, `mcp_server/handlers/memory-context.ts`, `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-crud-list.ts`, `mcp_server/lib/session/session-manager.ts` |
 
-The catalog entry documents `/memory:continue` as a session recovery command exposing 4 shared MCP tools (`memory_context` in resume mode, `memory_search`, `memory_list`, `memory_stats`) with auto/manual recovery modes and a 5-priority fallback chain. All referenced source files exist and implement the described behavior. The resume mode in `memory-context.ts` uses anchors `["state", "next-steps", "summary", "blockers"]`, `limit=5`, 1200-token budget, `minState=WARM` as documented.
+The catalog entry documents `/spec_kit:resume` as the session recovery command that surfaces 4 shared MCP tools (`memory_context` in resume mode, `memory_search`, `memory_list`, `memory_stats`) with auto/manual recovery modes and a 5-priority fallback chain. All referenced source files exist and implement the described behavior. The resume mode in `memory-context.ts` uses anchors `["state", "next-steps", "summary", "blockers"]`, `limit=5`, 1200-token budget, `minState=WARM` as documented.
 
 #### T040: mcp_server/api/search.ts (BOTH_MISSING Audit)
 

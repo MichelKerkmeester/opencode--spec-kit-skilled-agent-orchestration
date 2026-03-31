@@ -1,62 +1,122 @@
 ---
-title: "Plan: Download Button Code Standards Alignment [01--anobel.com/z_archive/003-btn-download-alignment/plan]"
-description: "Apply code quality standards to both JS and CSS files without changing functionality."
+title: "Implementation Plan: Download Button Code Standards Alignment [.opencode/specs/01--anobel.com/z_archive/003-btn-download-alignment/plan]"
+description: "Spec: Download Button Code Standards Alignment"
 trigger_phrases:
-  - "plan"
+  - "spec"
   - "download"
   - "button"
   - "code"
   - "standards"
-  - "003"
-  - "btn"
+  - "alignment"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Download Button Code Standards Alignment
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Download Button Code Standards Alignment
 
-<!-- ANCHOR:approach -->
-## Approach
-Apply code quality standards to both JS and CSS files without changing functionality.
-<!-- /ANCHOR:approach -->
+---
 
-<!-- ANCHOR:javascript-changes-btn-downloadjs -->
-## JavaScript Changes (btn_download.js)
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Current Issues:
-1. Uses camelCase (`initDownloadButtons`, `setState`, `triggerDownload`)
-2. No file header or section headers
-3. Non-standard initialization (plain DOMContentLoaded)
-4. Missing IIFE wrapper
-5. Missing comment on line 100
+### Technical Context
 
-### Transformations:
-| Current | Standard | Reason |
-|---------|----------|--------|
-| `initDownloadButtons` | `init_download_buttons` | snake_case convention |
-| `setState` | `set_state` | snake_case + semantic prefix |
-| `triggerDownload` | `trigger_download` | snake_case |
-| `showSuccessAndReset` | `show_success_and_reset` | snake_case |
-| `attrSrc`, `attrName` | `ATTR_SRC`, `ATTR_NAME` | Constants = UPPER_SNAKE_CASE |
-| DOMContentLoaded | CDN-safe pattern | Webflow compatibility |
-<!-- /ANCHOR:javascript-changes-btn-downloadjs -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-<!-- ANCHOR:css-changes-btn-downloadcss -->
-## CSS Changes (btn_download.css)
+### Overview
+Spec: Download Button Code Standards Alignment
+<!-- /ANCHOR:summary -->
 
-### Current Issues:
-1. No file header
-2. Comments are minimal/informal
-3. No numbered section structure
+---
 
-### Transformations:
-- Add file header matching btn_main.css pattern
-- Add numbered section headers
-- Improve comment clarity (WHY not WHAT)
-<!-- /ANCHOR:css-changes-btn-downloadcss -->
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-<!-- ANCHOR:risk-assessment -->
-## Risk Assessment
-- **Low risk**: Pure refactoring, no logic changes
-- **Testing**: Verify download still works after changes
-<!-- /ANCHOR:risk-assessment -->
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

@@ -1,86 +1,83 @@
 ---
-title: "Tasks: Agent Architecture Analysis [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/tasks]"
-description: "All tasks completed. Agent system implemented and integrated into AGENTS.md."
+title: "Tasks: Agents from Oh My Opencode [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "agent"
-  - "architecture"
-  - "analysis"
-  - "001"
-  - "agents"
+  - "agents from oh my opencode"
+  - "archive"
+  - "template"
+  - "tasks core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Tasks: Agents from Oh My Opencode
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
-# Tasks: Agent Architecture Analysis
-
-<!-- ANCHOR:status-complete -->
-## Status: COMPLETE
-
-All tasks completed. Agent system implemented and integrated into AGENTS.md.
 
 ---
 
-<!-- /ANCHOR:status-complete -->
+<!-- ANCHOR:notation -->
+## Task Notation
 
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-<!-- ANCHOR:research-tasks-parallel -->
-## Research Tasks (Parallel)
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-### Task 1: oh-my-opencode Agent Architecture
-- [x] Fetch agent files from GitHub dev branch
-- [x] Document each agent's purpose and capabilities
-- [x] Analyze system prompts and tool usage
-- [x] Identify architectural patterns
+---
 
-### Task 2: Communication & Delegation Patterns
-- [x] Analyze how agents communicate
-- [x] Document delegation mechanisms
-- [x] Identify context sharing patterns
-- [x] Map agent interaction flows
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-### Task 3: Current Environment Audit
-- [x] Review AGENTS.md (orchestrator)
-- [x] Audit .opencode/skill/ capabilities
-- [x] Document existing MCP tools
-- [x] Identify gaps and opportunities
+- [x] T001 Review archived folder contents
+- [x] T002 Confirm Level 1 template requirements
+- [x] T003 [P] Identify validation-breaking markdown drift
+<!-- /ANCHOR:phase-1 -->
 
-### Task 4: Best Practices Research
-- [x] Research multi-agent architectures
-- [x] Identify patterns for code environments
-- [x] Consider Webflow/frontend context
-- [x] Document applicable patterns
+---
 
-### Task 5: Recommendations & Refinements
-- [x] Synthesize findings into recommendations
-- [x] Prioritize agents to build
-- [x] Propose orchestrator refinements
-- [x] Create implementation roadmap
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-<!-- /ANCHOR:research-tasks-parallel -->
+- [x] T004 Rewrite spec.md as a concise archival record
+- [x] T005 Rewrite plan.md with the archive-fix approach
+- [x] T006 Rewrite implementation-summary.md for the completed normalization
+- [x] T007 Update tasks.md to reflect the finished archive work
+<!-- /ANCHOR:phase-2 -->
 
+---
 
-<!-- ANCHOR:synthesis-tasks-sequential -->
-## Synthesis Tasks (Sequential)
-- [x] Consolidate analysis into analysis.md
-- [x] Create recommendations.md
-- [x] Review and finalize documents
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-<!-- /ANCHOR:synthesis-tasks-sequential -->
+- [x] T008 Validate structural compliance
+- [x] T009 Confirm top-level markdown notes do not contain broken file references
+- [x] T010 Re-run strict validation and keep the passing result
+<!-- /ANCHOR:phase-3 -->
 
+---
 
-<!-- ANCHOR:implementation-tasks-added -->
-## Implementation Tasks (Added)
-- [x] Create 4 model-agnostic agents
-  - [x] research/AGENT.md
-  - [x] frontend-debug/AGENT.md
-  - [x] documentation-writer/AGENT.md
-  - [x] webflow-mcp/AGENT.md
-- [x] Create agent_advisor.py routing script
-- [x] Update AGENTS.md with Gate 4 and Section 8
-- [x] Update AGENTS (UNIVERSAL).md
-- [x] Create AGENT_TEMPLATE.md
-- [x] Format all agents to orchestrator.md style
-- [x] Test agent routing (all 4 agents route correctly)
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-<!-- /ANCHOR:implementation-tasks-added -->
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

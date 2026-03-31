@@ -1,94 +1,117 @@
 ---
-title: "Tab Menu Border Color Fix [002-tab-menu-border-fix/spec] [01--anobel.com/z_archive/002-tab-menu-border-fix/spec]"
-description: "Fix incorrect border color on filter tab buttons after they transition from active (SET) to inactive (ENABLED) state."
+title: "Feature Specification: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/spec]"
+description: "Tab Menu Border Color Fix"
 trigger_phrases:
   - "tab"
   - "menu"
   - "border"
   - "color"
   - "fix"
-  - "spec"
-  - "002"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Tab Menu Border Color Fix
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Tab Menu Border Color Fix
 
-<!-- ANCHOR:overview -->
-## Overview
-Fix incorrect border color on filter tab buttons after they transition from active (SET) to inactive (ENABLED) state.
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
-On the blog page (`/nl/blog`), filter category buttons display the wrong border color after being deselected:
-- **Expected:** Light gray border `#cfcfcf` (rgb(207, 207, 207))
-- **Actual:** Dark gray border `#979797` (rgb(151, 151, 151))
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-This only affects buttons that have been clicked and then deselected. Buttons never clicked display the correct border color.
-<!-- /ANCHOR:problem-statement -->
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `002-tab-menu-border-fix` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:user-stories -->
-## User Stories
+---
 
-### US-001: Consistent Border Color on Filter Buttons
-**As a** site visitor
-**I want** all inactive filter buttons to have the same border color
-**So that** the UI appears consistent and polished
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-**Acceptance Criteria:**
-- [ ] All inactive buttons have border color `#cfcfcf`
-- [ ] Border color remains consistent after clicking different filters
-- [ ] No visual jump when transitioning between states
-<!-- /ANCHOR:user-stories -->
+### Problem Statement
+Tab Menu Border Color Fix
 
-<!-- ANCHOR:root-cause-analysis -->
-## Root Cause Analysis
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
 
-### Discovery Method
-Used Chrome DevTools CLI (`bdg`) to:
-1. Query `.tab--menu-btn` elements
-2. Compare computed styles between never-clicked and previously-clicked buttons
-3. Identify inline style injection from JavaScript animation
-
-### Findings
-| Button State | Inline Style | Border Color |
-|-------------|--------------|--------------|
-| Never clicked | `min-width: NNpx;` only | `#cfcfcf` (CSS) |
-| Previously clicked | Full inline styles with `border-color` | `#979797` (JS) |
-
-### Root Cause
-The JavaScript file `tab_menu.js` uses the wrong CSS variable for UNSET button borders:
-- **CSS (Webflow):** `--_color-tokens---border-neutral--dark` → `#cfcfcf`
-- **JavaScript:** `--_color-tokens---border-neutral--darkest` → `#979797`
-
-When Motion.js animates a button back to UNSET state, it applies inline styles using the wrong variable, overriding the correct CSS value.
-<!-- /ANCHOR:root-cause-analysis -->
+---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- `src/2_javascript/menu/tab_menu.js` - 7 occurrences of wrong variable
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
 ### Out of Scope
-- CSS changes in Webflow
-- Other button states or components
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:technical-requirements -->
-<!-- ANCHOR:requirements -->
-## Technical Requirements
-- Replace `--_color-tokens---border-neutral--darkest` with `--_color-tokens---border-neutral--dark`
-- Maintain existing animation behavior
-- No changes to animation timing or easing
-<!-- /ANCHOR:technical-requirements -->
+---
 
-<!-- ANCHOR:reference -->
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
-## Reference
-- Affected page: https://a-nobel-en-zn.webflow.io/nl/blog
-- Source file: `src/2_javascript/menu/tab_menu.js:22,51,79,104,105,130,131`
-<!-- /ANCHOR:reference -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

@@ -397,7 +397,9 @@ exec
     20	/** Template data item that can be an object or primitive */
 exec
 /bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md' | sed -n '470,640p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
-   470	<!-- ANCHOR:{{DECISION_ANCHOR_ID}} -->
+   470
+<!-- /ANCHOR:detailed-changes -->
+	<!-- ANCHOR:{{DECISION_ANCHOR_ID}} -->
    471	### Decision {{INDEX}}: {{TITLE}}
    472	
    473	**Context**: {{CONTEXT}}
@@ -766,3 +768,4 @@ tokens used
   1. Fix decision parsing immediately (`chose/selected` regex + remove fabricated fallback choice).
   2. Replace single-char diagram detection with structural multi-line detection that supports both ASCII and Unicode.
   3. Align extractor output contract with template rendering so extracted diagrams are actually visible and sectioned correctly.
+<!-- /ANCHOR:{{DECISION_ANCHOR_ID}} -->

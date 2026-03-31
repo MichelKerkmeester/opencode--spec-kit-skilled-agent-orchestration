@@ -1,38 +1,19 @@
 ---
-title: "Feature Specification: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/spec]"
-description: "Level 1 (Core) is appropriate when"
+title: "Feature Specification: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/spec]"
+description: "Feature Specification: Attribute Cleanup Deepdive"
 trigger_phrases:
   - "feature"
   - "specification"
   - "attribute"
   - "cleanup"
   - "deepdive"
-  - "spec"
-  - "020"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Feature Specification: Attribute Cleanup Deepdive
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.0 -->
-
-<!-- WHEN TO USE THIS TEMPLATE:
-Level 1 (Core) is appropriate when:
-- Changes affect <100 lines of code
-- Simple feature or bug fix with clear scope
-- Single developer, single session work
-- Low risk, well-understood change
-- No architectural decisions required
-- 1-2 user stories maximum
-
-DO NOT use Level 1 if:
-- Multiple stakeholders need alignment
-- Verification checklist would help QA
-- Complex edge cases exist
-- Architecture decisions are involved (use Level 3)
-- Governance/compliance required (use Level 3+)
--->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -43,25 +24,22 @@ DO NOT use Level 1 if:
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress |
-| **Created** | 2026-01-24 |
-
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `020-attribute-cleanup` |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem--purpose -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-`src/2_javascript/global/attribute_cleanup.js` only cleaned a small, outdated subset of empty attributes (mostly legacy `data-btn-*`), while the current anobel.com CSS uses a broader set of value-based `data-*` attributes for variants and configuration.
-
-When Webflow outputs these attributes with empty values, they add DOM weight and can create invalid HTML (`id=""`).
+Feature Specification: Attribute Cleanup Deepdive
 
 ### Purpose
-Keep the DOM and exported HTML clean by removing empty value-based attributes consistently across all pages.
-
-<!-- /ANCHOR:problem--purpose -->
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
 
 ---
 
@@ -69,20 +47,22 @@ Keep the DOM and exported HTML clean by removing empty value-based attributes co
 ## 3. SCOPE
 
 ### In Scope
-- Deepdive scan of all local HTML pages in `src/0_html` for empty attribute output
-- Inventory of value-based `data-*` attributes used by site CSS in `src/1_css`
-- Update `src/2_javascript/global/attribute_cleanup.js` to remove empty attributes from that inventory
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
 ### Out of Scope
-- CDN deployment/version bump (R2 URLs in `src/0_html/global.html`) - requires separate step
-- Regenerating minified bundles under `src/2_javascript/z_minified/` - requires running the project minify workflow
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `src/2_javascript/global/attribute_cleanup.js` | Modify | Expand empty attribute allowlist based on `src/1_css` + known config attrs |
-
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -94,15 +74,16 @@ Keep the DOM and exported HTML clean by removing empty value-based attributes co
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Remove empty `id=""` attributes | A jsdom smoke test shows `id` removed when empty |
-| REQ-002 | Remove empty value-based `data-*` attributes used for variants/config | A jsdom smoke test shows representative attrs removed; list includes all CSS-derived attrs |
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Keep marker/presence-only attributes untouched | jsdom smoke test preserves an attribute not in the allowlist (e.g. `data-notification-spacer`) |
-
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -110,52 +91,27 @@ Keep the DOM and exported HTML clean by removing empty value-based attributes co
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `src/2_javascript/global/attribute_cleanup.js` contains the consolidated attribute list derived from `src/1_css`
-- **SC-002**: Smoke test passes (no accidental removal of non-listed marker attributes)
-
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:risks--dependencies -->
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Over-removing attributes that are used as marker/presence flags | High | Only include value-based attributes (seen as `[...]="..."` in CSS) + explicit reviewed config attrs; keep allowlist explicit |
-| Risk | Drift between CSS and allowlist over time | Med | Re-run CSS inventory when new variant attributes are introduced |
-
-<!-- /ANCHOR:risks--dependencies -->
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:open-questions -->
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Should we also regenerate `src/2_javascript/z_minified/global/attribute_cleanup.js` and bump the CDN version in `src/0_html/global.html`?
-
-<!-- /ANCHOR:open-questions -->
-
----
-
-<!-- ANCHOR:related-documents -->
+- None. This folder is archived and retained for reference.
 <!-- /ANCHOR:questions -->
-## 8. RELATED DOCUMENTS
-
-| Document | Purpose |
-|----------|---------|
-| [`plan.md`](./plan.md) | Implementation approach and phases |
-| [`tasks.md`](./tasks.md) | Detailed task breakdown |
-| [`implementation-summary.md`](./implementation-summary.md) | Post-implementation record |
-
-<!-- /ANCHOR:related-documents -->
 
 ---
-
-<!--
-CORE TEMPLATE (~95 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->

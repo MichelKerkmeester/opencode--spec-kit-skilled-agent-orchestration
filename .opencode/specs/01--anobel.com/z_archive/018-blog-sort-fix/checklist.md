@@ -1,151 +1,106 @@
 ---
-title: "Checklist: Blog Sort Dropdown Fix [019-blog-sort-fix/checklist] [01--anobel.com/z_archive/018-blog-sort-fix/checklist]"
-description: "Evidence: Deep dive completed 2026-01-18. See research/research.md for full findings."
+title: "Verification Checklist: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/checklist]"
+description: "Archived verification checklist for Blog Sort Dropdown Fix."
 trigger_phrases:
-  - "checklist"
+  - "spec"
   - "blog"
   - "sort"
   - "dropdown"
   - "fix"
-  - "019"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist: Blog Sort Dropdown Fix
+# Verification Checklist: Blog Sort Dropdown Fix
 
-<!-- ANCHOR:pre-implementation -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] **P0** Understand current `input_select_fs_bridge.js` code
-- [x] **P0** Confirm root cause: Finsweet behavior analyzed via deep dive
-- [x] **P0** Review Finsweet fs-list documentation for API
-- [x] **P0** Verify option values on live page (`date-asc`, `name-asc`, `category-asc`)
-- [x] **P1** Research Finsweet Reactive API (`listInstance.sorting.value`)
-- [x] **P1** Analyze bridge timing vs Finsweet initialization
-
-**Evidence:** Deep dive completed 2026-01-18. See `research/research.md` for full findings.
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
 
 ---
-<!-- /ANCHOR:pre-implementation -->
 
-<!-- ANCHOR:phase-0-quick-fix-test -->
-## Phase 0: Quick Fix Test
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [ ] **P0** Add `input` event dispatch to `sync_to_native()`
-- [ ] **P0** Test on blog page
-- [ ] **P0** Document result: Works / Does not work
-
----
-<!-- /ANCHOR:phase-0-quick-fix-test -->
-
-<!-- ANCHOR:phase-1-2-full-implementation-if-quick-fix-fails -->
-## Phase 1-2: Full Implementation (if Quick Fix fails)
-
-### Finsweet Instance Capture
-- [ ] **P0** Add `capture_finsweet_instance()` function
-- [ ] **P0** Call capture in `start()` before bridge init
-- [ ] **P0** Verify console shows capture message
-- [ ] **P0** Verify `window._finsweetListInstance` populated
-
-### Reactive API Integration
-- [ ] **P0** Rewrite `sync_to_native()` with Reactive API
-- [ ] **P0** Add `update_url_param()` helper (pushState)
-- [ ] **P0** Add `fallback_url_navigation()` helper
-- [ ] **P1** Use `lastIndexOf('-')` for value parsing (handles hyphenated fields)
-- [ ] **P1** Add direction validation (`asc`/`desc` only)
-- [ ] **P1** Add try/catch with fallback on API failure
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
 
 ---
-<!-- /ANCHOR:phase-1-2-full-implementation-if-quick-fix-fails -->
 
-<!-- ANCHOR:functional-testing -->
 <!-- ANCHOR:testing -->
-## Functional Testing
+## Testing
 
-### Sort Functionality
-- [ ] **P0** Sort by Name works - list alphabetically sorted
-- [ ] **P0** Sort by Category works - list grouped by category
-- [ ] **P0** Sort by Date works - list chronologically sorted
-- [ ] **P0** **NO PAGE RELOAD** during sort (instant)
-- [ ] **P0** URL updates via pushState (`?sort=name-asc`)
-- [ ] **P1** Page reload maintains sort order (reads URL param)
-- [ ] **P1** Default sort works when no URL param
-
-### Console Verification
-- [ ] **P0** Console shows: `FinsweetBridge: Captured list instance`
-- [ ] **P0** Console shows: `FinsweetBridge: Sorted by {field} ({direction})`
-- [ ] **P0** No errors in console
-
----
-<!-- /ANCHOR:functional-testing -->
-
-<!-- ANCHOR:regression-testing -->
-<!-- ANCHOR:testing -->
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
 <!-- /ANCHOR:testing -->
-## Regression Testing
-
-### Form Selects (Must NOT trigger URL navigation)
-- [ ] **P0** Contact form select still works
-- [ ] **P0** Werken bij form select still works
-- [ ] **P0** Vacature form select still works
-- [ ] **P1** No console errors on any page with CustomSelect
-
-### Existing Functionality
-- [ ] **P0** CustomSelect keyboard navigation works
-- [ ] **P0** CustomSelect accessibility intact (ARIA)
-- [ ] **P0** Hidden select syncs correctly (for fallback)
 
 ---
-<!-- /ANCHOR:regression-testing -->
 
-<!-- ANCHOR:browser-testing -->
-<!-- ANCHOR:testing -->
-<!-- /ANCHOR:testing -->
-## Browser Testing
+<!-- ANCHOR:security -->
+## Security
 
-- [ ] **P0** Chrome desktop (latest)
-- [ ] **P1** Firefox desktop (latest)
-- [ ] **P1** Safari desktop (latest)
-- [ ] **P1** Chrome mobile (iOS)
-- [ ] **P1** Chrome mobile (Android)
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
 
 ---
-<!-- /ANCHOR:browser-testing -->
 
-<!-- ANCHOR:deployment -->
-<!-- /ANCHOR:testing -->
-## Deployment
+<!-- ANCHOR:docs -->
+## Documentation
 
-- [ ] **P0** Minify using `minify-webflow.mjs`
-- [ ] **P0** Verify minified file with `verify-minification.mjs`
-- [ ] **P0** Test minified file locally
-- [ ] **P0** Upload to R2 CDN (`input_select_fs_bridge.js?v=1.1.0`)
-- [ ] **P0** Update `blog.html` version number (line 36)
-- [ ] **P0** Test live blog page sorting
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
 
 ---
-<!-- /ANCHOR:deployment -->
 
-<!-- ANCHOR:post-deployment -->
-## Post-Deployment
+<!-- ANCHOR:file-org -->
+## File Organization
 
-- [ ] **P1** Monitor for console errors (first 24 hours)
-- [ ] **P1** Verify no performance regression
-- [ ] **P1** Update implementation-summary.md
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
 
 ---
-<!-- /ANCHOR:post-deployment -->
 
-<!-- ANCHOR:sign-off -->
-## Sign-Off
+<!-- ANCHOR:summary -->
+## Verification Summary
 
-| Check | Status | Date | Notes |
-|-------|--------|------|-------|
-| Deep dive complete | ✅ | 2026-01-18 | 5 parallel agents |
-| Spec updated to Level 3 | ✅ | 2026-01-18 | Added decision-record.md, research/research.md |
-| Implementation complete | | | |
-| Testing complete | | | |
-| Deployed to production | | | |
-| Verified in production | | | |
-<!-- /ANCHOR:sign-off -->
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

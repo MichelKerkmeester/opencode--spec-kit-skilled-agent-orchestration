@@ -1,114 +1,117 @@
 ---
-title: "Spec: Context Loader Sub-Agent (@context_loader) [04--agent-orchestration/z_archive/007-explore-sub-agent/spec]"
-description: "Create a dedicated agent definition file (context_loader.md) for the @context_loader sub-agent — a fast, read-only context retrieval agent that gathers codebase and memory conte..."
+title: "Feature Specification: Explore Sub-Agent [template:level_1/spec.md]"
+description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
-  - "spec"
-  - "context"
-  - "loader"
-  - "sub"
-  - "agent"
-  - "007"
-  - "explore"
-importance_tier: "important"
-contextType: "decision"
+  - "feature"
+  - "specification"
+  - "explore sub-agent"
+  - "archive"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 2 -->
+# Feature Specification: Explore Sub-Agent
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Context Loader Sub-Agent (@context_loader)
-
-> **Spec Folder:** `.opencode/specs/04--agent-orchestration/z_archive/007-explore-sub-agent/`
-> **Status:** Complete
-> **Level:** 2
-> **Created:** 2026-02-10
-> **Note:** Originally scoped as `@explore`, renamed to `@context_loader` during implementation (T4).
 
 ---
 
-<!-- ANCHOR:executive-summary -->
-## 1. Overview
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-Create a dedicated agent definition file (`context_loader.md`) for the `@context_loader` sub-agent — a fast, read-only context retrieval agent that gathers codebase and memory context before implementation begins. It is primarily consumed by the orchestrator.
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `[007-explore-sub-agent]` |
+<!-- /ANCHOR:metadata -->
 
-**Implementation Note:** Originally scoped as `@explore` (to match the built-in `subagent_type`), the agent was renamed to `@context_loader` during implementation to better describe its role as a context retrieval specialist rather than a generic explorer. The built-in `subagent_type: "explore"` remains unchanged — `@context_loader` is an INTELLIGENCE LAYER on top of it, adding memory retrieval, structured output, thoroughness levels, Active Dispatch, and pattern analysis.
-
-<!-- /ANCHOR:executive-summary -->
+---
 
 <!-- ANCHOR:problem -->
-## 2. Problem Statement
+## 2. PROBLEM & PURPOSE
 
-The orchestrator (`orchestrate.md`) originally referenced `@explore` in 18+ locations — as a routing target, in the Agent Selection Matrix, in Exploration-First rules, and in task decomposition examples. However, unlike every other agent, it had NO dedicated agent definition file. It exists only as a bare built-in `subagent_type: "explore"` in the Task tool, which provides Glob/Grep/Read access but no structured behavior, output formatting, or intelligence layer.
+### Problem Statement
+This folder documents archived exploration into sub-agent usage patterns, feasibility, and orchestration boundaries, but its markdown had drifted away from the current system-spec-kit contract. Missing anchors, stale file expectations, and archive-era notes created validation errors and made the historical record harder to review with confidence.
 
-**Gap (now resolved)**: No agent definition meant no structured behavior, no memory retrieval, no output format standardization, no thoroughness levels. The `@context_loader` agent definition resolves all of these.
-
+### Purpose
+Preserve the sub-agent exploration theme in a current-template archival record.
 <!-- /ANCHOR:problem -->
 
-<!-- ANCHOR:requirements -->
-## 3. Goals
-
-| # | Goal | Success Metric |
-|---|------|---------------|
-| G1 | Create `context_loader.md` agent definition | File exists at `.opencode/agent/context_loader.md` |
-| G2 | Define 3 thoroughness levels (quick/medium/thorough) | Each level has clear tool usage, time budget, and output size |
-| G3 | Integrate Memory/Context retrieval | Agent uses Spec Kit Memory MCP alongside Glob/Grep/Read |
-| G4 | Define structured output format | Context Package with Memory, Findings, Patterns, Gaps, Recommendations |
-| G5 | Maintain READ-ONLY safety | Agent NEVER writes, edits, or creates files |
-| G6 | Follow existing agent structural patterns | Frontmatter, numbered emoji sections, consistent with peers |
-| G7 | Active Dispatch capability | Agent can dispatch @explore and @research for deeper context gathering |
-
-<!-- /ANCHOR:requirements -->
+---
 
 <!-- ANCHOR:scope -->
-## 4. Scope
+## 3. SCOPE
 
 ### In Scope
-- Create `.opencode/agent/context_loader.md` agent definition file
-- Define agent identity, capabilities, retrieval modes, output format
-- Follow structural patterns from research/research.md, write.md, review.md
-- Define 3 thoroughness levels with clear routing logic
-- Include Memory MCP integration (memory_match_triggers, memory_search, memory_context)
-- Structured Context Package output format
-- Active Dispatch protocol (dispatching @explore and @research sub-agents)
-- Ecosystem integration (orchestrate.md, AGENTS.md files, skills, commands, install guides)
+- Preserve the historical purpose of this archived workstream.
+- Normalize the required specification documents to the current Level 1 template.
+- Keep extra top-level markdown files as brief archival notes that avoid broken markdown-file references.
 
 ### Out of Scope
-- Creating new MCP tools or scripts
-- Modifying any existing agent files
-- Implementation of any code features
+- Reopening the archived work as an active implementation plan.
+- Making runtime code changes from this archival cleanup.
 
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| spec.md | Modify | Replace template drift with a compliant archival specification. |
+| plan.md | Modify | Record the archive-fix approach and validation method. |
+| tasks.md | Modify | Capture the archival cleanup work in the standard task format. |
+| implementation-summary.md | Modify | Summarize the completed archive normalization and verification. |
 <!-- /ANCHOR:scope -->
 
-## 5. Constraints
+---
 
-| Constraint | Description |
-|-----------|-------------|
-| C1 | Must use `subagent_type: "explore"` (built-in Task tool type — not renamed) |
-| C2 | Must be READ-ONLY (permission write: deny, edit: deny) |
-| C3 | Must follow the frontmatter + numbered section pattern of existing agents |
-| C4 | Must integrate with Spec Kit Memory MCP tools |
-| C5 | Must support orchestrator's CWB output size constraints |
-| C6 | Must NOT overlap with @research's deep investigation role (clear speed-vs-depth differentiation) |
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-## 6. Key Differentiator: @explore vs @research
+### P0 - Blockers (MUST complete)
 
-| Dimension | @context_loader (was @explore) | @research (EXISTING) |
-|-----------|---------------|---------------------|
-| Speed | FAST (30s–5min) | THOROUGH (extended) |
-| Depth | Surface scan + pattern detection | Deep 9-step investigation |
-| Output | Structured context package | Full research/research.md document |
-| Scope | Codebase + Memory retrieval | Technical investigation, feasibility |
-| Trigger | EVERY task (pre-implementation) | Complex/uncertain tasks only |
-| Purpose | "What exists?" + "What do we know?" | "What should we do?" + "Why?" |
-| Sub-Dispatch | Yes (dispatches @explore, @research) | No (standalone) |
-| Model | GPT-5.2-think-medium (reasoning-capable) | GPT-5.2-think (deep reasoning) |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The folder MUST preserve a concise archival summary of the original topic. | **Given** a maintainer opens the folder, **when** they read spec.md, **then** they understand the archived goal and why the folder is no longer active work. |
 
-<!-- ANCHOR:dependencies -->
-## 7. Dependencies
+### P1 - Required (complete OR user-approved deferral)
 
-| Dependency | Type | Description |
-|-----------|------|-------------|
-| orchestrate.md | Consumer | Primary consumer of @explore output |
-| Spec Kit Memory MCP | Tool | Memory retrieval capabilities |
-| Task tool (explore type) | Platform | Built-in subagent type for tool access |
-| Existing agent patterns | Template | Structural consistency requirement |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | Required spec documents MUST match the current Level 1 header and anchor structure. | **Given** strict validation runs, **when** template and anchor checks execute, **then** no error-level structural issues are reported. |
+| REQ-003 | Extra top-level markdown files MUST not contain broken backticked markdown references. | Top-level archival note files either have no backticked markdown references or only reference resolvable files. |
+<!-- /ANCHOR:requirements -->
 
-<!-- /ANCHOR:dependencies -->
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The folder validates with zero error-level findings.
+- **SC-002**: The archive remains readable as a concise history of explore sub-agent.
+- **SC-003**: Required documents align to the current Level 1 template contract.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Current Level 1 templates and validator rules | If the archive uses stale structure, validation fails again. | Copy the current template shape exactly and replace every placeholder with concrete archival text. |
+| Risk | Exploration notes can be misread as approved architecture if they are not clearly archived. | Reviewers may misread the archive as current guidance. | Mark the work as archived and keep the content concise and descriptive rather than prescriptive. |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and intentionally represented by a minimal validated summary.
+- Repository history remains available for superseded draft detail if deeper reconstruction is ever needed.
+<!-- /ANCHOR:questions -->
+
+---

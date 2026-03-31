@@ -1,23 +1,22 @@
 ---
-title: "Tasks: Attribute Cleanup Deepdive [020-attribute-cleanup/tasks] [01--anobel.com/z_archive/020-attribute-cleanup/tasks]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/tasks]"
+description: "Archived normalization task list for Attribute Cleanup Deepdive."
 trigger_phrases:
-  - "tasks"
+  - "feature"
+  - "specification"
   - "attribute"
   - "cleanup"
   - "deepdive"
-  - "020"
 importance_tier: "normal"
 contextType: "implementation"
 ---
 # Tasks: Attribute Cleanup Deepdive
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:task-notation -->
 <!-- ANCHOR:notation -->
 ## Task Notation
 
@@ -29,71 +28,56 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-
-<!-- /ANCHOR:task-notation -->
+<!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:phase-1-setup -->
-<!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create spec folder (`.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/`)
-- [x] T002 Inventory local HTML pages in `src/0_html` (deepdive)
-- [x] T003 [P] Extract value-based `data-*` attributes from `src/1_css`
-
-<!-- /ANCHOR:phase-1-setup -->
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:phase-2-implementation -->
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Update allowlist in `src/2_javascript/global/attribute_cleanup.js`
-- [x] T005 Run jsdom smoke test for representative empty attrs
-- [x] T006 (Optional) Update minified bundle + bump CDN version (out of scope unless requested)
-
-<!-- /ANCHOR:phase-2-implementation -->
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:phase-3-verification -->
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T007 Verify marker attributes are preserved (jsdom)
-- [x] T008 Remove placeholders from spec docs
-- [x] T009 If requested: browser verification on a representative page
-
-<!-- /ANCHOR:phase-3-verification -->
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
-<!-- ANCHOR:completion-criteria -->
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
-
-<!-- /ANCHOR:completion-criteria -->
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- ANCHOR:cross-references -->
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-
-<!-- /ANCHOR:cross-references -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->
-<!-- /ANCHOR:cross-refs -->

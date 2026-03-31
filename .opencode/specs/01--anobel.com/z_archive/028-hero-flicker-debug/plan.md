@@ -1,33 +1,20 @@
 ---
-title: "Implementation Plan: [NAME] [030-hero-flicker-debug/plan] [01--anobel.com/z_archive/028-hero-flicker-debug/plan]"
-description: "Level 2 Plan (+Verify) is appropriate when"
+title: "Implementation Plan: Hero Video Card Image Flickering Fix [.opencode/specs/01--anobel.com/z_archive/028-hero-flicker-debug/plan]"
+description: "Feature Specification: Hero Video Card Image Flickering Fix"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "name"
-  - "030"
+  - "feature"
+  - "specification"
   - "hero"
+  - "video"
+  - "card"
+  - "image"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-# Implementation Plan: [NAME]
+# Implementation Plan: Hero Video Card Image Flickering Fix
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.0 -->
-
-<!-- WHEN TO USE THIS TEMPLATE:
-Level 2 Plan (+Verify) is appropriate when:
-- 3-5 implementation phases
-- Phase dependencies need tracking
-- Effort estimation is valuable
-- Enhanced rollback procedures needed
-
-DO NOT use Level 2 Plan if:
-- Simple feature (use Level 1)
-- Dependency graphs and critical path needed (use Level 3)
-- Milestone tracking required (use Level 3)
-- Workstream coordination with multiple agents (use Level 3+)
--->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
@@ -38,13 +25,13 @@ DO NOT use Level 2 Plan if:
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
-| **Framework** | [e.g., React, FastAPI] |
-| **Storage** | [e.g., PostgreSQL, None] |
-| **Testing** | [e.g., Jest, pytest] |
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
 ### Overview
-[2-3 sentences: what this implements and the technical approach]
+Feature Specification: Hero Video Card Image Flickering Fix
 <!-- /ANCHOR:summary -->
 
 ---
@@ -53,14 +40,14 @@ DO NOT use Level 2 Plan if:
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -69,50 +56,48 @@ DO NOT use Level 2 Plan if:
 ## 3. ARCHITECTURE
 
 ### Pattern
-[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
+Archived documentation normalization
 
 ### Key Components
-- **[Component 1]**: [Purpose]
-- **[Component 2]**: [Purpose]
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
 
 ### Data Flow
-[Brief description of how data moves through the system]
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
 <!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:implementation-phases -->
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Project structure created
-- [ ] Dependencies installed
-- [ ] Development environment ready
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
 ### Phase 2: Core Implementation
-- [ ] [Core feature 1]
-- [ ] [Core feature 2]
-- [ ] [Core feature 3]
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
-<!-- /ANCHOR:implementation-phases -->
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:testing-strategy -->
-<!-- /ANCHOR:phases -->
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | [Components/functions] | [Jest/pytest/etc.] |
-| Integration | [API endpoints/flows] | [Tools] |
-| Manual | [User journeys] | Browser |
-<!-- /ANCHOR:testing-strategy -->
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
@@ -121,81 +106,17 @@ DO NOT use Level 2 Plan if:
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:rollback-plan -->
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: [Conditions requiring rollback]
-- **Procedure**: [How to revert changes]
-<!-- /ANCHOR:rollback-plan -->
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
 
 ---
-
-
----
-
-<!-- ANCHOR:phase-dependencies -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-dependencies -->
-
----
-
-<!-- ANCHOR:effort-estimation -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Setup | [Low/Med/High] | [e.g., 1-2 hours] |
-| Core Implementation | [Low/Med/High] | [e.g., 4-8 hours] |
-| Verification | [Low/Med/High] | [e.g., 1-2 hours] |
-| **Total** | | **[e.g., 6-12 hours]** |
-<!-- /ANCHOR:effort-estimation -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. [Immediate action - e.g., disable feature flag]
-2. [Revert code - e.g., git revert or redeploy previous version]
-3. [Verify rollback - e.g., smoke test critical paths]
-4. [Notify stakeholders - if user-facing]
-
-### Data Reversal
-- **Has data migrations?** [Yes/No]
-- **Reversal procedure**: [Steps or "N/A"]
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->

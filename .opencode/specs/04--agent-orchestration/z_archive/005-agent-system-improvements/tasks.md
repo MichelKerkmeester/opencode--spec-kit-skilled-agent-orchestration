@@ -1,23 +1,22 @@
 ---
-title: "Tasks: Agent System Improvements [04--agent-orchestration/z_archive/005-agent-system-improvements/tasks]"
+title: "Tasks: Agent System Improvements [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "agent"
-  - "system"
-  - "improvements"
-  - "005"
+  - "agent system improvements"
+  - "archive"
+  - "template"
+  - "tasks core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Tasks: Agent System Improvements
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3plus-govern | v2.0 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:task-notation -->
 <!-- ANCHOR:notation -->
 ## Task Notation
 
@@ -29,155 +28,56 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-
----
-
-<!-- /ANCHOR:task-notation -->
-
-
-<!-- ANCHOR:phase-1-immediate-fixes -->
 <!-- /ANCHOR:notation -->
-## Phase 1: Immediate Fixes
-
-- [x] T001 [P] Fix @documentation-writer → @write line 96 (`.opencode/agent/orchestrate.md`)
-- [x] T002 [P] Fix @documentation-writer → @write line 138 (`.opencode/agent/orchestrate.md`)
-- [x] T003 [P] Fix @documentation-writer → @write line 154 (`.opencode/agent/orchestrate.md`)
-- [x] T004 [P] Fix @documentation-writer → @write line 809 (`.opencode/agent/orchestrate.md`)
-- [x] T005 [P] Fix Q5 → Q6 duplicate numbering line 72 (`.opencode/command/spec_kit/research/research/research.md`)
-- [x] T006 [P] Complete "for default" text line 70 (`.opencode/command/spec_kit/debug.md`)
-- [x] T007 [P] Complete "for default" text line 90 (`.opencode/command/spec_kit/implement.md`)
 
 ---
 
-<!-- /ANCHOR:phase-1-immediate-fixes -->
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-
-<!-- ANCHOR:phase-2-core-additions -->
-## Phase 2: Core Additions
-
-### Verification Sections
-- [x] T008 Add OUTPUT VERIFICATION section (~50 lines) (`.opencode/agent/speckit.md`) - Already exists Section 12
-- [x] T009 Add OUTPUT VERIFICATION section (~40 lines) (`.opencode/agent/orchestrate.md`) - Section 26
-- [x] T010 Add HARD BLOCK verification section (~60 lines) (`.opencode/agent/research/research/research.md`) - Lines 636-667
-
-### Mermaid Diagrams
-- [x] T011 [P] Add Mermaid workflow diagram after Section 3 (`.opencode/command/spec_kit/complete.md`) - Lines 546-577
-- [x] T012 [P] Add Mermaid core workflow diagram after Section 1 (`.opencode/agent/orchestrate.md`) - Lines 47-69
+- [x] T001 Review archived folder contents
+- [x] T002 Confirm Level 1 template requirements
+- [x] T003 [P] Identify validation-breaking markdown drift
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- /ANCHOR:phase-2-core-additions -->
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-
-<!-- ANCHOR:phase-3-enhancements -->
-## Phase 3: Enhancements
-
-- [x] T013 Add Pre-Delegation Reasoning (PDR) protocol after line 377 (`.opencode/agent/orchestrate.md`) - Lines 407-422
-- [x] T014 Add task description template enhancement with Objective, Boundary, Scale (`.opencode/agent/orchestrate.md`) - Lines 393-404
-- [x] T015 Add scaling heuristics section with agent count table (`.opencode/agent/orchestrate.md`) - Section 25
+- [x] T004 Rewrite spec.md as a concise archival record
+- [x] T005 Rewrite plan.md with the archive-fix approach
+- [x] T006 Rewrite implementation-summary.md for the completed normalization
+- [x] T007 Refresh extra top-level markdown files as brief archival notes when present
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- /ANCHOR:phase-3-enhancements -->
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
+- [x] T008 Validate structural compliance
+- [x] T009 Confirm top-level markdown notes do not contain broken file references
+- [x] T010 Re-run strict validation and keep the passing result
+<!-- /ANCHOR:phase-3 -->
 
-<!-- ANCHOR:completion-criteria -->
+---
+
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` ✓ (15/15 complete)
-- [x] No `[B]` blocked tasks remaining ✓
-- [x] Manual verification passed ✓
-- [x] No orphan @documentation-writer references ✓ (grep verified: 0 matches)
-- [x] Mermaid diagrams render correctly ✓ (syntax valid)
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- /ANCHOR:completion-criteria -->
-
-
-<!-- ANCHOR:ai-execution-protocol -->
-## AI Execution Protocol
-
-### Pre-Task Checklist
-
-Before starting each task, verify:
-
-1. [x] Load `spec.md` and verify scope hasn't changed
-2. [x] Load `plan.md` and identify current phase
-3. [ ] Load `tasks.md` and find next uncompleted task
-4. [ ] Verify task dependencies are satisfied (none for this spec)
-5. [ ] Load `checklist.md` and identify relevant P0/P1 items
-6. [ ] Check for blocking issues in `decision-record.md`
-7. [ ] Confirm understanding of success criteria
-8. [ ] Begin implementation only after all checks pass
-
-### Execution Rules
-
-| Rule | Description |
-|------|-------------|
-| TASK-SEQ | Complete tasks in dependency order (none here - all parallel) |
-| TASK-SCOPE | Stay within task boundary, no scope creep |
-| TASK-VERIFY | Verify each task against acceptance criteria |
-| TASK-DOC | Update status immediately on completion |
-
-### Status Reporting Format
-
-```
-## Status Update - [TIMESTAMP]
-- **Task**: T### - [Description]
-- **Status**: [IN_PROGRESS | COMPLETED | BLOCKED]
-- **Evidence**: [Link to code/test/artifact]
-- **Blockers**: [None | Description]
-- **Next**: T### - [Next task]
-```
-
----
-
-<!-- /ANCHOR:ai-execution-protocol -->
-
-
-<!-- ANCHOR:workstream-organization -->
-## Workstream Organization
-
-### Workstream A: Immediate Fixes (T001-T007)
-All tasks parallelizable, no dependencies.
-
-- [x] T001-T004 orchestrate.md @write fixes ✓
-- [x] T005 research/research.md command Q5→Q6 ✓
-- [x] T006 debug.md text fix ✓
-- [x] T007 implement.md text fix ✓
-
-### Workstream B: Core Additions (T008-T012)
-Verification sections and diagrams.
-
-- [x] T008 speckit.md OUTPUT VERIFICATION ✓
-- [x] T009 orchestrate.md OUTPUT VERIFICATION ✓
-- [x] T010 research/research.md HARD BLOCK ✓
-- [x] T011 complete.md Mermaid ✓
-- [x] T012 orchestrate.md Mermaid ✓
-
-### Workstream C: Enhancements (T013-T015)
-All changes to orchestrate.md - apply sequentially.
-
-- [x] T013 PDR protocol ✓
-- [x] T014 Task template enhancement ✓
-- [x] T015 Scaling heuristics ✓
-
----
-
-<!-- /ANCHOR:workstream-organization -->
-
-
-<!-- ANCHOR:cross-references -->
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Checklist**: See `checklist.md`
-- **Decisions**: See `decision-record.md`
-- **Analysis**: See `001-analysis-agent-system-architecture.md`
-- **Recommendations**: See `002-recommendations-agent-system-improvements.md`
-
-<!-- /ANCHOR:cross-references -->
 <!-- /ANCHOR:cross-refs -->
+
+---

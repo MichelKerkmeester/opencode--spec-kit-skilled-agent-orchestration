@@ -1,78 +1,121 @@
 ---
-title: "Implementation Plan: Tab Menu Border Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/plan]"
-description: "Simple find-and-replace of the incorrect CSS variable name in tab_menu.js."
+title: "Implementation Plan: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/plan]"
+description: "Tab Menu Border Color Fix"
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "tab"
   - "menu"
   - "border"
-  - "002"
+  - "color"
+  - "fix"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Tab Menu Border Color Fix
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan: Tab Menu Border Fix
 
-<!-- ANCHOR:approach -->
-## Approach
-Simple find-and-replace of the incorrect CSS variable name in `tab_menu.js`.
-<!-- /ANCHOR:approach -->
+---
 
-<!-- ANCHOR:changes-required -->
-## Changes Required
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### File: `src/2_javascript/menu/tab_menu.js`
+### Technical Context
 
-Replace all occurrences of:
-```
---_color-tokens---border-neutral--darkest
-```
-With:
-```
---_color-tokens---border-neutral--dark
-```
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-### Lines Affected
+### Overview
+Tab Menu Border Color Fix
+<!-- /ANCHOR:summary -->
 
-| Line | Context | Change |
-|------|---------|--------|
-| 22 | Comment: UNSET BUTTON reference | Update documentation |
-| 51 | `apply_active_styles()` FROM value | Fix animation start |
-| 79 | `remove_active_styles()` TO value | **Primary fix** |
-| 104 | `apply_hover_styles()` FROM value | Fix hover animation |
-| 105 | `apply_hover_styles()` TO value | Fix hover animation |
-| 130 | `remove_hover_styles()` FROM value | Fix hover animation |
-| 131 | `remove_hover_styles()` TO value | Fix hover animation |
-<!-- /ANCHOR:changes-required -->
+---
 
-<!-- ANCHOR:implementation-steps -->
-## Implementation Steps
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-1. **Edit tab_menu.js** - Replace all 7 occurrences using `replaceAll`
-2. **Verify syntax** - Ensure no typos in variable name
-3. **Test in browser** - Use bdg to verify computed styles
-<!-- /ANCHOR:implementation-steps -->
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-<!-- ANCHOR:risk-assessment -->
-## Risk Assessment
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Typo in variable name | Low | High | Copy exact variable from CSS |
-| Break other animations | Low | Medium | Only changing border-color values |
-| Wrong variable chosen | Low | High | Verified via DevTools that `--dark` = `#cfcfcf` |
-<!-- /ANCHOR:risk-assessment -->
+---
 
-<!-- ANCHOR:rollback-plan -->
-## Rollback Plan
-Revert the single file change if issues arise.
-<!-- /ANCHOR:rollback-plan -->
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-<!-- ANCHOR:testing-strategy -->
-## Testing Strategy
-1. Navigate to `/nl/blog` with active filter
-2. Click different filter buttons
-3. Verify all inactive buttons have `rgb(207, 207, 207)` border
-4. Check hover states work correctly
-<!-- /ANCHOR:testing-strategy -->
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

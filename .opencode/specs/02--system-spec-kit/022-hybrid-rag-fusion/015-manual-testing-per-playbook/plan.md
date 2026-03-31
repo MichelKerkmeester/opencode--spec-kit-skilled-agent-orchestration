@@ -107,7 +107,7 @@ Create one playbook scenario file per true-gap feature. Use `create:testing-play
 |---|----------|-----------------------|---------------------|
 | 1 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` | `01--retrieval/` |
 | 2 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md` | `01--retrieval/` |
-| 3 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` | `01--retrieval/` |
+| 3 | 01 | `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` | `01--retrieval/` |
 | 4 | 02 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md` | `02--mutation/` |
 | 5 | 02 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md` | `02--mutation/` |
 | 6 | 10 | `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | `10--graph-signal-activation/` |

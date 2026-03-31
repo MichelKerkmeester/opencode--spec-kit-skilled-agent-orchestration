@@ -1,21 +1,21 @@
 ---
-title: "Implementation Summary: Image Decoding [01--anobel.com/z_archive/021-decoding-async-analysis/implementation-summary]"
-description: "Analyze anobel.com's image usage patterns and verify if decoding=\"async\" recommendations were implemented."
+title: "Implementation Summary"
+description: "Archived implementation summary for Image Decoding Async Analysis."
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "feature"
+  - "specification"
   - "image"
   - "decoding"
   - "async"
-  - "implementation summary"
-  - "023"
+  - "analysis"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Implementation Summary: Image Decoding Async Analysis
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -24,119 +24,59 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Completed** | 2026-01-24 |
-| **Type** | Analysis + Verification |
-| **Status** | Correctly Implemented |
-
-
----
-
-<!-- ANCHOR:what-was-analyzed -->
+| **Spec Folder** | 021-decoding-async-analysis |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
-## 2. WHAT WAS ANALYZED
-
-### Original Task
-Analyze anobel.com's image usage patterns and verify if `decoding="async"` recommendations were implemented.
-
-### Pages Tested
-- anobel.com/nl (Homepage)
-- anobel.com/nl/blog
-- anobel.com/nl/contact
-- anobel.com/nl/webshop
-
-<!-- /ANCHOR:what-was-analyzed -->
 
 ---
 
-<!-- ANCHOR:key-findings -->
-## 3. KEY FINDINGS
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Implementation Score: ~95% Correct
+This archive package now has validator-compliant root documents, which means you can inspect the archived scope without hitting structural validation failures first. The original root markdown is still preserved in scratch/legacy, so the historical wording remains recoverable.
 
-| Category | Images | Status | Rationale |
-|----------|--------|--------|-----------|
-| Nobel content images | 236 | `decoding="async"` | Below-fold |
-| CTA images | Multiple | `decoding="async"` | Below-fold |
-| Hero images | 3 | No async | Above-fold, LCP-critical |
-| **Marquee logos** | 64+ | No async | **Above-fold** |
-| Blog thumbnails | 12 | No async | Needs fold verification |
-| Link card images | 4 | No async | Needs fold verification |
+### Archive Compliance Normalization
 
-### What's Correctly Implemented
-1. **Below-fold content** (`.nobel--image`, CTA, etc.) uses `decoding="async"`
-2. **Above-fold critical images** (hero, marquee) do NOT use async
-3. **No console errors** related to image loading
-
-### Spec Correction
-The original plan.md incorrectly listed marquee logos as "below-fold" candidates for async. Since marquees are **above the fold** on anobel.com, the current implementation (no async) is **correct**.
-
-<!-- /ANCHOR:key-findings -->
+The repair rebuilt the required root spec documents around the active templates, aligned levels across validator-sensitive files, and created any missing required files. Supporting archive notes stayed in place after unresolved markdown references were sanitized.
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:no-critical-bugs -->
-## 4. NO CRITICAL BUGS
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-The implementation is correct. The original spec had an incorrect assumption about marquee placement.
-
-### Minor Optimization Opportunities (LOW Priority)
-
-| Item | Selector | Images | Action |
-|------|----------|--------|--------|
-| Blog thumbnails | `.link--blog-image` | 12 | Verify if below-fold |
-| Link card images | `.link--card-image` | 4 | Verify if below-fold |
-
-If these are below-fold, they could benefit from `decoding="async"`.
-
-<!-- /ANCHOR:no-critical-bugs -->
+The archive was normalized by preserving the original root markdown, regenerating the validator-facing documents, and rerunning `validate.sh` until only warnings remained, if any.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
-<!-- ANCHOR:artifacts -->
-## 5. ARTIFACTS
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-| Artifact | Path | Purpose |
-|----------|------|---------|
-| Verification Report | `./verification-report.md` | Detailed test results |
-| Spec | `./spec.md` | Original requirements |
-| Plan | `./plan.md` | Implementation recommendations (needs update) |
-
-<!-- /ANCHOR:artifacts -->
+| Decision | Why |
+|----------|-----|
+| Regenerate root documents instead of patching every legacy heading in place | It guarantees the required template order while preserving the historical source in scratch/legacy |
+| Sanitize unresolved markdown references in supporting notes | It clears integrity errors without deleting surrounding archived context |
+<!-- /ANCHOR:decisions -->
 
 ---
 
-<!-- ANCHOR:planmd-correction-needed -->
-## 6. PLAN.MD CORRECTION NEEDED
+<!-- ANCHOR:verification -->
+## Verification
 
-The `plan.md` Section 4.2 should be updated to move marquee logos from "SHOULD USE async" to "DO NOT USE async" since they are above-fold:
+| Check | Result |
+|-------|--------|
+| Structural validation | PASS after archive normalization rerun |
+| Historical source preservation | PASS, original root markdown copied to scratch/legacy |
+<!-- /ANCHOR:verification -->
 
-```markdown
-### 4.1 DO NOT USE `decoding="async"` (Above-Fold / Critical)
-
-| Image Type | Selector | Rationale |
-|------------|----------|-----------|
-| Primary hero images | `[data-target='hero-image']` | LCP-critical |
-| Marquee brand logos | `.logo--marquee` | **Above-fold, visible immediately** |
-| ...
-```
-
-<!-- /ANCHOR:planmd-correction-needed -->
-
----
-
-<!-- ANCHOR:conclusion -->
-## 7. CONCLUSION
-
-**The implementation is correct.** No bugs found. The site properly:
-- Uses `decoding="async"` for below-fold content images
-- Avoids async for above-fold critical images (hero, marquee)
-
-The original spec analysis made an incorrect assumption about marquee placement that was corrected during verification.
-<!-- /ANCHOR:conclusion -->
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Generated summaries** The active root docs are normalized summaries, so consult scratch/legacy when you need the original historical wording.
 <!-- /ANCHOR:limitations -->
+
+---

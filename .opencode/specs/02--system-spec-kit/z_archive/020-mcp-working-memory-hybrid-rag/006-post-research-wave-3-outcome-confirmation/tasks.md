@@ -1,24 +1,21 @@
 ---
-title: "Ta [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/tasks]"
-description: "Tracking document prepared for Wave 3 execution and synchronized with root post-research backlog mapping."
+title: "Tasks: Post Research Wave 3 Outcome Confirmation [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "006-post-research-wave-3-outcome-confirmation"
   - "tasks"
-  - "post"
-  - "research"
-  - "wave"
-  - "package"
-  - "006"
+  - "phase"
+  - "archive"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Post-Research Wave 3 Package (Outcome Confirmation)
+# Tasks: Post Research Wave 3 Outcome Confirmation
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-tasks | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:task-notation -->
 <!-- ANCHOR:notation -->
 ## Task Notation
 
@@ -26,41 +23,60 @@ contextType: "implementation"
 |--------|---------|
 | `[ ]` | Pending |
 | `[x]` | Completed |
-| `[B]` | Blocked by dependency |
-<!-- /ANCHOR:task-notation -->
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
----
-
-<!-- ANCHOR:task-groups -->
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
-## 1. Package Task Groups
-
-### Group A - User Outcome Evidence
-- [x] W3-001 Complete real-user survey outcomes package (`C136-06`) with scored summary and capability truth matrix interpretation notes. [Evidence: `scratch/c136-06-survey-outcomes.md`]
-
-### Group B - Longitudinal KPI Closure
-- [x] W3-010 Complete 14-day KPI closure evidence and decision note (`C136-07`) with capability truth matrix snapshots and drift analysis. [Evidence: `scratch/c136-07-kpi-closure-evidence.md`]
-
-### Group C - Final Closure Packaging
-- [x] W3-020 Publish final closure packet references for root checklist and sign-off review, including docs/handover-consumable capability matrix artifact. (Closure packaging task; scope derived from spec.md §6 dependency outputs.) [Evidence: all W3-001 through W3-010 complete]
-<!-- /ANCHOR:task-groups -->
-
-<!-- ANCHOR:evidence-requirements -->
-## 2. Evidence Requirements
-
-- [x] W3-E01 Survey dataset and scored summary artifact attached with capability matrix interpretation. [Evidence: `scratch/c136-06-survey-outcomes.md`]
-- [x] W3-E02 14-day KPI comparison report and closure note attached with matrix drift analysis. [Evidence: `scratch/c136-07-kpi-closure-evidence.md`]
-- [x] W3-E03 Root synchronization evidence attached (spec/plan/tasks/checklist + handover consumption references). [Evidence: root documents reference Wave 3 closure outputs]
-<!-- /ANCHOR:evidence-requirements -->
 
 ---
 
-<!-- ANCHOR:completion-conditions -->
-## 3. Completion Conditions
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [x] All W3-001, W3-010, and W3-020 completed.
-- [x] All `W3-E01` through `W3-E03` completed.
-- [x] Root mapping remains synchronized.
-<!-- /ANCHOR:completion-conditions -->
+- [x] T001 Review the archived phase folder contents
+- [x] T002 Load the current Level 1 templates
+- [x] T003 [P] Identify retained compatibility files
+<!-- /ANCHOR:phase-1 -->
 
-Tracking document prepared for Wave 3 execution and synchronized with root post-research backlog mapping.
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rewrite spec.md with archival phase context
+- [x] T005 Rewrite plan.md and tasks.md for normalization work
+- [x] T006 Rewrite implementation-summary.md with correct folder metadata
+- [x] T007 Simplify checklist.md and decision-record.md into compatibility stubs
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Remove broken top-level markdown references
+- [x] T009 Run validate.sh for 006-post-research-wave-3-outcome-confirmation
+- [x] T010 Confirm the phase folder reports zero errors
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

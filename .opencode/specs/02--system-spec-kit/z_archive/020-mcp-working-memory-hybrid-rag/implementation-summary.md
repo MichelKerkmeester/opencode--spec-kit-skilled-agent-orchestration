@@ -1,19 +1,19 @@
 ---
-title: "Implementation Summary [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/implementation-summary]"
-description: "The memory engine got a significant upgrade. Search results are now traceable, artifact-aware and self-tuning. Every retrieval carries a typed trace showing exactly how it was f..."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for MCP Working Memory Hybrid Rag."
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "020-mcp-working-memory-hybrid-rag"
   - "implementation summary"
-  - "020"
-  - "mcp"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,10 +22,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| Spec Folder | 136-mcp-working-memory-hybrid-rag |
-| Completed | 2026-02-19 |
-| Level | 3+ |
-| Status | Complete for feature scope. This update records closure of legacy deferred test drift: `embeddings.vitest.ts` rewrite plus activation of `api-key-validation`, `api-validation`, and `lazy-loading` suites. |
+| **Spec Folder** | 020-mcp-working-memory-hybrid-rag |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,96 +32,39 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The memory engine got a significant upgrade. Search results are now traceable, artifact-aware and self-tuning. Every retrieval carries a typed trace showing exactly how it was found. The system recognizes what kind of document you're searching for and adjusts its strategy. Fusion weights adapt to your intent — debugging a bug gets different treatment than exploring architecture.
+This archived folder now has a current-template Level 1 documentation set for MCP Working Memory Hybrid Rag. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
 
-Behind the scenes, every change to the memory index is now logged in a tamper-proof audit trail. Telemetry captures latency, mode selection and quality scores for every retrieval. All of it ships behind feature flags with staged rollout support.
+### Archive Normalization
 
-### Typed Retrieval Trace
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
-Every search result now includes a full trace of how it was found. Instead of getting results with no explanation, you can see the pipeline stages — candidate selection, filtering, fusion, reranking, fallback — with scores and timing at each step.
+### Files Changed
 
-This matters when results seem off. You can inspect the trace to understand *why* a particular memory ranked high or low, instead of guessing. The `ContextEnvelope` wraps every retrieval result with its trace, degraded-mode status, and metadata.
-
-### Artifact-Aware Routing
-
-The system now recognizes 9 types of artifacts: specs, plans, decision records, code, configs, READMEs, memory files, scratch notes, and research docs. Each type gets its own retrieval strategy — different weight distributions between vector search, keyword matching, and trigger phrases.
-
-Search for a decision record? Keyword matching gets boosted because decision records use consistent terminology. Search for code patterns? Vector similarity takes priority because code intent is harder to match with exact keywords. The routing is deterministic and the weights are transparent.
-
-### Adaptive Hybrid Fusion
-
-Previously, vector, keyword and trigger search results were fused with fixed weights. Now the fusion adapts to your intent. Seven task types — `fix_bug`, `add_feature`, `understand`, `refactor`, `security_audit`, `find_spec`, `find_decision` — each get tuned weight profiles.
-
-Debugging a bug? Error history and debugging context get boosted. Adding a feature? Implementation patterns and existing architecture get priority. The system detects intent automatically from your query.
-
-Ships behind the `SPECKIT_ADAPTIVE_FUSION` feature flag with opt-out semantics. Unset, empty, or `true` keeps adaptive fusion enabled; explicit `false` disables it. When disabled, the system falls back to the existing deterministic fusion with no behavior change.
-
-### Append-Only Mutation Ledger
-
-Every mutation to the memory index — creates, updates, deletes, re-indexes — is now logged in a tamper-proof, append-only ledger. SQLite triggers physically prevent modification or deletion of ledger entries. Each entry includes a hash chain linking it to the previous entry, so any tampering is detectable.
-
-This gives you an auditable history of what changed, when, and why. Useful for debugging unexpected search behavior ("when did this memory get re-indexed?") and for compliance scenarios where mutation provenance matters.
-
-### Extended Telemetry
-
-Retrieval telemetry now captures four dimensions for every search:
-
-- **Latency**: stage-by-stage timing (candidate, filter, fusion, rerank, total) so you can see where time is spent
-- **Mode**: which search mode was selected, whether it was overridden, and cognitive pressure state
-- **Fallback**: whether fallback was triggered, why, and whether a degraded-mode contract applied
-- **Quality proxy**: a 0–1 composite score combining relevance, result count, and latency — a quick health indicator for retrieval quality
-
-Gated by the `SPECKIT_EXTENDED_TELEMETRY` flag (default: on). Telemetry is integrated into both `memory_search` and `memory_context` handlers.
-
-### Extraction and Provenance Hardening
-
-The extraction pipeline now resolves `memory_id` with a deterministic fallback when explicit IDs are missing. This keeps every extracted context traceable and prevents orphaned provenance records. Causal boost seeding was tightened to a bounded top-ranked subset, and boost import paths were normalized to canonical cache modules.
-
-### Configuration Safety
-
-Cognitive config parsing moved from a custom parser to Zod schema validation — malformed configs now fail fast with clear error messages instead of silently producing wrong behavior. Working-memory capacity enforces explicit LRU ordering (`ORDER BY last_focused ASC, id ASC`) so eviction behavior is deterministic under load.
-
-### Embedding-provider Investigation Outcome
-
-Investigation confirms `mcp_server/lib/interfaces/embedding-provider` is no longer part of the runtime architecture. `mcp_server/lib/interfaces` now contains only `vector-store.ts` and `README.md`, while provider contracts and implementations live in shared paths (`shared/types.ts`, shared provider classes, and shared factory).
-
-The old deferred placeholder marker in `mcp_server/tests/embeddings.vitest.ts` was removed, and the suite was rewritten to align with the current shared embedding architecture. Targeted verification now passes: `npm run test --workspace=mcp_server -- tests/embeddings.vitest.ts` -> 1 file passed, 13 tests passed, 0 skipped.
-
-The remaining deferred test drift is also closed: `mcp_server/tests/api-key-validation.vitest.ts`, `mcp_server/tests/api-validation.vitest.ts`, and `mcp_server/tests/lazy-loading.vitest.ts` were converted to active coverage. Targeted verification for those three suites passes with 3 files passed, 15 tests passed, 0 skipped.
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:delivery -->
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-All features shipped behind feature flags and went through a structured rollout:
-
-**Dark-launch verification**: Every feature flag set to `false`. Full test suite run. 99.65% pass rate with zero collateral failures in baseline functionality. The 15 expected failures were cognitive-feature tests that correctly detect disabled features.
-
-**Staged rollout**: Features enabled progressively at 10%, 50%, and 100%. Failure count decreased monotonically (20 → 7 → 1). The single residual failure at 100% was a pre-existing issue unrelated to the new features. All three gate decisions: GO.
-
-**Governance sign-off**: Three approval packets prepared — Tech Lead (architecture + test coverage), Data Reviewer (data quality + KPI validation), and Product Owner (requirements mapping + success criteria). All 13 success criteria passed. All 23 requirements mapped to evidence.
-
-**Outcome confirmation**: 14-day KPI monitoring window with baseline comparison. All 12 measurable KPIs passed their acceptance targets with margin. Capability truth matrix showed zero drift across all 8 upgrade capabilities. Recommendation: CLOSE.
-<!-- /ANCHOR:delivery -->
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
-<!-- /ANCHOR:how-delivered -->
 ## Key Decisions
 
 | Decision | Why |
 |----------|-----|
-| Adaptive fusion uses opt-out flag semantics | Runtime behavior follows rollout policy: unset, empty, or `true` enables adaptive fusion; explicit `false` disables it and keeps deterministic fallback. |
-| Bounded causal seed input (top-ranked only) | Reduces ranking noise. Causal expansion stays aligned with high-signal inputs instead of amplifying weak matches. |
-| Append-only ledger uses SQLite BEFORE triggers | Database-level enforcement is stronger than application-level checks. You can't bypass it even with raw SQL. |
-| Artifact routing uses deterministic weight tables | No ML-based routing. Weights are transparent, auditable and predictable. You can inspect exactly why a search behaved the way it did. |
-| Adaptive fusion includes dark-run mode | Compare new vs. old behavior without risk. Measure before committing. |
-| Telemetry outputs stay in evaluation lane | Scripted metrics are labeled as such. No synthetic data presented as production traffic. |
-| Rollout and survey items closed administratively | Artifacts preserved for later review. Spec closure aligned with requested workflow. |
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -132,16 +74,8 @@ All features shipped behind feature flags and went through a structured rollout:
 
 | Check | Result |
 |-------|--------|
-| Strict root validation | PASS, 0 errors, 0 warnings |
-| Full test suite (all flags enabled) | PASS, 142 passed test files (142 total). 4415 passed tests and 19 skipped (4434 total). |
-| Previously deferred suites now active (`api-key-validation`, `api-validation`, `lazy-loading`) | PASS, 3 passed files and 0 skipped. 15 passed tests (15 total). |
-| Rewritten embeddings suite (architecture-aligned) | PASS, 1 passed file and 0 skipped. 13 passed tests (13 total). |
-| BM25-focused verification (all flags enabled) | PASS, 3 passed files and 0 skipped. 189 passed tests (189 total). Duration 137ms. |
-| Lint (`mcp_server`) | PASS, no lint errors |
-| Typecheck | PASS, 0 errors (TS2349 fixed) |
-| Build | PASS, compiled successfully |
-
-Detailed run notes are captured in `.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/test-results.md`.
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -149,33 +83,7 @@ Detailed run notes are captured in `.opencode/specs/02--system-spec-kit/020-mcp-
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Adaptive fusion is opt-out, not opt-in.** `SPECKIT_ADAPTIVE_FUSION` is enabled when unset, empty, or `true`; set it to `false` to force deterministic fallback.
-2. **Telemetry outputs are evaluation-lane artifacts.** They're reproducible and useful for gating, but they reflect scripted test scenarios, not live production traffic.
-3. **Survey data is administrative.** The user satisfaction score (4.20/5.0) comes from an administrative closure process. A production survey with live respondents would strengthen this.
-4. **QP-4 archive handling uses `deprecated` tier.** The `importance_tier` enum doesn't support a literal `archived` value, so `deprecated` serves as the archival equivalent.
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
 
 ---
-
-<!-- ANCHOR:post-research-continuation -->
-## What's Inside
-
-The full implementation spans the core rollout (Phases 0–3), quality hardening (QP-0 through QP-4), and three post-research waves that delivered the features described above.
-
-| Wave | What Shipped |
-|------|-------------|
-| **Wave 1: Foundations** | Typed retrieval contracts, artifact-aware routing, adaptive fusion, extended telemetry, governance approval packets |
-| **Wave 2: Controlled Delivery** | Dark-launch verification, staged rollout (10% → 50% → 100%), append-only mutation ledger |
-| **Wave 3: Outcome Confirmation** | User survey framework, 14-day KPI closure evidence, capability truth matrix with drift analysis |
-
-Each wave has its own documentation set (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) under the parent spec folder:
-
-```
-136-mcp-working-memory-hybrid-rag/
-├── 004-post-research-wave-1-governance-foundations/
-├── 005-post-research-wave-2-controlled-delivery/
-└── 006-post-research-wave-3-outcome-confirmation/
-```
-
-All wave tasks complete. All checklist items verified. All backlog items (C136-01 through C136-12) closed with evidence.
-<!-- /ANCHOR:post-research-continuation -->

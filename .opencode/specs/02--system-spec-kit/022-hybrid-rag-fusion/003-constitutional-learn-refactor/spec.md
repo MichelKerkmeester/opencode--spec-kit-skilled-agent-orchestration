@@ -81,7 +81,6 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 ---
 
 <!-- ANCHOR:requirements -->
-<!-- /ANCHOR:scope -->
 ## 4. REQUIREMENTS
 
 - REQ-001: learn.md MUST be rewritten as a constitutional memory manager, replacing all 5 generic learning types

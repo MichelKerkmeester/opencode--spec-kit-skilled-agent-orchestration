@@ -78,7 +78,7 @@ The implementation stayed intentionally narrow:
 | `cd .opencode/skill/system-spec-kit && npm run typecheck` | Passed |
 | `cd .opencode/skill/system-spec-kit && npm run build` | Passed |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection` | Passed: 0 errors, 0 warnings |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4371 |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection` | Passed: refreshed `memory/metadata.json` and indexed memory #4371 |
 <!-- /ANCHOR:verification -->
 
 ---

@@ -1,19 +1,17 @@
 ---
-title: "Tasks: MCP Server Failures After Updates [02--system-spec-kit/z_archive/018-mcp-issues-after-update/tasks]"
+title: "Tasks: MCP Issues After Update [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "018-mcp-issues-after-update"
   - "tasks"
-  - "mcp"
-  - "server"
-  - "failures"
-  - "after"
-  - "135"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: MCP Server Failures After Updates
+# Tasks: MCP Issues After Update
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,29 +32,22 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Investigation
+## Phase 1: Setup
 
-- [x] T001 Collect user error reports and log examples [Evidence: MCP startup failures post-update]
-- [x] T002 Review git history for node_modules relocation changes [Evidence: Fallback build awareness]
-- [x] T003 [P] Examine MCP server configuration and startup code [Evidence: context-server.js analysis]
-- [x] T004 Test hypothesis: Reproduce failure with relocated node_modules [Evidence: Build verification passed]
-- [x] T005 Identify alternate root causes (paths, permissions, dependencies) [Evidence: better-sqlite3 native module]
-- [x] T006 Document findings with evidence in decision-record or memory/ [Evidence: Documented in implementation-summary.md]
+- [x] T001 Review the archived folder contents (top-level markdown)
+- [x] T002 Load the current Level 1 templates (templates/level_1)
+- [x] T003 [P] Identify compatibility files that must remain in place (checklist.md or decision-record.md)
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Documentation Update
+## Phase 2: Implementation
 
-- [x] T007 Read current install guide thoroughly (`.opencode/install_guides/MCP - Spec Kit Memory.md`) [Evidence: Complete rewrite executed]
-- [x] T008 Design structure for new debugging section [Evidence: Recovery-first workflow via sk-doc]
-- [x] T009 Write error message reference table with common failures [Evidence: Troubleshooting section added]
-- [x] T010 Document recovery procedure for node_modules issues [Evidence: Build fallback procedures in guide]
-- [x] T011 Document recovery procedures for other identified causes [Evidence: Native module checks, path validation]
-- [x] T012 Add health check validation commands section [Evidence: check-native-modules.sh documented]
-- [x] T013 Write troubleshooting workflow diagram or step-by-step guide [Evidence: Step-by-step recovery flow]
-- [x] T014 Update install guide with all new content [Evidence: `.opencode/install_guides/MCP - Spec Kit Memory.md` + backing file]
+- [x] T004 Rewrite spec.md with validator-compliant archival context
+- [x] T005 Rewrite or create plan.md and tasks.md for archive maintenance
+- [x] T006 Rewrite or create implementation-summary.md with correct folder metadata
+- [x] T007 Add compatibility stubs for any retained checklist.md or decision-record.md files
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,12 +55,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T015 Manually test debugging procedures on affected system [Evidence: npm install + build in .opencode/skill/system-spec-kit]
-- [x] T016 Verify error messages in documentation match real failures [Evidence: better-sqlite3 check reports OK]
-- [x] T017 Validate recovery procedures successfully restore MCP server [Evidence: Startup smoke test for context-server.js passed]
-- [x] T018 Test health check commands work as documented [Evidence: scripts/setup/check-native-modules.sh passed]
-- [x] T019 Review documentation for clarity, completeness, accuracy [Evidence: Full installer end-to-end run succeeded]
-- [x] T020 Update checklist.md with verification evidence [Evidence: Checklist updated with all evidence references]
+- [x] T008 Remove broken top-level markdown references from auxiliary notes
+- [x] T009 Run validate.sh for 018-mcp-issues-after-update
+- [x] T010 Confirm the folder ends with zero validation errors
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -79,9 +67,7 @@ contextType: "implementation"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Install guide updated with debugging section
-- [x] Manual verification passed (procedures work on test system)
-- [x] Root cause(s) documented with evidence
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -91,14 +77,6 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Install Guide**: `.opencode/install_guides/MCP - Spec Kit Memory.md`
 <!-- /ANCHOR:cross-refs -->
 
 ---
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->

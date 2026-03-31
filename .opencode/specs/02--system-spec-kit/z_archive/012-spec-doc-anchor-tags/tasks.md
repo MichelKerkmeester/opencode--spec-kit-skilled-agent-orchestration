@@ -1,19 +1,17 @@
 ---
-title: "Tasks: Spec Document Anchor Tags [129-spec-doc-anchor-tag [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/tasks]"
+title: "Tasks: Spec Doc Anchor Tags [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "012-spec-doc-anchor-tags"
   - "tasks"
-  - "spec"
-  - "document"
-  - "anchor"
-  - "tags"
-  - "129"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Spec Document Anchor Tags
+# Tasks: Spec Doc Anchor Tags
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,36 +32,32 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: CORE Templates
+## Phase 1: Setup
 
-- [x] T001 Add 7 anchors to spec-core.md (templates/core/spec-core.md)
-- [x] T002 [P] Add 7 anchors to plan-core.md (templates/core/plan-core.md)
-- [x] T003 [P] Add 6 anchors to tasks-core.md (templates/core/tasks-core.md)
-- [x] T004 [P] Add 5 anchors to impl-summary-core.md (templates/core/impl-summary-core.md)
+- [x] T001 Review the archived folder contents (top-level markdown)
+- [x] T002 Load the current Level 1 templates (templates/level_1)
+- [x] T003 [P] Identify compatibility files that must remain in place (checklist.md or decision-record.md)
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Addendum + Composed Templates
+## Phase 2: Implementation
 
-- [x] T005 Add anchors to level2-verify addendum (3 files)
-- [x] T006 [P] Add anchors to level3-arch addendum (3 files)
-- [x] T007 [P] Add anchors to level3plus-govern addendum (3 files)
-- [x] T008 Propagate anchors to level_1/ composed templates (4 files)
-- [x] T009 [P] Propagate anchors to level_2/ composed templates (5 files)
-- [x] T010 [P] Propagate anchors to level_3/ composed templates (6 files)
-- [x] T011 [P] Propagate anchors to level_3+/ composed templates (6 files)
+- [x] T004 Rewrite spec.md with validator-compliant archival context
+- [x] T005 Rewrite or create plan.md and tasks.md for archive maintenance
+- [x] T006 Rewrite or create implementation-summary.md with correct folder metadata
+- [x] T007 Add compatibility stubs for any retained checklist.md or decision-record.md files
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Validation
+## Phase 3: Verification
 
-- [x] T012 Update check-anchors.sh to scan spec document files (scripts/rules/check-anchors.sh)
-- [x] T013 Run full test suite — verify no regressions
-- [x] T014 Create spec folder documentation
+- [x] T008 Remove broken top-level markdown references from auxiliary notes
+- [x] T009 Run validate.sh for 012-spec-doc-anchor-tags
+- [x] T010 Confirm the folder ends with zero validation errors
 <!-- /ANCHOR:phase-3 -->
 
 ---

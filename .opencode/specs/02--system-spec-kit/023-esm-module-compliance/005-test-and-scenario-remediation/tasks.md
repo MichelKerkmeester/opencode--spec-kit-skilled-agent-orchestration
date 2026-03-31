@@ -31,7 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Step 1: Pre-Existing Test Fixes (Actionable)
+## Phase 1: Setup
 
 - [x] T001 [P] Fix `integration-causal-graph.vitest.ts` (T528-4, T528-7, T014-CS1) - WHY: handler error codes updated during 026 audit but tests not updated - Acceptance: update expected codes to E104/E105, tests pass
 - [x] T002 [P] Fix `integration-error-recovery.vitest.ts` (T532-4) - WHY: handleMemorySearch now returns structured error not isError:true - Acceptance: update assertion to check response content, test passes
@@ -44,7 +44,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Step 2: Doc Consistency Test Triage
+## Phase 2: Implementation
 
 - [x] T007 Triage `hydra-spec-pack-consistency.vitest.ts` - WHY: doc alignment test pre-dating ESM work - Acceptance: fix alignment or document as deferred with reason
 - [x] T008 Triage `feature-flag-reference-docs.vitest.ts` - WHY: feature flag doc references out of date - Acceptance: fix references or document as deferred with reason
@@ -53,7 +53,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Step 3: Manual Playbook Scenario Fixes
+## Phase 3: Verification
 
 - [x] T009 Fix Scenario 1 (Memory save JSON mode) - WHY: minimal test payload rejected by sufficiency gate (INSUFFICIENT_CONTEXT_ABORT) - Acceptance: create a proper test fixture JSON with sufficient context (sessionSummary 100+ chars, 5+ trigger phrases, 2+ decisions, 1+ file), verify generate-context.js completes successfully
 - [x] T010 Fix Scenario 2 (Memory search) - WHY: test used session-local DB instead of live DB - Acceptance: document proper test setup for playbook scenarios OR create a test-fixture DB setup script
@@ -63,7 +63,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Step 4: Final Test Report
+### Step 4: Final Test Report
 
 - [x] T012 Run full test suite and document final counts - WHY: baseline for merge decision - Acceptance: test report with pass/fail/skip counts, all ESM-caused = 0, pre-existing documented
 - [x] T013 Update parent implementation-summary.md with final evidence - WHY: spec closure requires evidence - Acceptance: summary includes test counts, playbook results, verification matrix
@@ -90,5 +90,5 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Parent Spec**: See `../spec.md`
 - **Deep Review**: See `../review/`
-- **Playbook Results**: See `../scratch/playbook-results.md`
+- **Playbook Results**: Captured in `implementation-summary.md`
 <!-- /ANCHOR:cross-refs -->

@@ -30,7 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Step 1: Package Metadata
+## Phase 1: Setup
 
 - [x] T001 Add `"type": "module"` to `mcp_server/package.json` and update `engines` to `>=20.11.0` - WHY: Node must know this package emits ESM; `import.meta.dirname`/`filename` requires Node >=20.11.0 - Acceptance: `"type": "module"` present, `engines.node` is `>=20.11.0`. Evidence: committed in `d4fa69b4b` as the Phase 2 `@spec-kit/mcp-server` native ESM migration.
 - [x] T002 Update `main`, `exports`, and `bin` fields for ESM dist - WHY: consumers and CLI must resolve ESM entrypoints - Acceptance: fields reference `.js` ESM output in `dist/`. Evidence: `d4fa69b4b` landed the package-surface ESM rewrite and the emitted server output is native ESM.
@@ -39,7 +39,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Step 2: Compiler Settings
+## Phase 2: Implementation
 
 - [x] T003 Set `mcp_server/tsconfig.json` to `module: "nodenext"` and `moduleResolution: "nodenext"` - WHY: compiler must emit native ESM - Acceptance: settings present. Evidence: `d4fa69b4b` switched `mcp_server` to the NodeNext ESM compiler path and the package build passes.
 - [x] T004 Add `verbatimModuleSyntax: true` to `mcp_server/tsconfig.json` - WHY: prevents TS from rewriting imports to CJS - Acceptance: setting present. Evidence: `d4fa69b4b` completed the Phase 2 TypeScript ESM config required for truthful output.
@@ -48,7 +48,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Step 3: Import Rewrites and Cross-Package Cleanup
+## Phase 3: Verification
 
 - [x] T005 Rewrite all relative imports in `mcp_server/**/*.ts` to `.js` specifiers - WHY: Node ESM requires explicit file extensions - Acceptance: no extensionless relative imports in non-test files. Evidence: Phase 2 landed in `d4fa69b4b` across `181` files, including the production import rewrite.
 - [x] T006 [P] Rewrite all re-exports to `.js` specifiers - WHY: re-exports follow same ESM rules - Acceptance: no extensionless re-exports. Evidence: `d4fa69b4b` completed the ESM specifier rewrite across the `mcp_server` source tree.
@@ -58,7 +58,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Step 4: CommonJS Global Cleanup
+### Step 4: CommonJS Global Cleanup
 
 - [x] T008 Replace `__dirname` with `import.meta.dirname` in production files - WHY: `__dirname` is not available in ESM - Acceptance: zero `__dirname` hits in non-test `mcp_server/` files. Evidence: `d4fa69b4b` completed the CommonJS-global replacement required for native ESM runtime.
 - [x] T009 [P] Replace `__filename` with `import.meta.filename` in production files - WHY: `__filename` is not available in ESM - Acceptance: zero `__filename` hits in non-test files. Evidence: Phase 2 replaced the CommonJS path globals as part of the `181`-file ESM conversion in `d4fa69b4b`.
@@ -71,7 +71,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Step 5: Build and Runtime Verification
+### Step 5: Build and Runtime Verification
 
 - [x] T012 Run `npm run build --workspace=@spec-kit/mcp-server` - WHY: build must pass with new settings - Acceptance: exit code 0. Evidence: the Phase 2 `mcp_server` build passes after `d4fa69b4b`.
 - [x] T013 Run `node dist/context-server.js` startup smoke - WHY: runtime proof that ESM entrypoint works - Acceptance: server starts without module resolution errors. Evidence: `context-server.js` starts successfully after the Phase 2 ESM migration.

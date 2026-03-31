@@ -1,70 +1,122 @@
 ---
-title: "Plan: Icon Animation Isolation [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/plan]"
-description: "Remove all button-level styling from btn_download.css (staging), keeping only the pure icon animation for the download state machine."
+title: "Implementation Plan: Icon Animation Isolation for Download Button [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/plan]"
+description: "Spec: Icon Animation Isolation for Download Button"
 trigger_phrases:
-  - "plan"
+  - "spec"
   - "icon"
   - "animation"
   - "isolation"
-  - "003"
+  - "download"
+  - "button"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Icon Animation Isolation for Download Button
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Icon Animation Isolation
+
+---
 
 <!-- ANCHOR:summary -->
-## Summary
-Remove all button-level styling from `btn_download.css` (staging), keeping only the pure icon animation for the download state machine.
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Spec: Icon Animation Isolation for Download Button
 <!-- /ANCHOR:summary -->
 
-<!-- ANCHOR:analysis -->
-## Analysis
+---
 
-### KEEP - Core Icon Animation
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-| Lines | Selector | Purpose |
-|-------|----------|---------|
-| 13-17 | `[data-download-arrow], [data-download-base]` | Transform transitions |
-| 19-23 | `[data-download-icon-wrap]` | Clip-path for checkmark |
-| 25-28 | `[data-download-success] path` | Checkmark stroke |
-| 30-33 | `[data-download-base]` | Transform origin |
-| 38-41 | `[data-download-state="downloading"]` | Pointer-events |
-| 43-46 | `body:has(...)` | Wait cursor |
-| 51-72 | `[data-download-state="ready"] ...` | Success animations |
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-### REMOVE - Button/Interaction Styling
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
 
-| Lines | What | Why |
-|-------|------|-----|
-| 8-11 | `[data-download-src] { transition: background-color }` | Button wrapper styling |
-| 74-92 | Entire hover section | Parent handles hover |
-| 94-108 | Entire focus section | Parent handles focus |
-<!-- /ANCHOR:analysis -->
+---
 
-<!-- ANCHOR:implementation -->
-## Implementation
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### Step 1: Remove button wrapper transition (lines 8-11)
-Delete the `[data-download-src]` background-color transition rule.
+### Pattern
+Archived documentation normalization
 
-### Step 2: Remove hover section (lines 74-92)
-Delete the entire `@media (hover: hover)` block.
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
 
-### Step 3: Remove focus section (lines 94-108)
-Delete the entire focus state section.
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
 
-### Step 4: Clean up section headers
-Update comments to reflect new structure (no hover/focus sections).
-<!-- /ANCHOR:implementation -->
+---
 
-<!-- ANCHOR:file-changes -->
-## File Changes
-- `src/3_staging/btn_download.css` - Remove 3 sections
-<!-- /ANCHOR:file-changes -->
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-<!-- ANCHOR:risk-assessment -->
-## Risk Assessment
-- **Low risk**: Purely subtractive change
-- **Dependency**: Parent button must provide hover/focus styles
-<!-- /ANCHOR:risk-assessment -->
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

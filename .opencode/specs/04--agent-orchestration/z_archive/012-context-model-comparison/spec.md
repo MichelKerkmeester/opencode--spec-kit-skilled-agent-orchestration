@@ -1,130 +1,118 @@
 ---
-title: "Spec 012: Context Agent Model Comparison (Haiku [04--agent-orchestration/z_archive/012-context-model-comparison/spec]"
-description: "Spec Level: L2+ (Research & Validation)"
+title: "Feature Specification: Context Model Comparison [template:level_1/spec.md]"
+description: "Archived record for Context Model Comparison. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
-  - "spec"
-  - "012"
-  - "context"
-  - "agent"
-  - "model"
-importance_tier: "important"
-contextType: "decision"
+  - "012-context-model-comparison"
+  - "context model comparison"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: CORE -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)
+# Feature Specification: Context Model Comparison
 
-**Spec Level**: L2+ (Research & Validation)
-**Parent Spec**: 04--agent-orchestration / 011-context-model-optimization
-**Status**: ACTIVE — Phase 1 Validation
-**Created**: 2026-02-14
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P2 |
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `012-context-model-comparison` |
+<!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:problem -->
-## Problem Statement
+## 2. PROBLEM & PURPOSE
 
-Spec 011 switched the @context agent from Sonnet to Haiku to reduce latency and cost. However, the Phase 1 validation (controlled comparison) was never executed. Without empirical evidence, we cannot confirm that Haiku provides acceptable quality for the context retrieval role. This spec provides the controlled comparison framework to make a data-driven go/no-go decision.
+### Problem Statement
+This archived agent orchestration archive folder captures work related to Context Model Comparison. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.
 
+### Purpose
+Keep a concise, validator-compliant record of the archived work so future maintainers can understand the topic and safely retain the folder.
 <!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-
-- Create duplicate @context agent variants (Haiku and Sonnet) on both platforms (Copilot + Claude Code)
-- Design and document 5 standardized test queries covering quick/medium/thorough modes
-- Define scoring rubric with structural, substantive, and operational metrics
-- Execute controlled A/B comparison with fairness controls
-- Produce go/no-go decision based on predefined decision matrix
+- Preserve the archived topic and folder identity for Context Model Comparison.
+- Normalize the core spec documents to the current Level 1 structure.
+- Ensure top-level markdown in the folder resolves cleanly during validation.
 
 ### Out of Scope
+- Reconstructing every historical draft that existed before archive cleanup - git history remains the source of truth.
+- Reopening implementation work for this archived item - the folder stays archival.
 
-- Changes to the production @context agent during testing
-- Testing other agents beyond @context
-- Performance testing beyond the 5 defined queries (unless CONDITIONAL verdict triggers additional rounds)
-- Option C (hybrid model routing) — documented as future spec if needed
+### Files to Change
 
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| spec.md | Modify/Create | Restore current Level 1 specification structure. |
+| plan.md | Modify/Create | Record the archival normalization approach. |
+| tasks.md | Modify/Create | Capture the cleanup and validation tasks. |
+| implementation-summary.md | Modify/Create | Summarize the archived state and validation outcome. |
 <!-- /ANCHOR:scope -->
 
 ---
 
 <!-- ANCHOR:requirements -->
-## Requirements
+## 4. REQUIREMENTS
 
-### R-001: Agent Variant Isolation
+### P0 - Blockers (MUST complete)
 
-Agent variants MUST be identical to the production @context agent in all respects except the `model` field and `name`/`description` metadata. Body content must be copied verbatim with zero modifications.
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The archive must clearly state that the folder documents Context Model Comparison. | A maintainer can identify the archived topic from spec.md without opening other files. |
+| REQ-002 | The core spec documents must follow the current Level 1 template structure. | Validator structural checks pass with zero errors for spec.md, plan.md, tasks.md, and implementation-summary.md. |
 
-### R-002: Platform Parity
+### P1 - Required (complete OR user-approved deferral)
 
-Variants must exist on both platforms:
-- **Copilot**: `.opencode/agent/context-haiku.md` and `context-sonnet.md`
-- **Claude Code**: `.claude/agents/context-haiku.md` and `context-sonnet.md`
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Top-level markdown references must resolve cleanly inside the archived folder. | Integrity checks find no broken backticked markdown references or stale folder metadata. |
 
-### R-003: Test Fairness
-
-All test queries must be executed against the same codebase state (no commits between runs), with identical prompts, and alternating execution order to avoid first-mover bias.
-
-### R-004: Scoring Objectivity
-
-Scoring must use predefined rubrics with 1-5 scales. Only differences of 2+ points on substantive metrics count as meaningful (acknowledged N=5 limitation).
-
-### R-005: Decision Transparency
-
-The go/no-go decision must follow the predefined decision matrix exactly. No post-hoc rationalization.
-
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core docs, **then** they can understand the original topic and the normalization work that kept the archive valid.
+- **Given** the validator scans top-level markdown in this folder, **when** integrity checks run, **then** no error-level issues are reported for missing files, broken markdown references, or mismatched metadata.
 <!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:risks -->
-## Risks
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Non-determinism masks real differences | High | Medium | Use clear rubric; require 2+ point gaps for significance |
-| N=5 too small for statistical confidence | High | Medium | Acknowledged limitation; supplement with qualitative analysis |
-| Memory state differs between runs | Low | High | Execute all queries in same session, verify memory state before starting |
-| Codebase changes between runs | Low | High | No commits during test execution |
-| Evaluator bias | Medium | Medium | Use predefined rubric; score before comparing |
-
-<!-- /ANCHOR:risks -->
-
----
-
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
+## 5. SUCCESS CRITERIA
 
-- All 5 test queries executed on both variants
-- All scores recorded using the predefined rubric
-- Go/no-go decision made using the decision matrix
-- Results documented in `results.md` with full evidence
-- Spec 011 Phase 1 status updated based on outcome
-
+- **SC-001**: The archived folder validates with zero errors.
+- **SC-002**: The folder retains a readable summary of the archived work and why the archive was normalized.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
-## Dependencies
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-| Dependency | Type | Status |
-|-----------|------|--------|
-| Spec 011 (context-model-optimization) | Parent spec | Active — awaiting Phase 1 validation |
-| @context agent (production) | Source for variants | Stable — currently on Haiku |
-| anobel.com codebase | Test target | Stable — no changes during testing |
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Current system-spec-kit validator rules | Archive compliance depends on active validator behavior. | Keep the archive on the current template structure and rerun validation after edits. |
+| Risk | Historical implementation detail is condensed | Some older narrative detail is no longer in top-level docs. | Preserve the topic summary here and rely on git history for deeper reconstruction. |
+<!-- /ANCHOR:risks -->
 
 ---
 
-## Related Files
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
 
-| File | Purpose |
-|------|---------|
-| `plan.md` | Implementation phases and effort estimates |
-| `checklist.md` | Verification checklist for all phases |
-| `test-protocol.md` | 5 test queries with exact text and expected outputs |
-| `scoring-rubric.md` | Metric definitions, scales, and decision matrix |
-| `results.md` | Template for capturing test outputs and scores |
+- None at this time. Reopen the archive only if historical implementation detail needs to be reconstructed.
+<!-- /ANCHOR:questions -->
+
+---

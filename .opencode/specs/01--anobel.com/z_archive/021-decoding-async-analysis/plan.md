@@ -1,34 +1,37 @@
 ---
-title: "Implementation Plan: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/plan]"
-description: "Overview: This plan documents the analysis of anobel.com's image usage patterns and provides recommendations for implementing decoding=\"async\" to improve scrolling performance. ..."
+title: "Implementation Plan: Image Decoding Async Analysis [.opencode/specs/01--anobel.com/z_archive/021-decoding-async-analysis/plan]"
+description: "Feature Specification: Image Decoding Async Analysis"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "feature"
+  - "specification"
   - "image"
   - "decoding"
   - "async"
-  - "023"
+  - "analysis"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Implementation Plan: Image Decoding Async Analysis
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Webflow + Custom JavaScript |
-| **Framework** | Webflow CMS |
-| **Storage** | Webflow CDN (cdn.prod.website-files.com) |
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-**Overview**: This plan documents the analysis of anobel.com's image usage patterns and provides recommendations for implementing `decoding="async"` to improve scrolling performance. Images are managed entirely in Webflow and served from Webflow's CDN - no local image files exist in the repository.
-
+### Overview
+Feature Specification: Image Decoding Async Analysis
 <!-- /ANCHOR:summary -->
 
 ---
@@ -36,234 +39,84 @@ contextType: "decision"
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-**Ready When:**
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-**Done When:**
-- [ ] All image categories identified and catalogued
-- [ ] Recommendations documented with clear rationale
-- [ ] Implementation guidance provided
-
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:key-findings -->
-## 3. KEY FINDINGS
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### 3.1 Current State: No decoding optimization in use
+### Pattern
+Archived documentation normalization
 
-| Pattern | Status | Evidence |
-|---------|--------|----------|
-| `decoding="async"` | **Not used** | 0 occurrences in codebase |
-| `loading="lazy"` | **Not used** | Only in documentation |
-| `srcset` / `sizes` | **Not used** | No responsive image attributes |
-| `fetchpriority` | **Not used** | No LCP prioritization |
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
 
-### 3.2 Image Architecture
-
-**Key Finding**: Images are NOT in the source code repository. All `<img>` elements are:
-- Created in Webflow's visual editor
-- Hosted on Webflow CDN (`cdn.prod.website-files.com`)
-- Interacted with via JavaScript using CSS class and data-attribute selectors
-
-**Evidence**: Grep for `<img` returned 0 files. JavaScript files reference images via selectors like:
-- `[data-target='hero-image']`
-- `.hero--image.is--webshop`
-- `.marquee--item`
-
-<!-- /ANCHOR:key-findings -->
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:image-categorization -->
-## 4. IMAGE CATEGORIZATION
-
-### 4.1 DO NOT USE `decoding="async"` (Above-Fold / Critical)
-
-| Image Type | Selector | Found In | Rationale |
-|------------|----------|----------|-----------|
-| Primary hero images | `[data-target='hero-image']` | hero_general.js:20-21 | LCP-critical, above-fold |
-| Dark mode hero images | `[data-target='hero-image-dark']` | hero_general.js:20-21 | Above-fold variant |
-| Hero card images | `[data-target='hero-card-image']` | hero_cards.js:22 | First visible images |
-| Webshop hero images | `.hero--image.is--webshop` | hero_webshop.js:110 | Product hero images |
-
-**Why**: These images are:
-- Above the fold, visible immediately on page load
-- Critical for Largest Contentful Paint (LCP)
-- JavaScript waits for them to load before animating (`img.complete` checks)
-
-### 4.2 SHOULD USE `decoding="async"` (Below-Fold)
-
-| Image Type | Selector | Pages Present | Impact |
-|------------|----------|---------------|--------|
-| **Brand logos (marquee)** | `.marquee--item img` | 12+ pages | HIGH - many logos per page |
-| **Client logos (marquee)** | `.marquee--item img` | Multiple pages | HIGH - infinite scroll carousel |
-| **Timeline photos** | `.swiper--slide img` | n1_dit_is_nobel.html | MEDIUM - historical photos |
-| **Related article images** | `.blog--list-item img` | blog_template.html | MEDIUM - 3-4+ thumbnails |
-| **Department grid cards** | `.grid--card-department img` | d1-d4 service pages | MEDIUM - navigation cards |
-| **Team photos** | Various | n4_het_team.html | LOW - single page |
-| **Brochure thumbnails** | Various | n5_brochures.html | LOW - single page |
-
-**Why**: These images are:
-- Below the fold, not visible on initial load
-- Not LCP-critical
-- Often numerous (multiple per page)
-- Users scroll to them, giving time for async decoding
-
-<!-- /ANCHOR:image-categorization -->
-
----
-
-<!-- ANCHOR:implementation-recommendations -->
-## 5. IMPLEMENTATION RECOMMENDATIONS
-
-### Option A: Webflow-Native (Recommended)
-
-**Approach**: Configure `decoding="async"` directly in Webflow's image settings
-
-**Pros**:
-- No custom code required
-- Applies automatically to all instances
-- Survives Webflow updates
-
-**Cons**:
-- Webflow may not expose this attribute in UI
-- Limited granular control
-
-**Implementation**: Check Webflow's image settings for each image component. If attribute is not available, use Option B.
-
-### Option B: JavaScript Attribution (Fallback)
-
-**Approach**: Add JavaScript to apply `decoding="async"` to below-fold images
-
-```javascript
-// Add to global.js or create image_optimization.js
-function applyAsyncDecoding() {
-  // Below-fold image selectors
-  const asyncSelectors = [
-    '.marquee--item img',
-    '.swiper--slide img',
-    '.blog--list-item img',
-    '.grid--card-department img'
-  ];
-
-  asyncSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(img => {
-      if (!img.hasAttribute('decoding')) {
-        img.setAttribute('decoding', 'async');
-      }
-    });
-  });
-}
-
-// Run after DOM ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', applyAsyncDecoding);
-} else {
-  applyAsyncDecoding();
-}
-```
-
-**Pros**:
-- Full control over which images get the attribute
-- Can be deployed via existing CDN pipeline
-
-**Cons**:
-- Adds JavaScript execution
-- Must maintain selector list
-- Attribute added after initial parse (reduces effectiveness slightly)
-
-### Option C: Hybrid Approach
-
-**Approach**:
-1. Apply `decoding="async"` in Webflow for static images where possible
-2. Use JavaScript for dynamically added images (marquee clones, etc.)
-
-**Best for**: Maximum optimization with maintained flexibility
-
-<!-- /ANCHOR:implementation-recommendations -->
-
----
-
-<!-- ANCHOR:implementation-phases -->
 <!-- ANCHOR:phases -->
-## 6. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Audit
-- [ ] Verify current `decoding` attribute usage (confirmed: none)
-- [ ] Identify all image selectors
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-### Phase 2: Implementation
-- [ ] Choose approach (A, B, or C)
-- [ ] Apply `decoding="async"` to identified below-fold images
-- [ ] Ensure hero images do NOT get the attribute
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
 ### Phase 3: Verification
-- [ ] Test scrolling performance
-- [ ] Verify hero images still load synchronously
-- [ ] Check no visual regressions
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
-<!-- /ANCHOR:implementation-phases -->
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-<!-- /ANCHOR:phases -->
-## 7. DEPENDENCIES
+## 6. DEPENDENCIES
 
-| Dependency | Status | Impact if Blocked |
-|------------|--------|-------------------|
-| Webflow access | Required | Cannot modify image attributes directly |
-| CDN deployment | Green | JavaScript solution uses existing pipeline |
-
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 8. ROLLBACK
+## 7. ROLLBACK PLAN
 
-- **Trigger**: Visible image loading jank or LCP regression
-- **Procedure**: Remove `decoding="async"` attribute via Webflow or remove JavaScript
-
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
 <!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:pages-with-highest-image-density -->
-## 9. PAGES WITH HIGHEST IMAGE DENSITY
-
-| Page | Hero Type | Marquee | Other Below-Fold Images |
-|------|-----------|---------|------------------------|
-| Home | Video | Yes | Product cards |
-| n1_dit_is_nobel | Video | Yes | Timeline photos |
-| Contact | Cards | Yes | - |
-| Services (d1-d4) | General | Yes | Department grid |
-| Blog | General | No | Article list |
-| Blog Template | Blog Article | No | Related articles |
-| n4_het_team | General | Yes | Team photos |
-
-<!-- /ANCHOR:pages-with-highest-image-density -->
-
----
-
-<!-- ANCHOR:answer-to-open-questions -->
-## 10. ANSWER TO OPEN QUESTIONS
-
-**Q: Does anobel.com already use `decoding="async"` anywhere?**
-A: No. Zero occurrences found in the codebase.
-
-**Q: Are there CMS-managed images that need different handling?**
-A: Yes. Related articles (`.blog--list-item img`) are CMS-driven. These should receive `decoding="async"` via JavaScript approach since they're dynamically rendered from Webflow CMS.
-
-<!-- /ANCHOR:answer-to-open-questions -->
-
----
-
-<!--
-CORE TEMPLATE (~150 lines)
-- Analysis-focused plan for image optimization
-- Implementation guidance included
--->

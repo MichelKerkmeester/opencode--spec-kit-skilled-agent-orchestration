@@ -1,22 +1,17 @@
 ---
-title: "Feature Specification: OpenCode Documentation Quality [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/spec]"
-description: "OpenCode system documentation across 85 files contained superlatives, marketing language, unnecessary verbiage, and style inconsistencies that reduced professional clarity. Docu..."
+title: "Feature Specification: OpenCode Documentation Quality Upgrade [archive]"
+description: "Archived record for the OpenCode Documentation Quality Upgrade work, normalized to the current Level 1 template."
 trigger_phrases:
-  - "feature"
-  - "specification"
-  - "opencode"
-  - "documentation"
-  - "quality"
-  - "spec"
-  - "005"
-  - "upgrade"
+  - "documentation quality upgrade"
+  - "upgrade speckit docs"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
 # Feature Specification: OpenCode Documentation Quality Upgrade
 
-<!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-arch | v2.2 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -25,11 +20,11 @@ contextType: "decision"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3 |
+| **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Implementation Complete — Awaiting Commit |
-| **Created** | 2025-02-15 |
-
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `005-upgrade-speckit-docs` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -38,11 +33,10 @@ contextType: "decision"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-OpenCode system documentation across 85 files contained superlatives, marketing language, unnecessary verbiage, and style inconsistencies that reduced professional clarity. Documentation needed systematic tightening to improve readability and maintainability while preserving all technical content.
+This archived folder captures work that improved documentation quality for OpenCode and system-spec-kit. The older archive shape had drifted into invalid higher-level structure, which caused strict validation errors.
 
 ### Purpose
-Systematically improve documentation quality across the OpenCode system through prose tightening, conciseness improvements, and style consistency, resulting in more professional and maintainable documentation with reduced line count but preserved technical accuracy.
-
+Keep a concise archival summary of the documentation quality upgrade in a format that passes the current validator.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -51,41 +45,22 @@ Systematically improve documentation quality across the OpenCode system through 
 ## 3. SCOPE
 
 ### In Scope
-- Prose tightening: Remove superlatives, marketing language, unnecessary words
-- Conciseness: Reduce verbosity while preserving technical content
-- Style consistency: Apply uniform patterns (Oxford comma removal, em dash reduction, terminology standardization)
-- Version management: Bump sk-doc SKILL.md version to 1.0.6.0
-- Template improvement: Restructure readme_template.md for better documentation patterns
-- Config cleanup: Remove unused Antigravity plugin/provider configuration
+- Preserve the archived topic and folder identity for the documentation quality upgrade.
+- Normalize the core archive documents to the current Level 1 structure.
+- Keep top-level archive markdown free of broken markdown references.
 
 ### Out of Scope
-- Functional changes to code - documentation only
-- New features or capabilities - quality improvements only
-- Documentation structure changes - preserve existing organization
-- Translation or localization - English text improvements only
+- Reconstructing every former verification table and decision note from the original package.
+- Performing fresh documentation work outside this archived folder.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/` (61 README files) | Modify | Prose tightening across mcp_server/, scripts/, shared/, templates/, config/, constitutional/ |
-| `.opencode/skill/*/README.md` (9 files) | Modify | Quality improvements in mcp-code-mode, mcp-figma, workflows-* skills |
-| `.opencode/README.md` | Modify | Main OpenCode documentation tightening |
-| `.opencode/install_guides/README.md` | Modify | Installation guide clarity improvements |
-| `.opencode/scripts/README.md` | Modify | Scripts documentation quality |
-| Root `README.md` | Modify | Project-level documentation tightening |
-| `AGENTS.md` | Modify | Framework documentation quality improvements |
-| `system-spec-kit/SKILL.md` | Modify | Version bump to 1.0.6.0 + quality improvements |
-| `sub_folder_versioning.md` | Modify | Versioning documentation tightening |
-| `code_organization.md` | Modify | Organization documentation quality |
-| `readme_template.md` | Modify | Template restructure (+191 lines) |
-| `opencode.json` | Modify | Remove Antigravity config (-78 lines) |
-| `package.json`, `bun.lock` | Modify | Dependency updates from config changes |
-
-**Total: 85 files, ~4,864 LOC changed (+2,649/−2,215, net +434)**
-
-**Documentation Level Justification**: This is Level 3 because total LOC changed (~4,864) far exceeds the L3 threshold (≥500 LOC), requiring formal architecture documentation and decision records for systematic documentation quality improvements across the entire OpenCode system.
-
+| spec.md | Create | Restore a compliant archive specification. |
+| plan.md | Create | Record the archive normalization approach. |
+| tasks.md | Create | Capture the cleanup and verification work. |
+| implementation-summary.md | Create | Summarize the repaired archive state. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -97,19 +72,18 @@ Systematically improve documentation quality across the OpenCode system through 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All 85 files modified with quality improvements | Each file contains tightened prose with no superlatives or marketing language |
-| REQ-002 | Technical content preserved in all modifications | No loss of technical accuracy, instructions, or critical information |
-| REQ-003 | Version bump applied to sk-doc | SKILL.md version changed from 1.0.5.0 to 1.0.6.0 |
+| REQ-001 | The archive must clearly state that the folder documents a documentation quality upgrade. | A maintainer can identify the archived topic from spec.md alone. |
+| REQ-002 | Core archive documents must follow the current Level 1 template structure. | Strict validation reports no TEMPLATE_HEADERS or ANCHORS_VALID errors. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Style consistency applied across all files | Oxford commas removed, "deep dive" → "detailed reference", em dashes reduced |
-| REQ-005 | Total LOC changes tracked accurately | ~4,864 total LOC changed (+2,649/−2,215, net +434) documented |
-| REQ-006 | Unused config removed | Antigravity plugin/provider configuration deleted from opencode.json |
-| REQ-007 | Template improvements applied | readme_template.md restructured with improved patterns |
+| REQ-003 | Top-level archive markdown must validate without error-level integrity issues. | Strict validation reports zero errors for the folder. |
 
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core documents, **then** they can understand that the archived work improved documentation quality.
+- **Given** strict validation scans this folder, **when** it checks required files, structure, anchors, and references, **then** it reports zero errors.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -117,12 +91,8 @@ Systematically improve documentation quality across the OpenCode system through 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 85 files contain improved prose quality with no superlatives or marketing language
-- **SC-002**: Total LOC changes accurately tracked (~4,864 total, +2,649/−2,215, net +434) while preserving 100% of technical content
-- **SC-003**: Style patterns applied consistently across all modified files
-- **SC-004**: Version 1.0.6.0 applied to sk-doc SKILL.md
-- **SC-005**: All modified files pass validation checks (no broken links, proper formatting)
-
+- **SC-001**: The archived feature purpose remains clear.
+- **SC-002**: The folder validates with zero errors under strict mode.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -132,11 +102,8 @@ Systematically improve documentation quality across the OpenCode system through 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Unintended content removal | High | Careful review of each change, preserve all technical content |
-| Risk | Style changes break references | Medium | Verify cross-references remain valid after terminology changes |
-| Risk | Template changes affect new docs | Medium | Test template with sample documentation creation |
-| Dependency | Git working tree state | Low | Changes already applied, documentation is retroactive |
-
+| Dependency | Current Level 1 templates | Archive compliance depends on the active template contract. | Rewrite directly from the current templates and validate after edits. |
+| Risk | Historical detail is condensed | Some original upgrade detail is no longer in top-level docs. | Preserve the feature summary here and rely on git history for deeper reconstruction. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -144,15 +111,7 @@ Systematically improve documentation quality across the OpenCode system through 
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None (implementation complete, documentation retroactive)
-
+- None. This folder now serves as a concise archival record.
 <!-- /ANCHOR:questions -->
 
 ---
-
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->

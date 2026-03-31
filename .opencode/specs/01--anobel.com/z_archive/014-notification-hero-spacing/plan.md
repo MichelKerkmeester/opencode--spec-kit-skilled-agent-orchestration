@@ -1,156 +1,121 @@
 ---
-title: "Implementation Plan [015-notification-hero-spacing/plan] [01--anobel.com/z_archive/014-notification-hero-spacing/plan]"
-description: "Implement conditional hero spacing that responds to notification bar visibility using CSS :has() selector with the existing data-alert-container-active attribute."
+title: "Implementation Plan: Notification Hero Spacing [.opencode/specs/01--anobel.com/z_archive/014-notification-hero-spacing/plan]"
+description: "Notification Hero Spacing"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "015"
   - "notification"
+  - "hero"
+  - "spacing"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Notification Hero Spacing
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan
 
-<!-- ANCHOR:overview -->
-## Overview
+---
 
-Implement conditional hero spacing that responds to notification bar visibility using CSS `:has()` selector with the existing `data-alert-container-active` attribute.
-<!-- /ANCHOR:overview -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-<!-- ANCHOR:phase-1-webflow-setup -->
-## Phase 1: Webflow Setup
+### Technical Context
 
-**Goal:** Add the spacing div element to hero sections
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-### Steps
+### Overview
+Notification Hero Spacing
+<!-- /ANCHOR:summary -->
 
-1. Open Webflow Designer
-2. Navigate to hero section component (or each page with hero)
-3. Add a div block at the TOP of the hero section (first child)
-4. Add custom attribute: `data-notification-spacer` (no value needed)
-5. Set initial display to `none` in Webflow styles
-6. Set height to match notification bar (e.g., 60px)
+---
 
-### Verification
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-- [ ] Div exists in hero section
-- [ ] Div has `data-notification-spacer` attribute
-- [ ] Div is hidden by default
-<!-- /ANCHOR:phase-1-webflow-setup -->
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-<!-- ANCHOR:phase-2-css-implementation -->
-## Phase 2: CSS Implementation
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
 
-**Goal:** Add conditional visibility CSS
+---
 
-### CSS Code
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-```css
-/* ─────────────────────────────────────────────────────────────
-   HERO: Notification Spacer
-   Shows spacing in hero when notification bar is active
-   ───────────────────────────────────────────────────────────── */
+### Pattern
+Archived documentation normalization
 
-[data-notification-spacer] {
-  display: none;
-  height: 0;
-  transition: height 0.3s ease;
-}
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
 
-/* Show spacer when notification is active */
-body:has([data-alert-container-active]) [data-notification-spacer] {
-  display: block;
-  height: var(--notification-height, 60px);
-}
-```
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
 
-### Steps
+---
 
-1. Add CSS to Webflow custom code (Page or Site-level)
-2. Or add to `src/1_css/global/` if using external CSS
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-### Verification
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-- [ ] CSS is loaded on page
-- [ ] No syntax errors in console
-<!-- /ANCHOR:phase-2-css-implementation -->
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
-<!-- ANCHOR:phase-3-testing -->
-## Phase 3: Testing
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
-**Goal:** Verify correct behavior across all states
+---
 
-### Test Cases
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-| # | Scenario | Expected Result |
-|---|----------|-----------------|
-| 1 | No active notifications | Spacer hidden |
-| 2 | Active notification visible | Spacer visible |
-| 3 | Dismiss notification | Spacer hides |
-| 4 | Office hours: notification appears | Spacer shows |
-| 5 | Office hours: notification hides | Spacer hides |
-| 6 | Page load with active notification | Spacer visible immediately |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
-### Testing Commands
-
-```javascript
-// Console commands for testing
-AnobelAlerts.debug(true);  // Enable debug logging
-AnobelAlerts.refresh();     // Force visibility update
-AnobelAlerts.clearDismissals(); // Reset dismissed state
-```
-<!-- /ANCHOR:phase-3-testing -->
-
-<!-- ANCHOR:phase-4-optional-js-enhancement -->
-## Phase 4: Optional JS Enhancement
-
-**Goal:** Add body attribute for legacy browser support (if needed)
-
-### Code Change
-
-In `src/2_javascript/navigation/nav_notifications.js`, add at line ~311:
-
-```javascript
-// Add body-level state indicator for CSS targeting
-document.body.toggleAttribute('data-notification-active', !!winner);
-```
-
-### Alternative CSS
-
-```css
-body[data-notification-active] [data-notification-spacer] {
-  display: block;
-  height: var(--notification-height, 60px);
-}
-```
-<!-- /ANCHOR:phase-4-optional-js-enhancement -->
-
-<!-- ANCHOR:timeline -->
-## Timeline
-
-| Phase | Estimated Time |
-|-------|----------------|
-| Phase 1: Webflow Setup | 15 min |
-| Phase 2: CSS Implementation | 10 min |
-| Phase 3: Testing | 20 min |
-| Phase 4: Optional JS | 5 min |
-| **Total** | **~50 min** |
-<!-- /ANCHOR:timeline -->
-
-<!-- ANCHOR:risks-mitigations -->
-## Risks & Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| CSS `:has()` not supported | Low (95%+ support) | Fallback to Phase 4 JS approach |
-| Notification height varies | Medium | Use CSS variable `--notification-height` |
-| Layout shift on load | Low | CSS transition smooths change |
-<!-- /ANCHOR:risks-mitigations -->
+---
 
 <!-- ANCHOR:dependencies -->
-## Dependencies
+## 6. DEPENDENCIES
 
-- Notification system must set `data-alert-container-active` attribute (already implemented)
-- Hero section must be accessible via CSS descendant selector from body
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

@@ -1,19 +1,17 @@
 ---
-title: "Implementation Plan: Spec Document Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/plan]"
-description: "Add <!-- ANCHOR:name --> / <!-- /ANCHOR:name --> tags to all spec kit templates, enabling section-level retrieval for spec documents. The anchor infrastructure (parser, indexer,..."
+title: "Implementation Plan: Spec Doc Anchor Tags [template:level_1/plan.md]"
+description: "Normalize the archived system-spec-kit archive folder for Spec Doc Anchor Tags so current validation passes without reopening implementation scope."
 trigger_phrases:
-  - "implementation"
+  - "012-spec-doc-anchor-tags"
   - "plan"
-  - "spec"
-  - "document"
-  - "anchor"
-  - "129"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Plan: Spec Document Anchor Tags
+# Implementation Plan: Spec Doc Anchor Tags
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -25,13 +23,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown templates, Bash |
-| **Framework** | Spec Kit template system |
-| **Storage** | File-based templates |
-| **Testing** | Vitest (existing suite), check-anchors.sh |
+| **Language/Stack** | Markdown, Bash, Node.js validation tooling |
+| **Framework** | system-spec-kit template and validator workflow |
+| **Storage** | Git-tracked archive files only |
+| **Testing** | validate.sh --verbose |
 
 ### Overview
-Add `<!-- ANCHOR:name -->` / `<!-- /ANCHOR:name -->` tags to all spec kit templates, enabling section-level retrieval for spec documents. The anchor infrastructure (parser, indexer, search) already exists and works document-agnostically — this spec only modifies templates and validation.
+This plan keeps the archived record for Spec Doc Anchor Tags readable while bringing the folder back to current validation standards. The work focuses on template alignment, metadata cleanup, and reference-safe archival notes rather than reopening the original feature scope.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -40,14 +38,14 @@ Add `<!-- ANCHOR:name -->` / `<!-- /ANCHOR:name -->` tags to all spec kit templa
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified (spec 126 complete)
+- [x] Archived topic is identifiable from the folder name and existing docs.
+- [x] Current Level 1 templates are available as the normalization source.
+- [x] Validation rules for structure, anchors, and integrity are understood.
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing
-- [x] Docs updated (spec/plan/tasks)
+- [x] Core archive docs use current template structure.
+- [x] Top-level markdown no longer produces validator errors.
+- [x] Folder validation completes with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,13 +54,14 @@ Add `<!-- ANCHOR:name -->` / `<!-- /ANCHOR:name -->` tags to all spec kit templa
 ## 3. ARCHITECTURE
 
 ### Pattern
-Template modification — no architectural changes
+Archival normalization using Level 1 template compliance.
 
 ### Key Components
-- **CORE templates**: Base anchors present at all levels (4 files)
-- **Addendum templates**: Level-specific anchors (7+ files)
-- **Composed templates**: Inherit anchors from CORE + addendums (21 files)
-- **check-anchors.sh**: Validation script extended for spec docs
+- **Core spec docs**: spec.md, plan.md, tasks.md, and implementation-summary.md hold the validator-critical archive record.
+- **Compatibility stubs**: Existing checklist.md, decision-record.md, and other top-level markdown files are simplified so they remain readable without breaking validation.
+
+### Data Flow
+Folder name and surviving archive context inform the rewritten markdown, then validate.sh confirms the archive is structurally sound.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -70,32 +69,20 @@ Template modification — no architectural changes
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: CORE Templates
-- [x] Add 7 anchors to spec-core.md
-- [x] Add 7 anchors to plan-core.md
-- [x] Add 6 anchors to tasks-core.md
-- [x] Add 5 anchors to impl-summary-core.md
+### Phase 1: Setup
+- [x] Review the archived folder and note top-level markdown files.
+- [x] Load the current Level 1 templates that govern validator expectations.
+- [x] Decide to normalize to Level 1 unless an existing compatibility file must remain.
 
-### Phase 2: Addendum Templates
-- [x] Add 3 anchors to spec-level2.md
-- [x] Add 3 anchors to plan-level2.md
-- [x] Add 8 anchors to checklist.md
-- [x] Add 3 anchors to spec-level3.md
-- [x] Add 3 anchors to plan-level3.md
-- [x] Add 7 anchors to decision-record.md
-- [x] Add 6 anchors to checklist-extended.md
-- [x] Add 4 anchors to spec-level3plus.md
-- [x] Add 3 anchors to plan-level3plus.md
+### Phase 2: Core Implementation
+- [x] Rewrite the core archive docs into current template-shaped content.
+- [x] Create any missing required Level 1 files.
+- [x] Simplify extra top-level markdown into archival notes with safe references.
 
-### Phase 3: Composed Level Templates
-- [x] Propagate anchors to level_1/ (4 files)
-- [x] Propagate anchors to level_2/ (5 files)
-- [x] Propagate anchors to level_3/ (6 files)
-- [x] Propagate anchors to level_3+/ (6 files)
-
-### Phase 4: Validation
-- [x] Update check-anchors.sh to scan spec document files
-- [x] Run full test suite
+### Phase 3: Verification
+- [x] Run validate.sh for the archived folder.
+- [x] Repair any remaining error-level issues.
+- [x] Confirm the folder ends with zero validation errors.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -105,9 +92,9 @@ Template modification — no architectural changes
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Validation | All modified templates | check-anchors.sh |
-| Unit/Integration | Existing test suite | Vitest (4184+ tests) |
-| Manual | Spot-check anchor pairs in templates | Visual inspection |
+| Structural | Template headers, anchors, level markers | validate.sh --verbose |
+| Integrity | Markdown references and metadata consistency | validate.sh --verbose |
+| Manual | Archived topic readability and folder identity | Direct markdown review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -117,8 +104,8 @@ Template modification — no architectural changes
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Spec 126 (full spec doc indexing) | Internal | Green (complete) | Anchors would have no effect without indexing |
-| Anchor infrastructure (extractAnchors, resolveAnchorKey) | Internal | Green (existing) | Zero code changes needed |
+| system-spec-kit templates | Internal | Green | Without them the archive cannot be normalized safely. |
+| validate.sh rule set | Internal | Green | Validation evidence would be incomplete if unavailable. |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -126,8 +113,8 @@ Template modification — no architectural changes
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Anchor tags break template rendering or test suite
-- **Procedure**: `git checkout HEAD~1 -- .opencode/skill/system-spec-kit/templates/` to revert all template changes
+- **Trigger**: The normalized archive removes essential historical meaning or introduces new validation errors.
+- **Procedure**: Restore the affected files from git history, then repeat normalization with the active templates as the baseline.
 <!-- /ANCHOR:rollback -->
 
 ---

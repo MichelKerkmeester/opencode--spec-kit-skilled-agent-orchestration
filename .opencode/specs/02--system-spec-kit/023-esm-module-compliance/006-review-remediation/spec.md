@@ -25,14 +25,14 @@ This is **Phase 6** of the ESM Module Compliance specification.
 | **Parent Plan** | ../plan.md |
 | **Phase** | 6 of 6 |
 | **Predecessor** | 005-test-and-scenario-remediation |
-| **Successor** | None (final phase) |
+| **Successor** | 007-hybrid-search-null-db-fix |
 | **Handoff Criteria** | All 14 P1 findings resolved, all 4 P2 findings resolved, parent packet truth-synced, `/spec_kit:deep-review` re-run passes with PASS verdict |
 
-**Scope Boundary**: Fix all 18 findings from the 10-iteration deep review (`review/review-report.md`). No new features, no refactoring beyond what findings require.
+**Scope Boundary**: Fix all 18 findings from the 10-iteration deep review (`../review/review-report.md`). No new features, no refactoring beyond what findings require.
 
 **Dependencies**:
 - Deep review report: `../review/review-report.md`
-- All 10 iteration artifacts: `../review/iterations/iteration-001.md` through `iteration-010.md`
+- All 10 iteration artifacts: `../review/iterations/iteration-001.md` through `../review/iterations/iteration-010.md`
 - Parent packet docs: `../spec.md`, `../plan.md`, `../tasks.md`, `../checklist.md`, `../implementation-summary.md`
 <!-- /ANCHOR:phase-context -->
 
@@ -49,7 +49,7 @@ This is **Phase 6** of the ESM Module Compliance specification.
 | **Created** | 2026-03-30 |
 | **Branch** | `system-speckit/023-esm-module-compliance` |
 | **Parent Spec** | 023-esm-module-compliance |
-| **Source** | `review/review-report.md` — 10-iteration deep review, GPT-5.4 via codex exec |
+| **Source** | `../review/review-report.md` — 10-iteration deep review, GPT-5.4 via codex exec |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -145,7 +145,7 @@ The CONDITIONAL verdict blocks release-readiness. Each P1 finding was confirmed 
 <!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
-- **SC-001**: All 18 findings from `review/review-report.md` resolved with code changes
+- **SC-001**: All 18 findings from `../review/review-report.md` resolved with code changes
 - **SC-002**: Parent packet docs tell a single coherent completion story
 - **SC-003**: Phase 4 child packet is closed
 - **SC-004**: All tests pass (0 failures, 0 skipped)
@@ -166,3 +166,11 @@ The CONDITIONAL verdict blocks release-readiness. Each P1 finding was confirmed 
 | Dependency | Phase 4 child packet state | Green | Only needs doc updates, not code changes |
 | Dependency | Root package.json engines field | Yellow | May affect CI/CD or contributor setups |
 <!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None. The remediation scope, source review packet, and verification targets are already defined in `../review/review-report.md`.
+<!-- /ANCHOR:questions -->

@@ -98,9 +98,9 @@ State source of truth is `tasks.md` in this folder.
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [x] CHK-100 [P0] Architecture decisions documented in `decision-record.md`
-- [x] CHK-101 [P1] ADR status fields present and explicit
-- [x] CHK-102 [P1] Alternatives documented with rejection rationale
+- [x] CHK-100 [P0] Architecture decisions documented in `decision-record.md` [Evidence: ADR-001 through ADR-005]
+- [x] CHK-101 [P1] ADR status fields present and explicit [Evidence: `decision-record.md` ADR metadata tables]
+- [x] CHK-102 [P1] Alternatives documented with rejection rationale [Evidence: `decision-record.md` alternatives sections in ADR-001 through ADR-005]
 - [ ] CHK-103 [P2] Migration path fully validated by fixture coverage [Evidence: fixture backlog still open]
 <!-- /ANCHOR:arch-verify -->
 
@@ -143,7 +143,7 @@ State source of truth is `tasks.md` in this folder.
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] Root spec documents synchronized to current task state
+- [x] CHK-140 [P1] Root spec documents synchronized to current task state [Evidence: `spec.md`, `plan.md`, `tasks.md`, and `decision-record.md` all reflect pending tasks T005/T028/T033]
 - [N/A] CHK-141 [P1] API docs complete - N/A: script/documentation feature
 - [ ] CHK-142 [P2] User-facing guide updates validated end-to-end
 - [x] CHK-143 [P2] Knowledge transfer artifact present [Evidence: `implementation-summary.md`]
@@ -166,7 +166,7 @@ State source of truth is `tasks.md` in this folder.
 
 ---
 
-## Project: Phase 1 - Detection & Scoring
+### Project: Phase 1 - Detection & Scoring
 
 - [x] **P0** `determine_phasing()` implementation completed [Evidence: `tasks.md` T001]
 - [x] **P0** JSON output fields implemented [Evidence: `tasks.md` T004]
@@ -175,7 +175,7 @@ State source of truth is `tasks.md` in this folder.
 
 ---
 
-## Project: Phase 2 - Templates & Creation
+### Project: Phase 2 - Templates & Creation
 
 - [x] **P0** `create.sh --phase` parent/child behavior implemented [Evidence: `tasks.md` T008, T011, T012]
 - [x] **P1** `--phases` and `--phase-names` implemented [Evidence: `tasks.md` T009, T010]
@@ -184,7 +184,7 @@ State source of truth is `tasks.md` in this folder.
 
 ---
 
-## Project: Phase 3 - Commands & Router
+### Project: Phase 3 - Commands & Router
 
 - [x] **P0** PHASE intent, resource map, and command boost implemented [Evidence: `tasks.md` T013-T015]
 - [x] **P0** `/spec_kit:phase` command + workflow assets created [Evidence: `tasks.md` T017-T019]
@@ -192,7 +192,7 @@ State source of truth is `tasks.md` in this folder.
 
 ---
 
-## Project: Phase 4 - Validation, Docs & Nodes
+### Project: Phase 4 - Validation, Docs & Nodes
 
 - [x] **P0** Recursive validation plumbing implemented [Evidence: `tasks.md` T024-T026]
 - [x] **P1** `check-phase-links.sh` and docs/node updates implemented [Evidence: `tasks.md` T027, T029-T032, T034]
@@ -200,11 +200,11 @@ State source of truth is `tasks.md` in this folder.
 
 ---
 
-## Project: Cross-Cutting Verification
+### Project: Cross-Cutting Verification
 
 - [ ] **P0** Full regression run against existing fixtures (51) recorded
 - [ ] **P1** End-to-end `/spec_kit:phase -> create -> validate -> resume` run recorded
-- [x] **P1** Checklist/task state synchronized to current implementation status
+- [x] **P1** Checklist/task state synchronized to current implementation status [Evidence: `tasks.md` completion criteria and pending fixture tasks match this checklist]
 
 ---
 

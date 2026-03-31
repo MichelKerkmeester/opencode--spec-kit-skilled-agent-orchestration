@@ -37,7 +37,7 @@ A 12-agent deep research campaign (~3.3M tokens, GPT-5.4 high/xhigh via Codex CL
 - **Phases 019/021/022** are mapping/meta packets whose audited-item lists no longer correspond to live catalog entries — consider reclassifying.
 - **Phases 009 and 011** have implementation summaries that overcount retired features no longer in the live catalog.
 
-Full details: `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep-research-round2-2026-03-26.md`.
+Full details: `../006-feature-catalog/research/deep-research-gap-report-2026-03-26.md` and `../006-feature-catalog/research/deep-research-round2-2026-03-26.md`.
 
 ---
 

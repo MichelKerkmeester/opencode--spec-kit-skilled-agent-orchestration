@@ -830,3 +830,4 @@ Automated verifier violations in those nine files: none.
 - That gap matters here because the Wave 1 notes explicitly say 12 redundant typed catches were simplified to bare `catch {}` blocks across all nine modified files, which the automated verifier does not flag ([analysis-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing/scratch/analysis-summary.md#L76)).
 
 ALIGNMENT DRIFT verdict: PASS with `0` automated violations.
+<!-- /ANCHOR:when-to-use -->

@@ -1,19 +1,19 @@
 ---
-title: "Implementation Summary [02--system-spec-kit/z_archive/018-mcp-issues-after-update/implementation-summary]"
-description: "Resolved MCP server failure issues after system updates through comprehensive investigation, documentation rewrite, and verification. The solution focuses on improving user reco..."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for MCP Issues After Update."
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "018-mcp-issues-after-update"
   - "implementation summary"
-  - "018"
-  - "mcp"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,9 +22,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 135-mcp-issues-after-update |
-| **Completed** | 2026-02-18 |
-| **Level** | 2 |
+| **Spec Folder** | 018-mcp-issues-after-update |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,50 +32,39 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-### Overview
-Resolved MCP server failure issues after system updates through comprehensive investigation, documentation rewrite, and verification. The solution focuses on improving user recovery capabilities through enhanced install guide documentation with a recovery-first approach.
+This archived folder now has a current-template Level 1 documentation set for MCP Issues After Update. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
+
+### Archive Normalization
+
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/install_guides/MCP - Spec Kit Memory.md` | Rewritten | Complete rewrite using sk-doc skill to provide recovery-first troubleshooting guidance |
-| `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` | Modified | Canonical source backing the install guide with aligned content |
-| `.opencode/install_guides/install_scripts/install-spec-kit-memory.sh` | Modified | Aligned installer script with recovery-first flow and validation checks |
-
-### Key Improvements
-
-1. **Recovery-First Documentation Structure**
-   - Troubleshooting section with clear error patterns and solutions
-   - Step-by-step debugging workflow for common failure scenarios
-   - Health check validation procedures
-
-2. **Root Cause Identification**
-   - Fallback build process awareness and documentation
-   - Native module dependency handling (better-sqlite3)
-   - Database path verification (canonical path + compatibility symlink)
-   - Path resolution strategies
-
-3. **Verification Infrastructure**
-   - Native module checking via `scripts/setup/check-native-modules.sh`
-   - Startup smoke tests for `mcp_server/dist/context-server.js`
-   - End-to-end installer validation
-   - Build verification workflow (npm install + npm run build)
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Complete install guide rewrite via sk-doc skill | Ensured consistent quality, proper structure, and comprehensive coverage rather than incremental patches |
-| Recovery-first approach over prevention | Users needed immediate solutions for existing failures; prevention can be addressed in future work |
-| Canonical DB path documentation | Clarified the authoritative database location (`mcp_server/dist/database/context-index.sqlite`) while noting compatibility symlink |
-| Fallback build awareness | Documented that builds may fallback to alternative strategies rather than fail hard, improving resilience |
-| Native module validation emphasis | Better-sqlite3 is a critical dependency; explicit checks help users identify binary compatibility issues early |
-| Installer script alignment | Synchronized automated installer with manual recovery procedures for consistency |
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -83,14 +72,10 @@ Resolved MCP server failure issues after system updates through comprehensive in
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Build Verification | ✅ Passed | `npm install` + `npm run build` in `.opencode/skill/system-spec-kit` completed successfully with fallback awareness |
-| Native Module Check | ✅ Passed | `bash scripts/setup/check-native-modules.sh` reports better-sqlite3 OK |
-| Startup Smoke Test | ✅ Passed | `mcp_server/dist/context-server.js` starts without errors |
-| Installer End-to-End | ✅ Passed | Full installer script run completed successfully with all validation checks |
-| Database Path Validation | ✅ Passed | Canonical DB path `mcp_server/dist/database/context-index.sqlite` verified, compatibility symlink noted |
-| Documentation Quality | ✅ Passed | Install guide rewritten via sk-doc skill with recovery-first structure |
+| Check | Result |
+|-------|--------|
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -98,26 +83,7 @@ Resolved MCP server failure issues after system updates through comprehensive in
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-### Current Scope
-1. **Documentation-Focused Solution**: Implementation focused on user recovery documentation rather than preventative code changes in MCP server
-2. **Manual Recovery Required**: Users must follow documented procedures; no automated migration/update scripts provided
-3. **Environment Variations**: Some edge cases may exist for unusual system configurations not covered in testing
-
-### Future Enhancements
-1. **Automated Health Monitoring**: Proactive health checks that run on MCP server startup
-2. **Self-Healing Mechanisms**: Automatic detection and recovery for common failure modes
-3. **Enhanced Logging**: Structured error reporting for easier diagnosis
-4. **Update Safety Checks**: Pre-flight validation before system updates to prevent known failure scenarios
-5. **Telemetry**: Anonymous error pattern collection to identify new failure modes in the wild
-
-### Technical Debt
-- None introduced; documentation-only changes with no code modifications
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
 
 ---
-
-<!--
-CORE TEMPLATE (~40 lines)
-- Post-implementation documentation
-- Created AFTER implementation completes
--->

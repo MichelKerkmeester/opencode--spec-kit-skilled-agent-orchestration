@@ -23,7 +23,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix |
+| **Spec Folder** | 007-hybrid-search-null-db-fix |
 | **Completed** | 2026-03-30 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -64,6 +64,26 @@ Used Sequential Thinking (12 steps) to systematically rule out hypotheses: missi
 
 All paths relative to `.opencode/skill/system-spec-kit/`.
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The fix started with direct pipeline tracing, then narrowed the failure to two silent filters that removed every candidate after Stage 1. After restoring search correctness, the phase bundled the follow-on ranking, recall, lineage, and observability improvements into the same verification packet so the next phase inherited a truthful search baseline.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Make scope enforcement opt-in | The default-on behavior blocked every unscoped single-user query and produced false empties |
+| Remove the implicit `minState: "WARM"` filter | The database does not materialize `memoryState`, so the default filtered all rows as `UNKNOWN` |
+| Keep the optimization tranche in the same phase packet | The search fix and the follow-on ranking and observability improvements share the same proof surface |
+<!-- /ANCHOR:decisions -->
 
 ---
 

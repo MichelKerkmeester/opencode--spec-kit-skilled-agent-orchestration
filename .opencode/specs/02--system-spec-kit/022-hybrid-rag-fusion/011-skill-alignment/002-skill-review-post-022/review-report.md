@@ -76,7 +76,7 @@ However, 7 P1 findings block a clean PASS verdict. The primary issues are:
 ### F-003 [P1, correctness+traceability+maintainability]: Phase map missing 002-skill-review-post-022
 - **Source**: COR-003 (iteration 2, upgraded from P2), TR-001 (iteration 4), M-002 (iteration 5)
 - **File**: `spec.md:89-94`
-- **Evidence**: Phase Documentation Map lists only 001-post-session-capturing-alignment. Folder contains 002-skill-review-post-022 with a full spec set declaring the same parent. Parent `022-hybrid-rag-fusion/spec.md` child-count metadata also stale.
+- **Evidence**: Phase Documentation Map lists only 001-post-session-capturing-alignment. Folder contains 002-skill-review-post-022 with a full spec set declaring the same parent. Parent `../../spec.md` child-count metadata also stale.
 - **Impact**: Bidirectional traceability broken. Phase-aware tooling cannot navigate the full child set.
 - **Fix**: Add 002 to phase map. Update parent spec child-count. Align predecessor/successor metadata between 001 and 002.
 - **Disposition**: Active

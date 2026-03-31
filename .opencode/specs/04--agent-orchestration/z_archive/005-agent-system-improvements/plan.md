@@ -1,20 +1,19 @@
 ---
-title: "Implementation Plan: Agent System Improvements [04--agent-orchestration/z_archive/005-agent-system-improvements/plan]"
-description: "This plan implements 9 documentation improvements across 7 agent/command files. Changes are organized into 3 phases: immediate fixes (naming, minor text), core additions (verifi..."
+title: "Implementation Plan: Agent System Improvements [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"
   - "plan"
-  - "agent"
-  - "system"
-  - "improvements"
-  - "005"
-importance_tier: "important"
-contextType: "decision"
+  - "agent system improvements"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
 # Implementation Plan: Agent System Improvements
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch + level3plus-govern | v2.0 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
@@ -25,18 +24,16 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation |
-| **Framework** | OpenCode agent system |
-| **Storage** | File-based (.md files) |
-| **Testing** | Manual verification |
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
 
 ### Overview
-This plan implements 9 documentation improvements across 7 agent/command files. Changes are organized into 3 phases: immediate fixes (naming, minor text), core additions (verification sections, diagrams), and enhancements (protocols, templates). All changes are documentation-only with no code modifications.
-
----
-
+This archive fix rewrites the required Level 1 documents for agent system improvements. The plan favors structural compliance, concise historical context, and clean validation over recreating every superseded planning artifact.
 <!-- /ANCHOR:summary -->
 
+---
 
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
@@ -44,332 +41,81 @@ This plan implements 9 documentation improvements across 7 agent/command files. 
 ### Definition of Ready
 - [x] Problem statement clear and scope documented
 - [x] Success criteria measurable
-- [x] Dependencies identified (none)
+- [x] Dependencies identified
 
 ### Definition of Done
-- [x] All 7 files modified per requirements ✓
-- [x] No orphan @documentation-writer references ✓ (grep verified)
-- [x] All new sections follow existing patterns ✓
-- [x] Manual verification of Mermaid rendering ✓ (syntax valid)
-
----
-
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
+---
 
 <!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-File-based documentation updates following existing markdown patterns
+Documentation archive normalization
 
 ### Key Components
-- **Agent files**: orchestrate.md, speckit.md, research/research.md
-- **Command files**: complete.md, research/research.md, debug.md, implement.md
+- **Core Level 1 docs**: Preserve the historical topic in a compliant structure.
+- **Supplemental archive notes**: Remain brief and avoid broken markdown references.
 
 ### Data Flow
-No data flow changes - documentation only
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable and easy to inspect.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- /ANCHOR:architecture -->
-
-
-<!-- ANCHOR:implementation-phases -->
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Immediate Fixes (< 30 min) ✓ COMPLETE
-- [x] Fix @write naming in orchestrate.md (6 locations) ✓
-- [x] Fix Q5→Q6 in research/research.md command ✓
-- [x] Complete "for default" text in debug.md ✓
-- [x] Complete "for default" text in implement.md ✓
+### Phase 1: Setup
+- [x] Review archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
 
-### Phase 2: Core Additions (2-3 hours) ✓ COMPLETE
-- [x] Add OUTPUT VERIFICATION to speckit.md ✓ (already existed)
-- [x] Add OUTPUT VERIFICATION to orchestrate.md ✓ (Section 26)
-- [x] Add HARD BLOCK verification to research/research.md agent ✓
-- [x] Add Mermaid diagram to complete.md ✓
-- [x] Add Mermaid diagram to orchestrate.md ✓
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md and archive notes
 
-### Phase 3: Enhancements (1 hour) ✓ COMPLETE
-- [x] Add Pre-Delegation Reasoning protocol to orchestrate.md ✓
-- [x] Add task description template enhancement to orchestrate.md ✓
-- [x] Add scaling heuristics section to orchestrate.md ✓
+### Phase 3: Verification
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
+<!-- /ANCHOR:phases -->
 
 ---
 
-<!-- /ANCHOR:implementation-phases -->
-
-
-<!-- ANCHOR:testing-strategy -->
-<!-- /ANCHOR:phases -->
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual | Mermaid diagram rendering | VS Code preview, GitHub |
-| Manual | Section structure | Visual inspection |
-| Manual | Reference integrity | Search for orphan @documentation-writer |
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
 
 ---
-
-<!-- /ANCHOR:testing-strategy -->
-
 
 <!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| None | N/A | Green | N/A |
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- /ANCHOR:dependencies -->
-
-
-<!-- ANCHOR:rollback-plan -->
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Unexpected formatting issues or broken references
-- **Procedure**: Git revert individual file changes
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
+<!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- /ANCHOR:rollback-plan -->
-
-
-<!-- ANCHOR:l2-phase-dependencies -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (Fixes) ────────────────────────────────────┐
-                                                    ├──► Phase 3 (Enhancements)
-Phase 2 (Core Additions) ───────────────────────────┘
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Phase 1 | None | None |
-| Phase 2 | None | None |
-| Phase 3 | None | None |
-
-Note: Phases can run in parallel - no blocking dependencies.
-
----
-
-<!-- /ANCHOR:l2-phase-dependencies -->
-
-
-<!-- ANCHOR:l2-effort-estimation -->
-<!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Phase 1: Immediate Fixes | Low | 30 minutes |
-| Phase 2: Core Additions | Medium | 2-3 hours |
-| Phase 3: Enhancements | Low | 1 hour |
-| **Total** | | **3.5-4.5 hours** |
-
----
-
-<!-- /ANCHOR:l2-effort-estimation -->
-
-
-<!-- ANCHOR:l2-enhanced-rollback -->
-<!-- ANCHOR:enhanced-rollback -->
-<!-- /ANCHOR:effort -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [ ] Current file states noted
-- [ ] Git status clean before changes
-
-### Rollback Procedure
-1. Identify problematic file
-2. Git checkout to revert specific file
-3. Verify file restored
-4. Re-attempt with fixes
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-
----
-
-<!-- /ANCHOR:l2-enhanced-rollback -->
-
-
-<!-- ANCHOR:l3-dependency-graph -->
-<!-- /ANCHOR:enhanced-rollback -->
-## L3: DEPENDENCY GRAPH
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         PHASE 1: IMMEDIATE FIXES                         │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
-│  │ orchestrate  │  │  research    │  │   debug      │  │  implement   │ │
-│  │ @write fix   │  │  Q5→Q6 fix   │  │  text fix    │  │  text fix    │ │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘ │
-└─────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        PHASE 2: CORE ADDITIONS                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                   │
-│  │  speckit.md  │  │ orchestrate  │  │ research/research.md  │                   │
-│  │ OUTPUT VERIF │  │ OUTPUT VERIF │  │ HARD BLOCK   │                   │
-│  └──────────────┘  └──────────────┘  └──────────────┘                   │
-│                                                                          │
-│  ┌──────────────┐  ┌──────────────┐                                     │
-│  │ complete.md  │  │ orchestrate  │                                     │
-│  │   Mermaid    │  │   Mermaid    │                                     │
-│  └──────────────┘  └──────────────┘                                     │
-└─────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        PHASE 3: ENHANCEMENTS                             │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                   │
-│  │ orchestrate  │  │ orchestrate  │  │ orchestrate  │                   │
-│  │     PDR      │  │ Task Template│  │   Scaling    │                   │
-│  └──────────────┘  └──────────────┘  └──────────────┘                   │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### Dependency Matrix
-
-| Component | Depends On | Produces | Blocks |
-|-----------|------------|----------|--------|
-| Phase 1 fixes | None | Clean base | None |
-| Phase 2 additions | None | Verification sections, diagrams | None |
-| Phase 3 enhancements | None | Protocols, templates | None |
-
----
-
-<!-- /ANCHOR:l3-dependency-graph -->
-
-
-<!-- ANCHOR:l3-critical-path -->
-## L3: CRITICAL PATH
-
-All items can run in parallel. No critical path dependencies.
-
-**Parallel Opportunities**:
-- All Phase 1 tasks can run simultaneously
-- All Phase 2 tasks can run simultaneously
-- All Phase 3 tasks can run simultaneously
-
----
-
-<!-- /ANCHOR:l3-critical-path -->
-
-
-<!-- ANCHOR:l3-milestones -->
-## L3: MILESTONES
-
-| Milestone | Description | Success Criteria | Status |
-|-----------|-------------|------------------|--------|
-| M1 | Phase 1 Complete | All 4 minor fixes done | ✓ COMPLETE |
-| M2 | Phase 2 Complete | All 5 core additions done | ✓ COMPLETE |
-| M3 | Phase 3 Complete | All 3 enhancements done | ✓ COMPLETE |
-
----
-
-<!-- /ANCHOR:l3-milestones -->
-
-
-<!-- ANCHOR:l3-architecture-decision-record -->
-<!-- ANCHOR:architecture -->
-## L3: ARCHITECTURE DECISION RECORD
-
-### ADR-001: Documentation-Only Approach
-
-**Status**: Accepted
-
-**Context**: Research identified gaps in agent system. Could address via code changes or documentation improvements.
-
-**Decision**: All improvements implemented as documentation/instruction changes only.
-
-**Consequences**:
-- Positive: No risk of breaking existing functionality
-- Positive: Faster implementation
-- Negative: Relies on agent compliance with instructions
-
-**Alternatives Rejected**:
-- Code-based enforcement: Higher complexity, not needed for these improvements
-
----
-
-<!-- /ANCHOR:l3-architecture-decision-record -->
-
-
-<!-- ANCHOR:l3-ai-execution-framework -->
-<!-- /ANCHOR:architecture -->
-## L3+: AI EXECUTION FRAMEWORK
-
-### Tier 1: Sequential Foundation
-**Files**: spec.md, plan.md
-**Duration**: ~30s
-**Agent**: Primary
-
-### Tier 2: Parallel Execution
-| Agent | Focus | Files |
-|-------|-------|-------|
-| Agent 1 | Phase 1 fixes | orchestrate.md, research/research.md cmd, debug.md, implement.md |
-| Agent 2 | Phase 2 verifications | speckit.md, orchestrate.md, research/research.md agent |
-| Agent 3 | Phase 2 diagrams | complete.md, orchestrate.md |
-| Agent 4 | Phase 3 enhancements | orchestrate.md |
-
-**Duration**: ~120s (parallel)
-
-### Tier 3: Integration
-**Agent**: Primary
-**Task**: Verify all changes, update checklist
-**Duration**: ~60s
-
----
-
-<!-- /ANCHOR:l3-ai-execution-framework -->
-
-
-<!-- ANCHOR:l3-workstream-coordination -->
-## L3+: WORKSTREAM COORDINATION
-
-### Workstream Definition
-
-| ID | Name | Owner | Files | Status |
-|----|------|-------|-------|--------|
-| W-A | Immediate Fixes | Primary | 4 files | Ready |
-| W-B | Core Additions | Primary | 5 files | Ready |
-| W-C | Enhancements | Primary | 1 file | Ready |
-
-### Sync Points
-
-| Sync ID | Trigger | Participants | Output |
-|---------|---------|--------------|--------|
-| SYNC-001 | All phases complete | Primary | Final verification |
-
-### File Ownership Rules
-- orchestrate.md has multiple changes - apply sequentially
-- Other files have single changes - can parallel
-
----
-
-<!-- /ANCHOR:l3-workstream-coordination -->
-
-
-<!-- ANCHOR:l3-communication-plan -->
-## L3+: COMMUNICATION PLAN
-
-### Checkpoints
-- **Per Phase**: Update tasks.md status
-- **Blockers**: Report immediately
-
-### Escalation Path
-1. Formatting issues → Manual review
-2. Scope questions → User clarification
-
-<!-- /ANCHOR:l3-communication-plan -->

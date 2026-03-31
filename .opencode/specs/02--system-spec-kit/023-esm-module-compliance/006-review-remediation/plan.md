@@ -51,6 +51,23 @@ Fix all 18 findings from the deep review in dependency order: runtime correctnes
 
 ---
 
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Remediate by workstream, then truth-sync the packet after code and verification evidence converge.
+
+### Key Components
+- **Runtime fixes**: ESM entrypoint, engines, and export correctness
+- **Security and reliability fixes**: Save pipeline, path validation, duplicate preflight, response warnings
+- **Documentation sync**: Parent packet alignment and phase packet closure
+
+### Data Flow
+Code remediation by workstream -> targeted tests and builds -> packet truth-sync -> final verification and re-review.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
@@ -222,7 +239,7 @@ Fix all 18 findings from the deep review in dependency order: runtime correctnes
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -234,7 +251,7 @@ Phase D (performance)┘
 
 Phases A-D are independently implementable but must all complete before Phase E (docs) can truth-sync.
 
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:phase-deps -->
 ---
 
 <!-- ANCHOR:effort -->

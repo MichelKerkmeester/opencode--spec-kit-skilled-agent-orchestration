@@ -40,7 +40,7 @@ contextType: "implementation"
 - [x] T002 Reconfirm the narrow landed startup slice: home `MEMORY_DB_PATH`, stderr-only structured logging, and clean startup smoke expectations (same surfaces as T001)
 - [x] T002A Capture the direct DB root cause and landed fix: `initializeDb(':memory:')` and custom-path initialization now promote the active shared DB connection/path so later reads or writes stay isolated (`mcp_server/lib/search/vector-index-store.ts`, `mcp_server/tests/vector-index-store-remediation.vitest.ts`)
 - [x] T003 Reconfirm the follow-up caveat fix: numeric spec-leaf matching, public `SPEC_DOCUMENT_FILENAMES` re-export, and modularization threshold alignment (`mcp_server/lib/config/spec-doc-paths.ts`, `mcp_server/lib/config/memory-types.ts`, `mcp_server/tests/modularization.vitest.ts`)
-- [x] T004 Read the broader `020` backlog and extract the unresolved work that still matters for Codex-facing memory MCP reliability and release-control truth (`../020-pre-release-remediation/tasks.md`)
+- [x] T004 Read the broader `020` backlog and extract the unresolved work that still matters for Codex-facing memory MCP reliability and release-control truth (`../020-post-release-fixes/tasks.md`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -53,7 +53,7 @@ contextType: "implementation"
 - [x] T010 Update `024-codex-memory-mcp-fix` packet docs so they match the landed runtime remediation slice (`024-codex-memory-mcp-fix/*.md`)
 - [x] T011 Replace stale docs-only wording in `README.md`, `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` with current session fix evidence (`024-codex-memory-mcp-fix/*.md`)
 - [x] T012 Keep packet-local identity metadata aligned while the packet scope stays under the same slug (`024-codex-memory-mcp-fix/description.json`)
-- [x] T013 Record the relationship to `020-pre-release-remediation` so this packet owns the narrow Codex MCP slice without claiming the whole remediation program (`./spec.md`, `./tasks.md`, `./checklist.md`)
+- [x] T013 Record the relationship to `020-post-release-fixes` so this packet owns the narrow Codex MCP slice without claiming the whole remediation program (`./spec.md`, `./tasks.md`, `./checklist.md`)
 
 ### Broader Remediation Follow-On Capture
 
@@ -96,8 +96,8 @@ contextType: "implementation"
 - **Specification**: See `spec.md` for requirements REQ-001 through REQ-009 and success criteria SC-001 through SC-004.
 - **Plan**: See `plan.md` for execution phases, dependency graph, and validation strategy.
 - **Checklist**: See `checklist.md` for packet-local completion evidence and follow-on control coverage.
-- **Canonical Broader Backlog**: `../020-pre-release-remediation/tasks.md`
-- **Canonical Broader Review**: `../020-pre-release-remediation/review/review-report.md`
+- **Canonical Broader Backlog**: `../020-post-release-fixes/tasks.md`
+- **Canonical Broader Review**: `../020-post-release-fixes/review/review-report.md`
 <!-- /ANCHOR:cross-refs -->
 
 ---

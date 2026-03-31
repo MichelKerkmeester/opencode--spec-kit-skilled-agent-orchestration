@@ -1,162 +1,121 @@
 ---
-title: "Implementation Plan - Load Toggle Component [027-load-toggle/plan] [01--anobel.com/z_archive/025-load-toggle/plan]"
-description: "This plan outlines the implementation of a reusable expand/collapse component for Webflow with CMS-bindable button text and multi-instance support."
+title: "Implementation Plan: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.com/z_archive/025-load-toggle/plan]"
+description: "Load Toggle Component - anobel.com"
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "load"
   - "toggle"
   - "component"
-  - "027"
+  - "anobel"
+  - "com"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Load Toggle Component - anobel.com
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan - Load Toggle Component
-
-<!-- ANCHOR:overview -->
-## Overview
-
-This plan outlines the implementation of a reusable expand/collapse component for Webflow with CMS-bindable button text and multi-instance support.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:phase-1-core-implementation -->
-## Phase 1: Core Implementation 
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Objectives
-- Create JavaScript component with toggle functionality
-- Create CSS for visibility and animations
-- Support multi-instance operation
+### Technical Context
 
-### Tasks
-| ID | Task | Est. | Actual |
-|----|------|------|--------|
-| T1 | Create JavaScript IIFE with state management | 2h | ✅ |
-| T2 | Implement click handler with event delegation | 1h | ✅ |
-| T3 | Add text update function | 30m | ✅ |
-| T4 | Create CSS visibility rules | 30m | ✅ |
-| T5 | Add icon rotation animation | 30m | ✅ |
-| T6 | Add fade-in animation for expanded items | 30m | ✅ |
-<!-- /ANCHOR:phase-1-core-implementation -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Load Toggle Component - anobel.com
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:phase-2-cms-integration -->
-## Phase 2: CMS Integration 
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-### Objectives
-- Enable CMS-bindable button text
-- Place attributes on button element (not container)
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-### Tasks
-| ID | Task | Est. | Actual |
-|----|------|------|--------|
-| T7 | Move text attributes from container to button | 1h | ✅ |
-| T8 | Update JavaScript to read from button | 30m | ✅ |
-| T9 | Test with CMS collection items | 1h | ✅ |
-<!-- /ANCHOR:phase-2-cms-integration -->
-
----
-
-<!-- ANCHOR:phase-3-webflow-integration -->
-## Phase 3: Webflow Integration 
-
-### Objectives
-- Ensure compatibility with Webflow page transitions
-- Add proper cleanup for SPA navigation
-
-### Tasks
-| ID | Task | Est. | Actual |
-|----|------|------|--------|
-| T10 | Add Webflow.push integration | 30m | ✅ |
-| T11 | Implement cleanup function | 30m | ✅ |
-| T12 | Expose window.LoadToggle.cleanup() API | 15m | ✅ |
-<!-- /ANCHOR:phase-3-webflow-integration -->
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:phase-4-documentation -->
-## Phase 4: Documentation 
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### Objectives
-- Create Webflow implementation guide
-- Create Level 2 spec documentation
+### Pattern
+Archived documentation normalization
 
-### Tasks
-| ID | Task | Est. | Actual |
-|----|------|------|--------|
-| T13 | Create webflow-guide.md | 1h | ✅ |
-| T14 | Create spec.md | 30m | ✅ |
-| T15 | Create plan.md | 30m | ✅ |
-| T16 | Create tasks.md | 30m | ✅ |
-| T17 | Create checklist.md | 30m | ✅ |
-| T18 | Create implementation-summary.md | 30m | ✅ |
-<!-- /ANCHOR:phase-4-documentation -->
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:phase-5-deployment -->
-## Phase 5: Deployment
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-### Objectives
-- Minify and deploy to CDN
-- Test on staging site
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-### Tasks
-| ID | Task | Est. | Status |
-|----|------|------|--------|
-| T19 | Minify JavaScript with terser | 15m | ✅ |
-| T20 | Upload to Cloudflare R2 | 15m | Pending |
-| T21 | Update version in Webflow | 15m | Pending |
-| T22 | Test on staging site | 30m | Pending |
-<!-- /ANCHOR:phase-5-deployment -->
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## Dependencies
+## 6. DEPENDENCIES
 
-```mermaid
-graph LR
-    T1 --> T2
-    T2 --> T3
-    T3 --> T7
-    T4 --> T5 --> T6
-    T7 --> T8 --> T9
-    T10 --> T11 --> T12
-    T9 --> T13
-    T12 --> T13
-    T13 --> T14 --> T19
-    T19 --> T20 --> T21 --> T22
-```
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:risk-assessment -->
-## Risk Assessment
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Button wrapper has conflicting attributes | Medium | High | Check for duplicate `data-target` in Webflow |
-| Icon rotation not working | Low | Low | Verify icon has `data-target="load-icon"` |
-| CMS binding not working | Medium | Medium | Ensure attributes on button, not wrapper |
-| Memory leaks on navigation | Low | Medium | Cleanup function exposed for manual calls |
-<!-- /ANCHOR:risk-assessment -->
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:success-criteria -->
-## Success Criteria
-
-- [ ] Toggle works on click
-- [ ] Expanded items show/hide correctly
-- [ ] Button text updates based on state
-- [ ] Icon rotates 180° on expand
-- [ ] Multiple instances work independently
-- [ ] CMS binding works for text attributes
-- [ ] No console errors
-- [ ] Works with Webflow page transitions
-<!-- /ANCHOR:success-criteria -->

@@ -20,7 +20,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 023-esm-module-compliance/006-review-remediation |
+| **Spec Folder** | 006-review-remediation |
 | **Completed** | 2026-03-30 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->

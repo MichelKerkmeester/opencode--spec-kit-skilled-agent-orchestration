@@ -274,3 +274,4 @@ Audit completed 2026-03-22. Current packet coverage: **8 MATCH, 2 PARTIAL, 1 pen
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

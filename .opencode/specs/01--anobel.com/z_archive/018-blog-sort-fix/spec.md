@@ -1,294 +1,206 @@
 ---
-title: "Spec: Blog Sort Dropdown Fix [018-blog-sort-fix/spec] [01--anobel.com/z_archive/018-blog-sort-fix/spec]"
-description: "Fix the blog page sort dropdown to properly trigger Finsweet fs-list sorting. Currently, selecting a sort option updates the hidden select value but does not trigger list re-sor..."
+title: "Feature Specification: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/spec]"
+description: "Spec: Blog Sort Dropdown Fix"
 trigger_phrases:
   - "spec"
   - "blog"
   - "sort"
   - "dropdown"
   - "fix"
-  - "018"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Blog Sort Dropdown Fix
+
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Blog Sort Dropdown Fix
-
-<!-- ANCHOR:overview -->
-## Overview
-
-Fix the blog page sort dropdown to properly trigger Finsweet fs-list sorting. Currently, selecting a sort option updates the hidden select value but does not trigger list re-sorting.
-
-**Related Spec:** `012-form-input-components` (Custom Select + FS Bridge implementation)
-
-**Level:** 3 (requires decision-record.md)
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
-<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
+## EXECUTIVE SUMMARY
 
-The blog page (`/nl/blog`) has a sort dropdown built with:
-1. **CustomSelect** (`input_select.js`) - Custom dropdown UI
-2. **FS Bridge** (`input_select_fs_bridge.js`) - Bridges CustomSelect to Finsweet
+Spec: Blog Sort Dropdown Fix
 
-### Current Behavior (Broken)
-1. User selects sort option (e.g., "Naam")
-2. CustomSelect dispatches `change` event
-3. Bridge syncs value to hidden `<select>` element
-4. **List does NOT re-sort**
+**Key Decisions**: Keep the archive at Level 3, preserve legacy sources in scratch/legacy, and normalize only the validator-facing root documents.
 
-### Expected Behavior
-1. User selects sort option
-2. List re-sorts **instantly** (no page reload)
-3. URL updates to reflect sort state (for bookmarking/sharing)
+**Critical Dependencies**: Existing archived markdown in this folder.
 
 ---
-<!-- /ANCHOR:problem-statement -->
 
-<!-- ANCHOR:root-cause-analysis -->
-## Root Cause Analysis
+## 1. METADATA
 
-### Primary Finding
-
-**Finsweet fs-list uses URL parameters for initial sort state, but exposes a Reactive API for programmatic sorting without page reload.**
-
-### Deep Dive Evidence (2026-01-18)
-
-| Investigation | Finding |
-|---------------|---------|
-| Live page scan | Option values confirmed: `date-asc`, `name-asc`, `category-asc` |
-| Finsweet API research | Reactive API exists: `listInstance.sorting.value.fieldKey` |
-| Bridge timing analysis | No race condition - hidden select created 400ms+ before Finsweet |
-| Event dispatch test | Bridge dispatches only `change` event; may need `input` event too |
-| URL format verification | Format is `?sort={value}` not `?sort_{field}={direction}` |
-
-### Why Current Bridge Fails
-
-1. **Event Type Mismatch**: Bridge dispatches only `change` event, Finsweet may require `input` event
-2. **No Reactive API Usage**: Bridge doesn't use Finsweet's programmatic sorting API
-3. **Value Sync Only**: Setting hidden select value doesn't trigger Finsweet's internal sort
-
-### Verified Sort Field Attributes
-
-| Element | Attribute | Value |
-|---------|-----------|-------|
-| Search input | `fs-list-field` | `date, name, category` |
-| CMS item category | `fs-list-field` | `category` |
-| CMS item title | `fs-list-field` | `name` |
-| CMS item date | `fs-list-field` | `date` (with `fs-list-type="date"`) |
-
-### Verified Sort Option Values
-
-| Option Label | `data-value` |
-|--------------|--------------|
-| Publicatie datum | `date-asc` |
-| Naam | `name-asc` |
-| Categorie | `category-asc` |
+| Field | Value |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `018-blog-sort-fix` |
 
 ---
-<!-- /ANCHOR:root-cause-analysis -->
 
-<!-- ANCHOR:requirements -->
-## Requirements
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-### Functional Requirements
+### Problem Statement
+Spec: Blog Sort Dropdown Fix
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-1 | Selecting sort option re-sorts the list | P0 |
-| FR-2 | Sorting happens instantly (no page reload) | P0 |
-| FR-3 | URL reflects current sort state | P1 |
-| FR-4 | Sort persists on page reload | P1 |
-| FR-5 | Default sort works when no URL param | P1 |
-
-### Non-Functional Requirements
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| NFR-1 | No full page reload (use Finsweet Reactive API) | P0 |
-| NFR-2 | Maintain backward compatibility with existing pages | P0 |
-| NFR-3 | Works with existing CustomSelect component | P0 |
-| NFR-4 | Form selects unaffected (no URL navigation) | P0 |
+### Purpose
+Keep this complex archived packet structurally compliant so future work can reuse its decisions, implementation notes, and supporting research without validator drift.
+<!-- /ANCHOR:problem -->
 
 ---
-<!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- Modify `input_select_fs_bridge.js` to use Finsweet Reactive API
-- Add Finsweet instance capture on initialization
-- Update URL with `pushState` (no reload)
-- Test on blog page (`/nl/blog`)
-- Update CDN with new version
+- Normalize root specification, plan, tasks, checklist, decision record, and summary documents.
+- Preserve original markdown artifacts in `scratch/legacy`.
+- Keep local archive references, handover notes, and supporting documents resolvable.
 
 ### Out of Scope
-- Changes to CustomSelect core (`input_select.js`)
-- Changes to Finsweet configuration in Webflow
-- Other pages using CustomSelect (contact forms, etc.)
+- Re-implementing the archived feature set.
+- Expanding archived work into a new active roadmap.
 
----
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 3 structure |
+| `plan.md` | Modify | Rebuild required plan sections |
+| `tasks.md` | Modify/Create | Rebuild required task structure |
+| `checklist.md` | Modify/Create | Rebuild required checklist structure |
+| `decision-record.md` | Modify/Create | Capture the archived documentation decision |
+| `implementation-summary.md` | Modify/Create | Record the archived delivery summary |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:solution-options -->
-## Solution Options
-
-### Option A: URL Navigation (DEPRECATED)
-~~Update URL and trigger navigation when sort changes.~~
-
-**Status:** Superseded by Option B after deep dive discovered Reactive API.
-
-**Cons:** Full page reload, poor UX
-
 ---
 
-### Option B: Finsweet Reactive API (RECOMMENDED)
-Use Finsweet's reactive property system for instant sorting.
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-```javascript
-// Capture Finsweet instance on init
-window.FinsweetAttributes = window.FinsweetAttributes || [];
-window.FinsweetAttributes.push([
-  'list',
-  (listInstances) => {
-    const [listInstance] = listInstances;
-    window._finsweetListInstance = listInstance;
-  },
-]);
+### P0 - Blockers (MUST complete)
 
-// In sync_to_native():
-function sync_to_native(native_select, value) {
-  if (!native_select.hasAttribute(FS_ATTR)) return;
-  if (!value) return;
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 3 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Root headers match the active Level 3 templates | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and remain in order | `validate.sh` reports no ANCHORS_VALID errors |
 
-  const lastHyphen = value.lastIndexOf('-');
-  if (lastHyphen === -1) return;
+### P1 - Required (complete OR user-approved deferral)
 
-  const field = value.substring(0, lastHyphen);
-  const direction = value.substring(lastHyphen + 1);
-
-  // Use Finsweet Reactive API - NO PAGE RELOAD
-  if (window._finsweetListInstance) {
-    window._finsweetListInstance.sorting.value.fieldKey = field;
-    window._finsweetListInstance.sorting.value.direction = direction;
-
-    // Update URL for bookmarking (no reload)
-    const url = new URL(window.location);
-    url.searchParams.set('sort', value);
-    history.pushState({}, '', url);
-  }
-}
-```
-
-**Pros:** Instant sorting, excellent UX, URL updated for bookmarking
-**Cons:** Requires Finsweet instance capture, slightly more complex
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Level declarations align across root documents | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-005 | Root markdown references resolve inside the folder or repo | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-006 | Historical source material remains preserved | Original markdown is copied into `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
 
 ---
-
-### Option C: Event Dispatch Fix (QUICK FIX - Test First)
-Add `input` event dispatch alongside `change` event.
-
-```javascript
-function sync_to_native(native_select, value) {
-  native_select.value = value;
-  native_select.dispatchEvent(new Event('input', { bubbles: true }));
-  native_select.dispatchEvent(new Event('change', { bubbles: true }));
-}
-```
-
-**Pros:** Minimal code change, quick to test
-**Cons:** May not work if Finsweet doesn't listen to either event
-
----
-
-### Option D: URL Navigation Fallback
-If Options B and C fail, fall back to URL navigation with page reload.
-
-```javascript
-function sync_to_native(native_select, value) {
-  // ... parse value ...
-  const url = new URL(window.location);
-  url.searchParams.set('sort', value);
-  window.location.href = url.toString();
-}
-```
-
-**Pros:** Guaranteed to work
-**Cons:** Full page reload
-
----
-<!-- /ANCHOR:solution-options -->
-
-<!-- ANCHOR:recommended-approach -->
-## Recommended Approach
-
-1. **First:** Test Option C (event dispatch fix) - minimal change
-2. **If fails:** Implement Option B (Finsweet Reactive API)
-3. **Fallback:** Option D (URL navigation) if all else fails
-
-See `decision-record.md` for full rationale.
-
----
-<!-- /ANCHOR:recommended-approach -->
 
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
+## 5. SUCCESS CRITERIA
 
-1. User selects "Naam" → List sorted alphabetically by name **instantly**
-2. User selects "Categorie" → List sorted alphabetically by category **instantly**
-3. User selects "Publicatie datum" → List sorted by date **instantly**
-4. **No page reload** during sort
-5. URL updates to reflect sort selection
-6. Refreshing page maintains sort order
-7. No console errors
-8. Works on desktop and mobile
-9. Contact form selects unaffected
-
----
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The archive still exposes the core decisions, scope, and delivery summary in the root documents.
+- **SC-003**: Legacy source markdown remains preserved in `scratch/legacy` for deep historical review.
 <!-- /ANCHOR:success-criteria -->
 
-<!-- ANCHOR:dependencies -->
-## Dependencies
+---
 
-- `src/2_javascript/form/input_select_fs_bridge.js` (file to modify)
-- Finsweet Attributes v2 (fs-list module)
-- Blog page with `fs-list-field` attributes on items
-- `window.FinsweetAttributes` API
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Legacy root markdown and supporting guides | High | Back up originals before normalizing root docs |
+| Risk | Complex archive notes lose discoverability | Medium | Keep summary sections concise and preserve original sources |
+| Risk | Broken historical references hide useful context | Medium | Sanitize unresolved links while preserving surrounding text |
+<!-- /ANCHOR:risks -->
 
 ---
-<!-- /ANCHOR:dependencies -->
 
-<!-- ANCHOR:estimated-effort -->
-## Estimated Effort
+<!-- ANCHOR:questions -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
-- **LOC:** ~80-120 (bridge modification + Finsweet capture)
-- **Level:** 3 (requires decision-record due to API discovery)
-- **Complexity:** Medium (API integration)
+### Performance
+- **NFR-P01**: Root documentation remains lightweight enough for fast validator execution.
 
----
-<!-- /ANCHOR:estimated-effort -->
+### Security
+- **NFR-S01**: Sanitized archive references do not point to missing or external markdown targets.
 
-<!-- ANCHOR:files-to-modify -->
-## Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/2_javascript/form/input_select_fs_bridge.js` | Add Finsweet Reactive API integration |
-| `src/2_javascript/z_minified/form/input_select_fs_bridge.js` | Re-minify |
-| `src/0_html/blog.html` | Update CDN version number |
+### Reliability
+- **NFR-R01**: The archive can be validated repeatedly without manual cleanup.
 
 ---
-<!-- /ANCHOR:files-to-modify -->
 
-<!-- ANCHOR:references -->
-## References
+## 8. EDGE CASES
 
-- Finsweet Attributes API: https://finsweet.com/attributes/attributes-api
-- List Sort Documentation: https://finsweet.com/attributes/list-sort
-- Deep Dive Research: See `research/research.md`
-- Decision Rationale: See `decision-record.md`
-<!-- /ANCHOR:references -->
+### Data Boundaries
+- Empty optional guides remain acceptable as long as required root documents validate.
+- Missing legacy references are converted into plain archived notes rather than broken markdown links.
+
+### Error Scenarios
+- If a legacy root file contains outdated template syntax, a preserved copy is stored before replacement.
+- If historical references cannot be resolved, they are retained as plain text instead of live markdown links.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 15/25 | Multi-document archive normalization |
+| Risk | 10/25 | Historical context must be preserved |
+| Research | 8/20 | Validator and template investigation required |
+| Multi-Agent | 3/15 | Single repair stream |
+| Coordination | 4/15 | Root docs plus supporting archive notes |
+| **Total** | **40/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Legacy context becomes harder to inspect after normalization | M | M | Preserve originals in scratch/legacy |
+| R-002 | Historical markdown links point to removed guidance | M | M | Sanitize unresolved references and keep plain text notes |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Review Archived Scope (Priority: P0)
+
+**As a** future maintainer, **I want** the archive root docs to validate cleanly, **so that** I can inspect the folder without template drift getting in the way.
+
+**Acceptance Criteria**:
+1. Given the folder is validated, When `validate.sh` runs, Then it returns 0 errors.
+
+---
+
+### US-002: Recover Historical Detail (Priority: P1)
+
+**As a** future maintainer, **I want** the pre-normalization markdown preserved, **so that** I can recover historical detail when needed.
+
+**Acceptance Criteria**:
+1. Given a normalized root document, When I inspect `scratch/legacy`, Then the original archive source is still available.
+
+---
+
+## 12. OPEN QUESTIONS
+
+- None. This package remains archived for reference rather than active delivery.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`
+
+---

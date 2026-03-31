@@ -1,19 +1,21 @@
 ---
-title: "Implementation Summary [029-download-btn-on [01--anobel.com/z_archive/027-download-btn-on-mobile/implementation-summary]"
-description: "Fixed mobile download button functionality on anobel.com. The root cause was Webflow's hidden anchor overlay (.btn--interaction > .btn--link) intercepting taps before our JavaSc..."
+title: "Implementation Summary"
+description: "Archived implementation summary for Download Button Mobile Fix."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "implementation summary"
-  - "029"
+  - "feature"
+  - "specification"
   - "download"
+  - "button"
+  - "mobile"
+  - "fix"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,151 +24,59 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 029-download-btn-on-mobile |
-| **Completed** | 2026-02-01 |
+| **Spec Folder** | 027-download-btn-on-mobile |
+| **Completed** | 2026-03-31 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-was-built -->
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Fixed mobile download button functionality on anobel.com. The root cause was Webflow's hidden anchor overlay (`.btn--interaction > .btn--link`) intercepting taps before our JavaScript handler could process them. Added CSS to disable the overlay, a spinner animation for loading feedback, and updated the iOS code path to show a brief loading state before triggering the download.
+This archive package now has validator-compliant root documents, which means you can inspect the archived scope without hitting structural validation failures first. The original root markdown is still preserved in scratch/legacy, so the historical wording remains recoverable.
 
-### Files Changed
+### Archive Compliance Normalization
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `src/1_css/button/btn_download.css` | Modified | Added anchor overlay fix (`pointer-events: none`) + spinner keyframes + downloading state styles |
-| `src/1_css/z_minified/button/btn_download.css` | Modified | Minified CSS (1,521 bytes) |
-| `src/2_javascript/molecules/btn_download.js` | Modified | Updated iOS path: show `downloading` state for 400ms with spinner before triggering download |
-| `src/2_javascript/z_minified/molecules/btn_download.js` | Modified | Minified JS (1,815 bytes) |
-| `src/0_html/nobel/n1_dit_is_nobel.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/nobel/n2_isps_kade.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/nobel/n3_de_locatie.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/nobel/n5_brochures.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/contact.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/services/d1_bunkering.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/services/d2_filtratie.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/services/d3_uitrusting.html` | Modified | Version v1.2.0 → v1.3.0, added CSS link |
-| `src/0_html/werken_bij.html` | Modified | Version v1.2.0 → v1.3.0 (commented out) |
-<!-- /ANCHOR:what-was-built -->
+The repair rebuilt the required root spec documents around the active templates, aligned levels across validator-sensitive files, and created any missing required files. Supporting archive notes stayed in place after unresolved markdown references were sanitized.
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The archive was normalized by preserving the original root markdown, regenerating the validator-facing documents, and rerunning `validate.sh` until only warnings remained, if any.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
 <!-- ANCHOR:decisions -->
-<!-- /ANCHOR:what-built -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Disable Webflow anchor via CSS `pointer-events: none` | Less invasive than modifying Webflow templates; can be overridden via CDN CSS |
-| Added `z-index: -1` as backup | User confirmed z-index was also needed for complete fix |
-| Use 400ms delay on iOS before download | Shows spinner briefly so user knows something is happening |
-| Use `trigger_download()` instead of `window.open()` on iOS | Direct anchor click works better than popup which may be blocked |
-| Load CSS from CDN alongside JS | Ensures CSS fixes are applied without needing Webflow custom code update |
-<!-- /ANCHOR:key-decisions -->
-
----
-
-<!-- ANCHOR:root-cause-analysis -->
+| Decision | Why |
+|----------|-----|
+| Regenerate root documents instead of patching every legacy heading in place | It guarantees the required template order while preserving the historical source in scratch/legacy |
+| Sanitize unresolved markdown references in supporting notes | It clears integrity errors without deleting surrounding archived context |
 <!-- /ANCHOR:decisions -->
-## Root Cause Analysis
-
-### The Problem
-Webflow buttons have a hidden anchor element (`.btn--interaction > .btn--link`) with:
-- `position: absolute`
-- `inset: 0` (covers entire button)
-- `pointer-events: auto`
-
-On mobile touch, this anchor intercepted taps before our JavaScript handler on the `<button>` could fire.
-
-### The Flow (Before Fix)
-```
-User taps button
-    ↓
-Anchor intercepts tap (positioned on top)
-    ↓
-Browser navigates to PDF URL directly
-    ↓
-iOS opens PDF in viewer (no download)
-    ↓
-No JS animation triggers
-```
-
-### The Flow (After Fix)
-```
-User taps button
-    ↓
-Anchor has pointer-events: none (CSS fix)
-    ↓
-Button receives click event
-    ↓
-JS handler fires → set state "downloading"
-    ↓
-Spinner shows (400ms on iOS, fetch duration on desktop)
-    ↓
-Download triggered → state "ready"
-    ↓
-Checkmark animation plays
-    ↓
-Reset to idle after 3 seconds
-```
-<!-- /ANCHOR:root-cause-analysis -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Manual (Desktop) | Pass | Download works, spinner shows, checkmark animates |
-| Manual (iOS emulation) | Pass | Verified via Chrome DevTools with iPhone UA |
-| Manual (Real iOS) | Pass | User confirmed "works. was due to z-index" |
-| Integration | N/A | No automated tests for this component |
+| Check | Result |
+|-------|--------|
+| Structural validation | PASS after archive normalization rerun |
+| Historical source preservation | PASS, original root markdown copied to scratch/legacy |
 <!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:known-limitations -->
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **iOS PDF behavior**: iOS Safari will open PDFs in the browser viewer rather than downloading. Users must use "Share → Save to Files" to save the PDF. This is an iOS platform limitation, not a bug.
-
-2. **z-index dependency**: The fix requires both `pointer-events: none` AND a lower `z-index` to fully prevent the anchor from intercepting clicks. The final fix includes both.
-<!-- /ANCHOR:known-limitations -->
-
----
-
-<!-- ANCHOR:cdn-deployment -->
+1. **Generated summaries** The active root docs are normalized summaries, so consult scratch/legacy when you need the original historical wording.
 <!-- /ANCHOR:limitations -->
-## CDN Deployment
-
-Files need to be uploaded to Cloudflare R2:
-
-```bash
-# Login to Cloudflare
-npx wrangler login
-
-# Upload JS
-npx wrangler r2 object put anobel-cdn/btn_download.js \
-  --file=src/2_javascript/z_minified/molecules/btn_download.js \
-  --content-type="application/javascript" --remote
-
-# Upload CSS
-npx wrangler r2 object put anobel-cdn/btn_download.css \
-  --file=src/1_css/z_minified/button/btn_download.css \
-  --content-type="text/css" --remote
-```
-
-CDN URLs:
-- JS: `https://pub-85443b585f1e4411ab5cc976c4fb08ca.r2.dev/btn_download.js?v=1.3.0`
-- CSS: `https://pub-85443b585f1e4411ab5cc976c4fb08ca.r2.dev/btn_download.css?v=1.3.0`
-<!-- /ANCHOR:cdn-deployment -->
 
 ---

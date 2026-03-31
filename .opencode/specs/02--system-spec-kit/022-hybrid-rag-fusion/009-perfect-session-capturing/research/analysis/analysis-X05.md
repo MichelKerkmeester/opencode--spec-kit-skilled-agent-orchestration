@@ -192,7 +192,9 @@ exec
      9	
     10	---
     11	
-    12	<!-- ANCHOR:overview -->
+    12
+<!-- /ANCHOR:when-to-use -->
+	<!-- ANCHOR:overview -->
     13	## 1. OVERVIEW
     14	
     15	### Purpose
@@ -1097,3 +1099,4 @@ tokens used
 - Critical: 0, High: 4, Medium: 2, Low: 0
 - Top 3 recommendations: fail closed when an explicit data file is bad; add a mandatory redaction/schema-validation layer before rendering or indexing; replace the current write path with a shutdown-safe transactional commit using unique temp names.
 - Notable non-findings: session IDs already use `crypto.randomBytes()`, and I did not find second-pass Mustache execution of injected session text; the bigger template risk is raw secret persistence, not template-code execution.
+<!-- /ANCHOR:overview -->

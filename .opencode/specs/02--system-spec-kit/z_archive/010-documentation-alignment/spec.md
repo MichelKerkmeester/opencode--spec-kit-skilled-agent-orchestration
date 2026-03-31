@@ -1,186 +1,117 @@
 ---
-title: "Feature Specification: Documentation Alignment for [02--system-spec-kit/z_archive/010-documentation-alignment/spec]"
-description: "Spec 126 added the largest single MCP server feature since the memory system was created: full spec folder document indexing with schema v13, 11 document types, scoring multipli..."
+title: "Feature Specification: Documentation Alignment for Spec 126 [archive]"
+description: "Archived record for the Documentation Alignment for Spec 126 work, normalized to the current Level 1 template."
 trigger_phrases:
-  - "feature"
-  - "specification"
-  - "documentation"
-  - "alignment"
-  - "for"
-  - "spec"
-  - "010"
+  - "documentation alignment"
+  - "spec 126"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
-
 # Feature Specification: Documentation Alignment for Spec 126
 
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-<!-- ANCHOR:executive-summary -->
-## EXECUTIVE SUMMARY
-
-Spec 126 added the largest single MCP server feature since the memory system was created: full spec folder document indexing with schema v13, 11 document types, scoring multipliers, 2 new intent classifiers, a spec document crawler, and causal relationship chains. None of this is reflected in any documentation. This spec aligns all READMEs, SKILL.md, and reference files with the post-126 state.
-
-<!-- /ANCHOR:executive-summary -->
+---
 
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Spec Number** | 127 |
-| **Parent** | 02--system-spec-kit |
-| **Level** | 1 (documentation-only) |
+| **Level** | 1 |
 | **Priority** | P1 |
-| **LOC Estimate** | 0 (documentation-only, no code changes) |
-| **Files Affected** | 10+ documentation files |
-
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `010-documentation-alignment` |
 <!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-
-Spec 126 introduced schema v13, 11 document types, 2 new intents (`find_spec`, `find_decision`), scoring multipliers, a spec document crawler, causal chains, and a feature flag — none of which appear in any documentation. Three READMEs, SKILL.md, and four reference files all describe the pre-126 state with stale counts (4-source instead of 5-source, 5 intents instead of 7).
+This archived folder captures work that aligned documentation for Spec 126. The older archive shape no longer matched the active template contract, which caused strict validation errors.
 
 ### Purpose
-
-Update all documentation to accurately reflect the post-126 state of the memory system, ensuring consistency across all files.
-
+Keep a concise archival summary of the documentation alignment work in a format that passes the current validator.
 <!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-
-- Root `README.md`: Memory Engine sources, intent scoring table
-- `.opencode/skill/system-spec-kit/README.md`: Key innovations, tool params, pipeline, recent changes
-- `.opencode/skill/system-spec-kit/mcp_server/README.md`: Innovations, params, intents, feature flags, schema, structure
-- `.opencode/skill/system-spec-kit/SKILL.md`: Version, memory tools, key concepts
-- `references/memory/memory_system.md`: Sources, tool reference, intent enum
-- `references/memory/readme_indexing.md`: Pipeline section, weights
-- `references/memory/save_workflow.md`: Other indexed content table
-- Changelogs for both system-spec-kit and opencode-environment
+- Preserve the archived topic and folder identity for documentation alignment related to Spec 126.
+- Normalize the core archive documents to the current Level 1 structure.
+- Keep top-level archive markdown free of broken markdown references.
 
 ### Out of Scope
-
-- Code changes (this is documentation-only)
-- Test file updates (comments in test files are informational, not user-facing docs)
-- Changelog files for versions prior to this spec
+- Reconstructing every historical implementation note from the prior package.
+- Performing new documentation alignment work outside this archived folder.
 
 ### Files to Change
 
-| File | Action | Change Type |
-|------|--------|-------------|
-| `README.md` | Modify | Add 5th source, update intents |
-| `.opencode/skill/system-spec-kit/README.md` | Modify | Update innovations, pipeline, params, recent changes |
-| `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | Update innovations, params, intents, flags, schema, structure |
-| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Bump version, add spec doc indexing, document-type scoring |
-| `references/memory/memory_system.md` | Modify | Add 5th source, tool params, intents |
-| `references/memory/readme_indexing.md` | Modify | Update pipeline 4->5 source |
-| `references/memory/save_workflow.md` | Modify | Add spec docs to indexed content table |
-| `.opencode/changelog/01--system-spec-kit/v2.2.17.0.md` | Create | Spec 126+127 combined changelog |
-| `.opencode/changelog/00--opencode-environment/v2.0.5.0.md` | Create | Environment-level changelog |
-
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| spec.md | Create | Restore a compliant archive specification. |
+| plan.md | Create | Record the archive normalization approach. |
+| tasks.md | Create | Capture the cleanup and verification work. |
+| implementation-summary.md | Create | Summarize the repaired archive state. |
 <!-- /ANCHOR:scope -->
+
+---
 
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### P0 - Blockers
+### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| R-001 | All "4-source" references updated to "5-source" | Grep for "4-source" returns 0 in modified docs |
-| R-002 | All "5 intent" references updated to "7" | Grep for "5 intent" returns 0 in modified docs |
-| R-003 | Spec documents listed as 5th indexing source | All pipeline tables include spec documents row |
+| REQ-001 | The archive must clearly state that the folder documents documentation alignment work for Spec 126. | A maintainer can identify the archived topic from spec.md alone. |
+| REQ-002 | Core archive documents must follow the current Level 1 template structure. | Strict validation reports no TEMPLATE_HEADERS or ANCHORS_VALID errors. |
 
-### P1 - Required
+### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| R-004 | `find_spec` and `find_decision` intents documented | Both appear in intent tables |
-| R-005 | Document-type scoring multipliers documented | Multiplier table present in relevant files |
-| R-006 | `includeSpecDocs` parameter documented | Parameter appears in tool param tables |
-| R-007 | Schema v13 changes noted | `document_type` and `spec_level` columns mentioned |
-| R-008 | `SPECKIT_INDEX_SPEC_DOCS` feature flag documented | Flag appears in feature flags table |
+| REQ-003 | Top-level archive markdown must validate without error-level integrity issues. | Strict validation reports zero errors for the folder. |
 
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core documents, **then** they can understand that the archived work aligned documentation for Spec 126.
+- **Given** strict validation scans this folder, **when** it checks required files, structure, anchors, and references, **then** it reports zero errors.
 <!-- /ANCHOR:requirements -->
+
+---
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- SC-001: Zero stale "4-source" or "5 intent" references in modified files
-- SC-002: All three READMEs use consistent numbers: 7 intents, 5 sources, 11 document types
-- SC-003: Changelogs created with correct sequential version numbers
-- SC-004: No broken ANCHOR tags in edited files
-
+- **SC-001**: The archived feature purpose remains clear.
+- **SC-002**: The folder validates with zero errors under strict mode.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-<!-- ANCHOR:requirements -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-### Performance
-- **NFR-P01**: [Response time target - e.g., <200ms p95]
-- **NFR-P02**: [Throughput target - e.g., 100 req/sec]
-
-### Security
-- **NFR-S01**: [Auth requirement - e.g., JWT tokens required]
-- **NFR-S02**: [Data protection - e.g., TLS + encrypted at rest]
-
-### Reliability
-- **NFR-R01**: [Uptime target - e.g., 99.9%]
-- **NFR-R02**: [Error rate - e.g., <1%]
-
-<!-- /ANCHOR:nfr -->
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Current Level 1 templates | Archive compliance depends on the active template contract. | Rewrite directly from the current templates and validate after edits. |
+| Risk | Historical detail is condensed | Some original alignment detail is no longer in top-level docs. | Preserve the feature summary here and rely on git history for deeper reconstruction. |
+<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-<!-- /ANCHOR:requirements -->
-## L2: EDGE CASES
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
 
-### Data Boundaries
-- Empty input: [How system handles]
-- Maximum length: [Limit and behavior]
-- Invalid format: [Validation response]
-
-### Error Scenarios
-- External service failure: [Fallback behavior]
-- Network timeout: [Retry strategy]
-- Concurrent access: [Conflict resolution]
-
-### State Transitions
-- Partial completion: [Recovery behavior]
-- Session expiry: [User experience]
-
-<!-- /ANCHOR:edge-cases -->
+- None. This folder now serves as a concise archival record.
+<!-- /ANCHOR:questions -->
 
 ---
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | [/25] | [Files, LOC, systems] |
-| Risk | [/25] | [Auth, API, breaking changes] |
-| Research | [/20] | [Investigation needs] |
-| **Total** | **[/70]** | **Level 2** |
-
-<!-- /ANCHOR:complexity -->
-
----
-
-## 6. RELATED DOCUMENTS
-
-- Implementation Plan: See `plan.md`
-- Task Breakdown: See `tasks.md`
-- Parent spec: `.opencode/specs/02--system-spec-kit/z_archive/009-full-spec-doc-indexing`

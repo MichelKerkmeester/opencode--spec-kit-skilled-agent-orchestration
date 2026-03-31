@@ -30,7 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Step 1: Highest-Risk Retests
+## Phase 1: Setup
 
 - [x] T001 [P] Re-test `memory-save.ts` runtime paths [EVIDENCE: handler-memory-save.vitest.ts passes]
 - [x] T002 [P] Re-test `memory-index.ts` runtime paths [EVIDENCE: memory-index tests pass]
@@ -44,7 +44,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Step 2: Full Verification Matrix
+## Phase 2: Implementation
 
 - [x] T008 Run root gates [EVIDENCE: typecheck and test:cli pass]
 - [x] T009 Run workspace builds and tests [EVIDENCE: all 3 packages build clean, mcp-server 8997+ pass, scripts 483/483 pass]
@@ -56,7 +56,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Step 3: Standards-Doc Sync
+## Phase 3: Verification
 
 - [x] T013 Update `sk-code--opencode` standards docs with verified ESM state [EVIDENCE: Standards updated in Phase 4 session]
 - [x] T014 Update any other affected standards surfaces [EVIDENCE: README surfaces aligned in Phase 4]
@@ -65,10 +65,10 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Step 4: Packet Closure
+### Step 4: Packet Closure
 
 - [x] T015 Update parent `implementation-summary.md` with final runtime evidence [EVIDENCE: implementation-summary.md updated with all 6 phases]
-- [x] T016 Mark all parent `checklist.md` P0/P1 items with evidence [EVIDENCE: all P0 9/9 and P1 8/8 checked with evidence]
+- [x] T016 Mark all parent verification items with evidence [EVIDENCE: parent packet verification items reflect the completed runtime proof]
 - [x] T017 Close the parent packet [EVIDENCE: parent status set to Complete in spec.md]
 <!-- /ANCHOR:phase-4 -->
 
@@ -91,6 +91,6 @@ contextType: "implementation"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Parent Spec**: See `../spec.md`
-- **Parent Checklist**: See `../checklist.md`
-- **Research**: See `../research/research.md`
+- **Parent Summary**: See `../implementation-summary.md`
+- **Review Strategy**: See `../review/deep-review-strategy.md`
 <!-- /ANCHOR:cross-refs -->

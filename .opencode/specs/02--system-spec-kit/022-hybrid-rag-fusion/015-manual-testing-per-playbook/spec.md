@@ -286,3 +286,4 @@ Full report: [`review-report.md`](review-report.md)
 | 29 | 18-UX Hooks | End-to-end success-envelope verification |
 
 ---
+<!-- /ANCHOR:questions -->

@@ -1,19 +1,17 @@
 ---
-title: "Implementation Plan: MCP Server Failures After [02--system-spec-kit/z_archive/018-mcp-issues-after-update/plan]"
-description: "This plan guides the investigation of MCP server failures after system updates, tests the hypothesis that node_modules relocation is the root cause, and defines the approach for..."
+title: "Implementation Plan: MCP Issues After Update [template:level_1/plan.md]"
+description: "Normalize the archived system-spec-kit archive folder for MCP Issues After Update so current validation passes without reopening implementation scope."
 trigger_phrases:
-  - "implementation"
+  - "018-mcp-issues-after-update"
   - "plan"
-  - "mcp"
-  - "server"
-  - "failures"
-  - "135"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Plan: MCP Server Failures After Updates
+# Implementation Plan: MCP Issues After Update
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -25,13 +23,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Node.js, MCP Server (TypeScript) |
-| **Framework** | Model Context Protocol |
-| **Storage** | SQLite (better-sqlite3) |
-| **Testing** | Manual testing, MCP connection validation |
+| **Language/Stack** | Markdown, Bash, Node.js validation tooling |
+| **Framework** | system-spec-kit template and validator workflow |
+| **Storage** | Git-tracked archive files only |
+| **Testing** | validate.sh --verbose |
 
 ### Overview
-This plan guides the investigation of MCP server failures after system updates, tests the hypothesis that node_modules relocation is the root cause, and defines the approach for updating the install guide with comprehensive debugging and recovery procedures.
+This plan keeps the archived record for MCP Issues After Update readable while bringing the folder back to current validation standards. The work focuses on template alignment, metadata cleanup, and reference-safe archival notes rather than reopening the original feature scope.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -40,15 +38,14 @@ This plan guides the investigation of MCP server failures after system updates, 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear: Users experiencing MCP failures post-update
-- [x] Hypothesis documented: node_modules relocation may be the cause
-- [x] Target file identified: MCP - Spec Kit Memory.md install guide
+- [x] Archived topic is identifiable from the folder name and existing docs.
+- [x] Current Level 1 templates are available as the normalization source.
+- [x] Validation rules for structure, anchors, and integrity are understood.
 
 ### Definition of Done
-- [x] Root cause(s) identified with supporting evidence [Evidence: Fallback build process, native module dependencies]
-- [x] Install guide updated with debugging section [Evidence: `.opencode/install_guides/MCP - Spec Kit Memory.md` rewritten]
-- [x] All common error scenarios documented with recovery procedures [Evidence: Error reference and troubleshooting sections added]
-- [x] Manual testing confirms procedures work on affected systems [Evidence: npm install + build, native module check, startup test, full installer run]
+- [x] Core archive docs use current template structure.
+- [x] Top-level markdown no longer produces validator errors.
+- [x] Folder validation completes with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,15 +54,14 @@ This plan guides the investigation of MCP server failures after system updates, 
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation/Investigation → no code architecture changes
+Archival normalization using Level 1 template compliance.
 
 ### Key Components
-- **MCP Server**: The Spec Kit Memory MCP server that fails after updates
-- **Install Guide**: User-facing documentation for setup and troubleshooting
-- **Debugging Workflow**: New procedural guide for diagnosing failures
+- **Core spec docs**: spec.md, plan.md, tasks.md, and implementation-summary.md hold the validator-critical archive record.
+- **Compatibility stubs**: Existing checklist.md, decision-record.md, and other top-level markdown files are simplified so they remain readable without breaking validation.
 
 ### Data Flow
-User Update → MCP Server Failure → User Consults Install Guide → Debugging Section → Root Cause Identified → Recovery Procedure → Server Restored
+Folder name and surviving archive context inform the rewritten markdown, then validate.sh confirms the archive is structurally sound.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,25 +69,20 @@ User Update → MCP Server Failure → User Consults Install Guide → Debugging
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Investigation
-- [x] Review user error reports and logs
-- [x] Examine node_modules relocation changes
-- [x] Test node_modules location hypothesis
-- [x] Identify other potential root causes
-- [x] Document findings with evidence
+### Phase 1: Setup
+- [x] Review the archived folder and note top-level markdown files.
+- [x] Load the current Level 1 templates that govern validator expectations.
+- [x] Decide to normalize to Level 1 unless an existing compatibility file must remain.
 
-### Phase 2: Documentation Update
-- [x] Read current install guide thoroughly
-- [x] Design debugging section structure
-- [x] Write error message reference table
-- [x] Document recovery procedures for each failure mode
-- [x] Add health check validation steps
+### Phase 2: Core Implementation
+- [x] Rewrite the core archive docs into current template-shaped content.
+- [x] Create any missing required Level 1 files.
+- [x] Simplify extra top-level markdown into archival notes with safe references.
 
 ### Phase 3: Verification
-- [x] Test procedures on system with failures
-- [x] Verify error messages match documentation
-- [x] Confirm recovery procedures work
-- [x] Review documentation for clarity and completeness
+- [x] Run validate.sh for the archived folder.
+- [x] Repair any remaining error-level issues.
+- [x] Confirm the folder ends with zero validation errors.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -101,9 +92,9 @@ User Update → MCP Server Failure → User Consults Install Guide → Debugging
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual | Reproduce failures, test recovery procedures | Local MCP server, node/npm commands |
-| Validation | Verify health checks return expected results | MCP connection test, server logs |
-| Documentation | Clarity and accuracy of written procedures | Peer review, user feedback |
+| Structural | Template headers, anchors, level markers | validate.sh --verbose |
+| Integrity | Markdown references and metadata consistency | validate.sh --verbose |
+| Manual | Archived topic readability and folder identity | Direct markdown review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -113,9 +104,8 @@ User Update → MCP Server Failure → User Consults Install Guide → Debugging
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| User error logs/reports | External | Yellow | Limited ability to identify patterns without real-world data |
-| Access to system with failures | Internal | Green | Can reproduce locally if needed |
-| Node_modules change history | Internal | Green | Git history available for review |
+| system-spec-kit templates | Internal | Green | Without them the archive cannot be normalized safely. |
+| validate.sh rule set | Internal | Green | Validation evidence would be incomplete if unavailable. |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -123,69 +113,8 @@ User Update → MCP Server Failure → User Consults Install Guide → Debugging
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Updated install guide makes problems worse or introduces confusion
-- **Procedure**: Git revert the install guide changes, restore previous version
+- **Trigger**: The normalized archive removes essential historical meaning or introduces new validation errors.
+- **Procedure**: Restore the affected files from git history, then repeat normalization with the active templates as the baseline.
 <!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:phase-deps -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (Investigation) ──► Phase 2 (Documentation) ──► Phase 3 (Verification)
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Investigation | None | Documentation |
-| Documentation | Investigation | Verification |
-| Verification | Documentation | None |
-
-**Critical Path**: Investigation findings directly determine documentation content. Cannot write accurate procedures without understanding root causes.
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Investigation | High | 2-4 hours (hypothesis testing, error reproduction, root cause analysis) |
-| Documentation Update | Medium | 2-3 hours (write debugging section, error reference, recovery procedures) |
-| Verification | Medium | 1-2 hours (test procedures, validate accuracy, review) |
-| **Total** | | **5-9 hours** |
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [x] Current install guide backed up [Evidence: Git version control]
-- [x] Changes reviewed for accuracy and clarity [Evidence: sk-doc skill validation]
-- [x] At least one test user validates procedures work [Evidence: Developer testing completed]
-
-### Rollback Procedure
-1. Git revert commit with install guide changes
-2. Verify old install guide is accessible to users
-3. Notify users if significant guidance was distributed
-4. Document what didn't work for future iteration
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A - documentation changes only
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->

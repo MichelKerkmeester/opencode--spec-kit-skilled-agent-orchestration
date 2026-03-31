@@ -31,7 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Discovery & Baseline
+## Phase 1: Setup
 
 - [x] T001 [P] Run validate.sh --json --strict on all 121 active folders — 97/122 have errors
 - [x] T002 [P] Run validate.sh --json --strict on all 65 archived folders — 65/65 have errors
@@ -45,7 +45,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Spec Document Fixes
+## Phase 2: Implementation
 
 ### 2A — Category 00: ai-systems-non-dev (6 active + 10 phase children = 16 folders)
 
@@ -285,7 +285,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Memory Quality Review & Cleanup
+## Phase 3: Verification
 
 - [x] T197 Run validate-memory-quality.ts against ALL memory files — 135 files: 84 pass, 51 fail, 46 hard-block
 - [x] T198 Identify and list all hard-block violations — 23 V8, 20 V12, 3 mixed → research/hard-block-memories.txt
@@ -298,7 +298,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Database Rebuild & Verification
+### Phase 4: Database Rebuild & Verification
 
 - [x] T203 Run cleanup-orphaned-vectors.js — 2 orphans removed
 - [x] T204 Back up context-index.sqlite to context-index.sqlite.bak (66MB)

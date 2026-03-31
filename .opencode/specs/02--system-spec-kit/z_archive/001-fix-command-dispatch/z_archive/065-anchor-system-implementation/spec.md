@@ -111,6 +111,8 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 - **REQ-FUNC-006:** The response MUST include metadata indicating the token savings achieved.
 
 <!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:id -->
+
 ---
 
 <!-- ANCHOR:requirements -->

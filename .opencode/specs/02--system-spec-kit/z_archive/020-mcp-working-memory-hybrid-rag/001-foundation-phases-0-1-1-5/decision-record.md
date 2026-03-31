@@ -1,46 +1,44 @@
 ---
-title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/decision-record]"
-description: "This package is declared as Level 3+ and must include decision-record.md for compliance checks. Existing package governance text establishes that canonical architecture decision..."
+title: "Decision Record: Foundation Phases 0 1 1 5 [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Foundation Phases 0 1 1 5."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "foundation"
-  - "package"
-  - "phase"
   - "decision record"
-  - "001"
-importance_tier: "important"
-contextType: "decision"
+  - "phase"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Decision Record: Foundation Package (Phase 0, 1, 1.5)
+# Decision Record: Foundation Phases 0 1 1 5
 
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:adr-001 -->
-## ADR-001: Package-Local ADR Delegation to Parent Canonical Record
+## ADR-001: Normalize archived child phase docs to Level 1 compatibility
 
-<!-- ANCHOR:adr-001-context -->
 ### Metadata
 
 | Field | Value |
 |-------|-------|
-| Status | Accepted |
-| Date | 2026-02-19 |
-| Deciders | Package Maintainer, Spec Maintainer |
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
-This package is declared as Level 3+ and must include `decision-record.md` for compliance checks. Existing package governance text establishes that canonical architecture decisions live in the parent `../decision-record.md`.
+The archived child phase for Foundation Phases 0 1 1 5 used an older phase-package structure that no longer matched the active validator expectations. We needed to preserve the phase while removing error-level drift.
 
 ### Constraints
-- Preserve the current package intent and avoid rewriting architecture decisions.
-- Avoid duplicating parent ADR content to reduce drift risk.
-- Satisfy validator requirements for Level 3+ file presence.
+
+- The child phase had to stay archival.
+- Existing top-level compatibility files could remain but could not keep breaking validation.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -48,9 +46,9 @@ This package is declared as Level 3+ and must include `decision-record.md` for c
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**Summary**: Add a package-local decision record that explicitly delegates canonical architecture authority to `../decision-record.md`.
+**We chose**: Rewrite the child phase as Level 1-compatible archive docs and keep lightweight compatibility stubs for checklist.md and decision-record.md.
 
-**Details**: This file documents only the delegation model and package-level compliance intent. Root ADRs remain the source of truth for implementation architecture, and this package keeps its execution/handoff scope unchanged.
+**How it works**: The core docs now follow active templates. The retained compatibility files remain concise and avoid stale references or unsupported structure.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -60,11 +58,10 @@ This package is declared as Level 3+ and must include `decision-record.md` for c
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Local delegation record (chosen)** | Meets validator requirements, preserves package intent, avoids duplication | Adds one lightweight file to maintain | 9/10 |
-| Keep file absent | No new file | Fails Level 3+ validation | 1/10 |
-| Copy all parent ADRs into package | Local completeness | High duplication and divergence risk | 3/10 |
+| **Chosen: Level 1 normalization** | Reliable and low maintenance | Reduces historical narrative depth | 9/10 |
+| Preserve original phase-package documents | Keeps more historical structure | Continues failing current validation | 3/10 |
 
-**Why Chosen**: It is the smallest change that resolves compliance errors while preserving existing documentation intent.
+**Why this one**: It keeps the archived phase usable and maintainable under today’s tooling.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -72,17 +69,18 @@ This package is declared as Level 3+ and must include `decision-record.md` for c
 <!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
-**Positive**:
-- Level 3+ file requirements are satisfied.
-- Canonical architecture governance remains centralized in the parent spec.
+**What improves**:
+- The child phase validates cleanly.
+- The archive stays readable for future maintainers.
 
-**Negative**:
-- Readers must follow cross-reference to the parent ADR for full architectural detail.
+**What it costs**:
+- Some original planning detail is condensed. Mitigation: use git history for a fuller reconstruction.
 
 **Risks**:
+
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Local and parent governance wording drifts | Low | Keep this file delegation-focused and update with parent ADR policy changes |
+| Future validator changes require another refresh | M | Revalidate and update the archive with the current templates |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -92,11 +90,11 @@ This package is declared as Level 3+ and must include `decision-record.md` for c
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | Necessary? | PASS | Missing file produced validator errors |
-| 2 | Beyond Local Maxima? | PASS | Evaluated absence, duplication, and delegation options |
-| 3 | Sufficient? | PASS | Minimal delegation ADR resolves compliance target |
-| 4 | Fits Goal? | PASS | Goal is documentation compliance without scope change |
-| 5 | Open Horizons? | PASS | Future ADR changes remain centralized at parent |
+| 1 | **Necessary?** | PASS | The child phase had active validator errors. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preserving legacy phase-package structure with normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes the current error classes. |
+| 4 | **Fits Goal?** | PASS | The goal is archive stability, not renewed delivery planning. |
+| 5 | **Open Horizons?** | PASS | Git history still preserves deeper historical detail. |
 
 **Checks Summary**: 5/5 PASS
 <!-- /ANCHOR:adr-001-five-checks -->
@@ -106,10 +104,12 @@ This package is declared as Level 3+ and must include `decision-record.md` for c
 <!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
-**Affected Systems**:
-- `001-foundation-phases-0-1-1-5/decision-record.md`
-- `../decision-record.md` (referenced canonical source)
+**What changes**:
+- Rewrite the core docs to Level 1-compatible archive content.
+- Simplify retained compatibility files and remove broken references.
 
-**Rollback**: Remove this file only if folder level is changed away from Level 3+ and validator requirements are revised.
+**How to roll back**: Restore the earlier files from git history and compare validation outcomes.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
+
+---

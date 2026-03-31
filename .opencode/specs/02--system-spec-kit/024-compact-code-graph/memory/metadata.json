@@ -1,19 +1,19 @@
 {
-  "timestamp": "31-03-26 08-59",
-  "messageCount": 10,
-  "decisionCount": 9,
+  "timestamp": "31-03-26 10-23",
+  "messageCount": 1,
+  "decisionCount": 11,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 10,
-    "noiseFiltered": 10,
+    "totalProcessed": 1,
+    "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 30,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-31T07:59:49.738Z",
+        "timestamp": "2026-03-31T09:23:18.471Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -43,22 +43,20 @@
           "/^reasoning$/i",
           "/^<reasoning>.*<\\/reasoning>$/s"
         ],
-        "matchesFound": [
-          "/^[\\s\\u00A0]*$/ x10"
-        ],
+        "matchesFound": [],
         "actionsTaken": [
-          "filtered_noise:10",
+          "filtered_noise:0",
           "filtered_empty:0",
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:10",
-          "kept_items:0"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
     "filtered": {
-      "noise": 10,
+      "noise": 0,
       "empty": 0,
       "duplicate": 0,
       "lowQuality": 0
@@ -68,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-31T07:59:49.702Z",
+      "timestamp": "2026-03-31T09:23:18.426Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -128,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:61"
+        "processed_fields:75"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-31T07:59:49.738Z",
+      "timestamp": "2026-03-31T09:23:18.471Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -163,22 +161,20 @@
         "/^reasoning$/i",
         "/^<reasoning>.*<\\/reasoning>$/s"
       ],
-      "matchesFound": [
-        "/^[\\s\\u00A0]*$/ x10"
-      ],
+      "matchesFound": [],
       "actionsTaken": [
-        "filtered_noise:10",
+        "filtered_noise:0",
         "filtered_empty:0",
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:10",
-        "kept_items:0"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-31T07:59:49.766Z",
+      "timestamp": "2026-03-31T09:23:18.500Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -195,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:024-compact-code-graph",
-        "trigger_phrases:29",
+        "trigger_phrases:27",
         "key_topics:12",
         "captured_file_count:10",
         "filesystem_file_count:10"
@@ -211,9 +207,9 @@
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 0,
+      "result": 1,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "fileCounts": {
@@ -232,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 51,
-    "updatedAt": "2026-03-31T07:59:50.528Z",
-    "generatedAt": "2026-03-31T07:59:50.528Z",
+    "memoryId": 55,
+    "updatedAt": "2026-03-31T09:23:24.314Z",
+    "generatedAt": "2026-03-31T09:23:24.314Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

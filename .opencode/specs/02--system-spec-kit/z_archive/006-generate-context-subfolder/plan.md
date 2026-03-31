@@ -1,22 +1,17 @@
 ---
-title: "Implementation Plan: generate-context.ts Subfolder [02--system-spec-kit/z_archive/006-generate-context-subfolder/plan]"
-description: "Add nested subfolder path resolution to generate-context.ts and folder-detector.ts. The approach is additive-only: new branches handle parent/child format inputs while existing ..."
+title: "Implementation Plan: Generate Context Subfolder Support [archive]"
+description: "Archive normalization plan for the Generate Context Subfolder Support folder."
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "generate"
-  - "context"
-  - "subfolder"
-  - "123"
+  - "implementation plan"
+  - "generate context subfolder"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
-# Implementation Plan: generate-context.ts Subfolder Support
+# Implementation Plan: Generate Context Subfolder Support
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-
-- **Level**: 2
 
 ---
 
@@ -27,14 +22,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | None (standalone CLI script) |
-| **Storage** | Filesystem (spec folders, memory files) |
-| **Testing** | Manual CLI testing (6 input formats), `tsc --build` |
+| **Language/Stack** | Markdown documentation |
+| **Framework** | OpenCode system-spec-kit archive specs |
+| **Storage** | Git repository |
+| **Testing** | Strict validator plus manual review |
 
 ### Overview
-Add nested subfolder path resolution to `generate-context.ts` and `folder-detector.ts`. The approach is additive-only: new branches handle `parent/child` format inputs while existing flat-folder code paths remain untouched. One new function (`findChildFolder`) performs recursive search for bare child names with ambiguity detection.
-
+This archive repair keeps the original generate-context subfolder support topic but reduces the folder to a clean Level 1 archive package. The plan is to restore the core documents and validate until the folder reports zero errors.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -43,15 +37,14 @@ Add nested subfolder path resolution to `generate-context.ts` and `folder-detect
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Original archive topic identified
+- [x] Current Level 1 templates reviewed
+- [x] Folder-level validation target confirmed
 
 ### Definition of Done
-- [ ] All acceptance criteria met (6 input formats resolve correctly)
-- [ ] Tests passing (`tsc --build` clean, all 6 formats verified)
-- [ ] Docs updated (SKILL.md, sub_folder_versioning.md, AGENTS.md)
-
+- [x] spec.md, plan.md, tasks.md, and implementation-summary.md exist and follow the current template contract
+- [x] Metadata and cross-references are aligned
+- [x] Strict validation returns zero errors
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -60,29 +53,14 @@ Add nested subfolder path resolution to `generate-context.ts` and `folder-detect
 ## 3. ARCHITECTURE
 
 ### Pattern
-Additive branching in existing functions. No new files, no architectural changes.
+Template-based archive normalization.
 
 ### Key Components
-- **`generate-context.ts`**: Main script — `isValidSpecFolder()`, `parseArguments()`, `validateArguments()`, new `findChildFolder()`
-- **`folder-detector.ts`**: Priority-based folder detection — P1 (CLI), P2 (JSON), P4 (Auto-detect)
+- **Core archive docs**: Hold the durable historical summary.
+- **Validator checks**: Confirm structure, anchors, level, and integrity.
 
 ### Data Flow
-```
-User input (any of 6 formats)
-    ↓
-parseArguments() — detect prefix, normalize to relative or absolute path
-    ↓
-isValidSpecFolder() — validate format (now supports parent/child)
-    ↓
-validateArguments() — resolve to absolute path (now scans 2 levels deep)
-    ↓
-  ┌─ If parent/child format → join with specsDir
-  ├─ If bare child name → findChildFolder() searches all parents
-  └─ If flat name → existing behavior (unchanged)
-    ↓
-Resolved absolute path → generate memory context
-```
-
+Archive context is summarized into the Level 1 templates and then validated in strict mode.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -90,29 +68,20 @@ Resolved absolute path → generate memory context
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Core TypeScript Changes (generate-context.ts)
-- [ ] T3: Modify `isValidSpecFolder()` for nested format validation
-- [ ] T4: Modify `parseArguments()` for nested prefix detection
-- [ ] T5: Modify `validateArguments()` for recursive scanning
-- [ ] T6: Add new `findChildFolder()` function
-- [ ] T13: Update `--help` text with subfolder examples
+### Phase 1: Setup
+- [x] Review the archived folder and capture its theme
+- [x] Confirm Level 1 as the simplest compliant target
+- [x] Identify the required core documents
 
-### Phase 2: Folder Detector Changes (folder-detector.ts)
-- [ ] T7: Modify `detectSpecFolder()` Priority 1 (CLI) for nested paths
-- [ ] T8: Modify `detectSpecFolder()` Priority 2 (JSON) for nested paths
-- [ ] T9: Modify `detectSpecFolder()` Priority 4 (Auto) for recursive scanning
+### Phase 2: Core Implementation
+- [x] Create compliant core archive documents
+- [x] Align metadata and cross-references
+- [x] Replace the former higher-level shell with a stable Level 1 package
 
 ### Phase 3: Verification
-- [ ] T10: Build with `tsc --build` (zero errors)
-- [ ] T11: Test all 6 input formats manually
-- [ ] T12: Test backward compatibility with flat folders
-- [ ] T18: End-to-end verification
-
-### Phase 4: Documentation
-- [ ] T14: Update SKILL.md memory save section
-- [ ] T15: Update sub_folder_versioning.md
-- [ ] T16: Update AGENTS.md memory save rule
-
+- [x] Run strict validation
+- [x] Check markdown integrity
+- [x] Confirm the archive remains readable
 <!-- /ANCHOR:phases -->
 
 ---
@@ -122,11 +91,9 @@ Resolved absolute path → generate memory context
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Build | All TS changes compile cleanly | `tsc --build` |
-| Manual | All 6 input formats resolve correctly | CLI invocation with each format |
-| Regression | Flat folder behavior unchanged | CLI invocation with existing format |
-| Edge case | Ambiguous bare child name produces error | CLI with child name in multiple parents |
-
+| Structural | Headers, anchors, and required files | `validate.sh --strict` |
+| Integrity | Metadata and top-level markdown references | `validate.sh --strict` |
+| Manual | Archive readability | Direct file review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -136,10 +103,8 @@ Resolved absolute path → generate memory context
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| TypeScript compiler | Internal | Green | Cannot verify build |
-| Existing spec folder structure | Internal | Green | Test data available |
-| Node.js `fs` module | Internal | Green | Core filesystem operations |
-
+| Current Level 1 templates | Internal | Ready | Cannot normalize structure safely |
+| Spec validator | Internal | Ready | Cannot prove zero-error completion |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -147,85 +112,8 @@ Resolved absolute path → generate memory context
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Any of the 6 input formats fails, or flat-folder regression detected
-- **Procedure**: `git checkout` the two TS files to revert all changes; docs can remain
-
+- **Trigger**: The repaired archive loses essential context or reintroduces validation errors.
+- **Procedure**: Restore the prior folder state from git and replay the normalization with the missing context preserved.
 <!-- /ANCHOR:rollback -->
 
 ---
-
----
-
-<!-- ANCHOR:phase-deps -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (generate-context.ts) ──► Phase 2 (folder-detector.ts) ──► Phase 3 (Verify) ──► Phase 4 (Docs)
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Phase 1: Core TS | None | Phase 2, Phase 3 |
-| Phase 2: Detector | Phase 1 (shared patterns) | Phase 3 |
-| Phase 3: Verify | Phase 1, Phase 2 | Phase 4 |
-| Phase 4: Docs | Phase 3 (verified behavior) | None |
-
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Phase 1: Core TS changes | Medium | ~90 LOC, 1-2 hours |
-| Phase 2: Folder detector | Medium | ~50 LOC, 30-60 min |
-| Phase 3: Verification | Low | 30 min |
-| Phase 4: Documentation | Low | ~40 LOC, 30 min |
-| **Total** | | **~180 LOC, 3-4 hours** |
-
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [ ] Git working tree clean before starting
-- [ ] No uncommitted changes to target files
-- [ ] Build passes before changes
-
-### Rollback Procedure
-1. `git checkout -- .opencode/skill/system-spec-kit/scripts/src/memory/generate-context.ts`
-2. `git checkout -- .opencode/skill/system-spec-kit/scripts/src/memory/folder-detector.ts`
-3. Run `tsc --build` to verify clean revert
-4. Doc changes can remain (additive, no breaking content)
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-## RISKS
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Breaking existing flat-folder behavior | Low | High | Additive branches only; existing code paths untouched |
-| Performance of recursive scanning | Very Low | Low | Only 2 levels deep, ~20 folders total |
-| Bare child ambiguity edge case | Medium | Medium | Require unique match, error lists all candidates with parent paths |
-
----
-
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->

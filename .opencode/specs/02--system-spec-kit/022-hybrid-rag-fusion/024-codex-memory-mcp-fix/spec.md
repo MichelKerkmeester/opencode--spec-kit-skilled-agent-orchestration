@@ -19,11 +19,11 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-Codex-facing `spec_kit_memory` runtime reliability is now stable across the narrow slice owned by this packet: startup writes the SQLite database to a writable home path, structured logs stay on stderr, and `initializeDb(':memory:')` / custom-path test flows now promote their connection into the active shared DB state so later reads and writes stay isolated from the persistent live database. This packet records that landed remediation as a narrow green slice, then captures the remaining broader runtime, documentation, and release-control cleanup as explicit follow-on recommendations so future work does not keep stretching `020-pre-release-remediation`.
+Codex-facing `spec_kit_memory` runtime reliability is now stable across the narrow slice owned by this packet: startup writes the SQLite database to a writable home path, structured logs stay on stderr, and `initializeDb(':memory:')` / custom-path test flows now promote their connection into the active shared DB state so later reads and writes stay isolated from the persistent live database. This packet records that landed remediation as a narrow green slice, then captures the remaining broader runtime, documentation, and release-control cleanup as explicit follow-on recommendations so future work does not keep stretching `020-post-release-fixes`.
 
 **Key Decisions**: Keep `024` as the focused packet instead of reopening `020`; treat the Codex startup fix, the vector-index-store DB-isolation fix, and the spec-doc indexing caveat fix as landed evidence; keep broader `022` remediation in later execution waves.
 
-**Critical Dependencies**: `../020-pre-release-remediation/review/review-report.md`, Codex launcher config surfaces, `context-server` startup behavior, and packet-local validation.
+**Critical Dependencies**: `../020-post-release-fixes/review/review-report.md`, Codex launcher config surfaces, `context-server` startup behavior, and packet-local validation.
 
 ---
 
@@ -38,12 +38,13 @@ Codex-facing `spec_kit_memory` runtime reliability is now stable across the narr
 | **Created** | 2026-03-28 |
 | **Branch** | `024-codex-memory-mcp-fix` |
 | **Parent Spec** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/` |
-| **Related Packets** | `020-pre-release-remediation`, `022-spec-doc-indexing-bypass`, `023-ablation-benchmark-integrity` |
+| **Related Packets** | `020-post-release-fixes`, `022-spec-doc-indexing-bypass`, `023-ablation-benchmark-integrity` |
+| **Successor** | ../025-mcp-runtime-hardening/spec.md |
+<!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:problem -->
-<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -74,7 +75,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 ### Out of Scope
 
 - Declaring the full `022-hybrid-rag-fusion` tree release-ready.
-- Rewriting the canonical review packet inside `../020-pre-release-remediation/review/`.
+- Rewriting the canonical review packet inside `../020-post-release-fixes/review/`.
 - Closing unrelated `020` remediation items that were not part of the Codex MCP startup slice.
 - Performing unrelated broader runtime, docs, or release-control implementation beyond this narrow Codex/spec_kit_memory slice.
 
@@ -116,7 +117,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 |----|-------------|---------------------|
 | REQ-006 | `description.json` is present and aligned to the new packet slug and parent chain. | JSON parses and points at `02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix`. |
 | REQ-007 | The packet explains why a new numbered folder is better than expanding `020`. | `decision-record.md` records the alternative and rationale. |
-| REQ-008 | The packet links back to `020-pre-release-remediation` as the broader source of truth for unresolved findings. | Cross-references are present in README/spec/tasks/checklist. |
+| REQ-008 | The packet links back to `020-post-release-fixes` as the broader source of truth for unresolved findings. | Cross-references are present in README/spec/tasks/checklist. |
 | REQ-009 | The implementation summary stays honest about what landed in runtime code versus what remains open. | `implementation-summary.md` explicitly names the landed DB-isolation fix, the verification results, and the still-open broader follow-on work. |
 <!-- /ANCHOR:requirements -->
 
@@ -142,7 +143,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 
 **Given** the spec-doc indexing caveat resurfaces, **when** a later wave resumes from `024`, **then** the numeric spec-leaf and export drift fixes are already part of the recorded evidence chain.
 
-**Given** the broader remediation program is still open, **when** someone reads this packet, **then** they are redirected to `../020-pre-release-remediation/review/review-report.md` for the canonical broader review state.
+**Given** the broader remediation program is still open, **when** someone reads this packet, **then** they are redirected to `../020-post-release-fixes/review/review-report.md` for the canonical broader review state.
 
 **Given** the next implementation wave grows beyond focused Codex MCP remediation, **when** the team reviews `tasks.md`, **then** the packet already flags the option to open a new numbered follow-on folder.
 <!-- /ANCHOR:success-criteria -->
@@ -154,7 +155,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `../020-pre-release-remediation/review/review-report.md` remains the canonical broader review source | Packet could contradict the parent remediation story | Keep `024` narrow and explicitly cross-reference `020` as the broader source of truth |
+| Dependency | `../020-post-release-fixes/review/review-report.md` remains the canonical broader review source | Packet could contradict the parent remediation story | Keep `024` narrow and explicitly cross-reference `020` as the broader source of truth |
 | Dependency | Codex and sibling launcher configs stay aligned on `MEMORY_DB_PATH` | Future drift could reintroduce client-specific startup failures | Track launcher parity as an explicit follow-on item in `tasks.md` |
 | Risk | This new packet could be mistaken for a release-ready verdict change | Teams might overstate the health of the broader remediation program | Repeat in spec, checklist, and summary that only the Codex startup slice is green |
 | Risk | Future runtime changes can stale the retroactive evidence captured here | Packet could age into historical-only prose | Require future implementation waves to refresh tests and startup smoke evidence before closing later-wave follow-on items |
@@ -162,7 +163,6 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 
 ---
 
-<!-- ANCHOR:questions -->
 <!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
@@ -264,14 +264,15 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 
 - Should the next runtime implementation open `025` if it grows beyond the focused Codex MCP slice? Current routing guidance says yes.
 - Should a later docs-only truth-sync change use a dedicated docs packet if runtime behavior is already stable? Current routing guidance says yes.
+
 <!-- /ANCHOR:questions -->
 
 ---
 
 ## RELATED DOCUMENTS
 
-- **Broader Remediation Source**: `../020-pre-release-remediation/spec.md`
-- **Canonical Review**: `../020-pre-release-remediation/review/review-report.md`
+- **Broader Remediation Source**: `../020-post-release-fixes/spec.md`
+- **Canonical Review**: `../020-post-release-fixes/review/review-report.md`
 - **Ground Truth Follow-on**: `../021-ground-truth-id-remapping/spec.md`
 - **Spec-Doc Indexing Context**: `../022-spec-doc-indexing-bypass/spec.md`
 

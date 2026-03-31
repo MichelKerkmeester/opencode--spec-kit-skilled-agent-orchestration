@@ -1,18 +1,15 @@
 ---
-title: "Feature Specification: Review Agent [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/spec]"
-description: "The review agent (review.md) currently has a hardcoded model reference (model: github-copilot/claude-opus-4.6) in its YAML frontmatter (line 5). This prevents the review sub-age..."
+title: "Feature Specification: Review Agent Model Agnostic [template:level_1/spec.md]"
+description: "Archived record for Review Agent Model Agnostic. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
-  - "feature"
-  - "specification"
-  - "review"
-  - "agent"
-  - "model"
-  - "spec"
-  - "015"
-importance_tier: "important"
-contextType: "decision"
+  - "015-review-agent-model-agnostic"
+  - "review agent model agnostic"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Feature Specification: Review Agent Model-Agnostic
+# Feature Specification: Review Agent Model Agnostic
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -25,10 +22,10 @@ contextType: "decision"
 | Field | Value |
 |-------|-------|
 | **Level** | 1 |
-| **Priority** | P1 |
+| **Priority** | P2 |
 | **Status** | Complete |
-| **Created** | 2026-02-15 |
-
+| **Created** | 2026-03-31 |
+| **Branch** | `015-review-agent-model-agnostic` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,11 +34,10 @@ contextType: "decision"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The review agent (`review.md`) currently has a hardcoded model reference (`model: github-copilot/claude-opus-4.6`) in its YAML frontmatter (line 5). This prevents the review sub-agent from inheriting the model used by the dispatching parent agent, creating inconsistency when different models are used by orchestrators.
+This archived agent orchestration archive folder captures work related to Review Agent Model Agnostic. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.
 
 ### Purpose
-Enable the review agent to inherit the model from its dispatching parent agent by removing the hardcoded model reference, following the same pattern used by other agents like `orchestrate.md`.
-
+Keep a concise, validator-compliant record of the archived work so future maintainers can understand the topic and safely retain the folder.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,20 +46,22 @@ Enable the review agent to inherit the model from its dispatching parent agent b
 ## 3. SCOPE
 
 ### In Scope
-- Remove line 5 (`model: github-copilot/claude-opus-4.6`) from `.opencode/agent/review.md` frontmatter
-- Verify body text remains model-agnostic (already confirmed via investigation)
+- Preserve the archived topic and folder identity for Review Agent Model Agnostic.
+- Normalize the core spec documents to the current Level 1 structure.
+- Ensure top-level markdown in the folder resolves cleanly during validation.
 
 ### Out of Scope
-- Other agents with hardcoded models (context, debug, research, handover, speckit, write) - separate refactor if needed
-- YAML asset files referencing `model: opus` for orchestrator dispatch modes - unrelated to review agent
-- Command files in `.opencode/command/spec_kit/` - confirmed no review-model references
+- Reconstructing every historical draft that existed before archive cleanup - git history remains the source of truth.
+- Reopening implementation work for this archived item - the folder stays archival.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/agent/review.md` | Modify | Remove line 5: `model: github-copilot/claude-opus-4.6` |
-
+| spec.md | Modify/Create | Restore current Level 1 specification structure. |
+| plan.md | Modify/Create | Record the archival normalization approach. |
+| tasks.md | Modify/Create | Capture the cleanup and validation tasks. |
+| implementation-summary.md | Modify/Create | Summarize the archived state and validation outcome. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -75,16 +73,18 @@ Enable the review agent to inherit the model from its dispatching parent agent b
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Remove hardcoded model reference from review.md frontmatter | Line 5 (`model: github-copilot/claude-opus-4.6`) is deleted |
-| REQ-002 | Verify YAML frontmatter remains valid after deletion | Frontmatter parses without errors |
+| REQ-001 | The archive must clearly state that the folder documents Review Agent Model Agnostic. | A maintainer can identify the archived topic from spec.md without opening other files. |
+| REQ-002 | The core spec documents must follow the current Level 1 template structure. | Validator structural checks pass with zero errors for spec.md, plan.md, tasks.md, and implementation-summary.md. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Confirm review agent body text is model-agnostic | No prose mentions of specific models (Opus/Sonnet/Haiku) in agent instructions |
-| REQ-004 | Manual verification that review agent inherits parent model | Dispatched from different parent models → review uses inherited model |
+| REQ-003 | Top-level markdown references must resolve cleanly inside the archived folder. | Integrity checks find no broken backticked markdown references or stale folder metadata. |
 
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core docs, **then** they can understand the original topic and the normalization work that kept the archive valid.
+- **Given** the validator scans top-level markdown in this folder, **when** integrity checks run, **then** no error-level issues are reported for missing files, broken markdown references, or mismatched metadata.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -92,9 +92,8 @@ Enable the review agent to inherit the model from its dispatching parent agent b
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Review agent frontmatter contains no `model:` field, enabling model inheritance
-- **SC-002**: Review agent functions correctly when dispatched by agents using different models
-
+- **SC-001**: The archived folder validates with zero errors.
+- **SC-002**: The folder retains a readable summary of the archived work and why the archive was normalized.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -104,10 +103,8 @@ Enable the review agent to inherit the model from its dispatching parent agent b
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Breaking agent dispatch if frontmatter malformed | High | Validate YAML syntax after edit |
-| Dependency | Parent agent must have model defined | Low | Standard pattern - all dispatching agents have models |
-| Risk | Unexpected behavior differences across models | Medium | Manual testing with multiple parent models |
-
+| Dependency | Current system-spec-kit validator rules | Archive compliance depends on active validator behavior. | Keep the archive on the current template structure and rerun validation after edits. |
+| Risk | Historical implementation detail is condensed | Some older narrative detail is no longer in top-level docs. | Preserve the topic summary here and rely on git history for deeper reconstruction. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -115,16 +112,7 @@ Enable the review agent to inherit the model from its dispatching parent agent b
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Should we apply this pattern to other agents (context, debug, research, etc.) in a follow-up?
-- Is there a system-wide test suite for agent dispatch that should be run?
-
+- None at this time. Reopen the archive only if historical implementation detail needs to be reconstructed.
 <!-- /ANCHOR:questions -->
 
 ---
-
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->

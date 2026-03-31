@@ -1,20 +1,19 @@
 ---
-title: "Implementation Summary: Spec 017 [04--agent-orchestration/z_archive/017-agent-provider-switch/implementation-summary]"
-description: "Implemented agent provider switching system enabling runtime toggle between Copilot and ChatGPT profiles while preserving .opencode/agent/*.md as the canonical runtime path."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for Agent Provider Switch."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "spec"
-  - "017"
-  - "agent"
+  - "017-agent-provider-switch"
   - "implementation summary"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Implementation Summary: Spec 017 - Agent Provider Switching
+# Implementation Summary
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -23,10 +22,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `04--agent-orchestration/z_archive/017-agent-provider-switch` |
-| **Completed** | 2026-02-16 |
-| **Level** | 3 |
-| **Status** | Implemented and verified |
+| **Spec Folder** | 017-agent-provider-switch |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -34,30 +32,39 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Implemented agent provider switching system enabling runtime toggle between Copilot and ChatGPT profiles while preserving `.opencode/agent/*.md` as the canonical runtime path.
+This archived folder now has a current-template Level 1 documentation set for Agent Provider Switch. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
+
+### Archive Normalization
+
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/agent/scripts/activate-provider.sh` | Created | Provider activation with backup, verification, and rollback |
-| `.opencode/agent/scripts/provider-status.sh` | Created | Status reporting and runtime health checks |
-| `.opencode/agent/copilot/*.md` | Created | Copilot-specific agent profile files (8 files) |
-| `.opencode/agent/chatgpt/*.md` | Created | ChatGPT-specific agent profile files (8 files) |
-| `.opencode/README.md` | Modified | Documented activation and status workflow |
-| `.opencode/skill/scripts/README.md` | Modified | Added operator command reference |
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Keep `.opencode/agent/*.md` as primary runtime path | Preserve compatibility with existing commands and references |
-| Use `copilot` and `chatgpt` profile names | Match actual operator intent and platform usage |
-| Use copy + verify + rollback activation flow | Deterministic and safer than symlink-based switching |
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -65,12 +72,10 @@ Implemented agent provider switching system enabling runtime toggle between Copi
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Dry-run | Pass | Activation script validates provider existence and profile health |
-| Two-way switch | Pass | `copilot -> chatgpt -> copilot` round-trip successful with clean activation |
-| Induced mismatch rollback | Pass | Verification failure exits 5 with `ERROR: Verification failed for write.md`, `ROLLBACK_RUNTIME_MATCH=YES` confirms restore |
-| Status check | Pass | `provider-status.sh` reports `copilot 8/8 MATCH` after successful activation |
+| Check | Result |
+|-------|--------|
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -78,5 +83,7 @@ Implemented agent provider switching system enabling runtime toggle between Copi
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- Optional enhancements remain: launch wrappers (`opencode-copilot`, `opencode-chatgpt`), active provider marker file, automated CI drift detection (P2 items CHK-020 through CHK-022).
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
+
+---

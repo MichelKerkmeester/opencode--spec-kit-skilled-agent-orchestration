@@ -26,6 +26,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-28 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../022-spec-doc-indexing-bypass/spec.md |
+| **Successor** | ../024-codex-memory-mcp-fix/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -127,10 +130,6 @@ Restore a benchmark path that either runs against an aligned parent-memory datas
 | Risk | Ground-truth mapping heuristics choose the wrong parent memory | Refreshed dataset could still be clean but semantically wrong. | Use the existing deterministic mapper, keep preview artifact, and validate parent-only alignment after writing. |
 | Risk | Evaluation-only bypass diverges too far from live retrieval behavior | Benchmark could stop measuring the real ranking pipeline. | Scope the bypass narrowly to truncation layers only and keep the rest of the live fusion/reranking stack intact. |
 <!-- /ANCHOR:risks -->
-
----
-
-<!-- ANCHOR:questions -->
 
 ---
 

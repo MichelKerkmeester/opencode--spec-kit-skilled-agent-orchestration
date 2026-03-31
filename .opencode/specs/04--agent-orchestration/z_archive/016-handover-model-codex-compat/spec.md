@@ -1,120 +1,118 @@
 ---
-title: "Spec 016: Handover Model Downgrade + Codex [04--agent-orchestration/z_archive/016-handover-model-codex-compat/spec]"
-description: "Two issues with the current agent configuration"
+title: "Feature Specification: Handover Model Codex Compat [template:level_1/spec.md]"
+description: "Archived record for Handover Model Codex Compat. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
-  - "spec"
-  - "016"
-  - "handover"
-  - "model"
-  - "downgrade"
-importance_tier: "important"
-contextType: "decision"
+  - "016-handover-model-codex-compat"
+  - "handover model codex compat"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 3 -->
+# Feature Specification: Handover Model Codex Compat
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec 016: Handover Model Downgrade + Codex Agent Compatibility
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P2 |
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `016-handover-model-codex-compat` |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
-## Problem
+## 2. PROBLEM & PURPOSE
 
-Two issues with the current agent configuration:
+### Problem Statement
+This archived agent orchestration archive folder captures work related to Handover Model Codex Compat. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.
 
-1. **Handover agent over-provisioned**: The handover agent uses Sonnet across Copilot and Claude Code, but its template-filling task is well-suited for Haiku (validated by spec 012/013 Haiku compatibility testing).
-
-2. **Codex agents non-functional**: The `.codex/agents/` files use Claude Code YAML frontmatter (`model:`, `tools:`, `mcpServers:`) that Codex CLI completely ignores. These agents are decorative, not functional.
-
+### Purpose
+Keep a concise, validator-compliant record of the archived work so future maintainers can understand the topic and safely retain the folder.
 <!-- /ANCHOR:problem -->
 
+---
+
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-
-- Downgrade handover agent model from Sonnet to Haiku across Copilot (`.opencode/agent/`) and Claude Code (`.claude/agents/`)
-- Add Codex CLI profiles to `.codex/config.toml` for model tier and reasoning effort differentiation
-- Add `codex-specialized-subagents` MCP server for sub-agent dispatch
-- Convert all 8 `.codex/agents/*.md` frontmatters from Claude Code format to Codex-native profile-based format
-- Body content of all agent files preserved unchanged
+- Preserve the archived topic and folder identity for Handover Model Codex Compat.
+- Normalize the core spec documents to the current Level 1 structure.
+- Ensure top-level markdown in the folder resolves cleanly during validation.
 
 ### Out of Scope
+- Reconstructing every historical draft that existed before archive cleanup - git history remains the source of truth.
+- Reopening implementation work for this archived item - the folder stays archival.
 
-- Changes to `.opencode/agent/` files (beyond handover model change)
-- Changes to `.claude/agents/` files (beyond handover model change)
-- Agent body content modifications
-- New agent creation
-- Codex CLI installation or configuration beyond profiles/MCP
+### Files to Change
 
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| spec.md | Modify/Create | Restore current Level 1 specification structure. |
+| plan.md | Modify/Create | Record the archival normalization approach. |
+| tasks.md | Modify/Create | Capture the cleanup and validation tasks. |
+| implementation-summary.md | Modify/Create | Summarize the archived state and validation outcome. |
 <!-- /ANCHOR:scope -->
 
+---
+
 <!-- ANCHOR:requirements -->
-## Requirements
+## 4. REQUIREMENTS
 
-### R1: Handover Model Change
+### P0 - Blockers (MUST complete)
 
-| Platform | File | Before | After |
-|----------|------|--------|-------|
-| Copilot | `.opencode/agent/handover.md` | `github-copilot/claude-sonnet-4.5` | `github-copilot/claude-haiku-4.5` |
-| Claude Code | `.claude/agents/handover.md` | `sonnet` | `haiku` |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The archive must clearly state that the folder documents Handover Model Codex Compat. | A maintainer can identify the archived topic from spec.md without opening other files. |
+| REQ-002 | The core spec documents must follow the current Level 1 template structure. | Validator structural checks pass with zero errors for spec.md, plan.md, tasks.md, and implementation-summary.md. |
 
-### R2: Codex Profiles
+### P1 - Required (complete OR user-approved deferral)
 
-Four profiles in `.codex/config.toml`, all using gpt-5.3 family with differentiated reasoning effort:
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Top-level markdown references must resolve cleanly inside the archived folder. | Integrity checks find no broken backticked markdown references or stale folder metadata. |
 
-| Profile | Model | Reasoning Effort | Sandbox |
-|---------|-------|-----------------|---------|
-| `fast` | `gpt-5.3-codex-spark` | high | workspace-write |
-| `balanced` | `gpt-5.3-codex` | high | workspace-write |
-| `powerful` | `gpt-5.3-codex` | extra_high | workspace-write |
-| `readonly` | `gpt-5.3-codex` | extra_high | read-only |
-
-### R3: Sub-Agent MCP
-
-The `codex-specialized-subagents` MCP server added to `.codex/config.toml`, enabling the `delegate` tool that reads agent `.md` files and spawns `codex exec --profile <name> "<task>"`.
-
-### R4: Agent Frontmatter Conversion
-
-All 8 `.codex/agents/*.md` files converted from:
-```yaml
----
-name: <name>
-description: "<desc>"
-tools: [...]
-model: <model>
-mcpServers: [...]
----
-```
-
-To:
-```yaml
----
-profile: <profile_name>
-approval_policy: on-request
-sandbox_mode: <workspace-write|read-only>
----
-```
-
-### R5: Agent-to-Profile Mapping
-
-| Agent | Profile | Sandbox |
-|-------|---------|---------|
-| context | `fast` | read-only |
-| handover | `fast` | workspace-write |
-| speckit | `balanced` | workspace-write |
-| write | `balanced` | workspace-write |
-| debug | `powerful` | workspace-write |
-| research | `powerful` | workspace-write |
-| review | `readonly` | read-only |
-| orchestrate | `powerful` | workspace-write |
-
+### Acceptance Scenarios
+- **Given** a maintainer opens this archived folder, **when** they read the core docs, **then** they can understand the original topic and the normalization work that kept the archive valid.
+- **Given** the validator scans top-level markdown in this folder, **when** integrity checks run, **then** no error-level issues are reported for missing files, broken markdown references, or mismatched metadata.
 <!-- /ANCHOR:requirements -->
 
+---
+
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
+## 5. SUCCESS CRITERIA
 
-1. Handover agent uses Haiku in both Copilot and Claude Code platforms
-2. All 8 `.codex/agents/*.md` files have `profile:` frontmatter with no `model:` or `tools:` fields
-3. `.codex/config.toml` contains 4 profiles (all gpt-5.3 family) and sub-agents MCP server
-4. Agent body content unchanged across all files
-5. Reasoning effort differentiation: fast/balanced=high, powerful/readonly=extra_high
-
+- **SC-001**: The archived folder validates with zero errors.
+- **SC-002**: The folder retains a readable summary of the archived work and why the archive was normalized.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Current system-spec-kit validator rules | Archive compliance depends on active validator behavior. | Keep the archive on the current template structure and rerun validation after edits. |
+| Risk | Historical implementation detail is condensed | Some older narrative detail is no longer in top-level docs. | Preserve the topic summary here and rely on git history for deeper reconstruction. |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None at this time. Reopen the archive only if historical implementation detail needs to be reconstructed.
+<!-- /ANCHOR:questions -->
+
+---

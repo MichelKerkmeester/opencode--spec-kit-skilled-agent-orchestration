@@ -1,52 +1,119 @@
 ---
-title: "Security Vulnerability Remediation [009-security-remediation/sp [01--anobel.com/z_archive/009-security-remediation/spec]"
-description: "Remediation of security vulnerabilities discovered by Narsil MCP security scan."
+title: "Feature Specification: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/spec]"
+description: "Security Vulnerability Remediation"
 trigger_phrases:
   - "security"
   - "vulnerability"
   - "remediation"
-  - "spec"
-  - "009"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Security Vulnerability Remediation
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Security Vulnerability Remediation
 
-<!-- ANCHOR:overview -->
-## Overview
-Remediation of security vulnerabilities discovered by Narsil MCP security scan.
-<!-- /ANCHOR:overview -->
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `009-security-remediation` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Security Vulnerability Remediation
+
+### Purpose
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
+<!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
-## Scope
-- 4 vulnerabilities across 3 files
-- Priority: HIGH (XSS), MEDIUM (RNG, Path Traversal)
+## 3. SCOPE
+
+### In Scope
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
+
+### Out of Scope
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:vulnerabilities-addressed -->
-## Vulnerabilities Addressed
+---
 
-| ID | Type | File | Line | CWE | Severity |
-|----|------|------|------|-----|----------|
-| V1 | XSS (innerHTML) | form_validation.js | 424 | CWE-79 | HIGH |
-| V2 | XSS (innerHTML) | form_validation.js | 432 | CWE-79 | HIGH |
-| V3 | Insecure RNG | form_validation.js | 518 | CWE-330 | MEDIUM |
-| V4 | Insecure RNG | related_articles.js | 120 | CWE-330 | MEDIUM |
-| V5 | Path Traversal | modal_welcome.js | 638 | CWE-22 | MEDIUM |
-<!-- /ANCHOR:vulnerabilities-addressed -->
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-<!-- ANCHOR:discovery -->
-## Discovery
-- Tool: Narsil MCP security scan
-- Date: 2025-12-25
-- Scan scope: src/2_javascript/
-<!-- /ANCHOR:discovery -->
+### P0 - Blockers (MUST complete)
 
-<!-- ANCHOR:remediation-strategy -->
-## Remediation Strategy
-- XSS: Replace innerHTML with textContent or createElement
-- RNG: Replace Math.random() with crypto.getRandomValues()
-- Path Traversal: Add input validation and sanitization
-<!-- /ANCHOR:remediation-strategy -->
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
+
+---

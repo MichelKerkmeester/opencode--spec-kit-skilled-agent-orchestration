@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Hybrid [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/spec]"
-description: "The hybrid search pipeline returns 0 results for ALL queries because module-level db/vectorSearchFn references in hybrid-search.js are null at search time, likely due to ESM module duplication."
+description: "The hybrid search pipeline returns 0 results for all queries because search-time filters eliminate every candidate after ESM migration follow-on changes."
 trigger_phrases:
   - "hybrid search null db"
   - "search returns 0 results"
@@ -11,36 +11,25 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- SPECKIT_ADDENDUM: Phase - Child Header -->
+# Feature Specification: Hybrid Search Pipeline Null DB Fix
 
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
-| **Phase** | 7 of 7 |
-| **Predecessor** | 006-review-remediation |
-| **Successor** | 008-spec-memory-compliance-audit |
-| **Handoff Criteria** | memory_search returns >0 results for queries matching existing memories |
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+
+---
 
 <!-- ANCHOR:phase-context -->
 ### Phase Context
 
-This is **Phase 7** of the ESM Module Compliance specification — fixing a critical search pipeline failure caused by the ESM migration.
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 7 of 8 |
+| **Predecessor** | 006-review-remediation |
+| **Successor** | 008-spec-memory-compliance-audit |
+| **Handoff Criteria** | `memory_search` returns results for known matching queries and the search optimization follow-on tasks are captured with verification evidence |
 
-**Scope Boundary**: Only the hybrid search pipeline's null reference issue. No changes to search algorithms, ranking, or indexing.
-
-**Dependencies**:
-- Phases 001-006 (ESM migration completed)
-
-**Deliverables**:
-- Confirmed root cause (null db vs ESM duplication vs other)
-- Fix applied and verified
+This is **Phase 7** of the ESM Module Compliance specification. It restores hybrid search correctness first, then records the follow-on search quality improvements applied after the initial fix.
 <!-- /ANCHOR:phase-context -->
-
----
-
-# Feature Specification: Hybrid Search Pipeline Null DB Fix
-
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -178,7 +167,7 @@ All paths relative to `.opencode/skill/system-spec-kit/`.
 ---
 
 <!-- ANCHOR:investigation -->
-## INVESTIGATION FINDINGS
+### Investigation Findings
 
 ### Evidence Summary
 

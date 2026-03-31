@@ -1,64 +1,118 @@
 ---
-title: "Spec: Language Selector - Desktop Hover to Open [01--anobel.com/z_archive/024-language-selector-hover/spec]"
-description: "Modify nav_language_selector.js to open the dropdown on hover (desktop only), matching the behavior of nav_dropdown.js."
+title: "Feature Specification: Language Selector - Desktop Hover to Open [.opencode/specs/01--anobel.com/z_archive/024-language-selector-hover/spec]"
+description: "Spec: Language Selector - Desktop Hover to Open"
 trigger_phrases:
   - "spec"
   - "language"
   - "selector"
   - "desktop"
   - "hover"
-  - "024"
+  - "open"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Language Selector - Desktop Hover to Open
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Language Selector - Desktop Hover to Open
 
-<!-- ANCHOR:overview -->
-## Overview
-Modify `nav_language_selector.js` to open the dropdown on hover (desktop only), matching the behavior of `nav_dropdown.js`.
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:current-behavior -->
-## Current Behavior
-| Viewport | Trigger | Action |
-|----------|---------|--------|
-| Desktop | Click | Opens/closes dropdown |
-| Desktop | Hover | Only animates button color |
-| Mobile | N/A | Dropdown always visible (accordion style) |
-<!-- /ANCHOR:current-behavior -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- ANCHOR:desired-behavior -->
-## Desired Behavior
-| Viewport | Trigger | Action |
-|----------|---------|--------|
-| Desktop | Hover (enter) | Opens dropdown |
-| Desktop | Hover (leave) | Closes dropdown after 150ms delay |
-| Desktop | Hover on dropdown | Keeps dropdown open |
-| Desktop | Click | Closes dropdown if open |
-| Mobile | N/A | No change (accordion style) |
-<!-- /ANCHOR:desired-behavior -->
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `024-language-selector-hover` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:reference-implementation -->
-## Reference Implementation
-`nav_dropdown.js` lines 299-343 - hover pattern with timeout
-<!-- /ANCHOR:reference-implementation -->
+---
 
-<!-- ANCHOR:files-to-modify -->
-## Files to Modify
-- `src/2_javascript/navigation/nav_language_selector.js`
-- `src/2_javascript/z_minified/navigation/nav_language_selector.js` (regenerate)
-<!-- /ANCHOR:files-to-modify -->
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Spec: Language Selector - Desktop Hover to Open
+
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
+
+### Out of Scope
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
 
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
-- [ ] Desktop: Dropdown opens on mouseenter
-- [ ] Desktop: Dropdown closes on mouseleave with 150ms delay
-- [ ] Desktop: Dropdown stays open when cursor moves to dropdown
-- [ ] Desktop: Click closes dropdown if open
-- [ ] Desktop: Nav dropdowns close when language selector opens
-- [ ] Mobile: No behavior change
-- [ ] No console errors
-- [ ] Minified version works correctly
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

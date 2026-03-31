@@ -126,7 +126,7 @@ Fix warn-vs-fail, fallback descriptions, inert-vs-active claims in feature flag 
 ### WS-4: Fix Category 01-02 Drift (P1) — Medium Priority (RESOLVED via Iteration 2)
 
 Re-review with corrected `mcp_server/` scope completed. Results:
-- **Category 01 (retrieval)**: 9/11 aligned, 1 partial, 1 misaligned. P1: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` has stale resume-mode description. P2: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` understates existing AST groundwork.
+- **Category 01 (retrieval)**: 9/11 aligned, 1 partial, 1 misaligned. P1: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` has stale resume-mode description. P2: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` understates existing AST groundwork.
 - **Category 02 (mutation)**: 5/10 aligned, 4 partial, 1 misaligned. P1s: `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md` wrong actor identity model (doc says required, code makes optional); `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md` corrections module exists but has no handler/tool wiring; other partials for over-broad source file lists and minor description drift.
 
 ### WS-5: Trim Over-Broad Source File Lists (P2) — Low Priority

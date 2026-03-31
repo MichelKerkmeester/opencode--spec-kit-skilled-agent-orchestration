@@ -1,19 +1,16 @@
 ---
-title: "Implementation Plan: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/plan]"
-description: "Update SKILL.md and README.md to document the agent routing changes from spec 014. Add @debug to agent exclusivity exceptions, create an Agent Dispatch subsection, update mode s..."
+title: "Implementation Plan: Agent Routing Documentation Update [archive]"
+description: "Archive normalization plan for the Agent Routing Documentation Update folder."
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "agent"
-  - "routing"
-  - "documentation"
-  - "119"
+  - "implementation plan"
+  - "agent routing documentation update"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
 # Implementation Plan: Agent Routing Documentation Update
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -25,15 +22,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown |
-| **Framework** | OpenCode skill system (.opencode/skill/system-spec-kit/) |
-| **Storage** | N/A |
-| **Testing** | Manual verification + grep |
+| **Language/Stack** | Markdown documentation |
+| **Framework** | OpenCode system-spec-kit archive specs |
+| **Storage** | Git repository |
+| **Testing** | Strict validator plus manual review |
 
 ### Overview
-
-Update SKILL.md and README.md to document the agent routing changes from spec 014. Add @debug to agent exclusivity exceptions, create an Agent Dispatch subsection, update mode suffixes, and create a changelog entry.
-
+This archive repair keeps the original agent routing documentation topic but reduces the folder to a clean Level 1 archive package. The plan is to restore the core documents and validate until the folder reports zero errors.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,16 +37,14 @@ Update SKILL.md and README.md to document the agent routing changes from spec 01
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear — 3 files need updating
-- [x] Success criteria measurable — specific sections identified with line numbers
-- [x] Dependencies identified — spec 014 complete
+- [x] Original archive topic identified
+- [x] Current Level 1 templates reviewed
+- [x] Folder-level validation target confirmed
 
 ### Definition of Done
-- [ ] All acceptance criteria met (REQ-001 through REQ-005)
-- [ ] SKILL.md agent routing matches actual YAML implementations
-- [ ] README.md mode suffixes complete
-- [ ] Changelog created
-
+- [x] spec.md, plan.md, tasks.md, and implementation-summary.md exist and follow the current template contract
+- [x] Metadata and cross-references are aligned
+- [x] Strict validation returns zero errors
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -60,13 +53,14 @@ Update SKILL.md and README.md to document the agent routing changes from spec 01
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-only changes to existing Markdown files.
+Template-based archive normalization.
 
 ### Key Components
-- **SKILL.md**: AI workflow instructions — the authoritative reference for system-spec-kit
-- **README.md**: Human-readable documentation — the public-facing reference
-- **Changelog**: Version tracking for the skill
+- **Core archive docs**: Hold the durable historical summary.
+- **Validator checks**: Confirm structure, anchors, level, and integrity.
 
+### Data Flow
+Archive context is summarized into the Level 1 templates and then validated in strict mode.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -74,29 +68,20 @@ Documentation-only changes to existing Markdown files.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: SKILL.md Updates
+### Phase 1: Setup
+- [x] Review the archived folder and capture its theme
+- [x] Confirm Level 1 as the simplest compliant target
+- [x] Identify the required core documents
 
-- [ ] T001 Add `debug-delegation.md` to Agent Exclusivity exceptions (line ~67)
-- [ ] T002 Add Agent Dispatch subsection after Resource Router (~line 158) documenting:
-  - @debug: implement + complete commands, trigger at failure >= 3
-  - @review: implement + complete (dual-phase Mode 2 + Mode 4), debug (advisory)
-  - @research: plan command, trigger at confidence < 60%
-  - @handover: plan + implement + complete + research, session-end step
+### Phase 2: Core Implementation
+- [x] Create compliant core archive documents
+- [x] Align metadata and cross-references
+- [x] Remove reliance on obsolete verification-only structure
 
-### Phase 2: README.md Updates
-
-- [ ] T003 Add `:with-research` and `:auto-debug` to Mode Suffixes table (line ~228)
-- [ ] T004 Update Recent Changes section (line ~781) with spec 014 reference
-
-### Phase 3: Changelog
-
-- [ ] T005 Create `.opencode/changelog/01--system-spec-kit/v2.2.9.0.md`
-
-### Phase 4: Verification
-
-- [ ] T006 Verify all agent names match between SKILL.md and command YAML files
-- [ ] T007 Verify trigger conditions match YAML thresholds
-
+### Phase 3: Verification
+- [x] Run strict validation
+- [x] Check markdown integrity
+- [x] Confirm the archive remains readable
 <!-- /ANCHOR:phases -->
 
 ---
@@ -106,9 +91,9 @@ Documentation-only changes to existing Markdown files.
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Grep | Agent names in SKILL.md match YAML | grep across files |
-| Manual | Mode suffixes complete | Visual verification |
-
+| Structural | Headers, anchors, and required files | `validate.sh --strict` |
+| Integrity | Metadata and top-level markdown references | `validate.sh --strict` |
+| Manual | Archive readability | Direct file review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -118,8 +103,8 @@ Documentation-only changes to existing Markdown files.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Spec 014 implementation | Internal | Complete | Defines the routing being documented |
-
+| Current Level 1 templates | Internal | Ready | Cannot normalize structure safely |
+| Spec validator | Internal | Ready | Cannot prove zero-error completion |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -127,40 +112,8 @@ Documentation-only changes to existing Markdown files.
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Documentation inaccurate or misleading
-- **Procedure**: `git checkout -- .opencode/skill/system-spec-kit/SKILL.md .opencode/skill/system-spec-kit/README.md`
-
+- **Trigger**: The repaired archive loses essential context or reintroduces validation errors.
+- **Procedure**: Restore the prior folder state from git and replay the normalization with the missing context preserved.
 <!-- /ANCHOR:rollback -->
-
----
-
-<!-- ANCHOR:phase-deps -->
-<!-- ANCHOR:dependencies -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (SKILL.md) ──┐
-                      ├──► Phase 4 (Verify)
-Phase 2 (README.md) ──┤
-                      │
-Phase 3 (Changelog) ──┘
-```
-
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Phase 1: SKILL.md | Low | ~30 lines added |
-| Phase 2: README.md | Low | ~15 lines added |
-| Phase 3: Changelog | Low | ~40 lines |
-| Phase 4: Verification | Low | grep checks |
-
-<!-- /ANCHOR:effort -->
 
 ---

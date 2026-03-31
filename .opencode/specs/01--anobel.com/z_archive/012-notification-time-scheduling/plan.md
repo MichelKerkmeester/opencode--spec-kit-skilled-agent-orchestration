@@ -1,217 +1,121 @@
 ---
-title: "Implementation Plan: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/plan]"
-description: "Step-by-step implementation plan for adding time-based scheduling to the notification system."
+title: "Implementation Plan: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/plan]"
+description: "Feature Specification: Notification Time-Based Scheduling"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "feature"
+  - "specification"
   - "notification"
-  - "time"
-  - "based"
-  - "013"
+  - "time-based"
+  - "scheduling"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Implementation Plan: Notification Time-Based Scheduling
 
-Step-by-step implementation plan for adding time-based scheduling to the notification system.
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Feature Specification: Notification Time-Based Scheduling
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-### Metadata
-- **Category**: Implementation Plan
-- **Estimated Effort**: 2-3 hours
-- **Risk Level**: Low (additive change, backward compatible)
-- **Created**: 2025-12-29
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-### Summary
-Add time-based scheduling capability to nav_notifications.js by:
-1. Detecting time presence in date strings
-2. Implementing dual-mode comparison (exact time vs. midnight)
-3. Updating CDN version for deployment
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
 
 ---
-<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## 2. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Code Changes (nav_notifications.js)
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-#### Step 1.1: Add Time Detection Helper
-**Location**: After line 91 (after `log()` function)
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
-```javascript
-function has_time_component(str) {
-  if (!str) return false;
-  // Matches: "9:50", "09:50", "AM", "PM", "T12:" (ISO)
-  return /(\d{1,2}:\d{2})|([AP]M)|T\d{2}:/i.test(str);
-}
-```
-
-#### Step 1.2: Modify parse_alert_item()
-**Location**: Lines 124-136 (return object)
-
-Add two new properties:
-```javascript
-return {
-  // ... existing properties ...
-  startHasTime: has_time_component(start_date_attr),
-  endHasTime: has_time_component(end_date_attr),
-};
-```
-
-#### Step 1.3: Rewrite is_within_date_range()
-**Location**: Lines 189-225
-
-Replace with dual-mode comparison:
-```javascript
-function is_within_date_range(alert) {
-  const now = new Date();
-
-  // START DATE CHECK
-  if (alert.startDate) {
-    if (alert.startHasTime) {
-      // Exact time comparison
-      log(`${alert.id}: comparing now (${now.toLocaleTimeString()}) vs startDate (${alert.startDate.toLocaleTimeString()}) [EXACT TIME]`);
-      if (now < alert.startDate) {
-        log(`${alert.id}: blocked - current time is before start time`);
-        return false;
-      }
-    } else {
-      // Date-only: compare at midnight (legacy behavior)
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const start_local = new Date(
-        alert.startDate.getFullYear(),
-        alert.startDate.getMonth(),
-        alert.startDate.getDate()
-      );
-      log(`${alert.id}: comparing today (${today.toDateString()}) vs startDate (${start_local.toDateString()}) [MIDNIGHT]`);
-      if (today < start_local) {
-        log(`${alert.id}: blocked - today is before startDate`);
-        return false;
-      }
-    }
-  } else {
-    log(`${alert.id}: no startDate set, skipping start date check`);
-  }
-
-  // END DATE CHECK
-  if (alert.endDate) {
-    if (alert.endHasTime) {
-      // Exact time comparison
-      log(`${alert.id}: comparing now (${now.toLocaleTimeString()}) vs endDate (${alert.endDate.toLocaleTimeString()}) [EXACT TIME]`);
-      if (now > alert.endDate) {
-        log(`${alert.id}: blocked - current time is after end time`);
-        return false;
-      }
-    } else {
-      // Date-only: compare at END of day (23:59:59.999)
-      const end_of_day = new Date(
-        alert.endDate.getFullYear(),
-        alert.endDate.getMonth(),
-        alert.endDate.getDate(),
-        23, 59, 59, 999
-      );
-      log(`${alert.id}: comparing now vs endDate end-of-day (${end_of_day.toLocaleString()}) [END OF DAY]`);
-      if (now > end_of_day) {
-        log(`${alert.id}: blocked - now is after end of day`);
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-```
-
-### Phase 2: Minification
-
-Run the project's minification script:
-```bash
-node scripts/minify-webflow.mjs
-```
-
-Verify output at: `src/2_javascript/z_minified/navigation/nav_notifications.js`
-
-### Phase 3: CDN Version Update
-
-**File**: `src/0_html/global.html`
-**Line**: ~150
-
-Change:
-```
-nav_notifications.js?v=1.1.09
-```
-To:
-```
-nav_notifications.js?v=1.1.10
-```
-
-### Phase 4: Deployment
-
-1. Upload minified script to R2 CDN
-2. Verify new version loads on anobel.com
-3. Test with debug mode enabled
-
----
-<!-- /ANCHOR:implementation-phases -->
-
-<!-- ANCHOR:testing-strategy -->
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
 <!-- /ANCHOR:phases -->
-## 3. TESTING STRATEGY
-
-### Unit Tests (Manual)
-1. Parse date-only string → startHasTime should be false
-2. Parse datetime string → startHasTime should be true
-3. Regex matches: "9:50", "09:50", "AM", "PM", "T12:"
-
-### Integration Tests (Browser)
-1. Create alert with future time → should be hidden
-2. Create alert with past time → should be visible
-3. Existing date-only alerts → should work unchanged
-
-### Debug Commands
-```javascript
-AnobelAlerts.debug(true);
-AnobelAlerts.getAll(); // Check startHasTime/endHasTime
-AnobelAlerts.refresh(); // See comparison mode in logs
-```
 
 ---
-<!-- /ANCHOR:testing-strategy -->
 
-<!-- ANCHOR:rollback-plan -->
-## 4. ROLLBACK PLAN
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-If issues occur:
-1. Revert global.html to use v=1.1.09
-2. Previous version remains on CDN
-3. No database or CMS changes to revert
-
----
-<!-- /ANCHOR:rollback-plan -->
-
-<!-- ANCHOR:files-modified -->
-## 5. FILES MODIFIED
-
-| File | Change Type | Description |
-|------|-------------|-------------|
-| `src/2_javascript/navigation/nav_notifications.js` | Modified | Add time detection and dual-mode comparison |
-| `src/2_javascript/z_minified/navigation/nav_notifications.js` | Regenerated | Minified version |
-| `src/0_html/global.html` | Modified | CDN version bump |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
-<!-- /ANCHOR:files-modified -->
 
-<!-- ANCHOR:changelog -->
-## 6. CHANGELOG
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-### v1.0 (2025-12-29)
-- Initial implementation plan
-<!-- /ANCHOR:changelog -->
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

@@ -70,6 +70,8 @@ The perfect-session-capturing subsystem has grown to 20 child phases (000-019), 
 Produce a prioritized findings report that identifies every actionable bug, misalignment, dead reference, and architecture violation — enabling targeted remediation in subsequent phases. Wave 3 synthesis agents consolidate and validate all 135 findings, produce a decision record, and generate the remediation sprint plan.
 
 <!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem -->
+
 
 ---
 
@@ -92,6 +94,8 @@ Produce a prioritized findings report that identifies every actionable bug, misa
 - Editing existing spec folder documents outside of 019
 
 <!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope -->
+
 
 ---
 
@@ -171,6 +175,8 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 - **SC-006**: **Given** a maintainer starts Sprint S1-S8 work from this phase, **When** they read the plan, checklist, and ADR summary, **Then** they can trace each sprint back to validated findings.
 
 <!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria -->
+
 
 ---
 
@@ -195,6 +201,8 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 | R-005 | Type rename decisions (R-002/003/004) break callers not in scope | Medium | Medium | ADR-002 decision gates the rename; full call-site audit before execution |
 
 <!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks -->
+
 
 ---
 
@@ -207,6 +215,8 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 - **Auditability**: All Wave 3 synthesis decisions recorded in `decision-record.md` with alternatives
 
 <!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
+
 ---
 
 <!-- ANCHOR:edge-cases -->
@@ -315,3 +325,4 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 | Checklist | `checklist.md` | Quality gates |
 | Decision Record | `decision-record.md` | 8 ADRs (ADR-001 through ADR-008 — Wave 3 synthesis complete) |
 | Raw findings | `scratch/codex-1-core-pipeline.md` through `scratch/opus-5-type-system.md` | 10 Wave 1 outputs |
+<!-- /ANCHOR:questions -->

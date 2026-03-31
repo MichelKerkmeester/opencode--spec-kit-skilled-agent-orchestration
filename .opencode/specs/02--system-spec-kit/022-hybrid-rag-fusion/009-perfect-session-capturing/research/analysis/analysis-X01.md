@@ -1234,3 +1234,4 @@ argv / CONFIG / optional JSON file
 - Total findings: 10
 - Critical: 1, High: 6, Medium: 3, Low: 0
 - Top 3 recommendations: unify the capture schema before normalization; remove destructive post-render HTML stripping and make anchor preservation mandatory; make source loading and file writing fail-fast so bad inputs cannot silently become simulation output or partial saves.
+<!-- /ANCHOR:... -->

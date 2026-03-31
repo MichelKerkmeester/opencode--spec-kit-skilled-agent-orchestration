@@ -293,3 +293,4 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 - **Decision Records**: See `decision-record.md`
 - **Research**: See `../research/research.md` (Round 2, Domains D + F)
 - **Sibling Phase 003**: `../003-field-integrity-and-schema/` (template-renderer.ts — coordinate changes)
+<!-- /ANCHOR:questions -->

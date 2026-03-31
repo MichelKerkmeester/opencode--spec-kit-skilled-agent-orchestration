@@ -1,21 +1,20 @@
 ---
-title: "Feature Specification: Download Button Mobile Fix [01--anobel.com/z_archive/027-download-btn-on-mobile/spec]"
-description: "Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and..."
+title: "Feature Specification: Download Button Mobile Fix [.opencode/specs/01--anobel.com/z_archive/027-download-btn-on-mobile/spec]"
+description: "Feature Specification: Download Button Mobile Fix"
 trigger_phrases:
   - "feature"
   - "specification"
   - "download"
   - "button"
   - "mobile"
-  - "spec"
-  - "027"
+  - "fix"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Feature Specification: Download Button Mobile Fix
 
-<!-- SPECKIT_LEVEL: CORE -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.0 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -25,22 +24,23 @@ contextType: "decision"
 | Field | Value |
 |-------|-------|
 | **Level** | 1 |
-| **Priority** | P0 |
-| **Status** | Complete |
-| **Created** | 2026-02-01 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `027-download-btn-on-mobile` |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem--purpose -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and the button animation wouldn't trigger properly.
+Feature Specification: Download Button Mobile Fix
 
 ### Purpose
-Enable reliable PDF downloads on all mobile devices with proper visual feedback (spinner during loading, checkmark on success).
-<!-- /ANCHOR:problem--purpose -->
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
 
 ---
 
@@ -48,24 +48,22 @@ Enable reliable PDF downloads on all mobile devices with proper visual feedback 
 ## 3. SCOPE
 
 ### In Scope
-- Fix download button click handling on mobile
-- Add spinner animation during download
-- Fix iOS-specific download behavior
-- Update all HTML files with new version
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
 ### Out of Scope
-- Changing the PDF hosting location - files remain on Webflow CDN
-- Native iOS "Save to Files" behavior - iOS will open PDFs in viewer
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `src/1_css/button/btn_download.css` | Modify | Add anchor overlay fix + spinner animation |
-| `src/2_javascript/molecules/btn_download.js` | Modify | Fix iOS download path with loading state |
-| `src/0_html/nobel/*.html` | Modify | Bump version to v1.3.0 + add CSS link |
-| `src/0_html/contact.html` | Modify | Bump version to v1.3.0 + add CSS link |
-| `src/0_html/services/*.html` | Modify | Bump version to v1.3.0 + add CSS link |
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -77,16 +75,16 @@ Enable reliable PDF downloads on all mobile devices with proper visual feedback 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Download button click triggers JS handler on mobile | Tapping button fires JS, not Webflow anchor |
-| REQ-002 | Visual feedback during download | Spinner shows when downloading |
-| REQ-003 | Success animation works | Checkmark animation plays after download |
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | iOS devices show loading state | 400ms spinner before triggering download |
-| REQ-005 | All HTML files updated | Version bumped to v1.3.0 with CSS link |
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -94,42 +92,27 @@ Enable reliable PDF downloads on all mobile devices with proper visual feedback 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Download buttons work on iOS Safari (file opens/downloads)
-- **SC-002**: Spinner animation shows during download on all devices
-- **SC-003**: Checkmark animation shows on success
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:risks--dependencies -->
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Cloudflare R2 CDN | Files must be uploaded to CDN | Manual upload via wrangler CLI |
-| Dependency | Webflow deployment | HTML must be deployed to live site | Copy to Webflow custom code |
-| Risk | iOS still opens PDF in viewer | Medium | Expected behavior, user can use Share → Save |
-<!-- /ANCHOR:risks--dependencies -->
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:open-questions -->
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None - all issues resolved
-<!-- /ANCHOR:open-questions -->
-
----
-
-<!-- ANCHOR:related-documents -->
+- None. This folder is archived and retained for reference.
 <!-- /ANCHOR:questions -->
-## 8. RELATED DOCUMENTS
-
-| Document | Purpose |
-|----------|---------|
-| [`implementation-summary.md`](./implementation-summary.md) | Post-implementation record |
-| [`memory/`](./memory/) | Session context for future reference |
-<!-- /ANCHOR:related-documents -->
 
 ---

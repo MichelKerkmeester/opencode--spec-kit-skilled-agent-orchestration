@@ -1,46 +1,118 @@
 ---
-title: "Link Card Product/Adv - CTA Button Hover Animation [01--anobel.com/z_archive/017-link-card-product-adv/spec]"
-description: "Extend the link card ad hover state to trigger the CTA button Secondary-Full animations, including"
+title: "Feature Specification: Link Card Product/Adv - CTA Button Hover Animation [.opencode/specs/01--anobel.com/z_archive/017-link-card-product-adv/spec]"
+description: "Link Card Product/Adv - CTA Button Hover Animation"
 trigger_phrases:
   - "link"
   - "card"
   - "product"
   - "adv"
   - "cta"
-  - "spec"
-  - "017"
+  - "button"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Link Card Product/Adv - CTA Button Hover Animation
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Link Card Product/Adv - CTA Button Hover Animation
 
-<!-- ANCHOR:overview -->
-## Overview
-Extend the link card ad hover state to trigger the CTA button Secondary-Full animations, including:
-- Main button border color change (neutral-dark → brand-dark)
-- Icon button background color change (brand-base → brand-dark)
-- Icon swap animation (static icon slides out, animated icon slides in)
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:requirements -->
-## Requirements
-1. When `[data-adv]` card is hovered, trigger CTA button hover styles
-2. Use existing state machine pattern (`--_state---on` / `--_state---off`)
-3. Support focus states for accessibility
-4. Respect `prefers-reduced-motion`
-<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `017-link-card-product-adv` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Link Card Product/Adv - CTA Button Hover Animation
+
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
-## Scope
-- File: `src/1_css/animations/link_card_ad.css`
-- Pattern: Extend existing state machine integration
+## 3. SCOPE
+
+### In Scope
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
+
+### Out of Scope
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:out-of-scope -->
-## Out of Scope
-- Changes to `btn_cta.css` (existing styles remain unchanged)
-- JavaScript modifications
-<!-- /ANCHOR:out-of-scope -->
-<!-- /ANCHOR:scope -->
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

@@ -1,104 +1,121 @@
 ---
-title: "Plan: @write Agent Enforcement for /create [04--agent-orchestration/z_archive/002-write-agent-enforcement/plan]"
-description: "For each command, make these changes"
+title: "Implementation Plan: Write Agent Enforcement [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
+  - "implementation"
   - "plan"
-  - "write"
-  - "agent"
-  - "enforcement"
-  - "for"
-  - "002"
-importance_tier: "important"
-contextType: "decision"
+  - "write agent enforcement"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
+# Implementation Plan: Write Agent Enforcement
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: @write Agent Enforcement for /create Commands
 
-<!-- ANCHOR:implementation-strategy -->
-## Implementation Strategy
+---
 
-### Phase A: Core Changes
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-For each command, make these changes:
+### Technical Context
 
-#### 1. Add PHASE 0: WRITE AGENT VERIFICATION
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
 
-**Location:** After `# 🚨 MANDATORY PHASES - BLOCKING ENFORCEMENT` header, BEFORE existing phases
+### Overview
+This archive fix rewrites the required Level 1 documents for write agent enforcement. The plan favors structural compliance, concise historical context, and clean validation over recreating every superseded planning artifact.
+<!-- /ANCHOR:summary -->
 
-**Non-chained variant** (skill.md, install_guide.md, folder_readme.md):
-- Insert ~50 lines of PHASE 0 block
-- Proceeds to PHASE 1 if verified
+---
 
-**Chained variant** (skill_reference.md, skill_asset.md):
-- Insert ~55 lines of PHASE 0 block with chained handling
-- Skip PHASE 0 if `--chained` flag present
-- Proceeds to PHASE C if verified or skipped
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-#### 2. Update Phase Status Verification Table
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
-Add row for PHASE 0:
-```
-| PHASE 0: WRITE AGENT | ✅ PASSED [or ⏭️ N/A] | ______ | write_agent_verified: ______ |
-```
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
 
-#### 3. Update Violation Self-Detection
+---
 
-Add to Phase Violations list:
-```
-- Executed command without @write agent verification (Phase 0)
-```
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-#### 4. Fix Emoji Inconsistencies
+### Pattern
+Documentation archive normalization
 
-Per command_template.md Section 6:
-- `## 2. 📋 CONTRACT` → `## 2. 📝 CONTRACT`
-- `## 3. 📝 INSTRUCTIONS` → `## 3. ⚡ INSTRUCTIONS`
-- `## 4. 📚 REFERENCE` → `## 4. 📌 REFERENCE`
+### Key Components
+- **Core Level 1 docs**: Preserve the historical topic in a compliant structure.
+- **Supplemental archive notes**: Remain brief and avoid broken markdown references.
 
-### Phase B: Sync to Public Repo
+### Data Flow
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable and easy to inspect.
+<!-- /ANCHOR:architecture -->
 
-Copy all 5 updated files to:
-```
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/
-```
+---
 
-<!-- /ANCHOR:implementation-strategy -->
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Setup
+- [x] Review archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
 
-<!-- ANCHOR:execution-order -->
-## Execution Order
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md and archive notes
 
-1. skill.md (most complex, 9-step workflow)
-2. skill_reference.md (chained variant)
-3. skill_asset.md (chained variant)
-4. install_guide.md (non-chained)
-5. folder_readme.md (non-chained)
-6. Sync to public repo
-7. Verify all changes
+### Phase 3: Verification
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
+<!-- /ANCHOR:phases -->
 
-<!-- /ANCHOR:execution-order -->
+---
 
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-<!-- ANCHOR:estimated-impact -->
-## Estimated Impact
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
 
-| File | Current Lines | Added Lines | New Total |
-|------|---------------|-------------|-----------|
-| skill.md | 399 | ~55 | ~454 |
-| skill_reference.md | 373 | ~60 | ~433 |
-| skill_asset.md | 377 | ~60 | ~437 |
-| install_guide.md | 312 | ~55 | ~367 |
-| folder_readme.md | 322 | ~55 | ~377 |
+---
 
-<!-- /ANCHOR:estimated-impact -->
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
+<!-- /ANCHOR:dependencies -->
 
-<!-- ANCHOR:rollback-plan -->
-## Rollback Plan
+---
 
-If issues arise:
-1. Git revert changes in anobel.com repo
-2. Git revert changes in public repo
-3. Document issues in spec folder
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-<!-- /ANCHOR:rollback-plan -->
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
+<!-- /ANCHOR:rollback -->
+
+---

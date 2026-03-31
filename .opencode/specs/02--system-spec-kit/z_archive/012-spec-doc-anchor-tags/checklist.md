@@ -1,19 +1,17 @@
 ---
-title: "Verification Checklist: Spec Document Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/checklist]"
-description: "Verification Date: 2026-02-16"
+title: "Verification Checklist: Spec Doc Anchor Tags [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"
   - "checklist"
-  - "spec"
-  - "document"
-  - "anchor"
-  - "129"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Verification Checklist: Spec Document Anchor Tags
+# Verification Checklist: Spec Doc Anchor Tags
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -33,9 +31,9 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md
-- [x] CHK-002 [P0] Technical approach defined in plan.md
-- [x] CHK-003 [P1] Dependencies identified and available (spec 126 complete)
+- [ ] CHK-001 [P0] Archived topic documented in spec.md
+- [ ] CHK-002 [P0] Normalization approach recorded in plan.md
+- [ ] CHK-003 [P1] Compatibility files reviewed before edits
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -43,10 +41,9 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Anchor tags properly formatted (<!-- ANCHOR:name --> / <!-- /ANCHOR:name -->)
-- [x] CHK-011 [P0] No mismatched or orphaned anchors
-- [x] CHK-012 [P1] Anchor naming follows existing conventions (lowercase, hyphen-separated)
-- [x] CHK-013 [P1] Template content preserved exactly (only anchor tags added)
+- [ ] CHK-010 [P0] Core archive docs match current template structure
+- [ ] CHK-011 [P0] No malformed anchors remain in retained spec docs
+- [ ] CHK-012 [P1] Auxiliary notes are simplified and readable
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -54,9 +51,9 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] check-anchors.sh validates all modified templates
-- [x] CHK-021 [P0] Full test suite passes (4184+ tests)
-- [x] CHK-022 [P1] Spot-check anchor pairs in representative templates
+- [ ] CHK-020 [P0] Folder validates with zero errors
+- [ ] CHK-021 [P0] Top-level markdown integrity checks pass
+- [ ] CHK-022 [P1] Manual archive review confirms topic clarity
 <!-- /ANCHOR:testing -->
 
 ---
@@ -64,7 +61,8 @@ contextType: "implementation"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets (N/A - template-only changes)
+- [ ] CHK-030 [P0] No sensitive data was introduced during archive cleanup
+- [ ] CHK-031 [P1] No misleading instructions remain in handover or archive notes
 <!-- /ANCHOR:security -->
 
 ---
@@ -72,8 +70,9 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized
-- [x] CHK-041 [P1] Implementation summary created
+- [ ] CHK-040 [P1] spec.md, plan.md, and tasks.md describe the same archive state
+- [ ] CHK-041 [P1] implementation-summary.md uses the correct folder metadata
+- [ ] CHK-042 [P2] Optional archive notes are concise and self-explanatory
 <!-- /ANCHOR:docs -->
 
 ---
@@ -81,7 +80,9 @@ contextType: "implementation"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] All changes in correct template directories
+- [ ] CHK-050 [P1] Required Level 1 files are present
+- [ ] CHK-051 [P1] Compatibility stubs are only kept where the archived folder already had them
+- [ ] CHK-052 [P2] Extra markdown files no longer contain broken backticked markdown references
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -91,11 +92,11 @@ contextType: "implementation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 5 | 5/5 |
-| P1 Items | 5 | 5/5 |
-| P2 Items | 0 | 0/0 |
+| P0 Items | 7 | 0/7 |
+| P1 Items | 8 | 0/8 |
+| P2 Items | 2 | 0/2 |
 
-**Verification Date**: 2026-02-16
+**Verification Date**: 2026-03-31
 <!-- /ANCHOR:summary -->
 
 ---

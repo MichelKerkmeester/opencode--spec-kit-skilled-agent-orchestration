@@ -1,24 +1,21 @@
 ---
-title: "Tas [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/tasks]"
-description: "Tracking document prepared for Wave 2 execution and synchronized with root post-research backlog mapping."
+title: "Tasks: Post Research Wave 2 Controlled Delivery [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "005-post-research-wave-2-controlled-delivery"
   - "tasks"
-  - "post"
-  - "research"
-  - "wave"
-  - "package"
-  - "005"
+  - "phase"
+  - "archive"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Post-Research Wave 2 Package (Controlled Delivery)
+# Tasks: Post Research Wave 2 Controlled Delivery
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-tasks | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:task-notation -->
 <!-- ANCHOR:notation -->
 ## Task Notation
 
@@ -26,46 +23,60 @@ contextType: "implementation"
 |--------|---------|
 | `[ ]` | Pending |
 | `[x]` | Completed |
-| `[B]` | Blocked by dependency |
-<!-- /ANCHOR:task-notation -->
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
----
-
-<!-- ANCHOR:task-groups -->
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
-## 1. Package Task Groups
-
-### Group A - Dark-Launch Readiness Evidence
-- [x] W2-001 Complete dark-launch evidence pass (`C136-04`) with deterministic-tool outputs for exact count/status/dependency checks and degraded-mode behavior capture. [Evidence: `scratch/c136-04-dark-launch-evidence.md`]
-
-### Group B - Staged Delivery Evidence
-- [x] W2-010 Complete staged rollout evidence package (`C136-05`) for 10/50/100 gates, including durable queue/worker metrics for async post-response jobs. [Evidence: `scratch/c136-05-staged-rollout-evidence.md`]
-
-### Group C - Mutation Auditability
-- [x] W2-020 Complete append-only mutation ledger implementation and verification (`C136-11`) with required metadata fields (`reason`, `prior_hash`, `new_hash`, `linked_memory_ids`, `decision_meta`). [Evidence: `mcp_server/lib/storage/mutation-ledger.ts` + tests]
-
-### Group D - Wave Transition
-- [x] W2-030 Publish Wave 3 readiness handoff to package `../006-post-research-wave-3-outcome-confirmation/`. [Evidence: all W2-001 through W2-020 complete]
-<!-- /ANCHOR:task-groups -->
 
 ---
 
-<!-- ANCHOR:evidence-requirements -->
-## 2. Evidence Requirements
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [x] W2-E01 Dark-launch report and non-admin verification logs attached, including deterministic gate-check outputs. [Evidence: `scratch/c136-04-dark-launch-evidence.md`]
-- [x] W2-E02 Stage-gate logs and telemetry snapshots for 10/50/100 attached, including queue/worker durability metrics. [Evidence: `scratch/c136-05-staged-rollout-evidence.md`]
-- [x] W2-E03 Ledger schema and append-integrity test output attached with metadata lineage verification. [Evidence: `mcp_server/lib/storage/mutation-ledger.ts` + tests]
-<!-- /ANCHOR:evidence-requirements -->
+- [x] T001 Review the archived phase folder contents
+- [x] T002 Load the current Level 1 templates
+- [x] T003 [P] Identify retained compatibility files
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:completion-conditions -->
-## 3. Completion Conditions
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-- [x] All W2-001, W2-010, W2-020, and W2-030 completed.
-- [x] All `W2-E01` through `W2-E03` completed.
-- [x] Root mapping remains synchronized.
+- [x] T004 Rewrite spec.md with archival phase context
+- [x] T005 Rewrite plan.md and tasks.md for normalization work
+- [x] T006 Rewrite implementation-summary.md with correct folder metadata
+- [x] T007 Simplify checklist.md and decision-record.md into compatibility stubs
+<!-- /ANCHOR:phase-2 -->
 
-Tracking document prepared for Wave 2 execution and synchronized with root post-research backlog mapping.
-<!-- /ANCHOR:completion-conditions -->
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Remove broken top-level markdown references
+- [x] T009 Run validate.sh for 005-post-research-wave-2-controlled-delivery
+- [x] T010 Confirm the phase folder reports zero errors
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

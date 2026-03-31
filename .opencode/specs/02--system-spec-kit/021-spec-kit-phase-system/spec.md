@@ -89,9 +89,9 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - Phase-aware Gate 3: new Option E "Add phase to existing spec" in CLAUDE.md
 - Parent spec template addendum with Phase Documentation Map and phase-linkage fields
 - Child phase template with parent back-reference fields and handoff criteria
-- New `nodes/phase-system.md` graph mode node
-- New `references/structure/phase_definitions.md` reference document
-- Updates to `sub_folder_versioning.md`, `level_specifications.md`, `template_guide.md`, `quick_reference.md`
+- New `../../../skill/system-spec-kit/nodes/phase-system.md` graph mode node
+- New `../../../skill/system-spec-kit/references/structure/phase_definitions.md` reference document
+- Updates to `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`, `../../../skill/system-spec-kit/references/templates/level_specifications.md`, `../../../skill/system-spec-kit/references/templates/template_guide.md`, and `../../../skill/system-spec-kit/references/workflows/quick_reference.md`
 - Updates to existing commands: `/spec_kit:plan`, `/spec_kit:implement`, `/spec_kit:complete`, `/spec_kit:resume`
 
 ### Out of Scope
@@ -106,25 +106,25 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Add PHASE intent signal, resource mapping, command boost |
+| `../../../skill/system-spec-kit/SKILL.md` | Modify | Add PHASE intent signal, resource mapping, command boost |
 | `.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh` | Modify | Add phase recommendation scoring and --recommend-phases flag |
 | `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Modify | Add --phase mode with parent+child creation |
 | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Modify | Add --recursive flag for phase-aware validation |
-| `.opencode/command/spec_kit/phase.md` | Create | New /spec_kit:phase command entry point |
+| `/spec_kit:phase` command entry point | Create | New phase command entry point |
 | `.opencode/command/spec_kit/assets/spec_kit_phase_auto.yaml` | Create | Phase command autonomous workflow |
 | `.opencode/command/spec_kit/assets/spec_kit_phase_confirm.yaml` | Create | Phase command interactive workflow |
-| `.opencode/command/spec_kit/plan.md` | Modify | Add phase awareness to Gate 3 options |
-| `.opencode/command/spec_kit/implement.md` | Modify | Support sub-folder path resolution |
-| `.opencode/command/spec_kit/complete.md` | Modify | Add phase lifecycle to workflow |
-| `.opencode/command/spec_kit/resume.md` | Modify | Phase detection in context loading |
+| `../../../command/spec_kit/plan.md` | Modify | Add phase awareness to Gate 3 options |
+| `../../../command/spec_kit/implement.md` | Modify | Support sub-folder path resolution |
+| `../../../command/spec_kit/complete.md` | Modify | Add phase lifecycle to workflow |
+| `../../../command/spec_kit/resume.md` | Modify | Phase detection in context loading |
 | `.opencode/skill/system-spec-kit/templates/addendum/phase/` | Create | Phase-linkage addendum (parent + child templates) |
-| `.opencode/skill/system-spec-kit/nodes/phase-system.md` | Create | Graph mode node for phase workflow |
-| `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md` | Create | Phase taxonomy and transition rules |
-| `.opencode/skill/system-spec-kit/references/structure/sub_folder_versioning.md` | Modify | Integrate phase concepts into versioning docs |
-| `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` | Modify | Phase-boundary rules in cross-cutting section |
-| `.opencode/skill/system-spec-kit/references/templates/template_guide.md` | Modify | Phase template section (extend existing Section 10) |
-| `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` | Modify | Phase workflow shortcuts and decision tables |
-| `.opencode/skill/system-spec-kit/index.md` | Modify | Add phase-system.md to MOC Workflow & Routing section |
+| `../../../skill/system-spec-kit/nodes/phase-system.md` | Create | Graph mode node for phase workflow |
+| `../../../skill/system-spec-kit/references/structure/phase_definitions.md` | Create | Phase taxonomy and transition rules |
+| `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md` | Modify | Integrate phase concepts into versioning docs |
+| `../../../skill/system-spec-kit/references/templates/level_specifications.md` | Modify | Phase-boundary rules in cross-cutting section |
+| `../../../skill/system-spec-kit/references/templates/template_guide.md` | Modify | Phase template section (extend existing Section 10) |
+| `../../../skill/system-spec-kit/references/workflows/quick_reference.md` | Modify | Phase workflow shortcuts and decision tables |
+| `system-spec-kit index` | Modify | Add the phase-system node to the Workflow & Routing section |
 | `CLAUDE.md` | Modify | Gate 3 Option E, phase-aware routing table |
 <!-- /ANCHOR:scope -->
 
@@ -140,20 +140,20 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 | REQ-001 | `recommend-level.sh` outputs phase recommendation alongside level recommendation | `--json` output includes `recommended_phases: true/false`, `phase_reason`, `suggested_phase_count` when level score >= 70 (100-point scale) AND (architectural OR files > 15 OR LOC > 800) |
 | REQ-002 | `create.sh --phase` creates parent spec folder with Phase Documentation Map section + first child phase folder with parent back-reference | Running `create.sh "Large Feature" --phase --level 3 --phases 3` creates `specs/NNN-large-feature/` with root docs + `001-phase-name/` child with linked docs |
 | REQ-003 | `validate.sh --recursive` discovers and validates all `[0-9][0-9][0-9]-*/` child phase folders within a parent, producing aggregated results | Exit code reflects worst child; JSON output includes `phases[]` array with per-phase results |
-| REQ-004 | `/spec_kit:phase` command exists with auto/confirm modes | `phase.md` + 2 YAML workflow assets follow existing command structure pattern |
-| REQ-005 | SKILL.md smart router recognizes PHASE intent and loads phase-specific resources | Adding `"phase"` to INTENT_SIGNALS dict, mapping to `references/structure/phase_definitions.md` in RESOURCE_MAP, boost via `/spec_kit:phase` command |
+| REQ-004 | `/spec_kit:phase` command exists with auto/confirm modes | Command definition + 2 YAML workflow assets follow the existing command structure pattern |
+| REQ-005 | SKILL.md smart router recognizes PHASE intent and loads phase-specific resources | Adding `"phase"` to INTENT_SIGNALS, mapping to `../../../skill/system-spec-kit/references/structure/phase_definitions.md` in RESOURCE_MAP, and boosting via `/spec_kit:phase` |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-006 | Gate 3 offers Option E "Add phase to existing spec" when existing spec has high complexity | CLAUDE.md updated; AI correctly offers E when resuming complex specs |
-| REQ-007 | Existing commands (`plan`, `implement`, `complete`, `resume`) handle phase sub-folder paths | All commands resolve `specs/NNN-name/002-phase/plan.md` correctly |
+| REQ-007 | Existing commands (`plan`, `implement`, `complete`, `resume`) handle phase sub-folder paths | All commands resolve nested phase-plan paths correctly |
 | REQ-008 | Auto-suggestion triggers when AI detects task exceeding phase thresholds | AI proactively suggests "This task may benefit from a phased approach" when recommend-level.sh scoring indicates phases |
 | REQ-009 | Parent spec template includes Phase Documentation Map section linking to child phases | Section maps root requirements to phase deliverables (modeled after 136's Section 3.6) |
-| REQ-010 | Child phase template includes parent back-references and handoff criteria | Each child spec.md has `Parent Spec: ../spec.md`, `Parent Plan: ../plan.md`, predecessor/successor phase fields |
-| REQ-011 | `nodes/phase-system.md` documents phase lifecycle, transitions, and boundary rules | Node exists in Workflow & Routing section of index.md MOC |
-| REQ-012 | Reference docs updated: `phase_definitions.md` created, `sub_folder_versioning.md` + `template_guide.md` + `quick_reference.md` + `level_specifications.md` updated | All reference docs reflect phase system as first-class concept |
+| REQ-010 | Child phase template includes parent back-references and handoff criteria | Each child spec contains parent spec/plan links plus predecessor and successor phase fields |
+| REQ-011 | `../../../skill/system-spec-kit/nodes/phase-system.md` documents phase lifecycle, transitions, and boundary rules | Node exists in the Workflow & Routing section of the system-spec-kit index |
+| REQ-012 | Reference docs updated: `../../../skill/system-spec-kit/references/structure/phase_definitions.md` created, plus the sub-folder versioning, template guide, quick reference, and level specification references updated | All reference docs reflect phase system as a first-class concept |
 
 ### P2 - Nice to Have (can defer without approval)
 
@@ -174,7 +174,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - **SC-003**: Recursive validation coverage - `validate.sh --recursive` validates all children + parent; all 14 rules applied per phase folder
 - **SC-004**: Command phase-path resolution - all 4 modified commands resolve sub-folder paths; target 0 path resolution errors
 - **SC-005**: AI auto-suggestion rate - AI proactively suggests phasing for qualifying tasks; triggers on tasks matching 136/138 scope profile
-- **SC-006**: Template linkage integrity - parent-child back-references resolvable; all `../spec.md` references valid
+- **SC-006**: Template linkage integrity - parent-child back-references resolve correctly across parent and child docs
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -338,7 +338,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - [ ] Existing non-phased specs unaffected by new `--phase` and `--recursive` flags
 
 ### Command Pattern Compliance
-- [ ] `phase.md` + 2 YAML assets match file structure of existing commands
+- [ ] `/spec_kit:phase` command definition + 2 YAML assets match the file structure of existing commands
 - [ ] All 4 modified commands (`plan`, `implement`, `complete`, `resume`) resolve phase sub-folder paths correctly
 
 ### Documentation Alignment
@@ -390,8 +390,8 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Sub-Folder Versioning Reference**: See `../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`
-- **Level Specifications Reference**: See `../../skill/system-spec-kit/references/templates/level_specifications.md`
+- **Sub-Folder Versioning Reference**: See `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`
+- **Level Specifications Reference**: See `../../../skill/system-spec-kit/references/templates/level_specifications.md`
 - **136 Spec (7-phase example)**: See `../136-mcp-working-memory-hybrid-rag/`
 - **138 Spec (3-workstream example)**: See `../138-hybrid-rag-fusion/`
 

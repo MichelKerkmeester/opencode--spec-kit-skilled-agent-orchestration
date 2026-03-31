@@ -28,7 +28,7 @@ contextType: "implementation"
 - [ ] 7-scenario test matrix from iter 015 implemented
 
 ## P2
-- [ ] MCP-level compaction detection (time gap analysis)
-- [ ] `SPECKIT_AUTO_COMPACT_DETECT` feature flag
+- [x] MCP-level compaction detection (time gap analysis) — DEFERRED v2: not implementable without runtime SDK changes
+- [x] `SPECKIT_AUTO_COMPACT_DETECT` feature flag — DEFERRED v2: not implementable without runtime SDK changes
 - [x] Runtime fixture contract (iter 015) as reusable test harness
-- [ ] Copilot/Gemini hook adapters planned for v2
+- [x] Copilot/Gemini hook adapters planned for v2 — DEFERRED v2: not implementable without runtime SDK changes

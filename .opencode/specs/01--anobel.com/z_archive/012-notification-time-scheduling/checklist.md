@@ -1,158 +1,106 @@
 ---
-title: "Validation Checklist: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/checklist]"
-description: "Quality gates for validating the time-based scheduling implementation."
+title: "Verification Checklist: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/checklist]"
+description: "Archived verification checklist for Notification Time-Based Scheduling."
 trigger_phrases:
-  - "validation"
-  - "checklist"
+  - "feature"
+  - "specification"
   - "notification"
-  - "time"
-  - "based"
-  - "013"
+  - "time-based"
+  - "scheduling"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Validation Checklist: Notification Time-Based Scheduling
+# Verification Checklist: Notification Time-Based Scheduling
 
-Quality gates for validating the time-based scheduling implementation.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
-
----
-
-<!-- ANCHOR:metadata -->
-## 1. METADATA
-
-- **Category**: Checklist
-- **Tags**: notifications, time-scheduling, validation
-- **Priority**: P1
-- **Created**: 2025-12-29
-- **Status**: In Progress
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
-<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:pre-implementation -->
-## 2. PRE-IMPLEMENTATION
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-- [ ] CHK001 [P0] Spec folder created with all Level 3 documents
-- [ ] CHK002 [P0] Current nav_notifications.js backed up (version control)
-- [ ] CHK003 [P1] Webflow CMS DateTime field configuration verified
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
-<!-- /ANCHOR:pre-implementation -->
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
+
+---
 
 <!-- ANCHOR:code-quality -->
-## 3. CODE QUALITY
+## Code Quality
 
-- [ ] CHK010 [P0] has_time_component() function added and working
-- [ ] CHK011 [P0] parse_alert_item() returns startHasTime and endHasTime
-- [ ] CHK012 [P0] is_within_date_range() implements dual-mode comparison
-- [ ] CHK013 [P0] No syntax errors in modified code
-- [ ] CHK014 [P1] Debug logging shows comparison mode ([EXACT TIME] vs [MIDNIGHT])
-- [ ] CHK015 [P1] Code follows existing naming conventions (snake_case functions)
-- [ ] CHK016 [P2] Comments explain the dual-mode logic
-
----
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
 <!-- /ANCHOR:code-quality -->
 
-<!-- ANCHOR:time-detection -->
-## 4. TIME DETECTION
-
-- [ ] CHK020 [P0] Regex matches "9:50" format
-- [ ] CHK021 [P0] Regex matches "09:50" format
-- [ ] CHK022 [P0] Regex matches "AM" and "PM"
-- [ ] CHK023 [P0] Regex matches ISO "T12:" format
-- [ ] CHK024 [P0] Empty/null strings return false
-- [ ] CHK025 [P1] Date-only strings return false
-
 ---
-<!-- /ANCHOR:time-detection -->
 
-<!-- ANCHOR:backward-compatibility -->
-## 5. BACKWARD COMPATIBILITY
-
-- [ ] CHK030 [P0] Date-only start dates compare at midnight
-- [ ] CHK031 [P0] Date-only end dates compare at 23:59:59
-- [ ] CHK032 [P0] Existing alerts without time continue working
-- [ ] CHK033 [P1] Mixed scenarios work (time start + date end)
-
----
-<!-- /ANCHOR:backward-compatibility -->
-
-<!-- ANCHOR:time-based-scheduling -->
-## 6. TIME-BASED SCHEDULING
-
-- [ ] CHK040 [P0] Alert with future start time is hidden
-- [ ] CHK041 [P0] Alert with past start time is visible
-- [ ] CHK042 [P0] Alert with past end time is hidden
-- [ ] CHK043 [P0] Alert with future end time is visible
-- [ ] CHK044 [P1] Exact minute boundary works correctly
-
----
-<!-- /ANCHOR:time-based-scheduling -->
-
-<!-- ANCHOR:minification-deployment -->
-## 7. MINIFICATION & DEPLOYMENT
-
-- [ ] CHK050 [P0] Minification completes without errors
-- [ ] CHK051 [P0] Minified file is smaller than source
-- [ ] CHK052 [P0] CDN version updated to 1.1.10
-- [ ] CHK053 [P1] Minified version runs without errors
-
----
-<!-- /ANCHOR:minification-deployment -->
-
-<!-- ANCHOR:browser-testing -->
 <!-- ANCHOR:testing -->
-## 8. BROWSER TESTING
+## Testing
 
-- [ ] CHK060 [P0] No console errors on page load
-- [ ] CHK061 [P0] AnobelAlerts.debug(true) works
-- [ ] CHK062 [P0] AnobelAlerts.getAll() shows startHasTime/endHasTime
-- [ ] CHK063 [P1] Debug logs show correct comparison mode
-
----
-<!-- /ANCHOR:browser-testing -->
-
-<!-- ANCHOR:documentation -->
-<!-- ANCHOR:docs -->
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
 <!-- /ANCHOR:testing -->
-## 9. DOCUMENTATION
-
-- [ ] CHK070 [P1] webflow_guide.md created with testing instructions
-- [ ] CHK071 [P1] decision-record.md documents key decisions
-- [ ] CHK072 [P2] CMS Alert System documentation updated
 
 ---
-<!-- /ANCHOR:documentation -->
 
-<!-- ANCHOR:verification-summary -->
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
 <!-- /ANCHOR:docs -->
-## 10. VERIFICATION SUMMARY
-
-| Category | Total | Completed | Status |
-|----------|-------|-----------|--------|
-| Pre-Implementation | 3 | 0 | ⏳ |
-| Code Quality | 7 | 0 | ⏳ |
-| Time Detection | 6 | 0 | ⏳ |
-| Backward Compatibility | 4 | 0 | ⏳ |
-| Time-Based Scheduling | 5 | 0 | ⏳ |
-| Minification & Deployment | 4 | 0 | ⏳ |
-| Browser Testing | 4 | 0 | ⏳ |
-| Documentation | 3 | 0 | ⏳ |
-| **TOTAL** | **36** | **0** | ⏳ |
 
 ---
-<!-- /ANCHOR:verification-summary -->
 
-<!-- ANCHOR:priority-enforcement -->
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
 <!-- /ANCHOR:summary -->
-## 11. PRIORITY ENFORCEMENT
 
-| Priority | Handling | Items |
-|----------|----------|-------|
-| **[P0] Critical** | HARD BLOCKER - must complete | 22 |
-| **[P1] High** | Required OR user-approved deferral | 11 |
-| **[P2] Medium** | Can defer with documented reason | 3 |
-<!-- /ANCHOR:priority-enforcement -->
+---

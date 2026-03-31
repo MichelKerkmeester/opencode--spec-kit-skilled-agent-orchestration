@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `024-agent-ultra-think` |
+| **Spec Folder** | 024-agent-ultra-think |
 | **Completed** | Legacy normalization |
 | **Level** | 1 |
 | **Status** | Complete |

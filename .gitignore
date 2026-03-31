@@ -17,7 +17,6 @@
 
 # Archive
 # ───────────────────────────────────────────
-/z — Archive/
 .opencode/agent/.provider-backups/
 
 
@@ -55,7 +54,6 @@ node_modules/
 # Local settings
 # ───────────────────────────────────────────
 *.local
-settings.local.json
 
 # Log files
 # ───────────────────────────────────────────
@@ -69,36 +67,21 @@ settings.local.json
 # ───────────────────────────────────────────
 __pycache__/
 
-# Project-specific commands (not part of framework)
-# ───────────────────────────────────────────
-.opencode/command/agent_router.md
-.claude/commands/agent_router.md
-.agents/commands/agent_router.md
-
 # Temporary files
 # ───────────────────────────────────────────
+external/
 tmp/
 .tmp/
 **/vitest-tmp/
 **/node-compile-cache/
 
-# Non-dev AI systems specs (project-specific, not framework)
-# ───────────────────────────────────────────
-.opencode/specs/00--ai-systems-non-dev
-
-.opencode/skill/system-spec-kit/mcp_server/database/speckit-eval.db-wal
-
-.opencode/skill/system-spec-kit/mcp_server/database/speckit-eval.db-shm
-
-# Local symlinked repos
-# ───────────────────────────────────────────
-/anobel.com
-
-# CocoIndex Code semantic index
+# CocoIndex
 # ───────────────────────────────────────────
 .cocoindex_code/
-
-# CocoIndex Code MCP skill venv
-# ───────────────────────────────────────────
 .opencode/skill/mcp-cocoindex-code/mcp_server/.venv/
 .opencode/skill/mcp-coco-index/mcp_server/.venv/
+
+# Not part of framework
+# ───────────────────────────────────────────
+.opencode/specs/00--ai-systems-non-dev
+/anobel.com

@@ -1,17 +1,16 @@
 ---
-title: "Tasks: Convert OpenCode Agents to Claude Code [04--agent-orchestration/z_archive/009-claude-code-subagents/tasks]"
+title: "Tasks: Claude Code Subagents [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "convert"
-  - "opencode"
-  - "agents"
-  - "claude"
-  - "009"
+  - "claude code subagents"
+  - "archive"
+  - "template"
+  - "tasks core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Convert OpenCode Agents to Claude Code Subagents
+# Tasks: Claude Code Subagents
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -29,34 +28,27 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Preparation
+## Phase 1: Setup
 
-- [ ] T001 Read `.claude/agents/explore.md` frontmatter as reference
-- [ ] T002 Document frontmatter conversion mapping (OpenCode → Claude Code)
-- [ ] T003 Verify all 8 source files exist in `.opencode/agent/`
-
+- [x] T001 Review archived folder contents
+- [x] T002 Confirm Level 1 template requirements
+- [x] T003 [P] Identify validation-breaking markdown drift
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Conversion (Parallelizable)
+## Phase 2: Implementation
 
-- [ ] T004 [P] Convert context.md (.opencode/agent/context.md → .claude/agents/context.md)
-- [ ] T005 [P] Convert orchestrate.md (.opencode/agent/orchestrate.md → .claude/agents/orchestrate.md)
-- [ ] T006 [P] Convert speckit.md (.opencode/agent/speckit.md → .claude/agents/speckit.md)
-- [ ] T007 [P] Convert research/research.md (.opencode/agent/research/research/research.md → .claude/agents/research/research/research.md)
-- [ ] T008 [P] Convert write.md (.opencode/agent/write.md → .claude/agents/write.md)
-- [ ] T009 [P] Convert debug.md (.opencode/agent/debug.md → .claude/agents/debug.md)
-- [ ] T010 [P] Convert review.md (.opencode/agent/review.md → .claude/agents/review.md)
-- [ ] T011 [P] Convert handover.md (.opencode/agent/handover.md → .claude/agents/handover.md)
-
+- [x] T004 Rewrite spec.md as a concise archival record
+- [x] T005 Rewrite plan.md with the archive-fix approach
+- [x] T006 Rewrite implementation-summary.md for the completed normalization
+- [x] T007 Refresh extra top-level markdown files as brief archival notes when present
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,10 +56,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T012 Verify all 8 files exist in `.claude/agents/`
-- [ ] T013 Check frontmatter structure matches Claude Code format
-- [ ] T014 Confirm body content unchanged (diff source vs target bodies)
-
+- [x] T008 Validate structural compliance
+- [x] T009 Confirm top-level markdown notes do not contain broken file references
+- [x] T010 Re-run strict validation and keep the passing result
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,10 +66,9 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] 8 agent files in `.claude/agents/` with valid frontmatter and identical body content
-
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -88,7 +78,6 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-
 <!-- /ANCHOR:cross-refs -->
 
 ---

@@ -1,54 +1,118 @@
 ---
-title: "Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/spec]"
-description: "Add a scale animation to .video--pause and .video--play icons when hovering over .video--play-pause-btn."
+title: "Feature Specification: Video Play/Pause Button Hover Effect [.opencode/specs/01--anobel.com/z_archive/006-video-play-pause-hover/spec]"
+description: "Video Play/Pause Button Hover Effect"
 trigger_phrases:
   - "video"
   - "play"
   - "pause"
   - "button"
   - "hover"
-  - "spec"
-  - "006"
+  - "effect"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Video Play/Pause Button Hover Effect
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Video Play/Pause Button Hover Effect
 
-<!-- ANCHOR:overview -->
-## Overview
-Add a scale animation to `.video--pause` and `.video--play` icons when hovering over `.video--play-pause-btn`.
-<!-- /ANCHOR:overview -->
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `006-video-play-pause-hover` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Video Play/Pause Button Hover Effect
+
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
+
+### Out of Scope
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
+<!-- /ANCHOR:scope -->
+
+---
 
 <!-- ANCHOR:requirements -->
-## Requirements
-- On hover of `.video--play-pause-btn`, scale up the nested play/pause icons
-- Use the existing `data-trigger` / `data-hover` CSS pattern from `link_card_image.css`
-- Scale factor: 15% (more noticeable for small icons)
-- Smooth 300ms transition
-- Respect `prefers-reduced-motion` accessibility preference
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
 
-<!-- ANCHOR:structure -->
-## Structure
-```
-.video--play-pause-w (wrapper)
-  └── .video--play-pause-btn [data-trigger] (hover trigger)
-        ├── .video--pause [data-hover="scale-icon"]
-        └── .video--play [data-hover="scale-icon"]
-```
-<!-- /ANCHOR:structure -->
+---
 
-<!-- ANCHOR:technical-approach -->
-## Technical Approach
-Uses CSS custom property `--_state---on` (0 or 1) with `clamp()` for smooth state transitions:
-```css
-transform: scale(calc(1 + (0.15 * clamp(0, var(--_state---on, 0), 1))));
-```
-<!-- /ANCHOR:technical-approach -->
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-<!-- ANCHOR:files -->
-## Files
-- **CSS:** `src/1_css/animations/video_play_pause_btn.css`
-<!-- /ANCHOR:files -->
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

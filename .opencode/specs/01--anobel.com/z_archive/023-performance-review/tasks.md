@@ -1,8 +1,7 @@
 ---
-title: "Tasks: Performance Optimization Review - Spec 025 [01--anobel.com/z_archive/023-performance-review/tasks]"
-description: "Task Format: T### [P?] [Priority] Description (file path) → CHK-###"
+title: "Tasks: Performance Optimization Review - Spec 025 [.opencode/specs/01--anobel.com/z_archive/023-performance-review/tasks]"
+description: "Archived normalization task list for Performance Optimization Review - Spec 025."
 trigger_phrases:
-  - "tasks"
   - "performance"
   - "optimization"
   - "review"
@@ -14,11 +13,10 @@ contextType: "implementation"
 # Tasks: Performance Optimization Review - Spec 025
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:task-notation -->
 <!-- ANCHOR:notation -->
 ## Task Notation
 
@@ -29,147 +27,57 @@ contextType: "implementation"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] [Priority] Description (file path) → CHK-###`
-
----
-
-<!-- /ANCHOR:task-notation -->
-
-<!-- ANCHOR:phase-1-data-gathering -->
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
-## Phase 1: Data Gathering
-
-- [x] T001 [P] [P0] Run Lighthouse mobile audit - Home page → CHK-010
-- [x] T002 [P] [P0] Run Lighthouse desktop audit - Home page → CHK-011
-- [x] T003 [P] [P0] Run Lighthouse mobile audit - Contact page → CHK-012
-- [x] T004 [P] [P0] Run Lighthouse desktop audit - Contact page → CHK-013
-- [x] T005 [P] [P0] Run Lighthouse mobile audit - Werken Bij page → CHK-014
-- [x] T006 [P] [P0] Run Lighthouse desktop audit - Werken Bij page → CHK-015
-- [x] T007 [P0] Save all JSON outputs to scratch/ → CHK-060
-
-**Phase Gate**: All 6 Lighthouse reports captured ✅
 
 ---
 
-<!-- /ANCHOR:phase-1-data-gathering -->
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-<!-- ANCHOR:phase-2-version-remediation -->
-## Phase 2: Version Remediation
-
-- [x] T008 [P0] Update marquee_brands.js v1.2.33 → v1.2.35 (`contact.html`) → CHK-020
-- [x] T009 [P0] Update marquee_brands.js v1.2.33 → v1.2.35 (`home.html`) → CHK-021
-- [x] T010 [P0] Update marquee_brands.js v1.2.33 → v1.2.35 (`n5_brochures.html`) → CHK-022
-- [x] T011 [P0] Update marquee_brands.js v1.2.33 → v1.2.35 (`d1_bunkering.html`) → CHK-023
-- [x] T012 [P1] Update input_select.js v1.0.0 → v1.1.0 (`blog.html`) → CHK-024
-
-**Phase Gate**: All version strings updated, grep verification passes ✅
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- /ANCHOR:phase-2-version-remediation -->
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-<!-- ANCHOR:phase-3-cleanup-function-implementation -->
-## Phase 3: Cleanup Function Implementation
-
-- [x] T013 [P1] Add cleanup function to input_upload.js → CHK-032
-- [ ] T014 [P1] Test file upload still works after changes → CHK-033
-
-**Phase Gate**: Cleanup function implemented, file upload verification pending
-
----
-
-<!-- /ANCHOR:phase-3-cleanup-function-implementation -->
-
-<!-- ANCHOR:phase-4-documentation -->
-## Phase 4: Documentation
-
-- [x] T015 [P0] Update spec.md with post-implementation metrics → CHK-050
-- [x] T016 [P0] Create before/after comparison table → CHK-051
-- [x] T017 [P1] Document Phase 2 priorities → CHK-052
-- [x] T018 [P1] Create implementation-summary.md → CHK-053
-
-**Phase Gate**: All documentation complete and synchronized ✅
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`checklist.md`, `implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- /ANCHOR:phase-4-documentation -->
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-<!-- ANCHOR:completion-criteria -->
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` (except T014 - pending browser verification)
+- [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed (T014 pending)
-- [x] All P0 checklist items verified
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- /ANCHOR:completion-criteria -->
-
-<!-- ANCHOR:cross-references -->
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Verification**: See `checklist.md`
-
----
-
-<!-- /ANCHOR:cross-references -->
-
-<!-- ANCHOR:task-checklist-mapping -->
 <!-- /ANCHOR:cross-refs -->
-## L2: TASK-CHECKLIST MAPPING
-
-| Task ID | Checklist Item | Priority | Status |
-|---------|----------------|----------|--------|
-| T001-T007 | CHK-010-015, CHK-060 | P0 | [x] |
-| T008-T012 | CHK-020-024 | P0 | [x] |
-| T013 | CHK-032 | P1 | [x] |
-| T014 | CHK-033 | P1 | [ ] |
-| T015-T018 | CHK-050-053 | P0/P1 | [x] |
 
 ---
-
-<!-- /ANCHOR:task-checklist-mapping -->
-
-<!-- ANCHOR:phase-completion-gates -->
-## L2: PHASE COMPLETION GATES
-
-### Gate 1: Data Gathering Complete
-
-- [x] All 6 Lighthouse audits captured
-- [x] JSON files saved to scratch/
-- [x] Ready for metrics documentation
-
-### Gate 2: Version Remediation Complete
-
-- [x] All 5 files updated with correct versions
-- [x] Grep verification shows uniform versions
-- [ ] No console errors on affected pages (pending deployment)
-
-### Gate 3: Cleanup Implementation Complete
-
-- [x] InputUpload.cleanup() function exists
-- [ ] File upload still functional (pending browser test)
-- [ ] No console errors (pending browser test)
-
-### Gate 4: Documentation Complete
-
-- [x] spec.md metrics table populated
-- [x] implementation-summary.md created
-- [x] All docs synchronized
-
----
-
-<!-- /ANCHOR:phase-completion-gates -->
-
-<!-- ANCHOR:blocked-task-tracking -->
-## L2: BLOCKED TASK TRACKING
-
-| Task ID | Blocker | Impact | Resolution |
-|---------|---------|--------|------------|
-| None | - | - | - |
-
-<!-- /ANCHOR:blocked-task-tracking -->

@@ -1,68 +1,102 @@
 ---
-title: "Verification [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/checklist]"
-description: "checklist document for 001-foundation-phases-0-1-1-5."
+title: "Verification Checklist: Foundation Phases 0 1 1 5 [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"
-  - "checklist"
-  - "foundation"
-  - "package"
-  - "001"
+  - "phase"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Verification Checklist: Foundation Package
+# Verification Checklist: Foundation Phases 0 1 1 5
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-checklist | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
 ## Verification Protocol
 
-| Priority | Handling |
-|----------|----------|
-| P0 | Hard blocker |
-| P1 | Required unless explicitly deferred |
-| P2 | Optional optimization |
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
 <!-- /ANCHOR:protocol -->
 
 ---
 
-<!-- ANCHOR:p0-blockers -->
-## P0 - Blockers
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] FDN-CHK-001 Root checks `CHK-125-129` mapped and verifiable in this package. [EVIDENCE: File: ../checklist.md; Source: CHK-125-129 mapping retained in package scope]
-- [x] FDN-CHK-002 Root checks `CHK-130-139` mapped and verifiable in this package. [EVIDENCE: File: ../checklist.md; Source: CHK-130-139 mapping retained in package scope]
-- [x] FDN-CHK-003 Root checks `CHK-155-159b` mapped and verifiable in this package. [EVIDENCE: File: ../checklist.md; Source: CHK-155-159b mapping retained in package scope]
-- [x] FDN-CHK-004 Hard gate conditions documented: rank correlation >= 0.90 and redaction FP <= 15% before Phase 2. [EVIDENCE: File: spec.md; Source: Acceptance Targets and Acceptance Scenarios]
-- [x] FDN-CHK-005 Handoff artifacts listed and linked (`eval-dataset-1000.json`, `phase1-5-eval-results.md`, `redaction-calibration.md`). [EVIDENCE: File: spec.md; Source: Dependencies and Handoffs section]
-<!-- /ANCHOR:p0-blockers -->
+- [ ] CHK-001 [P0] Archived phase topic documented in spec.md
+- [ ] CHK-002 [P0] Normalization approach documented in plan.md
+- [ ] CHK-003 [P1] Existing compatibility files reviewed before rewrite
+<!-- /ANCHOR:pre-impl -->
 
-<!-- ANCHOR:p1-required -->
+---
 
-## P1 - Required
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] FDN-CHK-010 `T000a-T028` and `T027a-T027o` mapping to root tasks is current. [EVIDENCE: File: ../tasks.md; Source: task ranges aligned to package execution model]
-- [x] FDN-CHK-011 Dependency notes to package 002 are explicit and accurate. [EVIDENCE: File: spec.md; Source: Dependencies and Handoffs includes package 002 block]
-- [x] FDN-CHK-012 Session lifecycle contract coverage present (`T027k-T027n`). [EVIDENCE: File: plan.md; Source: Quality Gates and Risk Register lifecycle references]
-- [x] FDN-CHK-013 Execution status is explicit and synchronized with root completion claims. [EVIDENCE: File: spec.md; Source: Metadata and Status Statement]
-- [x] FDN-CHK-014 Root references remain synchronized across `../spec.md`, `../plan.md`, `../tasks.md`, and `../checklist.md`. [EVIDENCE: File: spec.md; Source: Root Mapping section]
-<!-- /ANCHOR:p1-required -->
+- [ ] CHK-010 [P0] Core phase docs match current templates
+- [ ] CHK-011 [P0] Anchors are valid in retained spec docs
+- [ ] CHK-012 [P1] Compatibility stubs remain readable and concise
+<!-- /ANCHOR:code-quality -->
 
-<!-- ANCHOR:p2-optional -->
+---
 
-## P2 - Optional
+<!-- ANCHOR:testing -->
+## Testing
 
-- [x] FDN-CHK-020 Package-level risk notes kept aligned with root `../plan.md`.
-- [x] FDN-CHK-021 Package timeline updated if root milestone dates change.
-<!-- /ANCHOR:p2-optional -->
+- [ ] CHK-020 [P0] Child phase validates with zero errors
+- [ ] CHK-021 [P0] Top-level markdown integrity checks pass
+- [ ] CHK-022 [P1] Manual review confirms the phase remains recognizable
+<!-- /ANCHOR:testing -->
 
-<!-- ANCHOR:evidence -->
+---
 
-## Evidence
+<!-- ANCHOR:security -->
+## Security
 
-- Root tasks: `../tasks.md`
-- Root verification: `../checklist.md`
-- Hardening artifacts: `../scratch/`
-<!-- /ANCHOR:evidence -->
+- [ ] CHK-030 [P0] No sensitive data was introduced during archive repair
+- [ ] CHK-031 [P1] No misleading execution instructions remain in retained notes
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Core docs describe the same archived phase state
+- [ ] CHK-041 [P1] implementation-summary.md uses the correct folder metadata
+- [ ] CHK-042 [P2] Compatibility docs avoid broken markdown references
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Required Level 1 files are present
+- [ ] CHK-051 [P1] Optional compatibility stubs remain top-level only
+- [ ] CHK-052 [P2] No new archive clutter was introduced
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 0/7 |
+| P1 Items | 8 | 0/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

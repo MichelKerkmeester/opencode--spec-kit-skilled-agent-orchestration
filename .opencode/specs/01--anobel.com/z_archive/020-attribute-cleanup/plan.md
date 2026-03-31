@@ -1,37 +1,36 @@
 ---
-title: "Implementation Plan: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/plan]"
-description: "USE LEVEL 2+ IF: Phase dependencies need tracking, effort estimation required, or multiple developers. -->"
+title: "Implementation Plan: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/plan]"
+description: "Feature Specification: Attribute Cleanup Deepdive"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "feature"
+  - "specification"
   - "attribute"
   - "cleanup"
   - "deepdive"
-  - "021"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Implementation Plan: Attribute Cleanup Deepdive
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.0 -->
-
-<!-- WHEN TO USE: Simple 2-3 phase implementation, minimal dependencies, single developer.
-     USE LEVEL 2+ IF: Phase dependencies need tracking, effort estimation required, or multiple developers. -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | JavaScript (Webflow runtime) |
-| **Framework** | None (vanilla JS) |
-| **Storage** | None |
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-**Overview**: Inventory value-based `data-*` attributes used by site CSS and known configuration attributes, then expand the on-load cleanup allowlist so any of those attributes (and `id`) are removed when their value is empty.
-
+### Overview
+Feature Specification: Attribute Cleanup Deepdive
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,62 +38,84 @@ contextType: "decision"
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-**Ready When:**
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-**Done When:**
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## 3. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Spec folder created (Level 1)
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
 ### Phase 2: Core Implementation
-- [x] Deepdive scan `src/0_html` for empty attributes (none found in source HTML)
-- [x] Extract value-based `data-*` attributes from `src/1_css`
-- [x] Update `src/2_javascript/global/attribute_cleanup.js` allowlist
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
 ### Phase 3: Verification
-- [x] jsdom smoke test (empty attrs removed; marker attr preserved)
-- [ ] Update spec docs (spec/plan/tasks) with final state
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
-<!-- /ANCHOR:implementation-phases -->
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-<!-- /ANCHOR:phases -->
-## 4. DEPENDENCIES
+## 6. DEPENDENCIES
 
-| Dependency | Status | Impact if Blocked |
-|------------|--------|-------------------|
-| `jsdom` (dev dependency) | Green | Smoke testing not possible in Node |
-
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 5. ROLLBACK
+## 7. ROLLBACK PLAN
 
-- **Trigger**: Attribute cleanup removes a marker attribute or breaks a component.
-- **Procedure**: Revert `src/2_javascript/global/attribute_cleanup.js` to previous allowlist; re-run smoke test.
-
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
 <!-- /ANCHOR:rollback -->
 
 ---
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Essential technical planning for simple features
-- For complex work, use Level 2+ templates
--->

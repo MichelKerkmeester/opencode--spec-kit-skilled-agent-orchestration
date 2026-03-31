@@ -1,184 +1,120 @@
 ---
-title: "Phase Package [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/plan]"
-description: "Deliver prerequisite and hardening infrastructure that enables safe start of Phase 2 extraction work."
+title: "Implementation Plan: Foundation Phases 0 1 1 5 [template:level_1/plan.md]"
+description: "Normalize archived phase folder 001-foundation-phases-0-1-1-5 so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
+  - "001-foundation-phases-0-1-1-5"
   - "phase"
-  - "package"
-  - "plan"
-  - "foundation"
-  - "001"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Phase Package Plan: Foundation (Phase 0, Phase 1, Phase 1.5)
+# Implementation Plan: Foundation Phases 0 1 1 5
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-plan | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. Objective
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Deliver prerequisite and hardening infrastructure that enables safe start of Phase 2 extraction work.
-<!-- /ANCHOR:objective -->
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, Bash, Node.js validator tooling |
+| **Framework** | system-spec-kit template compliance |
+| **Storage** | Git-tracked archived phase files |
+| **Testing** | validate.sh --verbose --no-recursive |
+
+### Overview
+This plan keeps the archived child phase readable while replacing outdated phase-package formatting with current Level 1 template structure. The work focuses on compliance, concise archival context, and safe integrity cleanup.
+<!-- /ANCHOR:summary -->
 
 ---
 
 <!-- ANCHOR:quality-gates -->
-## 2. Quality Gates
+## 2. QUALITY GATES
 
 ### Definition of Ready
-- Root mapping to `T000a-T028` and `T027a-T027o` confirmed.
-- Dataset strategy confirmed (100-query bootstrap, 1000-query hardening).
-- Token-usage three-tier contract accepted.
-- Session lifecycle contract scope confirmed.
+- [x] Current Level 1 templates reviewed.
+- [x] Existing child phase docs inspected before rewrite.
+- [x] Validation targets understood.
 
 ### Definition of Done
-- `T000l` and `T027o` complete.
-- Hard gates pass: correlation >= 0.90 and redaction FP <= 15%.
-- Handoff artifacts published to `../scratch/` for package 002.
+- [x] Phase docs use current Level 1 template structure.
+- [x] Retained compatibility docs are simplified.
+- [x] Child phase validates with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:execution-model -->
-## 3. Execution Model
-
-| Workstream | Root Tasks | Duration | Output |
-|------------|------------|----------|--------|
-| Hook pipeline | `T000a-T000d` | 2-3 days | Non-blocking post-dispatch callback pipeline |
-| tokenUsage contract | `T000e-T000g` | 1-2 days | Three-tier fallback contract and tests |
-| Phase 0 dataset bootstrap | `T000h-T000k` | 1 day | `eval-dataset-100.json` with baseline capture |
-| Core automation | `T001-T028` | 1-2 weeks | Event decay, session boost, pressure policy |
-| Hardening gate | `T027a-T027o` | 4-5 days | 1000-query eval, redaction calibration, go/no-go |
-<!-- /ANCHOR:execution-model -->
-
----
-
-<!-- ANCHOR:milestones -->
-## 4. Milestones
-
-| Milestone | Exit Criteria |
-|-----------|---------------|
-| FDN-M0 | `T000l` complete (Phase 0 sign-off) |
-| FDN-M1 | `T028` complete with Phase 1 dark launch |
-| FDN-M1.5 | `T027o` complete; all hard gates passed for Phase 2 handoff |
-<!-- /ANCHOR:milestones -->
-
----
-
-<!-- ANCHOR:risk-register -->
-## 5. Risk Register
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Dataset quality too weak in Phase 0 | Misleading Phase 1 confidence | Treat 100-query set as indicative only; enforce 1000-query hard gate |
-| tokenUsage often absent from callers | Pressure policy under-activation | Three-tier fallback + explicit WARN when inactive |
-| Redaction false positives | Loss of useful git/runtime context | Calibrate on 50 outputs + SHA/UUID exclusions before Phase 2 |
-| Session lifecycle ambiguity | Wrong decay/boost behavior on resume | Contract + integration test in `T027k-T027n` |
-<!-- /ANCHOR:risk-register -->
-
----
-
-<!-- ANCHOR:dependencies -->
-## 6. Dependencies and Handoff
-
-- Consumes canonical requirements and acceptance criteria from `../spec.md`.
-- Primary ownership in overlap set: this package owns acceptance for `REQ-014` and `REQ-017`; package 002 consumes these outputs.
-- On completion, unlocks package `../002-extraction-rollout-phases-2-3/`.
-- Handoff bundle:
-  - `../scratch/eval-dataset-1000.json`
-  - `../scratch/phase1-5-eval-results.md`
-  - `../scratch/redaction-calibration.md`
-<!-- /ANCHOR:dependencies -->
-
----
-
-<!-- ANCHOR:governance -->
-## 7. Governance Notes
-
-- Level 3+ package planning is maintained here.
-- `decision-record.md` remains root-only at `../decision-record.md`.
-- `implementation-summary.md` present as compliance normalization record; substantive summary at `../implementation-summary.md`.
-<!-- /ANCHOR:governance -->
-
----
-
-<!-- ANCHOR:status -->
-## 8. Planning Status
-
-Planning-only package. No implementation has started.
-<!-- /ANCHOR:status -->
-
----
-
-<!-- ANCHOR:technical-context -->
-## Technical Context
-
-| Context Item | Current State | Package Implication |
-|--------------|---------------|---------------------|
-| Root requirement baseline | Defined in `../spec.md` | Package 001 owns foundation acceptance for overlap items `REQ-014` and `REQ-017` |
-| Task inventory | Defined in `../tasks.md` | Execution scope is constrained to `T000a-T028` and `T027a-T027o` |
-| Validation inventory | Defined in `../checklist.md` | Gate mapping must stay aligned to `CHK-125-139` and `CHK-155-159b` |
-| Downstream dependency | Package `../002-extraction-rollout-phases-2-3/` | Phase 2 start is blocked until hardening gate completion |
-<!-- /ANCHOR:technical-context -->
-
----
-
 <!-- ANCHOR:architecture -->
-## Architecture
+## 3. ARCHITECTURE
 
-Foundation delivery architecture is a gated sequence: prerequisite wiring, core automation, then hardening verification. The architecture intentionally separates indicative confidence signals (Phase 0 and Phase 1) from hard go/no-go gates (Phase 1.5) so package 002 receives explicit readiness evidence rather than inferred readiness.
+### Pattern
+Archival phase normalization using Level 1 compliance.
+
+### Key Components
+- **Core docs**: spec.md, plan.md, tasks.md, and implementation-summary.md explain the archived phase state.
+- **Compatibility docs**: checklist.md and decision-record.md remain as lightweight stubs because they already exist in the folder.
+
+### Data Flow
+The phase folder name informs the rewritten markdown, then validate.sh confirms the normalized archive is structurally sound.
 <!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:implementation -->
-## Implementation
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-Implementation follows the root task mapping and keeps package boundaries explicit so this package can be audited independently while remaining synchronized with root completion semantics.
-<!-- /ANCHOR:implementation -->
+### Phase 1: Setup
+- [x] Review the archived phase docs
+- [x] Load active Level 1 templates
+- [x] Decide to normalize instead of preserving phase-package structure
+
+### Phase 2: Core Implementation
+- [x] Rewrite the core docs
+- [x] Simplify retained compatibility files
+- [x] Remove broken markdown references from top-level notes
+
+### Phase 3: Verification
+- [x] Run validate.sh on the child phase folder
+- [x] Repair any remaining error-level issues
+- [x] Confirm zero validation errors
+<!-- /ANCHOR:phases -->
 
 ---
 
-## Phase 0 - Prerequisite Bootstrap
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-Deliver `T000a-T000l` to establish callback pipeline behavior, token usage contract handling, and initial baseline dataset capture used by later hardening validation.
-
-## Phase 1 - Core Cognitive Automation
-
-Deliver `T001-T028` with event decay, session boost, and pressure policy behavior mapped to root acceptance and verification artifacts.
-
-## Phase 1.5 - Hardening Gate
-
-Deliver `T027a-T027o` and enforce hard gates (rank correlation and redaction calibration) before handing package outputs to package 002.
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Headers, anchors, level markers | validate.sh --verbose --no-recursive |
+| Integrity | Metadata and markdown references | validate.sh --verbose --no-recursive |
+| Manual | Archived phase readability | Direct markdown review |
+<!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:ai-execution-protocol -->
-## AI Execution Protocol
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-### Pre-Task Checklist
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit templates | Internal | Green | Safe normalization would be blocked. |
+| validate.sh | Internal | Green | Final verification evidence would be incomplete. |
+<!-- /ANCHOR:dependencies -->
 
-- Confirm package-to-root mapping for `T000a-T028` and `T027a-T027o` is still current.
-- Confirm dependency lock to package `../002-extraction-rollout-phases-2-3/` is unchanged.
-- Confirm hardening thresholds (`>= 0.90` correlation, `<= 15%` redaction false positives) remain unchanged.
-- Confirm handoff artifacts path remains `../scratch/`.
+---
 
-### Execution Rules
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-| Rule | Description | Trigger | Action |
-|------|-------------|---------|--------|
-| FDN-ER-001 | Preserve root ownership boundaries | Any package update | Keep requirement ownership unchanged (`REQ-014`, `REQ-017`) |
-| FDN-ER-002 | Enforce hardening gate before handoff | Before Phase 2 handoff | Block handoff unless `T027o` gate criteria are met |
-| FDN-ER-003 | Keep root references synchronized | Any document edit | Reconcile references to `../spec.md`, `../plan.md`, `../tasks.md`, `../checklist.md` |
+- **Trigger**: The normalized child phase loses essential meaning or introduces fresh validation errors.
+- **Procedure**: Restore the prior files from git history and repeat normalization using the active templates as the baseline.
+<!-- /ANCHOR:rollback -->
 
-### Status Reporting Format
-
-Use: `Status: <Planned|In Progress|Blocked|Complete> | Scope: <task IDs> | Evidence: <artifact paths> | Next: <next action>`.
-
-### Blocked Task Protocol
-
-If blocked, record `BLOCKED` status with blocker type, impacted task IDs, and expected unblock condition; keep package `002` dependency note updated until blocker is cleared.
-<!-- /ANCHOR:ai-execution-protocol -->
+---

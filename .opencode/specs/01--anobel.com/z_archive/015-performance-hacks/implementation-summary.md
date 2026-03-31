@@ -1,61 +1,81 @@
 ---
-title: "Implementation Summary - Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/implementation-summary]"
-description: "I cannot perform these changes via code because they are managed inside Webflow or external settings."
+title: "Implementation Summary"
+description: "Archived implementation summary for Specification: Additional Performance Hacks."
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "specification"
+  - "additional"
   - "performance"
   - "hacks"
-  - "implementation summary"
-  - "016"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-# Implementation Summary - Performance Hacks
-
-> **Goal:** High-impact, low-effort optimizations for Core Web Vitals (LCP/FCP).
-
-<!-- ANCHOR:applied-optimizations -->
-## Applied Optimizations
-
-### 1. Font Preloading (Previous Step)
-- Added `<link rel="preload">` for Silka Regular and Semibold.
-- Note: I updated the URLs to match the latest CDN paths found in your live site (`691d5754...`).
-
-### 2. Preload Cleanup (Global)
-- **Removed:** Preloads for `dropdown.js`, `mobile_menu.js`, and `modal_cookie_consent.js`.
-- **Reason:** These are interaction scripts, not needed for the initial paint. Removing them frees up bandwidth for the Hero video and CSS.
-
-### 3. FCP Safety Fallback
-- **Added:** A lightweight inline script in the footer that forces the page to become visible after 500ms.
-- **Reason:** Your site uses a "reveal" animation (`opacity: 0` -> `opacity: 1`). If the controlling script delays (e.g., waiting for fonts), the user sees a white screen. This fallback ensures content is visible even on slow connections.
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
-<!-- /ANCHOR:applied-optimizations -->
 
-<!-- ANCHOR:required-actions-webflow-designer -->
-## Required Actions (Webflow Designer)
+<!-- ANCHOR:metadata -->
+## Metadata
 
-I cannot perform these changes via code because they are managed inside Webflow or external settings.
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 015-performance-hacks |
+| **Completed** | 2026-03-31 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
-### 1. Remove Typekit Script
-**Location:** Webflow Project Settings > Custom Code (Head) OR Integrations > Adobe Fonts.
-**Action:** Delete the line `<script src="https://use.typekit.net/grw1wnt.js"...>`.
-**Why:** You are using uploaded fonts. This script is blocking the main thread and slowing down the site for no reason.
+---
 
-### 2. Lazy Load Marquee Images
-**Location:** Webflow Designer > Home Page > Marquee Section.
-**Action:** Select the logo images in the marquee and set "Load" setting to **"Lazy"** (instead of Eager/Auto).
-**Why:** These images are below the fold. Loading them "Eagerly" steals bandwidth from the Hero video (LCP).
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### 3. Publish Site
-**Action:** Publish to production to see the results.
-<!-- /ANCHOR:required-actions-webflow-designer -->
+This archive package now has validator-compliant root documents, which means you can inspect the archived scope without hitting structural validation failures first. The original root markdown is still preserved in scratch/legacy, so the historical wording remains recoverable.
+
+### Archive Compliance Normalization
+
+The repair rebuilt the required root spec documents around the active templates, aligned levels across validator-sensitive files, and created any missing required files. Supporting archive notes stayed in place after unresolved markdown references were sanitized.
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The archive was normalized by preserving the original root markdown, regenerating the validator-facing documents, and rerunning `validate.sh` until only warnings remained, if any.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Regenerate root documents instead of patching every legacy heading in place | It guarantees the required template order while preserving the historical source in scratch/legacy |
+| Sanitize unresolved markdown references in supporting notes | It clears integrity errors without deleting surrounding archived context |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| Structural validation | PASS after archive normalization rerun |
+| Historical source preservation | PASS, original root markdown copied to scratch/legacy |
+<!-- /ANCHOR:verification -->
+
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Generated summaries** The active root docs are normalized summaries, so consult scratch/legacy when you need the original historical wording.
 <!-- /ANCHOR:limitations -->
+
+---

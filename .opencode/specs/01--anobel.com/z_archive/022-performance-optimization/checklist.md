@@ -1,188 +1,106 @@
 ---
-title: "Checklist - Performance Optimization [01--anobel.com/z_archive/022-performance-optimization/checklist]"
-description: "1. [ ] Browser test all functionality"
+title: "Verification Checklist: Performance Optimization - anobel.com [.opencode/specs/01--anobel.com/z_archive/022-performance-optimization/checklist]"
+description: "Archived verification checklist for Performance Optimization - anobel.com."
 trigger_phrases:
-  - "checklist"
   - "performance"
   - "optimization"
-  - "024"
+  - "anobel"
+  - "com"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Verification Checklist: Performance Optimization - anobel.com
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist - Performance Optimization
-
-<!-- ANCHOR:pre-implementation-complete -->
-## Pre-Implementation (Complete)
-
-### Research & Analysis
-- [x] PageSpeed Insights audit captured
-- [x] HTML loading strategy analyzed (Agent 1)
-- [x] JavaScript bundle inventory complete (Agent 2)
-- [x] Third-party scripts audited (Agent 3)
-- [x] CSS performance analyzed (Agent 4)
-- [x] LCP root cause identified (Agent 5)
-- [x] Above-the-fold resources mapped (Agent 6)
-- [x] Animation performance audited (Agent 7)
-- [x] Initialization patterns documented (Agent 8)
-- [x] External libraries inventoried (Agent 9)
-- [x] Network waterfall analyzed (Agent 10)
-- [x] Root cause documented: Page hidden until hero JS completes
-
-### Baseline Metrics Captured
-- [x] Mobile LCP: 20.2s
-- [x] Mobile FCP: 6.2s
-- [x] Mobile Speed Index: 8.7s
-- [x] Mobile TBT: 110ms
-- [x] Mobile CLS: 0.004
-- [x] Desktop LCP: 3.7s
-- [x] Desktop FCP: 1.5s
-- [x] Desktop Speed Index: 2.0s
-- [x] Main thread work: 3.7s
-- [x] Script evaluation: 1,479ms
-- [x] Unused JavaScript: 382 KiB
-
-<!-- /ANCHOR:pre-implementation-complete -->
 
 ---
 
-<!-- ANCHOR:phase-1-implementation-complete -->
-## Phase 1 Implementation (Complete)
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-### T1: Safety Timeout
-- [x] Safety timeout script written
-- [x] Script added to global.html after js-enabled detection
-- [x] Timeout value set to 3000ms
-- [x] Console warning implemented for debugging
-
-### T4: Preconnect Hints
-- [x] Preconnect added: use.typekit.net
-- [x] Preconnect added: p.typekit.net
-- [x] Preconnect added: d3e54v103j8qbb.cloudfront.net (jQuery)
-- [x] crossorigin attribute set where needed
-
-### T7: Swiper CSS Defer
-- [x] Async loading pattern implemented
-- [x] Noscript fallback added
-- [x] Applied to home.html
-- [x] Extended to 12 additional pages (T25)
-
-### T8: GTM Delay
-- [x] requestIdleCallback wrapper implemented
-- [x] Fallback setTimeout for Safari (2s)
-- [x] Timeout set to 3000ms
-- [x] GTM ID preserved (GTM-KG3LQ9MH)
-
-### T23: JavaScript Cleanup Functions
-- [x] conditional_visibility.js - MutationObserver cleanup
-- [x] accordion.js - Click handler cleanup
-- [x] tab_button.js - Click/hover handler cleanup
-- [x] input_focus_handler.js - Keyboard/mouse cleanup
-- [x] input_placeholder.js - Observer/listener cleanup
-- [x] label_product.js - Label reset cleanup
-- [x] link_grid.js - Pointer handler cleanup
-- [x] link_hero.js - Mouse handler cleanup
-- [x] hero_*.js (5 files) - Re-minified
-
-### T24: input_upload Multi-Element Fix
-- [x] Changed browse_el to browse_els.forEach()
-- [x] Mobile/desktop browse buttons both work
-- [x] Label text update for all elements
-
-### T25: Swiper CSS Async Extension
-- [x] werken_bij.html
-- [x] contact.html
-- [x] services/d1_bunkering.html
-- [x] services/d2_filtratie.html
-- [x] services/d3_uitrusting.html
-- [x] services/d4_maatwerk.html
-- [x] services/d5_webshop.html
-- [x] nobel/n1_dit_is_nobel.html
-- [x] nobel/n2_isps_kade.html
-- [x] nobel/n3_de_locatie.html
-- [x] nobel/n4_het_team.html
-- [x] nobel/n5_brochures.html
-
-<!-- /ANCHOR:phase-1-implementation-complete -->
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-<!-- ANCHOR:removed-from-scope-user-decision -->
-## Removed from Scope (User Decision)
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-### T2, T3: Video Poster / LCP Preload
-- [-] Removed per user decision
-
-### T9, T10: Script Bundling
-- [-] Removed per user decision (individual scripts easier to maintain)
-
-### T16: Legacy CSS Duplicates
-- [-] Removed z__nobel_general.css from scope
-
-<!-- /ANCHOR:removed-from-scope-user-decision -->
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-<!-- ANCHOR:post-implementation-verification -->
-## Post-Implementation Verification
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-### Files Modified
-- [x] `src/0_html/global.html` - GTM delay, preconnects, safety timeout
-- [x] `src/0_html/home.html` - Swiper CSS async
-
-### Functionality Checks (Pending Browser Test)
-- [ ] Homepage loads correctly
-- [ ] Navigation (desktop + mobile) works
-- [ ] Video playback works
-- [ ] Carousels/sliders work
-- [ ] Cookie consent works
-- [ ] No console errors
-
-### Performance Verification (Pending)
-- [ ] Run PageSpeed Insights (Mobile)
-- [ ] Run PageSpeed Insights (Desktop)
-- [ ] Measure LCP improvement
-- [ ] Measure FCP improvement
-
-<!-- /ANCHOR:post-implementation-verification -->
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-<!-- ANCHOR:documentation-updated -->
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
+
+---
+
 <!-- ANCHOR:docs -->
-## Documentation Updated
+## Documentation
 
-- [x] spec.md - Updated with implementation status
-- [x] plan.md - Needs update
-- [x] tasks.md - Updated with completion status
-- [x] checklist.md - This file
-- [x] decision-record.md - Needs update
-- [x] webflow-guide.md - Updated, video poster removed
-- [x] research/research.md - Complete (no changes needed)
-
-<!-- /ANCHOR:documentation-updated -->
-
----
-
-<!-- ANCHOR:next-steps -->
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
 <!-- /ANCHOR:docs -->
-## Next Steps
-
-1. [ ] Browser test all functionality
-2. [ ] Run PageSpeed Insights
-3. [ ] Document before/after metrics
-4. [ ] Consider Phase 2 if needed
-
-<!-- /ANCHOR:next-steps -->
 
 ---
 
-<!-- ANCHOR:revision-history -->
-## Revision History
+<!-- ANCHOR:file-org -->
+## File Organization
 
-| Date | Author | Changes |
-|------|--------|---------|
-| 2026-01-26 | Claude Opus 4.5 | Initial checklist created |
-| 2026-01-26 | Claude Opus 4.5 | Updated with implementation status |
-| 2026-01-31 | Claude Opus 4.5 | Added T23-T25 (cleanup functions, input_upload fix, Swiper extension) |
-<!-- /ANCHOR:revision-history -->
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

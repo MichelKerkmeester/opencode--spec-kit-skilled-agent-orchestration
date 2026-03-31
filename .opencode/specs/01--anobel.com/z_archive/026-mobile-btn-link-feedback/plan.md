@@ -1,33 +1,37 @@
 ---
-title: "Implementation Plan: Mobile Button/Link Tap Feedback [01--anobel.com/z_archive/026-mobile-btn-link-feedback/plan]"
-description: "Overview: This implementation splits the :active pseudo-class behavior between desktop and touch devices. Desktop continues to use :active via @media (hover: hover) query. Touch..."
+title: "Implementation Plan: Mobile Button/Link Tap Feedback [.opencode/specs/01--anobel.com/z_archive/026-mobile-btn-link-feedback/plan]"
+description: "Feature Specification: Mobile Button/Link Tap Feedback"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "feature"
+  - "specification"
   - "mobile"
   - "button"
   - "link"
-  - "028"
+  - "tap"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
 # Implementation Plan: Mobile Button/Link Tap Feedback
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | CSS, JavaScript (ES6+) |
-| **Framework** | Vanilla JS, Webflow integration |
-| **Storage** | None |
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-**Overview**: This implementation splits the `:active` pseudo-class behavior between desktop and touch devices. Desktop continues to use `:active` via `@media (hover: hover)` query. Touch devices receive tap feedback via a JavaScript module that applies `[data-tap-active="true"]` attribute on click events (which fire after scroll detection completes).
+### Overview
+Feature Specification: Mobile Button/Link Tap Feedback
 <!-- /ANCHOR:summary -->
 
 ---
@@ -35,119 +39,84 @@ contextType: "decision"
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-**Ready When:**
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-**Done When:**
-- [x] All acceptance criteria met
-- [x] Manual testing on touch device confirms no scroll-triggered flashes
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## 3. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: JavaScript Module
-- [x] Create mobile_tap_feedback.js with IIFE pattern
-- [x] Implement touch device detection via media queries
-- [x] Add click event listener for matching elements
-- [x] Apply/remove data-tap-active attribute with timeout
-- [x] Add CDN-safe initialization pattern
-- [x] Minify to z_minified folder
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-### Phase 2: CSS Updates - Buttons
-- [x] btn_main.css - 14 button types with inline structure
-- [x] btn_text_link.css - 6 text link types
-- [x] btn_nav.css - 3 nav button types
-- [x] btn_cta.css - Icon swap active state
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
-### Phase 3: CSS Updates - Links
-- [x] hover_state_machine.css - Link card active states
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
 
-### Phase 4: Staging
-- [x] Copy updated CSS files to src/3_staging/
-- [x] Verify file sizes and syntax
-<!-- /ANCHOR:implementation-phases -->
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-<!-- /ANCHOR:phases -->
-## 4. DEPENDENCIES
+## 6. DEPENDENCIES
 
-| Dependency | Status | Impact if Blocked |
-|------------|--------|-------------------|
-| @media (hover: hover) support | Green | Supported in all modern browsers |
-| Webflow.push() API | Green | Fallback to DOMContentLoaded if unavailable |
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 5. ROLLBACK
+## 7. ROLLBACK PLAN
 
-- **Trigger**: Active states not showing on desktop, or JS errors on mobile
-- **Procedure**:
-  1. Revert CSS files via `git checkout HEAD -- src/1_css/button/*.css src/1_css/link_new/hover_state_machine.css`
-  2. Remove mobile_tap_feedback.js from CDN/deployment
-  3. Clear staging folder
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
 <!-- /ANCHOR:rollback -->
-
----
-
-<!-- ANCHOR:technical-approach -->
-## 6. TECHNICAL APPROACH
-
-### CSS Pattern
-
-Each `:active` rule is transformed from:
-```css
-/* Active */
-[data-btn-type="X"]:active {
-  /* styles */
-}
-```
-
-To:
-```css
-/* Active (Desktop) */
-@media (hover: hover) {
-  [data-btn-type="X"]:active {
-    /* styles */
-  }
-}
-
-/* Active (Touch) */
-[data-btn-type="X"][data-tap-active="true"] {
-  /* styles */
-}
-```
-
-### JavaScript Logic
-
-```
-Touch Device Detection:
-  - Primary: @media (hover: none)
-  - Secondary: @media (pointer: coarse)
-  - Tertiary: navigator.maxTouchPoints > 0
-
-Event Handling:
-  - Listen for 'click' on document (capture phase)
-  - Click fires AFTER browser completes touch/scroll detection
-  - Find closest matching element
-  - Apply data-tap-active="true" for 150ms
-```
-
-### Element Targeting
-
-JavaScript targets elements with:
-- `[data-btn-type]` - All button components
-- `[data-state~="hover"]` - Link cards with hover state machine
-- `[data-state~="hover-if-clickable"]` - Conditional hover state machine
-- `#btn-cta` - CTA container
-<!-- /ANCHOR:technical-approach -->
 
 ---

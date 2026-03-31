@@ -1,246 +1,119 @@
 ---
-title: "Load Toggle Component - anobel.com [025-load-toggle/spec] [01--anobel.com/z_archive/025-load-toggle/spec]"
-description: "A reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. Enables \"View More / View Less\" patterns with dyna..."
+title: "Feature Specification: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.com/z_archive/025-load-toggle/spec]"
+description: "Load Toggle Component - anobel.com"
 trigger_phrases:
   - "load"
   - "toggle"
   - "component"
   - "anobel"
   - "com"
-  - "spec"
-  - "025"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Load Toggle Component - anobel.com
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Load Toggle Component - anobel.com
+
+---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Spec ID** | 027 |
-| **Title** | Load Toggle Component |
-| **Status** | Implemented |
-| **Level** | 2 (Multi-file component with QA verification) |
-| **Created** | 2025-02-01 |
-| **Author** | Claude Opus 4 |
-| **LOC Estimate** | ~210 (JS: 151, CSS: 57) |
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `025-load-toggle` |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:overview -->
-## Overview
-
-A reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. Enables "View More / View Less" patterns with dynamic text controlled via data attributes.
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+Load Toggle Component - anobel.com
 
-The anobel.com website needed a flexible expand/collapse mechanism that:
-1. Shows/hides content items based on state
-2. Supports CMS-bindable button text for multilingual content
-3. Works with multiple instances on the same page
-4. Integrates with Webflow's page transitions (SPA behavior)
-5. Provides proper accessibility via `aria-expanded`
+### Purpose
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
+<!-- /ANCHOR:problem -->
 
-### Solution
+---
 
-A lightweight JavaScript component (~1KB minified) with CSS-only animations that:
-- Uses data attributes for configuration (no JavaScript configuration object needed)
-- Places CMS-bindable text attributes on the button element
-- Provides smooth icon rotation and fade-in animations
-- Includes proper cleanup for SPA navigation
-<!-- /ANCHOR:overview -->
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
+
+### Out of Scope
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
+<!-- /ANCHOR:scope -->
 
 ---
 
 <!-- ANCHOR:requirements -->
-## Requirements
+## 4. REQUIREMENTS
 
-### Functional Requirements
+### P0 - Blockers (MUST complete)
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR1 | Toggle between collapsed/expanded states on button click | P0 |
-| FR2 | Hide/show items marked with `data-load="expanded"` | P0 |
-| FR3 | Update button text based on state | P0 |
-| FR4 | Support CMS-bindable text via button data attributes | P1 |
-| FR5 | Support multiple independent instances per page | P1 |
-| FR6 | Provide default text if CMS values not set | P2 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
 
-### Non-Functional Requirements
+### P1 - Required (complete OR user-approved deferral)
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| NFR1 | < 1KB minified JavaScript | P1 |
-| NFR2 | No external dependencies | P0 |
-| NFR3 | Compatible with Webflow page transitions | P1 |
-| NFR4 | Accessible via aria-expanded attribute | P1 |
-| NFR5 | Smooth 300ms animations | P2 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:data-attribute-structure -->
-## Data Attribute Structure
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-| Attribute | Element | Purpose | CMS Bindable |
-|-----------|---------|---------|--------------|
-| `data-target="load-toggle"` | Container | Main wrapper, holds state | No |
-| `data-target="load-toggle-trigger"` | Button | Click target | No |
-| `data-target="load-toggle-text"` | Span (inside button) | JS sets text content | No |
-| `data-target="load-icon"` | Icon/SVG | CSS rotates 180° on expand | No |
-| `data-load-collapsed` | Button | Collapsed state text | **Yes** |
-| `data-load-expanded` | Button | Expanded state text | **Yes** |
-| `data-load="expanded"` | Any child | Hidden when collapsed | No |
-
-### State Management
-
-The container holds state via `data-state` attribute:
-- `data-state="collapsed"` - Initial state, expanded items hidden
-- `data-state="expanded"` - Expanded items visible
-<!-- /ANCHOR:data-attribute-structure -->
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:architecture -->
-## Architecture
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-### Component Structure
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ Container [data-target="load-toggle"]                           │
-│           [data-state="collapsed|expanded"]                     │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ Item 1   (no attribute)                                   │ │  ← Always visible
-│  └───────────────────────────────────────────────────────────┘ │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ Item 2   (no attribute)                                   │ │  ← Always visible
-│  └───────────────────────────────────────────────────────────┘ │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ Item 3   [data-load="expanded"]                           │ │  ← HIDDEN/SHOWN
-│  └───────────────────────────────────────────────────────────┘ │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ Item 4   [data-load="expanded"]                           │ │  ← HIDDEN/SHOWN
-│  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ Button [data-target="load-toggle-trigger"]                │ │
-│  │        [data-load-collapsed="View More"]                  │ │
-│  │        [data-load-expanded="View Less"]                   │ │
-│  │        [aria-expanded="false|true"]                       │ │
-│  │                                                           │ │
-│  │   ┌─────────────────────────────────────────────────┐    │ │
-│  │   │ Text [data-target="load-toggle-text"]           │    │ │
-│  │   └─────────────────────────────────────────────────┘    │ │
-│  │                                                           │ │
-│  │   ┌─────────────────────────────────────────────────┐    │ │
-│  │   │ Icon [data-target="load-icon"]  ↓ → ↑           │    │ │
-│  │   └─────────────────────────────────────────────────┘    │ │
-│  │                                                           │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### JavaScript Architecture
-
-```
-IIFE (self-executing function)
-├── Configuration constants
-│   ├── SELECTORS (container, trigger, text)
-│   ├── STATE (collapsed, expanded)
-│   ├── DEFAULTS (fallback text values)
-│   └── ATTRS (data attribute names)
-├── Core functions
-│   ├── update_text() - Set button text based on state
-│   └── toggle_state() - Toggle container state
-├── Event handlers
-│   ├── handle_click() - Process click events
-│   └── bind_events() - Attach listeners to containers
-├── Cleanup
-│   └── cleanup() - Remove all event listeners
-└── Initialize
-    └── init() - Entry point with Webflow.push support
-```
-
-### CSS Architecture
-
-```
-menu_load_toggle.css
-├── 1. ITEM VISIBILITY
-│   ├── Hidden when collapsed
-│   └── Visible when expanded (display: flex)
-├── 2. ICON ROTATION
-│   ├── Transition (0.3s cubic-bezier)
-│   ├── Collapsed: rotate(0deg)
-│   └── Expanded: rotate(180deg)
-└── 3. CONTENT ANIMATION
-    ├── @keyframes loadToggleFadeIn
-    └── Apply to expanded items
-```
-<!-- /ANCHOR:architecture -->
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:files -->
-## Files
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
 
-| File | Purpose | Location |
-|------|---------|----------|
-| `load_toggle.js` | Main source | `src/2_javascript/menu/` |
-| `load_toggle.js` | Minified | `src/2_javascript/z_minified/menu/` |
-| `menu_load_toggle.css` | Styles | `src/1_css/menu/` |
-| `src.js` | Staging copy | `src/3_staging/` |
-| `src.css` | Staging copy | `src/3_staging/` |
-<!-- /ANCHOR:files -->
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
 
 ---
-
-<!-- ANCHOR:cdn-deployment -->
-## CDN Deployment
-
-| Resource | URL |
-|----------|-----|
-| JavaScript | `https://pub-85443b585f1e4411ab5cc976c4fb08ca.r2.dev/load_toggle.js?v=1.1.0` |
-
-### Upload Command
-
-```bash
-wrangler r2 object put anobel-cdn/load_toggle.js --file src/2_javascript/z_minified/menu/load_toggle.js
-```
-<!-- /ANCHOR:cdn-deployment -->
-
----
-
-<!-- ANCHOR:documentation -->
-## Documentation
-
-| Document | Purpose | Status |
-|----------|---------|--------|
-| `spec.md` | Requirements and architecture | Complete |
-| `plan.md` | Implementation plan | Complete |
-| `tasks.md` | Task breakdown | Complete |
-| `checklist.md` | QA verification | Complete |
-| `implementation-summary.md` | What was built | Complete |
-| `webflow-guide.md` | Webflow configuration | Complete |
-<!-- /ANCHOR:documentation -->
-
----
-
-<!-- ANCHOR:revision-history -->
-## Revision History
-
-| Date | Author | Changes |
-|------|--------|---------|
-| 2025-02-01 | Claude Opus 4 | Initial implementation |
-| 2025-02-01 | Claude Opus 4 | Added multi-instance support |
-| 2025-02-01 | Claude Opus 4 | Moved text attributes to button for CMS bindability |
-| 2025-02-01 | Claude Opus 4 | Updated icon attribute to `data-target="load-icon"` |
-| 2025-02-01 | Claude Opus 4 | Retroactive Level 2 documentation |
-<!-- /ANCHOR:revision-history -->

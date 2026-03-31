@@ -1,225 +1,206 @@
 ---
-title: "Spec: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/spec]"
-description: "Enhance form input capabilities with two new components"
+title: "Feature Specification: Form Input Components Enhancement [.opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/spec]"
+description: "Spec: Form Input Components Enhancement"
 trigger_phrases:
   - "spec"
   - "form"
   - "input"
   - "components"
   - "enhancement"
-  - "011"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Form Input Components Enhancement
+
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Form Input Components Enhancement
-
-<!-- ANCHOR:overview -->
-## Overview
-
-Enhance form input capabilities with two new components:
-
-1. **Custom Select** - CMS-driven dropdown replacing Finsweet's `fs-selectcustom`
-2. **File Upload** - FilePond-based file upload with cloud storage
-
-Both components integrate with the existing Input | Main component structure and Webflow/Formspark form system.
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
-<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:part-a-cms-driven-custom-select -->
-## Part A: CMS-Driven Custom Select
+## EXECUTIVE SUMMARY
+
+Spec: Form Input Components Enhancement
+
+**Key Decisions**: Keep the archive at Level 3, preserve legacy sources in scratch/legacy, and normalize only the validator-facing root documents.
+
+**Critical Dependencies**: Existing archived markdown in this folder.
+
+---
+
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `011-form-input-upload-select` |
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+Spec: Form Input Components Enhancement
 
-Current select implementation uses Finsweet's select attribute which:
-- Requires external JS dependency
-- Has static/hardcoded options
-- Cannot be updated by non-developers
-- Adds maintenance overhead
-
-### Solution
-
-Build a custom select component with:
-- Native JavaScript (no Finsweet dependency)
-- CMS Collection List for dynamic options
-- Hidden native `<select>` for form submission
-- Full ARIA accessibility support
+### Purpose
+Keep this complex archived packet structurally compliant so future work can reuse its decisions, implementation notes, and supporting research without validator drift.
+<!-- /ANCHOR:problem -->
 
 ---
-<!-- /ANCHOR:part-a-cms-driven-custom-select -->
-
-<!-- ANCHOR:part-b-filepond-file-upload -->
-## Part B: FilePond File Upload
-
-### Problem Statement
-
-Current forms have no file upload capability. Users need to:
-- Upload CVs/resumes for job applications
-- Attach documents to contact forms
-- Submit images for service requests
-
-### Solution
-
-Integrate FilePond file upload library with:
-- Cloud storage backend (Cloudflare R2 + Worker)
-- Image preview for uploaded images
-- File type and size validation
-- Progress indicator during upload
-- File URL submitted with form to Formspark
-
-### Key Findings (Research)
-
-| Finding | Implication |
-|---------|-------------|
-| Formspark does NOT support native file attachments | Must use cloud storage + URL approach |
-| `form_submission.js` explicitly skips file inputs | Files converted to URLs before submission |
-| Base64 encoding has ~10MB practical limit | Not suitable for larger files |
-| User already has Cloudflare account | Use existing infrastructure, single ecosystem |
-| Cloudflare R2: FREE egress, 10GB free storage | Most cost-effective at any scale |
-
----
-<!-- /ANCHOR:part-b-filepond-file-upload -->
-
-<!-- ANCHOR:requirements -->
-## Requirements
-
-### Functional Requirements - Custom Select
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-1 | Dropdown opens on trigger click | P0 |
-| FR-2 | Dropdown closes on option selection | P0 |
-| FR-3 | Selected value updates display text | P0 |
-| FR-4 | Selected value syncs to hidden select | P0 |
-| FR-5 | Form submission includes selected value | P0 |
-| FR-6 | Dropdown closes on click outside | P0 |
-| FR-7 | Dropdown closes on Escape key | P0 |
-| FR-8 | Options populated from CMS Collection | P0 |
-| FR-9 | Keyboard navigation (Arrow keys) | P1 |
-| FR-10 | Enter/Space selects focused option | P1 |
-| FR-11 | Tab closes dropdown and moves focus | P1 |
-| FR-12 | Placeholder shown when no selection | P1 |
-| FR-13 | Selected option visually highlighted | P1 |
-| FR-14 | Form reset resets visual state | P2 |
-| FR-15 | Multiple instances work independently | P2 |
-
-### Functional Requirements - File Upload
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-16 | File upload UI using FilePond library | P0 |
-| FR-17 | Files upload to cloud storage (Uploadcare) | P0 |
-| FR-18 | File URL stored in hidden input | P0 |
-| FR-19 | Form submission includes file URL | P0 |
-| FR-20 | Image preview for image files | P1 |
-| FR-21 | File type validation (images, PDF, DOC) | P1 |
-| FR-22 | File size limit validation (5MB default) | P1 |
-| FR-23 | Upload progress indicator | P1 |
-| FR-24 | Error message for failed uploads | P1 |
-| FR-25 | Drag & drop support | P1 |
-| FR-26 | Remove/replace uploaded file | P1 |
-| FR-27 | Multiple file upload support | P2 |
-| FR-28 | Camera capture on mobile | P2 |
-
-### Non-Functional Requirements
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| NFR-1 | No Finsweet dependency for select | P0 |
-| NFR-2 | Works with Webflow form system | P0 |
-| NFR-3 | Works with existing form_submission.js | P0 |
-| NFR-4 | Smooth animations (open/close, progress) | P1 |
-| NFR-5 | WCAG 2.1 AA accessibility | P1 |
-| NFR-6 | < 5KB minified JS (custom select) | P2 |
-| NFR-7 | < 2KB minified CSS (custom select) | P2 |
-| NFR-8 | Upload completes within 10s for 5MB file | P2 |
-| NFR-9 | FilePond loaded from CDN | P1 |
-
----
-<!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- Custom select component (HTML structure, CSS, JS)
-- CMS Collection setup for select options
-- FilePond integration with Uploadcare
-- File upload CSS customization
-- Webflow Designer implementation guide
-- Integration with existing Input component styling
-- Integration with existing form submission system
+- Normalize root specification, plan, tasks, checklist, decision record, and summary documents.
+- Preserve original markdown artifacts in `scratch/legacy`.
+- Keep local archive references, handover notes, and supporting documents resolvable.
 
 ### Out of Scope
-- Multi-select functionality
-- Search/filter within dropdown
-- Grouped options (optgroup)
-- Server-side file processing
-- File transformation/manipulation
-- Custom file storage backend (only Uploadcare/Cloudinary)
+- Re-implementing the archived feature set.
+- Expanding archived work into a new active roadmap.
 
----
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 3 structure |
+| `plan.md` | Modify | Rebuild required plan sections |
+| `tasks.md` | Modify/Create | Rebuild required task structure |
+| `checklist.md` | Modify/Create | Rebuild required checklist structure |
+| `decision-record.md` | Modify/Create | Capture the archived documentation decision |
+| `implementation-summary.md` | Modify/Create | Record the archived delivery summary |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:success-criteria -->
-## Success Criteria
+---
 
-### Custom Select
-1. User can select an option from CMS-driven dropdown
-2. Form submission includes correct selected value
-3. Full keyboard navigation works
-4. Passes WAVE accessibility check
-5. No console errors
-6. Works on Chrome, Firefox, Safari, Edge
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### File Upload
-1. User can drag & drop or browse to upload file
-2. Image preview shows for image files
-3. Upload progress is visible
-4. File URL is submitted with form
-5. Formspark email includes clickable file URL
-6. Invalid files are rejected with clear error
-7. Works on desktop and mobile
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 3 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Root headers match the active Level 3 templates | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and remain in order | `validate.sh` reports no ANCHORS_VALID errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Level declarations align across root documents | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-005 | Root markdown references resolve inside the folder or repo | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-006 | Historical source material remains preserved | Original markdown is copied into `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
 
 ---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The archive still exposes the core decisions, scope, and delivery summary in the root documents.
+- **SC-003**: Legacy source markdown remains preserved in `scratch/legacy` for deep historical review.
 <!-- /ANCHOR:success-criteria -->
 
-<!-- ANCHOR:dependencies -->
-## Dependencies
-
-- Existing Input | Main component in Webflow
-- CMS Collection "Form Select Options" (to be created)
-- FilePond library (CDN)
-- Cloudflare R2 bucket with public access
-- Cloudflare Worker with R2 binding
-- Existing `form_submission.js` system
-
 ---
-<!-- /ANCHOR:dependencies -->
 
 <!-- ANCHOR:risks -->
-## Risks
+## 6. RISKS & DEPENDENCIES
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| CMS Collection List nesting issues | Medium | High | Test in Webflow before full implementation |
-| Cloudflare Worker configuration errors | Low | High | Test Worker thoroughly before deployment |
-| R2 public access misconfigured | Low | High | Verify r2.dev URL works before Webflow integration |
-| FilePond styling conflicts | Medium | Low | Use scoped CSS, test thoroughly |
-| Large file upload timeouts | Medium | Medium | Set appropriate size limits, show progress |
-| Form submission before upload complete | Medium | High | Disable submit until upload done |
-
----
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Legacy root markdown and supporting guides | High | Back up originals before normalizing root docs |
+| Risk | Complex archive notes lose discoverability | Medium | Keep summary sections concise and preserve original sources |
+| Risk | Broken historical references hide useful context | Medium | Sanitize unresolved links while preserving surrounding text |
 <!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:timeline -->
-## Timeline
+---
 
-- Estimated LOC: ~600 (JS: ~400, CSS: ~200)
-- Documentation Level: 3
-- Estimated effort: 8-12 hours total
-  - Custom Select: 4-6 hours
-  - File Upload: 4-6 hours
-<!-- /ANCHOR:timeline -->
+<!-- ANCHOR:questions -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Root documentation remains lightweight enough for fast validator execution.
+
+### Security
+- **NFR-S01**: Sanitized archive references do not point to missing or external markdown targets.
+
+### Reliability
+- **NFR-R01**: The archive can be validated repeatedly without manual cleanup.
+
+---
+
+## 8. EDGE CASES
+
+### Data Boundaries
+- Empty optional guides remain acceptable as long as required root documents validate.
+- Missing legacy references are converted into plain archived notes rather than broken markdown links.
+
+### Error Scenarios
+- If a legacy root file contains outdated template syntax, a preserved copy is stored before replacement.
+- If historical references cannot be resolved, they are retained as plain text instead of live markdown links.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 15/25 | Multi-document archive normalization |
+| Risk | 10/25 | Historical context must be preserved |
+| Research | 8/20 | Validator and template investigation required |
+| Multi-Agent | 3/15 | Single repair stream |
+| Coordination | 4/15 | Root docs plus supporting archive notes |
+| **Total** | **40/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Legacy context becomes harder to inspect after normalization | M | M | Preserve originals in scratch/legacy |
+| R-002 | Historical markdown links point to removed guidance | M | M | Sanitize unresolved references and keep plain text notes |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Review Archived Scope (Priority: P0)
+
+**As a** future maintainer, **I want** the archive root docs to validate cleanly, **so that** I can inspect the folder without template drift getting in the way.
+
+**Acceptance Criteria**:
+1. Given the folder is validated, When `validate.sh` runs, Then it returns 0 errors.
+
+---
+
+### US-002: Recover Historical Detail (Priority: P1)
+
+**As a** future maintainer, **I want** the pre-normalization markdown preserved, **so that** I can recover historical detail when needed.
+
+**Acceptance Criteria**:
+1. Given a normalized root document, When I inspect `scratch/legacy`, Then the original archive source is still available.
+
+---
+
+## 12. OPEN QUESTIONS
+
+- None. This package remains archived for reference rather than active delivery.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`
+
+---

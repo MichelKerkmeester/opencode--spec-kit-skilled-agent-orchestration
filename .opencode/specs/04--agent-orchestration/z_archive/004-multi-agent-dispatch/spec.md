@@ -1,86 +1,117 @@
 ---
-title: "Spec: Multi-Agent Dispatch for Research and Debug [04--agent-orchestration/z_archive/004-multi-agent-dispatch/spec]"
-description: "Add user-selectable multi-agent dispatch to /spec_kit:research and /spec_kit:debug commands, allowing 1 Opus orchestrator + 2-3 Sonnet parallel workers."
+title: "Feature Specification: Multi-Agent Dispatch [template:level_1/spec.md]"
+description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
-  - "spec"
-  - "multi"
-  - "agent"
-  - "dispatch"
-  - "for"
-  - "004"
-importance_tier: "important"
-contextType: "decision"
+  - "feature"
+  - "specification"
+  - "multi-agent dispatch"
+  - "archive"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 2 -->
+# Feature Specification: Multi-Agent Dispatch
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec: Multi-Agent Dispatch for Research and Debug Commands
 
-<!-- ANCHOR:overview -->
-## Overview
+---
 
-Add user-selectable multi-agent dispatch to `/spec_kit:research` and `/spec_kit:debug` commands, allowing 1 Opus orchestrator + 2-3 Sonnet parallel workers.
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- /ANCHOR:overview -->
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `[004-multi-agent-dispatch]` |
+<!-- /ANCHOR:metadata -->
 
+---
 
-<!-- ANCHOR:requirements -->
-## Requirements
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-### Functional Requirements
+### Problem Statement
+This folder documents archived work on dispatching multiple agents in coordinated orchestration flows, but its markdown had drifted away from the current system-spec-kit contract. Missing anchors, stale file expectations, and archive-era notes created validation errors and made the historical record harder to review with confidence.
 
-1. **Dispatch Mode Selection**
-   - Users can choose between:
-     - A) Single Agent (default, current behavior)
-     - B) Multi-Agent (1+2): 1 Opus orchestrator + 2 Sonnet workers
-     - C) Multi-Agent (1+3): 1 Opus orchestrator + 3 Sonnet workers
+### Purpose
+Retain the multi-agent dispatch history in a clean archival format that passes current validation.
+<!-- /ANCHOR:problem -->
 
-2. **Research Command**
-   - Add Phase 2.5: DISPATCH MODE SELECTION after Phase 2
-   - Workers handle: Codebase exploration, External research, Technical analysis (Option C only)
-
-3. **Debug Command**
-   - Extend Phase 2 to include dispatch mode alongside model selection
-   - Workers handle: Call path tracing, Pattern searching, Edge case hunting (Option C only)
-
-4. **YAML Configuration**
-   - Add `multi_agent_config` section to all 4 YAML files
-
-5. **Agent Modes**
-   - Coordinator mode: Receives worker outputs, validates, synthesizes
-   - Worker mode: Focused domain, returns structured JSON, does not create final docs
-
-### Non-Functional Requirements
-
-- Fallback to single-agent mode if workers fail
-- Worker timeout: 60 seconds
-- Partial results preserved on failure
-
-<!-- /ANCHOR:requirements -->
-
+---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- Command files: research/research.md, debug.md
-- YAML configs: 4 files (research auto/confirm, debug auto/confirm)
-- Agent files: research/research.md, debug.md
+- Preserve the historical purpose of this archived workstream.
+- Normalize the required specification documents to the current Level 1 template.
+- Keep extra top-level markdown files as brief archival notes that avoid broken markdown-file references.
 
 ### Out of Scope
-- Other spec_kit commands (complete, plan, implement, handover)
-- Changes to Task tool itself
-- New agent files (reusing existing agents)
+- Reopening the archived work as an active implementation plan.
+- Making runtime code changes from this archival cleanup.
 
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| spec.md | Modify | Replace template drift with a compliant archival specification. |
+| plan.md | Modify | Record the archive-fix approach and validation method. |
+| tasks.md | Modify | Capture the archival cleanup work in the standard task format. |
+| implementation-summary.md | Modify | Summarize the completed archive normalization and verification. |
 <!-- /ANCHOR:scope -->
 
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The folder MUST preserve a concise archival summary of the original topic. | **Given** a maintainer opens the folder, **when** they read spec.md, **then** they understand the archived goal and why the folder is no longer active work. |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | Required spec documents MUST match the current Level 1 header and anchor structure. | **Given** strict validation runs, **when** template and anchor checks execute, **then** no error-level structural issues are reported. |
+| REQ-003 | Extra top-level markdown files MUST not contain broken backticked markdown references. | Top-level archival note files either have no backticked markdown references or only reference resolvable files. |
+<!-- /ANCHOR:requirements -->
+
+---
 
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
+## 5. SUCCESS CRITERIA
 
-- [ ] User can select A/B/C dispatch mode for research
-- [ ] User can select A/B/C dispatch mode for debug
-- [ ] Multi-agent mode spawns correct number of workers
-- [ ] Orchestrator synthesizes worker outputs correctly
-- [ ] Fallback to single-agent works when workers fail
-
+- **SC-001**: The folder validates with zero error-level findings.
+- **SC-002**: The archive remains readable as a concise history of multi-agent dispatch.
+- **SC-003**: Required documents align to the current Level 1 template contract.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Current Level 1 templates and validator rules | If the archive uses stale structure, validation fails again. | Copy the current template shape exactly and replace every placeholder with concrete archival text. |
+| Risk | Archived dispatch guidance may conflict with newer orchestration behavior if left unscoped. | Reviewers may misread the archive as current guidance. | Mark the work as archived and keep the content concise and descriptive rather than prescriptive. |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and intentionally represented by a minimal validated summary.
+- Repository history remains available for superseded draft detail if deeper reconstruction is ever needed.
+<!-- /ANCHOR:questions -->
+
+---

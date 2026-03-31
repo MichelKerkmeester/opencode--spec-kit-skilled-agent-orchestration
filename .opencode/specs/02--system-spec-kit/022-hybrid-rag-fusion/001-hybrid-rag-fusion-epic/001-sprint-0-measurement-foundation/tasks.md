@@ -132,7 +132,6 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
-<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [x] All tasks T000a-T000d, T001-T009, T007b, T013, and T054 marked `[x]`

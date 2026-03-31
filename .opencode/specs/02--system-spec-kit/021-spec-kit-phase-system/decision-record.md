@@ -124,7 +124,7 @@ The phase system needed a home in the existing SpecKit architecture. Three optio
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Phase vs Sub-Folder Distinction
+### ADR-002: Phase vs Sub-Folder Distinction
 
 <!-- ANCHOR:adr-002-context -->
 ### Metadata
@@ -225,7 +225,7 @@ The existing `--subfolder` flag in create.sh creates versioned iterations within
 ---
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Conservative Phase Detection Thresholds
+### ADR-003: Conservative Phase Detection Thresholds
 
 <!-- ANCHOR:adr-003-context -->
 ### Metadata
@@ -327,7 +327,7 @@ recommend-level.sh needs a threshold to decide when to suggest phases. The thres
 ---
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: Default Child Phase Level
+### ADR-004: Default Child Phase Level
 
 <!-- ANCHOR:adr-004-context -->
 ### Metadata
@@ -430,7 +430,7 @@ When `--phase` creates child spec folders, each child needs a documentation leve
 
 <!-- ANCHOR:adr-005 -->
 <!-- ANCHOR:context -->
-## ADR-005: Gate 3 Option E Contextual Display
+### ADR-005: Gate 3 Option E Contextual Display
 
 <!-- ANCHOR:adr-005-context -->
 ### Metadata
@@ -533,7 +533,7 @@ Gate 3 in CLAUDE.md currently presents four options: A (existing spec), B (new s
 ---
 
 <!-- ANCHOR:decision -->
-## SESSION DECISION LOG
+### SESSION DECISION LOG
 
 | # | Decision | Rationale | Timestamp |
 |---|----------|-----------|-----------|

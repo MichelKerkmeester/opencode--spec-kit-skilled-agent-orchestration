@@ -29,7 +29,7 @@ contextType: "implementation"
 | **Parent** | `022-hybrid-rag-fusion` (Phase 019) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../018-rewrite-system-speckit-readme/spec.md |
-| **Successor** | ../020-hybrid-raf-fusion-related-changelogs/spec.md |
+| **Successor** | ../020-post-release-fixes/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

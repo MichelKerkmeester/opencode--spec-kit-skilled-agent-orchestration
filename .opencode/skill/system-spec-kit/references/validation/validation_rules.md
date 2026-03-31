@@ -553,6 +553,8 @@ Content here...
 ---
 
 <!-- /ANCHOR:anchors-valid -->
+<!-- /ANCHOR:decisions -->
+
 <!-- ANCHOR:folder-naming -->
 ## 10. FOLDER_NAMING
 

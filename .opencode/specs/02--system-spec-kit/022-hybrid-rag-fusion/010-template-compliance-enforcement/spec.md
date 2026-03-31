@@ -130,10 +130,6 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
 <!-- ANCHOR:nfr -->
 <!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS

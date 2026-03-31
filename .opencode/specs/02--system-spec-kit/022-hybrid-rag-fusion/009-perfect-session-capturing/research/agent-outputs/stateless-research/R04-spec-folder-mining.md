@@ -439,3 +439,4 @@ interface SpecFolderMiningResult {
 ## Bottom Line
 
 Stateless mode is currently leaving substantial structured context on the table. Even a deterministic pass over `description.json`, `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, and the newest `memory/*.md` files would yield far richer observations, decisions, file lists, and phase status than shallow session capture alone.
+<!-- /ANCHOR:problem -->

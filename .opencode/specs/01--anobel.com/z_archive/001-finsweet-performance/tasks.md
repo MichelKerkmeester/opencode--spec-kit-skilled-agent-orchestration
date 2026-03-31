@@ -1,48 +1,83 @@
 ---
-title: "Tasks: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/tasks]"
-description: "tasks document for 001-finsweet-performance."
+title: "Tasks: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/tasks]"
+description: "Archived normalization task list for Finsweet Performance Optimization."
 trigger_phrases:
-  - "tasks"
   - "finsweet"
   - "performance"
   - "optimization"
-  - "001"
+  - "anobel"
+  - "reference"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Finsweet Performance Optimization
 
-<!-- ANCHOR:us-001-deferred-finsweet-loading -->
-## US-001: Deferred Finsweet Loading
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-### Task 1: Fix cms/werken_bij.html
-- [ ] Remove line 19: `<script async src="...cmsnest.js"></script>`
-- [ ] Add deferred cmsnest script in FOOTER section
+---
 
-### Task 2: Fix cms/blog_template.html
-- [ ] Remove lines 17-18: `<script async type="module"...fs-socialshare></script>`
-- [ ] Add deferred attributes script with fs-socialshare in FOOTER section
+<!-- ANCHOR:notation -->
+## Task Notation
 
-### Task 3: Fix cms/vacature.html
-- [ ] Remove line 16: `<script async type="module"...fs-socialshare></script>`
-- [ ] Add deferred attributes script with fs-socialshare in FOOTER section
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### Task 4: Fix cms/blog.html
-- [ ] Remove line 15: `<script async type="module"...fs-list></script>`
-- [ ] Add deferred attributes script with fs-list in FOOTER section
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-### Task 5: Fix nobel/n4_het_team.html
-- [ ] Remove line 20: `<script async type="module"...fs-list></script>`
-- [ ] Add deferred attributes script with fs-list in FOOTER section
+---
 
-### Task 6: Fix home.html
-- [ ] Remove line 20: `<script async src="...cmsnest.js"></script>`
-- [ ] Add deferred cmsnest script in FOOTER section
-<!-- /ANCHOR:us-001-deferred-finsweet-loading -->
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-<!-- ANCHOR:verification -->
-## Verification
-- [ ] All Finsweet features work correctly
-- [ ] PageSpeed score improvement measured
-<!-- /ANCHOR:verification -->
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

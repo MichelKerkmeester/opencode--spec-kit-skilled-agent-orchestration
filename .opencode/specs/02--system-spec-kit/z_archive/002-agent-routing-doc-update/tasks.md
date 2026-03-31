@@ -1,19 +1,16 @@
 ---
-title: "Tasks: Agent Routing Documentation Update [02--system-spec-kit/z_archive/002-agent-routing-doc-update/tasks]"
+title: "Tasks: Agent Routing Documentation Update [archive]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "agent"
-  - "routing"
-  - "documentation"
-  - "update"
-  - "119"
+  - "agent routing documentation update"
+  - "archive"
 importance_tier: "normal"
 contextType: "implementation"
 ---
 # Tasks: Agent Routing Documentation Update
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -26,49 +23,40 @@ contextType: "implementation"
 | `[ ]` | Pending |
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: SKILL.md Updates
+## Phase 1: Setup
 
-- [x] T001 Add `debug-delegation.md` to Agent Exclusivity exceptions (`SKILL.md:~67`)
-- [x] T002 Add Agent Dispatch in Commands subsection after Resource Router (`SKILL.md:~158`)
-
+- [x] T001 Review archived folder content
+- [x] T002 Confirm the agent routing documentation theme
+- [x] T003 Choose Level 1 normalization
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: README.md Updates
+## Phase 2: Implementation
 
-- [x] T003 [P] Add `:with-research` and `:auto-debug` to Mode Suffixes table (`README.md:~228`)
-- [x] T004 [P] Update Recent Changes section with spec 014 reference (`README.md:~781`)
-
+- [x] T004 Create spec.md in the current Level 1 structure
+- [x] T005 Create plan.md and tasks.md in the current Level 1 structure
+- [x] T006 Create implementation-summary.md as an archive note
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Changelog
+## Phase 3: Verification
 
-- [x] T005 [P] Create changelog entry (`changelog/01--system-spec-kit/v2.2.9.0.md`)
-
+- [x] T007 Run strict validation for the folder
+- [x] T008 Review top-level markdown for broken references
+- [x] T009 Confirm the archive remains readable
 <!-- /ANCHOR:phase-3 -->
-
----
-
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Verification
-
-- [x] T006 Verify agent names match between SKILL.md and command YAML files
-- [x] T007 Verify trigger conditions match YAML thresholds
-
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
@@ -76,9 +64,8 @@ contextType: "implementation"
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
-- [x] SKILL.md documents all 4 agents dispatched in spec_kit commands
-- [x] README.md mode suffixes include `:with-research` and `:auto-debug`
-
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -88,7 +75,6 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-
 <!-- /ANCHOR:cross-refs -->
 
 ---

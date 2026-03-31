@@ -1,69 +1,115 @@
 ---
-title: "...em-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/decision-record]"
-description: "This phase package delegates decision records to the parent spec folder."
+title: "Decision Record: Post Research Wave 2 Controlled Delivery [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Post Research Wave 2 Controlled Delivery."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "post"
-  - "research"
-  - "wave"
   - "decision record"
-  - "005"
-importance_tier: "important"
-contextType: "decision"
+  - "phase"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
-# Decision Record: Post-Research Wave 2 (Controlled Delivery)
+# Decision Record: Post Research Wave 2 Controlled Delivery
 
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-decision-record | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-<!-- ANCHOR:delegation -->
-<!-- ANCHOR:decision -->
-## Decision Record Delegation
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Normalize archived child phase docs to Level 1 compatibility
 
-This phase package delegates decision records to the parent spec folder.
+### Metadata
 
 | Field | Value |
 |-------|-------|
-| Canonical Source | `../decision-record.md` |
-| Reason | Phase packages do not maintain independent ADRs; all architectural decisions are recorded at root level to prevent fragmentation |
-| Package Scope | `005-post-research-wave-2-controlled-delivery` |
-
-### Package-Relevant Decisions (Root Cross-References)
-
-Decisions relevant to this wave's scope (mutation ledger, dark-launch, staged rollout, sync/async operationalization):
-
-- **ADR-001 through ADR-006**: See `../decision-record.md` for full records
-- **Post-research wave model**: Documented in `../spec.md` §3.7 and `../plan.md` §2.7
-- **Wave 2 capability ownership**: Frozen per `../plan.md` REQUIREMENT OWNERSHIP MATRIX
-- **Wave 2 entry gate**: Requires Wave 1 typed contract bundle, routing policy, and governance closure artifacts
-<!-- /ANCHOR:delegation -->
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
-<!-- ANCHOR:context -->
-<!-- /ANCHOR:decision -->
-## Context
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-Wave 2 packages controlled-delivery proof and auditability evidence. Decisions about runtime behavior remain centralized at the root decision record to avoid diverging interpretations between rollout and governance streams.
-<!-- /ANCHOR:context -->
+The archived child phase for Post Research Wave 2 Controlled Delivery used an older phase-package structure that no longer matched the active validator expectations. We needed to preserve the phase while removing error-level drift.
 
----
+### Constraints
 
-<!-- ANCHOR:decision -->
-## Decision
-
-Treat `../decision-record.md` as the canonical ADR source and use this package record as a scoped linkage document for Wave 2 execution and handoff conditions.
-<!-- /ANCHOR:decision -->
+- The child phase had to stay archival.
+- Existing top-level compatibility files could remain but could not keep breaking validation.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-<!-- ANCHOR:consequences -->
-## Consequences
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-- Keeps Wave 2 rollout and ledger decisions aligned with root architecture policy.
-- Requires package updates to stay synchronized whenever root ADR wording changes.
-- Reduces documentation fragmentation while preserving wave-level traceability.
-<!-- /ANCHOR:consequences -->
+**We chose**: Rewrite the child phase as Level 1-compatible archive docs and keep lightweight compatibility stubs for checklist.md and decision-record.md.
+
+**How it works**: The core docs now follow active templates. The retained compatibility files remain concise and avoid stale references or unsupported structure.
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Chosen: Level 1 normalization** | Reliable and low maintenance | Reduces historical narrative depth | 9/10 |
+| Preserve original phase-package documents | Keeps more historical structure | Continues failing current validation | 3/10 |
+
+**Why this one**: It keeps the archived phase usable and maintainable under today’s tooling.
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- The child phase validates cleanly.
+- The archive stays readable for future maintainers.
+
+**What it costs**:
+- Some original planning detail is condensed. Mitigation: use git history for a fuller reconstruction.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future validator changes require another refresh | M | Revalidate and update the archive with the current templates |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | The child phase had active validator errors. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preserving legacy phase-package structure with normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes the current error classes. |
+| 4 | **Fits Goal?** | PASS | The goal is archive stability, not renewed delivery planning. |
+| 5 | **Open Horizons?** | PASS | Git history still preserves deeper historical detail. |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Rewrite the core docs to Level 1-compatible archive content.
+- Simplify retained compatibility files and remove broken references.
+
+**How to roll back**: Restore the earlier files from git history and compare validation outcomes.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---

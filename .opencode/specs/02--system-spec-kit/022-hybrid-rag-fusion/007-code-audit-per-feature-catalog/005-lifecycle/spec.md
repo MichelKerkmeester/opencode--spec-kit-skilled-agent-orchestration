@@ -249,3 +249,4 @@ Core archival behavior confirmed. **Behavioral mismatch on unarchive path**: cat
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

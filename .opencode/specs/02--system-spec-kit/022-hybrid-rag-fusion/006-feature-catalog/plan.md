@@ -11,7 +11,7 @@ contextType: "general"
 # Implementation Plan: Feature Catalog Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 

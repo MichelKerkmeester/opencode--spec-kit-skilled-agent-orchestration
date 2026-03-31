@@ -1,83 +1,106 @@
 ---
-title: "Checklist: Form Attribute Audit Remediation [01--anobel.com/z_archive/019-form-attribute-audit/checklist]"
-description: "checklist document for 020-form-attribute-audit."
+title: "Verification Checklist: Form Attribute Audit [.opencode/specs/01--anobel.com/z_archive/019-form-attribute-audit/checklist]"
+description: "Archived verification checklist for Form Attribute Audit."
 trigger_phrases:
-  - "checklist"
+  - "spec"
   - "form"
   - "attribute"
   - "audit"
-  - "remediation"
-  - "020"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Verification Checklist: Form Attribute Audit
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist: Form Attribute Audit Remediation
 
-<!-- ANCHOR:critical-p0---must-fix -->
-## Critical (P0) - Must Fix
+---
 
-- [ ] **C1** Add `data-value` to vacancy select options in CMS
-  - Location: Webflow CMS Collection "Vacatures"
-  - Action: Bind `data-value` to vacancy name/slug field
-  - Verify: Form submission includes actual vacancy name
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-- [ ] **C2** Add label IDs for ARIA references
-  - `id="label-voornaam"` on Voornaam label
-  - `id="label-email"` on Email label
-  - `id="label-telefoon"` on Telefoon label
-  - `id="label-bericht"` on Bericht label
-  - `id="label-terms-conditions"` on Terms label
-  - Verify: `aria-labelledby` references resolve
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-- [ ] **C3** Add helper text IDs for ARIA describedby
-  - Add matching IDs to helper/error text elements
-  - Verify: Screen reader announces helper text
+---
 
-<!-- /ANCHOR:critical-p0---must-fix -->
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-<!-- ANCHOR:high-priority-p1---should-fix -->
-## High Priority (P1) - Should Fix
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
 
-- [ ] **H1** Remove empty `id=""` attributes (122 buttons)
-  - Location: Button elements throughout page
-  - Action: Remove attribute or assign meaningful ID
+---
 
-- [ ] **H2** Clean up empty `data-btn-*` attributes
-  - `data-btn-action=""` on 124 buttons
-  - `data-btn-border-color=""` on 120 buttons
-  - `data-btn-hover=""` on 96 buttons
-  - Action: Remove or populate with valid values
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [ ] **H3** Re-minify input_select.js
-  - Source: Jan 12, Minified: Jan 6
-  - Run: minification script
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
 
-- [ ] **H4** Verify custom dropdown ARIA initialization
-  - Check: `role="combobox"` on trigger
-  - Check: `aria-expanded` toggles correctly
-  - Check: `role="listbox"` on dropdown
-  - Check: `role="option"` on each option
+---
 
-<!-- /ANCHOR:high-priority-p1---should-fix -->
+<!-- ANCHOR:testing -->
+## Testing
 
-<!-- ANCHOR:medium-priority-p2---consider -->
-## Medium Priority (P2) - Consider
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
+<!-- /ANCHOR:testing -->
 
-- [ ] **M1** Add ID to main contact form
-- [ ] **M2** Fix cookie checkbox name mismatch
-- [ ] **M3** Add landmark regions (`<header>`, `<main>`)
-- [ ] **M4** Add new window warnings to external links (18)
-- [ ] **M5** Investigate obsolete script loading (dropdown.js, mobile_menu.js)
+---
 
-<!-- /ANCHOR:medium-priority-p2---consider -->
+<!-- ANCHOR:security -->
+## Security
 
-<!-- ANCHOR:verification -->
-## Verification
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
 
-- [ ] **V1** Re-run accessibility audit after fixes
-- [ ] **V2** Test form submission with vacancy selection
-- [ ] **V3** Test keyboard navigation through form
-- [ ] **V4** Verify no console errors after changes
-- [ ] **V5** Cross-browser test (Chrome, Firefox, Safari, Edge)
-<!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

@@ -1,191 +1,206 @@
 ---
-title: "Feature Specification: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/spec]"
-description: "Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates."
+title: "Feature Specification: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/spec]"
+description: "Feature Specification: Notification Time-Based Scheduling"
 trigger_phrases:
   - "feature"
   - "specification"
   - "notification"
-  - "time"
-  - "based"
-  - "spec"
-  - "012"
+  - "time-based"
+  - "scheduling"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: CORE -->
 # Feature Specification: Notification Time-Based Scheduling
 
-Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. OBJECTIVE
+## EXECUTIVE SUMMARY
 
-### Metadata
-- **Category**: Enhancement
-- **Tags**: notifications, scheduling, time, cms, alerts
-- **Priority**: P1
-- **Feature Branch**: `013-notification-time-scheduling`
-- **Created**: 2025-12-29
-- **Status**: In Progress
-- **Input**: User report that 09:50 AM scheduled notification didn't appear at the specified time
+Feature Specification: Notification Time-Based Scheduling
 
-### Stakeholders
-- Development (implementation)
-- Content team (CMS management)
+**Key Decisions**: Keep the archive at Level 3, preserve legacy sources in scratch/legacy, and normalize only the validator-facing root documents.
 
-### Purpose
-Enable content managers to schedule notifications for specific times (e.g., "show at 09:50 AM") in addition to dates. Currently, the system only supports date-based scheduling where all times are normalized to midnight.
+**Critical Dependencies**: Existing archived markdown in this folder.
+
+---
+
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `012-notification-time-scheduling` |
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The current notification system ignores time components in CMS date fields:
-1. CMS outputs date strings like "December 29, 2025" (no time)
-2. JavaScript normalizes all dates to midnight for comparison
-3. Result: Cannot schedule alerts for specific times within a day
+Feature Specification: Notification Time-Based Scheduling
 
-### Assumptions
-- Webflow CMS DateTime fields CAN include time when configured
-- JavaScript Date() constructor handles various date/time string formats
-- Backward compatibility with existing date-only alerts is required
+### Purpose
+Keep this complex archived packet structurally compliant so future work can reuse its decisions, implementation notes, and supporting research without validator drift.
+<!-- /ANCHOR:problem -->
 
 ---
-<!-- /ANCHOR:objective -->
 
 <!-- ANCHOR:scope -->
-## 2. SCOPE
+## 3. SCOPE
 
 ### In Scope
-- Detect time presence in CMS date attribute strings
-- Implement dual-mode date comparison (exact time vs. midnight)
-- Maintain backward compatibility with date-only scheduling
-- Update debug logging to show comparison mode
-- CDN version update for cache busting
-- Webflow configuration guide for enabling time in date fields
+- Normalize root specification, plan, tasks, checklist, decision record, and summary documents.
+- Preserve original markdown artifacts in `scratch/legacy`.
+- Keep local archive references, handover notes, and supporting documents resolvable.
 
 ### Out of Scope
-- Timezone selection (uses browser local time)
-- Recurring schedules (e.g., "every day at 9 AM")
-- Separate time fields in CMS (uses existing DateTime fields)
-- Toast notifications (only banner alerts currently implemented)
+- Re-implementing the archived feature set.
+- Expanding archived work into a new active roadmap.
 
----
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 3 structure |
+| `plan.md` | Modify | Rebuild required plan sections |
+| `tasks.md` | Modify/Create | Rebuild required task structure |
+| `checklist.md` | Modify/Create | Rebuild required checklist structure |
+| `decision-record.md` | Modify/Create | Capture the archived documentation decision |
+| `implementation-summary.md` | Modify/Create | Record the archived delivery summary |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:users-stories -->
-## 3. USERS & STORIES
-
-### User Story 1 - Time-Based Alert Scheduling (Priority: P0)
-
-As a content manager, I need to schedule alerts for specific times so that time-sensitive announcements appear exactly when needed.
-
-**Why This Priority**: P0 because this is the core feature request.
-
-**Acceptance Scenarios**:
-1. **Given** I set start time to "December 29, 2025 2:00 PM", **When** it's 1:59 PM, **Then** the alert is hidden
-2. **Given** I set start time to "December 29, 2025 2:00 PM", **When** it's 2:01 PM, **Then** the alert is visible
-3. **Given** I set end time to "December 29, 2025 5:00 PM", **When** it's 5:01 PM, **Then** the alert is hidden
-
-### User Story 2 - Backward Compatibility (Priority: P0)
-
-As a content manager with existing date-only alerts, I need them to continue working without modification.
-
-**Why This Priority**: P0 because breaking existing functionality is unacceptable.
-
-**Acceptance Scenarios**:
-1. **Given** an existing alert with start date "December 29, 2025" (no time), **When** it's any time on Dec 29, **Then** the alert shows all day
-2. **Given** an existing alert with end date "December 29, 2025" (no time), **When** it's 11:59 PM on Dec 29, **Then** the alert is still visible
-3. **Given** an existing alert with end date "December 29, 2025" (no time), **When** it's 12:01 AM on Dec 30, **Then** the alert is hidden
-
 ---
-<!-- /ANCHOR:users-stories -->
 
-<!-- ANCHOR:functional-requirements -->
 <!-- ANCHOR:requirements -->
-## 4. FUNCTIONAL REQUIREMENTS
+## 4. REQUIREMENTS
 
-- **REQ-FUNC-001:** System MUST detect time presence in date attribute strings using pattern matching
-- **REQ-FUNC-002:** System MUST use exact timestamp comparison when time is present
-- **REQ-FUNC-003:** System MUST use midnight comparison for start dates without time (backward compatible)
-- **REQ-FUNC-004:** System MUST use end-of-day (23:59:59) comparison for end dates without time
-- **REQ-FUNC-005:** System MUST log comparison mode in debug output
-- **REQ-FUNC-006:** System MUST handle mixed scenarios (start with time, end without time)
+### P0 - Blockers (MUST complete)
 
-### Time Detection Pattern
-The system detects time using regex: `/(\d{1,2}:\d{2})|([AP]M)|T\d{2}:/i`
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 3 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Root headers match the active Level 3 templates | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and remain in order | `validate.sh` reports no ANCHORS_VALID errors |
 
-Matches:
-- "9:50" or "09:50" (colon-separated time)
-- "AM" or "PM" (12-hour format indicators)
-- "T12:" (ISO 8601 format)
+### P1 - Required (complete OR user-approved deferral)
 
----
-<!-- /ANCHOR:functional-requirements -->
-
-<!-- ANCHOR:non-functional-requirements -->
-<!-- ANCHOR:requirements -->
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Level declarations align across root documents | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-005 | Root markdown references resolve inside the folder or repo | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-006 | Historical source material remains preserved | Original markdown is copied into `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
-## 5. NON-FUNCTIONAL REQUIREMENTS
-
-### Performance
-- **NFR-P01**: Time detection must add < 1ms per alert
-- **NFR-P02**: No additional DOM queries required
-
-### Compatibility
-- **NFR-C01**: Must work with all existing Webflow date formats
-- **NFR-C02**: Must not break existing alerts without time
 
 ---
-<!-- /ANCHOR:non-functional-requirements -->
-
-<!-- ANCHOR:edge-cases -->
-<!-- /ANCHOR:requirements -->
-## 6. EDGE CASES
-
-| Scenario | Input | Expected Behavior |
-|----------|-------|-------------------|
-| Date only, start | "December 29, 2025" | Show from midnight (00:00:00) |
-| Date only, end | "December 29, 2025" | Show until 23:59:59 |
-| DateTime, start | "December 29, 2025 9:50 AM" | Show from 09:50:00 exactly |
-| DateTime, end | "December 29, 2025 3:00 PM" | Hide after 15:00:00 exactly |
-| Mixed: time start, date end | Start: "Dec 29 9:50 AM", End: "Dec 30" | Start at 9:50, end at Dec 30 23:59:59 |
-| Empty dates | null/undefined | No date restriction (always show) |
-| Malformed date | "invalid" | Treated as no date (null) |
-
----
-<!-- /ANCHOR:edge-cases -->
 
 <!-- ANCHOR:success-criteria -->
-## 7. SUCCESS CRITERIA
+## 5. SUCCESS CRITERIA
 
-- **SC-001**: Alerts with time show/hide at exact specified times
-- **SC-002**: Existing date-only alerts continue working unchanged
-- **SC-003**: Debug logging shows "exact time" vs "midnight" comparison mode
-- **SC-004**: No console errors or warnings
-- **SC-005**: CDN version updated for cache busting
-
----
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The archive still exposes the core decisions, scope, and delivery summary in the root documents.
+- **SC-003**: Legacy source markdown remains preserved in `scratch/legacy` for deep historical review.
 <!-- /ANCHOR:success-criteria -->
 
-<!-- ANCHOR:dependencies -->
-## 8. DEPENDENCIES
+---
 
-| Dependency | Type | Status | Impact if Blocked |
-|------------|------|--------|-------------------|
-| nav_notifications.js | Internal | ✅ Exists | Cannot implement |
-| Webflow DateTime fields | External | ⚠️ Needs verification | May need workaround |
-| CDN (R2) | External | ✅ Available | Cannot deploy |
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Legacy root markdown and supporting guides | High | Back up originals before normalizing root docs |
+| Risk | Complex archive notes lose discoverability | Medium | Keep summary sections concise and preserve original sources |
+| Risk | Broken historical references hide useful context | Medium | Sanitize unresolved links while preserving surrounding text |
+<!-- /ANCHOR:risks -->
 
 ---
-<!-- /ANCHOR:dependencies -->
 
-<!-- ANCHOR:changelog -->
-## 9. CHANGELOG
+<!-- ANCHOR:questions -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
-### v1.0 (2025-12-29)
-- Initial specification
-- Defined time detection pattern
-- Established backward compatibility requirements
-<!-- /ANCHOR:changelog -->
+### Performance
+- **NFR-P01**: Root documentation remains lightweight enough for fast validator execution.
+
+### Security
+- **NFR-S01**: Sanitized archive references do not point to missing or external markdown targets.
+
+### Reliability
+- **NFR-R01**: The archive can be validated repeatedly without manual cleanup.
+
+---
+
+## 8. EDGE CASES
+
+### Data Boundaries
+- Empty optional guides remain acceptable as long as required root documents validate.
+- Missing legacy references are converted into plain archived notes rather than broken markdown links.
+
+### Error Scenarios
+- If a legacy root file contains outdated template syntax, a preserved copy is stored before replacement.
+- If historical references cannot be resolved, they are retained as plain text instead of live markdown links.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 15/25 | Multi-document archive normalization |
+| Risk | 10/25 | Historical context must be preserved |
+| Research | 8/20 | Validator and template investigation required |
+| Multi-Agent | 3/15 | Single repair stream |
+| Coordination | 4/15 | Root docs plus supporting archive notes |
+| **Total** | **40/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Legacy context becomes harder to inspect after normalization | M | M | Preserve originals in scratch/legacy |
+| R-002 | Historical markdown links point to removed guidance | M | M | Sanitize unresolved references and keep plain text notes |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Review Archived Scope (Priority: P0)
+
+**As a** future maintainer, **I want** the archive root docs to validate cleanly, **so that** I can inspect the folder without template drift getting in the way.
+
+**Acceptance Criteria**:
+1. Given the folder is validated, When `validate.sh` runs, Then it returns 0 errors.
+
+---
+
+### US-002: Recover Historical Detail (Priority: P1)
+
+**As a** future maintainer, **I want** the pre-normalization markdown preserved, **so that** I can recover historical detail when needed.
+
+**Acceptance Criteria**:
+1. Given a normalized root document, When I inspect `scratch/legacy`, Then the original archive source is still available.
+
+---
+
+## 12. OPEN QUESTIONS
+
+- None. This package remains archived for reference rather than active delivery.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`
+
+---

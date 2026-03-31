@@ -537,7 +537,9 @@ exec
 /bin/zsh -lc "nl -ba .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '220,320p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md | sed -n '228,345p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '68,140p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
-   220	<!-- ANCHOR:summary -->
+   220
+<!-- /ANCHOR:when-to-use -->
+	<!-- ANCHOR:summary -->
    221	<a id="overview"></a>
    222	
    223	## 2. OVERVIEW
@@ -584,7 +586,9 @@ exec
    230	-->
    231	## 4. DECISIONS
    232	
-   233	<!-- ANCHOR:decision-wrote-codex-9bac192d -->
+   233
+<!-- /ANCHOR:summary -->
+	<!-- ANCHOR:decision-wrote-codex-9bac192d -->
    234	### Decision 1: Decision: Wrote codex
    235	
    236	**Context**: review-report.md as a separate file from review-report.md because the first was the original 6-agent review and the second is the Codex CLI-specific second-pass review
@@ -626,7 +630,9 @@ exec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '674,825p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
    614	## MEMORY METADATA
    615	
-   616	<!-- ANCHOR:metadata -->
+   616
+<!-- /ANCHOR:decision-wrote-codex-9bac192d -->
+	<!-- ANCHOR:metadata -->
    617	
    618	> **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
    619	
@@ -978,7 +984,9 @@ exec
    513	
    514	---
    515	
-   516	<!-- ANCHOR:recovery-hints -->
+   516
+<!-- /ANCHOR:metadata -->
+	<!-- ANCHOR:recovery-hints -->
    517	<a id="recovery-hints"></a>
    518	
    519	## RECOVERY HINTS

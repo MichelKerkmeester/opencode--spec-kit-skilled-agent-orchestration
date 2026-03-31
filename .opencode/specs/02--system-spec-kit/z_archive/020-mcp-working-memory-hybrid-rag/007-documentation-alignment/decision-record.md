@@ -1,110 +1,115 @@
 ---
-title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/decision-record]"
-description: "Documentation alignment follows completed Waves 1-3 and closes a doc-to-code drift gap. The goal is to restore accuracy of module inventories, feature flags, architecture flow d..."
+title: "Decision Record: Documentation Alignment [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Documentation Alignment."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "documentation"
-  - "alignment"
   - "decision record"
-  - "007"
-importance_tier: "important"
-contextType: "decision"
+  - "phase"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 3 -->
 # Decision Record: Documentation Alignment
 
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-<!-- ANCHOR:context -->
-## Context
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Normalize archived child phase docs to Level 1 compatibility
 
-Documentation alignment follows completed Waves 1-3 and closes a doc-to-code drift gap. The goal is to restore accuracy of module inventories, feature flags, architecture flow descriptions, and command signatures without changing implementation behavior.
-<!-- /ANCHOR:context -->
+### Metadata
 
----
-
-<!-- ANCHOR:decisions -->
-## Decisions
-
-### ADR-007-001: Scope to existing README patterns only
-
-**Status:** Accepted
-**Date:** 2026-02-19
-
-**Context:** The 30+ files needing updates each follow different README conventions (HVR format, ANCHOR tags, module tables). We could standardize all READMEs to a single format or preserve existing patterns.
-
-**Decision:** Preserve each README's existing format and pattern. Only add missing content; do not restructure.
-
-**Rationale:** Restructuring would create unnecessary diff noise, risk breaking ANCHOR tags that the memory system depends on for indexing, and increase review burden. The goal is alignment, not reformatting.
-
-**Consequences:** Some READMEs will remain in slightly different styles. Acceptable trade-off for lower risk and faster delivery.
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
-### ADR-007-002: Feature flags documented in 3 locations
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Status:** Accepted
-**Date:** 2026-02-19
+The archived child phase for Documentation Alignment used an older phase-package structure that no longer matched the active validator expectations. We needed to preserve the phase while removing error-level drift.
 
-**Context:** `SPECKIT_ADAPTIVE_FUSION` and `SPECKIT_EXTENDED_TELEMETRY` need documentation. Options: (A) single canonical location, (B) 3 locations for discoverability.
+### Constraints
 
-**Decision:** Document both flags in Skill README, MCP Server README, and INSTALL_GUIDE. Each location gets the same table format: flag name, default value, purpose, source file.
-
-**Rationale:** Users access documentation through different entry points. A developer might read the MCP Server README; a new user reads the INSTALL_GUIDE; an AI assistant reads SKILL.md. All three should surface the flags.
-
-**Consequences:** Minor duplication (one table in 3 places). Acceptable because flag lists change rarely and the cost of missing a flag in a key doc is higher than the cost of maintaining 3 copies.
+- The child phase had to stay archival.
+- Existing top-level compatibility files could remain but could not keep breaking validation.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-### ADR-007-003: New folder READMEs follow existing lib subfolder pattern
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-**Status:** Accepted
-**Date:** 2026-02-19
+**We chose**: Rewrite the child phase as Level 1-compatible archive docs and keep lightweight compatibility stubs for checklist.md and decision-record.md.
 
-**Context:** Three new folders (`contracts/`, `telemetry/`, `extraction/`) need READMEs. Options: (A) minimal stub, (B) full pattern matching existing lib subfolder READMEs.
-
-**Decision:** Full pattern match. Each new README includes: purpose section, module count, file listing with descriptions, key exports table, and ANCHOR tags.
-
-**Rationale:** Consistency with existing READMEs ensures the memory system indexes them correctly and developers can navigate them the same way. A stub would be insufficient for memory retrieval.
+**How it works**: The core docs now follow active templates. The retained compatibility files remain concise and avoid stale references or unsupported structure.
+<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
-### ADR-007-004: Memory commands get targeted updates, not rewrites
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
 
-**Status:** Accepted
-**Date:** 2026-02-19
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Chosen: Level 1 normalization** | Reliable and low maintenance | Reduces historical narrative depth | 9/10 |
+| Preserve original phase-package documents | Keeps more historical structure | Continues failing current validation | 3/10 |
 
-**Context:** The 5 memory command files have stale tool signature documentation. Options: (A) full rewrite, (B) targeted additions to existing parameter lists and behavior descriptions.
-
-**Decision:** Targeted additions only. Add missing parameters, feature flag context, and mutation-ledger notes to existing sections. Do not restructure command flow or change execution logic.
-
-**Rationale:** Memory commands are execution engines (YAML-backed workflows). Restructuring them risks breaking command behavior. The gap is informational (missing parameter docs), not structural.
-
----
-
-### ADR-007-005: Track legacy embedding-provider drift as post-completion addendum
-
-**Status:** Accepted, resolved
-**Date:** 2026-02-19
-
-**Context:** Follow-up investigation found a legacy placeholder suite in `mcp_server/tests/embeddings.vitest.ts` still references `lib/interfaces/embedding-provider`, but that module path was removed during TS migration. Current provider contracts now live in shared paths. A related drift class also remained in three deferred suites (`api-key-validation`, `api-validation`, `lazy-loading`) that were still excluded from active coverage.
-
-**Decision:** Record this as a post-completion documentation/runtime drift addendum in parent spec 136 root docs and this package's closure artifacts (`tasks.md`, `checklist.md`, `implementation-summary.md`). Do not reopen package 007 implementation scope. Mark the addendum closed once the architecture-aligned rewrite of `tests/embeddings.vitest.ts` lands and the deferred API/startup suites are converted to active tests.
-
-**Rationale:** Package 007 remains complete for its original scope. The newly discovered drift item was factual and relevant to alignment quality, so it was documented without rewriting completed task groups.
-
-**Consequences:** Closure artifacts include both the drift record and resolution state. `tests/embeddings.vitest.ts` was rewritten to current shared embedding architecture, old deferred marker removed, and targeted verification now passes (1 file passed, 13 tests passed, 0 skipped). The three previously deferred suites are now active and pass in targeted verification (3 files passed, 15 tests passed, 0 skipped), with root all-features totals updated to 142 passed test files and 4415 passed tests (19 skipped).
-<!-- /ANCHOR:decisions -->
+**Why this one**: It keeps the archived phase usable and maintainable under today’s tooling.
+<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
 
-<!-- ANCHOR:consequences -->
-## Consequences
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
 
-- Documentation accuracy improves retrieval quality and onboarding confidence.
-- Existing formatting differences remain where intentional to minimize change risk.
-- Future updates should verify counts and references against repository state before marking checklist completion.
-<!-- /ANCHOR:consequences -->
+**What improves**:
+- The child phase validates cleanly.
+- The archive stays readable for future maintainers.
+
+**What it costs**:
+- Some original planning detail is condensed. Mitigation: use git history for a fuller reconstruction.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future validator changes require another refresh | M | Revalidate and update the archive with the current templates |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | The child phase had active validator errors. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preserving legacy phase-package structure with normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes the current error classes. |
+| 4 | **Fits Goal?** | PASS | The goal is archive stability, not renewed delivery planning. |
+| 5 | **Open Horizons?** | PASS | Git history still preserves deeper historical detail. |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Rewrite the core docs to Level 1-compatible archive content.
+- Simplify retained compatibility files and remove broken references.
+
+**How to roll back**: Restore the earlier files from git history and compare validation outcomes.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---

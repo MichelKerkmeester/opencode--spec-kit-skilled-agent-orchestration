@@ -255,3 +255,4 @@ Verify that all 11 Query Intelligence features are accurately documented in the 
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

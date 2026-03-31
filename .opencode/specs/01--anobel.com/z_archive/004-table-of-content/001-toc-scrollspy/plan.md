@@ -1,276 +1,122 @@
 ---
-title: "Implementation Plan: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/plan]"
-description: "Implementation plan for a custom Table of Contents scroll-spy solution using IntersectionObserver with flexible styling options."
+title: "Implementation Plan: Custom TOC ScrollSpy - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/plan]"
+description: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "feature"
+  - "specification"
   - "custom"
   - "toc"
   - "scrollspy"
-  - "001"
+  - "requirements"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-# Implementation Plan: Custom TOC ScrollSpy - Technical Approach & Architecture
+# Implementation Plan: Custom TOC ScrollSpy - Requirements & User Stories
 
-Implementation plan for a custom Table of Contents scroll-spy solution using IntersectionObserver with flexible styling options.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. OBJECTIVE
-
-### Metadata
-- **Category**: Plan
-- **Tags**: toc, scrollspy, intersectionobserver, accessibility
-- **Priority**: P1
-- **Branch**: `004-table-of-content`
-- **Date**: 2024-12-13
-- **Spec**: `.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/spec.md`
-
-### Summary
-Build a custom TOC scroll-spy implementation that detects active sections using IntersectionObserver and applies styling through multiple mechanisms (data attributes, CSS classes, ARIA attributes), providing more flexibility than Finsweet's Webflow-dependent approach.
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
 ### Technical Context
 
-- **Language/Version**: JavaScript ES6+
-- **Primary Dependencies**: None (vanilla JS)
-- **Testing**: Manual browser testing
-- **Target Platform**: Modern browsers (Chrome, Firefox, Safari, Edge)
-- **Project Type**: Single project - `src/2_javascript/menu/`
-- **Constraints**: Must follow existing IIFE + INIT_FLAG pattern from project
-<!-- /ANCHOR:objective -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories
+<!-- /ANCHOR:summary -->
 
 ---
 
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-### Definition of Ready (DoR)
-- [x] Problem statement clear; scope documented
-- [x] Research complete (Finsweet analysis, IO best practices, accessibility)
-- [x] Constraints known (browser support, no dependencies)
-- [x] Success criteria measurable
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-### Definition of Done (DoD)
-- [ ] All acceptance criteria met; manual tests passing
-- [ ] Docs updated (spec/plan/tasks)
-- [ ] Performance within 16ms budget
-- [ ] Accessibility audit passing
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:project-structure -->
-## 3. PROJECT STRUCTURE
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### Documentation (This Feature)
+### Pattern
+Archived documentation normalization
 
-```
-.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/
-  spec.md              # Feature specification
-  plan.md              # This file
-  tasks.md             # Task breakdown
-  scratch/             # Test HTML, debug files
-  memory/              # Session context
-```
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
 
-### Source Code
-
-```
-src/
-  2_javascript/
-    cms/
-      table_of_content.js  # Main implementation
-  1_css/
-    menu/
-      toc_scrollspy.css    # Styling with multiple selectors
-```
-<!-- /ANCHOR:project-structure -->
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:implementation-phases -->
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Core Implementation
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
 
-- **Goal**: Build working scroll-spy with IntersectionObserver
-- **Deliverables**:
-  - `toc_scrollspy.js` with IIFE pattern
-  - Section detection and link matching
-  - Active state management
-- **Duration**: ~2 hours
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
 
-### Phase 2: Styling & Configuration
-
-- **Goal**: Add configurable options and CSS
-- **Deliverables**:
-  - `toc_scrollspy.css` with multi-selector support
-  - Data attribute configuration parsing
-  - Custom class name support
-- **Duration**: ~1 hour
-
-### Phase 3: Accessibility & Polish
-
-- **Goal**: WCAG compliance and edge case handling
-- **Deliverables**:
-  - Focus management
-  - Reduced motion support
-  - Hash URL handling
-  - Edge case fallbacks
-- **Duration**: ~1 hour
-<!-- /ANCHOR:implementation-phases -->
-
----
-
-<!-- ANCHOR:architecture-design -->
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
 <!-- /ANCHOR:phases -->
-## 5. ARCHITECTURE DESIGN
-
-### Data Attributes API
-
-```html
-<!-- Container (optional - for configuration) -->
-<nav data-toc-container
-     data-toc-offset-top="80px"
-     data-toc-offset-bottom="70%"
-     data-toc-active-class="is--current"
-     aria-label="Table of contents">
-
-  <!-- Links -->
-  <a href="#section-1" data-toc-link>Section 1</a>
-  <a href="#section-2" data-toc-link>Section 2</a>
-</nav>
-
-<!-- Sections -->
-<section id="section-1" data-toc-section>...</section>
-<section id="section-2" data-toc-section>...</section>
-```
-
-### State Application (All Applied Simultaneously)
-
-```javascript
-// When a link becomes active:
-link.dataset.tocActive = "true";           // data-toc-active="true"
-link.setAttribute("aria-current", "true"); // aria-current="true"
-link.classList.add(activeClass);           // .is--current (configurable)
-
-// When a link becomes inactive:
-link.dataset.tocActive = "false";
-link.removeAttribute("aria-current");
-link.classList.remove(activeClass);
-```
-
-### IntersectionObserver Configuration
-
-```javascript
-const observer = new IntersectionObserver(callback, {
-  root: null,                           // Viewport
-  rootMargin: "-10% 0px -70% 0px",     // 20% active zone at top
-  threshold: [0]                        // Single threshold for efficiency
-});
-```
-
-### Detection Algorithm
-
-```
-1. Track all visible sections in Map
-2. On intersection change:
-   - Add/remove from visible Map
-   - Determine active = first visible in document order
-   - If none visible, use nearest section (scroll fallback)
-3. Apply state to matching TOC link
-4. Batch DOM updates via RAF
-```
-<!-- /ANCHOR:architecture-design -->
 
 ---
 
-<!-- ANCHOR:testing-strategy -->
-## 6. TESTING STRATEGY
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-### Manual Testing Checklist
-
-- [ ] Scroll through page - correct section highlights
-- [ ] Fast scroll - no flicker
-- [ ] Click TOC link - smooth scroll, focus moves
-- [ ] Page load with hash - correct pre-highlight
-- [ ] Keyboard navigation - Tab through links
-- [ ] Screen reader - announces current state
-- [ ] Reduced motion - instant scroll
-
-### Browser Testing
-
-- [ ] Chrome (latest)
-- [ ] Firefox (latest)
-- [ ] Safari (latest)
-- [ ] Edge (latest)
-- [ ] Mobile Safari (iOS)
-- [ ] Chrome Mobile (Android)
-<!-- /ANCHOR:testing-strategy -->
-
----
-
-<!-- ANCHOR:success-metrics -->
-## 7. SUCCESS METRICS
-
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Active state update | <16ms | Performance profiling |
-| Console errors | 0 | Browser DevTools |
-| Accessibility issues | 0 critical | axe DevTools |
-| CSS styling works | 3 selectors | Manual verification |
-<!-- /ANCHOR:success-metrics -->
-
----
-
-<!-- ANCHOR:risks--mitigations -->
-## 8. RISKS & MITIGATIONS
-
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| Short sections missed | Med | Med | Scroll position fallback |
-| Fast scroll flicker | Low | Med | RAF batching |
-| Hash URL race condition | Low | Low | Delay initial highlight |
-<!-- /ANCHOR:risks--mitigations -->
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## 9. DEPENDENCIES
+## 6. DEPENDENCIES
 
-### External Dependencies
-
-| Dependency | Type | Status |
-|------------|------|--------|
-| IntersectionObserver | Browser API | Green (97%+ support) |
-| requestAnimationFrame | Browser API | Green (99%+ support) |
-
-### Internal Dependencies
-
-| Dependency | Type | Status |
-|------------|------|--------|
-| Project IIFE pattern | Convention | Green (documented) |
-| Motion.dev | Optional | Green (available at window.Motion) |
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:references -->
-## 10. REFERENCES
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-### Related Documents
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
 
-- **Feature Specification**: See `spec.md`
-- **Task Breakdown**: See `tasks.md`
-
-### Research Sources
-
-- Finsweet TOC: https://finsweet.com/attributes/table-of-contents
-- MDN IntersectionObserver: https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver
-- WAI-ARIA Navigation: https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/navigation.html
-<!-- /ANCHOR:references -->
+---

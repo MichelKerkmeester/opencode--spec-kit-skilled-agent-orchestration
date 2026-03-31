@@ -1,34 +1,121 @@
 ---
-title: "Implementation Plan - Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/plan]"
-description: "plan document for 016-performance-hacks."
+title: "Implementation Plan: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/plan]"
+description: "Specification: Additional Performance Hacks"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "specification"
+  - "additional"
   - "performance"
   - "hacks"
-  - "016"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Specification: Additional Performance Hacks
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan - Performance Hacks
 
-> **Goal:** Apply quick wins to boost LCP and FCP.
+---
 
-<!-- ANCHOR:phase-1-global-optimizations-globalhtml -->
-## Phase 1: Global Optimizations (global.html)
-- [ ] Remove Typekit script.
-- [ ] Remove non-critical preloads (`dropdown`, `mobile_menu`, `cookie`).
-- [ ] Add "Page Ready" safety fallback script (inline).
-<!-- /ANCHOR:phase-1-global-optimizations-globalhtml -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-<!-- ANCHOR:phase-2-page-level-optimizations-homehtml -->
-## Phase 2: Page-Level Optimizations (home.html)
-- [ ] Change marquee logo loading from `eager` to `lazy`.
-- [ ] Verify Hero video `fetchpriority` (already confirmed, but good to double check).
-<!-- /ANCHOR:phase-2-page-level-optimizations-homehtml -->
+### Technical Context
 
-<!-- ANCHOR:phase-3-verification -->
-## Phase 3: Verification
-- [ ] Review code changes.
-<!-- /ANCHOR:phase-3-verification -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Specification: Additional Performance Hacks
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

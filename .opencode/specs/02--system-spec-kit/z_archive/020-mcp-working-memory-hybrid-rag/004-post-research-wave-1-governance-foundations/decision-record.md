@@ -1,68 +1,115 @@
 ---
-title: "...spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/decision-record]"
-description: "This phase package delegates decision records to the parent spec folder."
+title: "Decision Record: Post Research Wave 1 Governance Foundations [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Post Research Wave 1 Governance Foundations."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "post"
-  - "research"
-  - "wave"
   - "decision record"
-  - "004"
-importance_tier: "important"
-contextType: "decision"
+  - "phase"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
-# Decision Record: Post-Research Wave 1 (Governance Foundations)
+# Decision Record: Post Research Wave 1 Governance Foundations
 
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-decision-record | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-<!-- ANCHOR:delegation -->
-<!-- ANCHOR:decision -->
-## Decision Record Delegation
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Normalize archived child phase docs to Level 1 compatibility
 
-This phase package delegates decision records to the parent spec folder.
+### Metadata
 
 | Field | Value |
 |-------|-------|
-| Canonical Source | `../decision-record.md` |
-| Reason | Phase packages do not maintain independent ADRs; all architectural decisions are recorded at root level to prevent fragmentation |
-| Package Scope | `004-post-research-wave-1-governance-foundations` |
-
-### Package-Relevant Decisions (Root Cross-References)
-
-Decisions relevant to this wave's scope (adaptive fusion, typed trace, artifact-aware routing, governance approvals):
-
-- **ADR-001 through ADR-006**: See `../decision-record.md` for full records
-- **Post-research wave model**: Documented in `../spec.md` §3.7 and `../plan.md` §2.7
-- **Wave 1 capability ownership**: Frozen per `../plan.md` REQUIREMENT OWNERSHIP MATRIX
-<!-- /ANCHOR:delegation -->
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
-<!-- ANCHOR:context -->
-<!-- /ANCHOR:decision -->
-## Context
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-Wave 1 exists to establish governance-safe runtime foundations before controlled delivery. The package intentionally references root ADRs so that contract, routing, and fusion decisions remain centralized in a single canonical record.
-<!-- /ANCHOR:context -->
+The archived child phase for Post Research Wave 1 Governance Foundations used an older phase-package structure that no longer matched the active validator expectations. We needed to preserve the phase while removing error-level drift.
 
----
+### Constraints
 
-<!-- ANCHOR:decision -->
-## Decision
-
-Maintain root-level ADR ownership in `../decision-record.md` and use this package decision record only for scoped cross-reference and wave-specific interpretation.
-<!-- /ANCHOR:decision -->
+- The child phase had to stay archival.
+- Existing top-level compatibility files could remain but could not keep breaking validation.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-<!-- ANCHOR:consequences -->
-## Consequences
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-- Prevents ADR drift across wave packages.
-- Requires package files to keep root references synchronized after each update.
-- Keeps review traffic concentrated in one decision source while preserving package traceability.
-<!-- /ANCHOR:consequences -->
+**We chose**: Rewrite the child phase as Level 1-compatible archive docs and keep lightweight compatibility stubs for checklist.md and decision-record.md.
+
+**How it works**: The core docs now follow active templates. The retained compatibility files remain concise and avoid stale references or unsupported structure.
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Chosen: Level 1 normalization** | Reliable and low maintenance | Reduces historical narrative depth | 9/10 |
+| Preserve original phase-package documents | Keeps more historical structure | Continues failing current validation | 3/10 |
+
+**Why this one**: It keeps the archived phase usable and maintainable under today’s tooling.
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- The child phase validates cleanly.
+- The archive stays readable for future maintainers.
+
+**What it costs**:
+- Some original planning detail is condensed. Mitigation: use git history for a fuller reconstruction.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future validator changes require another refresh | M | Revalidate and update the archive with the current templates |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | The child phase had active validator errors. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preserving legacy phase-package structure with normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes the current error classes. |
+| 4 | **Fits Goal?** | PASS | The goal is archive stability, not renewed delivery planning. |
+| 5 | **Open Horizons?** | PASS | Git history still preserves deeper historical detail. |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Rewrite the core docs to Level 1-compatible archive content.
+- Simplify retained compatibility files and remove broken references.
+
+**How to roll back**: Restore the earlier files from git history and compare validation outcomes.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---

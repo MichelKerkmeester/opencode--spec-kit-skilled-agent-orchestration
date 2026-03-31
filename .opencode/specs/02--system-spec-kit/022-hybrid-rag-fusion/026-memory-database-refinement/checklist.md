@@ -37,9 +37,9 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Review Quality
+## Code Quality
 
-- [x] CHK-010 [P0] All 30 iterations complete with findings logged [Evidence: 30 iteration files in `review/iterations/iteration-001.md` through `iteration-030.md`, all non-empty.]
+- [x] CHK-010 [P0] All 30 iterations complete with findings logged [Evidence: 30 iteration files in `review/iterations/iteration-001.md` through `review/iterations/iteration-030.md`, all non-empty.]
 - [x] CHK-011 [P0] Each iteration reviews a distinct dimension [Evidence: 30 dimensions covered (20 primary + 10 deep dives); no duplicate coverage.]
 - [x] CHK-012 [P0] All findings classified as P0/P1/P2 [Evidence: 121 findings total — 5 P0, 75 P1, 41 P2 — summary counts in `review/review-report-v1-original-audit.md`. Note: detailed flat tables enumerate 82 (5+50+27); remaining 39 from deep-dive iters 021-030 appear in the dimension totals but not the flat tables.]
 - [x] CHK-013 [P1] Each P0 finding has file path, code citation, and fix recommendation [Evidence: All 5 P0 findings cite specific files and include fix recommendations.]
@@ -49,12 +49,12 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:testing -->
-## Coverage
+## Testing
 
 - [x] CHK-020 [P1] Test coverage gaps identified for each P0/P1 finding [Evidence: Each iteration notes test coverage status; findings reference untested code paths.]
 - [x] CHK-021 [P1] No false positives in P0 findings (verified by code inspection) [Evidence: All 5 P0 findings cite specific code locations; each agent read the actual source before reporting.]
 
-## Fix Verification
+### Fix Verification
 
 - [x] CHK-060 [P0] All 5 P0 blockers fixed with passing tests [Evidence: T010-T014 all fixed via parallel GPT-5.4 agents; 8664 tests pass, 320/322 test files pass (1 pre-existing timeout)]
 - [x] CHK-061 [P0] Build and typecheck clean after all P0 fixes [Evidence: `npx tsc --noEmit` clean with zero errors]
@@ -70,6 +70,16 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No hardcoded secrets introduced during the remediation waves [Evidence: checklist evidence references only test fixtures and sanitized runtime behavior; no new secrets documented in packet artifacts.]
+- [x] CHK-031 [P0] Input validation and trust-boundary fixes were verified where findings required them [Evidence: shared-memory auth hardening, checkpoint scope isolation, and scoped resume/cursor fixes are recorded in T013, T060, T230, and related verification items.]
+- [x] CHK-032 [P1] Auth/authz behavior remained aligned with remediation scope [Evidence: shared-memory server-context auth and blank actor rejection are explicitly verified in CHK-098 and Phase 5 task evidence.]
+<!-- /ANCHOR:security -->
+
+---
+
 <!-- ANCHOR:docs -->
 ## Documentation
 
@@ -77,6 +87,26 @@ contextType: "general"
 - [x] CHK-031 [P1] Findings grouped by severity and dimension [Evidence: Report has separate P0, P1, P2 tables plus a findings-by-dimension summary table.]
 - [x] CHK-032 [P1] Context saved to memory [Evidence: `generate-context.js` completed with quality 100/100, indexed as memory #36.]
 <!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-030 [P0] Final `review/review-report.md` exists with ranked findings table [Evidence: Report created with P0/P1/P2 tables, dimension summary, and priority recommendations.]
+- [x] CHK-031 [P1] Findings grouped by severity and dimension [Evidence: Report has separate P0, P1, P2 tables plus a findings-by-dimension summary table.]
+- [x] CHK-032 [P1] Context saved to memory [Evidence: `generate-context.js` completed with quality 100/100, indexed as memory #36.]
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Review, research, memory, and scratch artifacts remain in their expected packet subfolders [Evidence: `review/`, `research/`, `memory/`, and `scratch/` all exist and hold the referenced audit artifacts.]
+- [x] CHK-051 [P1] Scratch artifacts are isolated to `scratch/` rather than mixed into packet root docs [Evidence: triage prompts and agent notes remain under `scratch/`; root packet docs only contain canonical packet files.]
+- [x] CHK-052 [P2] Findings were saved to `memory/` for continuity [Evidence: `memory/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory.md`, `memory/28-03-26_23-59__10-iteration-meta-review-of-spec-folder-026.md`, and `memory/29-03-26_11-24__phase-13-deep-research-refinement-implementation.md` exist.]
+<!-- /ANCHOR:file-org -->
 
 ---
 
@@ -102,7 +132,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:meta-review -->
-## Meta-Review (Phase 12)
+### Meta-Review (Phase 12)
 
 10-iteration meta-review of the spec folder and all work done (iterations 031-040). See `review/review-report.md` (v2).
 
@@ -127,7 +157,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:research-refinement -->
-## Research Refinement (Phase 13)
+### Research Refinement (Phase 13)
 
 5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities. See `research/research.md`.
 

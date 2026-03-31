@@ -1,134 +1,117 @@
 ---
-title: "Notification Hero Spacing [014-notification-hero-spacing/s [01--anobel.com/z_archive/014-notification-hero-spacing/spec]"
-description: "When the notification bar is visible at the top of the page, the hero section content may overlap or be partially hidden. A spacing mechanism is needed to push hero content down..."
+title: "Feature Specification: Notification Hero Spacing [.opencode/specs/01--anobel.com/z_archive/014-notification-hero-spacing/spec]"
+description: "Notification Hero Spacing"
 trigger_phrases:
   - "notification"
   - "hero"
   - "spacing"
-  - "spec"
-  - "014"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Notification Hero Spacing
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Notification Hero Spacing
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
+---
 
-When the notification bar is visible at the top of the page, the hero section content may overlap or be partially hidden. A spacing mechanism is needed to push hero content down when notifications are active.
-<!-- /ANCHOR:problem-statement -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- ANCHOR:solution-overview -->
-## Solution Overview
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `014-notification-hero-spacing` |
+<!-- /ANCHOR:metadata -->
 
-Use CSS to conditionally show a spacing div in the hero based on the notification system's existing state indicator.
-<!-- /ANCHOR:solution-overview -->
+---
 
-<!-- ANCHOR:technical-context -->
-## Technical Context
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-The notification system (`src/2_javascript/navigation/nav_notifications.js`) already provides a state indicator:
+### Problem Statement
+Notification Hero Spacing
 
-```javascript
-// Line 298 - set when notification is active
-container.setAttribute('data-alert-container-active', 'true');
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
 
-// Line 301 - removed when no notifications
-container.removeAttribute('data-alert-container-active');
-```
+---
 
-This attribute is the hook we'll use for CSS targeting.
-<!-- /ANCHOR:technical-context -->
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-<!-- ANCHOR:approach-options -->
-## Approach Options
+### In Scope
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
-### Option 1: Pure CSS with `:has()` (Recommended)
+### Out of Scope
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
 
-**Browser Support:** 95%+ (Chrome 105+, Firefox 121+, Safari 15.4+)
+### Files to Change
 
-```css
-[data-notification-spacer] {
-  display: none;
-}
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
+<!-- /ANCHOR:scope -->
 
-body:has([data-alert-container-active]) [data-notification-spacer] {
-  display: block;
-  height: var(--notification-height, 60px);
-}
-```
-
-**Attribute:** `data-notification-spacer` on any div element
-
-**Pros:**
-- Zero JavaScript changes required
-- Uses existing attribute from notification system
-- Clean separation of concerns
-
-**Cons:**
-- Older browsers silently fail (graceful degradation)
-
-### Option 2: Body Attribute (Legacy Support)
-
-Add one line to `nav_notifications.js` at line ~311:
-
-```javascript
-document.body.toggleAttribute('data-notification-active', !!winner);
-```
-
-Then CSS:
-
-```css
-body[data-notification-active] [data-notification-spacer] {
-  display: block;
-}
-```
-
-**Pros:**
-- Works in all browsers
-- Explicit state on body element
-
-**Cons:**
-- Requires JavaScript modification
-<!-- /ANCHOR:approach-options -->
+---
 
 <!-- ANCHOR:requirements -->
-## Requirements
+## 4. REQUIREMENTS
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| R1 | Spacing div hidden by default | P0 |
-| R2 | Visible only when notification is active | P0 |
-| R3 | Height matches notification bar | P1 |
-| R4 | Smooth transition (no layout jump) | P2 |
-| R5 | Works on all pages with hero sections | P1 |
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
 
-<!-- ANCHOR:success-criteria -->
-## Success Criteria
+---
 
-- [ ] Spacing div is invisible when no notifications active
-- [ ] Spacing div appears when notification shows
-- [ ] Spacing div hides when notification is dismissed
-- [ ] No flash of unstyled content (FOUC)
-- [ ] Works with notification office hours integration
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
 <!-- /ANCHOR:success-criteria -->
 
-<!-- ANCHOR:out-of-scope -->
-<!-- ANCHOR:scope -->
-## Out of Scope
+---
 
-- Notification bar styling changes
-- Hero section redesign
-- Animation of notification bar itself
-<!-- /ANCHOR:out-of-scope -->
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-<!-- ANCHOR:references -->
-<!-- /ANCHOR:scope -->
-## References
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
 
-- `src/2_javascript/navigation/nav_notifications.js` - Notification system
-- `src/2_javascript/navigation/CMS Alert System (Notifications).md` - System documentation
-<!-- /ANCHOR:references -->
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

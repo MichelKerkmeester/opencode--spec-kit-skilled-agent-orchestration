@@ -27,7 +27,9 @@ contextType: "implementation"
 | **Status** | Draft |
 | **Created** | 2026-03-27 |
 | **Branch** | `021-ground-truth-id-remapping` |
-| **Parent Spec** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../020-post-release-fixes/spec.md |
+| **Successor** | ../022-spec-doc-indexing-bypass/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -203,3 +205,4 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:questions -->

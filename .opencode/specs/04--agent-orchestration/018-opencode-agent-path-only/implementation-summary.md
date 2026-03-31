@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `018-opencode-agent-path-only` |
+| **Spec Folder** | 018-opencode-agent-path-only |
 | **Completed** | Legacy artifact |
 | **Level** | 1 |
 | **Status** | Legacy normalized |

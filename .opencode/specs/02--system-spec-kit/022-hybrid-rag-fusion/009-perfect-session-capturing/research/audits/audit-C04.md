@@ -439,3 +439,4 @@ tokens used
 - Total findings: 8
 - Critical: 0, High: 3, Medium: 3, Low: 2
 - Top 3 recommendations: 1) Make explicit `dataFile` mode fail-fast (no fallback on parse/validation/security errors). 2) Tighten format detection + validation (`userPrompts`/`recentContext` checks). 3) Accept OpenCode captures with `toolCalls` even when `exchanges` is empty.
+<!-- /ANCHOR:table-of-contents -->

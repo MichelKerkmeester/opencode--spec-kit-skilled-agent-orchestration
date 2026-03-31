@@ -81,7 +81,7 @@ contextType: "general"
 ### Phase 5: Deep Research Remediation (2026-03-26)
 
 > Source: 12-agent deep research (~3.3M tokens GPT-5.4 via Codex CLI).
-> Full findings: `scratch/deep-research-gap-report-2026-03-26.md`, `scratch/deep-research-round2-2026-03-26.md`.
+> Full findings: `../006-feature-catalog/research/deep-research-gap-report-2026-03-26.md`, `../006-feature-catalog/research/deep-research-round2-2026-03-26.md`.
 
 ### 5A: Stale Metadata Fixes
 
@@ -90,7 +90,7 @@ contextType: "general"
 
 ### 5B: Audit 5 Unaudited Snippets
 
-- [x] T032 Audit `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` → MATCH — added to 001-retrieval/implementation-summary.md. All source files exist and match catalog description.
+- [x] T032 Audit `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` → MATCH — added to 001-retrieval/implementation-summary.md. All source files exist and match catalog description.
 - [x] T033 Audit `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` → MATCH — added to 016-tooling/implementation-summary.md. 3-layer defense-in-depth system verified across 7 source files.
 - [x] T034 Review `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md` → META — reclassified as meta note in 020/implementation-summary.md. Explicitly excluded from accuracy scoring per file header.
 - [x] T035 Review `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md` → MATCH — not a stub. Full catalog entry documenting runtime remediation surface. Added to 021/implementation-summary.md. 7 source files verified.

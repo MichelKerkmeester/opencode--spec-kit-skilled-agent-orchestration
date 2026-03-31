@@ -31,7 +31,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Review (COMPLETE)
+## Phase 1: Setup
 
 - [x] T001 Setup review directory and state files
 - [x] T002 Run 20 review iterations via parallel GPT-5.4 Codex CLI agents (4 batches)
@@ -43,7 +43,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Fix P0 Blockers (Immediate)
+## Phase 2: Implementation
 
 - [x] T010 [P] Fix scope-aware lineage keys — prevent cross-scope collisions (`lib/storage/lineage-state.ts`) [iter-007] [Evidence: buildScopePrefix() with SHA-256 hash of governance scope tuple; 3 new tests; 8658 passed]
 - [x] T011 [P] Fix embedding dimension guard — fail-fast before DB bootstrap (`lib/search/vector-index-store.ts`) [iter-005] [Evidence: getStartupEmbeddingDimension() canonical resolution; dimension mismatch fail-fast; 3 new tests]
@@ -55,7 +55,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Sprint 1 — Search + Data Integrity P1s
+### Sprint 1 — Search + Data Integrity P1s
 
 - [x] T020 [P] Fix hybrid search fallback threshold units (fractional vs percentage) (`lib/search/hybrid-search.ts`) [iter-004]
 - [x] T021 [P] Fix disabled channels re-enabled in fallback chain (`lib/search/hybrid-search.ts`) [iter-004]
@@ -77,7 +77,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Sprint 2 — Correctness + Schema P1s
+### Sprint 2 — Correctness + Schema P1s
 
 - [x] T040 [P] Fix causal graph diamond traversal — recursion-path tracking instead of global visited set (`lib/storage/causal-edges.ts`) [iter-003]
 - [x] T041 [P] Fix `memory_drift_why` — direction-aware `incoming`/`outgoing` buckets (`handlers/causal-graph.ts`) [iter-003]
@@ -97,7 +97,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Phase 5: Sprint 3 — Security + Governance P1s
+### Sprint 3 — Security + Governance P1s
 
 - [x] T060 [P] Fix `shared_memory_status` — auth from caller identity, not request body (`handlers/shared-memory.ts`) [iter-012]
 - [x] T061 [P] Fix handler exceptions — domain-specific error codes (`lib/errors.ts`) [iter-016]
@@ -113,7 +113,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-6 -->
-## Phase 6: Sprint 4 — Remaining P1s
+### Sprint 4 — Remaining P1s
 
 - [x] T070 [P] Fix PE SUPERSEDE — only chain same-path; cross-path as causal supersedes link
 - [x] T071 [P] Fix YAML body text — stop re-parsing body as YAML after frontmatter
@@ -143,7 +143,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-7 -->
-## Phase 7: Verification
+## Phase 3: Verification
 
 - [x] T095 Run targeted Vitest suites after each sprint [Evidence: verified after each phase — P0: 8664, Sprint 1: 8682, Sprint 2: 8693, Final: 8699 pass]
 - [x] T096 Run full build and typecheck after all fixes [Evidence: tsc clean; 8748 tests pass, 326/328 files; sole failure is pre-existing eval_run_ablation timeout]
@@ -155,7 +155,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-8 -->
-## Phase 8: Integration Test Reconciliation (COMPLETE)
+### Integration Test Reconciliation (COMPLETE)
 
 24 test failures from parallel agent file conflicts, fixed by 4 dedicated test-only GPT-5.4 agents.
 
@@ -172,7 +172,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-9 -->
-## Phase 9: P2 Improvement Triage (COMPLETE)
+### P2 Improvement Triage (COMPLETE)
 
 41 P2 findings triaged by 5 parallel GPT-5.4 agents: 22 FIXED, 16 DEFERRED, 3 REJECTED. See `scratch/p2-triage-agent[1-5].md` for per-finding decisions.
 
@@ -193,7 +193,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-10 -->
-## Phase 10: Fix All 15 Deferred P2 Findings
+### Fix All 15 Deferred P2 Findings
 
 Previously deferred findings now fixed via 5 parallel GPT-5.4 agents (no fast mode).
 
@@ -217,7 +217,7 @@ Previously deferred findings now fixed via 5 parallel GPT-5.4 agents (no fast mo
 ---
 
 <!-- ANCHOR:phase-11 -->
-## Phase 11: Documentation Alignment Audit
+### Documentation Alignment Audit
 
 Full alignment check of all documentation, READMEs, references, and catalogs against the 102 fixes (80 P0/P1 + 22 P2 + 15 deferred P2).
 
@@ -236,7 +236,7 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 ---
 
 <!-- ANCHOR:phase-10-checklist -->
-## Phase 10 Checklist
+### Phase 10 Checklist
 
 - [x] CHK-070 [P0] All 15 deferred P2 findings fixed with passing tests [Evidence: T130-T144 all complete with per-task evidence]
 - [x] CHK-071 [P0] Build and typecheck clean after all fixes [Evidence: tsc clean, 8771 tests pass]
@@ -246,7 +246,7 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 ---
 
 <!-- ANCHOR:phase-11-checklist -->
-## Phase 11 Checklist
+### Phase 11 Checklist
 
 - [ ] CHK-080 [P1] All mcp_server/ READMEs reflect current module structure and features
 - [ ] CHK-081 [P1] SKILL.md and system-spec-kit README aligned with current capabilities
@@ -259,7 +259,7 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 ---
 
 <!-- ANCHOR:phase-12 -->
-## Phase 12: Meta-Review Remediation
+### Phase 12: Meta-Review Remediation
 
 10-iteration meta-review (iterations 031-040) found 29 new findings across 4 dimensions. See `review/review-report.md` (v2).
 
@@ -320,7 +320,7 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 ---
 
 <!-- ANCHOR:phase-13 -->
-## Phase 13: Deep Research Refinement
+### Phase 13: Deep Research Refinement
 
 5-iteration deep research (research/iterations/iteration-001.md through iteration-005.md) found 28 refinement opportunities across concurrency, search performance, SQLite optimization, error recovery, and dead code. See `research/research.md`.
 
@@ -412,11 +412,11 @@ Full alignment check of all documentation, READMEs, references, and catalogs aga
 - **Verification**: See `checklist.md`
 - **Original Audit Report**: See `review/review-report-v1-original-audit.md` (121 findings)
 - **Meta-Review Report**: See `review/review-report.md` (v2, 29 findings)
-- **Original Iterations**: See `review/iterations/iteration-001.md` through `iteration-030.md`
-- **Meta-Review Iterations**: See `review/iterations/iteration-031.md` through `iteration-040.md`
+- **Original Iterations**: See `review/iterations/iteration-001.md` through `review/iterations/iteration-030.md`
+- **Meta-Review Iterations**: See `review/iterations/iteration-031.md` through `review/iterations/iteration-040.md`
 - **P2 Triage Reports**: See `scratch/p2-triage-agent[1-5].md`
-- **Review State**: See `review/deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`
+- **Review State**: See `review/deep-research-config.json`, `deep-research-state.jsonl`, `review/deep-review-strategy.md`, `review/deep-review-dashboard.md`
 - **Research Report**: See `research/research.md` (28 refinement findings)
-- **Research Iterations**: See `research/iterations/iteration-001.md` through `iteration-005.md`
-- **Research State**: See `research/deep-research-config.json`, `deep-research-state.jsonl`, `deep-research-strategy.md`
+- **Research Iterations**: See `research/iterations/iteration-001.md` through `research/iterations/iteration-005.md`
+- **Research State**: See `research/deep-research-config.json`, `deep-research-state.jsonl`, `research/deep-research-strategy.md`
 <!-- /ANCHOR:cross-refs -->

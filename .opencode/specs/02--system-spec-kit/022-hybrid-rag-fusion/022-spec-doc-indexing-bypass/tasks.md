@@ -30,7 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Code Change
+## Phase 1: Setup
 
 - [x] T001 Gate 1 bypass: Add `qualityGateMode === 'warn-only'` to V-rule rejection at line 333 (`mcp_server/handlers/memory-save.ts`)
 - [x] T002 Gate 2 bypass: Add `qualityGateMode === 'warn-only'` to sufficiency rejection at line 350 (`mcp_server/handlers/memory-save.ts`)
@@ -40,7 +40,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Build
+## Phase 2: Implementation
 
 - [x] T004 Run `npm run build` in `mcp_server/` — verify clean build
 <!-- /ANCHOR:phase-2 -->

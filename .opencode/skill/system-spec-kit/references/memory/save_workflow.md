@@ -371,6 +371,8 @@ For retrieval, `memory_context()` routes queries across 7 intents (including `fi
 ---
 
 <!-- /ANCHOR:document-structure -->
+<!-- /ANCHOR:name -->
+
 <!-- ANCHOR:metadata -->
 ## 7. METADATA
 
@@ -448,6 +450,8 @@ done | sort -rn
 ---
 
 <!-- /ANCHOR:anchor-retrieval -->
+<!-- /ANCHOR:decision-jwt-049 -->
+
 <!-- ANCHOR:context-recovery -->
 ## 9. CONTEXT RECOVERY
 
@@ -516,6 +520,8 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ---
 
 <!-- /ANCHOR:context-recovery -->
+<!-- /ANCHOR:decision-auth-049 -->
+
 <!-- ANCHOR:validation-checklists -->
 ## 10. VALIDATION CHECKLISTS
 

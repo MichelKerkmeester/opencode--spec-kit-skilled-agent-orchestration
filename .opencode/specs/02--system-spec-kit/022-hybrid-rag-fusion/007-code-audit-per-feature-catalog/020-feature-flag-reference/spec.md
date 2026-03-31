@@ -241,3 +241,4 @@ Commit `09acbe8ce` ("feat(system-spec-kit): graduate all Wave 1-4 feature flags 
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

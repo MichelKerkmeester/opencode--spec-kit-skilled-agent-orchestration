@@ -761,3 +761,4 @@ tokens used
 - Total findings: 12
 - Critical: 0, High: 2, Medium: 7, Low: 3
 - Top 3 recommendations: 1. Add exhaustive V1-V9 mapping with explicit `V3` flag and runtime rule validation. 2. Change baseline logic so missing validation evidence cannot score `1.0`. 3. Externalize scoring config and define one canonical quality model (with clear 0..1 vs 0..100 semantics).
+<!-- /ANCHOR:table-of-contents -->

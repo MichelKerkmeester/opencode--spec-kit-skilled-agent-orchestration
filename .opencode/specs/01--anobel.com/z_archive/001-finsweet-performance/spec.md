@@ -1,75 +1,117 @@
 ---
-title: "Finsweet Performance Optimization [001-finsweet-performance/spe [01--anobel.com/z_archive/001-finsweet-performance/spec]"
-description: "Optimize Finsweet Attributes loading to improve PageSpeed scores by deferring script execution until after page load."
+title: "Feature Specification: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/spec]"
+description: "Finsweet Performance Optimization"
 trigger_phrases:
   - "finsweet"
   - "performance"
   - "optimization"
-  - "spec"
-  - "001"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Finsweet Performance Optimization
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Finsweet Performance Optimization
 
-<!-- ANCHOR:overview -->
-## Overview
-Optimize Finsweet Attributes loading to improve PageSpeed scores by deferring script execution until after page load.
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
-Finsweet Attributes are currently loaded in the HEADER section with `async`, which:
-- Loads immediately when page opens
-- Blocks rendering
-- Takes 200-400ms before content shows
-- Negatively impacts PageSpeed/Core Web Vitals (LCP)
-<!-- /ANCHOR:problem-statement -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- ANCHOR:user-stories -->
-## User Stories
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `001-finsweet-performance` |
+<!-- /ANCHOR:metadata -->
 
-### US-001: Deferred Finsweet Loading
-**As a** site visitor
-**I want** the page content to load quickly
-**So that** I can see the content without waiting for third-party scripts
+---
 
-**Acceptance Criteria:**
-- [ ] Finsweet scripts load after page `load` event
-- [ ] All Finsweet functionality (fs-list, fs-socialshare, cmsnest) works correctly
-- [ ] PageSpeed score improves by 10-20 points
-<!-- /ANCHOR:user-stories -->
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Finsweet Performance Optimization
+
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. SCOPE
 
 ### In Scope
-- 6 HTML files with Finsweet scripts:
-  - `cms/werken_bij.html` - cmsnest
-  - `cms/blog_template.html` - fs-socialshare
-  - `cms/vacature.html` - fs-socialshare
-  - `cms/blog.html` - fs-list
-  - `nobel/n4_het_team.html` - fs-list
-  - `home.html` - cmsnest
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
 
 ### Out of Scope
-- Other performance optimizations
-- Non-Finsweet scripts
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:technical-requirements -->
-<!-- ANCHOR:requirements -->
-## Technical Requirements
-- Use `window.addEventListener("load", ...)` pattern
-- Dynamic script creation with `document.createElement("script")`
-- Proper `setAttribute()` syntax (one call per attribute with empty string value)
-- Move scripts from HEADER to FOOTER section
-<!-- /ANCHOR:technical-requirements -->
+---
 
-<!-- ANCHOR:reference -->
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
 <!-- /ANCHOR:requirements -->
-## Reference
-Based on Dmytro Bala's Finsweet performance optimization technique.
-<!-- /ANCHOR:reference -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

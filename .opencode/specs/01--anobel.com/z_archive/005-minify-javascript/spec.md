@@ -1,80 +1,120 @@
 ---
-title: "Feature Specification: minify-javascript - Requirements & User [01--anobel.com/z_archive/005-minify-javascript/spec]"
-description: "Minify the JavaScript files in src/2_javascript/z_minified/ (in-place) for smaller payloads when served from Cloudflare and embedded in Webflow, while preserving runtime behavior."
+title: "Feature Specification: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/spec]"
+description: "Feature Specification: minify-javascript - Requirements & User Stories"
 trigger_phrases:
   - "feature"
   - "specification"
-  - "minify"
-  - "javascript"
+  - "minify-javascript"
   - "requirements"
-  - "spec"
-  - "005"
+  - "user"
+  - "stories"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: minify-javascript - Requirements & User Stories
 
-Minify the JavaScript files in `src/2_javascript/z_minified/` (in-place) for smaller payloads when served from Cloudflare and embedded in Webflow, while preserving runtime behavior.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. OBJECTIVE
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-### Metadata
-- **Category**: Enhancement
-- **Tags**: javascript, webflow, cloudflare
-- **Priority**: P0
-- **Feature Branch**: `013-minify-javascript`
-- **Created**: 2025-12-14
-- **Status**: In Progress
-- **Input**: Minify all JavaScript in `src/2_javascript/z_minified` without breaking logic.
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `005-minify-javascript` |
+<!-- /ANCHOR:metadata -->
 
-### Stakeholders
-- Site owner/maintainer
-- Webflow editor/publisher
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Feature Specification: minify-javascript - Requirements & User Stories
 
 ### Purpose
-Reduce JS payload size for faster page loads while keeping existing site behavior unchanged.
-
-### Assumptions
-- Target browsers are modern evergreen browsers supported by Webflow sites (no IE11 requirement).
-- Scripts are embedded as classic browser scripts (not ESM modules).
-- Minification must avoid risky transforms (no property mangling, no top-level mangling, no `unsafe` compress options).
-<!-- /ANCHOR:objective -->
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
+<!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## 2. SCOPE
+## 3. SCOPE
 
 ### In Scope
-- Minify every `.js` file within `src/2_javascript/z_minified/`.
-- Overwrite files in place (no `*.min.js` duplicates).
-- Preserve `/*! ... */` comments if present.
-- Verify each output parses as valid JavaScript.
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
 
 ### Out of Scope
-- Functional refactors or behavior changes.
-- Renaming files or changing public/global APIs.
-- Adding a new build pipeline; this is a one-time minification pass.
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
 <!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:users--stories -->
-## 3. USERS & STORIES
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### User Story 1 - Smaller JS payloads without regressions (Priority: P0)
+### P0 - Blockers (MUST complete)
 
-As the site owner, I want the JS assets embedded in Webflow to be minified so that pages load faster, without any behavior changes.
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
 
-**Independent Test**: All files in `src/2_javascript/z_minified/` can be minified, pass syntax checks, and preserve the same global entry points.
+### P1 - Required (complete OR user-approved deferral)
 
-**Acceptance Scenarios**:
-1. **Given** the repository state before minification, **When** the folder is processed, **Then** all `.js` files remain valid JavaScript and are smaller (or equal) in bytes.
-2. **Given** the minified outputs are embedded in Webflow, **When** pages load, **Then** there are no new runtime errors in the browser console compared to the pre-minified versions.
-<!-- /ANCHOR:users--stories -->
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
+
+---

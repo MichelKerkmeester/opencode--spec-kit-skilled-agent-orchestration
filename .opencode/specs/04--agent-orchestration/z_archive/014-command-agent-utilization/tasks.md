@@ -1,19 +1,17 @@
 ---
-title: "Tasks: Command Agent Utilization Audit [04--agent-orchestration/z_archive/014-command-agent-utilization/tasks]"
+title: "Tasks: Command Agent Utilization [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "014-command-agent-utilization"
   - "tasks"
-  - "command"
-  - "agent"
-  - "utilization"
-  - "audit"
-  - "014"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Command Agent Utilization Audit
+# Tasks: Command Agent Utilization
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -29,85 +27,47 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Route Spec Folder Creation Through @speckit
+## Phase 1: Setup
 
-- [x] T001 [P] Update spec_folder_setup with @speckit routing (`create_skill_auto.yaml`)
-- [x] T002 [P] Update spec_folder_setup with @speckit routing (`create_skill_confirm.yaml`)
-- [x] T003 [P] Update spec_folder_setup with @speckit routing (`create_agent_auto.yaml`)
-- [x] T004 [P] Update spec_folder_setup with @speckit routing (`create_agent_confirm.yaml`)
-
+- [x] T001 Review the archived folder contents (top-level markdown)
+- [x] T002 Load the current Level 1 templates (templates/level_1)
+- [x] T003 [P] Identify compatibility files that must remain in place (checklist.md or decision-record.md)
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Route Discovery Through @context
+## Phase 2: Implementation
 
-- [x] T005 [P] Replace inline Glob/Grep with @context dispatch (`create_skill_auto.yaml`)
-- [x] T006 [P] Replace inline Glob/Grep with @context dispatch (`create_skill_confirm.yaml`)
-- [x] T007 [P] Replace inline Glob/Grep with @context dispatch (`create_agent_auto.yaml`)
-- [x] T008 [P] Replace inline Glob/Grep with @context dispatch (`create_agent_confirm.yaml`)
-
+- [x] T004 Rewrite spec.md with validator-compliant archival context
+- [x] T005 Rewrite or create plan.md and tasks.md for archive maintenance
+- [x] T006 Rewrite or create implementation-summary.md with correct folder metadata
+- [x] T007 Add compatibility stubs for any retained checklist.md or decision-record.md files
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Add @review Quality Gate
+## Phase 3: Verification
 
-### Auto YAML files (no checkpoint)
-- [x] T009 [P] Add quality_review step (`create_skill_auto.yaml`)
-- [x] T010 [P] Add quality_review step (`create_agent_auto.yaml`)
-- [x] T011 [P] Add quality_review step (`create_folder_readme_auto.yaml`)
-- [x] T012 [P] Add quality_review step (`create_install_guide_auto.yaml`)
-- [x] T013 [P] Add quality_review step (`create_skill_asset_auto.yaml`)
-- [x] T014 [P] Add quality_review step (`create_skill_reference_auto.yaml`)
-
-### Confirm YAML files (with checkpoint)
-- [x] T015 [P] Add quality_review step with checkpoint (`create_skill_confirm.yaml`)
-- [x] T016 [P] Add quality_review step with checkpoint (`create_agent_confirm.yaml`)
-- [x] T017 [P] Add quality_review step with checkpoint (`create_folder_readme_confirm.yaml`)
-- [x] T018 [P] Add quality_review step with checkpoint (`create_install_guide_confirm.yaml`)
-- [x] T019 [P] Add quality_review step with checkpoint (`create_skill_asset_confirm.yaml`)
-- [x] T020 [P] Add quality_review step with checkpoint (`create_skill_reference_confirm.yaml`)
-
-### MD Reference Files
-- [x] T021 Add Agent Routing section with 3 agents (`skill.md`)
-- [x] T022 Add Agent Routing section with 3 agents (`agent.md`)
-- [x] T023 [P] Add Agent Routing section with 1 agent (`folder_readme.md`)
-- [x] T024 [P] Add Agent Routing section with 1 agent (`install_guide.md`)
-- [x] T025 [P] Add Agent Routing section with 1 agent (`skill_asset.md`)
-- [x] T026 [P] Add Agent Routing section with 1 agent (`skill_reference.md`)
-
+- [x] T008 Remove broken top-level markdown references from auxiliary notes
+- [x] T009 Run validate.sh for 014-command-agent-utilization
+- [x] T010 Confirm the folder ends with zero validation errors
 <!-- /ANCHOR:phase-3 -->
-
----
-
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Verification
-
-- [x] T027 Grep verification: no inline patterns remain in modified steps
-- [x] T028 Review agent: Phase 1+2 structural checks (72/72 passed)
-- [x] T029 Review agent: Phase 3 structural checks (132/132 passed)
-- [x] T030 Manual: verify all 6 MD Agent Routing sections
-
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 30 tasks marked `[x]`
+- [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] 204/204 verification checks passed
-
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -117,12 +77,6 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Checklist**: See `checklist.md`
-
 <!-- /ANCHOR:cross-refs -->
 
 ---
-
-<!--
-CORE TEMPLATE — 30 tasks across 4 phases, all completed
--->

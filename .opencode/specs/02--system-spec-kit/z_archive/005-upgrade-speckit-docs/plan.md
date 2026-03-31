@@ -1,20 +1,16 @@
 ---
-title: "Implementation Plan: OpenCode Documentation Quality [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/plan]"
-description: "Systematic documentation quality improvement across the OpenCode system. Applied prose tightening, conciseness improvements, and style consistency patterns to ~4,864 total LOC c..."
+title: "Implementation Plan: OpenCode Documentation Quality Upgrade [archive]"
+description: "Archive normalization plan for the OpenCode Documentation Quality Upgrade folder."
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "opencode"
-  - "documentation"
-  - "quality"
-  - "122"
-  - "upgrade"
+  - "implementation plan"
+  - "documentation quality upgrade"
+  - "archive"
 importance_tier: "important"
 contextType: "decision"
 ---
 # Implementation Plan: OpenCode Documentation Quality Upgrade
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -26,14 +22,13 @@ contextType: "decision"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, JSON |
-| **Framework** | OpenCode system documentation |
-| **Storage** | File system (.opencode/ directory) |
-| **Testing** | Manual review, validation scripts |
+| **Language/Stack** | Markdown documentation |
+| **Framework** | OpenCode system-spec-kit archive specs |
+| **Storage** | Git repository |
+| **Testing** | Strict validator plus manual review |
 
 ### Overview
-Systematic documentation quality improvement across the OpenCode system. Applied prose tightening, conciseness improvements, and style consistency patterns to ~4,864 total LOC changed (+2,649/−2,215, net +434) while preserving all technical content. Updated sk-doc to version 1.0.6.0, restructured readme_template.md, and removed unused Antigravity configuration.
-
+This archive repair keeps the original documentation quality upgrade topic but reduces the folder to a clean Level 1 archive package. The plan is to restore the core documents and validate until the folder reports zero errors.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,17 +37,14 @@ Systematic documentation quality improvement across the OpenCode system. Applied
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Documentation quality issues identified across OpenCode system
-- [x] Style patterns and improvement criteria defined
-- [x] Target files identified (~85 modified + 13 untracked across .opencode/ directory)
+- [x] Original archive topic identified
+- [x] Current Level 1 templates reviewed
+- [x] Folder-level validation target confirmed
 
 ### Definition of Done
-- [x] ~85 modified + 13 untracked files completed with quality improvements
-- [x] Technical content preserved in all changes
-- [x] Version bumped to 1.0.6.0 in sk-doc
-- [x] ~4,864 total LOC changed (+2,649/−2,215, net +434) — implementation complete, awaiting commit
-- [x] All files pass validation (proper formatting, no broken structure)
-
+- [x] spec.md, plan.md, tasks.md, and implementation-summary.md exist and follow the current template contract
+- [x] Metadata and cross-references are aligned
+- [x] Strict validation returns zero errors
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -61,17 +53,14 @@ Systematic documentation quality improvement across the OpenCode system. Applied
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation as Code - systematic quality improvements applied to markdown and config files
+Template-based archive normalization.
 
 ### Key Components
-- **Documentation Files (~81 modified docs + 10 new changelogs)**: README.md files across skills, guides, scripts, templates
-- **Skill Definitions (1)**: sk-doc SKILL.md with version management
-- **Templates (1)**: readme_template.md providing documentation patterns
-- **Configuration (3)**: opencode.json, package.json, bun.lock for system config
+- **Core archive docs**: Hold the durable historical summary.
+- **Validator checks**: Confirm structure, anchors, level, and integrity.
 
 ### Data Flow
-File-by-file editing workflow: Read original → Apply quality patterns → Verify technical content preserved → Write improved version
-
+Archive context is summarized into the Level 1 templates and then validated in strict mode.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -79,27 +68,20 @@ File-by-file editing workflow: Read original → Apply quality patterns → Veri
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Pattern Definition
-- [x] Identify quality improvement patterns (remove superlatives, tighten prose, style consistency)
-- [x] Define scope (~85 modified + 13 untracked across .opencode/ directory)
-- [x] Establish preservation criteria (100% technical content retained)
+### Phase 1: Setup
+- [x] Review the archived folder and capture its theme
+- [x] Confirm Level 1 as the simplest compliant target
+- [x] Identify the required core documents
 
 ### Phase 2: Core Implementation
-- [x] Apply prose tightening to system-spec-kit/ README files
-- [x] Apply quality improvements to 9 non-spec-kit skill READMEs
-- [x] Improve other documentation files (main docs, guides, scripts)
-- [x] Create 10 new CHANGELOG.md files for versioned skills
-- [x] Bump sk-doc version to 1.0.6.0
-- [x] Restructure readme_template.md (+191 lines of improvements)
-- [x] Remove Antigravity config from opencode.json (-78 lines)
-- [x] Update package.json and bun.lock for config changes
+- [x] Create compliant core archive documents
+- [x] Align metadata and cross-references
+- [x] Replace the former higher-level shell with a stable Level 1 package
 
 ### Phase 3: Verification
-- [x] Review each file for technical content preservation
-- [x] Verify style consistency across all changes
-- [x] Validate markdown formatting and structure
-- [x] Confirm total change metrics (~4,864 LOC: +2,649/−2,215, net +434)
-
+- [x] Run strict validation
+- [x] Check markdown integrity
+- [x] Confirm the archive remains readable
 <!-- /ANCHOR:phases -->
 
 ---
@@ -109,10 +91,9 @@ File-by-file editing workflow: Read original → Apply quality patterns → Veri
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual Review | ~85 modified + 13 untracked files | Visual inspection, content comparison |
-| Validation | Markdown structure, formatting | Markdown linters, manual checks |
-| Content Verification | Technical accuracy preservation | Diff review, content audits |
-
+| Structural | Headers, anchors, and required files | `validate.sh --strict` |
+| Integrity | Metadata and top-level markdown references | `validate.sh --strict` |
+| Manual | Archive readability | Direct file review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -122,9 +103,8 @@ File-by-file editing workflow: Read original → Apply quality patterns → Veri
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Git working tree | Internal | Complete | Changes already applied |
-| Markdown tooling | Internal | Available | Validation and review capabilities |
-
+| Current Level 1 templates | Internal | Ready | Cannot normalize structure safely |
+| Spec validator | Internal | Ready | Cannot prove zero-error completion |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -132,16 +112,8 @@ File-by-file editing workflow: Read original → Apply quality patterns → Veri
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Discovery of lost technical content or broken documentation structure
-- **Procedure**: Git revert of specific file changes, selective restoration from commit history
-
+- **Trigger**: The repaired archive loses essential context or reintroduces validation errors.
+- **Procedure**: Restore the prior folder state from git and replay the normalization with the missing context preserved.
 <!-- /ANCHOR:rollback -->
 
 ---
-
-<!--
-CORE TEMPLATE (~90 lines)
-- Essential technical planning
-- Simple phase structure
-- Add L2/L3 addendums for complexity
--->

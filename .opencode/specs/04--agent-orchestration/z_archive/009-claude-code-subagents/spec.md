@@ -1,19 +1,16 @@
 ---
-title: "Feature Specification: Convert OpenCode Agents to [04--agent-orchestration/z_archive/009-claude-code-subagents/spec]"
-description: "OpenCode has 8 specialized agent files in .opencode/agent/ using OpenCode-specific YAML frontmatter. Claude Code IDE supports subagents but requires a different frontmatter form..."
+title: "Feature Specification: Claude Code Subagents [template:level_1/spec.md]"
+description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"
   - "specification"
-  - "convert"
-  - "opencode"
-  - "agents"
-  - "spec"
-  - "009"
-  - "claude"
-importance_tier: "important"
-contextType: "decision"
+  - "claude code subagents"
+  - "archive"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Feature Specification: Convert OpenCode Agents to Claude Code Subagents
+# Feature Specification: Claude Code Subagents
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -27,9 +24,9 @@ contextType: "decision"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Draft |
-| **Created** | 2026-02-11 |
-
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `[009-claude-code-subagents]` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -38,11 +35,10 @@ contextType: "decision"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-OpenCode has 8 specialized agent files in `.opencode/agent/` using OpenCode-specific YAML frontmatter. Claude Code IDE supports subagents but requires a different frontmatter format in `.claude/agents/`. We need to convert these agents to work in Claude Code while preserving their functionality.
+This folder documents archived research and planning around Claude Code style subagents and how they map to the local system, but its markdown had drifted away from the current system-spec-kit contract. Missing anchors, stale file expectations, and archive-era notes created validation errors and made the historical record harder to review with confidence.
 
 ### Purpose
-Enable the same agent routing and specialization system to work in both OpenCode and Claude Code environments by converting agent file frontmatter to Claude Code format.
-
+Summarize the subagent research topic in a minimal compliant archive record.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -51,29 +47,22 @@ Enable the same agent routing and specialization system to work in both OpenCode
 ## 3. SCOPE
 
 ### In Scope
-- Convert 8 agent files from OpenCode to Claude Code format
-- Preserve all markdown body content (instructions, workflows, rules)
-- Convert YAML frontmatter only (name, description, routing metadata)
-- Files: context.md, orchestrate.md, speckit.md, research/research.md, write.md, debug.md, review.md, handover.md
+- Preserve the historical purpose of this archived workstream.
+- Normalize the required specification documents to the current Level 1 template.
+- Keep extra top-level markdown files as brief archival notes that avoid broken markdown-file references.
 
 ### Out of Scope
-- Modifying agent behavior or instructions - body content stays identical
-- Creating new agents or removing existing ones - exact 1:1 conversion
-- Testing in Claude Code IDE - verification is manual post-implementation
+- Reopening the archived work as an active implementation plan.
+- Making runtime code changes from this archival cleanup.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.claude/agents/context.md` | Create | Convert from `.opencode/agent/context.md` |
-| `.claude/agents/orchestrate.md` | Create | Convert from `.opencode/agent/orchestrate.md` |
-| `.claude/agents/speckit.md` | Create | Convert from `.opencode/agent/speckit.md` |
-| `.claude/agents/research/research/research.md` | Create | Convert from `.opencode/agent/research/research/research.md` |
-| `.claude/agents/write.md` | Create | Convert from `.opencode/agent/write.md` |
-| `.claude/agents/debug.md` | Create | Convert from `.opencode/agent/debug.md` |
-| `.claude/agents/review.md` | Create | Convert from `.opencode/agent/review.md` |
-| `.claude/agents/handover.md` | Create | Convert from `.opencode/agent/handover.md` |
-
+| spec.md | Modify | Replace template drift with a compliant archival specification. |
+| plan.md | Modify | Record the archive-fix approach and validation method. |
+| tasks.md | Modify | Capture the archival cleanup work in the standard task format. |
+| implementation-summary.md | Modify | Summarize the completed archive normalization and verification. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -85,16 +74,14 @@ Enable the same agent routing and specialization system to work in both OpenCode
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All 8 agent files converted | 8 files exist in `.claude/agents/` with Claude Code frontmatter |
-| REQ-002 | Frontmatter follows Claude Code format | YAML block contains `name`, `description` in correct structure |
-| REQ-003 | Body content preserved exactly | Markdown body identical to source files (no modifications) |
+| REQ-001 | The folder MUST preserve a concise archival summary of the original topic. | **Given** a maintainer opens the folder, **when** they read spec.md, **then** they understand the archived goal and why the folder is no longer active work. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Source files remain unchanged | Original `.opencode/agent/*.md` files untouched |
-
+| REQ-002 | Required spec documents MUST match the current Level 1 header and anchor structure. | **Given** strict validation runs, **when** template and anchor checks execute, **then** no error-level structural issues are reported. |
+| REQ-003 | Extra top-level markdown files MUST not contain broken backticked markdown references. | Top-level archival note files either have no backticked markdown references or only reference resolvable files. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -102,9 +89,9 @@ Enable the same agent routing and specialization system to work in both OpenCode
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: 8 agent files exist in `.claude/agents/` with valid Claude Code frontmatter
-- **SC-002**: Body content diff shows zero changes (only frontmatter modified)
-
+- **SC-001**: The folder validates with zero error-level findings.
+- **SC-002**: The archive remains readable as a concise history of claude code subagents.
+- **SC-003**: Required documents align to the current Level 1 template contract.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -114,9 +101,8 @@ Enable the same agent routing and specialization system to work in both OpenCode
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Claude Code frontmatter spec | Medium - wrong format = broken routing | Use existing `.claude/agents/explore.md` as reference |
-| Risk | Body content accidentally modified | Low - breaks agent behavior | Verify diff shows frontmatter-only changes |
-
+| Dependency | Current Level 1 templates and validator rules | If the archive uses stale structure, validation fails again. | Copy the current template shape exactly and replace every placeholder with concrete archival text. |
+| Risk | External subagent terminology can become stale if it is left as active guidance. | Reviewers may misread the archive as current guidance. | Mark the work as archived and keep the content concise and descriptive rather than prescriptive. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -124,18 +110,8 @@ Enable the same agent routing and specialization system to work in both OpenCode
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None - straightforward format conversion with clear reference example
-
+- None. This folder is archived and intentionally represented by a minimal validated summary.
+- Repository history remains available for superseded draft detail if deeper reconstruction is ever needed.
 <!-- /ANCHOR:questions -->
-
----
-
-## 8. RELATED DOCUMENTS
-
-| Document | Purpose |
-|----------|---------|
-| [`plan.md`](./plan.md) | Implementation approach and phases |
-| [`tasks.md`](./tasks.md) | Detailed task breakdown |
-| [`implementation-summary.md`](./implementation-summary.md) | Post-implementation record |
 
 ---

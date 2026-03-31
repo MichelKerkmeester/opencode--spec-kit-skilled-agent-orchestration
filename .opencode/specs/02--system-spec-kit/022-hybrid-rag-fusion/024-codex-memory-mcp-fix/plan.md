@@ -30,7 +30,7 @@ contextType: "implementation"
 
 ### Overview
 
-This packet update truth-syncs a focused Level 3 remediation slice after the session landed new runtime code in `vector-index-store.ts` and its regression test. The packet now records the already-landed Codex startup remediation, the newly landed DB-isolation fix for `initializeDb(':memory:')` and custom-path flows, the caveat fix that followed it, and the broader follow-on recommendations so future runtime or docs work can resume from a clean scope boundary instead of extending `020-pre-release-remediation`.
+This packet update truth-syncs a focused Level 3 remediation slice after the session landed new runtime code in `vector-index-store.ts` and its regression test. The packet now records the already-landed Codex startup remediation, the newly landed DB-isolation fix for `initializeDb(':memory:')` and custom-path flows, the caveat fix that followed it, and the broader follow-on recommendations so future runtime or docs work can resume from a clean scope boundary instead of extending `020-post-release-fixes`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -56,7 +56,7 @@ This packet update truth-syncs a focused Level 3 remediation slice after the ses
 ### Pre-Task Checklist
 
 - Confirm the edit stays inside `024-codex-memory-mcp-fix` packet creation or its explicitly listed backlog.
-- Re-read `../020-pre-release-remediation/review/review-report.md` before claiming any broader status change.
+- Re-read `../020-post-release-fixes/review/review-report.md` before claiming any broader status change.
 - Keep packet wording tied to current validation or already-recorded remediation evidence.
 - Re-run packet-local validation after structural edits.
 
@@ -77,7 +77,7 @@ This packet update truth-syncs a focused Level 3 remediation slice after the ses
 
 ### Blocked Task Protocol
 
-1. If packet prose starts to contradict `../020-pre-release-remediation/review/review-report.md`, stop and preserve the broader canonical review truth.
+1. If packet prose starts to contradict `../020-post-release-fixes/review/review-report.md`, stop and preserve the broader canonical review truth.
 2. If template validation fails, fix anchors and section headers before making more content changes.
 3. If future runtime scope outgrows focused Codex MCP remediation, record the boundary and open a new numbered packet instead of overloading `024`.
 
@@ -113,7 +113,7 @@ current remediation evidence
 
 ### Phase 1: Retrospective Evidence Capture
 - [x] Confirm the landed Codex startup remediation, the DB-isolation fix surfaces, and the follow-up caveat fix surfaces.
-- [x] Read `020-pre-release-remediation` to identify which broader items still matter for this focused packet.
+- [x] Read `020-post-release-fixes` to identify which broader items still matter for this focused packet.
 - [x] Decide to create a new numbered packet instead of expanding `020`.
 
 ### Phase 2: Packet Authoring
@@ -147,7 +147,7 @@ current remediation evidence
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../020-pre-release-remediation/review/review-report.md` | Internal | Green | Without it, backlog mapping could drift from the canonical broader review |
+| `../020-post-release-fixes/review/review-report.md` | Internal | Green | Without it, backlog mapping could drift from the canonical broader review |
 | Codex and sibling launcher config surfaces | Internal | Green | Future parity work cannot be scoped honestly |
 | Existing runtime evidence from the current remediation session | Internal | Green | Packet would lose the factual basis for its remediation claims |
 | `vector-index-store.ts` active-connection promotion change | Internal | Green | The packet would not be able to describe the DB-isolation fix accurately |

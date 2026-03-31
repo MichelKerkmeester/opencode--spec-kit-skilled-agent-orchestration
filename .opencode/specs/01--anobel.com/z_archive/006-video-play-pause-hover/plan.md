@@ -1,35 +1,122 @@
 ---
-title: "Plan: Video Play/Pause Hover Effect [006-video-play-pause-hov [01--anobel.com/z_archive/006-video-play-pause-hover/plan]"
-description: "1. Create new CSS file following existing animation patterns"
+title: "Implementation Plan: Video Play/Pause Button Hover Effect [.opencode/specs/01--anobel.com/z_archive/006-video-play-pause-hover/plan]"
+description: "Video Play/Pause Button Hover Effect"
 trigger_phrases:
-  - "plan"
   - "video"
   - "play"
   - "pause"
+  - "button"
   - "hover"
-  - "006"
+  - "effect"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Video Play/Pause Button Hover Effect
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Video Play/Pause Hover Effect
 
-<!-- ANCHOR:phase-1-css-implementation -->
-## Phase 1: CSS Implementation
-1. Create new CSS file following existing animation patterns
-2. Use `data-hover="scale-icon"` as new hover type
-3. Include accessibility support
-<!-- /ANCHOR:phase-1-css-implementation -->
+---
 
-<!-- ANCHOR:phase-2-webflow-configuration -->
-## Phase 2: Webflow Configuration
-1. Add `data-trigger` attribute to `.video--play-pause-btn`
-2. Add `data-hover="scale-icon"` to `.video--pause`
-3. Add `data-hover="scale-icon"` to `.video--play`
-<!-- /ANCHOR:phase-2-webflow-configuration -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Video Play/Pause Button Hover Effect
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
 
 <!-- ANCHOR:dependencies -->
-## Dependencies
-- Existing JavaScript hover system that sets `--_state---on` variable
-- Pattern reference: `src/1_css/animations/link_card_image.css`
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
 <!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

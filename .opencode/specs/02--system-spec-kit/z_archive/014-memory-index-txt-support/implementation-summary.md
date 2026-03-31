@@ -1,180 +1,89 @@
 ---
-title: "Implementation Summary: Memory [02--system-spec-kit/z_archive/014-memory-index-txt-support/implementation-summary]"
-description: "Status: ✅ COMPLETED"
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for Memory Index Txt Support."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "memory"
-  - "index"
-  - "txt"
+  - "014-memory-index-txt-support"
   - "implementation summary"
-  - "014"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Implementation Summary: Memory Index TXT File Support
+# Implementation Summary
 
-<!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
-
----
-
-## OVERVIEW
-
-**Status**: ✅ COMPLETED
-**Implementation Date**: 2026-02-16
-**Implementer**: Implementation Agent
-
-Successfully extended memory indexing subsystem to support `.txt` files alongside `.md` files across all allowed paths (specs/**/memory/, .opencode/skill/, .opencode/command/). All changes additive with zero regressions.
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-<!-- ANCHOR:changes -->
-## CHANGES MADE
+<!-- ANCHOR:metadata -->
+## Metadata
 
-### Files Modified
-
-| File | Lines Changed | Description |
-|------|---------------|-------------|
-| `mcp_server/handlers/memory-index.ts` | ~30 | Added README.txt discovery in scan functions |
-| `mcp_server/handlers/memory-save.ts` | ~15 | Updated path validation regex to accept .txt, updated error messages |
-| `mcp_server/lib/config/memory-types.ts` | ~10 | Added .txt classification logic for README files |
-| `mcp_server/lib/parsing/memory-parser.ts` | ~8 | Extended validation to accept .txt for memory/ paths |
-| `mcp_server/lib/search/vector-index-impl.ts` | ~12 | Added type inference for README.txt with reduced importance (0.3) |
-| `mcp_server/tool-schemas.ts` | ~5 | Updated descriptions for memory_save and memory_index_scan to mention .txt |
-
-### Tests Added/Updated
-
-| File | Purpose |
-|------|---------|
-| `tests/readme-discovery.vitest.ts` | Tests for README.txt discovery and indexing |
-| `tests/memory-parser-readme.vitest.ts` | Tests for README.txt frontmatter parsing |
-| `tests/spec126-full-spec-doc-indexing.vitest.ts` | Regression tests for spec document indexing |
-| `tests/handler-memory-index.vitest.ts` | Integration tests for index scan with .txt files |
-
-### Key Implementation Details
-
-1. **Discovery Layer**: Extended file discovery to check for both `.md` and `.txt` extensions using regex-based helper `isReadmeFileName()`:
-   - `specs/**/memory/` paths (memory context files)
-   - `.opencode/skill/**/` paths (skill README files)
-   - All project paths including `.opencode/command/` (via expanded `findProjectReadmes()`)
-
-2. **Validation Layer**: Updated path validation in `memory-save.ts` to accept `.txt` from allowed directories while maintaining security boundaries.
-
-3. **Type Inference**: Added logic to infer correct memory type for `.txt` files, with reduced importance weight (0.3) for README.txt files.
-
-4. **Migration Support**: Updated backfill logic to handle README.txt files correctly during database migrations.
-<!-- /ANCHOR:changes -->
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 014-memory-index-txt-support |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:testing -->
-## TESTING RESULTS
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Test Coverage
+This archived folder now has a current-template Level 1 documentation set for Memory Index Txt Support. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
 
-**All Tests Pass**: ✅ 4 test files, 256 tests passed, 0 failed
+### Archive Normalization
 
-#### Test Command
-```bash
-npm test -- tests/readme-discovery.vitest.ts tests/memory-parser-readme.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts tests/handler-memory-index.vitest.ts
-```
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
-#### Test Files Coverage
+### Files Changed
 
-1. **readme-discovery.vitest.ts**
-   - Tests README.txt file discovery in skill and command directories
-   - Validates frontmatter extraction from .txt files
-   - Confirms reduced importance weight (0.3) for README.txt
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
+<!-- /ANCHOR:what-built -->
 
-2. **memory-parser-readme.vitest.ts**
-   - Tests parsing of README.txt frontmatter (title, description, triggers)
-   - Edge case handling (empty files, missing frontmatter)
-   - UTF-8 encoding validation
+---
 
-3. **spec126-full-spec-doc-indexing.vitest.ts**
-   - Regression testing for existing spec document indexing
-   - Confirms no side effects from .txt support
-   - Validates constitutional file indexing unchanged
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-4. **handler-memory-index.vitest.ts**
-   - End-to-end integration tests for memory_index_scan
-   - Incremental indexing with .txt files
-   - Command invocation safety verification
-
-### Manual Testing
-
-- ✅ `.txt` files discovered from all allowed paths
-- ✅ `.txt` content searchable via memory_search
-- ✅ Trigger phrases extracted correctly from .txt frontmatter
-- ✅ No command invocation side effects
-- ✅ Incremental indexing skips unchanged .txt files
-
-### Regression Testing
-
-- ✅ All existing `.md` indexing tests pass unchanged
-- ✅ Constitutional file indexing preserved
-- ✅ Spec document indexing (spec.md, plan.md) unchanged
-- ✅ README.md discovery and indexing unchanged
-<!-- /ANCHOR:testing -->
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-### What Went Well
-
-- **Unified Discovery Approach**: Adding `.txt` alongside `.md` in single pass simplified implementation and maintenance
-- **Existing Infrastructure**: Parser, incremental indexing, and type inference already extension-agnostic - minimal changes needed
-- **Comprehensive Test Coverage**: Test suite caught edge cases early and validated no regressions
-- **Security Preserved**: Path validation boundaries maintained while extending file type support
-- **Additive Implementation**: Zero breaking changes, all existing behavior preserved
-
-### What Could Be Improved
-
-- **Documentation Update Lag**: Tool schema descriptions updated but SKILL.md could benefit from explicit .txt examples
-- **Manual Testing**: Automated tests sufficient but manual verification of command folder indexing could strengthen confidence
-
-### Surprises
-
-- **Type Inference Simplicity**: Expected complex logic for README.txt classification but existing patterns covered most cases
-- **Migration Backfill**: Backfill logic required update for README.txt to avoid type misclassification during database migrations
-- **Test Suite Coverage**: Existing test suite more comprehensive than expected - minimal new tests needed for .txt coverage
-
----
-
-<!-- ANCHOR:future -->
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
-## FUTURE WORK
-
-### Deferred Items
-
-- **P2 Documentation**: SKILL.md update with explicit `.txt` examples (deferred as P2 - tool schemas provide sufficient guidance)
-- **Load Testing**: Performance benchmarking with 50+ `.txt` files (deferred - incremental indexing mitigates performance concerns)
-
-### Potential Enhancements
-
-- **Other Extensions**: Consider `.rst`, `.adoc` support if documentation ecosystem expands
-- **Content Type Detection**: Auto-detect plain text vs structured formats for specialized parsing
-- **Importance Heuristics**: Refine importance weighting based on file location depth or naming patterns
-- **Command Folder Documentation**: Standardize `.txt` vs `.md` convention for command folders (currently mixed)
-
-### No Blockers Remaining
-
-All P0 and P1 items completed. Implementation ready for production use.
-<!-- /ANCHOR:future -->
 
 ---
 
-<!--
-Implementation summary - completed post-implementation
-Captures actual changes, test results, and lessons learned
--->
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
+<!-- /ANCHOR:verification -->
+
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
+
+---

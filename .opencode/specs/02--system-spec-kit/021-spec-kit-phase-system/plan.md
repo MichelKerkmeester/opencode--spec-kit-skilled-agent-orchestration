@@ -221,14 +221,14 @@ create.sh "Feature Name" --phase --level 3+ --phases 3 --phase-names "foundation
 5. Create git branch (if not --skip-branch)
 ```
 
-**New template addendum** (`templates/addendum/phase/`):
-- `phase-parent-section.md`: Phase Documentation Map section for parent spec.md
-- `phase-child-header.md`: Parent back-reference metadata block for child spec.md
+**New template addendum** (`../../../skill/system-spec-kit/templates/addendum/phase/`):
+- `../../../skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md`: Phase Documentation Map section for parent spec.md
+- `../../../skill/system-spec-kit/templates/addendum/phase/phase-child-header.md`: Parent back-reference metadata block for child spec.md
 
 **Phase Documentation Map format** (injected into parent spec.md):
 ```markdown
-<!-- /ANCHOR:phases -->
-## PHASE DOCUMENTATION MAP
+&lt;!-- /ANCHOR:phases --&gt;
+### Phase Documentation Map
 
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|-------------|--------|
@@ -274,7 +274,7 @@ create.sh "Feature Name" --phase --level 3+ --phases 3 --phase-names "foundation
 
 **New Command**: `/spec_kit:phase`
 
-File: `command/spec_kit/phase.md`
+File: `/spec_kit:phase` command definition
 - Frontmatter: `description: "Create and manage phase decomposition for complex spec folders"`
 - Argument hint: `"Feature description" [--phases N] [--parent specs/NNN-name/]`
 - Execution protocol: detect mode → load YAML → execute
@@ -294,10 +294,10 @@ File: `assets/spec_kit_phase_confirm.yaml` (same 7 steps, with approval gates)
 
 | Command | Modification |
 |---------|-------------|
-| `plan.md` | Add Gate 3 Option E; support `--phase-folder` argument for targeting specific child |
-| `implement.md` | Resolve nested path `specs/NNN/002-phase/plan.md`; scope implementation to active phase |
-| `complete.md` | Add phase lifecycle step: validate active phase → check if all phases done → validate parent |
-| `resume.md` | Detect phase folders; offer choice: resume parent or specific child phase |
+| `../../../command/spec_kit/plan.md` | Add Gate 3 Option E; support `--phase-folder` argument for targeting a specific child |
+| `../../../command/spec_kit/implement.md` | Resolve nested phase-plan paths; scope implementation to the active phase |
+| `../../../command/spec_kit/complete.md` | Add phase lifecycle step: validate active phase → check if all phases are done → validate parent |
+| `../../../command/spec_kit/resume.md` | Detect phase folders; offer a choice: resume parent or a specific child phase |
 
 ---
 
@@ -325,21 +325,21 @@ fi
 
 | Document | Changes |
 |----------|---------|
-| `references/structure/phase_definitions.md` (NEW) | Phase taxonomy, transition rules, boundary definitions, when-to-phase decision tree |
-| `references/structure/sub_folder_versioning.md` | Add "Phases vs Versions" distinction section; integrate with --phase flag |
-| `references/templates/level_specifications.md` | Add §9.5 "Phase-Aware Specifications" with phase template rules |
-| `references/templates/template_guide.md` | Expand §10 "Using Sub-Folders" into §10 "Phase & Sub-Folder Organization" |
-| `references/workflows/quick_reference.md` | Add phase workflow shortcuts, decision table, and phase creation commands |
-| `references/validation/validation_rules.md` | Add PHASE_LINKS rule documentation |
+| `../../../skill/system-spec-kit/references/structure/phase_definitions.md` (NEW) | Phase taxonomy, transition rules, boundary definitions, when-to-phase decision tree |
+| `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md` | Add "Phases vs Versions" distinction section; integrate with --phase flag |
+| `../../../skill/system-spec-kit/references/templates/level_specifications.md` | Add §9.5 "Phase-Aware Specifications" with phase template rules |
+| `../../../skill/system-spec-kit/references/templates/template_guide.md` | Expand §10 "Using Sub-Folders" into §10 "Phase & Sub-Folder Organization" |
+| `../../../skill/system-spec-kit/references/workflows/quick_reference.md` | Add phase workflow shortcuts, decision table, and phase creation commands |
+| `../../../skill/system-spec-kit/references/validation/validation_rules.md` | Add PHASE_LINKS rule documentation |
 
 **Graph Mode Updates:**
 
-New node: `nodes/phase-system.md`
+New node: `../../../skill/system-spec-kit/nodes/phase-system.md`
 - Covers: Phase detection triggers, creation workflow, validation, transitions, boundary rules
-- Links to: gate-3-integration.md (entry), progressive-enhancement.md (levels), validation-workflow.md (validation)
-- Position: index.md MOC → Workflow & Routing section, between gate-3-integration and progressive-enhancement
+- Links to the Gate 3 integration, progressive enhancement, and validation workflow nodes in graph mode
+- Position: the system-spec-kit index Workflow & Routing section, between gate-3-integration and progressive-enhancement
 
-Update: `index.md` — add `[[nodes/phase-system|Phase System]]` to Workflow & Routing section.
+Update: the system-spec-kit index — add `[[nodes/phase-system|Phase System]]` to Workflow & Routing section.
 
 **CLAUDE.md Updates:**
 - Gate 3: Add Option E "Add phase to existing spec" with contextual display rules
@@ -587,6 +587,30 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 - Each implementation phase should be a separate session or use /spec_kit:resume
 - Phase-level memory saves after each milestone
 - Avoid loading all modified files simultaneously — work file-by-file
+
+### Pre-Task Checklist
+
+- Confirm the active task belongs to this root spec before editing.
+- Read the target document plus the matching Level 3+ template scaffold first.
+- Validate after each write and repair blocking issues before continuing.
+
+### Execution Rules
+
+| Rule | Meaning |
+|------|---------|
+| TASK-SEQ | Finish template-alignment fixes before secondary content cleanup |
+| TASK-SCOPE | Keep edits inside the assigned root unless recursive validation requires a child-phase repair |
+| TASK-VERIFY | Re-run `validate.sh` after each write and capture the updated outcome |
+
+### Status Reporting Format
+
+`STATUS: <phase> | file=<doc> | result=<pass|warn|fail> | next=<action>`
+
+### Blocked Task Protocol
+
+1. Record the blocking validator rule and affected file.
+2. Pause dependent edits until the blocking file passes validation.
+3. Re-run validation, confirm the blocker is gone, then resume the next planned task.
 <!-- /ANCHOR:ai-execution -->
 
 ---
@@ -600,7 +624,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 |----|------|-------|-------|--------|
 | W-A | Detection & Scoring | @general | scripts/spec/recommend-level.sh, test fixtures (5) | Pending |
 | W-B | Templates & Creation | @speckit + @general | scripts/spec/create.sh, templates/addendum/phase/* | Pending (after W-A) |
-| W-C | Commands & Router | @general | command/spec_kit/phase.md, assets/spec_kit_phase_*.yaml, SKILL.md, plan.md, implement.md, complete.md, resume.md | Pending (after W-A, W-B) |
+| W-C | Commands & Router | @general | `/spec_kit:phase` command definition, assets/spec_kit_phase_*.yaml, SKILL.md, plan.md, implement.md, complete.md, resume.md | Pending (after W-A, W-B) |
 | W-D | Validation, Docs & Nodes | @speckit + @general | scripts/spec/validate.sh, scripts/rules/check-phase-links.sh, 6 reference docs, nodes/phase-system.md, index.md, CLAUDE.md | Pending (after W-A, W-B, W-C) |
 
 ### Sync Points
@@ -647,7 +671,7 @@ Changes to spec scope (new P0 requirements, architectural shifts) require re-app
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - [Specification](./spec.md)
 - [Tasks](./tasks.md)

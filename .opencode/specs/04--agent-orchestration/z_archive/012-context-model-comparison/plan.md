@@ -1,147 +1,120 @@
 ---
-title: "Plan: Context Agent Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/plan]"
-description: "Spec: 012-context-model-comparison"
+title: "Implementation Plan: Context Model Comparison [template:level_1/plan.md]"
+description: "Normalize the archived agent orchestration archive folder for Context Model Comparison so current validation passes without reopening implementation scope."
 trigger_phrases:
+  - "012-context-model-comparison"
   - "plan"
-  - "context"
-  - "agent"
-  - "model"
-  - "comparison"
-  - "012"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
+# Implementation Plan: Context Model Comparison
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Context Agent Model Comparison
-
-**Spec**: 012-context-model-comparison
-**Created**: 2026-02-14
 
 ---
 
-<!-- ANCHOR:phase-1 -->
-## Phase 1: Agent Variant Creation
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-**Effort**: Low
-**Dependencies**: None
+### Technical Context
 
-Create 4 agent variant files (2 per platform) with identical body content to the production @context agent. Only frontmatter differs:
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, Bash, Node.js validation tooling |
+| **Framework** | system-spec-kit template and validator workflow |
+| **Storage** | Git-tracked archive files only |
+| **Testing** | validate.sh --verbose |
 
-| # | File | Key Changes |
-|---|------|-------------|
-| 1 | `.opencode/agent/context-haiku.md` | `name: context-haiku`, `model: github-copilot/claude-haiku-4.5` |
-| 2 | `.opencode/agent/context-sonnet.md` | `name: context-sonnet`, `model: github-copilot/claude-sonnet-4.5` |
-| 3 | `.claude/agents/context-haiku.md` | `name: context-haiku`, `model: haiku` |
-| 4 | `.claude/agents/context-sonnet.md` | `name: context-sonnet`, `model: sonnet` |
-
-**Verification**: Diff body sections to confirm zero content changes. Confirm model fields are correct per platform.
-
-**Status**: COMPLETED
-
-<!-- /ANCHOR:phase-1 -->
+### Overview
+This plan keeps the archived record for Context Model Comparison readable while bringing the folder back to current validation standards. The work focuses on template alignment, metadata cleanup, and reference-safe archival notes rather than reopening the original feature scope.
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:phase-2 -->
-## Phase 2: Spec Folder Documentation
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-**Effort**: Medium
-**Dependencies**: None (parallel with Phase 1)
+### Definition of Ready
+- [x] Archived topic is identifiable from the folder name and existing docs.
+- [x] Current Level 1 templates are available as the normalization source.
+- [x] Validation rules for structure, anchors, and integrity are understood.
 
-Create the spec folder structure at `.opencode/specs/04--agent-orchestration/z_archive/012-context-model-comparison/`:
-
-| File | Purpose |
-|------|---------|
-| `spec.md` | L2+ spec with problem, scope, requirements, risks |
-| `plan.md` | This file — implementation phases |
-| `checklist.md` | Verification checklist for all phases |
-| `test-protocol.md` | 5 test queries with exact copy-pasteable text |
-| `scoring-rubric.md` | Metric definitions, 1-5 scales, decision matrix |
-| `results.md` | Template for capturing outputs, scores, verdicts |
-
-**Status**: COMPLETED
-
-<!-- /ANCHOR:phase-2 -->
+### Definition of Done
+- [x] Core archive docs use current template structure.
+- [x] Top-level markdown no longer produces validator errors.
+- [x] Folder validation completes with zero errors.
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:phase-3 -->
-## Phase 3: Test Execution
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-**Effort**: High (manual execution)
-**Dependencies**: Phase 1 + Phase 2
+### Pattern
+Archival normalization using Level 1 template compliance.
 
-### Execution Protocol
+### Key Components
+- **Core spec docs**: spec.md, plan.md, tasks.md, and implementation-summary.md hold the validator-critical archive record.
+- **Compatibility stubs**: Existing checklist.md, decision-record.md, and other top-level markdown files are simplified so they remain readable without breaking validation.
 
-- **Platform**: Claude Code primary (clearer dispatch logging)
-- **Execution order**: Alternate Haiku/Sonnet per query; swap order on rounds 3 and 5 to avoid first-mover bias
-- **Fairness controls**: Same prompts, same codebase state, same memory state
-
-### Query Execution Order
-
-| Round | Query | First Runner | Second Runner |
-|-------|-------|--------------|---------------|
-| 1 | TQ-1 (quick) | Haiku | Sonnet |
-| 2 | TQ-2 (medium) | Sonnet | Haiku |
-| 3 | TQ-3 (medium) | Sonnet | Haiku |
-| 4 | TQ-4 (thorough) | Haiku | Sonnet |
-| 5 | TQ-5 (thorough) | Sonnet | Haiku |
-
-**Status**: PENDING
-
-<!-- /ANCHOR:phase-3 -->
+### Data Flow
+Folder name and surviving archive context inform the rewritten markdown, then validate.sh confirms the archive is structurally sound.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Scoring & Analysis
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-**Effort**: Medium (manual evaluation)
-**Dependencies**: Phase 3
+### Phase 1: Setup
+- [x] Review the archived folder and note top-level markdown files.
+- [x] Load the current Level 1 templates that govern validator expectations.
+- [x] Decide to normalize to Level 1 unless an existing compatibility file must remain.
 
-1. Score each response using the rubric in `scoring-rubric.md`
-2. Record all scores in `results.md`
-3. Calculate per-query verdicts using the verdict scale
-4. Apply the go/no-go decision matrix
-5. Document rationale for the final decision
+### Phase 2: Core Implementation
+- [x] Rewrite the core archive docs into current template-shaped content.
+- [x] Create any missing required Level 1 files.
+- [x] Simplify extra top-level markdown into archival notes with safe references.
 
-**Status**: PENDING
-
-<!-- /ANCHOR:phase-4 -->
+### Phase 3: Verification
+- [x] Run validate.sh for the archived folder.
+- [x] Repair any remaining error-level issues.
+- [x] Confirm the folder ends with zero validation errors.
+<!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Decision & Cleanup
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-**Effort**: Low
-**Dependencies**: Phase 4
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Template headers, anchors, level markers | validate.sh --verbose |
+| Integrity | Markdown references and metadata consistency | validate.sh --verbose |
+| Manual | Archived topic readability and folder identity | Direct markdown review |
+<!-- /ANCHOR:testing -->
 
-### If GO (keep Haiku)
+---
 
-1. Delete all 4 variant agent files
-2. Update spec 011 Phase 1 as PASSED
-3. Close relevant checklist items (CHK-003/004/020-024)
-4. Save results to memory
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-### If NO-GO (revert to Sonnet)
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit templates | Internal | Green | Without them the archive cannot be normalized safely. |
+| validate.sh rule set | Internal | Green | Validation evidence would be incomplete if unavailable. |
+<!-- /ANCHOR:dependencies -->
 
-1. Delete all 4 variant agent files
-2. Revert production `context.md` to Sonnet on both platforms
-3. Update spec 011 as "Reverted"
-4. Save results to memory
+---
 
-### If CONDITIONAL
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-1. Run 3 additional queries for stronger signal, OR
-2. Document Option C (hybrid model routing) as separate future spec
-3. Keep variant agents until resolution
+- **Trigger**: The normalized archive removes essential historical meaning or introduces new validation errors.
+- **Procedure**: Restore the affected files from git history, then repeat normalization with the active templates as the baseline.
+<!-- /ANCHOR:rollback -->
 
-### Always
-
-1. Save final results to memory via `generate-context.js`
-2. Update this plan with final status
-
-**Status**: PENDING
-
-<!-- /ANCHOR:phase-5 -->
+---

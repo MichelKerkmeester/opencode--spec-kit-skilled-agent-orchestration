@@ -159,3 +159,4 @@ function extract_anchors(content) {
 ## 6. IMPLEMENTATION NOTES
 
 > **Implementation Status**: Completed and verified in `memory-parser.js`. Unit tests cover standard, nested, and broken anchor scenarios.
+<!-- /ANCHOR:id -->

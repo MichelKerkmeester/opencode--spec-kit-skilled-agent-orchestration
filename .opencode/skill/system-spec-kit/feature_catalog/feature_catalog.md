@@ -4674,3 +4674,4 @@ These variables are read at runtime to annotate checkpoint and evaluation record
 Source file references are included in the flag table above.
 
 See [`19--feature-flag-reference/07-7-ci-and-build-informational.md`](19--feature-flag-reference/07-7-ci-and-build-informational.md) for full flag reference details.
+<!-- /ANCHOR:state -->

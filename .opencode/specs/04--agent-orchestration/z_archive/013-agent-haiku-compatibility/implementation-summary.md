@@ -1,75 +1,89 @@
 ---
-title: "Implementation Summary: Agent [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/implementation-summary]"
-description: "Updated orchestrate.md on both platforms to align with the thorough-only Haiku context agent (spec 012 outcome). Removed stale 3-mode dispatch limits and added Haiku-specific fa..."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for Agent Haiku Compatibility."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "agent"
-  - "haiku"
-  - "compatibility"
+  - "013-agent-haiku-compatibility"
   - "implementation summary"
-  - "013"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Implementation Summary: Agent Haiku Compatibility
+# Implementation Summary
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Overview
+## Metadata
 
-Updated orchestrate.md on both platforms to align with the thorough-only Haiku context agent (spec 012 outcome). Removed stale 3-mode dispatch limits and added Haiku-specific failure awareness based on A/B test data.
-
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 013-agent-haiku-compatibility |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
+---
+
 <!-- ANCHOR:what-built -->
-## Changes Made
+## What Was Built
 
-### `.opencode/agent/orchestrate.md` (+ `.claude/agents/orchestrate.md`)
+This archived folder now has a current-template Level 1 documentation set for Agent Haiku Compatibility. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
 
-| Change | Location | Before | After |
-|--------|----------|--------|-------|
-| Dispatch limits | Line 192 | `quick=0, medium=1 max, thorough=2 max` | `2 max (thorough-only mode)` |
-| Haiku quality notes | After line 200 (new §5 subsection) | N/A | 3-row failure awareness table |
-| Review checklist | §6 checklist block | 8 items | 9 items (+Context Package section count) |
+### Archive Normalization
 
-### Files NOT Changed (Verified)
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
-All 6 non-context agents verified — no mode references found:
-- research/research.md, speckit.md, write.md, review.md, debug.md, handover.md
+### Files Changed
 
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
 
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
+<!-- /ANCHOR:decisions -->
+
+---
+
 <!-- ANCHOR:verification -->
-## Verification Results
+## Verification
 
 | Check | Result |
 |-------|--------|
-| SC-001: No `quick=0` references | PASS |
-| SC-002: Thorough-only in Two-Tier section | PASS |
-| SC-003: Haiku quality notes with 3-row table | PASS |
-| SC-004: Platform body identity | PASS (diff IDENTICAL) |
-
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
 <!-- /ANCHOR:verification -->
 
-## Spec Folder Artifacts
-
-| File | Status |
-|------|--------|
-| spec.md | Complete |
-| plan.md | Complete |
-| tasks.md | Complete (7/7 tasks [x]) |
-| checklist.md | Complete (6/6 requirements [x], 4/4 verifications [x]) |
-| implementation-summary.md | This file |
-| memory/ | Generated |
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
+
+---

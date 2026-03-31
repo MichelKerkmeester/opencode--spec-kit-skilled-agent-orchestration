@@ -1,46 +1,44 @@
 ---
-title: "Deci [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/decision-record]"
-description: "This package captures closed Phase 2/3 execution and wave handoff mappings. Level 3+ compliance requires a local decision-record.md, while architecture-level ADR authority remai..."
+title: "Decision Record: Extraction Rollout Phases 2 3 [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Extraction Rollout Phases 2 3."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "extraction"
-  - "and"
-  - "rollout"
   - "decision record"
-  - "002"
-importance_tier: "important"
-contextType: "decision"
+  - "phase"
+  - "archive"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Decision Record: Extraction and Rollout Package (Phase 2, 3)
+# Decision Record: Extraction Rollout Phases 2 3
 
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:adr-001 -->
-## ADR-001: Keep Package ADR Lightweight and Delegate Architecture Canonical Source
+## ADR-001: Normalize archived child phase docs to Level 1 compatibility
 
-<!-- ANCHOR:adr-001-context -->
 ### Metadata
 
 | Field | Value |
 |-------|-------|
-| Status | Accepted |
-| Date | 2026-02-19 |
-| Deciders | Package Maintainer, Spec Maintainer |
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
-This package captures closed Phase 2/3 execution and wave handoff mappings. Level 3+ compliance requires a local `decision-record.md`, while architecture-level ADR authority remains in the parent `../decision-record.md`.
+The archived child phase for Extraction Rollout Phases 2 3 used an older phase-package structure that no longer matched the active validator expectations. We needed to preserve the phase while removing error-level drift.
 
 ### Constraints
-- Preserve historical execution and transition intent already documented in package files.
-- Avoid duplicating parent ADRs that apply across multiple packages.
-- Resolve validator file-presence and level-match errors.
+
+- The child phase had to stay archival.
+- Existing top-level compatibility files could remain but could not keep breaking validation.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -48,9 +46,9 @@ This package captures closed Phase 2/3 execution and wave handoff mappings. Leve
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**Summary**: Maintain a concise package-local ADR that references the parent ADR set as canonical and records package-level governance behavior.
+**We chose**: Rewrite the child phase as Level 1-compatible archive docs and keep lightweight compatibility stubs for checklist.md and decision-record.md.
 
-**Details**: The package-local ADR documents how this folder should be interpreted: historical execution evidence remains local, while architecture rationale is inherited from `../decision-record.md`.
+**How it works**: The core docs now follow active templates. The retained compatibility files remain concise and avoid stale references or unsupported structure.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -60,11 +58,10 @@ This package captures closed Phase 2/3 execution and wave handoff mappings. Leve
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Concise local ADR with parent delegation (chosen)** | Compliance satisfied, minimal change, no architecture drift | Requires parent ADR cross-reference | 9/10 |
-| Leave decision-record absent | No file maintenance | Validation failure persists | 1/10 |
-| Copy parent ADRs into this folder | Self-contained package | Duplicates large ADR corpus and increases drift risk | 2/10 |
+| **Chosen: Level 1 normalization** | Reliable and low maintenance | Reduces historical narrative depth | 9/10 |
+| Preserve original phase-package documents | Keeps more historical structure | Continues failing current validation | 3/10 |
 
-**Why Chosen**: It resolves compliance with the least disruption to established package intent and content.
+**Why this one**: It keeps the archived phase usable and maintainable under today’s tooling.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -72,17 +69,18 @@ This package captures closed Phase 2/3 execution and wave handoff mappings. Leve
 <!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
-**Positive**:
-- Level 3+ required file coverage is now complete.
-- Existing closed-execution narrative remains unchanged.
+**What improves**:
+- The child phase validates cleanly.
+- The archive stays readable for future maintainers.
 
-**Negative**:
-- Full architectural rationale remains one directory up rather than repeated here.
+**What it costs**:
+- Some original planning detail is condensed. Mitigation: use git history for a fuller reconstruction.
 
 **Risks**:
+
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Reader misses parent ADR reference | Low | Keep explicit parent path references in this file and governance sections |
+| Future validator changes require another refresh | M | Revalidate and update the archive with the current templates |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -92,11 +90,11 @@ This package captures closed Phase 2/3 execution and wave handoff mappings. Leve
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | Necessary? | PASS | Missing file caused validation errors |
-| 2 | Beyond Local Maxima? | PASS | Compared absent, duplicated, and delegated models |
-| 3 | Sufficient? | PASS | Lightweight ADR meets Level 3+ requirement |
-| 4 | Fits Goal? | PASS | Goal is compliance without rewriting historical content |
-| 5 | Open Horizons? | PASS | Parent ADR remains central and extensible |
+| 1 | **Necessary?** | PASS | The child phase had active validator errors. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preserving legacy phase-package structure with normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes the current error classes. |
+| 4 | **Fits Goal?** | PASS | The goal is archive stability, not renewed delivery planning. |
+| 5 | **Open Horizons?** | PASS | Git history still preserves deeper historical detail. |
 
 **Checks Summary**: 5/5 PASS
 <!-- /ANCHOR:adr-001-five-checks -->
@@ -106,10 +104,12 @@ This package captures closed Phase 2/3 execution and wave handoff mappings. Leve
 <!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
-**Affected Systems**:
-- `002-extraction-rollout-phases-2-3/decision-record.md`
-- `../decision-record.md` (canonical ADR source)
+**What changes**:
+- Rewrite the core docs to Level 1-compatible archive content.
+- Simplify retained compatibility files and remove broken references.
 
-**Rollback**: Remove this file only if Level 3+ compliance requirements are revised.
+**How to roll back**: Restore the earlier files from git history and compare validation outcomes.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
+
+---

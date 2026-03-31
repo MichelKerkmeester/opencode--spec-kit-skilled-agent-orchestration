@@ -1,46 +1,84 @@
 ---
-title: "Tasks: minify-javascript - Implementation Breakdown [01--anobel.com/z_archive/005-minify-javascript/tasks]"
-description: "Minify the JavaScript files in src/2_javascript/z_minified/ in-place, with conservative settings to avoid runtime regressions when embedded in Webflow."
+title: "Tasks: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/tasks]"
+description: "Archived normalization task list for minify-javascript - Requirements & User Stories."
 trigger_phrases:
-  - "tasks"
-  - "minify"
-  - "javascript"
-  - "implementation"
-  - "breakdown"
-  - "005"
+  - "feature"
+  - "specification"
+  - "minify-javascript"
+  - "requirements"
+  - "user"
+  - "stories"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Tasks: minify-javascript - Implementation Breakdown
+# Tasks: minify-javascript - Requirements & User Stories
 
-Minify the JavaScript files in `src/2_javascript/z_minified/` in-place, with conservative settings to avoid runtime regressions when embedded in Webflow.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.1 -->
-
----
-
-<!-- ANCHOR:objective -->
-## 1. OBJECTIVE
-
-### Metadata
-- **Category**: Tasks
-- **Tags**: minify-javascript, javascript-assets
-- **Priority**: P0
-
-### Input
-- `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/spec.md`
-- `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/plan.md`
-<!-- /ANCHOR:objective -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:tasks -->
-## 2. TASKS
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] T001 [P0] [US1] Inventory `.js` files in `src/2_javascript/z_minified/` and capture pre-minify sizes
-- [x] T002 [P0] [US1] Confirm local minifier availability (prefer `terser`) without network installs
-- [x] T003 [P0] [US1] Minify all `.js` files in-place using conservative settings (no property mangling, no top-level mangling, no unsafe transforms)
-- [x] T004 [P0] [US1] Verify every minified file passes a syntax check (`node --check` or equivalent)
-- [x] T005 [P1] [US1] Capture post-minify sizes and confirm size reduction where applicable
-- [x] T006 [P1] [US1] Document exact minifier command/options and verification evidence in `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/checklist.md`
-<!-- /ANCHOR:tasks -->
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`checklist.md`, `implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

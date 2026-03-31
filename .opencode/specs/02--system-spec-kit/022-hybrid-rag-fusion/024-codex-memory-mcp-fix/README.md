@@ -9,7 +9,7 @@ contextType: "implementation"
 ---
 # 024 Codex Memory MCP Fix
 
-This packet now documents the landed Codex-facing `spec_kit_memory` MCP remediation slice across both startup stabilization and the in-session DB-isolation fix for `initializeDb(':memory:')` / custom-path flows, while keeping the next broader remediation recommendations visible without rewriting `020-pre-release-remediation`.
+This packet now documents the landed Codex-facing `spec_kit_memory` MCP remediation slice across both startup stabilization and the in-session DB-isolation fix for `initializeDb(':memory:')` / custom-path flows, while keeping the next broader remediation recommendations visible without rewriting `020-post-release-fixes`.
 
 ## Current State
 
@@ -29,7 +29,7 @@ This packet now documents the landed Codex-facing `spec_kit_memory` MCP remediat
 
 ## Related Packets
 
-- `../020-pre-release-remediation/` - broader remediation source of truth
+- `../020-post-release-fixes/` - broader remediation source of truth
 - `../021-ground-truth-id-remapping/` - adjacent follow-on packet in the same tree
 - `../022-spec-doc-indexing-bypass/` - nearby spec-doc indexing context
 

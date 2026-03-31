@@ -1,39 +1,81 @@
 ---
-title: "Implementation Summary [014-font-performance/impl [01--anobel.com/z_archive/013-font-performance/implementation-summary]"
-description: "implementation summary document for 014-font-performance."
+title: "Implementation Summary"
+description: "Archived implementation summary for Specification: Font Performance Optimization."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "implementation summary"
-  - "014"
+  - "specification"
   - "font"
+  - "performance"
+  - "optimization"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary
 
-<!-- ANCHOR:changes -->
-## Changes
-- Updated `src/0_html/global.html` to include `<link rel="preload">` tags for Silka Regular and Semibold fonts.
-- Created `.opencode/specs/01--anobel.com/z_archive/013-font-performance/webflow_guide.md` with updated instructions for Custom Fonts (uploaded).
-<!-- /ANCHOR:changes -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 013-font-performance |
+| **Completed** | 2026-03-31 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+This archive package now has validator-compliant root documents, which means you can inspect the archived scope without hitting structural validation failures first. The original root markdown is still preserved in scratch/legacy, so the historical wording remains recoverable.
+
+### Archive Compliance Normalization
+
+The repair rebuilt the required root spec documents around the active templates, aligned levels across validator-sensitive files, and created any missing required files. Supporting archive notes stayed in place after unresolved markdown references were sanitized.
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The archive was normalized by preserving the original root markdown, regenerating the validator-facing documents, and rerunning `validate.sh` until only warnings remained, if any.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Regenerate root documents instead of patching every legacy heading in place | It guarantees the required template order while preserving the historical source in scratch/legacy |
+| Sanitize unresolved markdown references in supporting notes | It clears integrity errors without deleting surrounding archived context |
+<!-- /ANCHOR:decisions -->
+
+---
 
 <!-- ANCHOR:verification -->
 ## Verification
-- **Preloading:** Added `silka-regular-webfont.woff2` and `silka-semibold-webfont.woff2` with `as="font" type="font/woff2" crossorigin`.
-- **Display Swap:** Confirmed `font-display: swap` is already present in the Webflow CSS.
+
+| Check | Result |
+|-------|--------|
+| Structural validation | PASS after archive normalization rerun |
+| Historical source preservation | PASS, original root markdown copied to scratch/legacy |
 <!-- /ANCHOR:verification -->
 
-<!-- ANCHOR:pending-actions -->
-## Pending Actions
-- **Redeployment:** The user should publish the site for changes to take effect.
-- **Minification:** Run `scripts/minify-webflow.mjs` if this is part of the standard deployment pipeline (optional).
-<!-- /ANCHOR:pending-actions -->
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Generated summaries** The active root docs are normalized summaries, so consult scratch/legacy when you need the original historical wording.
 <!-- /ANCHOR:limitations -->
+
+---

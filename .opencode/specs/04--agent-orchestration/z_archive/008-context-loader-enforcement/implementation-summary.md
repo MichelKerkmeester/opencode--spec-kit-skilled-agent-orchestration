@@ -1,90 +1,90 @@
 ---
-title: "Implementation Summary: [04--agent-orchestration/z_archive/008-context-loader-enforcement/implementation-summary]"
-description: "Full audit of all agent files (8) and command files (38+) for @explore references that should be replaced with @context_loader. Applied the aggressive enforcement rule defined i..."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for context loader enforcement."
 trigger_phrases:
   - "implementation"
   - "summary"
-  - "aggressive"
-  - "context"
-  - "loader"
-  - "implementation summary"
-  - "008"
+  - "archive"
+  - "context loader enforcement"
+  - "impl summary core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-# Implementation Summary: Aggressive @context_loader Enforcement
+# Implementation Summary
 
-> **Spec Folder:** `.opencode/specs/04--agent-orchestration/z_archive/008-context-loader-enforcement/`
-> **Status:** Complete
-> **Level:** 1
-> **Created:** 2026-02-11
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## 1. What Was Done
+## Metadata
 
-Full audit of all agent files (8) and command files (38+) for `@explore` references that should be replaced with `@context_loader`. Applied the aggressive enforcement rule defined in spec.md §3.
-
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 008-context-loader-enforcement |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
+---
+
 <!-- ANCHOR:what-built -->
-## 2. Finding: Already Clean
+## What Was Built
 
-**The codebase is already aggressively enforced.** An intermediate session (between spec 007 completion and this audit) had already:
+This archive fix replaced drifted planning documents with a concise Level 1 record for context loader enforcement. You can now inspect the folder without running into broken structure, stale metadata, or invalid top-level references.
 
-1. Replaced the 9 "intentional" @explore references in orchestrate.md
-2. Added **Rule 4: Never Dispatch @explore Directly** to orchestrate.md
-3. Updated the Agent Selection Matrix with enforcement warnings
-4. Added Two-Tier Model enforcement language
+### Archival Normalization
 
+The spec, plan, tasks, and implementation summary now follow the current system-spec-kit template contract. Where extra top-level markdown files existed, they were reduced to short archival notes so the folder keeps its historical context without pretending to be active work.
+
+### Files Changed
+
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Modified | Captures the archived feature intent in a compliant specification. |
+| plan.md | Modified | Documents the archive-fix approach and validation method. |
+| tasks.md | Modified | Records the normalization work in the standard task format. |
+| implementation-summary.md | Modified | Summarizes the completed archive cleanup and result. |
 <!-- /ANCHOR:what-built -->
 
-<!-- ANCHOR:verification -->
-## 3. Audit Results
+---
 
-| Area | Files Scanned | Total Matches | Replacements Needed |
-|------|--------------|---------------|-------------------|
-| Agent files (excl. context_loader.md) | 8 | 12 | 0 |
-| Command files (.claude/commands/ + .opencode/command/) | 38+ | 113 | 0 |
-| **Total** | **46+** | **125** | **0** |
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-### Categories of Remaining "explore" References (All Legitimate)
+The archive was normalized by copying the current Level 1 structure, replacing every placeholder with folder-specific content, simplifying extra notes, and validating the result with strict spec checks.
+<!-- /ANCHOR:how-delivered -->
 
-| Category | Count | Example | Why Legitimate |
-|----------|-------|---------|---------------|
-| Enforcement warnings | 7 | "NEVER dispatch @explore directly" | Promotes @context_loader |
-| Factual built-in description | 3 | `subagent_type: "explore"` table entry | Documents the tool |
-| Two-Tier Model description | 2 | "@context_loader dispatches @explore" | Internal mechanism |
-| Task tool YAML params | 4 | `subagent_type: explore` | Literal code value |
-| Role/name labels in YAML | 52 | `role: "architecture_explorer"` | Descriptive label |
-| Natural English verb | 57 | "Explore the codebase", "Explored alternatives?" | Not an agent reference |
-
-<!-- /ANCHOR:verification -->
+---
 
 <!-- ANCHOR:decisions -->
-## 4. Current Enforcement State
+## Key Decisions
 
-orchestrate.md now has a 3-layer enforcement:
-
-1. **Rule 4** (line 202): Explicit section "Never Dispatch @explore Directly"
-2. **Agent Selection Matrix** (line 151): "REQUIRED — never dispatch @explore directly"
-3. **Built-in Subagent Types table** (line 130): "Use @context_loader instead" warning
-
+| Decision | Why |
+|----------|-----|
+| Normalize this folder to Level 1 | The archive needed the smallest compliant structure that still preserved the historical record. |
+| Keep extra notes brief | Archived folders should remain readable without keeping validation-breaking draft structures. |
 <!-- /ANCHOR:decisions -->
 
-## 5. Files Modified
+---
 
-None. The audit confirmed the codebase is already clean. Only spec folder documentation was created.
+<!-- ANCHOR:verification -->
+## Verification
 
-## 6. Conclusion
+| Check | Result |
+|-------|--------|
+| Strict spec validation | PASS after the archive normalization updates |
+| Manual archive review | PASS, the folder now reads as a stable historical summary |
+<!-- /ANCHOR:verification -->
 
-The aggressive enforcement objective was already achieved prior to this audit. This spec folder serves as the **verification record** confirming comprehensive coverage across all agents and commands.
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Condensed archive** This summary does not reproduce every earlier draft detail. Repository history remains the source for superseded notes.
 <!-- /ANCHOR:limitations -->
+
+---

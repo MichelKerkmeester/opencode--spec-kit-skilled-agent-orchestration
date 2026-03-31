@@ -20,7 +20,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `02--system-spec-kit/023-esm-module-compliance/008-spec-memory-compliance-audit` |
+| **Spec Folder** | 008-spec-memory-compliance-audit |
 | **Date** | 2026-03-31 |
 | **Duration** | ~2 hours |
 | **Approach** | Hybrid: automated scripts + 4 parallel GPT-5.4 copilot agents + direct orchestration |

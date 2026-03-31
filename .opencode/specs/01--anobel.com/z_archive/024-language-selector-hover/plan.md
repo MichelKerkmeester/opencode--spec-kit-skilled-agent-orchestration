@@ -1,100 +1,122 @@
 ---
-title: "Plan: Language Selector - Desktop Hover to Open [01--anobel.com/z_archive/024-language-selector-hover/plan]"
-description: "let hover_timeout = null"
+title: "Implementation Plan: Language Selector - Desktop Hover to Open [.opencode/specs/01--anobel.com/z_archive/024-language-selector-hover/plan]"
+description: "Spec: Language Selector - Desktop Hover to Open"
 trigger_phrases:
-  - "plan"
+  - "spec"
   - "language"
   - "selector"
   - "desktop"
   - "hover"
-  - "026"
+  - "open"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Language Selector - Desktop Hover to Open
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Language Selector - Desktop Hover to Open
 
-<!-- ANCHOR:implementation-changes -->
-## Implementation Changes
+---
 
-### Change 1: Add hover timeout variable (~Line 49)
-```javascript
-let hover_timeout = null;
-```
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Change 2: Modify mouseenter handler (~Line 207-212)
-Replace color-only animation with dropdown open:
-```javascript
-language_btn.addEventListener('mouseenter', () => {
-  if (!should_hide_dropdown()) return;
-  clearTimeout(hover_timeout);
-  is_hovering = true;
-  if (!is_open) {
-    // Close nav dropdowns when opening language selector
-    close_nav_dropdowns();
-    toggle_dropdown(true);
-  }
-});
-```
+### Technical Context
 
-### Change 3: Modify mouseleave handler (~Line 214-219)
-Add delayed close:
-```javascript
-language_btn.addEventListener('mouseleave', () => {
-  if (!should_hide_dropdown()) return;
-  is_hovering = false;
-  hover_timeout = setTimeout(() => {
-    if (is_open) {
-      toggle_dropdown(false);
-    }
-  }, 150);
-});
-```
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-### Change 4: Add dropdown hover handlers (new, after mouseleave)
-Keep dropdown open when hovering over it:
-```javascript
-language_dropdown.addEventListener('mouseenter', () => {
-  if (!should_hide_dropdown()) return;
-  clearTimeout(hover_timeout);
-});
+### Overview
+Spec: Language Selector - Desktop Hover to Open
+<!-- /ANCHOR:summary -->
 
-language_dropdown.addEventListener('mouseleave', () => {
-  if (!should_hide_dropdown()) return;
-  hover_timeout = setTimeout(() => {
-    if (is_open) {
-      toggle_dropdown(false);
-    }
-  }, 150);
-});
-```
+---
 
-### Change 5: Modify click handler (~Line 222-226)
-Click should close if open (allow hover to handle opening):
-```javascript
-language_btn.addEventListener('click', (e) => {
-  if (!should_hide_dropdown()) return;
-  e.stopPropagation();
-  if (is_open) {
-    toggle_dropdown(false);
-  }
-});
-```
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-### Change 6: Add integration helper (new, in utility functions)
-Close nav dropdowns when language selector opens:
-```javascript
-const close_nav_dropdowns = () => {
-  // Dispatch event for nav_dropdown.js to listen to
-  document.dispatchEvent(new CustomEvent('language-selector:open'));
-};
-```
-<!-- /ANCHOR:implementation-changes -->
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
 
-<!-- ANCHOR:post-implementation -->
-## Post-Implementation
-1. Run minification
-2. Verify minification
-3. Browser test on staging
-4. Update CDN version if deploying
-<!-- /ANCHOR:post-implementation -->
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

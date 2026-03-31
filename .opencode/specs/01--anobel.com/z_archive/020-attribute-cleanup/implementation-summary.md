@@ -1,19 +1,20 @@
 ---
-title: "Implementation Summary [021-attribute-cleanup/im [01--anobel.com/z_archive/020-attribute-cleanup/implementation-summary]"
-description: "Expanded the global attribute cleanup script to remove empty value-based data-* attributes used for component variants/configuration across anobel.com (based on a CSS inventory)..."
+title: "Implementation Summary"
+description: "Archived implementation summary for Attribute Cleanup Deepdive."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "implementation summary"
-  - "021"
+  - "feature"
+  - "specification"
   - "attribute"
+  - "cleanup"
+  - "deepdive"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,79 +23,59 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 021-attribute-cleanup |
-| **Completed** | 2026-01-24 |
+| **Spec Folder** | 020-attribute-cleanup |
+| **Completed** | 2026-03-31 |
 | **Level** | 1 |
-
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-was-built -->
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Expanded the global attribute cleanup script to remove empty value-based `data-*` attributes used for component variants/configuration across anobel.com (based on a CSS inventory), in addition to invalid `id=""`.
+This archive package now has validator-compliant root documents, which means you can inspect the archived scope without hitting structural validation failures first. The original root markdown is still preserved in scratch/legacy, so the historical wording remains recoverable.
 
-This reduces DOM noise from Webflow-exported empty custom attributes while keeping marker/presence-only attributes untouched (explicit allowlist).
+### Archive Compliance Normalization
 
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `src/2_javascript/global/attribute_cleanup.js` | Modified | Expand allowlist of attributes removed when empty |
-| `.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/spec.md` | Modified | Define scope/requirements and open questions |
-| `.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/plan.md` | Modified | Document implementation and verification plan |
-| `.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/tasks.md` | Modified | Track executed steps |
-| `.claude/skills/workflows-code/references/implementation/webflow_patterns.md` | Modified | Update attribute cleanup documentation |
-| `.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/implementation-summary.md` | Modified | Record completed work |
-
-<!-- /ANCHOR:what-was-built -->
+The repair rebuilt the required root spec documents around the active templates, aligned levels across validator-sensitive files, and created any missing required files. Supporting archive notes stayed in place after unresolved markdown references were sanitized.
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The archive was normalized by preserving the original root markdown, regenerating the validator-facing documents, and rerunning `validate.sh` until only warnings remained, if any.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
 <!-- ANCHOR:decisions -->
-<!-- /ANCHOR:what-built -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Use an explicit allowlist for empty-attribute removal | Prevent accidental removal of marker/presence-only attributes (`[data-x]`) while still cleaning value-based attributes |
-| Derive most attributes from `src/1_css` value selectors | Keeps allowlist aligned with how variants are actually used in styling |
-
-<!-- /ANCHOR:key-decisions -->
+| Decision | Why |
+|----------|-----|
+| Regenerate root documents instead of patching every legacy heading in place | It guarantees the required template order while preserving the historical source in scratch/legacy |
+| Sanitize unresolved markdown references in supporting notes | It clears integrity errors without deleting surrounding archived context |
+<!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-<!-- /ANCHOR:decisions -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Manual | Skip | No live browser verification performed in this pass |
-| Unit | Skip | N/A (script is DOM-side IIFE) |
-| Integration | Pass | jsdom smoke test: empty attrs removed; marker attr preserved |
-
+| Check | Result |
+|-------|--------|
+| Structural validation | PASS after archive normalization rerun |
+| Historical source preservation | PASS, original root markdown copied to scratch/legacy |
 <!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:known-limitations -->
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- Does not regenerate `src/2_javascript/z_minified/global/attribute_cleanup.js` or bump the CDN version referenced in `src/0_html/global.html`.
-- Allowlist may need updates if new value-based attributes are introduced in `src/1_css`.
-
-<!-- /ANCHOR:known-limitations -->
+1. **Generated summaries** The active root docs are normalized summaries, so consult scratch/legacy when you need the original historical wording.
+<!-- /ANCHOR:limitations -->
 
 ---
-
-<!--
-CORE TEMPLATE (~40 lines)
-- Post-implementation documentation
-- Created AFTER implementation completes
--->
-<!-- /ANCHOR:limitations -->

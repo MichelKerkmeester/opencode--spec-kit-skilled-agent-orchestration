@@ -1,196 +1,116 @@
 ---
-title: "Decision Record: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/decision-record]"
-description: "Key architectural and implementation decisions for the time-based scheduling feature."
+title: "Decision Record: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/decision-record]"
+description: "Archived decision record for Notification Time-Based Scheduling."
 trigger_phrases:
-  - "decision"
-  - "record"
+  - "feature"
+  - "specification"
   - "notification"
-  - "time"
-  - "based"
-  - "decision record"
-  - "013"
-importance_tier: "important"
-contextType: "decision"
+  - "time-based"
+  - "scheduling"
+importance_tier: "normal"
+contextType: "general"
 ---
 # Decision Record: Notification Time-Based Scheduling
 
-Key architectural and implementation decisions for the time-based scheduling feature.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v1.0 -->
-
----
-
-<!-- ANCHOR:metadata -->
-## 1. METADATA
-
-- **Category**: Decision Record
-- **Created**: 2025-12-29
-- **Status**: Active
-- **Participants**: Development Team
-
----
-<!-- /ANCHOR:metadata -->
-
-<!-- ANCHOR:decisions -->
-## 2. DECISIONS
-
-### DEC-001: Use String Pattern Matching for Time Detection
-
-**Date**: 2025-12-29
-**Status**: Accepted
-
-**Context**:
-Need to determine if a date string includes a time component to decide which comparison mode to use.
-
-**Decision**:
-Use regex pattern matching on the raw attribute string: `/(\d{1,2}:\d{2})|([AP]M)|T\d{2}:/i`
-
-**Rationale**:
-- Cannot reliably detect from parsed Date object (midnight could be intentional)
-- String pattern matching is unambiguous
-- Handles all common Webflow date formats
-
-**Alternatives Considered**:
-1. Check if parsed Date has hours/minutes = 0 → Rejected: ambiguous (midnight is valid time)
-2. Add separate boolean CMS field → Rejected: adds complexity for content managers
-3. Always use exact time → Rejected: breaks backward compatibility
-
-**Consequences**:
-- ✅ Clear distinction between date-only and datetime
-- ✅ No CMS changes required
-- ⚠️ Depends on Webflow outputting time in attribute
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-### DEC-002: Dual-Mode Comparison (Backward Compatible)
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Normalize Archived Root Documents
 
-**Date**: 2025-12-29
-**Status**: Accepted
+### Metadata
 
-**Context**:
-Existing alerts use date-only scheduling. New feature must not break them.
-
-**Decision**:
-Implement dual-mode comparison:
-- If time detected → exact timestamp comparison
-- If date only → midnight/end-of-day comparison (legacy)
-
-**Rationale**:
-- Zero impact on existing alerts
-- Gradual adoption possible
-- No migration required
-
-**Alternatives Considered**:
-1. Breaking change (all dates require time) → Rejected: disrupts existing content
-2. Configuration flag to enable time mode → Rejected: unnecessary complexity
-
-**Consequences**:
-- ✅ Existing alerts continue working unchanged
-- ✅ New alerts can use time when needed
-- ⚠️ Slightly more complex code logic
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-31 |
+| **Deciders** | Copilot archive repair workflow |
 
 ---
 
-### DEC-003: End Dates Without Time Use 23:59:59
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Date**: 2025-12-29
-**Status**: Accepted
+This folder contains historically useful archive notes, but the active validator now expects newer root document structure. The archive needed compliant root documents without discarding the original markdown.
 
-**Context**:
-When end date is "December 29, 2025" (no time), should alert hide at midnight (start of day) or end of day?
+### Constraints
 
-**Decision**:
-Use end of day (23:59:59.999) for date-only end dates.
-
-**Rationale**:
-- More intuitive: "end on Dec 29" means show all day
-- Matches user expectation
-- Consistent with how humans interpret "until date X"
-
-**Alternatives Considered**:
-1. Use midnight (00:00:00) → Rejected: would hide alert at START of end day
-2. Use noon (12:00:00) → Rejected: arbitrary, confusing
-
-**Consequences**:
-- ✅ Intuitive behavior for content managers
-- ✅ Alert visible for entire end date
-- ✅ Matches existing behavior (current code compares dates at midnight level)
+- The archive content had to remain recoverable.
+- The repair needed to avoid introducing broken local markdown references.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-### DEC-004: No Separate Time Fields in CMS
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-**Date**: 2025-12-29
-**Status**: Accepted
+**We chose**: Regenerate the required root documents and preserve the original source files in `scratch/legacy`.
 
-**Context**:
-Could add separate `data-alert-start-time` and `data-alert-end-time` attributes.
-
-**Decision**:
-Use existing DateTime fields; rely on Webflow to output time in date string.
-
-**Rationale**:
-- Simpler CMS structure
-- Fewer fields for content managers
-- DateTime fields already support time
-
-**Alternatives Considered**:
-1. Add separate time fields → Rejected: doubles number of date-related fields
-2. Use Unix timestamps → Rejected: not human-readable in CMS
-
-**Consequences**:
-- ✅ No CMS schema changes
-- ✅ Simpler content management
-- ⚠️ Depends on Webflow DateTime field configuration
+**How it works**: The active root docs are rewritten to match the current template structure, while the legacy source markdown is copied aside before any replacement. Supporting archive notes stay in place after unresolved markdown references are sanitized.
+<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
-### DEC-005: CDN Version Increment Strategy
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
 
-**Date**: 2025-12-29
-**Status**: Accepted
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Regenerate root docs and preserve originals** | Clears validator errors and keeps history recoverable | Adds a preservation layer in scratch/legacy | 9/10 |
+| Leave legacy docs untouched | Zero rewrite effort | Validation errors remain permanent | 3/10 |
 
-**Context**:
-Need to ensure browsers load the updated script.
-
-**Decision**:
-Increment version from 1.1.09 to 1.1.10 in query string.
-
-**Rationale**:
-- Simple cache busting
-- Maintains version history
-- Easy rollback (just change version back)
-
-**Consequences**:
-- ✅ Guaranteed fresh script load
-- ✅ Previous version remains available
-- ✅ Clear version progression
+**Why this one**: It resolves the compliance problem while still keeping the historical source material available for inspection.
+<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
-<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:open-questions -->
-## 3. OPEN QUESTIONS
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
 
-### Q1: Does Webflow Output Time in Attribute Bindings?
+**What improves**:
+- Root archive docs stay compatible with the active validator.
+- Historical root markdown remains recoverable from scratch/legacy.
 
-**Status**: Needs Verification
+**What it costs**:
+- The active root docs become normalized summaries rather than verbatim historical copies. Mitigation: preserve originals in scratch/legacy.
 
-**Question**: When a CMS DateTime field has time enabled, does Webflow include the time in custom attribute bindings?
+**Risks**:
 
-**Expected**: `data-alert-start="December 29, 2025 9:50 AM"`
-**Current**: `data-alert-start="December 29, 2025"` (no time)
-
-**Action**: User needs to verify in Webflow Designer and test with time-enabled field.
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future readers miss a legacy nuance | M | Review the preserved scratch/legacy files when deeper detail is needed |
+<!-- /ANCHOR:adr-001-consequences -->
 
 ---
-<!-- /ANCHOR:open-questions -->
 
-<!-- ANCHOR:changelog -->
-## 4. CHANGELOG
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
 
-### 2025-12-29
-- Initial decision record created
-- Documented 5 key decisions
-- Identified 1 open question
-<!-- /ANCHOR:changelog -->
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Validator errors blocked archive compliance |
+| 2 | **Beyond Local Maxima?** | PASS | Alternatives were considered before rewriting |
+| 3 | **Sufficient?** | PASS | Root document regeneration solves the validator-facing drift |
+| 4 | **Fits Goal?** | PASS | The task focused on spec compliance only |
+| 5 | **Open Horizons?** | PASS | Preserved backups keep future review options open |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Required root documents are regenerated with current template headers and anchors.
+- Original root markdown is copied into scratch/legacy before rewrite.
+
+**How to roll back**: Restore the original root files from scratch/legacy or recover them from git history.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---

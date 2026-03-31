@@ -1,106 +1,119 @@
 ---
-title: "Form Data Persistence [016-form-persistence/spec] [01--anobel.com/z_archive/016-form-persistence/spec]"
-description: "Implement automatic form data persistence to preserve user input across page refreshes, preventing data loss due to accidental navigation or browser refresh."
+title: "Feature Specification: Form Data Persistence [.opencode/specs/01--anobel.com/z_archive/016-form-persistence/spec]"
+description: "Form Data Persistence"
 trigger_phrases:
   - "form"
   - "data"
   - "persistence"
-  - "spec"
-  - "016"
+  - "anobel"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: CORE -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Form Data Persistence
+# Feature Specification: Form Data Persistence
 
-<!-- ANCHOR:overview -->
-## Overview
-Implement automatic form data persistence to preserve user input across page refreshes, preventing data loss due to accidental navigation or browser refresh.
-<!-- /ANCHOR:overview -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `016-form-persistence` |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
-## Problem
-Users filling out forms lose all entered data when:
-- Accidentally refreshing the page
-- Browser crashes
-- Navigating away and returning
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Form Data Persistence
+
+### Purpose
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
 <!-- /ANCHOR:problem -->
 
-<!-- ANCHOR:solution -->
-## Solution
-Create `form_persistence.js` that automatically saves form data to localStorage and restores it on page load.
-<!-- /ANCHOR:solution -->
+---
 
 <!-- ANCHOR:scope -->
-## Scope
-- New file: `src/2_javascript/form/form_persistence.js`
-- Opt-in via `data-persist-form` attribute on form elements
-- Works with existing form components (validation, submission, custom select, file upload)
+## 3. SCOPE
+
+### In Scope
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
+
+### Out of Scope
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:out-of-scope -->
-## Out of Scope
-- Server-side persistence
-- Cross-device sync
-- File input restoration (browser security restriction)
-<!-- /ANCHOR:out-of-scope -->
+---
 
-<!-- ANCHOR:technical-approach -->
-<!-- /ANCHOR:scope -->
-## Technical Approach
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### Storage Strategy
-- **Storage type**: localStorage (persists across sessions)
-- **Key format**: `form_persist_{formId|pageUrl}`
-- **Expiry**: 24 hours (configurable)
-- **Debounce**: 500ms on input events
+### P0 - Blockers (MUST complete)
 
-### Supported Fields
-| Field Type | Persisted | Notes |
-|------------|-----------|-------|
-| Text inputs | Yes | |
-| Textareas | Yes | |
-| Native select | Yes | |
-| Custom select | Yes | Both value and display text |
-| Checkboxes | Yes | Checked state |
-| Radio buttons | Yes | Checked state |
-| File upload URL | Yes | Hidden URL input only |
-| File input | No | Browser security |
-| Password | No | Security exclusion |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
 
-### Integration Points
-- Listens for `form-submit-success` event to clear data
-- Triggers `input`/`change` events after restore for validation
-- Works with CustomSelect API for proper restoration
-<!-- /ANCHOR:technical-approach -->
+### P1 - Required (complete OR user-approved deferral)
 
-<!-- ANCHOR:webflow-implementation -->
-## Webflow Implementation
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
 
-### Required Attribute
-Add to any form that should persist data:
-```html
-<form data-persist-form>
-```
-
-### Optional Configuration
-```html
-<form 
-  data-persist-form
-  data-persist-key="job-application"   <!-- Custom storage key -->
-  data-persist-expiry="48"             <!-- Hours until expiry (default: 24) -->
->
-```
-<!-- /ANCHOR:webflow-implementation -->
+---
 
 <!-- ANCHOR:success-criteria -->
-## Success Criteria
-- [ ] Form data persists across page refresh
-- [ ] Data clears on successful form submission
-- [ ] Data clears on form reset
-- [ ] Custom select values restore correctly
-- [ ] File upload URLs restore correctly
-- [ ] No conflicts with validation/submission scripts
-- [ ] Expired data is automatically cleared
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
+
+---

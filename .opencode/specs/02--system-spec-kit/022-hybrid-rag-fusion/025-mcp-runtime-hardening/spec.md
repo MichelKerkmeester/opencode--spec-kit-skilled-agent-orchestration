@@ -29,6 +29,7 @@ contextType: "implementation"
 | **Branch** | `025-mcp-runtime-hardening` |
 | **Parent Spec** | `022-hybrid-rag-fusion` |
 | **Predecessor** | `024-codex-memory-mcp-fix` (follow-on tasks T020-T025) |
+| **Successor** | ../026-memory-database-refinement/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -136,10 +137,6 @@ Close the T020-T025 gaps with targeted tests, one focused code change (log sanit
 | Risk | T021 and T022 both touch `context-server.ts` | Low | Different sections (startup vs shutdown) |
 | Risk | New tests may expose latent bugs | Medium | Fix or document findings |
 <!-- /ANCHOR:risks -->
-
----
-
-<!-- ANCHOR:questions -->
 
 ---
 

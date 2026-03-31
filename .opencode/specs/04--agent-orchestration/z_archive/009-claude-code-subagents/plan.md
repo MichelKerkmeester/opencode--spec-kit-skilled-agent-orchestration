@@ -1,18 +1,16 @@
 ---
-title: "Implementation Plan: Convert OpenCode Agents to [04--agent-orchestration/z_archive/009-claude-code-subagents/plan]"
-description: "Overview: Convert 8 agent markdown files from OpenCode frontmatter format to Claude Code subagent frontmatter format. Source files in .opencode/agent/ remain unchanged. Target f..."
+title: "Implementation Plan: Claude Code Subagents [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"
   - "plan"
-  - "convert"
-  - "opencode"
-  - "agents"
-  - "009"
-  - "claude"
-importance_tier: "important"
-contextType: "decision"
+  - "claude code subagents"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Plan: Convert OpenCode Agents to Claude Code Subagents
+# Implementation Plan: Claude Code Subagents
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -22,14 +20,17 @@ contextType: "decision"
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, YAML |
-| **Framework** | None (text conversion) |
-| **Storage** | None |
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
 
-**Overview**: Convert 8 agent markdown files from OpenCode frontmatter format to Claude Code subagent frontmatter format. Source files in `.opencode/agent/` remain unchanged. Target files created in `.claude/agents/` with identical body content but Claude Code-compatible YAML frontmatter using `.claude/agents/explore.md` as reference.
-
+### Overview
+This archive fix rewrites the required Level 1 documents for claude code subagents. The plan favors structural compliance, concise historical context, and clean validation over recreating every superseded planning artifact.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,60 +38,84 @@ contextType: "decision"
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-**Ready When:**
-- [ ] Reference file `.claude/agents/explore.md` frontmatter structure documented
-- [ ] All 8 source files identified and readable
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
-**Done When:**
-- [ ] All 8 target files created with valid frontmatter
-- [ ] Body content diff confirms zero changes (frontmatter-only conversion)
-
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation archive normalization
+
+### Key Components
+- **Core Level 1 docs**: Preserve the historical topic in a compliant structure.
+- **Supplemental archive notes**: Remain brief and avoid broken markdown references.
+
+### Data Flow
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable and easy to inspect.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## 3. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Preparation
-- [ ] Read `.claude/agents/explore.md` to understand Claude Code frontmatter format
-- [ ] Document frontmatter mapping: OpenCode → Claude Code
-- [ ] List all 8 source files with their metadata
+### Phase 1: Setup
+- [x] Review archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
 
-### Phase 2: Conversion
-- [ ] Convert each agent file (8 files):
-  - Read source file `.opencode/agent/{name}.md`
-  - Extract body content (everything after frontmatter)
-  - Convert frontmatter to Claude Code format
-  - Write to `.claude/agents/{name}.md`
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md and archive notes
 
 ### Phase 3: Verification
-- [ ] Verify all 8 files exist in `.claude/agents/`
-- [ ] Check frontmatter structure matches reference
-- [ ] Confirm body content unchanged (diff check)
-
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
 <!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
+
+---
+
 <!-- ANCHOR:dependencies -->
-## 4. DEPENDENCIES
+## 6. DEPENDENCIES
 
-| Dependency | Status | Impact if Blocked |
-|------------|--------|-------------------|
-| `.claude/agents/explore.md` (reference) | Green | Cannot determine correct frontmatter format |
-| Source files in `.opencode/agent/` | Green | No files to convert |
-
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 5. ROLLBACK
+## 7. ROLLBACK PLAN
 
-- **Trigger**: Frontmatter format incorrect or body content modified
-- **Procedure**: Delete all 8 files from `.claude/agents/` and retry conversion
-
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
 <!-- /ANCHOR:rollback -->
 
 ---

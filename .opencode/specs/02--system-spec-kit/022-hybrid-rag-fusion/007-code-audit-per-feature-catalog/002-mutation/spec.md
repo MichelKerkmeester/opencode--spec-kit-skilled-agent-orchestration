@@ -314,3 +314,4 @@ All 4 correction types, stability adjustment, undo operation, and feature flag c
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

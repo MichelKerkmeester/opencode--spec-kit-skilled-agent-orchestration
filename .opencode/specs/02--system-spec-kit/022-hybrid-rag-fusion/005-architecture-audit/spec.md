@@ -132,7 +132,6 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 
 ---
 
-<!-- ANCHOR:questions -->
 <!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 

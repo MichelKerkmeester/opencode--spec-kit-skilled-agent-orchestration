@@ -96,7 +96,7 @@
 | **Disposition** | Active |
 
 **Missing entries:**
-1. `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continue.md` — Session recovery via /memory:continue
+1. `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` — Session recovery via /memory:continue
 2. `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md` — Audit phase mapping note
 3. `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md` — Category stub
 4. `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` — Category stub

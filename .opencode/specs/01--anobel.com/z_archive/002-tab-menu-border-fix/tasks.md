@@ -1,65 +1,83 @@
 ---
-title: "Tasks: Tab Menu Border Fix [002-tab-menu-border-fix/tasks] [01--anobel.com/z_archive/002-tab-menu-border-fix/tasks]"
-description: "Priority: High"
+title: "Tasks: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/tasks]"
+description: "Archived normalization task list for Tab Menu Border Color Fix."
 trigger_phrases:
-  - "tasks"
   - "tab"
   - "menu"
   - "border"
+  - "color"
   - "fix"
-  - "002"
 importance_tier: "normal"
 contextType: "implementation"
 ---
+# Tasks: Tab Menu Border Color Fix
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
-# Tasks: Tab Menu Border Fix
-
-<!-- ANCHOR:us-001-consistent-border-color-on-filter-buttons -->
-## US-001: Consistent Border Color on Filter Buttons
-
-### Task 1: Fix CSS Variable in tab_menu.js
-**Priority:** High
-**Estimate:** 5 minutes
-**Status:** Pending
-
-**Steps:**
-- [ ] Open `src/2_javascript/menu/tab_menu.js`
-- [ ] Replace `--_color-tokens---border-neutral--darkest` with `--_color-tokens---border-neutral--dark` (7 occurrences)
-- [ ] Verify no syntax errors
-
-**Files:**
-- `src/2_javascript/menu/tab_menu.js`
 
 ---
 
-### Task 2: Browser Verification
-**Priority:** High
-**Estimate:** 5 minutes
-**Status:** Pending
+<!-- ANCHOR:notation -->
+## Task Notation
 
-**Steps:**
-- [ ] Navigate to `/nl/blog` with bdg
-- [ ] Click a filter button to activate it
-- [ ] Click a different filter button
-- [ ] Verify previously-active button has border `rgb(207, 207, 207)`
-- [ ] Verify all inactive buttons have same border color
-- [ ] Test hover states on inactive buttons
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-**Acceptance Criteria:**
-- [ ] All inactive buttons: `borderColor: rgb(207, 207, 207)`
-- [ ] No visual inconsistencies between buttons
-- [ ] Hover animations work correctly
-<!-- /ANCHOR:us-001-consistent-border-color-on-filter-buttons -->
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:summary -->
-## Summary
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-| Task | Status | Priority |
-|------|--------|----------|
-| Fix CSS Variable | Pending | High |
-| Browser Verification | Pending | High |
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
 
-**Total Estimated Time:** 10 minutes
-<!-- /ANCHOR:summary -->
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

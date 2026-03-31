@@ -150,7 +150,7 @@ contextType: "implementation"
 **Phase H: Deep Research Remediation (2026-03-26) — NEW**
 
 > Source: 12-agent deep research (7 round 1 + 5 round 2, ~3.3M tokens GPT-5.4 via Codex CLI).
-> Full findings: `scratch/deep-research-gap-report-2026-03-26.md`, `scratch/deep-research-round2-2026-03-26.md`.
+> Full findings: `research/deep-research-gap-report-2026-03-26.md`, `research/deep-research-round2-2026-03-26.md`.
 
 ### H1: P0 Critical — BOTH_MISSING Capabilities (13 items)
 

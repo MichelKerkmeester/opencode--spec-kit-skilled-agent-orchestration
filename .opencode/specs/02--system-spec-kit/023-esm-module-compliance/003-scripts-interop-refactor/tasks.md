@@ -30,7 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Step 1: Interop Helper
+## Phase 1: Setup
 
 - [x] T001 Create `scripts/lib/esm-interop.ts` with typed dynamic `import()` wrappers - WHY: central boundary for CJS->ESM crossing - Acceptance: helper exports typed functions for `shared` and `mcp-server/api*` surfaces. Evidence: Phase 3 proved scripts-side CJS-to-ESM interop works on Node 25 using native `require(esm)`.
 - [x] T002 Handle async loading pattern with proper error handling - WHY: `import()` returns Promises in CJS context - Acceptance: helper gracefully handles import failures. Evidence: the Phase 3 interop path was finalized by removing top-level await blockers so the Node 25 boundary works natively.
@@ -39,7 +39,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Step 2: Consumer Refactors
+## Phase 2: Implementation
 
 - [x] T003 Audit all 20 scripts files consuming ESM siblings - WHY: need bounded scope before committing to interop approach - Acceptance: audit list with change complexity per file. Evidence: the Phase 3 scripts-side interop work closed without using the dual-build fallback.
 - [x] T004 Replace `require('@spec-kit/shared/...')` calls with interop helpers - WHY: `require()` of ESM packages fails at runtime - Acceptance: zero direct `require()` of `@spec-kit/shared` in scripts. Evidence: scripts-side CJS consumers now rely on the Node 25 native `require(esm)` path validated in Phase 3.
@@ -51,7 +51,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Step 3: Test Rewrites
+## Phase 3: Verification
 
 - [x] T008 Rewrite module-sensitive tests asserting old CJS emit details - WHY: tests anchored to old output hide real runtime breakage - Acceptance: updated suites assert ESM runtime truth. Evidence: Phase 3 verification records the scripts-side interop and ESM-truth test rewrite completion.
 - [x] T009 [P] Update `modularization.vitest.ts` and `trigger-config-extended.vitest.ts` - WHY: these suites are module-boundary sensitive - Acceptance: suites pass with ESM packages. Evidence: the module-sensitive Phase 3 verification completed after the top-level-await fix enabled native interop.
@@ -62,7 +62,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Step 4: Memory Save Pipeline Hardening
+### Step 4: Memory Save Pipeline Hardening
 
 - [x] T012 [P0] Decouple `scripts/core/workflow.ts` from direct `@spec-kit/mcp-server/*` runtime imports - WHY: workflow.ts top-level imports from mcp-server crash when mcp-server becomes ESM; memory save pipeline breaks mid-migration - Acceptance: workflow.ts uses script-local adapters for PFD and retry; no direct mcp-server runtime imports remain. Evidence: Phase 3 completed the `workflow.ts` decoupling called out in the packet implementation record.
 - [x] T013 [P0] Extend V8 allowed-spec detection to include validated descendant phase IDs - WHY: child phase folder names (e.g. phase-1-shared) match SPEC_ID_REGEX but are blocked as foreign specs; prevents saving memory for phased specs - Acceptance: `extractAllowedSpecIds()` scans spec folder for NNN-* subdirectories containing spec docs and includes them in allowed set. Evidence: Phase 3 completed the V8 descendant phase detection fix for child phase folders.
@@ -75,7 +75,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Step 5: Runtime Verification
+### Step 5: Runtime Verification
 
 - [x] T018 Run `node scripts/dist/memory/generate-context.js --help` - WHY: primary CLI surface must work - Acceptance: help output displayed, exit code 0. Evidence: Phase 3 verification records `generate-context.js --help: PASS`.
 - [x] T019 Run `npm run test --workspace=@spec-kit/scripts` - WHY: full test suite must pass - Acceptance: exit code 0. Evidence: Phase 3 verification records `476/477` scripts tests passing.

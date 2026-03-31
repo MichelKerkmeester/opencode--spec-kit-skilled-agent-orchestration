@@ -79,7 +79,7 @@ Delivered through a focused compatibility-first pass that kept existing threshol
 | `node mcp_server/node_modules/vitest/vitest.mjs run tests/decision-confidence.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed |
 | `node scripts/tests/test-extractors-loaders.js` | Passed |
 | `node scripts/tests/test-scripts-modules.js` | Passed (`384` passed, `0` failed, `5` skipped) |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4373 |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration` | Passed: refreshed `memory/metadata.json` and indexed memory #4373 |
 <!-- /ANCHOR:verification -->
 
 ---

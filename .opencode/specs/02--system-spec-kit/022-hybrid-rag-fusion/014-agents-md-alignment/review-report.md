@@ -98,7 +98,9 @@ Remediation is recommended but not blocking.
 3. **D3-001**: Remove or clarify the "partially reverted" note in `implementation-summary.md` since git history shows the alignment rows are still present.
 4. **D3-003**: Refresh checklist line number citations to current file positions.
 5. **D3-004**: Either locate and link the review artifact or downgrade CHK-017 evidence to "scores from live session, no preserved artifact".
-6. **D4-002**: Add `<!-- ANCHOR:phase-navigation -->` / `<!-- /ANCHOR:phase-navigation -->` around the Phase Navigation block.
+6. **D4-002**: Add `
+<!-- /ANCHOR:... -->
+<!-- ANCHOR:phase-navigation -->` / `<!-- /ANCHOR:phase-navigation -->` around the Phase Navigation block.
 7. **D4-003**: Update `description.json` description to match spec.md frontmatter title.
 
 ---

@@ -284,3 +284,4 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **19 MATCH, 5 
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

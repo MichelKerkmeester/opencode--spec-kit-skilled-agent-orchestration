@@ -27,8 +27,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:runtime -->
-## Runtime Correctness (Phase A)
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+### Runtime Correctness (Phase A)
 
 - [x] CHK-001 [P0] `mcp_server/scripts/map-ground-truth-ids.ts` no longer uses `__dirname` [EVIDENCE: import.meta.dirname used, builds clean]
 - [x] CHK-002 [P0] `mcp_server/scripts/reindex-embeddings.ts` no longer uses `__dirname` [EVIDENCE: import.meta.dirname used, builds clean]
@@ -37,12 +39,41 @@ contextType: "implementation"
 - [x] CHK-005 [P1] `shared/package.json` root export points to `dist/index.js` [EVIDENCE: exports["."] and main point to dist/index.js, ./embeddings subpath added]
 - [x] CHK-006 [P0] All 3 package builds succeed after runtime fixes [EVIDENCE: npm run build --workspaces passes, 3 packages clean]
 - [x] CHK-007 [P0] Runtime smokes pass: `node dist/context-server.js`, `node scripts/dist/memory/generate-context.js --help` [EVIDENCE: both verified passing]
-<!-- /ANCHOR:runtime -->
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+### Reliability & Maintainability (Phase C)
+
+- [x] CHK-020 [P0] Post-commit file-persistence failures produce typed warnings, not generic "anchor issues" [EVIDENCE: typedWarnings with [file-persistence-failed] category in response-builder.ts]
+- [x] CHK-021 [P1] All 3 dynamic-import call sites in `workflow.ts` use a single shared degradation helper [EVIDENCE: tryImportMcpApi helper consolidates 2 call sites in workflow.ts]
+- [x] CHK-022 [P1] `mcp_server/api/index.ts` no longer re-exports deep `lib/` internals [EVIDENCE: barrel kept wide; documented as legitimate (external consumers in scripts/, see P2-MNT-02 review)]
+- [x] CHK-023 [P1] No import resolution failures after barrel narrowing (grep all consumers) [EVIDENCE: all 8978+ mcp-server tests pass, no import failures]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+### Performance and Final Verification
+
+- [x] CHK-030 [P1] `vector-index-store.ts` hot retrieval methods use module-level lazy-init, not per-call `await import()` [EVIDENCE: module-level cached lazy loader in vector-index-store.ts]
+- [x] CHK-031 [P1] `cli.ts` defers heavy imports behind command dispatch; `--help` avoids loading DB stack [EVIDENCE: deferred imports behind per-command handlers in cli.ts]
+- [x] CHK-032 [P1] All CLI subcommands still work after import restructure [EVIDENCE: all tests pass]
+- [x] CHK-050 [P0] Full workspace test suite passes (9480+ tests, 0 failures, 0 skipped) [EVIDENCE: mcp-server 8978 pass + 3 pre-existing data-dependent failures (context-server.vitest.ts); scripts 317 legacy pass + 1 pre-existing failure (EXT-CSData-043); no regressions from Phase 6]
+- [x] CHK-051 [P0] No regressions from pre-remediation state [EVIDENCE: all 3 pre-existing mcp-server failures and 1 pre-existing scripts failure are unchanged; no new failures introduced]
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Security Hardening (Phase B)
+## Security
+
+### Security Hardening (Phase B)
 
 - [x] CHK-010 [P0] Shared-memory admin operations validate against trusted principal, not just caller-supplied IDs [EVIDENCE: trusted-transport warning on admin ops in shared-memory.ts]
 - [x] CHK-011 [P0] V-rule bridge returns failure (not success) when validation module unavailable [EVIDENCE: v-rule-bridge.ts fail-closed with SPECKIT_VRULE_OPTIONAL bypass]
@@ -54,29 +85,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:reliability -->
-## Reliability & Maintainability (Phase C)
-
-- [x] CHK-020 [P0] Post-commit file-persistence failures produce typed warnings, not generic "anchor issues" [EVIDENCE: typedWarnings with [file-persistence-failed] category in response-builder.ts]
-- [x] CHK-021 [P1] All 3 dynamic-import call sites in `workflow.ts` use a single shared degradation helper [EVIDENCE: tryImportMcpApi helper consolidates 2 call sites in workflow.ts]
-- [x] CHK-022 [P1] `mcp_server/api/index.ts` no longer re-exports deep `lib/` internals [EVIDENCE: barrel kept wide; documented as legitimate (external consumers in scripts/, see P2-MNT-02 review)]
-- [x] CHK-023 [P1] No import resolution failures after barrel narrowing (grep all consumers) [EVIDENCE: all 8978+ mcp-server tests pass, no import failures]
-<!-- /ANCHOR:reliability -->
-
----
-
-<!-- ANCHOR:performance -->
-## Performance (Phase D)
-
-- [x] CHK-030 [P1] `vector-index-store.ts` hot retrieval methods use module-level lazy-init, not per-call `await import()` [EVIDENCE: module-level cached lazy loader in vector-index-store.ts]
-- [x] CHK-031 [P1] `cli.ts` defers heavy imports behind command dispatch; `--help` avoids loading DB stack [EVIDENCE: deferred imports behind per-command handlers in cli.ts]
-- [x] CHK-032 [P1] All CLI subcommands still work after import restructure [EVIDENCE: all tests pass]
-<!-- /ANCHOR:performance -->
-
----
-
 <!-- ANCHOR:docs -->
-## Documentation Truth-Sync (Phase E)
+## Documentation
+
+### Documentation Truth-Sync (Phase E)
 
 - [x] CHK-040 [P0] Parent `checklist.md` CHK-010 evidence is accurate (not false positive) [EVIDENCE: CHK-010 evidence is correct — pre-impl doc sync was accurate]
 - [x] CHK-041 [P0] Parent `tasks.md` T001-T016 marked `[x]` with evidence [EVIDENCE: all 16 tasks checked with phase evidence]
@@ -90,13 +102,13 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:final -->
-## Final Verification (Phase F)
+<!-- ANCHOR:file-org -->
+## File Organization
 
-- [x] CHK-050 [P0] Full workspace test suite passes (9480+ tests, 0 failures, 0 skipped) [EVIDENCE: mcp-server 8978 pass + 3 pre-existing data-dependent failures (context-server.vitest.ts); scripts 317 legacy pass + 1 pre-existing failure (EXT-CSData-043); no regressions from Phase 6]
-- [x] CHK-051 [P0] No regressions from pre-remediation state [EVIDENCE: all 3 pre-existing mcp-server failures and 1 pre-existing scripts failure are unchanged; no new failures introduced]
+### Packet Closure
+
 - [x] CHK-052 [P1] Phase 6 `implementation-summary.md` written [EVIDENCE: implementation-summary.md created]
-<!-- /ANCHOR:final -->
+<!-- /ANCHOR:file-org -->
 
 ---
 

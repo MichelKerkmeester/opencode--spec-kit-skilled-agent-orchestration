@@ -32,7 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Diagnose
+## Phase 1: Setup
 
 - [x] T001 Verify data exists in FTS5, vec_memories, active_memory_projection (direct SQL)
 - [x] T002 Check embedding_status distribution (996 success, 1 failed, 2 partial)
@@ -50,7 +50,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Fix
+## Phase 2: Implementation
 
 - [x] T012 Fix scope-governance.ts — change isScopeEnforcementEnabled() to opt-in
 - [x] T013 Fix scope-governance.js (dist) — same change
@@ -63,7 +63,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verify & Cleanup
+## Phase 3: Verification
 
 - [x] T018 Verify "semantic search" returns results (4 results, including #893 CocoIndex)
 - [x] T019 Verify "SpecKit Phase System" returns results (5 results, including #325)
@@ -76,7 +76,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Search Engine Optimization
+### Phase 4: Search Engine Optimization
 
 > Source: 10-iteration deep research on live search pipeline post-fix. All tasks target `.opencode/skill/system-spec-kit/mcp_server/lib/` unless noted.
 
@@ -95,7 +95,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Phase 5: Ultra-Think Review P1 Fixes
+### Phase 5: Ultra-Think Review P1 Fixes
 
 > Source: GPT-5.4 ultra-think review found 4 P1 issues in the Phase 4 changes.
 
@@ -104,3 +104,25 @@ contextType: "implementation"
 - [x] T036 Fix scalar related_memories similarity scale 0.5→50 (`cognitive/co-activation.ts`)
 - [x] T037 Wire computeBackfillQualityScore into Stage 1 candidate pipeline (`pipeline/stage1-candidate-gen.ts`)
 <!-- /ANCHOR:phase-5 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks T001-T037 marked `[x]`
+- [x] Hybrid search returns non-zero results for known matching queries
+- [x] Search optimization follow-on items are implemented and verified
+- [x] Phase handoff to `008-spec-memory-compliance-audit` complete
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Implementation Summary**: See `implementation-summary.md`
+- **Parent Spec**: See `../spec.md`
+<!-- /ANCHOR:cross-refs -->

@@ -1,45 +1,84 @@
 ---
-title: "Tasks: Download Button Code Standards Alignment [01--anobel.com/z_archive/003-btn-download-alignment/tasks]"
-description: "tasks document for 003-btn-download-alignment."
+title: "Tasks: Download Button Code Standards Alignment [.opencode/specs/01--anobel.com/z_archive/003-btn-download-alignment/tasks]"
+description: "Archived normalization task list for Download Button Code Standards Alignment."
 trigger_phrases:
-  - "tasks"
+  - "spec"
   - "download"
   - "button"
   - "code"
   - "standards"
-  - "003"
-  - "btn"
+  - "alignment"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Download Button Code Standards Alignment
 
-<!-- ANCHOR:us-1-javascript-standards-alignment -->
-## US-1: JavaScript Standards Alignment
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-- [x] Add file header (COMPONENT: DOWNLOAD BUTTON)
-- [x] Add numbered section headers (CONFIG, HELPERS, EVENT HANDLERS, INITIALIZE)
-- [x] Rename functions to snake_case
-- [x] Rename variables to snake_case
-- [x] Convert string constants to UPPER_SNAKE_CASE
-- [x] Wrap in IIFE
-- [x] Implement CDN-safe initialization pattern
-- [x] Fix missing comment marker on line 100
-<!-- /ANCHOR:us-1-javascript-standards-alignment -->
+---
 
-<!-- ANCHOR:us-2-css-standards-alignment -->
-## US-2: CSS Standards Alignment
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] Add file header matching btn_main.css pattern
-- [x] Add numbered section headers
-- [x] Improve comments to explain WHY
-<!-- /ANCHOR:us-2-css-standards-alignment -->
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-<!-- ANCHOR:verification -->
-## Verification
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-- [ ] Download button functions correctly
-- [ ] No console errors
-- [ ] State transitions work (idle → downloading → ready)
-<!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Inventory archive root markdown (`*.md`)
+- [x] T002 Preserve original root files in `scratch/legacy`
+- [x] T003 [P] Infer the required documentation level (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild required root documents (`spec.md`)
+- [x] T005 Rebuild plan and task structure (`plan.md`, `tasks.md`)
+- [x] T006 Create missing required support files (`implementation-summary.md`)
+- [x] T007 Sanitize unresolved markdown references (root archive notes)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Re-run validator for the archived folder
+- [x] T009 Confirm zero validation errors remain
+- [x] T010 Keep preserved archive copies available for follow-up review
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

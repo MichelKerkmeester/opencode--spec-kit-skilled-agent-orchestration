@@ -1,49 +1,121 @@
 ---
-title: "Implementation Plan [008-social-share-cms/plan] [01--anobel.com/z_archive/008-social-share-cms/plan]"
-description: "1. Check for direct link attribute (backwards compatible)"
+title: "Implementation Plan: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/plan]"
+description: "Social Share CMS Integration"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "008"
   - "social"
+  - "share"
+  - "cms"
+  - "integration"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Social Share CMS Integration
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan
 
-<!-- ANCHOR:phase-1-add-new-attribute-constants -->
-## Phase 1: Add New Attribute Constants
-- Add `ATTR_URL = "data-social-share-url"`
-- Add `ATTR_SLUG = "data-social-share-slug"`
-<!-- /ANCHOR:phase-1-add-new-attribute-constants -->
+---
 
-<!-- ANCHOR_EXAMPLE:phase-2-add-url-join-helper -->
-## Phase 2: Add URL Join Helper
-- Create `join_url_slug(base, slug)` function
-- Handle trailing/leading slash normalization
-- Ensure clean URL output
-<!-- /ANCHOR_EXAMPLE:phase-2-add-url-join-helper -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-<!-- ANCHOR_EXAMPLE:phase-3-refactor-get_share_context -->
-## Phase 3: Refactor get_share_context()
-- Implement priority logic:
-  1. Check for direct `link` attribute (backwards compatible)
-  2. Check for `url` + `slug` combination
-  3. Check for `url` only
-  4. Check for `slug` only (combine with origin)
-  5. Fallback to `window.location.href`
-<!-- /ANCHOR_EXAMPLE:phase-3-refactor-get_share_context -->
+### Technical Context
 
-<!-- ANCHOR_EXAMPLE:phase-4-testing -->
-## Phase 4: Testing
-- Verify backwards compatibility with existing `data-social-share-link`
-- Test URL + slug combination
-- Test edge cases (trailing slashes, etc.)
-<!-- /ANCHOR_EXAMPLE:phase-4-testing -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
 
-<!-- ANCHOR:files-modified -->
-<!-- ANCHOR_EXAMPLE:files-modified -->
-## Files Modified
-- `src/2_javascript/cms/social_share.js`
-<!-- /ANCHOR:files-modified -->
+### Overview
+Social Share CMS Integration
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

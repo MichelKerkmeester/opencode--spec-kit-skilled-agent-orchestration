@@ -20,7 +20,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 023-esm-module-compliance/004-verification-and-standards |
+| **Spec Folder** | 004-verification-and-standards |
 | **Completed** | 2026-03-30 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->

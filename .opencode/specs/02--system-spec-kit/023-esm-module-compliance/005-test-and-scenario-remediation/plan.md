@@ -48,6 +48,23 @@ Remediate all test failures and playbook scenario gaps discovered during the ESM
 
 ---
 
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Verification-driven remediation. Fix the failing tests and playbook gaps first, then rerun the full suites to prove the branch reflects live runtime behavior.
+
+### Key Components
+- **Vitest suites**: Primary regression signal for `mcp_server` and `scripts`
+- **Manual playbook fixtures**: End-to-end proof for memory save and retrieval scenarios
+- **Final reporting docs**: `tasks.md` and `implementation-summary.md` capture the verified closeout state
+
+### Data Flow
+Targeted failing suites -> fixture or assertion repair -> full-suite rerun -> playbook rerun -> final evidence update.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 

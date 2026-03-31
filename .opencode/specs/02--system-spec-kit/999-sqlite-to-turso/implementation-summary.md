@@ -23,7 +23,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `999-sqlite-to-turso` |
+| **Spec Folder** | 999-sqlite-to-turso |
 | **Completed** | 2026-03-05 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->

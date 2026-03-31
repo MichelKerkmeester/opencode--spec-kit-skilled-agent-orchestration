@@ -31,7 +31,7 @@ This is **Phase 4** of the ESM Module Compliance specification.
 
 **Dependencies**:
 - Phases 1-3 complete: all runtime migration work landed
-- Parent research verification matrix in `../research/research.md`
+- Parent review verification matrix in `../review/deep-review-strategy.md`
 
 **Deliverables**:
 - Highest-risk recent surfaces re-tested
@@ -61,7 +61,7 @@ This is **Phase 4** of the ESM Module Compliance specification.
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The parent research mandates that standards docs outside 023 remain deferred until the runtime verification matrix passes. Phases 1-3 perform the runtime migration, but the migration is not proven complete until the exact verification matrix from `research/research.md` passes and the highest-risk recent surfaces are re-tested first.
+The parent review packet mandates that standards docs outside 023 remain deferred until the runtime verification matrix passes. Phases 1-3 perform the runtime migration, but the migration is not proven complete until the exact verification matrix from `../review/deep-review-strategy.md` passes and the highest-risk recent surfaces are re-tested first.
 
 ### Purpose
 Close the migration by running the full verification suite, re-testing hot runtime areas, and syncing deferred standards docs from verified runtime state rather than planning intent.
@@ -74,7 +74,7 @@ Close the migration by running the full verification suite, re-testing hot runti
 
 ### In Scope
 - Re-test highest-risk recent surfaces first (memory-save, memory-index, shared-memory, vector-index-store, session-manager, generate-context, workflow)
-- Run the full verification matrix from `../research/research.md`
+- Run the full verification matrix from `../review/deep-review-strategy.md`
 - Update deferred standards docs outside 023 from verified runtime state
 - Refresh parent `implementation-summary.md` with final runtime evidence
 - Close the parent packet
@@ -90,7 +90,6 @@ Close the migration by running the full verification suite, re-testing hot runti
 |-----------|-------------|-------------|
 | Standards docs outside 023 | Update | Sync from verified ESM runtime state |
 | `../implementation-summary.md` | Update | Record final runtime migration evidence |
-| `../checklist.md` | Update | Mark remaining verification gates |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -103,7 +102,7 @@ Close the migration by running the full verification suite, re-testing hot runti
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Highest-risk recent surfaces pass retests | Targeted smokes for memory-save, memory-index, shared-memory, vector-index-store, session-manager, generate-context, workflow all pass |
-| REQ-002 | Full verification matrix passes | All root commands, workspace commands, targeted Vitest runs, runtime smokes, and scripts interop proofs from `../research/research.md` pass |
+| REQ-002 | Full verification matrix passes | All root commands, workspace commands, targeted Vitest runs, runtime smokes, and scripts interop proofs from `../review/deep-review-strategy.md` pass |
 | REQ-003 | Standards docs updated from verified state | Deferred docs sync only after REQ-001 and REQ-002 pass |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -111,7 +110,6 @@ Close the migration by running the full verification suite, re-testing hot runti
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-004 | Parent `implementation-summary.md` updated | Final summary records what shipped and what verification proved |
-| REQ-005 | Parent `checklist.md` fully closed | All P0 and P1 items marked with evidence |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -142,5 +140,5 @@ Close the migration by running the full verification suite, re-testing hot runti
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None. Verification matrix is defined in `../research/research.md`. Standards docs update scope will be determined by what the ESM migration actually changed.
+- None. Verification matrix is defined in `../review/deep-review-strategy.md`. Standards docs update scope will be determined by what the ESM migration actually changed.
 <!-- /ANCHOR:questions -->

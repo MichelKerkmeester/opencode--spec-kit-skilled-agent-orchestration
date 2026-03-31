@@ -17,9 +17,9 @@ status: "In Progress"
 updated: "2026-03-26"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
-
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch -->
+
 
 ---
 
@@ -80,7 +80,7 @@ The older `180`, `189`, `194`, and `224/275` figures remain historical milestone
 - **Shared memory:** `mcp_server/shared/` is a symlink to generic utils, `mcp_server/shared-spaces/` is docs-only; real code in 9 handler/lib files.
 - **ARCHITECTURE.md drift:** References nonexistent `searchMemories` and `api/scoring`.
 
-Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full details in `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep-research-round2-2026-03-26.md`.
+Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full details in `research/deep-research-gap-report-2026-03-26.md` and `research/deep-research-round2-2026-03-26.md`.
 
 ---
 
@@ -111,6 +111,8 @@ This packet still preserves important historical audit evidence, but downstream 
 ### Purpose
 Preserve the March 8 snapshot as historical record while making the live wrapper denominator explicit so other packets stop treating older milestone counts as current truth.
 <!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem -->
+
 
 ---
 
@@ -147,6 +149,8 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 | `scratch/remediation-manifest.md` | Create | Synthesis output |
 | `scratch/analysis-summary.md` | Create | Statistics |
 <!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope -->
+
 
 ---
 
@@ -185,6 +189,8 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 - **SC-004**: All file paths in existing snippets resolve to real files on disk
 - **SC-005**: All 14 omitted current snippets (2026-03-16 addendum) are explicitly classified with remediation status
 <!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria -->
+
 
 ---
 
@@ -199,6 +205,8 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 | Risk | Source files moved since last annotation | False invalid paths | Agents report both invalid and new paths |
 | Risk | Context window overflow in agents | Incomplete verification | Partition into manageable chunks per agent |
 <!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks -->
+
 
 ---
 
@@ -219,6 +227,8 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 - **NFR-X02**: Remediation manifest covers every finding from both streams
 
 <!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
+
 ---
 
 <!-- ANCHOR:edge-cases -->
@@ -319,9 +329,8 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 > **Merge note (2026-03-14)**: The content below was originally in the 016 spec document (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 011's audit findings. The 016 spec folder has been absorbed into 011 to reduce folder count.
 
-# Feature Specification: 016-Feature Catalog Code References
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+## Historical Merge Note: 016-Feature Catalog Code References
+
 
 ---
 
@@ -506,3 +515,4 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 | **Parent Spec** | ../spec.md |
 | **Previous Phase** | ../005-architecture-audit/spec.md |
 | **Next Phase** | ../007-code-audit-per-feature-catalog/spec.md |
+<!-- /ANCHOR:questions -->

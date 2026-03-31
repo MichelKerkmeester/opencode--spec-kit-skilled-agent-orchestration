@@ -79,7 +79,7 @@ Delivered as a narrow parity pass rather than a broad embedding refactor.
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint` | Passed |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | Passed |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts tests/embedding-pipeline-weighting.vitest.ts tests/embeddings.vitest.ts tests/handler-memory-save.vitest.ts` | Passed: 4 files, 49 tests |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4374 |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization` | Passed: wrote `memory/16-03-26_20-38__implemented-weighted-document-embedding-input-for.md`, refreshed `metadata.json`, and indexed memory #4374 |
 <!-- /ANCHOR:verification -->
 
 ---

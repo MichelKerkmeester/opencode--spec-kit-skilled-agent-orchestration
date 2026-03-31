@@ -97,7 +97,7 @@ updated: "2026-03-13"
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: scratch/ contains only .gitkeep + test-verification artifact (w2-a3-test-verification.md); review reports removed at completion]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: scratch/ cleaned per temp-file policy — codex-review-report.md, review-report.md, w1-a4-evidence-quality-audit.md removed]
-- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: available phase memory artifacts are `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/06-03-26_20-30__review-13-fixes-applied.md` and `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md`; parent-spec indexing still reports no new indexed memory ID because of the known `Expected 1024 dimensions but received 768` mismatch]
+- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: available phase memory artifacts are `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/19-03-26_08-35__ux-hooks-automation.md` and `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/19-03-26_08-35__ux-hooks-automation.md`; parent-spec indexing still reports no new indexed memory ID because of the known `Expected 1024 dimensions but received 768` mismatch]
 <!-- /ANCHOR:file-org -->
 
 ---

@@ -1,215 +1,120 @@
 ---
-title: "Phase Package Plan: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/plan]"
-description: "Synchronize all user-facing documentation with the post-Wave 1–3 codebase. Every README, SKILL.md, INSTALL_GUIDE, memory command, and scripts doc should accurately reflect the c..."
+title: "Implementation Plan: Documentation Alignment [template:level_1/plan.md]"
+description: "Normalize archived phase folder 007-documentation-alignment so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
+  - "007-documentation-alignment"
   - "phase"
-  - "package"
-  - "plan"
-  - "documentation"
-  - "alignment"
-  - "007"
-importance_tier: "important"
-contextType: "decision"
+  - "archive normalization"
+  - "validation"
+importance_tier: "normal"
+contextType: "general"
 ---
-<!-- SPECKIT_LEVEL: 3 -->
-# Phase Package Plan: Documentation Alignment
+# Implementation Plan: Documentation Alignment
 
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-plan | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:objective -->
-## 1. Objective
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Synchronize all user-facing documentation with the post-Wave 1–3 codebase. Every README, SKILL.md, INSTALL_GUIDE, memory command, and scripts doc should accurately reflect the current module inventory, feature flags, architecture, and tool signatures.
-<!-- /ANCHOR:objective -->
+### Technical Context
 
----
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, Bash, Node.js validator tooling |
+| **Framework** | system-spec-kit template compliance |
+| **Storage** | Git-tracked archived phase files |
+| **Testing** | validate.sh --verbose --no-recursive |
 
-<!-- ANCHOR:technical-context -->
-## 2. Technical Context
-
-Waves 1–3 added the following to the MCP server:
-
-**New source modules (5):**
-- `lib/contracts/retrieval-trace.ts` — typed ContextEnvelope, RetrievalTrace, DegradedModeContract
-- `lib/search/artifact-routing.ts` — 9 artifact classes with per-type retrieval strategies
-- `lib/search/adaptive-fusion.ts` — intent-aware weighted RRF with dark-run mode
-- `lib/storage/mutation-ledger.ts` — append-only audit trail with SQLite triggers
-- `lib/telemetry/retrieval-telemetry.ts` — 4-dimension retrieval telemetry
-
-**New feature flags (2):**
-- `SPECKIT_ADAPTIVE_FUSION` (opt-out: unset/empty/`true` = enabled, `false` = disabled) — controls adaptive fusion
-- `SPECKIT_EXTENDED_TELEMETRY` (default: on) — enables extended telemetry
-
-**Handler integration:**
-- `handlers/memory-search.ts` — now captures retrieval telemetry
-- `handlers/memory-context.ts` — now captures mode metrics
-
-**Additional modules also undocumented from earlier phases:**
-- `lib/cognitive/pressure-monitor.ts`, `lib/cognitive/rollout-policy.ts`
-- `lib/search/causal-boost.ts`, `lib/search/session-boost.ts`
-- `lib/config/skill-ref-config.ts`
-- `lib/extraction/extraction-adapter.ts`, `lib/extraction/redaction-gate.ts`
-- `scripts/extractors/contamination-filter.ts`, `scripts/extractors/quality-scorer.ts`
-- `scripts/memory/validate-memory-quality.ts`
-- `scripts/evals/` directory (9 scripts), `scripts/kpi/` directory
-<!-- /ANCHOR:technical-context -->
-
----
-
-<!-- ANCHOR:architecture -->
-## Architecture
-
-The package follows the existing documentation architecture and updates content in place:
-
-- Top-level docs (`README.md`, `SKILL.md`, MCP `README.md`, `INSTALL_GUIDE.md`) provide primary discovery paths.
-- Folder READMEs under `mcp_server/lib/`, `mcp_server/handlers/`, `mcp_server/tests/`, and `scripts/` provide implementation-level inventory.
-- Memory command docs under `.opencode/command/memory/` define user-facing command contracts.
-- ANCHOR blocks remain stable to preserve memory indexing behavior.
-<!-- /ANCHOR:architecture -->
-
----
-
-<!-- ANCHOR:implementation -->
-## Implementation
-
-Execution remains documentation-only and is split into two phases to keep verification deterministic.
-
-## Phase 1 - Core Documentation Alignment
-
-- Update top-level docs and subfolder READMEs with current module inventories and feature flags.
-- Add missing folder READMEs for `contracts`, `telemetry`, and `extraction`.
-- Update architecture diagrams and key capability sections where gaps were identified.
-
-## Phase 2 - Command and Script Documentation Alignment
-
-- Update memory command docs to match current MCP tool signatures and behavior notes.
-- Update scripts documentation inventories for extractors, memory tooling, and tests.
-- Run final stale-reference and evidence validation across all updated docs.
-<!-- /ANCHOR:implementation -->
-
----
-
-<!-- ANCHOR:ai-execution-protocol -->
-## AI Execution Protocol
-
-### Pre-Task Checklist
-
-1. Confirm scope is limited to package `007-documentation-alignment` and listed in-scope files.
-2. Confirm no runtime code implementation claims are introduced in doc updates.
-3. Confirm module counts and file references are verified before checklist completion marks are kept.
-4. Confirm ANCHOR open/close pairs remain intact after each edit.
-
-### Execution Rules
-
-| Rule ID | Rule |
-|---------|------|
-| TASK-SEQ-01 | Complete Phase 1 documentation alignment before Phase 2 command/script updates. |
-| TASK-SCOPE-01 | Keep changes documentation-only and within package 007 scope. |
-| TASK-EVID-01 | Every completed P0/P1 checklist item must include explicit evidence formatting. |
-
-### Status Reporting Format
-
-Use: `Status: <in-progress|blocked|complete> | Group: <A-F> | Evidence: <path or pending> | Next: <next action>`
-
-### Blocked Task Protocol
-
-When blocked, mark item as `[B]`, describe missing source evidence, identify owner, and define clear unblock criteria before continuing.
-<!-- /ANCHOR:ai-execution-protocol -->
-
----
-
-<!-- ANCHOR:execution-model -->
-## 3. Execution Model
-
-Work is organized into 6 groups. Groups A–C are high priority (user-facing docs). Groups D–F are medium-to-lower priority (internal docs).
-
-| Group | Scope | Files | Priority | Est. Duration |
-|-------|-------|-------|----------|---------------|
-| A | Top-level docs | 4 files (README, SKILL.md, MCP README, INSTALL_GUIDE) | P0 | 2–3 hours |
-| B | Library subfolder README updates | 8 existing READMEs | P1 | 1–2 hours |
-| C | New folder READMEs | 3 new READMEs (contracts, telemetry, extraction) | P1 | 30 min |
-| D | Memory commands | 5 command files | P1 | 1–2 hours |
-| E | Scripts READMEs | 4 files | P2 | 30 min |
-| F | Tests/Handlers READMEs | 2 files | P2 | 20 min |
-
-**Parallelization:** Groups A–F are independent. All 6 groups can run concurrently with dedicated agents.
-
-**Pattern:** Each update follows: Read current → Glob for actual files → Diff listed vs actual → Edit to add missing entries and correct counts → Verify ANCHOR tags preserved.
-<!-- /ANCHOR:execution-model -->
+### Overview
+This plan keeps the archived child phase readable while replacing outdated phase-package formatting with current Level 1 template structure. The work focuses on compliance, concise archival context, and safe integrity cleanup.
+<!-- /ANCHOR:summary -->
 
 ---
 
 <!-- ANCHOR:quality-gates -->
-## 4. Quality Gates
+## 2. QUALITY GATES
 
 ### Definition of Ready
-- Gap analysis complete (performed 2026-02-19)
-- All new source modules verified to exist via Glob
-- Existing README patterns understood (ANCHOR format, HVR structure)
+- [x] Current Level 1 templates reviewed.
+- [x] Existing child phase docs inspected before rewrite.
+- [x] Validation targets understood.
 
 ### Definition of Done
-- Every module count in every README matches Glob results
-- Every new module appears in its parent README and top-level READMEs
-- Both feature flags documented in feature flag tables
-- Architecture diagrams updated to show new pipeline stages
-- No stale references (every mentioned file exists)
-- ANCHOR tags preserved in all edited files
+- [x] Phase docs use current Level 1 template structure.
+- [x] Retained compatibility docs are simplified.
+- [x] Child phase validates with zero errors.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:milestones -->
-## 5. Milestones
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-| Milestone | Exit Criteria |
-|-----------|---------------|
-| M1 | Group A complete — top-level docs updated |
-| M2 | Groups B+C complete — all lib READMEs updated/created |
-| M3 | Groups D+E complete — commands and scripts docs updated |
-| M4 | Group F complete — all remaining docs updated |
-| M5 | Verification pass — all counts and references validated |
-<!-- /ANCHOR:milestones -->
+### Pattern
+Archival phase normalization using Level 1 compliance.
+
+### Key Components
+- **Core docs**: spec.md, plan.md, tasks.md, and implementation-summary.md explain the archived phase state.
+- **Compatibility docs**: checklist.md and decision-record.md remain as lightweight stubs because they already exist in the folder.
+
+### Data Flow
+The phase folder name informs the rewritten markdown, then validate.sh confirms the normalized archive is structurally sound.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:risk-register -->
-## 6. Risk Register
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| ANCHOR tags broken during edit | Broken memory indexing for affected doc | Preserve all ANCHOR open/close tags; verify after edit |
-| Module count goes stale again after next change | Recurring maintenance burden | Add a "Last verified" date to module count tables |
-| README format inconsistency across folders | Reduced readability, indexing gaps | Follow existing README patterns exactly; don't introduce new formats |
-| Concurrent edits from other agents | Merge conflicts | This phase runs independently; no code changes |
-<!-- /ANCHOR:risk-register -->
+### Phase 1: Setup
+- [x] Review the archived phase docs
+- [x] Load active Level 1 templates
+- [x] Decide to normalize instead of preserving phase-package structure
+
+### Phase 2: Core Implementation
+- [x] Rewrite the core docs
+- [x] Simplify retained compatibility files
+- [x] Remove broken markdown references from top-level notes
+
+### Phase 3: Verification
+- [x] Run validate.sh on the child phase folder
+- [x] Repair any remaining error-level issues
+- [x] Confirm zero validation errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Headers, anchors, level markers | validate.sh --verbose --no-recursive |
+| Integrity | Metadata and markdown references | validate.sh --verbose --no-recursive |
+| Manual | Archived phase readability | Direct markdown review |
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## 7. Dependencies
+## 6. DEPENDENCIES
 
-- Depends on Waves 1–3 completion (packages 004, 005, 006)
-- No upstream blockers
-- No code changes required
-- Feeds updated documentation into memory index for future retrieval
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit templates | Internal | Green | Safe normalization would be blocked. |
+| validate.sh | Internal | Green | Final verification evidence would be incomplete. |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:governance -->
-## 8. Governance Notes
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-- Level 3 package planning
-- `decision-record.md` present for documentation approach decisions
-- All edits are documentation-only; no code risk
-<!-- /ANCHOR:governance -->
+- **Trigger**: The normalized child phase loses essential meaning or introduces fresh validation errors.
+- **Procedure**: Restore the prior files from git history and repeat normalization using the active templates as the baseline.
+<!-- /ANCHOR:rollback -->
 
 ---
-
-<!-- ANCHOR:status -->
-## 9. Planning Status
-
-Complete. All 26 tasks implemented, verified, and remediated. CHK-336 (P2) closed with evidence in the updated "Last Verified" rows across skill, MCP server, and lib README tables.
-<!-- /ANCHOR:status -->

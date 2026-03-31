@@ -32,13 +32,13 @@ contextType: "implementation"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The Codex-facing `spec_kit_memory` startup failure was fixed with a narrow set of runtime and launcher changes, and this session also landed a second narrow runtime fix in `vector-index-store` so `initializeDb(':memory:')` or custom-path initialization promotes the active shared DB connection instead of letting later default operations drift back into the persistent live DB. A follow-up caveat around spec-doc indexing tests was also fixed. Those fixes lived inside the broader `020-pre-release-remediation` packet, which still intentionally holds the overall `022` program in an open, non-release-ready state.
+The Codex-facing `spec_kit_memory` startup failure was fixed with a narrow set of runtime and launcher changes, and this session also landed a second narrow runtime fix in `vector-index-store` so `initializeDb(':memory:')` or custom-path initialization promotes the active shared DB connection instead of letting later default operations drift back into the persistent live DB. A follow-up caveat around spec-doc indexing tests was also fixed. Those fixes lived inside the broader `020-post-release-fixes` packet, which still intentionally holds the overall `022` program in an open, non-release-ready state.
 
 We needed a cleaner resume surface for Codex-specific memory MCP work without rewriting the canonical broader remediation packet or pretending the whole program was done.
 
 ### Constraints
 
-- `../020-pre-release-remediation/review/review-report.md` remains the broader remediation source of truth.
+- `../020-post-release-fixes/review/review-report.md` remains the broader remediation source of truth.
 - The new packet must be honest about the difference between a landed narrow slice and broader later-wave follow-on work.
 <!-- /ANCHOR:adr-001-context -->
 

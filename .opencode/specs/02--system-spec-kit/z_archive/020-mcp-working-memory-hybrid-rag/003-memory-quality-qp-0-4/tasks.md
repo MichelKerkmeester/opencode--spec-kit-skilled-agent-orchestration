@@ -1,19 +1,18 @@
 ---
-title: "Tasks: Memory [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/tasks]"
-description: "Tracking document synchronized with root execution state; administrative closure applied per user directive."
+title: "Tasks: Memory Quality QP 0 4 [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
+  - "003-memory-quality-qp-0-4"
   - "tasks"
-  - "memory"
-  - "quality"
-  - "package"
-  - "003"
+  - "phase"
+  - "archive"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Tasks: Memory Quality Package (QP-0 to QP-4)
+# Tasks: Memory Quality QP 0 4
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: phase-package-tasks | v1.1 -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
@@ -24,51 +23,60 @@ contextType: "implementation"
 |--------|---------|
 | `[ ]` | Pending |
 | `[x]` | Completed |
-| `[B]` | Blocked by dependency |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:package-task-groups -->
-## 1. Package Task Groups
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-### Group A - Baseline Harness (QP-0)
-- [x] MQ-001 Complete fixture baseline tasks (`TQ001-TQ005`).
+- [x] T001 Review the archived phase folder contents
+- [x] T002 Load the current Level 1 templates
+- [x] T003 [P] Identify retained compatibility files
+<!-- /ANCHOR:phase-1 -->
 
-### Group B - Validator and Contamination (QP-1)
-- [x] MQ-010 Complete post-render validator tasks (`TQ010-TQ011`, `TQ013`, `TQ015`).
-- [x] MQ-011 Complete contamination filter tasks (`TQ012`, `TQ014`).
+---
 
-### Group C - Decision and Semantic Quality (QP-2)
-- [x] MQ-020 Complete decision extraction tasks (`TQ020-TQ021`, `TQ025`).
-- [x] MQ-021 Complete semantic backfill tasks (`TQ022-TQ023`, `TQ026`).
-- [x] MQ-022 Complete placeholder suppression tasks (`TQ024`, `TQ027`, `TQ028`).
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-### Group D - Quality Score and KPIs (QP-3)
-- [x] MQ-030 Complete quality scoring tasks (`TQ030-TQ034`).
-- [x] MQ-031 Complete KPI automation task (`TQ035`).
+- [x] T004 Rewrite spec.md with archival phase context
+- [x] T005 Rewrite plan.md and tasks.md for normalization work
+- [x] T006 Rewrite implementation-summary.md with correct folder metadata
+- [x] T007 Simplify checklist.md and decision-record.md into compatibility stubs
+<!-- /ANCHOR:phase-2 -->
 
-### Group E - Legacy Remediation (QP-4)
-- [x] MQ-040 [B:MQ-031] Complete active-tier remediation tasks (`TQ040-TQ046`).
-- [x] MQ-041 [B:MQ-040] Complete archive-tier handling task (`TQ047`).
-<!-- /ANCHOR:package-task-groups -->
+---
 
-<!-- ANCHOR:evidence -->
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-## 2. Evidence Requirements
+- [x] T008 Remove broken top-level markdown references
+- [x] T009 Run validate.sh for 003-memory-quality-qp-0-4
+- [x] T010 Confirm the phase folder reports zero errors
+<!-- /ANCHOR:phase-3 -->
 
-- [x] MQ-E01 Quality gate test evidence attached (known-bad fail / known-good pass).
-- [x] MQ-E02 KPI 14-day evidence attached for `SC-006-SC-013`. [Status: administratively closed per user directive; see `scratch/quality-kpi-14day.md`.]
-- [x] MQ-E03 Legacy remediation before/after retrieval comparison attached.
-<!-- /ANCHOR:evidence -->
+---
 
 <!-- ANCHOR:completion -->
-## 3. Completion Conditions
+## Completion Criteria
 
-- [x] All package tasks `MQ-001` through `MQ-041` completed.
-- [x] All evidence tasks `MQ-E01` through `MQ-E03` completed.
-- [x] Root KPI targets for `SC-006` through `SC-013` are measurable and traceable.
-- [x] Root mapping remains synchronized.
-
-Tracking document synchronized with root execution state; administrative closure applied per user directive.
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

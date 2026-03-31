@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `019-incorrect-sub-agent-nesting` |
+| **Spec Folder** | 019-incorrect-sub-agent-nesting |
 | **Completed** | 2026-02-17 |
 | **Level** | 3 |
 | **Status** | Partially Reverted |

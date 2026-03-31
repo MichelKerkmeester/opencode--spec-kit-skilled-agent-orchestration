@@ -1,48 +1,44 @@
 ---
-title: "Decision Record: AI Auto-Populate on Spec [02--system-spec-kit/z_archive/011-upgrade-auto-populate/decision-record]"
-description: "The upgrade-level.sh script injects template scaffolding with [placeholder] text when upgrading spec levels. These placeholders need to be replaced with real, context-aware cont..."
+title: "Decision Record: Upgrade Auto Populate [template:level_3/decision-record.md]"
+description: "Archive normalization decision record for Upgrade Auto Populate."
 trigger_phrases:
-  - "decision"
-  - "record"
-  - "auto"
-  - "populate"
-  - "spec"
   - "decision record"
-  - "128"
-  - "upgrade"
-importance_tier: "important"
-contextType: "decision"
+  - "archive"
+  - "validation"
+  - "normalization"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Decision Record: AI Auto-Populate on Spec Upgrade
+# Decision Record: Upgrade Auto Populate
 
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:adr-001 -->
-## ADR-001: AI-Side Workflow vs Script Modification
+## ADR-001: Normalize the archive to current Level 1 compatibility
 
-<!-- ANCHOR:adr-001-context -->
 ### Metadata
 
 | Field | Value |
 |-------|-------|
 | **Status** | Accepted |
-| **Date** | 2026-02-16 |
-| **Deciders** | Michel Kerkmeester |
+| **Date** | 2026-03-31 |
+| **Deciders** | Spec archive maintenance |
 
 ---
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
-The `upgrade-level.sh` script injects template scaffolding with `[placeholder]` text when upgrading spec levels. These placeholders need to be replaced with real, context-aware content. The question is whether to modify the shell script to produce better content or to have the AI agent handle population as a separate post-upgrade step.
+The archived folder for Upgrade Auto Populate had drifted away from the active templates. We needed a safe way to preserve the archive while eliminating validator errors.
 
 ### Constraints
-- Shell scripts cannot reason about content or derive context from existing documents
-- The upgrade script is already complex (1600+ lines) with chained multi-step upgrades
-- AI agents have full read access to all spec folder documents and can reason about content
 
+- The folder had to stay within archive scope instead of reopening feature work.
+- Existing top-level markdown files could remain, but they could no longer break validation.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -50,10 +46,9 @@ The `upgrade-level.sh` script injects template scaffolding with `[placeholder]` 
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**Summary**: Keep the shell script as structural scaffolding only; add an AI-side post-upgrade workflow step that reads existing context and populates all placeholder sections.
+**We chose**: Normalize the archive to the current Level 1 template set and keep lightweight compatibility stubs for legacy files.
 
-**Details**: After `upgrade-level.sh` completes its structural work (creating files, injecting template sections, updating markers), the AI agent reads all existing spec folder documents, extracts context (problem statement, requirements, phases, decisions), identifies placeholder patterns in the newly injected sections, and replaces them with derived content using the Edit tool.
-
+**How it works**: The core docs use the active Level 1 structure. Any retained checklist, decision record, or archive note is simplified so it remains readable without reintroducing higher-level validator failures.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -63,12 +58,10 @@ The `upgrade-level.sh` script injects template scaffolding with `[placeholder]` 
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **AI-side workflow** | Leverages AI reasoning, no script changes, flexible | Requires AI involvement for every upgrade | 9/10 |
-| Script modification | Fully automated, no AI dependency | Shell cannot reason about content, enormous complexity | 3/10 |
-| Hybrid (script + AI) | Script fills what it can, AI fills rest | Two systems to maintain, unclear boundary | 5/10 |
+| **Chosen: Level 1 normalization** | Fast, stable, and validator-friendly for archives | Condenses some historical detail | 9/10 |
+| Preserve older mixed-level docs | Keeps more historical structure | Continues failing modern validation | 3/10 |
 
-**Why Chosen**: The shell script fundamentally cannot reason about content. Attempting to make it context-aware would require embedding an entire template engine with conditional logic, making the already-complex script unmaintainable. The AI agent naturally has the reasoning capabilities needed and already has access to all spec folder documents.
-
+**Why this one**: It preserves the archive as a usable record while minimizing future maintenance cost.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -76,157 +69,47 @@ The `upgrade-level.sh` script injects template scaffolding with `[placeholder]` 
 <!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
-**Positive**:
-- Shell script remains simple, deterministic, and maintainable
-- AI produces higher-quality content by reasoning about actual spec context
-- Approach is inherently flexible and improves as AI capabilities improve
+**What improves**:
+- The archived folder can validate cleanly under current rules.
+- Maintainers get a short, readable explanation of the archived topic.
 
-**Negative**:
-- Every upgrade requires AI agent involvement - Mitigation: Integrate into SpecKit workflows so it happens automatically
+**What it costs**:
+- Detailed historical narrative is reduced. Mitigation: consult git history when deeper reconstruction is needed.
 
 **Risks**:
+
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| AI generates inaccurate content | Medium | Human review step; content derived from existing documents |
-| Workflow not triggered | Medium | Integrate into /spec_kit:complete as mandatory post-upgrade step |
+| Future validator changes add new archive requirements | M | Revalidate and refresh the archive with current templates if needed |
+<!-- /ANCHOR:adr-001-consequences -->
 
 ---
 
+<!-- ANCHOR:adr-001-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Spec 127 upgrade produced entirely placeholder-filled files; manual population took significant time |
-| 2 | **Beyond Local Maxima?** | PASS | Three alternatives evaluated (AI-only, script-only, hybrid); AI-only is clearly superior for content reasoning |
-| 3 | **Sufficient?** | PASS | Simplest approach: add a workflow step rather than rewriting the upgrade script |
-| 4 | **Fits Goal?** | PASS | Directly addresses the problem of placeholder-filled upgrades |
-| 5 | **Open Horizons?** | PASS | Approach improves naturally as AI capabilities improve; no lock-in |
+| 1 | **Necessary?** | PASS | The archive had active error-level validation failures. |
+| 2 | **Beyond Local Maxima?** | PASS | We compared preservation of legacy structure against normalization. |
+| 3 | **Sufficient?** | PASS | Level 1 compliance removes error-level drift without reopening scope. |
+| 4 | **Fits Goal?** | PASS | The goal is a stable archive, not a new implementation cycle. |
+| 5 | **Open Horizons?** | PASS | Future maintainers can still rebuild deeper history from git when needed. |
 
 **Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
-
-### Implementation
-
-**Affected Systems**:
-- SpecKit workflow documentation (add post-upgrade populate instructions)
-- `/spec_kit:complete` skill (integrate auto-populate step)
-
-**Rollback**: Remove the post-upgrade populate step from workflow docs; upgrades revert to scaffold-only behavior
-
-<!-- /ANCHOR:adr-001-consequences -->
 
 <!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
-<!-- /ANCHOR:adr-001-impl -->
+**What changes**:
+- Rewrite core docs to current Level 1 structure.
+- Simplify retained legacy markdown into safe archival notes.
 
+**How to roll back**: Restore the previous archive files from git history and rerun validation to compare outcomes.
+<!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
 
 ---
-
-<!-- ANCHOR:adr-002 -->
-<!-- ANCHOR:context -->
-## ADR-002: Handling Missing Source Context
-
-<!-- ANCHOR:adr-002-context -->
-
-### Metadata
-
-| Field | Value |
-|-------|-------|
-| **Status** | Accepted |
-| **Date** | 2026-02-16 |
-| **Deciders** | Michel Kerkmeester |
-
----
-
-### Context
-
-When auto-populating, some spec folders may not have enough source context to fill all template sections. For example, a spec with only a minimal spec.md and no plan.md cannot derive Phase Dependencies or Dependency Graphs.
-
-### Constraints
-- Cannot fabricate content that has no source basis
-- Empty placeholders provide no value and look unfinished
-- Some sections are structurally required by L3+ template
-
-<!-- /ANCHOR:adr-002-context -->
-
----
-
-<!-- ANCHOR:adr-002-decision -->
-### Decision
-
-**Summary**: Populate what can be derived from existing context; for sections without source material, write explicit "N/A - insufficient source context" rather than leaving placeholder brackets or fabricating content.
-
-**Details**: The AI agent should distinguish between sections where it can derive accurate content (e.g., complexity scores from file counts) and sections where no source data exists (e.g., phase dependencies when no plan.md exists). For the latter, it writes a clear "N/A" with explanation rather than generating speculative content.
-
-<!-- /ANCHOR:adr-002-decision -->
-
----
-
-<!-- ANCHOR:adr-002-alternatives -->
-### Alternatives Considered
-
-| Option | Pros | Cons | Score |
-|--------|------|------|-------|
-| **N/A with explanation** | Honest, clear, no false content | Some sections look sparse | 8/10 |
-| Leave placeholders | Easy to implement | Defeats the purpose of auto-populate | 2/10 |
-| Generate speculative content | All sections filled | Risk of inaccurate/misleading content | 4/10 |
-
-**Why Chosen**: Accuracy is more important than completeness. An explicit "N/A" with context is more useful than a fabricated answer and far better than a raw placeholder.
-
-<!-- /ANCHOR:adr-002-alternatives -->
-
----
-
-<!-- ANCHOR:adr-002-consequences -->
-### Consequences
-
-**Positive**:
-- No risk of inaccurate content in populated files
-- Clear signal to the spec author about what needs manual attention
-
-**Negative**:
-- Some sections may appear sparse for minimal specs - Mitigation: Spec author can always fill in manually later
-
-**Risks**:
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Too many N/A sections | Low | Only applies to minimal specs; most have sufficient context |
-
----
-
-### Five Checks Evaluation
-
-| # | Check | Result | Evidence |
-|---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Must handle missing context gracefully |
-| 2 | **Beyond Local Maxima?** | PASS | Three alternatives compared |
-| 3 | **Sufficient?** | PASS | Simple rule: derive if possible, N/A otherwise |
-| 4 | **Fits Goal?** | PASS | Supports accurate auto-population |
-| 5 | **Open Horizons?** | PASS | Does not prevent future improvements |
-
-**Checks Summary**: 5/5 PASS
-
----
-
-### Implementation
-
-**Affected Systems**:
-- Auto-populate workflow instructions
-
-**Rollback**: Switch to leaving original placeholders (revert to pre-populate behavior)
-
-<!-- /ANCHOR:adr-002-consequences -->
-
-<!-- /ANCHOR:adr-002 -->
-
----
-
-<!--
-Level 3+ Decision Record
-Document significant technical decisions
-One ADR per major decision
--->
-<!-- /ANCHOR:context -->

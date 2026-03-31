@@ -280,3 +280,4 @@ Phase 014 was revalidated against the 2026-03-25 deep review findings. Five verd
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

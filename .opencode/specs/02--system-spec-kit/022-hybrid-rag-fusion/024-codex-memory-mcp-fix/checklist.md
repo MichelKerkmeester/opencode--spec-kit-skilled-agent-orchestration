@@ -31,7 +31,7 @@ contextType: "implementation"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] The packet scope is documented as a retroactive Codex MCP remediation slice under `022-hybrid-rag-fusion`. `[EVIDENCE: spec.md metadata, problem statement, and scope sections all name the packet as a retroactive Codex slice.]`
-- [x] CHK-002 [P0] The packet points back to `020-pre-release-remediation` as the broader remediation source of truth. `[EVIDENCE: README.md, spec.md, tasks.md, and plan.md all cross-reference ../020-pre-release-remediation.]`
+- [x] CHK-002 [P0] The packet points back to `020-post-release-fixes` as the broader remediation source of truth. `[EVIDENCE: README.md, spec.md, tasks.md, and plan.md all cross-reference ../020-post-release-fixes.]`
 - [x] CHK-003 [P1] The packet includes concrete follow-on recommendations instead of generic future-work notes. `[EVIDENCE: tasks.md T020-T025 enumerate runtime, docs, and release-control follow-on work.]`
 <!-- /ANCHOR:pre-impl -->
 

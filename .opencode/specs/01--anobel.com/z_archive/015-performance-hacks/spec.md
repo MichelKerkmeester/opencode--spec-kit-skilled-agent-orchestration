@@ -1,63 +1,119 @@
 ---
-title: "Specification: Additional Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/spec]"
-description: "Implementation of high-impact, low-effort performance optimizations (\"hacks\") for anobel.com to improve LCP and FCP scores."
+title: "Feature Specification: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/spec]"
+description: "Specification: Additional Performance Hacks"
 trigger_phrases:
   - "specification"
   - "additional"
   - "performance"
   - "hacks"
-  - "spec"
-  - "015"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Specification: Additional Performance Hacks
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Specification: Additional Performance Hacks
 
-<!-- ANCHOR:overview -->
-## 1. Overview
-Implementation of high-impact, low-effort performance optimizations ("hacks") for anobel.com to improve LCP and FCP scores.
-<!-- /ANCHOR:overview -->
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `015-performance-hacks` |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
-## 2. Problem
-- **Blocked FCP:** The current implementation hides the page content (`opacity: 0`) until JavaScript loads and executes (`page-ready`), causing a white screen delay.
-- **Unused Blocking Script:** The Adobe Fonts (Typekit) script is still present but unused (fonts are self-hosted).
-- **Aggressive Preloading:** Interaction-heavy scripts (dropdown, mobile menu) are preloaded, competing with critical LCP assets.
-- **Eager Loading Below Fold:** Marquee logos are set to `loading="eager"` but are likely below the fold on many devices.
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Specification: Additional Performance Hacks
+
+### Purpose
+Retain this archived implementation record in a validator-compliant shape so the folder remains searchable, reviewable, and safe to reuse as historical context.
 <!-- /ANCHOR:problem -->
 
-<!-- ANCHOR:goals -->
-## 3. Goals
-- **Eliminate White Screen:** Ensure the hero section is visible immediately or significantly sooner.
-- **Reduce Blocking Requests:** Remove Typekit.
-- **Prioritize LCP:** Focus preloading on Hero assets only.
-- **Defer Non-Critical:** Lazy load non-LCP images.
-<!-- /ANCHOR:goals -->
+---
 
-<!-- ANCHOR:implementation-details -->
-## 4. Implementation Details
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-### 4.1 Remove Typekit
-- **Action:** Delete `<script src="https://use.typekit.net/grw1wnt.js"...>` from `src/0_html/global.html`.
+### In Scope
+- Normalize the root archive documents to the active Level 2 structure.
+- Preserve the historical source markdown in `scratch/legacy`.
+- Keep checklist, plan, and implementation summary available for archived review.
 
-### 4.2 Fix "White Screen" Fade-in
-- **Context:** `hero_video.js` (and others) adds `.page-ready` class to `.page--wrapper` (which is `opacity: 0`).
-- **Action:** Add an inline script in `global.html` (immediately after opening `<body>` or in `<head>`) that sets a safety timeout to add `page-ready` if it hasn't been added within 200ms-500ms. This prevents the user from staring at a blank screen if external scripts hang.
-- **Better Action:** Change the CSS strategy? No, inline script is safer "hack" without breaking the animation logic intended by the developers.
+### Out of Scope
+- Reopening the archived implementation as active work.
+- Introducing new product requirements beyond documentation compliance.
 
-### 4.3 Optimize Preloads
-- **Action:** In `src/0_html/global.html`:
-    - Remove preloads for `dropdown.js`, `mobile_menu.js`, `modal_cookie_consent.js`.
-    - Keep preload for `lenis.css`, `motion` (ESM) if critical (it seems used for hero).
+### Files to Change
 
-### 4.4 Lazy Load Marquee
-- **Action:** Edit `src/0_html/home.html` (which seems to be the source of the marquee section) to set `loading="lazy"` on client logos.
-<!-- /ANCHOR:implementation-details -->
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild required Level 2 sections and anchors |
+| `plan.md` | Modify | Rebuild required Level 2 plan structure |
+| `tasks.md` | Modify/Create | Ensure required task structure exists |
+| `checklist.md` | Modify/Create | Ensure required Level 2 checklist format exists |
+| `implementation-summary.md` | Modify/Create | Record archived delivery summary |
+<!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:verification -->
-## 5. Verification
-- **Manual:** Check `global.html` and `home.html` for changes.
-- **Logic:** Confirm the safety timeout script is syntactically correct.
-<!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Required Level 2 documents exist | `validate.sh` reports no FILE_EXISTS errors |
+| REQ-002 | Required section headers match the active template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-003 | Required anchors exist and stay in order | `validate.sh` reports no ANCHORS_VALID errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Archive references resolve locally | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Level declarations are consistent across spec and checklist files | `validate.sh` reports no LEVEL_MATCH errors |
+| REQ-006 | Original archived notes remain preserved | Backup copies exist in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The folder retains a readable summary of the archived work and a preserved legacy copy.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Historical markdown already in the folder | High | Preserve each original file in `scratch/legacy` before rewriting |
+| Risk | Legacy wording may drift from active template vocabulary | Medium | Use concise archive-specific summaries while keeping the original source copies |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The archive package is retained as historical documentation.
+<!-- /ANCHOR:questions -->
+
+---

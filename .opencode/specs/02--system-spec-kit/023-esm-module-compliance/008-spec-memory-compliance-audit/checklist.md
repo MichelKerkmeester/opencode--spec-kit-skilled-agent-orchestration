@@ -30,17 +30,17 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Baseline scan completed for all 186 spec folders (research/discovery-summary.md exists)
-- [x] CHK-002 [P0] Discovery summary documents quantitative issue counts by rule and category
-- [x] CHK-003 [P1] Available tooling confirmed: validate.sh, backfill-frontmatter.js, validate-memory-quality.ts, cleanup-orphaned-vectors.js, reindex-embeddings.js
+- [x] CHK-001 [P0] Baseline scan completed for all 186 spec folders [EVIDENCE: `research/discovery-summary.md` exists]
+- [x] CHK-002 [P0] Discovery summary documents quantitative issue counts by rule and category [EVIDENCE: issue totals and category breakdown are recorded in `research/discovery-summary.md`]
+- [x] CHK-003 [P1] Available tooling confirmed: validate.sh, backfill-frontmatter.js, validate-memory-quality.ts, cleanup-orphaned-vectors.js, reindex-embeddings.js [EVIDENCE: toolchain is enumerated in `plan.md` and used throughout this phase]
 <!-- /ANCHOR:pre-impl -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
-## Document Quality
+## Code Quality
 
-- [x] CHK-010 [P0] All active spec documents use correct YAML frontmatter schema — backfill-frontmatter applied to 2081 files
+- [x] CHK-010 [P0] All active spec documents use correct YAML frontmatter schema [EVIDENCE: `backfill-frontmatter.js --apply` normalized 2081 files]
 - [ ] CHK-011 [P0] All active spec documents have SPECKIT_LEVEL and SPECKIT_TEMPLATE_SOURCE comments
 - [ ] CHK-012 [P0] All required ANCHOR markers present per declared level
 - [ ] CHK-013 [P1] No unfilled template placeholders in active spec folders
@@ -51,13 +51,13 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:testing -->
-## Validation
+## Testing
 
 - [ ] CHK-020 [P0] validate.sh --strict: Cat 03 (38) + Cat 04 (10) = 48 folders at 0 errors; remaining active folders have residual SPEC_DOC_INTEGRITY/TEMPLATE_HEADERS — IN PROGRESS
-- [x] CHK-021 [P0] validate-memory-quality.ts: 0 hard-block violations — 46 deleted, 89 surviving, 84 pass
-- [x] CHK-022 [P0] memory_health(): healthy, vectorSearchAvailable: true, 1134 memories, voyage-4
+- [x] CHK-021 [P0] validate-memory-quality.ts: 0 hard-block violations [EVIDENCE: 46 files deleted, 89 survivors revalidated, 0 hard-block failures remain]
+- [x] CHK-022 [P0] memory_health(): healthy, vectorSearchAvailable: true, 1134 memories, voyage-4 [EVIDENCE: post-rebuild health check captured in `implementation-summary.md`]
 - [ ] CHK-023 [P1] memory_search(): KNOWN BUG — trigger_phrases stored as JSON array by indexer, search .trim() fails. Requires code fix (out of scope for doc audit)
-- [x] CHK-024 [P1] cleanup-orphaned-vectors.js --dry-run: 0 orphans post-rebuild
+- [x] CHK-024 [P1] cleanup-orphaned-vectors.js --dry-run: 0 orphans post-rebuild [EVIDENCE: post-rebuild dry run reported 0 orphaned vectors]
 - [ ] CHK-025 [P1] validate.sh archived folders: frontmatter + anchors fixed, residual TEMPLATE_HEADERS remain
 <!-- /ANCHOR:testing -->
 
@@ -66,9 +66,9 @@ contextType: "implementation"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P1] No memory files containing secrets or credentials survive cleanup — validated during V-rule scan
-- [x] CHK-031 [P1] Database backup created: context-index.sqlite.bak (66MB)
-- [x] CHK-032 [P1] All --dry-run outputs reviewed before destructive operations
+- [x] CHK-030 [P1] No memory files containing secrets or credentials survive cleanup [EVIDENCE: V-rule scan cleared surviving files of hard-block content]
+- [x] CHK-031 [P1] Database backup created: context-index.sqlite.bak (66MB) [EVIDENCE: backup recorded before rebuild]
+- [x] CHK-032 [P1] All --dry-run outputs reviewed before destructive operations [EVIDENCE: orphan and frontmatter dry-runs completed before apply steps]
 <!-- /ANCHOR:security -->
 
 ---
@@ -77,8 +77,8 @@ contextType: "implementation"
 ## Documentation
 
 - [ ] CHK-040 [P1] Implementation summary — pending (will write after checklist verification)
-- [x] CHK-041 [P1] Discovery reports preserved: research/discovery-summary.md + research/hard-block-memories.txt
-- [x] CHK-042 [P1] Spec/plan/tasks synchronized with actual progress
+- [x] CHK-041 [P1] Discovery reports preserved: research/discovery-summary.md + research/hard-block-memories.txt [EVIDENCE: both files remain in `research/`]
+- [x] CHK-042 [P1] Spec/plan/tasks synchronized with actual progress [EVIDENCE: phase packet documents the completed scan, cleanup, and rebuild work]
 <!-- /ANCHOR:docs -->
 
 ---

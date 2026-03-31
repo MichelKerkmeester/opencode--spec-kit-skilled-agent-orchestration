@@ -1,35 +1,121 @@
 ---
-title: "Implementation Plan - Font Performance [014-font-performance/plan] [01--anobel.com/z_archive/013-font-performance/plan]"
-description: "plan document for 014-font-performance."
+title: "Implementation Plan: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/plan]"
+description: "Specification: Font Performance Optimization"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "specification"
   - "font"
   - "performance"
-  - "014"
+  - "optimization"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Implementation Plan: Specification: Font Performance Optimization
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Implementation Plan - Font Performance
 
-> **Goal:** Optimize font loading to improve LCP and eliminate FOIT.
+---
 
-<!-- ANCHOR:phase-1-preparation-user-guidance -->
-## Phase 1: Preparation & User Guidance
-- [ ] Create `webflow_guide.md` with instructions for Adobe Fonts configuration.
-- [ ] Request specific font URL from user (pending response).
-<!-- /ANCHOR:phase-1-preparation-user-guidance -->
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-<!-- ANCHOR:phase-2-implementation -->
-## Phase 2: Implementation
-- [ ] Update `src/0_html/global.html`:
-    - [ ] Add `<link rel="preload" ...>` for the Silka font.
-    - [ ] Place it high in the `<head>` (after preconnects).
-<!-- /ANCHOR:phase-2-implementation -->
+### Technical Context
 
-<!-- ANCHOR:phase-3-verification -->
-## Phase 3: Verification
-- [ ] Verify `global.html` syntax.
-- [ ] Provide instructions for user to verify in staging/production.
-<!-- /ANCHOR:phase-3-verification -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Archived website documentation |
+| **Framework** | Webflow / static site archive |
+| **Storage** | Markdown files in the spec folder |
+| **Testing** | `validate.sh` plus archival review |
+
+### Overview
+Specification: Font Performance Optimization
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Archived source documents collected
+- [x] Folder level inferred from existing required files
+- [x] Broken local markdown references identified
+
+### Definition of Done
+- [x] Required template headers and anchors restored
+- [x] Required files created where needed
+- [x] Original root markdown preserved in `scratch/legacy`
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Archived documentation normalization
+
+### Key Components
+- **Root spec docs**: Active validator-facing archive summary
+- **scratch/legacy**: Preserved source markdown before normalization
+
+### Data Flow
+Original root markdown is copied to `scratch/legacy`, normalized root files are regenerated, and validation is rerun against the cleaned archive packet.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Capture original archive markdown
+- [x] Infer required documentation level
+- [x] Identify broken root references
+
+### Phase 2: Core Implementation
+- [x] Rebuild required root documents
+- [x] Create missing required files
+- [x] Align declared levels across spec and checklist files
+
+### Phase 3: Verification
+- [x] Sanitize unresolved markdown references
+- [x] Re-run validator on the folder
+- [x] Keep only warnings, not errors
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural | Required headers and anchors | `validate.sh --verbose` |
+| Integrity | Root markdown references | `validate.sh --verbose` |
+| Manual | Archived source preservation | File inspection |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing root markdown | Internal | Green | Historical detail would be harder to recover |
+| Active spec templates | Internal | Green | Root docs could drift from validator expectations |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Normalized root docs lose important archive context or fail validation unexpectedly
+- **Procedure**: Restore preserved source files from `scratch/legacy` or git history, then regenerate with corrected structure
+<!-- /ANCHOR:rollback -->
+
+---

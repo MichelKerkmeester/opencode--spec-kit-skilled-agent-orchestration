@@ -30,8 +30,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-a -->
-## Phase A: Runtime Correctness (WS-2 + WS-7)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Runtime Correctness (WS-2 + WS-7)
 
 - [x] T001 Replace `__dirname` with `import.meta.dirname` in `mcp_server/scripts/map-ground-truth-ids.ts` — P1-COR-03 [EVIDENCE: import.meta.dirname in place, builds clean]
 - [x] T002 Replace `__dirname` with `import.meta.dirname` in `mcp_server/scripts/reindex-embeddings.ts` — P1-COR-03 [EVIDENCE: import.meta.dirname in place, builds clean]
@@ -40,12 +42,14 @@ contextType: "implementation"
 - [x] T005 Align `engines.node` to `>=20.11.0` in root, scripts, shared, and mcp_server `package.json` — P1-COR-02 [EVIDENCE: all 4 package.json files have >=20.11.0]
 - [x] T006 Fix `shared/package.json` root export to point at `dist/index.js` — P2-COR-01 [EVIDENCE: root export changed, ./embeddings subpath added]
 - [x] T007 Build all 3 packages and run runtime smokes after Phase A — Gate [EVIDENCE: all 3 packages build clean]
-<!-- /ANCHOR:phase-a -->
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:phase-b -->
-## Phase B: Security Hardening (WS-1)
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Security Hardening (WS-1)
 
 - [x] T008 Add trusted principal validation for shared-memory admin operations — P1-SEC-01 [EVIDENCE: trusted-transport warning added to shared-memory.ts]
 - [x] T009 Make V-rule bridge fail closed when validation module unavailable — P1-SEC-02 [EVIDENCE: v-rule-bridge.ts returns failure with SPECKIT_VRULE_OPTIONAL env bypass]
@@ -54,24 +58,26 @@ contextType: "implementation"
 - [x] T012 Thread governed scope into duplicate preflight query in `preflight.ts` — P1-CMP-03 [EVIDENCE: scope-aware filtering in preflight.ts]
 - [x] T013 Redact cross-scope metadata from duplicate detection responses — P1-CMP-03 [EVIDENCE: cross-scope metadata redaction in preflight.ts]
 - [x] T014 Run security-targeted tests after Phase B — Gate [EVIDENCE: new regression tests added and passing]
-<!-- /ANCHOR:phase-b -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:phase-c -->
-## Phase C: Reliability & Maintainability (WS-5)
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Reliability & Maintainability (WS-5)
 
 - [x] T015 Preserve specific warning categories in `response-builder.ts` — P1-REL-01 [EVIDENCE: typedWarnings with category detection in response-builder.ts]
 - [x] T016 Emit typed warnings in `memory-save.ts` for post-commit file-write failures — P1-REL-01 [EVIDENCE: [file-persistence-failed] prefix in memory-save.ts warnings]
 - [x] T017 Consolidate 3 dynamic-import degradation patterns in `workflow.ts` into one shared helper — P1-MNT-01 [EVIDENCE: tryImportMcpApi helper, 2 call sites consolidated]
 - [x] T018 Audit and narrow `mcp_server/api/index.ts` barrel re-exports — P2-MNT-02 [EVIDENCE: documentation comment added; barrel kept wide due to legitimate external consumers]
 - [x] T019 Verify no import resolution failures after barrel narrowing — Gate [EVIDENCE: all tests pass, no import failures]
-<!-- /ANCHOR:phase-c -->
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:phase-d -->
-## Phase D: Performance (WS-6)
+### Phase D: Performance (WS-6)
 
 - [x] T020 Hoist dynamic imports in `vector-index-store.ts` to module-level lazy-init — P2-PRF-01 [EVIDENCE: module-level cached lazy loader in vector-index-store.ts]
 - [x] T021 Defer heavy imports in `cli.ts` behind per-command loaders — P2-PRF-02 [EVIDENCE: deferred imports in cli.ts, --help exits early]
@@ -81,7 +87,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-e -->
-## Phase E: Documentation Truth-Sync (WS-3 + WS-4)
+### Phase E: Documentation Truth-Sync (WS-3 + WS-4)
 
 - [x] T023 Fix CHK-010 evidence in `../checklist.md` — P1-TRC-01 [EVIDENCE: CHK-010 evidence kept accurate — pre-impl doc sync is correct]
 - [x] T024 Close CHK-015 in `../checklist.md` with existing evidence — P1-TRC-01 [EVIDENCE: CHK-015 marked [x] with evidence]
@@ -98,7 +104,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-f -->
-## Phase F: Final Verification
+### Phase F: Final Verification
 
 - [x] T033 Run full workspace build + test suite — Gate [EVIDENCE: build clean; mcp-server 8978+3 pre-existing, scripts 317+1 pre-existing — 0 regressions]
 - [x] T034 Run runtime smokes — Gate [EVIDENCE: builds verified, runtime smokes pass]
@@ -127,5 +133,5 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Review Source**: See `../review/review-report.md`
-- **Iteration Details**: See `../review/iterations/iteration-001.md` through `iteration-010.md`
+- **Iteration Details**: See `../review/iterations/iteration-001.md` through `../review/iterations/iteration-010.md`
 <!-- /ANCHOR:cross-refs -->

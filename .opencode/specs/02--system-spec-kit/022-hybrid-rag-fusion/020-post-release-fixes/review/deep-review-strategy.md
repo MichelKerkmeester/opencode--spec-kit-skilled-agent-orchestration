@@ -244,3 +244,4 @@ Session complete. The next focus is remediation planning:
 | `feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` | D1, D3, D4 | 055 | 0 P0, 1 P1, 0 P2 | complete |
 | `scripts/tests/memory-learn-command-docs.vitest.ts` | D1, D3 | 055 | 0 P0, 1 P1, 0 P2 | complete |
 | `007-code-audit-per-feature-catalog/implementation-summary.md` | D3, D4 | 052 | 0 P0, 0 P1, 1 P2 | complete |
+<!-- /ANCHOR:files-under-review -->

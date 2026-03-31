@@ -226,3 +226,4 @@ Sprint grouping, metric summaries, trend analysis, `SPECKIT_DASHBOARD_LIMIT`, an
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

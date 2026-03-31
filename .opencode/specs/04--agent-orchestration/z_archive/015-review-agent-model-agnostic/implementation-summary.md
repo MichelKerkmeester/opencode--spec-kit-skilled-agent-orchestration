@@ -1,19 +1,19 @@
 ---
-title: "Implementation Summary [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/implementation-summary]"
-description: "Removed the hardcoded model: github-copilot/claude-opus-4.6 line from the review agent's YAML frontmatter, enabling model inheritance from the dispatching parent agent. This fol..."
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Archive normalization summary for Review Agent Model Agnostic."
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "015-review-agent-model-agnostic"
   - "implementation summary"
-  - "015"
-  - "review"
+  - "archive"
+  - "validation"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,10 +22,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 04--agent-orchestration/z_archive/015-review-agent-model-agnostic |
-| **Completed** | 2026-02-15 |
+| **Spec Folder** | 015-review-agent-model-agnostic |
+| **Completed** | 2026-03-31 |
 | **Level** | 1 |
-
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,41 +32,39 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Removed the hardcoded `model: github-copilot/claude-opus-4.6` line from the review agent's YAML frontmatter, enabling model inheritance from the dispatching parent agent. This follows the established pattern used by `orchestrate.md` (which has `mode: primary` and no `model:` field), ensuring the review sub-agent adapts to whatever model the invoking agent uses rather than being locked to a specific model.
+This archived folder now has a current-template Level 1 documentation set for Review Agent Model Agnostic. You can open the archive and understand the topic, the cleanup scope, and the fact that the folder was normalized to pass today’s validator instead of being left in drifted historical form.
+
+### Archive Normalization
+
+You can now inspect the archive without tripping over stale structure, broken markdown references, or mismatched metadata. The core docs were rewritten for validator compatibility, and any extra top-level notes were simplified into short archival context files.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/agent/review.md` | Modified | Removed line 5 (`model: github-copilot/claude-opus-4.6`) from YAML frontmatter |
-
-### Files Investigated (No Changes Needed)
-
-| File/Path | Scope | Finding |
-|-----------|-------|---------|
-| `.opencode/command/spec_kit/*.md` (7 files) | Command files | Zero model references for review agent |
-| `.opencode/command/spec_kit/assets/*.yaml` (13 files) | YAML asset files | Contain `model: opus` for orchestrator dispatch modes, not review agent |
-| `.opencode/agent/context.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/debug.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/research/research/research.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/handover.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/speckit.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/write.md` | Agent file | Own model config, unrelated to review |
-| `.opencode/agent/orchestrate.md` | Agent file | References "Haiku" in body for context agent quality notes, unrelated to review |
-
+| spec.md | Created/Modified | Restores the current Level 1 archived specification. |
+| plan.md | Created/Modified | Describes the normalization approach and validation workflow. |
+| tasks.md | Created/Modified | Records the archive cleanup steps and validation tasks. |
+| implementation-summary.md | Created/Modified | Captures the completed archive state and verification summary. |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The folder was reviewed, normalized against the active Level 1 templates, and verified with validate.sh until the archive reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Remove `model:` field entirely (not replace with a different value) | Enables inheritance from dispatching parent agent, matching the `orchestrate.md` pattern |
-| Scope limited to review agent only | Other agents have their own model configs for valid reasons; changing them is a separate concern |
-| No changes to command/asset YAML files | The `model: opus` references in assets control orchestrator dispatch modes, not the review agent |
-
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | This removes Level 2 and Level 3+ enforcement burdens while preserving a concise, reliable archive record. |
+| Keep compatibility stubs only where files already existed | This preserves folder shape without forcing higher-level requirements back onto archived work. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,13 +72,10 @@ Removed the hardcoded `model: github-copilot/claude-opus-4.6` line from the revi
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Test Type | Status | Notes |
-|-----------|--------|-------|
-| Manual | Pass | YAML frontmatter validates correctly after line removal |
-| Syntax | Pass | Frontmatter structure intact (name, description, mode, temperature, permission block) |
-| Investigation | Pass | Comprehensive search of 20+ files confirmed no other review-model references require changes |
-| Integration | Skip | Runtime dispatch testing deferred to manual usage (review agent will inherit model on next dispatch) |
-
+| Check | Result |
+|-------|--------|
+| Archived folder validation | PASS after template normalization and integrity cleanup |
+| Top-level markdown integrity review | PASS after removing broken markdown references and stale metadata |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -89,27 +83,7 @@ Removed the hardcoded `model: github-copilot/claude-opus-4.6` line from the revi
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Other agents still have hardcoded models** - context, debug, research, handover, speckit, and write agents each have their own `model:` field. Making them model-agnostic would be a separate spec if desired.
-2. **No automated test for model inheritance** - Verification relies on manual dispatch; no CI test confirms the inheritance mechanism works correctly.
-
+1. **Condensed history** Detailed historical analysis was intentionally reduced in top-level docs. Use git history if the full original narrative is needed.
 <!-- /ANCHOR:limitations -->
 
 ---
-
-## LOC Summary
-
-| Metric | Value |
-|--------|-------|
-| **Lines added** | 0 |
-| **Lines removed** | 1 |
-| **Net change** | -1 |
-| **Files modified** | 1 |
-| **Files investigated** | 20+ |
-
----
-
-<!--
-CORE TEMPLATE (~40 lines)
-- Post-implementation documentation
-- Created AFTER implementation completes
--->

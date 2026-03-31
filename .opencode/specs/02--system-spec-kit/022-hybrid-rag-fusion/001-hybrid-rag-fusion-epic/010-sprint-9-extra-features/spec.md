@@ -42,6 +42,8 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 | **Successor** | ../011-research-based-refinement/spec.md |
 | **Research** | `006-extra-features/research/` (16 files) |
 <!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

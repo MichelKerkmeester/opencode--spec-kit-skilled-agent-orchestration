@@ -1,72 +1,117 @@
 ---
-title: "Social Share CMS Integration [008-social-share-cms/spec] [01--anobel.com/z_archive/008-social-share-cms/spec]"
-description: "Enhance the social share component to support separate URL and slug CMS fields in Webflow, enabling more flexible CMS binding while maintaining backwards compatibility."
+title: "Feature Specification: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/spec]"
+description: "Social Share CMS Integration"
 trigger_phrases:
   - "social"
   - "share"
   - "cms"
   - "integration"
-  - "spec"
-  - "008"
+  - "reference"
 importance_tier: "important"
-contextType: "decision"
+contextType: "general"
 ---
+# Feature Specification: Social Share CMS Integration
+
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Social Share CMS Integration
 
-<!-- ANCHOR:overview -->
-## Overview
-Enhance the social share component to support separate URL and slug CMS fields in Webflow, enabling more flexible CMS binding while maintaining backwards compatibility.
-<!-- /ANCHOR:overview -->
+---
 
-<!-- ANCHOR:problem-statement -->
-## Problem Statement
-Current implementation uses a single `data-social-share-link` attribute for the full URL. In Webflow CMS, it's often more practical to have:
-- A base URL (hardcoded or from CMS)
-- A slug (from CMS collection item)
-<!-- /ANCHOR:problem-statement -->
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-<!-- ANCHOR:solution -->
-## Solution
-Add two new attributes that combine to form the share URL:
-- `data-social-share-url` - Base URL (e.g., `https://anobel.com/blog/`)
-- `data-social-share-slug` - Page slug from CMS (e.g., `my-article`)
-<!-- /ANCHOR:solution -->
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P1 |
+| **Status** | Archived |
+| **Created** | 2026-03-31 |
+| **Branch** | `008-social-share-cms` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:attribute-priority-logic -->
-## Attribute Priority Logic
-1. `data-social-share-link` - Direct full URL (backwards compatible)
-2. `data-social-share-url` + `data-social-share-slug` - Combined
-3. `data-social-share-url` only - Use as full link
-4. `data-social-share-slug` only - Combine with `window.location.origin`
-5. Fallback - `window.location.href`
-<!-- /ANCHOR:attribute-priority-logic -->
+---
 
-<!-- ANCHOR:webflow-cms-usage-example -->
-## Webflow CMS Usage Example
-```html
-<div data-social-share
-     data-social-share-url="https://anobel.com/blog/"
-     data-social-share-slug="{Slug from CMS}"
-     data-social-share-title="{Title from CMS}">
-  <button data-social-share-type="linkedin">LinkedIn</button>
-  <button data-social-share-type="x">X</button>
-  <button data-social-share-type="clipboard">Copy Link</button>
-</div>
-```
-<!-- /ANCHOR:webflow-cms-usage-example -->
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-<!-- ANCHOR:technical-details -->
-## Technical Details
-- File: `src/2_javascript/cms/social_share.js`
-- Changes: ~25 lines modified/added
-- Backwards compatible: Yes (existing `data-social-share-link` continues to work)
-<!-- /ANCHOR:technical-details -->
+### Problem Statement
+Social Share CMS Integration
 
-<!-- ANCHOR:edge-cases-handled -->
-## Edge Cases Handled
-- Trailing slash normalization: `url/` + `slug` = `url/slug`
-- Leading slash normalization: `url` + `/slug` = `url/slug`
-- Double slash prevention: `url/` + `/slug` = `url/slug`
-<!-- /ANCHOR:edge-cases-handled -->
+### Purpose
+Keep this archived work packet validator-compliant while preserving the original source material in the folder scratch space for future reference.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Normalize the archived documentation structure to the active Level 1 template.
+- Preserve the historical working notes in `scratch/legacy`.
+- Keep cross-references inside this archived folder resolvable.
+
+### Out of Scope
+- Re-implementing historical code changes.
+- Expanding the archived scope beyond reference and compliance needs.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Align required headers and anchors for archive compliance |
+| `plan.md` | Modify | Align plan structure with the active template |
+| `tasks.md` | Modify | Align task structure and preserve archived status |
+| `implementation-summary.md` | Create/Modify | Provide archived implementation summary when needed |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root spec documents follow the active Level 1 template | `validate.sh` reports no TEMPLATE_HEADERS errors |
+| REQ-002 | Required anchors exist in the expected order | `validate.sh` reports no ANCHORS_VALID errors |
+| REQ-003 | Required archive files exist | `validate.sh` reports no FILE_EXISTS errors |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Broken internal markdown references are removed or repaired | `validate.sh` reports no SPEC_DOC_INTEGRITY errors |
+| REQ-005 | Historical context remains preserved | Original root markdown is retained in `scratch/legacy` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The archived folder validates with 0 errors.
+- **SC-002**: The original archive notes remain preserved in `scratch/legacy`.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Original archived markdown | Needed for historical context | Preserve a copy in `scratch/legacy` before normalization |
+| Risk | Structural normalization obscures legacy intent | Medium | Keep the generated summary concise and preserve original source files |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. This folder is archived and retained for reference.
+<!-- /ANCHOR:questions -->
+
+---

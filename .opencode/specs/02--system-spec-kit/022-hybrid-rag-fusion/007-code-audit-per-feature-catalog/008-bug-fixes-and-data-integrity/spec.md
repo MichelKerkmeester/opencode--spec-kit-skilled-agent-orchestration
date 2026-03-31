@@ -246,3 +246,4 @@ Audit completed 2026-03-22. 11 features verified against source code.
 - **Verification Checklist**: See `checklist.md`
 
 <!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions -->

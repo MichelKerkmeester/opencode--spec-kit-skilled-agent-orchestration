@@ -1,50 +1,121 @@
 ---
-title: "Plan: Agent Architecture Analysis [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/plan]"
-description: "Multi-agent parallel research using 5 specialized analysis agents"
+title: "Implementation Plan: Agents from Oh My Opencode [template:level_1/plan.md]"
+description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
+  - "implementation"
   - "plan"
-  - "agent"
-  - "architecture"
-  - "analysis"
-  - "001"
-  - "agents"
-importance_tier: "important"
-contextType: "decision"
+  - "agents from oh my opencode"
+  - "archive"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
 ---
+# Implementation Plan: Agents from Oh My Opencode
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Agent Architecture Analysis
 
-<!-- ANCHOR:approach -->
-## Approach
-Multi-agent parallel research using 5 specialized analysis agents:
+---
 
-### Phase 1: Parallel Research (5 agents)
-1. **Agent Architecture Analyzer** - Deep dive into oh-my-opencode agent implementations
-2. **Communication Patterns Analyzer** - Focus on delegation and inter-agent communication
-3. **Environment Auditor** - Analyze current AGENTS.md, skills, and capabilities
-4. **Best Practices Researcher** - Research multi-agent patterns and best practices
-5. **Recommendations Synthesizer** - Create recommendations and orchestrator refinements
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Phase 2: Synthesis
-- Consolidate findings into analysis.md
-- Create recommendations.md with prioritized agent list
-- Propose orchestrator refinements
+### Technical Context
 
-<!-- /ANCHOR:approach -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown, JSON, shell validation scripts |
+| **Framework** | system-spec-kit templates |
+| **Storage** | Git repository |
+| **Testing** | validate.sh --strict |
 
+### Overview
+This archive fix rewrites the required Level 1 documents for the Oh My Opencode agent import record using the current templates. The approach favors structural compliance, brief historical context, and clean validation over reconstructing every discarded planning detail.
+<!-- /ANCHOR:summary -->
 
-<!-- ANCHOR:timeline -->
-## Timeline
-- Research: Parallel execution
-- Synthesis: Sequential after research complete
+---
 
-<!-- /ANCHOR:timeline -->
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
-<!-- ANCHOR:risks -->
-## Risks
-- GitHub content may require multiple fetch attempts
-- Agent patterns may not directly apply to Webflow context
-- Mitigation: Adapt patterns to specific environment needs
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Validation passes for error-level rules
+- [x] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
 
-<!-- /ANCHOR:risks -->
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation archive normalization
+
+### Key Components
+- **Core Level 1 docs**: Preserve the historical summary in a compliant structure.
+- **Supplemental archive notes**: Stay brief and avoid broken markdown references.
+
+### Data Flow
+Archived topic details are condensed into the required Level 1 documents, then validated with the current rule set so the folder remains stable.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Review the archived folder contents
+- [x] Identify required Level 1 template structure
+- [x] Confirm validation targets
+
+### Phase 2: Core Implementation
+- [x] Rewrite spec.md with a concise archive-safe summary
+- [x] Rewrite plan.md and tasks.md to current template format
+- [x] Refresh implementation-summary.md for the archive fix
+
+### Phase 3: Verification
+- [x] Remove validation-breaking structure drift
+- [x] Check top-level markdown notes for broken references
+- [x] Run strict validation on the folder
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required spec docs and archive notes | validate.sh --strict |
+| Integrity review | Markdown reference safety | Manual inspection |
+| Manual | Historical readability of the archive summary | Editor review |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| system-spec-kit Level 1 templates | Internal | Green | Without the templates, the folder can drift back out of compliance. |
+| Existing archive folder contents | Internal | Green | The summary would lose context if the archive contents were unavailable for review. |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: The archive rewrite removes essential historical meaning or introduces new validation failures.
+- **Procedure**: Restore the prior markdown revision from git history and reapply the template-based normalization with corrected content.
+<!-- /ANCHOR:rollback -->
+
+---

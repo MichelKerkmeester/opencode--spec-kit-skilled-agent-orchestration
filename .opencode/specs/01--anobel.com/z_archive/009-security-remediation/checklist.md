@@ -1,67 +1,106 @@
 ---
-title: "Security Remediation Checklist [009-security-remediation/c [01--anobel.com/z_archive/009-security-remediation/checklist]"
-description: "All minified files regenerated with Terser 5.44.1"
+title: "Verification Checklist: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/checklist]"
+description: "Archived verification checklist for Security Vulnerability Remediation."
 trigger_phrases:
   - "security"
+  - "vulnerability"
   - "remediation"
-  - "checklist"
-  - "009"
+  - "anobel"
+  - "reference"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Verification Checklist: Security Vulnerability Remediation
+
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Security Remediation Checklist
 
-<!-- ANCHOR:p0---must-complete -->
-## P0 - Must Complete
-- [x] All XSS vulnerabilities fixed (CWE-79) - innerHTML replaced with textContent/createElement at lines 424, 432
-- [x] All RNG vulnerabilities fixed (CWE-330) - crypto.getRandomValues() used in form_validation.js:518 and related_articles.js:76
-- [x] Path traversal vulnerability fixed (CWE-22) - modal_id validation with whitelist at modal_welcome.js:58-66
-- [x] No syntax errors introduced - All 3 files pass `node --check`
-- [x] Functionality preserved - DOM manipulation approach maintains same behavior
-<!-- /ANCHOR:p0---must-complete -->
+---
 
-<!-- ANCHOR:p1---should-complete -->
-## P1 - Should Complete
-- [x] Minified files updated - All 3 files regenerated with Terser 5.44.1 at Dec 25 13:01
-- [x] Security comments added - CWE references added at fix locations
-- [x] Documentation complete - spec folder created
-- [x] CDN versioning updated - HTML files updated to ?v=1.1.33
-<!-- /ANCHOR:p1---should-complete -->
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-<!-- ANCHOR:verification-evidence -->
-## Verification Evidence
-- [x] form_validation.js - syntax OK (verified with node --check)
-- [x] related_articles.js - syntax OK (verified with node --check)
-- [x] modal_welcome.js - syntax OK (verified with node --check)
-<!-- /ANCHOR:verification-evidence -->
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-<!-- ANCHOR:minified-files-status-complete -->
-## Minified Files Status: COMPLETE
+---
 
-All minified files regenerated with Terser 5.44.1:
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-| File | Size | Verified Patterns |
-|------|------|-------------------|
-| form_validation.js | 19,303 bytes | 6x textContent, 2x cloneNode, 0x innerHTML |
-| related_articles.js | 1,314 bytes | 1x getRandomValues, 0x Math.random |
-| modal_welcome.js | 10,072 bytes | 1x Object.create(null) |
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
 
-**Timestamp:** Dec 25 13:01 (all files)
-<!-- /ANCHOR:minified-files-status-complete -->
+---
 
-<!-- ANCHOR:cdn-versioning-complete -->
-## CDN Versioning: COMPLETE
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-HTML files updated to force browser cache invalidation:
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
 
-| HTML File | Script | Old Version | New Version |
-|-----------|--------|-------------|-------------|
-| cms/werken_bij.html | form_validation.js | 1.1.32 | 1.1.33 |
-| cms/vacature.html | form_validation.js | 1.1.32 | 1.1.33 |
-| contact.html | form_validation.js | 1.1.30 | 1.1.33 |
-| cms/blog_template.html | related_articles.js | 1.1.32 | 1.1.33 |
-| home.html | modal_welcome.js | 1.1.30 | 1.1.33 |
+---
 
-**Updated:** Dec 25 2025
-<!-- /ANCHOR:cdn-versioning-complete -->
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
+<!-- /ANCHOR:summary -->
+
+---

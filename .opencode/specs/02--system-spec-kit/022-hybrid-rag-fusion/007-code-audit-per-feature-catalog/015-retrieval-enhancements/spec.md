@@ -239,3 +239,4 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
+<!-- /ANCHOR:questions -->

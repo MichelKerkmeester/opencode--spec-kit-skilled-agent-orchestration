@@ -1,74 +1,83 @@
 ---
-title: "Tasks: Multi-Agent Dispatch Implementation [04--agent-orchestration/z_archive/004-multi-agent-dispatch/tasks]"
-description: "Task 1, Task 2 (commands) - No dependencies ✅"
+title: "Tasks: Multi-Agent Dispatch [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "multi"
-  - "agent"
-  - "dispatch"
-  - "implementation"
-  - "004"
+  - "multi-agent dispatch"
+  - "archive"
+  - "template"
+  - "tasks core"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
+# Tasks: Multi-Agent Dispatch
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
-# Tasks: Multi-Agent Dispatch Implementation
 
-<!-- ANCHOR:task-list -->
-## Task List
+---
 
-### Command Updates
-- [x] Task 1: Update research/research.md command - Add Phase 2.5 ✅
-- [x] Task 2: Update debug.md command - Extend Phase 2 ✅
+<!-- ANCHOR:notation -->
+## Task Notation
 
-### YAML Configuration
-- [x] Task 3: Update spec_kit_research_auto.yaml - Add multi_agent_config ✅
-- [x] Task 4: Update spec_kit_research_confirm.yaml - Add multi_agent_config ✅
-- [x] Task 5: Update spec_kit_debug_auto.yaml - Add multi_agent_config ✅
-- [x] Task 6: Update spec_kit_debug_confirm.yaml - Add multi_agent_config ✅
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### Agent Updates
-- [x] Task 7: Update research/research.md agent - Add coordinator/worker modes ✅
-- [x] Task 8: Update debug.md agent - Add coordinator/worker modes ✅
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-<!-- /ANCHOR:task-list -->
+---
 
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-<!-- ANCHOR:dependencies -->
-## Dependencies
+- [x] T001 Review archived folder contents
+- [x] T002 Confirm Level 1 template requirements
+- [x] T003 [P] Identify validation-breaking markdown drift
+<!-- /ANCHOR:phase-1 -->
 
-```
-Task 1, Task 2 (commands) - No dependencies ✅
-       │
-       ▼
-Task 3-6 (YAMLs) - Can be done in parallel ✅
-       │
-       ▼
-Task 7, Task 8 (agents) - No dependencies ✅
-```
+---
 
-<!-- /ANCHOR:dependencies -->
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
+- [x] T004 Rewrite spec.md as a concise archival record
+- [x] T005 Rewrite plan.md with the archive-fix approach
+- [x] T006 Rewrite implementation-summary.md for the completed normalization
+- [x] T007 Refresh extra top-level markdown files as brief archival notes when present
+<!-- /ANCHOR:phase-2 -->
 
-<!-- ANCHOR:actual-effort -->
-## Actual Effort
+---
 
-| Task | Files Modified | LOC Added |
-|------|----------------|-----------|
-| Task 1 | 1 | ~45 |
-| Task 2 | 1 | ~35 |
-| Task 3-6 | 4 | ~400 (100 each) |
-| Task 7-8 | 2 | ~200 (100 each) |
-| **Total** | **8** | **~680** |
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-Documentation Level: **Level 2** (100-499 LOC estimated, actual ~350 net changes)
+- [x] T008 Validate structural compliance
+- [x] T009 Confirm top-level markdown notes do not contain broken file references
+- [x] T010 Re-run strict validation and keep the passing result
+<!-- /ANCHOR:phase-3 -->
 
-<!-- /ANCHOR:actual-effort -->
+---
 
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-<!-- ANCHOR:implementation-complete -->
-## Implementation Complete
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
 
-All 8 tasks completed successfully on 2026-01-23.
+---
 
-<!-- /ANCHOR:implementation-complete -->
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

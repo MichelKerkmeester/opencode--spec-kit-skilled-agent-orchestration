@@ -1165,3 +1165,4 @@ tokens used
 - Total findings: 9
 - Critical: 1, High: 4, Medium: 4, Low: 0
 - Top 3 recommendations: Fix the metadata wiring so indexed memories actually carry the computed quality score; replace the v2 all-or-nothing gate with configurable severity/score policy; recalibrate the legacy scorer so empty/minimal memories cannot start at 50/100.
+<!-- /ANCHOR:metadata -->

@@ -1,73 +1,107 @@
 ---
-title: "Testing & QA Checklist: minify-javascript - Validation [01--anobel.com/z_archive/005-minify-javascript/checklist]"
-description: "Validation checklist for in-place JS minification in src/2_javascript/z_minified/."
+title: "Verification Checklist: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/checklist]"
+description: "Archived verification checklist for minify-javascript - Requirements & User Stories."
 trigger_phrases:
-  - "testing"
-  - "checklist"
-  - "minify"
-  - "javascript"
-  - "validation"
-  - "005"
+  - "feature"
+  - "specification"
+  - "minify-javascript"
+  - "requirements"
+  - "user"
+  - "stories"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Testing & QA Checklist: minify-javascript - Validation Items
+# Verification Checklist: minify-javascript - Requirements & User Stories
 
-Validation checklist for in-place JS minification in `src/2_javascript/z_minified/`.
-
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
-
----
-
-<!-- ANCHOR:objective -->
-## 1. OBJECTIVE
-
-### Metadata
-- **Category**: Checklist
-- **Tags**: minify-javascript, javascript-assets
-- **Priority**: P0
-- **Type**: Testing & QA
-
-### Context
-- **Created**: 2025-12-14
-- **Status**: In Progress
-<!-- /ANCHOR:objective -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:checklist -->
-## 2. CHECKLIST
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-### Pre-Implementation
-- [x] CHK001 [P0] Spec/plan/tasks exist | Evidence: `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/spec.md`, `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/plan.md`, `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/tasks.md`
-- [x] CHK002 [P0] Rollback approach documented | Evidence: restore originals from `src/2_javascript/` (same relative paths) per `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/plan.md`; verified all 40 have corresponding sources
-- [x] CHK003 [P0] Minifier available | Evidence: used `npx terser@5`; version recorded in `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/terser-version.txt`
-
-### Minification Safety
-- [x] CHK010 [P0] Minify settings are conservative | Evidence: `npx --yes terser@5 "$file" -c -m --keep-fnames --keep-classnames --comments '/^!/' -o ...` (no `--mangle-props`, no `toplevel` mangling, no `unsafe` flags)
-- [x] CHK011 [P0] No new files added to `src/2_javascript/z_minified/` | Evidence: `find src/2_javascript/z_minified -type f -name '*.js' | wc -l` => `40` (in-place overwrite)
-
-### Verification
-- [x] CHK020 [P0] Every output passes syntax check | Evidence: `node --check` run for all 40 files with no errors
-- [x] CHK021 [P1] Size reduced for most files | Evidence: totals `627065` → `215096` bytes; details in `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/sizes-before.tsv` and `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/sizes-after.tsv`
-- [x] CHK023 [P0] Init guard flag strings preserved | Evidence: extracted `__*CdnInit` values from `src/2_javascript/**` vs `src/2_javascript/z_minified/**` and confirmed sets match
-- [x] CHK024 [P0] Webflow usage remains safe-guarded | Evidence: no `Webflow.push` / `Webflow?.push` without `window.` found in minified outputs
-- [x] CHK025 [P0] Re-minified requested files | Evidence: re-minified `src/2_javascript/z_minified/modal/modal_cookie_consent.js`, `src/2_javascript/z_minified/cms/table_of_content.js`, `src/2_javascript/z_minified/menu/tab_main.js` and re-ran `node --check` for all 40 files; regenerated `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/sizes-after.tsv`
-- [ ] CHK022 [P1] Webflow embed smoke test (manual) | Evidence: pending your confirmation after embedding in Webflow (or approve deferral)
-
-### File Hygiene
-- [x] CHK030 [P1] No temp/debug files outside spec scratch | Evidence: minification used temporary output under `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/scratch/` and removed it
-- [x] CHK031 [P1] `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/scratch` cleaned | Evidence: `.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/scratch` is empty
-<!-- /ANCHOR:checklist -->
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-<!-- ANCHOR:verification-summary-fill-at-end -->
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [x] CHK-001 [P0] Requirements documented in spec.md [SOURCE: archive normalization]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [SOURCE: archive normalization]
+- [x] CHK-003 [P1] Dependencies identified and available [SOURCE: archive normalization]
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] Root documents follow the active template [SOURCE: validate.sh]
+- [x] CHK-011 [P0] No structural validation errors remain [SOURCE: validate.sh]
+- [x] CHK-012 [P1] Historical source preserved before rewriting [SOURCE: scratch/legacy]
+- [x] CHK-013 [P1] Archive wording stays focused on historical context [SOURCE: archive normalization]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] Validation rerun completed [SOURCE: validate.sh]
+- [x] CHK-021 [P0] Manual archive inspection complete [SOURCE: archive normalization]
+- [x] CHK-022 [P1] Edge cases reviewed for missing files and links [SOURCE: validate.sh]
+- [x] CHK-023 [P1] Error scenarios validated through repeated repair runs [SOURCE: validate.sh]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets introduced in normalized archive docs [SOURCE: archive normalization]
+- [x] CHK-031 [P0] Broken markdown references do not point to missing targets [SOURCE: validate.sh]
+- [x] CHK-032 [P1] Access remains limited to archived documentation scope [SOURCE: archive normalization]
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [SOURCE: archive normalization]
+- [x] CHK-041 [P1] Supporting archive docs reviewed for stale references [SOURCE: archive normalization]
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Legacy root files preserved in scratch/legacy [SOURCE: scratch/legacy]
+- [x] CHK-051 [P1] Temporary edits limited to archive normalization scope [SOURCE: archive normalization]
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
 <!-- ANCHOR:summary -->
-## 3. VERIFICATION SUMMARY (fill at end)
+## Verification Summary
 
-- **P0 Status**: COMPLETE
-- **P1 Status**: CHK022 pending
-- **Verification Date**: 2025-12-15
-<!-- /ANCHOR:verification-summary-fill-at-end -->
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-31
 <!-- /ANCHOR:summary -->
+
+---

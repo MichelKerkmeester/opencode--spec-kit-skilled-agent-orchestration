@@ -1,19 +1,18 @@
 ---
-title: "Implementation Summary [02--system-spec-kit/z_archive/008-codex-system-wide-audit/implementation-summary]"
-description: "This session completed the runtime remediation backlog captured in spec 125 and closed verification tasks across shell and MCP layers."
+title: "Implementation Summary"
+description: "Archive repair summary for the System-Wide Remediation of Audit Findings folder."
 trigger_phrases:
-  - "implementation"
-  - "summary"
   - "implementation summary"
-  - "008"
-  - "codex"
+  - "system wide remediation"
+  - "archive"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 (refactored) -->
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,80 +21,70 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| Spec Folder | 125-codex-system-wide-audit |
-| Date | 2026-02-16 |
-| Level | 3+ |
-| Status | Runtime Remediation Complete, Verification Complete |
-
+| **Spec Folder** | 008-codex-system-wide-audit |
+| **Completed** | 2026-03-31 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Completed in This Session
+## What Was Built
 
-This session completed the runtime remediation backlog captured in spec 125 and closed verification tasks across shell and MCP layers.
+This archive repair turned the folder into a clean Level 1 historical record for the system-wide remediation work. You can now inspect the archived topic without obsolete higher-level structure.
 
-Updated root documents:
-- `spec.md`
-- `plan.md`
-- `tasks.md`
-- `checklist.md`
-- `decision-record.md`
-- `implementation-summary.md`
-- `handover.md`
+### Archive Repair
 
-Runtime outcomes:
-1. Fixed shell upgrade failure-path and rollback behavior in `upgrade-level.sh`.
-2. Aligned level parser behavior across `upgrade-level.sh`, `validate.sh`, and `check-level-match.sh`.
-3. Added missing `upgrade-level` registry entry and confirmed registry resolution.
-4. Hardened shell test isolation and exit-code assertions in `test-upgrade-level.sh`.
-5. Fixed MCP path consistency, dedup degraded-mode behavior, reinforcement result contract, and cooldown update timing.
-6. Added targeted MCP test coverage for the new runtime contracts.
+The core documents were rebuilt from the current templates, and the extra handover file was reduced to a brief archival note. The result is concise, readable, and validator-safe.
 
+### Files Changed
+
+| File | Action | Purpose |
+|------|--------|---------|
+| spec.md | Created | Preserve the archived feature summary in the current structure |
+| plan.md | Created | Record the archive normalization approach |
+| tasks.md | Created | Capture the repair workflow and verification |
+| implementation-summary.md | Created | Document the archive repair outcome |
+| handover.md | Created | Keep a brief archival note for the extra top-level markdown file |
 <!-- /ANCHOR:what-built -->
 
 ---
 
-## Confirmed Runtime Work Still Open
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-No open P0/P1 runtime items remain from this spec's remediation scope.
+I rebuilt the archive from the current Level 1 templates, kept the original remediation-focused topic explicit, and validated the folder in strict mode until it reported zero errors.
+<!-- /ANCHOR:how-delivered -->
 
-Known residual observations (non-blocking):
-- Spec validation for folders 121/124 still reports existing content-quality warnings (`SECTION_COUNTS` and AI protocol completeness for 121).
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Normalize the archive to Level 1 | The folder only needed a compact, trustworthy historical record |
+| Keep handover.md as a short note | The extra top-level markdown should remain readable without introducing integrity issues |
+<!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-## Verification Status
+## Verification
 
-| Area | Status |
-|------|--------|
-| Documentation alignment | Complete |
-| Shell runtime fixes | Complete |
-| MCP runtime fixes | Complete |
-| Final verification run | Complete |
-
+| Check | Result |
+|-------|--------|
+| Strict folder validation | PASS |
+| Markdown reference integrity | PASS |
+| Manual archive review | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Risks If Left Unfixed
-
-1. Outstanding validator warnings in legacy specs can mask future regressions if teams treat warnings as ignorable noise.
-
-<!-- /ANCHOR:limitations -->
-
----
-
-## Next Steps
-
-1. If desired, open a focused follow-up spec to eliminate current `validate.sh` warning-only debt in 121/124.
----
-
-<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No known limitations.
+1. **Condensed detail** This archive preserves the feature summary and repair outcome, not the full historical remediation trail.
 <!-- /ANCHOR:limitations -->
+
+---
