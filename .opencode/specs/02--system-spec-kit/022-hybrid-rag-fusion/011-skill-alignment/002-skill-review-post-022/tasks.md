@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-022 Skill Review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/tasks]"
+title: "Tasks: Post-022 Skill [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/tasks]"
 description: "Task history for the post-022 documentation review, remediation, and verification pass."
 trigger_phrases:
   - "post-022 review tasks"

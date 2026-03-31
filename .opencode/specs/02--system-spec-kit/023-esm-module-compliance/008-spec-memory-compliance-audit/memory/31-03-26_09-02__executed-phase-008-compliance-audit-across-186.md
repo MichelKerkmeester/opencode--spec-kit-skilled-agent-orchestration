@@ -1,4 +1,9 @@
 ---
+title: "...sm-module-compliance/008-spec-memory-compliance-audit/31-03-26_09-02__executed-phase-008-compliance-audit-across-186]"
+importance_tier: "important"
+contextType: "planning"
+---
+---
 title: "Executed Phase 008 [008-spec-memory-compliance-audit/31-03-26_09-02__executed-phase-008-compliance-audit-across-186]"
 description: "Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...; Hybrid orchestration: automated scripts for bulk fixes + copilot agents..."
 trigger_phrases:

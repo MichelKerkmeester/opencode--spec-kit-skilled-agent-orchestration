@@ -1,6 +1,15 @@
 ---
 title: "Tasks: GitHub MCP Integration [03--commands-and-skills/002-sk-git-github-mcp-integration/tasks]"
 description: "Task breakdown for correcting GitHub MCP guidance inside sk-git documentation."
+trigger_phrases:
+  - "tasks"
+  - "github"
+  - "mcp"
+  - "integration"
+  - "002"
+  - "git"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: GitHub MCP Integration
 

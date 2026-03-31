@@ -6,7 +6,7 @@ trigger_phrases:
   - "mcp_server esm"
   - "023 phase 2"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: MCP Server ESM Migration
 

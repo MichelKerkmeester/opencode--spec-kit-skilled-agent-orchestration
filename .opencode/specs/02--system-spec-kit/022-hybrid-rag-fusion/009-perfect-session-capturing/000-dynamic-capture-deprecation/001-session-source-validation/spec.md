@@ -11,7 +11,7 @@ trigger_phrases:
   - "001"
   - "session"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Session Source Validation
 

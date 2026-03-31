@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SQLite-to-Turso Migration Research"
+title: "Feature Specification: SQLite-to-Turso Migration Research [02--system-spec-kit/999-sqlite-to-turso/spec]"
 description: "Define the research scope, required outputs, and success criteria for evaluating Turso as a potential replacement for the current SQLite-based memory stack."
 trigger_phrases:
   - "sqlite"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "999"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: SQLite-to-Turso Migration Research
 

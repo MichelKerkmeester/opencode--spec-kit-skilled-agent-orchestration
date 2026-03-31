@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "023"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Gemini CLI Compatibility
 

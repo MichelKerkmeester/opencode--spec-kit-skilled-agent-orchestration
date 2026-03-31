@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/023-esm-module-compliance/004-verification-and-standards/spec]"
+title: "Feature Specification [02--system-spec-kit/023-esm-module-compliance/004-verification-and-standards/spec]"
 description: "Run the full verification matrix, re-test highest-risk surfaces, and sync deferred standards docs after runtime proof."
 trigger_phrases:
   - "verification and standards"
   - "esm verification matrix"
   - "023 phase 4"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Verification and Standards Sync
 

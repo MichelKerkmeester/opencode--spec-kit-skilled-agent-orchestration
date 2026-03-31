@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/tasks]"
 description: "Task breakdown for Sprint 2: embedding cache, cold-start boost, G2 investigation, score normalization"
 trigger_phrases:
   - "sprint 2 tasks"

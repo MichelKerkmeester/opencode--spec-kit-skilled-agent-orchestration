@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/tasks]"
 description: "Task tracker for normalizing the JSON-mode hybrid-enrichment phase container and repairing the metadata and integrity issues blocking recursive strict validation."
 trigger_phrases:
   - "016 json mode tasks"

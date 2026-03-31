@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/tasks]"
 description: "Task tracker for Phase 020 feature-flag-reference audit scenarios PB-020-01 through PB-020-03."
 trigger_phrases:
   - "phase 020 tasks"

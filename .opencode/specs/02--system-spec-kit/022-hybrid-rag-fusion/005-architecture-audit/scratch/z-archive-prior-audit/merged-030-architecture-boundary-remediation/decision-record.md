@@ -6,7 +6,7 @@ trigger_phrases:
   - "boundary enforcement decision"
   - "ast upgrade timeline"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: Architecture Boundary Remediation

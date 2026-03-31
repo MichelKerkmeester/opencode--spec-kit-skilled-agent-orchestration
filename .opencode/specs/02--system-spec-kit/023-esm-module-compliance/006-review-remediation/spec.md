@@ -7,7 +7,7 @@ trigger_phrases:
   - "023 phase 6"
   - "fix review findings"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Deep Review Remediation
 

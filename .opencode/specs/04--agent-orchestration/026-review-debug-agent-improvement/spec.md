@@ -1,6 +1,6 @@
 
 ---
-title: "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents [04--agent-orchestration/026-review-debug-agent-improvement/spec]"
+title: "Spec: Adversarial Self-Check for Review, Debug [04--agent-orchestration/026-review-debug-agent-improvement/spec]"
 description: "Adds adversarial self-check protocols to the review, debug, and ultra-think agents across the supported runtime variants."
 trigger_phrases:
   - "spec"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "ultra-think"
   - "026"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents
 

@@ -8,7 +8,7 @@ trigger_phrases:
   - "009"
   - "embedding"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Embedding Optimization
 

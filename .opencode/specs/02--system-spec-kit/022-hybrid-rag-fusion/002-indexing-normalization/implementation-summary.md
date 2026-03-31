@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/implementation-summary]"
 description: "Close-out summary for consolidated indexing deduplication, tier normalization, and frontmatter normalization work."
 trigger_phrases:
   - "implementation"

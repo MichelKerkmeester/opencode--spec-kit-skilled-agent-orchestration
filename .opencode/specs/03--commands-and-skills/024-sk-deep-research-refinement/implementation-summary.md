@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research Refinement via Self-Research"
+title: "Implementation Summary [03--commands-and-skills/024-sk-deep-research-refinement/implementation-summary]"
 description: "Summary of the research refinement cycle and the validated proposal outputs."
 trigger_phrases:
   - "implementation summary"

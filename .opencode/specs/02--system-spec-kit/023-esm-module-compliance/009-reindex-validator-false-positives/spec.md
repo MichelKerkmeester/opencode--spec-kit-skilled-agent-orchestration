@@ -1,5 +1,5 @@
 ---
-title: "Phase 009: Reindex Validator False Positives [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/spec]"
+title: "Phase 009: Reindex [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/spec]"
 description: "Fix false-positive validation rules that block legitimate memory and spec doc files from being indexed during bulk reindex. Two rules cause the majority of rejections."
 trigger_phrases:
   - "reindex false positive"

@@ -7,7 +7,7 @@ trigger_phrases:
   - "hydra phase 1"
   - "checkpoint safety"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 001-baseline-and-safety-rails

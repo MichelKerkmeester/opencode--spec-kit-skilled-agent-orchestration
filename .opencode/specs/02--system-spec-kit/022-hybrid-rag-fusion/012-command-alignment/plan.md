@@ -7,7 +7,7 @@ trigger_phrases:
   - "alignment"
   - "012"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 012-command-alignment

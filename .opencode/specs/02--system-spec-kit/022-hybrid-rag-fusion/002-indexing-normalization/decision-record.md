@@ -1,5 +1,5 @@
 ---
-title: "Consolidated decision-record: [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/decision-record]"
+title: "Consolidated decision-record [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/decision-record]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> decision-record.md and former child spec 004-frontmatter-indexing -> decision-record.md."
 trigger_phrases:
   - "consolidated"

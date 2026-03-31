@@ -7,7 +7,7 @@ trigger_phrases:
   - "kiss dry solid"
   - "comment policy"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record + level3-arch + level3plus-govern | v2.2"
 ---
 # Decision Record: sk-code--opencode refinement

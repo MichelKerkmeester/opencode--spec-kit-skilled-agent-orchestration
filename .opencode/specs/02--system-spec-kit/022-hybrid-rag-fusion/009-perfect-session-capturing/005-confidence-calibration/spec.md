@@ -8,7 +8,7 @@ trigger_phrases:
   - "005"
   - "confidence"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Confidence Calibration
 

@@ -11,7 +11,7 @@ trigger_phrases:
   - "019"
   - "incorrect"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Sub-Agent Nesting Depth Control
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post-022 Skill Review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/plan]"
 description: "Template-compliant plan for review, remediation, and verification of post-022 system-spec-kit documentation drift."
 trigger_phrases:
   - "post-022 remediation plan"

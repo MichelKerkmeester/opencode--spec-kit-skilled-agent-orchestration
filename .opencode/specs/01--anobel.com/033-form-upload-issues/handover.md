@@ -1,5 +1,5 @@
 ---
-title: "Handover: Form Upload File Type Issues [033-form-upload-issues/handover] [01--anobel.com/033-form-upload-issues/handover]"
+title: "Handover: Form Upload File Type Issues [033-form-upload-issues/handover [01--anobel.com/033-form-upload-issues/handover]"
 description: "Spec: 033-form-upload-issues"
 trigger_phrases:
   - "handover"

@@ -6,7 +6,7 @@ trigger_phrases:
   - "processpreparedmemory fix"
   - "warn-only gates"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Spec Doc Indexing Bypass
 

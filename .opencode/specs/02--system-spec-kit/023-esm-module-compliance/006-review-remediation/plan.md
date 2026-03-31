@@ -6,7 +6,7 @@ trigger_phrases:
   - "review fix plan"
   - "023 phase 6 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Deep Review Remediation
 

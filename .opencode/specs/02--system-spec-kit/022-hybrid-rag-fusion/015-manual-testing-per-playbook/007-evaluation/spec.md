@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/spec]"
 description: "Execute 6 manual test scenarios for the evaluation category, covering ablation studies, reporting dashboard, evaluation dashboard generation, ablation study execution, baseline comparison reporting, and learning history retrieval."
 trigger_phrases:
   - "evaluation testing"

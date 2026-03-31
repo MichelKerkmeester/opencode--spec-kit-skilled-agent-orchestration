@@ -11,7 +11,7 @@ trigger_phrases:
   - "021"
   - "codex"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: ChatGPT Agent Suite Codex Optimization
 

@@ -8,7 +8,7 @@ trigger_phrases:
   - "button"
   - "transition"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Fix Download Button Transition Glitch
 

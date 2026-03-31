@@ -8,7 +8,7 @@ trigger_phrases:
   - "1807 spec docs rejected"
   - "processpreparedmemory rejection gates"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Spec Doc Indexing Bypass
 

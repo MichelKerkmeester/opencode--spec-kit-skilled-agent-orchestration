@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "021"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Phase System

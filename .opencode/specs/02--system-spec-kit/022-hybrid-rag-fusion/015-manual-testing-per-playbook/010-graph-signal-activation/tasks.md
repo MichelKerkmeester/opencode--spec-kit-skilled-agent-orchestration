@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "graph signal activation tasks"

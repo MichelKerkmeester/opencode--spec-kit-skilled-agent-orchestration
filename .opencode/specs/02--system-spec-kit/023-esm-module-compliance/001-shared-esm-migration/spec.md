@@ -6,7 +6,7 @@ trigger_phrases:
   - "shared package esm"
   - "023 phase 1"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Shared ESM Migration
 

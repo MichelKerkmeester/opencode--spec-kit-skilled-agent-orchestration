@@ -8,7 +8,7 @@ trigger_phrases:
   - "008"
   - "signal"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Signal Extraction
 

@@ -31,7 +31,7 @@ trigger_phrases:
   - "module"
   - "compliance"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 _sourceSessionCreated: 0
 _sourceSessionId: ""
 _sourceSessionUpdated: 0

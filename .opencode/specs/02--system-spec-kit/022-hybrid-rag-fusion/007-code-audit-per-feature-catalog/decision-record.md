@@ -6,7 +6,7 @@ trigger_phrases:
   - "feature catalog audit"
   - "audit methodology"
 importance_tier: "normal"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Code Audit Per Feature Catalog
 

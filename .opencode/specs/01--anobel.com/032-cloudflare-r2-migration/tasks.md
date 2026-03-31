@@ -4,7 +4,6 @@ description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
   - "cloudflare"
-  - "r2"
   - "worker"
   - "migration"
   - "032"

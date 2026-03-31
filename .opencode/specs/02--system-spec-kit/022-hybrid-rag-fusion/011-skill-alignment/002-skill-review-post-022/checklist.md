@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post-022 Skill Review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/checklist]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/checklist]"
 description: "Verification checklist for the template-compliant post-022 review and remediation packet."
 trigger_phrases:
   - "post-022 verification checklist"

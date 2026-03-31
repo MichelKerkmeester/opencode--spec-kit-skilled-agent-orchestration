@@ -9,7 +9,7 @@ trigger_phrases:
   - "readme"
   - "016"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 016-rewrite-memory-mcp-readme

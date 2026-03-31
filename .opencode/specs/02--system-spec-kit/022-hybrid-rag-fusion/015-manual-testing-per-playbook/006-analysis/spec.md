@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/spec]"
 description: "Execute 7 manual test scenarios for the analysis category, covering causal graph tools, epistemic measurement, and learning history."
 trigger_phrases:
   - "analysis testing"

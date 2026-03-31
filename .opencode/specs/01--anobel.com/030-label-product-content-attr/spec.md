@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "030"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Label Product Content Attribute
 

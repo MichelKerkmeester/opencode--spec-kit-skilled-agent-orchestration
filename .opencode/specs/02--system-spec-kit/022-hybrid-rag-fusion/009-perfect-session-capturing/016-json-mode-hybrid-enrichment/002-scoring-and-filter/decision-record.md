@@ -8,7 +8,7 @@ trigger_phrases:
   - "post-save penalty integration"
   - "adr-001 adr-002 adr-003 scoring filter"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Scoring and Filter
 

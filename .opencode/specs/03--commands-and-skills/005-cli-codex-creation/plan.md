@@ -1,6 +1,15 @@
 ---
-title: "Implementation Plan: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/plan]"
+title: "Implementation Plan: cli-gemini Model Consolidation + cli-codex [03--commands-and-skills/005-cli-codex-creation/plan]"
 description: "Plan for consolidating cli-gemini model guidance and creating the cli-codex skill."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "cli"
+  - "gemini"
+  - "model"
+  - "005"
+importance_tier: "important"
+contextType: "planning"
 ---
 # Implementation Plan: cli-gemini Model Consolidation + cli-codex Skill
 

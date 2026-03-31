@@ -8,7 +8,7 @@ trigger_phrases:
   - "solid checks"
   - "139-hybrid-rag-fusion pattern extraction"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: sk-code--opencode refinement

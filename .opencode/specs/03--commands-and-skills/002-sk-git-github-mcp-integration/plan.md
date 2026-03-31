@@ -1,6 +1,16 @@
 ---
 title: "Implementation Plan: GitHub MCP Integration [03--commands-and-skills/002-sk-git-github-mcp-integration/plan]"
 description: "Align sk-git documentation to correct GitHub MCP syntax and remote workflow guidance."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "github"
+  - "mcp"
+  - "integration"
+  - "002"
+  - "git"
+importance_tier: "important"
+contextType: "planning"
 ---
 # Implementation Plan: GitHub MCP Integration
 

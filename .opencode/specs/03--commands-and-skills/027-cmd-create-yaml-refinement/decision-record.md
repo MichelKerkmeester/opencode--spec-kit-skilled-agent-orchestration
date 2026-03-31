@@ -5,7 +5,7 @@ trigger_phrases:
   - "create yaml refinement adr"
   - "create command yaml standardization decision"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Create Command YAML Refinement
 

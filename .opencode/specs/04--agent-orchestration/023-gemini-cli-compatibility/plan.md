@@ -9,7 +9,7 @@ trigger_phrases:
   - "compatibility"
   - "023"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Gemini CLI Compatibility
 

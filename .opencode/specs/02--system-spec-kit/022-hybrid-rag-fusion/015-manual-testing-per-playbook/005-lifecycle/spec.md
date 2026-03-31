@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/spec]"
 description: "Phase 005 documents the lifecycle manual test packet. Execute all 10 scenarios (EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144) to verify checkpoint management, async ingestion, path traversal guards, archival, startup recovery, and ingest forecast."
 trigger_phrases:
   - "lifecycle manual testing"

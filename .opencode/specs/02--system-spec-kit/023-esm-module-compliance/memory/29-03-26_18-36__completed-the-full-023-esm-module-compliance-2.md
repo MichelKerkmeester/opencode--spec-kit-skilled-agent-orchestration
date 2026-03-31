@@ -1,7 +1,7 @@
 ---
 title: "Completed [02--system-spec-kit/023-esm-module-compliance/29-03-26_18-36__completed-the-full-023-esm-module-compliance-2]"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 ---
 ---
 title: "Completed The Full 023 Esm [023-esm-module-compliance/29-03-26_18-36__completed-the-full-023-esm-module-compliance]"

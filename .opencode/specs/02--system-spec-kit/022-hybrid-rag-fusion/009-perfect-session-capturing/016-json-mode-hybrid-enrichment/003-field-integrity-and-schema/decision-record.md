@@ -9,7 +9,7 @@ trigger_phrases:
   - "content density threshold"
   - "string length limits decision"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Field Integrity and Schema Validation
 

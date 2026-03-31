@@ -13,7 +13,7 @@ contextType: "research"
 ---
 # Deep Research Report: Compact Code Graph — Complete Findings
 
-> **55 iterations across 5 segments** | 40 GPT-5.4 agent iterations (segments 3-5) | ~8,400 lines of research
+> **75 iterations across 6 segments** | 10 orchestrator + 40 GPT-5.4 agents + 20 Claude Opus deep-research + 5 skipped | ~12,000+ lines of research
 
 ---
 
@@ -427,10 +427,11 @@ session transcript + working-set tracker
 | 3 | 016-035 | Implementation research (GPT-5.4) | 0.41-0.90 |
 | 4 | 036-045 | Code graph research (GPT-5.4) | 0.73-0.88 |
 | 5 | 046-055 | CocoIndex + Code Graph integration | 0.49-0.76 |
+| 6 | 056-075 | Feature improvements + UX | 0.10-0.80 |
 
-**Total**: 55 iterations, ~8,400 lines across iteration files.
+**Total**: 75 iterations (73 completed, 2 skipped), ~12,000+ lines across iteration files.
 
-**Method**: Segments 1-2 mixed orchestrator + codex agents. Segments 3-5 all GPT-5.4 agents via `codex exec -m gpt-5.4 -c model_reasoning_effort="high" --full-auto`, dispatched in parallel waves.
+**Method**: Segments 1-2 mixed orchestrator + codex agents. Segments 3-5 GPT-5.4 agents via `codex exec -m gpt-5.4 -c model_reasoning_effort="high" --full-auto`, dispatched in parallel waves. Segment 6 Claude Opus deep-research iterations.
 
 ---
 
@@ -563,3 +564,483 @@ CocoIndex covering semantic search means the code graph can be **purely structur
 **API Design** (iter 054): Three query modes — neighborhood (expand around seeds), outline (structural overview), impact (reverse dependency). Seed types: CocoIndexSeed, ManualSeed, GraphSeed. Normalized to ArtifactRef internally.
 
 **Readiness** (iter 055): Phase 008-011 specs defined. Graph MVP ~850-1,200 LOC. Integrates into existing MCP server. Readiness scores: indexer 4/5, storage 4/5, bridge 3/5, compaction merge 3/5.
+
+### Segment 6 Key Findings (Iterations 056-059)
+
+**Feature Improvements** (iter 056): Comprehensive implementation-gap analysis of all four subsystems:
+
+| Subsystem | Critical Finding | Priority |
+|-----------|-----------------|----------|
+| Code Graph Parser | **endLine bug**: Regex parser sets `endLine = startLine` for all captures, making CALLS edge detection non-functional (only scans declaration line, not function body) | P0 |
+| Code Graph Edge Types | 3 missing: DECORATES (decorator→target), OVERRIDES (subclass method→parent method), TYPE_OF (typed symbol→type definition) | P1 |
+| Code Graph Query API | 5 missing operations: `extends_from/to`, `implements`, `tested_by/tests`, `contains/contained_by`, `search` | P2 |
+| Code Graph SymbolKind | `variable`, `parameter` defined but never emitted; `decorator`, `property`, `constant`, `namespace`, `generator` missing | P2 |
+| Budget Allocator | Needs adaptive weighting by query intent (structural→more graph, semantic→more CocoIndex), usage-based learning, dynamic overflow proportional to context budget, source-quality scoring | P2 |
+| 3-Source Merger | Needs cross-source dedup by content hash, relevance decay by traversal depth, interleaved ranking by score, conflict flagging between sources | P2 |
+| Hook System | Needs incremental graph refresh on Stop hook, pre-compaction graph snapshot, hook-based CocoIndex re-index trigger, cross-runtime parity patterns | P1 |
+
+Key fix: **tree-sitter WASM migration** (web-tree-sitter + language grammars) resolves the endLine bug and enables accurate CALLS detection, DECORATES/OVERRIDES extraction, and proper nesting awareness. Dual-mode parser (tree-sitter primary, regex fallback) preserves backward compatibility. ~1.5MB additional WASM files (revised down from initial 8-15MB estimate: core ~300KB + 4 grammars ~1.2MB). The `parseFile()` interface is parser-agnostic -- `extractEdges()` and all downstream consumers (code-graph-db, code-graph-context, code-graph-query) need zero changes. Concrete S-expression queries designed for CALLS (`call_expression` + `member_expression`), IMPORTS (`import_statement` + `named_imports`), DECORATES (`decorator` + `decorated_definition`), OVERRIDES (`override_modifier` + name-match heuristic).
+
+**Q13 Deep Dive** (iter 060): Implementation-ready detail from direct source code analysis:
+
+1. **endLine bug confirmed in source** (`structural-indexer.ts`): Every parser (`parseJsTs`, `parsePython`, `parseBash`) sets `endLine: lineNum` (same as `startLine`). In `extractEdges()`, CALLS detection uses `contentLines.slice(caller.startLine - 1, caller.endLine)` which yields a 1-line slice (declaration only). Secondary bug: `capturesToNodes()` generates `contentHash` from the same 1-line slice, breaking incremental change detection (body changes are invisible). **Fix**: Brace-counting `estimateEndLine()` for JS/TS, indentation-based end detection for Python.
+
+2. **Missing edge type regex designs**: DECORATES uses `@(\w+)` lookahead pattern with pending-decorator buffer (confidence 0.85). OVERRIDES uses either name-match across EXTENDS chain (confidence 0.7) or TypeScript `override` keyword detection (confidence 0.95). TYPE_OF scans typed variable declarations, return types, and parameter annotations (confidence 0.85). All require `EdgeType` union update in `indexer-types.ts`.
+
+3. **Tree-sitter WASM 4-phase migration**: Phase 1 (immediate, ~50 LOC): brace-counting endLine fix. Phase 2 (~200 LOC): optional tree-sitter behind `SPECKIT_TREE_SITTER=true` flag with `web-tree-sitter` + 4 grammar packages (`tree-sitter-javascript`, `tree-sitter-typescript`, `tree-sitter-python`, `tree-sitter-bash`). Phase 3 (~30 LOC): tree-sitter default, regex fallback. Phase 4 (-170 LOC): remove regex parsers. Revised tradeoffs: ~1.5MB total WASM bundle (core ~300KB + JS ~200KB + TS ~500KB + Python ~150KB + Bash ~100KB), ~50-200ms init, 99% parse accuracy vs ~70% regex. Adapter pattern: both parsers return `ParseResult`, tree-sitter auto-fallback to regex on failure.
+
+4. **Budget allocator 5 improvements**: (a) Intent-aware priority reordering (structural queries prefer codeGraph, semantic prefer cocoIndex). (b) Proportional overflow distribution with weighted shares instead of greedy first-come. (c) Minimum-floor protection during trim (never trim below 50% of floor). (d) Allocation metrics telemetry (demandRatio, overflowUtilization, dropRate). (e) Dynamic source registry pattern for future sources.
+
+5. **Ghost SymbolKinds**: `variable`, `module`, `parameter` are defined in the type but have no extraction regex. The type system promises more than the parser delivers.
+
+**Automatic AI Utilization** (iter 057): Three-tier auto-enrichment architecture for code graph + CocoIndex without explicit tool calls:
+
+| Tier | Trigger | Mechanism | Latency | Budget |
+|------|---------|-----------|---------|--------|
+| T1: Session lifecycle | SessionStart / Compaction | Background incremental code_graph_scan + ccc_reindex; preload working set neighborhoods | Zero (background) | 300-500 tokens graph, 200-400 CocoIndex |
+| T2: Tool dispatch | AI calls Read/Edit/Write/Grep | Extract file_path from toolArgs, inject file outline + imports from code graph | <100ms | 200-400 tokens per enrichment |
+| T3: Query-aware | memory_context/memory_search runs | Graph neighborhood expansion alongside semantic results; intent-based routing | Shares main budget | Via 3-source allocator (floors + overflow) |
+
+Key patterns:
+- **Extends proven memory-surface.ts architecture**: `autoSurfaceAtToolDispatch` already intercepts every non-memory tool call; code graph enrichment runs in parallel alongside memory auto-surface.
+- **GRAPH_AWARE_TOOLS set prevents recursion**: Same pattern as MEMORY_AWARE_TOOLS — skip auto-enrichment for code_graph_* and ccc_* tools.
+- **Session working set preloading**: session-prime.ts already tracks `workingSet`; feed to code_graph_context in "neighborhood" mode on session restart.
+- **Lazy per-file staleness checks via `ensureFreshFiles()`** (iter 067): On `code_graph_query`/`code_graph_context` call, extract touched file paths from results, run two-tier staleness check: (1) mtime fast-path comparing `statSync().mtimeMs` against stored `code_files.file_mtime_ms` (~1ms/file), (2) content hash verification only when mtime differs (~5-20ms/file). Hybrid sync/async reindex: <=2 stale files reindexed synchronously, 3-10 files deferred to async with `freshness.reindexInProgress: true` flag, >10 files triggers nextAction suggesting full scan. Requires `ALTER TABLE code_files ADD COLUMN file_mtime_ms INTEGER` schema extension (mirrors memory system's `memory_index.file_mtime_ms` pattern). CocoIndex coordination: code graph stores `lastStaleDetectedAt` timestamp; `ccc_status` checks it and triggers `ccc_reindex({ full: false })` if recent. Session-start batch: first MCP call triggers parallel `handleCodeGraphScan({ incremental: true })` + `cccReindex({ full: false })` via `resolveTrustedSession` session detection.
+- **Non-hook runtimes get Tier 2+3 automatically**: MCP server intercepts tool calls regardless of runtime. Only Tier 1 (session lifecycle) requires hooks, with instruction-file fallback.
+- **Pressure-aware budget scaling**: Reuses session-prime.ts pressure calculator — reduce enrichment budget when context window filling up.
+
+**Implementation Deep Dive** (iter 061): Source code analysis reveals critical implementation constraints and concrete integration points:
+
+- **Interception point is context-server.ts:325-352, NOT tools/index.ts**: `dispatchTool` is a pure pass-through scanner with no middleware. All auto-enrichment must wire into the pre-dispatch block in `context-server.ts` alongside existing memory auto-surface.
+- **MEMORY_AWARE_TOOLS has inverted double-check pattern**: Outer block in context-server.ts checks the set first; inner `autoSurfaceAtToolDispatch` checks again defensively. GRAPH_AWARE_TOOLS must follow the same pattern inside the generic dispatch path, not in the outer block.
+- **Dedicated `extractFilePathHint(args)` needed**: Existing `extractContextHint` returns first match from `['input', 'query', 'prompt', 'specFolder', 'filePath']` which prioritizes query strings over file paths. Graph enrichment needs a file-path-specific extractor checking `['file_path', 'filePath', 'path', 'subject']` with path-shape validation.
+- **250ms latency budget requires `Promise.allSettled` parallel execution**: Memory and graph auto-surface must run concurrently. Per-enrichment timeout of 150ms via `Promise.race` caps worst-case latency. Configurable via `SPECKIT_GRAPH_ENRICH_TIMEOUT`.
+- **Direct handler call bypasses recursive auto-surface**: Calling `handleCodeGraphQuery` directly from the enrichment function (not through `dispatchTool`) avoids triggering the auto-surface interceptor, making GRAPH_AWARE_TOOLS a safety net rather than primary guard.
+- **Hook process.exit(0) blocks background scan**: session-prime.ts calls `process.exit(0)` in finally block, killing any background work. Auto-refresh scan must be triggered in the long-lived MCP server process, not the short-lived hook script. Implementation: hook writes a "scan-requested" flag to hook state; MCP server checks flag on next tool call.
+- **Working set data available but not leveraged**: session-prime.ts renders workingSet as text list but never feeds it to code_graph_query for structural preloading. Adding 3 lines to `handleStartup` injects file outlines for the top 5 recently-active files.
+- **Envelope injection via `meta.graphContext`**: Same pattern as `appendAutoSurfaceHints` injecting `meta.autoSurface`. `syncEnvelopeTokenCount` automatically accounts for added graph context in token budget.
+
+**Non-Hook Runtime UX** (iter 058): Four-tier fallback architecture for context preservation across runtimes:
+
+| Tier | Mechanism | Runtimes | Quality |
+|------|-----------|----------|---------|
+| T1: Lifecycle hooks | PreCompact + SessionStart + Stop (3-source merge) | Claude Code only | Best (automatic) |
+| T1.5: MCP first-call priming | Server detects first call in session, enriches response with recovery context | All runtimes (proposed) | Very good (transparent) |
+| T2: Instruction-file triggers | CODEX.md / CLAUDE.md force memory_context() at session start | Codex CLI, Copilot, Gemini | Good (AI compliance dependent) |
+| T3: Command-based recovery | `/spec_kit:resume` full recovery workflow | All runtimes | Good (manual trigger) |
+| T4: Gate 1 automatic | CLAUDE.md Gate 1 forces memory_match_triggers() each message | All runtimes | Basic (triggered context only) |
+
+Key findings:
+- **CODEX.md already implements T2**: Explicit compaction recovery instructions with `memory_context({ mode: "resume" })` as first action.
+- **Agent definitions are cross-runtime identical**: `.opencode/agent/`, `.codex/agents/`, `.claude/agents/` all declare same MCP server access (`spec_kit_memory`, `cocoindex_code`) with same workflow.
+- **MCP servers cannot detect session start natively**: They are stateless request handlers. Enhancement: track last-call timestamp per session; if gap > threshold, treat next call as session restart.
+- **`/spec_kit:resume` is the universal manual fallback**: 4-5 step workflow using only MCP tools (no hooks), works identically on all runtimes.
+- **Unified hook abstraction layer ruled out**: Runtime hook APIs are fundamentally incompatible (Claude: stdin/stdout JSON, Copilot: .github/hooks/*.json, Gemini: different event system).
+
+**MCP First-Call Priming Design** (iter 062): Concrete mechanism for T1.5 universal context injection:
+
+- **Session detection primitive already exists**: `resolveTrustedSession()` in session-manager.ts returns `trusted: false` + `requestedSessionId: null` for all non-hook callers -- this is the universal "new session" signal.
+- **TTL-based logical session detection**: Process-level `FirstCallTracker` singleton maintains a Map of identity hashes to first-call timestamps. Gap > 30min (matching SESSION_CONFIG.sessionTtlMinutes) = new session. False positives are harmless (additive context).
+- **Interceptor layer, not mode modification**: Priming wraps existing handlers in tools/index.ts dispatch layer. Does NOT modify resolveEffectiveMode() pipeline. Priming context is appended to response envelope as `sessionPriming` field.
+- **Per-tool priming behavior**: memory tools get full recovery hints (interrupted sessions, last spec folder, graph freshness); code graph tools get index freshness warnings; CocoIndex tools get availability status.
+- **Token budget**: Priming tokens are additive (outside main tool budget) but capped at 300 tokens for non-memory tools, 800 for memory tools.
+- **CODEX.md gap identified**: No instruction-level trigger for code_graph_status() on session start. Enhancement: add `code_graph_status()` to "Context Retrieval Primitives" as third cross-runtime primitive alongside memory_match_triggers and memory_context.
+
+**OpenCode-Specific Integration Design** (iter 065): OpenCode is the primary non-hook runtime. Deep analysis of its agent system (.opencode/agent/), command structure (.opencode/command/spec_kit/), and MCP registration (opencode.json) reveals a 4-tier integration strategy:
+
+- **OpenCode has NO native hook system**: Extension points are limited to MCP server registration, agent markdown definitions, and YAML command workflows.
+- **@context agent is the universal enrichment gateway**: Its 3-layer retrieval sequence is the ideal injection point -- add code_graph_context as Layer 1.5 between Memory and Codebase layers.
+- **Resume command is the session-start proxy**: `/spec_kit:resume` implements 4-step session recovery; adding Step 1b (index freshness check) provides index refresh on every session resume.
+
+| Tier | Mechanism | Where to Change | Effort | Parity |
+|------|-----------|----------------|--------|--------|
+| A: Agent instruction triggers | Add code_graph_context to @context retrieval | .opencode/agent/context.md | Low | Auto graph enrichment |
+| B: Resume command enhancement | Add index freshness step to resume | spec_kit_resume_auto.yaml | Low | Session start refresh |
+| C: CLAUDE.md universal instruction | Add auto-enrichment section | Root CLAUDE.md | Low | Index staleness check |
+| D: MCP first-call priming | Server-side session detection + auto-refresh | context-server.ts | Medium | Background preloading |
+
+Tiers A-D together achieve ~90% feature parity with Claude Code hooks. The 10% gap is latency: hooks run before first AI response; MCP first-call priming adds 1-3s to first tool call.
+
+**CocoIndex Utilization Improvements** (iter 059): Five improvement areas for better CocoIndex integration:
+
+1. **Smarter seed resolution** (seed-resolver.ts):
+   - Add "near-exact" tier: `ABS(start_line - ?) <= 3` between exact and enclosing, confidence 0.95
+   - Add fuzzy name matching for manual seeds: `LIKE` fallback after exact `=` fails
+   - Propagate CocoIndex similarity score into ArtifactRef confidence (currently discarded)
+
+2. **Automatic re-indexing triggers** (3 trigger points):
+   - Branch switch: detect `.git/HEAD` changes, trigger incremental `ccc index` + `code_graph_scan`
+   - Session start: auto-check `ccc status` during SessionStart hook, reindex if stale
+   - Debounced file save: 30s debounce window, incremental reindex of changed files
+
+3. **Query intent router improvements**:
+   - Keyword pre-classification: "who calls X" -> Code Graph impact; "find code that does X" -> CocoIndex search
+   - Confidence-based fallback: low CocoIndex similarity (<0.3) -> fall back to code graph; file_anchor resolution -> suggest CocoIndex
+   - Dual-query for ambiguous intents: execute both searches in parallel, merge via compact-merger
+
+4. **Hybrid query patterns** (3 new patterns):
+   - Structural expansion of semantic results: CocoIndex -> resolve seeds -> expand neighborhood automatically
+   - Semantic enrichment of structural results: Code graph call chain -> CocoIndex finds similar non-connected code
+   - Working set warm-up: code graph hot files + CocoIndex adjacent code on session start
+
+5. **Underutilized CocoIndex features**:
+   - Language/path filters not passed through from code graph metadata to CocoIndex searches
+   - `refresh_index` session tracking needed (concurrent true requests cause ComponentContext errors)
+   - `ccc_feedback` tool available but never called -- implicit positive feedback after AI uses results
+
+---
+
+## Part VII: Consolidation — Prioritized Implementation Backlog (Iteration 064)
+
+### Contradiction Analysis
+
+No fundamental contradictions between segments 4-5 and segment 6. Seven refinements identified:
+- **endLine bug** elevates CALLS edge extraction from "improvable" to "non-functional" (P0 fix)
+- **Tool dispatch insertion point** corrected from dispatchTool to context-server.ts pre-dispatch block
+- **Session detection** corrected from "impossible for MCP servers" to "achievable via resolveTrustedSession()"
+- **Index coordination** shifted from "fully independent" to "minimal shared trigger coordination"
+- **Cross-runtime readiness** elevated from 3/5 to ~4/5 with MCP first-call priming design
+- **Seed resolution** deepened: CocoIndex scores are discarded at integration seam, needs near-exact tier
+- **Budget allocator** expanded with 5 specific production improvements
+
+### Prioritized Backlog (Impact-to-Effort Ratio)
+
+| Priority | Item | Impact | Effort | Depends On |
+|---|---|---|---|---|
+| **P0-1** | Fix endLine bug (brace-counting heuristic) | 10/10 | ~50-80 LOC | Nothing |
+| **P0-2** | Fix `/spec_kit:resume` profile:"resume" | 8/10 | ~4 LOC | Nothing |
+| **P1-1** | MCP first-call priming (T1.5 universal) | 9/10 | ~150-200 LOC | resolveTrustedSession() |
+| **P1-2** | Tool-dispatch auto-enrichment (Tier 2) | 9/10 | ~120-180 LOC | endLine fix |
+| **P1-3** | Near-exact seed resolution + score propagation | 7/10 | ~60-80 LOC | seed-resolver.ts |
+| **P1-4** | DECORATES + OVERRIDES + TYPE_OF edges | 7/10 | ~120-160 LOC | endLine fix |
+| **P2-1** | Auto-reindex triggers (3 triggers) | 6/10 | ~100-150 LOC | scan/reindex APIs |
+| **P2-2** | Budget allocator improvements (2 of 5) | 6/10 | ~80-120 LOC | budget-allocator.ts |
+| **P2-3** | Query-intent pre-classification | 6/10 | ~60-100 LOC | Intent router |
+| **P2-4** | Session lifecycle preloading (Tier 1) | 7/10 | ~150-200 LOC | Hook system |
+| **P2-5** | Missing SymbolKinds | 4/10 | ~40-60 LOC | endLine fix |
+| **P2-6** | Missing query API operations | 5/10 | ~100-150 LOC/op | Schema |
+| **P3-1** | Instruction-file updates (CODEX.md etc.) | 4/10 | ~20-40 LOC | Nothing |
+| **P3-2** | ccc_feedback implicit positive feedback | 3/10 | ~30-50 LOC | ccc_feedback API |
+| **P3-3** | Hybrid query patterns (3 patterns) | 5/10 | ~200-300 LOC | Seeds + router + indexes |
+| **P3-4** | Tree-sitter WASM migration (phases 2-4) | 8/10 | ~400-600 LOC | Phase 1 brace-fix |
+| **P3-5** | Min-floor trim protection + telemetry | 3/10 | ~40-60 LOC | Allocator works |
+| **P3-6** | Dynamic source registry | 2/10 | ~60-80 LOC | Allocator exists |
+
+### Gaps Identified
+
+| Gap | Severity | Status |
+|---|---|---|
+| Testing strategy for auto-enrichment | Medium | Addressed (iteration 069) -- 6 new test files, 40 test cases designed |
+| Performance benchmarks for 3-source merge | Low | Theoretical only |
+| Error recovery for failed auto-enrichment | Medium | Degrade-not-fail principle stated but no concrete paths |
+| Migration path phases 2-4 detail | Medium | Sketch-level |
+| CocoIndex availability graceful degradation | Low | Partial |
+
+### Modified Prior Conclusions
+
+1. MVP scope: 850-1,200 LOC + ~50-80 LOC critical bugfix = **900-1,280 LOC**
+2. Index coordination: "no shared event bus" refined to "minimal shared trigger mechanism"
+3. Cross-runtime readiness: elevated 3/5 to ~4/5 with first-call priming
+4. Auto-surface insertion point: context-server.ts, not tool handler layer
+5. CocoIndex/Code Graph independence: true at index level, tightly integrated at query level
+
+---
+
+## Part VIII: Implementation Phasing Roadmap (Iteration 068)
+
+### Phase Overview
+
+The prioritized backlog (Part VII) maps into 4 implementation phases, 11 sub-phases, with a total net delta of 654-932 LOC.
+
+| Phase | Focus | Net LOC | Risk | Sessions |
+|-------|-------|---------|------|----------|
+| **A** | P0 endLine fix | +60-80 | Low | 1-2 |
+| **B** | Auto-enrichment (B1 stale-on-read, B2 first-call priming, B3 GRAPH_AWARE_TOOLS) | +291-389 | Medium | 5-8 |
+| **C** | Tree-sitter WASM (C1 adapter, C2 parser, C3 new edges, C4 regex removal) | +200-315 net | High | 7-10 |
+| **D** | Cross-runtime UX (D1 agent instructions, D2 resume command, D3 instruction files) | +100-168 | Low | 3 |
+
+### Critical Path
+
+```
+A (endLine fix) --> B1 (stale-on-read) --> B2/B3 (parallel) --> D (cross-runtime)
+A (endLine fix) --> C1 (adapter) --> C2 (WASM) --> C3 (edges) --> C4 (cleanup)
+```
+
+### Phase A: P0 Critical Fixes (60-80 LOC, LOW risk)
+
+Primary target: `structural-indexer.ts` (473 lines). Add brace-counting endLine detection to `parseJsTs()` (+25-35 LOC helper + 10 LOC call sites), indentation-based to `parsePython()` (+15-20 LOC), brace-counting to `parseBash()` (+10 LOC). No other files need changes -- `extractEdges()` and `capturesToNodes()` already use `endLine` correctly.
+
+### Phase B: Auto-Enrichment Infrastructure (291-389 LOC, MEDIUM risk)
+
+Three sub-phases with internal dependency ordering (B1 before B2/B3):
+
+- **B1 Stale-on-read** (76-104 LOC): Add `ensureFreshFiles()` to `code-graph-db.ts`, `file_mtime_ms` schema column, mtime fast-path. Modify `handlers/code-graph/query.ts` and `context.ts` to call it.
+- **B2 First-call priming** (110-150 LOC): Add `FirstCallTracker` singleton to `hooks/memory-surface.ts`, priming payload in `handlers/memory-context.ts`, `getQuickSummary()` in `code-graph-context.ts`.
+- **B3 GRAPH_AWARE_TOOLS** (105-135 LOC): Add interceptor to `hooks/memory-surface.ts` (follows existing `MEMORY_AWARE_TOOLS` pattern), `getFileContext()` in `code-graph-context.ts`.
+
+### Phase C: Tree-Sitter WASM Migration (320-465 new, -120-150 removed, HIGH risk)
+
+- **C1 Adapter** (40-60 LOC): Extract `ParseResult` interface in `structural-indexer.ts`.
+- **C2 WASM Parser** (200-280 LOC): New file `tree-sitter-parser.ts`, add `web-tree-sitter` + 4 grammar packages (~1.5MB). Cold start risk (50-200ms); mitigate with lazy init.
+- **C3 New Edge Types** (83-125 LOC): Add DECORATES, OVERRIDES, TYPE_OF extraction in `structural-indexer.ts` + enum updates in `indexer-types.ts`.
+- **C4 Regex Removal** (-120-150 LOC): Remove `parseJsTs()`, `parsePython()`, `parseBash()` after extensive testing.
+
+### Phase D: Cross-Runtime UX (100-168 LOC, LOW risk)
+
+- **D1 Agent instructions** (50-70 LOC): Update 4 agent definition files (`.opencode/agent/context.md`, `.claude/agents/context.md`, `.codex/agents/context.toml`, `.agents/agents/context.md`) with Layer 1.5 code_graph_context.
+- **D2 Resume command** (20-30 LOC): Add index freshness step to both `spec_kit_resume_auto.yaml` and `spec_kit_resume_confirm.yaml`.
+- **D3 Instruction files** (30-48 LOC): Update CLAUDE.md, CODEX.md, SKILL.md with code graph references.
+
+Rollout: start with OpenCode (primary runtime), mirror to Claude, then Codex/Copilot. Each runtime independent.
+
+---
+
+## Part IX: Error Recovery and Graceful Degradation (Iteration 071)
+
+### Current Error Handling Posture
+
+The existing codebase uses a **"never-block" guarantee** in hooks: `main().catch(log).finally(exit(0))`. This ensures hook failures never block the Claude Code session, but at the cost of invisible error reporting (stderr-only).
+
+Three concrete gaps identified:
+
+| Gap | Severity | Location | Impact |
+|-----|----------|----------|--------|
+| `initDb()` has no try/catch | P0 | code-graph-db.ts:71-80 | Corrupt/locked DB crashes MCP server |
+| No `SQLITE_BUSY` handling | P1 | code-graph-db.ts (all queries) | Write contention throws unhandled exception |
+| `getRecoveryApproach()` unwired | P2 | runtime-detection.ts:52-54 | Designed degradation signals never consumed |
+
+### Graceful Degradation Cascade (4 Levels)
+
+| Level | Name | Sources Available | Trigger | Action |
+|-------|------|-------------------|---------|--------|
+| 0 | Full | Code Graph + CocoIndex + Memory | Default | 3-source merge |
+| 1 | Graph-down | CocoIndex + Memory | `initDb()` throws or `getStats()` null | Skip codeGraph in MergeInput, log warning |
+| 2 | Graph+Coco-down | Memory only | CocoIndex binary missing AND graph unavailable | Constitutional + triggered memories only |
+| 3 | All-down | Bare session recovery | MCP server unreachable | Instruction-file prompts (CLAUDE.md, CODEX.md) |
+
+Implementation: A `DegradationLevel` enum (0-3) computed once per session via `computeDegradationLevel()` that probes each source. Passed into `mergeCompactBrief` to reallocate token budgets (e.g., Level 1 moves code graph's 1200-token floor to CocoIndex and memory). Estimated: ~60 LOC.
+
+### DB Auto-Rebuild Strategy
+
+The code graph DB is **fully reconstructable** from source files (unlike the memory index which contains user-authored content). Auto-rebuild design:
+
+1. **In `initDb()`**: Wrap `new Database()` + `db.exec(SCHEMA_SQL)` in try/catch
+2. **On `SQLITE_CORRUPT` / `SQLITE_NOTADB` / `SQLITE_CANTOPEN`**: Rename corrupt file to `code-graph.sqlite.corrupt.{timestamp}`, create fresh DB, set `needsFullRescan` flag
+3. **On next `code_graph_scan`**: Check flag, run full rescan instead of incremental
+4. **For `SQLITE_BUSY`**: Add `db.pragma('busy_timeout = 3000')` for automatic retry on write contention
+5. Continue at Level 1 degradation until rescan completes
+
+Estimated: ~50 LOC (40 in initDb + 10 in scan handler).
+
+### Existing Patterns to Extend
+
+- **compact-inject.ts**: Already demonstrates 2-tier source fallback (merged -> legacy). Extend to per-source try/catch within the merge pipeline.
+- **session-prime.ts**: Already demonstrates dynamic import guard for optional code graph dependency. Extend to all optional sources.
+- **shared.ts `withTimeout()`**: Already provides timeout-with-fallback. Extend to wrap individual source queries in the budget allocator.
+
+---
+
+## Part X: Final Synthesis -- Complete Research Program Summary (75 Iterations)
+
+> **75 iterations across 6 segments** | 10 Claude orchestrator + 40 GPT-5.4 agent + 20 Claude Opus deep-research + 5 skipped/pending | 16 research questions answered | ~12,000+ lines of research output
+
+### Executive Summary
+
+This research program evaluated, designed, and specified a comprehensive upgrade to the Spec Kit Memory MCP system's context preservation and code understanding capabilities. The program spanned 75 iterations across 6 segments, using three execution methods (orchestrator-driven, parallel GPT-5.4 agents, and Claude Opus deep-research iterations).
+
+**Key decisions:**
+1. **REJECT** Codex-CLI-Compact (Dual-Graph) -- proprietary graperoot core, CLAUDE.md conflicts, workflow collisions
+2. **BUILD** hybrid hook+tool context injection architecture for Claude Code (PreCompact + SessionStart + Stop)
+3. **BUILD** clean-room structural code graph using tree-sitter + SQLite, integrated into existing MCP search pipeline
+4. **USE** CocoIndex as complementary semantic layer -- no overlap with structural code graph
+5. **BUILD** 4-tier cross-runtime fallback for non-hook CLI runtimes (hooks -> MCP priming -> instruction files -> Gate 1)
+6. **FIX** critical endLine bug that renders CALLS edge detection non-functional (P0, zero dependencies)
+
+### Segment 6 Summary (Iterations 56-75, Feature Improvements + UX)
+
+Segment 6 investigated four research questions with Claude Opus deep-research iterations:
+
+**Q13 -- Feature Improvements** (iterations 056, 060, 066):
+- P0 bug: `endLine = startLine` in all 3 parsers makes CALLS edge detection scan only declaration lines, not function bodies. Secondary bug: `contentHash` computed from 1-line slice, breaking change detection.
+- Fix: brace-counting `estimateEndLine()` for JS/TS/Bash (~50-80 LOC), indentation-based for Python
+- 3 missing edge types: DECORATES (decorator->target), OVERRIDES (subclass->parent method), TYPE_OF (symbol->type)
+- tree-sitter WASM 4-phase migration: brace-fix (immediate) -> optional WASM (flag-gated) -> WASM default -> regex removal. Revised bundle: ~1.5MB (not 8-15MB). Parser-agnostic `ParseResult` interface means zero changes to downstream consumers.
+- Budget allocator: 5 improvements (intent-aware priority, proportional overflow, min-floor protection, metrics telemetry, dynamic source registry)
+
+**Q14 -- Automatic AI Utilization** (iterations 057, 061):
+- 3-tier auto-enrichment: T1 session lifecycle (background preloading), T2 tool dispatch (file-path-aware injection via GRAPH_AWARE_TOOLS interceptor), T3 query-aware (graph expansion alongside semantic results via 3-source allocator)
+- Interception point: `context-server.ts:325-352` pre-dispatch block (NOT `dispatchTool`)
+- `GRAPH_AWARE_TOOLS` follows proven `MEMORY_AWARE_TOOLS` pattern with inverted set logic
+- 250ms latency budget requires `Promise.allSettled` parallel execution with 150ms per-enrichment timeout
+- Non-hook runtimes get T2+T3 automatically (MCP server intercepts regardless of runtime)
+
+**Q15 -- Non-Hook Runtime UX** (iterations 058, 062, 065):
+- 4-tier fallback: T1 hooks (Claude only), T1.5 MCP first-call priming (universal, proposed), T2 instruction-file triggers (CODEX.md etc.), T3 command-based (`/spec_kit:resume`), T4 Gate 1 auto
+- MCP first-call priming: `resolveTrustedSession()` returns `trusted:false + requestedSessionId:null` for all non-hook callers = universal "new session" signal. TTL-based `FirstCallTracker` singleton with 30min gap detection.
+- OpenCode 4-tier integration: A (agent instruction triggers), B (resume command enhancement), C (CLAUDE.md universal instruction), D (MCP first-call priming). Tiers A-D achieve ~90% parity with Claude Code hooks.
+
+**Q16 -- CocoIndex Utilization** (iterations 059, 063):
+- Near-exact seed resolution tier: `ABS(start_line - ?) <= 3` between exact and enclosing (confidence 0.95)
+- CocoIndex score propagation: similarity scores currently discarded at integration seam; blend into ArtifactRef confidence
+- 3 auto-reindex triggers: branch switch (.git/HEAD), session start (ccc_status), debounced file save (30s)
+- 3 hybrid query patterns: structural expansion of semantic results, semantic enrichment of structural results, working set warm-up
+- Underutilized features: language filters, refresh_index management, ccc_feedback implicit positive feedback
+
+### Prioritized Implementation Roadmap
+
+From consolidation iteration 064 and phasing iteration 068:
+
+| Phase | Focus | LOC (net) | Risk | Sessions | Key Files |
+|-------|-------|-----------|------|----------|-----------|
+| **A** | P0 endLine fix | +60-80 | Low | 1-2 | structural-indexer.ts |
+| **B1** | Stale-on-read | +76-104 | Low | 1-2 | code-graph-db.ts, handlers/ |
+| **B2** | MCP first-call priming | +110-150 | Med | 2-3 | memory-surface.ts, memory-context.ts |
+| **B3** | GRAPH_AWARE_TOOLS | +105-135 | Med | 2-3 | memory-surface.ts, code-graph-context.ts |
+| **C1** | Parser adapter | +40-60 | Low | 1 | structural-indexer.ts |
+| **C2** | Tree-sitter WASM | +200-280 | High | 3-5 | NEW: tree-sitter-parser.ts |
+| **C3** | New edge types | +83-125 | Med | 2-3 | structural-indexer.ts, indexer-types.ts |
+| **C4** | Regex removal | -120-150 | Med | 1 | structural-indexer.ts |
+| **D1** | Agent instructions | +50-70 | Low | 1 | 4 agent definition files |
+| **D2** | Resume command | +20-30 | Low | 1 | 2 YAML workflow files |
+| **D3** | Instruction files | +30-48 | Low | 1 | CLAUDE.md, CODEX.md, SKILL.md |
+| **TOTAL** | | **+654-932** | | **16-26** | |
+
+Critical path: `A -> B1 -> B2/B3 (parallel) -> D` and `A -> C1 -> C2 -> C3 -> C4`
+
+### Performance Constraints (Iteration 070)
+
+| Resource | Budget | Measured/Estimated | Headroom |
+|----------|--------|-------------------|----------|
+| Hook timeout | 1800ms hard cap | 1-50ms current usage | ~1750ms |
+| SQLite 1-hop expansion | 400ms deadline | 1-9ms typical | ~391ms |
+| Token estimation accuracy | +/-25% | chars/4 heuristic | Acceptable for rough budgeting |
+| CocoIndex MCP roundtrip | N/A (not in hook path) | 100-500ms | Must be tool-dispatch-time only |
+| Tree-sitter per-file parse | <50ms target | 5-50ms (size dependent) | Meets target; cold start 50-200ms |
+| Staleness check (20 files) | <5ms | ~2ms | Negligible |
+
+### Error Recovery Design (Iteration 071)
+
+**Current state**: Hooks use "never-block" pattern (`main().catch().finally(exit(0))`). Three gaps: no `initDb()` try/catch, no `SQLITE_BUSY` retry, `getRecoveryApproach()` unwired.
+
+**Designed 4-level degradation cascade**:
+- Level 0 (full): Code Graph + CocoIndex + Memory
+- Level 1 (graph-down): CocoIndex + Memory (code graph DB unavailable)
+- Level 2 (graph+coco-down): Memory only (both unavailable)
+- Level 3 (all-down): Instruction-file prompts (CLAUDE.md, CODEX.md)
+
+**DB auto-rebuild**: Code graph DB is fully reconstructable from source via `code_graph_scan`. On corruption: rename corrupt file, create fresh DB, set `needsFullRescan` flag. `SQLITE_BUSY`: add `busy_timeout = 3000` pragma. Estimated: ~50 LOC.
+
+### Testing Strategy Summary (Iteration 069)
+
+6 new test files designed, ~40 test cases:
+- `structural-indexer.test.ts`: endLine correctness, multi-language, edge cases (strings with braces, template literals)
+- `edge-extraction.test.ts`: DECORATES, OVERRIDES, TYPE_OF extraction with fixture files
+- `auto-enrichment.test.ts`: GRAPH_AWARE_TOOLS interceptor, file path extraction, parallel execution, recursion prevention
+- `stale-on-read.test.ts`: mtime fast-path, content hash fallback, sync vs async threshold, schema migration
+- `cross-runtime.test.ts`: Runtime detection simulation, fallback tier verification, instruction file parsing
+- `integration.test.ts`: Full pipeline E2E (scan -> query -> context -> enrich)
+
+Follows established patterns: inline content strings, direct module imports, `vi.stubEnv()` save/restore.
+
+### Cross-Runtime UX Comparison (Iterations 058, 062, 065)
+
+| Capability | Claude Code | OpenCode | Codex CLI | Copilot CLI | Gemini CLI |
+|------------|:-----------:|:--------:|:---------:|:-----------:|:----------:|
+| Lifecycle hooks | Full (25 events) | None | None | Limited (8 events) | Limited |
+| Auto context injection | SessionStart | MCP priming (proposed) | MCP priming | MCP priming | MCP priming |
+| Compaction recovery | PreCompact cache + inject | Instruction-file trigger | CODEX.md trigger | Instruction-file | Instruction-file |
+| Token tracking | Stop hook | None (future) | None | None | None |
+| Session detection | Hook session_id | resolveTrustedSession | resolveTrustedSession | resolveTrustedSession | resolveTrustedSession |
+| Code graph auto-enrich | T1+T2+T3 (all tiers) | T2+T3 (tool dispatch) | T2+T3 | T2+T3 | T2+T3 |
+| Parity estimate | 100% | ~90% | ~85% | ~80% | ~75% |
+
+Universal mechanism across all runtimes: MCP first-call priming (T1.5) detects new sessions via `resolveTrustedSession()` and injects recovery context + graph freshness summary on first tool call.
+
+### Open Items and Recommended Next Steps
+
+1. **Immediate** (before implementation): Fix `/spec_kit:resume` `profile: "resume"` defect in all 4 YAML blocks (~4 LOC)
+2. **Phase A**: Implement endLine brace-counting fix (60-80 LOC, zero dependencies, 1-2 sessions)
+3. **Phase B**: Build auto-enrichment infrastructure (291-389 LOC, 5-8 sessions)
+4. **Phase C**: Tree-sitter WASM migration (320-465 new LOC, 7-10 sessions, highest risk)
+5. **Phase D**: Cross-runtime instruction updates (100-168 LOC, 3 sessions, lowest risk)
+6. **Deferred**: Performance benchmarks on real workload, error telemetry observability, Phases 5-7 of original hook architecture (810-1,650 LOC)
+
+### Convergence Report
+
+| Segment | Iterations | newInfoRatio Range | Final |
+|---------|-----------|-------------------|-------|
+| 1 | 001-010 | 0.15-0.95 | Converged (all 5 questions answered) |
+| 2 | 011-015 | 0.44-0.88 | Converged (architecture designed) |
+| 3 | 016-035 | 0.41-0.90 | Converged (implementation-ready) |
+| 4 | 036-045 | 0.73-0.88 | Converged (code graph specified) |
+| 5 | 046-055 | 0.49-0.76 | Converged (integration designed) |
+| 6 | 056-075 | 0.10-0.80 | Converged (implementation phased) |
+
+All 16 research questions answered. Zero productive research avenues remain. The program is ready for implementation.
+
+---
+
+## Appendix: Full Iteration Index (Updated)
+
+| Iter | Lines | Focus |
+|------|------:|-------|
+| 001-010 | ~5K | Dual-Graph evaluation: REJECTED |
+| 011-015 | ~5K | Hook+tool architecture design |
+| 016 | 71 | autoSurfaceAtCompaction API |
+| 017 | 166 | memory_context resume flow |
+| 018 | 102 | Claude hooks stdin/stdout schemas |
+| 019 | 333 | Transcript JSONL format (640 files analyzed) |
+| 020 | 43 | Hook-state design patterns |
+| 021 | 42 | Vitest test framework patterns |
+| 022 | -- | Query router and hybrid search (pending) |
+| 023 | 300 | Settings merge strategy |
+| 024 | 96 | Token budget and truncation |
+| 025 | 49 | Recovery payload format |
+| 026 | 192 | Copilot CLI hooks API |
+| 027 | 102 | Gemini CLI hooks API |
+| 028 | 46 | Agent compaction audit (30 files) |
+| 029 | 131 | Command compaction audit (52 files) |
+| 030 | 117 | CLAUDE.md/CODEX.md recovery gaps |
+| 031 | 204 | tree-sitter npm evaluation |
+| 032 | 98 | aider repo-map analysis |
+| 033 | 48 | CocoIndex integration options |
+| 034 | 184 | End-to-end flow trace |
+| 035 | 76 | Implementation readiness assessment |
+| 036 | 171 | AI coding tools context strategies |
+| 037 | 190 | Code graph representations for AI |
+| 038 | 290 | tree-sitter deep dive (queries, parsing) |
+| 039 | 295 | Compact code representations for LLMs |
+| 040 | 187 | SQLite vs graph databases |
+| 041 | 88 | Incremental code graph updates |
+| 042 | 137 | Code-aware RAG pipelines |
+| 043 | 307 | Open-source code graph tools survey |
+| 044 | 414 | Code graph MCP tool API design |
+| 045 | 265 | Code graph for context compaction synthesis |
+| 046 | 284 | CocoIndex-Code Graph bridge design |
+| 047 | 70 | tree-sitter-CocoIndex chunk alignment |
+| 048 | 275 | Query-intent router for code queries |
+| 049 | 213 | Token budget allocation across 3 sources |
+| 050 | 572 | Compact repo map generation |
+| 051 | 134 | Incremental index coordination |
+| 052 | 301 | Compaction 3-source merge strategy |
+| 053 | 192 | Session working set tracking |
+| 054 | 549 | code_graph_context API with CocoIndex seeds |
+| 055 | 282 | Implementation readiness assessment |
+| 056 | ~280 | Feature improvements: endLine bug, edge types, SymbolKinds, budget allocator, merger |
+| 057 | ~260 | Automatic AI utilization: 3-tier auto-enrichment architecture |
+| 058 | ~250 | Non-hook CLI runtime UX: 4-tier fallback architecture |
+| 059 | ~200 | CocoIndex utilization: seed resolution, auto-reindex, hybrid queries |
+| 060 | ~320 | Q13 deep dive: endLine source trace, regex designs, tree-sitter migration, allocator |
+| 061 | ~300 | Q14 deep dive: auto-enrichment interceptor architecture from source code |
+| 062 | ~280 | Q15 deep dive: MCP first-call priming with session detection |
+| 063 | ~260 | Q16 deep dive: seed resolution chain, auto-reindex, hybrid queries |
+| 064 | ~350 | CONSOLIDATION: contradiction analysis, prioritized 18-item backlog |
+| 065 | ~280 | OpenCode-specific: agent architecture, MCP registration, 4-tier integration |
+| 066 | ~300 | Tree-sitter WASM: regex parser analysis, S-expression queries, adapter design |
+| 067 | ~280 | Auto-indexing: stale-on-read, mtime fast-path, per-file granularity |
+| 068 | ~275 | IMPLEMENTATION PHASING: 4 phases, 11 sub-phases, 654-932 LOC |
+| 069 | ~260 | Testing strategy: 6 test files, 40 test cases |
+| 070 | ~250 | Performance analysis: 1800ms budget, SQLite <10ms, CocoIndex 100-500ms |
+| 071 | ~240 | Error recovery: 4-level degradation, DB auto-rebuild |
+| 072-074 | -- | Skipped (convergence achieved) |
+| 075 | ~120 | FINAL SYNTHESIS: complete program summary and convergence report |

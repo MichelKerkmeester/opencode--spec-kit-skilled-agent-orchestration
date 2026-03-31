@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/plan]"
 description: "Execution plan for 9 mutation playbook scenarios: preconditions, non-destructive tests, transaction integrity, destructive deletion, and evidence-plus-verdict collection."
 trigger_phrases:
   - "mutation execution plan"

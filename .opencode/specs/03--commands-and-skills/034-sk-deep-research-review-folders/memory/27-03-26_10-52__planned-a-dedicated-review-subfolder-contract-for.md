@@ -7,7 +7,7 @@ trigger_phrases:
   - "review-report placement"
   - "review_mode_contract review subfolder"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 _sourceSessionCreated: 0
 _sourceSessionId: ""
 _sourceSessionUpdated: 0

@@ -6,7 +6,7 @@ trigger_phrases:
   - "baseline decision"
   - "safety rails adr"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 001-baseline-and-safety-rails

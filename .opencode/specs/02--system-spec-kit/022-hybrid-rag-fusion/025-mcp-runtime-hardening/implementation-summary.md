@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/implementation-summary]"
 description: "20 new tests, recursive credential sanitization, side-effect-free cleanup helpers, and full documentation surface alignment close the T020-T025 follow-on recommendations from 024."
 trigger_phrases:
   - "025 mcp hardening summary"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Label Product Content Attribute [032-label-product-content- [01--anobel.com/030-label-product-content-attr/tasks]"
+title: "Tasks: Label Product Content Attribute [032-label-product-content [01--anobel.com/030-label-product-content-attr/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"

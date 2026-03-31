@@ -1,6 +1,6 @@
 
 ---
-title: "Plan: Adversarial Self-Check for Review, Debug, Ultra-Think Agents [04--agent-orchestration/026-review-debug-agent-improvement/plan]"
+title: "Plan: Adversarial Self-Check for Review, Debug [04--agent-orchestration/026-review-debug-agent-improvement/plan]"
 description: "Implementation plan for normalizing the adversarial self-check update across surviving runtime variants."
 trigger_phrases:
   - "plan"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "ultra-think"
   - "026"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Adversarial Self-Check for Review, Debug, Ultra-Think Agents
 

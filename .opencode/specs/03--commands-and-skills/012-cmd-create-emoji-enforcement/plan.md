@@ -10,7 +10,7 @@ trigger_phrases:
   - "011"
   - "create"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Remove Emoji Enforcement from /create Command
 

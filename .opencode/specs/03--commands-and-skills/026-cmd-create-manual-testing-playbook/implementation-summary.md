@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [03--commands-and-skills/026-cmd-create-manual-testing-playbook/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/026-cmd-create-manual-testing-playbook/implementation-summary]"
 description: "The /create:testing-playbook command is now implemented, validated, and synchronized across command docs, workflow assets, runtime mirrors, and discovery surfaces."
 trigger_phrases:
   - "testing playbook command implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-doc README and HVR Improvements [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/implementation-summary]"
+title: "Implementation Summary: sk-doc [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/implementation-summary]"
 description: "Summary of the sk-doc HVR, README template, and README creation guidance upgrade plus packet repair."
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/spec]"
 description: "Phase 004 documents the maintenance manual test packet. Execute scenarios EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, and EX-045 against the Spec Kit Memory system to verify memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair."
 trigger_phrases:
   - "maintenance manual testing"

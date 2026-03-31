@@ -7,7 +7,7 @@ trigger_phrases:
   - "004"
   - "type"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Type Consolidation
 

@@ -5,7 +5,7 @@ trigger_phrases:
   - "test remediation plan"
   - "023 phase 5 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Test and Scenario Remediation
 

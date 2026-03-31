@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Phase 009 — Reindex Validator False Positives [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/checklist]"
+title: "Checklist: Phase 009 — [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/checklist]"
 description: "Verification checklist for fixing false-positive validation rules during bulk reindex."
 trigger_phrases:
   - "checklist"

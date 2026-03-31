@@ -7,7 +7,7 @@ trigger_phrases:
   - "008"
   - "signal"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Signal Extraction
 

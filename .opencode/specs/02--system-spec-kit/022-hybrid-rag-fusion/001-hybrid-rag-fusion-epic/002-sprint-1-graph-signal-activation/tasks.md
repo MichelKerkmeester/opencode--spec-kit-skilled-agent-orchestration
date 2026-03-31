@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/tasks]"
 description: "Task breakdown for Sprint 1: typed-weighted degree as 5th RRF channel, edge density, agent UX"
 trigger_phrases:
   - "sprint 1 tasks"

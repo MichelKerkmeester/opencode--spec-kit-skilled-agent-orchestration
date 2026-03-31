@@ -5,7 +5,7 @@ trigger_phrases:
   - "phase 2 adr"
   - "lineage adr"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 002-versioned-memory-state

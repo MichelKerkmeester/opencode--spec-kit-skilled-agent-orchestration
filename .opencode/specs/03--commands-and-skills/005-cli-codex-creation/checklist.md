@@ -1,6 +1,15 @@
 ---
-title: "Verification Checklist: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/checklist]"
+title: "Verification Checklist: cli-gemini Model Consolidation + [03--commands-and-skills/005-cli-codex-creation/checklist]"
 description: "Verification checklist for model consolidation and cli-codex skill creation."
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "cli"
+  - "gemini"
+  - "model"
+  - "005"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: cli-gemini Model Consolidation + cli-codex Skill
 

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/checklist]"
+title: "Verification Checklist [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/checklist]"
 description: "Verification checklist for keeping the root manual-testing wrapper aligned to the live 290-file playbook tree."
 trigger_phrases:
   - "manual testing checklist"

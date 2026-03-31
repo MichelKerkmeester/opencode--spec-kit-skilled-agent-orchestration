@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/spec]"
 description: "Systematic code audit of 19 UX Hooks features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"

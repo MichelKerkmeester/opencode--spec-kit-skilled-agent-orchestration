@@ -7,7 +7,7 @@ trigger_phrases:
   - "003"
   - "constitutional"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---

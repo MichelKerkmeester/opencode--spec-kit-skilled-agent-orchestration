@@ -4,12 +4,11 @@ description: "Capture the technical context and execution sequence for documenti
 trigger_phrases:
   - "plan"
   - "cloudflare"
-  - "r2"
   - "worker"
   - "migration"
   - "032"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Cloudflare R2 + Worker Migration
 

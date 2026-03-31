@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/tasks]"
 description: "Task breakdown for MPAB chunk aggregation, learned relevance feedback, and shadow scoring."
 trigger_phrases:
   - "sprint 4 tasks"

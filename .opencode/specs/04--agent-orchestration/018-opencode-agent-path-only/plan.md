@@ -9,7 +9,7 @@ trigger_phrases:
   - "path"
   - "018"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: OpenCode Agent Path Only
 

@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "012"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 completed: 2026-02-17
 created: 2026-02-17
 level: 3

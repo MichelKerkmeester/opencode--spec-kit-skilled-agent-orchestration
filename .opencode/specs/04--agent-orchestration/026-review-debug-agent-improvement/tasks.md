@@ -1,6 +1,6 @@
 
 ---
-title: "Tasks: Adversarial Self-Check for Review, Debug, Ultra-Think Agents [04--agent-orchestration/026-review-debug-agent-improvement/tasks]"
+title: "Tasks: Adversarial Self-Check for Review, Debug [04--agent-orchestration/026-review-debug-agent-improvement/tasks]"
 description: "Task Format: T### [P?] Description"
 trigger_phrases:
   - "tasks"

@@ -7,7 +7,7 @@ trigger_phrases:
   - "012"
   - "auto"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Auto-Detection Fixes
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/tasks]"
 description: "Task breakdown for auditing 22 Pipeline Architecture features"
 trigger_phrases:
   - "tasks"

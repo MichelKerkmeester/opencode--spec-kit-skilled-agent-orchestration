@@ -8,7 +8,7 @@ trigger_phrases:
   - "hydra"
   - "architecture"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 008-hydra-db-based-features

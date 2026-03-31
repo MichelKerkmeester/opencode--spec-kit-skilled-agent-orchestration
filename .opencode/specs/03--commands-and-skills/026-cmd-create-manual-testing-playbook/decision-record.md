@@ -5,7 +5,7 @@ trigger_phrases:
   - "testing playbook command adr"
   - "/create:testing-playbook decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: /create:testing-playbook Command
 

@@ -6,7 +6,7 @@ trigger_phrases:
   - "architecture adr"
   - "boundary contract"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: Scripts vs mcp_server Architecture Refinement + Boundary Remediation

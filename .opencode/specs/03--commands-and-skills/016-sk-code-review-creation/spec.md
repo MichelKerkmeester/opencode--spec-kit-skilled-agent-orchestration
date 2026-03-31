@@ -8,7 +8,7 @@ trigger_phrases:
   - "review agent"
   - "041"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 <!-- SPECKIT_LEVEL: 2 -->

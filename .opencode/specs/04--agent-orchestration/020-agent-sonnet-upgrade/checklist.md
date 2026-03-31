@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Agent Sonnet 4.6 Upgrade [020-agent-sonnet-upgrade/checklist]"
+title: "Verification Checklist: Agent Sonnet 4.6 Upgrade [04--agent-orchestration/020-agent-sonnet-upgrade/checklist]"
 description: "Verification Date: 2026-02-18"
 trigger_phrases:
   - "verification"

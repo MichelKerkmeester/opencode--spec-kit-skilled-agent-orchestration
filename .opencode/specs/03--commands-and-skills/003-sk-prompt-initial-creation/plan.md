@@ -9,7 +9,7 @@ trigger_phrases:
   - "initial"
   - "003"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: sk-prompt-improver Initial Creation
 

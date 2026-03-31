@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 011 tasks"

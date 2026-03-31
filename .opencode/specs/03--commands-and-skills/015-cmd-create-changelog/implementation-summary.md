@@ -8,7 +8,7 @@ trigger_phrases:
   - "create changelog"
   - "014"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 completed: 2026-03-01
 status: done
 ---

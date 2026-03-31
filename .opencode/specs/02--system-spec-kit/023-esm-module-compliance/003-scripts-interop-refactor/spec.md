@@ -6,7 +6,7 @@ trigger_phrases:
   - "scripts esm interop"
   - "023 phase 3"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Scripts Interop Refactor
 

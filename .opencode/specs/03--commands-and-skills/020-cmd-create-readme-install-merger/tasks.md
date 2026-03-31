@@ -1,7 +1,6 @@
 ---
-title: "Tasks: Merge create README and install guide commands [017-create-readme-install-merger/tasks]"
+title: "Tasks: Merge create README and install guide [03--commands-and-skills/020-cmd-create-readme-install-merger/tasks]"
 description: "Task Format: T### Description (file path or artifact)"
-SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "task breakdown"
   - "merge tasks"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "migration tasks"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 ---
 # Tasks: Merge create README and install guide commands
 

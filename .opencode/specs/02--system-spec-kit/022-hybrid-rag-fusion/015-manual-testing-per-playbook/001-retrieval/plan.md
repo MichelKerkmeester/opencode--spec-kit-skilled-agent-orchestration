@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/plan]"
 description: "Execution plan for 13 retrieval playbook scenarios: preconditions, non-destructive tests, destructive/stateful tests, and evidence-plus-verdict collection."
 trigger_phrases:
   - "retrieval execution plan"

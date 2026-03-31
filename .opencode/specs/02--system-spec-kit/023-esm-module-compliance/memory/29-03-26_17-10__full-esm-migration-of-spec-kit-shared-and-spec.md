@@ -29,7 +29,7 @@ trigger_phrases:
   - "30 iteration deep review"
   - "phase sequential migration"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 _sourceSessionCreated: 0
 _sourceSessionId: ""
 _sourceSessionUpdated: 0

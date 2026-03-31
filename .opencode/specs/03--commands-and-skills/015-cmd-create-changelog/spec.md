@@ -9,7 +9,7 @@ trigger_phrases:
   - "command"
   - "015"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Create Changelog Command
 

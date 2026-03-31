@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity/spec]"
 description: "Preserve normalized data fidelity with visible drop reporting through the pipeline."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "003"
   - "data"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Data Fidelity
 

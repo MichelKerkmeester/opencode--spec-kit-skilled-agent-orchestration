@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/plan]"
 description: "Technical plan for auditing 7 Analysis features against source code"
 trigger_phrases:
   - "audit plan"

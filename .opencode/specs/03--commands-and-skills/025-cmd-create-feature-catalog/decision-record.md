@@ -5,7 +5,7 @@ trigger_phrases:
   - "feature catalog command adr"
   - "/create:feature-catalog decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: /create:feature-catalog Command
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent Sonnet 4.6 Upgrade [020-agent-sonnet-upgrade/tasks [020-agent-sonnet-upgrade/tasks]"
+title: "Tasks: Agent Sonnet 4.6 Upgrade [020-agent-sonnet-upgrade/tasks [04--agent-orchestration/020-agent-sonnet-upgrade/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

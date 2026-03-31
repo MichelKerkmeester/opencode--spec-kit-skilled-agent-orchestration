@@ -7,7 +7,7 @@ trigger_phrases:
   - "010"
   - "integration"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Integration Testing
 

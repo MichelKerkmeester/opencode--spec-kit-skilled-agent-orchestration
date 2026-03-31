@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/spec]"
 description: "Phase 003 documents the discovery manual test packet. Execute scenarios EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, and EX-040 against the Spec Kit Memory system to verify memory_list, memory_stats, memory_health, and targeted discovery operations including folder filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal."
 trigger_phrases:
   - "discovery manual testing"

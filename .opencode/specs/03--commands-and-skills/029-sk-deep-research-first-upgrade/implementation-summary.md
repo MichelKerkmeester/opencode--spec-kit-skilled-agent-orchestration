@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research First Upgrade [03--commands-and-skills/029-sk-deep-research-first-upgrade/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/029-sk-deep-research-first-upgrade/implementation-summary]"
 description: "Post-repair summary for the research packet that documents the first sk-deep-research upgrade recommendations."
 trigger_phrases:
   - "implementation"

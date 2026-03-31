@@ -5,7 +5,7 @@ trigger_phrases:
   - "verification plan"
   - "023 phase 4 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Verification and Standards Sync
 

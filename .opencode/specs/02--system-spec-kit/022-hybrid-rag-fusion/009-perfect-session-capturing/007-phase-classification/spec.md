@@ -8,7 +8,7 @@ trigger_phrases:
   - "007"
   - "phase"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Phase Classification
 

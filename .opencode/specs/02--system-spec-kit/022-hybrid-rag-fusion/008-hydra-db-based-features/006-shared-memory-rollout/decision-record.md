@@ -5,7 +5,7 @@ trigger_phrases:
   - "phase 6 adr"
   - "shared memory adr"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 006-shared-memory-rollout

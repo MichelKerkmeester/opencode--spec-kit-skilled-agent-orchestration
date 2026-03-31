@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Cloudflare R2 + Worker Migration [01--anobel.com/032-cloudflare-r2-migration/implementation-summary]"
+title: "Implementation Summary: Cloudflare R2 + Worker [01--anobel.com/032-cloudflare-r2-migration/implementation-summary]"
 description: "Minimal compliant summary for a documentation-first migration guide package."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "cloudflare"
-  - "r2"
   - "worker"
   - "032"
 importance_tier: "normal"

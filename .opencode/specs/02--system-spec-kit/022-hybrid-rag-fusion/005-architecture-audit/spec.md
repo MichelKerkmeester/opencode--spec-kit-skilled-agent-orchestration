@@ -8,7 +8,7 @@ trigger_phrases:
   - "boundary enforcement"
   - "handler cycle removal"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Architecture Audit
 

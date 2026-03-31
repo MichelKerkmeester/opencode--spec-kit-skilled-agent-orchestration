@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: /create:feature- [03--commands-and-skills/025-cmd-create-feature-catalog/implementation-summary]"
+title: "Implementation Summary: /create:feature [03--commands-and-skills/025-cmd-create-feature-catalog/implementation-summary]"
 description: "The /create:feature-catalog command is now implemented, validated, and synchronized across command docs, workflow assets, runtime mirrors, and discovery surfaces."
 trigger_phrases:
   - "feature catalog command implementation summary"

@@ -8,7 +8,7 @@ trigger_phrases:
   - "pre-existing test failures"
   - "playbook scenario gaps"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Test and Scenario Remediation
 

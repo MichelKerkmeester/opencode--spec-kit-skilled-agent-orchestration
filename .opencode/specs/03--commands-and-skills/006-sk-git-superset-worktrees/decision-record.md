@@ -1,6 +1,16 @@
 ---
-title: "Decision Record: sk-git Superset Worktree Alignment [03--commands-and-skills/006-sk-git-superset-worktrees/decision-record]"
+title: "Decision Record: sk-git Superset Worktree [03--commands-and-skills/006-sk-git-superset-worktrees/decision-record]"
 description: "Architecture decisions for adapting Superset-style worktree workflows into sk-git documentation."
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "git"
+  - "superset"
+  - "worktree"
+  - "decision record"
+  - "006"
+importance_tier: "important"
+contextType: "planning"
 ---
 # Decision Record: sk-git Superset Worktree Alignment
 

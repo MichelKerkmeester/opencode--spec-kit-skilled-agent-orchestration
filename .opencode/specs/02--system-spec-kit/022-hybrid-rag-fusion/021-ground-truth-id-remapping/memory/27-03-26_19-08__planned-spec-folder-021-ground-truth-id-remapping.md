@@ -32,7 +32,7 @@ trigger_phrases:
   - "truth"
   - "remapping"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 _sourceSessionCreated: 0
 _sourceSessionId: ""
 _sourceSessionUpdated: 0

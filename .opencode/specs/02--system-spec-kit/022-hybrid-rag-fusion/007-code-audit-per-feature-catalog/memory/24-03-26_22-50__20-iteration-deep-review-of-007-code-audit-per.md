@@ -34,7 +34,7 @@ trigger_phrases:
   - "governance bypass"
   - "stale audit verdicts"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 _sourceSessionCreated: 0
 _sourceSessionId: ""
 _sourceSessionUpdated: 0

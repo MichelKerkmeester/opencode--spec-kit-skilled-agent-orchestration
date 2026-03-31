@@ -11,7 +11,7 @@ trigger_phrases:
   - "031"
   - "anobel"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Comprehensive Performance Optimization - anobel.com
 

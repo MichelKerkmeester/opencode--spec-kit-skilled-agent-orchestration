@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [030-label-product-content-attr/implementation-summary]"
+title: "Implementation Summary [030-label-product-content [01--anobel.com/030-label-product-content-attr/implementation-summary]"
 description: "Structural implementation summary for the label product content attribute update."
 trigger_phrases:
   - "implementation"

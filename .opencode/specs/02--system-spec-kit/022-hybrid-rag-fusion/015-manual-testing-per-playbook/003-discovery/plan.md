@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/plan]"
 description: "Execution plan for Phase 003 discovery scenarios EX-011, EX-012, EX-013. Read playbook context, set up environment, execute each scenario in order, record evidence and verdicts."
 trigger_phrases:
   - "discovery phase execution plan"

@@ -1,6 +1,16 @@
 ---
 title: "Feature Specification: CLI Self-Invocation Guards [03--commands-and-skills/009-cli-self-invocation-guards/spec]"
 description: "Add consistent self-invocation guards across the CLI bridge skills so each runtime avoids delegating to itself."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "cli"
+  - "self"
+  - "invocation"
+  - "spec"
+  - "009"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Feature Specification: CLI Self-Invocation Guards
 

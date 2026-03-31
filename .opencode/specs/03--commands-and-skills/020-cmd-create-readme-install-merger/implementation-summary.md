@@ -1,7 +1,6 @@
 ---
-title: "Implementation Summary [017-create-readme-install-merger/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/020-cmd-create-readme-install-merger/implementation-summary]"
 description: "Implementation cycle completed for canonical create command merge with compatibility aliases and validation evidence captured."
-SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 trigger_phrases:
   - "implementation summary"
   - "implementation complete"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "canonical wrapper"
 importance_tier: "important"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 ---
 # Implementation Summary
 

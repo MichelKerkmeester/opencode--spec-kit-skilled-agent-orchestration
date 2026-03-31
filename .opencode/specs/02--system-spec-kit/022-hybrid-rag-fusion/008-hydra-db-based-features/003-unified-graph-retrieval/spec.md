@@ -7,7 +7,7 @@ trigger_phrases:
   - "graph fusion"
   - "deterministic ranking"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 003-unified-graph-retrieval

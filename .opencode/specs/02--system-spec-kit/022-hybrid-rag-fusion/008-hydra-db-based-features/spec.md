@@ -8,7 +8,7 @@ trigger_phrases:
   - "governance"
   - "shared memory"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: 008-hydra-db-based-features
 

@@ -1,6 +1,14 @@
 ---
 title: "Implementation Summary [03--commands-and-skills/002-sk-git-github-mcp-integration/implementation-summary]"
 description: "Structural closeout for GitHub MCP guidance normalization inside the sk-git documentation set."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "002"
+  - "git"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary
 

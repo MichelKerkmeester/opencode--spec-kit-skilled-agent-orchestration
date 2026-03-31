@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SQLite-to-Turso Migration Research"
+title: "Implementation Plan: SQLite-to-Turso Migration Research [02--system-spec-kit/999-sqlite-to-turso/plan]"
 description: "Plan the documentation work needed to make the SQLite-to-Turso research root compliant with the active Level 1 template and validator."
 trigger_phrases:
   - "implementation"

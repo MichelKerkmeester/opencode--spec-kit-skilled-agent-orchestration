@@ -6,7 +6,7 @@ trigger_phrases:
   - "mcp_server esm refactor"
   - "system-spec-kit esm migration"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: ESM Module Compliance
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/plan]"
 description: "Execute 2 evaluation scenarios from the manual testing playbook covering ablation studies and reporting dashboard."
 trigger_phrases:
   - "evaluation test plan"

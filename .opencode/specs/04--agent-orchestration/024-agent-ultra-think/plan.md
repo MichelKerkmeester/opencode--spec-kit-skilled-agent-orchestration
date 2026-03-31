@@ -8,7 +8,7 @@ trigger_phrases:
   - "024"
   - "ultra"
 importance_tier: "normal"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Agent Ultra-Think
 

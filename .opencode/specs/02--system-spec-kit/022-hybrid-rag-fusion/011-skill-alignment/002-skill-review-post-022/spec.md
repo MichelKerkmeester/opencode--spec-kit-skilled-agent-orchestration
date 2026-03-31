@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Post-022 Skill Review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/spec]"
 description: "Level 2 follow-up packet that reviewed and remediated post-022 documentation drift across system-spec-kit guidance, references, assets, and templates."
 trigger_phrases:
   - "post-022 skill review"

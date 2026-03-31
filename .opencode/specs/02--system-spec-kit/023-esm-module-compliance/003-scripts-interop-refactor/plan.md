@@ -5,7 +5,7 @@ trigger_phrases:
   - "scripts interop plan"
   - "023 phase 3 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Scripts Interop Refactor
 

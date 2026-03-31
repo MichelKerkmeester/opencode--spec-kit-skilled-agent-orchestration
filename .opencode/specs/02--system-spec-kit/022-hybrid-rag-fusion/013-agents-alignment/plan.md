@@ -8,7 +8,7 @@ trigger_phrases:
   - "alignment"
   - "agents"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 013 — Agent Alignment

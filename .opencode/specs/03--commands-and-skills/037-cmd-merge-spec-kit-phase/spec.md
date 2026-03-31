@@ -10,7 +10,7 @@ trigger_phrases:
   - "037"
   - "cmd"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Merge spec_kit:phase into plan and complete
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Ground Truth ID Remapping [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/implementation-summary]"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/implementation-summary]"
 description: "Packet-completeness backfill for the still-pending ground-truth remapping implementation."
 trigger_phrases:
   - "ground truth remapping implementation summary"

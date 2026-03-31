@@ -11,7 +11,7 @@ trigger_phrases:
   - "005"
   - "retrieval"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Retrieval UX & Result Presentation
 

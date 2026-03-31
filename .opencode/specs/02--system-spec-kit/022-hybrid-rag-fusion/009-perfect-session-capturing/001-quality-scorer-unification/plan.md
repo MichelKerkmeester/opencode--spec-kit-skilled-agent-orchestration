@@ -7,7 +7,7 @@ trigger_phrases:
   - "001"
   - "quality"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Quality Scorer Unification
 

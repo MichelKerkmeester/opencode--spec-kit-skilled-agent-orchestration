@@ -9,7 +9,7 @@ trigger_phrases:
   - "dashboard"
   - "036"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Memory Command Dashboard Visual Design System
 

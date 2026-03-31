@@ -1,5 +1,5 @@
 ---
-title: "System-Spec-Kit Architecture Audit v2 -- [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/research]"
+title: "System-Spec-Kit Architecture Audit v2 [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/research]"
 description: "A comprehensive architecture audit of the system-spec-kit codebase was conducted over 10 iterations using 3 specialized agents per iteration (30 total agent runs). The audit cov..."
 trigger_phrases:
   - "system"

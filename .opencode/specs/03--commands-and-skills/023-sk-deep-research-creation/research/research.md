@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: Autonomous Deep Research Loop - [03--commands-and-skills/023-sk-deep-research-creation/research]"
+title: "Feature Research: Autonomous Deep Research Loop [03--commands-and-skills/023-sk-deep-research-creation/research]"
 description: "Research into karpathy/autoresearch and 3 forks to design an integrated auto-deep-research system for the OpenCode agent/skill/speckit architecture."
 trigger_phrases:
   - "autoresearch"

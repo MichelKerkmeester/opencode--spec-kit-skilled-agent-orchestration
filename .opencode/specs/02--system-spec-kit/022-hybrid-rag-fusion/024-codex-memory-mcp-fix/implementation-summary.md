@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/implementation-summary]"
 description: "A completed Level 3 packet now captures the landed Codex startup fix, the in-session DB-isolation fix, and the remaining broader cleanup as follow-on recommendations outside the packet completion gate."
 trigger_phrases:
   - "codex spec kit memory implementation summary"

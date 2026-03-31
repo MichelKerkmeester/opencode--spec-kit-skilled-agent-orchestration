@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-doc README and HVR Improvements [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/checklist]"
+title: "Verification Checklist: sk-doc README and HVR [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/checklist]"
 description: "Verification checklist for the sk-doc HVR, README template, and README creation standards upgrade packet."
 trigger_phrases:
   - "verification"

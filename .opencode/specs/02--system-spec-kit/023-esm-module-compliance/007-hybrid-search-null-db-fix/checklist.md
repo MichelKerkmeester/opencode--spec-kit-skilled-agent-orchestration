@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Hybrid Search Pipeline Null DB Fix [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/checklist]"
+title: "Verification Checklist: Hybrid [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/checklist]"
 description: "Verification gates for restoring hybrid search results and validating the follow-on optimization work."
 trigger_phrases:
   - "hybrid search checklist"

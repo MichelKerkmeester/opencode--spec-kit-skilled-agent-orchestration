@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "033"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: CV Upload Form File Type Validation Fix
 

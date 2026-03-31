@@ -1,6 +1,15 @@
 ---
 title: "Tasks: sk-git Superset Worktree Alignment [03--commands-and-skills/006-sk-git-superset-worktrees/tasks]"
 description: "Task breakdown for adapting Superset-style worktree documentation into sk-git."
+trigger_phrases:
+  - "tasks"
+  - "git"
+  - "superset"
+  - "worktree"
+  - "alignment"
+  - "006"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: sk-git Superset Worktree Alignment
 

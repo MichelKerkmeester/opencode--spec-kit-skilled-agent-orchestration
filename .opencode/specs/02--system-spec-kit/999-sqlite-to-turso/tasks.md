@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SQLite-to-Turso Migration Research"
+title: "Tasks: SQLite-to-Turso Migration Research [02--system-spec-kit/999-sqlite-to-turso/tasks]"
 description: "Task list for bringing the assigned research spec root into validator compliance."
 trigger_phrases:
   - "tasks"

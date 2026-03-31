@@ -9,7 +9,7 @@ trigger_phrases:
   - "kit"
   - "018"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 018-rewrite-system-speckit-readme

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/checklist]"
+title: "Verification Checklist [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/checklist]"
 description: "Level 2 verification checklist for 3-layer template compliance enforcement implementation."
 trigger_phrases:
   - "template compliance checklist"

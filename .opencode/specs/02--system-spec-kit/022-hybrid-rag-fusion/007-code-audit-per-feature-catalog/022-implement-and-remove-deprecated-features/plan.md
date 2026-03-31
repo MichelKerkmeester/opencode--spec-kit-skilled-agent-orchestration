@@ -10,7 +10,7 @@ trigger_phrases:
   - "plan"
   - "implement"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Implement and Remove Deprecated Features
 

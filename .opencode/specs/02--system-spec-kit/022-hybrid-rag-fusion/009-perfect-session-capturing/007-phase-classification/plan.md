@@ -7,7 +7,7 @@ trigger_phrases:
   - "007"
   - "phase"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Phase Classification
 

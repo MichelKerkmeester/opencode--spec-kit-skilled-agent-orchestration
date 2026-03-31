@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks]"
 description: "Task breakdown for auditing 23 Scoring and Calibration features"
 trigger_phrases:
   - "tasks"

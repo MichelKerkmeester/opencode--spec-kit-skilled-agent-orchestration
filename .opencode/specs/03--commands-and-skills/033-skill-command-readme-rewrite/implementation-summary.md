@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary]"
+title: "Implementation Summary: Skill and [03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary]"
 description: "Summary of the packet repairs for the README rewrite program across skill and command surfaces."
 trigger_phrases:
   - "implementation"

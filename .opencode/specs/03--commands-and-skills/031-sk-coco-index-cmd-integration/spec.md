@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-coco-index Command Integration [03--commands-and-skills/031-sk-coco-index-cmd-integration/spec]"
+title: "Feature Specification: sk-coco-index Command [03--commands-and-skills/031-sk-coco-index-cmd-integration/spec]"
 description: "Create a compliant planning packet for integrating sk-coco-index with command surfaces."
 trigger_phrases:
   - "031"

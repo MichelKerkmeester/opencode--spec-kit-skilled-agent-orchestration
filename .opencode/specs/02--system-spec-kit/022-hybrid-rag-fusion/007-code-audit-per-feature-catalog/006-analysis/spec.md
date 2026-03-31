@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/spec]"
+title: "Feature Specification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/spec]"
 description: "Systematic code audit of 7 Analysis features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"

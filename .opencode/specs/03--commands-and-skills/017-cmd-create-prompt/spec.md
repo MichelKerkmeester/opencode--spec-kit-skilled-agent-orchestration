@@ -11,7 +11,7 @@ trigger_phrases:
   - "017"
   - "cmd"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: create:prompt Command
 

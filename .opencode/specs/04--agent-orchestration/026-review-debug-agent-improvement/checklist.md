@@ -1,6 +1,6 @@
 
 ---
-title: "Verification Checklist: Adversarial Self-Check for Review, Debug, Ultra-Think Agents [04--agent-orchestration/026-review-debug-agent-improvement/checklist]"
+title: "Verification Checklist: Adversarial Self-Check [04--agent-orchestration/026-review-debug-agent-improvement/checklist]"
 description: "Verification checklist for the adversarial self-check agent improvement spec."
 trigger_phrases:
   - "verification"

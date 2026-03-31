@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/plan]"
 description: "Execution plan for Phase 004 maintenance scenarios EX-014 and EX-035. Read playbook context, set up environment, execute each scenario in order, record evidence and verdicts."
 trigger_phrases:
   - "maintenance phase execution plan"

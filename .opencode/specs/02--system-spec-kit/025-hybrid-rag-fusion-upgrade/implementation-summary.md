@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Hybrid RAG Fusion Upgrade [02--system-spec-kit/025-hybrid-rag-fusion-upgrade/implementation-summary]"
+title: "Implementation Summary: Hybrid RAG Fusion [02--system-spec-kit/025-hybrid-rag-fusion-upgrade/implementation-summary]"
 description: "Placeholder summary for the hybrid RAG fusion upgrade."
 trigger_phrases:
   - "hybrid rag upgrade summary"

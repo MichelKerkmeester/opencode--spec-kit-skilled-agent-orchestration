@@ -1,6 +1,16 @@
 ---
-title: "Feature Specification: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/spec]"
+title: "Feature Specification: cli-gemini Model Consolidation + [03--commands-and-skills/005-cli-codex-creation/spec]"
 description: "Consolidate cli-gemini to one model and create the cli-codex skill with matching ecosystem registration."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "cli"
+  - "gemini"
+  - "model"
+  - "spec"
+  - "005"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Feature Specification: cli-gemini Model Consolidation + cli-codex Skill
 

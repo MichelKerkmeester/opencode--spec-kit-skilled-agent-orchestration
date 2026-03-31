@@ -5,7 +5,7 @@ trigger_phrases:
   - "shared esm plan"
   - "023 phase 1 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Shared ESM Migration
 

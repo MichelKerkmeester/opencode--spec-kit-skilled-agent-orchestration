@@ -6,7 +6,7 @@ trigger_phrases:
   - "boundary remediation plan"
   - "scripts mcp server boundary"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Architecture Audit
 

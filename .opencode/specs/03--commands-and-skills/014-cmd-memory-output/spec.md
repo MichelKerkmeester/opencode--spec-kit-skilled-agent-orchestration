@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "036"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Memory Command Dashboard Visual Design System
 

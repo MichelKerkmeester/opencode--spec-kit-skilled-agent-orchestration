@@ -7,7 +7,7 @@ trigger_phrases:
   - "002"
   - "contamination"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Contamination Detection
 

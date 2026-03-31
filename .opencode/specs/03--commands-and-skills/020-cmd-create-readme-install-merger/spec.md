@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: Merge create README and install guide commands [017-create-readme-install-merger/spec]"
+title: "Feature Specification: Merge create README and [03--commands-and-skills/020-cmd-create-readme-install-merger/spec]"
 description: "The create command family currently duplicates setup logic and routing across two command entry points. This spec defines a single canonical command/workflow family that preserves compatibility while reducing maintenance overhead."
-SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "create command merge"
   - "folder readme"
@@ -9,7 +8,8 @@ trigger_phrases:
   - "canonical command"
   - "workflow unification"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 ---
 # Feature Specification: Merge create README and install guide commands
 

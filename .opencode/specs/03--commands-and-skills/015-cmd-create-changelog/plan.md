@@ -9,7 +9,7 @@ trigger_phrases:
   - "command"
   - "014"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Create Changelog Command
 

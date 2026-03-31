@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/tasks]"
 description: "Task Format: T### [P?] Description"
 trigger_phrases:
   - "feature flag reference tasks"

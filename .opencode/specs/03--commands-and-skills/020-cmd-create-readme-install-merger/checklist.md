@@ -1,7 +1,6 @@
 ---
-title: "Verification Checklist: Merge create README and install guide commands [017-create-readme-install-merger/checklist]"
+title: "Verification Checklist: Merge create README [03--commands-and-skills/020-cmd-create-readme-install-merger/checklist]"
 description: "Verification Date: 2026-03-03"
-SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "verification checklist"
   - "p0 p1 p2"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "command migration readiness"
 importance_tier: "important"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 ---
 # Verification Checklist: Merge create README and install guide commands
 

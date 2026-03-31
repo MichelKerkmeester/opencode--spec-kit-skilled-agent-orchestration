@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "006"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 created: "2025-12-01"
 level: 3
 status: "In Progress"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/plan]"
 description: "Technical plan for auditing 19 UX Hooks features against source code"
 trigger_phrases:
   - "audit plan"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/tasks]"
 description: "Task tracker for Phase 021 remediation-revalidation scenarios PB-021-01 through PB-021-03."
 trigger_phrases:
   - "phase 021 tasks"

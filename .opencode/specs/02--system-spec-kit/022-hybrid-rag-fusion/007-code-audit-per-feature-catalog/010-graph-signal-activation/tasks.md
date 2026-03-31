@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/tasks]"
 description: "Task breakdown for auditing 16 Graph Signal Activation features"
 trigger_phrases:
   - "tasks"

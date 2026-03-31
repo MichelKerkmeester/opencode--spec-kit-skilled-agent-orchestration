@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/implementation-summary]"
 description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 4-command memory surface and /memory:manage shared routing."
 trigger_phrases:
   - "014 summary"

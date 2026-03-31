@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Split sk-deep-research review mode [03--commands-and-skills/036-sk-deep-research-review-split/spec]"
+title: "Feature Specification: Split sk-deep-research review [03--commands-and-skills/036-sk-deep-research-review-split/spec]"
 description: "The original sk-deep-research skill mixed iterative investigation and iterative code review in one command and one skill package. That overlap made routing, documentation, and runtime wrappers harder to maintain."
 trigger_phrases:
   - "deep research review split"

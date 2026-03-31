@@ -1,6 +1,17 @@
 ---
-title: "Feature Specification: GitHub MCP Integration for sk-git Skill [03--commands-and-skills/002-sk-git-github-mcp-integration/spec]"
+title: "Feature Specification: GitHub MCP Integration for [03--commands-and-skills/002-sk-git-github-mcp-integration/spec]"
 description: "Integrate GitHub MCP guidance into sk-git documentation with correct tool syntax and clear local-vs-remote workflow guidance."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "github"
+  - "mcp"
+  - "integration"
+  - "spec"
+  - "002"
+  - "git"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Feature Specification: GitHub MCP Integration for sk-git Skill
 

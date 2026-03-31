@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks/plan]"
 description: "Phase 018 defines the execution plan for eleven UX-hooks manual tests in the Spec Kit Memory system. It sequences preconditions, vitest and ripgrep execution, flag-based MCP testing, evidence capture, and review-protocol verdicting."
 trigger_phrases:
   - "ux hooks execution plan"

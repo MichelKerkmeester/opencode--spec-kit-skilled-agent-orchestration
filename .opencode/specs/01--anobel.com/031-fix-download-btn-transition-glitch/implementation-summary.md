@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [031-fix-download-btn-transition-glitch/implementation-summary]"
+title: "Implementation Summary [031-fix-download [01--anobel.com/031-fix-download-btn-transition-glitch/implementation-summary]"
 description: "Summary of the CSS-only fix for the download button ready -> idle overlap glitch."
 trigger_phrases:
   - "implementation"

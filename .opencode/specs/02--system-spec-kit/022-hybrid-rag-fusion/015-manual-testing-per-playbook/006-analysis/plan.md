@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/plan]"
 description: "Execute 7 analysis scenarios from the manual testing playbook covering causal graph tools and epistemic measurement."
 trigger_phrases:
   - "analysis test plan"

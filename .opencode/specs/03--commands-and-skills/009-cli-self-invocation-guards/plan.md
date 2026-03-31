@@ -1,6 +1,15 @@
 ---
 title: "Implementation Plan: CLI Self-Invocation Guards [03--commands-and-skills/009-cli-self-invocation-guards/plan]"
 description: "Plan for adding consistent self-invocation guard language across the CLI bridge skills."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "cli"
+  - "self"
+  - "invocation"
+  - "009"
+importance_tier: "important"
+contextType: "planning"
 ---
 # Implementation Plan: CLI Self-Invocation Guards
 

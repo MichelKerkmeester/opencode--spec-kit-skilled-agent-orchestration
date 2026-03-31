@@ -10,7 +10,7 @@ trigger_phrases:
   - "021"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Phase System
 

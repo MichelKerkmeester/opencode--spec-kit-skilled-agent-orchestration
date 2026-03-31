@@ -8,7 +8,7 @@ trigger_phrases:
   - "research-based improvements"
   - "fusion query graph feedback ux"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-parent | v2.2 -->

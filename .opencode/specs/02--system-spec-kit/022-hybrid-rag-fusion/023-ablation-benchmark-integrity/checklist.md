@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/checklist]"
+title: "Verification Checklist [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/checklist]"
 description: "Verification Date: 2026-03-28"
 trigger_phrases:
   - "verification checklist"

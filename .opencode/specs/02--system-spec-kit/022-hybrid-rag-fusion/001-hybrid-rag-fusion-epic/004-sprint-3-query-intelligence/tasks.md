@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/tasks]"
 description: "Task breakdown for query complexity routing, RSF evaluation, and channel min-representation."
 trigger_phrases:
   - "sprint 3 tasks"

@@ -305,10 +305,11 @@ contextType: "implementation"
 - [x] T205 Delete context-index.sqlite + shm/wal + vector index
 - [x] T206 Run reindex-embeddings.js — COMPLETE (62.9MB rebuilt, STATUS=OK)
 - [x] T207 Run memory_health() — healthy, vectorSearchAvailable: true, 1134 memories indexed
-- [x] T208 Run memory_search("ESM migration") — worked pre-rescan (3 results); post-rescan trigger_phrases bug blocks all queries
-- [x] T209 KNOWN BUG: trigger_phrases stored as JSON arrays by indexer, search code calls .trim() expecting string — requires code fix in search pipeline
+- [x] T208 Run memory_search("ESM migration") — returned 3 results pre-rescan; post-rescan trigger_phrases bug blocked queries → FIXED
+- [x] T209 BUG FIX: trigger_phrases Array.isArray() guard added to save-quality-gate.ts:578 + learned-feedback.ts:293 (source + compiled)
 - [x] T210 Orphaned vectors cleaned (T203) — reindex rebuilt from zero so no orphans possible
 - [x] T211 Final DB state: 1134 memories, 62.9MB, voyage-4 embeddings (1024-dim), 1285 FTS5 entries, constitutional rules indexed
+- [x] T212 Final validation sweep: 175/175 in-scope folders at 0 errors (100%), 13 skipped (024-compact-code-graph)
 <!-- /ANCHOR:phase-4 -->
 
 ---

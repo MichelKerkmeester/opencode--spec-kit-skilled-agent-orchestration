@@ -1,6 +1,16 @@
 ---
-title: "Decision Record: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/decision-record]"
+title: "Decision Record: sk-prompt-improver Initial [03--commands-and-skills/003-sk-prompt-initial-creation/decision-record]"
 description: "Architecture decisions for packaging the Prompt Improver system as an OpenCode skill."
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "prompt"
+  - "improver"
+  - "initial"
+  - "decision record"
+  - "003"
+importance_tier: "important"
+contextType: "planning"
 ---
 # Decision Record: sk-prompt-improver Initial Creation
 

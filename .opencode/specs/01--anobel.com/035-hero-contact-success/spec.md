@@ -9,7 +9,7 @@ trigger_phrases:
   - "blue bar"
   - "035"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Hero Webshop Selector Scoping
 

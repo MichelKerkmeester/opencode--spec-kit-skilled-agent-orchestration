@@ -7,7 +7,7 @@ trigger_phrases:
   - "review mode"
   - "sk-deep-research"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: sk-deep-research Review Mode
 

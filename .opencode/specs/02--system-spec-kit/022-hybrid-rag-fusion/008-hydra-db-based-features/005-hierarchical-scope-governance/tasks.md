@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks]"
 description: "Phase 5 governance and scope-enforcement task breakdown."
 trigger_phrases:
   - "phase 5 tasks"

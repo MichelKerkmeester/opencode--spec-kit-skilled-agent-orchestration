@@ -8,7 +8,7 @@ trigger_phrases:
   - "command"
   - "014"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Tasks: Create Changelog Command
 

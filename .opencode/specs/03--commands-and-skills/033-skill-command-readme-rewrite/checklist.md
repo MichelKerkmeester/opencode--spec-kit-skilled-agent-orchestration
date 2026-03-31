@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/checklist]"
+title: "Verification Checklist: Skill and Command README [03--commands-and-skills/033-skill-command-readme-rewrite/checklist]"
 description: "Verification checklist for the README rewrite packet."
 trigger_phrases:
   - "verification"

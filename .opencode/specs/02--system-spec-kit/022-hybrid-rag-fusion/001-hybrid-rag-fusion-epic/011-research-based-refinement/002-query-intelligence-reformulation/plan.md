@@ -10,7 +10,7 @@ trigger_phrases:
   - "002"
   - "query"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Query Intelligence & Reformulation
 

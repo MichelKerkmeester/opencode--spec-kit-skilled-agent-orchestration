@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/checklist]"
+title: "Verification Checklist [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/checklist]"
 description: "Verification Date: 2026-03-20"
 trigger_phrases:
   - "verification"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "hydra"
   - "closure"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Verification Checklist: 008-hydra-db-based-features
 

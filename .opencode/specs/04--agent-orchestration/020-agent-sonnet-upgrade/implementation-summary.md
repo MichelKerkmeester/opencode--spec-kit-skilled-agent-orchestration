@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [020-agent-sonnet-upgra [020-agent-sonnet-upgrade/implementation-summary]"
+title: "Implementation Summary [020-agent-sonnet-upgra [04--agent-orchestration/020-agent-sonnet-upgrade/implementation-summary]"
 description: "All agent model fields across the Copilot and Claude Code agent systems were upgraded to align on claude-sonnet-4-6 as the standard fleet model. Five Copilot agents were pinned ..."
 trigger_phrases:
   - "implementation"

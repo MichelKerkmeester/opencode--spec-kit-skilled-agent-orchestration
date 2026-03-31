@@ -8,7 +8,7 @@ trigger_phrases:
   - "contact-success"
   - "035"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Hero Webshop Selector Scoping
 

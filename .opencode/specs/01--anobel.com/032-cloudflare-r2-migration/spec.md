@@ -4,12 +4,11 @@ description: "Document the Cloudflare account migration setup needed to move the
 trigger_phrases:
   - "spec"
   - "cloudflare"
-  - "r2"
   - "worker"
   - "migration"
   - "032"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Cloudflare R2 + Worker Migration
 

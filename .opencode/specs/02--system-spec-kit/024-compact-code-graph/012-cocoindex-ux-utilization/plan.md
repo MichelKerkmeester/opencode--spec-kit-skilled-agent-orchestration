@@ -1,5 +1,5 @@
 ---
-title: "Plan: Phase 012 — CocoIndex UX, [02--system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/plan]"
+title: "Plan: Phase 012 — CocoIndex UX [02--system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/plan]"
 description: "1. Fix hook compilation (P0, 1-2 hours) — tsconfig + build verification"
 trigger_phrases:
   - "plan"

@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: Merge create README and install guide commands [017-create-readme-install-merger/plan]"
+title: "Implementation Plan: Merge create README and [03--commands-and-skills/020-cmd-create-readme-install-merger/plan]"
 description: "This plan defines how to consolidate duplicated command orchestration into a canonical workflow family while preserving current command behavior through aliases and staged deprecation."
-SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "create command plan"
   - "routing model"
@@ -10,6 +9,7 @@ trigger_phrases:
   - "migration plan"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 ---
 # Implementation Plan: Merge create README and install guide commands
 

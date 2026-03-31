@@ -1,5 +1,5 @@
 ---
-title: "Plan: Phase 009 — Reindex Validator False Positives [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/plan]"
+title: "Plan: Phase 009 — Reindex [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/plan]"
 description: "Fix two validation rules (cross-spec contamination, topical coherence) that false-positive reject legitimate files during bulk reindex."
 trigger_phrases:
   - "fix reindex validator"

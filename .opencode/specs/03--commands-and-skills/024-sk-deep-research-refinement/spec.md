@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "024"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: sk-deep-research Refinement via Self-Research
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/plan]"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/plan]"
 description: "Execution plan for Phase 005 lifecycle scenarios EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144. Read playbook context, set up environment, execute scenarios in dependency order, record evidence and verdicts."
 trigger_phrases:
   - "lifecycle phase execution plan"

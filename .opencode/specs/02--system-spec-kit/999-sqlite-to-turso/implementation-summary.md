@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/999-sqlite-to-turso/implementation-summary]"
 description: "The SQLite-to-Turso research spec root now validates cleanly because its documentation set matches the Level 1 template contract and includes the required planning artifacts."
 trigger_phrases:
   - "implementation"

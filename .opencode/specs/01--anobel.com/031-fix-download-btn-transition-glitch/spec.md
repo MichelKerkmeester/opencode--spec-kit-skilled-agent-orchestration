@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Fix Download Button Transition Glitch [01--anobel.com/031-fix-download-btn-transition-glitch/spec]"
+title: "Feature Specification: Fix Download Button Transition [01--anobel.com/031-fix-download-btn-transition-glitch/spec]"
 description: "The download button at /nl/locatie flashes both the success icon and the download arrow during the ready -> idle transition."
 trigger_phrases:
   - "spec"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "button"
   - "transition"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Fix Download Button Transition Glitch
 

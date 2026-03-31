@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "035"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: CV Upload Form File Type Validation Fix
 

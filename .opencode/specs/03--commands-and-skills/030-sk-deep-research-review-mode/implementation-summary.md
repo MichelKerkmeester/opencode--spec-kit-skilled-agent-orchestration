@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research Review Mode [03--commands-and-skills/030-sk-deep-research-review-mode/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/030-sk-deep-research-review-mode/implementation-summary]"
 description: "Post-repair summary for the review-mode planning packet and handover reference cleanup."
 trigger_phrases:
   - "implementation"

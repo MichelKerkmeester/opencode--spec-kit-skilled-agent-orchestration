@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/tasks]"
 description: "Task breakdown for auditing 9 Retrieval Enhancements features"
 trigger_phrases:
   - "tasks"

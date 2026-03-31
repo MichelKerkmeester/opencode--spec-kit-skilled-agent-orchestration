@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/tasks]"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/tasks]"
 description: "Task breakdown for auditing 5 Remediation and Revalidation features"
 trigger_phrases:
   - "tasks"

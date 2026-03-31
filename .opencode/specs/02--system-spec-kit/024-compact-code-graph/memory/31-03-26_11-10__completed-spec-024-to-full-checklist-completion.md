@@ -1,6 +1,5 @@
 ---
-title: "Final Completion: Catch Type Fixes + Test Extensions + Coverage [024-compact-code-graph/31-03-26_11-10__completed-spec-024-to-full-checklist-completion]"
-description: "Completed spec 024 to full checklist. Fixed catch(err) :unknown annotations, added cross-runtime matrix, compaction pipeline, SQLite recovery, CocoIndex routing tests. 242 tests across 16 files."
+title: "Final Compl [02--system-spec-kit/024-compact-code-graph/31-03-26_11-10__completed-spec-024-to-full-checklist-completion]"
 trigger_phrases:
   - "catch unknown type annotation"
   - "cleanup orphans"

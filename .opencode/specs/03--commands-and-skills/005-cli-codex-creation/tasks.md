@@ -1,6 +1,15 @@
 ---
 title: "Tasks: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/tasks]"
 description: "Task breakdown for model consolidation and cli-codex skill creation."
+trigger_phrases:
+  - "tasks"
+  - "cli"
+  - "gemini"
+  - "model"
+  - "consolidation"
+  - "005"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: cli-gemini Model Consolidation + cli-codex Skill
 

@@ -5,7 +5,7 @@ trigger_phrases:
   - "phase 3 adr"
   - "graph fusion adr"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 <!-- ANCHOR:adr-001 -->

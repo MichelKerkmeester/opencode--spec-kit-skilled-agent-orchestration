@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [03--commands-and-skills/034-sk-deep-research-review-folders/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/034-sk-deep-research-review-folders/implementation-summary]"
 description: "Review mode now stores its durable packet under review/, including the final report, with a legacy scratch-to-review migration path, synchronized runtime and documentation contracts, and follow-up command-surface compatibility fixes."
 trigger_phrases:
   - "review folder implementation summary"

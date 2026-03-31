@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide/implementation-summary]"
 description: "Summary of the install guide update."
 trigger_phrases:
   - "implementation"

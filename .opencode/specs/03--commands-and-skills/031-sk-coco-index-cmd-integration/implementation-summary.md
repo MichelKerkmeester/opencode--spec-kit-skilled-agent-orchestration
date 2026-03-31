@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-coco-index Command Integration [03--commands-and-skills/031-sk-coco-index-cmd-integration/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/031-sk-coco-index-cmd-integration/implementation-summary]"
 description: "Post-repair summary for the draft planning packet that restores the missing Level 1 completion artifact."
 trigger_phrases:
   - "implementation"

@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "022"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Context Overload Prevention
 

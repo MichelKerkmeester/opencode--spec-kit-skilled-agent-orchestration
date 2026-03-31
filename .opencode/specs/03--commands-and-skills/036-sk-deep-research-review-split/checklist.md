@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Split sk-deep-research review mode [03--commands-and-skills/036-sk-deep-research-review-split/checklist]"
+title: "Verification Checklist: Split sk-deep-research [03--commands-and-skills/036-sk-deep-research-review-split/checklist]"
 description: "Verification checklist for the deep-research/deep-review split."
 trigger_phrases:
   - "036 checklist"

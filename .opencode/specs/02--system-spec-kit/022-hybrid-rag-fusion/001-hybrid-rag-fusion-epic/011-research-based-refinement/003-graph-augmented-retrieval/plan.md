@@ -11,7 +11,7 @@ trigger_phrases:
   - "003"
   - "graph"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Graph-Augmented Retrieval
 

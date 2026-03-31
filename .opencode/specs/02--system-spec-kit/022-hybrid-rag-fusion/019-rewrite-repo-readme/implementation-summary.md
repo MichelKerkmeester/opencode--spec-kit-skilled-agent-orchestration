@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/implementation-summary]"
 description: "Summary of the complete repository README rewrite from scratch with two-tier voice, accurate component counts, and style alignment with sibling READMEs."
 trigger_phrases:
   - "implementation"

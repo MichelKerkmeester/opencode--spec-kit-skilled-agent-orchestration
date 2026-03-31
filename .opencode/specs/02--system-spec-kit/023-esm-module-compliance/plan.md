@@ -5,7 +5,7 @@ trigger_phrases:
   - "esm plan"
   - "mcp_server esm migration plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: ESM Module Compliance
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/implementation-summary]"
 description: "Hydra closure summary covering parent and phase template normalization, runtime hardening fixes, and the March 20 2026 targeted follow-up rerun layered on top of the March 17 2026 baseline."
 trigger_phrases:
   - "implementation"

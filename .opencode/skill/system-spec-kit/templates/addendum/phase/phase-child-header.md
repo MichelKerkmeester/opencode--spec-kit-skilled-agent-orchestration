@@ -1,5 +1,5 @@
 ---
-title: "This is Phase [YOUR_VALUE_HERE: PHASE_NUMBER] of the [YOUR_VALUE_HERE: [template:addendum/phase/phase-child-header.md]"
+title: "This is Phase [YOUR_VALUE_HERE: PHASE_NUMBER] of the [YOUR_VALUE_HERE [template:addendum/phase/phase-child-header.md]"
 description: "This is Phase [YOUR_VALUE_HERE: PHASE_NUMBER] of the [YOUR_VALUE_HERE: PARENT_SPEC_NAME] specification."
 trigger_phrases:
   - "this"

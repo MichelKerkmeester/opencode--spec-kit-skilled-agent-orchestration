@@ -8,7 +8,7 @@ trigger_phrases:
   - "toolcalls exchanges template design decision"
   - "optional_placeholders adr"
 importance_tier: "normal"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Indexing & Coherence
 

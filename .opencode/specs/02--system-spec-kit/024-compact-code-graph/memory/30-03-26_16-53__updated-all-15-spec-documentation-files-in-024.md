@@ -1,6 +1,5 @@
 ---
-title: "Documentation Alignment: Updated 15 Spec Files with CocoIndex Integration [024-compact-code-graph/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024]"
-description: "Updated all 15 spec documentation files in 024 to reflect CocoIndex integration decisions. Added three-system architecture, query-intent routing tables, and revised compaction pipeline."
+title: "Documentatio [02--system-spec-kit/024-compact-code-graph/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024]"
 trigger_phrases:
   - "cocoindex integration"
   - "code graph cocoindex"

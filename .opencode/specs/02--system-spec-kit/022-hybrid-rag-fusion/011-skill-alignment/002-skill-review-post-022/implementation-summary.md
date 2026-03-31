@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/implementation-summary]"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/implementation-summary]"
 description: "Summary of the post-022 documentation review packet after it was restored to the active Level 2 template contract."
 trigger_phrases:
   - "post-022 implementation summary"

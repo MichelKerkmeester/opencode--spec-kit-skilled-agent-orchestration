@@ -9,7 +9,7 @@ trigger_phrases:
   - "codex"
   - "012"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 completed: 2026-02-17
 created: 2026-02-17
 level: 3

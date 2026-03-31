@@ -1,7 +1,6 @@
 ---
 title: "Implementation Summary: Create [03--commands-and-skills/013-cmd-create-codex-compatibility/implementation-summary]"
 description: "level: 3"
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -15,6 +14,7 @@ contextType: "implementation"
 completed: 2026-02-17
 created: 2026-02-17
 level: 3
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 status: done
 ---
 # Implementation Summary

@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: CocoIndex Code MCP Integration - [03--commands-and-skills/022-mcp-coco-integration/research]"
+title: "Feature Research: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/research]"
 description: "Complete research documentation for integrating CocoIndex Code semantic code search into the OpenCode multi-CLI ecosystem."
 trigger_phrases:
   - "cocoindex"

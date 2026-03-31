@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [029-anobel-performance-analysis/implementation-summary]"
+title: "Implementation Summary [029-anobel-performance-a [01--anobel.com/029-anobel-performance-analysis/implementation-summary]"
 description: "Structural implementation summary retained for the comprehensive anobel.com performance analysis package."
 trigger_phrases:
   - "implementation"

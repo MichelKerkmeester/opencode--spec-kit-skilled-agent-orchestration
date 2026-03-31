@@ -7,7 +7,7 @@ trigger_phrases:
   - "collaboration spaces"
   - "shared memory"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 006-shared-memory-rollout

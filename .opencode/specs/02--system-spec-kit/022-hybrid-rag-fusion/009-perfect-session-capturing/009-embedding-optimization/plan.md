@@ -7,7 +7,7 @@ trigger_phrases:
   - "009"
   - "embedding"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Embedding Optimization
 

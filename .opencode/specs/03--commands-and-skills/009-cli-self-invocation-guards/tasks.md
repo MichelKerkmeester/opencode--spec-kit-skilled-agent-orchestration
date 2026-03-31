@@ -1,6 +1,15 @@
 ---
 title: "Tasks: CLI Self-Invocation Guards [03--commands-and-skills/009-cli-self-invocation-guards/tasks]"
 description: "Task breakdown for adding self-invocation guard language to the CLI bridge skills."
+trigger_phrases:
+  - "tasks"
+  - "cli"
+  - "self"
+  - "invocation"
+  - "guards"
+  - "009"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: CLI Self-Invocation Guards
 

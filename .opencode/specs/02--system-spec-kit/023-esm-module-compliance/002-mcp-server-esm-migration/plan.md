@@ -5,7 +5,7 @@ trigger_phrases:
   - "mcp server esm plan"
   - "023 phase 2 plan"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: MCP Server ESM Migration
 

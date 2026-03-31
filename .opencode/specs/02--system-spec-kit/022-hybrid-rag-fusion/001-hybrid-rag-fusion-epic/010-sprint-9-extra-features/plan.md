@@ -7,7 +7,7 @@ trigger_phrases:
   - "010"
   - "sprint"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Sprint 9 — Extra Features
 

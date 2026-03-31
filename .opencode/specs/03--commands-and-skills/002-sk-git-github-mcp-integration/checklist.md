@@ -1,6 +1,16 @@
 ---
 title: "Verification Checklist: GitHub MCP Integration [03--commands-and-skills/002-sk-git-github-mcp-integration/checklist]"
 description: "Verification checklist for corrected GitHub MCP guidance inside sk-git documentation."
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "github"
+  - "mcp"
+  - "integration"
+  - "002"
+  - "git"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: GitHub MCP Integration
 

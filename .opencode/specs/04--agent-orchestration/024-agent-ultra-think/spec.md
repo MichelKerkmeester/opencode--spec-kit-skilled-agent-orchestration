@@ -9,7 +9,7 @@ trigger_phrases:
   - "agent"
   - "ultra"
 importance_tier: "normal"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Feature Specification: Agent Ultra-Think
 

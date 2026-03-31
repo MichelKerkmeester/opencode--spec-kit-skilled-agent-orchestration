@@ -9,7 +9,7 @@ trigger_phrases:
   - "bot submission"
   - "034"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 ---
 # Feature Specification: Contact Form Bot Submission Investigation

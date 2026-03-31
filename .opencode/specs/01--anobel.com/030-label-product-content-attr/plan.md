@@ -8,7 +8,7 @@ trigger_phrases:
   - "product"
   - "content"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Label Product Content Attribute
 

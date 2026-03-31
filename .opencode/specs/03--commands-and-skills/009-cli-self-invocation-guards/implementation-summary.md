@@ -1,6 +1,14 @@
 ---
 title: "Implementation Summary [03--commands-and-skills/009-cli-self-invocation-guards/implementation-summary]"
 description: "Closeout summary for CLI self-invocation guard normalization."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "009"
+  - "cli"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary
 

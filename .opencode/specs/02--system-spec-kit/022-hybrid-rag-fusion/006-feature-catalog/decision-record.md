@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "006"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Feature Catalog Audit & Remediation
 

@@ -7,7 +7,7 @@ trigger_phrases:
   - "changelog"
   - "014"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Verification Checklist: Create Changelog Command
 

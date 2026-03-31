@@ -9,7 +9,7 @@ trigger_phrases:
   - "file"
   - "035"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: CV Upload Form File Type Validation Fix
 
