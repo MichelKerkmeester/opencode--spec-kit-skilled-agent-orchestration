@@ -48,7 +48,7 @@ type VRuleUnavailableResult = {
 // 2. MODULE LOADING
 // ───────────────────────────────────────────────────────────────
 
-let _validateMemoryQualityContent: ((content: string) => ValidationResult) | null = null;
+let _validateMemoryQualityContent: ((content: string, options?: { filePath?: string }) => ValidationResult) | null = null;
 let _determineValidationDisposition: ((failedRules: readonly QualityRuleId[], source?: string | null) => ValidationDispositionResult) | null = null;
 let _loadAttempted = false;
 const runtimeRequire = createRequire(import.meta.filename);
@@ -85,7 +85,7 @@ function loadModule(): void {
 // 3. EXPORTS
 // ───────────────────────────────────────────────────────────────
 
-export function validateMemoryQualityContent(content: string): ValidationResult | VRuleUnavailableResult | null {
+export function validateMemoryQualityContent(content: string, options?: { filePath?: string }): ValidationResult | VRuleUnavailableResult | null {
   loadModule();
   if (!_validateMemoryQualityContent) {
     if (process.env.SPECKIT_VRULE_OPTIONAL === 'true') {
@@ -100,7 +100,7 @@ export function validateMemoryQualityContent(content: string): ValidationResult 
       _unavailable: true,
     } as VRuleUnavailableResult;
   }
-  return _validateMemoryQualityContent(content);
+  return _validateMemoryQualityContent(content, options);
 }
 
 /** Check whether the V-rule validator module is loaded and operational. */
