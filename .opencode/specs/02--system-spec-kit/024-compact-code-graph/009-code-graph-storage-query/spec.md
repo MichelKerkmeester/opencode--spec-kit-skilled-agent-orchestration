@@ -9,7 +9,7 @@ trigger_phrases:
   - "storage"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 009: Code Graph Storage + Query
 

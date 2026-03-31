@@ -10,7 +10,7 @@ trigger_phrases:
   - "024"
   - "compact"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Spec: Hybrid Context Injection — Hook + Tool Architecture
 

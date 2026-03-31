@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "004"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 4: Cross-Runtime Fallback
 

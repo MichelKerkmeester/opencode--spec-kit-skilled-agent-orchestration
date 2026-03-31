@@ -10,7 +10,7 @@ trigger_phrases:
   - "001"
   - "precompact"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 1: Compaction Context Injection (PreCompact + SessionStart)
 

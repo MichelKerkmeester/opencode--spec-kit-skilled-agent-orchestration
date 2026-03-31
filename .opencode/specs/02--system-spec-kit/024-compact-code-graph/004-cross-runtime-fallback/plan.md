@@ -9,7 +9,7 @@ trigger_phrases:
   - "fallback"
   - "004"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 4 — Cross-Runtime Fallback
 

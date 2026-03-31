@@ -1,11 +1,6 @@
 ---
-title: "Deep Resear [02--system-spec-kit/024-compact-code-graph/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual]"
-importance_tier: "important"
-contextType: "research"
----
----
-title: "Deep Research Evaluating [024-compact-code-graph/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual]"
-description: "Deep research evaluating Codex-CLI-Compact (Dual-Graph) for upgrading Spec Kit Memory MCP. 10...; REJECTED: Installing Dual-Graph standalone (CLAUDE.; REJECTED: Extracting..."
+title: "Deep Research: Evaluating Codex-CLI-Compact Dual-Graph [024-compact-code-graph/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual]"
+description: "Deep research evaluating Codex-CLI-Compact (Dual-Graph) for upgrading Spec Kit Memory MCP. Investigated 10 approaches, rejected Dual-Graph (proprietary Cython), recommended clean-room structural indexer."
 trigger_phrases:
   - "code graph"
   - "codex-cli-compact"

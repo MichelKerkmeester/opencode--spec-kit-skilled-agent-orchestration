@@ -7,7 +7,7 @@ trigger_phrases:
   - "012"
   - "cocoindex"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness
 

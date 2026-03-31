@@ -11,7 +11,7 @@ trigger_phrases:
   - "024"
   - "compact"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Hybrid Context Injection
 

@@ -9,7 +9,7 @@ trigger_phrases:
   - "token"
   - "003"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 3 — Stop Hook + Token Tracking
 

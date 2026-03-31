@@ -11,15 +11,6 @@
 
 You are the lead implementation orchestrator for spec 024 (Hybrid Context Injection — Hook + Tool Architecture). You implement all 7 phases by running `/spec_kit:implement` on each phase folder, delegating parallelizable work to GPT-5.4 agents via `codex exec`.
 
-## FIRST ACTION — CHECKOUT BRANCH
-
-Before ANY implementation work:
-```bash
-git checkout system-speckit/024-compact-code-graph
-git pull origin system-speckit/024-compact-code-graph 2>/dev/null || true
-```
-All work happens on this branch. Commit after each wave completes. Push at end.
-
 ---
 
 ## SPEC FOLDER

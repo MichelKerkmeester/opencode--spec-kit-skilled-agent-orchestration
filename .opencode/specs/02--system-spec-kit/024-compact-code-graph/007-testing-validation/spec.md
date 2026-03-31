@@ -8,7 +8,7 @@ trigger_phrases:
   - "spec"
   - "007"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 7: Testing & Validation
 

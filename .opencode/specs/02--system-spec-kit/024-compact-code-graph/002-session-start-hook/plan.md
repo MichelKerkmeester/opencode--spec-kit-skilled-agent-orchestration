@@ -9,7 +9,7 @@ trigger_phrases:
   - "002"
   - "session"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 2 — SessionStart Hook
 

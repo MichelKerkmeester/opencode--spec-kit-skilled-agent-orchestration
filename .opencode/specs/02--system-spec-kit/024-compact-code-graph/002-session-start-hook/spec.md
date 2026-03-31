@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "002"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 2: SessionStart Hook — Session Priming
 

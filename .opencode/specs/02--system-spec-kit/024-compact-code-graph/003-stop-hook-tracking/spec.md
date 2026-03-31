@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "003"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 3: Stop Hook + Token Tracking
 

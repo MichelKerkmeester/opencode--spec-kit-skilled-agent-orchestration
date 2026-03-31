@@ -8,7 +8,7 @@ trigger_phrases:
   - "alignment"
   - "006"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 6 — Documentation Alignment
 

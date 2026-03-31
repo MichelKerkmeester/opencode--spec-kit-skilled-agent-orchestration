@@ -8,7 +8,7 @@ trigger_phrases:
   - "hook"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 1 — PreCompact Hook
 

@@ -9,7 +9,7 @@ trigger_phrases:
   - "set"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 011: Compaction Working-Set Integration
 

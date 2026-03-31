@@ -1,7 +1,7 @@
 {
-  "timestamp": "31-03-26 10-23",
+  "timestamp": "31-03-26 11-10",
   "messageCount": 1,
-  "decisionCount": 11,
+  "decisionCount": 5,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-31T09:23:18.471Z",
+        "timestamp": "2026-03-31T10:10:17.864Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-31T09:23:18.426Z",
+      "timestamp": "2026-03-31T10:10:17.814Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:75"
+        "processed_fields:38"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-31T09:23:18.471Z",
+      "timestamp": "2026-03-31T10:10:17.864Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-31T09:23:18.500Z",
+      "timestamp": "2026-03-31T10:10:17.902Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:024-compact-code-graph",
-        "trigger_phrases:27",
+        "trigger_phrases:29",
         "key_topics:12",
         "captured_file_count:10",
         "filesystem_file_count:10"
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 55,
-    "updatedAt": "2026-03-31T09:23:24.314Z",
-    "generatedAt": "2026-03-31T09:23:24.314Z",
+    "memoryId": 56,
+    "updatedAt": "2026-03-31T10:10:18.953Z",
+    "generatedAt": "2026-03-31T10:10:18.953Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

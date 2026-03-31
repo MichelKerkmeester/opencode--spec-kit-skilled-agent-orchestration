@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "005"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 5: Command & Agent Alignment
 

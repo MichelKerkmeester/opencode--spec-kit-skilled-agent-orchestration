@@ -1,3 +1,15 @@
+---
+title: "Deep Research Strategy: Hybrid Context Injection [02--system-spec-kit/024-compact-code-graph/research/deep-research-strategy]"
+description: "Research strategy for evaluating Codex-CLI-Compact Dual-Graph and designing hybrid hook+tool context injection architecture for automated context preservation."
+trigger_phrases:
+  - "deep research strategy"
+  - "codex-cli-compact evaluation"
+  - "hybrid context injection"
+  - "hook tool architecture"
+  - "context preservation research"
+importance_tier: "normal"
+contextType: "research"
+---
 # Deep Research Strategy — Hybrid Context Injection
 
 ## 2. TOPIC

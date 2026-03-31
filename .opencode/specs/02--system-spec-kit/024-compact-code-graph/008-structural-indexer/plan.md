@@ -8,7 +8,7 @@ trigger_phrases:
   - "structural"
   - "indexer"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 008 — Structural Indexer
 

@@ -8,7 +8,7 @@ trigger_phrases:
   - "code"
   - "graph"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 009 — Code Graph Storage + Query
 

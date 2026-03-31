@@ -8,7 +8,7 @@ trigger_phrases:
   - "spec"
   - "006"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 6: Documentation Alignment
 

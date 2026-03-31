@@ -8,7 +8,7 @@ trigger_phrases:
   - "cocoindex"
   - "bridge"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Phase 010 — CocoIndex Bridge + code_graph_context
 

@@ -8,7 +8,7 @@ trigger_phrases:
   - "utilization"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 012: CocoIndex UX, Utilization & Usefulness
 

@@ -9,7 +9,7 @@ trigger_phrases:
   - "tree"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 008: Structural Indexer (tree-sitter)
 

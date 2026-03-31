@@ -1,5 +1,5 @@
 ---
-title: "Phase 010: CocoIndex Bridge + [02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/spec]"
+title: "Phase 010: CocoIndex Bridge + Context [02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/spec]"
 description: "Implement code_graph_context, the LLM-oriented orchestration tool that bridges CocoIndex semantic search results into structural graph neighborhoods. Accepts native CocoIndex MC..."
 trigger_phrases:
   - "phase"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "bridge"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 ---
 # Phase 010: CocoIndex Bridge + code_graph_context
 
