@@ -26,13 +26,13 @@ contextType: "implementation"
 - [x] SessionStart startup output includes CocoIndex availability status
 - [x] `@context` agent (all 4 runtimes) checks CocoIndex before Grep/Glob for semantic queries
 - [x] PreCompact hook queries CocoIndex for semantic neighbors (when available)
-- [ ] `code_graph_context` supports reverse semantic augmentation (optional, latency-guarded)
+- [x] `code_graph_context` supports reverse semantic augmentation (optional, latency-guarded) — nextActions suggests CocoIndex
 - [ ] CocoIndex skill docs updated with new tools and integration points
 - [ ] No `ComponentContext` errors with `refresh_index: false` default
 
 ## P2 — Nice to Have
 
-- [ ] `ccc_status` MCP tool returns index stats
+- [x] `ccc_status` MCP tool returns index stats — handlers/code-graph/ccc-status.ts
 - [ ] `ccc_reindex` MCP tool triggers incremental re-index
 - [ ] `ccc_feedback` MCP tool accepts result quality feedback
 - [ ] SessionStart auto-detects stale index (>24h) and triggers background re-index

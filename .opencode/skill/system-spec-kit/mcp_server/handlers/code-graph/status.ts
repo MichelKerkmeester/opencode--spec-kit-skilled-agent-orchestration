@@ -11,9 +11,6 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
     const stats = graphDb.getStats();
     const d = graphDb.getDb();
 
-    // Get last scan timestamp
-    const lastScan = d.prepare('SELECT MAX(indexed_at) as last FROM code_files').get() as { last: string | null } | undefined;
-
     // Get stale file count (files that exist in DB but may need re-indexing)
     const staleCount = (d.prepare(`
       SELECT COUNT(*) as c FROM code_files
@@ -30,7 +27,9 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
             staleFiles: staleCount,
-            lastScanAt: lastScan?.last ?? null,
+            lastScanAt: stats.lastScanTimestamp,
+            dbFileSize: stats.dbFileSize,
+            schemaVersion: stats.schemaVersion,
             nodesByKind: stats.nodesByKind,
             edgesByType: stats.edgesByType,
             parseHealth: stats.parseHealthSummary,

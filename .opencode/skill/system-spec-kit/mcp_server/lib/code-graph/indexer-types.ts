@@ -12,7 +12,7 @@ export type SymbolKind =
 /** Edge types for relationships between symbols */
 export type EdgeType =
   | 'CONTAINS' | 'CALLS' | 'IMPORTS' | 'EXPORTS'
-  | 'EXTENDS' | 'IMPLEMENTS';
+  | 'EXTENDS' | 'IMPLEMENTS' | 'TESTED_BY';
 
 /** Languages supported by the structural indexer */
 export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'bash';

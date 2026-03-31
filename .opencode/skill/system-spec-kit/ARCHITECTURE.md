@@ -26,6 +26,7 @@ trigger_phrases:
 - [7. TROUBLESHOOTING](#7--troubleshooting)
 - [8. FAQ](#8--faq)
 - [9. RELATED DOCUMENTS](#9--related-documents)
+- [10. HOOK + CODE GRAPH + COCOINDEX ARCHITECTURE](#10--hook--code-graph--cocoindex-architecture)
 
 <!-- /ANCHOR:table-of-contents -->
 ---
@@ -431,3 +432,124 @@ A: No. `dist/` contains generated build output. Edit the source `.ts` files in p
 | [mcp_server/scripts/README.md](mcp_server/scripts/README.md) | Compatibility wrapper documentation |
 
 <!-- /ANCHOR:related-documents -->
+---
+
+<!-- ANCHOR:hook-code-graph-cocoindex -->
+## 10. HOOK + CODE GRAPH + COCOINDEX ARCHITECTURE
+
+### Overview
+
+Three subsystems collaborate to provide intelligent context across session boundaries: **Hooks** manage session lifecycle events, **Code Graph** provides structural code intelligence, and **CocoIndex** enables semantic discovery. A **Compact Merger** unifies their outputs under a token budget during compaction.
+
+### Integration Flowchart
+
+```mermaid
+flowchart TB
+    subgraph SESSION["Session Lifecycle"]
+        direction LR
+        startup["startup"] --> work["work"] --> compact["compact"] --> resume["resume"]
+    end
+
+    subgraph HOOKS["Hook Layer"]
+        direction TB
+        precompact["PreCompact<br/>compact-inject.ts"]
+        sessionstart["SessionStart<br/>session-prime.ts"]
+        stop["Stop<br/>session-stop.ts"]
+        hookstate["hook-state.ts<br/>Per-session state"]
+
+        precompact -->|"cache context"| hookstate
+        sessionstart -->|"inject primed context"| hookstate
+        stop -->|"track tokens"| hookstate
+    end
+
+    subgraph CODEGRAPH["Code Graph Layer"]
+        direction TB
+        indexer["Structural Indexer<br/>structural-indexer.ts"]
+        db["SQLite DB<br/>code-graph-db.ts"]
+        cgtools["MCP Tools<br/>scan / query / status / context"]
+        wst["Working Set Tracker<br/>working-set-tracker.ts"]
+
+        indexer -->|"parse JS/TS/Python/Bash"| db
+        db --> cgtools
+        wst -->|"recency-weighted files"| cgtools
+    end
+
+    subgraph COCOINDEX["CocoIndex Layer"]
+        direction TB
+        semantic["Semantic Search<br/>mcp__cocoindex_code__search"]
+        seed["Seed Resolver<br/>seed-resolver.ts"]
+        ctxbuilder["Context Builder<br/>code-graph-context.ts"]
+
+        semantic -->|"embedding matches"| seed
+        seed -->|"resolve to graph nodes"| ctxbuilder
+    end
+
+    subgraph MERGER["Compact Merger"]
+        direction TB
+        merger["compact-merger.ts<br/>3-source merge"]
+        budget["Budget Allocator<br/>budget-allocator.ts"]
+        runtime["Runtime Detection<br/>runtime-detection.ts"]
+        brief["Merged Brief"]
+
+        runtime -->|"hook policy"| merger
+        merger --> budget
+        budget --> brief
+    end
+
+    SESSION -->|"triggers"| HOOKS
+    precompact -->|"constitutional + triggered"| merger
+    cgtools -->|"structural neighborhoods"| merger
+    ctxbuilder -->|"semantic context"| merger
+    brief -->|"injected on resume"| sessionstart
+```
+
+### Component Reference
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `compact-inject.ts` | `hooks/claude/` | PreCompact: cache context before compaction |
+| `session-prime.ts` | `hooks/claude/` | SessionStart: inject context on startup/resume/compact |
+| `session-stop.ts` | `hooks/claude/` | Stop: track tokens, auto-save session |
+| `hook-state.ts` | `hooks/claude/` | Per-session state management |
+| `structural-indexer.ts` | `lib/code-graph/` | Regex-based code parser (JS/TS/Python/Bash) |
+| `code-graph-db.ts` | `lib/code-graph/` | SQLite storage + CRUD operations |
+| `seed-resolver.ts` | `lib/code-graph/` | CocoIndex results to graph node resolution |
+| `code-graph-context.ts` | `lib/code-graph/` | LLM-oriented compact neighborhoods |
+| `budget-allocator.ts` | `lib/code-graph/` | Token distribution (floor + overflow) |
+| `compact-merger.ts` | `lib/code-graph/` | 3-source merge for compaction |
+| `working-set-tracker.ts` | `lib/code-graph/` | Recency-weighted file tracking |
+| `runtime-detection.ts` | `lib/code-graph/` | Runtime ID + hook policy |
+
+### Budget Allocation
+
+The budget allocator distributes a fixed token budget across four sources using a **floor + overflow** strategy. Each source receives a guaranteed minimum (floor). Remaining tokens form an overflow pool redistributed to sources that need more space.
+
+```mermaid
+pie title Token Budget Distribution (4000 total)
+    "Constitutional (700)" : 700
+    "Code Graph (1200)" : 1200
+    "CocoIndex (900)" : 900
+    "Triggered (400)" : 400
+    "Overflow (800)" : 800
+```
+
+| Source | Floor | Purpose |
+|--------|-------|---------|
+| Constitutional | 700 | Always-present rules, CLAUDE.md essentials |
+| Code Graph | 1200 | Structural neighborhoods, active file context |
+| CocoIndex | 900 | Semantic search results, related code |
+| Triggered | 400 | Memory matches, session-specific context |
+| Overflow | 800 | Redistributed to sources that exceed their floor |
+| **Total** | **4000** | |
+
+### Query Routing
+
+Different query intents route to different subsystems. The routing ensures each query reaches the system best suited to answer it.
+
+| Query Intent | Route To | Tool |
+|-------------|----------|------|
+| Semantic discovery (find by meaning/concept) | CocoIndex | `mcp__cocoindex_code__search` |
+| Structural navigation (call graph, dependencies) | Code Graph | `code_graph_query` / `code_graph_context` |
+| Session continuity (prior work, decisions) | Memory | `memory_search` / `memory_context` |
+
+<!-- /ANCHOR:hook-code-graph-cocoindex -->

@@ -22,6 +22,8 @@ interface RawCapture {
   endColumn: number;
   signature?: string;
   parentName?: string;
+  extendsName?: string;
+  implementsNames?: string[];
 }
 
 /** Parse JavaScript/TypeScript source for structural symbols */
@@ -45,10 +47,18 @@ function parseJsTs(content: string): RawCapture[] {
       captures.push({ name: arrowMatch[1], kind: 'function', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length, signature: line.trim() });
     }
 
-    // Classes
-    const classMatch = line.match(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/);
+    // Classes (with extends and implements)
+    const classMatch = line.match(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?(?:\s+implements\s+([^{]+))?/);
     if (classMatch) {
-      captures.push({ name: classMatch[1], kind: 'class', startLine: lineNum, endLine: lineNum, startColumn: 0, endColumn: line.length, signature: line.trim() });
+      const implNames = classMatch[3]
+        ? classMatch[3].split(',').map(s => s.trim()).filter(Boolean)
+        : undefined;
+      captures.push({
+        name: classMatch[1], kind: 'class', startLine: lineNum, endLine: lineNum,
+        startColumn: 0, endColumn: line.length, signature: line.trim(),
+        extendsName: classMatch[2] || undefined,
+        implementsNames: implNames,
+      });
     }
 
     // Interfaces
@@ -181,37 +191,151 @@ function capturesToNodes(
   }));
 }
 
-/** Extract edges from nodes and source content */
-export function extractEdges(nodes: CodeNode[]): CodeEdge[] {
+/** Extract edges from nodes, source content, and raw captures */
+export function extractEdges(
+  nodes: CodeNode[],
+  contentLines?: string[],
+  captures?: RawCapture[],
+): CodeEdge[] {
   const edges: CodeEdge[] = [];
   const nodesByName = new Map<string, CodeNode>();
   for (const n of nodes) nodesByName.set(n.name, n);
 
-  // CONTAINS: class -> method
+  // Build capture lookup by name for extends/implements data
+  const captureByName = new Map<string, RawCapture>();
+  if (captures) {
+    for (const c of captures) captureByName.set(c.name, c);
+  }
+
+  // CONTAINS: class -> method (confidence 1.0)
   const classes = nodes.filter(n => n.kind === 'class');
   const methods = nodes.filter(n => n.kind === 'method');
   for (const method of methods) {
     const parent = classes.find(c => method.fqName.startsWith(c.name + '.'));
     if (parent) {
-      edges.push({ sourceId: parent.symbolId, targetId: method.symbolId, edgeType: 'CONTAINS', weight: 1.0 });
+      edges.push({
+        sourceId: parent.symbolId, targetId: method.symbolId,
+        edgeType: 'CONTAINS', weight: 1.0,
+        metadata: { confidence: '1.0' },
+      });
     }
   }
 
-  // IMPORTS
+  // IMPORTS (confidence 1.0)
   const imports = nodes.filter(n => n.kind === 'import');
   for (const imp of imports) {
     const target = nodesByName.get(imp.name);
     if (target && target.symbolId !== imp.symbolId) {
-      edges.push({ sourceId: imp.symbolId, targetId: target.symbolId, edgeType: 'IMPORTS', weight: 1.0 });
+      edges.push({
+        sourceId: imp.symbolId, targetId: target.symbolId,
+        edgeType: 'IMPORTS', weight: 1.0,
+        metadata: { confidence: '1.0' },
+      });
     }
   }
 
-  // EXPORTS
+  // EXPORTS (confidence 1.0)
   const exports = nodes.filter(n => n.kind === 'export');
   for (const exp of exports) {
     const target = nodesByName.get(exp.name);
     if (target && target.symbolId !== exp.symbolId) {
-      edges.push({ sourceId: target.symbolId, targetId: exp.symbolId, edgeType: 'EXPORTS', weight: 1.0 });
+      edges.push({
+        sourceId: target.symbolId, targetId: exp.symbolId,
+        edgeType: 'EXPORTS', weight: 1.0,
+        metadata: { confidence: '1.0' },
+      });
+    }
+  }
+
+  // EXTENDS: class -> parent class (confidence 0.95)
+  for (const cls of classes) {
+    const cap = captureByName.get(cls.name);
+    if (cap?.extendsName) {
+      const parent = nodesByName.get(cap.extendsName);
+      if (parent) {
+        edges.push({
+          sourceId: cls.symbolId, targetId: parent.symbolId,
+          edgeType: 'EXTENDS', weight: 0.95,
+          metadata: { confidence: '0.95' },
+        });
+      }
+    }
+  }
+
+  // IMPLEMENTS: class -> interface (confidence 0.95)
+  for (const cls of classes) {
+    const cap = captureByName.get(cls.name);
+    if (cap?.implementsNames) {
+      for (const ifaceName of cap.implementsNames) {
+        const iface = nodesByName.get(ifaceName);
+        if (iface) {
+          edges.push({
+            sourceId: cls.symbolId, targetId: iface.symbolId,
+            edgeType: 'IMPLEMENTS', weight: 0.95,
+            metadata: { confidence: '0.95' },
+          });
+        }
+      }
+    }
+  }
+
+  // CALLS: function/method -> called function (confidence 0.8)
+  if (contentLines) {
+    const callableNodes = nodes.filter(
+      n => n.kind === 'function' || n.kind === 'method',
+    );
+    const callPattern = /\b(\w+)\s*\(/g;
+
+    for (const caller of callableNodes) {
+      const bodyLines = contentLines.slice(caller.startLine - 1, caller.endLine);
+      const bodyText = bodyLines.join('\n');
+      const seen = new Set<string>();
+      let match: RegExpExecArray | null;
+
+      while ((match = callPattern.exec(bodyText)) !== null) {
+        const calledName = match[1];
+        // Skip self-references, keywords, and duplicates
+        if (calledName === caller.name || seen.has(calledName)) continue;
+        // Skip common JS/TS keywords that precede parens
+        if (['if', 'for', 'while', 'switch', 'catch', 'return', 'throw', 'new', 'typeof', 'await', 'async', 'function', 'class', 'const', 'let', 'var'].includes(calledName)) continue;
+        seen.add(calledName);
+
+        const target = nodesByName.get(calledName);
+        if (target && target.symbolId !== caller.symbolId) {
+          edges.push({
+            sourceId: caller.symbolId, targetId: target.symbolId,
+            edgeType: 'CALLS', weight: 0.8,
+            metadata: { confidence: '0.8' },
+          });
+        }
+      }
+    }
+  }
+
+  // TESTED_BY: test file nodes -> tested module nodes (confidence 0.6)
+  const testPattern = /[./](?:test|spec|vitest)\./;
+  const fileGroups = new Map<string, CodeNode[]>();
+  for (const n of nodes) {
+    const group = fileGroups.get(n.filePath) ?? [];
+    group.push(n);
+    fileGroups.set(n.filePath, group);
+  }
+
+  for (const [filePath, fileNodes] of fileGroups) {
+    if (!testPattern.test(filePath)) continue;
+    // Derive tested module path: foo.test.ts -> foo.ts, foo.spec.js -> foo.js
+    const testedPath = filePath.replace(/\.(test|spec|vitest)\./, '.');
+    const testedNodes = fileGroups.get(testedPath);
+    if (!testedNodes) continue;
+
+    for (const testNode of fileNodes) {
+      for (const testedNode of testedNodes) {
+        edges.push({
+          sourceId: testNode.symbolId, targetId: testedNode.symbolId,
+          edgeType: 'TESTED_BY', weight: 0.6,
+          metadata: { confidence: '0.6' },
+        });
+      }
     }
   }
 
@@ -245,7 +369,8 @@ export async function parseFile(
     }
 
     const nodes = capturesToNodes(captures, filePath, language, content);
-    const edges = extractEdges(nodes);
+    const contentLines = content.split('\n');
+    const edges = extractEdges(nodes, contentLines, captures);
 
     return {
       filePath, language, nodes, edges, contentHash,
@@ -285,7 +410,11 @@ function findFiles(dir: string, pattern: string, excludeGlobs: string[], maxSize
         if (targetExt && !entry.name.endsWith(targetExt)) continue;
         try {
           const stat = statSync(fullPath);
-          if (stat.size <= maxSize) results.push(fullPath);
+          if (stat.size <= maxSize) {
+            results.push(fullPath);
+          } else {
+            console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${fullPath}`);
+          }
         } catch { /* skip */ }
       }
     }
@@ -314,6 +443,30 @@ export async function indexFiles(config: IndexerConfig): Promise<ParseResult[]> 
       const result = await parseFile(file, content, language);
       results.push(result);
     } catch { /* skip unreadable */ }
+  }
+
+  // Cross-file TESTED_BY edges (heuristic, confidence 0.6)
+  const testPattern = /[./](?:test|spec|vitest)\./;
+  const nodesByFile = new Map<string, CodeNode[]>();
+  for (const r of results) {
+    nodesByFile.set(r.filePath, r.nodes);
+  }
+
+  for (const result of results) {
+    if (!testPattern.test(result.filePath)) continue;
+    const testedPath = result.filePath.replace(/\.(test|spec|vitest)\./, '.');
+    const testedNodes = nodesByFile.get(testedPath);
+    if (!testedNodes) continue;
+
+    for (const testNode of result.nodes) {
+      for (const testedNode of testedNodes) {
+        result.edges.push({
+          sourceId: testNode.symbolId, targetId: testedNode.symbolId,
+          edgeType: 'TESTED_BY', weight: 0.6,
+          metadata: { confidence: '0.6' },
+        });
+      }
+    }
   }
 
   return results;

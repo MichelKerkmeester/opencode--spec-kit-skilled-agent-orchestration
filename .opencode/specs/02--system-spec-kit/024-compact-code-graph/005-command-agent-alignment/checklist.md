@@ -25,7 +25,7 @@ contextType: "implementation"
 - [x] Agent definitions in `.gemini/agents/` updated for compaction awareness
 - [x] `@handover` agent references hook state when available
 - [x] `@context` agent references hook-injected context
-- [ ] All spec_kit commands audited (resume, handover, complete, implement)
+- [x] All spec_kit commands audited (resume, handover, complete, implement) — resume, handover, implement, complete all have hook integration
 
 ## P2
 - [ ] Memory commands fully audited (search, manage, learn)

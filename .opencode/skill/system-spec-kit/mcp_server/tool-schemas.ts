@@ -636,7 +636,7 @@ const codeGraphScan: ToolDefinition = {
 
 const codeGraphQuery: ToolDefinition = {
   name: 'code_graph_query',
-  description: '[L8:CodeGraph] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Token Budget: 1200.',
+  description: '[L8:CodeGraph] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Supports includeTransitive for multi-hop BFS traversal. Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -644,6 +644,8 @@ const codeGraphQuery: ToolDefinition = {
       subject: { type: 'string', minLength: 1, description: 'File path, symbol name, or symbolId to query (required)' },
       edgeType: { type: 'string', description: 'Filter by edge type (optional)' },
       limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results' },
+      includeTransitive: { type: 'boolean', default: false, description: 'Enable multi-hop BFS traversal (follows edges transitively)' },
+      maxDepth: { type: 'number', minimum: 1, maximum: 10, default: 3, description: 'Max traversal depth when includeTransitive is true' },
     },
     required: ['operation', 'subject'],
   },
@@ -651,13 +653,13 @@ const codeGraphQuery: ToolDefinition = {
 
 const codeGraphStatus: ToolDefinition = {
   name: 'code_graph_status',
-  description: '[L8:CodeGraph] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp. Token Budget: 500.',
+  description: '[L8:CodeGraph] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp, DB file size, schema version. Token Budget: 500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
 const codeGraphContext: ToolDefinition = {
   name: 'code_graph_context',
-  description: '[L8:CodeGraph] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds. Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
+  description: '[L8:CodeGraph] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds (provider: cocoindex), manual seeds (provider: manual), or graph seeds (provider: graph). Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -673,14 +675,54 @@ const codeGraphContext: ToolDefinition = {
             startLine: { type: 'number' },
             endLine: { type: 'number' },
             query: { type: 'string' },
+            provider: { type: 'string', enum: ['cocoindex', 'manual', 'graph'], description: 'Seed provider type' },
+            file: { type: 'string', description: 'CocoIndex file path (provider: cocoindex)' },
+            range: { type: 'object', properties: { start: { type: 'number' }, end: { type: 'number' } }, description: 'CocoIndex line range' },
+            score: { type: 'number', description: 'CocoIndex relevance score' },
+            symbolName: { type: 'string', description: 'Manual seed symbol name' },
+            symbolId: { type: 'string', description: 'Graph seed symbol ID' },
           },
-          required: ['filePath'],
         },
-        description: 'Seeds from CocoIndex or other providers (file:line pairs)',
+        description: 'Seeds from CocoIndex, manual input, or graph lookups',
       },
       budgetTokens: { type: 'number', minimum: 100, maximum: 4000, default: 1200, description: 'Token budget for response' },
+      profile: { type: 'string', enum: ['quick', 'research', 'debug'], description: 'Output density profile' },
+      includeTrace: { type: 'boolean', default: false, description: 'Include resolution trace metadata' },
     },
     required: [],
+  },
+};
+
+const cccStatus: ToolDefinition = {
+  name: 'ccc_status',
+  description: '[L8:CodeGraph] Check CocoIndex availability, binary path, and index status.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+};
+
+const cccReindex: ToolDefinition = {
+  name: 'ccc_reindex',
+  description: '[L8:CodeGraph] Trigger CocoIndex incremental (or full) re-indexing of the workspace.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      full: { type: 'boolean', default: false, description: 'Full re-index (slower) vs incremental' },
+    },
+    required: [],
+  },
+};
+
+const cccFeedback: ToolDefinition = {
+  name: 'ccc_feedback',
+  description: '[L8:CodeGraph] Submit quality feedback on CocoIndex search results to improve future searches.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      query: { type: 'string', description: 'The search query that was executed' },
+      resultFile: { type: 'string', description: 'File path from the result being rated' },
+      rating: { type: 'string', enum: ['helpful', 'not_helpful', 'partial'], description: 'Quality rating' },
+      comment: { type: 'string', description: 'Optional free-form feedback' },
+    },
+    required: ['query', 'rating'],
   },
 };
 
@@ -737,4 +779,8 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   codeGraphQuery,
   codeGraphStatus,
   codeGraphContext,
+  // L8: CocoIndex
+  cccStatus,
+  cccReindex,
+  cccFeedback,
 ];

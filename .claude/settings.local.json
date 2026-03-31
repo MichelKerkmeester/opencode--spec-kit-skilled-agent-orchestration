@@ -1,0 +1,50 @@
+{
+  "env": {
+    "SPECKIT_ABLATION": "true"
+  },
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/compact-inject.js'",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js'",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-stop.js'",
+            "async": true,
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__sequential_thinking__sequentialthinking",
+      "Bash(bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/999-compliance-test\" --strict)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ]
+  }
+}

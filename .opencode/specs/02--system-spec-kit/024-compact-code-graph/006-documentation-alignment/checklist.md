@@ -15,7 +15,7 @@ contextType: "implementation"
 - [x] Feature catalog entries created for all hook-related features
 - [x] Manual testing playbook has scenarios for each hook type
 - [x] SKILL.md documents hook system, registration, and design principle
-- [ ] ARCHITECTURE.md includes hook architecture diagram
+- [x] ARCHITECTURE.md includes hook architecture diagram — Mermaid diagram section added
 - [x] No stale references to pre-hook compaction approach in updated files
 
 ## P1

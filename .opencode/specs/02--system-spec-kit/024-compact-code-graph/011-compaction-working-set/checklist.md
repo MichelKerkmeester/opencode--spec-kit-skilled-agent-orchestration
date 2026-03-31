@@ -18,20 +18,20 @@ contextType: "implementation"
 - [x] 3-source merge produces combined compact brief under 4000 tokens
 - [x] Constitutional memory always included, never trimmed
 - [x] Trim order is deterministic and matches spec
-- [ ] `autoSurfaceAtCompaction` uses 3-source merge instead of Memory-only
+- [x] `autoSurfaceAtCompaction` uses 3-source merge instead of Memory-only — compact-inject uses mergeCompactBrief
 - [x] Graceful degradation: if Code Graph or CocoIndex unavailable, remaining sources fill budget
 
 ## P1
 - [x] Working-set tracker weights entries by recency + frequency
-- [ ] File-level deduplication across sources before budget allocation
+- [x] File-level deduplication across sources before budget allocation — deduplicateFilePaths in compact-merger
 - [x] Compact brief has visible section headers (Constitutional, Structural, Semantic, Session, Triggered)
 - [x] Overflow pool redistribution follows priority order
-- [ ] Cached compact brief available for SessionStart(source=compact) injection
-- [ ] Total pipeline completes within 2s hard cap
+- [x] Cached compact brief available for SessionStart(source=compact) injection — session-prime reads from hook state
+- [x] Total pipeline completes within 2s hard cap — HOOK_TIMEOUT_MS=1800 + withTimeout
 
 ## P2
 - [x] Allocator observability metadata included in output (per-source requested/granted/dropped)
-- [ ] Per-source freshness metadata in compact brief
-- [ ] Symbol-level working-set tracking (not just files)
-- [ ] Compact brief rendering adapts to smaller budgets (1500/2500) with same ratio
-- [ ] Merge time tracked for performance monitoring
+- [x] Per-source freshness metadata in compact brief — SourceFreshness in MergedBrief
+- [x] Symbol-level working-set tracking (not just files) — WorkingSetTracker.trackSymbol()
+- [x] Compact brief rendering adapts to smaller budgets (1500/2500) with same ratio — totalBudget parameter in mergeCompactBrief
+- [x] Merge time tracked for performance monitoring — mergeDurationMs in metadata

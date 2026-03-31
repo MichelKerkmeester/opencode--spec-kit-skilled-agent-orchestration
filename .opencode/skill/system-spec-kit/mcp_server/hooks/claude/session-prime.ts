@@ -14,7 +14,7 @@ import {
 } from './shared.js';
 import { ensureStateDir, loadState, updateState } from './hook-state.js';
 
-/** Handle source=compact: inject cached PreCompact payload */
+/** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
 function handleCompact(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
   if (!state?.pendingCompactPrime) {
@@ -26,18 +26,28 @@ function handleCompact(sessionId: string): OutputSection[] {
   }
 
   const { payload, cachedAt } = state.pendingCompactPrime;
-  hookLog('info', 'session-prime', `Injecting cached compact context (${payload.length} chars, cached at ${cachedAt})`);
+  hookLog('info', 'session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
 
   // Clear the pending payload after injection
   updateState(sessionId, { pendingCompactPrime: null });
 
-  return [
+  const sections: OutputSection[] = [
     { title: 'Recovered Context (Post-Compaction)', content: payload },
     {
       title: 'Recovery Instructions',
-      content: 'Context was compacted and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+      content: 'Context was compacted and auto-recovered via 3-source merge (Memory + Code Graph + CocoIndex). For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
     },
   ];
+
+  // Add last spec folder if known
+  if (state.lastSpecFolder) {
+    sections.push({
+      title: 'Active Spec Folder',
+      content: `Last active: ${state.lastSpecFolder}`,
+    });
+  }
+
+  return sections;
 }
 
 /** Check if CocoIndex Code binary is available */

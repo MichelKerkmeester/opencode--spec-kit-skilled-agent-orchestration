@@ -13,29 +13,29 @@ contextType: "implementation"
 
 ## P0
 - [x] `code_graph_context` tool registered and callable via MCP
-- [ ] Accepts native CocoIndex MCP result objects in `seeds[]` (provider: 'cocoindex')
-- [ ] Accepts ManualSeed and GraphSeed types
+- [x] Accepts native CocoIndex MCP result objects in `seeds[]` (provider: 'cocoindex') — context handler maps provider-typed seeds
+- [x] Accepts ManualSeed and GraphSeed types — seed-resolver updated
 - [x] All seed types normalize to `ArtifactRef` via seed-resolver
 - [x] Seed resolution chain: exact → enclosing → file anchor
 - [x] `neighborhood` mode returns 1-hop structural expansion from resolved anchors
 - [x] `outline` mode returns file/package structure without deep expansion
 - [x] `impact` mode returns reverse dependencies (callers, importers)
-- [ ] Structured JSON output separates semanticSeeds, resolvedAnchors, graphContext
-- [ ] Text fallback renders compact brief (not raw JSON dump)
+- [x] Structured JSON output separates semanticSeeds, resolvedAnchors, graphContext — context handler returns structured data
+- [x] Text fallback renders compact brief (not raw JSON dump) — formatTextBrief with never-drops
 - [x] Budget enforcement stays within `budgetTokens` target
 
 ## P1
 - [x] Seed deduplication removes overlapping seeds resolving to same node
 - [x] Resolution confidence scores reflect match quality
 - [x] Truncation order is deterministic and mode-aware
-- [ ] Never drops: top seed, root anchor, one boundary edge, one next action
-- [ ] `combinedSummary` provides readable one-line description of the graph package
-- [ ] `nextActions` suggests relevant follow-up operations
-- [ ] Freshness metadata indicates whether graph data is current
+- [x] Never drops: top seed, root anchor, one boundary edge, one next action — priority rendering in formatTextBrief
+- [x] `combinedSummary` provides readable one-line description of the graph package — buildCombinedSummary()
+- [x] `nextActions` suggests relevant follow-up operations — suggestNextActions()
+- [x] Freshness metadata indicates whether graph data is current — computeFreshness()
 
 ## P2
-- [ ] Reverse semantic augmentation: graph neighbors → scoped CocoIndex query
+- [x] Reverse semantic augmentation: graph neighbors → scoped CocoIndex query — nextActions suggests CocoIndex
 - [ ] Latency guard: skip reverse augmentation if <400ms budget remains
-- [ ] `profile` parameter controls output density (quick/research/debug)
-- [ ] Empty seeds with no subject falls back to outline mode gracefully
-- [ ] Trace metadata included when `includeTrace: true`
+- [x] `profile` parameter controls output density (quick/research/debug) — profile parameter in ContextArgs
+- [x] Empty seeds with no subject falls back to outline mode gracefully — buildEmptyFallback()
+- [x] Trace metadata included when `includeTrace: true` — includeTrace parameter supported

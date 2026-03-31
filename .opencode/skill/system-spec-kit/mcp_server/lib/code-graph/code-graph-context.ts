@@ -16,6 +16,8 @@ export interface ContextArgs {
   subject?: string;
   seeds?: CodeGraphSeed[];
   budgetTokens?: number;
+  profile?: 'quick' | 'research' | 'debug';
+  includeTrace?: boolean;
 }
 
 export interface ContextResult {
@@ -23,11 +25,14 @@ export interface ContextResult {
   resolvedAnchors: ArtifactRef[];
   graphContext: GraphContextSection[];
   textBrief: string;
+  combinedSummary: string;
+  nextActions: string[];
   metadata: {
     totalNodes: number;
     totalEdges: number;
     budgetUsed: number;
     budgetLimit: number;
+    freshness: { lastScanAt: string | null; staleness: 'fresh' | 'recent' | 'stale' | 'unknown' };
   };
 }
 
@@ -50,14 +55,22 @@ export function buildContext(args: ContextArgs): ContextResult {
     if (subjectRef) resolvedAnchors.push(subjectRef);
   }
 
+  // Empty seeds + no subject → outline mode fallback
+  if (resolvedAnchors.length === 0) {
+    return buildEmptyFallback(queryMode, budgetTokens);
+  }
+
   const sections: GraphContextSection[] = [];
   let totalNodes = 0;
   let totalEdges = 0;
 
+  // Profile-based limits
+  const nodeLimit = args.profile === 'quick' ? 10 : args.profile === 'debug' ? 30 : 20;
+
   for (const anchor of resolvedAnchors) {
     if (!anchor.symbolId) {
       // File anchor — get outline
-      const outlineNodes = graphDb.queryOutline(anchor.filePath).slice(0, 20);
+      const outlineNodes = graphDb.queryOutline(anchor.filePath).slice(0, nodeLimit);
       sections.push({
         anchor: `${anchor.filePath}:${anchor.startLine}`,
         nodes: outlineNodes.map(n => ({ name: n.fqName, kind: n.kind, file: n.filePath, line: n.startLine })),
@@ -73,20 +86,85 @@ export function buildContext(args: ContextArgs): ContextResult {
     totalEdges += section.edges.length;
   }
 
-  const textBrief = formatTextBrief(sections, budgetTokens);
+  const textBrief = formatTextBrief(sections, budgetTokens, resolvedAnchors);
+  const combinedSummary = buildCombinedSummary(resolvedAnchors, sections);
+  const nextActions = suggestNextActions(resolvedAnchors, sections, queryMode);
+  const freshness = computeFreshness();
 
   return {
     queryMode,
     resolvedAnchors,
     graphContext: sections,
     textBrief,
+    combinedSummary,
+    nextActions,
     metadata: {
       totalNodes,
       totalEdges,
       budgetUsed: Math.ceil(textBrief.length / 4),
       budgetLimit: budgetTokens,
+      freshness,
     },
   };
+}
+
+/** Build fallback result when no seeds/subject resolve */
+function buildEmptyFallback(queryMode: QueryMode, budgetTokens: number): ContextResult {
+  return {
+    queryMode,
+    resolvedAnchors: [],
+    graphContext: [],
+    textBrief: 'No anchors resolved. Try `code_graph_scan` first, or provide a `subject` or `seeds[]`.',
+    combinedSummary: 'Empty context — no seeds or subject resolved to graph nodes.',
+    nextActions: ['Run `code_graph_scan` to index the workspace', 'Provide `subject` parameter with a symbol name'],
+    metadata: { totalNodes: 0, totalEdges: 0, budgetUsed: 0, budgetLimit: budgetTokens, freshness: computeFreshness() },
+  };
+}
+
+/** Generate a one-line summary of the resolved context */
+function buildCombinedSummary(anchors: ArtifactRef[], sections: GraphContextSection[]): string {
+  if (anchors.length === 0) return 'No anchors resolved.';
+  const totalNodes = sections.reduce((sum, s) => sum + s.nodes.length, 0);
+  const totalEdges = sections.reduce((sum, s) => sum + s.edges.length, 0);
+  const files = new Set(anchors.map(a => a.filePath));
+  const topAnchor = anchors[0];
+  const topName = topAnchor.fqName ?? topAnchor.filePath.split('/').pop() ?? 'unknown';
+  return `${anchors.length} anchor(s) across ${files.size} file(s): ${topName} + ${totalNodes} symbols, ${totalEdges} relationships`;
+}
+
+/** Suggest relevant follow-up operations */
+function suggestNextActions(anchors: ArtifactRef[], sections: GraphContextSection[], mode: QueryMode): string[] {
+  const actions: string[] = [];
+  if (mode === 'neighborhood' && sections.some(s => s.edges.length > 5)) {
+    actions.push('Use `queryMode: "impact"` to see who calls these symbols');
+  }
+  if (mode === 'impact') {
+    actions.push('Use `queryMode: "outline"` for file-level overview');
+  }
+  if (anchors.some(a => a.resolution === 'file_anchor')) {
+    actions.push('Run `code_graph_scan` to improve resolution (file anchors found)');
+  }
+  if (sections.some(s => s.nodes.length >= 15)) {
+    actions.push('Narrow with `seeds[]` for more specific context');
+  }
+  actions.push('Use `mcp__cocoindex_code__search` for semantic discovery of related code');
+  return actions.slice(0, 4);
+}
+
+/** Compute freshness metadata from DB scan timestamps */
+function computeFreshness(): { lastScanAt: string | null; staleness: 'fresh' | 'recent' | 'stale' | 'unknown' } {
+  try {
+    const d = graphDb.getDb();
+    const row = d.prepare('SELECT MAX(indexed_at) as last FROM code_files').get() as { last: string | null } | undefined;
+    const lastScanAt = row?.last ?? null;
+    if (!lastScanAt) return { lastScanAt: null, staleness: 'unknown' };
+
+    const ageMs = Date.now() - new Date(lastScanAt).getTime();
+    const staleness = ageMs < 300_000 ? 'fresh' : ageMs < 3_600_000 ? 'recent' : 'stale';
+    return { lastScanAt, staleness };
+  } catch {
+    return { lastScanAt: null, staleness: 'unknown' };
+  }
 }
 
 /** Expand a single anchor into a context section */
@@ -180,35 +258,50 @@ function resolveSubjectToRef(subject: string): ArtifactRef | null {
   return null;
 }
 
-/** Format sections into compact text brief within token budget */
-function formatTextBrief(sections: GraphContextSection[], budgetTokens: number): string {
-  const lines: string[] = [];
+/**
+ * Format sections into compact text brief within token budget.
+ * Never-drops guarantee: always includes top seed, root anchor, one boundary edge, one next action.
+ */
+function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, anchors?: ArtifactRef[]): string {
   const maxChars = budgetTokens * 4;
+  const lines: string[] = [];
 
-  for (const section of sections) {
+  // Priority rendering: first section is always fully rendered (never dropped)
+  for (let i = 0; i < sections.length; i++) {
+    const section = sections[i];
+    const isFirst = i === 0;
+    const nodeLimit = isFirst ? 15 : Math.max(5, 15 - i * 3);
+    const edgeLimit = isFirst ? 10 : Math.max(3, 10 - i * 2);
+
     lines.push(`### ${section.anchor}`);
 
     if (section.nodes.length > 0) {
       lines.push('Symbols:');
-      for (const n of section.nodes.slice(0, 15)) {
+      for (const n of section.nodes.slice(0, nodeLimit)) {
         lines.push(`  ${n.kind} ${n.name} (${n.file}:${n.line})`);
       }
-      if (section.nodes.length > 15) {
-        lines.push(`  ... +${section.nodes.length - 15} more`);
+      if (section.nodes.length > nodeLimit) {
+        lines.push(`  ... +${section.nodes.length - nodeLimit} more`);
       }
     }
 
     if (section.edges.length > 0) {
       lines.push('Relationships:');
-      for (const e of section.edges.slice(0, 10)) {
+      for (const e of section.edges.slice(0, edgeLimit)) {
         lines.push(`  ${e.from} -[${e.type}]-> ${e.to}`);
       }
-      if (section.edges.length > 10) {
-        lines.push(`  ... +${section.edges.length - 10} more`);
+      if (section.edges.length > edgeLimit) {
+        lines.push(`  ... +${section.edges.length - edgeLimit} more`);
       }
     }
 
     lines.push('');
+
+    // Budget check: stop adding sections if we're over budget (but first section always included)
+    if (!isFirst && lines.join('\n').length > maxChars * 0.9) {
+      lines.push(`[${sections.length - i - 1} more sections omitted — budget limit]`);
+      break;
+    }
   }
 
   let result = lines.join('\n');

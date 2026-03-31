@@ -5,7 +5,7 @@
 // Resolution chain: exact symbol → enclosing symbol → file anchor.
 
 import * as graphDb from './code-graph-db.js';
-import type { CodeNode } from './indexer-types.js';
+import type { CodeNode, SymbolKind } from './indexer-types.js';
 
 /** A seed from CocoIndex or other providers */
 export interface CodeGraphSeed {
@@ -14,6 +14,33 @@ export interface CodeGraphSeed {
   endLine?: number;
   query?: string;
 }
+
+/** Native CocoIndex search result as a seed */
+export interface CocoIndexSeed {
+  provider: 'cocoindex';
+  file: string;
+  range: { start: number; end: number };
+  score: number;
+  snippet?: string;
+}
+
+/** Manual seed with symbol name (no file path required) */
+export interface ManualSeed {
+  provider: 'manual';
+  symbolName: string;
+  filePath?: string;
+  kind?: SymbolKind;
+}
+
+/** Pre-resolved graph node seed */
+export interface GraphSeed {
+  provider: 'graph';
+  nodeId: string;
+  symbolId: string;
+}
+
+/** Union type for all seed kinds */
+export type AnySeed = CodeGraphSeed | CocoIndexSeed | ManualSeed | GraphSeed;
 
 /** A resolved reference into the code graph */
 export interface ArtifactRef {
@@ -25,6 +52,116 @@ export interface ArtifactRef {
   kind: string | null;
   confidence: number; // 0.0 - 1.0
   resolution: 'exact' | 'enclosing' | 'file_anchor';
+}
+
+// ── Type guards ──────────────────────────────────────────────
+
+function isCocoIndexSeed(seed: unknown): seed is CocoIndexSeed {
+  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'cocoindex';
+}
+
+function isManualSeed(seed: unknown): seed is ManualSeed {
+  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'manual';
+}
+
+function isGraphSeed(seed: unknown): seed is GraphSeed {
+  return typeof seed === 'object' && seed !== null && (seed as any).provider === 'graph';
+}
+
+// ── Seed resolvers ───────────────────────────────────────────
+
+/** Resolve a CocoIndex seed by converting to CodeGraphSeed and delegating */
+export function resolveCocoIndexSeed(seed: CocoIndexSeed): ArtifactRef {
+  return resolveSeed({
+    filePath: seed.file,
+    startLine: seed.range.start,
+    endLine: seed.range.end,
+  });
+}
+
+/** Resolve a ManualSeed by looking up the symbol name in the DB */
+export function resolveManualSeed(seed: ManualSeed): ArtifactRef {
+  try {
+    const d = graphDb.getDb();
+
+    let query = 'SELECT * FROM code_nodes WHERE name = ?';
+    const params: unknown[] = [seed.symbolName];
+
+    if (seed.filePath) {
+      query += ' AND file_path = ?';
+      params.push(seed.filePath);
+    }
+    if (seed.kind) {
+      query += ' AND kind = ?';
+      params.push(seed.kind);
+    }
+    query += ' LIMIT 1';
+
+    const row = d.prepare(query).get(...params) as Record<string, unknown> | undefined;
+
+    if (row) {
+      return {
+        filePath: row.file_path as string,
+        startLine: row.start_line as number,
+        endLine: row.end_line as number,
+        symbolId: row.symbol_id as string,
+        fqName: row.fq_name as string,
+        kind: row.kind as string,
+        confidence: 0.9,
+        resolution: 'exact',
+      };
+    }
+  } catch {
+    // DB not available — fall through
+  }
+
+  return {
+    filePath: seed.filePath ?? '<unknown>',
+    startLine: 1,
+    endLine: 1,
+    symbolId: null,
+    fqName: null,
+    kind: seed.kind ?? null,
+    confidence: 0.1,
+    resolution: 'file_anchor',
+  };
+}
+
+/** Resolve a GraphSeed by looking up the node by symbolId in the DB */
+export function resolveGraphSeed(seed: GraphSeed): ArtifactRef {
+  try {
+    const d = graphDb.getDb();
+
+    const row = d.prepare(
+      'SELECT * FROM code_nodes WHERE symbol_id = ? LIMIT 1'
+    ).get(seed.symbolId) as Record<string, unknown> | undefined;
+
+    if (row) {
+      return {
+        filePath: row.file_path as string,
+        startLine: row.start_line as number,
+        endLine: row.end_line as number,
+        symbolId: row.symbol_id as string,
+        fqName: row.fq_name as string,
+        kind: row.kind as string,
+        confidence: 1.0,
+        resolution: 'exact',
+      };
+    }
+  } catch {
+    // DB not available — fall through
+  }
+
+  return {
+    filePath: '<unknown>',
+    startLine: 1,
+    endLine: 1,
+    symbolId: seed.symbolId,
+    fqName: null,
+    kind: null,
+    confidence: 0.1,
+    resolution: 'file_anchor',
+  };
 }
 
 /** Resolve a single seed to an ArtifactRef */
@@ -102,13 +239,21 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
   }
 }
 
+/** Resolve any seed variant to an ArtifactRef */
+function resolveAnySeed(seed: AnySeed): ArtifactRef {
+  if (isCocoIndexSeed(seed)) return resolveCocoIndexSeed(seed);
+  if (isManualSeed(seed)) return resolveManualSeed(seed);
+  if (isGraphSeed(seed)) return resolveGraphSeed(seed);
+  return resolveSeed(seed as CodeGraphSeed);
+}
+
 /** Resolve multiple seeds, deduplicate overlapping refs */
-export function resolveSeeds(seeds: CodeGraphSeed[]): ArtifactRef[] {
+export function resolveSeeds(seeds: AnySeed[]): ArtifactRef[] {
   const refs: ArtifactRef[] = [];
   const seen = new Set<string>();
 
   for (const seed of seeds) {
-    const ref = resolveSeed(seed);
+    const ref = resolveAnySeed(seed);
     const key = ref.symbolId ?? `${ref.filePath}:${ref.startLine}`;
     if (!seen.has(key)) {
       seen.add(key);

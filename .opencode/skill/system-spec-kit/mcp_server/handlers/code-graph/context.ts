@@ -10,8 +10,24 @@ export interface ContextHandlerArgs {
   input?: string;
   queryMode?: string;
   subject?: string;
-  seeds?: Array<{ filePath: string; startLine?: number; endLine?: number; query?: string }>;
+  seeds?: Array<{
+    filePath?: string;
+    startLine?: number;
+    endLine?: number;
+    query?: string;
+    provider?: string;
+    file?: string;
+    range?: { start: number; end: number };
+    score?: number;
+    snippet?: string;
+    symbolName?: string;
+    kind?: string;
+    nodeId?: string;
+    symbolId?: string;
+  }>;
   budgetTokens?: number;
+  profile?: string;
+  includeTrace?: boolean;
 }
 
 /** Handle code_graph_context tool call */
@@ -20,12 +36,15 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     ? args.queryMode as QueryMode
     : 'neighborhood');
 
-  const seeds: CodeGraphSeed[] = (args.seeds ?? []).map(s => ({
-    filePath: s.filePath,
-    startLine: s.startLine,
-    endLine: s.endLine,
-    query: s.query,
-  }));
+  // Map seeds — support both CodeGraphSeed format and provider-typed seeds
+  const seeds: CodeGraphSeed[] = (args.seeds ?? []).map(s => {
+    if (s.provider === 'cocoindex' && s.file) {
+      return { filePath: s.file, startLine: s.range?.start, endLine: s.range?.end, query: s.query };
+    }
+    return { filePath: s.filePath ?? s.file ?? '', startLine: s.startLine, endLine: s.endLine, query: s.query };
+  });
+
+  const profile = (['quick', 'research', 'debug'].includes(args.profile ?? '') ? args.profile : undefined) as ContextArgs['profile'];
 
   const contextArgs: ContextArgs = {
     input: args.input,
@@ -33,6 +52,8 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     subject: args.subject,
     seeds,
     budgetTokens: args.budgetTokens ?? 1200,
+    profile,
+    includeTrace: args.includeTrace,
   };
 
   try {
@@ -45,6 +66,8 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
           status: 'ok',
           data: {
             queryMode: result.queryMode,
+            combinedSummary: result.combinedSummary,
+            nextActions: result.nextActions,
             anchors: result.resolvedAnchors.map(a => ({
               file: a.filePath,
               line: a.startLine,
@@ -52,6 +75,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
               resolution: a.resolution,
               confidence: a.confidence,
             })),
+            graphContext: result.graphContext,
             textBrief: result.textBrief,
             metadata: result.metadata,
           },

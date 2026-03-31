@@ -30,10 +30,10 @@ contextType: "implementation"
 - [x] Subject resolution works via symbolId, fqName, or filePath
 - [x] Directional indexes improve query performance
 - [x] Scan summary includes parse error count and duration
-- [ ] Status includes last scan timestamp and DB file size
+- [x] Status includes last scan timestamp and DB file size — getStats() returns lastScanTimestamp, dbFileSize
 
 ## P2
-- [ ] `code_graph_query` supports `includeTransitive` for multi-hop traversal
+- [x] `code_graph_query` supports `includeTransitive` for multi-hop traversal — BFS transitiveTraversal
 - [ ] DB handles concurrent reads without corruption or locks
-- [ ] Schema versioning supports future migrations
-- [ ] Orphaned node cleanup on re-scan
+- [x] Schema versioning supports future migrations — SCHEMA_VERSION=1
+- [x] Orphaned node cleanup on re-scan — cleanupOrphans()

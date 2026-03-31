@@ -24,9 +24,9 @@ contextType: "implementation"
 
 ## P1
 - [x] Incremental parsing with byte offset (only new lines)
-- [ ] Context auto-save when >1000 output tokens
+- [x] Context auto-save when >1000 output tokens — AUTO_SAVE_TOKEN_THRESHOLD in session-stop.ts
 - [x] Hook-state updated with save bookmark
-- [ ] Spec folder auto-detected from transcript or hook-state
+- [x] Spec folder auto-detected from transcript or hook-state — detectSpecFolder() in session-stop.ts
 - [x] Append-only snapshots (multiple Stop fires handled)
 
 ## P2

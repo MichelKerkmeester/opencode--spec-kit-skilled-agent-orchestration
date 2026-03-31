@@ -6,9 +6,14 @@
 
 import Database from 'better-sqlite3';
 import { join } from 'node:path';
+import { statSync } from 'node:fs';
 import type { CodeNode, CodeEdge } from './indexer-types.js';
 
 let db: Database.Database | null = null;
+let dbPath: string | null = null;
+
+/** Schema version for migration tracking */
+export const SCHEMA_VERSION = 1;
 
 /** SQL schema for code graph tables */
 const SCHEMA_SQL = `
@@ -66,7 +71,7 @@ const SCHEMA_SQL = `
 export function initDb(dbDir: string): Database.Database {
   if (db) return db;
 
-  const dbPath = join(dbDir, 'code-graph.sqlite');
+  dbPath = join(dbDir, 'code-graph.sqlite');
   db = new Database(dbPath);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
@@ -237,6 +242,9 @@ export function getStats(): {
   totalFiles: number; totalNodes: number; totalEdges: number;
   nodesByKind: Record<string, number>; edgesByType: Record<string, number>;
   parseHealthSummary: Record<string, number>;
+  lastScanTimestamp: string | null;
+  dbFileSize: number | null;
+  schemaVersion: number;
 } {
   const d = getDb();
   const totalFiles = (d.prepare('SELECT COUNT(*) as c FROM code_files').get() as { c: number }).c;
@@ -255,7 +263,38 @@ export function getStats(): {
   const healthRows = d.prepare('SELECT parse_health, COUNT(*) as c FROM code_files GROUP BY parse_health').all() as { parse_health: string; c: number }[];
   for (const r of healthRows) parseHealthSummary[r.parse_health] = r.c;
 
-  return { totalFiles, totalNodes, totalEdges, nodesByKind, edgesByType, parseHealthSummary };
+  // Last scan timestamp
+  const lastScan = d.prepare('SELECT MAX(indexed_at) as last FROM code_files').get() as { last: string | null } | undefined;
+  const lastScanTimestamp = lastScan?.last ?? null;
+
+  // DB file size
+  let dbFileSize: number | null = null;
+  if (dbPath) {
+    try { dbFileSize = statSync(dbPath).size; } catch { /* file may not exist yet */ }
+  }
+
+  return {
+    totalFiles, totalNodes, totalEdges, nodesByKind, edgesByType, parseHealthSummary,
+    lastScanTimestamp, dbFileSize, schemaVersion: SCHEMA_VERSION,
+  };
+}
+
+/** Remove orphaned nodes whose files no longer exist in code_files */
+export function cleanupOrphans(): number {
+  const d = getDb();
+  // Find node file_ids not in code_files
+  const orphanedNodes = d.prepare(`
+    DELETE FROM code_nodes WHERE file_id NOT IN (SELECT id FROM code_files)
+  `).run();
+
+  // Find edges referencing non-existent nodes
+  const orphanedEdges = d.prepare(`
+    DELETE FROM code_edges WHERE
+      source_id NOT IN (SELECT symbol_id FROM code_nodes) OR
+      target_id NOT IN (SELECT symbol_id FROM code_nodes)
+  `).run();
+
+  return orphanedNodes.changes + orphanedEdges.changes;
 }
 
 /** Convert DB row to CodeNode */

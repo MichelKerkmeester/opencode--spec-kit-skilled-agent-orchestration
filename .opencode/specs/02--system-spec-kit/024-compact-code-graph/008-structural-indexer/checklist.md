@@ -18,7 +18,7 @@ contextType: "implementation"
 - [x] TypeScript regex parser extracts functions, classes, interfaces, types without crash
 - [x] Standardized captures produce correct `CodeNode[]` for functions, classes, methods
 - [x] `CONTAINS` edges correctly link classes → methods
-- [ ] `CALLS` edges correctly identify direct function calls
+- [x] `CALLS` edges correctly identify direct function calls — added to extractEdges
 - [x] `IMPORTS` edges correctly identify import statements
 - [x] `symbolId` is deterministic (SHA-256 of filePath + fqName + kind)
 - [x] Parser health metadata distinguishes clean/recovered/error
@@ -33,8 +33,8 @@ contextType: "implementation"
 - [ ] Incremental re-index (10 files changed) completes in <5 seconds
 
 ## P2
-- [ ] `EXTENDS` and `IMPLEMENTS` edges extracted for TS classes/interfaces
-- [ ] `TESTED_BY` heuristic edge links test files to tested modules
-- [ ] Files >100KB skipped with warning (not crash)
-- [ ] Parse time tracked per file for performance monitoring
-- [ ] Edge confidence scores reflect extraction reliability
+- [x] `EXTENDS` and `IMPLEMENTS` edges extracted for TS classes/interfaces — added to parseJsTs + extractEdges
+- [x] `TESTED_BY` heuristic edge links test files to tested modules — added
+- [x] Files >100KB skipped with warning (not crash) — maxFileSizeBytes=102400 in getDefaultConfig
+- [x] Parse time tracked per file for performance monitoring — parseDurationMs in ParseResult
+- [x] Edge confidence scores reflect extraction reliability — metadata.confidence on edges

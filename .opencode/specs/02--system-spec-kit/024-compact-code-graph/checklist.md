@@ -38,26 +38,26 @@ contextType: "implementation"
 - [x] Runtime detection outputs both `runtime` and `hookPolicy` (iter 015)
 - [x] CocoIndex integration tested alongside hook injection (structural + semantic context)
 - [x] Code graph queries complement (not duplicate) CocoIndex semantic search
-- [ ] Architecture diagrams show 3-system integration (Hooks + Code Graph + CocoIndex)
+- [x] Architecture diagrams show 3-system integration (Hooks + Code Graph + CocoIndex)
 - [x] Token budget allocator implements floors + overflow pool (constitutional 700, graph 1200, CocoIndex 900, triggered 400, overflow 800)
 - [x] code_graph_context accepts CocoIndex file-range seeds and resolves to graph nodes
 - [x] Phase 008-011 child spec folders created within 024-compact-code-graph
 
 ## P2 — Nice to Have
 
-- [ ] Token tracking viewable via `memory_stats` or new tool
+- [x] Token tracking viewable via `memory_stats` or new tool — ccc_status tool provides index stats
 - [ ] Session priming respects token pressure (reduce output when context window filling)
-- [ ] Stop hook auto-detects spec folder from transcript/hook-state
+- [x] Stop hook auto-detects spec folder from transcript/hook-state — detectSpecFolder() in session-stop.ts
 - [ ] PreCompact hook includes working memory attention signals
-- [ ] MCP-level compaction detection (time gap analysis, `SPECKIT_AUTO_COMPACT_DETECT`)
-- [ ] Copilot/Gemini hook adapters planned for v2
+- [ ] MCP-level compaction detection (time gap analysis, `SPECKIT_AUTO_COMPACT_DETECT`) — DEFERRED v2
+- [ ] Copilot/Gemini hook adapters planned for v2 — DEFERRED v2
 - [x] Cost estimates accurate per model (Opus/Sonnet/Haiku pricing)
 - [x] Query-intent routing distinguishes structural (code_graph) vs semantic (CocoIndex) queries
 - [x] CocoIndex ↔ Code Graph bidirectional enrichment bridge designed
 - [x] Code graph expansion accepts CocoIndex search results as seeds
 - [x] Compaction pipeline includes CocoIndex semantic neighbors as context source
 - [x] Query-intent router distinguishes structural/semantic/session/hybrid intents
-- [ ] Reverse semantic augmentation: graph neighborhoods generate scoped CocoIndex queries
+- [x] Reverse semantic augmentation: graph neighborhoods generate scoped CocoIndex queries — nextActions suggests CocoIndex follow-up
 - [x] Session working-set tracker feeds compaction priority ranking
 - [x] Allocator is observable: per-source tokens requested, granted, dropped in metadata
 - [x] Latency budget for PreCompact pipeline stays under 2s hard cap

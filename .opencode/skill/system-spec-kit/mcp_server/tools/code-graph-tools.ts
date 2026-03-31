@@ -7,6 +7,9 @@ import {
   handleCodeGraphQuery,
   handleCodeGraphStatus,
   handleCodeGraphContext,
+  handleCccStatus,
+  handleCccReindex,
+  handleCccFeedback,
 } from '../handlers/code-graph/index.js';
 
 import type { MCPResponse } from './types.js';
@@ -17,6 +20,9 @@ export const TOOL_NAMES = new Set([
   'code_graph_query',
   'code_graph_status',
   'code_graph_context',
+  'ccc_status',
+  'ccc_reindex',
+  'ccc_feedback',
 ]);
 
 /** Coerce handler response to MCPResponse (fix type literal narrowing) */
@@ -37,6 +43,12 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
       return toMCP(await handleCodeGraphStatus());
     case 'code_graph_context':
       return toMCP(await handleCodeGraphContext(args as Parameters<typeof handleCodeGraphContext>[0]));
+    case 'ccc_status':
+      return toMCP(await handleCccStatus());
+    case 'ccc_reindex':
+      return toMCP(await handleCccReindex(args as Parameters<typeof handleCccReindex>[0]));
+    case 'ccc_feedback':
+      return toMCP(await handleCccFeedback(args as unknown as Parameters<typeof handleCccFeedback>[0]));
     default:
       return null;
   }

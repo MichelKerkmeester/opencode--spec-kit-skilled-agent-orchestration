@@ -10,6 +10,8 @@ export interface QueryArgs {
   subject: string; // filePath, fqName, or symbolId
   edgeType?: string;
   limit?: number;
+  includeTransitive?: boolean;
+  maxDepth?: number;
 }
 
 /** Resolve a subject string to a symbolId */
@@ -29,6 +31,58 @@ function resolveSubject(subject: string): string | null {
   if (byName) return byName.symbol_id;
 
   return null;
+}
+
+/** BFS transitive traversal from a symbolId via the given edge type */
+function transitiveTraversal(
+  startId: string,
+  edgeType: string,
+  direction: 'from' | 'to',
+  maxDepth: number,
+  limit: number,
+): Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> {
+  const visited = new Set<string>();
+  const results: Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> = [];
+  let frontier = [{ id: startId, depth: 0 }];
+
+  while (frontier.length > 0 && results.length < limit) {
+    const next: typeof frontier = [];
+    for (const item of frontier) {
+      if (visited.has(item.id) || item.depth > maxDepth) continue;
+      visited.add(item.id);
+
+      if (direction === 'from') {
+        for (const { edge, targetNode } of graphDb.queryEdgesFrom(item.id, edgeType)) {
+          if (!visited.has(edge.targetId)) {
+            results.push({
+              symbolId: edge.targetId,
+              fqName: targetNode?.fqName ?? null,
+              filePath: targetNode?.filePath ?? null,
+              line: targetNode?.startLine ?? null,
+              depth: item.depth + 1,
+            });
+            next.push({ id: edge.targetId, depth: item.depth + 1 });
+          }
+        }
+      } else {
+        for (const { edge, sourceNode } of graphDb.queryEdgesTo(item.id, edgeType)) {
+          if (!visited.has(edge.sourceId)) {
+            results.push({
+              symbolId: edge.sourceId,
+              fqName: sourceNode?.fqName ?? null,
+              filePath: sourceNode?.filePath ?? null,
+              line: sourceNode?.startLine ?? null,
+              depth: item.depth + 1,
+            });
+            next.push({ id: edge.sourceId, depth: item.depth + 1 });
+          }
+        }
+      }
+    }
+    frontier = next;
+  }
+
+  return results.slice(0, limit);
 }
 
 /** Handle code_graph_query tool call */
@@ -67,6 +121,24 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       content: [{
         type: 'text',
         text: JSON.stringify({ status: 'error', error: `Could not resolve subject: ${subject}` }),
+      }],
+    };
+  }
+
+  const maxDepth = args.maxDepth ?? 3;
+
+  // If includeTransitive, use BFS traversal instead of 1-hop
+  if (args.includeTransitive) {
+    const edgeType = operation.startsWith('calls') ? 'CALLS' : 'IMPORTS';
+    const direction = operation.endsWith('from') ? 'from' : 'to';
+    const transitive = transitiveTraversal(symbolId, edgeType, direction, maxDepth, limit);
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'ok',
+          data: { operation, symbolId, transitive: true, maxDepth, nodes: transitive },
+        }, null, 2),
       }],
     };
   }
