@@ -81,7 +81,7 @@ export interface ParsedMemoryValidation {
 }
 
 /** Context type string value */
-export type ContextType = 'implementation' | 'research' | 'decision' | 'discovery' | 'general';
+export type ContextType = 'implementation' | 'research' | 'planning' | 'general' | 'decision' | 'discovery';
 
 interface ExtractImportanceTierOptions {
   documentType?: string | null;
@@ -108,17 +108,17 @@ export const MAX_CONTENT_LENGTH: number = Number.isFinite(_parsedMaxLen) && _par
 export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
   'implementation': 'implementation',
   'research': 'research',
-  'decision': 'decision',
-  'discovery': 'discovery',
+  'planning': 'planning',
   'general': 'general',
+  'decision': 'planning',    // legacy migration: decision → planning
+  'discovery': 'general',    // legacy migration: discovery → general
   'debug': 'implementation',
   'analysis': 'research',
-  'planning': 'decision',
-  'bug': 'discovery',
+  'bug': 'implementation',
   'fix': 'implementation',
   'refactor': 'implementation',
   'feature': 'implementation',
-  'architecture': 'decision',
+  'architecture': 'planning',
   'review': 'research',
   'test': 'implementation',
 };

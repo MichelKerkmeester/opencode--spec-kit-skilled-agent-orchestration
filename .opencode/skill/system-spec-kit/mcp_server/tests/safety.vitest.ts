@@ -112,7 +112,7 @@ describe('T105 + T106 Safety Tests', () => {
             CHECK(importance_tier IN ('constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated')),
           session_id TEXT,
           context_type TEXT DEFAULT 'general'
-            CHECK(context_type IN ('research', 'implementation', 'decision', 'discovery', 'general')),
+            CHECK(context_type IN ('research', 'implementation', 'planning', 'general', 'decision', 'discovery')),
           channel TEXT DEFAULT 'default',
           content_hash TEXT,
           expires_at DATETIME,

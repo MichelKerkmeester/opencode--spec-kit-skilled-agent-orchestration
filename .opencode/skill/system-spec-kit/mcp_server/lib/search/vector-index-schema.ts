@@ -2251,7 +2251,7 @@ export function create_schema(
       agent_id TEXT,
       session_id TEXT,
       shared_space_id TEXT,
-      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'decision', 'discovery', 'general')),
+      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general', 'decision', 'discovery')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,
       provenance_source TEXT,
