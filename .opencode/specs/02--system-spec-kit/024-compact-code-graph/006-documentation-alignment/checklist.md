@@ -14,14 +14,14 @@ contextType: "implementation"
 ## P0
 - [x] Feature catalog entries created for all hook-related features
 - [x] Manual testing playbook has scenarios for each hook type
-- [ ] SKILL.md documents hook system, registration, and design principle
+- [x] SKILL.md documents hook system, registration, and design principle
 - [ ] ARCHITECTURE.md includes hook architecture diagram
 - [x] No stale references to pre-hook compaction approach in updated files
 
 ## P1
 - [x] Root README updated with context preservation capabilities
 - [x] `.opencode/skill/system-spec-kit/README.md` updated with hook features
-- [ ] `.opencode/skill/README.md` system-spec-kit description updated
+- [x] `.opencode/skill/README.md` system-spec-kit description updated
 - [x] AGENTS.md updated to reflect Phase 5 agent changes
 - [x] All feature catalog entries follow existing format conventions
 - [ ] All playbook scenarios include prerequisites, steps, and expected results

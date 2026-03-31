@@ -107,7 +107,7 @@ This work was delivered in two documentation streams: the ChatGPT suite consiste
 5. Verified command diff scope for runtime-path work: 33 files changed, 147 insertions, 71 deletions.
 6. Ran YAML parse validation on modified command YAML assets: `YAML_OK 23`.
 7. Ran pattern scan confirming no hardcoded `agent_file: ".opencode/agent/..."` values remain in command YAML assets.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:verification-steps -->
 
 ---
 

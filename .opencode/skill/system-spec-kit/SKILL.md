@@ -731,6 +731,45 @@ Automated validation of spec folder contents via `validate.sh`.
 
 ---
 
+### Hook System (Claude Code Lifecycle)
+
+Automated context preservation via Claude Code hooks. Hooks are transport reliability — they call the same retrieval primitives that other runtimes call explicitly via CLAUDE.md instructions.
+
+**Hooks registered in `.claude/settings.local.json`:**
+
+| Hook | Script | Behavior |
+|------|--------|----------|
+| PreCompact | `dist/hooks/claude/compact-inject.js` | Precomputes context from transcript, caches to temp state |
+| SessionStart | `dist/hooks/claude/session-prime.js` | Injects context via stdout (routes by source: compact/startup/resume/clear) |
+| Stop | `dist/hooks/claude/session-stop.js` | Parses transcript for token usage, stores snapshots (async) |
+
+**Lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup: primes with tool overview + CocoIndex status. On resume: loads prior session state.
+
+**Cross-runtime fallback:** Non-hook runtimes (Codex CLI, Copilot CLI, Gemini CLI) use tool-based recovery via CLAUDE.md instructions: `memory_context({ mode: "resume", profile: "resume" })`.
+
+**Token budgets:** Compaction injection: 4000 tokens. Session priming: 2000 tokens. Hook timeout: 1800ms (<2s hard cap).
+
+**Source:** `mcp_server/hooks/claude/` | **Reference:** `references/config/hook_system.md`
+
+### Code Graph (Structural Code Analysis)
+
+4 MCP tools for structural code analysis via regex-based indexing and SQLite storage:
+
+| Tool | Purpose |
+|------|---------|
+| `code_graph_scan` | Index workspace files, build structural graph |
+| `code_graph_query` | Query relationships: outline, calls_from/to, imports_from/to |
+| `code_graph_status` | Report graph health and statistics |
+| `code_graph_context` | LLM-oriented compact graph neighborhoods (neighborhood/outline/impact modes) |
+
+**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this system) maps imports, calls, hierarchy. Memory (session, existing MCP) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection.
+
+**Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800.
+
+**Source:** `mcp_server/lib/code-graph/` | `mcp_server/handlers/code-graph/`
+
+---
+
 <!-- /ANCHOR:how-it-works -->
 <!-- ANCHOR:rules -->
 ## 4. RULES

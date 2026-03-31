@@ -126,7 +126,7 @@ The skill system covers four distinct workflow domains.
 
 **Code Quality Overlays.** The four sk-code-- skills form a layered review contract. sk-code--review provides a findings-first baseline. The three implementation overlays (opencode, web, full-stack) add stack-specific standards on top. They share terminology so switching overlays during a task requires no mental context switch.
 
-**System Foundation.** system-spec-kit governs all file modifications through spec folder workflows (Levels 1-3+), template validation, and Spec Kit Memory for context preservation across sessions. It is the only skill that is mandatory for every task involving file changes.
+**System Foundation.** system-spec-kit governs all file modifications through spec folder workflows (Levels 1-3+), template validation, and Spec Kit Memory for context preservation across sessions. It includes a hook system for automated context preservation at Claude Code lifecycle boundaries (PreCompact, SessionStart, Stop), a structural code graph with 4 MCP tools (code_graph_scan/query/status/context), and a CocoIndex bridge for semantic-to-structural expansion. It is the only skill that is mandatory for every task involving file changes.
 
 ### 3.2 FEATURE REFERENCE
 

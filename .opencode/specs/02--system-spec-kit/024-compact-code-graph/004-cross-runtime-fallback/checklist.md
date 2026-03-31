@@ -21,7 +21,7 @@ contextType: "implementation"
 
 ## P1
 - [x] `.claude/CLAUDE.md` created with Claude-specific recovery (closes Gap B)
-- [ ] CODEX.md updated with recovery instructions
+- [x] CODEX.md created with recovery instructions
 - [ ] Copilot runtime tested (tool fallback by policy)
 - [ ] Gemini runtime tested (tool fallback by policy)
 - [x] Cross-runtime behavior documented

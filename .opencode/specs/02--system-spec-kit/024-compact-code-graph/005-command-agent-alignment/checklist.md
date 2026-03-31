@@ -23,7 +23,7 @@ contextType: "implementation"
 - [x] Agent definitions in `.opencode/agent/` updated for compaction awareness
 - [x] Agent definitions in `.codex/agents/` updated for compaction awareness
 - [x] Agent definitions in `.gemini/agents/` updated for compaction awareness
-- [ ] `@handover` agent references hook state when available
+- [x] `@handover` agent references hook state when available
 - [x] `@context` agent references hook-injected context
 - [ ] All spec_kit commands audited (resume, handover, complete, implement)
 

@@ -57,6 +57,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 | `tasks.md`                  | Task breakdown, progress    | High     |
 | `checklist.md`              | Quality gates, verification | Medium   |
 | `memory/*.md`               | Session context, decisions  | High     |
+| Hook state (if available)   | Token metrics, last spec folder, session ID | Low |
 | `implementation-summary.md` | Completion status           | Medium   |
 
 ### Workflow Diagram
