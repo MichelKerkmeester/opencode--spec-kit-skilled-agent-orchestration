@@ -104,13 +104,19 @@ All issues resolved. Changes made:
 8. **Retroactive backfill** — 828 files updated across all specs including z_archive (0 "decision" remaining on disk)
 9. **DB migration** — direct UPDATE: 2006 decision→planning, 3 discovery→general
 10. **DB dedup** — removed 13,211 duplicate rows from force reindex accumulation (1,200 unique entries remain)
-11. **context_template.md** — updated contextType comment from "decision|discovery" to "planning"
+11. **context_template.md** — updated detection logic comment and pseudo-code from decision/discovery to planning/research
+12. **session-extractor.ts** — `detectContextType()` returns `'planning'` instead of `'decision'`, web-heavy sessions return `'research'` instead of `'discovery'`, `detectImportanceTier()` checks `'planning'`
+13. **intent-classifier.ts** — `find_spec` and `find_decision` intent weights use `contextType: 'planning'`
+14. **save-quality-gate.ts** — `isShortCriticalException()` accepts both `'planning'` and legacy `'decision'`
+15. **fsrs-scheduler.ts** — `CONTEXT_TYPE_STABILITY_MULTIPLIER` and `HYBRID_NO_DECAY_CONTEXT_TYPES` include `'planning'` with `'decision'` as legacy alias
+16. **memory-state-baseline.ts** — validation query includes `'planning'` in valid context_type set
 
 ## Success Criteria — All Met
 
 - Force reindex: 0 V-rule blocks, 0 failures (was 1106 blocks + 90 failures)
 - Main database: 1,200 unique entries after dedup (95 memories, 1,104 spec docs, 1 constitutional)
 - Spec docs indexed with correct document_type: spec (221), plan (221), tasks (207), implementation_summary (201), checklist (186), decision_record (41), research (19), handover (8)
-- contextType distribution across DB: implementation (6204→deduped), planning (2006→deduped), research, general
-- 0 files with "decision" contextType on disk or in DB
+- 0 files with "decision" contextType in frontmatter across all 186 folders from spec 008
 - 0 duplicates, 0 test files, 0 orphaned entries
+- All runtime consumers (session extractor, intent classifier, quality gate, FSRS scheduler, eval baseline) updated to use "planning"
+- Templates, assets, references, README.md, SKILL.md verified clean

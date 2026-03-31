@@ -38,3 +38,6 @@ contextType: "implementation"
 - [x] DB CHECK constraint updated — added "planning" to allowed context_type values in schema + downgrade
 - [x] DB migration — UPDATE 2006 decision→planning, 3 discovery→general in context-index.sqlite
 - [x] DB dedup — removed 13,211 duplicate rows, 1,200 unique entries remain (0 duplicates, 0 test files, 0 orphans)
+- [x] All runtime consumers updated — session-extractor (detectContextType→planning), intent-classifier (find_spec/find_decision→planning), save-quality-gate (accepts planning+legacy decision), fsrs-scheduler (no-decay set includes planning), memory-state-baseline (valid set includes planning)
+- [x] All 186 spec folders from spec 008 verified — 0 files with contextType "decision" in frontmatter
+- [x] system-spec-kit docs verified — templates, assets, references, README.md, SKILL.md all clean
