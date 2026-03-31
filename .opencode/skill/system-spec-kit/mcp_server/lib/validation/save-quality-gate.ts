@@ -337,7 +337,7 @@ export function countStructuralSignals(params: {
  *
  * Returns true when ALL conditions hold:
  *   1. SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS is enabled
- *   2. context_type === 'decision'
+ *   2. context_type === 'planning' (or legacy 'decision')
  *   3. At least SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS (2) structural signals present
  *
  * This is warn-only initially — callers must log bypass events.
@@ -349,7 +349,7 @@ export function isShortCriticalException(params: {
   anchor?: string | null;
 }): boolean {
   if (!isSaveQualityGateExceptionsEnabled()) return false;
-  if (params.contextType !== 'decision') return false;
+  if (params.contextType !== 'planning' && params.contextType !== 'decision') return false;
 
   const signals = countStructuralSignals({
     title: params.title,
@@ -575,7 +575,7 @@ export function computeBackfillQualityScore(row: {
   if ((row.content_text?.length ?? 0) > 100) {
     score += 0.2;
   }
-  if ((row.trigger_phrases?.trim().length ?? 0) > 0) {
+  if ((Array.isArray(row.trigger_phrases) ? row.trigger_phrases.length : (row.trigger_phrases?.trim().length ?? 0)) > 0) {
     score += 0.2;
   }
   if ((row.title?.trim().length ?? 0) > 0) {

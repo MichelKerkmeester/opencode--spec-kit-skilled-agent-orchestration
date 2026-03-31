@@ -16,10 +16,9 @@ git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 <!-- Template Configuration Comments (stripped during generation) -->
 
 <!-- Context Type Detection:
+  - "implementation": >30% Write/Edit tools, or decision recording present
   - "research": >50% Read/Grep/Glob tools, minimal Write/Edit
-  - "implementation": >30% Write/Edit tools
-  - "decision": User choice recorded OR explicit decision recording
-  - "discovery": WebSearch/WebFetch used significantly
+  - "planning": Spec/plan creation, architecture decisions, design work
   - "general": fallback when no clear pattern
 
   Detection Logic (pseudo-code):
@@ -31,9 +30,9 @@ git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
   total = sum(tool_counts.values())
 
   if decision_count > 0 or user_choice_recorded:
-    return 'decision'
+    return 'planning'
   elif web_tools / total > 0.3:
-    return 'discovery'
+    return 'research'
   elif read_tools / total > 0.5 and write_tools / total < 0.1:
     return 'research'
   elif write_tools / total > 0.3:

@@ -115,12 +115,12 @@ function getChannel(): string {
  * Classify the session context type based on tool usage ratios and decision count.
  * @param toolCounts - Aggregated counts of each tool type used in the session.
  * @param decisionCount - Number of decision observations recorded.
- * @returns One of `'decision'`, `'discovery'`, `'research'`, `'implementation'`, or `'general'`.
+ * @returns One of `'planning'`, `'research'`, `'implementation'`, or `'general'`.
  */
 function detectContextType(toolCounts: ToolCounts, decisionCount: number): string {
   // RC5: Check decision count BEFORE total===0 early return.
   // In JSON mode tool counts are always 0, so decisions were never checked.
-  if (decisionCount > 0) return 'decision';
+  if (decisionCount > 0) return 'planning';
 
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   if (total === 0) return 'general';
@@ -128,7 +128,7 @@ function detectContextType(toolCounts: ToolCounts, decisionCount: number): strin
   const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0) + (toolCounts.View || 0);
   const writeTools = (toolCounts.Write || 0) + (toolCounts.Edit || 0);
   const webTools = (toolCounts.WebSearch || 0) + (toolCounts.WebFetch || 0);
-  if (webTools / total > 0.3) return 'discovery';
+  if (webTools / total > 0.3) return 'research';
   if (readTools / total > 0.5 && writeTools / total < 0.1) return 'research';
   if (writeTools / total > 0.3) return 'implementation';
   return 'general';
@@ -147,7 +147,7 @@ function detectImportanceTier(filesModified: string[], contextType: string): str
     const segments = resolvedPath.split(path.sep).filter(Boolean);
     return criticalSegments.some((segment) => segments.includes(segment));
   })) return 'critical';
-  if (contextType === 'decision') return 'important';
+  if (contextType === 'planning') return 'important';
   return 'normal';
 }
 

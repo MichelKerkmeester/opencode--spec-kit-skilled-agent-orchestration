@@ -269,10 +269,10 @@ const TIER_MULTIPLIER: Readonly<Record<string, number>> = {
  * 1.0 = standard FSRS schedule.
  */
 const CONTEXT_TYPE_STABILITY_MULTIPLIER: Record<string, number> = {
-  decision: Infinity,    // no decay — decisions are permanent
+  planning: Infinity,    // no decay — planning/decisions are permanent
+  decision: Infinity,    // legacy alias — same as planning
   research: 2.0,         // 2x stability — research context decays slower
   implementation: 1.0,   // standard decay
-  discovery: 1.0,        // standard decay
   general: 1.0,          // standard decay
 };
 
@@ -381,7 +381,8 @@ function applyClassificationDecay(
  * Classified as permanent knowledge artifacts.
  */
 const HYBRID_NO_DECAY_CONTEXT_TYPES: ReadonlySet<string> = new Set([
-  'decision',
+  'planning',
+  'decision',     // legacy alias for planning
   'constitutional',
   'critical',
 ]);

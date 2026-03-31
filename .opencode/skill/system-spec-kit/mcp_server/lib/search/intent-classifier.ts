@@ -200,8 +200,8 @@ const INTENT_WEIGHT_ADJUSTMENTS: Record<IntentType, IntentWeights> = {
   refactor: { recency: 0.2, importance: 0.3, similarity: 0.5, contextType: 'implementation' },
   security_audit: { recency: 0.1, importance: 0.5, similarity: 0.4, contextType: 'research' },
   understand: { recency: 0.2, importance: 0.3, similarity: 0.5, contextType: null },
-  find_spec: { recency: 0.1, importance: 0.5, similarity: 0.4, contextType: 'decision' },
-  find_decision: { recency: 0.1, importance: 0.5, similarity: 0.4, contextType: 'decision' },
+  find_spec: { recency: 0.1, importance: 0.5, similarity: 0.4, contextType: 'planning' },
+  find_decision: { recency: 0.1, importance: 0.5, similarity: 0.4, contextType: 'planning' },
 };
 
 const INTENT_CENTROIDS: IntentCentroids = buildIntentCentroids();
