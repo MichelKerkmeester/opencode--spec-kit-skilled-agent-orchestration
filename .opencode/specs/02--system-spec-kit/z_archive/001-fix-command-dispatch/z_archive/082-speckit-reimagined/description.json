@@ -7,7 +7,7 @@
     "speckit",
     "reimagined"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.151Z",
+  "lastUpdated": "2026-03-31T17:03:23.854Z",
   "specId": "082",
   "folderSlug": "speckit-reimagined",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Reimagined [082-speckit-reimagined/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Reimagined"
+  "memoryNameHistory": []
 }

@@ -1,15 +1,16 @@
 {
   "specFolder": "01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation",
-  "description": "Spec: Icon Animation Isolation for Download Button",
+  "description": "Feature Specification: Icon Animation Isolation for Download Button",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "icon",
     "animation",
     "isolation",
     "download",
     "button"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.917Z",
+  "lastUpdated": "2026-03-31T17:03:22.686Z",
   "specId": "003",
   "folderSlug": "icon-animation-isolation",
   "parentChain": [
@@ -18,8 +19,5 @@
     "004-table-of-content"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Icon Animation Isolation for Download Button [003-icon-animation-isolation/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Icon Animation Isolation for Download Button"
+  "memoryNameHistory": []
 }

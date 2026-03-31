@@ -170,6 +170,7 @@ interface SearchArgs {
   query?: string;
   concepts?: string[];
   specFolder?: string;
+  folderBoost?: { folder: string; factor: number };
   tenantId?: string;
   userId?: string;
   agentId?: string;
@@ -403,6 +404,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     query,
     concepts,
     specFolder,
+    folderBoost,
     tenantId,
     userId,
     agentId,
@@ -586,6 +588,15 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
+  // FIX RC3-B: Intent confidence floor — override low-confidence auto-detections to "understand"
+  const INTENT_CONFIDENCE_FLOOR = parseFloat(process.env.SPECKIT_INTENT_CONFIDENCE_FLOOR || '0.25');
+  if (detectedIntent && intentConfidence < INTENT_CONFIDENCE_FLOOR && !explicitIntent) {
+    console.error(`[memory-search] Intent confidence ${intentConfidence.toFixed(3)} below floor ${INTENT_CONFIDENCE_FLOOR}, overriding '${detectedIntent}' → 'understand'`);
+    detectedIntent = 'understand';
+    intentConfidence = 1.0;
+    intentWeights = intentClassifier.getIntentWeights('understand' as IntentType);
+  }
+
   // Create retrieval trace at pipeline entry
   const trace = createTrace(
     effectiveQuery,
@@ -687,6 +698,29 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     const pipelineResult: PipelineResult = await executePipeline(pipelineConfig);
     let resultsForFormatting = pipelineResult.results as unknown as SessionAwareResult[];
 
+    // Fix 4 (RC1-B): Apply folder boost — multiply similarity for results matching discovered folder
+    if (folderBoost && folderBoost.folder && folderBoost.factor > 1) {
+      let boostedCount = 0;
+      for (const r of resultsForFormatting) {
+        const filePath = (r as Record<string, unknown>).file_path as string | undefined;
+        if (filePath && filePath.includes(folderBoost.folder)) {
+          const raw = (r as Record<string, unknown>);
+          if (typeof raw.similarity === 'number') {
+            raw.similarity = Math.min(raw.similarity * folderBoost.factor, 1.0);
+            boostedCount++;
+          }
+        }
+      }
+      // Re-sort by similarity after boosting
+      if (boostedCount > 0) {
+        resultsForFormatting.sort((a, b) => {
+          const sa = (a as Record<string, unknown>).similarity as number ?? 0;
+          const sb = (b as Record<string, unknown>).similarity as number ?? 0;
+          return sb - sa;
+        });
+      }
+    }
+
     if (sessionId && isSessionRetrievalStateEnabled()) {
       const activeGoal = effectiveQuery.trim().length > 0 ? effectiveQuery : null;
       if (activeGoal) {
@@ -774,10 +808,13 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
     _evalChannelPayloads = buildEvalChannelPayloads(resultsForFormatting);
 
-    const appliedBoosts = {
+    const appliedBoosts: Record<string, unknown> = {
       session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },
       causal: { applied: pipelineResult.metadata.stage2.causalBoostApplied },
     };
+    if (folderBoost && folderBoost.folder) {
+      appliedBoosts.folder = { applied: true, folder: folderBoost.folder, factor: folderBoost.factor };
+    }
     extraData.appliedBoosts = appliedBoosts;
     extraData.applied_boosts = appliedBoosts;
 

@@ -7,7 +7,7 @@
     "bugs",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.947Z",
+  "lastUpdated": "2026-03-31T17:03:23.730Z",
   "specId": "054",
   "folderSlug": "remaining-bugs-remediation",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Remaining Bugs Remediation [054-remaining-bugs-remediation/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Spec: Remaining Bugs Remediation"
+  "memoryNameHistory": []
 }

@@ -6,7 +6,7 @@
     "validation",
     "rules"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.616Z",
+  "lastUpdated": "2026-03-31T17:03:23.519Z",
   "specId": "001",
   "folderSlug": "mvp-monolithic",
   "parentChain": [
@@ -17,9 +17,5 @@
     "023-path-scoped-rules"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Path-Scoped Validation Rules [001-mvp-monolithic/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Path-Scoped Validation Rules"
+  "memoryNameHistory": []
 }

@@ -8,16 +8,12 @@
     "phase",
     "system"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.079Z",
+  "lastUpdated": "2026-03-31T17:03:22.793Z",
   "specId": "021",
   "folderSlug": "spec-kit-phase-system",
   "parentChain": [
     "02--system-spec-kit"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Phase System [021-spec-kit-phase-system/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Phase System"
+  "memoryNameHistory": []
 }

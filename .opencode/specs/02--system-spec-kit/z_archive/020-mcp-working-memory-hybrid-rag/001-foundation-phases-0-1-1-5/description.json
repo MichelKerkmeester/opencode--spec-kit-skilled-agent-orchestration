@@ -1,13 +1,13 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5",
-  "description": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5)",
+  "description": "Feature Specification: Foundation Phases 0 1 1 5",
   "keywords": [
-    "phase",
-    "package",
-    "spec",
-    "foundation"
+    "feature",
+    "specification",
+    "foundation",
+    "phases"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.442Z",
+  "lastUpdated": "2026-03-31T17:03:24.054Z",
   "specId": "001",
   "folderSlug": "foundation-phases-0-1-1-5",
   "parentChain": [
@@ -16,9 +16,5 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5) [001-foundation-phases-0-1-1-5/spec]",
-  "status": "Draft (planning-only)",
-  "importance_tier": "important",
-  "short_description": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5)"
+  "memoryNameHistory": []
 }

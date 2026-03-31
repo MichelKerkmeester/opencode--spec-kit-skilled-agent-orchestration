@@ -1,14 +1,16 @@
 {
   "specFolder": "01--anobel.com/z_archive/023-performance-review",
-  "description": "Performance Optimization Review - Spec 025",
+  "description": "Feature Specification: Performance Optimization Review - Spec 025",
   "keywords": [
+    "feature",
+    "specification",
     "performance",
     "optimization",
     "review",
     "spec",
     "025"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.841Z",
+  "lastUpdated": "2026-03-31T17:03:22.769Z",
   "specId": "023",
   "folderSlug": "performance-review",
   "parentChain": [

@@ -11,7 +11,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.011Z",
+  "lastUpdated": "2026-03-31T17:03:23.777Z",
   "specId": "068",
   "folderSlug": "memory-index-commands",
   "parentChain": [
@@ -21,9 +21,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Memory Command Separation - Requirements & User Stories [068-memory-index-commands/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Memory Command Separation - Requirements & User Stories"
+  "memoryNameHistory": []
 }

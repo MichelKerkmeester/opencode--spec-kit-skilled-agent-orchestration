@@ -8,7 +8,7 @@
     "upgrade",
     "research"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.952Z",
+  "lastUpdated": "2026-03-31T17:03:23.735Z",
   "specId": "055",
   "folderSlug": "cognitive-memory-upgrade",
   "parentChain": [
@@ -18,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Cognitive Memory Upgrade Research [055-cognitive-memory-upgrade/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Cognitive Memory Upgrade Research"
+  "memoryNameHistory": []
 }

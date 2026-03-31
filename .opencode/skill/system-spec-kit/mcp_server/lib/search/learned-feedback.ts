@@ -291,11 +291,15 @@ export function recordSelection(
     // Extract existing organic triggers
     let existingTriggers: string[] = [];
     if (memory.trigger_phrases) {
-      try {
-        const parsed = JSON.parse(memory.trigger_phrases);
-        existingTriggers = Array.isArray(parsed) ? parsed : [memory.trigger_phrases];
-      } catch (_error: unknown) {
-        existingTriggers = memory.trigger_phrases.split(',').map((t: string) => t.trim());
+      if (Array.isArray(memory.trigger_phrases)) {
+        existingTriggers = memory.trigger_phrases;
+      } else {
+        try {
+          const parsed = JSON.parse(memory.trigger_phrases);
+          existingTriggers = Array.isArray(parsed) ? parsed : [memory.trigger_phrases];
+        } catch (_error: unknown) {
+          existingTriggers = memory.trigger_phrases.split(',').map((t: string) => t.trim());
+        }
       }
     }
 

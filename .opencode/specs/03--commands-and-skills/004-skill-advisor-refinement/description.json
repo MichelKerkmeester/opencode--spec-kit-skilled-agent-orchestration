@@ -1,23 +1,17 @@
 {
   "specFolder": "03--commands-and-skills/004-skill-advisor-refinement",
-  "description": "Feature Specification: Skill Advisor Refinement",
+  "description": "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->",
   "keywords": [
-    "feature",
-    "specification",
-    "skill",
-    "advisor",
-    "refinement"
+    "spec-core",
+    "level2-verify",
+    "level3-arch"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.514Z",
+  "lastUpdated": "2026-03-31T17:03:24.108Z",
   "specId": "004",
   "folderSlug": "skill-advisor-refinement",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Skill Advisor Refinement [template:level_3/spec.md]",
-  "status": "Implementation Complete",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: Skill Advisor Refinement"
+  "memoryNameHistory": []
 }

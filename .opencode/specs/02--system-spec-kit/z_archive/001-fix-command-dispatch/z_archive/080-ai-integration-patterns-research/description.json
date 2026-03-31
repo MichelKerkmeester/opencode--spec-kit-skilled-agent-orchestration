@@ -6,7 +6,7 @@
     "patterns",
     "research"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.134Z",
+  "lastUpdated": "2026-03-31T17:03:23.843Z",
   "specId": "080",
   "folderSlug": "ai-integration-patterns-research",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "AI Integration Patterns Research [080-ai-integration-patterns-research/spec]",
-  "importance_tier": "important",
-  "short_description": "AI Integration Patterns Research"
+  "memoryNameHistory": []
 }

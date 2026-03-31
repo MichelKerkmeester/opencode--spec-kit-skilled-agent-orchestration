@@ -7,7 +7,7 @@
     "anchors",
     "fixture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.673Z",
+  "lastUpdated": "2026-03-31T17:03:23.543Z",
   "specId": "",
   "folderSlug": "valid-anchors",
   "parentChain": [
@@ -20,9 +20,5 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Valid Anchors Fixture [valid-anchors/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Spec: Valid Anchors Fixture"
+  "memoryNameHistory": []
 }

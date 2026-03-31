@@ -8,16 +8,12 @@
     "skill",
     "merger"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.646Z",
+  "lastUpdated": "2026-03-31T17:03:24.183Z",
   "specId": "019",
   "folderSlug": "cmd-create-skill-merger",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Create Skill Merger",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Create Skill Merger"
+  "memoryNameHistory": []
 }

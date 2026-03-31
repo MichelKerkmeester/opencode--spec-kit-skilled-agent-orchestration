@@ -9,7 +9,7 @@
     "bug",
     "fix"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.782Z",
+  "lastUpdated": "2026-03-31T17:03:23.609Z",
   "specId": "032",
   "folderSlug": "system-health-audit",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "System Health Audit - Comprehensive Bug Fix [032-system-health-audit/spec]",
-  "status": "Critical Issues",
-  "importance_tier": "important",
-  "short_description": "System Health Audit - Comprehensive Bug Fix"
+  "memoryNameHistory": []
 }

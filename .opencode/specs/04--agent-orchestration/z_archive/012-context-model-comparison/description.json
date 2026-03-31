@@ -1,17 +1,14 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/012-context-model-comparison",
-  "description": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)",
+  "description": "Feature Specification: Context Model Comparison",
   "keywords": [
-    "spec",
-    "012",
+    "feature",
+    "specification",
     "context",
-    "agent",
     "model",
-    "comparison",
-    "haiku",
-    "sonnet"
+    "comparison"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.872Z",
+  "lastUpdated": "2026-03-31T17:03:24.351Z",
   "specId": "012",
   "folderSlug": "context-model-comparison",
   "parentChain": [
@@ -19,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet) [012-context-model-comparison/spec]",
-  "status": "|-----------",
-  "importance_tier": "important",
-  "short_description": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)"
+  "memoryNameHistory": []
 }

@@ -8,7 +8,7 @@
     "bug",
     "fixes"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.901Z",
+  "lastUpdated": "2026-03-31T17:03:23.677Z",
   "specId": "046",
   "folderSlug": "post-release-refinement-1",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Post-Release Refinement 1: Infrastructure Bug Fixes [046-post-release-refinement-1/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Post-Release Refinement 1: Infrastructure Bug Fixes"
+  "memoryNameHistory": []
 }

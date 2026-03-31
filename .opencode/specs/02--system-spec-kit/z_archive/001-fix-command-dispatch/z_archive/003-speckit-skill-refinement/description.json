@@ -7,7 +7,7 @@
     "skill",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.525Z",
+  "lastUpdated": "2026-03-31T17:03:23.440Z",
   "specId": "003",
   "folderSlug": "speckit-skill-refinement",
   "parentChain": [
@@ -17,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: SpecKit Skill Refinement [003-speckit-skill-refinement/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: SpecKit Skill Refinement"
+  "memoryNameHistory": []
 }

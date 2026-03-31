@@ -1,14 +1,18 @@
 {
-  "specFolder": "023-esm-module-compliance/003-scripts-interop-refactor",
-  "description": "Phase 3: scripts-interop-refactor",
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/003-scripts-interop-refactor",
+  "description": "Feature Specification: Scripts Interop Refactor",
   "keywords": [
-    "phase",
-    "scripts-interop-refactor"
+    "feature",
+    "specification",
+    "scripts",
+    "interop",
+    "refactor"
   ],
-  "lastUpdated": "2026-03-29T10:21:42.709Z",
+  "lastUpdated": "2026-03-31T17:03:23.384Z",
   "specId": "003",
   "folderSlug": "scripts-interop-refactor",
   "parentChain": [
+    "02--system-spec-kit",
     "023-esm-module-compliance"
   ],
   "memorySequence": 0,

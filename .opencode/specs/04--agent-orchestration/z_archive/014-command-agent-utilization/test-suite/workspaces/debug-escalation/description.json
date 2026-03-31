@@ -7,7 +7,7 @@
     "jwt",
     "authentication"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.939Z",
+  "lastUpdated": "2026-03-31T17:03:24.387Z",
   "specId": "",
   "folderSlug": "debug-escalation",
   "parentChain": [
@@ -18,9 +18,5 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: JWT Authentication [debug-escalation/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: JWT Authentication"
+  "memoryNameHistory": []
 }

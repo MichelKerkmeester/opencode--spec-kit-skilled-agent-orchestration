@@ -1,15 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/018-mcp-issues-after-update",
-  "description": "Feature Specification: MCP Server Failures After Updates",
+  "description": "Feature Specification: MCP Issues After Update",
   "keywords": [
     "feature",
     "specification",
     "mcp",
-    "server",
-    "failures",
-    "updates"
+    "issues",
+    "update"
   ],
-  "lastUpdated": "2026-03-21T13:24:04.135Z",
+  "lastUpdated": "2026-03-31T17:03:24.039Z",
   "specId": "018",
   "folderSlug": "mcp-issues-after-update",
   "parentChain": [

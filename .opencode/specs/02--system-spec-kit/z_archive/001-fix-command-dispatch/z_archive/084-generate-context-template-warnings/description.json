@@ -10,7 +10,7 @@
     "api",
     "mismatch"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.180Z",
+  "lastUpdated": "2026-03-31T17:03:23.874Z",
   "specId": "084",
   "folderSlug": "generate-context-template-warnings",
   "parentChain": [
@@ -20,8 +20,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Fix generate-context.js Template Warnings and API Mismatch [084-generate-context-template-warnings/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Fix generate-context.js Template Warnings and API Mismatch"
+  "memoryNameHistory": []
 }

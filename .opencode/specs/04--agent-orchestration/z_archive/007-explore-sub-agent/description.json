@@ -1,13 +1,13 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/007-explore-sub-agent",
-  "description": "Spec: Context Loader Sub-Agent (@context_loader)",
+  "description": "Feature Specification: Explore Sub-Agent",
   "keywords": [
-    "spec",
-    "context",
-    "loader",
+    "feature",
+    "specification",
+    "explore",
     "sub-agent"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.739Z",
+  "lastUpdated": "2026-03-31T17:03:24.328Z",
   "specId": "007",
   "folderSlug": "explore-sub-agent",
   "parentChain": [

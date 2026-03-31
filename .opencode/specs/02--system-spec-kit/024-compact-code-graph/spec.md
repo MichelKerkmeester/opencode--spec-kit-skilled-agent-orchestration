@@ -37,10 +37,12 @@ Based on Claude Code hooks API (25 lifecycle events, 4 handler types — iterati
 - **PreCompact** hook → **precomputes** critical context and caches to temp file
   - stdout is NOT injected on PreCompact (confirmed by official docs)
   - Receives: `session_id`, `transcript_path`, `trigger` (auto|manual), `custom_instructions`
-- **SessionStart(source=compact)** → **injects** cached context via stdout into conversation
-  - SessionStart supports matcher on `source`: `startup`, `resume`, `clear`, `compact`
-  - Plain stdout or `hookSpecificOutput.additionalContext` becomes model-visible context
-- **SessionStart(source=startup|resume)** → primes session with relevant prior work
+- **SessionStart** → single unscoped hook registration; in-script branching via `input.source`
+  - `source=compact` → injects cached PreCompact context via stdout
+  - `source=startup` → primes new session with tool overview + stale-index detection
+  - `source=resume` → loads last spec folder and resume guidance
+  - `source=clear` → minimal context after `/clear`
+  - Plain stdout becomes model-visible context
 - **Stop** (async) → saves session context + tracks token usage
   - Receives: `transcript_path`, `stop_hook_active`, `last_assistant_message`
   - Token totals NOT in payload — must parse transcript JSONL

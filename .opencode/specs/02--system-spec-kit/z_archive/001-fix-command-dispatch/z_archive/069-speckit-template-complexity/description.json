@@ -8,7 +8,7 @@
     "template",
     "architecture"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.018Z",
+  "lastUpdated": "2026-03-31T17:03:23.783Z",
   "specId": "069",
   "folderSlug": "speckit-template-complexity",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Level-Based Template Architecture [069-speckit-template-complexity/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Level-Based Template Architecture"
+  "memoryNameHistory": []
 }

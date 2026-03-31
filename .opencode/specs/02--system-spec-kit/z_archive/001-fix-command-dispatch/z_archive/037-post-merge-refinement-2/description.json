@@ -8,7 +8,7 @@
     "library",
     "unification"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.822Z",
+  "lastUpdated": "2026-03-31T17:03:23.636Z",
   "specId": "037",
   "folderSlug": "post-merge-refinement-2",
   "parentChain": [
@@ -18,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Post-Merge Refinement Phase 2 (Library Unification) [037-post-merge-refinement-2/spec]",
-  "importance_tier": "important",
-  "short_description": "Post-Merge Refinement Phase 2 (Library Unification)"
+  "memoryNameHistory": []
 }

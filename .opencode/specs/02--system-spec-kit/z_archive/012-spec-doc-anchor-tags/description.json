@@ -1,15 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/012-spec-doc-anchor-tags",
-  "description": "Feature Specification: Spec Document Anchor Tags",
+  "description": "Feature Specification: Spec Doc Anchor Tags",
   "keywords": [
     "feature",
     "specification",
     "spec",
-    "document",
+    "doc",
     "anchor",
     "tags"
   ],
-  "lastUpdated": "2026-03-21T13:24:04.103Z",
+  "lastUpdated": "2026-03-31T17:03:23.972Z",
   "specId": "012",
   "folderSlug": "spec-doc-anchor-tags",
   "parentChain": [

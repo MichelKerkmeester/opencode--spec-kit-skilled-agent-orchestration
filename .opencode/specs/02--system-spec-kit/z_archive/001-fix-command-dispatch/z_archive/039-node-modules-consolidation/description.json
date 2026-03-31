@@ -6,7 +6,7 @@
     "modules",
     "consolidation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.828Z",
+  "lastUpdated": "2026-03-31T17:03:23.641Z",
   "specId": "039",
   "folderSlug": "node-modules-consolidation",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Node Modules Consolidation [039-node-modules-consolidation/spec]",
-  "importance_tier": "important",
-  "short_description": "Node Modules Consolidation"
+  "memoryNameHistory": []
 }

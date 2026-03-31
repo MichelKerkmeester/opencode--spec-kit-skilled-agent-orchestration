@@ -9,16 +9,12 @@
     "folder",
     "reorganization"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.568Z",
+  "lastUpdated": "2026-03-31T17:03:24.143Z",
   "specId": "011",
   "folderSlug": "sk-doc-template-folders",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: sk-doc Template Folder Reorganization",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: sk-doc Template Folder Reorganization"
+  "memoryNameHistory": []
 }

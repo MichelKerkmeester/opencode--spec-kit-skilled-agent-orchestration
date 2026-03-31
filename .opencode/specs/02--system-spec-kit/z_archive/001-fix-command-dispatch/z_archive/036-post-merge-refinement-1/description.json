@@ -6,7 +6,7 @@
     "system",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.812Z",
+  "lastUpdated": "2026-03-31T17:03:23.631Z",
   "specId": "036",
   "folderSlug": "post-merge-refinement-1",
   "parentChain": [
@@ -16,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Post-Merger System Refinement [036-post-merge-refinement-1/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Post-Merger System Refinement"
+  "memoryNameHistory": []
 }

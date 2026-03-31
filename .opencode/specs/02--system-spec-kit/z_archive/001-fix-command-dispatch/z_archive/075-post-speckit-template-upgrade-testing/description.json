@@ -9,7 +9,7 @@
     "upgrade",
     "testing"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.080Z",
+  "lastUpdated": "2026-03-31T17:03:23.815Z",
   "specId": "075",
   "folderSlug": "post-speckit-template-upgrade-testing",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Post-SpecKit Template Upgrade Testing"
+  "memoryNameHistory": []
 }

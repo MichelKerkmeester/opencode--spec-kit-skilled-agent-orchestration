@@ -9,16 +9,12 @@
     "agent",
     "definitions"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.746Z",
+  "lastUpdated": "2026-03-31T17:03:24.286Z",
   "specId": "025",
   "folderSlug": "codex-cli-agents",
   "parentChain": [
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Codex CLI Agent Definitions",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Codex CLI Agent Definitions"
+  "memoryNameHistory": []
 }

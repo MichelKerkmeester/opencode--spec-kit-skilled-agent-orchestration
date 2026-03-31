@@ -15,7 +15,8 @@
       ],
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
+        "SPECKIT_ADAPTIVE_FUSION": "true"
       },
       "disabled": false
     },

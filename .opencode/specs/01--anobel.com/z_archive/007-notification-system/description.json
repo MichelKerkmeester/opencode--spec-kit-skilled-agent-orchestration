@@ -10,7 +10,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.936Z",
+  "lastUpdated": "2026-03-31T17:03:22.699Z",
   "specId": "007",
   "folderSlug": "notification-system",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Notification System - Requirements & User Stories [007-notification-system/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Notification System - Requirements & User Stories"
+  "memoryNameHistory": []
 }

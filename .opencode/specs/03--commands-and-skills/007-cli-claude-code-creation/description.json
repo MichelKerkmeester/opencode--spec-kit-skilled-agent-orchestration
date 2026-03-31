@@ -7,16 +7,12 @@
     "cli-claude-code",
     "skill"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.552Z",
+  "lastUpdated": "2026-03-31T17:03:24.123Z",
   "specId": "007",
   "folderSlug": "cli-claude-code-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: cli-claude-code Skill",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: cli-claude-code Skill"
+  "memoryNameHistory": []
 }

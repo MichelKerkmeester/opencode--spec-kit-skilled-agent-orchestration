@@ -12,7 +12,7 @@
     "code",
     "references"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.530Z",
+  "lastUpdated": "2026-03-31T17:03:23.447Z",
   "specId": "004",
   "folderSlug": "memory-hook-cleanup",
   "parentChain": [
@@ -22,8 +22,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References [004-memory-hook-cleanup/spec]",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References"
+  "memoryNameHistory": []
 }

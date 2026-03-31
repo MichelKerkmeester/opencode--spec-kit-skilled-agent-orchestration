@@ -8,7 +8,7 @@
     "system-spec-kit",
     "commands"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.611Z",
+  "lastUpdated": "2026-03-31T17:03:23.515Z",
   "specId": "020",
   "folderSlug": "comprehensive-bug-fix",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands [020-comprehensive-bug-fix/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands"
+  "memoryNameHistory": []
 }

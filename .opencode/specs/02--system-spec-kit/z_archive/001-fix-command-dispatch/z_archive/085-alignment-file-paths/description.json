@@ -9,7 +9,7 @@
     "path",
     "analysis"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.192Z",
+  "lastUpdated": "2026-03-31T17:03:23.879Z",
   "specId": "085",
   "folderSlug": "alignment-file-paths",
   "parentChain": [
@@ -19,8 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "085: Alignment Validator File Path Analysis [085-alignment-file-paths/spec]",
-  "importance_tier": "important",
-  "short_description": "085: Alignment Validator File Path Analysis"
+  "memoryNameHistory": []
 }

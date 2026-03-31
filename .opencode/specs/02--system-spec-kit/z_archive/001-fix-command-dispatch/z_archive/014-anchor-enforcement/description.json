@@ -6,7 +6,7 @@
     "system",
     "enforcement"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.570Z",
+  "lastUpdated": "2026-03-31T17:03:23.485Z",
   "specId": "014",
   "folderSlug": "anchor-enforcement",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Anchor System Enforcement [014-anchor-enforcement/spec]",
-  "importance_tier": "important",
-  "short_description": "Anchor System Enforcement"
+  "memoryNameHistory": []
 }

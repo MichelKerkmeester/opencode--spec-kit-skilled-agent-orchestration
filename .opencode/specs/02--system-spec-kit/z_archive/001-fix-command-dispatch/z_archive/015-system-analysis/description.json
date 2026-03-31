@@ -9,7 +9,7 @@
     "architecture",
     "analysis"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.575Z",
+  "lastUpdated": "2026-03-31T17:03:23.491Z",
   "specId": "015",
   "folderSlug": "system-analysis",
   "parentChain": [
@@ -19,8 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit System Architecture Analysis [015-system-analysis/spec]",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit System Architecture Analysis"
+  "memoryNameHistory": []
 }

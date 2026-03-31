@@ -1,20 +1,19 @@
 {
-  "specFolder": "023-esm-module-compliance",
-  "description": "Fix hybrid search pipeline null db reference causing 0 results",
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance",
+  "description": "Feature Specification: ESM Module Compliance",
   "keywords": [
-    "fix",
-    "hybrid",
-    "search",
-    "pipeline",
-    "null",
-    "reference",
-    "causing",
-    "results"
+    "feature",
+    "specification",
+    "esm",
+    "module",
+    "compliance"
   ],
-  "lastUpdated": "2026-03-30T15:54:47.593Z",
+  "lastUpdated": "2026-03-31T17:03:23.368Z",
   "specId": "023",
   "folderSlug": "esm-module-compliance",
-  "parentChain": [],
+  "parentChain": [
+    "02--system-spec-kit"
+  ],
   "memorySequence": 7,
   "memoryNameHistory": [
     "29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec.md",

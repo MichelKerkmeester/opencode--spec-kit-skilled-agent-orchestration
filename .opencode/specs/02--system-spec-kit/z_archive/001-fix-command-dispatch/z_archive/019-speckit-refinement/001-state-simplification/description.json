@@ -8,7 +8,7 @@
     "memory",
     "files"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.594Z",
+  "lastUpdated": "2026-03-31T17:03:23.505Z",
   "specId": "001",
   "folderSlug": "state-simplification",
   "parentChain": [
@@ -19,9 +19,5 @@
     "019-speckit-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "State Simplification: Integrate State into Memory Files [001-state-simplification/spec]",
-  "status": "Planning",
-  "importance_tier": "important",
-  "short_description": "State Simplification: Integrate State into Memory Files"
+  "memoryNameHistory": []
 }

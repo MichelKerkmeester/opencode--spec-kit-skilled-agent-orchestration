@@ -1,14 +1,15 @@
 {
   "specFolder": "01--anobel.com/035-hero-contact-success",
-  "description": "Spec: Hero Webshop Selector Scoping",
+  "description": "Feature Specification: Hero Webshop Selector Scoping",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "hero",
     "webshop",
     "selector",
     "scoping"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.775Z",
+  "lastUpdated": "2026-03-31T17:03:22.661Z",
   "specId": "035",
   "folderSlug": "hero-contact-success",
   "parentChain": [

@@ -22,7 +22,8 @@
         "_NOTE_4_CLOUD_PROVIDERS": "For cloud: add VOYAGE_API_KEY or OPENAI_API_KEY and set EMBEDDINGS_PROVIDER=auto",
         "_NOTE_5_GET_VOYAGE_KEY": "Get Voyage key: https://dash.voyageai.com/api-keys (recommended, 8% better than OpenAI)",
         "_NOTE_6_GET_OPENAI_KEY": "Get OpenAI key: https://platform.openai.com/api-keys",
-        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON unless noted): SPECKIT_GRAPH_UNIFIED, SPECKIT_GRAPH_MMR, SPECKIT_GRAPH_AUTHORITY, SPECKIT_EXTENDED_TELEMETRY | Default OFF: SPECKIT_ADAPTIVE_FUSION",
+        "SPECKIT_ADAPTIVE_FUSION": "true",
+        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_GRAPH_UNIFIED, SPECKIT_GRAPH_MMR, SPECKIT_GRAPH_AUTHORITY, SPECKIT_EXTENDED_TELEMETRY",
         "_NOTE_8_GRAPH": "Skill graph active by default. Set SPECKIT_GRAPH_UNIFIED=false to disable"
       }
     },

@@ -9,7 +9,7 @@
     "optimization",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.058Z",
+  "lastUpdated": "2026-03-31T17:03:23.805Z",
   "specId": "074",
   "folderSlug": "speckit-template-optimization-refinement",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Template Optimization Refinement [074-speckit-template-optimization-refinement/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Template Optimization Refinement"
+  "memoryNameHistory": []
 }

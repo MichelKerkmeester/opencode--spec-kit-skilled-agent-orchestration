@@ -1,17 +1,15 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/016-handover-model-codex-compat",
-  "description": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility",
+  "description": "Feature Specification: Handover Model Codex Compat",
   "keywords": [
-    "spec",
-    "016",
+    "feature",
+    "specification",
     "handover",
     "model",
-    "downgrade",
     "codex",
-    "agent",
-    "compatibility"
+    "compat"
   ],
-  "lastUpdated": "2026-03-19T15:45:45.092Z",
+  "lastUpdated": "2026-03-31T17:03:24.438Z",
   "specId": "016",
   "folderSlug": "handover-model-codex-compat",
   "parentChain": [
@@ -19,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility [016-handover-model-codex-compat/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility"
+  "memoryNameHistory": []
 }

@@ -8,7 +8,7 @@
     "reimagined",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.224Z",
+  "lastUpdated": "2026-03-31T17:03:23.902Z",
   "specId": "089",
   "folderSlug": "speckit-reimagined-refinement",
   "parentChain": [
@@ -18,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec 089: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec 089: system-spec-kit Reimagined Refinement"
+  "memoryNameHistory": []
 }

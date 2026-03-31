@@ -1,14 +1,18 @@
 {
-  "specFolder": "023-esm-module-compliance/001-shared-esm-migration",
-  "description": "Phase 1: shared-esm-migration",
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/001-shared-esm-migration",
+  "description": "Feature Specification: Shared ESM Migration",
   "keywords": [
-    "phase",
-    "shared-esm-migration"
+    "feature",
+    "specification",
+    "shared",
+    "esm",
+    "migration"
   ],
-  "lastUpdated": "2026-03-29T10:21:42.370Z",
+  "lastUpdated": "2026-03-31T17:03:23.374Z",
   "specId": "001",
   "folderSlug": "shared-esm-migration",
   "parentChain": [
+    "02--system-spec-kit",
     "023-esm-module-compliance"
   ],
   "memorySequence": 0,

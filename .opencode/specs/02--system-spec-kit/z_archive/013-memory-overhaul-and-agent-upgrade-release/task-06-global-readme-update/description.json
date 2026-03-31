@@ -7,7 +7,7 @@
     "readme",
     "update"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.381Z",
+  "lastUpdated": "2026-03-31T17:03:24.008Z",
   "specId": "",
   "folderSlug": "task-06-global-readme-update",
   "parentChain": [
@@ -16,9 +16,5 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Task 06 — Root README Update [task-06-global-readme-update/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Task 06 — Root README Update"
+  "memoryNameHistory": []
 }

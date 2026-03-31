@@ -279,8 +279,10 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 | `--ask-for-approval untrusted` | Prompt before untrusted operations (default) |
 | `--ask-for-approval on-request` | Prompt only when Codex requests approval |
 | `--ask-for-approval never` | Auto-approve all operations (use with caution) |
-| `--full-auto` | Low-friction mode combining auto-approval — **requires explicit user approval** |
+| `--full-auto` | Low-friction mode: `workspace-write` sandbox + auto-approval — **requires explicit user approval** |
 | `--search` | Enable live web browsing during task execution |
+
+> **Default sandbox behavior**: `codex exec` without an explicit `--sandbox` flag defaults to `read-only` with `approval: never`. This means **file modification tasks will silently fail** — the agent reads the code and plans the changes but cannot write them. Always pass `--sandbox workspace-write` (or `--full-auto`) when the task requires file edits.
 | `--image` / `-i` | Attach an image file as visual input |
 
 ### Model Selection
@@ -382,6 +384,8 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 | Rate limit exceeded | Wait for auto-retry or reduce request frequency |
 | Auth expired | Run `codex login` to re-authenticate via OAuth |
 | Sandbox violation | Match `--sandbox` level to task requirements |
+| Task ran but no files changed | `codex exec` defaults to `read-only` sandbox — add `--sandbox workspace-write` or `--full-auto` for edit tasks |
+| Agent asks for spec folder / approval | Non-interactive `exec` cannot answer prompts — include `(pre-approved, skip Gate 3)` in prompt and use `--full-auto` |
 | Context too large | Specify files explicitly with `@./path` rather than broad prompts |
 
 ---
@@ -400,8 +404,9 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 2. **ALWAYS use `--sandbox read-only`** for review and analysis tasks
    - Review, audit, architecture analysis, and research should never write files
 
-3. **ALWAYS use `--sandbox workspace-write`** for code generation tasks
-   - Generation, bug fixing, refactoring, and documentation writing need this level
+3. **ALWAYS use `--sandbox workspace-write`** (or `--full-auto`) for code generation and file modification tasks
+   - `codex exec` defaults to `read-only` sandbox — omitting this flag causes edit tasks to silently produce no changes
+   - Generation, bug fixing, refactoring, and documentation writing need write access
 
 4. **ALWAYS validate Codex-generated code** before applying to the project
    - Check for security vulnerabilities (XSS, injection, eval)

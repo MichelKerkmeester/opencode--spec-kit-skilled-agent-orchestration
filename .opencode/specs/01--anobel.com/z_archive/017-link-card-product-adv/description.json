@@ -1,7 +1,9 @@
 {
   "specFolder": "01--anobel.com/z_archive/017-link-card-product-adv",
-  "description": "Link Card Product/Adv - CTA Button Hover Animation",
+  "description": "Feature Specification: Link Card Product/Adv - CTA Button Hover Animation",
   "keywords": [
+    "feature",
+    "specification",
     "link",
     "card",
     "product",
@@ -11,7 +13,7 @@
     "hover",
     "animation"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.816Z",
+  "lastUpdated": "2026-03-31T17:03:22.746Z",
   "specId": "017",
   "folderSlug": "link-card-product-adv",
   "parentChain": [

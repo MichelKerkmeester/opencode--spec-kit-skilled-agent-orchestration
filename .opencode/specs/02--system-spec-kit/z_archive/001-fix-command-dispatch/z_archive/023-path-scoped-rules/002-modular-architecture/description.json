@@ -6,7 +6,7 @@
     "validation",
     "architecture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.621Z",
+  "lastUpdated": "2026-03-31T17:03:23.524Z",
   "specId": "002",
   "folderSlug": "modular-architecture",
   "parentChain": [
@@ -17,9 +17,5 @@
     "023-path-scoped-rules"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Modular Validation Architecture [002-modular-architecture/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Modular Validation Architecture"
+  "memoryNameHistory": []
 }

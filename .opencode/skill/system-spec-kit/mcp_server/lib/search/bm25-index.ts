@@ -40,6 +40,7 @@ const DEFAULT_K1 = 1.2;
 const DEFAULT_B = 0.75;
 const BM25_WARMUP_BATCH_SIZE = 250;
 const BM25_ENABLED_VALUES = new Set(['1', 'true', 'yes', 'on', 'experimental', 'fallback']);
+const BM25_DISABLED_VALUES = new Set(['0', 'false', 'no', 'off']);
 
 /**
  * C138: Field weight multipliers for weighted BM25 scoring.
@@ -77,7 +78,9 @@ const BM25_FIELD_WEIGHTS: Record<string, number> = {
  */
 function isBm25Enabled(): boolean {
   const value = process.env.ENABLE_BM25?.trim().toLowerCase();
-  return value ? BM25_ENABLED_VALUES.has(value) : false;
+  if (!value) return true; // enabled by default
+  if (BM25_DISABLED_VALUES.has(value)) return false;
+  return BM25_ENABLED_VALUES.has(value);
 }
 
 // ───────────────────────────────────────────────────────────────

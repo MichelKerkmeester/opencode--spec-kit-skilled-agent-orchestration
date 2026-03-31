@@ -103,20 +103,20 @@ contextType: "implementation"
 - [x] Duplicated token-count sync logic consolidated (Phase 014, item 29) [F019]
 - [x] Drifted pressure-budget helper replaced with shared tested helper (Phase 014, item 30) [F032]
 - [x] Parser adapter interface created for tree-sitter/regex swap (Phase 015, item 31)
-- [ ] Tree-sitter WASM parser implemented for JS/TS/Python/Bash (Phase 015, item 32) — DEFERRED: awaits web-tree-sitter integration
+- [x] Tree-sitter WASM parser implemented for JS/TS/Python/Bash (Phase 015, item 32) — TreeSitterParser class in tree-sitter-parser.ts, web-tree-sitter + tree-sitter-wasms deps, cursor-based AST walk, all 18 indexer tests pass
 - [x] DECORATES, OVERRIDES, TYPE_OF edge types added (Phase 015, item 33)
 - [x] Dead per-file TESTED_BY branch removed (Phase 015, item 36) [F015]
 - [x] excludeGlobs option wired into glob pipeline (Phase 015, item 37) [F016]
 - [x] .zsh language mapping fixed — globs discover .zsh files (Phase 015, item 38) [F017]
 - [x] Near-exact seed resolution with graduated confidence (Phase 016, item 39)
-- [ ] Query-intent pre-classification routes structural vs semantic queries (Phase 016, item 40) — DEFERRED
+- [x] Query-intent pre-classification routes structural vs semantic queries (Phase 016, item 40) — classifyQueryIntent() in query-intent-classifier.ts, keyword dictionaries + regex patterns, structural/semantic/hybrid routing
 - [x] Auto-reindex triggers on branch switch and session start (Phase 016, item 41)
 - [x] Recovery documentation consolidated to single source of truth (Phase 016, item 43) [F018]
 - [x] Seed-resolver DB failures handled — throws instead of silent placeholder (Phase 016, item 44) [F014]
-- [ ] Spec/settings SessionStart scope mismatch fixed (Phase 016, item 45) [F030] — DEFERRED
+- [x] Spec/settings SessionStart scope mismatch fixed (Phase 016, item 45) [F030] — spec.md updated to reflect actual implementation: single unscoped registration with in-script source branching
 
 ## v2 Remediation — P3 (Nice to Have)
 
 - [x] Ghost SymbolKinds (variable, module, parameter, method) extracted by parser (Phase 015, item 34) [F008]
-- [ ] Regex parser removed after tree-sitter stable (Phase 015, item 35) — DEFERRED
+- [x] Regex parser demoted to fallback after tree-sitter default (Phase 015, item 35) — tree-sitter is now default parser; regex available via SPECKIT_PARSER=regex env var; getParser() auto-falls back on WASM init failure
 - [x] Cross-runtime instructions updated: CODEX.md, AGENTS.md, OpenCode agents, Gemini (Phase 016, item 42)

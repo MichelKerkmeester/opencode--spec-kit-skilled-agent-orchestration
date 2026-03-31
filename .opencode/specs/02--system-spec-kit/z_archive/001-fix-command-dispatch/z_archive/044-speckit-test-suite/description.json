@@ -7,7 +7,7 @@
     "test",
     "suite"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.882Z",
+  "lastUpdated": "2026-03-31T17:03:23.666Z",
   "specId": "044",
   "folderSlug": "speckit-test-suite",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec Kit Test Suite [044-speckit-test-suite/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Spec Kit Test Suite"
+  "memoryNameHistory": []
 }

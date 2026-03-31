@@ -7,7 +7,7 @@
     "notification",
     "system"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.922Z",
+  "lastUpdated": "2026-03-31T17:03:24.376Z",
   "specId": "",
   "folderSlug": "complete-gate-fail",
   "parentChain": [
@@ -18,9 +18,5 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Notification System [complete-gate-fail/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Notification System"
+  "memoryNameHistory": []
 }

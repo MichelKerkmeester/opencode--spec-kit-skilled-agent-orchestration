@@ -7,7 +7,7 @@
     "bug",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.145Z",
+  "lastUpdated": "2026-03-31T17:03:23.848Z",
   "specId": "080",
   "folderSlug": "speckit-bug-remediation",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Spec Kit Bug Remediation [080-speckit-bug-remediation/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Spec: Spec Kit Bug Remediation"
+  "memoryNameHistory": []
 }

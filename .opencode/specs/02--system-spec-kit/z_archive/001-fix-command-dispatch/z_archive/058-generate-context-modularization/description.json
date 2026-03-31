@@ -6,7 +6,7 @@
     "generate-context",
     "modularization"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.968Z",
+  "lastUpdated": "2026-03-31T17:03:23.750Z",
   "specId": "058",
   "folderSlug": "generate-context-modularization",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Specification: generate-context.js Modularization [058-generate-context-modularization/spec]",
-  "importance_tier": "important",
-  "short_description": "Specification: generate-context.js Modularization"
+  "memoryNameHistory": []
 }

@@ -12,7 +12,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.564Z",
+  "lastUpdated": "2026-03-31T17:03:23.479Z",
   "specId": "012",
   "folderSlug": "handover-triggers",
   "parentChain": [
@@ -22,9 +22,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories [012-handover-triggers/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories"
+  "memoryNameHistory": []
 }

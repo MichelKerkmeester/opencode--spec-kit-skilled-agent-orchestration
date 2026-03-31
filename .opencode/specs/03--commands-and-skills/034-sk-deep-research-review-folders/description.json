@@ -1,15 +1,15 @@
 {
   "specFolder": "03--commands-and-skills/034-sk-deep-research-review-folders",
-  "description": "Move sk-deep-research review-mode outputs into a dedicated review/ subfolder and plan the contract, migration, and documentation synchronization work needed to land that change safely.",
+  "description": "Feature Specification: sk-deep-research Review Folder Contract",
   "keywords": [
-    "review folder",
-    "deep-review",
-    "review-mode contract",
-    "scratch misuse",
-    "legacy migration",
-    "review-report path"
+    "feature",
+    "specification",
+    "sk-deep-research",
+    "review",
+    "folder",
+    "contract"
   ],
-  "lastUpdated": "2026-03-27T09:55:00.000Z",
+  "lastUpdated": "2026-03-31T17:03:24.247Z",
   "specId": "034",
   "folderSlug": "sk-deep-research-review-folders",
   "parentChain": [

@@ -94,12 +94,12 @@ Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and
 | Item | Status | Notes |
 |------|--------|-------|
 | 39: Near-exact seeds | **DONE** | +/-5 lines, graduated confidence, composite index |
-| 40: Intent pre-classifier | **DEFERRED** | Requires CocoIndex API integration |
+| 40: Intent pre-classifier | **DONE** | classifyQueryIntent() heuristic classifier in query-intent-classifier.ts |
 | 41: Auto-reindex | **DONE** | Git HEAD change detection, stale file pruning |
 | 42: Cross-runtime instructions | **DONE** | CODEX.md, AGENTS.md, context.md, GEMINI.md |
 | 43: Recovery consolidation | **DONE** | Universal in root CLAUDE.md, Claude-specific in .claude/ |
 | 44: Seed-resolver errors | **DONE** | Throws instead of silent placeholder |
-| 45: SessionStart scope | **DEFERRED** | Requires settings.local.json changes |
+| 45: SessionStart scope | **DONE** | Spec updated to reflect actual single-entry in-script branching |
 | 46: Truth-sync | **DONE** | 5 PARTIAL annotations on v1 checklist |
 
 ## Deferred Items — Future Work

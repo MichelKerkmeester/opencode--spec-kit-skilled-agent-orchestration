@@ -9,7 +9,7 @@
     "template",
     "alignment"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.040Z",
+  "lastUpdated": "2026-03-31T17:03:23.794Z",
   "specId": "071",
   "folderSlug": "speckit-level-alignment",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Level-Based Template Alignment"
+  "memoryNameHistory": []
 }

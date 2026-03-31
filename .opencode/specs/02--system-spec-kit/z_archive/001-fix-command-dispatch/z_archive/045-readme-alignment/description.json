@@ -8,7 +8,7 @@
     "guide",
     "alignment"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.888Z",
+  "lastUpdated": "2026-03-31T17:03:23.671Z",
   "specId": "045",
   "folderSlug": "readme-alignment",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: README & Install Guide Alignment [045-readme-alignment/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Spec: README & Install Guide Alignment"
+  "memoryNameHistory": []
 }

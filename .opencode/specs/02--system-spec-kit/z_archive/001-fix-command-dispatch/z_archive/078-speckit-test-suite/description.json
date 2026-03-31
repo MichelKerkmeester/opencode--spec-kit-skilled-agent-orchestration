@@ -11,7 +11,7 @@
     "test",
     "suite"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.121Z",
+  "lastUpdated": "2026-03-31T17:03:23.832Z",
   "specId": "078",
   "folderSlug": "speckit-test-suite",
   "parentChain": [
@@ -21,9 +21,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: System Spec Kit Comprehensive Test Suite [078-speckit-test-suite/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: System Spec Kit Comprehensive Test Suite"
+  "memoryNameHistory": []
 }

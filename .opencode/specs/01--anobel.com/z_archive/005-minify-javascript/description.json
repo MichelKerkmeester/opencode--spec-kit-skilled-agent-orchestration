@@ -9,7 +9,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.923Z",
+  "lastUpdated": "2026-03-31T17:03:22.690Z",
   "specId": "005",
   "folderSlug": "minify-javascript",
   "parentChain": [
@@ -17,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: minify-javascript - Requirements & User Stories [005-minify-javascript/spec]",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: minify-javascript - Requirements & User Stories"
+  "memoryNameHistory": []
 }

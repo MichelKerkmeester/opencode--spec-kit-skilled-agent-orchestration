@@ -11,16 +11,12 @@
     "skill",
     "cleanup"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.563Z",
+  "lastUpdated": "2026-03-31T17:03:24.138Z",
   "specId": "010",
   "folderSlug": "sk-doc-rename",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup"
+  "memoryNameHistory": []
 }

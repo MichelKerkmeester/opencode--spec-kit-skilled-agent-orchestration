@@ -9,16 +9,12 @@
     "path",
     "only"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.702Z",
+  "lastUpdated": "2026-03-31T17:03:24.257Z",
   "specId": "018",
   "folderSlug": "opencode-agent-path-only",
   "parentChain": [
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: OpenCode Agent Path Only [018-opencode-agent-path-only/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: OpenCode Agent Path Only"
+  "memoryNameHistory": []
 }

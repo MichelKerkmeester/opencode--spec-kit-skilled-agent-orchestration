@@ -1,7 +1,7 @@
 ---
 title: "Deep Research Report: Compact Code Graph — Complete Findings [02--system-spec-kit/024-compact-code-graph/research]"
 description: "This research addresses two interconnected problems"
-iterations: 95
+iterations: 105
 trigger_phrases:
   - "deep"
   - "research"
@@ -14,7 +14,7 @@ contextType: "research"
 ---
 # Deep Research Report: Compact Code Graph — Complete Findings
 
-> **95 iterations across 7 segments** | final synthesis updated through Segment 7 verification via Copilot CLI (GPT-5.4)
+> **105 iterations across 8 segments** | final synthesis updated through Segment 8: cross-runtime UX, automation, and integration research via Copilot CLI (GPT-5.4)
 
 ---
 
@@ -1046,6 +1046,85 @@ This tally is intentionally conservative: it reflects only the Segment 7 verific
 3. Keep the **endLine / range / seed-identity** fixes near the front of the queue because they unblock both correctness and future structural retrieval quality.
 4. Standardize a **Session Start Protocol** across Claude/OpenCode/Codex/Copilot/Gemini docs before attempting transparent priming features.
 5. Re-run deep review and a shorter verification wave after remediation; Segment 7 showed that design claims drift unless they are periodically revalidated against live code.
+
+---
+
+## Part XII: Segment 8 -- Cross-Runtime UX, Automation, and Integration (Iterations 096-105)
+
+> **Segment 8 scope:** 10 targeted research iterations via `copilot -p` (GPT-5.4, high effort) investigating concrete, implementable improvements for non-hook CLI context preservation. Each iteration examined a specific capability gap with file-level source references, LOC estimates, and cross-runtime parity impact projections.
+
+### Executive Summary
+
+Segment 8 shifts from verification to **actionable feature design** for closing the context-preservation parity gap between Claude Code (100% hook coverage) and the four non-hook runtimes (OpenCode, Codex CLI, Copilot CLI, Gemini CLI). The 10 iterations produced 40+ concrete proposals across 10 capability areas, with clear winners identified for each.
+
+Key finding: the existing MCP server already contains most of the primitives needed for cross-runtime parity. The gap is not missing infrastructure but **missing coordination** -- priming payloads live in response metadata instead of actionable recovery context, code graph freshness is fragmented across multiple helpers, query routing is orphaned, and tool workflows require 3-5 manual calls instead of one composite operation.
+
+### Iteration Topic Map
+
+| Iter | Topic | Recommended Approach | LOC Estimate |
+|------|-------|---------------------|-------------|
+| 096 | Auto-priming without hooks | MCP first-call injection (A) + gate doc instructions (B) | 165-315 |
+| 097 | Context preservation without PreCompact | Session health monitor (A) + gap detection (C) + docs (D) | 360-670 |
+| 098 | Code graph auto-trigger | Lazy indexing on first query (C) + mtime staleness (B) + docs (D) | 170-360 |
+| 099 | Query-intent routing integration | Auto-routing in memory_context (A) + classification metadata (D) | 150-300 |
+| 100 | Cross-runtime instruction parity | Comprehensive instruction update (A) to all gate docs | 60-140 |
+| 101 | Tool-chain automation (composites) | session_resume composite tool (A), then full_context (B) | 120-220 (A only) |
+| 102 | Passive context enrichment | Token-budgeted enrichment pipeline (D) with graph (A) + continuity (B) enrichers | 280-680 |
+| 103 | Gemini CLI hook port | Gemini-native workflow hooks (C) with shared-core boundaries | 140-260 |
+| 104 | OpenCode @context-prime agent | Dedicated bootstrap agent (A) + gate doc delegation (D) | 80-210 |
+| 105 | Metrics and observability | Session metrics collector (A) -> quality scoring (B) -> dashboard (D) | 650-1190 |
+
+### Top Recommendations by Priority
+
+**Tier 1 -- Immediate (highest parity gain per LOC):**
+
+1. **Gate doc instruction parity** (Iter 100): Add explicit non-hook lifecycle sections to `CODEX.md`, `AGENTS.md`, `GEMINI.md`. Lowest LOC, highest immediate impact. Estimated parity gain: +25-30% for Codex/Copilot/Gemini.
+
+2. **MCP first-call auto-prime injection** (Iter 096): Upgrade existing `primeSessionIfNeeded()` from metadata-only to actionable recovery payload. The seam already exists in `context-server.ts`. Files: `context-server.ts`, `memory-surface.ts`, `session-manager.ts`.
+
+3. **Lazy code graph indexing** (Iter 098): Add `ensureCodeGraphReady()` to `code_graph_context` and `code_graph_query` so non-hook CLIs get automatic graph indexing on first structural query. Only sessions using graph tools pay the cost.
+
+**Tier 2 -- High value (moderate effort):**
+
+4. **session_resume composite tool** (Iter 101): Single MCP tool combining `memory_context(resume)` + `code_graph_status` + `ccc_status`. Saves 400-900 tokens and 2-4 request/response cycles per resume flow.
+
+5. **Query-intent routing in memory_context** (Iter 099): Wire orphaned `classifyQueryIntent()` into `memory_context` so structural queries auto-route to code graph. Universal benefit across all runtimes.
+
+6. **Session health monitor** (Iter 097): New `session_health` tool scoring continuity from existing signals. Enables gap detection and recovery injection for non-hook CLIs.
+
+**Tier 3 -- Strategic (larger effort, longer-term):**
+
+7. **Gemini hook port** (Iter 103): Port session-prime, compact-cache, and session-stop to Gemini-native events. 5-6 hooks covering `SessionStart`, `PreCompress`, `BeforeAgent`, `AfterAgent`, `AfterModel`. Estimated Gemini parity: 50% -> 85%.
+
+8. **Token-budgeted enrichment pipeline** (Iter 102): Replace ad hoc enrichment with coordinated middleware. Session continuity (40-80 tokens) + memory hints (120-180 tokens) + graph enrichment (180-300 tokens) with degradation order.
+
+9. **OpenCode @context-prime agent** (Iter 104): Dedicated bootstrap agent with narrow "prime package" output. Works within existing agent system, no runtime changes needed.
+
+10. **Context preservation metrics** (Iter 105): MCP-side session metrics collector + quality scoring + cross-runtime dashboard. Foundation for measuring whether improvements actually work.
+
+### Updated Cross-Runtime Parity Projections
+
+| Runtime | Pre-Segment 8 | After Tier 1 | After Tier 1+2 | After Tier 1+2+3 |
+|---------|:-------------:|:------------:|:--------------:|:-----------------:|
+| Claude Code | 100% | 100% | 100% | 100% |
+| OpenCode | ~60% | ~80% | ~88% | ~92% |
+| Codex CLI | ~55% | ~80% | ~85% | ~88% |
+| Copilot CLI | ~50% | ~75% | ~82% | ~85% |
+| Gemini CLI | ~50% | ~75% | ~82% | ~88% (with hooks) |
+
+### Key Architecture Insights
+
+1. **Server-side enrichment is the universal parity lever.** Any improvement to the MCP server benefits all runtimes automatically. Hook-specific features are additive but not prerequisites.
+
+2. **The `primeSessionIfNeeded()` seam in `context-server.ts` is the primary extension point.** It already runs before every tool dispatch and has first-call detection. Upgrading its payload from metadata to actionable recovery context is the single highest-leverage change.
+
+3. **`classifyQueryIntent()` is ready to wire in.** The orphaned classifier returns `structural | semantic | hybrid` with confidence scores. Wiring it into `memory_context` as a backend router (not just a mode selector) would unify the query experience.
+
+4. **Composite tools are server-design choices, not protocol limitations.** MCP supports any tool that internally calls other handlers. `session_resume` is a thin wrapper, not a new retrieval engine.
+
+5. **Gemini is not hookless anymore.** Since v0.33.1+, Gemini CLI has `SessionStart`, `PreCompress`, `BeforeAgent`, `AfterAgent`, `AfterModel`, and more. The gap is this project not configuring them, not Gemini lacking the capability.
+
+6. **Passive enrichment needs a budget coordinator.** The server already does ad hoc enrichment via 3 separate hooks. A unified pipeline with token budgets and degradation order would prevent noise while increasing signal.
 
 ---
 

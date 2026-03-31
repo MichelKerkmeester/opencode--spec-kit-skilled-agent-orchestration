@@ -9,7 +9,7 @@
     "folder",
     "bypass"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.762Z",
+  "lastUpdated": "2026-03-31T17:03:23.598Z",
   "specId": "030",
   "folderSlug": "gate3-enforcement",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Gate 3 Enforcement - Preventing Spec Folder Bypass [030-gate3-enforcement/spec]",
-  "status": "COMPLETE - All 31 checklist items verified, 24 tests passed",
-  "importance_tier": "important",
-  "short_description": "Gate 3 Enforcement - Preventing Spec Folder Bypass"
+  "memoryNameHistory": []
 }

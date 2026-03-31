@@ -9,16 +9,12 @@
     "yaml",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.690Z",
+  "lastUpdated": "2026-03-31T17:03:24.222Z",
   "specId": "027",
   "folderSlug": "cmd-create-yaml-refinement",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Create Command YAML Refinement [template:level_3/spec.md]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Create Command YAML Refinement"
+  "memoryNameHistory": []
 }

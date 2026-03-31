@@ -9,7 +9,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.559Z",
+  "lastUpdated": "2026-03-31T17:03:23.473Z",
   "specId": "011",
   "folderSlug": "docs-alignment",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories [011-docs-alignment/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories"
+  "memoryNameHistory": []
 }

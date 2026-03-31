@@ -32,6 +32,8 @@ dist/
 # Database files
 # ───────────────────────────────────────────
 *.db
+*.db-shm
+*.db-wal
 *.sqlite3
 .opencode/skill/system-spec-kit/mcp_server/database/*.sqlite
 .opencode/skill/system-spec-kit/mcp_server/database/*.sqlite-shm
@@ -84,4 +86,11 @@ tmp/
 # Not part of framework
 # ───────────────────────────────────────────
 .opencode/specs/00--ai-systems-non-dev
-/anobel.com
+.claude/specs/00--ai-systems-non-dev
+.codex/specs/00--ai-systems-non-dev
+.agents/specs/00--ai-systems-non-dev
+
+.opencode/specs/00--barter-dev
+.claude/specs/00--barter-dev
+.codex/specs/00--barter-dev
+.agents/specs/00--barter-dev

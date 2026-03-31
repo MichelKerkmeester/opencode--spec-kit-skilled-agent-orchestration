@@ -6,7 +6,7 @@
     "server",
     "rename"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.840Z",
+  "lastUpdated": "2026-03-31T17:03:23.646Z",
   "specId": "040",
   "folderSlug": "mcp-server-rename",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "MCP Server Rename: semantic_memory → spec_kit_memory [040-mcp-server-rename/spec]",
-  "importance_tier": "important",
-  "short_description": "MCP Server Rename: semantic_memory → spec_kit_memory"
+  "memoryNameHistory": []
 }

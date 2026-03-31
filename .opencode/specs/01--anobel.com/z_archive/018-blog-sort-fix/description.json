@@ -1,14 +1,15 @@
 {
   "specFolder": "01--anobel.com/z_archive/018-blog-sort-fix",
-  "description": "Spec: Blog Sort Dropdown Fix",
+  "description": "Feature Specification: Blog Sort Dropdown Fix",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "blog",
     "sort",
     "dropdown",
     "fix"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.532Z",
+  "lastUpdated": "2026-03-31T17:03:22.749Z",
   "specId": "018",
   "folderSlug": "blog-sort-fix",
   "parentChain": [

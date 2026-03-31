@@ -1,13 +1,14 @@
 {
   "specFolder": "03--commands-and-skills/030-sk-deep-research-review-mode",
-  "description": "Spec: sk-deep-research Review Mode",
+  "description": "Feature Specification: sk-deep-research Review Mode",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "sk-deep-research",
     "review",
     "mode"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.715Z",
+  "lastUpdated": "2026-03-31T17:03:24.232Z",
   "specId": "030",
   "folderSlug": "sk-deep-research-review-mode",
   "parentChain": [

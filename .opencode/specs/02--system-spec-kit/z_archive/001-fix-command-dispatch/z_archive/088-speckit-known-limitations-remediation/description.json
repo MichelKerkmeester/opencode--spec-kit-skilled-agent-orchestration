@@ -9,7 +9,7 @@
     "limitations",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.218Z",
+  "lastUpdated": "2026-03-31T17:03:23.896Z",
   "specId": "088",
   "folderSlug": "speckit-known-limitations-remediation",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: System-Spec-Kit Known Limitations Remediation [088-speckit-known-limitations-remediation/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: System-Spec-Kit Known Limitations Remediation"
+  "memoryNameHistory": []
 }

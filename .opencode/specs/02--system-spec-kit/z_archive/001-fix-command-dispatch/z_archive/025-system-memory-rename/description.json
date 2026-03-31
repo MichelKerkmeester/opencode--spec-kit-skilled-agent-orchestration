@@ -7,7 +7,7 @@
     "workflows-memory",
     "system-memory"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.705Z",
+  "lastUpdated": "2026-03-31T17:03:23.568Z",
   "specId": "025",
   "folderSlug": "system-memory-rename",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Rename workflows-memory → system-memory [025-system-memory-rename/spec]",
-  "status": "✅ Complete",
-  "importance_tier": "important",
-  "short_description": "Spec: Rename workflows-memory → system-memory"
+  "memoryNameHistory": []
 }

@@ -9,7 +9,7 @@
     "rs256",
     "signing"
   ],
-  "lastUpdated": "2026-03-19T15:45:45.035Z",
+  "lastUpdated": "2026-03-31T17:03:24.418Z",
   "specId": "",
   "folderSlug": "plan-happy",
   "parentChain": [
@@ -20,9 +20,5 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: JWT Authentication with RS256 Signing [plan-happy/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: JWT Authentication with RS256 Signing"
+  "memoryNameHistory": []
 }

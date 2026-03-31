@@ -1,18 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/023-esm-module-compliance/008-spec-memory-compliance-audit",
-  "description": "Comprehensive compliance audit of all 186 spec folders (131 top-level + 55 phase children) and memory files against CORE + ADDENDUM v2.2 templates, with memory quality review and full database re-index from zero.",
+  "description": "Feature Specification: Spec & Memory Compliance Audit",
   "keywords": [
-    "compliance",
-    "audit",
+    "feature",
+    "specification",
     "spec",
     "memory",
-    "quality",
-    "validation",
-    "cleanup",
-    "reindex",
-    "template"
+    "compliance",
+    "audit"
   ],
-  "lastUpdated": "2026-03-31T12:00:00.000Z",
+  "lastUpdated": "2026-03-31T17:03:23.411Z",
   "specId": "008",
   "folderSlug": "spec-memory-compliance-audit",
   "parentChain": [

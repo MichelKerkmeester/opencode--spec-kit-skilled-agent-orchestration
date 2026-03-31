@@ -11,7 +11,7 @@
     "user",
     "stories"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.904Z",
+  "lastUpdated": "2026-03-31T17:03:22.678Z",
   "specId": "001",
   "folderSlug": "toc-scrollspy",
   "parentChain": [
@@ -20,9 +20,5 @@
     "004-table-of-content"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories [001-toc-scrollspy/spec]",
-  "status": "Impact if Blocked",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
+  "memoryNameHistory": []
 }

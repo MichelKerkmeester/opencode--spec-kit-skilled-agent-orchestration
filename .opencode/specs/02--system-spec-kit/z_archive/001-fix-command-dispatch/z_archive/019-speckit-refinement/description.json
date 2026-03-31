@@ -8,7 +8,7 @@
     "analysis",
     "improvements"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.586Z",
+  "lastUpdated": "2026-03-31T17:03:23.500Z",
   "specId": "019",
   "folderSlug": "speckit-refinement",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "SpecKit Refinement: ECP Analysis & Improvements [019-speckit-refinement/spec]",
-  "status": "Research Complete",
-  "importance_tier": "important",
-  "short_description": "SpecKit Refinement: ECP Analysis & Improvements"
+  "memoryNameHistory": []
 }

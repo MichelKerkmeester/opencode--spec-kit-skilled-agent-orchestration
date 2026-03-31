@@ -1,22 +1,21 @@
 {
   "specFolder": "03--commands-and-skills/002-sk-git-github-mcp-integration",
-  "description": "GitHub MCP Integration for sk-git Skill",
+  "description": "Feature Specification: GitHub MCP Integration for sk-git Skill",
   "keywords": [
+    "feature",
+    "specification",
     "github",
     "mcp",
     "integration",
     "sk-git",
     "skill"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.502Z",
+  "lastUpdated": "2026-03-31T17:03:24.098Z",
   "specId": "002",
   "folderSlug": "sk-git-github-mcp-integration",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "GitHub MCP Integration for sk-git Skill [001-github-mcp-integration/spec]",
-  "importance_tier": "important",
-  "short_description": "GitHub MCP Integration for sk-git Skill"
+  "memoryNameHistory": []
 }

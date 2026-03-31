@@ -1,12 +1,14 @@
 {
   "specFolder": "01--anobel.com/z_archive/016-form-persistence",
-  "description": "Form Data Persistence",
+  "description": "Feature Specification: Form Data Persistence",
   "keywords": [
+    "feature",
+    "specification",
     "form",
     "data",
     "persistence"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.811Z",
+  "lastUpdated": "2026-03-31T17:03:22.741Z",
   "specId": "016",
   "folderSlug": "form-persistence",
   "parentChain": [

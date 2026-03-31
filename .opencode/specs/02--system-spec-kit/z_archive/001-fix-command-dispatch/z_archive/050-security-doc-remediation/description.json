@@ -6,7 +6,7 @@
     "documentation",
     "remediation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.926Z",
+  "lastUpdated": "2026-03-31T17:03:23.710Z",
   "specId": "050",
   "folderSlug": "security-doc-remediation",
   "parentChain": [
@@ -16,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Security & Documentation Remediation [050-security-doc-remediation/spec]",
-  "importance_tier": "important",
-  "short_description": "Security & Documentation Remediation"
+  "memoryNameHistory": []
 }

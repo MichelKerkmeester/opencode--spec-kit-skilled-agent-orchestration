@@ -11,7 +11,7 @@
     "email",
     "delivery"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.932Z",
+  "lastUpdated": "2026-03-31T17:03:24.381Z",
   "specId": "",
   "folderSlug": "complete-happy",
   "parentChain": [
@@ -22,9 +22,5 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Notification System with In-App Alerts and Email Delivery [complete-happy/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Notification System with In-App Alerts and Email Delivery"
+  "memoryNameHistory": []
 }

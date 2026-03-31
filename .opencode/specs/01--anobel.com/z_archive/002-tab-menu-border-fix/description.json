@@ -1,14 +1,16 @@
 {
   "specFolder": "01--anobel.com/z_archive/002-tab-menu-border-fix",
-  "description": "Tab Menu Border Color Fix",
+  "description": "Feature Specification: Tab Menu Border Color Fix",
   "keywords": [
+    "feature",
+    "specification",
     "tab",
     "menu",
     "border",
     "color",
     "fix"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.890Z",
+  "lastUpdated": "2026-03-31T17:03:22.669Z",
   "specId": "002",
   "folderSlug": "tab-menu-border-fix",
   "parentChain": [
@@ -16,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Tab Menu Border Color Fix [002-tab-menu-border-fix/spec]",
-  "importance_tier": "important",
-  "short_description": "Tab Menu Border Color Fix"
+  "memoryNameHistory": []
 }

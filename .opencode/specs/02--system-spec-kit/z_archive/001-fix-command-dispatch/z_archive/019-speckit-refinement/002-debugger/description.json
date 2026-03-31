@@ -6,7 +6,7 @@
     "delegation",
     "integration"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.600Z",
+  "lastUpdated": "2026-03-31T17:03:23.510Z",
   "specId": "002",
   "folderSlug": "debugger",
   "parentChain": [
@@ -17,8 +17,5 @@
     "019-speckit-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Debug Delegation Integration [002-debugger/spec]",
-  "importance_tier": "important",
-  "short_description": "Debug Delegation Integration"
+  "memoryNameHistory": []
 }

@@ -8,7 +8,7 @@
     "memory",
     "refinement"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.798Z",
+  "lastUpdated": "2026-03-31T17:03:23.621Z",
   "specId": "034",
   "folderSlug": "gate-enforcement-refinement",
   "parentChain": [
@@ -18,8 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Gate Enforcement Constitutional Memory Refinement [034-gate-enforcement-refinement/spec]",
-  "importance_tier": "important",
-  "short_description": "Gate Enforcement Constitutional Memory Refinement"
+  "memoryNameHistory": []
 }

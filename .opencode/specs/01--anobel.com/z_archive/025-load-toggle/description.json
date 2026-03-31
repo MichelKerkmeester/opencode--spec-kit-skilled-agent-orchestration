@@ -1,14 +1,16 @@
 {
   "specFolder": "01--anobel.com/z_archive/025-load-toggle",
-  "description": "Load Toggle Component - anobel.com",
+  "description": "Feature Specification: Load Toggle Component - anobel.com",
   "keywords": [
+    "feature",
+    "specification",
     "load",
     "toggle",
     "component",
     "anobel",
     "com"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.851Z",
+  "lastUpdated": "2026-03-31T17:03:22.777Z",
   "specId": "025",
   "folderSlug": "load-toggle",
   "parentChain": [

@@ -8,7 +8,7 @@
     "template",
     "optimization"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.050Z",
+  "lastUpdated": "2026-03-31T17:03:23.800Z",
   "specId": "073",
   "folderSlug": "speckit-template-optimization",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Template Optimization [073-speckit-template-optimization/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Template Optimization"
+  "memoryNameHistory": []
 }

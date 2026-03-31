@@ -7,7 +7,7 @@
     "upgrade",
     "analysis"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.005Z",
+  "lastUpdated": "2026-03-31T17:03:23.772Z",
   "specId": "067",
   "folderSlug": "voyage-4-upgrade",
   "parentChain": [
@@ -17,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Voyage 4 Model Upgrade Analysis [067-voyage-4-upgrade/spec]",
-  "importance_tier": "important",
-  "short_description": "Voyage 4 Model Upgrade Analysis"
+  "memoryNameHistory": []
 }

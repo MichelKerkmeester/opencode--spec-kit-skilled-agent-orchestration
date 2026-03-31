@@ -8,6 +8,7 @@ import Database from 'better-sqlite3';
 import { join } from 'node:path';
 import { statSync } from 'node:fs';
 import type { CodeNode, CodeEdge } from './indexer-types.js';
+import { DATABASE_DIR } from '../../core/config.js';
 
 let db: Database.Database | null = null;
 let dbPath: string | null = null;
@@ -137,10 +138,10 @@ export function initDb(dbDir: string): Database.Database {
   }
 }
 
-/** Get the current database instance (throws if not initialized) */
+/** Get the current database instance (lazy-initializes if needed) */
 export function getDb(): Database.Database {
-  if (!db) throw new Error('Code graph database not initialized. Call initDb() first.');
-  return db;
+  if (!db) initDb(DATABASE_DIR);
+  return db!;
 }
 
 /** Close the database connection */

@@ -9,7 +9,7 @@
     "dimension",
     "performance"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.936Z",
+  "lastUpdated": "2026-03-31T17:03:23.720Z",
   "specId": "052",
   "folderSlug": "codebase-fixes",
   "parentChain": [
@@ -19,8 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Codebase Fixes - Embedding Dimension & Performance [052-codebase-fixes/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Codebase Fixes - Embedding Dimension & Performance"
+  "memoryNameHistory": []
 }

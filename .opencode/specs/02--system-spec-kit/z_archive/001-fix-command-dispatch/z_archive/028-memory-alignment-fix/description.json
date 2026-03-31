@@ -9,7 +9,7 @@
     "defense",
     "system"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.748Z",
+  "lastUpdated": "2026-03-31T17:03:23.588Z",
   "specId": "028",
   "folderSlug": "memory-alignment-fix",
   "parentChain": [
@@ -19,8 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Memory Alignment Fix - Three-Layer Defense System [028-memory-alignment-fix/spec]",
-  "importance_tier": "important",
-  "short_description": "Memory Alignment Fix - Three-Layer Defense System"
+  "memoryNameHistory": []
 }

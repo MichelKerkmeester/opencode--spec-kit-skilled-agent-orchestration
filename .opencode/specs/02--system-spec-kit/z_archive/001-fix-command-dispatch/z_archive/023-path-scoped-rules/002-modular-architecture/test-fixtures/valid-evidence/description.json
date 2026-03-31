@@ -7,7 +7,7 @@
     "evidence",
     "fixture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.679Z",
+  "lastUpdated": "2026-03-31T17:03:23.548Z",
   "specId": "",
   "folderSlug": "valid-evidence",
   "parentChain": [
@@ -20,9 +20,5 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Valid Evidence Fixture [valid-evidence/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Spec: Valid Evidence Fixture"
+  "memoryNameHistory": []
 }

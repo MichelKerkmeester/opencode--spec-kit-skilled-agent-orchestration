@@ -6,7 +6,7 @@
     "tagged",
     "release"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.387Z",
+  "lastUpdated": "2026-03-31T17:03:24.013Z",
   "specId": "",
   "folderSlug": "task-07-github-release",
   "parentChain": [
@@ -15,9 +15,5 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Task 07 — Tagged Release [task-07-github-release/spec]",
-  "status": "In Progress (release notes prepared; publication blocked)",
-  "importance_tier": "important",
-  "short_description": "Task 07 — Tagged Release"
+  "memoryNameHistory": []
 }

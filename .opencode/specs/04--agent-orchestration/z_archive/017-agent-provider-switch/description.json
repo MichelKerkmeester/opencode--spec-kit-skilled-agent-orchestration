@@ -1,17 +1,14 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/017-agent-provider-switch",
-  "description": "Spec 017: Agent Provider Switching with Primary Runtime Path",
+  "description": "Feature Specification: Agent Provider Switch",
   "keywords": [
-    "spec",
-    "017",
+    "feature",
+    "specification",
     "agent",
     "provider",
-    "switching",
-    "primary",
-    "runtime",
-    "path"
+    "switch"
   ],
-  "lastUpdated": "2026-03-19T15:45:45.099Z",
+  "lastUpdated": "2026-03-31T17:03:24.443Z",
   "specId": "017",
   "folderSlug": "agent-provider-switch",
   "parentChain": [
@@ -19,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec 017: Agent Provider Switching with Primary Runtime Path [017-agent-provider-switch/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Spec 017: Agent Provider Switching with Primary Runtime Path"
+  "memoryNameHistory": []
 }

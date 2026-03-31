@@ -1,13 +1,14 @@
 {
   "specFolder": "01--anobel.com/z_archive/019-form-attribute-audit",
-  "description": "Spec: Form Attribute Audit",
+  "description": "Feature Specification: Form Attribute Audit",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "form",
     "attribute",
     "audit"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.013Z",
+  "lastUpdated": "2026-03-31T17:03:22.754Z",
   "specId": "019",
   "folderSlug": "form-attribute-audit",
   "parentChain": [
@@ -15,8 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Form Attribute Audit [019-form-attribute-audit/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec: Form Attribute Audit"
+  "memoryNameHistory": []
 }

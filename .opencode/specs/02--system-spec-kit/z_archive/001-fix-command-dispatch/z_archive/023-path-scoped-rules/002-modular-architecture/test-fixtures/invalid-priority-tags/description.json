@@ -8,7 +8,7 @@
     "tags",
     "fixture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.658Z",
+  "lastUpdated": "2026-03-31T17:03:23.533Z",
   "specId": "",
   "folderSlug": "invalid-priority-tags",
   "parentChain": [
@@ -21,9 +21,5 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Invalid Priority Tags Fixture [invalid-priority-tags/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Spec: Invalid Priority Tags Fixture"
+  "memoryNameHistory": []
 }

@@ -1,16 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations",
-  "description": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations)",
+  "description": "Feature Specification: Post Research Wave 1 Governance Foundations",
   "keywords": [
-    "phase",
-    "package",
-    "spec",
-    "post-research",
+    "feature",
+    "specification",
+    "post",
+    "research",
     "wave",
     "governance",
     "foundations"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.463Z",
+  "lastUpdated": "2026-03-31T17:03:24.070Z",
   "specId": "004",
   "folderSlug": "post-research-wave-1-governance-foundations",
   "parentChain": [
@@ -19,9 +19,5 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations) [004-post-research-wave-1-governance-foundations/spec]",
-  "status": "Planned (post-research wave package)",
-  "importance_tier": "important",
-  "short_description": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations)"
+  "memoryNameHistory": []
 }

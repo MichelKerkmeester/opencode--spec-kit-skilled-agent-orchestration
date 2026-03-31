@@ -9,7 +9,7 @@
     "convention",
     "alignment"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.234Z",
+  "lastUpdated": "2026-03-31T17:03:23.908Z",
   "specId": "090",
   "folderSlug": "opencode-naming-conventions",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: OpenCode Naming Convention Alignment"
+  "memoryNameHistory": []
 }

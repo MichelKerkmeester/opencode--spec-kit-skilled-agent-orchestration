@@ -10,16 +10,12 @@
     "submission",
     "investigation"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.871Z",
+  "lastUpdated": "2026-03-31T17:03:22.657Z",
   "specId": "034",
   "folderSlug": "form-bot-problem",
   "parentChain": [
     "01--anobel.com"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Contact Form Bot Submission Investigation",
-  "status": "Draft (planning only)",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: Contact Form Bot Submission Investigation"
+  "memoryNameHistory": []
 }

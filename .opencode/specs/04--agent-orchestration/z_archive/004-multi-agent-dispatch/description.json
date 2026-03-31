@@ -1,15 +1,13 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/004-multi-agent-dispatch",
-  "description": "Spec: Multi-Agent Dispatch for Research and Debug Commands",
+  "description": "Feature Specification: Multi-Agent Dispatch",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "multi-agent",
-    "dispatch",
-    "research",
-    "debug",
-    "commands"
+    "dispatch"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.729Z",
+  "lastUpdated": "2026-03-31T17:03:24.315Z",
   "specId": "004",
   "folderSlug": "multi-agent-dispatch",
   "parentChain": [

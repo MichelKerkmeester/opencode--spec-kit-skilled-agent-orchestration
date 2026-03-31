@@ -9,7 +9,7 @@
     "bug",
     "fix"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.755Z",
+  "lastUpdated": "2026-03-31T17:03:23.593Z",
   "specId": "029",
   "folderSlug": "comprehensive-bug-fix",
   "parentChain": [
@@ -19,8 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Comprehensive Skills & MCP Server Bug Fix [029-comprehensive-bug-fix/spec]",
-  "importance_tier": "important",
-  "short_description": "Comprehensive Skills & MCP Server Bug Fix"
+  "memoryNameHistory": []
 }

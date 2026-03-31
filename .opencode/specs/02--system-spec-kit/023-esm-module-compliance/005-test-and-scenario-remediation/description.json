@@ -1,14 +1,18 @@
 {
-  "specFolder": "023-esm-module-compliance/005-phase-5",
-  "description": "Phase 1: phase-5",
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/005-test-and-scenario-remediation",
+  "description": "Feature Specification: Test and Scenario Remediation",
   "keywords": [
-    "phase",
-    "phase-5"
+    "feature",
+    "specification",
+    "test",
+    "scenario",
+    "remediation"
   ],
-  "lastUpdated": "2026-03-29T16:32:47.880Z",
+  "lastUpdated": "2026-03-31T17:03:23.394Z",
   "specId": "005",
-  "folderSlug": "phase-5",
+  "folderSlug": "test-and-scenario-remediation",
   "parentChain": [
+    "02--system-spec-kit",
     "023-esm-module-compliance"
   ],
   "memorySequence": 0,

@@ -1,12 +1,14 @@
 {
   "specFolder": "01--anobel.com/z_archive/014-notification-hero-spacing",
-  "description": "Notification Hero Spacing",
+  "description": "Feature Specification: Notification Hero Spacing",
   "keywords": [
+    "feature",
+    "specification",
     "notification",
     "hero",
     "spacing"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.801Z",
+  "lastUpdated": "2026-03-31T17:03:22.728Z",
   "specId": "014",
   "folderSlug": "notification-hero-spacing",
   "parentChain": [

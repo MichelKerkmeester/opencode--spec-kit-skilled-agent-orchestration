@@ -8,7 +8,7 @@
     "research",
     "synthesis"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.091Z",
+  "lastUpdated": "2026-03-31T17:03:23.825Z",
   "specId": "077",
   "folderSlug": "speckit-upgrade-from-research",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Specification: System-Spec-Kit Upgrade from Research Synthesis [077-speckit-upgrade-from-research/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Specification: System-Spec-Kit Upgrade from Research Synthesis"
+  "memoryNameHistory": []
 }

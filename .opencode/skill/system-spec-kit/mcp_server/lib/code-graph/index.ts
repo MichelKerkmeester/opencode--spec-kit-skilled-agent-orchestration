@@ -9,3 +9,5 @@ export * from './code-graph-context.js';
 export * from './budget-allocator.js';
 export * from './working-set-tracker.js';
 export * from './compact-merger.js';
+export * from './tree-sitter-parser.js';
+export * from './query-intent-classifier.js';

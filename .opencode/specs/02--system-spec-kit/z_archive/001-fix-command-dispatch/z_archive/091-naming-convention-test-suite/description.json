@@ -9,7 +9,7 @@
     "test",
     "suite"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.240Z",
+  "lastUpdated": "2026-03-31T17:03:23.913Z",
   "specId": "091",
   "folderSlug": "naming-convention-test-suite",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Naming Convention Test Suite [091-naming-convention-test-suite/spec]",
-  "status": "Planning",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Naming Convention Test Suite"
+  "memoryNameHistory": []
 }

@@ -1,14 +1,15 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/015-review-agent-model-agnostic",
-  "description": "Feature Specification: Review Agent Model-Agnostic",
+  "description": "Feature Specification: Review Agent Model Agnostic",
   "keywords": [
     "feature",
     "specification",
     "review",
     "agent",
-    "model-agnostic"
+    "model",
+    "agnostic"
   ],
-  "lastUpdated": "2026-03-19T15:45:45.072Z",
+  "lastUpdated": "2026-03-31T17:03:24.433Z",
   "specId": "015",
   "folderSlug": "review-agent-model-agnostic",
   "parentChain": [
@@ -16,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Review Agent Model-Agnostic [015-review-agent-model-agnostic/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Review Agent Model-Agnostic"
+  "memoryNameHistory": []
 }

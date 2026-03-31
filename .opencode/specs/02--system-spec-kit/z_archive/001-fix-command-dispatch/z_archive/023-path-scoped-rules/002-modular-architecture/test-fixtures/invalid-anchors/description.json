@@ -7,7 +7,7 @@
     "anchors",
     "fixture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.650Z",
+  "lastUpdated": "2026-03-31T17:03:23.529Z",
   "specId": "",
   "folderSlug": "invalid-anchors",
   "parentChain": [
@@ -20,9 +20,5 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Invalid Anchors Fixture [invalid-anchors/spec]",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Spec: Invalid Anchors Fixture"
+  "memoryNameHistory": []
 }

@@ -1,15 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/016-index-workflows-code",
-  "description": "Feature Specification: Skill References & Assets Indexing",
+  "description": "Feature Specification: Index Workflows Code",
   "keywords": [
     "feature",
     "specification",
-    "skill",
-    "references",
-    "assets",
-    "indexing"
+    "index",
+    "workflows",
+    "code"
   ],
-  "lastUpdated": "2026-03-21T13:24:04.125Z",
+  "lastUpdated": "2026-03-31T17:03:24.028Z",
   "specId": "016",
   "folderSlug": "index-workflows-code",
   "parentChain": [

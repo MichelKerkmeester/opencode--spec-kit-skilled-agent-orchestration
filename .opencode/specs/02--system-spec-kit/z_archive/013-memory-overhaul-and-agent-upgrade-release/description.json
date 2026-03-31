@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
-  "description": "Feature Specification: Memory Overhaul & Agent Upgrade Release",
+  "description": "Feature Specification: Memory Overhaul And Agent Upgrade Release",
   "keywords": [
     "feature",
     "specification",
@@ -10,7 +10,7 @@
     "upgrade",
     "release"
   ],
-  "lastUpdated": "2026-03-21T13:24:04.108Z",
+  "lastUpdated": "2026-03-31T17:03:23.977Z",
   "specId": "013",
   "folderSlug": "memory-overhaul-and-agent-upgrade-release",
   "parentChain": [

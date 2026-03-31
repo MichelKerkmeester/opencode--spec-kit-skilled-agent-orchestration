@@ -7,7 +7,7 @@
     "test",
     "fixture"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.692Z",
+  "lastUpdated": "2026-03-31T17:03:23.558Z",
   "specId": "",
   "folderSlug": "with-templates",
   "parentChain": [
@@ -20,9 +20,5 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Template Test Fixture [with-templates/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Spec: Template Test Fixture"
+  "memoryNameHistory": []
 }

@@ -10,15 +10,12 @@
     "ultra-think",
     "agents"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.753Z",
+  "lastUpdated": "2026-03-31T17:03:24.291Z",
   "specId": "026",
   "folderSlug": "review-debug-agent-improvement",
   "parentChain": [
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents",
-  "importance_tier": "normal",
-  "short_description": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents"
+  "memoryNameHistory": []
 }

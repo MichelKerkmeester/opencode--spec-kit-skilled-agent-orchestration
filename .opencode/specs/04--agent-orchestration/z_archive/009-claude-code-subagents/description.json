@@ -1,17 +1,14 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/009-claude-code-subagents",
-  "description": "Feature Specification: Convert OpenCode Agents to Claude Code Subagents",
+  "description": "Feature Specification: Claude Code Subagents",
   "keywords": [
     "feature",
     "specification",
-    "convert",
-    "opencode",
-    "agents",
     "claude",
     "code",
     "subagents"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.744Z",
+  "lastUpdated": "2026-03-31T17:03:24.336Z",
   "specId": "009",
   "folderSlug": "claude-code-subagents",
   "parentChain": [

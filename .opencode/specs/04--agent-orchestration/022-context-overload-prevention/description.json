@@ -8,16 +8,12 @@
     "overload",
     "prevention"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.733Z",
+  "lastUpdated": "2026-03-31T17:03:24.276Z",
   "specId": "022",
   "folderSlug": "context-overload-prevention",
   "parentChain": [
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Context Overload Prevention [022-context-overload-prevention/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Context Overload Prevention"
+  "memoryNameHistory": []
 }

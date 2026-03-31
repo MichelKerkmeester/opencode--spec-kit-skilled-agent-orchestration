@@ -9,7 +9,7 @@
     "test",
     "suite"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.174Z",
+  "lastUpdated": "2026-03-31T17:03:23.869Z",
   "specId": "083",
   "folderSlug": "speckit-reimagined-test-suite",
   "parentChain": [
@@ -19,9 +19,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: SpecKit Reimagined Test Suite [083-speckit-reimagined-test-suite/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: SpecKit Reimagined Test Suite"
+  "memoryNameHistory": []
 }

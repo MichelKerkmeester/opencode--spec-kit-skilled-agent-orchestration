@@ -7,7 +7,7 @@
     "references",
     "audit"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.355Z",
+  "lastUpdated": "2026-03-31T17:03:23.987Z",
   "specId": "",
   "folderSlug": "task-02-skill-speckit-alignment",
   "parentChain": [
@@ -16,9 +16,5 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Task 02 — SKILL.md & References Audit [task-02-skill-speckit-alignment/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Task 02 — SKILL.md & References Audit"
+  "memoryNameHistory": []
 }

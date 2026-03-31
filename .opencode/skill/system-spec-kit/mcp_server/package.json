@@ -38,13 +38,15 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@spec-kit/shared": "file:../shared",
     "@huggingface/transformers": "^3.8.1",
     "@modelcontextprotocol/sdk": "^1.24.3",
+    "@spec-kit/shared": "file:../shared",
     "better-sqlite3": "^12.6.2",
     "chokidar": "^4.0.3",
     "onnxruntime-common": "^1.21.0",
     "sqlite-vec": "^0.1.7-alpha.2",
+    "tree-sitter-wasms": "^0.1.13",
+    "web-tree-sitter": "^0.24.7",
     "zod": "^4.1.12"
   },
   "optionalDependencies": {
@@ -52,6 +54,7 @@
     "sqlite-vec-darwin-arm64": "^0.1.7-alpha.2"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.2",
     "eslint": "^9.39.1",
     "globals": "^16.4.0",
     "typescript": "^5.9.3",

@@ -1,16 +1,13 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4",
-  "description": "Phase Package Spec: Memory Quality (QP-0 through QP-4)",
+  "description": "Feature Specification: Memory Quality QP 0 4",
   "keywords": [
-    "phase",
-    "package",
-    "spec",
+    "feature",
+    "specification",
     "memory",
-    "quality",
-    "qp-0",
-    "qp-4"
+    "quality"
   ],
-  "lastUpdated": "2026-03-28T10:35:07.691Z",
+  "lastUpdated": "2026-03-31T17:03:24.065Z",
   "specId": "003",
   "folderSlug": "memory-quality-qp-0-4",
   "parentChain": [

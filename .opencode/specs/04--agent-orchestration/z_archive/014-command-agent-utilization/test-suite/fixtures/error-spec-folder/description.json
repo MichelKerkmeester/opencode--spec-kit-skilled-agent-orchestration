@@ -7,7 +7,7 @@
     "notification",
     "system"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.911Z",
+  "lastUpdated": "2026-03-31T17:03:24.371Z",
   "specId": "",
   "folderSlug": "error-spec-folder",
   "parentChain": [
@@ -18,9 +18,5 @@
     "fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Notification System [error-spec-folder/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Notification System"
+  "memoryNameHistory": []
 }

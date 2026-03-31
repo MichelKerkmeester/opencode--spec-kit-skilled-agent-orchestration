@@ -70,6 +70,7 @@ interface ContextMode {
 
 interface ContextOptions {
   specFolder?: string;
+  folderBoost?: { folder: string; factor: number };
   tenantId?: string;
   userId?: string;
   agentId?: string;
@@ -465,11 +466,45 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
         const currentResults = [...innerResults];
         let currentTokens = actualTokens;
 
+        // Phase 1: Adaptive content truncation — truncate content fields before dropping results
+        const MAX_CONTENT_CHARS = 500;
+        for (const r of currentResults) {
+          if (r.content && typeof r.content === 'string' && r.content.length > MAX_CONTENT_CHARS) {
+            r.content = r.content.substring(0, MAX_CONTENT_CHARS) + '...';
+            r.contentTruncated = true;
+          }
+        }
+        // Re-estimate after content truncation
+        innerEnvelope.data.results = currentResults;
+        innerEnvelope.data.count = currentResults.length;
+        currentTokens = estimateTokens(JSON.stringify(innerEnvelope));
+
+        // Phase 2: Drop lowest-scored results if still over budget
         while (currentResults.length > 1 && currentTokens > budgetTokens) {
           // Remove the last (lowest-scored) result
           const removed = currentResults.pop();
           const removedTokens = estimateTokens(JSON.stringify(removed));
           currentTokens -= removedTokens;
+        }
+
+        // Phase 3: Two-tier response — append metadata-only entries for dropped results
+        const droppedResults = innerResults.slice(currentResults.length);
+        if (droppedResults.length > 0) {
+          const metadataOnly = droppedResults.map((r: Record<string, unknown>) => ({
+            id: r.id,
+            title: r.title,
+            similarity: r.similarity,
+            specFolder: r.specFolder,
+            confidence: r.confidence,
+            importanceTier: r.importanceTier,
+            isConstitutional: r.isConstitutional,
+            metadataOnly: true,
+          }));
+          const metadataTokens = estimateTokens(JSON.stringify(metadataOnly));
+          if (currentTokens + metadataTokens <= budgetTokens) {
+            currentResults.push(...metadataOnly);
+            currentTokens += metadataTokens;
+          }
         }
 
         // Update the inner envelope
@@ -625,10 +660,11 @@ async function executeQuickStrategy(input: string, options: ContextOptions): Pro
   };
 }
 
-async function executeDeepStrategy(input: string, options: ContextOptions): Promise<ContextResult> {
+async function executeDeepStrategy(input: string, intent: string | null, options: ContextOptions): Promise<ContextResult> {
   const result = await handleMemorySearch({
     query: input,
     specFolder: options.specFolder,
+    folderBoost: options.folderBoost,
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
@@ -642,7 +678,8 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
     profile: options.profile,
-    autoDetectIntent: true,
+    intent: intent ?? undefined,
+    autoDetectIntent: intent ? false : true,
     useDecay: true,
     // minState omitted — memoryState column not yet in schema
   });
@@ -658,6 +695,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
   const result = await handleMemorySearch({
     query: input,
     specFolder: options.specFolder,
+    folderBoost: options.folderBoost,
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
@@ -685,12 +723,13 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
   };
 }
 
-async function executeResumeStrategy(input: string, options: ContextOptions): Promise<ContextResult> {
+async function executeResumeStrategy(input: string, intent: string | null, options: ContextOptions): Promise<ContextResult> {
   const resumeAnchors = options.anchors || ['state', 'next-steps', 'summary', 'blockers'];
 
   const result = await handleMemorySearch({
     query: input || 'resume work continue session',
     specFolder: options.specFolder,
+    folderBoost: options.folderBoost,
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
@@ -704,7 +743,8 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     sessionTransition: options.sessionTransition,
     enableDedup: false,
     profile: options.profile,
-    autoDetectIntent: true,
+    intent: intent ?? undefined,
+    autoDetectIntent: intent ? false : true,
     useDecay: false,
     // minState omitted — memoryState column not yet in schema
   });
@@ -715,6 +755,19 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     resumeAnchors: resumeAnchors,
     ...result
   };
+}
+
+function extractResultCount(result: ContextResult): number {
+  try {
+    const contentArr = (result as Record<string, unknown>).content as Array<{ type: string; text: string }> | undefined;
+    if (contentArr && Array.isArray(contentArr) && contentArr.length > 0 && contentArr[0]?.text) {
+      const envelope = JSON.parse(contentArr[0].text);
+      return envelope?.data?.count ?? envelope?.data?.results?.length ?? 0;
+    }
+  } catch {
+    // Parse failed — assume non-zero to avoid false recovery
+  }
+  return -1;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -857,7 +910,10 @@ function maybeDiscoverSpecFolder(options: ContextOptions, args: ContextArgs): st
     const basePaths = getSpecsBasePaths();
     const discoveredFolder = discoverSpecFolder(args.input.trim(), basePaths) || undefined;
     if (discoveredFolder) {
-      options.specFolder = discoveredFolder;
+      (options as Record<string, unknown>).folderBoost = {
+        folder: discoveredFolder,
+        factor: parseFloat(process.env.SPECKIT_FOLDER_BOOST_FACTOR || '1.3'),
+      };
     }
     return discoveredFolder;
   } catch (error: unknown) {
@@ -881,10 +937,10 @@ async function executeStrategy(
       return executeQuickStrategy(normalizedInput, options);
 
     case 'deep':
-      return executeDeepStrategy(normalizedInput, options);
+      return executeDeepStrategy(normalizedInput, args.intent || null, options);
 
     case 'resume':
-      return executeResumeStrategy(normalizedInput, options);
+      return executeResumeStrategy(normalizedInput, args.intent || null, options);
 
     case 'focused':
     default:
@@ -1204,6 +1260,21 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         severity: strategyError.severity ?? 'error',
       },
     });
+  }
+
+  // FIX RC1-A: Folder discovery recovery — retry without folder filter when discovery yields 0 results
+  if (discoveredFolder && extractResultCount(result) === 0) {
+    options.specFolder = undefined;
+    try {
+      result = await executeStrategy(effectiveMode, options, {
+        ...args,
+        input: normalizedInput,
+        intent: detectedIntent,
+      });
+    } catch (retryError: unknown) {
+      console.error('[memory-context] Folder discovery recovery retry failed:', toErrorMessage(retryError));
+      // Keep original 0-result response rather than crashing
+    }
   }
 
   try {

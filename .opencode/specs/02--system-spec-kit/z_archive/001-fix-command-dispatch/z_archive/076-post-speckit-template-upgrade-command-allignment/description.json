@@ -10,7 +10,7 @@
     "command",
     "alignment"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.085Z",
+  "lastUpdated": "2026-03-31T17:03:23.820Z",
   "specId": "076",
   "folderSlug": "post-speckit-template-upgrade-command-allignment",
   "parentChain": [
@@ -20,8 +20,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment [076-post-speckit-template-upgrade-command-allignment/spec]",
-  "importance_tier": "important",
-  "short_description": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment"
+  "memoryNameHistory": []
 }

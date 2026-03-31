@@ -8,7 +8,7 @@
     "memory",
     "upgrade"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.127Z",
+  "lastUpdated": "2026-03-31T17:03:23.837Z",
   "specId": "079",
   "folderSlug": "speckit-cognitive-memory",
   "parentChain": [
@@ -18,9 +18,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Cognitive Memory Upgrade [079-speckit-cognitive-memory/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Cognitive Memory Upgrade"
+  "memoryNameHistory": []
 }

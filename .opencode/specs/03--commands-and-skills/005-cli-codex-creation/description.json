@@ -1,7 +1,8 @@
 {
   "specFolder": "03--commands-and-skills/005-cli-codex-creation",
-  "description": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
+  "description": "Feature Specification: cli-gemini Model Consolidation + cli-codex Skill",
   "keywords": [
+    "feature",
     "specification",
     "cli-gemini",
     "model",
@@ -9,15 +10,12 @@
     "cli-codex",
     "skill"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.542Z",
+  "lastUpdated": "2026-03-31T17:03:24.113Z",
   "specId": "005",
   "folderSlug": "cli-codex-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
-  "importance_tier": "normal",
-  "short_description": "Specification: cli-gemini Model Consolidation + cli-codex Skill"
+  "memoryNameHistory": []
 }

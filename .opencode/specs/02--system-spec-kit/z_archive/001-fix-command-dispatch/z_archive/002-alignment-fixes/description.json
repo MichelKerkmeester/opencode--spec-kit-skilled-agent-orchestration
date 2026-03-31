@@ -7,7 +7,7 @@
     "alignment",
     "fixes"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.519Z",
+  "lastUpdated": "2026-03-31T17:03:23.434Z",
   "specId": "002",
   "folderSlug": "alignment-fixes",
   "parentChain": [
@@ -17,8 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Memory Command Alignment Fixes [002-alignment-fixes/spec]",
-  "importance_tier": "important",
-  "short_description": "Memory Command Alignment Fixes"
+  "memoryNameHistory": []
 }

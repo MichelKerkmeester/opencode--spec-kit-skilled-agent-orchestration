@@ -1,16 +1,14 @@
 {
   "specFolder": "04--agent-orchestration/z_archive/010-explore-routing-fix",
-  "description": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent",
+  "description": "Feature Specification: Explore Routing Fix",
   "keywords": [
-    "spec",
-    "fix",
+    "feature",
+    "specification",
     "explore",
-    "direct",
-    "dispatch",
-    "orchestrate",
-    "agent"
+    "routing",
+    "fix"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.850Z",
+  "lastUpdated": "2026-03-31T17:03:24.341Z",
   "specId": "010",
   "folderSlug": "explore-routing-fix",
   "parentChain": [
@@ -18,9 +16,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/spec]",
-  "status": "Draft",
-  "importance_tier": "important",
-  "short_description": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent"
+  "memoryNameHistory": []
 }

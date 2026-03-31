@@ -7,7 +7,7 @@
     "integration",
     "spec-kit"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.806Z",
+  "lastUpdated": "2026-03-31T17:03:23.626Z",
   "specId": "035",
   "folderSlug": "memory-speckit-merger",
   "parentChain": [
@@ -17,9 +17,5 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Memory System Integration into Spec-Kit [035-memory-speckit-merger/spec]",
-  "status": "Complete",
-  "importance_tier": "important",
-  "short_description": "Memory System Integration into Spec-Kit"
+  "memoryNameHistory": []
 }

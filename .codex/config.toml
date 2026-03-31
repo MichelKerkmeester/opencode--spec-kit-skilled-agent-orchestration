@@ -47,6 +47,10 @@ child_agents_md = true
 sandbox_mode = "read-only"
 model_reasoning_effort = "high"
 
+[profiles.deep-review]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "high"
+
 [profiles.debug]
 sandbox_mode = "workspace-write"
 model_reasoning_effort = "high"

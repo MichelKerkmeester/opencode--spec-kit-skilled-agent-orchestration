@@ -1,9 +1,10 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Structural Indexer
 // ───────────────────────────────────────────────────────────────
-// Regex-based structural code parser. Extracts symbols and
-// relationships from JS/TS/Python/Shell source files.
-// Tree-sitter WASM integration planned as future enhancement.
+// Structural code parser with dual-backend support:
+// - Tree-sitter WASM (default): AST-accurate symbol extraction
+// - Regex fallback (SPECKIT_PARSER=regex): lightweight, no WASM deps
+// Extracts symbols and relationships from JS/TS/Python/Shell.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
@@ -616,9 +617,28 @@ class RegexParser implements ParserAdapter {
   }
 }
 
-export function getParser(): ParserAdapter {
-  if (process.env.SPECKIT_PARSER === 'treesitter') {
-    throw new Error('SPECKIT_PARSER=treesitter is not implemented yet');
+/** Cached tree-sitter parser instance (lazy-loaded to avoid circular import at module init) */
+let treeSitterParser: ParserAdapter | null = null;
+
+export async function getParser(): Promise<ParserAdapter> {
+  const parserEnv = process.env.SPECKIT_PARSER ?? 'treesitter';
+
+  if (parserEnv === 'treesitter') {
+    if (treeSitterParser) return treeSitterParser;
+
+    try {
+      // Dynamic import avoids circular dependency (tree-sitter-parser imports extractEdges from here)
+      const { TreeSitterParser } = await import('./tree-sitter-parser.js');
+      if (!TreeSitterParser.isReady()) {
+        await TreeSitterParser.init();
+        await TreeSitterParser.loadAllLanguages();
+      }
+      treeSitterParser = new TreeSitterParser();
+      return treeSitterParser;
+    } catch (err: unknown) {
+      console.warn(`[structural-indexer] Tree-sitter init failed, falling back to regex: ${err instanceof Error ? err.message : String(err)}`);
+      return new RegexParser();
+    }
   }
 
   return new RegexParser();
@@ -916,7 +936,8 @@ export async function parseFile(
   const contentHash = generateContentHash(content);
 
   try {
-    const parserResult = getParser().parse(content, language);
+    const parser = await getParser();
+    const parserResult = parser.parse(content, language);
     return attachFilePath(parserResult, filePath);
   } catch (err: unknown) {
     return {

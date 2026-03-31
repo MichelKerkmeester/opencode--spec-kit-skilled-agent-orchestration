@@ -8,7 +8,7 @@
     "main",
     "component"
   ],
-  "lastUpdated": "2026-03-19T15:45:42.911Z",
+  "lastUpdated": "2026-03-31T17:03:22.682Z",
   "specId": "002",
   "folderSlug": "tab-main-component",
   "parentChain": [
@@ -17,9 +17,5 @@
     "004-table-of-content"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Tab Main Component [002-tab-main-component/spec]",
-  "status": "|------",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Tab Main Component"
+  "memoryNameHistory": []
 }
