@@ -621,10 +621,21 @@ function hasExecutionSignals(content: string): boolean {
   return EXECUTION_SIGNAL_PATTERNS.some((pattern) => pattern.test(content));
 }
 
-function validateMemoryQualityContent(content: string): ValidationResult {
+function validateMemoryQualityContent(content: string, options?: { filePath?: string }): ValidationResult {
   const { parseError: frontMatterParseError } = extractAndValidateFrontMatter(content);
   const toolCount = parseToolCount(content);
-  const specFolder = extractYamlValueFromContent(content, 'spec_folder') || '';
+  let specFolder = extractYamlValueFromContent(content, 'spec_folder') || '';
+
+  // Fallback: extract spec folder from file path when frontmatter doesn't have it.
+  // This is critical for bulk reindex where spec docs and older memory files lack
+  // the spec_folder frontmatter field — without it, V8 sees current_spec as unknown
+  // and treats all cross-references as foreign contamination.
+  if (!specFolder && options?.filePath) {
+    const specsMatch = options.filePath.match(/[/\\]specs[/\\](.+?[/\\](?:\d{3}-[^/\\]+))/);
+    if (specsMatch) {
+      specFolder = specsMatch[1];
+    }
+  }
 
   const ruleResults: RuleResult[] = [];
 
@@ -805,9 +816,17 @@ function validateMemoryQualityContent(content: string): ValidationResult {
   });
 
   // V12: Topical coherence — check if memory content overlaps with spec's trigger_phrases
+  // Skip when:
+  // - File is in a */memory/ directory (already validated by save pipeline, may use different terms)
+  // - File is a spec doc (spec.md, plan.md, checklist.md, etc.) — these define the spec itself
+  // - filePath is provided and matches known spec doc patterns
+  const isMemoryDirFile = options?.filePath ? /[/\\]memory[/\\]/.test(options.filePath) : false;
+  const isSpecDoc = options?.filePath
+    ? /[/\\](?:spec|plan|checklist|tasks|decision-record|implementation-summary|research|handover)\.md$/i.test(options.filePath)
+    : false;
   let v12Failed = false;
   let v12Message = 'ok';
-  if (specFolder) {
+  if (specFolder && !isMemoryDirFile && !isSpecDoc) {
     // T023: Normalize specFolder to an absolute path before resolving spec.md.
     // If specFolder is already absolute, use it as-is; otherwise resolve relative
     // to the current working directory.
@@ -953,7 +972,7 @@ function validateMemoryQualityFile(filePath: string): ValidationResult {
       },
     };
   }
-  return validateMemoryQualityContent(content);
+  return validateMemoryQualityContent(content, { filePath });
 }
 
 export {

@@ -207,7 +207,7 @@ function prepareParsedMemoryForIndexing(
   }
 
   // O2-5/O2-12: Run V-rule validation (previously only in workflow path)
-  const vRuleResult = validateMemoryQualityContent(parsed.content);
+  const vRuleResult = validateMemoryQualityContent(parsed.content, { filePath: parsed.filePath });
   if (isVRuleUnavailableResult(vRuleResult) && vRuleResult.status === 'error') {
     throw new VRuleUnavailableError(vRuleResult.message);
   }
