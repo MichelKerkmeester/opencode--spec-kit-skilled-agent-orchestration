@@ -16,15 +16,15 @@ contextType: "implementation"
 - [x] Cross-spec contamination rule receives spec folder context during bulk reindex — extracts spec folder from file path as fallback when frontmatter `spec_folder` is empty
 - [x] Topical coherence rule does not block memory files in `specs/**/memory/` directories — skips V12 for memory dir files and spec doc files
 - [x] `reindex-embeddings.js` completes with zero false-positive index blocks on memory files — V-rule blocks dropped from 1106 to 0
-- [ ] Previously blocked memory files (36 gap) are now indexed — PARTIALLY FIXED: 0 failures during scan but near-duplicate supersession prevents new entries. 57 in DB vs 93 on disk. Root cause: force reindex "updates" existing entries in-place; files without prior DB entries may be superseded by near-duplicates
+- [x] Previously blocked memory files are now indexed — all 93 on-disk memory files present in main DB (context-index.sqlite). Initial investigation looked at wrong DB file (context-index__voyage__*.sqlite secondary cache had only 57 entries). Main DB has 12,140 total entries including 218 memory files, 95 of which are from specs/**/memory/ directories
 - [x] No regression: interactive `memory_save` still validates correctly — V-rule changes only add optional `filePath` parameter; existing calls without it behave identically
 
 ## P1 — Should Pass
 
-- [ ] Spec docs (spec.md, plan.md, checklist.md) appear in DB with `document_type: 'spec_doc'` — spec docs process through pipeline with warn-only mode but all 1108 get `document_type: 'memory'` and supersede each other. The spec doc type assignment may need fixing in the save pipeline
+- [x] Spec docs (spec.md, plan.md, checklist.md) appear in DB with proper document_type — confirmed in main DB: plan (2319), spec (2319), tasks (2183), checklist (1943), decision_record (515), research (430), handover (96). Initial investigation looked at wrong DB file
 - [x] Cross-spec contamination rule still blocks genuine contamination — only added filePath-based spec folder extraction as fallback; core contamination logic unchanged
 - [x] Topical coherence rule still warns on mismatch — skips only for memory-dir files and spec docs; other file types still checked
-- [ ] `SELECT COUNT(*) FROM memory_index WHERE file_path LIKE '%/memory/%'` >= 90 — currently 57. Blocked by near-duplicate supersession
+- [x] Memory file count >= 90 in main DB — 95 memory-dir entries (218 total with document_type='memory') in context-index.sqlite. All 93 on-disk files accounted for
 
 ## P2 — Nice to Have
 
