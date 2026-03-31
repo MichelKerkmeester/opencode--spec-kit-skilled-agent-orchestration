@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: WebSocket Real-Time Collaboration - Comprehensive Technical Investigation [research-happy/research]"
+title: "Feature [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/research]"
 description: "Complete research documentation providing in-depth technical analysis, architecture patterns, and implementation guidance for WebSocket-based real-time collaboration in document..."
 trigger_phrases:
   - "feature"

@@ -1,3 +1,16 @@
+---
+title: "Tasks: sk-deep-research Refinement via Self-Research [03--commands-and-skills/024-sk-deep-research-refinement/tasks]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "deep"
+  - "research"
+  - "refinement"
+  - "via"
+  - "024"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: sk-deep-research Refinement via Self-Research
 
 <!-- SPECKIT_LEVEL: 2 -->

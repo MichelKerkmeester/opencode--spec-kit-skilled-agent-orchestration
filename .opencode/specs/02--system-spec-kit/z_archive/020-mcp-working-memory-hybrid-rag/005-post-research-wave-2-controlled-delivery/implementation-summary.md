@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [005-post-research-wave-2-controlled-delivery/implementation-summary]"
+title: "...-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/implementation-summary]"
 description: "Wave 2 controlled-delivery outputs are documented as complete in this package. Existing task evidence covers dark-launch proof, staged rollout gate evidence, and append-only mut..."
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Path-Scoped Validation Rules [001-mvp-monolithic/plan]"
+title: "Impleme [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/plan]"
 description: "┌─────────────────────────────────────────────────────────────────┐"
 trigger_phrases:
   - "implementation"
@@ -57,6 +57,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 2. Architecture
 
 ### Component Diagram
@@ -120,8 +121,10 @@ Input: spec folder path
 └─────────────────────┘
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 3. Implementation Phases
 
 ### Phase 1: Core Validation Engine (P0)
@@ -179,6 +182,7 @@ Input: spec folder path
 | 4.3 | Create validation_rules.md | Rule reference |
 | 4.4 | Update README.md | Feature description |
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## 4. Validation Rules Detail
@@ -309,6 +313,7 @@ Result: FAIL (fix errors to pass)
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 7. Testing Strategy
 
 ### Test Fixtures
@@ -355,6 +360,7 @@ run_test "unfilled-placeholders" "false"
 echo "All tests passed!"
 ```
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 8. Rollout Plan

@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Post-SpecKit Template Upgrade - Command [075-post-speckit-template-upgrade-command-allignment/checklist]"
+title: "...spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment/checklist]"
 description: "checklist document for 075-post-speckit-template-upgrade-command-allignment."
 trigger_phrases:
   - "checklist"

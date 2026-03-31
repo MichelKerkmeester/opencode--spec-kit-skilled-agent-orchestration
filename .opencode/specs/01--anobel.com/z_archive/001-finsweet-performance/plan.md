@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Finsweet Performance Optimization [001-finsweet-performance/plan]"
+title: "Implementation Plan: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/plan]"
 description: "Defer Finsweet Attributes loading to improve PageSpeed by 10-20 points."
 trigger_phrases:
   - "implementation"

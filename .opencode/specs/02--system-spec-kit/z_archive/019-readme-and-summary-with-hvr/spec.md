@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Human Voice Rules — Template Integration [019-readme-and-summary-with-hvr/spec]"
+title: "Feature Specification: Human Voice Rules — [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/spec]"
 description: "AI-generated documentation has a tell: it reads like AI wrote it. This spec fixes that. The Human Voice Rules (HVR), currently locked inside a Barter-specific document, get extr..."
 trigger_phrases:
   - "feature"
@@ -146,6 +146,7 @@ Extract the Human Voice Rules into a reusable skill asset and integrate HVR guid
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Maintainability
@@ -162,6 +163,7 @@ Extract the Human Voice Rules into a reusable skill asset and integrate HVR guid
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Template Usage

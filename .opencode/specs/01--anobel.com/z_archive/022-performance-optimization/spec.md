@@ -1,5 +1,5 @@
 ---
-title: "Performance Optimization - anobel.com [022-performance-optimization/spec]"
+title: "Performance Optimization - anobel.com [01--anobel.com/z_archive/022-performance-optimization/spec]"
 description: "Comprehensive performance analysis and optimization for anobel.com based on Google PageSpeed Insights results. The site had critical LCP issues (20.2s mobile) primarily caused b..."
 trigger_phrases:
   - "performance"

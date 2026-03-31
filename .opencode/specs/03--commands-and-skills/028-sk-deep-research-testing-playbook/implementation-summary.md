@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research Manual Testing Playbook Spec Packet Alignment"
+title: "Implementation Summary: [03--commands-and-skills/028-sk-deep-research-testing-playbook/implementation-summary]"
 description: "This summary records the completed alignment of the Level 3 spec packet to the approved 19-scenario implementation plan."
 trigger_phrases:
   - "deep research playbook implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Document Anchor Tags [012-spec-doc-anchor-tags/spec]"
+title: "Feature Specification: Spec Document Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/spec]"
 description: "Spec 126 made all spec documents searchable by indexing them as whole documents. But unlike Memory files and READMEs — which use &lt;!-- ANCHOR:name --&gt; tags for section-leve..."
 trigger_phrases:
   - "feature"
@@ -115,6 +115,7 @@ All spec kit templates gain anchor tags around their sections, enabling token-ef
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Backward Compatibility
@@ -125,6 +126,7 @@ All spec kit templates gain anchor tags around their sections, enabling token-ef
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Template Edge Cases

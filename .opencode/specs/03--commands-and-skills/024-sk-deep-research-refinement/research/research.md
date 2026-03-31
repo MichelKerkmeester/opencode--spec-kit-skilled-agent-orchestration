@@ -1,3 +1,14 @@
+---
+title: "Deep Research: sk-deep-research Refinement (v3 [03--commands-and-skills/024-sk-deep-research-refinement/research]"
+description: "The sk-deep-research system is 72% implemented by specification coverage but only 44% by runtime behavior. The dominant weakness is NOT missing algorithms -- it is the gap betwe..."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "refinement"
+  - "024"
+importance_tier: "normal"
+contextType: "research"
+---
 # Deep Research: sk-deep-research Refinement (v3 Proposals)
 
 > Spec folder: `.opencode/specs/03--commands-and-skills/024-sk-deep-research-refinement`

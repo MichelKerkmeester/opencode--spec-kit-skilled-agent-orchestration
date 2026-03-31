@@ -5,6 +5,7 @@ trigger_phrases:
   - "templates"
   - "level architecture"
   - "core addendum"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Templates

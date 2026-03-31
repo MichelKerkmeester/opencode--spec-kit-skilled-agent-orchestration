@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Fix Command Dispatch Vulnerability [001-fix-command-dispatch/spec]"
+title: "Feature Specification: Fix Command Dispatch [02--system-spec-kit/z_archive/001-fix-command-dispatch/spec]"
 description: "During a security audit of the OpenCode command system, a critical vulnerability was discovered in 7 command .md files: phantom dispatch text and missing guardrails that cause c..."
 trigger_phrases:
   - "feature"
@@ -152,6 +152,7 @@ Eliminate phantom dispatch injection across all 7 spec_kit command files and 13 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -169,6 +170,7 @@ Eliminate phantom dispatch injection across all 7 spec_kit command files and 13 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

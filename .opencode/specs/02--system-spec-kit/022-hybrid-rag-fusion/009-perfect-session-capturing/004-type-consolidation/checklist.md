@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Type Consolidation [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation/checklist]"
+description: "title: \"Verification Checklist: Type Consolidation [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "004"
+  - "type"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Type Consolidation
 

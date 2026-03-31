@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System-Wide Remediation of Audit Findings [008-codex-system-wide-audit/spec]"
+title: "Feature Specification: System-Wide Remediation of [02--system-spec-kit/z_archive/008-codex-system-wide-audit/spec]"
 description: "This spec is re-baselined to address the full set of confirmed issues from audits of specs 121, 124, and 125 plus the runtime code they reference. The previous version mixed sta..."
 trigger_phrases:
   - "feature"
@@ -168,6 +168,7 @@ Provide one authoritative remediation contract that:
 - **SC-002**: Targeted shell and TS checks pass for each remediated defect.
 - **SC-003**: No cross-file contract drift remains for level detection, exit codes, or completion status reporting.
 - **SC-004**: Spec 125 can be used as an accurate source of truth for pending and completed remediation work.
+<!-- /ANCHOR:success-criteria -->
 
 ## 6.1 ACCEPTANCE SCENARIOS
 

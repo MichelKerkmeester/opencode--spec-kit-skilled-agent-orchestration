@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 004-adaptive-retrieval-loops"
+title: "Verificat [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/checklist]"
 description: "Readiness and execution evidence for Hydra Phase 4 adaptive learning."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 4 checklist"
   - "adaptive checklist"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 004-adaptive-retrieval-loops
 

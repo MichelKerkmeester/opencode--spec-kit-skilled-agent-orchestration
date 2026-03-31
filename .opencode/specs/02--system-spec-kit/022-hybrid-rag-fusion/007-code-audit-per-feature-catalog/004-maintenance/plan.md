@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Maintenance"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance/plan]"
 description: "Technical plan for auditing 2 Maintenance features against source code"
 trigger_phrases:
   - "audit plan"
@@ -124,14 +124,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 2 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -160,3 +163,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 2 features) ──► Phase 3 (Synthesis
 | Startup runtime compatibility guards | MATCH | All 3 impl + 3 test files confirmed; Node version, ABI/platform/arch, SQLite 3.35.0+ all verified |
 
 **Overall**: 1 MATCH, 1 PARTIAL. No blockers. Minor catalog update recommended for F01 (add `history.ts` to source list).
+<!-- /ANCHOR:effort -->

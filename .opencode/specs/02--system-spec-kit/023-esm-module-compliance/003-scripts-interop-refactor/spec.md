@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Scripts Interop Refactor"
+title: "Feature Specification: Scripts [02--system-spec-kit/023-esm-module-compliance/003-scripts-interop-refactor/spec]"
 description: "Refactor @spec-kit/scripts to use explicit dynamic-import interoperability with ESM siblings while remaining CommonJS."
 trigger_phrases:
   - "scripts interop refactor"
   - "scripts esm interop"
   - "023 phase 3"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Scripts Interop Refactor
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Reimagined [082-speckit-reimagined/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/decision-record]"
 description: "The current SpecKit search relies on vector + FTS5 with partial RRF fusion. Comparative analysis of dotmd, seu-claude, and drift systems revealed that multi-engine approaches wi..."
 trigger_phrases:
   - "decision"
@@ -846,6 +846,7 @@ The following open questions from Section 9 were resolved during analysis:
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 > **Purpose**: Track all gate decisions made during this session for audit trail and learning.
@@ -877,3 +878,4 @@ Includes Session Decision Log for audit trail
 Generated: 2026-02-01
 Source: consolidated-analysis.md (25-agent parallel analysis synthesis)
 -->
+<!-- /ANCHOR:decision -->

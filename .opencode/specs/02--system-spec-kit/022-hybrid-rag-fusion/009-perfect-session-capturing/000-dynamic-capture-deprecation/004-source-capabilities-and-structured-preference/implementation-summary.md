@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Source Capabilities And Structured Preference"
+title: "...n-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference/implementation-summary]"
 description: "Phase 019 shipped typed source capabilities and updated the operator contract for structured saves."
 trigger_phrases:
   - "phase 019"

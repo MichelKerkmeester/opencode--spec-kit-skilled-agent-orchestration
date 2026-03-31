@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: scoring-and-calibration manual testing [template:level_2/checklist.md]"
+title: "Verifi [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/checklist]"
 description: "Verification checklist for Phase 011 scoring-and-calibration manual tests covering 22 playbook rows: 21 active MCP scenarios plus retired row 170."
 trigger_phrases:
   - "phase 011 checklist"
   - "scoring calibration verification checklist"
   - "scoring and calibration checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: scoring-and-calibration manual testing

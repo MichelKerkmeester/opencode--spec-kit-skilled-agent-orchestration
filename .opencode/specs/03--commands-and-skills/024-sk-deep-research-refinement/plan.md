@@ -1,3 +1,16 @@
+---
+title: "Implementation Plan: sk-deep-research Refinement via [03--commands-and-skills/024-sk-deep-research-refinement/plan]"
+description: "This plan uses the existing /spec_kit:deep-research:auto system to run autonomous research rounds that investigate improvements to itself. The research targets 3 external refere..."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "deep"
+  - "research"
+  - "refinement"
+  - "024"
+importance_tier: "important"
+contextType: "decision"
+---
 # Implementation Plan: sk-deep-research Refinement via Self-Research
 
 <!-- SPECKIT_LEVEL: 2 -->

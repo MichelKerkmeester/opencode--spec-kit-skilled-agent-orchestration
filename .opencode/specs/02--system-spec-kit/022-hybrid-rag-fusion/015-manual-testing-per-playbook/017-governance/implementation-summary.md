@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook governance phase [template:level_2/implementation-summary.md]"
+title: "Implem [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance/implementation-summary]"
 description: "Phase 017 governance manual testing — code-audit complete. 5 PASS, 0 PARTIAL, 0 FAIL across 5 governance scenarios."
 trigger_phrases:
   - "governance implementation summary"

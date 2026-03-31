@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist.md]"
+title: "Verificatio [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes/checklist]"
+description: "title: \"Verification Checklist: Auto-Detection Fixes [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verificatio"
+  - "checklist"
+  - "012"
+  - "auto"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Auto-Detection Fixes
 

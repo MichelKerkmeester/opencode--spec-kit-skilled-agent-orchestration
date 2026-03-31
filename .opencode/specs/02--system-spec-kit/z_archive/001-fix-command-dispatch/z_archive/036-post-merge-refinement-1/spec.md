@@ -1,5 +1,5 @@
 ---
-title: "Post-Merger System Refinement [036-post-merge-refinement-1/spec]"
+title: "Post-Merger System [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/spec]"
 description: "id: 036-post-merge-refinement"
 trigger_phrases:
   - "post"
@@ -73,6 +73,7 @@ Following the successful merger of system-memory and system-spec-kit (035-memory
 ### 8. memory_load Tool Reference (Phantom Tool)
 - `resume.md:407-409` references non-existent `memory_load` tool
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -84,7 +85,9 @@ Following the successful merger of system-memory and system-spec-kit (035-memory
 - Major architectural changes
 - New feature development
 - Performance optimization
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. All P0 issues resolved and verified
@@ -92,6 +95,7 @@ Following the successful merger of system-memory and system-spec-kit (035-memory
 3. Gate 6 validation workflow functional
 4. MCP tool documentation accurate
 5. No phantom script/tool references
+<!-- /ANCHOR:success-criteria -->
 
 ## Dependencies
 

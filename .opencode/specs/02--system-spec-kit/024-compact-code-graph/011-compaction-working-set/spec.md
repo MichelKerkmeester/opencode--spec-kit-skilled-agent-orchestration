@@ -1,3 +1,16 @@
+---
+title: "Phase 011: Compaction Working-Set [02--system-spec-kit/024-compact-code-graph/011-compaction-working-set/spec]"
+description: "Wire the code graph and CocoIndex into the compaction pipeline via a session working-set tracker and a 3-source merge allocator. Replace the current Memory-only compaction with ..."
+trigger_phrases:
+  - "phase"
+  - "011"
+  - "compaction"
+  - "working"
+  - "set"
+  - "spec"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 011: Compaction Working-Set Integration
 
 ## Summary

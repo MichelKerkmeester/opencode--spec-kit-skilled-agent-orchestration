@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Memory Database Refinement"
+title: "Tasks: Memory Database Refinement [02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/tasks]"
 description: "30-iteration audit (121 findings) + 4 fix sprints + P2 triage + 10-iteration meta-review (29 new findings). Phase 12 remediation tracks 1 P0, 17 P1, 11 P2 from meta-review."
 trigger_phrases:
   - "memory database refinement tasks"
   - "deep research review tasks"
   - "mcp server fix tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: Memory Database Refinement

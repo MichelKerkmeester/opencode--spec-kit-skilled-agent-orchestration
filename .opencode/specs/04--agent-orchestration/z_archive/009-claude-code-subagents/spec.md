@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Convert OpenCode Agents to Claude Code Subagents [009-claude-code-subagents/spec]"
+title: "Feature Specification: Convert OpenCode Agents to [04--agent-orchestration/z_archive/009-claude-code-subagents/spec]"
 description: "OpenCode has 8 specialized agent files in .opencode/agent/ using OpenCode-specific YAML frontmatter. Claude Code IDE supports subagents but requires a different frontmatter form..."
 trigger_phrases:
   - "feature"

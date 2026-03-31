@@ -32,6 +32,16 @@ This section provides an overview of the Hooks directory.
 - It is a utility layer for memory-aware context surfacing and UX feedback metadata.
 - It is not a standalone MCP hook registration system.
 
+### Claude Code Lifecycle Hooks (`claude/`)
+
+The `claude/` subdirectory contains hook scripts for Claude Code lifecycle events (PreCompact, SessionStart, Stop). These run as external processes triggered by Claude Code, not as MCP server modules:
+- `compact-inject.ts` — PreCompact: precomputes context, caches to temp state
+- `session-prime.ts` — SessionStart: injects context via stdout (routes by source)
+- `session-stop.ts` — Stop (async): parses transcript, stores token snapshots
+- `claude-transcript.ts`, `shared.ts`, `hook-state.ts` — shared libraries
+
+See `claude/README.md` for details and `references/config/hook_system.md` for registration.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
 ## 2. IMPLEMENTED STATE

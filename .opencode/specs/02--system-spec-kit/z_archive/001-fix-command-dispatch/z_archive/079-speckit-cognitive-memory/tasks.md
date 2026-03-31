@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Cognitive Memory Upgrade [079-speckit-cognitive-memory/tasks]"
+title: "Tasks: Cognitive [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -33,6 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Schema & Core FSRS
 
 ### Setup Tasks
@@ -69,8 +70,10 @@ contextType: "implementation"
 - [x] T021 Verify schema migration is idempotent - PASS (CREATE TABLE IF NOT EXISTS)
 - [x] T022 Verify backward compatibility with existing memories - PASS (DEFAULT values)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Prediction Error Gating
 
 ### Core Implementation
@@ -97,8 +100,10 @@ contextType: "implementation"
 - [x] T036 Test: similarity < 0.70 returns CREATE - PASS
 - [x] T037 Test: memory_conflicts table populated correctly - Schema verified
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Scoring & Testing Effect
 
 ### Composite Scoring Update
@@ -123,6 +128,7 @@ contextType: "implementation"
 - [x] T049 Test: accessed memories show increased stability - PASS (strengthen_on_access)
 - [x] T050 Test: low R memories get larger boost (desirable difficulty) - PASS
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: State Model & Integration
@@ -162,6 +168,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -170,6 +177,7 @@ contextType: "implementation"
 - [x] Manual verification passed (verify-cognitive-upgrade.js: 9/9 PASS)
 - [x] Existing tests still pass (fsrs-scheduler.test.js: 30/30 PASS)
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## AI Execution Protocol
@@ -262,6 +270,7 @@ ALL WORKSTREAMS COMPLETED via 10 parallel Opus agents.
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -271,3 +280,4 @@ ALL WORKSTREAMS COMPLETED via 10 parallel Opus agents.
 - **Research**: See `001-analysis-cognitive-memory-systems.md`
 - **Recommendations**: See `002-recommendations-cognitive-memory-upgrade.md`
 - **Implementation**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

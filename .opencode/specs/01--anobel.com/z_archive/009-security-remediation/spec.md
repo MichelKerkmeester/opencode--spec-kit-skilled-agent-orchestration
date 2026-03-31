@@ -1,5 +1,5 @@
 ---
-title: "Security Vulnerability Remediation [009-security-remediation/spec]"
+title: "Security Vulnerability Remediation [009-security-remediation/sp [01--anobel.com/z_archive/009-security-remediation/spec]"
 description: "Remediation of security vulnerabilities discovered by Narsil MCP security scan."
 trigger_phrases:
   - "security"

@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook remediation-revalidation phase [template:level_2/checklist.md]"
+title: "Verif [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/checklist]"
 description: "Verification checklist for Phase 021 remediation-revalidation scenarios PB-021-01 through PB-021-03."
 trigger_phrases:
   - "phase 021 checklist"
   - "remediation revalidation checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook remediation-revalidation phase

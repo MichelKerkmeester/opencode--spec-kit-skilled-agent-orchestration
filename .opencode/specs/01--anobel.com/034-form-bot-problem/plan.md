@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: Contact Form Bot Submission Investigation"
+title: "Implementation Plan: Contact Form Bot Submission Investigation [01--anobel.com/034-form-bot-problem/plan]"
 description: "Plan unresolved spam investigation while prioritizing a Formspark-enforced honeypot-first mitigation compatible with custom JSON submit and native fallback."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -11,6 +10,7 @@ trigger_phrases:
   - "034"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Implementation Plan: Contact Form Bot Submission Investigation
 
@@ -61,7 +61,7 @@ Formspark documentation indicates honeypot/custom-honeypot and spam-verification
 
 ---
 
-## 2.1 AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 - Confirm target hypothesis (RC-A, RC-B, RC-C, or RC-D) before running validation.
@@ -147,7 +147,7 @@ Investigation-first, evidence-driven mitigation planning.
 ---
 
 <!-- ANCHOR:webflow-guide -->
-## 4.1 WEBFLOW DESIGNER GUIDE (HONEYPOT-FIRST)
+### Webflow Designer Guide (Honeypot-First)
 
 Execution-level Webflow and Formspark instructions are documented in `webflow-honeypot-guide.md`.
 
@@ -202,6 +202,7 @@ Investigation test protocol avoids real user data and avoids sending unintended 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -219,6 +220,7 @@ Phase 1 (Baseline) ──► Phase 2 (Validate Causes) ──► Phase 3 (Design
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -308,6 +310,7 @@ Phase 1 (Baseline) ──► Phase 2 (Validate Causes) ──► Phase 3 (Design
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Formspark-enforced honeypot-first mitigation before UI hardening
@@ -325,4 +328,5 @@ Phase 1 (Baseline) ──► Phase 2 (Validate Causes) ──► Phase 3 (Design
 **Alternatives Rejected**:
 - Botpoison-only answer without honeypot gate: rejected because available provenance does not make it a sufficient standalone investigation answer.
 
+<!-- /ANCHOR:architecture -->
 ---

@@ -1,14 +1,13 @@
 ---
-title: "Fixed Two Root Cause Bugs [026-memory-database-refinement/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory]"
-description: "Fixed two root-cause bugs in the MCP memory server that caused scan failures during force re-index:...; Evict stale projection rows (DELETE WHERE active memory id=?; Replace..."
+title: "...kit/022-hybrid-rag-fusion/026-memory-database-refinement/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory]"
 trigger_phrases:
-  - "active_memory_projection UNIQUE constraint"
+  - "active_memory_projection unique constraint"
   - "cannot start a transaction within a transaction"
   - "scan failures force re-index"
   - "projection eviction stale rows"
   - "nested transaction savepoint fix"
-  - "memory-save BEGIN IMMEDIATE bug"
-  - "T088 T088b fixes"
+  - "memory-save begin immediate bug"
+  - "t088 t088b fixes"
   - "active memory id"
   - "root cause"
   - "better sqlite3"
@@ -38,18 +37,17 @@ trigger_phrases:
   - "scan pipeline transaction bug"
 importance_tier: "critical"
 contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 3
 filesystem_file_count: 3
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # Fixed Two Root Cause Bugs In The Mcp Memory
 
 ## SESSION SUMMARY

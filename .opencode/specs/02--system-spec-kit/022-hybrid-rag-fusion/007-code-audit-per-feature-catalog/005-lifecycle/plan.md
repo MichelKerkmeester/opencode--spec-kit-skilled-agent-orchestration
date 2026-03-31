@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Lifecycle"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/plan]"
 description: "Technical plan for auditing 7 Lifecycle features against source code"
 trigger_phrases:
   - "audit plan"
@@ -129,14 +129,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 7 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -179,3 +182,4 @@ Audit completed 2026-03-22. Overall result: **4 MATCH, 3 PARTIAL** (0 FAIL).
 2. **Snapshot scope understatement (F01)**: `checkpoint_create` catalog entry documents 3 tables but the implementation captures 20. Catalog needs correction to reflect actual scope.
 3. **F07 re-embedding behavior**: The unarchive path performs immediate async re-embedding, contradicting the catalog's claim of deferral to next scan. This is a behavioral accuracy issue requiring catalog update.
 4. **Missing test file coverage (F01, F06)**: F01 is missing 4 checkpoint test files; F06 is missing 1 transaction-manager test file. Test coverage catalog entries need updating.
+<!-- /ANCHOR:effort -->

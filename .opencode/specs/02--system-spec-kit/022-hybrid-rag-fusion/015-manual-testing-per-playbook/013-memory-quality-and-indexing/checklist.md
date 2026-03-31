@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook memory quality and indexing phase [template:level_2/checklist.md]"
+title: "Ve [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing/checklist]"
 description: "Verification checklist for phase 013 memory quality and indexing: 34 exact IDs verdicted via code analysis -- 34 PASS, 0 PARTIAL, 0 FAIL."
 trigger_phrases:
   - "memory quality checklist"
   - "phase 013 verification"
   - "indexing checklist"
-  - "M-003 M-005 M-006 039 155 164 verification"
+  - "m-003 m-005 m-006 039 155 164 verification"
 importance_tier: "normal"
 contextType: "implementation"
 ---

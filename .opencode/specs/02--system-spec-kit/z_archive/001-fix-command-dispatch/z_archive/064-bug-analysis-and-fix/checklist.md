@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Bug Analysis and Fix - Validation Items [064-bug-analysis-and-fix/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/checklist]"
 description: "Comprehensive checklist for validating the SpecKit bug fix implementation across all priority levels (re-analysis included)."
 trigger_phrases:
   - "verification"
@@ -130,6 +130,7 @@ Before claiming ANY phase complete:
 □ Git commit includes phase summary
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## 2. LINKS
@@ -351,6 +352,7 @@ Before claiming ANY phase complete:
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### AI Self-Verification Requirement
@@ -384,13 +386,17 @@ When marking items complete, include evidence:
 - [ ] CHK066 [P2] Phase 2.5 positioning | Deferred: Low impact, post-release cleanup
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
+<!-- ANCHOR:summary -->
 ## VERIFICATION SUMMARY TEMPLATE
 
 At completion, document verification status:
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 112
 - **Verified [x]**: [COUNT]
@@ -405,6 +411,7 @@ At completion, document verification status:
 | CHK066 | Phase 2.5 positioning | Low impact | Issue #XXX |
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 4. USAGE NOTES

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & [001-memory-repo-analysis/spec]"
+title: "...spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/spec]"
 description: "Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities."
 trigger_phrases:
   - "feature"
@@ -57,6 +57,7 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -72,6 +73,7 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 - Performance benchmarking between systems
 - User interface design for any new features
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USER STORIES
@@ -122,6 +124,7 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### FR-001: Architecture Analysis
@@ -149,8 +152,10 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 - **Description**: Create implementation planning documents
 - **Rationale**: Enables future implementation sessions
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### NFR-001: Documentation Quality
@@ -163,8 +168,10 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 - All improvement opportunities identified
 - No significant gaps missed
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS
 
 | Risk | Impact | Probability | Mitigation |
@@ -173,6 +180,7 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 | Recommendations not feasible | High | Medium | Include feasibility assessment |
 | Scope creep into implementation | Medium | Medium | Strict research-only scope |
 
+<!-- /ANCHOR:risks -->
 ---
 
 ## 7. SUCCESS METRICS

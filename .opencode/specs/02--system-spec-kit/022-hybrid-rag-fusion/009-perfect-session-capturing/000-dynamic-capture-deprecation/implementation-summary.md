@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Dynamic Capture Deprecation Branch [template:level_1/implementation-summary.md]"
+title: "...-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/implementation-summary]"
 description: "Branch-parent documentation added so the moved child phases validate and navigate cleanly."
 trigger_phrases:
   - "dynamic capture branch summary"

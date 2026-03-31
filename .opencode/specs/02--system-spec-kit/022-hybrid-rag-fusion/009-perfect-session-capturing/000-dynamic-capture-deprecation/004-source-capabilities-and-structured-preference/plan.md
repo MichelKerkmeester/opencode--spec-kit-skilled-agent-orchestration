@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Source Capabilities And Structured Preference [template:level_1/plan.md]"
+title: "...009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference/plan]"
 description: "Move source-aware behavior onto a typed capability registry and publish structured input as the preferred contract."
 trigger_phrases:
   - "phase 019"

@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: Contact Form Bot Submission Investigation"
+title: "Feature Specification: Contact Form Bot Submission Investigation [01--anobel.com/034-form-bot-problem/spec]"
 description: "Investigate unresolved contact-form spam while prioritizing a Formspark-enforced honeypot-first mitigation design grounded in verified evidence."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "contact form"
   - "botpoison"
@@ -11,6 +10,7 @@ trigger_phrases:
   - "034"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 ---
 # Feature Specification: Contact Form Bot Submission Investigation
 
@@ -153,7 +153,7 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 
 ---
 
-## 5.1 ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 - **AS-001** Given endpoint-only traffic samples, when analyzed, then direct-abuse indicators can be classified.
 - **AS-002** Given forced network/CORS failure in controlled testing, when fallback path runs, then assurance behavior is observable.
@@ -181,6 +181,7 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -193,8 +194,11 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 ### Reliability
 - **NFR-R01**: If anti-abuse verification dependency fails, system behavior must be fail-safe and observable.
 
+<!-- /ANCHOR:questions -->
 ---
 
+<!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -208,8 +212,10 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 - Service worker serves stale JS despite source updates.
 - Event-name drift causes persistence/cleanup side effects not to fire.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -221,6 +227,7 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 | Coordination | 13/15 | Needs synchronized evidence from code, live runtime, and inbox/provider logs |
 | **Total** | **75/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -267,14 +274,15 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - What provider-side evidence is available to prove honeypot and Botpoison verification outcomes per submission?
 - Is a Formspark honeypot already configured in production, and if so, what field name is active?
 - Are there existing server-side rules (rate-limits, additional challenge scoring) configured outside this repository?
 - What is the acceptable false-positive rate for anti-spam controls on legitimate contact requests?
-<!-- /ANCHOR:questions -->
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

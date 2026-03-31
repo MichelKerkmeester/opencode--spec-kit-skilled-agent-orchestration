@@ -1,5 +1,12 @@
 ---
-title: "Tasks: Type Consolidation [template:level_2/tasks.md]"
+title: "Tasks: Type [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation/tasks]"
+description: "title: \"Tasks: Type Consolidation [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "type"
+  - "004"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Type Consolidation
 

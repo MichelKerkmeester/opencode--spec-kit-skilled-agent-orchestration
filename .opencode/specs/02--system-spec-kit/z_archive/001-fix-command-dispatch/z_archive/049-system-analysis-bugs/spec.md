@@ -1,5 +1,5 @@
 ---
-title: "System-Spec-Kit Bug Analysis and Remediation [049-system-analysis-bugs/spec]"
+title: "System-Spec-Kit Bug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/spec]"
 description: "A comprehensive 20-agent parallel analysis of the system-spec-kit skill revealed 1 CRITICAL bug, 2 HIGH severity issues, and 6 MEDIUM issues that impact the memory indexing syst..."
 trigger_phrases:
   - "system"
@@ -44,6 +44,7 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 5. Missing --help flag in generate-context.js
 6. Malformed table in implementation-summary.md template (line 10)
 
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -60,7 +61,9 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 - New feature development
 - Performance optimizations beyond bug fixes
 - UI/UX changes
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## 3. SUCCESS CRITERIA
 
 1. Memory indexing works with any embedding provider (768, 1024, or other dimensions)
@@ -69,6 +72,7 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 4. All templates follow consistent formatting
 5. Constitutional memories are indexed and searchable
 6. All scripts have --help documentation
+<!-- /ANCHOR:success-criteria -->
 
 ## 4. CONSTRAINTS
 
@@ -85,6 +89,7 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 - @huggingface/transformers ^3.8.1 (optional)
 - Voyage AI API (current provider)
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -92,6 +97,7 @@ A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill reveal
 | Database migration issues | Medium | High | Create backup before changes, test with copy |
 | Breaking existing workflows | Low | High | Comprehensive testing, staged rollout |
 | Provider API changes | Low | Medium | Abstract provider interface |
+<!-- /ANCHOR:risks -->
 
 ## 7. RELATED DOCUMENTS
 

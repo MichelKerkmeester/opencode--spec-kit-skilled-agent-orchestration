@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research Review Folder Contract"
+title: "Implementation Summary: [03--commands-and-skills/034-sk-deep-research-review-folders/implementation-summary]"
 description: "Review mode now stores its durable packet under review/, including the final report, with a legacy scratch-to-review migration path, synchronized runtime and documentation contracts, and follow-up command-surface compatibility fixes."
 trigger_phrases:
   - "review folder implementation summary"
@@ -49,8 +49,8 @@ Implementation was delivered in three coordinated tracks:
   - `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml`
   - `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml`
   - `.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`
-  - `.opencode/skill/sk-deep-research/assets/deep_review_strategy.md`
-  - `.opencode/skill/sk-deep-research/assets/deep_review_dashboard.md`
+  - `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`
+  - `.opencode/skill/sk-deep-review/assets/deep_review_dashboard.md`
 - Shared command-surface compatibility follow-up:
   - `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
   - `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`

@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary: 001-baseline-and-safety-rails"
+title: "...stem-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary]"
 description: "Verified implementation summary for Phase 1 baseline and safety rails under the default-on Phase 015 rollout."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 1 summary"
   - "baseline summary"
   - "safety rails summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

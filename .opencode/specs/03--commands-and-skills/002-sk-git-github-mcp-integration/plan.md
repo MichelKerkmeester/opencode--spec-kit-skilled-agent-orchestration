@@ -1,100 +1,148 @@
 ---
-title: "Implementation Plan: GitHub MCP Integration [001-github-mcp-integration/plan]"
-description: "Current (Wrong)"
-trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "github"
-  - "mcp"
-  - "integration"
-  - "032"
-importance_tier: "important"
-contextType: "decision"
+title: "Implementation Plan: GitHub MCP Integration [03--commands-and-skills/002-sk-git-github-mcp-integration/plan]"
+description: "Align sk-git documentation to correct GitHub MCP syntax and remote workflow guidance."
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: legacy-normalized | v2.2 -->
-
 # Implementation Plan: GitHub MCP Integration
 
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
 <!-- ANCHOR:summary -->
-## Phase 1: SKILL.md Updates (High Priority)
+## 1. SUMMARY
 
-### Task 1.1: Rewrite Section 1.1 GitHub Integration
-- Fix call_tool_chain syntax (backticks, correct tool naming)
-- Expand tool list with all major GitHub MCP tools
-- Add Docker prerequisite note
-- Add decision guidance: when to use GitHub MCP vs gh CLI vs local git
+### Technical Context
 
-**Current (Wrong):**
-```javascript
-call_tool_chain("github.list_pull_requests({ owner: 'owner', repo: 'repo', state: 'open' })")
-```
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown documentation |
+| **Framework** | sk-git skill documentation |
+| **Storage** | Repository files only |
+| **Testing** | Manual review + spec validation |
 
-**Corrected:**
-```javascript
-call_tool_chain(`github.github_list_pull_requests({ owner: 'owner', repo: 'repo', state: 'open' })`)
-```
+### Overview
+This plan updates sk-git documentation so GitHub MCP examples use the right syntax and remote workflow guidance is consistent. The work is documentation-only and focuses on correcting examples, adding remote operation patterns, and validating the spec folder structure.
 <!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Scope for sk-git GitHub MCP guidance is documented.
+- [x] Correct GitHub MCP syntax is known.
+- [x] Affected reference files are identified.
+
+### Definition of Done
+- [x] Correct syntax appears across the scoped sk-git docs.
+- [x] Local-vs-remote guidance is documented.
+- [x] Spec folder documentation passes structural validation with no errors.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation-only reference update.
+
+### Key Components
+- **SKILL.md guidance**: high-level invocation and decision rules.
+- **Reference workflows**: examples for PRs, issues, and CI/CD checks.
+- **Quick reference**: short-form syntax and decision support.
+
+### Data Flow
+User request -> sk-git guidance -> choose local git, `gh`, or GitHub MCP -> execute the appropriate remote or local workflow.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## Phase 2: finish_workflows.md Updates (High Priority)
+## 4. IMPLEMENTATION PHASES
 
-### Task 2.1: Update Option 2 (Push and Create PR)
-- Fix commented GitHub MCP code syntax
-- Make GitHub MCP a documented alternative (not just comment)
-- Add complete example with correct syntax
+### Phase 1: Setup
+- [x] Review existing sk-git GitHub MCP guidance.
+- [x] Confirm correct GitHub MCP call syntax.
 
-## Phase 3: shared_patterns.md Updates (Medium Priority)
+### Phase 2: Core Implementation
+- [x] Update high-level skill guidance.
+- [x] Update workflow and pattern reference files.
+- [x] Add or normalize quick-reference guidance.
 
-### Task 3.1: Add GitHub MCP Patterns Section
-- Add new section "9. GitHub MCP Patterns"
-- Document patterns for:
-  - Issue management
-  - PR reviews
-  - CI/CD status checks
-  - Remote file reading
-
-## Phase 4: quick_reference.md Updates (Medium Priority)
-
-### Task 4.1: Add GitHub MCP Quick Reference
-- Add section with common GitHub MCP commands
-- Quick decision guide: local git vs GitHub MCP
-
-## Phase 5: Review & Verification
-
-### Task 5.1: Review pr_template.md
-- Check if any updates needed for GitHub MCP mention
-
-### Task 5.2: Verify All Changes
-- Ensure consistent syntax across all files
-- Verify examples are copy-paste ready
-- Check cross-references between files
+### Phase 3: Verification
+- [x] Check syntax consistency across scoped files.
+- [x] Verify local-vs-remote guidance is clear.
+- [x] Validate the spec folder structure.
 <!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:files -->
-## Files to Modify
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-| File | Changes |
-|------|---------|
-| SKILL.md | Rewrite Section 1.1 |
-| finish_workflows.md | Update Option 2 section |
-| shared_patterns.md | Add new Section 9 |
-| quick_reference.md | Add new section |
-| pr_template.md | Minor review (if needed) |
-<!-- /ANCHOR:files -->
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Documentation review | Example syntax and workflow guidance | Manual inspection |
+| Structural validation | Spec folder markdown structure | `validate.sh` |
+| Consistency checks | Local-vs-remote guidance alignment | Manual comparison |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| GitHub MCP syntax reference | Internal/External knowledge | Green | Incorrect examples would persist |
+| sk-git documentation files | Internal | Green | No update possible without scoped files |
+| Docker + GitHub auth prerequisites | External runtime | Yellow | Examples remain informational if runtime is unavailable |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Documentation update introduces incorrect or contradictory guidance.
+- **Procedure**: Revert scoped documentation edits and re-apply with verified syntax examples only.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core implementation |
+| Core implementation | Setup | Verification |
+| Verification | Core implementation | Completion |
+<!-- /ANCHOR:phase-deps -->
 
 ---
 
 <!-- ANCHOR:effort -->
-## Estimated Effort
+## L2: EFFORT ESTIMATION
 
-- Phase 1: 15 minutes
-- Phase 2: 10 minutes
-- Phase 3: 15 minutes
-- Phase 4: 10 minutes
-- Phase 5: 10 minutes
-- **Total: ~60 minutes**
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | Short |
+| Core Implementation | Medium | Moderate |
+| Verification | Low | Short |
 <!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+- Revert only the scoped sk-git documentation changes.
+- Re-check syntax examples before reapplying.
+- Re-run spec validation after rollback or rework.
+<!-- /ANCHOR:enhanced-rollback -->
+
+---

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Cognitive Memory Upgrade [079-speckit-cognitive-memory/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/checklist]"
 description: "Verification Date: 2026-01-27"
 trigger_phrases:
   - "verification"
@@ -31,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md - Evidence: spec.md Level 3+ complete
@@ -39,8 +40,10 @@ contextType: "implementation"
 - [x] CHK-004 [P1] Dependencies verified (sqlite-vec, better-sqlite3) - Evidence: Existing MCP server deps
 - [x] CHK-005 [P1] Research documents reviewed (FSRS, Vestige analysis) - Evidence: 001-analysis, 002-recommendations
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality (workflows-code Standards)
 
 ### File Structure
@@ -66,6 +69,7 @@ contextType: "implementation"
 - [x] CHK-022 [P1] Type coercion handled explicitly - Evidence: typeof checks in guard clauses
 - [x] CHK-023 [P1] Edge cases handled (null, undefined, negative values) - Evidence: Unit tests 30/30 pass
 
+<!-- /ANCHOR:code-quality -->
 ---
 
 ## Requirements Verification
@@ -91,6 +95,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 ### Unit Tests
@@ -115,8 +120,10 @@ contextType: "implementation"
 - [x] CHK-051 [P1] No regression in existing memory functionality - Evidence: All modules load, exports intact
 - [x] CHK-052 [P1] Performance within NFR targets (< 1ms per calculation) - Evidence: O(1) formula
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [x] CHK-060 [P0] No external API calls for FSRS calculations (local only) - Evidence: Pure math, no fetch/http
@@ -124,6 +131,7 @@ contextType: "implementation"
 - [x] CHK-062 [P1] Memory conflicts logged but not exposed to users - Evidence: Internal audit table only
 - [x] CHK-063 [P1] Input validation prevents SQL injection - Evidence: Parameterized queries
 
+<!-- /ANCHOR:security -->
 ---
 
 ## Performance
@@ -135,6 +143,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-080 [P1] spec.md synchronized with implementation - Evidence: Requirements match code
@@ -144,14 +153,17 @@ contextType: "implementation"
 - [x] CHK-084 [P2] implementation-summary.md created - Evidence: Created this session
 - [x] CHK-085 [P2] memory/ context saved for future sessions - Evidence: Pending user confirmation
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-090 [P1] Temp files in scratch/ only - Evidence: No temp files in root
 - [x] CHK-091 [P1] scratch/ cleaned before completion - Evidence: No scratch artifacts
 - [x] CHK-092 [P2] Research findings saved to memory/ - Evidence: Memory #218 indexed
 
+<!-- /ANCHOR:file-org -->
 ---
 
 ## L3+: ARCHITECTURE VERIFICATION
@@ -193,6 +205,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All spec documents synchronized - Evidence: spec/plan/tasks/checklist updated
@@ -200,8 +213,10 @@ contextType: "implementation"
 - [x] CHK-142 [P2] Research documents archived - Evidence: 001-analysis, 002-recommendations
 - [x] CHK-143 [P2] Knowledge transfer documented in memory/ - Evidence: Memory #218
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -218,6 +233,7 @@ contextType: "implementation"
 - All modules load without errors
 - All exports verified present and functional
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## L3+: SIGN-OFF

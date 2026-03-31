@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Gemini CLI Compatibility [023-gemini-cli-compatibility/tasks]"
+title: "Tasks: Gemini CLI Compatibility [023-gemini-cli-compatibili [04--agent-orchestration/023-gemini-cli-compatibility/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -33,7 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Foundation Setup
+## Phase 1: Setup
 
 - [ ] T001 Create `.gemini/` directory with subdirectories (`agents/`, `commands/spec_kit/`, `commands/memory/`, `commands/create/`, `skills/`)
 - [ ] T002 Create `GEMINI.md` symlink → `AGENTS.md` at project root
@@ -44,12 +44,12 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Agent Adaptation
+## Phase 2: Implementation
 
 - [ ] T010 [P] Create `.gemini/agents/orchestrate.md` with Gemini frontmatter + optimization profile
 - [ ] T011 [P] Create `.gemini/agents/context.md` with Gemini frontmatter
 - [ ] T012 [P] Create `.gemini/agents/debug.md` with Gemini frontmatter
-- [ ] T013 [P] Create `.gemini/agents/research/research/research.md` with Gemini frontmatter
+- [ ] T013 [P] Create `.gemini/agents/research/research/research` with Gemini frontmatter
 - [ ] T014 [P] Create `.gemini/agents/review.md` with Gemini frontmatter
 - [ ] T015 [P] Create `.gemini/agents/speckit.md` with Gemini frontmatter
 - [ ] T016 [P] Create `.gemini/agents/write.md` with Gemini frontmatter
@@ -59,7 +59,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Skill Symlinks
+## Phase 3: Verification
 
 - [ ] T020 [P] Create 9 skill symlinks in `.gemini/skills/` → `../../.opencode/skill/*`
 - [ ] T021 [P] Create scripts symlink in `.gemini/skills/` → `../../.opencode/skill/scripts`
@@ -68,7 +68,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Command TOMLs
+#### Command TOMLs
 
 - [ ] T030 [P] Create 7 spec_kit command TOMLs in `.gemini/commands/spec_kit/` (`plan`, `implement`, `complete`, `research`, `resume`, `debug`, `handover`)
 - [ ] T031 [P] Create 5 memory command TOMLs in `.gemini/commands/memory/` (`save`, `context`, `manage`, `learn`, `continue`)
@@ -79,16 +79,16 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Phase 5: Reference Updates
+#### Reference Updates
 
 - [ ] T040 Update `AGENTS.md` §7 to add Gemini row to runtime agent directory table
-- [ ] T041 Update `.opencode/command/create/agent.md` to add Gemini CLI path to runtime path resolution list
+- [ ] T041 Update `.opencode/command/create agent command` to add Gemini CLI path to runtime path resolution list
 <!-- /ANCHOR:phase-5 -->
 
 ---
 
 <!-- ANCHOR:phase-6 -->
-## Phase 6: Verification
+### Phase 3: Verification
 
 - [ ] T050 Verify all symlinks resolve correctly (`find .gemini -type l -exec test -e {} \; -print`)
 - [ ] T051 Verify `.gemini/settings.json` is valid JSON (`python3 -c "import json; json.load(open('.gemini/settings.json'))"`)
@@ -108,7 +108,7 @@ contextType: "implementation"
 - [ ] All 8 agent `.md` files have valid Gemini YAML frontmatter
 - [ ] All 19 command `.toml` files are valid TOML
 - [ ] `AGENTS.md` §7 updated with Gemini row
-- [ ] `.opencode/command/create/agent.md` updated with Gemini CLI path
+- [ ] `.opencode/command/create agent command` updated with Gemini CLI path
 <!-- /ANCHOR:completion -->
 
 ---

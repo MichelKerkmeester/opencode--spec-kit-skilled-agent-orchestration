@@ -1,6 +1,5 @@
 ---
-title: "Unified memory dashboard rollout for 014-cmd-memory-output 2026-02-20"
-description: "This session completed the Unified Memory Dashboard Visual Design System for the 013-memory-command-output spec. It standardized shared components and templates across all..."
+title: "Unified memory dashboard rollout [03--commands-and-skills/014-cmd-memory-output/20-02-26_14-44__memory-command-output]"
 trigger_phrases:
   - "unified memory dashboard rollout"
   - "shared output components"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "workflow documentation review"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Memory Command Output
 
 ## SESSION SUMMARY

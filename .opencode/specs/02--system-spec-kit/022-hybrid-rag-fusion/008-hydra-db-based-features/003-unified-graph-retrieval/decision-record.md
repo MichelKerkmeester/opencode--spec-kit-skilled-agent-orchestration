@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 003-unified-graph-retrieval"
+title: "Deci [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/decision-record]"
 description: "Phase-local architecture decisions for Hydra Phase 3 graph fusion."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "phase 3 adr"
   - "graph fusion adr"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 <!-- ANCHOR:adr-001 -->
 # Decision Record: 003-unified-graph-retrieval

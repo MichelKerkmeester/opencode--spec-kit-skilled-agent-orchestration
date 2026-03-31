@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Auto-Detection Fixes"
+title: "Feature Specific [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes/spec]"
 description: "Fix native-source auto-detection behavior with review-driven corrections."
+trigger_phrases:
+  - "feature"
+  - "specific"
+  - "spec"
+  - "012"
+  - "auto"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Auto-Detection Fixes
 

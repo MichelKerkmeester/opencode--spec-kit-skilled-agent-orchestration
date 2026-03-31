@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: WebSocket Real-Time Collaboration Research [research-happy/checklist]"
+title: "Verific [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"

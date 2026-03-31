@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Query Intelligence"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence/checklist]"
 description: "QA verification for Query Intelligence code audit"
 trigger_phrases:
   - "checklist"

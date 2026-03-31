@@ -1,5 +1,5 @@
 ---
-title: "State Simplification: Tasks [001-state-simplification/tasks]"
+title: "...--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/001-state-simplification/tasks]"
 description: "1. Find the memory file template section"
 trigger_phrases:
   - "state"

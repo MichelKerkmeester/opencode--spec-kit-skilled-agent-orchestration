@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Agent Routing Documentation Update [119-agent-routing-doc-update/checklist]"
+title: "Verification Checklist: Agent Routing [02--system-spec-kit/z_archive/002-agent-routing-doc-update/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"

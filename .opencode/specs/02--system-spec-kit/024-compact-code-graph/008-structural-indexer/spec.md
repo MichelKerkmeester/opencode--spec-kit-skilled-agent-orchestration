@@ -1,3 +1,16 @@
+---
+title: "Phase 008: Structural Indexer (tree-sitter) [02--system-spec-kit/024-compact-code-graph/008-structural-indexer/spec]"
+description: "Extract structural symbols (functions, classes, methods, modules) and their relationships (calls, imports, containment) from JS/TS/Python/Shell source files using tree-sitter. P..."
+trigger_phrases:
+  - "phase"
+  - "008"
+  - "structural"
+  - "indexer"
+  - "tree"
+  - "spec"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 008: Structural Indexer (tree-sitter)
 
 ## Summary

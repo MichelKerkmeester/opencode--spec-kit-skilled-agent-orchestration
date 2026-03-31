@@ -1,5 +1,17 @@
 ---
-title: "Implementation Plan: Session Source Validation"
+title: "...2-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation/plan]"
+description: "title: \"Implementation Plan: Session Source Validation\""
+trigger_phrases:
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "009"
+  - "perfect"
+  - "plan"
+  - "001"
+  - "session"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Session Source Validation
 

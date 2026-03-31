@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Context Agent Model Comparison [012-context-model-comparison/checklist]"
+title: "Checklist: Context Agent Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/checklist]"
 description: "Spec: 012-context-model-comparison"
 trigger_phrases:
   - "checklist"
@@ -37,6 +37,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:docs -->
 ## Phase 2: Spec Folder Documentation
 
 - [x] CHK-010: `spec.md` created with problem, scope, requirements, risks
@@ -51,6 +52,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
+<!-- /ANCHOR:docs -->
 ## Phase 3: Test Execution
 
 - [ ] CHK-016: Codebase state verified (no uncommitted changes affecting test targets)

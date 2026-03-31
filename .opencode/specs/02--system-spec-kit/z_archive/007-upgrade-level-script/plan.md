@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Spec Folder Level Upgrade Script [124-upgrade-level-script/plan]"
+title: "Implementation Plan: Spec Folder Level Upgrade Script [02--system-spec-kit/z_archive/007-upgrade-level-script/plan]"
 description: "Implement upgrade-level.sh as a bash script that orchestrates spec folder upgrades using compose.sh-generated templates, validate.sh-derived level detection, and careful content..."
 trigger_phrases:
   - "implementation"
@@ -175,6 +175,7 @@ Report results (verbose/JSON/standard output)
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -195,6 +196,7 @@ Phase 1 (Core Infrastructure) ──┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

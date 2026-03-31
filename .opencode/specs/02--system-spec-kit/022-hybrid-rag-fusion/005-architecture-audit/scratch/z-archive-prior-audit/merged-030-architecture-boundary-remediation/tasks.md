@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Architecture Boundary Remediation"
+title: "...d-rag-fusion/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "boundary remediation tasks"
   - "api migration tasks"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: Architecture Boundary Remediation
 

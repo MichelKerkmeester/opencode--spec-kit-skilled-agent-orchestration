@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Code Audit per Feature Catalog"
+title: "Feature Specification: Code Audit [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/spec]"
 description: "Comprehensive code audit of the Spec Kit Memory MCP server organized by the 19-category feature catalog covering 222 live features across 22 child folders."
 trigger_phrases:
   - "code audit"
   - "feature catalog audit"
   - "spec kit memory audit"
   - "007 code audit"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: Code Audit per Feature Catalog
@@ -41,6 +41,7 @@ Full details: `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -58,6 +59,7 @@ Full details: `scratch/deep-research-gap-report-2026-03-26.md` and `scratch/deep
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -249,6 +251,7 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Scalability
@@ -261,8 +264,10 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 ### Traceability
 - **NFR-T01**: Every finding must reference both the feature catalog entry and the source code location
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Feature Boundaries
@@ -273,8 +278,10 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 - Feature description is vague: document interpretation used for audit
 - Duplicate features across categories: flag in cross-cutting analysis (phase 019)
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -286,6 +293,7 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 | Coordination | 11/15 | Cross-phase synthesis, consistent methodology |
 | **Total** | **75/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: ESM Module Compliance"
+title: "Feature Specification: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/spec]"
 description: "Decision-complete packet for the pending @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and standards-doc work deferred until runtime proof passes."
 trigger_phrases:
   - "esm module compliance"
   - "mcp_server esm refactor"
   - "system-spec-kit esm migration"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: ESM Module Compliance
 
@@ -32,7 +32,7 @@ The finished 20-iteration research in `research/research.md` confirms that this 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete — all 6 phases finished |
+| **Status** | Active — phase 8 in progress |
 | **Created** | 2026-03-23 |
 | **Branch** | `main` |
 | **Parent Spec** | None (top-level spec folder) |
@@ -174,6 +174,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Module Boundary
@@ -193,6 +194,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 ---
 
 <!-- ANCHOR:questions -->
+<!-- /ANCHOR:edge-cases -->
 ## 8. OPEN QUESTIONS
 
 - No strategy question remains open. `research/research.md` locks the first-pass decision.
@@ -227,7 +229,8 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 5 | 005-test-and-scenario-remediation/ | Fix pre-existing test failures, playbook scenario gaps, final test report | Phase 4 | Complete |
 | 6 | 006-review-remediation/ | Fix all 18 findings (14 P1 + 4 P2) from 10-iteration GPT-5.4 deep review | Phase 5 | Complete |
 
-| 7 | 007-hybrid-search-null-db-fix/ | [Phase 7 scope] | [deps] | Pending |
+| 7 | 007-hybrid-search-null-db-fix/ | Hybrid search pipeline null DB fix | Phase 6 | Complete |
+| 8 | 008-spec-memory-compliance-audit/ | Spec & memory compliance audit, database rebuild from zero | Phase 7 | Draft |
 ### Phase Transition Rules
 
 - Each phase MUST pass `validate.sh` independently before the next phase begins
@@ -244,5 +247,6 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 003-scripts-interop-refactor | 004-verification-and-standards | Scripts interop helpers work, all scripts-side consumers cross explicit `import()` boundaries | `node scripts/dist/memory/generate-context.js --help` passes; scripts interop tests pass |
 | 004-verification-and-standards | 005-test-and-scenario-remediation | Deep review complete, all P1/P2 resolved, ESM-caused test failures fixed | 30-iteration review 0 open P0/P1; 3 ESM test files fixed |
 | 005-test-and-scenario-remediation | 006-review-remediation | All tests green, test sweep complete | 9480/9480 passing, 0 failures, 0 skipped |
-| 006-review-remediation | 007-hybrid-search-null-db-fix | [Criteria TBD] | [Verification TBD] |
+| 006-review-remediation | 007-hybrid-search-null-db-fix | All 18 review findings (14 P1 + 4 P2) resolved | Validation passes, review dashboard clean |
+| 007-hybrid-search-null-db-fix | 008-spec-memory-compliance-audit | memory_search returns >0 results for queries matching existing memories | memory_search("ESM migration") returns results |
 <!-- /ANCHOR:phase-map -->

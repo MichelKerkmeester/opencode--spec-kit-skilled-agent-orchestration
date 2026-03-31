@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Confidence Calibration"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration/spec]"
 description: "Calibrate confidence signals and gating behavior with proper threshold validation."
+trigger_phrases:
+  - "feature"
+  - "specif"
+  - "spec"
+  - "005"
+  - "confidence"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Confidence Calibration
 

@@ -1,6 +1,13 @@
 ---
-title: "Plan: Command Alignment"
+title: "Plan: Command Alignment [02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/plan]"
 description: "Documentation-only reconciliation plan for updating the 012 command-alignment spec pack to the live 33-tool, 4-command memory-command surface plus /spec_kit:resume recovery ownership."
+trigger_phrases:
+  - "plan"
+  - "command"
+  - "alignment"
+  - "012"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 012-command-alignment

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Autonomous Deep Research Loop"
+title: "Feature Specification: Autonomous Deep Research Loop [03--commands-and-skills/023-sk-deep-research-creation/spec]"
 description: "No built-in iterative research capability exists. Current /spec_kit:research is single-pass only, unable to deepen findings across multiple cycles or detect convergence."
 trigger_phrases:
   - "autoresearch"
@@ -27,6 +27,7 @@ Create a 3-layer autonomous deep research system: `@deep-research` agent (single
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,6 +41,7 @@ Create a 3-layer autonomous deep research system: `@deep-research` agent (single
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -81,7 +83,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 - P1.2: Composite Convergence Algorithm -- 3-signal weighted vote (rolling avg 0.30, MAD 0.35, question entropy 0.35)
 
 **P2 -- Adopt Next (6 items)**:
-- P2.2: Ideas Backlog File -- `research/research-ideas.md` checked at init, stuck recovery, auto-resume
+- P2.2: Ideas Backlog File -- research ideas backlog checked at init, stuck recovery, and auto-resume
 - P2.6: Sentinel Pause File -- `research/.deep-research-pause` for clean pause/resume
 - P3.2: Compact State Summary -- 200-token summary injected into every dispatch prompt
 - P2.1: Enriched Stuck Recovery -- try opposites, combine findings, audit low-value iterations
@@ -156,7 +158,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | REQ-013 | Iteration template includes `## Reflection` section | P1 | S | karpathy PR #282 |
 | REQ-014 | Agent protocol defines 5-tier error recovery | P1 | S | AGR + Round 2 direct mode |
 | REQ-015 | Composite convergence: 3-signal weighted vote | P1 | M | Optuna + pi-autoresearch PR #22 |
-| REQ-016 | Ideas backlog file (`research/research-ideas.md`) | P2 | S | autoresearch-opencode |
+| REQ-016 | Ideas backlog file for deferred research directions | P2 | S | autoresearch-opencode |
 | REQ-017 | Sentinel pause file support | P2 | S | autoresearch-opencode + pi-autoresearch Issue #6 |
 | REQ-018 | Compact state summary in dispatch prompts | P2 | S | Novel (template approach) |
 | REQ-019 | 3 explicit stuck recovery heuristics | P2 | S | AGR stuck detection protocol |
@@ -197,7 +199,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 
 ---
 
-<!-- ANCHOR:questions -->
+<!-- ANCHOR:nfr -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -207,8 +209,10 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 ### Reliability
 - **NFR-R01**: State survives interruptions (JSONL append-only, auto-resume from state)
 
+<!-- /ANCHOR:nfr -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -228,8 +232,10 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 - Zero-kept at scale: Trigger stuck recovery after N low-value iterations (P2.1, from karpathy Issue #307)
 - Shell injection in git commits: Sanitize commit messages (P3.3, from pi-autoresearch PR #13)
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -241,6 +247,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | Coordination | 10/15 | Dependencies between phases |
 | **Total** | **68/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -279,6 +286,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None for v1 (all design decisions documented)

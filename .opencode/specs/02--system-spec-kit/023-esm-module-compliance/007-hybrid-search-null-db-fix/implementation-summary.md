@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary: Hybrid Search Pipeline Fix — Two Filtering Bugs Causing 0 Results"
+title: "Implementation [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/implementation-summary]"
 description: "Fixed two bugs in the Spec Kit Memory search pipeline that silently filtered ALL search results to zero: scope enforcement defaulting ON and TRM state filtering against a nonexistent column."
 trigger_phrases:
   - "hybrid search fix"
   - "search pipeline 0 results"
   - "scope enforcement bug"
-  - "TRM state UNKNOWN filter"
-  - "minState WARM bug"
-  - "isScopeEnforcementEnabled"
+  - "trm state unknown filter"
+  - "minstate warm bug"
+  - "isscopeenforcementenabled"
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -80,3 +80,10 @@ Pipeline test results after fix:
 
 Both vector and FTS5 channels contribute results. Stage 4 no longer filters them out.
 <!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

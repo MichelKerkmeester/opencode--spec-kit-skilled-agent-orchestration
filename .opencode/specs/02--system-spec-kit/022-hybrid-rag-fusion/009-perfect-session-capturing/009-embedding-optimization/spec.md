@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Embedding Optimization"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/spec]"
 description: "Optimize embedding workload and retrieval preparation for memory indexing."
+trigger_phrases:
+  - "feature"
+  - "specif"
+  - "spec"
+  - "009"
+  - "embedding"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Embedding Optimization
 

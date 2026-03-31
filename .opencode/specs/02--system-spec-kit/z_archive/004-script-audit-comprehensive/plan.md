@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Comprehensive Script Audit [121-script-audit-comprehensive/plan]"
+title: "Implementation Plan: Comprehensive Script Audit [02--system-spec-kit/z_archive/004-script-audit-comprehensive/plan]"
 description: "Shard-based audit of system-spec-kit scripts across three directories (scripts/, shared/, mcp_server/) using 30 discrete shards: 10 context shards for discovery, 10 build verifi..."
 trigger_phrases:
   - "implementation"
@@ -152,6 +152,7 @@ Context shards discover scripts → Build shards test functionality → Review s
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -169,6 +170,7 @@ Phase 1 (Context) ──► Phase 2 (Build) ──► Phase 3 (Review) ──►
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -256,6 +258,7 @@ Phase 1 (Context) ──► Phase 2 (Build) ──► Phase 3 (Review) ──►
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Shard-Based Audit Strategy
@@ -283,3 +286,4 @@ LEVEL 3 PLAN (~200 lines)
 - Dependency graphs, milestones
 - Architecture decision records
 -->
+<!-- /ANCHOR:architecture -->

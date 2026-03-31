@@ -1,11 +1,11 @@
 ---
-title: "Tasks: manual-testing-per-playbook evaluation phase"
+title: "Tasks: manual-testing-p [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/tasks]"
 description: "2 manual test scenarios for evaluation category. One task per scenario ID."
 trigger_phrases:
   - "evaluation tasks"
   - "evaluation test tasks"
   - "ablation dashboard tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook evaluation phase

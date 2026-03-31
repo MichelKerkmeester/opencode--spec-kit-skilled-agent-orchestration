@@ -1,3 +1,16 @@
+---
+title: "Plan: Phase 2 — SessionStart Hook [02--system-spec-kit/024-compact-code-graph/002-session-start-hook/plan]"
+description: "1. Extend session-prime.ts with source routing"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "sessionstart"
+  - "hook"
+  - "002"
+  - "session"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 2 — SessionStart Hook
 
 ## Steps
@@ -23,5 +36,7 @@
    - `compact` → verify cache read + injection
    - `clear` → verify minimal output
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1 (shared `session-prime.ts`, `hook-state.ts`, `shared.ts`)
+<!-- /ANCHOR:dependencies -->

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Template Test Fixture [with-templates/spec]"
+title: ".../001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/with-templates/spec]"
 description: "This fixture tests that template directories are excluded from validation."
 trigger_phrases:
   - "spec"
@@ -27,11 +27,15 @@ contextType: "decision"
 This fixture tests that template directories are excluded from validation.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 - Validate that templates/ folder is ignored
 - Ensure placeholders in templates don't trigger errors
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 Test fixture only - not a real spec.
+<!-- /ANCHOR:scope -->

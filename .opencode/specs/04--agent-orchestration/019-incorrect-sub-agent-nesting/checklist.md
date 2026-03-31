@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sub-Agent Nesting Depth Control [019-incorrect-sub-agent-nesting/checklist]"
+title: "Verification Checklist: Sub-Agent Nesting Depth [04--agent-orchestration/019-incorrect-sub-agent-nesting/checklist]"
 description: "Verification Date: 2026-02-17"
 trigger_phrases:
   - "verification"
@@ -42,7 +42,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Content Quality
+## Code Quality
 
 - [x] CHK-010 [P0] NDP section is self-contained and referenceable by section number — NDP is now §2 in restructured orchestrate.md (lines 78-204)
 - [x] CHK-011 [P0] No placeholder text remains ([PLACEHOLDER], [TODO], TBD) — grep verified zero matches

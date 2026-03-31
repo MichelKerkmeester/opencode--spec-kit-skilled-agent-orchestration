@@ -11,27 +11,10 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-# Feature Specification: Skill Advisor Refinement
+# <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
-
-<!-- WHEN TO USE THIS TEMPLATE:
-Level 3 (+Arch) is appropriate when:
-- Changes affect 500+ lines of code
-- Architecture decisions need formal documentation (ADRs)
-- Executive summary needed for stakeholders
-- Risk matrix required
-- 4-8 user stories
-- Multiple teams or cross-functional work
-
-DO NOT use Level 3 if:
-- Simple feature (use Level 1)
-- Only verification needed (use Level 2)
-- Governance approval workflow required (use Level 3+)
-- Compliance checkpoints needed (use Level 3+)
-- Multi-agent parallel execution coordination (use Level 3+)
--->
 
 ---
 
@@ -45,8 +28,10 @@ This spec defines a focused refinement of the skill advisor workflow to improve 
 
 ---
 
+---
+
+
 ## 1. METADATA
-<!-- ANCHOR:metadata -->
 
 | Field | Value |
 |-------|-------|
@@ -56,7 +41,9 @@ This spec defines a focused refinement of the skill advisor workflow to improve 
 | **Created** | 2026-03-03 |
 | **Branch** | `03--commands-and-skills/skill-advisor` |
 | **Spec Folder** | `.opencode/specs/03--commands-and-skills/004-advisor-refinement/` |
-<!-- /ANCHOR:metadata -->
+
+---
+
 
 ---
 
@@ -64,10 +51,14 @@ This spec defines a focused refinement of the skill advisor workflow to improve 
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 The current advisor mixes command bridges and real skills in a single ranking path, applies confidence-only behavior when `--threshold` is explicitly passed, and performs repeated expensive discovery/parsing work per process. This causes avoidable routing errors in ambiguous prompts and unnecessary latency during repeated Gate 2 calls.
 
 ### Purpose
+
 Deliver a safer and faster skill advisor that improves top-ranked routing quality while preserving conservative uncertainty handling by default.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -76,6 +67,7 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 ## 3. SCOPE
 
 ### In Scope
+
 - Implement all nine approved refinements inside the skill advisor workflow:
   1. Preserve default uncertainty guard even when `--threshold` is explicitly provided.
   2. Add explicit `--confidence-only` override mode.
@@ -90,6 +82,7 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 - Update usage documentation for new flags and benchmark commands in `.opencode/skill/scripts/README.md` and `.opencode/skill/scripts/SET-UP_GUIDE.md`.
 
 ### Out of Scope
+
 - Editing AGENTS policy text, Gate threshold policy, or global orchestration logic outside advisor scripts.
 - Refactoring unrelated skills, SKILL.md content rewrites, or directory reorganization.
 - Any non-script codebase changes outside `.opencode/skill/scripts/`.
@@ -106,6 +99,8 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 | `.opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Create | Versioned regression dataset with expected routing outcomes |
 | `.opencode/skill/scripts/README.md` | Modify | CLI examples for override flag, structural mode, benchmark and regression commands |
 | `.opencode/skill/scripts/SET-UP_GUIDE.md` | Modify | Setup/runbook guidance aligned with implemented flags, modes, and benchmark workflow |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -118,7 +113,7 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Uncertainty guard remains active by default even when `--threshold` is set. | `python3 .opencode/skill/scripts/skill_advisor.py "ambiguous prompt" --threshold 0.8` still applies uncertainty filtering unless explicit override flag is provided; verified by regression case IDs `U001-U004`. |
-| REQ-002 | Confidence-only behavior is available through explicit override flag. | `--confidence-only` bypasses uncertainty gating and is documented in `README.md` and `SET-UP_GUIDE.md`; regression harness asserts behavior delta against default mode. |
+| REQ-002 | Confidence-only behavior is available through explicit override flag. | `--confidence-only` bypasses uncertainty gating and is documented in `README.md` and SET-UP_GUIDE.md; regression harness asserts behavior delta against default mode. |
 | REQ-003 | Command bridges are ranked separately and deprioritized relative to real skills unless slash-command intent is explicit. | Dataset cases `C001-C010` pass: real skills rank first for plain-language intents, command bridges rank first only for explicit `/spec_kit` or `/memory:save` prompts. |
 | REQ-004 | Per-process skill discovery cache with mtime invalidation is implemented. | Warm-call p95 latency improves at least 35% vs baseline in benchmark report and invalidation test confirms changed SKILL.md is reloaded. |
 | REQ-005 | Fast frontmatter-only parsing is used in discovery. | Runtime parsing avoids full SKILL.md reads and frontmatter extraction remains stable across the fixture set. |
@@ -131,6 +126,8 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 | REQ-007 | Margin-aware confidence and ambiguity-aware adjustment improve ranking stability. | Regression report achieves `top1_accuracy: 1.0` and `command_bridge_fp_rate: 0.0`. |
 | REQ-008 | Structural batch mode reduces subprocess overhead. | Benchmark report shows `throughput_multiplier: 25.8538x`. |
 | REQ-009 | Permanent regression and benchmark harnesses are runnable in CI/local. | Harness commands produce machine-readable artifacts in `.opencode/skill/scripts/out/` with `overall_pass: true`. |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -142,6 +139,8 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 - **SC-002**: Warm-call latency p95 is <= 20 ms and cold-call latency p95 is <= 55 ms on local benchmark profile.
 - **SC-003**: Ambiguous intent false-positive rate for command bridges is <= 5% for non-slash prompts.
 - **SC-004**: Structural mode (`--batch` or persistent mode) delivers >= 2.0x throughput vs repeated subprocess invocations.
+
+---
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -156,40 +155,54 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 | Risk | Over-calibration could suppress legitimate recommendations | High | Guard with margin floor, add protected high-confidence cases |
 | Risk | Cache invalidation misses changed skills | High | Compare mtimes each request in cache layer; include invalidation regression case |
 | Risk | Structural mode complexity introduces maintenance cost | Medium | Keep API small (`analyze_once`, `analyze_batch`), document invocation contract |
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:questions -->
 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
+
 - **NFR-P01**: One-shot mode latency p95 <= 55 ms cold and <= 20 ms warm for dataset size <= 200 prompts.
 - **NFR-P02**: Batch/persistent mode throughput >= 2.0x over one-shot subprocess baseline.
 
 ### Security
+
 - **NFR-S01**: No shell execution, dynamic import, or external network access introduced in advisor runtime path.
 
 ### Reliability
+
 - **NFR-R01**: Regression harness pass rate must remain 100% for P0 cases on every run.
 - **NFR-R02**: Parser failures degrade gracefully and never crash `--health` or analysis calls.
 
 ---
 
+
+---
+
+
 ## 8. EDGE CASES
 
 ### Data Boundaries
+
 - Empty input: return empty result list with exit code 0.
 - Very long prompt (>10k chars): tokenize safely, cap normalization work, no crash.
 - Missing or malformed frontmatter: skill record loads with default values and warning path.
 
 ### Error Scenarios
+
 - Skills directory missing: `--health` reports error state without traceback.
 - Mtime read failure: cache path falls back to uncached discovery for that cycle.
 - Structural mode malformed batch payload: returns structured validation error and non-zero exit.
 
 ---
+
+
+---
+
 
 ## 9. COMPLEXITY ASSESSMENT
 
@@ -204,6 +217,10 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 
 ---
 
+
+---
+
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -215,6 +232,10 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 | R-005 | Structural mode adds complexity without adoption | M | M | Keep backward-compatible one-shot default and minimal additional flags |
 
 ---
+
+
+---
+
 
 ## 11. USER STORIES
 
@@ -268,9 +289,15 @@ Deliver a safer and faster skill advisor that improves top-ranked routing qualit
 
 ---
 
+
+---
+
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None blocking. Default assumption is to implement a `--confidence-only` explicit override and keep current CLI behavior backward compatible for existing one-shot usage.
+
+---
 <!-- /ANCHOR:questions -->
 
 ---
@@ -290,3 +317,6 @@ LEVEL 3 SPEC (~165 lines)
 - Executive Summary, Risk Matrix, User Stories
 - Full Complexity Assessment
 -->
+
+
+---

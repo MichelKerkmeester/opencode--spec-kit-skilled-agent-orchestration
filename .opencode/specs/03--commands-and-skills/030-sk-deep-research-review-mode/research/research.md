@@ -1,3 +1,16 @@
+---
+title: "Research: Improving Review Logic in [03--commands-and-skills/030-sk-deep-research-review-mode/research]"
+description: "This research investigated 7 key questions about improving the review logic in sk-deep-research and related commands/agents. Across 8 iterations using GPT-5.4 agents, the resear..."
+trigger_phrases:
+  - "research"
+  - "improving"
+  - "review"
+  - "logic"
+  - "030"
+  - "deep"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Improving Review Logic in sk-deep-research (v2)
 
 > **Note**: This replaces the v1 research that designed review mode's initial architecture. V1 findings are archived in `scratch/archive-research-v1/`. This v2 research investigates how to further improve the now-implemented review logic.

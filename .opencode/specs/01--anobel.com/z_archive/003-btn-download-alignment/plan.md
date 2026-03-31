@@ -1,5 +1,5 @@
 ---
-title: "Plan: Download Button Code Standards Alignment [003-btn-download-alignment/plan]"
+title: "Plan: Download Button Code Standards Alignment [01--anobel.com/z_archive/003-btn-download-alignment/plan]"
 description: "Apply code quality standards to both JS and CSS files without changing functionality."
 trigger_phrases:
   - "plan"

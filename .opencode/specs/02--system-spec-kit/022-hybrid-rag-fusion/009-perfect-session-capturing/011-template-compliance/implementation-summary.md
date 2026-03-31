@@ -1,9 +1,9 @@
 ---
-title: "Implementation Summary: Template Compliance"
+title: "...--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/implementation-summary]"
 description: "Live template compliance now comes from the current templates, not draft sidecar files."
 trigger_phrases:
   - "template compliance"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary: Template Compliance
@@ -96,3 +96,10 @@ The work landed in three passes. First, the shared template helper and validator
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

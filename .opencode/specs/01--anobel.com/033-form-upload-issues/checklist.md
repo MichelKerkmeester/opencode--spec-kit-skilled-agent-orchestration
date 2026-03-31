@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: CV Upload Form File Type Validation Fix [035-form-upload-issues/checklist]"
+title: "Verification Checklist: CV Upload Form File Type Validation Fix [01--anobel.com/033-form-upload-issues/checklist]"
 description: "Phase 1 (COMPLETED)"
 trigger_phrases:
   - "verification"
@@ -191,6 +191,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All spec documents synchronized
@@ -202,6 +203,7 @@ contextType: "implementation"
 - [x] CHK-143 [P2] Knowledge transfer documented
   - **Evidence**: handover.md provides continuation prompt for next agent, scratch/webflow-attributes.md provides copy-paste values
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## L3+: SIGN-OFF
@@ -214,7 +216,7 @@ contextType: "implementation"
 
 ---
 
-## Manual Upload Tests (Evidence)
+### Manual Upload Tests (Evidence)
 
 | Test | File Type | File Name | Result | Evidence |
 |------|-----------|-----------|--------|----------|
@@ -229,7 +231,7 @@ contextType: "implementation"
 
 ---
 
-## DevTools Verification (Evidence)
+### DevTools Verification (Evidence)
 
 ```javascript
 // Test performed: 2026-02-14 15:15
@@ -274,7 +276,7 @@ console.log('Custom validator:', wrapper._pond.fileValidateTypeDetectType !== nu
 
 ---
 
-## CDN Deployment Verification (Evidence)
+### CDN Deployment Verification (Evidence)
 
 ```bash
 # Test performed: 2026-02-14 14:45
@@ -299,7 +301,7 @@ curl "https://pub-53729c3289024c618f90a09ec4c63bf9.r2.dev/input_upload.min.js?v=
 
 ---
 
-## Form Submission Test (Evidence — INVALIDATED 2026-02-14)
+### Form Submission Test (Evidence — INVALIDATED 2026-02-14)
 
 **HISTORICAL TEST (Pre-Discovery of CORS Issue):**
 

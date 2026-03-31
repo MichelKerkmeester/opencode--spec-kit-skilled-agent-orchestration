@@ -1,4 +1,9 @@
 ---
+title: "Completed [02--system-spec-kit/023-esm-module-compliance/29-03-26_18-36__completed-the-full-023-esm-module-compliance-1]"
+importance_tier: "critical"
+contextType: "decision"
+---
+---
 title: "Completed The Full 023 Esm [023-esm-module-compliance/29-03-26_18-36__completed-the-full-023-esm-module-compliance]"
 description: "Completed the full 023 ESM Module Compliance specification across 5 phases and 17 commits. Phase 1...; Node 25 native CJS require(esm) eliminates interop helpers — only fix..."
 trigger_phrases:

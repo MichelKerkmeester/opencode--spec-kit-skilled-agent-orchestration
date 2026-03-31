@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 004-adaptive-retrieval-loops"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/plan]"
 description: "Execution plan for Hydra Phase 4 adaptive retrieval in shadow mode."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 4 plan"
   - "adaptive plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 004-adaptive-retrieval-loops
 
@@ -143,6 +143,7 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -155,8 +156,10 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 | Shadow evaluation | Signal design | Promotion decisions |
 | Promotion and rollback validation | Shadow evaluation | Later rollout confidence |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -166,8 +169,10 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 | Rollback and promotion validation | Medium-High | 2-4 days |
 | **Total** | | **7-12 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -186,6 +191,7 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 - **Has data migrations?** Likely no mandatory schema migration; policy state may be additive.
 - **Reversal procedure**: disable adaptive features and discard learned shadow-state artifacts if necessary.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -248,6 +254,7 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-401: Start Adaptive Learning in Shadow Mode Only
@@ -262,6 +269,7 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 - Safer rollout and clearer evidence.
 - Slower visible activation, but much lower regression risk.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

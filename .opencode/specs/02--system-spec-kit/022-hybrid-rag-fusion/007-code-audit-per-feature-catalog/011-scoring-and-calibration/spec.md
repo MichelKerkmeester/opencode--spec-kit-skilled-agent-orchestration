@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Scoring and Calibration"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/spec]"
 description: "Systematic code audit of 22 live Scoring and Calibration features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -144,6 +144,7 @@ Verify that all 22 live Scoring and Calibration features are accurately document
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -152,8 +153,10 @@ Verify that all 22 live Scoring and Calibration features are accurately document
 ### Reliability
 - **NFR-R01**: Findings must be reproducible by re-reading same sources
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -164,8 +167,10 @@ Verify that all 22 live Scoring and Calibration features are accurately document
 - Source file referenced in catalog no longer exists: Document as finding
 - Feature partially implemented: Document completion percentage
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -249,7 +254,9 @@ Behavioral drift is limited but real: F19 and F20 document capabilities that exi
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - F13: Remove retired `rsf-fusion` references from the scoring/fusion corrections catalog entry.

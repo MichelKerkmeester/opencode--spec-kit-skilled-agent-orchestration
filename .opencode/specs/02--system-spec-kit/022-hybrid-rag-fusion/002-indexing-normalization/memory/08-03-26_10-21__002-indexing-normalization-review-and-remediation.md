@@ -1,16 +1,14 @@
 ---
-title: "002-indexing-normalization"
-description: "Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser.ts, canonical-path.ts, memory-index.ts, memory-crud-list.ts, importance-tiers.ts)."
+title: "...t/022-hybrid-rag-fusion/002-indexing-normalization/08-03-26_10-21__002-indexing-normalization-review-and-remediation]"
 trigger_phrases:
   - "find spec documents"
   - "memory index"
   - "memory crud list"
 importance_tier: "important"
 contextType: "general"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # 002 Indexing Normalization Review And Remediation
 
 ## SESSION SUMMARY

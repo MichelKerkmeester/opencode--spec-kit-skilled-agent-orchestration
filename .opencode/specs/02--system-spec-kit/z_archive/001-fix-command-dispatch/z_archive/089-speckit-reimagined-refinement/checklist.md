@@ -1,5 +1,5 @@
 ---
-title: "Checklist: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/checklist]"
 description: "title: \"Checklist: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "checklist"

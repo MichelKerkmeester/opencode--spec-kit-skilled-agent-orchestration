@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [085-alignment-file-paths/implementation-summary]"
+title: "Imple [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/085-alignment-file-paths/implementation-summary]"
 description: "File: .opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.js"
 trigger_phrases:
   - "implementation"
@@ -100,3 +100,10 @@ The fix: File paths are now the primary signal for infrastructure work. When >50
 
 - `.opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.js`
 - `.opencode/command/memory/continue.md`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

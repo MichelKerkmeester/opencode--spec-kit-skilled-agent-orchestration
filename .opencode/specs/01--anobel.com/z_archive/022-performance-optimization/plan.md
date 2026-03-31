@@ -1,5 +1,5 @@
 ---
-title: "Performance Optimization Plan - anobel.com [024-performance-optimization/plan]"
+title: "Performance Optimization Plan - anobel.com [01--anobel.com/z_archive/022-performance-optimization/plan]"
 description: "Problem: Mobile LCP was 20.2s (target: <4s) due to page being hidden until hero JS completes."
 trigger_phrases:
   - "performance"
@@ -15,6 +15,7 @@ contextType: "decision"
 # Performance Optimization Plan - anobel.com
 
 <!-- ANCHOR:executive-summary -->
+<!-- ANCHOR:summary -->
 ## Executive Summary
 
 **Problem:** Mobile LCP was 20.2s (target: <4s) due to page being hidden until hero JS completes.
@@ -32,6 +33,7 @@ contextType: "decision"
 <!-- /ANCHOR:executive-summary -->
 
 <!-- ANCHOR:phase-1-implemented -->
+<!-- /ANCHOR:summary -->
 ## Phase 1: Implemented
 
 ### 1.1 LCP Safety Timeout

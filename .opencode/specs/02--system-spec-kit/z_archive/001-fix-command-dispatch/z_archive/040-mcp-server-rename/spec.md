@@ -1,5 +1,5 @@
 ---
-title: "MCP Server Rename: semantic_memory → spec_kit_memory [040-mcp-server-rename/spec]"
+title: "MCP Server Rename: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/spec]"
 description: "Rename the semantic memory MCP server from semantic_memory to spec_kit_memory across all configuration files, documentation, and code references."
 trigger_phrases:
   - "mcp"
@@ -27,6 +27,7 @@ Rename the semantic memory MCP server from `semantic_memory` to `spec_kit_memory
 3. Update all code/script references
 4. Ensure consistent naming across the entire codebase
 
+<!-- ANCHOR:scope -->
 ## Scope
 ### In Scope
 - opencode.json MCP configuration
@@ -39,9 +40,12 @@ Rename the semantic memory MCP server from `semantic_memory` to `spec_kit_memory
 - Actual MCP server implementation (external)
 - Database schema changes
 - Memory file content changes
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 - [ ] All occurrences of "semantic_memory" renamed to "spec_kit_memory"
 - [ ] All tool function names updated (e.g., semantic_memory_memory_search → spec_kit_memory_memory_search)
 - [ ] Documentation is consistent and accurate
 - [ ] No broken references remain
+<!-- /ANCHOR:success-criteria -->

@@ -26,6 +26,7 @@ The D5 research agent found the system already has basic empty-result handling, 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### REQ-D5-001: Empty/Weak Result Recovery
@@ -227,8 +228,10 @@ The D5 research agent found the system already has basic empty-result handling, 
 - Dedup respects `seenResultIds` and falls back to score-based deprioritization when the legacy session manager is unavailable.
 - `data.goalRefinement` is returned when an active goal is inferred or refreshed from the current query.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 | Criterion                             | Measure                                                        |
@@ -239,6 +242,7 @@ The D5 research agent found the system already has basic empty-result handling, 
 | Progressive disclosure available      | Full results preserved plus companion disclosure and cursor flow |
 | Session state operational             | Additive session state and goal refinement emitted live         |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## Risks & Mitigations

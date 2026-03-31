@@ -1,5 +1,5 @@
 ---
-title: "Tasks: manual-testing-per-playbook lifecycle phase"
+title: "Tasks: manual-testing-pe [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/tasks]"
 description: "Task tracker for Phase 005 lifecycle scenarios. One task per scenario (EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144), all pending."
 trigger_phrases:
   - "lifecycle phase tasks"

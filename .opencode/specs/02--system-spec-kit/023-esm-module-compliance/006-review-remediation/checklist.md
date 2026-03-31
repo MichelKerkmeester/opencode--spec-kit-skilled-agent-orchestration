@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: Deep Review Remediation"
+title: "Verification Checklist: Deep Review [02--system-spec-kit/023-esm-module-compliance/006-review-remediation/checklist]"
 description: "Verification gates for all 18 finding fixes plus documentation truth-sync and final verification."
 trigger_phrases:
   - "remediation checklist"
   - "review fix checklist"
   - "023 phase 6 checklist"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Deep Review Remediation
 

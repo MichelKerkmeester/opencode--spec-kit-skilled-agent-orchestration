@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Human Voice Rules — Template Integration [137-readme-and-summary-with-hvr/checklist]"
+title: "Verification Checklist: Human Voice Rules — [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/checklist]"
 description: "These items verify that this spec folder demonstrates the style it promotes."
 trigger_phrases:
   - "verification"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Task 04 — Agent Configs Audit [task-04-agent-alignment/checklist]"
+title: "Verifica [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment/checklist]"
 description: "Verification Date: 2026-02-16 (manual re-check)"
 trigger_phrases:
   - "verification"
@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -26,6 +27,7 @@ contextType: "implementation"
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## P0 — Model Assignments
@@ -62,6 +64,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -75,6 +78,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [ ] CHK-100 [P1] Audit methodology documented in plan.md

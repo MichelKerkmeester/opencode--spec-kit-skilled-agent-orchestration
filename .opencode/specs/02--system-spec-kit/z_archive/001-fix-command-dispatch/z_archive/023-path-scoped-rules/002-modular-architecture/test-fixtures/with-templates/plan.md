@@ -1,5 +1,5 @@
 ---
-title: "Plan: Template Test Fixture [with-templates/plan]"
+title: ".../001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/with-templates/plan]"
 description: "Testing template exclusion from validation rules."
 trigger_phrases:
   - "plan"
@@ -20,9 +20,11 @@ contextType: "decision"
 Testing template exclusion from validation rules.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Simple fixture structure with templates/ subdirectory.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

@@ -30,6 +30,7 @@ Six requirements span event logging, decay policy, gate exceptions, batch learni
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 2. Requirements
 
 ### REQ-D4-001: Implicit Feedback Event Ledger
@@ -213,8 +214,10 @@ for (const query of holdoutQueries) {
 
 **Acceptance:** Shadow comparison running, promote only after 2 stable weekly evaluations.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 3. Success Criteria
 
 | Criterion                     | Target                                              |
@@ -226,6 +229,7 @@ for (const query of holdoutQueries) {
 | Reconsolidation               | Assistive — auto-merge above 0.96, recommend 0.88-0.96 |
 | Shadow scoring                | Validating — holdout comparison active               |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 4. Risks

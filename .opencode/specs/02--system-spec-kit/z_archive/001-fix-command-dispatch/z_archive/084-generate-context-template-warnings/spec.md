@@ -1,5 +1,5 @@
 ---
-title: "Spec: Fix generate-context.js Template Warnings and API Mismatch [084-generate-context-template-warnings/spec]"
+title: "Spec: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/spec]"
 description: "When running generate-context.js, two issues occur"
 trigger_phrases:
   - "spec"
@@ -52,6 +52,7 @@ When running `generate-context.js`, two issues occur:
 1. Fix the `get_db is not a function` error (P0)
 2. Suppress or implement template placeholder warnings (P1)
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -61,9 +62,12 @@ When running `generate-context.js`, two issues occur:
 ### Out of Scope
 - Implementing the full V2.2 memory verification feature (template placeholders)
 - Refactoring all snake_case to camelCase across the codebase
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] `generate-context.js` runs without `get_db is not a function` error
 - [ ] Retry processing completes successfully
 - [ ] Template warnings reduced or eliminated
+<!-- /ANCHOR:success-criteria -->

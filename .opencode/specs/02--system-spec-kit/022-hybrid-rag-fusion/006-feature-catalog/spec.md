@@ -1,8 +1,19 @@
 ---
-title: "Feature Catalog Comprehensive Audit & Remediation"
-status: "In Progress"
-level: 3
+title: "Feature Catalog Comprehensive Audit & Remediation [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec]"
+description: "title: \"Feature Catalog Comprehensive Audit & Remediation\""
+trigger_phrases:
+  - "feature"
+  - "catalog"
+  - "comprehensive"
+  - "audit"
+  - "remediation"
+  - "spec"
+  - "006"
+importance_tier: "important"
+contextType: "decision"
 created: "2025-12-01"
+level: 3
+status: "In Progress"
 updated: "2026-03-26"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
@@ -73,6 +84,7 @@ Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full detai
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -86,8 +98,10 @@ Remediation backlog: 8 P0 critical, 15 P1 required, 5 P2 recommended. Full detai
 | **Predecessor** | ../005-architecture-audit/spec.md |
 | **Successor** | ../007-code-audit-per-feature-catalog/spec.md |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 <!-- ANCHOR:problem -->
 
@@ -100,6 +114,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 <!-- ANCHOR:scope -->
 
@@ -135,6 +150,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 <!-- ANCHOR:requirements -->
 
@@ -159,6 +175,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 <!-- ANCHOR:success-criteria -->
 
@@ -171,6 +188,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 <!-- ANCHOR:risks -->
 
@@ -184,6 +202,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Accuracy
@@ -199,8 +218,10 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 - **NFR-X01**: Each verification report follows the structured output format
 - **NFR-X02**: Remediation manifest covers every finding from both streams
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -215,8 +236,10 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 - Gap confirmed as already documented: Mark as FALSE_POSITIVE with evidence pointer
 - Verification finds new gap not in 55-list: Add as NEW_GAP with full details
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -228,6 +251,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 | Coordination | 12/15 | Cross-stream validation, manifest synthesis |
 | **Total** | **75/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -272,6 +296,7 @@ Preserve the March 8 snapshot as historical record while making the live wrapper
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 <!-- ANCHOR:questions -->
 

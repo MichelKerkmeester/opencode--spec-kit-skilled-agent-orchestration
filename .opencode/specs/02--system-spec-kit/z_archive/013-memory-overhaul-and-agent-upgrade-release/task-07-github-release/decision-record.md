@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Task 07 — GitHub Release [task-07-github-release/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release/decision-record]"
 description: "Task 07 requires systematic audit/creation of tagged releases for 3 tracks with GitHub release notes. The scope must be clearly defined to ensure complete coverage while avoidin..."
 trigger_phrases:
   - "decision"

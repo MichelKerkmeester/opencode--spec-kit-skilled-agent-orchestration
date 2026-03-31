@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec 017 - Agent Provider Switching [017-agent-provider-switch/decision-record]"
+title: "Decision Record: Spec 017 - Agent [04--agent-orchestration/z_archive/017-agent-provider-switch/decision-record]"
 description: "Status: Accepted"
 trigger_phrases:
   - "decision"

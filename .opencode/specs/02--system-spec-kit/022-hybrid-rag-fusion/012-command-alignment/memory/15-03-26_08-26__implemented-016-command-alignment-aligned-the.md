@@ -1,6 +1,5 @@
 ---
-title: "Implemented 012-command-alignment"
-description: "HISTORICAL (superseded 2026-03-21): Originally aligned the memory command documentation suite with the then-current 31-tool Spec Kit Memory MCP surface. The live surface is now 33 tools / 6 commands. Do not use this memory as current-state evidence."
+title: "...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_08-26__implemented-016-command-alignment-aligned-the]"
 trigger_phrases:
   - "command alignment"
   - "implemented 012-command-alignment aligned memory"
@@ -16,11 +15,10 @@ trigger_phrases:
   - "kit memory mcp surface"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
+quality_score: 0.90
 ---
-
 # Implemented 016 Command Alignment Aligned The
 
 ## SESSION SUMMARY

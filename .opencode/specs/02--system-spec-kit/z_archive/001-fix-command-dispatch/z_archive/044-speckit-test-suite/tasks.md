@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Kit Test Suite [044-speckit-test-suite/tasks]"
+title: "Tasks: Spec Kit Test [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/tasks]"
 description: "Total: ~830 test cases across 4 domains"
 trigger_phrases:
   - "tasks"
@@ -30,6 +30,7 @@ Total: ~830 test cases across 4 domains
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Foundation Setup (Week 1)
 
 ### Task 1.1: Test Infrastructure
@@ -50,8 +51,10 @@ Total: ~830 test cases across 4 domains
 - [ ] Document test running procedures
 - [ ] Set up coverage reporting
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Unit Tests - Shell Scripts (Week 2)
 
 ### Task 2.1: Core Script Tests (P0 - 45 tests)
@@ -83,8 +86,10 @@ Total: ~830 test cases across 4 domains
 - [ ] Concurrent access scenarios
 - [ ] Symlink handling
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Unit Tests - Skill Advisor (Week 2)
 
 ### Task 2.4: Routing Logic Tests (P0 - ~100 tests)
@@ -104,8 +109,10 @@ Total: ~830 test cases across 4 domains
 - [ ] Multi-skill matching scenarios
 - [ ] Confidence score calculations
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Unit Tests - Memory MCP Server (Week 3)
 
 ### Task 3.1: MCP Tool Tests (P0 - 78 tests)
@@ -141,6 +148,7 @@ Total: ~830 test cases across 4 domains
 - [ ] `retry-manager.js` - 7 tests
 - [ ] `errors.js` - 7 tests
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Integration Tests (Week 4)

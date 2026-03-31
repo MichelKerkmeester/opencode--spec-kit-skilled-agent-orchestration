@@ -1,5 +1,5 @@
 ---
-title: "Plan: Invalid Priority Tags Fixture [invalid-priority-tags/plan]"
+title: "...x-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-priority-tags/plan]"
 description: "Testing detection of malformed priority tags in checklists."
 trigger_phrases:
   - "plan"
@@ -19,9 +19,11 @@ contextType: "decision"
 Testing detection of malformed priority tags in checklists.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Level 2 spec with intentionally broken checklist format.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

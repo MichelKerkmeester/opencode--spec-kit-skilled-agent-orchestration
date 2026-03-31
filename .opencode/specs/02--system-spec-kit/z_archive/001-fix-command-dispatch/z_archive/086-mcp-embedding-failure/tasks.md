@@ -1,5 +1,5 @@
 ---
-title: "MCP Embedding Failure - Tasks [086-mcp-embedding-failure/tasks]"
+title: "MCP Embedding [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure/tasks]"
 description: "Objective: Give user actionable steps to resolve the issue now"
 trigger_phrases:
   - "mcp"
@@ -176,6 +176,7 @@ Model will automatically re-download on next startup (~274MB for nomic-embed-tex
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] User has clear instructions to fix the issue
@@ -183,3 +184,4 @@ Model will automatically re-download on next startup (~274MB for nomic-embed-tex
 - [ ] Error code E005 added to recovery-hints.js
 - [ ] Error classification catches Protobuf patterns
 - [ ] Cache locations documented
+<!-- /ANCHOR:completion -->

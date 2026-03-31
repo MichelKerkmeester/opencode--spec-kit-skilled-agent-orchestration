@@ -1,6 +1,5 @@
 ---
-title: "Implemented Wave 1 Phase A [011-research-based-refinement/21-03-26_19-32__implemented-wave-1-phase-a-across-all-5]"
-description: "Implemented Wave 1 Phase A across all 5 dimensions (D1-D5) of the Research-Based Refinement spec..."
+title: "...ion/001-hybrid-rag-fusion-epic/011-research-based-refinement/21-03-26_19-32__implemented-wave-1-phase-a-across-all-5]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic/011 research based refinement"
   - "implemented wave phase across"
@@ -26,18 +25,17 @@ trigger_phrases:
   - "refinement"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.8,"errors":0,"warnings":4}
 ---
-
 # Implemented Wave 1 Phase A Across All 5
 
 ## SESSION SUMMARY

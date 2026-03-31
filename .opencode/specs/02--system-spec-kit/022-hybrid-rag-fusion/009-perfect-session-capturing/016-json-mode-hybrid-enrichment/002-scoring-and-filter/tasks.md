@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "scoring filter tasks"

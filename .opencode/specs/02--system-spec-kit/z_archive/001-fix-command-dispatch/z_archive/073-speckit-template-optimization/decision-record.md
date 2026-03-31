@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Template Optimization [073-speckit-template-optimization/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/decision-record]"
 description: "The existing SpecKit templates were monolithic - each level had its own complete set of templates with significant duplication. tasks.md L1 and L2 were 100% identical (278 lines..."
 trigger_phrases:
   - "decision"

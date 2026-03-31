@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Lifecycle"
+title: "Tasks: Code Audit — [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/tasks]"
 description: "Task breakdown for auditing 7 Lifecycle features"
 trigger_phrases:
   - "tasks"

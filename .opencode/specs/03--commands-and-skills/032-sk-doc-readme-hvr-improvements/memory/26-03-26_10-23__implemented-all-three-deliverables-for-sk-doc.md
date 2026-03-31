@@ -1,6 +1,5 @@
 ---
-title: "Implemented All Three [032-sk-doc-readme-hvr-improvements/26-03-26_10-23__implemented-all-three-deliverables-for-sk-doc]"
-description: "Session focused on implementing and testing features."
+title: "...commands-and-skills/032-sk-doc-readme-hvr-improvements/26-03-26_10-23__implemented-all-three-deliverables-for-sk-doc]"
 trigger_phrases:
   - "session focused"
   - "focused implementing"
@@ -19,15 +18,15 @@ trigger_phrases:
   - "improvements"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.3,"errors":4,"warnings":2}
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.

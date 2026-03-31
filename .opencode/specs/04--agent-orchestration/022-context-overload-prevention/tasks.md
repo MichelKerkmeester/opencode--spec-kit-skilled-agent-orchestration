@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context Overload Prevention [022-context-overload-prevention/tasks]"
+title: "Tasks: Context Overload Prevention [04--agent-orchestration/022-context-overload-prevention/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -33,7 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Analysis
+## Phase 1: Setup
 
 - [x] T001 Read source prompt 007 and identify all prevention logic sections
 - [x] T002 Read Claude orchestrate.md and map existing coverage vs gaps
@@ -51,13 +51,13 @@ contextType: "implementation"
 - [x] T007 Add Orchestrator Self-Protection Rules to Claude orchestrate.md section 8 (`.claude/agents/orchestrate.md`)
 - [x] T008 Add 3 context-related anti-patterns to Claude orchestrate.md section 9 (`.claude/agents/orchestrate.md`)
 - [x] T009 [P] Add all 5 sections to Copilot orchestrate.md with runtime adaptations (`.opencode/agent/orchestrate.md`)
-- [x] T010 [P] Add all 5 sections to ChatGPT orchestrate.md with higher thresholds (`.opencode/agent/chatgpt/orchestrate.md`)
+- [x] T010 [P] Add all 5 sections to ChatGPT orchestrate.md with higher thresholds (`.opencode/agent/chatgpt/orchestrate`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification & Documentation
+## Phase 3: Verification
 
 - [x] T011 Verify ChatGPT thresholds are proportionally higher (300 line / 4 file / >80 line)
 - [x] T012 Verify Copilot/ChatGPT use "save context" instead of `/compact`

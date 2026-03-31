@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/plan]"
+title: "Implementation Plan: ChatGPT Agent Suite Codex Optimization [04--agent-orchestration/021-codex-orchestrate/plan]"
 description: "This implementation performs a suite-level audit and optimization pass across all 8 ChatGPT agent files. The work extends orchestrate optimization into consistency fixes for con..."
 trigger_phrases:
   - "implementation"
@@ -27,7 +27,7 @@ contextType: "decision"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Markdown policy documents |
-| **Framework** | OpenCode ChatGPT agent suite (`.opencode/agent/chatgpt/*.md`) |
+| **Framework** | OpenCode ChatGPT agent suite (the historical ChatGPT agent suite) |
 | **Storage** | File-based: 8 ChatGPT agent files + Level 3 spec artifacts |
 | **Testing** | Static consistency verification (read/grep + checklist evidence) |
 
@@ -55,10 +55,10 @@ This implementation performs a suite-level audit and optimization pass across al
 ---
 
 <!-- ANCHOR:ai-execution-protocol -->
-## L3: AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
-- [x] Scope target confirmed (all `.opencode/agent/chatgpt/*.md` files)
+- [x] Scope target confirmed (all the historical ChatGPT agent suite files)
 - [x] Baseline content read before edits
 - [x] Level 3 documentation files prepared before implementation
 
@@ -113,14 +113,14 @@ This plan changes documentation policy content in all 8 ChatGPT agent files, not
 - [x] Define suite-wide Codex optimization consistency targets
 
 ### Phase 2: Policy Implementation
-- [x] Update `context.md` retrieval mode and output-budget rules
-- [x] Update `debug.md` low-complexity fast path wording
-- [x] Update `handover.md` fast path and context-package phrasing
-- [x] Update `research/research.md` memory-save exception semantics
-- [x] Update `review.md` model and blocker/required clarity
-- [x] Update `speckit.md` level and validation semantics
-- [x] Update `write.md` template-first and mode-aware DQI completion rules
-- [x] Update `orchestrate.md` direct-first profile, DEG, CWB/TCB, and anti-patterns
+- [x] Update context agent retrieval mode and output-budget rules
+- [x] Update debug agent low-complexity fast path wording
+- [x] Update handover agent fast path and context-package phrasing
+- [x] Update research agent memory-save exception semantics
+- [x] Update review agent model and blocker/required clarity
+- [x] Update speckit agent level and validation semantics
+- [x] Update write agent template-first and mode-aware DQI completion rules
+- [x] Update orchestrate agent direct-first profile, DEG, CWB/TCB, and anti-patterns
 
 ### Phase 3: Verification
 - [x] Verify NDP text remains intact
@@ -160,12 +160,13 @@ This plan changes documentation policy content in all 8 ChatGPT agent files, not
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Updated suite policy causes contradictory guidance or user rejects optimization behavior
-- **Procedure**: Revert affected `.opencode/agent/chatgpt/*.md` files to prior revisions and keep spec docs as record
+- **Procedure**: Revert affected the historical ChatGPT agent suite files to prior revisions and keep spec docs as record
 <!-- /ANCHOR:rollback -->
 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -182,6 +183,7 @@ Phase 1 (Baseline Audit) ---> Phase 2 (8-File Policy Edit) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -203,7 +205,7 @@ Phase 1 (Baseline Audit) ---> Phase 2 (8-File Policy Edit) ---> Phase 3 (Verify)
 - [x] Confirm checklist evidence is recorded
 
 ### Rollback Procedure
-1. Revert modified `.opencode/agent/chatgpt/*.md` files to prior commit
+1. Revert modified the historical ChatGPT agent suite files to prior commit
 2. Re-run consistency checks against restored files
 3. Preserve spec folder documentation as implementation history
 
@@ -269,6 +271,7 @@ decision-record.md -----------> checklist.md ---> implementation-summary.md
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Direct-First Delegation with Suite-Wide Consistency
@@ -286,4 +289,5 @@ decision-record.md -----------> checklist.md ---> implementation-summary.md
 **Alternatives Rejected**:
 - Keep current defaults and only raise one threshold: insufficient to solve root problem.
 
+<!-- /ANCHOR:architecture -->
 ---

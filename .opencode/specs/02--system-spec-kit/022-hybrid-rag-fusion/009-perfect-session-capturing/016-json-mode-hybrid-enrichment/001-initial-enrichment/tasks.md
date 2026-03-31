@@ -1,5 +1,5 @@
 ---
-title: "Tasks: JSON Mode Hybrid Enrichment (Phase 1B)"
+title: "...kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

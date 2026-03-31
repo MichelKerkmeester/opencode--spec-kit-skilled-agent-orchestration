@@ -1,13 +1,13 @@
 ---
-title: "Feature Specification: Field Integrity and Schema Validation"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/spec]"
 description: "Two interrelated gap categories from deep research Round 2: the fast-path silently drops filesModified data, and five schema/validation deficiencies allow corrupt or trivial input to reach storage without detection."
 trigger_phrases:
   - "field integrity"
   - "schema validation"
-  - "filesModified fast-path"
+  - "filesmodified fast-path"
   - "unknown-field warnings"
-  - "contextType enum"
-  - "YAML frontmatter validation"
+  - "contexttype enum"
+  - "yaml frontmatter validation"
   - "content density"
   - "input-normalizer"
   - "validate-memory-quality"
@@ -31,6 +31,7 @@ The `generate-context.js` pipeline contains two categories of correctness gap di
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -46,6 +47,7 @@ The `generate-context.js` pipeline contains two categories of correctness gap di
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -157,6 +159,7 @@ Eliminate silent data loss and silent quality degradation in the memory-save pip
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -174,8 +177,10 @@ Eliminate silent data loss and silent quality degradation in the memory-save pip
 - **NFR-R01**: All new V-rules must emit structured error objects (not throw) so the caller can handle them gracefully.
 - **NFR-R02**: The fast-path fix must not break existing callers that omit `filesModified`.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -190,8 +195,10 @@ Eliminate silent data loss and silent quality degradation in the memory-save pip
 - `js-yaml` throws a synchronous exception on malformed YAML: catch and convert to a V-rule failure object, do not propagate exception.
 - Both `userPrompts` AND `filesModified` present but `filesModified` is undefined: fast path must guard with `Array.isArray` check before pushing entries.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -203,6 +210,7 @@ Eliminate silent data loss and silent quality degradation in the memory-save pip
 | Coordination | 5/15 | Sibling phases 002 and 004 touch different files |
 | **Total** | **42/100** | **Level 3 (architectural decisions justified)** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

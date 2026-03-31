@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Integration Testing [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing/checklist]"
+description: "title: \"Verification Checklist: Integration Testing [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "010"
+  - "integration"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Integration Testing
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Routing Documentation Update [002-agent-routing-doc-update/spec]"
+title: "Feature Specification: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/spec]"
 description: "Spec 014 (Command Agent Utilization Audit) added formal agent routing to all spec_kit commands — @debug at failure >= 3, @research at confidence < 60%, dual-phase @review (Mode ..."
 trigger_phrases:
   - "feature"
@@ -125,6 +125,7 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Consistency
@@ -137,6 +138,7 @@ Update SKILL.md agent exclusivity section, README.md command mode suffixes, and 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Documentation Scope

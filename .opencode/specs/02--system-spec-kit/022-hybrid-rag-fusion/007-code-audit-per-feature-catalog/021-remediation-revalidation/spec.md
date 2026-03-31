@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Remediation and Revalidation"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/spec]"
 description: "Systematic code audit of 5 Remediation and Revalidation features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -286,6 +286,7 @@ These require new catalog feature entries before any re-audit can consider them 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -294,8 +295,10 @@ These require new catalog feature entries before any re-audit can consider them 
 ### Reliability
 - **NFR-R01**: Findings must be reproducible by re-reading same sources
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -306,8 +309,10 @@ These require new catalog feature entries before any re-audit can consider them 
 - Source file referenced in catalog no longer exists: Document as finding
 - Feature partially implemented: Document completion percentage
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -348,7 +353,9 @@ These require new catalog feature entries before any re-audit can consider them 
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Are there undocumented features in this category not yet in the catalog?

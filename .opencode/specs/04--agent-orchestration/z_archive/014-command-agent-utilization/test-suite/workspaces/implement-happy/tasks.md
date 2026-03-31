@@ -1,5 +1,5 @@
 ---
-title: "Tasks: JWT Authentication [implement-happy/tasks]"
+title: "Tasks: [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -32,14 +32,17 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
 - [x] T001 Install auth dependencies - passport, @nestjs/jwt, bcrypt (package.json)
 - [x] T002 Generate RSA key pair for RS256 signing (config/keys/)
 - [x] T003 [P] Create auth module scaffold (src/auth/auth.module.ts)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
 - [x] T004 Implement JwtService with sign/verify methods (src/auth/jwt.service.ts)
@@ -50,8 +53,10 @@ contextType: "implementation"
 - [x] T009 Implement logout with token blacklist (src/auth/auth.controller.ts)
 - [x] T010 [P] Add rate limiting to login endpoint (src/auth/auth.controller.ts)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T011 Write unit tests for JwtService (src/auth/jwt.service.spec.ts)
@@ -59,19 +64,24 @@ contextType: "implementation"
 - [x] T013 Manual testing of full auth cycle
 - [x] T014 Update API documentation
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
 
+<!-- /ANCHOR:completion -->
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 
+<!-- /ANCHOR:cross-refs -->
 ---

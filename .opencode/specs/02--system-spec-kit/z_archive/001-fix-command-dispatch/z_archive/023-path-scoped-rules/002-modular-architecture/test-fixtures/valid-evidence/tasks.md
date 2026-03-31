@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Valid Evidence Fixture [valid-evidence/tasks]"
+title: "...001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-evidence/tasks]"
 description: "tasks document for valid-evidence."
 trigger_phrases:
   - "tasks"

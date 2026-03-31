@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: CSS Performance Upgrade [011-css-performance-cv/plan]"
+title: "Implementation Plan: CSS Performance Upgrade [01--anobel.com/z_archive/010-css-performance-cv/plan]"
 description: "plan document for 011-css-performance-cv."
 trigger_phrases:
   - "implementation"

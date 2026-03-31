@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 016-json-mode-hybrid-enrichment"
+title: "...-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/implementation-summary]"
 description: "Top-level phase-container summary for the JSON-mode hybrid-enrichment packet, recording the shipped child phases, remaining follow-on tasks, and current validation-focused normalization work."
 trigger_phrases:
   - "016 json mode implementation summary"

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook remediation-revalidation phase [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/spec]"
 description: "Phase 021 documents the remediation-revalidation manual test packet for the Spec Kit Memory system. It groups three remediation tracking and revalidation scenarios from the central playbook so testers can verify audit finding capture, revalidation checklist execution, and finding closure workflow."
 trigger_phrases:
   - "remediation revalidation manual testing"
   - "phase 021 remediation revalidation"
   - "audit finding closure tests"
   - "hybrid rag remediation playbook"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook remediation-revalidation phase
@@ -155,6 +155,7 @@ No P1 items are defined for this phase; all three remediation-revalidation scena
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -170,6 +171,7 @@ No P1 items are defined for this phase; all three remediation-revalidation scena
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Spec Doc Indexing Bypass"
+title: "Tasks: Spec Doc Indexing Bypass [02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/tasks]"
 description: "Task tracking for completing the warn-only bypass across all 4 rejection gates in processPreparedMemory."
 trigger_phrases:
   - "spec doc bypass tasks"
   - "indexing bypass tasks"
 importance_tier: "critical"
-contextType: "task-tracking"
+contextType: "implementation"
 ---
 # Tasks: Spec Doc Indexing Bypass
 

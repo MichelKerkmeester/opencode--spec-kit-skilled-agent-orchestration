@@ -1,3 +1,14 @@
+---
+title: "Deep Research: Improving sk-deep-research from [03--commands-and-skills/029-sk-deep-research-first-upgrade/research]"
+description: "Two open-source auto-research implementations — ResearcherSkill (experiment-driven, branch-aware) and pjhoberman/autoresearch (metric-driven, harness-generated) — were analyzed ..."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "improving"
+  - "029"
+importance_tier: "normal"
+contextType: "research"
+---
 # Deep Research: Improving sk-deep-research from ResearcherSkill & autoresearch
 
 > **Topic:** How can auto-research approaches from krzysztofdudek/ResearcherSkill and pjhoberman/autoresearch improve our sk-deep-research skill?

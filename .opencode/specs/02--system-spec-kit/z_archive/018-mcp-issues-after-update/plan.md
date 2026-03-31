@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: MCP Server Failures After Updates [135-mcp-issues-after-update/plan]"
+title: "Implementation Plan: MCP Server Failures After [02--system-spec-kit/z_archive/018-mcp-issues-after-update/plan]"
 description: "This plan guides the investigation of MCP server failures after system updates, tests the hypothesis that node_modules relocation is the root cause, and defines the approach for..."
 trigger_phrases:
   - "implementation"
@@ -130,6 +130,7 @@ User Update → MCP Server Failure → User Consults Install Guide → Debugging
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -148,6 +149,7 @@ Phase 1 (Investigation) ──► Phase 2 (Documentation) ──► Phase 3 (Ver
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

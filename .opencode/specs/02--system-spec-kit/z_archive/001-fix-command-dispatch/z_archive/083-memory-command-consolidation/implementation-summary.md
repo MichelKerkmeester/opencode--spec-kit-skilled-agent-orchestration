@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory Command Consolidation [083-memory-command-consolidation/implementation-summary]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/implementation-summary]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "implementation"
@@ -187,6 +187,7 @@ All 5 memory commands aligned with `command_template.md`:
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 ### Command Count
@@ -213,6 +214,7 @@ $ grep -r "memory_drift_learn" .opencode/
 (no output) ✅
 ```
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Statistics
@@ -231,6 +233,7 @@ $ grep -r "memory_drift_learn" .opencode/
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Final Verification: 17-Agent Parallel Audit
 
 On 2025-02-03, a comprehensive verification audit was performed using 17 parallel agents to check all system-spec-kit documentation for any remaining legacy command references.
@@ -274,6 +277,7 @@ Each agent searched for these 7 legacy patterns:
 - `/memory:manage checkpoint` (replaces /memory:checkpoint)
 - `memory_context` (replaces memory_drift_context)
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## ADR: Memory Command Consolidation
@@ -311,3 +315,10 @@ Each agent searched for these 7 legacy patterns:
 - **Template:** `.opencode/skill/sk-doc/assets/opencode/command_template.md`
 - **Commands:** `.opencode/command/memory/` - Final 5 command files
 - **This spec:** `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

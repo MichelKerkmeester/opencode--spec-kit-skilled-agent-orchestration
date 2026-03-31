@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Stateless Quality Gate Fixes"
+title: "...stem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/implementation-summary]"
 description: "Phase 014 closes the stateless false-positive gap by splitting Gate A severity, adding structured JSON CLI input, and making contamination severity source-aware for Claude Code."
 trigger_phrases:
   - "phase 014 implementation summary"

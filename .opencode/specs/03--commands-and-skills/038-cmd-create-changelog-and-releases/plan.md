@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Upgrade create:changelog with GitHub Release Creation"
+title: "Implementation Plan: Upgrade create:changelog [03--commands-and-skills/038-cmd-create-changelog-and-releases/plan]"
 description: "Adds optional release creation phases (tag + gh release create) to the create:changelog command instruction files, and cross-references the command from sk-git finish Step 6."
 trigger_phrases:
   - "changelog release plan"

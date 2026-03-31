@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 001-post-session-capturing-alignment"
+title: "Verificat [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/checklist]"
 description: "Verification checklist for the rebuilt child packet under 011-skill-alignment."
 trigger_phrases:
   - "011 child 001 checklist"

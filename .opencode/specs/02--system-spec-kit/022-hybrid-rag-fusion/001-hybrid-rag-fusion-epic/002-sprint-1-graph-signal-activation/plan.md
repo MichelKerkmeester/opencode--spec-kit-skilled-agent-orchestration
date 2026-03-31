@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Sprint 1 — Graph Signal Activation"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/plan]"
 description: "Implement typed-weighted degree as 5th RRF channel, measure edge density, and add agent consumption instrumentation."
 trigger_phrases:
   - "sprint 1 plan"
   - "graph signal plan"
-  - "R4 plan"
+  - "r4 plan"
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -172,6 +172,7 @@ Channel extension — adding a 5th signal to existing RRF fusion pipeline
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -198,6 +199,7 @@ Phase 6 (PI-A3) ─── (independent, no blockers from Phase 5)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

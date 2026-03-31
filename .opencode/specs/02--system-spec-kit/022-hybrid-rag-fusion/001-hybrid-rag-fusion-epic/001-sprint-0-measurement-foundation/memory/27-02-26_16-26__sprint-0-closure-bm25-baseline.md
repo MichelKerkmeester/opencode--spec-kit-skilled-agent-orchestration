@@ -1,6 +1,5 @@
 ---
-title: "sprint 0 measurement foundation"
-description: "Completed Sprint 0 closure for the Hybrid RAG Fusion Refinement initiative."
+title: "...fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/27-02-26_16-26__sprint-0-closure-bm25-baseline]"
 trigger_phrases:
   - "sprint 0 closure"
   - "bm25 baseline"
@@ -9,10 +8,9 @@ trigger_phrases:
   - "ground truth id mapping"
 importance_tier: "important"
 contextType: "general"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # Sprint 0 Closure Bm25 Baseline
 
 ## SESSION SUMMARY

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Indexing and Coherence"
+title: "...sion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/implementation-summary]"
 description: "Post-implementation record for Phase 004: embedding visibility, trigger phrase filtering, template section improvements, OPTIONAL_PLACEHOLDERS cleanup, multi-token path fragment detection, observation dedup, and pre-save overlap check."
 trigger_phrases:
   - "indexing coherence implementation summary"

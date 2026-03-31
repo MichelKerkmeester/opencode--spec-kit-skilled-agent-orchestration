@@ -1,5 +1,5 @@
 ---
-title: "Plan: Spec 017 - Agent Provider Switching with Primary Runtime Path [017-agent-provider-switch/plan]"
+title: "Plan: Spec 017 - Agent Provider Switching with [04--agent-orchestration/z_archive/017-agent-provider-switch/plan]"
 description: "Implement a profile activation layer that maps provider-specific source folders (copilot, chatgpt) into .opencode/agent/*.md without changing command references. The runtime pat..."
 trigger_phrases:
   - "plan"
@@ -129,6 +129,7 @@ Stable runtime mount point with profile source switching.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 Phase 1 (Safety baseline) -> Phase 2 (Switching scripts) -> Phase 3 (Verification/docs)
@@ -143,6 +144,7 @@ Phase 1 (Safety baseline) -> Phase 2 (Switching scripts) -> Phase 3 (Verificatio
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

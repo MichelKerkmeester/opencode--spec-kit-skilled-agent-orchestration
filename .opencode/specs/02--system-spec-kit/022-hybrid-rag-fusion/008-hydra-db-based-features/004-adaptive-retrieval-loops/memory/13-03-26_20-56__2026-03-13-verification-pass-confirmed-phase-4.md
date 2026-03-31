@@ -1,6 +1,5 @@
 ---
-title: "Phase 4 Adaptive Retrieval Loops — Rollback Reset Helper + Verification Pass"
-description: "2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence."
+title: "...-hydra-db-based-features/004-adaptive-retrieval-loops/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-4]"
 trigger_phrases:
   - "verification pass confirmed phase"
   - "pass confirmed phase adaptive"
@@ -16,11 +15,10 @@ trigger_phrases:
   - "rollback reset audit evidence"
 importance_tier: "important"
 contextType: "general"
-quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
+quality_score: 0.90
 ---
-
 # 2026-03-13 Verification Pass Confirmed Phase 4
 
 ## SESSION SUMMARY

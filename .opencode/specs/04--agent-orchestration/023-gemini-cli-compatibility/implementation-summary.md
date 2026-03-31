@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [023-gemini-cli-compatibility/implementation-summary]"
+title: "Implementation Summary [023-gemini-cli-com [04--agent-orchestration/023-gemini-cli-compatibility/implementation-summary]"
 description: "Gemini CLI users can now access the full agent, command, and skill system that Claude Code and ChatGPT users already have. The implementation adds a complete .gemini/ runtime la..."
 trigger_phrases:
   - "implementation"
@@ -23,7 +23,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 04--agent-orchestration/023-gemini-cli-compatibility |
+| **Spec Folder** | 023-gemini-cli-compatibility |
 | **Completed** | 2026-02-20 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -44,7 +44,7 @@ Gemini CLI users can now access the full agent, command, and skill system that C
 | `.gemini/agents/orchestrate.md` | Created | Orchestrate agent with Gemini frontmatter, Gemini Optimization Profile, `max_turns: 25` |
 | `.gemini/agents/context.md` | Created | Context agent adapted to Gemini tools array and `gemini-2.5-flash` |
 | `.gemini/agents/debug.md` | Created | Debug agent with full file/shell tools, `timeout_mins: 10` |
-| `.gemini/agents/research/research/research.md` | Created | Research agent with `web_search` access, `timeout_mins: 10` |
+| `.gemini/agents/research/research/research` | Created | Research agent with `web_search` access, `timeout_mins: 10` |
 | `.gemini/agents/review.md` | Created | Review agent (read-only tools) adapted to `gemini-2.5-flash` |
 | `.gemini/agents/speckit.md` | Created | Speckit agent with full file tools, `gemini-2.5-flash` |
 | `.gemini/agents/write.md` | Created | Write agent with file tools and `web_search` |
@@ -60,27 +60,27 @@ Gemini CLI users can now access the full agent, command, and skill system that C
 | `.gemini/skills/sk-git` | Created (symlink) | Resolves to `../../.opencode/skill/sk-git` |
 | `.gemini/skills/scripts` | Created (symlink) | Resolves to `../../.opencode/skill/scripts` |
 | `.gemini/specs` | Created (symlink) | Resolves to `../.opencode/specs` |
-| `.gemini/commands/spec_kit/plan.toml` | Created | TOML wrapper injecting `spec_kit/plan.md` content |
-| `.gemini/commands/spec_kit/implement.toml` | Created | TOML wrapper injecting `spec_kit/implement.md` content |
-| `.gemini/commands/spec_kit/complete.toml` | Created | TOML wrapper injecting `spec_kit/complete.md` content |
-| `.gemini/commands/spec_kit/research.toml` | Created | TOML wrapper injecting `spec_kit/research/research/research.md` content |
-| `.gemini/commands/spec_kit/resume.toml` | Created | TOML wrapper injecting `spec_kit/resume.md` content |
-| `.gemini/commands/spec_kit/debug.toml` | Created | TOML wrapper injecting `spec_kit/debug.md` content |
-| `.gemini/commands/spec_kit/handover.toml` | Created | TOML wrapper injecting `spec_kit/handover.md` content |
-| `.gemini/commands/memory/save.toml` | Created | TOML wrapper injecting `memory/save.md` content |
-| `.gemini/commands/memory/context.toml` | Created | TOML wrapper injecting `memory/context.md` content |
-| `.gemini/commands/memory/manage.toml` | Created | TOML wrapper injecting `memory/manage.md` content |
-| `.gemini/commands/memory/learn.toml` | Created | TOML wrapper injecting `memory/learn.md` content |
-| `.gemini/commands/memory/continue.toml` | Created | TOML wrapper injecting `memory/continue.md` content |
-| `.gemini/commands/create/agent.toml` | Created | TOML wrapper injecting `create/agent.md` content |
-| `.gemini/commands/create/skill.toml` | Created | TOML wrapper injecting `create/skill.md` content |
-| `.gemini/commands/create/install_guide.toml` | Created | TOML wrapper injecting `create/install_guide.md` content |
-| `.gemini/commands/create/folder_readme.toml` | Created | TOML wrapper injecting `create/folder_readme.md` content |
-| `.gemini/commands/create/skill_reference.toml` | Created | TOML wrapper injecting `create/skill_reference.md` content |
-| `.gemini/commands/create/skill_asset.toml` | Created | TOML wrapper injecting `create/skill_asset.md` content |
+| `.gemini/commands/spec_kit/plan.toml` | Created | TOML wrapper injecting `spec_kit plan command` content |
+| `.gemini/commands/spec_kit/implement.toml` | Created | TOML wrapper injecting `spec_kit implement command` content |
+| `.gemini/commands/spec_kit/complete.toml` | Created | TOML wrapper injecting `spec_kit complete command` content |
+| `.gemini/commands/spec_kit/research.toml` | Created | TOML wrapper injecting `spec_kit research command` content |
+| `.gemini/commands/spec_kit/resume.toml` | Created | TOML wrapper injecting `spec_kit resume command` content |
+| `.gemini/commands/spec_kit/debug.toml` | Created | TOML wrapper injecting `spec_kit debug command` content |
+| `.gemini/commands/spec_kit/handover.toml` | Created | TOML wrapper injecting `spec_kit handover command` content |
+| `.gemini/commands/memory/save.toml` | Created | TOML wrapper injecting `memory save command` content |
+| `.gemini/commands/memory/context.toml` | Created | TOML wrapper injecting `memory context command` content |
+| `.gemini/commands/memory/manage.toml` | Created | TOML wrapper injecting `memory manage command` content |
+| `.gemini/commands/memory/learn.toml` | Created | TOML wrapper injecting `memory learn command` content |
+| `.gemini/commands/memory/continue.toml` | Created | TOML wrapper injecting `memory continue command` content |
+| `.gemini/commands/create/agent.toml` | Created | TOML wrapper injecting `create agent command` content |
+| `.gemini/commands/create/skill.toml` | Created | TOML wrapper injecting `create skill command` content |
+| `.gemini/commands/create/install_guide.toml` | Created | TOML wrapper injecting `create install_guide command` content |
+| `.gemini/commands/create/folder_readme.toml` | Created | TOML wrapper injecting `create folder_readme command` content |
+| `.gemini/commands/create/skill_reference.toml` | Created | TOML wrapper injecting `create skill_reference command` content |
+| `.gemini/commands/create/skill_asset.toml` | Created | TOML wrapper injecting `create skill_asset command` content |
 | `.gemini/commands/agent_router.toml` | Created | Root-level TOML wrapper for agent routing command |
 | `AGENTS.md` | Modified | Added Gemini CLI row to §7 runtime agent directory table |
-| `.opencode/command/create/agent.md` | Modified | Added `.gemini/agents/` path to runtime resolution section |
+| `.opencode/command/create agent command` | Modified | Added `.gemini/agents/` path to runtime resolution section |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -129,7 +129,7 @@ SC-006 (`.opencode/agent/gemini/` directory) was reconsidered during implementat
 | All TOML files parse correctly | PASS — no parse errors |
 | No hardcoded secrets in `.gemini/settings.json` | PASS — MCP env vars use `$ENV_VAR` pattern |
 | AGENTS.md §7 contains Gemini row | PASS — row added to runtime agent directory table |
-| `.opencode/command/create/agent.md` references `.gemini/agents/` | PASS — path added to runtime resolution section |
+| `.opencode/command/create agent command` references `.gemini/agents/` | PASS — path added to runtime resolution section |
 | SC-006 (`.opencode/agent/gemini/` directory) | NOT APPLICABLE — architecture reconsidered; Gemini CLI reads from `.gemini/agents/` directly |
 <!-- /ANCHOR:verification -->
 

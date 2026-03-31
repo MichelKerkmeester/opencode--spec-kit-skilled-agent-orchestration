@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Command Pattern Reference Upgrade [015-system-analysis/implementation-summary]"
+title: "Implementa [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/implementation-summary]"
 description: ".opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis"
 trigger_phrases:
   - "implementation"
@@ -31,11 +31,13 @@ contextType: "implementation"
     - Renumbered sections for clean flow.
 - **Created**: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/plan.md` (Revised Plan)
 
+<!-- ANCHOR:verification -->
 ## 3. Verification Steps
 - [x] Verified insertion of "COMMAND PATTERN REFERENCE PROTOCOL".
 - [x] Verified deletion of redundant "REFERENCES" section.
 - [x] Verified renumbering (1-8).
 - [x] Verified internal link update ("See Section 6 (RULES)").
+<!-- /ANCHOR:verification -->
 
 ## 4. Deviations from Plan
 - **Refinement**: Moved "Command Pattern" protocol from Section 3 to Section 5 based on user feedback to prioritize "Folder Choice Enforcement".
@@ -58,3 +60,10 @@ contextType: "implementation"
     - Extracted the **Step 11 Completion** logic.
     - Applied it here by creating this `implementation-summary.md`.
     - Extracted the **Confidence Checkpoint** logic (Self-Correction during renumbering).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

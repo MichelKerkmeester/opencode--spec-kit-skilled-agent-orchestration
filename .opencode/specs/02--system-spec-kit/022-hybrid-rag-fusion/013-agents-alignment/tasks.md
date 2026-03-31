@@ -1,6 +1,14 @@
 ---
-title: "Tasks: 013 — Agent Alignment"
+title: "Tasks: 013 — Agent Alignment [02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/tasks]"
 description: "Truth-reconciliation tasks for updating the 013 packet and the scoped runtime-facing agent docs to the live runtime lineage model."
+trigger_phrases:
+  - "tasks"
+  - "013"
+  - "agent"
+  - "alignment"
+  - "agents"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Tasks: 013 — Agent Alignment

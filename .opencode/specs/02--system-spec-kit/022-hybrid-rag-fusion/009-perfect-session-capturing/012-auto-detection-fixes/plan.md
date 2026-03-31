@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Auto-Detection Fixes"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes/plan]"
+description: "title: \"Implementation Plan: Auto-Detection Fixes\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "012"
+  - "auto"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Auto-Detection Fixes
 

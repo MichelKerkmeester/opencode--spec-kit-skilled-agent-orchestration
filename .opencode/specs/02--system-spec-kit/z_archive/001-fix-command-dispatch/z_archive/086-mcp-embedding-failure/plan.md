@@ -1,5 +1,5 @@
 ---
-title: "MCP Embedding Failure - Investigation Plan [086-mcp-embedding-failure/plan]"
+title: "MCP Embedding [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure/plan]"
 description: "After comprehensive parallel investigation by 12 opus agents, the root cause of the \"Protobuf parsing failed\" error is identified as"
 trigger_phrases:
   - "mcp"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Retrieval Enhancements"
+title: "Veri [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/checklist]"
 description: "QA verification for Retrieval Enhancements code audit"
 trigger_phrases:
   - "checklist"

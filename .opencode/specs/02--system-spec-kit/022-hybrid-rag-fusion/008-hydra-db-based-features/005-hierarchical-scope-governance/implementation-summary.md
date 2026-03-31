@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 005-hierarchical-scope-governance"
+title: "...-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary]"
 description: "Verified implementation summary for Phase 5 hierarchical scope governance."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 5 summary"
   - "governance summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

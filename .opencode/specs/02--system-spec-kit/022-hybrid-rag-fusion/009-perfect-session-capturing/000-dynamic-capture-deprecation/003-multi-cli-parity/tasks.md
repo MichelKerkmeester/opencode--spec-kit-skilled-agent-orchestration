@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Multi-CLI Parity Hardening"
+title: "...c-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 016 tasks"

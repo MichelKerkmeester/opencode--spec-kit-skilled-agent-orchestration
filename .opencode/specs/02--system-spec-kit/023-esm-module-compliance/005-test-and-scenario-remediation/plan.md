@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Test and Scenario Remediation"
+title: "Implementation Plan: Test and [02--system-spec-kit/023-esm-module-compliance/005-test-and-scenario-remediation/plan]"
 description: "Fix pre-existing test failures, triage doc tests, verify playbook scenarios, produce final test report."
 trigger_phrases:
   - "test remediation plan"
   - "023 phase 5 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Test and Scenario Remediation
 

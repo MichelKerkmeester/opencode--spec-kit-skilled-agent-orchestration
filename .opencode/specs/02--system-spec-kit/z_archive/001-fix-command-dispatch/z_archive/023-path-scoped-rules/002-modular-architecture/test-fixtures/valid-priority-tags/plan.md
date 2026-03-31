@@ -1,5 +1,5 @@
 ---
-title: "Plan: Valid Priority Tags Fixture [valid-priority-tags/plan]"
+title: "...fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-priority-tags/plan]"
 description: "Testing that properly formatted priority tags pass validation."
 trigger_phrases:
   - "plan"
@@ -19,9 +19,11 @@ contextType: "decision"
 Testing that properly formatted priority tags pass validation.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Standard Level 2 spec structure with checklist.md.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

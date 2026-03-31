@@ -1,5 +1,5 @@
 ---
-title: "Plan: Valid Evidence Fixture [valid-evidence/plan]"
+title: ".../001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-evidence/plan]"
 description: "Testing that completed high-priority items include evidence."
 trigger_phrases:
   - "plan"
@@ -18,9 +18,11 @@ contextType: "decision"
 Testing that completed high-priority items include evidence.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Level 2 spec with properly evidenced checklist items.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

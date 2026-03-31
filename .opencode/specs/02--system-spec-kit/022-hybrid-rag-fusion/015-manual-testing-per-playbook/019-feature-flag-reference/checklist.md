@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook feature-flag-reference phase [template:level_2/checklist.md]"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/checklist]"
 description: "Verification checklist for Phase 019 feature-flag-reference manual test packet covering EX-028 through EX-034 and scenario 125."
 trigger_phrases:
   - "feature flag reference checklist"
   - "phase 019 verification"
   - "flag catalog test quality gates"
-  - "SPECKIT flag audit checklist"
+  - "speckit flag audit checklist"
 importance_tier: "normal"
 contextType: "general"
 ---

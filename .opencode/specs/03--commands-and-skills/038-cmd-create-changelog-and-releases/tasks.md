@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Upgrade create:changelog with GitHub Release Creation"
+title: "Tasks: Upgrade create:changelog with GitHub [03--commands-and-skills/038-cmd-create-changelog-and-releases/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "changelog release tasks"

@@ -1,6 +1,5 @@
 ---
-title: "Sprint 1 Quick Wins"
-description: "Sprint 1 Quick Wins — implemented 6 P0/P1 fixes for the hybrid-rag-fusion pipeline based on 20-iteration deep research findings"
+title: "...t/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "compare deterministic rows"
@@ -13,18 +12,17 @@ trigger_phrases:
   - "fixed 100x similarity scale"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Sprint 1 Quick Wins Implemented 6 P0 P1 Fixes For
 
 ## SESSION SUMMARY

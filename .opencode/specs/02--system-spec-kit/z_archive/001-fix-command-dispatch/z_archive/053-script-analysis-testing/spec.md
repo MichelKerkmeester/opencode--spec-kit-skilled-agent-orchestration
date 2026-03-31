@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Script Analysis Testing - End-to-End Workflow Validation [053-script-analysis-testing/spec]"
+title: "Feature Specificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing/spec]"
 description: "Complete feature specification defining the end-to-end testing requirements for the Spec Kit Memory workflow."
 trigger_phrases:
   - "feature"
@@ -52,6 +52,7 @@ Validate that the complete Spec Kit Memory workflow functions correctly from Gat
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -67,6 +68,7 @@ Validate that the complete Spec Kit Memory workflow functions correctly from Gat
 - Performance optimization
 - UI/UX improvements
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -86,6 +88,7 @@ As a developer, I need to verify that the complete Spec Kit Memory workflow func
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST surface relevant context via memory_match_triggers for valid prompts
@@ -100,8 +103,10 @@ As a developer, I need to verify that the complete Spec Kit Memory workflow func
 |------------|---------------------|-------|
 | Story 1 - Workflow Validation | REQ-FUNC-001 through REQ-FUNC-005 | All requirements support validation |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -111,6 +116,7 @@ As a developer, I need to verify that the complete Spec Kit Memory workflow func
 - **SC-003**: Auto-indexing occurs after memory save
 - **SC-004**: Checklist can be loaded and verified
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 6. REFERENCES

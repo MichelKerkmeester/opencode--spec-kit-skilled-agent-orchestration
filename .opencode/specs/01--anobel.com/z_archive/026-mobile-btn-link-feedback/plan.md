@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Mobile Button/Link Tap Feedback [028-mobile-btn-link-feedback/plan]"
+title: "Implementation Plan: Mobile Button/Link Tap Feedback [01--anobel.com/z_archive/026-mobile-btn-link-feedback/plan]"
 description: "Overview: This implementation splits the :active pseudo-class behavior between desktop and touch devices. Desktop continues to use :active via @media (hover: hover) query. Touch..."
 trigger_phrases:
   - "implementation"
@@ -47,6 +47,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 3. IMPLEMENTATION PHASES
 
 ### Phase 1: JavaScript Module
@@ -74,6 +75,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:dependencies -->
+<!-- /ANCHOR:phases -->
 ## 4. DEPENDENCIES
 
 | Dependency | Status | Impact if Blocked |

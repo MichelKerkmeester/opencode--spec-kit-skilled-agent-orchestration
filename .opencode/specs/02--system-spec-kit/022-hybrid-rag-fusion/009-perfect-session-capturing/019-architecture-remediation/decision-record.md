@@ -1,9 +1,9 @@
 ---
-title: "Decision Record: Architecture Remediation Deep Dive [template:level_3/decision-record.md]"
+title: "D [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/decision-record]"
 description: "Architecture decisions for the 15-agent audit and remediation of the perfect-session-capturing subsystem. Synthesized by Wave 3 agent OPUS-B3."
 trigger_phrases:
   - "019 decision record"
-  - "architecture remediation ADR"
+  - "architecture remediation adr"
   - "opus-b3 synthesis"
 importance_tier: "normal"
 contextType: "general"

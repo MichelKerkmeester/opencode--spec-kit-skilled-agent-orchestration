@@ -1,5 +1,5 @@
 ---
-title: "Tasks: README & Install Guide Alignment [045-readme-alignment/tasks]"
+title: "Tasks: README & Install [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment/tasks]"
 description: "tasks document for 045-readme-alignment."
 trigger_phrases:
   - "tasks"
@@ -29,6 +29,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: system-spec-kit/README.md
 
 ### T1.1: Fix Overview Template Count
@@ -79,8 +80,10 @@ contextType: "implementation"
 - **Action**: Add 10th template (context_template.md)
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: mcp_server/README.md
 
 ### T2.1: Update Version Number
@@ -113,8 +116,10 @@ contextType: "implementation"
 - **Action**: Change to `save-workflow.md` (which exists) or remove row
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: mcp-narsil/README.md
 
 ### T3.1: Fix Security Scanning Tool Names
@@ -147,6 +152,7 @@ contextType: "implementation"
 - **Action**: Update pattern column to show full `narsil.narsil_*` invocation
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: MCP - Code Mode.md (Install Guide)

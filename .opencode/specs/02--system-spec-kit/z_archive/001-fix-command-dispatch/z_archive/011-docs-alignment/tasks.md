@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [YOUR_VALUE_HERE: feature-name] - Implementation Breakdown [011-docs-alignment/tasks]"
+title: "Tasks: [YOUR_VALUE_HERE: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/tasks]"
 description: "Task list template for feature implementation with user story organization and independent testing."
 trigger_phrases:
   - "tasks"

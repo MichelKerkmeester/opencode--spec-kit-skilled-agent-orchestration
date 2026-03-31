@@ -1,7 +1,6 @@
 ---
-title: "Tasks: 008-hydra-db-based-features [template:level_3/tasks.md]"
+title: "Tasks: 008-hydra-db-based-features [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "hydra"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "roadmap"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: 008-hydra-db-based-features
 

@@ -1,10 +1,10 @@
 ---
-title: "Tasks: 014-agents-md-alignment"
+title: "Tasks: 014-agents-md-alignment [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/tasks]"
 description: "Task breakdown for AGENTS.md Quick Reference alignment."
 trigger_phrases:
   - "014 tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

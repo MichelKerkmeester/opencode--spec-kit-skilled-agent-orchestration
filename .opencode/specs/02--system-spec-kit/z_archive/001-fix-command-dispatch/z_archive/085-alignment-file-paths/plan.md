@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan [085-alignment-file-paths/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/085-alignment-file-paths/plan]"
 description: "1. Test with spec-kit memory file saved to project folder (current bug case)"
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: MCP Runtime Hardening"
+title: "Verification Checklist: MCP Runtime [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/checklist]"
 description: "Verification Date: 2026-03-28"
 trigger_phrases:
   - "025 mcp hardening checklist"

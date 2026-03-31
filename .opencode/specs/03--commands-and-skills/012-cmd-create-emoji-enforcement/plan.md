@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Remove Emoji Enforcement from /create Command [011-create-command-emoji-enforcement/plan]"
+title: "Implementation Plan: Remove Emoji Enforcement from [03--commands-and-skills/012-cmd-create-emoji-enforcement/plan]"
 description: "This implementation removes emoji enforcement logic from the /create command infrastructure. We will locate all validation functions that check for emoji presence, remove or mod..."
 trigger_phrases:
   - "implementation"
@@ -49,6 +49,25 @@ This implementation removes emoji enforcement logic from the `/create` command i
 - [ ] All acceptance criteria met
 - [ ] Manual testing passed (command executes without emoji errors)
 - [ ] Documentation updated (spec/plan/tasks/checklist)
+
+### Pre-Task Checklist
+- Confirm scoped files and validation targets before editing.
+- Confirm the change is structure-only and does not alter feature intent.
+- Confirm the next validation batch is limited to the current spec folder.
+
+### Task Execution Rules
+- TASK-SEQ: Complete one compliance batch before re-validating.
+- TASK-SCOPE: Preserve document meaning while fixing structure and validator-facing metadata only.
+- TASK-VERIFY: Re-run `validate.sh --verbose` after each structural batch.
+
+### Status Reporting Format
+- STATUS=IN_PROGRESS when a compliance batch is underway.
+- STATUS=BLOCKED when a validator warning or document shape cannot be resolved safely.
+- STATUS=DONE only after the packet validates without blocking findings.
+
+### Blocked Task Protocol
+- BLOCKED: record the failing file, validator rule, and the smallest safe remediation path.
+- If a fix would change implementation meaning, stop and keep the packet structure-only.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -132,6 +151,7 @@ User invokes `/create` → Command parses input → Validation runs → Template
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -151,6 +171,7 @@ Phase 1 (Analysis) ──────┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -241,6 +262,7 @@ Phase 1 (Analysis) ──────┐
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Remove vs. Make Optional
@@ -289,3 +311,4 @@ LEVEL 3 PLAN (~200 lines)
 - Dependency graphs, milestones
 - Architecture decision records
 -->
+<!-- /ANCHOR:architecture -->

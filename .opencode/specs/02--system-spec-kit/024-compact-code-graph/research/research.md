@@ -1,3 +1,16 @@
+---
+title: "Deep Research Report: Compact Code Graph — Complete Findings [02--system-spec-kit/024-compact-code-graph/research]"
+description: "This research addresses two interconnected problems"
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "report"
+  - "compact"
+  - "code"
+  - "024"
+importance_tier: "normal"
+contextType: "research"
+---
 # Deep Research Report: Compact Code Graph — Complete Findings
 
 > **55 iterations across 5 segments** | 40 GPT-5.4 agent iterations (segments 3-5) | ~8,400 lines of research

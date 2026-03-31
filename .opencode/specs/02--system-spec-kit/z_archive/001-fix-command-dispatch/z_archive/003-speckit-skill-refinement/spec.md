@@ -1,5 +1,5 @@
 ---
-title: "Spec: SpecKit Skill Refinement [003-speckit-skill-refinement/spec]"
+title: "Spec: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/spec]"
 description: "created: 2025-12-13"
 trigger_phrases:
   - "spec"
@@ -28,6 +28,7 @@ Comprehensively improve the `workflows-spec-kit` skill by reducing redundancy, i
 **Out of scope:** README.md, templates/, scripts/
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM STATEMENT
 
 The current SpecKit skill documentation has several issues:
@@ -57,7 +58,9 @@ The current SpecKit skill documentation has several issues:
 - SKILL.md tries to be both reference AND quick-start
 - No clear "start here" path for new users
 - Asset files and reference files have significant overlap
+<!-- /ANCHOR:problem -->
 
+<!-- ANCHOR:success-criteria -->
 ## 3. SUCCESS CRITERIA
 
 | Criterion | Target | Measurement |
@@ -67,6 +70,7 @@ The current SpecKit skill documentation has several issues:
 | Clarity improvement | Self-evident structure | Clear navigation, no circular references |
 | Accuracy | 100% verified | All claims match actual behavior |
 | Completeness | No information loss | All useful content preserved |
+<!-- /ANCHOR:success-criteria -->
 
 ## 4. PROPOSED SOLUTION
 

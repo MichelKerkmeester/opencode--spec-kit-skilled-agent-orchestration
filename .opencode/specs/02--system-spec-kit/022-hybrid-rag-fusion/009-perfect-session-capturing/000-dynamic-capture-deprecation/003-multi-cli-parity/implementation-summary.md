@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Multi-CLI Parity Hardening"
+title: "...rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/implementation-summary]"
 description: "Phase 016 now has direct parity proofs for aliasing, noise filtering, and CLI file provenance, and its Level 2 docs validate cleanly again."
 trigger_phrases:
   - "phase 016 summary"
@@ -121,3 +121,10 @@ Three fixes from deferred deep research findings (Q1, Q3, Q5) plus an ALIGNMENT_
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

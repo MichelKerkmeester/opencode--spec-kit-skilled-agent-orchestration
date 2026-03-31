@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: query-intelligence manual testing [template:level_2/plan.md]"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence/plan]"
 description: "Execution plan for Phase 012 manual testing of 10 query-intelligence scenarios. Covers preconditions, execution sequencing for non-destructive and feature-flag paths, evidence capture, and verdict assignment per the review protocol."
 trigger_phrases:
   - "phase 012 execution plan"
   - "query intelligence manual test plan"
   - "query intelligence execution"
   - "phase 012 plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: query-intelligence manual testing
@@ -164,6 +164,7 @@ For each scenario: run with flag ON, capture trace; run with flag OFF, confirm n
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -183,6 +184,7 @@ Phase 1 (Setup) ─────────────┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

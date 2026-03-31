@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist - UX Deep Analysis [033-ux-deep-analysis/checklist]"
+title: "Verification Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/checklist]"
 description: "checklist document for 033-ux-deep-analysis."
 trigger_phrases:
   - "verification"
@@ -46,6 +46,7 @@ contextType: "implementation"
 - [x] Fix categories defined
 - [x] Recommended fix order established
 
+<!-- ANCHOR:docs -->
 ## Documentation Phase
 - [x] spec.md created
 - [x] plan.md created
@@ -54,6 +55,7 @@ contextType: "implementation"
 - [x] fix-summary.md created [File: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/fix-summary.md - 1,100+ lines]
 - [x] completion-summary.md created
 - [ ] Memory saved for future sessions
+<!-- /ANCHOR:docs -->
 
 ## Fix Phase (10 Agents)
 - [x] Agent 1: Memory Commands MCP naming (30+ fixes)

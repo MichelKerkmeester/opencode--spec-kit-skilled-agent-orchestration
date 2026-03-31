@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Stateless Quality Gate Fixes"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/checklist]"
 description: "Verification Date: 2026-03-18"
 trigger_phrases:
   - "stateless quality gates checklist"

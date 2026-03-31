@@ -1,5 +1,16 @@
 ---
-title: "Tasks: Implement and Remove Deprecated Features"
+title: "...spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/tasks]"
+description: "title: \"Tasks: Implement and Remove Deprecated Features\""
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "tasks"
+  - "implement"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Task Breakdown: Implement and Remove Deprecated Features
 

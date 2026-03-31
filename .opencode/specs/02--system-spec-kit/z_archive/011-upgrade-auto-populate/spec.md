@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: AI Auto-Populate on Spec Upgrade [011-upgrade-auto-populate/spec]"
+title: "Feature Specification: AI Auto-Populate on Spec Upgrade [02--system-spec-kit/z_archive/011-upgrade-auto-populate/spec]"
 description: "When upgrade-level.sh upgrades a spec folder (e.g., L1 → L3+), it injects template scaffolding with placeholder text like [Response time target], [Low/Med/High], [Component A]. ..."
 trigger_phrases:
   - "feature"
@@ -154,6 +154,7 @@ After the upgrade script runs, the AI agent should read the injected placeholder
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -173,6 +174,7 @@ After the upgrade script runs, the AI agent should read the injected placeholder
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

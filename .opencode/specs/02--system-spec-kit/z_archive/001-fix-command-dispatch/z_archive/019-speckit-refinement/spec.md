@@ -1,5 +1,5 @@
 ---
-title: "SpecKit Refinement: ECP Analysis & Improvements [019-speckit-refinement/spec]"
+title: "SpecKit Refinement: ECP [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/spec]"
 description: "1. Three State Files"
 trigger_phrases:
   - "speckit"
@@ -126,6 +126,7 @@ This captures 80% of ECP's benefit because:
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 5. Scope
 
 ### 5.1 In Scope
@@ -153,8 +154,10 @@ This captures 80% of ECP's benefit because:
 - Checkpoint-based branching (already solved by sub-folders)
 - Full ECP replication (different philosophies)
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 6. Success Criteria
 
 - [ ] Session resumption time < 30 seconds (vs current ~5 minutes)
@@ -165,6 +168,7 @@ This captures 80% of ECP's benefit because:
 - [ ] `/handover` provides immediate quick-continue + background full handover
 - [ ] All P0/P1 recommendations implemented
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 7. Handover System Design (Deep Analysis)

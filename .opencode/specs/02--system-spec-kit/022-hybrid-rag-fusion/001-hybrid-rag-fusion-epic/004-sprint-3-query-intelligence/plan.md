@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Sprint 3 — Query Intelligence"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/plan]"
 description: "Query complexity routing, RSF evaluation, and channel min-representation implementation plan."
 trigger_phrases:
   - "sprint 3 plan"
   - "query intelligence plan"
   - "complexity router plan"
-  - "RSF plan"
+  - "rsf plan"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -194,6 +194,7 @@ The 100+ queries required for RSF shadow comparison (CHK-030) must be sourced us
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -213,6 +214,7 @@ Phase 2 (R14/N1 RSF) ──────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

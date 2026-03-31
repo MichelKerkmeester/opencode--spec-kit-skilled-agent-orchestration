@@ -1,14 +1,14 @@
 ---
-title: "Feature Specification: 002-versioned-memory-state"
+title: "Feature Specific [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/spec]"
 description: "Level 3+ phase spec for append-first lineage, active projection, and temporal query semantics."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 2"
   - "versioned memory state"
   - "lineage"
-  - "asOf query"
+  - "asof query"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 002-versioned-memory-state
 
@@ -27,6 +27,7 @@ Phase 2 is the first true Hydra data-plane phase. It implements append-first mem
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -64,6 +65,7 @@ This phase turns the roadmap from capability metadata into actual memory-state b
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -159,6 +161,7 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -177,8 +180,10 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 - **NFR-O21**: Maintainers can inspect lineage state during debugging.
 - **NFR-O22**: Migration checkpoints exist before any irreversible lineage move.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -196,8 +201,10 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 - Restore from checkpoint occurs after partial lineage migration.
 - Conflict logs disagree with the proposed canonical predecessor chain.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -209,6 +216,7 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 | Coordination | 14/15 | Strong dependency on Phase 1 and blocker for Phases 3, 5, and 6 |
 | **Total** | **87/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -296,11 +304,13 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - Should active projection live in dedicated tables, materialized views, or cached query helpers?
 - How much lineage inspection tooling needs to ship in Phase 2 versus later admin/debug surfaces?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

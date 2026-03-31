@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity/checklist]"
+description: "title: \"Verification Checklist: Data Fidelity [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "003"
+  - "data"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Data Fidelity
 

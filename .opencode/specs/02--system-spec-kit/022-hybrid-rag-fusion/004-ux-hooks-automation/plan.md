@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: UX Hooks Automation"
+title: "Implementation Plan: UX Hooks Automation [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/plan]"
 description: "Introduce automated hook prechecks, command UX guardrails, and standardized remediation messaging for spec workflows."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -10,6 +9,7 @@ trigger_phrases:
   - "error reduction"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Implementation Plan: UX Hooks Automation
 
@@ -150,6 +150,7 @@ Mutation request executes handler logic, then shared post-mutation hooks run and
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -166,6 +167,7 @@ Phase 1 (Audit + Design) ──► Phase 2 (Automation + Guardrails) ──► P
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

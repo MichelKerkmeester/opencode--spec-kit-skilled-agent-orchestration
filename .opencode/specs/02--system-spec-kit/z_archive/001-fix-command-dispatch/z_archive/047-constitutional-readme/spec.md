@@ -1,5 +1,5 @@
 ---
-title: "Spec: Constitutional Memory System README [047-constitutional-readme/spec]"
+title: "Spec: Constitutional [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme/spec]"
 description: "Create comprehensive documentation (README.md) for the constitutional memory system located at .opencode/skill/system-spec-kit/constitutional/. The README should explain how con..."
 trigger_phrases:
   - "spec"
@@ -34,6 +34,7 @@ Create comprehensive documentation (README.md) for the constitutional memory sys
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. Scope
 
 ### In Scope
@@ -51,8 +52,10 @@ Create comprehensive documentation (README.md) for the constitutional memory sys
 - Changes to the MCP server code
 - Changes to the importance tier system
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 3. Success Criteria
 
 - [x] README.md created in constitutional/ directory
@@ -63,6 +66,7 @@ Create comprehensive documentation (README.md) for the constitutional memory sys
 - [x] Includes customization guide
 - [x] Has troubleshooting section
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 4. Technical Context

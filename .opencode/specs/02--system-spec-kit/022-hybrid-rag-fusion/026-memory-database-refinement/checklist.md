@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: Memory Database Refinement"
+title: "Verification Checklist: Memory [02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/checklist]"
 description: "Verification Date: 2026-03-28"
 trigger_phrases:
   - "verification checklist"
   - "memory database refinement"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: Memory Database Refinement

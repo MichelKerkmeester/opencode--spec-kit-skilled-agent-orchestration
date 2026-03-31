@@ -65,7 +65,7 @@ Command-router consolidation with explicit operation and mode contracts.
 - **Auto Workflow** (`.opencode/command/create/assets/create_sk_skill_auto.yaml`): Autonomous execution flow.
 - **Confirm Workflow** (`.opencode/command/create/assets/create_sk_skill_confirm.yaml`): Interactive execution flow with checkpoints.
 - **Reference Update** (`.opencode/command/create/prompt.md`): Points related command guidance to canonical command variants.
-- **Cross-Runtime Doc Sync** (`.agents/agents/write.md`, `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, `.opencode/install_guides/SET-UP - AGENTS.md`): Aligns active docs to canonical `/create:sk-skill` naming.
+- **Cross-Runtime Doc Sync** (`.agents/agents/write.md`, `.opencode/agent/write.md`, .opencode/agent/chatgpt/write.md, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, `.opencode/install_guides/SET-UP - AGENTS.md`): Aligns active docs to canonical `/create:sk-skill` naming.
 - **Legacy Reference Verification** (`.agents/agents`, `.codex`, `.claude`): Directory-level check confirms no remaining `/create:skill*` references.
 - **Memory Artifacts** (`memory/*.md`, `memory/metadata.json`): Captures and indexes implementation context for retrieval.
 
@@ -148,6 +148,7 @@ User invokes `/create:sk-skill` -> command file validates setup and required fie
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -167,6 +168,7 @@ Phase 1 (Canonical Create) ---> Phase 2 (Migration Cleanup) ---> Phase 3 (Refere
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

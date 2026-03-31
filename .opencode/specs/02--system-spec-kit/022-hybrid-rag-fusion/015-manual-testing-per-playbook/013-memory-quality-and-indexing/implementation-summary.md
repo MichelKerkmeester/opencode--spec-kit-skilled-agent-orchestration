@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "...pec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing/implementation-summary]"
 description: "Phase 013 memory quality and indexing manual testing -- code analysis complete. 34/34 IDs verdicted: 34 PASS, 0 PARTIAL, 0 FAIL. Pass rate 100%."
 trigger_phrases:
   - "memory quality implementation summary"

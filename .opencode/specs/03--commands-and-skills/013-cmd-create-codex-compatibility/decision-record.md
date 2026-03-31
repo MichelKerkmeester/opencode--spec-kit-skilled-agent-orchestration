@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Create Commands Codex Compatibility [012-create-codex-compatibility/decision-record]"
+title: "Decision Record: Create Commands Codex [03--commands-and-skills/013-cmd-create-codex-compatibility/decision-record]"
 description: "level: 3"
 trigger_phrases:
   - "decision"
@@ -128,10 +128,10 @@ Create command files exhibit the same Codex compatibility issues as spec_kit com
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Bundle Emoji Cleanup (Change D)
 
-<!-- ANCHOR:adr-002-context -->
+### ADR-002: Bundle Emoji Cleanup (Change D)
+
+
 ### Metadata
 
 | Field | Value |
@@ -151,21 +151,21 @@ Spec 011 established that emoji enforcement should be removed from the `/create`
 - Emoji optionality language exists in both .md and .yaml files
 - `emoji_conventions:` needs renaming to `section_icons:` in folder_readme YAMLs specifically
 - Must not remove cosmetic emojis already present in templates
-<!-- /ANCHOR:adr-002-context -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
+
 ### Decision
 
 **Summary**: Bundle emoji cleanup (Change D) into this spec rather than creating a separate pass.
 
 **Details**: Remove all emoji optionality language from all 20 create command files during the same editing pass. Rename `emoji_conventions:` to `section_icons:` in the 2 folder_readme YAML files. Leave existing cosmetic emojis in template content untouched. Add verification check #7 (`[Ee]moji` returns 0 matches) to confirm completeness.
-<!-- /ANCHOR:adr-002-decision -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
+
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -175,11 +175,11 @@ Spec 011 established that emoji enforcement should be removed from the `/create`
 | Defer Indefinitely | Zero effort | Stale emoji language persists, contradicts spec 011 policy | 2/10 |
 
 **Why Chosen**: Since all 20 files are already open for editing, bundling emoji cleanup is the most efficient approach. Creating a separate spec would require touching the same 14 YAML files again, which doubles the risk of merge conflicts and review overhead. The additional scope (Change D) is minor compared to Changes A-C.
-<!-- /ANCHOR:adr-002-alternatives -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
+
 ### Consequences
 
 **Positive**:
@@ -196,11 +196,11 @@ Spec 011 established that emoji enforcement should be removed from the `/create`
 |------|--------|------------|
 | Emoji cleanup accidentally removes content emojis | L | Only remove optionality language, not decorative emojis; verify with targeted grep |
 | Scope creep | L | Change D is well-defined and bounded (grep-verifiable) |
-<!-- /ANCHOR:adr-002-consequences -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
+
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -212,11 +212,11 @@ Spec 011 established that emoji enforcement should be removed from the `/create`
 | 5 | **Open Horizons?** | PASS | Does not prevent future emoji-related changes; cosmetic emojis preserved |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
+
 ### Implementation
 
 **Affected Systems**:
@@ -224,8 +224,8 @@ Spec 011 established that emoji enforcement should be removed from the `/create`
 - `.opencode/command/create/assets/*.yaml` (14 files) -- emoji language removal + `emoji_conventions:` rename in folder_readme variants
 
 **Rollback**: Git revert; emoji language can be restored from git history if needed
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
+
+
 
 ---
 

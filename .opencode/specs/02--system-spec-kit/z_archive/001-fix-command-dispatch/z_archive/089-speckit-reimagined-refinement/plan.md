@@ -1,5 +1,5 @@
 ---
-title: "Plan: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/plan]"
+title: "Plan: system-s [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/plan]"
 description: "title: \"Plan: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "plan"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan [039-node-modules-consolidation/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/plan]"
 description: "id: 039-node-modules-consolidation"
 trigger_phrases:
   - "implementation"
@@ -133,12 +133,14 @@ du -sh node_modules/
 - [ ] Full MCP tool test (all 14 tools)
 - [ ] OpenCode restart and MCP connection test
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues occur:
 1. Delete root package.json and node_modules
 2. Restore individual package-lock.json from git
 3. Run `npm install` in each subdirectory separately
+<!-- /ANCHOR:rollback -->
 
 ## Execution Order
 

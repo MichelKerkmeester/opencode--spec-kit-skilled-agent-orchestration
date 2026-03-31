@@ -1,5 +1,15 @@
 ---
-title: "Implementation Plan: sk-prompt-improver Initial Creation"
+title: "Implementation Plan: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/plan]"
+description: "title: \"Implementation Plan: sk-prompt-improver Initial Creation\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "prompt"
+  - "improver"
+  - "initial"
+  - "003"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: sk-prompt-improver Initial Creation
 
@@ -40,6 +50,25 @@ Convert the standalone Prompt Improver AI system (v0.200) into an OpenCode-nativ
 - [x] All references created and linked
 - [x] skill_advisor.py updated and tested
 - [x] All tasks marked [x] in tasks.md
+
+### Pre-Task Checklist
+- Confirm scoped files and validation targets before editing.
+- Confirm the change is structure-only and does not alter feature intent.
+- Confirm the next validation batch is limited to the current spec folder.
+
+### Task Execution Rules
+- TASK-SEQ: Complete one compliance batch before re-validating.
+- TASK-SCOPE: Preserve document meaning while fixing structure and validator-facing metadata only.
+- TASK-VERIFY: Re-run `validate.sh --verbose` after each structural batch.
+
+### Status Reporting Format
+- STATUS=IN_PROGRESS when a compliance batch is underway.
+- STATUS=BLOCKED when a validator warning or document shape cannot be resolved safely.
+- STATUS=DONE only after the packet validates without blocking findings.
+
+### Blocked Task Protocol
+- BLOCKED: record the failing file, validator rule, and the smallest safe remediation path.
+- If a fix would change implementation meaning, stop and keep the packet structure-only.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -135,6 +164,7 @@ User Request → SKILL.md (intent classification)
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -151,6 +181,7 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Integration)
 ---
 
 <!-- ANCHOR:dependency-graph -->
+<!-- /ANCHOR:dependencies -->
 ## L3: DEPENDENCY GRAPH
 
 ```
@@ -177,6 +208,7 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Integration)
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Progressive Reference Strategy
@@ -219,4 +251,5 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Integration)
 - Positive: Reduces file count, content is complementary
 - Negative: Larger single file (~45KB consolidated)
 
+<!-- /ANCHOR:architecture -->
 ---

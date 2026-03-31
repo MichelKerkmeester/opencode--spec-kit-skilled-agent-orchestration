@@ -1,6 +1,5 @@
 ---
-title: "True-mem research integration findings"
-description: "Conducted comprehensive technical research on the true-mem repository (rizal72/true-mem v1.0.14) using 5 parallel research agents. Produced two research documents: (1) deep..."
+title: "Tru [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/26-02-26_22-15__true-mem-research-integration]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "psychology based"
@@ -9,10 +8,9 @@ trigger_phrases:
   - "root level"
 importance_tier: "important"
 contextType: "research"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # True Mem Research Integration
 
 ## SESSION SUMMARY

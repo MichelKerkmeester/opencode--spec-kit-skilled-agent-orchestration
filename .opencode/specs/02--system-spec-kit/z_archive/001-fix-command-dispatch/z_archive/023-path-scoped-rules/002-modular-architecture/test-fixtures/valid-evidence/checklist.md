@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Valid Evidence Fixture [valid-evidence/checklist]"
+title: "...fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-evidence/checklist]"
 description: "checklist document for valid-evidence."
 trigger_phrases:
   - "checklist"

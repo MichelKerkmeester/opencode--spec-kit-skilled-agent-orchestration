@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Phase System [021-spec-kit-phase-system/spec]"
+title: "Feature Specification: SpecKit Phase System [02--system-spec-kit/021-spec-kit-phase-system/spec]"
 description: "Level 3+ (+Govern) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -199,6 +199,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -223,6 +224,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Phase Structure Boundaries

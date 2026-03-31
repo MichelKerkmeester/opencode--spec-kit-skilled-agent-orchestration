@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Semantic Memory Auto-Indexing (v12.0) [006-auto-indexing/implementation-summary]"
+title: "Implementati [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/implementation-summary]"
 description: "Date: 2025-12-16"
 trigger_phrases:
   - "implementation"
@@ -225,3 +225,10 @@ All indexing methods use SHA-256 content hashing:
 - `005-memory/001-refinement-dec-13` - Initial memory system refinement
 - `005-memory/002-alignment-fixes` - Database path documentation
 - `005-memory/003-memory-hook-cleanup` - Hook cleanup work
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

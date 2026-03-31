@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [022-context-overload-prevention/implementation-summary]"
+title: "Implementation Summary [022-context-ove [04--agent-orchestration/022-context-overload-prevention/implementation-summary]"
 description: "The orchestrator agent now protects itself from context overload. Five new sections were added to all three runtime variants of orchestrate.md, giving the orchestrator explicit ..."
 trigger_phrases:
   - "implementation"
@@ -63,7 +63,7 @@ The additions came from a purpose-built prevention prompt (007-enhanced-cc-conte
 |------|--------|---------|
 | `.claude/agents/orchestrate.md` | Modified | 5 new sections for Claude Code runtime |
 | `.opencode/agent/orchestrate.md` | Modified | 5 new sections adapted for Copilot runtime |
-| `.opencode/agent/chatgpt/orchestrate.md` | Modified | 5 new sections adapted for ChatGPT/Codex runtime |
+| `.opencode/agent/chatgpt/orchestrate` | Modified | 5 new sections adapted for ChatGPT/Codex runtime |
 | `.opencode/changelog/03--agent-orchestration/v2.0.8.0.md` | Created | Changelog documenting all changes |
 <!-- /ANCHOR:what-built -->
 

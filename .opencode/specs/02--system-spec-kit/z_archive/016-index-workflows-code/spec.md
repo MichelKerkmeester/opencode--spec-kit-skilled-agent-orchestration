@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill References & Assets Indexing [016-index-workflows-code/spec]"
+title: "Feature Specification: Skill References & Assets [02--system-spec-kit/z_archive/016-index-workflows-code/spec]"
 description: "Add a configurable 6th indexing source to the Spec Kit Memory pipeline that indexes references/ and assets/ content from user-selected workflows-code--* skills. This enables the..."
 trigger_phrases:
   - "feature"
@@ -181,6 +181,7 @@ Enable selective indexing of skill `references/` and `assets/` directories, allo
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -205,6 +206,7 @@ Enable selective indexing of skill `references/` and `assets/` directories, allo
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

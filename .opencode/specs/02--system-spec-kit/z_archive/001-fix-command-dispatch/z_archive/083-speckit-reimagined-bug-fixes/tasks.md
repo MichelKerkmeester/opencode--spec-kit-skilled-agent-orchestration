@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Spec Kit Bug Fixes [083-speckit-reimagined-bug-fixes/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/tasks]"
 description: "tasks document for 083-speckit-reimagined-bug-fixes."
 trigger_phrases:
   - "task"
@@ -44,6 +44,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: CRITICAL Fixes (P0)
 
 ### T-001: Fix README ANCHOR Format - Line 421
@@ -127,8 +128,10 @@ contextType: "implementation"
 - **Change:** Renumber 11→12, 12→13
 - **Status:** [x] Complete
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: HIGH Fixes (P1)
 
 ### T-013: Add PREFLIGHT to implement YAMLs
@@ -212,8 +215,10 @@ contextType: "implementation"
 - **Change:** Renumber second "6." to "7."
 - **Status:** [x] Complete
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: MEDIUM Fixes (P2)
 
 ### T-025: Fix Orphaned References - speckit.md
@@ -297,6 +302,7 @@ contextType: "implementation"
 - **Change:** Add Five Checks Framework to quality_gates section
 - **Status:** [x] Complete
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: LOW Fixes (P3)

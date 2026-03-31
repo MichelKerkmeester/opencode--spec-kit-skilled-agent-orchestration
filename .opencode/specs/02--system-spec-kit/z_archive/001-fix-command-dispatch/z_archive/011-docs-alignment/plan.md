@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [YOUR_VALUE_HERE: feature-name] - Technical Approach & Architecture [011-docs-alignment/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/plan]"
 description: "Implementation plan defining technical approach, project structure, and execution strategy."
 trigger_phrases:
   - "implementation"
@@ -52,6 +52,7 @@ Feature specification from `/specs/[###-feature-name]/spec.md`
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**
@@ -81,6 +82,7 @@ Feature specification from `/specs/[###-feature-name]/spec.md`
 | [example: 4th project] | [current need] | [why 3 projects insufficient] |
 | [example: Repository pattern] | [specific problem] | [why direct DB access insufficient] |
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -149,6 +151,7 @@ ios/ or android/
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 0: Research & Discovery
@@ -209,8 +212,10 @@ ios/ or android/
 
 **Parallelization Note**: Use [P] tag to denote tasks that can run in parallel
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Pyramid
@@ -261,6 +266,7 @@ ios/ or android/
 - [ ] Performance benchmarks met
 - [ ] No breaking changes (or documented + approved)
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -311,6 +317,7 @@ ios/ or android/
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -327,6 +334,7 @@ ios/ or android/
 | [Service/API] | External | [Company] | [Green/Yellow/Red] | [Date] | [Impact description] |
 | [Library/Tool] | External | [Source] | [Green/Yellow/Red] | [Date] | [Impact description] |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

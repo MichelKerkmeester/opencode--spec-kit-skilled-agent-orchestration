@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent System Improvements [005-agent-system-improvements/tasks]"
+title: "Tasks: Agent System Improvements [04--agent-orchestration/z_archive/005-agent-system-improvements/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -18,6 +18,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -35,6 +36,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:phase-1-immediate-fixes -->
+<!-- /ANCHOR:notation -->
 ## Phase 1: Immediate Fixes
 
 - [x] T001 [P] Fix @documentation-writer → @write line 96 (`.opencode/agent/orchestrate.md`)
@@ -167,6 +169,7 @@ All changes to orchestrate.md - apply sequentially.
 
 
 <!-- ANCHOR:cross-references -->
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -177,3 +180,4 @@ All changes to orchestrate.md - apply sequentially.
 - **Recommendations**: See `002-recommendations-agent-system-improvements.md`
 
 <!-- /ANCHOR:cross-references -->
+<!-- /ANCHOR:cross-refs -->

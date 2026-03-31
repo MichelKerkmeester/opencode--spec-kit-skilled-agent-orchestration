@@ -1,5 +1,5 @@
 ---
-title: "Task 07 — Tagged Release [task-07-github-release/spec]"
+title: "Task 07 — [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release/spec]"
 description: "Specify the GitHub tagged release for spec 130, following PUBLIC_RELEASE.md conventions. This is the final task in the dependency chain — all documentation alignment work must b..."
 trigger_phrases:
   - "task"
@@ -63,6 +63,7 @@ Minor version bump (2.0.x → 2.1.0) because:
 ### Release Notes Structure
 
 ```
+<!-- /ANCHOR:scope -->
 ## v2.1.0 — Memory Overhaul & Agent Upgrade Release
 
 Cross-system documentation alignment following 11 source specs (014–016 agent system, 122–129 spec-kit system) across 3 tracks.

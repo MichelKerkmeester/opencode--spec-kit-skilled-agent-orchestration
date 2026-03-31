@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Data Fidelity"
+title: "Imple [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity/implementation-summary]"
 description: "Implementation summary for data fidelity phase of perfect session capturing"
-trigger_phrases: ["implementation", "summary", "data", "fidelity"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "data"
+  - "fidelity"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Data Fidelity
 
@@ -85,3 +91,10 @@ The implementation stayed narrow and phase-correct:
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Form Input Components Enhancement [011-form-input-upload-select/spec]"
+title: "Spec: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/spec]"
 description: "Enhance form input capabilities with two new components"
 trigger_phrases:
   - "spec"

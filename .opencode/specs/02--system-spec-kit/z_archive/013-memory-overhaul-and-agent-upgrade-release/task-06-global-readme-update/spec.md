@@ -1,5 +1,5 @@
 ---
-title: "Task 06 — Root README Update [task-06-global-readme-update/spec]"
+title: "Task [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/spec]"
 description: "Specify required updates to the project root /README.md to ensure all statistics, feature descriptions, and component references reflect the post-alignment state after spec 130 ..."
 trigger_phrases:
   - "task"

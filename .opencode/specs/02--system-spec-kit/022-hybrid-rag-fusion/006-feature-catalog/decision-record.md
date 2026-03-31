@@ -1,5 +1,16 @@
 ---
-title: "Decision Record: Feature Catalog Audit & Remediation"
+title: "Decision Record: Feature Catalog Audit [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/decision-record]"
+description: "title: \"Decision Record: Feature Catalog Audit & Remediation\""
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "feature"
+  - "catalog"
+  - "audit"
+  - "decision record"
+  - "006"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Decision Record: Feature Catalog Audit & Remediation
 

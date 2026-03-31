@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: generate-context.ts Subfolder Support [123-generate-context-subfolder/plan]"
+title: "Implementation Plan: generate-context.ts Subfolder [02--system-spec-kit/z_archive/006-generate-context-subfolder/plan]"
 description: "Add nested subfolder path resolution to generate-context.ts and folder-detector.ts. The approach is additive-only: new branches handle parent/child format inputs while existing ..."
 trigger_phrases:
   - "implementation"
@@ -157,6 +157,7 @@ Resolved absolute path → generate memory context
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -175,6 +176,7 @@ Phase 1 (generate-context.ts) ──► Phase 2 (folder-detector.ts) ──► P
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

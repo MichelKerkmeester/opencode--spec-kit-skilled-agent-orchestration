@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [028-mobile-btn-link-feedback/implementation-summary]"
+title: "Implementation Summary [028-mobile-btn-li [01--anobel.com/z_archive/026-mobile-btn-link-feedback/implementation-summary]"
 description: "A scroll-aware system for button/link active states that eliminates unwanted visual feedback during scroll on touch devices while preserving instant tap feedback."
 trigger_phrases:
   - "implementation"
@@ -30,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:what-was-built -->
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 A scroll-aware system for button/link active states that eliminates unwanted visual feedback during scroll on touch devices while preserving instant tap feedback.
@@ -47,7 +48,7 @@ The new approach uses native `:active` which triggers instantly on touchstart, b
 
 ---
 
-<!-- ANCHOR:files-changed -->
+<!-- /ANCHOR:what-built -->
 ## Files Changed
 
 | File | Action | Purpose |
@@ -76,7 +77,6 @@ The new approach uses native `:active` which triggers instantly on touchstart, b
 | btn_nav.css | src/3_staging/ |
 | btn_cta.css | src/3_staging/ |
 | hover_state_machine.css | src/3_staging/ |
-<!-- /ANCHOR:files-changed -->
 
 ---
 
@@ -138,6 +138,7 @@ User lifts finger (touchend)
 ---
 
 <!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale |
@@ -152,6 +153,7 @@ User lifts finger (touchend)
 ---
 
 <!-- ANCHOR:verification -->
+<!-- /ANCHOR:decisions -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -164,6 +166,7 @@ User lifts finger (touchend)
 ---
 
 <!-- ANCHOR:known-limitations -->
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - **Hybrid devices** (laptops with touchscreen): Will use touch behavior when touch input detected. This is acceptable as scroll-on-touch issue only affects touch input.
@@ -173,6 +176,7 @@ User lifts finger (touchend)
 ---
 
 <!-- ANCHOR:api-reference -->
+<!-- /ANCHOR:limitations -->
 ## API Reference
 
 ```javascript

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Modular Validation Architecture [002-modular-architecture/tasks]"
+title: "...2--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/tasks]"
 description: "tasks document for 002-modular-architecture."
 trigger_phrases:
   - "tasks"
@@ -29,6 +29,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Extract Libraries
 
 ### Task 1.1: Create lib/common.sh
@@ -61,8 +62,10 @@ contextType: "implementation"
 - [ ] Add CONFIG_* variables and defaults
 - [ ] Test: Config loading with/without yq
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Extract Existing Rules
 
 ### Task 2.1: Create rules/check-files.sh
@@ -91,8 +94,10 @@ contextType: "implementation"
 - [ ] Implement run_check() interface
 - [ ] Test: Rule works in isolation
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Refactor Orchestrator
 
 ### Task 3.1: Slim down validate-spec.sh
@@ -114,6 +119,7 @@ contextType: "implementation"
 - [ ] Test: Exit codes correct (0, 1, 2)
 - [ ] Test: All 6 existing fixtures pass
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Add New Rules

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Upgrade create:changelog with GitHub Release Creation"
+title: "Feature Specification: Upgrade create:changelog [03--commands-and-skills/038-cmd-create-changelog-and-releases/spec]"
 description: "The create:changelog command only generates changelog files. It cannot create git tags, push them, or publish GitHub releases — meaning users must manually complete the release workflow after every changelog generation."
 trigger_phrases:
   - "changelog release creation"
@@ -179,8 +179,8 @@ Extend `create:changelog` to optionally create a git tag, push it, and publish a
 
 ---
 
-<!-- ANCHOR:acceptance -->
-## 7. ACCEPTANCE SCENARIOS
+<!-- ANCHOR:success-criteria -->
+### Acceptance Scenarios
 
 **Given** a user runs `/create:changelog [spec] :auto :release` with a valid spec folder, **when** the changelog file is generated with STATUS=OK, **then** the command proceeds to the release phase, creates an annotated git tag, pushes it, and calls `gh release create` without requiring additional user input.
 
@@ -191,7 +191,7 @@ Extend `create:changelog` to optionally create a git tag, push it, and publish a
 **Given** `gh auth status` returns a non-zero exit code (user not authenticated), **when** the release phase performs its pre-check, **then** the command aborts with a clear error message ("GitHub CLI not authenticated — run `gh auth login` and retry") and no git tag is created.
 
 **Given** `gh release create` fails after the tag has already been pushed, **when** the error is detected, **then** the command reports the partial state, logs the exact manual recovery command, and instructs the user to delete the dangling tag with `git tag -d vX.X.X.X && git push origin --delete vX.X.X.X`.
-<!-- /ANCHOR:acceptance -->
+<!-- /ANCHOR:success-criteria -->
 
 ---
 

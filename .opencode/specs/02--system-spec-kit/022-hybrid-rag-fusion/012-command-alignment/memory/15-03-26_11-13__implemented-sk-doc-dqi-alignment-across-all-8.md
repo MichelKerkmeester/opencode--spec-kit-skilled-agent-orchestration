@@ -1,6 +1,5 @@
 ---
-title: "Implemented sk-doc DQI alignment"
-description: "HISTORICAL (superseded 2026-03-21): Implemented sk-doc DQI alignment across the then-current 8 memory command files including context.md. The live suite is now 6 commands (context.md merged into analyze.md). Do not use this memory as current-state evidence."
+title: "...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8]"
 trigger_phrases:
   - "sk doc"
   - "implemented sk-doc dqi alignment"
@@ -16,11 +15,10 @@ trigger_phrases:
   - "analyze.md context.md continue.md learn.md"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
+quality_score: 0.90
 ---
-
 # Implemented Sk Doc Dqi Alignment Across All 8
 
 ## SESSION SUMMARY

@@ -1,5 +1,5 @@
 ---
-title: "Research: Blog Sort Dropdown Fix [018-blog-sort-fix/research]"
+title: "Research: Blog Sort Dropdown Fix [018-blog-sort-fix/research] [01--anobel.com/z_archive/018-blog-sort-fix/research]"
 description: "Deep dive investigation conducted 2026-01-18 using 5 parallel Opus agents to analyze the blog sort dropdown issue and identify optimal solutions."
 trigger_phrases:
   - "research"

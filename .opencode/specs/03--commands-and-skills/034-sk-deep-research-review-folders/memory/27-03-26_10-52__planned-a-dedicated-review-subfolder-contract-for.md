@@ -1,6 +1,5 @@
 ---
-title: "Planned A Dedicated [034-sk-deep-research-review-folders/27-03-26_10-52__planned-a-dedicated-review-subfolder-contract-for]"
-description: "Review mode is contractually routed into scratch across command and skill assets; System-spec-kit defines scratch as disposable temporary space, not the durable home for..."
+title: "...nds-and-skills/034-sk-deep-research-review-folders/27-03-26_10-52__planned-a-dedicated-review-subfolder-contract-for]"
 trigger_phrases:
   - "sk-deep-research review folder"
   - "deep-review scratch output"
@@ -8,19 +7,18 @@ trigger_phrases:
   - "review-report placement"
   - "review_mode_contract review subfolder"
 importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+contextType: "decision"
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # Planned A Dedicated Review Subfolder Contract For
 
 ## SESSION SUMMARY

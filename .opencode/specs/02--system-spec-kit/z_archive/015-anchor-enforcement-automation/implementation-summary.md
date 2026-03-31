@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Anchor Enforcement Automation [015-anchor-enforcement-automation/implementation-summary]"
+title: "Implementation Summary: [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/implementation-summary]"
 description: "This implementation delivers a 3-layer defense-in-depth enforcement system to ensure all spec folder documentation follows template structure and uses proper ANCHOR tags for str..."
 trigger_phrases:
   - "implementation"
@@ -33,7 +33,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 This implementation delivers a 3-layer defense-in-depth enforcement system to ensure all spec folder documentation follows template structure and uses proper ANCHOR tags for structured retrieval. The system prevents @speckit agent bypass and template violations through a combination of routing enforcement, template improvements, and validation enhancements.
@@ -53,7 +52,6 @@ Three complementary enforcement layers:
 - ✅ 100% spec file writes route through @speckit agent (SC-003)
 - ✅ validate.sh catches 100% of template/anchor violations (SC-004)
 - ✅ Root cause analysis documented with evidence (SC-005)
-<!-- /ANCHOR:overview -->
 
 ---
 
@@ -306,8 +304,8 @@ Three complementary enforcement layers:
 
 ---
 
-<!-- ANCHOR:lessons -->
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Went Well
 
@@ -400,11 +398,11 @@ Three complementary enforcement layers:
 3. **Validation architecture:** Defense-in-depth is effective for enforcement systems
 4. **Evidence requirements:** Checklist evidence forced thorough verification
 5. **Level 3+ governance:** AI Protocol and sign-off sections add significant overhead but improve quality
-<!-- /ANCHOR:lessons -->
 
 ---
 
 <!-- ANCHOR:known-issues -->
+<!-- /ANCHOR:decisions -->
 ## Known Issues & Limitations
 
 ### Non-Blocking Issues (P1/P2)
@@ -601,3 +599,10 @@ Implementation Summary for Anchor Enforcement Automation
 Comprehensive retrospective covering all 7 implementation phases
 Documented: 2026-02-17
 -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

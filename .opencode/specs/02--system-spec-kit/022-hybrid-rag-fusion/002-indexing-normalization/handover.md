@@ -1,12 +1,12 @@
 ---
-title: "Consolidated handover: 002-indexing-normalization [002-indexing-normalization/handover.md]"
+title: "Consolidated handover: 002-indexing-norm [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/handover]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> handover.md and former child spec 004-frontmatter-indexing -> handover.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
   - "002-indexing-normalization"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 ---
 # Consolidated handover.md
 

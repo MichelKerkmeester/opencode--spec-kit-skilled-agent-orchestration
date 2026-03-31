@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Stateless Quality Gate Fixes"
+title: "De [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/decision-record]"
 description: "The shipped Phase 014 contract bundles hard-block stateless rules, structured stdin/json input, and narrow source-aware contamination severity."
 trigger_phrases:
   - "stateless quality gates decisions"

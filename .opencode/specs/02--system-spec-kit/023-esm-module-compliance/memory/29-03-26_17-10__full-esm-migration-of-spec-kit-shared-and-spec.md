@@ -1,16 +1,15 @@
 ---
-title: "Full Esm Migration Of Spec [023-esm-module-compliance/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec]"
-description: "Full ESM migration of @spec-kit/shared and @spec-kit/mcp-server completed across 12 commits on branch system-speckit/023-esm-module-compliance. Phase 1 migrated shared to..."
+title: "Full Esm [02--system-spec-kit/023-esm-module-compliance/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec]"
 trigger_phrases:
   - "esm module compliance"
   - "esm migration complete"
   - "shared mcp_server native esm"
   - "type module nodenext"
-  - "CJS to ESM interop node 25"
+  - "cjs to esm interop node 25"
   - "memory save hardening"
-  - "V8 descendant phase detection"
+  - "v8 descendant phase detection"
   - "manual fallback save mode"
-  - "superRefine schema fix copilot"
+  - "superrefine schema fix copilot"
   - "search-weights.json path fallback"
   - "v-rule bridge bypass warning"
   - "super refine"
@@ -31,18 +30,17 @@ trigger_phrases:
   - "phase sequential migration"
 importance_tier: "critical"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 ---
-
 # Full Esm Migration Of Spec Kit Shared And Spec
 
 ## SESSION SUMMARY

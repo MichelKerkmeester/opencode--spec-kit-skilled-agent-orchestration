@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Architecture Audit [template:level_3/tasks.md]"
+title: "Tasks: Architecture Audit [template:level_3/tas [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/tasks]"
 description: "Recovered task map for the completed scripts-versus-mcp_server architecture audit."
 trigger_phrases:
   - "architecture audit tasks"
   - "boundary remediation tasks"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "implementation"
 ---
 # Tasks: Architecture Audit
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 5 Pipeline Refactor"
+title: "...stem-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "006-sprint-5-pipeline-refactor implementation summary"

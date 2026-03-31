@@ -1,11 +1,11 @@
 ---
-title: "Tasks: query-intelligence manual testing [template:level_2/tasks.md]"
+title: "Tasks: query-in [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 012 tasks"
   - "query intelligence tasks"
   - "query intelligence task tracker"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: query-intelligence manual testing

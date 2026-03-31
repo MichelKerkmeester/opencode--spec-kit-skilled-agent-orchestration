@@ -1,5 +1,5 @@
 ---
-title: "Plan [.backup-20260216-113650/plan]"
+title: "Plan [.backup-20260216-113650/pla [02--system-spec-kit/z_archive/011-upgrade-auto-populate/.backup-20260216-113650/plan]"
 description: "N/A - legacy spec artifact."
 trigger_phrases:
   - "plan"

@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Extraction and Rollout (Phase 2, Phase 3) [002-extraction-rollout-phases-2-3/plan]"
+title: "Phase Package [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/plan]"
 description: "Implement extraction and causal ranking features, then execute controlled rollout with telemetry and rollback safety."
 trigger_phrases:
   - "phase"

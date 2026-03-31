@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Invalid Priority Tags Fixture [invalid-priority-tags/checklist]"
+title: "...mand-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-priority-tags/checklist]"
 description: "* [ ] Wrong bullet style with asterisk"
 trigger_phrases:
   - "checklist"

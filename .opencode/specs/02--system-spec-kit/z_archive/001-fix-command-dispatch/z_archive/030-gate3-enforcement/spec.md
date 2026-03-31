@@ -1,5 +1,5 @@
 ---
-title: "Gate 3 Enforcement - Preventing Spec Folder Bypass [030-gate3-enforcement/spec]"
+title: "Gate 3 Enforcement - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/spec]"
 description: "During a comprehensive bug fix session (63+ bugs, 25+ files, 15 parallel agents), the AI"
 trigger_phrases:
   - "gate"
@@ -168,6 +168,7 @@ When changes are made to:
 | `constitutional-memory-draft.md` | Draft content for constitutional memory |
 | Memory file via generate-context.js | Indexed constitutional memory |
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 ### Implementation
@@ -186,6 +187,7 @@ When changes are made to:
 - [ ] `system-memory/README.md` updated with Constitutional Tier for Gate 3 section
 - [ ] `system-memory/SKILL.md` mentions constitutional enforcement
 - [ ] `system-spec-kit/SKILL.md` references First Message Protocol
+<!-- /ANCHOR:success-criteria -->
 
 ## Risk Assessment
 

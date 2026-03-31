@@ -1,7 +1,6 @@
 ---
-title: "Tasks: UX Hooks Automation"
+title: "Tasks: UX Hooks Automation [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "name"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "tasks core"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: UX Hooks Automation
 

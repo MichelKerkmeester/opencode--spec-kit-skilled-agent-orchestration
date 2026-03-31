@@ -1,10 +1,10 @@
 ---
-title: "Tasks: manual-testing-per-playbook discovery phase"
+title: "Tasks: manual-testing-pe [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/tasks]"
 description: "Task tracker for Phase 003 discovery scenarios. One task per scenario (EX-011, EX-012, EX-013), all pending."
 trigger_phrases:
   - "discovery phase tasks"
   - "phase 003 tasks"
-  - "EX-011 EX-012 EX-013 tasks"
+  - "ex-011 ex-012 ex-013 tasks"
 importance_tier: "normal"
 contextType: "general"
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/tasks]"
+title: "Tasks: OpenCode [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/tasks]"
 description: "tasks document for 090-opencode-naming-conventions."
 trigger_phrases:
   - "tasks"
@@ -31,13 +31,16 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Spec Folder Setup
 
 - [x] T001 Create spec folder structure (090-opencode-naming-conventions/)
 - [x] T002 Create spec.md, plan.md, tasks.md, checklist.md, decision-record.md
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Skill Documentation (Part A)
 
 - [ ] T010 [P] Update SKILL.md - naming matrix and routing rules
@@ -50,8 +53,10 @@ contextType: "implementation"
 - [ ] T017 [P] Update assets/checklists/universal_checklist.md - alignment
 - [ ] T018 [P] Update CHANGELOG.md - v1.1.0 entry
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: JS Migration (Part B)
 
 - [ ] T020 [P] W:1 Migrate mcp_server/handlers/ (~10 files)
@@ -65,6 +70,7 @@ contextType: "implementation"
 - [ ] T028 [P] W:9 Migrate scripts/spec-folder/ + scripts/tests/ (15 files)
 - [ ] T029 [P] W:10 Migrate remaining (config/, install/, standalone scripts) (~10 files)
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Cross-Reference Sweep
@@ -90,9 +96,11 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
 - [ ] MCP server starts successfully
 - [ ] Zero orphaned snake_case function calls
+<!-- /ANCHOR:completion -->

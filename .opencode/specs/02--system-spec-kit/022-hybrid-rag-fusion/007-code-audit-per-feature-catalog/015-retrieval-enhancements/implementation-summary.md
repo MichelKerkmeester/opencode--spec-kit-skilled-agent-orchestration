@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Retrieval Enhancements"
+title: "...-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/implementation-summary]"
 description: "9 features audited: 9 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

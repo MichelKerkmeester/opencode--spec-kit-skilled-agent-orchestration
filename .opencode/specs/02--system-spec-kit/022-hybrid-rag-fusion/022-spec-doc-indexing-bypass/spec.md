@@ -1,14 +1,14 @@
 ---
-title: "Feature Specification: Spec Doc Indexing Bypass"
+title: "Feature Specification: Spec Doc Indexing [02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/spec]"
 description: "Spec documents (spec.md, plan.md, tasks.md, etc.) are rejected by 3 upstream quality gates during memory_index_scan despite the v3.0.0.1 warn-only bypass, which only covers the 4th gate."
 trigger_phrases:
   - "spec doc indexing rejected"
   - "quality gate bypass incomplete"
   - "warn-only not working"
   - "1807 spec docs rejected"
-  - "processPreparedMemory rejection gates"
+  - "processpreparedmemory rejection gates"
 importance_tier: "critical"
-contextType: "bug-fix"
+contextType: "decision"
 ---
 # Feature Specification: Spec Doc Indexing Bypass
 

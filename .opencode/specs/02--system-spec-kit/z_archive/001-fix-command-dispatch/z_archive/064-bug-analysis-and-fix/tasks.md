@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Bug Analysis and Fix - Implementation Breakdown [064-bug-analysis-and-fix/tasks]"
+title: "Tasks: SpecKit Bug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/tasks]"
 description: "Comprehensive task breakdown for fixing ~231 identified issues across the SpecKit system, organized by priority and phase."
 trigger_phrases:
   - "tasks"
@@ -72,6 +72,7 @@ scratch/debug-notes.md           # Investigation notes
 | `[P]`  | Can be done in parallel with other [P] tasks |
 | `[B]`  | Blocked - waiting on dependency              |
 
+<!-- /ANCHOR:notation -->
 ---
 
 ## AI EXECUTION PROTOCOL

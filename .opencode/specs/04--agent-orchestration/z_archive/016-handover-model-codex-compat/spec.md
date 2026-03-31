@@ -1,5 +1,5 @@
 ---
-title: "Spec 016: Handover Model Downgrade + Codex Agent Compatibility [016-handover-model-codex-compat/spec]"
+title: "Spec 016: Handover Model Downgrade + Codex [04--agent-orchestration/z_archive/016-handover-model-codex-compat/spec]"
 description: "Two issues with the current agent configuration"
 trigger_phrases:
   - "spec"

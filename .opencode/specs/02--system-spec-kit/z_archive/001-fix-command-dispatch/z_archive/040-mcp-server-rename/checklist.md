@@ -1,5 +1,5 @@
 ---
-title: "Checklist: MCP Server Rename [040-mcp-server-rename/checklist]"
+title: "Checklist: MCP [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/checklist]"
 description: "checklist document for 040-mcp-server-rename."
 trigger_phrases:
   - "checklist"
@@ -14,12 +14,14 @@ contextType: "implementation"
 # Checklist: MCP Server Rename
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 - [x] P0: Spec folder created
 - [x] P0: All target files identified (159 occurrences found across 30+ files)
 - [x] P0: Current occurrences documented
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Implementation
 - [x] P0: opencode.json updated (1 replacement)
 - [x] P0: AGENTS.md updated (5 replacements)

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: generate-context.js Modularization [058-generate-context-modularization/implementation-summary]"
+title: "...tem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/implementation-summary]"
 description: "Result: Successfully decomposed a 4,837-line monolithic script into a modular architecture with 145-line CLI entry point and 20+ specialized modules."
 trigger_phrases:
   - "implementation"
@@ -85,6 +85,7 @@ scripts/
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 ### 1. JSDoc Headers for Node.js Modules
@@ -120,6 +121,7 @@ const { CONFIG } = require('./core');
 
 **Rationale**: Session data collection aggregates from multiple extractors. Keeping it separate prevents the session-extractor from becoming too large and maintains clear data flow.
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Benefits Achieved
@@ -201,3 +203,10 @@ The following existing modules were NOT modified (per spec scope):
 | Clean imports via index.js | PASS |
 | JSDoc headers on all modules | PASS |
 | No performance regression | PASS |
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

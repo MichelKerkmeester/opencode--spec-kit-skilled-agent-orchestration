@@ -1,3 +1,17 @@
+---
+title: "Phase 2: SessionStart Hook — Session Priming [02--system-spec-kit/024-compact-code-graph/002-session-start-hook/spec]"
+description: "Auto-prime every new Claude Code session with relevant prior context by hooking into the SessionStart lifecycle event. Shares session-prime.ts with Phase 1's compact injection p..."
+trigger_phrases:
+  - "phase"
+  - "sessionstart"
+  - "hook"
+  - "session"
+  - "priming"
+  - "spec"
+  - "002"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 2: SessionStart Hook — Session Priming
 
 ## Summary

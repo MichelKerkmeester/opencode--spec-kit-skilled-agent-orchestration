@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Tooling and Scripts"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/checklist]"
 description: "QA verification for Tooling and Scripts code audit"
 trigger_phrases:
   - "checklist"

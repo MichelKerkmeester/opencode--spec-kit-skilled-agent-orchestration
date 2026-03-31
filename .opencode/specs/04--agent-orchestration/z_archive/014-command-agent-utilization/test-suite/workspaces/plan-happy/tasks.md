@@ -1,5 +1,5 @@
 ---
-title: "Tasks: JWT Authentication with RS256 Signing [plan-happy/tasks]"
+title: "Tasks: JWT [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -34,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
 - [ ] T001 Generate RSA key pair for RS256 signing (scripts/generate-keys.sh)
@@ -41,8 +42,10 @@ contextType: "implementation"
 - [ ] T003 [P] Configure JWT settings with key loading (src/config/jwt.config.ts)
 - [ ] T004 [P] Install dependencies: @nestjs/jwt, @nestjs/passport, passport-jwt (package.json)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
 - [ ] T005 Implement JwtService.sign() with RS256 private key (src/auth/jwt.service.ts)
@@ -56,8 +59,10 @@ contextType: "implementation"
 - [ ] T013 Implement AuthMiddleware for token extraction (src/auth/auth.middleware.ts)
 - [ ] T014 Implement in-memory refresh token store (src/auth/token-store.service.ts)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [ ] T015 Unit tests for JwtService sign/verify (src/auth/__tests__/jwt.service.spec.ts)
@@ -67,16 +72,20 @@ contextType: "implementation"
 - [ ] T019 Manual verification of protected route rejection
 - [ ] T020 Update spec.md, plan.md, tasks.md status to Complete
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
 - [ ] Manual verification passed
 
+<!-- /ANCHOR:completion -->
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -90,3 +99,4 @@ CORE TEMPLATE (~60 lines)
 - 3 phases: Setup, Implementation, Verification
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:cross-refs -->

@@ -1,6 +1,5 @@
 ---
-title: "Deep Review Pass 3 Reality [013-agents-alignment/25-03-26_16-28__deep-review-pass-3-reality-alignment-check-of-013]"
-description: "Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via GPT-5.4 high (cli-copilot). Verdict: CONDITIONAL. 2 active P1 findings: file..."
+title: "...pec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_16-28__deep-review-pass-3-reality-alignment-check-of-013]"
 trigger_phrases:
   - "validation fails"
   - "agents alignment"
@@ -31,18 +30,17 @@ trigger_phrases:
   - "fusion/013"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Deep Review Pass 3 Reality Alignment Check Of 013
 
 ## SESSION SUMMARY

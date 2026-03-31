@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Ground Truth ID Remapping"
+title: "Tasks: Ground Truth ID Remapping [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/tasks]"
 description: "Task breakdown for creating map-ground-truth-ids.ts and updating ground-truth.json with live memory IDs to restore non-zero ablation study metrics."
 trigger_phrases:
   - "ground truth remapping tasks"

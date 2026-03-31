@@ -1,11 +1,6 @@
 ---
-title: "Decision Record: sk-git Superset Worktree Alignment"
-description: "Architectural decisions for aligning sk-git with Superset IDE's worktree model"
-trigger_phrases:
-  - "sk-git decisions"
-  - "worktree alignment decisions"
-importance_tier: "normal"
-contextType: "decision"
+title: "Decision Record: sk-git Superset Worktree Alignment [03--commands-and-skills/006-sk-git-superset-worktrees/decision-record]"
+description: "Architecture decisions for adapting Superset-style worktree workflows into sk-git documentation."
 ---
 # Decision Record: sk-git Superset Worktree Alignment
 
@@ -14,92 +9,295 @@ contextType: "decision"
 
 ---
 
-## ADR-001: Centralized Worktree Storage
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Centralized worktree storage with backward-compatible fallback
 
-**Status**: Accepted
-**Date**: 2026-02-28
+### Metadata
 
-**Context**: Superset IDE stores all worktrees in `~/.superset/worktrees/<project>/<branch>/`, keeping project directories clean. The current sk-git skill uses `.worktrees/` inside the project directory. The centralized model supports better organization across multiple projects and aligns with Superset's proven pattern.
-
-**Decision**: Adopt `~/.opencode/worktrees/<project>/<branch>/` as the NEW default location. Keep `.worktrees/` (project-local) as a supported fallback with clear detection: if `.worktrees/` already exists in a project, use it; otherwise default to centralized.
-
-**Directory resolution priority** (mirrors Superset):
-1. Project-level override (if worktree.json specifies `worktreeBaseDir`)
-2. Existing project-local: `.worktrees/` (if directory exists)
-3. Global default: `~/.opencode/worktrees/<project>/<branch>/`
-
-**Consequences**:
-- (+) Project directories stay clean
-- (+) Worktrees organized by project in one location
-- (+) Matches Superset's architecture
-- (+) Backward compatible — existing `.worktrees/` users unaffected
-- (-) New users must know the centralized location (mitigated by `git worktree list`)
-
-**Alternatives Rejected**:
-- **Keep `.worktrees/` only**: Doesn't align with Superset; clutters project dir
-- **Centralized only, no fallback**: Breaks backward compatibility for existing users
-- **`~/.config/opencode/worktrees/`**: XDG-compliant but doesn't match Superset's `~/.superset/` pattern
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-02-28 |
+| **Deciders** | Spec author, sk-git maintainers |
 
 ---
 
-## ADR-002: Config-Driven Lifecycle Hooks
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Status**: Accepted
-**Date**: 2026-02-28
+The existing sk-git workflow used project-local `.worktrees/` storage. The Superset model uses centralized storage that keeps repo roots cleaner and supports broader multi-workspace organization.
 
-**Context**: Superset uses `.superset/config.json` with `{ "setup": [...], "teardown": [...] }` to automate dependency installation when worktrees are created and cleanup when destroyed. sk-git currently has no lifecycle hook system — it auto-detects project type (package.json, Cargo.toml, etc.) and runs standard commands inline.
+### Constraints
 
-**Decision**: Adopt `.opencode/worktree.json` with schema: `{ "setup": [...], "teardown": [...] }`. Simple single-location loading from `<main-repo>/.opencode/worktree.json`. Multi-level config resolution hierarchy deferred to follow-up spec.
-
-**Config vs auto-detect rule**: If worktree.json `setup[]` is present and non-empty, it REPLACES auto-detect setup. If absent or empty, fall back to existing auto-detect behavior.
-
-**Security gate**: AI MUST show the user the commands from worktree.json and get explicit confirmation before executing. This prevents arbitrary command execution from malicious worktree.json files in cloned repositories.
-
-**Deferred to follow-up**:
-- Multi-level config resolution hierarchy (user override → worktree → project default)
-- Environment variable injection (`SK_GIT_ROOT_PATH`, `SK_GIT_WORKSPACE_NAME`)
-
-**Consequences**:
-- (+) Automated, repeatable workspace setup
-- (+) Project-specific teardown (Docker, database cleanup, etc.)
-- (+) Adapted from Superset's pattern
-- (+) Optional — missing config = no hooks, graceful degradation
-- (+) Security gate prevents malicious script execution
-- (-) New file for users to create (mitigated by config template asset)
-- (-) User must confirm lifecycle scripts each time (mitigated: small friction for significant security benefit)
-
-**Alternatives Rejected**:
-- **Git hooks (post-checkout)**: Can't cover teardown; not per-project without custom scripts
-- **Makefile targets (`make setup`, `make teardown`)**: Different paradigm; not aligned with Superset
-- **Auto-detect only (current approach)**: No teardown support; can't handle custom stacks
-- **package.json scripts**: Language-specific; doesn't work for non-Node projects
+- Existing `.worktrees/` users must not be broken.
+- The documentation must remain practical for a CLI/AI-skill workflow.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-## ADR-003: Branch Name Sanitization Pipeline
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-**Status**: Deferred (follow-up spec)
-**Date**: 2026-02-28
+**We chose**: Document `~/.opencode/worktrees/<project>/<branch>/` as the new default while preserving `.worktrees/` as a supported fallback.
 
-**Context**: Superset sanitizes branch names through a multi-step pipeline: lowercase, replace invalid chars with hyphens, strip `.lock`, truncate to 100 chars, deduplicate with `-1`/`-2` suffixes. sk-git currently uses `type/description` convention with no automated sanitization, which can lead to invalid branch names.
+**How it works**: New guidance recommends centralized storage first, but existing project-local workflows continue to be supported so migration is not forced.
+<!-- /ANCHOR:adr-001-decision -->
 
-**Decision**: Adopt a shell-based sanitization pipeline:
-1. **Sanitize**: lowercase, replace non-alphanumeric (except `/` and `-`) with hyphens, collapse multiple hyphens, strip `.lock`, max 50 chars per segment
-2. **Truncate**: Cap total length at 100 characters, cut at word boundary
-3. **Deduplicate**: If branch exists, append `-1`, `-2`, etc.
-4. **Preview**: Always show the sanitized name to user before proceeding
+---
 
-**Consequences**:
-- (+) Valid, consistent branch names from any user input
-- (+) Prevents Git errors from invalid characters
-- (+) Matches Superset's sanitization approach
-- (+) User sees preview before creation
-- (-) Sanitized name may differ from user intent (mitigated by preview)
-- (-) The prefix `type/` convention is preserved but sanitization applies to the description part
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
 
-**Alternatives Rejected**:
-- **No sanitization (status quo)**: Users get Git errors with special chars
-- **Strict validation (reject invalid)**: Poor UX — auto-fix is friendlier
-- **Full Superset pipeline (with DB dedup)**: Over-engineered for CLI; git-based dedup sufficient
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Centralized default + fallback** | Cleaner repos, backward compatibility | Slightly more complex guidance | 9/10 |
+| Project-local only | Simple and familiar | Less aligned with Superset model | 5/10 |
+| Centralized only | Strong consistency | Breaks existing local setups | 4/10 |
+
+**Why this one**: It captured the Superset benefit without forcing current users into an immediate migration.
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- Repo roots stay cleaner.
+- Worktrees can be organized across projects more predictably.
+
+**What it costs**:
+- The guidance becomes slightly more complex. Mitigation: document resolution priority clearly.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Users are confused by two supported storage patterns | M | Document precedence and migration notes clearly |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Existing worktree model was too manual |
+| 2 | **Beyond Local Maxima?** | PASS | Several storage approaches were considered |
+| 3 | **Sufficient?** | PASS | Default + fallback covers old and new workflows |
+| 4 | **Fits Goal?** | PASS | Aligns sk-git with the adapted Superset model |
+| 5 | **Open Horizons?** | PASS | Leaves room for future migration guidance |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Worktree docs describe centralized storage as the default.
+- Existing `.worktrees/` usage remains documented as supported.
+
+**How to roll back**: Revert the guidance to project-local `.worktrees/` only and remove centralized-path references.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---
+
+
+### ADR-002: Config-driven lifecycle hooks with explicit user confirmation
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-02-28 |
+| **Deciders** | Spec author, sk-git maintainers |
+
+---
+
+
+### Context
+
+Superset-style worktree setup and teardown become more useful when project-specific commands can run automatically. In an AI-driven CLI context, that creates a security problem because repository config could request arbitrary commands.
+
+### Constraints
+
+- Setup and teardown must stay optional.
+- Users must remain in control of command execution.
+
+
+---
+
+
+### Decision
+
+**We chose**: Use `.opencode/worktree.json` for setup/teardown hooks and require explicit user confirmation before any lifecycle script runs.
+
+**How it works**: The config file can define hook arrays, but the AI must show those commands to the user and get approval before execution. If no config exists, the workflow falls back gracefully.
+
+
+---
+
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Config hooks + confirmation** | Flexible and safer in AI workflows | Adds one extra confirmation step | 9/10 |
+| Config hooks without confirmation | Less friction | Unsafe for cloned repos | 2/10 |
+| No lifecycle config | Simpler docs | Misses important automation benefits | 5/10 |
+
+**Why this one**: It preserves automation value while respecting the security expectations of AI-mediated command execution.
+
+
+---
+
+
+### Consequences
+
+**What improves**:
+- Projects can document repeatable setup and teardown.
+- Users retain control over potentially unsafe commands.
+
+**What it costs**:
+- There is extra confirmation friction. Mitigation: keep commands visible and explicit.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Malicious config in cloned repos | H | Mandatory explicit confirmation |
+
+
+---
+
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Hook automation without safeguards would be risky |
+| 2 | **Beyond Local Maxima?** | PASS | Hook-free and auto-exec variants were considered |
+| 3 | **Sufficient?** | PASS | Confirmation requirement addresses the key risk |
+| 4 | **Fits Goal?** | PASS | Supports the adapted Superset lifecycle model |
+| 5 | **Open Horizons?** | PASS | Future config expansion remains possible |
+
+**Checks Summary**: 5/5 PASS
+
+
+---
+
+
+### Implementation
+
+**What changes**:
+- Docs describe `.opencode/worktree.json` with setup and teardown arrays.
+- The workflow explicitly asks for confirmation before script execution.
+
+**How to roll back**: Remove config-hook guidance and return to manual setup/teardown instructions only.
+
+
+
+---
+
+
+### ADR-003: Defer branch sanitization and advanced config resolution
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Deferred |
+| **Date** | 2026-02-28 |
+| **Deciders** | Spec author, sk-git maintainers |
+
+---
+
+
+### Context
+
+The full Superset-style model also suggests branch sanitization, multi-level config resolution, and environment-variable injection. Those improvements were valuable but expanded the scope beyond the core documentation alignment work.
+
+### Constraints
+
+- The current spec must stay focused on the core worktree workflow adaptation.
+- Deferred items still need to be recorded for future work.
+
+
+---
+
+
+### Decision
+
+**We chose**: Defer branch sanitization, advanced config resolution, and environment-variable injection to follow-up work.
+
+**How it works**: The current documentation focuses on centralized storage, lifecycle hooks, setup flow, and teardown safety. Deferred items remain documented so they can be resumed without rediscovery.
+
+
+---
+
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Defer advanced features** | Keeps current scope achievable | Some Superset parity remains incomplete | 8/10 |
+| Include everything now | More feature parity immediately | Too much scope for one documentation pass | 4/10 |
+
+**Why this one**: It protected the core adaptation work from scope creep.
+
+
+---
+
+
+### Consequences
+
+**What improves**:
+- The current work stays focused and completable.
+- Future work has a documented starting point.
+
+**What it costs**:
+- Some advanced parity remains deferred. Mitigation: keep deferred items explicit in the spec and checklist.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Deferred items are forgotten | M | Record them in the spec, plan, and checklist |
+
+
+---
+
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Core scope was already large |
+| 2 | **Beyond Local Maxima?** | PASS | Full-parity option was explicitly considered |
+| 3 | **Sufficient?** | PASS | Core workflow adaptation remains meaningful without the deferred items |
+| 4 | **Fits Goal?** | PASS | Keeps the current effort focused on the highest-value pieces |
+| 5 | **Open Horizons?** | PASS | Follow-up work is clearly defined |
+
+**Checks Summary**: 5/5 PASS
+
+
+---
+
+
+### Implementation
+
+**What changes**:
+- Deferred items remain documented rather than implemented in this pass.
+- Core worktree workflow alignment remains the focus.
+
+**How to roll back**: Re-open the deferred scope and fold the advanced features back into the current plan.
+
+
 
 ---

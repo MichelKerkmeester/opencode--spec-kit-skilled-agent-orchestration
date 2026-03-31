@@ -1,5 +1,5 @@
 ---
-title: "Plan: Rename workflows-memory → system-memory [025-system-memory-rename/plan]"
+title: "Plan: Rename workflows- [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/plan]"
 description: "Based on the proven pattern from .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename, this rename will follow a 5-phase architecture with parallel agent execution where possible."
 trigger_phrases:
   - "plan"
@@ -15,6 +15,7 @@ contextType: "decision"
 # Plan: Rename workflows-memory → system-memory
 
 <!-- ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Implementation Architecture
 
 ### 5-Phase Execution Model
@@ -79,6 +80,7 @@ Based on the proven pattern from `.opencode/specs/02--system-spec-kit/z_archive/
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- /ANCHOR:architecture -->
 ## Phase 1: Directory Rename (BLOCKING)
 
 **Agent Count:** 1 (Orchestrator direct)
@@ -370,6 +372,7 @@ node .opencode/skills/system-memory/scripts/generate-context.js \
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If critical failures occur:
@@ -389,6 +392,7 @@ If critical failures occur:
 
 3. **Partial rollback:** Restore specific files using git while keeping directory rename
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## Related Documentation

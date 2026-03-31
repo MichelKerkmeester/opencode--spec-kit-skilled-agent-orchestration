@@ -1,6 +1,5 @@
 ---
-title: "Create prompt command implementation for 017-cmd-create-prompt 2026-03-01"
-description: "This session completed the /create:prompt command implementation around the sk-prompt-improver skill. It also embedded full Gemini CLI TOML command content across 21 wrappers..."
+title: "Create prompt command [03--commands-and-skills/017-cmd-create-prompt/01-03-26_14-44__create-prompt-command]"
 trigger_phrases:
   - "create prompt command"
   - "prompt improver wrapper"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "clear scoring workflow"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Create Prompt Command
 
 ## SESSION SUMMARY

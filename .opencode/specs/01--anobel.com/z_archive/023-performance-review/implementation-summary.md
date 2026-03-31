@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Performance Optimization Review - Spec 025 [025-performance-review/implementation-summary]"
+title: "Implementation Summary: Performance [01--anobel.com/z_archive/023-performance-review/implementation-summary]"
 description: "Six Lighthouse audits were run using the Lighthouse CLI to capture post-Spec 024 performance metrics"
 trigger_phrases:
   - "implementation"
@@ -219,3 +219,10 @@ Based on the analysis, the following optimizations are recommended for Phase 2:
 | 2026-01-31 | Claude Opus 4.5 | Initial implementation |
 
 <!-- /ANCHOR:revision-history -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

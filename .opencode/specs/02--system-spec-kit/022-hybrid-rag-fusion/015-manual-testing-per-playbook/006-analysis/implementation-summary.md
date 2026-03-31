@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook analysis phase"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/implementation-summary]"
 description: "Post-execution summary for 7 analysis scenarios. To be completed after test execution."
 trigger_phrases:
   - "analysis summary"
   - "analysis results"
   - "causal graph results"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

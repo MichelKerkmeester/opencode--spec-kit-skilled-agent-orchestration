@@ -1,13 +1,13 @@
 ---
-title: "Verification Checklist: Sprint 6 — Indexing and Graph"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph/checklist]"
 description: "Verification checklist for Sprint 6: graph centrality, N3-lite consolidation, anchor-aware thinning, entity extraction, spec folder hierarchy"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "sprint 6 checklist"
   - "indexing and graph checklist"
   - "sprint 6 verification"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: Sprint 6 — Indexing and Graph
 

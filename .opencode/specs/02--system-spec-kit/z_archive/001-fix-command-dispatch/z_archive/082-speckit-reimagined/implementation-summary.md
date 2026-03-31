@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 082-speckit-reimagined [082-speckit-reimagined/implementation-summary]"
+title: "Impleme [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/implementation-summary]"
 description: "Date: 2026-02-01"
 trigger_phrases:
   - "implementation"
@@ -26,12 +26,14 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Complete
 
 **Date:** 2026-02-01
 
 All 233 checklist items verified by 20-agent parallel review. This spec folder is now fully verified and complete.
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Executive Summary
@@ -316,3 +318,10 @@ Test planning documentation is now consolidated in `tests/` subdirectory:
 - **Competitor Research:** drift, seu-claude, dotmd systems
 - **Template Location:** `.opencode/skill/system-spec-kit/templates/context_template.md`
 - **Memory Commands:** `.opencode/command/memory/`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

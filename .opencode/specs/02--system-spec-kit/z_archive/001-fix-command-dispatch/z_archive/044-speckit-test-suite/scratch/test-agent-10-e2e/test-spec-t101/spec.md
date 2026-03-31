@@ -1,5 +1,5 @@
 ---
-title: "Test Spec T10.1 [test-spec-t101/spec]"
+title: "...it/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-spec-t101/spec]"
 description: "This is a test specification for end-to-end integration testing."
 trigger_phrases:
   - "test"

@@ -1,3 +1,16 @@
+---
+title: "Plan: Phase 3 — Stop Hook + Token Tracking [02--system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/plan]"
+description: "1. Create claude-transcript.ts parser"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "stop"
+  - "hook"
+  - "token"
+  - "003"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 3 — Stop Hook + Token Tracking
 
 ## Steps
@@ -25,6 +38,8 @@
    - Large transcript (>10MB) → verify no OOM
    - Cost calculation accuracy per model
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phases 1-2 (shared utilities: `shared.ts`, `hook-state.ts`)
 - SQLite database access from hook script (direct import)
+<!-- /ANCHOR:dependencies -->

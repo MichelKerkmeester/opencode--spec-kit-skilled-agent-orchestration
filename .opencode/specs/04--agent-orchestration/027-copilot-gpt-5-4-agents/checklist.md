@@ -1,6 +1,14 @@
 ---
-title: "Verification Checklist: GPT-5.4 Agent Model Upgrade"
+title: "Verification Checklist: GPT-5.4 Agent Model Upgrade [04--agent-orchestration/027-copilot-gpt-5-4-agents/checklist]"
 description: "Verification Date: 2026-03-06"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "gpt"
+  - "agent"
+  - "model"
+  - "027"
+  - "copilot"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -72,7 +80,7 @@ contextType: "implementation"
 
 - [x] CHK-040 [P1] Spec, plan, and tasks reflect final implementation state [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`]
 - [x] CHK-041 [P1] Implementation summary written [EVIDENCE: `implementation-summary.md`]
-- [x] CHK-042 [P2] Memory context saved [EVIDENCE: `memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md`, `memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md`]
+- [x] CHK-042 [P2] Memory context saved [EVIDENCE: `scratch/legacy-memory-quarantine/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md`, `scratch/legacy-memory-quarantine/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md`]
 <!-- /ANCHOR:docs -->
 
 ---

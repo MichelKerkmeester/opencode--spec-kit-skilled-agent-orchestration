@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: AI Auto-Populate on Spec Upgrade [128-upgrade-auto-populate/plan]"
+title: "Implementation Plan: AI Auto-Populate on Spec Upgrade [02--system-spec-kit/z_archive/011-upgrade-auto-populate/plan]"
 description: "This implements a post-upgrade AI workflow step that automatically populates template placeholders injected by upgrade-level.sh. The approach is workflow-driven (AI agent instru..."
 trigger_phrases:
   - "implementation"
@@ -143,6 +143,7 @@ upgrade-level.sh output → AI reads all .md files → AI extracts context
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -160,6 +161,7 @@ Phase 1 (Context Extraction) ──► Phase 2 (Placeholder Population) ──�
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -259,6 +261,7 @@ Phase 1 (Context Extraction) ──► Phase 2 (Placeholder Population) ──�
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: AI-Side Workflow vs Script Modification
@@ -279,6 +282,7 @@ Phase 1 (Context Extraction) ──► Phase 2 (Placeholder Population) ──�
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

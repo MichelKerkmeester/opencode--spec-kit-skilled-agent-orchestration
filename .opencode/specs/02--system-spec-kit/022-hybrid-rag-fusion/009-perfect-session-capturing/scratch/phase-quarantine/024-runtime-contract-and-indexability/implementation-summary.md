@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: ".../009-perfect-session-capturing/scratch/phase-quarantine/024-runtime-contract-and-indexability/implementation-summary]"
 description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Security Remediation Plan [009-security-remediation/plan]"
+title: "Security Remediation Plan [009-security-remediation/plan] [01--anobel.com/z_archive/009-security-remediation/plan]"
 description: "plan document for 009-security-remediation."
 trigger_phrases:
   - "security"

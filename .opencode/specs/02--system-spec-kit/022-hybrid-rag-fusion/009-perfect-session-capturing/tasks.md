@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Perfect Session Capturing [template:level_3/tasks.md]"
+title: "Tasks: Perfect Session Capturing [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/tasks]"
 description: "Task Format: T### [P?] Description (file path); current scope is the authoritative phase-tree reference realignment pass."
 trigger_phrases:
   - "tasks"

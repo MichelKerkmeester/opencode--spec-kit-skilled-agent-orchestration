@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Hybrid Search Pipeline Null DB Fix"
+title: "Implementation Plan: Hybrid Search [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/plan]"
 description: "Diagnose and fix the null db/vectorSearchFn references in hybrid-search.js that cause the search pipeline to return 0 results for all queries."
 trigger_phrases:
   - "hybrid search fix plan"
   - "null db search fix"
   - "search pipeline repair"
-  - "ftsSearch null db fix"
+  - "ftssearch null db fix"
 importance_tier: "critical"
 contextType: "implementation"
 ---

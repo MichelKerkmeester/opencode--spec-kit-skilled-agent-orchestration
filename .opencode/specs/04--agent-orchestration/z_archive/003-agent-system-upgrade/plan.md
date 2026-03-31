@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent System Upgrade [003-agent-system-upgrade/plan]"
+title: "Implementation Plan: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/plan]"
 description: "This plan consolidates three workstreams that were executed in sequence"
 trigger_phrases:
   - "implementation"
@@ -263,6 +263,7 @@ Request → Circuit Breaker Check
 
 
 <!-- ANCHOR:files-changed-summary -->
+<!-- ANCHOR:summary -->
 ## FILES CHANGED SUMMARY
 
 ### Agent Files (6)
@@ -300,6 +301,7 @@ All agents linked in `.claude/agents/`:
 
 
 <!-- ANCHOR:lessons-learned -->
+<!-- /ANCHOR:summary -->
 ## LESSONS LEARNED
 
 1. **Parallel dispatch accelerates**: 10+ agents in parallel significantly speeds implementation

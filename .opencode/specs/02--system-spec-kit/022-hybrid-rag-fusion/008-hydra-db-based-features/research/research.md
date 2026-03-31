@@ -1,3 +1,15 @@
+---
+title: "Research: Hydra DB Features Assessment [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/research]"
+description: "Deep research audit of the Hydra DB features delivered during 008-hydra-db-based-features spec folder. The goal is to determine whether these features need refinement, upgrade, ..."
+trigger_phrases:
+  - "research"
+  - "hydra"
+  - "features"
+  - "assessment"
+  - "008"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Hydra DB Features Assessment
 
 ## 1. Executive Summary

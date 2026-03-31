@@ -1,5 +1,5 @@
 ---
-title: "Plan: MCP Server Rename [040-mcp-server-rename/plan]"
+title: "Plan: MCP Server Rename [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/plan]"
 description: "plan document for 040-mcp-server-rename."
 trigger_phrases:
   - "plan"

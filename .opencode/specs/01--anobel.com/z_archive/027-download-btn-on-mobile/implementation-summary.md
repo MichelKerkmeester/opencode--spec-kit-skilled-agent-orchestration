@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [029-download-btn-on-mobile/implementation-summary]"
+title: "Implementation Summary [029-download-btn-on [01--anobel.com/z_archive/027-download-btn-on-mobile/implementation-summary]"
 description: "Fixed mobile download button functionality on anobel.com. The root cause was Webflow's hidden anchor overlay (.btn--interaction > .btn--link) intercepting taps before our JavaSc..."
 trigger_phrases:
   - "implementation"
@@ -30,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:what-was-built -->
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Fixed mobile download button functionality on anobel.com. The root cause was Webflow's hidden anchor overlay (`.btn--interaction > .btn--link`) intercepting taps before our JavaScript handler could process them. Added CSS to disable the overlay, a spinner animation for loading feedback, and updated the iOS code path to show a brief loading state before triggering the download.
@@ -56,6 +57,8 @@ Fixed mobile download button functionality on anobel.com. The root cause was Web
 ---
 
 <!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:decisions -->
+<!-- /ANCHOR:what-built -->
 ## Key Decisions
 
 | Decision | Rationale |
@@ -70,6 +73,7 @@ Fixed mobile download button functionality on anobel.com. The root cause was Web
 ---
 
 <!-- ANCHOR:root-cause-analysis -->
+<!-- /ANCHOR:decisions -->
 ## Root Cause Analysis
 
 ### The Problem
@@ -129,6 +133,7 @@ Reset to idle after 3 seconds
 ---
 
 <!-- ANCHOR:known-limitations -->
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **iOS PDF behavior**: iOS Safari will open PDFs in the browser viewer rather than downloading. Users must use "Share → Save to Files" to save the PDF. This is an iOS platform limitation, not a bug.
@@ -139,6 +144,7 @@ Reset to idle after 3 seconds
 ---
 
 <!-- ANCHOR:cdn-deployment -->
+<!-- /ANCHOR:limitations -->
 ## CDN Deployment
 
 Files need to be uploaded to Cloudflare R2:

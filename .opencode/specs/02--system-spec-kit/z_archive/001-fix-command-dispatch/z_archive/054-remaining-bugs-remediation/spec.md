@@ -1,5 +1,5 @@
 ---
-title: "Spec: Remaining Bugs Remediation [054-remaining-bugs-remediation/spec]"
+title: "Spec: Remaining [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/spec]"
 description: "Following comprehensive analysis of spec folders 052-codebase-fixes and 053-script-analysis-testing, along with a deep bug hunt of the Spec Kit Memory system, 13 bugs were ident..."
 trigger_phrases:
   - "spec"
@@ -126,6 +126,7 @@ Following comprehensive analysis of spec folders 052-codebase-fixes and 053-scri
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 3. Requirements
 
 ### 3.1 Functional Requirements
@@ -154,8 +155,10 @@ Following comprehensive analysis of spec folders 052-codebase-fixes and 053-scri
 | NFR-002 | Backward compatibility | Existing checkpoints must restore |
 | NFR-003 | Test coverage | All fixes must have unit tests |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 4. Success Criteria
 
 - [ ] All 2 P0 bugs fixed and verified
@@ -166,14 +169,17 @@ Following comprehensive analysis of spec folders 052-codebase-fixes and 053-scri
 - [ ] Memory search returns correct results
 - [ ] Checkpoint create/restore works with all embedding providers
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 5. Out of Scope
 
 - God module refactoring (generate-context.js splitting) - separate spec
 - Cross-boundary import cleanup - separate spec
 - New feature development
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 6. References

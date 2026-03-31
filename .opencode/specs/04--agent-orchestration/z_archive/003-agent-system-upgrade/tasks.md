@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Agent System Upgrade [003-agent-system-upgrade/tasks]"
+title: "Task Breakdown: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/tasks]"
 description: "Phase 1 (Orchestration)"
 trigger_phrases:
   - "task"

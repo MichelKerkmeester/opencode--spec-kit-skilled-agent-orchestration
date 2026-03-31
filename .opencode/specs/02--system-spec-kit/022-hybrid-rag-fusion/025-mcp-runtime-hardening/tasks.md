@@ -1,5 +1,5 @@
 ---
-title: "Tasks: MCP Runtime Hardening"
+title: "Tasks: MCP Runtime Hardening [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/tasks]"
 description: "T020-T025 implementation tasks delegated to codex exec agents and finalized by Claude."
 trigger_phrases:
   - "025 mcp hardening tasks"

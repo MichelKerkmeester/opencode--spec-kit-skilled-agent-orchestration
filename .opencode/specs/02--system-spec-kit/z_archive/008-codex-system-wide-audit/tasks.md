@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Wide Remediation of Confirmed Findings [125-codex-system-wide-audit/tasks]"
+title: "Tasks: System-Wide Remediation of Confirmed Findings [02--system-spec-kit/z_archive/008-codex-system-wide-audit/tasks]"
 description: "Task format: T### [P?] Description (path)"
 trigger_phrases:
   - "tasks"
@@ -111,6 +111,7 @@ Task format: `T### [P?] Description (path)`
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All P0 tasks complete: `T020..T029`

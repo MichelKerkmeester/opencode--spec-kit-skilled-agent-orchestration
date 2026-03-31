@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 016-Tooling-and-Scripts Manual Testing"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts/plan]"
 description: "Execution plan for 65 tooling-and-scripts scenario IDs across 5 groups: phase workflow, main-agent review, session capturing pipeline quality, tooling utilities, runtime audits, command routing, and JSON mode structured summary hardening."
 trigger_phrases:
   - "tooling scripts manual testing"
@@ -159,6 +159,7 @@ Two groups have sub-scenario expansions that require individual tracking:
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -179,6 +180,7 @@ Note: Phases 2, 3, and 4 can run in parallel after Phase 1 completes.
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

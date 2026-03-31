@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [014-font-performance/implementation-summary]"
+title: "Implementation Summary [014-font-performance/impl [01--anobel.com/z_archive/013-font-performance/implementation-summary]"
 description: "implementation summary document for 014-font-performance."
 trigger_phrases:
   - "implementation"
@@ -30,3 +30,10 @@ contextType: "implementation"
 - **Redeployment:** The user should publish the site for changes to take effect.
 - **Minification:** Run `scripts/minify-webflow.mjs` if this is part of the standard deployment pipeline (optional).
 <!-- /ANCHOR:pending-actions -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

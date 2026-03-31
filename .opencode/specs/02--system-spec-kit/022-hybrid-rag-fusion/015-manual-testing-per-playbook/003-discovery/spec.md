@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook discovery phase"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/spec]"
 description: "Phase 003 documents the discovery manual test packet. Execute scenarios EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, and EX-040 against the Spec Kit Memory system to verify memory_list, memory_stats, memory_health, and targeted discovery operations including folder filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal."
 trigger_phrases:
   - "discovery manual testing"
   - "phase 003 discovery"
-  - "EX-011 EX-012 EX-013 EX-036 EX-037 EX-038 EX-039 EX-040"
+  - "ex-011 ex-012 ex-013 ex-036 ex-037 ex-038 ex-039 ex-040"
   - "memory_list memory_stats memory_health test"
   - "folder filter discovery"
   - "trigger phrase matching discovery"
@@ -167,6 +167,7 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -185,6 +186,7 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Create Command YAML Refinement [template:level_3/decision-record.md]"
+title: "Decision Record: Create Command YAML [03--commands-and-skills/027-cmd-create-yaml-refinement/decision-record]"
 description: "Accepted implementation decision covering the shared top-level contract used to normalize the create-command YAML suite."
 trigger_phrases:
   - "create yaml refinement adr"

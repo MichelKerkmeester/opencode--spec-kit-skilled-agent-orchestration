@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-deep-research Manual Testing Playbook"
+title: "Feature Specification: sk-deep-research Manual [03--commands-and-skills/028-sk-deep-research-testing-playbook/spec]"
 description: "sk-deep-research ships protocol and command docs but no manual testing playbook package. This spec locks the approved greenfield implementation plan: a 19-scenario playbook across 6 categories, with no feature catalog in place yet."
 trigger_phrases:
   - "sk-deep-research testing playbook"
@@ -26,6 +26,7 @@ Implement the first `manual_testing_playbook/` package for `.opencode/skill/sk-d
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,6 +40,7 @@ Implement the first `manual_testing_playbook/` package for `.opencode/skill/sk-d
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -162,8 +164,7 @@ Define the exact Level 3 implementation scope for a greenfield `manual_testing_p
 
 ---
 
-<!-- ANCHOR:questions -->
-
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -175,8 +176,10 @@ Define the exact Level 3 implementation scope for a greenfield `manual_testing_p
 ### Reliability
 - **NFR-R01**: Every scenario must include at least one live source anchor and one concrete expected signal so future maintainers can detect drift during manual reviews.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -188,8 +191,10 @@ Define the exact Level 3 implementation scope for a greenfield `manual_testing_p
 - Root-doc validation is not recursive; the implementation must add manual path, link, and prompt-sync sweeps for category files.
 - If command, skill, and reference docs disagree during authoring, the implementation must stop and reconcile those conflicts before publishing scenario truth.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -201,6 +206,7 @@ Define the exact Level 3 implementation scope for a greenfield `manual_testing_p
 | Coordination | 12/15 | Must align `sk-doc` contract, `sk-deep-research` docs, approved scenario ordering, and no-feature-catalog constraints |
 | **Total** | **66/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -246,6 +252,7 @@ Define the exact Level 3 implementation scope for a greenfield `manual_testing_p
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Should a future `feature_catalog/` reuse the playbook feature IDs directly, or should the catalog introduce its own ID namespace and crosswalk table?

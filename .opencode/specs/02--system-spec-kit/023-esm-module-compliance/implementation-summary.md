@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: ESM Module Compliance"
+title: "Implementation Summary: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/implementation-summary]"
 description: "Final packet summary for the completed 5-phase ESM migration across shared, mcp_server, and scripts, including runtime proof, deep-review follow-through, and the final zero-failure test sweep."
 trigger_phrases:
   - "implementation summary"
   - "esm migration final summary"
   - "phase 5 test closure"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary
 

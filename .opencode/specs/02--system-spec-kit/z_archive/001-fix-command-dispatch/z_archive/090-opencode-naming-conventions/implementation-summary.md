@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/implementation-summary]"
+title: "...-system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/implementation-summary]"
 description: "Migrated all JavaScript code in .opencode/skill/system-spec-kit/ from snake_case to camelCase naming conventions, aligning with JS ecosystem standards (MDN, Airbnb, Node.js). Up..."
 trigger_phrases:
   - "implementation"
@@ -109,6 +109,7 @@ Fixed cross-directory import mismatches and remaining string-embedded function n
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 | Check | Result |
@@ -121,14 +122,17 @@ Fixed cross-directory import mismatches and remaining string-embedded function n
 | Python/Shell files modified | 0 |
 | Checklist items verified | 20/20 (8 P0, 11 P1, 1 P2) |
 
+<!-- /ANCHOR:verification -->
 ---
 
+<!-- ANCHOR:limitations -->
 ## Risks and Known Limitations
 
 1. **Test files**: Some test files reference function names in string literals (test descriptions). These were left as-is since they're descriptive text, not code.
 2. **External consumers**: Any code outside `.opencode/skill/system-spec-kit/` that imports snake_case names will still work via backward-compatible aliases.
 3. **String-embedded identifiers**: Some error messages and log strings contain the old snake_case names (e.g., `[working-memory] enforce_memory_limit failed`). These are display strings, not code references.
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Files Modified
@@ -136,3 +140,10 @@ Fixed cross-directory import mismatches and remaining string-embedded function n
 **Documentation**: 8 files in `sk-code--opencode/`
 **JS Code**: 163+ files in `system-spec-kit/` (mcp_server/, scripts/, shared/)
 **Spec Folder**: 6 files in `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

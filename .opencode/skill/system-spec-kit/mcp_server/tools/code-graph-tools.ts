@@ -1,0 +1,43 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Tools
+// ───────────────────────────────────────────────────────────────
+// Dispatch for code graph MCP tools: scan, query, status, context.
+import {
+  handleCodeGraphScan,
+  handleCodeGraphQuery,
+  handleCodeGraphStatus,
+  handleCodeGraphContext,
+} from '../handlers/code-graph/index.js';
+
+import type { MCPResponse } from './types.js';
+
+/** Tool names handled by this module */
+export const TOOL_NAMES = new Set([
+  'code_graph_scan',
+  'code_graph_query',
+  'code_graph_status',
+  'code_graph_context',
+]);
+
+/** Coerce handler response to MCPResponse (fix type literal narrowing) */
+function toMCP(result: { content: Array<{ type: string; text: string }> }): MCPResponse {
+  return {
+    content: result.content.map(c => ({ type: 'text' as const, text: c.text })),
+  };
+}
+
+/** Dispatch a tool call. Returns null if tool name not handled. */
+export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+  switch (name) {
+    case 'code_graph_scan':
+      return toMCP(await handleCodeGraphScan(args as Parameters<typeof handleCodeGraphScan>[0]));
+    case 'code_graph_query':
+      return toMCP(await handleCodeGraphQuery(args as unknown as Parameters<typeof handleCodeGraphQuery>[0]));
+    case 'code_graph_status':
+      return toMCP(await handleCodeGraphStatus());
+    case 'code_graph_context':
+      return toMCP(await handleCodeGraphContext(args as Parameters<typeof handleCodeGraphContext>[0]));
+    default:
+      return null;
+  }
+}

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent Haiku Compatibility [013-agent-haiku-compatibility/plan]"
+title: "Implementation Plan: Agent Haiku Compatibility [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/plan]"
 description: "Update orchestrate.md to remove stale 3-mode context agent references and add Haiku-specific failure awareness. The context agent was rewritten to thorough-only mode after spec ..."
 trigger_phrases:
   - "implementation"
@@ -166,6 +166,7 @@ User Request → Orchestrator
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -183,6 +184,7 @@ Phase 1 (Update orchestrate.md) ──► Phase 2 (Mirror to Claude Code) ──
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -216,6 +218,7 @@ Phase 1 (Update orchestrate.md) ──► Phase 2 (Mirror to Claude Code) ──
 
 ---
 
+<!-- ANCHOR:summary -->
 ## EXPLORATION FINDINGS SUMMARY
 
 ### From Architecture Explorer
@@ -244,3 +247,4 @@ LEVEL 2 PLAN (~140 lines)
 - Phase dependencies, effort estimation
 - Enhanced rollback procedures
 -->
+<!-- /ANCHOR:summary -->

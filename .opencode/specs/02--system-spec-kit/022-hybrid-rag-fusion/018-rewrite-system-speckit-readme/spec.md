@@ -1,5 +1,5 @@
 ---
-title: "Rewrite System Spec Kit README"
+title: "Rewrite System Spec Kit README [02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/spec]"
 description: "Complete rewrite of the system-spec-kit README to document the full skill surface: documentation levels 1-3+, memory system, 33 MCP tools, 14 commands, templates, scripts, and validation."
 trigger_phrases:
   - "speckit readme rewrite"

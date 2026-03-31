@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: 001-baseline-and-safety-rails"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/spec]"
 description: "Level 3+ phase spec for Hydra roadmap baseline hardening, rollout controls, and verification safety rails."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 1"
   - "baseline and safety rails"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "checkpoint safety"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 001-baseline-and-safety-rails
 
@@ -27,6 +27,7 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -65,6 +66,7 @@ This phase turns the roadmap from a loose planning artifact into a controlled ex
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -165,6 +167,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -183,8 +186,10 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **NFR-O01**: Phase 1 must provide rollback-safe artifacts for later schema work.
 - **NFR-O02**: Documentation must support manual validation by maintainers without hidden assumptions.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -201,8 +206,10 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - Graph phase smoke check sets `SPECKIT_HYDRA_PHASE=graph` and `SPECKIT_HYDRA_GRAPH_UNIFIED=true`.
 - Extended telemetry remains documented consistently with actual code behavior.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -214,6 +221,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | Coordination | 14/15 | This phase is a hard dependency for all later phases |
 | **Total** | **80/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -305,11 +313,13 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - Should the remaining Phase 1 baseline work absorb broader observability fields now, or stay narrowly focused on current hardening and documentation?
 - Do we want a dedicated Phase 1 regression command alias in `package.json`, or is the focused verification command in documentation sufficient?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

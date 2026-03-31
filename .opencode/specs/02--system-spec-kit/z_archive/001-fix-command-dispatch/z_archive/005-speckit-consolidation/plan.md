@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Skill Consolidation - Technical Approach & Migration [005-speckit-consolidation/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/plan]"
 description: "Implementation plan for consolidating .opencode/speckit/ into .opencode/skills/workflows-spec-kit/."
 trigger_phrases:
   - "implementation"
@@ -42,6 +42,7 @@ Migrate all templates, scripts, and supporting files from the standalone `.openc
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## 2. MIGRATION ARCHITECTURE
 
 ### Directory Depth Analysis
@@ -70,8 +71,10 @@ Migrate all templates, scripts, and supporting files from the standalone `.openc
 | Evidence | `.opencode/speckit/checklist-evidence/` | `.opencode/skills/workflows-spec-kit/checklist-evidence/` |
 | Relative depth | `../../..` (3 up) | `../../../..` (4 up) |
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 3. IMPLEMENTATION PHASES
 
 ### Phase 1: File Migration (No Breaking Changes Yet)
@@ -339,6 +342,7 @@ rm -rf .opencode/speckit-deprecated
 
 **Duration:** 5 minutes
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## 4. EXECUTION ORDER

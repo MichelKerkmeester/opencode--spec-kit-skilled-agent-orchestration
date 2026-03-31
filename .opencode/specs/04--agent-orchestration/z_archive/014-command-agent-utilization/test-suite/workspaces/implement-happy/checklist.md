@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: JWT Authentication [implement-happy/checklist]"
+title: "Verifi [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"
@@ -30,14 +30,17 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
 - [x] CHK-002 [P0] Technical approach defined in plan.md
 - [x] CHK-003 [P1] Dependencies identified and available
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks
@@ -45,8 +48,10 @@ contextType: "implementation"
 - [x] CHK-012 [P1] Error handling implemented for all auth flows
 - [x] CHK-013 [P1] Code follows NestJS module patterns
 
+<!-- /ANCHOR:code-quality -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria from spec.md met
@@ -54,32 +59,40 @@ contextType: "implementation"
 - [x] CHK-022 [P1] Integration tests pass for login flow
 - [x] CHK-023 [P1] Edge cases tested (expired token, invalid creds)
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets or keys
 - [x] CHK-031 [P0] Passwords hashed with bcrypt (cost 12)
 - [x] CHK-032 [P1] JWT signed with RS256
 
+<!-- /ANCHOR:security -->
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized
 - [x] CHK-041 [P1] API endpoints documented
 - [x] CHK-042 [P2] README updated with auth setup
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-050 [P1] Temp files in scratch/ only
 - [x] CHK-051 [P1] scratch/ cleaned before completion
 - [x] CHK-052 [P2] Findings saved to memory/
 
+<!-- /ANCHOR:file-org -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -90,4 +103,5 @@ contextType: "implementation"
 
 **Verification Date**: 2026-02-14
 
+<!-- /ANCHOR:summary -->
 ---

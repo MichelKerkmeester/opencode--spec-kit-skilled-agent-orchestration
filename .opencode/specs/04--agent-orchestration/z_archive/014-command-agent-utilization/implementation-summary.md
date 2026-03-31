@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Command Agent Utilization Audit [014-command-agent-utilization/implementation-summary]"
+title: "Implementation Summary: [04--agent-orchestration/z_archive/014-command-agent-utilization/implementation-summary]"
 description: "Audited all 18 create command files (12 YAML workflows + 6 MD references) and updated them to comply with AGENTS.md routing rules. Three violations were fixed: spec folder creat..."
 trigger_phrases:
   - "implementation"

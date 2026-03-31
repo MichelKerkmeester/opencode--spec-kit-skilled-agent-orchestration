@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: 005-hierarchical-scope-governance"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/spec]"
 description: "Level 3+ phase spec for scope isolation, governed ingest, retention, deletion, and auditability."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 5"
   - "scope governance"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "deletion"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 005-hierarchical-scope-governance
 
@@ -27,6 +27,7 @@ Phase 5 implements the governance controls intended to make Hydra collaboration-
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -64,6 +65,7 @@ This phase establishes the policy and lifecycle controls that keep memory state 
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -154,6 +156,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -172,8 +175,10 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 - **NFR-O51**: Operators can explain allow/deny decisions.
 - **NFR-O52**: Rollback procedures are defined before broad rollout.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -191,8 +196,10 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 - Retention policy requires keeping lineage but deleting derived search artifacts.
 - Audit logs must explain why a write was rejected without revealing protected content.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -204,6 +211,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 | Coordination | 14/15 | Depends on earlier phases and blocks Phase 6 |
 | **Total** | **89/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -291,11 +299,13 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - Which policy decisions should be cached locally versus resolved dynamically?
 - How much of the audit surface should be exposed directly to operators versus internal logs only?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

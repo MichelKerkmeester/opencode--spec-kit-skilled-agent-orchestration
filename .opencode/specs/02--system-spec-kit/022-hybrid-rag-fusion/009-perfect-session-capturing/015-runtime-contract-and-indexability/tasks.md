@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Runtime Contract and Indexability"
+title: "Ta [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 015"

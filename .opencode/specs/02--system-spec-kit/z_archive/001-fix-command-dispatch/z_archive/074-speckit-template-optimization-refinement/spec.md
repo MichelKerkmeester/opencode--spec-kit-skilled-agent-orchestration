@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Template Optimization Refinement [074-speckit-template-optimization-refinement/spec]"
+title: "Fea [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/spec]"
 description: "Enterprise-scale refinement of the SpecKit template optimization (Spec 073), conducted through multi-agent orchestration with 20+ Opus 4.5 agents executing parallel research, im..."
 trigger_phrases:
   - "feature"
@@ -42,8 +42,10 @@ Enterprise-scale refinement of the SpecKit template optimization (Spec 073), con
 | **Completed** | 2026-01-20 |
 | **Version** | v1.9.0 |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -52,8 +54,10 @@ The Spec 073 template optimization achieved significant template reduction (74-8
 ### Purpose
 Conduct thorough quality review of Spec 073 implementation through parallel research agents, generate formal analysis documents with quality grades, and implement priority refinements to achieve production-ready v1.9.0 release of the SpecKit system.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -83,8 +87,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 | `specs/074-*/review.md` | Create | Quality assessment document |
 | `specs/074-*/refinement-recommendations.md` | Create | Actionable recommendations |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -107,8 +113,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 | REQ-009 | Parallel dispatch documentation enhanced | Workstream notation fully documented |
 | REQ-010 | Integration tests pass | All existing validation rules green |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All analysis documents created with comprehensive content (3 documents, 500+ lines each)
@@ -117,8 +125,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 - **SC-004**: 10 verification agents all report pass status
 - **SC-005**: Version v1.9.0 released with complete changelog
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -130,8 +140,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 | Risk | Template drift during changes | Inconsistent system state | Atomic updates with validation |
 | Risk | Breaking changes introduced | User disruption | Backward compatibility testing |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -146,8 +158,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 - **NFR-R01**: All changes reversible via git
 - **NFR-R02**: Validation system unchanged (no regression risk)
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -160,8 +174,10 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 - Merge conflicts: Halt and report, require manual resolution
 - Validation failure: Block completion until resolved
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -173,6 +189,7 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 | Coordination | 13/15 | 10 parallel research, 10 verification |
 | **Total** | **83/100** | **Level 3+ (Enterprise Governance)** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -293,12 +310,14 @@ Conduct thorough quality review of Spec 073 implementation through parallel rese
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - [RESOLVED] Should verbose templates be created? Decision: Deferred to future spec
 - [RESOLVED] Should compose script be automated? Decision: Deferred to future spec
 - [RESOLVED] What version number for release? Decision: v1.9.0
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

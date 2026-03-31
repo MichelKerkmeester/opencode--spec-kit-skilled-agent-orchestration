@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Memory Plugin bun:sqlite Migration [003-memory-plugin-debugging/checklist]"
+title: ".../z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/checklist]"
 description: "Verified by: _______________"
 trigger_phrases:
   - "verification"
@@ -17,6 +17,7 @@ contextType: "implementation"
 > **SIMPLIFIED**: Only import statement change required - `bun:sqlite` is API-compatible with `better-sqlite3`. The `db.prepare()`, `db.query()`, and `db.close()` methods work identically in both libraries.
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation Checks
 
 - [ ] **P0**: Backup of original plugin file created
@@ -24,6 +25,7 @@ contextType: "implementation"
 - [ ] **P1**: bun:sqlite API compatibility verified for all query patterns
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Code Changes (P0 - Critical)
 
 ### Import Statement (ONLY REQUIRED CHANGE)
@@ -75,14 +77,17 @@ contextType: "implementation"
 - [ ] **P2**: Cache mechanism still works (1-minute TTL)
 - [ ] **P2**: Session refresh clears cache correctly
 
+<!-- ANCHOR:docs -->
 ## Documentation (P2 - Medium)
 
 - [ ] **P2**: research/research.md updated with implementation results
 - [ ] **P2**: Any unexpected findings documented
 - [ ] **P2**: Memory file created for future reference
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Passed | Failed | N/A |
@@ -93,6 +98,7 @@ contextType: "implementation"
 | **Total** | **21** | _ | _ | **7** |
 
 > **Note**: 7 items marked N/A due to bun:sqlite API compatibility with better-sqlite3. Only the import statement requires modification.
+<!-- /ANCHOR:summary -->
 
 ## Sign-off
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Security & Documentation Remediation [050-security-doc-remediation/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation/plan]"
 description: "Problem: CONFIG.DATA_FILE from CLI arguments is used in fs.readFileSync() without path validation."
 trigger_phrases:
   - "implementation"

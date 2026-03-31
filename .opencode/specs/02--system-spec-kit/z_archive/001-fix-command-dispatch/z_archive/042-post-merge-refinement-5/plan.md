@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: post-merge-refinement-5 - Technical Approach & Architecture [042-post-merge-refinement-5/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5/plan]"
 description: "Implementation plan defining technical approach, project structure, and execution strategy for Spec Kit Memory system bug fixes and refinements."
 trigger_phrases:
   - "implementation"
@@ -51,6 +51,7 @@ Address critical bugs affecting system stability and data integrity (P0), signif
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 1 implementation. Re-check after each phase.**
@@ -75,6 +76,7 @@ Address critical bugs affecting system stability and data integrity (P0), signif
 
 No violations expected. All changes are bug fixes or incremental improvements to existing architecture.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -154,6 +156,7 @@ Selected Option 1 (single project) because all changes are within the existing `
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Critical Bug Fixes (P0) - IMMEDIATE
@@ -269,8 +272,10 @@ Selected Option 1 (single project) because all changes are within the existing `
 - **Duration**: 1 day
 - **Parallel Tasks**: None (sequential verification)
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Pyramid
@@ -320,6 +325,7 @@ Selected Option 1 (single project) because all changes are within the existing `
 - [ ] Checkpoint restore preserves data
 - [ ] Validation script runs without false positives
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -376,6 +382,7 @@ Selected Option 1 (single project) because all changes are within the existing `
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -395,6 +402,7 @@ Selected Option 1 (single project) because all changes are within the existing `
 | Ollama | Service | Local | Green | Ongoing | Embedding generation blocked |
 | MCP Protocol | Standard | Anthropic | Green | Stable | Client communication blocked |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

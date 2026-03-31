@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [001-memory-repo-analysis/handover]"
+title: "...-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/handover]"
 description: "1. Restart OpenCode to load the fixed plugin"
 trigger_phrases:
   - "session"

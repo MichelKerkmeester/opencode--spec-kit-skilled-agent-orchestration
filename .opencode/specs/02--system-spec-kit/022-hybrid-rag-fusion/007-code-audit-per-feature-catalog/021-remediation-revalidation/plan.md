@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Remediation and Revalidation"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/plan]"
 description: "Technical plan for auditing 5 Remediation and Revalidation features against source code"
 trigger_phrases:
   - "audit plan"
@@ -154,14 +154,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 5 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -179,3 +182,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 5 features) ──► Phase 3 (Synthesis
 | M1 | Audit spec created | All docs in place |
 | M2 | All features audited | 5/5 complete |
 | M3 | Synthesis delivered | Summary report finalized |
+<!-- /ANCHOR:effort -->

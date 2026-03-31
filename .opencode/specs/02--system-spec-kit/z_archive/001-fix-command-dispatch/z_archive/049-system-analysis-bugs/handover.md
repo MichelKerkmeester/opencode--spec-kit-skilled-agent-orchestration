@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [049-system-analysis-bugs/handover]"
+title: "Session Handover [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/handover]"
 description: "1. RESTART OPENCODE - MCP server has old code cached (critical)"
 trigger_phrases:
   - "session"

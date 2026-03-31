@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Query Intelligence"
+title: "...stem-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence/implementation-summary]"
 description: "11 features audited: 11 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

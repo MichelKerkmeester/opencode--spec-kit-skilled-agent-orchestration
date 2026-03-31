@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [NAME] [template:level_1/plan.md]"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/024-runtime-contract-and-indexability/plan]"
 description: "[2-3 sentences: what this implements and the technical approach]"
 trigger_phrases:
   - "implementation"

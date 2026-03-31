@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Custom TOC ScrollSpy - Implementation Breakdown [001-toc-scrollspy/tasks]"
+title: "Tasks: Custom TOC ScrollSpy - Implementation [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/tasks]"
 description: "Task list for implementing custom TOC scroll-spy with IntersectionObserver."
 trigger_phrases:
   - "tasks"

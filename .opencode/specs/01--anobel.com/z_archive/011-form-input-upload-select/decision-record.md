@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Form Input Components Enhancement [012-form-input-upload-select/decision-record]"
+title: "Decision Record: Form Input Components [01--anobel.com/z_archive/011-form-input-upload-select/decision-record]"
 description: "Date: 2024-12-27"
 trigger_phrases:
   - "decision"

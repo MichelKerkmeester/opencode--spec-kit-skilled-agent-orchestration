@@ -1,5 +1,15 @@
 ---
-title: "SQLite-to-Turso Migration Research"
+title: "SQLite-to-Turso Migration Research [02--system-spec-kit/999-sqlite-to-turso/spec]"
+description: "title: \"SQLite-to-Turso Migration Research\""
+trigger_phrases:
+  - "sqlite"
+  - "turso"
+  - "migration"
+  - "research"
+  - "spec"
+  - "999"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -34,8 +44,10 @@ Turso is a **complete Rust rewrite** of SQLite (not a fork), offering native vec
 1. **Technical Analysis** (`research/001 - analysis-sqlite-to-turso-migration.md`) — 2000-3000 word deep-dive covering architecture, compatibility matrix, and limitations
 2. **Recommendations** (`research/002 - recommendations-sqlite-to-turso-migration.md`) — 1000-1500 word actionable roadmap with prioritized strategies and migration pathways
 
+<!-- ANCHOR:scope -->
 ## Out of Scope
 
 - Code changes, prototyping, or proof-of-concept implementations
 - Performance benchmarking (covered in research only)
 - Migration execution
+<!-- /ANCHOR:scope -->

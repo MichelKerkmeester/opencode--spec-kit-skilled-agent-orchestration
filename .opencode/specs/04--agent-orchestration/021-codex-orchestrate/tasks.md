@@ -1,5 +1,5 @@
 ---
-title: "Tasks: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/tasks]"
+title: "Tasks: ChatGPT Agent Suite Codex Optimization [04--agent-orchestration/021-codex-orchestrate/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -34,7 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Request Analysis and Planning
+## Phase 1: Setup
 
 - [x] T001 Confirm execution mode is `:auto` from user request
 - [x] T002 Load `.opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml`
@@ -47,14 +47,14 @@ contextType: "implementation"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T005 Update retrieval-mode and output-budget policy (`.opencode/agent/chatgpt/context.md`)
-- [x] T006 Update low-complexity fast-path analysis wording (`.opencode/agent/chatgpt/debug.md`)
-- [x] T007 Update handover fast-path/tool-call and context-package wording (`.opencode/agent/chatgpt/handover.md`)
-- [x] T008 Update research memory-save default and trivial exception wording (`.opencode/agent/chatgpt/research/research/research.md`)
-- [x] T009 Update review model convention and blocker-vs-required semantics (`.opencode/agent/chatgpt/review.md`)
-- [x] T010 Update speckit level semantics and validation-exit guidance (`.opencode/agent/chatgpt/speckit.md`)
-- [x] T011 Update write template-first fast-path and mode-aware DQI thresholds (`.opencode/agent/chatgpt/write.md`)
-- [x] T012 Update orchestrate direct-first profile, DEG, CWB/TCB thresholds, and anti-patterns (`.opencode/agent/chatgpt/orchestrate.md`)
+- [x] T005 Update retrieval-mode and output-budget policy (`.opencode/agent/chatgpt/context`)
+- [x] T006 Update low-complexity fast-path analysis wording (`.opencode/agent/chatgpt/debug`)
+- [x] T007 Update handover fast-path/tool-call and context-package wording (`.opencode/agent/chatgpt/handover`)
+- [x] T008 Update research memory-save default and trivial exception wording (`.opencode/agent/chatgpt/research/research/research`)
+- [x] T009 Update review model convention and blocker-vs-required semantics (`.opencode/agent/chatgpt/review`)
+- [x] T010 Update speckit level semantics and validation-exit guidance (`.opencode/agent/chatgpt/speckit`)
+- [x] T011 Update write template-first fast-path and mode-aware DQI thresholds (`.opencode/agent/chatgpt/write`)
+- [x] T012 Update orchestrate direct-first profile, DEG, CWB/TCB thresholds, and anti-patterns (`.opencode/agent/chatgpt/orchestrate`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -71,7 +71,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Completion and Context
+#### Completion and Context
 
 - [x] T017 Update `implementation-summary.md` with all changed ChatGPT files and policy deltas
 - [x] T018 Add ADR for cross-agent optimization strategy in `decision-record.md`

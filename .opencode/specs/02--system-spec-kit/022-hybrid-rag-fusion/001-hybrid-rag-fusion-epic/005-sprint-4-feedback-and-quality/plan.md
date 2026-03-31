@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Sprint 4 — Feedback and Quality"
+title: "Implementa [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/plan]"
 description: "MPAB chunk aggregation, learned relevance feedback, and shadow scoring infrastructure implementation plan."
 trigger_phrases:
   - "sprint 4 plan"
   - "feedback and quality plan"
-  - "MPAB plan"
-  - "R11 plan"
+  - "mpab plan"
+  - "r11 plan"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -211,6 +211,7 @@ Pipeline extension + schema migration — R1 appends aggregation stage, R11 adds
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -238,6 +239,7 @@ Phase 5 (TM-06 Reconsolidation) ─────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

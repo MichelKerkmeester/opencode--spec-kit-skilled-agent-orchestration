@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Analysis"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/plan]"
 description: "Technical plan for auditing 7 Analysis features against source code"
 trigger_phrases:
   - "audit plan"
@@ -129,14 +129,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 7 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -182,3 +185,4 @@ Audit completed 2026-03-22. 7/7 features audited. Overall result: **5 MATCH, 2 P
 | CF-03 | F07 | Layer classification mismatch: catalog says L7, implementation uses L6 |
 | CF-04 | F07 | `includeSummary` parameter present in implementation but absent from catalog |
 | CF-05 | F06 | Re-correction capability functional but undocumented in catalog |
+<!-- /ANCHOR:effort -->

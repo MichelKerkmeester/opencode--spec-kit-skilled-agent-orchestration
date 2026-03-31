@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Index TXT File Support [131-memory-index-txt-support/plan]"
+title: "Implementation Plan: Memory Index TXT File Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/plan]"
 description: "Extend the memory indexing subsystem (memory-index.ts, memory-save.ts) to discover and index .txt files alongside .md files. The implementation adds .txt extension checks to fou..."
 trigger_phrases:
   - "implementation"
@@ -136,6 +136,7 @@ Layered Architecture: MCP Tool Layer → Handler Layer → File Discovery → In
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -154,6 +155,7 @@ Phase 2 (Validation) ─────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -244,6 +246,7 @@ Phase 2 (Validation) ─────┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Unified File Discovery (Single Extension Check)
@@ -308,3 +311,4 @@ LEVEL 3 PLAN (~270 lines)
 - Dependency graphs, milestones
 - Architecture decision records
 -->
+<!-- /ANCHOR:architecture -->

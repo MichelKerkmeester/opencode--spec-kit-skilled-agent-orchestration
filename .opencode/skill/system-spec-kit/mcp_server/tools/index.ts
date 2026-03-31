@@ -7,8 +7,9 @@ import * as memoryTools from './memory-tools.js';
 import * as causalTools from './causal-tools.js';
 import * as checkpointTools from './checkpoint-tools.js';
 import * as lifecycleTools from './lifecycle-tools.js';
+import * as codeGraphTools from './code-graph-tools.js';
 
-export { contextTools, memoryTools, causalTools, checkpointTools, lifecycleTools };
+export { contextTools, memoryTools, causalTools, checkpointTools, lifecycleTools, codeGraphTools };
 
 export type { MCPResponse } from './types.js';
 
@@ -19,6 +20,7 @@ export const ALL_DISPATCHERS = [
   causalTools,
   checkpointTools,
   lifecycleTools,
+  codeGraphTools,
 ] as const;
 
 /** Dispatch a tool call to the appropriate module. Returns null if unrecognized. */

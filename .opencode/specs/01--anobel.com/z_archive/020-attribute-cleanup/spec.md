@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Attribute Cleanup Deepdive [020-attribute-cleanup/spec]"
+title: "Feature Specification: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/spec]"
 description: "Level 1 (Core) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -130,6 +130,7 @@ Keep the DOM and exported HTML clean by removing empty value-based attributes co
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - Should we also regenerate `src/2_javascript/z_minified/global/attribute_cleanup.js` and bump the CDN version in `src/0_html/global.html`?
@@ -139,6 +140,7 @@ Keep the DOM and exported HTML clean by removing empty value-based attributes co
 ---
 
 <!-- ANCHOR:related-documents -->
+<!-- /ANCHOR:questions -->
 ## 8. RELATED DOCUMENTS
 
 | Document | Purpose |

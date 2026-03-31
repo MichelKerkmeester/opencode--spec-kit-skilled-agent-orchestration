@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Retrieval Enhancements"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/spec]"
 description: "Systematic code audit of 9 Retrieval Enhancements features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -142,6 +142,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -150,8 +151,10 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 ### Reliability
 - **NFR-R01**: Findings reproducible by re-reading same sources — ACHIEVED (all sources are static catalog files)
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -161,8 +164,10 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 ### Findings
 - F09 source list contains incidental dependency files (vector index, embedding providers, etc.) that are not primary to contextual tree injection. Primary implementation is `hybrid-search.ts` with `SPECKIT_CONTEXT_HEADERS` gate; primary test is `hybrid-search-context-headers.vitest.ts`.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -219,7 +224,9 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None. F09 source-list trimming remains a catalog follow-up and does not block this audit packet.

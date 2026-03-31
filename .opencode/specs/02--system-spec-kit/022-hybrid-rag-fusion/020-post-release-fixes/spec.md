@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: 020 Pre-Release Remediation [template:level_3/spec.md]"
+title: "Feature Specification: 020 Pre-Release [02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/spec]"
 description: "Live remediation contract for closing the canonical 60-iteration review findings for 020-post-release-fixes."
 trigger_phrases:
   - "020 pre-release remediation"
   - "post-review remediation"
   - "canonical review remediation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: 020 Pre-Release Remediation
@@ -34,6 +34,7 @@ This documentation pass does not fix those findings yet. Its job is narrower and
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -55,6 +56,7 @@ This documentation pass does not fix those findings yet. Its job is narrower and
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -173,6 +175,7 @@ Turn this packet into an implementation-ready remediation program that:
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -189,7 +192,9 @@ Turn this packet into an implementation-ready remediation program that:
 - **NFR-R01**: All packet-local references must resolve from `020-post-release-fixes/`.
 - **NFR-R02**: The canonical review boundary must remain stable: `review/review-report.md` is authoritative and the top-level `review-report.md` is historical only.
 - **NFR-R03**: If report subsections drift, the packet must follow the normalized review state already reflected in the canonical `review/` artifacts.
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -203,7 +208,9 @@ Turn this packet into an implementation-ready remediation program that:
 - If a remediation attempt does not produce fresh rerun evidence, the packet must keep the current `FAIL` verdict.
 - If a feature-catalog entry cannot be proven by code or tests yet, the packet must route it to explicit test work, explicit static proof, or explicit approved deferral.
 - If new implementation work discovers a contradiction with the canonical review, the packet must be updated from fresh evidence instead of silently overriding the review.
+<!-- /ANCHOR:edge-cases -->
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -214,6 +221,7 @@ Turn this packet into an implementation-ready remediation program that:
 | Multi-Agent | 6/15 | The packet supports parallel implementation later, but this step is still a single coordinated doc rewrite |
 | Coordination | 14/15 | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `review/` must stay aligned |
 | **Total** | **77/100** | **Level 3** |
+<!-- /ANCHOR:complexity -->
 
 ## 10. RISK MATRIX
 
@@ -246,6 +254,7 @@ Turn this packet into an implementation-ready remediation program that:
 **Acceptance Criteria**:
 1. **Given** I read this spec and plan, **When** I reach the verification sections, **Then** the packet makes it clear that only fresh reruns can change the verdict.
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Whether implementation should begin with WS-2 packet/spec truth-sync or with the highest-risk runtime/code fixes first will be confirmed at execution start, but both paths are already represented in the backlog.

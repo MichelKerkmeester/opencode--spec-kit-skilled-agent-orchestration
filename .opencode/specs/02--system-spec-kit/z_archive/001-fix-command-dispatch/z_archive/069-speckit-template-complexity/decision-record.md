@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Dynamic Complexity-Based Template Scaling [069-speckit-template-complexity/decision-record]"
+title: "Decis [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/decision-record]"
 description: "Architectural decisions and rationale for the complexity detection system."
 trigger_phrases:
   - "decision"
@@ -207,6 +207,7 @@ Accepted
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | ID | Date | Decision | Status |
@@ -217,3 +218,4 @@ Accepted
 | ADR-004 | 2026-01-16 | Opt-In Migration | Accepted |
 | ADR-005 | 2026-01-16 | JS + Bash Split | Accepted |
 | ADR-006 | 2026-01-16 | Extend vs Replace | Accepted |
+<!-- /ANCHOR:decision -->

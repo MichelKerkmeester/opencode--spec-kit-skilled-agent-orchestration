@@ -291,8 +291,7 @@ See `decision-record.md` for full ADR documentation.
 <!-- /ANCHOR:risks-realized -->
 ---
 
-<!-- ANCHOR:lessons -->
-## Lessons Learned
+## Key Decisions
 
 ### What Went Well
 - **AI Execution Protocol** reduced coordination overhead
@@ -314,7 +313,6 @@ See `decision-record.md` for full ADR documentation.
 4. **Consider authentication library** (Passport.js) for OAuth integration
 
 
-<!-- /ANCHOR:lessons -->
 ---
 
 <!-- ANCHOR:deviations -->

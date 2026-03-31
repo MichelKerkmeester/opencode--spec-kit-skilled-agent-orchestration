@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Agent System Implementation [001-agents-from-oh-my-opencode/checklist]"
+title: "Checklist: Agent System Implementation [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/checklist]"
 description: "checklist document for 001-agents-from-oh-my-opencode."
 trigger_phrases:
   - "checklist"
@@ -84,6 +84,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Component | Status | Evidence |
@@ -100,6 +101,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:completion-criteria-met -->
+<!-- /ANCHOR:summary -->
 ## Completion Criteria Met
 
 - [x] All P0 items complete with evidence

@@ -1,5 +1,5 @@
 ---
-title: "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet) [012-context-model-comparison/spec]"
+title: "Spec 012: Context Agent Model Comparison (Haiku [04--agent-orchestration/z_archive/012-context-model-comparison/spec]"
 description: "Spec Level: L2+ (Research & Validation)"
 trigger_phrases:
   - "spec"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 016-Tooling-and-Scripts Manual Testing"
+title: "...system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts/implementation-summary]"
 description: "Post-execution summary capturing what was tested, verdicts assigned, and key decisions made during the 016-tooling-and-scripts manual testing phase."
 trigger_phrases:
   - "tooling scripts manual testing"

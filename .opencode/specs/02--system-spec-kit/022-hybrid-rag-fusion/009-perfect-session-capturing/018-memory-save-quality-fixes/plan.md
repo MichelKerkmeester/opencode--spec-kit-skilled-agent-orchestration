@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: Memory Save Quality Root Cause Fixes"
+title: "Implementat [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes/plan]"
 description: "This plan delivered eight targeted backend fixes across the memory-save extraction pipeline, then verified them with rebuilds, tests, and independent reviews."
-level: 2
 trigger_phrases:
   - "memory save quality plan"
   - "018 memory save quality fixes"
   - "generate-context remediation"
+importance_tier: "important"
+contextType: "implementation"
 key_topics:
   - "extractor fixes"
   - "review process"
   - "test verification"
-importance_tier: "high"
-contextType: "implementation"
+level: 2
 ---
 # Implementation Plan: Memory Save Quality Root Cause Fixes
 
@@ -154,6 +154,7 @@ Structured or normalized session data enters the extraction layer first, quality
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -172,6 +173,7 @@ Phase 1 (Root-Cause Confirmation) ---> Phase 2 (Code Fixes) ---> Phase 3 (Verifi
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Embedding Optimization"
+title: "...ystem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/implementation-summary]"
 description: "Implementation summary for embedding optimization phase of perfect session capturing"
-trigger_phrases: ["implementation", "summary", "embedding", "optimization"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "embedding"
+  - "optimization"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Embedding Optimization
 
@@ -88,3 +94,10 @@ Delivered as a narrow parity pass rather than a broad embedding refactor.
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

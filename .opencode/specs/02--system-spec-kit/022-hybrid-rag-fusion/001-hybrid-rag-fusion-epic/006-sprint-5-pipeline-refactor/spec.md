@@ -1,13 +1,12 @@
 ---
-title: "Feature Specification: Sprint 5 — Pipeline Refactor"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor/spec]"
 description: "Refactor retrieval pipeline to 4-stage architecture with Stage 4 invariant, add spec folder pre-filter, query expansion, and spec-kit retrieval metadata."
 trigger_phrases:
   - "sprint 5"
   - "pipeline refactor"
-  - "R6"
   - "4-stage pipeline"
 importance_tier: "normal"
-contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
+contextType: "implementation"
 ---
 # Feature Specification: Sprint 5 — Pipeline Refactor
 
@@ -166,6 +165,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -185,6 +185,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

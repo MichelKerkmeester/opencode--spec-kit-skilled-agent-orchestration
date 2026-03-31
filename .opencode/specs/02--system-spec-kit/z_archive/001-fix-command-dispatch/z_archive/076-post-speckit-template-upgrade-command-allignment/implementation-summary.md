@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Post-SpecKit [076-post-speckit-template-upgrade-command-allignment/implementation-summary]"
+title: "...chive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment/implementation-summary]"
 description: "Status: COMPLETE"
 trigger_phrases:
   - "implementation"
@@ -156,6 +156,7 @@ Files: create_skill.yaml, create_skill_asset.yaml, create_skill_reference.yaml, 
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Matrix
 
 | Check | Expected | Actual | Status |
@@ -174,6 +175,7 @@ Files: create_skill.yaml, create_skill_asset.yaml, create_skill_reference.yaml, 
 | create_agent.yaml unified permissions | 1 YAML | 1 YAML | PASS |
 | "secondary" terminology (not subagent) | 9 refs | 9 refs | PASS |
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Agent Execution Summary
@@ -325,3 +327,10 @@ None - all planned changes implemented.
 |------|--------|------|
 | AI Orchestrator | APPROVED | 2026-01-20 |
 | User | PENDING | - |
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

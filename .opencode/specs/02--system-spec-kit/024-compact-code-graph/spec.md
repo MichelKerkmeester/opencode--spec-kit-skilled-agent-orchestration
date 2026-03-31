@@ -1,3 +1,17 @@
+---
+title: "Spec: Hybrid Context Injection — Hook + Tool Architecture [02--system-spec-kit/024-compact-code-graph/spec]"
+description: "Implement a hybrid context injection system that uses Claude Code hooks (PreCompact, SessionStart, Stop) for automated context preservation at lifecycle boundaries, with tool-ba..."
+trigger_phrases:
+  - "spec"
+  - "hybrid"
+  - "context"
+  - "injection"
+  - "hook"
+  - "024"
+  - "compact"
+importance_tier: "important"
+contextType: "decision"
+---
 # Spec: Hybrid Context Injection — Hook + Tool Architecture
 
 ## Summary
@@ -151,10 +165,13 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | 009 | Code Graph Storage + Query (SQLite + MCP tools) | 2-3 days | P2 — structural query |
 | 010 | CocoIndex Bridge + code_graph_context | 3-4 days | P2 — bridge integration |
 | 011 | Compaction Working-Set Integration | 2-3 days | P2 — 3-source merge |
+| 012 | CocoIndex UX, Utilization & Usefulness | 2-3 days | P1 — semantic search integration |
 
+<!-- ANCHOR:scope -->
 ## Out of Scope
 
 - Code graph implementation (phases 008+) — architecture designed in this spec (iterations 036-045), implementation follows hook phases
 - Dual-Graph installation or graperoot integration — rejected per research
 - Token tracking dashboard UI — future work
 - Copilot/Gemini hook adapters — v2 after v1 ships
+<!-- /ANCHOR:scope -->

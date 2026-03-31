@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Full Spec Folder Document Indexing [009-full-spec-doc-indexing/implementation-summary]"
+title: "Implementation Summary: Full Spec [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/implementation-summary]"
 description: "Status: Implemented -- Fully Verified"
 trigger_phrases:
   - "implementation"
@@ -245,7 +245,8 @@ See `decision-record.md` for full ADRs with Five Checks evaluation.
 
 ---
 
-## LESSONS LEARNED
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Worked Well
 
@@ -259,6 +260,7 @@ See `decision-record.md` for full ADRs with Five Checks evaluation.
 1. **Spec folder documentation**: Implementation was completed before spec folder was created; retroactive documentation is harder
 2. **Full-suite runs catch integration regressions quickly**: import-path drift was surfaced immediately by `npm test`
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## NEXT STEPS
@@ -280,3 +282,10 @@ See `decision-record.md` for full ADRs with Five Checks evaluation.
 Implementation summary for Spec 126: Full Spec Folder Document Indexing
 All 10 phases complete; full suite passing after regression hardening
 -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

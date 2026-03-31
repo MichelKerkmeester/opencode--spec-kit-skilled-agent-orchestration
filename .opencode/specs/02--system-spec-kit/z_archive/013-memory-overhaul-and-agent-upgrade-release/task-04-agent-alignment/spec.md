@@ -1,5 +1,5 @@
 ---
-title: "Task 04 — Agent Configs Audit [task-04-agent-alignment/spec]"
+title: "Task 04 — [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment/spec]"
 description: "Audit agent configuration files across all 3 platforms (OpenCode, Claude Code, Codex) to ensure handover model assignment (spec 016), review model-agnostic configuration (spec 0..."
 trigger_phrases:
   - "task"

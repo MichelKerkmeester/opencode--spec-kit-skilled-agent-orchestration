@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Label Product Content Attribute [032-label-product-content-attr/tasks]"
+title: "Tasks: Label Product Content Attribute [032-label-product-content- [01--anobel.com/030-label-product-content-attr/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -33,7 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Config Update
+## Phase 1: Setup
 
 - [ ] T001 Add `content: 'White'` to Favorite config (`label_product.js`)
 - [ ] T002 Add `content: 'Blue'` to Exclusive config (`label_product.js`)
@@ -45,7 +45,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Logic Update
+## Phase 2: Implementation
 
 - [ ] T005 Set `data-label-content` attribute in `initLabelProduct()` (`label_product.js`)
 - [ ] T006 Remove `data-label-content` attribute in `cleanup()` (`label_product.js`)

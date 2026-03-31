@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Manual Testing — Bug Fixes and Data Integrity"
+title: "Featur [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity/spec]"
 description: "Test specification for the 11 manual test scenarios in the bug-fixes-and-data-integrity phase of the hybrid-rag-fusion playbook."
 trigger_phrases:
   - "manual testing"
@@ -160,6 +160,7 @@ All 11 scenarios must be executed and pass before this phase is marked complete.
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -178,6 +179,7 @@ All 11 scenarios must be executed and pass before this phase is marked complete.
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

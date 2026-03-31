@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Anchor System Implementation [065-anchor-system-implementation/tasks]"
+title: "Tasks: Anchor [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/tasks]"
 description: "tasks document for 065-anchor-system-implementation."
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Architecture Remediation Deep Dive [template:level_3/plan.md]"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/plan]"
 description: "Prioritized remediation plan synthesized from 15 analysis agents (10 Wave 1/2 + 5 Wave 3 synthesis) across the perfect-session-capturing subsystem. 197 unique findings, 8-sprint remediation plan, 8 ADRs."
 trigger_phrases:
   - "architecture remediation plan"

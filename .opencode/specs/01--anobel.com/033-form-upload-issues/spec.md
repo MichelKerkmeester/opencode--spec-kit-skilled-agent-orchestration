@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: CV Upload Form File Type Validation Fix [033-form-upload-issues/spec]"
+title: "Feature Specification: CV Upload Form File Type Validation Fix [01--anobel.com/033-form-upload-issues/spec]"
 description: "Level 3 (+Arch) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -302,6 +302,7 @@ Enable applicants to submit CVs in all seven commonly-used document formats (PDF
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -320,6 +321,7 @@ Enable applicants to submit CVs in all seven commonly-used document formats (PDF
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

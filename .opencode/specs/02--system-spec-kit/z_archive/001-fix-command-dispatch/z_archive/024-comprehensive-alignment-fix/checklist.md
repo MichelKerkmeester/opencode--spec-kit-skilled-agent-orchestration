@@ -1,5 +1,5 @@
 ---
-title: "Comprehensive Alignment Fix Checklist [024-comprehensive-alignment-fix/checklist]"
+title: "Comprehensi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/checklist]"
 description: "checklist document for 024-comprehensive-alignment-fix."
 trigger_phrases:
   - "comprehensive"

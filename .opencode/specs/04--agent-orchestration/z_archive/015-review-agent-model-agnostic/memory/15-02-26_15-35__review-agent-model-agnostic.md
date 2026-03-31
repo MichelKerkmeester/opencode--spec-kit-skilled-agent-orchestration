@@ -1,6 +1,5 @@
 ---
-title: "Review agent model-agnostic update for 015-review-agent-model-agnostic 2026-02-15"
-description: "This session removed the hardcoded model from .opencode/agent/review.md so the review agent could inherit the dispatching model. It also recorded the scope analysis that ruled..."
+title: "Review [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/15-02-26_15-35__review-agent-model-agnostic]"
 trigger_phrases:
   - "review agent model agnostic"
   - "remove model from review agent"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "review md frontmatter change"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Review Agent Model Agnostic
 
 ## SESSION SUMMARY

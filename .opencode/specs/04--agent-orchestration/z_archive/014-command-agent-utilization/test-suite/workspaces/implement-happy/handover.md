@@ -1,5 +1,5 @@
 ---
-title: "Session Handover: JWT Authentication [implement-happy/handover]"
+title: "Session [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/handover]"
 description: "Spec Folder: specs/042-jwt-authentication"
 trigger_phrases:
   - "session"

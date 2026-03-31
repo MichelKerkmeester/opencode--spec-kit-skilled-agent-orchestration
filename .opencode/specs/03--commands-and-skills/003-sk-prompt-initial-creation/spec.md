@@ -1,37 +1,19 @@
 ---
-title: "Feature Specification: sk-prompt-improver OpenCode Skill [template:level_3/spec.md]"
+title: "Feature Specification: sk-prompt-improver OpenCode Skill [03--commands-and-skills/003-sk-prompt-initial-creation/spec]"
 description: "Convert the standalone Prompt Improver AI system into an OpenCode-native skill with integrated prompt engineering frameworks, DEPTH thinking methodology, and triple scoring systems."
 trigger_phrases:
   - "sk-prompt-improver"
   - "prompt engineering skill"
   - "prompt improvement"
-  - "RCAF COSTAR frameworks"
+  - "rcaf costar frameworks"
   - "prompt frameworks"
 importance_tier: "important"
 contextType: "implementation"
 ---
-
 # Feature Specification: sk-prompt-improver
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
-
-<!-- WHEN TO USE THIS TEMPLATE:
-Level 3 (+Arch) is appropriate when:
-- Changes affect 500+ lines of code
-- Architecture decisions need formal documentation (ADRs)
-- Executive summary needed for stakeholders
-- Risk matrix required
-- 4-8 user stories
-- Multiple teams or cross-functional work
-
-DO NOT use Level 3 if:
-- Simple feature (use Level 1)
-- Only verification needed (use Level 2)
-- Governance approval workflow required (use Level 3+)
-- Compliance checkpoints needed (use Level 3+)
-- Multi-agent parallel execution coordination (use Level 3+)
--->
 
 ---
 
@@ -45,6 +27,9 @@ Convert the standalone Prompt Improver AI system (v0.200) into an OpenCode-nativ
 
 ---
 
+---
+
+
 ## 1. METADATA
 
 | Field | Value |
@@ -54,13 +39,12 @@ Convert the standalone Prompt Improver AI system (v0.200) into an OpenCode-nativ
 | **Status** | Complete |
 | **Created** | 2026-03-01 |
 
-<!-- ANCHOR:metadata -->
-<!-- /ANCHOR:metadata -->
+---
+
 
 ---
 
 <!-- ANCHOR:problem -->
-
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -71,12 +55,12 @@ The Prompt Improver is a comprehensive, standalone Claude Project that provides 
 
 Create a fully functional `sk-prompt-improver` OpenCode skill that enables developers to invoke prompt engineering directly from their coding environment via skill_advisor.py routing, transforming vague inputs into structured, scored AI prompts using proven frameworks integrated into the development workflow.
 
+---
 <!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-
 ## 3. SCOPE
 
 ### In Scope
@@ -103,19 +87,19 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/skill/sk-prompt-improver/SKILL.md` | Create | Main skill definition with WHEN TO USE, SMART ROUTING, HOW IT WORKS, RULES sections |
-| `.opencode/skill/sk-prompt-improver/references/frameworks.md` | Create | All 10 prompt frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT, VIBE, FRAME, MOTION) |
+| .opencode/skill/sk-prompt-improver/references/frameworks.md | Create | All 10 prompt frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT, VIBE, FRAME, MOTION) |
 | `.opencode/skill/sk-prompt-improver/references/depth_framework.md` | Create | DEPTH thinking methodology (10-round approach) |
-| `.opencode/skill/sk-prompt-improver/references/scoring_systems.md` | Create | Triple scoring documentation (CLEAR, EVOKE, VISUAL) |
-| `.opencode/skill/sk-prompt-improver/references/operating_modes.md` | Create | Signal-based routing and 10 operating modes |
-| `.opencode/skill/sk-prompt-improver/references/knowledge_base.md` | Create | System prompts, templates, and visual/image/video reference materials |
+| .opencode/skill/sk-prompt-improver/references/scoring_systems.md | Create | Triple scoring documentation (CLEAR, EVOKE, VISUAL) |
+| .opencode/skill/sk-prompt-improver/references/operating_modes.md | Create | Signal-based routing and 10 operating modes |
+| .opencode/skill/sk-prompt-improver/references/knowledge_base.md | Create | System prompts, templates, and visual/image/video reference materials |
 | `.opencode/skill/scripts/skill_advisor.py` | Modify | Add sk-prompt-improver intent boosters and confidence thresholds |
 
+---
 <!-- /ANCHOR:scope -->
 
 ---
 
 <!-- ANCHOR:requirements -->
-
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -136,12 +120,12 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 | REQ-007 | Knowledge base materials included | System prompts, templates, and visual/image/video reference materials packaged in references/knowledge_base.md for skill user access |
 | REQ-008 | Spec folder documentation complete | plan.md, tasks.md, checklist.md, decision-record.md created and validated; all P0 requirements mapped to tasks |
 
+---
 <!-- /ANCHOR:requirements -->
 
 ---
 
 <!-- ANCHOR:success-criteria -->
-
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `python skill_advisor.py "improve my prompt"` returns sk-prompt-improver with confidence >= 0.8 (or user-verified mode detection)
@@ -149,12 +133,21 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 - **SC-003**: All 10 operating modes (Interactive, Text, Short, Improve, Refine, JSON, YAML, Visual, Image, Video) documented and routable via signal-based detection
 - **SC-004**: User can read SKILL.md and references/*.md to successfully invoke sk-prompt-improver for prompt engineering tasks in their development workflow
 
+---
+
+### Acceptance Scenarios
+
+- **Given** a developer asks to improve a vague prompt, **when** `sk-prompt-improver` is routed in, **then** the skill can select an appropriate framework and return a more structured prompt.
+- **Given** a user needs DEPTH-style iteration, **when** the DEPTH reference is consulted, **then** the workflow explains the multi-round thinking process without requiring the original standalone system.
+- **Given** a request targets JSON, YAML, or other structured output, **when** the operating-mode guidance is used, **then** the skill routes the request to the matching prompt-improvement mode.
+- **Given** a prompt engineering request is ambiguous, **when** the skill is invoked, **then** the routing guidance supports clarification instead of forcing the wrong framework.
+- **Given** the new skill is reviewed against the source material, **when** framework coverage is compared, **then** the adapted OpenCode skill preserves the original capability set in native form.
+- **Given** the spec folder is validated after compliance normalization, **when** the packet is checked, **then** the structure reflects a Level 3 skill-creation packet without changing implementation meaning.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
 <!-- ANCHOR:risks -->
-
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -166,11 +159,11 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 | Risk | Knowledge base size and maintainability | Refs/ directory could become unwieldy (frameworks + templates + examples) | Organize by concern: frameworks.md, depth_framework.md, scoring_systems.md, operating_modes.md, knowledge_base.md (5 files, clear boundaries) |
 | Dependency | OpenCode skill system version | Incompatibility with older skill registration patterns | Verify skill_advisor.py version and test registration; document in decision-record.md any API assumptions |
 
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
@@ -195,9 +188,11 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 - **NFR-U01**: SKILL.md written at 6th-grade reading level for clarity
 - **NFR-U02**: Framework documentation includes at least one worked example per framework
 
-<!-- /ANCHOR:nfr -->
+---
+
 
 ---
+
 
 ## 8. EDGE CASES
 
@@ -220,6 +215,10 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 
 ---
 
+
+---
+
+
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -233,6 +232,10 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 
 ---
 
+
+---
+
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -244,6 +247,10 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 | R-005 | Knowledge base size explosion (10 frameworks + 10 modes + scoring) | Low | High | Pre-plan file organization (5 reference files); document each file's scope; index in references/README.md |
 
 ---
+
+
+---
+
 
 ## 11. USER STORIES
 
@@ -291,6 +298,9 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 
 ---
 
+
+---
+
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
@@ -300,6 +310,7 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 - **Q-004**: Should skill_advisor.py boosters include both direct phrases ("improve prompt") and indirect signals (mentions of "clarity", "structure", "framework")?
 - **Q-005**: How should Visual/Image/Video modes work when invoked from CLI or text-only context? Should they offer ASCII/text alternatives?
 
+---
 <!-- /ANCHOR:questions -->
 
 ---
@@ -322,3 +333,6 @@ LEVEL 3 SPEC (~310 lines)
 - 12 sections covering all architectural concerns
 - Ready for conversion to plan.md and task breakdown
 -->
+
+
+---

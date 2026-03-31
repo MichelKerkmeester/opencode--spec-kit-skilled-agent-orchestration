@@ -1,6 +1,5 @@
 ---
-title: "Unified setup phase YAML cleanup for 005-agent-system-improvements 2026-01-28"
-description: "This session updated six create-command YAML assets to remove stale version references and align them with the unified setup phase terminology. It recorded the phase-reference..."
+title: "Unified [04--agent-orchestration/z_archive/005-agent-system-improvements/28-01-26_09-11__agent-system-improvements]"
 trigger_phrases:
   - "unified setup phase update"
   - "create command yaml cleanup"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "workflow terminology migration"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Agent System Improvements
 
 ## SESSION SUMMARY

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [035-form-upload-issues/implementation-summary]"
+title: "Implementation Summary [035-form-upload-issues/implementa [01--anobel.com/033-form-upload-issues/implementation-summary]"
 description: "Phase 1 (COMPLETED — v1.3.4): Fixed three independent MIME validation bugs in the CV upload form. Implementation included: (1) added missing MIME types with extension-based fall..."
 trigger_phrases:
   - "implementation"
@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 035-form-upload-issues |
+| **Spec Folder** | 033-form-upload-issues |
 | **Phase 1 Completed** | 2026-02-14 (morning) |
 | **Status** | Reopened 2026-02-14 (evening) — CORS + error handling issues |
 | **Level** | 3 |
@@ -64,6 +64,14 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+Phase 1 shipped through source updates, minification, Cloudflare R2 deployment, HTML version bumps, and manual verification on the live page. Phase 2 remains open because production debugging later showed the deployed client-side MIME fixes were correct, but CORS and frontend error-handling issues still block successful uploads end to end.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
@@ -79,7 +87,7 @@ contextType: "implementation"
 
 ---
 
-## Implementation Details
+### Implementation Details
 
 ### Fix 1: MIME Types & Extension Map (lines 44-47, 63, 112-120)
 
@@ -258,7 +266,7 @@ console.log(wrapper._pond.acceptedFileTypes);
 
 ---
 
-## Session Timeline
+### Session Timeline
 
 **Phase 1 (2026-02-14 Morning):**
 
@@ -296,7 +304,7 @@ console.log(wrapper._pond.acceptedFileTypes);
 
 ---
 
-## Lessons Learned
+### Key Decisions
 
 **Phase 1 (MIME Validation):**
 
@@ -324,7 +332,7 @@ console.log(wrapper._pond.acceptedFileTypes);
 
 ---
 
-## Future Improvements
+### Future Improvements
 
 **Phase 1 (Completed):**
 1. ~~Server-side validation audit~~ → VERIFIED via curl testing (Worker functional)
@@ -341,7 +349,7 @@ console.log(wrapper._pond.acceptedFileTypes);
 
 ---
 
-## ADDENDUM: Reopened Issues (2026-02-14 Evening)
+### ADDENDUM: Reopened Issues (2026-02-14 Evening)
 
 ### Summary
 

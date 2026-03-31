@@ -1,5 +1,5 @@
 ---
-title: "QA Checklist - Load Toggle Component [027-load-toggle/checklist]"
+title: "QA Checklist - Load Toggle Component [027-load-toggle/checklist] [01--anobel.com/z_archive/025-load-toggle/checklist]"
 description: "Must pass before deployment."
 trigger_phrases:
   - "checklist"
@@ -98,6 +98,7 @@ Nice to have, can defer without approval.
 ---
 
 <!-- ANCHOR:browser-testing -->
+<!-- ANCHOR:testing -->
 ## Browser Testing
 
 | Browser | Version | Status | Notes |
@@ -113,6 +114,7 @@ Nice to have, can defer without approval.
 ---
 
 <!-- ANCHOR:performance-metrics -->
+<!-- /ANCHOR:testing -->
 ## Performance Metrics
 
 | Metric | Target | Actual | Status |

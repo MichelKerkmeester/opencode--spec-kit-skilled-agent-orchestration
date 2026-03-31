@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Task 07 — GitHub Release [task-07-github-release/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release/implementation-summary]"
 description: "Task 07 release preparation was completed for version v2.1.0.0. The release notes draft is finalized, publication blockers are documented, and Task 07 tracking artifacts were up..."
 trigger_phrases:
   - "implementation"

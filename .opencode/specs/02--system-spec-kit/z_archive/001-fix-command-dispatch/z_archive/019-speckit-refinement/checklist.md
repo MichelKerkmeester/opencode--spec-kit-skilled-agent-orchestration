@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Refinement Phase 1 MVP [019-speckit-refinement/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/checklist]"
 description: "Comprehensive verification checklist for the Handover System MVP implementation."
 trigger_phrases:
   - "verification"
@@ -333,6 +333,7 @@ These features are intentionally NOT implemented in Phase 1. Do NOT report as bu
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 9. VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -353,13 +354,17 @@ When marking items complete, include evidence:
 - [ ] CHK052 [P2] Output formatting | Deferred: Functional priority over visual polish
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
+<!-- ANCHOR:summary -->
 ## 10. VERIFICATION SUMMARY
 
 Complete this section after verification:
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 
 - **Total Items**: 69
@@ -385,6 +390,7 @@ Complete this section after verification:
 [Any additional observations, blockers, or recommendations]
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 11. SIGN-OFF

@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook discovery phase"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/plan]"
 description: "Execution plan for Phase 003 discovery scenarios EX-011, EX-012, EX-013. Read playbook context, set up environment, execute each scenario in order, record evidence and verdicts."
 trigger_phrases:
   - "discovery phase execution plan"
   - "phase 003 plan"
-  - "EX-011 EX-012 EX-013 execution"
+  - "ex-011 ex-012 ex-013 execution"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -182,6 +182,7 @@ Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -198,6 +199,7 @@ Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

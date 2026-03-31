@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-Research Wave 2 Package (Controlled Delivery) [005-post-research-wave-2-controlled-delivery/tasks]"
+title: "Tas [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/tasks]"
 description: "Tracking document prepared for Wave 2 execution and synchronized with root post-research backlog mapping."
 trigger_phrases:
   - "tasks"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -31,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-groups -->
+<!-- /ANCHOR:notation -->
 ## 1. Package Task Groups
 
 ### Group A - Dark-Launch Readiness Evidence

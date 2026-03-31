@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Orchestrate Agent Context Window Protection [006-orchestrate-context-window/plan]"
+title: "Implementation Plan: Orchestrate Agent Context [04--agent-orchestration/z_archive/006-orchestrate-context-window/plan]"
 description: "This plan adds a Context Window Budget (CWB) system to orchestrate.md through 6 targeted modifications: a new CWB section, updated dispatch format, file-based collection pattern..."
 trigger_phrases:
   - "implementation"
@@ -164,6 +164,7 @@ Final Synthesis (existing)
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -187,6 +188,7 @@ Phase 2 (Patterns) ───────┘                                     
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -247,6 +249,7 @@ Phase 2 (Patterns) ───────┘                                     
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: See `decision-record.md` - File-Based Result Collection
@@ -255,6 +258,7 @@ Phase 2 (Patterns) ───────┘                                     
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

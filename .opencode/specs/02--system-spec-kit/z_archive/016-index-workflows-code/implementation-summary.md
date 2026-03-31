@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [016-index-workflows-code/implementation-summary]"
+title: "Implementation Summary [016-index-workfl [02--system-spec-kit/z_archive/016-index-workflows-code/implementation-summary]"
 description: "A configurable skill reference indexing system that extends the Spec Kit Memory pipeline with a 6th indexing source. The system allows selective indexing of references/ and asse..."
 trigger_phrases:
   - "implementation"
@@ -143,7 +143,8 @@ Implemented multiple layers of path validation:
 ---
 
 <!-- ANCHOR:lessons-learned -->
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Went Well
 - **Template-first approach**: Using CORE + ADDENDUM v2.2 template architecture ensured consistent documentation structure
@@ -170,3 +171,4 @@ LEVEL 3+ IMPLEMENTATION SUMMARY (~180 lines)
 - Created after implementation completes
 - Documents actual implementation vs original plan
 -->
+<!-- /ANCHOR:decisions -->

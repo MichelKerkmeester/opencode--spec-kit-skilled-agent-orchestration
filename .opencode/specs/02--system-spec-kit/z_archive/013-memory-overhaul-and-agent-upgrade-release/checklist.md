@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Memory Overhaul & Agent Upgrade [130-memory-overhaul-and-agent-upgrade-release/checklist]"
+title: "Verification Checklist: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/checklist]"
 description: "Verification Date: 2026-02-16 (Task 07 prepared; publication still blocked)"
 trigger_phrases:
   - "verification"
@@ -45,6 +45,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:root-docs -->
+<!-- ANCHOR:docs -->
 ## Root Documentation Quality
 
 - [x] CHK-010 [P0] Root spec.md has all Level 3+ ANCHOR tags [Evidence: validate.sh ANCHORS_VALID pass]
@@ -60,6 +61,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-01 -->
+<!-- /ANCHOR:docs -->
 ## Task 01: README Audit
 
 - [x] CHK-020 [P0] spec.md upgraded to Level 3+ with governance sections [Evidence: task-01/spec.md SPECKIT_LEVEL 3+ and governance sections present]

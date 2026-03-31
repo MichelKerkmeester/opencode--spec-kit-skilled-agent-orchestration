@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [078-speckit-test-suite/implementation-summary]"
+title: "Impleme [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/implementation-summary]"
 description: "Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 test files with approximately 1,087 total tests. The suite validates all major SpecKit subsystems..."
 trigger_phrases:
   - "implementation"
@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -26,8 +27,10 @@ contextType: "implementation"
 | **Level** | 2 |
 | **Checklist Status** | All P0 verified |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 test files with approximately 1,087 total tests. The suite validates all major SpecKit subsystems: memory MCP handlers, session learning, cognitive memory integration, validation rules, template system, dual-threshold validation, extractors/loaders, and the Five Checks Framework.
@@ -47,8 +50,10 @@ Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 
 
 **Total: 1,087 tests across 8 files**
 
+<!-- /ANCHOR:what-built -->
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale |
@@ -60,8 +65,10 @@ Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 
 | Separate cognitive integration tests | Isolate database-dependent tests from static analysis tests |
 | Test extractors and loaders together | These modules work as a pipeline and should be validated end-to-end |
 
+<!-- /ANCHOR:decisions -->
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -75,14 +82,17 @@ Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 
 | Extractors/Loaders | Pass | 279 tests covering all extractors and data-loader |
 | Five Checks | Pass | 65 tests covering framework documentation and integration |
 
+<!-- /ANCHOR:verification -->
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - Some cognitive integration tests require better-sqlite3 (install with `npm install better-sqlite3`)
 - Dual-threshold tests require Python 3.9+ and pytest (`pip install pytest`)
 - Template tests depend on actual template files in `.opencode/skill/system-spec-kit/templates/`
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## L2: CHECKLIST COMPLETION SUMMARY
@@ -115,6 +125,7 @@ Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 
 
 ---
 
+<!-- ANCHOR:verification -->
 ## L2: VERIFICATION EVIDENCE
 
 ### Code Quality Evidence
@@ -131,6 +142,7 @@ Created comprehensive test suite for system-spec-kit v2.1.0 features covering 8 
 - **Edge cases**: Floating point precision, negative learning index, boundary conditions, empty inputs
 - **Error scenarios**: MemoryError handling, missing parameters, invalid values, malformed data
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## L2: NFR COMPLIANCE

@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [014-command-agent-utilization/handover]"
+title: "Session Handover Document [014-command-agent- [04--agent-orchestration/z_archive/014-command-agent-utilization/handover]"
 description: "Session handover for cross-project implementation: Smart Agent Integration into Spec Kit Commands."
 trigger_phrases:
   - "session"

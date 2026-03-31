@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Evaluation and Measurement"
+title: "...2--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement/checklist]"
 description: "QA verification for Evaluation and Measurement code audit"
 trigger_phrases:
   - "checklist"

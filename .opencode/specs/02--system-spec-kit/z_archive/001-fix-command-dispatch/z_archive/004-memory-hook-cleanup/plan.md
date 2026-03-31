@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Hook Cleanup - Technical Approach [004-memory-hook-cleanup/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/plan]"
 description: "Implementation plan for removing Claude Code Hook references from workflows-memory skill."
 trigger_phrases:
   - "implementation"
@@ -42,6 +42,7 @@ Remove 2 misleading Claude Code Hook references from README.md in the workflows-
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)
@@ -55,6 +56,7 @@ Remove 2 misleading Claude Code Hook references from README.md in the workflows-
 - [ ] No other files require changes
 - [ ] Verification complete
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -77,6 +79,7 @@ Remove 2 misleading Claude Code Hook references from README.md in the workflows-
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Edit README.md
@@ -89,6 +92,7 @@ Remove 2 misleading Claude Code Hook references from README.md in the workflows-
 
 **Duration**: 5 minutes
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## 5. SUCCESS METRICS

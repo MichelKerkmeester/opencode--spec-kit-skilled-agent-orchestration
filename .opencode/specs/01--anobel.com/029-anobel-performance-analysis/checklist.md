@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Comprehensive Performance Optimization - anobel.com [031-anobel-performance-analysis/checklist]"
+title: "Verification Checklist: Comprehensive Performance [01--anobel.com/029-anobel-performance-analysis/checklist]"
 description: "Evidence Requirements"
 trigger_phrases:
   - "verification"
@@ -42,7 +42,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation Verification
+## Pre-Implementation
 
 ### Documentation Ready
 
@@ -64,7 +64,52 @@ contextType: "implementation"
 
 ---
 
-## Phase 1: Critical Path Fixes (P0)
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- Detailed implementation-quality checks remain in the phase subsections below, covering timeout handling, event orchestration, CSS cleanup, and architecture hardening.
+- Completed checklist items retain their existing evidence references and status values.
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- Manual, browser, Lighthouse, and console-driven verification is captured in the detailed phase subsections below.
+- Integration checkpoints remain grouped by implementation phase to preserve the original execution order.
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- No new security-sensitive code paths are introduced in this performance package.
+- Existing verification below continues to track safe degradation, timeout guards, and deployment precautions.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- This checklist works alongside `spec.md`, `plan.md`, `tasks.md`, and `decision-record.md`.
+- Documentation synchronization and rollout notes remain preserved in the detailed sections below.
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- Supporting artifacts remain in `scratch/`, while long-form references stay in the spec root.
+- File-location expectations and future result capture points remain documented by the detailed entries below.
+<!-- /ANCHOR:file-org -->
+
+---
+
+### Phase 1: Critical Path Fixes (P0)
 
 ### T001: hero_webshop.js Infinite Loop Fix
 
@@ -119,7 +164,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 2: Resource Hints & LCP Optimization (P1)
+### Phase 2: Resource Hints & LCP Optimization (P1)
 
 ### T006: Video Poster Images
 
@@ -180,7 +225,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 3: JavaScript Optimization (P1/P2)
+### Phase 3: JavaScript Optimization (P1/P2)
 
 ### T012: Motion.dev Ready Event
 
@@ -221,7 +266,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 4: CSS Optimization (P2)
+### Phase 4: CSS Optimization (P2)
 
 ### T019: Critical CSS Inlining
 
@@ -249,7 +294,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 5: Image & Media Optimization (P1/P2)
+### Phase 5: Image & Media Optimization (P1/P2)
 
 ### T024: Responsive Images
 
@@ -279,7 +324,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 6: Architecture Improvements (P2/P3)
+### Phase 6: Architecture Improvements (P2/P3)
 
 ### T028-T029: Bundle Size Reduction
 
@@ -423,6 +468,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 ### Spec Folder Completeness
@@ -447,6 +493,7 @@ contextType: "implementation"
 - [ ] CHK-157 [P2] Remaining issues documented for future
   - Evidence: `[File: Open items section]`
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## L3+: SIGN-OFF
@@ -478,7 +525,7 @@ contextType: "implementation"
 
 ---
 
-## Quick Reference: Priority Distribution by Phase
+### Quick Reference: Priority Distribution by Phase
 
 | Phase | P0 | P1 | P2 | Total |
 |-------|----|----|-----|-------|

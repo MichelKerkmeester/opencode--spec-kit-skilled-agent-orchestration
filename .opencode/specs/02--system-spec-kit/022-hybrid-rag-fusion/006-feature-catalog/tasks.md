@@ -1,5 +1,15 @@
 ---
-title: "Tasks: Feature Catalog Audit & Remediation"
+title: "Tasks: Feature Catalog Audit & Remediation [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/tasks]"
+description: "title: \"Tasks: Feature Catalog Audit & Remediation\""
+trigger_phrases:
+  - "tasks"
+  - "feature"
+  - "catalog"
+  - "audit"
+  - "remediation"
+  - "006"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Feature Catalog Audit & Remediation
 

@@ -1,5 +1,5 @@
 ---
-title: "Spec Kit Test Suite [044-speckit-test-suite/spec]"
+title: "Spec Kit Test Suite [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/spec]"
 description: "The Spec Kit Memory MCP and related tools lacked comprehensive testing"
 trigger_phrases:
   - "spec"
@@ -34,6 +34,7 @@ The Spec Kit Memory MCP and related tools lacked comprehensive testing:
 - Manual testing was time-consuming and inconsistent
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### Functional Requirements
@@ -55,6 +56,7 @@ The Spec Kit Memory MCP and related tools lacked comprehensive testing:
 - End-to-end integration workflow tests
 - Cross-component interaction verification
 - Isolated test sandboxes to prevent conflicts
+<!-- /ANCHOR:requirements -->
 
 ## 1. Objective
 
@@ -64,6 +66,7 @@ Create a comprehensive test suite covering all components of the Spec Kit ecosys
 - Memory MCP Server (13 tools, 23 modules)
 - Integration and E2E workflows
 
+<!-- ANCHOR:scope -->
 ## 2. Scope
 
 ### In Scope
@@ -78,7 +81,9 @@ Create a comprehensive test suite covering all components of the Spec Kit ecosys
 - Website-specific tests (anobel.com)
 - Third-party dependency tests
 - Load/stress testing
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## 3. Success Criteria
 
 - [ ] 80%+ code coverage for shell scripts
@@ -87,6 +92,7 @@ Create a comprehensive test suite covering all components of the Spec Kit ecosys
 - [ ] All 23 lib modules have unit tests
 - [ ] E2E tests cover full spec folder lifecycle
 - [ ] CI/CD integration ready
+<!-- /ANCHOR:success-criteria -->
 
 ## 4. Components
 

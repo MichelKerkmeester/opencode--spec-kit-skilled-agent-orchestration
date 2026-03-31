@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Sub-Agent Nesting Depth Control [019-incorrect-sub-agent-nesting/decision-record]"
+title: "Decision Record: Sub-Agent Nesting Depth [04--agent-orchestration/019-incorrect-sub-agent-nesting/decision-record]"
 description: "The orchestrator agent frequently creates deeply nested sub-agent chains (5+ levels) because there is no formal classification of which agents are allowed to spawn sub-agents. T..."
 trigger_phrases:
   - "decision"
@@ -121,8 +121,8 @@ The orchestrator agent frequently creates deeply nested sub-agent chains (5+ lev
 
 **Affected Systems**:
 - `.opencode/agent/orchestrate.md` (base)
-- `.opencode/agent/chatgpt/orchestrate.md`
-- `.opencode/agent/copilot/orchestrate.md`
+- `.opencode/agent/chatgpt/orchestrate`
+- `.opencode/agent/copilot/orchestrate`
 
 **Rollback**: `git checkout` the three files — all changes are additive section additions and column additions to existing tables.
 <!-- /ANCHOR:adr-001-impl -->
@@ -131,7 +131,7 @@ The orchestrator agent frequently creates deeply nested sub-agent chains (5+ lev
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Absolute Maximum Depth of 3
+#### ADR-002: Absolute Maximum Depth of 3
 
 <!-- ANCHOR:adr-002-context -->
 ### Metadata
@@ -223,7 +223,7 @@ This means: the maximum chain is 3 agents deep (depth 0, 1, 2). The "3" in "max 
 <!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
-**Affected Systems**: Same 3 orchestrate.md files
+**Affected Systems**: the same three orchestrate variants
 
 **Rollback**: Remove depth cap from NDP section — additive change, easy to revert
 <!-- /ANCHOR:adr-002-impl -->

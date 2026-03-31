@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Working Memory + Hybrid RAG Automation [136-mcp-working-memory-hybrid-rag/plan]"
+title: "Implementation Plan: Working Memory + Hybrid [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/plan]"
 description: "Enhance Spec Kit Memory MCP with session-cognitive automation by adding bounded attention boosting post-RRF fusion, pressure-aware mode switching based on token usage ratios, ev..."
 trigger_phrases:
   - "implementation"
@@ -369,6 +369,7 @@ Wave sequencing rule:
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -390,6 +391,7 @@ Phase 0 (Prerequisites) ──────────────────�
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -527,6 +529,7 @@ Phase 0 (Prerequisites) ──────────────────�
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: TypeScript-Only Implementation (No Python/Docker)
@@ -605,6 +608,7 @@ Phase 0 (Prerequisites) ──────────────────�
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Pre-Task Checklist

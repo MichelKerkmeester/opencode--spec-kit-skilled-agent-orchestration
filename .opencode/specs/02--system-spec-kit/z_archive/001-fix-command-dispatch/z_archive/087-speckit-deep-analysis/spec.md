@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/spec]"
 description: "Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP server code, skill files, agent definitions, command files, constitutional memories, scripts, an..."
 trigger_phrases:
   - "feature"
@@ -40,8 +40,10 @@ Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP
 | **Status** | Complete |
 | **Created** | 2026-02-05 |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -50,8 +52,10 @@ Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP
 ### Purpose
 Eliminate all identified bugs and misalignments so that AI agents loading any part of the spec-kit ecosystem get consistent, correct information about tools, gates, file names, and architecture.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -93,8 +97,10 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | `opencode.json` (project) | Modify | Document shared-DB |
 | `agent/research/research/research.md` | Modify | AGENTS.md reference |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -118,16 +124,20 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | REQ-010 | Boost memory query scores | "save memory context" passes 0.8 threshold |
 | REQ-011 | Fix debug routing | "debug this issue" doesn't auto-route to chrome-devtools |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All grep verifications pass (0 stale references)
 - **SC-002**: `skill_advisor.py "save memory context"` confidence >= 0.8
 - **SC-003**: `skill_advisor.py "debug this issue"` does NOT route to chrome-devtools above 0.8
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -137,8 +147,10 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | Risk | skill_advisor.py threshold changes | May affect other query routing | Only boosted spec-kit scores, verified chrome-devtools still works for explicit queries |
 | Dependency | Existing SQLite databases | CHECK constraint change only affects new tables | Existing databases need manual ALTER TABLE or recreation |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Correctness
@@ -146,8 +158,10 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 - **NFR-C02**: All gate numbers must match AGENTS.md as source of truth
 - **NFR-C03**: All file name references must point to files that exist
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Existing Databases
@@ -156,8 +170,10 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 ### Archived Specs
 - Archived spec folders in `z_archive/` contain historical AGENTS.md references. These are intentionally NOT modified to preserve historical accuracy.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -169,6 +185,7 @@ Eliminate all identified bugs and misalignments so that AI agents loading any pa
 | Coordination | 12/15 | Cross-file dependencies, template count standardization |
 | **Total** | **82/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

@@ -1,6 +1,5 @@
 ---
-title: "Full Re Audit Of 007 [007-code-audit-per-feature-catalog/23-03-26_15-42__full-re-audit-of-007-code-audit-per-feature]"
-description: "Full re-audit of 007-code-audit-per-feature-catalog using 3-agent triangulation (GPT-5.4 analyst + GPT-5.3-Codex verifier via cli-codex + Opus adjudicator). All 21 phases..."
+title: "...022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/23-03-26_15-42__full-re-audit-of-007-code-audit-per-feature]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/007 code audit per feature catalog"
   - "code audit per feature catalog"
@@ -36,18 +35,17 @@ trigger_phrases:
   - "catalog"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.65,"errors":2,"warnings":1}
 ---
-
 # Full Re Audit Of 007 Code Audit Per Feature
 
 ## SESSION SUMMARY

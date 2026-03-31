@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: cli-claude-code Skill"
+title: "Implementation Plan: cli-claude-code Skill [03--commands-and-skills/007-cli-claude-code-creation/plan]"
 description: "Create a cli-claude-code skill enabling external AI assistants to invoke Claude Code CLI, mirroring cli-codex structure with reversed orchestration."
 trigger_phrases:
   - "cli-claude-code plan"
@@ -132,6 +132,7 @@ External AI request → skill_advisor.py routing → SKILL.md smart router
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -148,6 +149,7 @@ Phase 1 (Setup) ──► Phase 2 (Core Implementation) ──► Phase 3 (Verif
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

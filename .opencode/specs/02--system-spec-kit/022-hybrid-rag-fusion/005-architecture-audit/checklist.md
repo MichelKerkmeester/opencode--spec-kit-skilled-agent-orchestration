@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: Architecture Audit [template:level_3/checklist.md]"
+title: "Verification Checklist: Architecture [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/checklist]"
 description: "Verification Date: 2026-03-23"
 trigger_phrases:
   - "architecture audit checklist"
   - "boundary remediation verification"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "implementation"
 ---
 # Verification Checklist: Architecture Audit
 

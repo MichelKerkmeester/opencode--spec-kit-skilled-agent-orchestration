@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory & Folder Ranking [070-memory-ranking/decision-record]"
+title: "Decision Record: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record]"
 description: "Date: 2026-01-16"
 trigger_phrases:
   - "decision"
@@ -350,6 +350,7 @@ How should importance tiers contribute to the ranking score?
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | ID | Decision | Date | Status |
@@ -363,6 +364,7 @@ How should importance tiers contribute to the ranking score?
 | D7 | Importance tier weights | 2026-01-16 | Decided |
 | D8 | Constitutional decay exemption | 2026-01-16 | Decided |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## D8: Constitutional Decay Exemption
@@ -421,6 +423,7 @@ function computeRecencyScore(updatedAt, tier, decayRate = 0.1) {
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Pending Decisions
 
 | Topic | Blocker | Expected Resolution |
@@ -428,3 +431,4 @@ function computeRecencyScore(updatedAt, tier, decayRate = 0.1) {
 | Personalized weights storage | Phase 3 scope | After Phase 2 validation |
 | A/B testing infrastructure | Phase 3 scope | After usage data available |
 | Cross-project ranking | Out of scope | Future spec |
+<!-- /ANCHOR:decision -->

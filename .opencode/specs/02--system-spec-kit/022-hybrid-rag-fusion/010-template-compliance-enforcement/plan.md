@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Template Compliance Enforcement"
+title: "Implementation Plan: Template [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/plan]"
 description: "4-phase implementation plan for 2-layer template compliance enforcement: shared reference file creation, contract injection into 4 CLI agent definitions, directive consolidation, and end-to-end verification."
 trigger_phrases:
   - "template compliance plan"
@@ -136,6 +136,7 @@ Agent receives task -> Reads inline contract (Layer 1: headers + anchors per doc
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -157,6 +158,7 @@ Phase C (Directive Consolidation) ─────────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

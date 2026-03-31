@@ -1,13 +1,13 @@
 ---
-title: "Feature Specification: Deep Review Remediation"
+title: "Feature Specification: Deep Review [02--system-spec-kit/023-esm-module-compliance/006-review-remediation/spec]"
 description: "Fix all 18 findings (14 P1 + 4 P2) from the 10-iteration GPT-5.4 deep review across security, runtime correctness, traceability, completeness, reliability, maintainability, and performance."
 trigger_phrases:
   - "review remediation"
   - "deep review fixes"
   - "023 phase 6"
   - "fix review findings"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Deep Review Remediation
 

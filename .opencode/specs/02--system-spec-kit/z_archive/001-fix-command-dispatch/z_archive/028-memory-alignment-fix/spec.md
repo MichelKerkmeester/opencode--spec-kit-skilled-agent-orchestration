@@ -1,5 +1,5 @@
 ---
-title: "Memory Alignment Fix - Three-Layer Defense System [028-memory-alignment-fix/spec]"
+title: "Memory Alignment Fix [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/spec]"
 description: "Implement a comprehensive 3-layer defense system to prevent memory saves to incorrect spec folders."
 trigger_phrases:
   - "memory"
@@ -65,12 +65,14 @@ Layer A (AI Gate) → Layer C (Content Analysis) → Layer B (Script Safety Net)
 - Score against all spec folder names
 - Return top 3 matches with scores
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. Memory saves ALWAYS validate folder against content
 2. User prompted when significant mismatch detected (< 50%)
 3. Suggestion provided for better-matching folders
 4. No more incorrectly-placed memories
+<!-- /ANCHOR:success-criteria -->
 
 ## Files to Modify
 

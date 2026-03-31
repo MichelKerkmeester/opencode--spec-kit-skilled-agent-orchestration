@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Task 02 — SKILL.md & References Audit [task-02-skill-speckit-alignment/implementation-summary]"
+title: "...c-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment/implementation-summary]"
 description: "[Implementer: Summarize what was completed for this task. Document all files audited/created/modified and the nature of changes made.]"
 trigger_phrases:
   - "implementation"

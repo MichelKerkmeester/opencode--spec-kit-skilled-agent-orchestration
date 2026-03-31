@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context-Server Modularization - Implementation Breakdown [066-context-server-modularization/tasks]"
+title: "Tasks: Contex [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/tasks]"
 description: "Task list for decomposing context-server.js into focused modules."
 trigger_phrases:
   - "tasks"

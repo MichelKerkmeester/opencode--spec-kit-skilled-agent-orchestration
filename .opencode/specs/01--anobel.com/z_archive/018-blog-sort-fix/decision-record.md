@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Blog Sort Dropdown Fix [019-blog-sort-fix/decision-record]"
+title: "Decision Record: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/decision-record]"
 description: "This document records architectural decisions made during the blog sort dropdown fix, including the rationale for choosing the Finsweet Reactive API approach over simpler altern..."
 trigger_phrases:
   - "decision"

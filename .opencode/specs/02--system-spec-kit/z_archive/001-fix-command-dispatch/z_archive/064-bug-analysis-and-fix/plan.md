@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System-Spec-Kit Bug Fix - Technical Approach & Architecture [064-bug-analysis-and-fix/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/plan]"
 description: "Implementation plan for systematically addressing ~231 identified issues across system-spec-kit skill and spec_kit commands."
 trigger_phrases:
   - "implementation"
@@ -146,6 +146,7 @@ If during execution you encounter:
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before each phase begins. Re-check after phase completion.**
@@ -245,6 +246,7 @@ If during execution you encounter:
 
 No complexity violations anticipated - fixes are within existing architecture.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -298,6 +300,7 @@ The system-spec-kit is an MCP server providing memory management capabilities. K
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Critical Fixes (HARD BLOCKERS)
@@ -589,8 +592,10 @@ grep -n "return.*formatSearchResults" .opencode/skill/system-spec-kit/mcp_server
 9. Missing instructional footers in 3 templates
 10. Phase 2.5 positioning error in complete.md
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Pyramid
@@ -635,6 +640,7 @@ Each fix should be verified individually:
 - Sample config with modified values
 - Edge case inputs (null, undefined, empty)
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -681,6 +687,7 @@ Each fix should be verified individually:
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -695,6 +702,7 @@ Each fix should be verified individually:
 
 None - all fixes are internal to system-spec-kit.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

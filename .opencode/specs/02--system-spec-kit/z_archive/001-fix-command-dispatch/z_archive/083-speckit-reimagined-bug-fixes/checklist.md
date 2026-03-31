@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Spec Kit Bug Fixes [083-speckit-reimagined-bug-fixes/checklist]"
+title: "Verificati [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/checklist]"
 description: "checklist document for 083-speckit-reimagined-bug-fixes."
 trigger_phrases:
   - "verification"

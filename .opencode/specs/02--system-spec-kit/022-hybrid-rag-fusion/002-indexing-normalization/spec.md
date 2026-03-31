@@ -1,16 +1,16 @@
 ---
-title: "Indexing Normalization"
-status: "Complete"
-level: 3
-created: "2025-12-01"
-updated: "2026-03-08"
+title: "Indexing Normalization [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/spec]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> spec.md and former child spec 004-frontmatter-indexing -> spec.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
   - "002-indexing-normalization"
 importance_tier: "important"
 contextType: "implementation"
+created: "2025-12-01"
+level: 3
+SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
+status: "Complete"
+updated: "2026-03-08"
 ---
 # Feature Specification: Indexing Normalization
 
@@ -54,6 +54,7 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -69,6 +70,7 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -157,6 +159,7 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -168,8 +171,10 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 ### Reliability
 - **NFR-R01**: Re-running scans on unchanged trees remains idempotent.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -180,8 +185,10 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 - Broken symlink entries are skipped without aborting full scan.
 - Invalid tier metadata falls back to documented default tier.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -193,6 +200,7 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 | Coordination | 9/15 | Cross-file coupling between parser, scanner, and scoring |
 | **Total** | **73/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

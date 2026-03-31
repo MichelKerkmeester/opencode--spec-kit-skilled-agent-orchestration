@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Create Command YAML Refinement [template:level_3/tasks.md]"
+title: "Tasks: Create Command YAML Refinement [03--commands-and-skills/027-cmd-create-yaml-refinement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "create yaml refinement tasks"

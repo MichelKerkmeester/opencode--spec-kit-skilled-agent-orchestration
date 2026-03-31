@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [001-foundation-phases-0-1-1-5/implementation-summary]"
+title: "I [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/implementation-summary]"
 description: "This package remains a foundation planning and synchronization artifact. No new runtime implementation was introduced in this folder. This update added required Level 3+ documen..."
 trigger_phrases:
   - "implementation"

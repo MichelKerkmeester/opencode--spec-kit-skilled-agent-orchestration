@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Folder Level Upgrade Script [007-upgrade-level-script/spec]"
+title: "Feature Specification: Spec Folder Level Upgrade Script [02--system-spec-kit/z_archive/007-upgrade-level-script/spec]"
 description: "Currently, create.sh only creates new spec folders at a specific level from scratch, and compose.sh builds clean templates. No tooling exists to upgrade an existing, user-popula..."
 trigger_phrases:
   - "feature"
@@ -141,6 +141,7 @@ Provide a bash script that safely upgrades existing spec folders to higher docum
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -160,6 +161,7 @@ Provide a bash script that safely upgrades existing spec folders to higher docum
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

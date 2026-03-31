@@ -1,13 +1,13 @@
 ---
-title: "Decision Record: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/decision-record.md]"
+title: "Decision Record: Scripts vs [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/decision-record]"
 description: "Architecture decisions for boundary contract, compatibility strategy, dependency consolidation, and merged boundary-remediation risk handling in Phase 8."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "decision record"
   - "architecture adr"
   - "boundary contract"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
 

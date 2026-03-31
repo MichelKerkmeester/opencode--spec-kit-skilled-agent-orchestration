@@ -1,6 +1,14 @@
 ---
-title: "Tasks: Rewrite Repo README"
+title: "Tasks: Rewrite Repo README [02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/tasks]"
 description: "Task breakdown for complete rewrite of the repository root README."
+trigger_phrases:
+  - "tasks"
+  - "rewrite"
+  - "repo"
+  - "readme"
+  - "019"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Tasks: 019-rewrite-repo-readme

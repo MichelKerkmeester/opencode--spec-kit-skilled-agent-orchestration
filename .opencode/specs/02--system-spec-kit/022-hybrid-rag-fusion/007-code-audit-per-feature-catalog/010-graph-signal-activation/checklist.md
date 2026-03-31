@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Graph Signal Activation"
+title: "Ver [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/checklist]"
 description: "QA verification for Graph Signal Activation code audit"
 trigger_phrases:
   - "checklist"

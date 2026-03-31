@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Task 07 — Tagged Release [task-07-github-release/checklist]"
+title: "Verificat [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release/checklist]"
 description: "Prep Status: Release notes complete, publication blocked on clean commit and release publication"
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -27,6 +28,7 @@ contextType: "implementation"
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## P0 — Pre-Release
@@ -57,6 +59,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -71,6 +74,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P1] Release process documented in plan.md [Evidence: task-07/plan.md has phased release flow and release workstreams]

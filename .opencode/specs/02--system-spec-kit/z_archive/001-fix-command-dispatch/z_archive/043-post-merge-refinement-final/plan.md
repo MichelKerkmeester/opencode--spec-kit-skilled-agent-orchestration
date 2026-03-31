@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post-Merge Refinement Final [043-post-merge-refinement-final/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/plan]"
 description: "Duration: 3-4 days | Effort: ~10 hours"
 trigger_phrases:
   - "implementation"

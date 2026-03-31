@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Codex Memory MCP Fix"
+title: "Verification Checklist: Codex Memory [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/checklist]"
 description: "Verification date: 2026-03-28. Packet-local completion checklist for the closed retroactive Codex MCP remediation packet."
 trigger_phrases:
   - "codex spec kit memory verification"

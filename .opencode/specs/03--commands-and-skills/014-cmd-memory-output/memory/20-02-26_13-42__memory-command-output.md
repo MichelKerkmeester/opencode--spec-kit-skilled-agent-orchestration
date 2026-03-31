@@ -1,6 +1,5 @@
 ---
-title: "Memory dashboard design planning for 014-cmd-memory-output 2026-02-20"
-description: "This session planned a Memory Dashboard Visual Design System for the 013-memory-command-output spec. It documented how to unify the visual language, status lines, and shared..."
+title: "Memory dashboard design planning [03--commands-and-skills/014-cmd-memory-output/20-02-26_13-42__memory-command-output]"
 trigger_phrases:
   - "memory dashboard design system"
   - "unified memory command output"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "memory command visual language"
 importance_tier: "normal"
 contextType: "discovery"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Memory Command Output
 
 ## SESSION SUMMARY

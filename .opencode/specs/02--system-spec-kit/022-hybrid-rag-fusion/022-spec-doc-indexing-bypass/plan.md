@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Spec Doc Indexing Bypass"
+title: "Implementation Plan: Spec Doc Indexing [02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/plan]"
 description: "Propagate qualityGateMode warn-only to all 4 rejection gates in processPreparedMemory, fixing incomplete v3.0.0.1 spec doc indexing bypass."
 trigger_phrases:
   - "spec doc bypass plan"
-  - "processPreparedMemory fix"
+  - "processpreparedmemory fix"
   - "warn-only gates"
 importance_tier: "critical"
-contextType: "implementation-plan"
+contextType: "decision"
 ---
 # Implementation Plan: Spec Doc Indexing Bypass
 

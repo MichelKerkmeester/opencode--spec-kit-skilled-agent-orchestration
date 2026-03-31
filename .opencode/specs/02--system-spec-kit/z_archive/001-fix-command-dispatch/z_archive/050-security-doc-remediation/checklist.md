@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Security & Documentation Remediation [050-security-doc-remediation/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation/checklist]"
 description: "curl or MCP call memory_health()"
 trigger_phrases:
   - "verification"
@@ -23,6 +23,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:security -->
 ## P0 - Critical Security
 
 ### SEC001: CLI Path Validation (generate-context.js)
@@ -40,8 +41,10 @@ contextType: "implementation"
 - [x] `formatSearchResults()` handles validation failures
 - **Evidence:** Updated context-server.js:784-795, vector-index.js:3081-3093, retry-manager.js:400-416. validateFilePath exported from vector-index.js. Server loads correctly.
 
+<!-- /ANCHOR:security -->
 ---
 
+<!-- ANCHOR:security -->
 ## P1 - High Priority Security
 
 ### SEC003: Input Length Limits
@@ -51,8 +54,10 @@ contextType: "implementation"
 - [x] Validation errors returned with clear messages
 - **Evidence:** Added INPUT_LIMITS constant and validateInputLengths() at context-server.js:215-256. Called before all tool handlers at line 580.
 
+<!-- /ANCHOR:security -->
 ---
 
+<!-- ANCHOR:docs -->
 ## P2 - Documentation Updates
 
 ### DOC001: Embedding Dimension References
@@ -82,6 +87,7 @@ contextType: "implementation"
 - [x] rules/README.md - key scripts table updated
 - **Evidence:** README.md:127-134, README.md:863-870, rules/README.md:91-108.
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## Verification Commands

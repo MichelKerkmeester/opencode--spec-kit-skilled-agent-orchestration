@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-SpecKit Template Upgrade [076-post-speckit-template-upgrade-command-allignment/decision-record]"
+title: "...it/z_archive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment/decision-record]"
 description: "Status: ACCEPTED"
 trigger_phrases:
   - "decision"

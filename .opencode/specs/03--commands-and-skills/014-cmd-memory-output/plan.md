@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Command Dashboard Visual Design System [013-memory-command-output/plan]"
+title: "Implementation Plan: Memory Command Dashboard Visual Design [03--commands-and-skills/014-cmd-memory-output/plan]"
 description: "This plan defines a Memory Dashboard Visual Design System — a shared set of output components (headers, dividers, tables, status bars, box frames, metric displays) — and applies..."
 trigger_phrases:
   - "implementation"
@@ -163,6 +163,7 @@ Apply the design system to each live command doc. Update the output template sec
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -184,6 +185,7 @@ Phase 1 must be fully stable before Phase 2 begins. Changes to the design system
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

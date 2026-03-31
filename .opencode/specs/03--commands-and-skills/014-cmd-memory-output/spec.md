@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: Memory Command Dashboard Visual Design System [013-memory-command-output/spec]"
-description: "This active packet documents the Memory Dashboard Visual Design System against the current 4-command memory surface: `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory routing under `/memory:manage shared`."
+title: "Feature Specification: Memory Command Dashboard Visual Design [03--commands-and-skills/014-cmd-memory-output/spec]"
+description: "This active packet documents the Memory Dashboard Visual Design System against the current 4-command memory surface: /memory:search, /memory:save, /memory:manage, and /memory:learn, with shared-memory routing under /memory:manage shared."
 trigger_phrases:
   - "feature"
   - "specification"
@@ -129,6 +129,7 @@ Keep the Memory Dashboard Visual Design System packet aligned with the live memo
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -147,6 +148,7 @@ Keep the Memory Dashboard Visual Design System packet aligned with the live memo
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Template Compliance Enforcement"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/implementation-summary]"
 description: "Current implementation summary for 2-layer template compliance enforcement with delivered A-C phases and pending verification."
 trigger_phrases:
   - "template compliance summary"

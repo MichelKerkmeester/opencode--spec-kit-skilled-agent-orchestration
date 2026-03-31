@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: JSON-Primary Deprecation"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/implementation-summary]"
 description: "This phase made JSON the preferred routine-save contract, kept stateless mode as recovery-only, and moved obsolete dynamic-capture follow-ups under the archived branch parent."
 trigger_phrases:
   - "implementation summary"
   - "json primary deprecation"
   - "017 json primary deprecation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 ---
 # Implementation Summary

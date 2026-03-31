@@ -1,3 +1,14 @@
+---
+title: "Resea [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/research]"
+description: "This research investigated the shipped generate-context.js pipeline across 6 domains using 10 agents in 2 waves. The investigation found 74 concrete issues with source-level cit..."
+trigger_phrases:
+  - "resea"
+  - "research"
+  - "016"
+  - "json"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Flawless JSON Memory Capturing Pipeline
 
 ## Research Metadata

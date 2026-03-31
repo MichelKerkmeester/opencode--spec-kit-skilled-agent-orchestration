@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: Ground Truth ID Remapping"
+title: "Feature Specification: Ground Truth ID [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/spec]"
 description: "The ablation study produces all-zero retrieval metrics because ground-truth.json references stale memory IDs from a prior DB snapshot. This spec covers creating the missing map-ground-truth-ids.ts script that re-maps 297 relevance judgments to live memory IDs via FTS5 search."
 trigger_phrases:
   - "ground truth id remapping"
   - "ablation study zero metrics"
   - "map-ground-truth-ids"
-  - "stale memory IDs"
+  - "stale memory ids"
   - "ground-truth.json relevance"
 importance_tier: "important"
 contextType: "implementation"
@@ -135,6 +135,7 @@ Create `map-ground-truth-ids.ts` so that all 297 relevance judgments in `ground-
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -153,6 +154,7 @@ Create `map-ground-truth-ids.ts` so that all 297 relevance judgments in `ground-
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -186,6 +188,7 @@ Create `map-ground-truth-ids.ts` so that all 297 relevance judgments in `ground-
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Should the script also update `ground-truth-data.ts` by regenerating `GROUND_TRUTH_RELEVANCES`, or is modifying `ground-truth.json` sufficient (given that `ground-truth-data.ts` imports the JSON directly)?

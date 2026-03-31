@@ -69,9 +69,9 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 | `.opencode/command/create/sk-skill.md` | Modify | Canonical command aligned to sk-doc/create command conventions and expanded to 523 lines |
 | `.opencode/command/create/assets/create_sk_skill_auto.yaml` | Modify | Unified autonomous workflow aligned to command ecosystem and expanded to 470 lines |
 | `.opencode/command/create/assets/create_sk_skill_confirm.yaml` | Modify | Unified interactive workflow aligned to command ecosystem and expanded to 519 lines |
-| `.opencode/command/create/skill.md` | Delete | Deprecated legacy command removed |
-| `.opencode/command/create/skill_reference.md` | Delete | Deprecated legacy command removed |
-| `.opencode/command/create/skill_asset.md` | Delete | Deprecated legacy command removed |
+| .opencode/command/create/skill.md | Delete | Deprecated legacy command removed |
+| .opencode/command/create/skill_reference.md | Delete | Deprecated legacy command removed |
+| .opencode/command/create/skill_asset.md | Delete | Deprecated legacy command removed |
 | `.opencode/command/create/assets/create_skill_auto.yaml` | Delete | Deprecated legacy workflow removed |
 | `.opencode/command/create/assets/create_skill_confirm.yaml` | Delete | Deprecated legacy workflow removed |
 | `.opencode/command/create/assets/create_skill_reference_auto.yaml` | Delete | Deprecated legacy workflow removed |
@@ -81,7 +81,7 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 | `.opencode/command/create/prompt.md` | Modify | Replace old create:skill references with create:sk-skill variants |
 | `.agents/agents/write.md` | Modify | Synchronize active write-agent docs to canonical `/create:sk-skill` |
 | `.opencode/agent/write.md` | Modify | Synchronize runtime write-agent docs to canonical `/create:sk-skill` |
-| `.opencode/agent/chatgpt/write.md` | Modify | Synchronize ChatGPT runtime write-agent docs to canonical `/create:sk-skill` |
+| .opencode/agent/chatgpt/write.md | Modify | Synchronize ChatGPT runtime write-agent docs to canonical `/create:sk-skill` |
 | `.codex/agents/write.toml` | Modify | Synchronize Codex runtime write-agent config to canonical `/create:sk-skill` |
 | `.opencode/README.md` | Modify | Synchronize command documentation to canonical `/create:sk-skill` |
 | `README.md` | Modify | Synchronize root documentation to canonical `/create:sk-skill` |
@@ -112,7 +112,7 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 | REQ-007 | Canonical artifacts must align with command template conventions | `.opencode/command/create/sk-skill.md` and both unified YAMLs follow sk-doc-style command template and create-command structure patterns |
 | REQ-008 | Length expansion must be completed for canonical artifacts | `wc -l` reports 523 lines for `.opencode/command/create/sk-skill.md`, 470 for `create_sk_skill_auto.yaml`, and 519 for `create_sk_skill_confirm.yaml` |
 | REQ-009 | Spec-folder memory save and indexing must be completed | Latest `memory/*.md` artifact and `memory/metadata.json` exist; index status is `indexed` and `memory_index_scan` reports completion |
-| REQ-010 | Active cross-runtime docs must be synchronized to canonical command naming | `.agents/agents/write.md`, `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, and `.opencode/install_guides/SET-UP - AGENTS.md` reference `/create:sk-skill` and no longer reference `/create:skill*` |
+| REQ-010 | Active cross-runtime docs must be synchronized to canonical command naming | `.agents/agents/write.md`, `.opencode/agent/write.md`, .opencode/agent/chatgpt/write.md, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, and `.opencode/install_guides/SET-UP - AGENTS.md` reference `/create:sk-skill` and no longer reference `/create:skill*` |
 | REQ-011 | Legacy `/create:skill*` references must be absent in key runtime directories | Directory verification returns no `/create:skill` matches in `.agents/agents`, `.codex`, and `.claude` |
 <!-- /ANCHOR:requirements -->
 
@@ -126,7 +126,7 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 - **SC-003**: All listed deprecated create-skill command and workflow files are removed.
 - **SC-004**: Related prompt command references use `/create:sk-skill` variants only.
 - **SC-005**: Canonical command and unified YAMLs are aligned with sk-doc/create command template conventions.
-- **SC-006**: Length expansion is completed with exact counts: 523 (`sk-skill.md`), 470 (`create_sk_skill_auto.yaml`), 519 (`create_sk_skill_confirm.yaml`).
+- **SC-006**: Length expansion is completed with exact counts: 523 (sk-skill.md), 470 (`create_sk_skill_auto.yaml`), 519 (`create_sk_skill_confirm.yaml`).
 - **SC-007**: Memory context for this spec folder is saved and indexed.
 - **SC-008**: All eight listed cross-runtime and onboarding docs are synchronized to canonical `/create:sk-skill` references.
 - **SC-009**: Verification scan confirms no legacy `/create:skill*` references remain in `.agents/agents`, `.codex`, or `.claude`.
@@ -147,6 +147,7 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -162,6 +163,7 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -179,17 +181,17 @@ Establish `/create:sk-skill` as the single canonical entrypoint with determinist
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## L2: ACCEPTANCE SCENARIOS
 
-1. **AS-001 - Canonical Entrypoint Present**: **Given** the command directory after merger completion, **When** `.opencode/command/create/sk-skill.md` is inspected, **Then** `/create:sk-skill` is the documented canonical entrypoint and legacy `skill.md`, `skill_reference.md`, and `skill_asset.md` are absent.
+### Acceptance Scenarios
+
+1. **AS-001 - Canonical Entrypoint Present**: **Given** the command directory after merger completion, **When** `.opencode/command/create/sk-skill.md` is inspected, **Then** `/create:sk-skill` is the documented canonical entrypoint and legacy skill.md, skill_reference.md, and skill_asset.md are absent.
 2. **AS-002 - Deterministic Mode Routing**: **Given** canonical command execution in auto or confirm mode, **When** mode routing is evaluated in `.opencode/command/create/sk-skill.md`, **Then** `:auto` routes to `create_sk_skill_auto.yaml` and `:confirm` routes to `create_sk_skill_confirm.yaml`.
 3. **AS-003 - Full Operation Coverage**: **Given** operation selection for merged skill workflows, **When** command and workflow contracts are inspected, **Then** `full-create`, `full-update`, `reference-only`, and `asset-only` are all documented and supported.
 4. **AS-004 - Canonical Artifact Expansion Complete**: **Given** completion evidence for canonical artifacts, **When** line counts are checked, **Then** `.opencode/command/create/sk-skill.md` is 523 lines, `create_sk_skill_auto.yaml` is 470 lines, and `create_sk_skill_confirm.yaml` is 519 lines.
 5. **AS-005 - Cross-Runtime Docs Synced**: **Given** active runtime and onboarding documentation surfaces, **When** synchronized documentation files are reviewed, **Then** all eight listed files reference canonical `/create:sk-skill` naming and do not reference `/create:skill*`.
 6. **AS-006 - Directory-Level Legacy Reference Verification**: **Given** repository runtime directories, **When** searching `.agents/agents`, `.codex`, and `.claude` for `/create:skill`, **Then** zero matches are returned.
 7. **AS-007 - Migration + Memory Completion Verified**: **Given** post-merger validation state, **When** command references and spec memory artifacts are reviewed, **Then** `.opencode/command/create/prompt.md` references `/create:sk-skill` variants only and the latest `memory/*.md` plus `memory/metadata.json` are present with indexed status.
-<!-- /ANCHOR:acceptance-scenarios -->
+
 
 ---
 

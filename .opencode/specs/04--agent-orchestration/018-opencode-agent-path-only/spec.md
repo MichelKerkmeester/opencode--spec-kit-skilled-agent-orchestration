@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: OpenCode Agent Path Only [018-opencode-agent-path-only/spec]"
+title: "Feature Specification: OpenCode Agent Path Only [04--agent-orchestration/018-opencode-agent-path-only/spec]"
 description: "Current repository documentation references agent file paths across three platforms (.opencode/agent, .claude/agents, .codex/agents). This creates maintenance overhead and confu..."
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Task 01 — README Audit & Alignment [task-01-readme-alignment/implementation-summary]"
+title: "...tem-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment/implementation-summary]"
 description: "[Implementer: Summarize README audit results. Example: \"Audited 60+ README.md files across .opencode/ directory tree, identified X stale source counts (4→5), Y stale intent coun..."
 trigger_phrases:
   - "implementation"

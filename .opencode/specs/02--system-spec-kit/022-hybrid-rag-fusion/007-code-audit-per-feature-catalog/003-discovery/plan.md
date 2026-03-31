@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Discovery"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/plan]"
 description: "Technical plan for auditing 3 Discovery features against source code"
 trigger_phrases:
   - "audit plan"
@@ -125,14 +125,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 3 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -175,3 +178,4 @@ Audit completed 2026-03-22. All 3 Discovery features audited.
 - Both MATCH features (F01, F02) had complete source file coverage in the catalog.
 - The single PARTIAL feature (F03) had a source attribution error and undocumented response fields in full-mode output — both catalog documentation gaps rather than implementation defects.
 - No missing source files or unimplemented catalog features found across any of the 3 features.
+<!-- /ANCHOR:effort -->

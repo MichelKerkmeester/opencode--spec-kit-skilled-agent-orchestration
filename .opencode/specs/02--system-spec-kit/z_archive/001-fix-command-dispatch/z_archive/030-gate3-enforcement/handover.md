@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [030-gate3-enforcement/handover]"
+title: "Session Handover [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/handover]"
 description: "MCP Server Changes (semantic-memory.js)"
 trigger_phrases:
   - "session"

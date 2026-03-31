@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Bug Fixes and Data Integrity"
+title: "Imp [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/plan]"
 description: "Technical plan for auditing 11 Bug Fixes and Data Integrity features against source code"
 trigger_phrases:
   - "audit plan"
@@ -133,14 +133,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 11 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -181,3 +184,4 @@ Audit completed 2026-03-22. Result: **9 MATCH, 2 PARTIAL** across 11 features.
 - **Inflated source lists**: F07 and F09 reference more source files than the fix strictly involves. Catalog source lists should be trimmed on next revision.
 - **Transaction count (F09)**: Documented as 2 transactions; source code shows 3. Catalog correction recommended.
 - **`graph-lifecycle.ts` as a hotspot**: Appears in both F01 and F08 PARTIAL verdicts — two separate unfixed patterns in the same file.
+<!-- /ANCHOR:effort -->

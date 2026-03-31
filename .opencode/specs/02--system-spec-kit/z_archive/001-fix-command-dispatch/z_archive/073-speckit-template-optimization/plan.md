@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Template Optimization [073-speckit-template-optimization/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/plan]"
 description: "Restructure the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. Core templates (~270 LOC) provide the foundation shared across..."
 trigger_phrases:
   - "implementation"
@@ -35,6 +35,7 @@ Restructure the SpecKit template system from monolithic templates to a CORE + AD
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 3. QUALITY GATES
 
 ### Definition of Ready
@@ -49,8 +50,10 @@ Restructure the SpecKit template system from monolithic templates to a CORE + AD
 - [x] Documentation updated
 - [x] Line counts verified
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 4. ARCHITECTURE
 
 ### Template Directory Structure
@@ -92,8 +95,10 @@ templates/
 | **L3 (+Arch)** | Architecture decisions | Executive Summary, ADRs, Risk Matrix |
 | **L3+ (+Govern)** | Enterprise governance | Approval Workflow, Compliance, AI Protocols |
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 5. IMPLEMENTATION PHASES
 
 ### Phase 1: Core Template Creation
@@ -150,8 +155,10 @@ templates/
 
 **Checkpoint**: Documentation complete
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. L2: PHASE DEPENDENCIES
 
 ```
@@ -166,8 +173,10 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 | 3 (Compose) | 1, 2 | 4 |
 | 4 (Docs) | 3 | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## 7. L2: EFFORT ESTIMATION
 
 | Phase | Estimate | Actual | Confidence |
@@ -178,6 +187,7 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 | Phase 4 (Docs) | 1h | 45min | High |
 | **Total** | **5.5h** | **4h** | **High** |
 
+<!-- /ANCHOR:effort -->
 ---
 
 ## 8. L3: CRITICAL PATH
@@ -237,6 +247,7 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 13. TESTING STRATEGY
 
 ### Verification Approach
@@ -255,8 +266,10 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 | L3+ total LOC | ~640 | 845 | [x] Pass |
 | Level differentiation | Clear | Verified | [x] Pass |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 14. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -265,14 +278,17 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 | SKILL.md | Internal | Available | None |
 | Real usage analysis | Research | Complete | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 15. L2: ROLLBACK PLAN
 
 - **Trigger**: Critical issue discovered with new templates
 - **Procedure**: Restore from git history
 - **Verification**: create.sh --help shows correct output
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## CROSS-REFERENCES

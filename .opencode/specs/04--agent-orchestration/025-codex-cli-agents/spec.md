@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Codex CLI Agent Definitions"
+title: "Feature Specification: Codex CLI Agent Definitions [04--agent-orchestration/025-codex-cli-agents/spec]"
 description: "The .codex/config.toml declares 9 agent roles with config_file references but the .codex/agents/ directory is empty. These TOML agent definition files need to be created by converting the existing ChatGPT agent markdown files."
 trigger_phrases:
   - "codex cli agents"
@@ -121,6 +121,7 @@ Create all 9 agent TOML definition files by converting the existing ChatGPT agen
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -137,6 +138,7 @@ Create all 9 agent TOML definition files by converting the existing ChatGPT agen
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

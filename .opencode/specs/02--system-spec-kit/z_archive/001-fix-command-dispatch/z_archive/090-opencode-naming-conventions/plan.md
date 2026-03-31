@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/plan]"
 description: "Rename all snake_case JavaScript identifiers (functions, parameters, module variables, exports) to camelCase across ~206 files in .opencode/skill/system-spec-kit/. Update 9 skil..."
 trigger_phrases:
   - "implementation"
@@ -36,6 +36,7 @@ Rename all snake_case JavaScript identifiers (functions, parameters, module vari
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -50,8 +51,10 @@ Rename all snake_case JavaScript identifiers (functions, parameters, module vari
 - [ ] Zero orphaned snake_case calls
 - [ ] Backward-compat aliases in handler exports
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -66,8 +69,10 @@ Directory-by-directory migration with backward-compatible exports
 ### Data Flow
 Function definitions are renamed → Call sites updated in same file → Cross-file imports updated in sweep → MCP exports get backward-compat aliases
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Spec Folder Setup
@@ -93,8 +98,10 @@ Function definitions are renamed → Call sites updated in same file → Cross-f
 - [ ] Implementation summary
 - [ ] Checklist verification
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -103,8 +110,10 @@ Function definitions are renamed → Call sites updated in same file → Cross-f
 | Grep audit | No orphaned snake_case | `grep -r` pattern scan |
 | Manual | Handler invocation | MCP tool calls |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -112,13 +121,16 @@ Function definitions are renamed → Call sites updated in same file → Cross-f
 | All JS files readable | Internal | Green | Cannot migrate |
 | MCP server testable | Internal | Green | Cannot verify |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: MCP server fails to start after migration
 - **Procedure**: `git checkout -- .opencode/skill/system-spec-kit/` to restore all JS files
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## L3: CRITICAL PATH

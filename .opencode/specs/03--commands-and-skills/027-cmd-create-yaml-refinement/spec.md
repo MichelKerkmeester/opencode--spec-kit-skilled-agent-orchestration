@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Create Command YAML Refinement [template:level_3/spec.md]"
+title: "Feature Specification: Create Command YAML Refinement [03--commands-and-skills/027-cmd-create-yaml-refinement/spec]"
 description: "Define a Level 3 refinement packet that aligns the create-command YAML assets with the richer spec_kit-style workflow contract while preserving the current command behaviors."
 trigger_phrases:
   - "create yaml refinement"
@@ -25,6 +25,7 @@ This packet defines the refinement pass for `.opencode/command/create/assets/*.y
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,6 +40,7 @@ This packet defines the refinement pass for `.opencode/command/create/assets/*.y
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -151,6 +153,7 @@ Refine the create-command YAML suite so it reads like one family of workflows: s
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -165,8 +168,10 @@ Refine the create-command YAML suite so it reads like one family of workflows: s
 - **NFR-R01**: All refined assets must continue to parse successfully as YAML.
 - **NFR-R02**: The new shared section names should be stable enough to serve as the suite baseline for future create-command work.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -184,8 +189,10 @@ Refine the create-command YAML suite so it reads like one family of workflows: s
 - Target state: one create YAML suite with a shared top-level contract and stronger auto/confirm symmetry.
 - Residual exception: `create_folder_readme` remains unified but gains shared workflow framing.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -197,6 +204,7 @@ Refine the create-command YAML suite so it reads like one family of workflows: s
 | Coordination | 7/15 | YAML assets and spec packet must stay aligned |
 | **Total** | **62/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

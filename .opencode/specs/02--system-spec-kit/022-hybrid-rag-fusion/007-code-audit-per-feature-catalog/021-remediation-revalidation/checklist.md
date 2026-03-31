@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Remediation and Revalidation"
+title: "Ve [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/checklist]"
 description: "QA verification for Remediation and Revalidation code audit"
 trigger_phrases:
   - "checklist"

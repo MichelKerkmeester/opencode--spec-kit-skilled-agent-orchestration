@@ -1,12 +1,12 @@
 ---
-title: "Consolidated plan: 002-indexing-normalization [002-indexing-normalization/plan.md]"
+title: "Consolidated plan: 002-indexing-normalizatio [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/plan]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> plan.md and former child spec 004-frontmatter-indexing -> plan.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
   - "002-indexing-normalization"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 ---
 # Consolidated plan.md
 
@@ -149,6 +149,7 @@ Targeted pipeline hardening with deterministic normalization stages.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -165,6 +166,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -261,6 +263,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Canonical dedup and explicit tier precedence
@@ -515,8 +518,10 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 | M2 | Migration Ready | Dry-run shows deterministic rewrites with no schema violations | Day 3 |
 | M3 | Release Ready | Reindex + regression suite pass on normalized corpus | Day 4 |
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Canonical frontmatter first, migration second
@@ -558,3 +563,4 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 1. Mark task as BLOCKED with concrete command output.
 2. Attempt one bounded workaround that does not expand scope.
 3. Escalate with evidence and options if still blocked.
+<!-- /ANCHOR:architecture -->

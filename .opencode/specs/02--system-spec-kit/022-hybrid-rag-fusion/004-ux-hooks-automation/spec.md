@@ -1,11 +1,6 @@
 ---
-title: "UX Hooks Automation"
-status: "Complete"
-level: 2
-created: "2025-12-01"
-updated: "2026-03-13"
+title: "UX Hooks Automation [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/spec]"
 description: "Define automated hook enforcement and command UX guardrails to reduce common operator mistakes in spec workflows."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -14,6 +9,11 @@ trigger_phrases:
   - "guardrails"
 importance_tier: "normal"
 contextType: "general"
+created: "2025-12-01"
+level: 2
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+status: "Complete"
+updated: "2026-03-13"
 ---
 # Feature Specification: UX Hooks Automation
 
@@ -157,6 +157,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -175,6 +176,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -207,6 +209,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Which deferred follow-on should lead the next phase: structured response actions or a shared success-hint composition layer? See `research/research.md` for the ranked recommendation set and evidence.

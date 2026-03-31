@@ -1,11 +1,11 @@
 ---
-title: "Decision Record: Field Integrity and Schema Validation"
+title: "...-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/decision-record]"
 description: "Four architecture decisions: unknown-field handling strategy, YAML parser approach, content density threshold, and string length limit values."
 trigger_phrases:
   - "field integrity decisions"
-  - "schema validation ADR"
+  - "schema validation adr"
   - "unknown-field warn vs error"
-  - "YAML parser decision"
+  - "yaml parser decision"
   - "content density threshold"
   - "string length limits decision"
 importance_tier: "important"

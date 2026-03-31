@@ -1,5 +1,5 @@
 ---
-title: "Decision: Context-Server Modularization Architecture - ADR [066-context-server-modularization/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/decision-record]"
 description: "Architecture Decision Record documenting the modularization approach for context-server.js."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ Architecture Decision Record documenting the modularization approach for context
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-066
@@ -30,8 +31,10 @@ Architecture Decision Record documenting the modularization approach for context
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -54,8 +57,10 @@ The context-server.js file is 2,703 lines - too large for effective AI-assisted 
 - Layered imports prevent circular dependencies
 - No behavior changes are acceptable
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -103,6 +108,7 @@ mcp_server/
 └── lib/                       (UNCHANGED - 28 modules)
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -180,6 +186,7 @@ mcp_server/
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -206,6 +213,7 @@ mcp_server/
 ### Technical Debt Introduced
 - None - this is a debt reduction effort
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES

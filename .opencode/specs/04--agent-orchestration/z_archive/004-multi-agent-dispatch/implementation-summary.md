@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Multi-Agent Dispatch [004-multi-agent-dispatch/implementation-summary]"
+title: "Implementation Summary: [04--agent-orchestration/z_archive/004-multi-agent-dispatch/implementation-summary]"
 description: "Successfully added user-selectable multi-agent dispatch to /spec_kit:research and /spec_kit:debug commands, enabling 1 Opus orchestrator + 2-3 Sonnet parallel workers."
 trigger_phrases:
   - "implementation"
@@ -15,12 +15,10 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Multi-Agent Dispatch
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 Successfully added user-selectable multi-agent dispatch to `/spec_kit:research` and `/spec_kit:debug` commands, enabling 1 Opus orchestrator + 2-3 Sonnet parallel workers.
 
-<!-- /ANCHOR:overview -->
 
 
 <!-- ANCHOR:changes-made -->
@@ -82,7 +80,6 @@ Each config includes:
 <!-- /ANCHOR:changes-made -->
 
 
-<!-- ANCHOR:architecture -->
 ## Architecture
 
 ```
@@ -101,7 +98,6 @@ User selects dispatch mode (A/B/C)
                  └─► Orchestrator synthesizes → Returns result
 ```
 
-<!-- /ANCHOR:architecture -->
 
 
 <!-- ANCHOR:section-numbering -->
@@ -161,6 +157,7 @@ User selects dispatch mode (A/B/C)
 
 
 <!-- ANCHOR:post-verification-fixes -->
+<!-- ANCHOR:verification -->
 ## Post-Verification Fixes
 
 1. **research.md command Phase 4**: Fixed "EXECUTE AFTER PHASE 2 PASSES" → "EXECUTE AFTER PHASE 3 PASSES"
@@ -170,6 +167,7 @@ User selects dispatch mode (A/B/C)
 
 
 <!-- ANCHOR:phase-2-extended-to-complete-and-plan-commands -->
+<!-- /ANCHOR:verification -->
 ## Phase 2: Extended to Complete and Plan Commands
 
 ### complete.md Changes
@@ -229,3 +227,10 @@ Workers for complete/plan workflows:
 2026-01-23
 
 <!-- /ANCHOR:completion-date -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

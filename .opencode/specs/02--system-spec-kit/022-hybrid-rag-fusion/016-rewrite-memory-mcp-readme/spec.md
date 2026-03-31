@@ -1,5 +1,5 @@
 ---
-title: "Rewrite Memory MCP README"
+title: "Rewrite Memory MCP README [02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/spec]"
 description: "Complete rewrite of the Spec Kit Memory MCP server README to accurately document all 33 tools, hybrid search pipeline, and cognitive memory architecture."
 trigger_phrases:
   - "mcp readme rewrite"

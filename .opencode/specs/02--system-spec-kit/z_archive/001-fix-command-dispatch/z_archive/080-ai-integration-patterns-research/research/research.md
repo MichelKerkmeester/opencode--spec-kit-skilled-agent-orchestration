@@ -1,5 +1,5 @@
 ---
-title: "AI Integration Patterns Research [080-ai-integration-patterns-research/research]"
+title: "AI Inte [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/research]"
 description: "Extract patterns for AI assistant integration, prompt management, and context optimization from three open-source repositories to inform improvements to the system-spec-kit MCP."
 trigger_phrases:
   - "integration"

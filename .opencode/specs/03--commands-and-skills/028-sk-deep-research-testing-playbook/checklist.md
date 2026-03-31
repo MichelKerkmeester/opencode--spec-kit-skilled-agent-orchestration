@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: sk-deep-research Manual Testing Playbook"
+title: "Verification Checklist: sk-deep-research [03--commands-and-skills/028-sk-deep-research-testing-playbook/checklist]"
 description: "Verification date: 2026-03-19"
 trigger_phrases:
   - "deep research playbook checklist"
   - "manual testing playbook checklist"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
 ---
 # Verification Checklist: sk-deep-research Manual Testing Playbook
 

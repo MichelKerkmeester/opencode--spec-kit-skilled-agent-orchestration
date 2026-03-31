@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Scripts Interop Refactor"
+title: "Tasks: Scripts Interop Refactor [02--system-spec-kit/023-esm-module-compliance/003-scripts-interop-refactor/tasks]"
 description: "Task breakdown for @spec-kit/scripts CJS-to-ESM interoperability refactor and test rewrites."
 trigger_phrases:
   - "scripts interop tasks"
   - "023 phase 3 tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Scripts Interop Refactor
 

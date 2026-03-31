@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Type Consolidation"
+title: "Feature Specificat [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation/spec]"
 description: "Consolidate canonical shared types (FileChange, DecisionRecord, etc.) across the pipeline."
+trigger_phrases:
+  - "feature"
+  - "specificat"
+  - "spec"
+  - "004"
+  - "type"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Type Consolidation
 

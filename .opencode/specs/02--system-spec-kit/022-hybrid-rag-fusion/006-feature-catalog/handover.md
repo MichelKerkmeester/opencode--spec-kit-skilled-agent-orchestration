@@ -1,5 +1,15 @@
 ---
-title: "Session Handover: Feature Catalog Audit & Remediation"
+title: "Session Handover: Feature Catalog Audit & [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/handover]"
+description: "title: \"Session Handover: Feature Catalog Audit & Remediation\""
+trigger_phrases:
+  - "session"
+  - "handover"
+  - "feature"
+  - "catalog"
+  - "audit"
+  - "006"
+importance_tier: "normal"
+contextType: "general"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Session Handover: Feature Catalog Audit & Remediation

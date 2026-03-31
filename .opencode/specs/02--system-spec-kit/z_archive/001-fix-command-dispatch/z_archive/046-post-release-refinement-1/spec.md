@@ -1,5 +1,5 @@
 ---
-title: "Post-Release Refinement 1: Infrastructure Bug Fixes [046-post-release-refinement-1/spec]"
+title: "Post-Release [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/spec]"
 description: "Systematically address all bugs, misalignments, and technical debt identified during the comprehensive 20-agent deep dive analysis of the OpenCode infrastructure. This includes ..."
 trigger_phrases:
   - "post"
@@ -35,6 +35,7 @@ Systematically address all bugs, misalignments, and technical debt identified du
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## SCOPE
 
 ### In Scope
@@ -54,6 +55,7 @@ Systematically address all bugs, misalignments, and technical debt identified du
 - Performance optimization beyond bug fixes
 - UI/UX changes
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## USER STORIES
@@ -102,6 +104,7 @@ Systematically address all bugs, misalignments, and technical debt identified du
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## FUNCTIONAL REQUIREMENTS
 
 ### FR-001: Memory System Reliability
@@ -205,8 +208,10 @@ Systematically address all bugs, misalignments, and technical debt identified du
 - **Location:** `vector-index.js:923-939`
 - **Fix:** Delete history before deleting memory
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## NON-FUNCTIONAL REQUIREMENTS
 
 ### NFR-001: Reliability
@@ -228,8 +233,10 @@ Systematically address all bugs, misalignments, and technical debt identified du
 - Bug fixes MUST NOT degrade performance by more than 10%
 - Database migrations MUST be idempotent and safe to run multiple times
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## SUCCESS CRITERIA
 
 | Criterion | Target | Measurement |
@@ -241,6 +248,7 @@ Systematically address all bugs, misalignments, and technical debt identified du
 | Documentation accuracy | 100% | All doc issues resolved |
 | Cross-platform compatibility | macOS + Linux | Manual testing on both |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## RISKS AND MITIGATIONS

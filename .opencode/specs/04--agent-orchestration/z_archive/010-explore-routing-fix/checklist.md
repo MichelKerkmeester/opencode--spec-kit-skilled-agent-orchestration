@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/checklist]"
+title: "Verification Checklist: Fix @explore Direct [04--agent-orchestration/z_archive/010-explore-routing-fix/checklist]"
 description: "Verification Date: 2026-02-12"
 trigger_phrases:
   - "verification"
@@ -162,6 +162,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -175,4 +176,5 @@ contextType: "implementation"
 
 <!-- /ANCHOR:sign-off -->
 
+<!-- /ANCHOR:summary -->
 ---

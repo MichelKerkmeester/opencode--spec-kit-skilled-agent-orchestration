@@ -1,5 +1,5 @@
 ---
-title: "Completion Checklist [036-post-merge-refinement-1/checklist]"
+title: "Completion [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/checklist]"
 description: "id: 036-post-merge-refinement"
 trigger_phrases:
   - "completion"

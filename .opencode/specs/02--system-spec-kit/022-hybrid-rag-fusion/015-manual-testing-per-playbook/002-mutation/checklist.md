@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook mutation phase [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/checklist]"
 description: "Verification checklist for phase 002 mutation: 9 scenarios (EX-006, EX-007, M-008, EX-008, EX-009, EX-010, 085, 101, 110) — all items unchecked, awaiting execution."
 trigger_phrases:
   - "mutation checklist"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-deep-research Path Migration"
+title: "Implementation Summary: [03--commands-and-skills/035-sk-deep-research-path-migration/implementation-summary]"
 description: "Deep-research packet paths now use the canonical research packet root and review iteration folders across the touched command, skill, runtime, helper, doc, test, and corpus-migration surfaces, with verification evidence captured and residual caveats kept explicit."
 trigger_phrases:
   - "deep-research path migration implementation summary"

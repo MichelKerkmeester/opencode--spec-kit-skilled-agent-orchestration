@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Source Capabilities And Structured Preference [template:level_1/tasks.md]"
+title: "...09-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 019"

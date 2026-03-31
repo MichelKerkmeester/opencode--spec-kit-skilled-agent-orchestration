@@ -1,5 +1,5 @@
 ---
-title: "Spec: Rename /memory Command to /memory:check [008-rename-memory-check/spec]"
+title: "Spec: Rename /memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check/spec]"
 description: "Rename the unified memory dashboard command from /memory to /memory:check and update all references across the codebase."
 trigger_phrases:
   - "spec"
@@ -22,6 +22,7 @@ Rename the unified memory dashboard command from `/memory` to `/memory:check` an
 ## User Story
 As a developer, I want the memory dashboard command renamed from `/memory` to `/memory:check` so that the command naming is more explicit and distinguishable from other memory-related commands.
 
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### Primary Changes
@@ -51,6 +52,7 @@ As a developer, I want the memory dashboard command renamed from `/memory` to `/
 - `/memory cleanup` → `/memory:check cleanup`
 - `/memory triggers` → `/memory:check triggers`
 - `/memory --tier:X` → `/memory:check --tier:X`
+<!-- /ANCHOR:requirements -->
 
 ## Acceptance Criteria
 - [ ] File successfully renamed to `check.md`

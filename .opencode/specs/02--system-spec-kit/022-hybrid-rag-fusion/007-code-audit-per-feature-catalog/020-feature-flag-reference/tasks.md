@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Feature Flag Reference"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/tasks]"
 description: "Task breakdown for auditing 7 Feature Flag Reference features"
 trigger_phrases:
   - "tasks"

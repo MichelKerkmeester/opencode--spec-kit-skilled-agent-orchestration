@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: Sprint 0 — Measurement Foundation"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/spec]"
 description: "Fix graph channel (0% hit rate), chunk collapse dedup, co-activation hub domination, and establish evaluation infrastructure with BM25 baseline."
 trigger_phrases:
   - "sprint 0"
   - "measurement foundation"
-  - "graph ID fix"
+  - "graph id fix"
   - "eval infrastructure"
 importance_tier: "critical"
 contextType: "implementation"
@@ -175,6 +175,7 @@ When BM25 baseline results fall in the 50-80% range ("rationalize" path):
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -193,6 +194,7 @@ When BM25 baseline results fall in the 50-80% range ("rationalize" path):
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

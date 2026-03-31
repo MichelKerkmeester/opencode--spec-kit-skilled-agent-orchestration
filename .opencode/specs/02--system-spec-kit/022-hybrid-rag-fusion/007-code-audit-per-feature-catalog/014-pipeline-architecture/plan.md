@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Pipeline Architecture"
+title: "Implementa [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/plan]"
 description: "Technical plan for auditing 22 Pipeline Architecture features against source code"
 trigger_phrases:
   - "audit plan"
@@ -144,14 +144,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 22 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -188,3 +191,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 22 features) ──► Phase 3 (Synthesi
 - F07, F14: Trim source lists to the primary files that implement the feature's core behavior
 - F12: Either switch catalog source references to `.js` paths or add a note clarifying that `.ts` is the authoring language and `.js` is the runtime artifact
 - No features require re-implementation or behavioral correction
+<!-- /ANCHOR:effort -->

@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 6 — Documentation Alignment [02--system-spec-kit/024-compact-code-graph/006-documentation-alignment/plan]"
+description: "1. Create feature catalog entries"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "documentation"
+  - "alignment"
+  - "006"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 6 — Documentation Alignment
 
 ## Steps
@@ -32,7 +44,9 @@
    - Ensure consistent terminology (hooks, context injection, runtime detection)
    - Verify no stale references to pre-hook compaction approach
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1-4 (all hook implementations must be designed for accurate documentation)
 - Phase 5 (agent definition changes affect AGENTS.md)
 - Can begin drafts in parallel with Phases 1-5, finalize after implementation
+<!-- /ANCHOR:dependencies -->

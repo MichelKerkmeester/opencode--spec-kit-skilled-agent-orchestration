@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Roampal Analysis - Technical Approach & Architecture [001-memory-repo-analysis/plan]"
+title: "...spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/plan]"
 description: "Research plan defining the analysis approach, deliverables, and execution strategy for comparing system-memory with roampal-core."
 trigger_phrases:
   - "implementation"
@@ -52,6 +52,7 @@ Conduct comprehensive comparative analysis between our system-memory skill (v11.
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**
@@ -76,6 +77,7 @@ Conduct comprehensive comparative analysis between our system-memory skill (v11.
 
 No complexity violations - this is a documentation/research effort with no code artifacts.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -102,6 +104,7 @@ Research-only structure selected. All deliverables are documentation artifacts w
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 0: Our System Analysis (system-memory v11.2.0)
@@ -223,6 +226,7 @@ Research-only structure selected. All deliverables are documentation artifacts w
 8. ChromaDB Migration - Alternative vector storage
 9. Working Memory - Ephemeral session context
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## 4A. OPENCODE HOOK ANALYSIS FINDINGS
@@ -266,6 +270,7 @@ The original plan to "defer hooks" (ADR-002) is now updated to "implement hybrid
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Validation Approach
@@ -308,6 +313,7 @@ For research tasks, testing is replaced by validation checkpoints:
 - [ ] Decision record created (Level 3 requirement)
 - [ ] No unresolved questions/blockers
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -362,6 +368,7 @@ For research tasks, testing is replaced by validation checkpoints:
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -388,6 +395,7 @@ For research tasks, testing is replaced by validation checkpoints:
 | GitHub access | Network | Roampal-core repository | Available |
 | Spec folder | Storage | Document deliverables | Available |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW
@@ -416,6 +424,7 @@ For research tasks, testing is replaced by validation checkpoints:
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 10. TIMELINE SUMMARY
 
 ```
@@ -440,6 +449,7 @@ Phase 3: Recommendations            [████████] 2-3 hours
 TOTAL ESTIMATED TIME: 9-13 hours
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 11. DELIVERABLES CHECKLIST

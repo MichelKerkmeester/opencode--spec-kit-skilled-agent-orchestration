@@ -1,5 +1,5 @@
 ---
-title: "Tasks: cli-claude-code Skill"
+title: "Tasks: cli-claude-code Skill [03--commands-and-skills/007-cli-claude-code-creation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "cli-claude-code tasks"
@@ -24,6 +24,10 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,6 +38,10 @@ contextType: "implementation"
 - [x] T001 Create skill directory structure (.opencode/skill/cli-claude-code/{references,assets})
 - [x] T002 Read cli-codex as template reference (.opencode/skill/cli-codex/)
 - [x] T003 [P] Read agent definitions (.opencode/agent/*.md)
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,12 +56,20 @@ contextType: "implementation"
 - [x] T008 [P] Create integration_patterns.md — 10 reversed orchestration patterns (.opencode/skill/cli-claude-code/references/integration_patterns.md)
 - [x] T009 Create prompt_templates.md — 10 template categories (.opencode/skill/cli-claude-code/assets/prompt_templates.md)
 - [x] T010 Create README.md companion guide (.opencode/skill/cli-claude-code/README.md)
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
+
+### Phase 3: Verification
+
+### Phase 3: Verification
 
 - [x] T011 Register in skill_advisor.py — 3 booster sections (.opencode/skill/scripts/skill_advisor.py)
 - [x] T012 Create symlink (.claude/skills/cli-claude-code)
@@ -64,6 +80,10 @@ contextType: "implementation"
 - [x] T017 Verify symlink resolves
 - [x] T018 Create spec folder documentation (.opencode/specs/03--commands-and-skills/007-cli-claude-code/)
 - [x] T019 Create implementation-summary.md
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -74,6 +94,10 @@ contextType: "implementation"
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed (skill_advisor.py confidence 0.95, symlink resolves)
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -84,4 +108,8 @@ contextType: "implementation"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+---
 <!-- /ANCHOR:cross-refs -->
+
+---

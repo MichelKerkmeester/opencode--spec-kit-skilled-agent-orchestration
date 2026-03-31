@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Memory Command Separation - Validation Items [068-memory-index-commands/checklist]"
+title: "Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/checklist]"
 description: "Checklist for validating the memory command separation implementation."
 trigger_phrases:
   - "validation"
@@ -136,6 +136,7 @@ Ensure the command separation preserves all functionality while properly isolati
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -155,11 +156,15 @@ When marking items complete, include evidence:
 - [x] CHK010 [P0] Cleanup Mode removed | Evidence: search.md no longer contains "CLEANUP MODE"
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
+<!-- ANCHOR:summary -->
 ## 4. VERIFICATION SUMMARY
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 46
 - **Verified [x]**: 32/46
@@ -170,6 +175,7 @@ When marking items complete, include evidence:
 - **Testing Status**: PENDING - Runtime tests needed for CHK050-CHK063
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 5. USAGE NOTES

@@ -36,17 +36,17 @@ export interface ToolDefinition {
 // 2. TOOL DEFINITIONS
 
 // ───────────────────────────────────────────────────────────────
-// T061: L1 Orchestration - Unified entry point (Token Budget: 2000)
+// T061: L1 Orchestration - Unified entry point (Token Budget: 3500)
 const memoryContext: ToolDefinition = {
   name: 'memory_context',
-  description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 2000.',
+  description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 3500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', minLength: 1, description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', minimum: 1, maximum: 100, description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Optional server-issued session identifier for working-memory continuity. When provided, it must match an existing server-managed session or the call is rejected. Omit it to let the server generate a new session for this request.' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' }, profile: { type: 'string', enum: ['quick', 'research', 'resume', 'debug'], description: 'Optional response profile formatter. Returns a reduced or mode-aware response shape when profile formatting is enabled.' } }, required: ['input'] },
 };
 
-// L2: Core - Primary operations (Token Budget: 1500)
+// L2: Core - Primary operations (Token Budget: 3500)
 const memorySearch: ToolDefinition = {
   name: 'memory_search',
-  description: '[L2:Core] Search conversation memories semantically using vector similarity. Returns ranked results with similarity scores. Constitutional tier memories are ALWAYS included at the top of results (~2000 tokens max), regardless of query. Requires query (string), concepts (array of 2-5 strings), or cursor (string) for continuation pagination. Supports intent-aware retrieval (REQ-006) with task-specific weight adjustments. Token Budget: 1500.',
+  description: '[L2:Core] Search conversation memories semantically using vector similarity. Returns ranked results with similarity scores. Constitutional tier memories are ALWAYS included at the top of results (~2000 tokens max), regardless of query. Requires query (string), concepts (array of 2-5 strings), or cursor (string) for continuation pagination. Supports intent-aware retrieval (REQ-006) with task-specific weight adjustments. Token Budget: 3500.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
@@ -208,14 +208,14 @@ const memoryQuickSearch: ToolDefinition = {
 
 const memoryMatchTriggers: ToolDefinition = {
   name: 'memory_match_triggers',
-  description: '[L2:Core] Fast trigger phrase matching with cognitive memory features. Supports attention-based decay, tiered content injection (HOT=full, WARM=summary), and co-activation of related memories. Pass session_id and turnNumber for cognitive features. Token Budget: 1500.',
+  description: '[L2:Core] Fast trigger phrase matching with cognitive memory features. Supports attention-based decay, tiered content injection (HOT=full, WARM=summary), and co-activation of related memories. Pass session_id and turnNumber for cognitive features. Token Budget: 3500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: { prompt: { type: 'string', minLength: 1, description: 'User prompt or text to match against trigger phrases' }, specFolder: { type: 'string', description: 'Limit trigger matches to a specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed trigger matching.' }, userId: { type: 'string', description: 'User boundary for governed trigger matching.' }, agentId: { type: 'string', description: 'Agent boundary for governed trigger matching.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed trigger matching.' }, limit: { type: 'number', default: 3, minimum: 1, maximum: 100, description: 'Maximum number of matching memories to return (default: 3)' }, session_id: { type: 'string', description: 'Session identifier for cognitive features. When provided, enables attention decay and tiered content injection.' }, turnNumber: { type: 'number', minimum: 1, description: 'Current conversation turn number. Used with session_id for decay calculations.' }, include_cognitive: { type: 'boolean', default: true, description: 'Enable cognitive features (decay, tiers, co-activation). Requires session_id.' } }, required: ['prompt'] },
 };
 
 // T306: Added asyncEmbedding parameter for non-blocking embedding generation
 const memorySave: ToolDefinition = {
   name: 'memory_save',
-  description: '[L2:Core] Index a memory file into the spec kit memory database. Reads the file, extracts metadata (title, trigger phrases), generates embedding, and stores in the index. Use this to manually index new or updated memory files. Includes pre-flight validation (T067-T070) for anchor format, duplicate detection, and token budget estimation. Token Budget: 1500.',
+  description: '[L2:Core] Index a memory file into the spec kit memory database. Reads the file, extracts metadata (title, trigger phrases), generates embedding, and stores in the index. Use this to manually index new or updated memory files. Includes pre-flight validation (T067-T070) for anchor format, duplicate detection, and token budget estimation. Token Budget: 3500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: { filePath: { type: 'string', minLength: 1, description: 'Absolute path to the memory file (must be in specs/**/memory/, .opencode/specs/**/memory/, specs/**/ for spec documents, or .opencode/skill/*/constitutional/)' }, force: { type: 'boolean', default: false, description: 'Force re-index even if content hash unchanged' }, dryRun: { type: 'boolean', default: false, description: 'Validate only without saving. Returns validation results including anchor format, duplicate check, and token budget estimation (CHK-160)' }, skipPreflight: { type: 'boolean', default: false, description: 'Skip pre-flight validation checks (not recommended)' }, asyncEmbedding: { type: 'boolean', default: false, description: 'When true, embedding generation is deferred for non-blocking saves. Memory is immediately saved with pending status and an async background attempt is triggered. Default false preserves synchronous embedding behavior.' }, tenantId: { type: 'string', description: 'Tenant boundary for governed ingest.' }, userId: { type: 'string', description: 'User boundary for governed ingest.' }, agentId: { type: 'string', description: 'Agent boundary for governed ingest.' }, sessionId: { type: 'string', description: 'Session boundary for governed ingest.' }, sharedSpaceId: { type: 'string', description: 'Optional shared-memory space for collaboration saves.' }, provenanceSource: { type: 'string', description: 'Required provenance source when governance guardrails are enabled.' }, provenanceActor: { type: 'string', description: 'Required provenance actor when governance guardrails are enabled.' }, governedAt: { type: 'string', description: 'ISO timestamp for governed ingest. Defaults to now when omitted.' }, retentionPolicy: { type: 'string', enum: ['keep', 'ephemeral', 'shared'], description: 'Retention class applied to the saved memory.' }, deleteAfter: { type: 'string', description: 'Optional ISO timestamp after which retention sweep may delete the memory.' } }, required: ['filePath'] },
 };
 
@@ -618,6 +618,72 @@ const memoryIngestCancel: ToolDefinition = {
   },
 };
 
+// L8: Code Graph - Structural code analysis tools
+const codeGraphScan: ToolDefinition = {
+  name: 'code_graph_scan',
+  description: '[L8:CodeGraph] Scan workspace files and build structural code graph index (functions, classes, imports, calls). Supports incremental re-indexing via content hash. Token Budget: 1000.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      rootDir: { type: 'string', description: 'Root directory to scan (default: workspace root)' },
+      includeGlobs: { type: 'array', items: { type: 'string' }, description: 'Glob patterns for files to include' },
+      excludeGlobs: { type: 'array', items: { type: 'string' }, description: 'Additional glob patterns to exclude' },
+      incremental: { type: 'boolean', default: true, description: 'Skip unchanged files (default: true)' },
+    },
+    required: [],
+  },
+};
+
+const codeGraphQuery: ToolDefinition = {
+  name: 'code_graph_query',
+  description: '[L8:CodeGraph] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Token Budget: 1200.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      operation: { type: 'string', enum: ['outline', 'calls_from', 'calls_to', 'imports_from', 'imports_to'], description: 'Query operation (required)' },
+      subject: { type: 'string', minLength: 1, description: 'File path, symbol name, or symbolId to query (required)' },
+      edgeType: { type: 'string', description: 'Filter by edge type (optional)' },
+      limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results' },
+    },
+    required: ['operation', 'subject'],
+  },
+};
+
+const codeGraphStatus: ToolDefinition = {
+  name: 'code_graph_status',
+  description: '[L8:CodeGraph] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp. Token Budget: 500.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+};
+
+const codeGraphContext: ToolDefinition = {
+  name: 'code_graph_context',
+  description: '[L8:CodeGraph] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds. Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      input: { type: 'string', description: 'Natural language context query' },
+      queryMode: { type: 'string', enum: ['neighborhood', 'outline', 'impact'], default: 'neighborhood', description: 'Graph expansion mode' },
+      subject: { type: 'string', description: 'Symbol name, fqName, or symbolId' },
+      seeds: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            filePath: { type: 'string' },
+            startLine: { type: 'number' },
+            endLine: { type: 'number' },
+            query: { type: 'string' },
+          },
+          required: ['filePath'],
+        },
+        description: 'Seeds from CocoIndex or other providers (file:line pairs)',
+      },
+      budgetTokens: { type: 'number', minimum: 100, maximum: 4000, default: 1200, description: 'Token budget for response' },
+    },
+    required: [],
+  },
+};
+
 // ───────────────────────────────────────────────────────────────
 // 3. AGGREGATED DEFINITIONS
 
@@ -666,4 +732,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   memoryIngestStart,
   memoryIngestStatus,
   memoryIngestCancel,
+  // L8: Code Graph
+  codeGraphScan,
+  codeGraphQuery,
+  codeGraphStatus,
+  codeGraphContext,
 ];

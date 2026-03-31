@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Working Memory + Hybrid RAG Automation [136-mcp-working-memory-hybrid-rag/checklist]"
+title: "Verification Checklist: Working Memory + [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/checklist]"
 description: "Verification Date: 2026-02-19"
 trigger_phrases:
   - "verification"
@@ -411,6 +411,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-packages-verify -->
+<!-- ANCHOR:docs -->
 ## Phase Package Documentation Verification
 
 ### P1
@@ -431,6 +432,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:post-research-follow-up-verify -->
+<!-- /ANCHOR:docs -->
 ## Post-Research Follow-up Verification
 
 Source backlog: `research/136 - prioritized-implementation-backlog-post-research.md`

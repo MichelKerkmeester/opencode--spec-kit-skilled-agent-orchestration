@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Sprint 8 - Deferred Features"
+title: "Implementatio [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features/plan]"
 description: "Plan deferred-feature execution with dependency gates, verification checkpoints, and rollback controls."
 trigger_phrases:
   - "sprint 8 plan"

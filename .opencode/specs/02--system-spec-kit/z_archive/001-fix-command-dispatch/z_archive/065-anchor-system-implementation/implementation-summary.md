@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Anchor System [065-anchor-system-implementation/implementation-summary]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/implementation-summary]"
 description: "Implemented the Anchor System backend logic, enabling targeted retrieval of specific memory sections. This feature allows AI agents to request only relevant context (e.g., \"summ..."
 trigger_phrases:
   - "implementation"
@@ -57,6 +57,7 @@ Implemented the **Anchor System** backend logic, enabling targeted retrieval of 
 - `Created` .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/scratch/measure-token-savings.js
 - `Created` .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/scratch/token-savings-results.json
 
+<!-- ANCHOR:verification -->
 ## 4. Verification Results
 - **Unit Tests:** `scratch/test-parser.js` verified extraction of standard and nested anchors.
 - **Integration Simulation:** `scratch/verify-logic.js` confirmed that the filtering logic correctly reduces content and calculates savings.
@@ -86,6 +87,7 @@ Analysis of **29 production memory files** with properly closed anchors (62,652 
 **Key Finding:** The most common use case (Summary + Decisions) achieves **61% savings**, validating the original 58-90% estimate. Retrieving just Summary achieves **73% savings**.
 
 **Note:** 117 of 146 memory files (80%) have unclosed anchor tags and could not be measured. Consider running anchor validation to identify and fix these files.
+<!-- /ANCHOR:verification -->
 
 ## 5. Next Steps
 - **Client Adoption:** Update agent prompts to utilize the `anchors` parameter when requesting context.
@@ -96,3 +98,10 @@ During final review, the following issues were identified and fixed:
 1. **Test Infrastructure:** Fixed `test-embeddings-factory.js` which had typos in class names (`HFLocalProvider` -> `HfLocalProvider`) and method names (`getMetadata` -> `get_metadata`).
 2. **Partial Match Warning:** Updated `context-server.js` to explicitly warn when *some* requested anchors are found but others are missing (previously only warned if *none* were found).
 3. **Verification:** Ran full test suite (`run-all-tests.sh`) confirming all systems pass with 0 failures.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sprint 0 — Measurement Foundation"
+title: "Ver [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/checklist]"
 description: "Verification checklist for Sprint 0: graph ID fix, chunk collapse, eval infrastructure, BM25 baseline"
 trigger_phrases:
   - "sprint 0 checklist"

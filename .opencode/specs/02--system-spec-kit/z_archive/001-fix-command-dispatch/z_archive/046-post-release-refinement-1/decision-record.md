@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-Release Refinement 1 [046-post-release-refinement-1/decision-record]"
+title: "Decisio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/decision-record]"
 description: "Checkpoint restore can insert duplicate memory entries. The UNIQUE constraint on (spec_folder, file_path, anchor_id) should prevent this, but duplicates occur when values differ..."
 trigger_phrases:
   - "decision"
@@ -25,6 +25,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:decision -->
 ## DECISION LOG
 
 | ID | Title | Status | Date |
@@ -38,6 +39,7 @@ contextType: "decision"
 | DR-007 | INTENT_BOOSTERS Hyphen Handling | Proposed | 2025-12-26 |
 | DR-008 | LRU Cache Implementation | Proposed | 2025-12-26 |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## DR-001: Checkpoint Deduplication Strategy
@@ -540,6 +542,7 @@ class LRUCache {
 
 ---
 
+<!-- ANCHOR:decision -->
 ## APPENDIX: Decision Status Definitions
 
 | Status | Definition |
@@ -549,3 +552,4 @@ class LRUCache {
 | **Implemented** | Code changes complete |
 | **Superseded** | Replaced by newer decision |
 | **Rejected** | Not proceeding with this option |
+<!-- /ANCHOR:decision -->

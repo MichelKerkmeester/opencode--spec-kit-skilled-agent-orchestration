@@ -1,7 +1,12 @@
 ---
-title: "Outsourced Agent Handback Protocol"
+title: "...2-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/spec]"
 description: "External CLI handback protocol for session memory saves: hard-fail JSON input, next-step persistence, redact-and-scrub security, and post-010 awareness of sufficiency/contamination gates."
-trigger_phrases: ["outsourced agent memory", "cli agent context", "memory handback", "external agent save", "generate-context json"]
+trigger_phrases:
+  - "outsourced agent memory"
+  - "cli agent context"
+  - "memory handback"
+  - "external agent save"
+  - "generate-context json"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -166,6 +171,7 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -184,6 +190,7 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. L2: EDGE CASES
 
 ### Data Boundaries

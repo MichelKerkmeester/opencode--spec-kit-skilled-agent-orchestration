@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Documentation Alignment [007-documentation-alignment/tasks]"
+title: "Tasks: Documentation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/tasks]"
 description: "tasks document for 007-documentation-alignment."
 trigger_phrases:
   - "tasks"
@@ -17,6 +17,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-groups -->
+<!-- /ANCHOR:notation -->
 ## 1. Task Groups
 
 ### Group A — Top-Level Documentation (P0)

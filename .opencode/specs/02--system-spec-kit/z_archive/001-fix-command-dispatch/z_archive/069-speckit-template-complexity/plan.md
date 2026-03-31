@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Level-Based Template Architecture [069-speckit-template-complexity/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/plan]"
 description: "Technical approach and architecture for complexity detection and level-based template folder system."
 trigger_phrases:
   - "implementation"
@@ -50,6 +50,7 @@ Implement a complexity detection module that scores task descriptions across 5 d
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)
@@ -68,6 +69,7 @@ Implement a complexity detection module that scores task descriptions across 5 d
 - **Stop Signals**: Existing specs fail validation, template parsing errors > 5%
 - **Recovery Procedure**: Revert template changes, disable complexity flag
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -193,6 +195,7 @@ Level-Based Template Architecture:
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Core Infrastructure (lib/complexity/)
@@ -299,8 +302,10 @@ Level-Based Template Architecture:
 3. Create test fixtures for each level folder
 4. Run retrospective validation on specs 056-068
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Pyramid
@@ -332,6 +337,7 @@ Level-Based Template Architecture:
 - **Location**: `scripts/test-fixtures/069-complexity/`
 - **Contents**: Sample task descriptions with expected scores and folder selections
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -374,6 +380,7 @@ Level-Based Template Architecture:
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -391,6 +398,7 @@ Level-Based Template Architecture:
 | Node.js 16+ | Runtime | Green | Required for JS tools |
 | Bash 3.2+ | Runtime | Green | Required for shell scripts |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. REFERENCES

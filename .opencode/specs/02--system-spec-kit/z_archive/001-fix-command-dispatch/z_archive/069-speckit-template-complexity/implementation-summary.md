@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Dynamic Complexity-Based Template [069-speckit-template-complexity/implementation-summary]"
+title: "...-system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/implementation-summary]"
 description: "Spec Folder: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity"
 trigger_phrases:
   - "implementation"
@@ -29,6 +29,7 @@ Implemented a dynamic complexity-scaling system that automatically adapts spec-k
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 ### Core Infrastructure (lib/complexity/)
@@ -78,6 +79,7 @@ Implemented a dynamic complexity-scaling system that automatically adapts spec-k
 - Updated `scripts/create-spec-folder.sh` with `--complexity` and `--expand` flags
 - Updated `SKILL.md` with complexity detection flow
 
+<!-- /ANCHOR:what-built -->
 ---
 
 ## Technical Details
@@ -230,6 +232,7 @@ node scripts/expand-template.js --template plan.md --level 3 --dry-run
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 - [x] All 94 tests passing
@@ -238,6 +241,7 @@ node scripts/expand-template.js --template plan.md --level 3 --dry-run
 - [x] Integration with create-spec-folder.sh working
 - [x] Documentation updated (SKILL.md, references)
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Future Improvements (Not in Scope)
@@ -246,3 +250,10 @@ node scripts/expand-template.js --template plan.md --level 3 --dry-run
 2. Create validation rules for complexity consistency
 3. Retrospective validation on specs 056-068
 4. User experience refinements based on feedback
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

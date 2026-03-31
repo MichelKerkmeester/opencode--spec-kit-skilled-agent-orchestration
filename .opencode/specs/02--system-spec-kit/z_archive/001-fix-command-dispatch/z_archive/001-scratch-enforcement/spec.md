@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis [001-scratch-enforcement/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/spec]"
 description: "Complete specification for enforcing scratch folder usage to prevent root folder pollution."
 trigger_phrases:
   - "feature"
@@ -49,6 +49,7 @@ Ensure AI agents never place random scripts, tests, or temporary files in the pr
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -62,6 +63,7 @@ Ensure AI agents never place random scripts, tests, or temporary files in the pr
 - Changes to unrelated parts of the codebase
 - Automated cleanup scripts for scratch folders
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. ANALYSIS FINDINGS
@@ -183,6 +185,7 @@ When documenting features, use this pattern:
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -199,6 +202,7 @@ When documenting features, use this pattern:
 - **SC-007**: Hook-based blocking for temp file creation (if hook support added)
 - **SC-008**: Automated suggestion of scratch/ for temp patterns
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS

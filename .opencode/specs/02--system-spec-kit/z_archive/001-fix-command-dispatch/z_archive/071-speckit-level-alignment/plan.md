@@ -1,5 +1,5 @@
 ---
-title: "Plan: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/plan]"
+title: "Plan: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/plan]"
 description: "Spec Folder: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment"
 trigger_phrases:
   - "plan"
@@ -46,6 +46,7 @@ Align ALL SpecKit scripts, lib modules, and documentation with the new level-bas
 
 **Verified Scope**: 20+ files need updates across scripts, lib modules, documentation, and templates.
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Current State Analysis
@@ -63,6 +64,7 @@ templates/
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Alignment Status Summary
 
 | Category | Files Analyzed | Needs Update | Aligned |
@@ -72,6 +74,7 @@ templates/
 | **Documentation** | 10 | 10 | 0 |
 | **Templates** | 25 | 3 | 22 |
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Phase 1: Script Updates (CRITICAL)

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Remaining Bugs Remediation [054-remaining-bugs-remediation/decision-record]"
+title: "Decisi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/decision-record]"
 description: "Date: 2026-01-01"
 trigger_phrases:
   - "decision"
@@ -23,6 +23,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 ### DEC-001: Database Change Notification Mechanism
@@ -277,8 +278,10 @@ BUG-012 identified magic numbers in scoring weights that should be configurable.
 - Weights can be tuned per deployment
 - Defaults documented in config
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary
 
 | ID | Decision | Status |
@@ -291,6 +294,7 @@ BUG-012 identified magic numbers in scoring weights that should be configurable.
 | DEC-006 | Fail explicitly in non-interactive mode | Proposed |
 | DEC-007 | Scoring weights in search-weights.json | Proposed |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Future Considerations

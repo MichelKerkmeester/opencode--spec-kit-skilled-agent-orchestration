@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook evaluation phase"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/spec]"
 description: "Execute 6 manual test scenarios for the evaluation category, covering ablation studies, reporting dashboard, evaluation dashboard generation, ablation study execution, baseline comparison reporting, and learning history retrieval."
 trigger_phrases:
   - "evaluation testing"
@@ -9,8 +9,8 @@ trigger_phrases:
   - "evaluation dashboard generation"
   - "baseline comparison"
   - "learning history"
-  - "EX-026 EX-027 EX-046 EX-047 EX-048 EX-049"
-importance_tier: "high"
+  - "ex-026 ex-027 ex-046 ex-047 ex-048 ex-049"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook evaluation phase
@@ -150,6 +150,7 @@ Execute all six evaluation scenarios from the manual testing playbook, producing
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Test Execution
@@ -160,6 +161,7 @@ Execute all six evaluation scenarios from the manual testing playbook, producing
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Scenario-Specific

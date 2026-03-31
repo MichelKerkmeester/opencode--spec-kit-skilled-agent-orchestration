@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Anchor System [065-anchor-system-implementation/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/plan]"
 description: "The implementation focuses on enhancing the existing memory-parser.js to support extraction (not just validation) and integrating this capability into the memory_search MCP tool."
 trigger_phrases:
   - "implementation"

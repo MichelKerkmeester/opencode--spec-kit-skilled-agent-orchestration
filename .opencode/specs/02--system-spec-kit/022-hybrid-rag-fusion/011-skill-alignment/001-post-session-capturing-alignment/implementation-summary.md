@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 001-post-session-capturing-alignment"
+title: "...ystem-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/implementation-summary]"
 description: "Summary of the child-packet rebuild for the documentation-only post-session-capturing alignment under 011-skill-alignment."
 trigger_phrases:
   - "011 child 001 summary"

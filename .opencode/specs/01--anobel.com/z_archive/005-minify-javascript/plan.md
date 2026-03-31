@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: minify-javascript - Technical Approach [005-minify-javascript/plan]"
+title: "Implementation Plan: minify-javascript - Technical Approach [01--anobel.com/z_archive/005-minify-javascript/plan]"
 description: "Minify all JavaScript files in src/2_javascript/z_minified/ in-place, using conservative minifier settings to avoid behavior changes when embedded in Webflow and served from Clo..."
 trigger_phrases:
   - "implementation"

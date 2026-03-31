@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/implementation-summary]"
 description: "Phase 001 retrieval manual testing — 13/13 scenarios executed via source-code review. All verdicted PASS. Evidence citations included per scenario."
 trigger_phrases:
   - "retrieval implementation summary"

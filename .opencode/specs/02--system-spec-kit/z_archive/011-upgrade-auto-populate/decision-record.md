@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: AI Auto-Populate on Spec Upgrade [128-upgrade-auto-populate/decision-record]"
+title: "Decision Record: AI Auto-Populate on Spec [02--system-spec-kit/z_archive/011-upgrade-auto-populate/decision-record]"
 description: "The upgrade-level.sh script injects template scaffolding with [placeholder] text when upgrading spec levels. These placeholders need to be replaced with real, context-aware cont..."
 trigger_phrases:
   - "decision"
@@ -126,6 +126,7 @@ The `upgrade-level.sh` script injects template scaffolding with `[placeholder]` 
 ---
 
 <!-- ANCHOR:adr-002 -->
+<!-- ANCHOR:context -->
 ## ADR-002: Handling Missing Source Context
 
 <!-- ANCHOR:adr-002-context -->
@@ -228,3 +229,4 @@ Level 3+ Decision Record
 Document significant technical decisions
 One ADR per major decision
 -->
+<!-- /ANCHOR:context -->

@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document — CONTINUATION Attempt 1 [021-codex-orchestrate/handover]"
+title: "Session Handover Document — CONTINUATION Attempt 1 [04--agent-orchestration/021-codex-orchestrate/handover]"
 description: "ChatGPT Agent Suite Codex Optimization — session handover for context preservation and optional continuation."
 trigger_phrases:
   - "session"
@@ -36,8 +36,8 @@ ChatGPT Agent Suite Codex Optimization — session handover for context preserva
 
 | Decision | Rationale | Impact |
 | -------- | --------- | ------ |
-| Expand from orchestrate-only to full 8-file ChatGPT suite pass | Contradiction fixes require cross-agent consistency; isolated edits leave drift | All 8 `.opencode/agent/chatgpt/*.md` files modified |
-| Keep orchestrate direct-first + DEG dispatch profile | Prevent micro-task fan-out and unnecessary dispatch width | `.opencode/agent/chatgpt/orchestrate.md` — CWB/TCB/DEG tuning |
+| Expand from orchestrate-only to full 8-file ChatGPT suite pass | Contradiction fixes require cross-agent consistency; isolated edits leave drift | All 8 historical ChatGPT agent files modified |
+| Keep orchestrate direct-first + DEG dispatch profile | Prevent micro-task fan-out and unnecessary dispatch width | `.opencode/agent/chatgpt/orchestrate` — CWB/TCB/DEG tuning |
 | Align fast-path semantics across all leaf agents | Reduce ambiguity about what can be skipped in low-complexity mode | context/debug/handover/research/review/speckit/write all updated |
 | Align completion/validation semantics | Keep blocker/required/pass criteria deterministic across files | Removed conflicting exit-code and completion language across suite |
 | Preserve NDP and @speckit authority boundaries | Maintain depth and exclusivity guardrails while optimizing behavior | Depth max (0-1-2) and LEAF non-dispatch enforcement remain unchanged |
@@ -53,14 +53,14 @@ ChatGPT Agent Suite Codex Optimization — session handover for context preserva
 
 | File | Change Summary | Status |
 | ---- | -------------- | ------ |
-| `.opencode/agent/chatgpt/context.md` | Adaptive retrieval modes; mode-specific output/tool budgets | COMPLETE |
-| `.opencode/agent/chatgpt/debug.md` | Low-complexity fast-path: added explicit minimal analysis step | COMPLETE |
-| `.opencode/agent/chatgpt/handover.md` | Fast-path tool-call cap updated; context-package wording aligned | COMPLETE |
-| `.opencode/agent/chatgpt/research/research/research.md` | Trivial-research exception added to Step 9 memory-save rule | COMPLETE |
-| `.opencode/agent/chatgpt/review.md` | Codex model pin clarified; blocker-vs-required semantics tightened | COMPLETE |
-| `.opencode/agent/chatgpt/speckit.md` | Level-3 semantics corrected; validation-exit language (0 or 1) fixed | COMPLETE |
-| `.opencode/agent/chatgpt/write.md` | Template-first fast path enforced; mode-aware DQI thresholds added | COMPLETE |
-| `.opencode/agent/chatgpt/orchestrate.md` | Direct-first profile, DEG, CWB/TCB tuning, anti-microtask safeguards | COMPLETE |
+| `.opencode/agent/chatgpt/context` | Adaptive retrieval modes; mode-specific output/tool budgets | COMPLETE |
+| `.opencode/agent/chatgpt/debug` | Low-complexity fast-path: added explicit minimal analysis step | COMPLETE |
+| `.opencode/agent/chatgpt/handover` | Fast-path tool-call cap updated; context-package wording aligned | COMPLETE |
+| `.opencode/agent/chatgpt/research/research/research` | Trivial-research exception added to Step 9 memory-save rule | COMPLETE |
+| `.opencode/agent/chatgpt/review` | Codex model pin clarified; blocker-vs-required semantics tightened | COMPLETE |
+| `.opencode/agent/chatgpt/speckit` | Level-3 semantics corrected; validation-exit language (0 or 1) fixed | COMPLETE |
+| `.opencode/agent/chatgpt/write` | Template-first fast path enforced; mode-aware DQI thresholds added | COMPLETE |
+| `.opencode/agent/chatgpt/orchestrate` | Direct-first profile, DEG, CWB/TCB tuning, anti-microtask safeguards | COMPLETE |
 | `.opencode/specs/04--agent-orchestration/021-codex-orchestrate/spec.md` | Scope expanded to all 8 ChatGPT files; REQ-001..REQ-008 defined | COMPLETE |
 | `.opencode/specs/04--agent-orchestration/021-codex-orchestrate/plan.md` | Phases updated for suite-wide work; all marked complete | COMPLETE |
 | `.opencode/specs/04--agent-orchestration/021-codex-orchestrate/tasks.md` | Per-file tasks T005–T012 added for all 8 ChatGPT files; all [x] | COMPLETE |

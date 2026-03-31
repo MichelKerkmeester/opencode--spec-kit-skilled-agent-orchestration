@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Ground Truth ID Remapping"
+title: "Implementation Plan: Ground Truth ID [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/plan]"
 description: "Create map-ground-truth-ids.ts, a standalone TypeScript CLI that re-maps 297 stale relevance judgments in ground-truth.json to live memory IDs via FTS5 search on context-index.sqlite, restoring meaningful ablation study metrics."
 trigger_phrases:
   - "ground truth id remapping plan"
   - "map-ground-truth-ids implementation"
-  - "FTS5 remapping script"
+  - "fts5 remapping script"
   - "ablation metrics fix implementation"
 importance_tier: "important"
 contextType: "implementation"
@@ -157,6 +157,7 @@ SummaryReporter → stdout
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -173,6 +174,7 @@ Phase 1 (Scaffolding) ──► Phase 2 (Core Logic) ──► Phase 3 (Output &
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

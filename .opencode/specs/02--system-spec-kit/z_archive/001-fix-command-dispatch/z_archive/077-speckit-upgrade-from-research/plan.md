@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Upgrade from Research Consolidation [077-speckit-upgrade-from-research/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/plan]"
 description: "SPECKIT UPGRADE IMPLEMENTATION ROADMAP"
 trigger_phrases:
   - "implementation"
@@ -450,6 +450,7 @@ def evaluate_skill_match(request, skill):
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies & Prerequisites
 
 ```mermaid
@@ -485,6 +486,7 @@ graph TD
 | Existing MCP server | Phase 2 migrations | Required |
 | AGENTS.md access | All documentation | Required |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## Critical Path

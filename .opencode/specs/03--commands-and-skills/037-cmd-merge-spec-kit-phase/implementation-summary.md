@@ -1,3 +1,15 @@
+---
+title: "Implementation Summary [03--commands-and-skills/037-cmd-merge-spec-kit-phase/implementation-summary]"
+description: "Merged the standalone /spec_kit:phase command into the existing /spec_kit:plan and /spec_kit:complete commands as an optional :with-phases flag, following the same pattern as th..."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "037"
+  - "cmd"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->

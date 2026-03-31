@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: Sprint 1 — Graph Signal Activation"
+title: "Ve [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/checklist]"
 description: "Verification checklist for Sprint 1: R4 typed-degree channel, edge density, agent UX"
 trigger_phrases:
   - "sprint 1 checklist"
   - "graph signal checklist"
-  - "R4 checklist"
+  - "r4 checklist"
 importance_tier: "critical"
 contextType: "implementation"
 ---

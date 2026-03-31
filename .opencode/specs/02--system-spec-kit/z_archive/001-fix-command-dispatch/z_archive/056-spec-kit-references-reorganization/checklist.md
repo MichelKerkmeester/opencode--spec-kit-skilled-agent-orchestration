@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: system-spec-kit References Reorganization [056-spec-kit-references-reorganization/checklist]"
+title: "Veri [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/checklist]"
 description: "grep -E '\\\\\\\\./references/[^/]+\\\\\\\\.md' .opencode/skill/system-spec-kit/SKILL.md"
 trigger_phrases:
   - "verification"

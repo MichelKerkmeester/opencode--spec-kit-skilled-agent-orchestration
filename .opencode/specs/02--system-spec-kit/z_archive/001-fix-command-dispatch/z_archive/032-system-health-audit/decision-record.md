@@ -1,5 +1,5 @@
 ---
-title: "Decision Record - System Health Audit [032-system-health-audit/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/decision-record]"
 description: "Date: 2025-12-25"
 trigger_phrases:
   - "decision"

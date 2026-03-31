@@ -1,3 +1,17 @@
+---
+title: "Phase 1: Compaction Context Injection [02--system-spec-kit/024-compact-code-graph/001-precompact-hook/spec]"
+description: "Implement a two-step compaction context injection: PreCompact precomputes critical context and caches it, then SessionStart(source=compact) injects it into the conversation."
+trigger_phrases:
+  - "phase"
+  - "compaction"
+  - "context"
+  - "injection"
+  - "spec"
+  - "001"
+  - "precompact"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 1: Compaction Context Injection (PreCompact + SessionStart)
 
 ## Summary

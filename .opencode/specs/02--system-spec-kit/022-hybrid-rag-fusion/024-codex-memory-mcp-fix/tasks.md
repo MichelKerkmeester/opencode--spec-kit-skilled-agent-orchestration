@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Codex Memory MCP Fix"
+title: "Tasks: Codex Memory MCP Fix [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/tasks]"
 description: "Packet truth-sync tasks for the landed Codex MCP remediation slice, including the startup fix, the DB-isolation fix, and the remaining broader recommendations outside this packet's completion gate."
 trigger_phrases:
   - "codex memory mcp fix tasks"

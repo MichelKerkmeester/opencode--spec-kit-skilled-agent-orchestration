@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [017-command-adherence/implementation-summary]"
+title: "Implementation Summary [017-command-adheren [02--system-spec-kit/z_archive/017-command-adherence/implementation-summary]"
 description: "Implementation work for the core gate-bypass fix is still in progress in this spec folder."
 trigger_phrases:
   - "implementation"

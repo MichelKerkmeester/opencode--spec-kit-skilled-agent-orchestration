@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/checklist]"
+title: "Verification Checklist: Full Spec Folder Document [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/checklist]"
 description: "Status: ALL ITEMS VERIFIED -- 143 Spec 126 tests passing and full system-spec-kit suite green"
 trigger_phrases:
   - "verification"
@@ -163,6 +163,7 @@ contextType: "implementation"
 - [x] CHK-144 [P0] Feature flag allows opt-out
 - [x] CHK-145 [P1] Existing search queries unaffected
 
+<!-- ANCHOR:testing -->
 ## L3+: TESTING VERIFICATION
 
 - [x] CHK-150 [P0] Test suite created (spec126-full-spec-doc-indexing.vitest.ts) -- 143 tests, all passing
@@ -176,6 +177,7 @@ contextType: "implementation"
 - [x] CHK-158 [P0] Full system-spec-kit suite passes (`npm test`) -- 122 files, 4184 tests passing (72 skipped)
 
 <!-- ANCHOR:docs-verify -->
+<!-- /ANCHOR:testing -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-160 [P0] Spec folder exists (126-full-spec-doc-indexing/)

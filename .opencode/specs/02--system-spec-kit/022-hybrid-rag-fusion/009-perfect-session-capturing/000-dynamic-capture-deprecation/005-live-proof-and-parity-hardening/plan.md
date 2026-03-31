@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Live Proof And Parity Hardening [template:level_1/plan.md]"
+title: "...id-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening/plan]"
 description: "Refresh retained live artifacts and keep multi-CLI parity claims tied to current evidence."
 trigger_phrases:
   - "retained live proof"

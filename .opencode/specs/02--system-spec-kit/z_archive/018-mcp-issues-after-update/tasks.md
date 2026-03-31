@@ -1,5 +1,5 @@
 ---
-title: "Tasks: MCP Server Failures After Updates [135-mcp-issues-after-update/tasks]"
+title: "Tasks: MCP Server Failures After Updates [02--system-spec-kit/z_archive/018-mcp-issues-after-update/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

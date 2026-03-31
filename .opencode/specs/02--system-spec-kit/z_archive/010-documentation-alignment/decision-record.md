@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec 126 Documentation Alignment [127-documentation-alignment/decision-record]"
+title: "Decision Record: Spec 126 Documentation [02--system-spec-kit/z_archive/010-documentation-alignment/decision-record]"
 description: "Spec 126 added spec folder document indexing as a 5th source in the memory pipeline. The code implementation used true as the default for includeSpecDocs, but all documentation ..."
 trigger_phrases:
   - "decision"
@@ -89,6 +89,7 @@ Spec 126 added spec folder document indexing as a 5th source in the memory pipel
 ---
 
 <!-- ANCHOR:adr-002 -->
+<!-- ANCHOR:decision -->
 ## ADR-002: Route `find_spec` to deep mode, `find_decision` to focused mode
 
 <!-- ANCHOR:adr-002-context -->
@@ -159,6 +160,7 @@ Spec 126 added 2 new intent types (`find_spec`, `find_decision`) to the intent c
 ---
 
 <!-- ANCHOR:adr-003 -->
+<!-- /ANCHOR:decision -->
 ## ADR-003: Expand scope to include tests, code comments, and command files
 
 <!-- ANCHOR:adr-003-context -->

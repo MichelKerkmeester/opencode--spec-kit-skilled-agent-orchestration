@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Anchor Enforcement Automation [015-anchor-enforcement-automation/spec]"
+title: "Feature Specification: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/spec]"
 description: "This specification addresses systematic gaps in template and anchor compliance within the system-spec-kit framework, implementing automated enforcement to prevent spec documenta..."
 trigger_phrases:
   - "feature"
@@ -151,6 +151,7 @@ Implement automated enforcement mechanisms that make template/anchor non-complia
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -169,6 +170,7 @@ Implement automated enforcement mechanisms that make template/anchor non-complia
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

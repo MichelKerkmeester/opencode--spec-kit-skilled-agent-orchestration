@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Gemini CLI Compatibility [023-gemini-cli-compatibility/spec]"
+title: "Feature Specification: Gemini CLI Compatibility [04--agent-orchestration/023-gemini-cli-compatibility/spec]"
 description: "The existing multi-provider setup supports Claude Code (.claude/) and ChatGPT (.opencode/agent/chatgpt/) runtimes, but has no Gemini CLI integration. Gemini CLI uses a different..."
 trigger_phrases:
   - "feature"
@@ -54,9 +54,8 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 - Create `.gemini/skills/` with symlinks to all `.opencode/skill/` directories
 - Create `.gemini/commands/` with `.toml` wrapper files referencing OpenCode command content via file injection
 - Create `.gemini/specs` symlink pointing to `../.opencode/specs`
-- Create `.opencode/agent/gemini/` with 8 adapted agent files for runtime path resolution
 - Update AGENTS.md section 7 to add Gemini row to runtime agent directory table
-- Update `.opencode/command/create/agent.md` to include the Gemini agent path
+- Update `.opencode/command/create agent command` to include the Gemini agent path
 
 ### Out of Scope
 - Modifying any existing `.opencode/` agent, command, or skill source files - these remain the single source of truth
@@ -70,10 +69,10 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 |-----------|-------------|-------------|
 | `GEMINI.md` | Create (symlink) | Symlink to `AGENTS.md` at project root |
 | `.gemini/settings.json` | Create | Main Gemini config: enableAgents, mcpServers, skills, context filename |
-| `.gemini/agents/general.md` | Create | Gemini-adapted copy of @general agent |
+| `.gemini/agents/general` | Create | Gemini-adapted copy of @general agent |
 | `.gemini/agents/orchestrate.md` | Create | Gemini-adapted copy of @orchestrate agent |
 | `.gemini/agents/context.md` | Create | Gemini-adapted copy of @context agent |
-| `.gemini/agents/research/research/research.md` | Create | Gemini-adapted copy of @research agent |
+| `.gemini/agents/research/research/research` | Create | Gemini-adapted copy of @research agent |
 | `.gemini/agents/write.md` | Create | Gemini-adapted copy of @write agent |
 | `.gemini/agents/review.md` | Create | Gemini-adapted copy of @review agent |
 | `.gemini/agents/speckit.md` | Create | Gemini-adapted copy of @speckit agent |
@@ -82,9 +81,8 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 | `.gemini/skills/<name>` | Create (symlinks) | Symlinks to each `.opencode/skill/` directory |
 | `.gemini/commands/<ns>/<cmd>.toml` | Create | TOML wrappers for key OpenCode commands |
 | `.gemini/specs` | Create (symlink) | Symlink to `../.opencode/specs` |
-| `.opencode/agent/gemini/*.md` | Create | 8+ agent files with Gemini-specific frontmatter |
 | `AGENTS.md` | Modify | Add Gemini row to §7 runtime agent directory table |
-| `.opencode/command/create/agent.md` | Modify | Add `.opencode/agent/gemini/` path reference |
+| `.opencode/command/create agent command` | Modify | Add `.opencode/agent/gemini/` path reference |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -99,8 +97,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 | REQ-001 | `.gemini/settings.json` must enable subagents and define mcpServers | File contains `"experimental": {"enableAgents": true}` and mcpServers block matching `.opencode/` MCP config |
 | REQ-002 | All agent files in `.gemini/agents/` must use valid Gemini frontmatter schema | Each file has `name`, `description`, `tools` (array), and optionally `model`, `max_turns`, `timeout_mins`; no OpenCode-style permission maps |
 | REQ-003 | `GEMINI.md` symlink must resolve to `AGENTS.md` | `readlink GEMINI.md` returns `AGENTS.md` and file is readable |
-| REQ-004 | Skill symlinks in `.gemini/skills/` must resolve to valid `.opencode/skill/` directories | No broken symlinks; each target contains a `SKILL.md` |
-| REQ-005 | `.opencode/agent/gemini/` must exist with all agent files for runtime path resolution | Directory contains one `.md` file per agent with Gemini-specific frontmatter |
+| REQ-004 | Skill symlinks in `.gemini/skills/` must resolve to valid `.opencode/skill/` directories | No broken symlinks; each target contains a `skill index` |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -108,7 +105,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 |----|-------------|---------------------|
 | REQ-006 | Command TOML files must use correct Gemini injection syntax (`@{file}`) | `.toml` files contain `prompt` field with valid `@{../../.opencode/command/...}` references |
 | REQ-007 | AGENTS.md §7 runtime table updated with Gemini row | Table includes row: `Gemini CLI | .gemini/agents/ | Load Gemini-specific agent definitions` |
-| REQ-008 | `.opencode/command/create/agent.md` updated to include Gemini agent path | Document references `.opencode/agent/gemini/` as a target path for new agent creation |
+| REQ-008 | `.opencode/command/create agent command` updated to include Gemini agent path | Document references `.opencode/agent/gemini/` as a target path for new agent creation |
 | REQ-009 | `.gemini/specs` symlink resolves to `.opencode/specs` | `readlink .gemini/specs` returns `../.opencode/specs` and directory is accessible |
 <!-- /ANCHOR:requirements -->
 
@@ -122,7 +119,6 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 - **SC-003**: `.gemini/agents/` contains 8+ adapted agent `.md` files with valid Gemini frontmatter (tools array, no permission maps)
 - **SC-004**: `.gemini/skills/` contains symlinks to all `.opencode/skill/` directories, all resolving correctly
 - **SC-005**: `.gemini/commands/` contains `.toml` wrapper files for key OpenCode commands using `@{file}` injection
-- **SC-006**: `.opencode/agent/gemini/` contains 8+ adapted agent files for runtime path resolution
 - **SC-007**: AGENTS.md §7 includes a Gemini row in the runtime agent directory table
 - **SC-008**: All symlinks resolve correctly with no broken links (`find .gemini -type l | xargs -I{} test -e {}` passes)
 <!-- /ANCHOR:success-criteria -->
@@ -135,7 +131,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Gemini CLI installed and authenticated in target environment | Agents and commands cannot be tested without CLI | Document as prerequisite; validate file structure independently |
-| Dependency | `.opencode/skill/` directories must exist and contain `SKILL.md` | Broken skill symlinks if source is missing | Verify source skill directories before creating symlinks |
+| Dependency | `.opencode/skill/` directories must exist and contain `skill index` | Broken skill symlinks if source is missing | Verify source skill directories before creating symlinks |
 | Risk | Gemini CLI TOML command syntax (`@{file}`) may differ across CLI versions | Commands fail to inject OpenCode markdown content | Test with current Gemini CLI version; document minimum version requirement |
 | Risk | Gemini frontmatter schema may evolve (experimental feature) | Agent definitions break on CLI upgrade | Pin minimum CLI version in `settings.json` documentation; monitor Gemini CLI changelog |
 | Risk | Symlink support on Windows environments | Symlinks may not resolve for Windows users | Document Linux/macOS requirement; provide fallback copy-based alternative |
@@ -145,6 +141,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -163,6 +160,7 @@ Add a fully functional Gemini CLI runtime layer so that all agents, commands, an
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

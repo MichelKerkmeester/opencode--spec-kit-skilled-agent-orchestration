@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Template [074-speckit-template-optimization-refinement/implementation-summary]"
+title: "...kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/implementation-summary]"
 description: "Enterprise-scale refinement and validation of the SpecKit template optimization (Spec 073) through multi-agent orchestration. Deployed 10 parallel Opus 4.5 research agents to co..."
 trigger_phrases:
   - "implementation"
@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -29,8 +30,10 @@ contextType: "implementation"
 | **Duration** | ~45 minutes (excluding user wait time) |
 | **Agents Used** | 20+ Opus 4.5 agents |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Enterprise-scale refinement and validation of the SpecKit template optimization (Spec 073) through multi-agent orchestration. Deployed 10 parallel Opus 4.5 research agents to comprehensively analyze ~450 files and 27,600 LOC, comparing current implementation against backup. Generated formal analysis documents with DQI-scored quality grades, identified 15 prioritized recommendations, and implemented 5 high-priority refinements.
@@ -66,8 +69,10 @@ The work validated that the Spec 073 CORE + ADDENDUM v2.0 architecture is well-d
 | Test fixtures | 51 | 5,000+ |
 | **Total** | **~450** | **~27,600** |
 
+<!-- /ANCHOR:what-built -->
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale | ADR Reference |
@@ -78,6 +83,7 @@ The work validated that the Spec 073 CORE + ADDENDUM v2.0 architecture is well-d
 | Three analysis documents | Separation of concerns for findings, assessment, actions | ADR-004 |
 | Version bump to v1.9.0 | Semantic versioning for feature improvements | ADR-005 |
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Architecture Impact
@@ -142,6 +148,7 @@ This implementation established a reusable pattern for enterprise-scale analysis
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -160,6 +167,7 @@ This implementation established a reusable pattern for enterprise-scale analysis
 | P1 (Required) | 21 | 21 | 100% |
 | P2 (Optional) | 10 | 10 | 100% |
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Compliance Sign-Off
@@ -173,6 +181,7 @@ This implementation established a reusable pattern for enterprise-scale analysis
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **~~Verbose templates not created~~**: ✅ IMPLEMENTED - 26 verbose template files created in `templates/verbose/`
@@ -182,9 +191,11 @@ This implementation established a reusable pattern for enterprise-scale analysis
 5. **Analysis documents are point-in-time**: Will need refresh if significant changes made to SpecKit
 6. **Level calculator not unified**: Two complexity scoring systems remain (deferred to future spec)
 
+<!-- /ANCHOR:limitations -->
 ---
 
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Worked Well
 
@@ -209,6 +220,7 @@ This implementation established a reusable pattern for enterprise-scale analysis
 4. **Build in verification phase** with parallel agents matching research count
 5. **Document deferrals explicitly** to distinguish from completions
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Performance Metrics

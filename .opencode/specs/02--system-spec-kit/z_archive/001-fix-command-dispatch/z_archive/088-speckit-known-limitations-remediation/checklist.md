@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: System-Spec-Kit Known Limitations [088-speckit-known-limitations-remediation/checklist]"
+title: "V [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/checklist]"
 description: "Verification Date: 2026-02-05"
 trigger_phrases:
   - "verification"
@@ -31,12 +31,14 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md filled with requirements]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md filled with approach]
 - [x] CHK-003 [P1] Dependencies identified (shared symlink, SQLite limitations) [EVIDENCE: Shared symlink and SQLite limitations documented]
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## KL-1: SQLite Schema Unification
@@ -63,11 +65,13 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## KL-3: Script Documentation
 
 - [x] CHK-030 [P1] speckit.md Capability Scan lists archive.sh, check-completion.sh, recommend-level.sh [EVIDENCE: speckit.md Capability Scan has all 6 scripts at lines 193-195]
 - [x] CHK-031 [P1] SKILL.md Key Scripts lists archive.sh, check-completion.sh, recommend-level.sh [EVIDENCE: SKILL.md Key Scripts has all 7 scripts at lines 199-201]
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## KL-4: Signal Handler Cleanup
@@ -86,13 +90,16 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-060 [P1] Spec/plan/tasks synchronized [EVIDENCE: Spec/plan/tasks filled and synchronized]
 - [x] CHK-061 [P2] implementation-summary.md created after completion [EVIDENCE: Deferred to post-completion (P2)]
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -102,3 +109,4 @@ contextType: "implementation"
 | P2 Items | 1 | 1/1 |
 
 **Verification Date**: 2026-02-05
+<!-- /ANCHOR:summary -->

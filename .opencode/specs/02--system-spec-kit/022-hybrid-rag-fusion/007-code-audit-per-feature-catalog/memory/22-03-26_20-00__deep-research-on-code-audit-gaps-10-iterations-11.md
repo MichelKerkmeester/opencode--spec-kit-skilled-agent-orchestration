@@ -1,6 +1,5 @@
 ---
-title: "Deep Research On Code [007-code-audit-per-feature-catalog/22-03-26_20-00__deep-research-on-code-audit-gaps-10-iterations-11]"
-description: "Deep research on code audit gaps: 10 iterations, 11 questions answered. Found: 32/286 source files..."
+title: "...brid-rag-fusion/007-code-audit-per-feature-catalog/22-03-26_20-00__deep-research-on-code-audit-gaps-10-iterations-11]"
 trigger_phrases:
   - "code audit gaps"
   - "deep research findings"
@@ -14,18 +13,17 @@ trigger_phrases:
   - "per-phase risk model"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.65,"errors":2,"warnings":1}
 ---
-
 # Deep Research On Code Audit Gaps 10 Iterations 11
 
 ## SESSION SUMMARY

@@ -1,12 +1,12 @@
 ---
-title: "Tasks: 003-unified-graph-retrieval"
+title: "Tasks: 003-uni [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/tasks]"
 description: "Phase 3 deterministic graph-fusion task breakdown."
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "phase 3 tasks"
   - "graph fusion tasks"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: 003-unified-graph-retrieval
 

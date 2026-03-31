@@ -1,5 +1,5 @@
 ---
-title: "Plan: Language Selector - Desktop Hover to Open [026-language-selector-hover/plan]"
+title: "Plan: Language Selector - Desktop Hover to Open [01--anobel.com/z_archive/024-language-selector-hover/plan]"
 description: "let hover_timeout = null"
 trigger_phrases:
   - "plan"

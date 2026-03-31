@@ -1,6 +1,5 @@
 ---
-title: "Deep Review Of Feature Catalog [006-feature-catalog/25-03-26_18-33__deep-review-of-feature-catalog-alignment-224]"
-description: "Deep review of feature catalog alignment (224 files, 21 categories) against MCP server code and 022-hybrid-rag-fusion spec changes. Dispatched 15 GPT 5.4 copilot agents in 8..."
+title: "...stem-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/25-03-26_18-33__deep-review-of-feature-catalog-alignment-224]"
 trigger_phrases:
   - "searched wrong"
   - "wrong behavior"
@@ -32,18 +31,17 @@ trigger_phrases:
   - "catalog"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Deep Review Of Feature Catalog Alignment 224
 
 ## SESSION SUMMARY

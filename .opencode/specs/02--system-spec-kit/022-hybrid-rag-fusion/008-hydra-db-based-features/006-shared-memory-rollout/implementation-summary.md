@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 006-shared-memory-rollout"
+title: "...--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/implementation-summary]"
 description: "Verified implementation summary for Phase 6 shared memory rollout."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 6 summary"
   - "shared memory summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

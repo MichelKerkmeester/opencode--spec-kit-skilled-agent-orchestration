@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Ablation Benchmark Integrity"
+title: "Implementation Plan: Ablation [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/plan]"
 description: "This plan restores benchmark validity by separating evaluation from live truncation behavior, validating ground-truth provenance against the active DB, and refreshing the canonical relevance dataset before rerunning ablations."
 trigger_phrases:
   - "implementation plan"
   - "ablation benchmark"
   - "benchmark integrity"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: Ablation Benchmark Integrity
@@ -121,6 +121,7 @@ CLI or MCP ablation entrypoint opens the active DB, runs a ground-truth alignmen
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -137,6 +138,7 @@ Phase 1 (Hardening) ───► Phase 2 (Dataset Refresh) ───► Phase 3 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

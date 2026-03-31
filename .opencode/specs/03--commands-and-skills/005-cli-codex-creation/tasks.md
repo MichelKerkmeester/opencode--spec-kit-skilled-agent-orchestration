@@ -1,10 +1,6 @@
 ---
-title: "Tasks: cli-gemini Model Consolidation + cli-codex Skill"
-description: "Task breakdown for model consolidation and skill creation."
-trigger_phrases:
-  - "cli-codex tasks"
-importance_tier: "normal"
-contextType: "implementation"
+title: "Tasks: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/tasks]"
+description: "Task breakdown for model consolidation and cli-codex skill creation."
 ---
 # Tasks: cli-gemini Model Consolidation + cli-codex Skill
 
@@ -14,37 +10,82 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:notation -->
-## Task List
+## Task Notation
 
-### T001: Consolidate cli-gemini models
-- [x] Replace gemini-2.5-pro → gemini-3.1-pro-preview in all files
-- [x] Replace gemini-2.5-flash → gemini-3.1-pro-preview in all files
-- [x] Replace gemini-2.5-flash-lite → gemini-3.1-pro-preview in all files
-- [x] Replace gemini-3-pro-preview → gemini-3.1-pro-preview in cli_reference.md
-- [x] Simplify model selection tables to single model
-- [x] Update routing logic to remove complexity-based model selection
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### T002: Create cli-codex skill files
-- [x] Create directory structure
-- [x] Write SKILL.md with 8 sections
-- [x] Write references/cli_reference.md
-- [x] Write references/agent_delegation.md
-- [x] Write references/codex_tools.md
-- [x] Write references/integration_patterns.md
-- [x] Write assets/prompt_templates.md
+**Task Format**: `T### [P?] Description (file path)`
 
-### T003: Register cli-codex in ecosystem
-- [x] Add INTENT_BOOSTERS entries in skill_advisor.py
-- [x] Add MULTI_SKILL_BOOSTERS entries in skill_advisor.py
-- [x] Add PHRASE_INTENT_BOOSTERS entries in skill_advisor.py
-- [x] Create .claude/skills/cli-codex symlink
-- [x] Add cli-codex to .opencode/skill/README.md
-- [x] Add cli-codex to root README.md
-- [x] Add cli-codex to .opencode/README.md
-
-### T004: Create spec folder documentation
-- [x] spec.md
-- [x] plan.md
-- [x] tasks.md
-- [x] checklist.md
+---
 <!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Review existing `cli-gemini` model references.
+- [x] T002 Review sibling CLI skill structure for `cli-codex`.
+- [x] T003 Identify advisor and README registration touchpoints.
+
+---
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Normalize `cli-gemini` to one canonical model reference.
+- [x] T005 [P] Create `cli-codex` SKILL.md.
+- [x] T006 [P] Create `cli-codex` reference files.
+- [x] T007 [P] Create `cli-codex` prompt templates.
+- [x] T008 Update advisor and README registration surfaces.
+
+---
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Phase 3: Verification
+
+- [x] T009 Verify `cli-codex` file presence.
+- [x] T010 Verify normalized `cli-gemini` model guidance.
+- [x] T011 Validate the spec-folder documentation structure.
+
+---
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+
+---
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+
+---
+<!-- /ANCHOR:cross-refs -->
+
+---

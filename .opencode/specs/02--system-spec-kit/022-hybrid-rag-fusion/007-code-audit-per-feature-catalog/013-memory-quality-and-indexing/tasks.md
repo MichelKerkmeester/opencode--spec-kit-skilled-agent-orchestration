@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Memory Quality and Indexing"
+title: "Tas [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/tasks]"
 description: "Task breakdown for auditing 24 Memory Quality and Indexing features"
 trigger_phrases:
   - "tasks"

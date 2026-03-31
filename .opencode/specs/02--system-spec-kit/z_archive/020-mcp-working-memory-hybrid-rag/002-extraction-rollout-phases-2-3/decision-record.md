@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Extraction and Rollout Package (Phase 2, 3) [002-extraction-rollout-phases-2-3/decision-record]"
+title: "Deci [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/decision-record]"
 description: "This package captures closed Phase 2/3 execution and wave handoff mappings. Level 3+ compliance requires a local decision-record.md, while architecture-level ADR authority remai..."
 trigger_phrases:
   - "decision"

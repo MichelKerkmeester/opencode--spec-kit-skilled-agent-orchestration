@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Modular Validation Architecture [002-modular-architecture/implementation-summary]"
+title: "...t/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/implementation-summary]"
 description: "Transformed validate-spec.sh from a monolithic 600-line script into a modular architecture with 11 focused files totaling 1,291 lines. This refactoring enables plugin-like exten..."
 trigger_phrases:
   - "implementation"
@@ -485,3 +485,10 @@ validate-spec.sh --help
 
 *Generated: 2024-12-25*
 *Spec: 012-path-scoped-rules/002-modular-architecture*
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

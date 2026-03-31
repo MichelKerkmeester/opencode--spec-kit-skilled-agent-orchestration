@@ -1,28 +1,27 @@
 ---
-title: "Deep Research Round 2 [016-json-mode-hybrid-enrichment/21-03-26_18-29__deep-research-round-2-completed-10-agent]"
-description: "Quality scorer bonus system makes score non-discriminative for this pipeline; Contamination filter scope gap in the JSON mode pipeline; Template consumption gaps lose rich..."
+title: "...ring/016-json-mode-hybrid-enrichment/001-initial-enrichment/21-03-26_18-29__deep-research-round-2-completed-10-agent]"
 trigger_phrases:
   - "generate-context pipeline quality"
   - "quality scorer bonus system"
   - "contamination filter scope"
   - "trigger phrase auto-extraction"
   - "cross-session dedup verification"
-  - "V-rule coverage gaps"
+  - "v-rule coverage gaps"
   - "json memory capturing flawless"
   - "field propagation integrity"
   - "template consumption gaps"
   - "deep research round 2"
 importance_tier: "critical"
 contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.

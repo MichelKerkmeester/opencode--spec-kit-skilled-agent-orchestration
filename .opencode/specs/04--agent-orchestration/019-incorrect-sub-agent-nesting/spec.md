@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Sub-Agent Nesting Depth Control [019-incorrect-sub-agent-nesting/spec]"
+title: "Feature Specification: Sub-Agent Nesting Depth Control [04--agent-orchestration/019-incorrect-sub-agent-nesting/spec]"
 description: "The orchestrator agent (Codex/ChatGPT provider) creates deeply nested sub-agent chains of 5+ levels when handling user requests, wasting tokens on orchestration overhead and pro..."
 trigger_phrases:
   - "feature"
@@ -27,7 +27,7 @@ The orchestrator agent (Codex/ChatGPT provider) creates deeply nested sub-agent 
 
 **Key Decisions**: Absolute max depth = 3 (Orchestrator > Dispatcher > Leaf); agents classified by tier with hard LEAF enforcement.
 
-**Critical Dependencies**: All three orchestrate.md variants (base, chatgpt, copilot) must be updated simultaneously.
+**Critical Dependencies**: All three orchestrate variants (base, historical ChatGPT, removed Copilot) must be updated simultaneously.
 <!-- /ANCHOR:executive-summary -->
 
 ---
@@ -70,15 +70,15 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 
 ### In Scope
 - Define the Nesting Depth Protocol (NDP) with agent tier classification
-- Add a `depth` parameter to every dispatch template in orchestrate.md
+- Add a `depth` parameter to every dispatch template in the orchestrate variants
 - Classify all agents as ORCHESTRATOR, DISPATCHER, or LEAF
-- Harmonize nesting rules across base, chatgpt, and copilot orchestrate.md variants
+- Harmonize nesting rules across the base, historical ChatGPT, and removed Copilot orchestrate variants
 - Add a new anti-pattern entry for depth violations
 - Update Section 4 (Sub-Orchestrator Pattern) with absolute depth rules
 - Update Section 10 (Task Decomposition Format) with depth field
 
 ### Out of Scope
-- Modifying agent definition files (context.md, speckit.md, etc.) — future spec
+- Modifying other agent definition files — future spec
 - Runtime depth enforcement via code/tooling — future spec
 - Changing the Two-Tier Dispatch Model (Phase 1/Phase 2) — preserved as-is
 
@@ -87,10 +87,10 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/agent/orchestrate.md` | Modify | Add NDP section, update Section 4/10/24 |
-| `.opencode/agent/chatgpt/orchestrate.md` | Modify | Same changes as base |
-| `.opencode/agent/copilot/orchestrate.md` | Modify | Same changes + fix Section 11 conflict |
+| `.opencode/agent/chatgpt/orchestrate` | Modify | Same changes as base |
+| `.opencode/agent/copilot/orchestrate` | Modify | Same changes + fix Section 11 conflict |
 
-> **Note (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. Changes to `copilot/orchestrate.md` and `copilot/review.md` are therefore no longer present in the repository. Status updated to "Partially Reverted".
+> **Note (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. Changes to `copilot/orchestrate` and `copilot/review` are therefore no longer present in the repository. Status updated to "Partially Reverted".
 <!-- /ANCHOR:scope -->
 
 ---
@@ -106,7 +106,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 | REQ-002 | Establish absolute maximum depth of 3 for any dispatch chain | Rule stated in Section 4 with enforcement logic |
 | REQ-003 | Add `Depth` field to Task Decomposition Format (Section 10) | Template updated with depth tracking |
 | REQ-004 | Add anti-pattern for depth violations (Section 24) | New anti-pattern entry with detection signals |
-| REQ-005 | Harmonize nesting rules across all 3 orchestrate.md files | No conflicting depth caps between variants |
+| REQ-005 | Harmonize nesting rules across all three orchestrate variants | No conflicting depth caps between variants |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -122,7 +122,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All three orchestrate.md files contain identical NDP rules (no conflicting depth caps)
+- **SC-001**: All three orchestrate variants contain identical NDP rules (no conflicting depth caps)
 - **SC-002**: Every agent in the routing table (Section 3) has a TIER classification
 - **SC-003**: Task Decomposition Format (Section 10) includes `Depth` field
 - **SC-004**: At least one anti-pattern in Section 24 covers depth violations
@@ -136,7 +136,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | All 3 orchestrate.md files must stay synchronized | Drift causes recurring nesting bugs | Single source of truth section, copied to variants |
+| Dependency | All three orchestrate variants must stay synchronized | Drift causes recurring nesting bugs | Single source of truth section, copied to variants |
 | Risk | Overly strict depth limits may prevent @context from dispatching @explore | High — breaks exploration workflow | @context classified as DISPATCHER (allowed 1 sub-dispatch) |
 | Risk | Codex may ignore depth instructions in practice | Medium — behavioral, not structural | Add depth to every dispatch template so it's always visible |
 | Risk | Existing sub-orchestrator workflows may break | Low — sub-orchestrator is rarely used for simple tasks | Sub-orchestrator becomes depth-1 ORCHESTRATOR, inherits remaining depth budget |
@@ -145,6 +145,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -160,6 +161,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Depth Budget Exhaustion
@@ -182,7 +184,7 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 15/25 | Files: 3, LOC: ~100 edits, Systems: orchestrate.md variants |
+| Scope | 15/25 | Files: 3, LOC: ~100 edits, Systems: orchestrate variants |
 | Risk | 12/25 | Breaking: possible if too strict, Multi-file sync: yes |
 | Research | 10/20 | Must analyze current nesting behavior deeply |
 | Multi-Agent | 5/15 | Workstreams: 1 (documentation-only change) |
@@ -239,10 +241,10 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 
 ### US-004: Synchronized Rules Across Variants (Priority: P1)
 
-**As a** maintainer of OpenCode agent definitions, **I want** all three orchestrate.md variants to have identical NDP rules, **so that** behavior is consistent regardless of provider.
+**As a** maintainer of OpenCode agent definitions, **I want** all three orchestrate variants to have identical NDP rules, **so that** behavior is consistent regardless of provider.
 
 **Acceptance Criteria**:
-1. Given the base, chatgpt, and copilot orchestrate.md files, When NDP section is compared, Then all three are identical
+1. Given the base, historical ChatGPT, and removed Copilot orchestrate variants, when the NDP section is compared, then all three are identical
 <!-- /ANCHOR:user-stories -->
 
 ---

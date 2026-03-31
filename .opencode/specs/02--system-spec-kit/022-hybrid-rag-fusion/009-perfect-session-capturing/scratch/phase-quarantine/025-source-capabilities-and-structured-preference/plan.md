@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [NAME] [template:level_1/plan.md]"
+title: "...fusion/009-perfect-session-capturing/scratch/phase-quarantine/025-source-capabilities-and-structured-preference/plan]"
 description: "[2-3 sentences: what this implements and the technical approach]"
 trigger_phrases:
   - "implementation"

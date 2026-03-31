@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Decisions and Deferrals"
+title: "Ver [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist]"
 description: "QA verification for Decisions and Deferrals code audit"
 trigger_phrases:
   - "checklist"

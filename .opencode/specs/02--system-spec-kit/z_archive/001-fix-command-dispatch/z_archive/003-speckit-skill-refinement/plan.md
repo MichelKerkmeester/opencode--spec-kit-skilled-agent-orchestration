@@ -1,5 +1,5 @@
 ---
-title: "Plan: SpecKit Skill Refinement (Conservative Approach) [003-speckit-skill-refinement/plan]"
+title: "Plan: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/plan]"
 description: "created: 2025-12-13"
 trigger_phrases:
   - "plan"
@@ -176,6 +176,7 @@ None - file is already well-structured with clear status.
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 3. Summary of Changes
 
 ### By Category
@@ -206,6 +207,7 @@ None - file is already well-structured with clear status.
 | Files modified | 0 | 7 | - |
 | Files restructured | 0 | 0 | - |
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 4. The One Redundancy to Address
@@ -277,6 +279,7 @@ After changes, verify:
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 8. Rollback Plan
 
 If issues discovered:
@@ -285,3 +288,4 @@ git checkout HEAD -- .opencode/skills/workflows-spec-kit/
 ```
 
 All changes are cosmetic/clarifying - no structural changes that would complicate rollback.
+<!-- /ANCHOR:rollback -->

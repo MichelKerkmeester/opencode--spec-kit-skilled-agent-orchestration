@@ -1,6 +1,5 @@
 ---
-title: "Verified And Refined Spec 012 Agents Alignment"
-description: "Verified and refined spec 013-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence..."
+title: "...m-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/16-03-26_11-32__verified-and-refined-spec-017-agents-alignment]"
 trigger_phrases:
   - "chatgpt agent model fields"
   - "agent model fields removed"
@@ -14,12 +13,11 @@ trigger_phrases:
   - "corresponding spec folder existed"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
+quality_score: 0.90
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Verified And Refined Spec 012 Agents Alignment
 
 ## SESSION SUMMARY

@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Transaction Nesting Fix (BUG-057) [057-transaction-nesting-fix/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix/checklist]"
 description: "Why no README updates needed"
 trigger_phrases:
   - "checklist"
@@ -15,6 +15,7 @@ contextType: "implementation"
 # Checklist: Transaction Nesting Fix (BUG-057)
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] P0: Root cause identified - `indexMemory()` uses explicit BEGIN/COMMIT while caller uses `database.transaction()` wrapper
@@ -22,6 +23,7 @@ contextType: "implementation"
 - [x] P1: Impact analysis - Internal change only, no API changes
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Implementation
 
 - [x] P0: Modified `indexMemory()` in `vector-index.js` to use `database.transaction()` wrapper
@@ -40,6 +42,7 @@ contextType: "implementation"
 - [ ] P1: All 154+ memory files indexed successfully - REQUIRES RESTART
 - [ ] P1: Semantic search returns results with Voyage embeddings - REQUIRES RESTART
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] P1: Spec folder created with spec.md and plan.md
@@ -47,6 +50,7 @@ contextType: "implementation"
 - [x] P2: Reviewed mcp_server/README.md - No update needed (internal change)
 - [x] P2: Reviewed main README.md - No update needed (internal change)
 - [x] P2: Noted broken INSTALL_GUIDE.md symlink (separate issue)
+<!-- /ANCHOR:docs -->
 
 ## Notes
 

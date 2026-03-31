@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [NAME] [template:level_1/tasks.md]"
+title: "...usion/009-perfect-session-capturing/scratch/phase-quarantine/025-source-capabilities-and-structured-preference/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

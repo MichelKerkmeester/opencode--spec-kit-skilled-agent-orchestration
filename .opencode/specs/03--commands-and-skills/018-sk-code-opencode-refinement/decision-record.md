@@ -1,7 +1,6 @@
 ---
-title: "Decision Record: sk-code--opencode refinement"
+title: "Decision Record: sk-code--opencode refinement [03--commands-and-skills/018-sk-code-opencode-refinement/decision-record]"
 description: "Architecture and policy decisions for comment policy tightening, structural invariants, AI-oriented semantics, principle enforcement depth, and optional review scope."
-SPECKIT_TEMPLATE_SOURCE: "decision-record + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "decision"
   - "adr"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "comment policy"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record + level3-arch + level3plus-govern | v2.2"
 ---
 # Decision Record: sk-code--opencode refinement
 
@@ -80,7 +80,7 @@ Current guidance permits up to five inline comments per ten lines, which still a
 ### Implementation
 
 **What changes**:
-- `sk-code--opencode/SKILL.md` and shared patterns define threshold and exception framing.
+- sk-code--opencode/SKILL.md and shared patterns define threshold and exception framing.
 - Language style guides align with the same threshold and examples.
 
 **How to roll back**: Restore threshold references to prior wording in scoped files and rerun policy assertion commands.
@@ -88,8 +88,8 @@ Current guidance permits up to five inline comments per ten lines, which still a
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Preserve Numbered ALL-CAPS Section Headers
+
+### ADR-002: Preserve Numbered ALL-CAPS Section Headers
 
 ### Metadata
 
@@ -155,12 +155,12 @@ Numbered ALL-CAPS section headers are a structural invariant in current standard
 - Language guides and checklists include preservation checks.
 
 **How to roll back**: Remove invariant checks and restore prior guidance, then rerun header verification to confirm prior baseline.
-<!-- /ANCHOR:adr-002 -->
+
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: AI-Oriented Inline Comment Semantics
+
+### ADR-003: AI-Oriented Inline Comment Semantics
 
 ### Metadata
 
@@ -226,12 +226,12 @@ The refinement requires comment semantics optimized for AI parsing instead of na
 - Checklist rules verify semantic presence and non-narrative guidance.
 
 **How to roll back**: Revert to prior comment semantics language and remove allowlist references.
-<!-- /ANCHOR:adr-003 -->
+
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: KISS/DRY and SOLID Enforcement Depth
+
+### ADR-004: KISS/DRY and SOLID Enforcement Depth
 
 ### Metadata
 
@@ -297,12 +297,12 @@ Current checklists do not consistently encode KISS/DRY and full SOLID enforcemen
 - Verification commands assert marker presence and coverage.
 
 **How to roll back**: Remove added principle checks from affected checklists and restore prior baseline wording.
-<!-- /ANCHOR:adr-004 -->
+
 
 ---
 
-<!-- ANCHOR:adr-005 -->
-## ADR-005: Optional Scope for `sk-code--review`
+
+### ADR-005: Optional Scope for `sk-code--review`
 
 ### Metadata
 
@@ -368,4 +368,4 @@ The spec allows optional `sk-code--review` updates. Unconditional edits could cr
 - Global quality sweep includes mandatory EVT-004 decision entry.
 
 **How to roll back**: Revert optional review edits and mark pathway N/A with evidence if mismatch is not confirmed.
-<!-- /ANCHOR:adr-005 -->
+

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/decision-record]"
+title: "...stem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/decision-record]"
 description: "The refinement task required comprehensive analysis of ~450 files and 27,600 LOC across the SpecKit system. Sequential analysis by a single agent would require 15+ minutes per s..."
 trigger_phrases:
   - "decision"
@@ -727,6 +727,7 @@ MCP tools (14 total) require a running MCP server to fully exercise the protocol
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary
 
 | ADR | Decision | Status | Impact |
@@ -741,6 +742,7 @@ MCP tools (14 total) require a running MCP server to fully exercise the protocol
 | ADR-008 | Direct import + integration MCP tests | Accepted | Medium - MCP coverage strategy |
 | ADR-009 | P0-first coverage prioritization | Accepted | High - focus on critical paths |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Approval Tracking

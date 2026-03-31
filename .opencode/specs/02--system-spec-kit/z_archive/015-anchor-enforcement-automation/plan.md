@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Anchor Enforcement Automation [132-anchor-enforcement-automation/plan]"
+title: "Implementation Plan: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/plan]"
 description: "Implements multi-layer enforcement system preventing spec documentation creation without template/anchor compliance. Three enforcement points: (1) Pre-flight validation gates in..."
 trigger_phrases:
   - "implementation"
@@ -211,6 +211,7 @@ User Request → Gate 3 (orchestrate.md) → Route to @speckit ONLY
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -239,6 +240,7 @@ Phase 2 (Validation) ──┬──► Phase 3 (ANCHOR Gen) ──┬──► 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -349,6 +351,7 @@ Phase 2 (Validation) ──┬──► Phase 3 (ANCHOR Gen) ──┬──► 
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Three-Layer Enforcement vs Single Validation Point
@@ -412,6 +415,7 @@ Phase 2 (Validation) ──┬──► Phase 3 (ANCHOR Gen) ──┬──► 
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

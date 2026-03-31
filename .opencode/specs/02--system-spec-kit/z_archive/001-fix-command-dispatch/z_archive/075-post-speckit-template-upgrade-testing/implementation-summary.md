@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Post-SpecKit Template [075-post-speckit-template-upgrade-testing/implementation-summary]"
+title: "...ec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/implementation-summary]"
 description: "A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test files covering all skill components. The suite includes 557 tests across templates, validation, MC..."
 trigger_phrases:
   - "implementation"
@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -30,8 +31,10 @@ contextType: "implementation"
 | **Total Tests** | 557 |
 | **Pass Rate** | 97% (540 pass, 17 skipped, 0 failures) |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test files covering all skill components. The suite includes 557 tests across templates, validation, MCP tools, scripts, and integration testing, validating the CORE + ADDENDUM v2.0 template architecture following Spec 073/074 optimizations.
@@ -46,8 +49,10 @@ A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test f
 | `test-scripts-modules.js` | 166 | 163 Pass, 3 Skipped | Script modules and utilities |
 | `test-integration.js` | 36 | All Pass | End-to-end integration workflows |
 
+<!-- /ANCHOR:what-built -->
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale | ADR Reference |
@@ -57,6 +62,7 @@ A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test f
 | Direct module import for MCP testing | Enables isolated unit testing without running full MCP server | ADR-008 |
 | P0-first coverage prioritization | Ensure critical functionality is tested before expanding to edge cases | ADR-009 |
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Test Coverage Summary
@@ -82,6 +88,7 @@ A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test f
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -100,8 +107,10 @@ A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test f
 - Template system: All CORE + ADDENDUM compositions validated
 - Validation rules: All path-scoped and standard rules tested
 
+<!-- /ANCHOR:verification -->
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **17 tests skipped**: Quick mode tests and tests requiring mock MCP server infrastructure
@@ -109,6 +118,7 @@ A comprehensive test suite for system-spec-kit v1.9.0 consisting of 5 new test f
 3. **Bug fixes test**: Needs MCP server path update to point to correct server location
 4. **Mock infrastructure**: Some MCP tests require mock server setup not yet implemented
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Compliance Sign-Off

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 005-hierarchical-scope-governance"
+title: "Implement [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/plan]"
 description: "Execution plan for Hydra Phase 5 governance and scope enforcement."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 5 plan"
   - "governance plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 005-hierarchical-scope-governance
 
@@ -137,6 +137,7 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -149,8 +150,10 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 | Governed ingest/retrieval | Policy model | Lifecycle validation |
 | Lifecycle jobs and validation | Policy model, governed ingest | Phase 6 rollout |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -160,8 +163,10 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 | Lifecycle enforcement and validation | High | 3-5 days |
 | **Total** | | **9-15 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -180,6 +185,7 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 - **Has data migrations?** Likely yes for scope/provenance metadata.
 - **Reversal procedure**: checkpoint restore plus rollback of governance-related schema or lifecycle state.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -242,6 +248,7 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-501: Centralize Governance Before Shared Rollout
@@ -256,6 +263,7 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 - Stronger safety posture and cleaner rollout gates.
 - Requires more upfront engineering before collaboration features.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

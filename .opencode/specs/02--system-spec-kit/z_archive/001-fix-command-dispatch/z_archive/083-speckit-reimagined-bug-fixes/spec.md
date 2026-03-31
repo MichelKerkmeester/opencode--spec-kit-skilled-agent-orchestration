@@ -1,5 +1,5 @@
 ---
-title: "Spec Kit Reimagined Bug Fixes (Consolidated) [083-speckit-reimagined-bug-fixes/spec]"
+title: "Spec Kit Reimag [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/spec]"
 description: "After the successful release of Spec Kit v1.2.1.0 (SpecKit Reimagined + Memory Command Consolidation), comprehensive parallel audits revealed 70+ issues across the command files..."
 trigger_phrases:
   - "spec"
@@ -96,6 +96,7 @@ This specification covers remediation of:
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 2. Requirements
 
 ### 2.1 Critical Issues (P0 - Must Fix)
@@ -222,6 +223,7 @@ This specification covers remediation of:
 | **AUD-034** | Missing mode in error | manage.md line 23 | Error message missing "stats" |
 | **AUD-035** | Wrong script path | scripts/README.md line 91 | Wrong path for validate.sh |
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 3. Technical Architecture

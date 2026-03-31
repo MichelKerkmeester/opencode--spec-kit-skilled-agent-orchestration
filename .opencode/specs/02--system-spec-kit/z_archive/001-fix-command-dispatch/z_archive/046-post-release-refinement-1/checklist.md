@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Post-Release Refinement 1 [046-post-release-refinement-1/checklist]"
+title: "Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/checklist]"
 description: "Task: Fix duplicate entries on checkpoint restore"
 trigger_phrases:
   - "validation"
@@ -44,6 +44,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## PRE-IMPLEMENTATION CHECKLIST
 
 ### CHK-PRE-001: Backup & Safety
@@ -58,6 +59,7 @@ contextType: "implementation"
 - [ ] **P1** All referenced files exist before modification
 - [ ] **P1** Node.js version compatible (>=18)
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## PHASE 1: CRITICAL BUG FIXES (P0)

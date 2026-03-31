@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: JWT Authentication with RS256 Signing [plan-happy/checklist]"
+title: "Verificatio [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"
@@ -31,14 +31,17 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md
 - [ ] CHK-002 [P0] Technical approach defined in plan.md
 - [ ] CHK-003 [P1] Dependencies identified and available
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [ ] CHK-010 [P0] Code passes lint/format checks
@@ -46,8 +49,10 @@ contextType: "implementation"
 - [ ] CHK-012 [P1] Error handling implemented for all auth flows
 - [ ] CHK-013 [P1] Code follows NestJS module/service/controller patterns
 
+<!-- /ANCHOR:code-quality -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 - [ ] CHK-020 [P0] All acceptance criteria met (REQ-001 through REQ-007)
@@ -55,8 +60,10 @@ contextType: "implementation"
 - [ ] CHK-022 [P1] Edge cases tested (expired, malformed, reused tokens)
 - [ ] CHK-023 [P1] Error scenarios validated (invalid credentials, missing headers)
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [ ] CHK-030 [P0] No hardcoded secrets (RSA keys loaded from env/files)
@@ -64,24 +71,30 @@ contextType: "implementation"
 - [ ] CHK-032 [P1] Auth guard correctly rejects unauthenticated requests
 - [ ] CHK-033 [P1] Refresh token rotation prevents reuse attacks
 
+<!-- /ANCHOR:security -->
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [ ] CHK-040 [P1] Spec/plan/tasks synchronized
 - [ ] CHK-041 [P1] Code comments adequate for auth flow
 - [ ] CHK-042 [P2] README updated with auth setup instructions
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [ ] CHK-050 [P1] Temp files in scratch/ only
 - [ ] CHK-051 [P1] scratch/ cleaned before completion
 - [ ] CHK-052 [P2] Findings saved to memory/
 
+<!-- /ANCHOR:file-org -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -99,3 +112,4 @@ Level 2 checklist - Verification focus
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
+<!-- /ANCHOR:summary -->

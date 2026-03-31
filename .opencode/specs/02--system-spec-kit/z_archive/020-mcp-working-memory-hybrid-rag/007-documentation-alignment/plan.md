@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Documentation Alignment [007-documentation-alignment/plan]"
+title: "Phase Package Plan: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/plan]"
 description: "Synchronize all user-facing documentation with the post-Wave 1–3 codebase. Every README, SKILL.md, INSTALL_GUIDE, memory command, and scripts doc should accurately reflect the c..."
 trigger_phrases:
   - "phase"

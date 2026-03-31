@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Task 01 — README Audit & Alignment [task-01-readme-alignment/checklist]"
+title: "Verific [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment/checklist]"
 description: "Verification Date: 2026-02-16 (manual re-check)"
 trigger_phrases:
   - "verification"
@@ -59,6 +59,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -72,6 +73,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [ ] CHK-040 [P1] Audit scope decisions documented in decision-record.md

@@ -1,9 +1,9 @@
 ---
-title: "Verification Checklist: Template Compliance"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/checklist]"
 description: "Verification Date: 2026-03-17"
 trigger_phrases:
   - "template compliance"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: Template Compliance

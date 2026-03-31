@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Manual Testing — Pipeline Architecture (Phase 014)"
+title: "Tasks: Manua [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "pipeline architecture tasks"

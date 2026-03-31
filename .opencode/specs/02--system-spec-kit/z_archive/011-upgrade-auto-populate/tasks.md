@@ -1,5 +1,5 @@
 ---
-title: "Tasks: AI Auto-Populate on Spec Upgrade [128-upgrade-auto-populate/tasks]"
+title: "Tasks: AI Auto-Populate on Spec Upgrade [02--system-spec-kit/z_archive/011-upgrade-auto-populate/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

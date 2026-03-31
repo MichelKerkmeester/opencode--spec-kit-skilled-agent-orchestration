@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — UX Hooks"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/checklist]"
 description: "QA verification for UX Hooks code audit"
 trigger_phrases:
   - "checklist"

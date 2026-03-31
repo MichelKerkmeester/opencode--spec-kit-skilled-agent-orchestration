@@ -1,5 +1,12 @@
 ---
-title: "Tasks: Quality Scorer Unification [template:level_2/tasks.md]"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/tasks]"
+description: "title: \"Tasks: Quality Scorer Unification [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "001"
+  - "quality"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Quality Scorer Unification
 

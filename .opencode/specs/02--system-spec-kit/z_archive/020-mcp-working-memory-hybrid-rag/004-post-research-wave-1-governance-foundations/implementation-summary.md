@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [004-post-research-wave-1-governance-foundations/implementation-summary]"
+title: "...t/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/implementation-summary]"
 description: "Wave 1 governance-foundation outputs are documented as complete in this package. Existing task evidence covers typed contracts, artifact-aware routing, adaptive fusion with degr..."
 trigger_phrases:
   - "implementation"

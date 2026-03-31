@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Indexing & Coherence — Embedding Visibility, Trigger Quality, Template Gaps, Cross-Session Validation"
+title: "...022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "indexing coherence tasks"
   - "embedding visibility tasks"
   - "trigger phrase filter tasks"
-  - "toolCalls exchanges tasks"
-  - "OPTIONAL_PLACEHOLDERS tasks"
+  - "toolcalls exchanges tasks"
+  - "optional_placeholders tasks"
   - "pre-save overlap tasks"
 importance_tier: "normal"
 contextType: "implementation"

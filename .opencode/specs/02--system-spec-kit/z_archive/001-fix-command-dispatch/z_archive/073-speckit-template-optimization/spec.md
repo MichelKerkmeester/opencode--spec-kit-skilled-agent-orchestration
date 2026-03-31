@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Template Optimization [073-speckit-template-optimization/spec]"
+title: "Feature Specif [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/spec]"
 description: "This specification defines a comprehensive restructuring of the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. The optimizati..."
 trigger_phrases:
   - "feature"
@@ -50,6 +50,7 @@ This specification defines a comprehensive restructuring of the SpecKit template
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 3. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -76,8 +77,10 @@ Create a template architecture where:
 - Parallel sub-agent spec creation is supported via workstream notation
 - Templates are concise, focused, and reflect real usage patterns
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 4. SCOPE
 
 ### In Scope
@@ -119,8 +122,10 @@ Create a template architecture where:
 | `SKILL.md` | Modified | Updated to v1.8.0 |
 | `references/templates/level_specifications.md` | Modified | Comprehensive update |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. REQUIREMENTS
 
 ### P0 (Blockers)
@@ -148,8 +153,10 @@ Create a template architecture where:
 | REQ-009 | Compose script | Automated template composition | [ ] Deferred |
 | REQ-010 | Level calculator unification | Single unified scoring system | [ ] Deferred |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 6. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Rationale |
@@ -163,8 +170,10 @@ Create a template architecture where:
 
 *Note: Originally assessed at Level 3, documented at Level 3+ for comprehensive governance documentation given architectural significance.*
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -179,8 +188,10 @@ Create a template architecture where:
 | NFR-M01 | Single source of truth for core content | Yes - core/ folder |
 | NFR-M02 | Modular addendum updates | Yes - addendum/ structure |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. L2: EDGE CASES
 
 ### Template Boundaries
@@ -191,6 +202,7 @@ Create a template architecture where:
 - **Template not found**: create.sh creates empty file with warning
 - **Invalid level**: create.sh validates 1/2/3/3+ only
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
 ## 9. L3: STAKEHOLDERS
@@ -212,6 +224,7 @@ Create a template architecture where:
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 11. SUCCESS CRITERIA
 
 - [x] SC-001: All core templates created (~270 LOC total)
@@ -221,8 +234,10 @@ Create a template architecture where:
 - [x] SC-005: SKILL.md updated to v1.8.0 with new architecture
 - [x] SC-006: level_specifications.md comprehensively updated
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 12. RISKS & DEPENDENCIES
 
 | Risk | Impact | Likelihood | Mitigation | Status |
@@ -231,12 +246,15 @@ Create a template architecture where:
 | Missing value at higher levels | High | Low | Each addendum justified by real usage data | Mitigated |
 | Parallel conflicts | Medium | Medium | Strict workstream file ownership | Documented |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 13. OPEN QUESTIONS
 
 *All questions resolved during implementation.*
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## CROSS-REFERENCES

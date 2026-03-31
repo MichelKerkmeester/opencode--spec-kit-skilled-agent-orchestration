@@ -1,5 +1,16 @@
 ---
-title: "006 Core RAG Sprints 0 to 8 - Consolidated handover"
+title: "006 Core RAG Sprints 0 to 8 - [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/handover]"
+description: "title: \"006 Core RAG Sprints 0 to 8 - Consolidated handover\""
+trigger_phrases:
+  - "006"
+  - "core"
+  - "rag"
+  - "sprints"
+  - "handover"
+  - "001"
+  - "hybrid"
+importance_tier: "normal"
+contextType: "general"
 ---
 # 006 Core RAG Sprints 0 to 8 - Consolidated handover
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 008-hydra-db-based-features"
+title: "Feature Specification: 008-hydra-db-based-f [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/spec]"
 description: "Parent Level 3 coordination spec for the delivered Hydra memory roadmap in system-spec-kit."
 trigger_phrases:
   - "hydra"
@@ -27,6 +27,7 @@ This parent spec-pack now acts as the Level 3 coordination record for the delive
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -44,6 +45,7 @@ This parent spec-pack now acts as the Level 3 coordination record for the delive
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -153,6 +155,7 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -167,8 +170,10 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 ### Maintainability
 - **NFR-M01**: The root pack should remain aligned with active Level 3 template sections so future validation stays predictable.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -183,8 +188,10 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 - Shared-memory rollout is shipped, but a workspace still reports shared memory disabled until explicitly enabled.
 - Lineage and `asOf` exist in storage and integration paths, but there is still no standalone public lineage query tool.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -196,6 +203,7 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 | Coordination | 14/15 | Root docs must stay in sync with child folders, runtime surfaces, and validation |
 | **Total** | **79/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

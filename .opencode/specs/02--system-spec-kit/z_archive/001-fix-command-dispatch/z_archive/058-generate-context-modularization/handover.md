@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [058-generate-context-modularization/handover]"
+title: "Session [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/handover]"
 description: "Spec: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization"
 trigger_phrases:
   - "session"

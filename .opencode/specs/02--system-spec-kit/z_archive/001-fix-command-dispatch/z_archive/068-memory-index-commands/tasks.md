@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Command Separation - Implementation Breakdown [068-memory-index-commands/tasks]"
+title: "Tasks: Memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/tasks]"
 description: "Task list for separating /memory:search into /memory:search (read-only) and /memory:database (management)."
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Checklist - Comprehensive Bug Fix [029-comprehensive-bug-fix/checklist]"
+title: "Checklist - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/checklist]"
 description: "checklist document for 029-comprehensive-bug-fix."
 trigger_phrases:
   - "checklist"
@@ -18,6 +18,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:security -->
 ## P0: Critical Security Issues
 
 - [x] **SEC-001**: Add `.utcp_config.json` to .gitignore
@@ -27,6 +28,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:security -->
 ## P0: High Severity Bugs
 
 ### MCP Server Core

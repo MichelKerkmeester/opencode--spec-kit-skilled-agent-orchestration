@@ -1,16 +1,15 @@
 ---
-title: "Updated All 15 Spec [024-compact-code-graph/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024]"
-description: "Updated all 15 spec documentation files in 024-compact-code-graph to incorporate CocoIndex integration findings from 30 deep-research iterations. CocoIndex (already deployed)..."
+title: "Updated [02--system-spec-kit/024-compact-code-graph/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024]"
 trigger_phrases:
-  - "CocoIndex integration"
-  - "code graph CocoIndex"
+  - "cocoindex integration"
+  - "code graph cocoindex"
   - "semantic vs structural separation"
   - "query-intent routing"
-  - "CocoIndex complementary layer"
+  - "cocoindex complementary layer"
   - "three-system architecture"
-  - "decision record CocoIndex code graph"
+  - "decision record cocoindex code graph"
   - "code graph implementation phases"
-  - "revised compaction pipeline CocoIndex"
+  - "revised compaction pipeline cocoindex"
   - "compact code graph"
   - "deep research"
   - "decision record"
@@ -33,21 +32,20 @@ trigger_phrases:
   - "complementary semantic layer"
   - "graph research"
   - "024 compact code graph spec"
-  - "CocoIndex bridge enrichment"
+  - "cocoindex bridge enrichment"
 importance_tier: "important"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.45,"errors":2,"warnings":5}
 ---
-
 # Updated All 15 Spec Documentation Files In 024
 
 ## SESSION SUMMARY

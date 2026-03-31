@@ -1,6 +1,5 @@
 ---
-title: "SpecKit bug remediation completion 2026-01-28"
-description: "Captured the continuation session that resolved the remaining Spec Kit MCP server failures and expanded supporting documentation. It summarizes the specific bugs fixed, the..."
+title: "...kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/28-01-26_22-04__speckit-bug-remediation]"
 trigger_phrases:
   - "speckit bug remediation"
   - "mcp server test failures"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "documentation remediation pass"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Speckit Bug Remediation
 
 ## SESSION SUMMARY

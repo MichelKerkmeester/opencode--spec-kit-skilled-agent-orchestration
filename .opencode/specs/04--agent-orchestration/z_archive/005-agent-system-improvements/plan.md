@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent System Improvements [005-agent-system-improvements/plan]"
+title: "Implementation Plan: Agent System Improvements [04--agent-orchestration/z_archive/005-agent-system-improvements/plan]"
 description: "This plan implements 9 documentation improvements across 7 agent/command files. Changes are organized into 3 phases: immediate fixes (naming, minor text), core additions (verifi..."
 trigger_phrases:
   - "implementation"
@@ -76,6 +76,7 @@ No data flow changes - documentation only
 
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Immediate Fixes (< 30 min) ✓ COMPLETE
@@ -102,6 +103,7 @@ No data flow changes - documentation only
 
 
 <!-- ANCHOR:testing-strategy -->
+<!-- /ANCHOR:phases -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -139,6 +141,7 @@ No data flow changes - documentation only
 
 
 <!-- ANCHOR:l2-phase-dependencies -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -161,6 +164,8 @@ Note: Phases can run in parallel - no blocking dependencies.
 
 
 <!-- ANCHOR:l2-effort-estimation -->
+<!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -176,6 +181,8 @@ Note: Phases can run in parallel - no blocking dependencies.
 
 
 <!-- ANCHOR:l2-enhanced-rollback -->
+<!-- ANCHOR:enhanced-rollback -->
+<!-- /ANCHOR:effort -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -198,6 +205,7 @@ Note: Phases can run in parallel - no blocking dependencies.
 
 
 <!-- ANCHOR:l3-dependency-graph -->
+<!-- /ANCHOR:enhanced-rollback -->
 ## L3: DEPENDENCY GRAPH
 
 ```
@@ -274,6 +282,7 @@ All items can run in parallel. No critical path dependencies.
 
 
 <!-- ANCHOR:l3-architecture-decision-record -->
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Documentation-Only Approach
@@ -298,6 +307,7 @@ All items can run in parallel. No critical path dependencies.
 
 
 <!-- ANCHOR:l3-ai-execution-framework -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

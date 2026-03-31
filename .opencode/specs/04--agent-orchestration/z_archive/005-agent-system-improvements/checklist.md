@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Agent System Improvements [005-agent-system-improvements/checklist]"
+title: "Verification Checklist: Agent System [04--agent-orchestration/z_archive/005-agent-system-improvements/checklist]"
 description: "Verification Date: 2026-01-27 (Post-Implementation)"
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -33,6 +34,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:pre-implementation -->
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
@@ -102,6 +104,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:documentation-quality -->
+<!-- ANCHOR:docs -->
 ## Documentation Quality
 
 - [x] CHK-050 [P1] All modified files maintain consistent formatting ✓
@@ -115,6 +118,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:file-organization -->
+<!-- /ANCHOR:docs -->
 ## File Organization
 
 - [x] CHK-060 [P1] Spec folder has all required Level 3+ files
@@ -128,6 +132,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -144,6 +149,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:l3-architecture-verification -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P0] Architecture decisions documented in decision-record.md
@@ -157,6 +163,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:l3-documentation-verification -->
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All spec documents synchronized ✓
@@ -169,6 +176,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:l3-sign-off -->
+<!-- /ANCHOR:docs -->
 ## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |

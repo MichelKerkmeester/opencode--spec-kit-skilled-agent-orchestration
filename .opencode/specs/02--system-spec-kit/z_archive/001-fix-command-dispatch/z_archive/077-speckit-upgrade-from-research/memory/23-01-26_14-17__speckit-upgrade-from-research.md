@@ -1,6 +1,5 @@
 ---
-title: "Research-to-upgrade compliance remediation 2026-01-23"
-description: "Captured the Level 3+ compliance remediation session that consolidated several research specs into the unified SpecKit upgrade effort. It summarizes the governance fixes,..."
+title: "...e/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/23-01-26_14-17__speckit-upgrade-from-research]"
 trigger_phrases:
   - "research to upgrade remediation"
   - "level 3 plus compliance"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "speckit upgrade planning"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Speckit Upgrade From Research
 
 ## SESSION SUMMARY

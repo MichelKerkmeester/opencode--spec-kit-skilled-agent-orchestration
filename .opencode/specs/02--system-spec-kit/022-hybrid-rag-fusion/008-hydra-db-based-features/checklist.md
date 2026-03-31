@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 008-hydra-db-based-features"
+title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/checklist]"
 description: "Verification Date: 2026-03-20"
 trigger_phrases:
   - "verification"

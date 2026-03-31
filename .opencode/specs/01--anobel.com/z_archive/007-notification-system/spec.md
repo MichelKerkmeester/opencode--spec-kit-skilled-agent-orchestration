@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification System - Requirements & User Stories [007-notification-system/spec]"
+title: "Feature Specification: Notification System - Requirements & [01--anobel.com/z_archive/007-notification-system/spec]"
 description: "CMS-driven notification system for navbar banners and hero toasts with office hours integration."
 trigger_phrases:
   - "feature"
@@ -138,6 +138,7 @@ As a content manager, I want to choose where notifications appear (navbar banner
 ---
 
 <!-- ANCHOR:functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST read notification data from Webflow CMS via DOM data attributes
@@ -164,6 +165,8 @@ As a content manager, I want to choose where notifications appear (navbar banner
 ---
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -184,6 +187,7 @@ As a content manager, I want to choose where notifications appear (navbar banner
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -236,6 +240,7 @@ As a content manager, I want to choose where notifications appear (navbar banner
 ---
 
 <!-- ANCHOR:out-of-scope -->
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 - **PDF/print styling** - Not needed for notifications
@@ -247,6 +252,8 @@ As a content manager, I want to choose where notifications appear (navbar banner
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
+<!-- /ANCHOR:scope -->
 ## 10. OPEN QUESTIONS
 
 All questions resolved:
@@ -259,6 +266,7 @@ All questions resolved:
 ---
 
 <!-- ANCHOR:appendix -->
+<!-- /ANCHOR:questions -->
 ## 11. APPENDIX
 
 ### CMS Collection Structure: "Notifications"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks - Performance Optimization [024-performance-optimization/tasks]"
+title: "Tasks - Performance Optimization [024-performance-optimiza [01--anobel.com/z_archive/022-performance-optimization/tasks]"
 description: "Status: Complete | Priority: P0"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Testing Checklist: Script Analysis Testing - Workflow Validation Items [053-script-analysis-testing/checklist]"
+title: "Testing Checkli [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing/checklist]"
 description: "Checklist for validating the complete Spec Kit Memory workflow end-to-end."
 trigger_phrases:
   - "testing"
@@ -95,9 +95,12 @@ Validate that all components of the Spec Kit Memory workflow function correctly 
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 4. VERIFICATION SUMMARY
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 24
 - **Verified [x]**: 0
@@ -107,6 +110,7 @@ Validate that all components of the Spec Kit Memory workflow function correctly 
 - **Verification Date**: [PENDING]
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 5. TEST RESULTS

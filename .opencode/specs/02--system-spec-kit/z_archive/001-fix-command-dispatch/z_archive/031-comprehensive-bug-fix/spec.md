@@ -1,5 +1,5 @@
 ---
-title: "Memory System Comprehensive Bug Fix [031-comprehensive-bug-fix/spec]"
+title: "Memory System [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/spec]"
 description: "id: 018-comprehensive-bug-fix"
 trigger_phrases:
   - "memory"
@@ -25,6 +25,7 @@ status: in-progress
 Comprehensive fix for 80 bugs identified across the semantic memory system through deep analysis by 10 parallel Opus agents.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -39,6 +40,7 @@ Comprehensive fix for 80 bugs identified across the semantic memory system throu
 - New feature development
 - Performance optimization beyond bug fixes
 - UI/UX changes
+<!-- /ANCHOR:scope -->
 
 ## Files Affected
 - `.opencode/skill/system-memory/mcp_server/semantic-memory.js`
@@ -53,6 +55,7 @@ Comprehensive fix for 80 bugs identified across the semantic memory system throu
 - `.opencode/skill/system-memory/README.md`
 - `.opencode/skill/system-memory/references/*.md`
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 1. All 80 bugs fixed and verified
 2. No new bugs introduced
@@ -63,3 +66,4 @@ Comprehensive fix for 80 bugs identified across the semantic memory system throu
    - Memory save/load works
    - Checkpoint create/restore works
    - Trigger matching works
+<!-- /ANCHOR:success-criteria -->

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist [031-comprehensive-bug-fix/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/checklist]"
 description: "*Note: These were in the bug report but not tracked in original checklist*"
 trigger_phrases:
   - "verification"

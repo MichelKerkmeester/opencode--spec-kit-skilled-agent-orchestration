@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Path-Scoped Validation Rules [001-mvp-monolithic/implementation-summary]"
+title: "...pec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/implementation-summary]"
 description: "Implemented validate-spec.sh, a spec folder validation script that enforces documentation standards by checking for required files, unfilled placeholders, and required sections ..."
 trigger_phrases:
   - "implementation"
@@ -121,3 +121,10 @@ This prevents false positives when documentation describes the patterns being de
 | **Overall** | **38** | **53** | **72%** |
 
 The MVP is complete with all core validation functionality working. Remaining items are enhancements for future iterations.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,13 +1,13 @@
 ---
-title: "Decision Record: 001-baseline-and-safety-rails"
+title: "De [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/decision-record]"
 description: "Phase-local architecture decisions for Hydra Phase 1 baseline hardening."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "phase 1 adr"
   - "baseline decision"
   - "safety rails adr"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 001-baseline-and-safety-rails
 

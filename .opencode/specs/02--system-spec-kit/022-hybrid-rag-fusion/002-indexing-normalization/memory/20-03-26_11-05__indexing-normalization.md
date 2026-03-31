@@ -1,6 +1,5 @@
 ---
-title: "Indexing Normalization — 3 ADRs: Canonical Path Dedup, Tier Precedence, Frontmatter Contract"
-description: "find the actual hybrid-rag-fusion codebase and understand the MCP ser; Iteration 1 dispatched — all 3 agents running in parallel: - A1 (Codex) :; Good, rich scoring ecosystem...."
+title: "Indexing [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/20-03-26_11-05__indexing-normalization]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/002 indexing normalization"
   - "adr 001"
@@ -34,16 +33,16 @@ trigger_phrases:
   - "normalization"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2.jsonl"
-_sourceSessionId: "05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2"
 _sourceSessionCreated: 1773996424462
+_sourceSessionId: "05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2"
 _sourceSessionUpdated: 1774001130859
+_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2.jsonl"
 captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 4
-quality_score: 0.80
 quality_flags:
   - "has_contamination"
+quality_score: 0.80
 spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.

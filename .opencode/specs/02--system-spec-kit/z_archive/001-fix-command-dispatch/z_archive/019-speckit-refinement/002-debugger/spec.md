@@ -1,5 +1,5 @@
 ---
-title: "Debug Delegation Integration [002-debugger/spec]"
+title: "Debug Delega [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/002-debugger/spec]"
 description: "The debug-delegation.md template exists in SpecKit but is underutilized. There's no active workflow that triggers its use, and debugging tasks are handled ad-hoc without structu..."
 trigger_phrases:
   - "debug"
@@ -27,6 +27,7 @@ Create a `/spec_kit:debug` command and auto-detection system that:
 3. **Generates structured debug report** using debug-delegation.md template
 4. **Auto-suggests** when detecting repeated failures or frustration keywords
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 - [x] `/spec_kit:debug` command created and functional (591 lines)
 - [x] Model selection is mandatory (Sonnet/Opus/o1/Other) - Phase 2 HARD STOP
@@ -35,7 +36,9 @@ Create a `/spec_kit:debug` command and auto-detection system that:
 - [x] debug-delegation.md saved to spec folder root (Step 2)
 - [x] Sub-agent receives full context and returns structured findings (Step 3-4)
 - [x] All documentation updated (SKILL.md, README.md, AGENTS.md, etc.)
+<!-- /ANCHOR:success-criteria -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 **In Scope:**
 - New /spec_kit:debug command
@@ -47,3 +50,4 @@ Create a `/spec_kit:debug` command and auto-detection system that:
 - Changes to Task tool itself
 - New model integrations
 - UI/visual changes
+<!-- /ANCHOR:scope -->

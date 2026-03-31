@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: sk-deep-research Review Folder Contract"
+title: "Decision Record: sk-deep-research Review [03--commands-and-skills/034-sk-deep-research-review-folders/decision-record]"
 description: "Architectural decisions for moving deep-review outputs into a dedicated review/ packet while preserving compatibility for legacy scratch-based sessions."
 trigger_phrases:
   - "review folder adr"
@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-Review mode currently writes durable packet state into `scratch/` even though system-spec-kit defines `scratch/` as temporary, disposable workspace. The review YAML workflows, the canonical `deep-review` agent, the review contract asset, and the review strategy template all encode `scratch/` as the runtime location for resumable state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:82-120] [SOURCE: .opencode/agent/deep-review.md:31-65] [SOURCE: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml:202-230] [SOURCE: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md:3-19]
+Review mode currently writes durable packet state into `scratch/` even though system-spec-kit defines `scratch/` as temporary, disposable workspace. The review YAML workflows, the canonical `deep-review` agent, the review contract asset, and the review strategy template all encode `scratch/` as the runtime location for resumable state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:82-120] [SOURCE: .opencode/agent/deep-review.md:31-65] [SOURCE: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml:202-230] [SOURCE: .opencode/skill/sk-deep-review/assets/deep_review_strategy.md:3-19]
 
 ### Constraints
 

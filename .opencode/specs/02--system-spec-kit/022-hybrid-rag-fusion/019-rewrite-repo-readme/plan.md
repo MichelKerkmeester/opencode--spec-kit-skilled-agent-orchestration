@@ -1,6 +1,14 @@
 ---
-title: "Plan: Rewrite Repo README"
+title: "Plan: Rewrite Repo README [02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/plan]"
 description: "Implementation plan for a complete rewrite of the repository root README."
+trigger_phrases:
+  - "plan"
+  - "rewrite"
+  - "repo"
+  - "readme"
+  - "019"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 019-rewrite-repo-readme

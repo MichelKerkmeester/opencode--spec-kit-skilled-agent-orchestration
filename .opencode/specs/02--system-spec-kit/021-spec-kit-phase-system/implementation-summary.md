@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [021-spec-kit-phase-system/implementation-summary]"
+title: "Implementation Summary [021-spec-kit-phase-system [02--system-spec-kit/021-spec-kit-phase-system/implementation-summary]"
 description: "The phase system moved from proposal into implemented behavior across scripts, command routing, and documentation surfaces. The core flow now exists end-to-end: phase recommenda..."
 trigger_phrases:
   - "implementation"

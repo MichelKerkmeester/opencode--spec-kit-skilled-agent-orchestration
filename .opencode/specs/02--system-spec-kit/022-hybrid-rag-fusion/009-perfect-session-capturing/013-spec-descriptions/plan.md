@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Spec Folder Description System Refactor"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions/plan]"
 description: "Refactor centralized descriptions.json into per-folder description.json files with collision-resistant memory naming, integrated into spec folder creation automation."
 trigger_phrases:
   - "description system refactor"
@@ -260,6 +260,7 @@ interface PerFolderDescription {
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## 8. L2: PHASE DEPENDENCIES
 
 ```
@@ -284,6 +285,7 @@ Phase 4 (Aggregation) ───────────────────�
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

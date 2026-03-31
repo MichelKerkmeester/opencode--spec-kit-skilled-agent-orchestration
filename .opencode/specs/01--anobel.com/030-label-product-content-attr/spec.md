@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Label Product Content Attribute [030-label-product-content-attr/spec]"
+title: "Feature Specification: Label Product Content Attribute [01--anobel.com/030-label-product-content-attr/spec]"
 description: "The label_main.css defines a data-label-content attribute for controlling text/icon color on labels (Black, Blue, White), but label_product.js never applies this attribute. Prod..."
 trigger_phrases:
   - "feature"
@@ -104,13 +104,15 @@ Add `content` to the JS label config so each product label gets the correct `dat
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 None.
 
+<!-- /ANCHOR:questions -->
 ---
 
-## 8. RELATED DOCUMENTS
+### Related Documents
 
 | Document | Purpose |
 |----------|---------|

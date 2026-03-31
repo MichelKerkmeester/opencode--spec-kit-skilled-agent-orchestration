@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Comprehensive Bug Fix [020-comprehensive-bug-fix/implementation-summary]"
+title: "Impl [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/020-comprehensive-bug-fix/implementation-summary]"
 description: "Comprehensive bug fix and refinement of the system-spec-kit skill and all spec_kit commands. Deployed 40 parallel AI agents across three phases (analysis, implementation, verifi..."
 trigger_phrases:
   - "implementation"
@@ -15,6 +15,7 @@ contextType: "implementation"
 # Implementation Summary: Comprehensive Bug Fix
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary.md | v1.0 -->
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -23,7 +24,9 @@ contextType: "implementation"
 | **Completed** | 2024-12-24 |
 | **Duration** | ~2 hours |
 | **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
+<!-- ANCHOR:what-built -->
 ## 1. What Was Built
 
 Comprehensive bug fix and refinement of the `system-spec-kit` skill and all `spec_kit` commands. Deployed 40 parallel AI agents across three phases (analysis, implementation, verification) to identify and resolve 36+ issues across P0-P3 priority levels.
@@ -57,6 +60,7 @@ Comprehensive bug fix and refinement of the `system-spec-kit` skill and all `spe
 | `.opencode/skill/system-spec-kit/scripts/README.md` | Created | New documentation for all scripts |
 
 **Total: 23 files (4 created, 19 modified)**
+<!-- /ANCHOR:what-built -->
 
 ## 2. Issues Fixed by Priority
 
@@ -113,6 +117,7 @@ Comprehensive bug fix and refinement of the `system-spec-kit` skill and all `spe
 | 10 | readline error handling | generate-context.js | Added error handler and SIGINT handling |
 | 11-15 | Various formatting/docs | Multiple | Standardized formatting, added examples |
 
+<!-- ANCHOR:verification -->
 ## 3. Verification Results
 
 ### Phase 3: Verification (10 Agents)
@@ -138,7 +143,9 @@ Comprehensive bug fix and refinement of the `system-spec-kit` skill and all `spe
 | Scripts | 7 | 7 | ✅ |
 | Checklists | 4 | 4 | ✅ |
 | References | 6 | 6 | ✅ |
+<!-- /ANCHOR:verification -->
 
+<!-- ANCHOR:decisions -->
 ## 4. Key Decisions Made
 
 | Decision | Rationale | Alternatives Considered |
@@ -147,6 +154,7 @@ Comprehensive bug fix and refinement of the `system-spec-kit` skill and all `spe
 | Fix all priorities in one pass | Comprehensive fix prevents regression | Fix only P0/P1 (leaves technical debt) |
 | Create new templates | Commands referenced non-existent files | Remove references (breaks functionality) |
 | Restructure SKILL.md | Template compliance, maintainability | Leave as-is (inconsistent with template) |
+<!-- /ANCHOR:decisions -->
 
 ## 5. Technical Details
 
@@ -161,10 +169,12 @@ None
 - skill_advisor.py now uses `__file__` for path resolution instead of `os.getcwd()`
 - Added `--health` CLI flag to skill_advisor.py for diagnostics
 
+<!-- ANCHOR:limitations -->
 ## 6. Known Limitations
 
 - One `substr()` call remains in `simulation-factory.js` (different file, low priority)
 - YAML diagnostic error in `spec_kit_plan_auto.yaml` (pre-existing, not addressed)
+<!-- /ANCHOR:limitations -->
 
 ## 7. Next Steps
 
@@ -175,3 +185,10 @@ Implementation complete. Recommended follow-up:
 
 ---
 *Generated retroactively for comprehensive bug fix work completed 2024-12-24*
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

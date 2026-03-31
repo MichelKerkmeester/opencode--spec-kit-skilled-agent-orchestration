@@ -1,3 +1,17 @@
+---
+title: "Verification Checklist: Merge spec_kit:phase into [03--commands-and-skills/037-cmd-merge-spec-kit-phase/checklist]"
+description: "Verification Date: TBD"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "merge"
+  - "spec"
+  - "kit"
+  - "037"
+  - "cmd"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Verification Checklist: Merge spec_kit:phase into plan and complete
 
 <!-- SPECKIT_LEVEL: 2 -->

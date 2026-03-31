@@ -1,5 +1,5 @@
 ---
-title: "Plan: Blog Sort Dropdown Fix [019-blog-sort-fix/plan]"
+title: "Plan: Blog Sort Dropdown Fix [019-blog-sort-fix/plan] [01--anobel.com/z_archive/018-blog-sort-fix/plan]"
 description: "┌─────────────────────────────────────────────────────────────────────────────┐"
 trigger_phrases:
   - "plan"
@@ -97,6 +97,7 @@ Test simplest solution first, escalate if needed:
 <!-- /ANCHOR:implementation-strategy -->
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## Implementation Phases
 
 ### Phase 0: Quick Fix Test (Option C)
@@ -250,6 +251,7 @@ const start = () => {
 <!-- /ANCHOR:implementation-phases -->
 
 <!-- ANCHOR:data-flow-fixed -->
+<!-- /ANCHOR:phases -->
 ## Data Flow (Fixed)
 
 ```

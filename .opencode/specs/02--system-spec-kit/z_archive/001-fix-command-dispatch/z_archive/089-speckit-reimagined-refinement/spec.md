@@ -1,5 +1,5 @@
 ---
-title: "Spec 089: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/spec]"
+title: "Spec 089: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/spec]"
 description: "title: \"Spec 089: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "spec"
@@ -25,6 +25,7 @@ status: "Active"
 ---
 
 <!-- ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 1. SCOPE
 
 ### In Scope
@@ -53,6 +54,8 @@ status: "Active"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
+<!-- /ANCHOR:scope -->
 ## 2. REQUIREMENTS
 
 ### Functional Requirements
@@ -83,6 +86,7 @@ status: "Active"
 | NFR-002 | No changes to MCP server tool signatures (would break callers) | P0 |
 | NFR-003 | All documentation fixes must use correct relative paths verified by file existence | P1 |
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 3. ACCEPTANCE CRITERIA

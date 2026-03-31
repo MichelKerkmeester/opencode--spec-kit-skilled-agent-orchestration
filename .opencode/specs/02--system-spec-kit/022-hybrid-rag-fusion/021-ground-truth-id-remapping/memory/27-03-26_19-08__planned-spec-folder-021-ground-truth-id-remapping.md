@@ -1,6 +1,5 @@
 ---
-title: "Planned Spec Folder [021-ground-truth-id-remapping/27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping]"
-description: "Planned spec folder 021-ground-truth-id-remapping: create map-ground-truth-ids.ts script to remap stale ground truth memory IDs. Ablation study returns all-zero relevance..."
+title: "...22-hybrid-rag-fusion/021-ground-truth-id-remapping/27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping]"
 trigger_phrases:
   - "expected result description"
   - "ground truth id remapping"
@@ -34,18 +33,17 @@ trigger_phrases:
   - "remapping"
 importance_tier: "important"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # Planned Spec Folder 021 Ground Truth Id Remapping
 
 ## SESSION SUMMARY

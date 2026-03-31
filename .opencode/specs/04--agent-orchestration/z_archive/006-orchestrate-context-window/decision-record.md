@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Orchestrate Agent Context Window Protection [006-orchestrate-context-window/decision-record]"
+title: "Decision Record: Orchestrate Agent [04--agent-orchestration/z_archive/006-orchestrate-context-window/decision-record]"
 description: "When the orchestrate agent dispatches 10-20 sub-agents in parallel, all results return simultaneously into the orchestrator's context window. Each agent returns ~2-8K tokens, so..."
 trigger_phrases:
   - "decision"
@@ -220,6 +220,7 @@ Each wave completes and its results are synthesized (compressed into key finding
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 | Timestamp | Gate | Decision | Confidence | Uncertainty | Evidence |
@@ -227,3 +228,4 @@ Each wave completes and its results are synthesized (compressed into key finding
 | 10:30 | Gate 3 | User specified spec folder 006 | HIGH | 0.05 | User's explicit instruction |
 | 10:35 | ADR-001 | File-based collection | HIGH | 0.10 | Screenshot evidence + root cause analysis |
 | 10:35 | ADR-002 | Batched waves | HIGH | 0.15 | Complementary to ADR-001, covers summary overflow |
+<!-- /ANCHOR:decision -->

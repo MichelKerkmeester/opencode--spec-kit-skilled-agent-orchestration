@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [066-context-server-modularization/handover]"
+title: "Session [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/handover]"
 description: "Session handover for the completed context-server.js modularization."
 trigger_phrases:
   - "session"

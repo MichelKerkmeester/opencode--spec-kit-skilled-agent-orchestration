@@ -1,7 +1,5 @@
 ---
-title: "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/spec.md]"
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
-SPECKIT_LEVEL: "2"
+title: "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill [03--commands-and-skills/010-sk-doc-rename/spec]"
 description: "The repository used legacy skill identifiers and paths. This implementation standardized documentation-skill identifiers to sk-doc and removed stale visual-skill references from live docs."
 trigger_phrases:
   - "feature"
@@ -11,6 +9,8 @@ trigger_phrases:
   - "spec core"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_LEVEL: "2"
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 # Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
@@ -28,6 +28,8 @@ contextType: "general"
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-23 |
+
+---
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -36,10 +38,14 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 The Public repository previously contained legacy documentation-skill identifiers plus stale references to a removed visual skill across content, folder paths, and runtime symlink names. That caused routing drift and inconsistent command/skill discovery behavior across runtime profiles.
 
 ### Purpose
+
 Complete a deterministic migration to `sk-doc` and remove stale visual-skill references, with verified zero remnants of the tracked legacy identifier families in the scoped repository.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,12 +54,14 @@ Complete a deterministic migration to `sk-doc` and remove stale visual-skill ref
 ## 3. SCOPE
 
 ### In Scope
+
 - Repository-wide identifier migration in `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public`.
 - Filesystem path and symlink-name migration for documentation skill references plus cleanup of stale visual-skill references.
 - Verification and conditional no-op/update handling for `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md`.
 - Evidence capture in `scratch/` and completion evidence in `checklist.md`.
 
 ### Out of Scope
+
 - Functional behavior changes inside skill logic.
 - Non-rename refactors.
 - External repository edits beyond the single conditional AGENTS file check.
@@ -67,6 +75,8 @@ Complete a deterministic migration to `sk-doc` and remove stale visual-skill ref
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/skills/*` | Rename | Runtime symlink-name and target updates. |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.gemini/skills/*` | Rename | Runtime symlink-name and target updates. |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md` | Verify/Conditional Modify | Check for legacy matches and update only if needed. |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -89,6 +99,8 @@ Complete a deterministic migration to `sk-doc` and remove stale visual-skill ref
 |----|-------------|---------------------|
 | REQ-101 | Preserve repo behavior outside rename scope. | Skill advisor smoke tests pass for `sk-doc` and unaffected routing flows. |
 | REQ-102 | Preserve evidence traceability for migration operations. | `scratch/` artifacts document baseline, migration, and final checks. |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -101,6 +113,17 @@ Complete a deterministic migration to `sk-doc` and remove stale visual-skill ref
 - **SC-003**: Runtime symlink report contains only supported names pointing to supported skill paths, with no stale visual-skill claims.
 - **SC-004**: External AGENTS check in Barter repo reports zero matches and no edit required.
 - **SC-005**: `validate.sh` and `check-completion --strict` both pass.
+
+---
+
+### Acceptance Scenarios
+
+1. **Given** preflight reports show legacy identifier presence, **when** migration completes, **then** `final-remnant-counts.txt` shows only zeros.
+2. **Given** ordered rename map entries exist, **when** execution finishes, **then** rename log count equals map count and flatten fix resolves nested-path leftovers.
+3. **Given** runtime profile symlinks are migrated, **when** post-path verification runs, **then** symlink inventory contains only supported aliases and no stale visual-skill target claims.
+4. **Given** external AGENTS file may include legacy identifiers, **when** scoped check runs, **then** file is unchanged on zero-match outcome.
+
+---
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -115,79 +138,18 @@ Complete a deterministic migration to `sk-doc` and remove stale visual-skill ref
 | Risk | Nested path move ordering | Temporary residual subpaths | Apply flatten fix after ordered path moves and re-check remnants. |
 | Risk | Symlink target drift | Skill resolution failures | Generate post-migration symlink inventory and verify supported targets. |
 | Risk | External scope creep | Unintended edits outside scope | Restrict external action to one AGENTS file with match-gated update policy. |
+
+---
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Performance
-- **NFR-P01**: Baseline and final scans complete in local shell workflow without interactive retries.
-- **NFR-P02**: Migration remains reproducible from recorded artifacts (`preflight`, `map`, `log`, `final counts`).
-
-### Security
-- **NFR-S01**: No secrets introduced during rename operations.
-- **NFR-S02**: External write scope constrained to one explicitly listed file and only on positive match.
-
-### Reliability
-- **NFR-R01**: Post-migration remnant report is all zeros.
-- **NFR-R02**: Runtime symlink targets resolve to supported skill paths.
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
-
-### Data Boundaries
-- Empty matches: No-op behavior for files with no legacy identifiers.
-- Large docs/assets: Replace identifiers without truncation or format breakage.
-- Mixed case tokens: Include uppercase and title-case legacy variants in remnant policy verification.
-
-### Error Scenarios
-- Path move ordering conflicts: Resolve with flatten fix and rerun remnant/path checks.
-- Partial operation: Resume from rename map and verify with rename log parity.
-- External file no-match: Record no-op outcome and do not modify file.
-
-### State Transitions
-- Setup -> Implementation: Proceed only after baseline artifacts exist.
-- Implementation -> Verification: Proceed only after path + symlink migration artifacts exist.
-- Verification -> Completion: Proceed only after validation and strict completion checks pass.
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 24/25 | Repo-wide content + path + symlink migration. |
-| Risk | 17/25 | Ordering and remnant risks mitigated with artifact-backed verification. |
-| Research | 11/20 | Baseline discovery and conditional external verification completed. |
-| **Total** | **52/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 9. ACCEPTANCE SCENARIOS
-
-1. **Given** preflight reports show legacy identifier presence, **when** migration completes, **then** `final-remnant-counts.txt` shows only zeros.
-2. **Given** ordered rename map entries exist, **when** execution finishes, **then** rename log count equals map count and flatten fix resolves nested-path leftovers.
-3. **Given** runtime profile symlinks are migrated, **when** post-path verification runs, **then** symlink inventory contains only supported aliases and no stale visual-skill target claims.
-4. **Given** external AGENTS file may include legacy identifiers, **when** scoped check runs, **then** file is unchanged on zero-match outcome.
-
----
-
-## 10. OPEN QUESTIONS
+## 7. OPEN QUESTIONS
 
 - None. All required implementation evidence has been captured and validated.
-<!-- /ANCHOR:questions -->
 
 ---
 
@@ -197,3 +159,6 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:questions -->
+
+---

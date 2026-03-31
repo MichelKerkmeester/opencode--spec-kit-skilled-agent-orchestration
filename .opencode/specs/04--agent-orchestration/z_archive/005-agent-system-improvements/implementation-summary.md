@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Agent System Improvements [005-agent-system-improvements/implementation-summary]"
+title: "Implementation Summary: Agent [04--agent-orchestration/z_archive/005-agent-system-improvements/implementation-summary]"
 description: "Naming Consistency (T001-T004)"
 trigger_phrases:
   - "implementation"
@@ -204,7 +204,8 @@ Pattern change: Multiple separate phases → ONE UNIFIED SETUP PHASE
 
 
 <!-- ANCHOR:lessons-learned -->
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 1. **Pre-existing content**: Some requested additions already existed in more comprehensive form
 2. **Parallel execution**: Multiple waves of parallel Opus agents completed all tasks with no conflicts
@@ -218,6 +219,7 @@ Pattern change: Multiple separate phases → ONE UNIFIED SETUP PHASE
 
 
 <!-- ANCHOR:checklist-status -->
+<!-- /ANCHOR:decisions -->
 ## Checklist Status
 
 | Priority | Total | Completed |
@@ -254,3 +256,10 @@ Pattern change: Multiple separate phases → ONE UNIFIED SETUP PHASE
 - **Decisions**: [decision-record.md](decision-record.md)
 
 <!-- /ANCHOR:cross-references -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

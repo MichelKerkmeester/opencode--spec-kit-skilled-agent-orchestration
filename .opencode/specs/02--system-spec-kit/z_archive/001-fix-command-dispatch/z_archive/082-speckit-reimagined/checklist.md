@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Reimagined [082-speckit-reimagined/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/checklist]"
 description: "When marking items complete, include evidence references using this format"
 trigger_phrases:
   - "verification"
@@ -29,6 +29,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:docs -->
 ## Evidence Documentation
 
 When marking items complete, include evidence references using this format:
@@ -40,8 +41,10 @@ When marking items complete, include evidence references using this format:
 
 Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png] [E:test-output.log]`
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [E:spec.md:136-185 Section 4 REQUIREMENTS - 10 P0 (REQ-001 to REQ-010), 18 P1 (REQ-011 to REQ-028), 5 P0 Embedding Resilience (REQ-029 to REQ-033) with acceptance criteria]
@@ -51,6 +54,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 - [x] CHK-005 [P1] Feature flag strategy defined with env variables [E:plan.md:543-567 L3+ FEATURE FLAG STRATEGY - Phase 1: SPECKIT_SESSION_DEDUP/LAZY_LOAD, Phase 2: SPECKIT_RRF/BM25/USAGE/TYPE_DECAY, Phase 3: SPECKIT_RELATIONS/CROSS_ENCODER/NO_LEGACY, migration path documented]
 - [x] CHK-006 [P2] Open questions Q1-Q8 resolved or defaults documented [E:spec.md:390-402 Section 16 OPEN QUESTIONS - Q1-Q8 all have recommended defaults: Q1=file path+frontmatter, Q2=k=60, Q3=Voyage rerank-2, Q4=automatic+override, Q5=2+ occurrences, Q6=SQLite, Q7=existing files, Q8=test drift defaults]
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## Phase 1 Verification: Quick Wins (Week 1)
@@ -351,6 +355,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [x] CHK-083 [P0] Code passes lint/format checks
@@ -379,8 +384,10 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
   - [E:code] MockVectorStore, MockEmbeddingProvider exported for testing
   - [E:code] interfaces/index.js:19-20 documents "Protocol-based DI over full hexagonal...targeted abstractions at integration boundaries only"
 
+<!-- /ANCHOR:code-quality -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 - [x] CHK-088 [P0] All acceptance criteria met
@@ -411,8 +418,10 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
   - [E:test] T322: R=1.0 at t=0 verified
   - [E:test] T323-T330: Edge cases (NaN, invalid stability, type-specific half-lives)
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [x] CHK-093 [P0] No hardcoded secrets in codebase
@@ -433,6 +442,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
   - [E:code] shared/embeddings/factory.js:34 process.env.OPENAI_API_KEY
   - [E:code] No hardcoded API keys - all providers require env vars
 
+<!-- /ANCHOR:security -->
 ---
 
 ## L3+: Performance Verification
@@ -806,6 +816,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-129 [P1] Spec/plan/tasks synchronized [E:verified 2026-02-01] spec.md (15 P0 + 18 P1 requirements, 6-7 week timeline), plan.md (4 phases + Phase 5, 7-layer architecture, dependency graphs), tasks.md (107/107 tasks complete across 5 workstreams) - all documents reference same scope, timeline, and requirements; tasks.md completion criteria matches spec.md requirements
@@ -814,14 +825,17 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 - [x] CHK-132 [P1] Knowledge transfer documented in memory/ [E:files] memory/ folder contains 11 context files including 01-02-26_14-15__speckit-reimagined-complete.md (391 lines) with: SESSION SUMMARY, DECISIONS (5 key decisions), TECHNICAL CONTEXT, ARTIFACTS, RECOVERY HINTS, and full MEMORY METADATA YAML
 - [x] CHK-133 [P2] README updated with new features [E:code] mcp_server/README.md - comprehensive 939-line README including: FSRS formula, 5-state model, PE gating, ANCHOR format, 6-tier importance. MINOR: Tool count should be updated from 17 to 22
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-134 [P1] Temp files in scratch/ only [E:verified] scratch/ contains evidence/ folder + workflow-analysis-report.md (appropriate work artifacts). No temp files in spec folder root.
 - [x] CHK-135 [P1] scratch/ cleaned before completion [E:verified] scratch/ contains: evidence/README.md, evidence/.gitkeep, workflow-analysis-report.md (legitimate artifacts, not temp files)
 - [x] CHK-136 [P2] Findings saved to memory/ [E:files] memory/ folder has 11 context files. Most recent: 01-02-26_14-15__speckit-reimagined-complete.md captures full implementation completion
 
+<!-- /ANCHOR:file-org -->
 ---
 
 ## L3+: Sign-off
@@ -834,6 +848,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified | Status |
@@ -854,6 +869,7 @@ Example: `- [x] CHK-001: Component renders correctly [E:screenshot-component.png
 
 **Verification Date**: 2026-02-01
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Evidence Log

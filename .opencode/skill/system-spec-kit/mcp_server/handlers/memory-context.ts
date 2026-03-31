@@ -567,7 +567,7 @@ const CONTEXT_MODES: Record<string, ContextMode> = {
     name: 'Deep',
     description: 'Semantic search with full context retrieval',
     strategy: 'search',
-    tokenBudget: 3500  // Raised from 2000 — single memory with content can be 2500+ tokens
+    tokenBudget: 3500
   },
 
   // Focused: Intent-specific search with optimized weights
@@ -575,7 +575,7 @@ const CONTEXT_MODES: Record<string, ContextMode> = {
     name: 'Focused',
     description: 'Intent-aware search with task-specific optimization',
     strategy: 'intent-search',
-    tokenBudget: 3000  // Raised from 1500 — was truncating all results to 0-1
+    tokenBudget: 3000
   },
 
   // Resume: Session recovery mode
@@ -583,7 +583,7 @@ const CONTEXT_MODES: Record<string, ContextMode> = {
     name: 'Resume',
     description: 'Resume previous work with state and next-steps anchors',
     strategy: 'resume',
-    tokenBudget: 2000  // Raised from 1200 — resume needs room for state + next-steps
+    tokenBudget: 2000
   }
 };
 

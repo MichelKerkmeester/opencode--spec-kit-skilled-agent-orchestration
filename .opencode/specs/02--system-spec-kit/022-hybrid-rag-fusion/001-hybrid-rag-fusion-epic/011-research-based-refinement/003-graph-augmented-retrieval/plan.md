@@ -1,3 +1,18 @@
+---
+title: "...it/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval/plan]"
+description: "Goal: Establish the sparse-first typed traversal foundation and intent-aware edge prioritization."
+trigger_phrases:
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "plan"
+  - "003"
+  - "graph"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Graph-Augmented Retrieval
 
 > Phase 3 of 5 in the Research-Based Refinement track.
@@ -64,6 +79,7 @@
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 | Dependency                                       | Direction |

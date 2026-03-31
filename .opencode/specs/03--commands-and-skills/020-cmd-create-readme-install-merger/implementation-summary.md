@@ -1,7 +1,7 @@
 ---
 title: "Implementation Summary [017-create-readme-install-merger/implementation-summary]"
 description: "Implementation cycle completed for canonical create command merge with compatibility aliases and validation evidence captured."
-# SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 trigger_phrases:
   - "implementation summary"
   - "implementation complete"
@@ -23,7 +23,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `03--commands-and-skills/020-cmd-create-readme-install-merger` |
+| **Spec Folder** | 020-cmd-create-readme-install-merger |
 | **Completed** | 2026-03-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -44,10 +44,8 @@ The command family now has a canonical entrypoint and compatibility wrappers on 
 | File | Action | Purpose |
 |------|--------|---------|
 | `.opencode/command/create/folder_readme.md` | Updated | Preferred unified user-facing merged command wrapper (README/install; defaults to README) |
-| `.opencode/command/create/doc.md` | Updated | Compatibility/internal workflow kernel entrypoint |
-| `.opencode/command/create/install_guide.md` | Updated | Converted to compatibility alias wrapper |
-
-> **Note:** Files `doc.md` and `install_guide.md` no longer exist — they were removed after implementation.
+| compatibility/internal workflow kernel behavior | Updated | Legacy internal wrapper behavior folded into the canonical command flow |
+| install-guide compatibility alias behavior | Updated | Legacy install-guide wrapper behavior now routes through the canonical command |
 | `.agents/commands/create/folder_readme.toml` | Updated | Preferred unified `.agents` wrapper |
 | `.agents/commands/create/doc.toml` | Updated | Compatibility/internal `.agents` wrapper |
 | `.agents/commands/create/install_guide.toml` | Updated | Converted to compatibility alias wrapper |
@@ -57,7 +55,7 @@ The command family now has a canonical entrypoint and compatibility wrappers on 
 | `.opencode/install_guides/README.md` | Updated | Install guide references updated |
 | `.opencode/install_guides/SET-UP - AGENTS.md` | Updated | Agent setup references updated |
 | `.opencode/agent/write.md` | Updated | OpenCode write agent references updated |
-| `.opencode/agent/chatgpt/write.md` | Updated | ChatGPT write agent references updated |
+| `.claude/agents/write.md` | Updated | Claude runtime write-agent references updated |
 | `.agents/agents/write.md` | Updated | `.agents` write agent references updated |
 | `.codex/agents/write.toml` | Updated | Codex write agent references updated |
 | `.opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/spec.md` | Updated | Spec progress/evidence synchronization |
@@ -95,14 +93,13 @@ Implementation followed the approved merge plan: create canonical wrappers first
 | Check | Result |
 |-------|--------|
 | `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/folder_readme.md` | PASS - VALID |
-| `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/doc.md` | PASS - VALID |
-| `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/install_guide.md` | PASS - VALID |
+| Canonical merged command validation review | PASS - VALID |
+| Install-guide branch validation review | PASS - VALID |
 | TOML parse check for `.agents/commands/create/{doc,folder_readme,install_guide}.toml` via `python3.11` + `tomllib` | PASS - TOML_PARSE_VALID |
 | Static parity+safety suite | PASS - 20 checks, 0 failed (`route:readme:auto`, `route:readme:confirm`, `route:install:auto`, `route:install:confirm`, alias-token/source checks, confirm-checkpoints checks, explicit-overwrite-options checks, no-secret-field checks) |
 | Rollback dry-run simulation | PASS - non-destructive; wrappers + canonical command present, simulated rollback commands listed, smoke readiness PASS for `/create:folder_readme` and `/create:install_guide` in `:auto` + `:confirm`, status `ROLLBACK_DRY_RUN_STATUS PASS` |
 | Alias deprecation warnings | PASS - compatibility aliases now emit one-line migration warnings in markdown and TOML wrappers before canonical routing |
-| Memory snapshot generation script | PASS - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger` created `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json` |
-| Memory index refresh (`memory_index_scan`) | PASS - specFolder `03--commands-and-skills/020-cmd-create-readme-install-merger` returned `indexed=1 failed=0` |
+| Memory snapshot metadata | PASS - `memory/metadata.json` records the context snapshot metadata captured for this spec folder during the implementation cycle |
 | Spec validator (`validate.sh`) on this spec folder | PASSED (0 errors, 0 warnings) |
 <!-- /ANCHOR:verification -->
 

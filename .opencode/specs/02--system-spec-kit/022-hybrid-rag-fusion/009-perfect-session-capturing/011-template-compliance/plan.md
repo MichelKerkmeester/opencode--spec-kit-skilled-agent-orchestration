@@ -1,9 +1,9 @@
 ---
-title: "Implementation Plan: Template Compliance"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/plan]"
 description: "Live template contract derivation, validator hardening, runtime prompt updates, and targeted coverage."
 trigger_phrases:
   - "template compliance"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: Template Compliance

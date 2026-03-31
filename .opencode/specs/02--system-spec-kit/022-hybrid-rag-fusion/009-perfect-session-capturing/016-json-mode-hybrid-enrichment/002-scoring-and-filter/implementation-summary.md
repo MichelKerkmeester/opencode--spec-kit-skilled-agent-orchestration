@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...g-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/implementation-summary]"
 description: "Post-implementation summary for Domain C + E fixes: bonus removal from quality scorer, contamination filter extension to 4 additional text fields, 7 new contamination categories, projectPhase override, and post-save review score feedback."
 trigger_phrases:
   - "scoring filter implementation summary"

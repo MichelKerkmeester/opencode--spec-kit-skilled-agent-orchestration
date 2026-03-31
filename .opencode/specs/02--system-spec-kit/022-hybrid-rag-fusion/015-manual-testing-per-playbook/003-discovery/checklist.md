@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook discovery phase"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery/checklist]"
 description: "Verification checklist for Phase 003 discovery scenarios EX-011, EX-012, EX-013. All items unchecked — pending execution."
 trigger_phrases:
   - "discovery checklist"
   - "phase 003 checklist"
-  - "EX-011 EX-012 EX-013 checklist"
+  - "ex-011 ex-012 ex-013 checklist"
 importance_tier: "normal"
 contextType: "general"
 ---

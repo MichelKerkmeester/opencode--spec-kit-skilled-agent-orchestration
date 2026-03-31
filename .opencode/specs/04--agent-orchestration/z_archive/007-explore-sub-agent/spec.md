@@ -1,5 +1,5 @@
 ---
-title: "Spec: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/spec]"
+title: "Spec: Context Loader Sub-Agent (@context_loader) [04--agent-orchestration/z_archive/007-explore-sub-agent/spec]"
 description: "Create a dedicated agent definition file (context_loader.md) for the @context_loader sub-agent — a fast, read-only context retrieval agent that gathers codebase and memory conte..."
 trigger_phrases:
   - "spec"

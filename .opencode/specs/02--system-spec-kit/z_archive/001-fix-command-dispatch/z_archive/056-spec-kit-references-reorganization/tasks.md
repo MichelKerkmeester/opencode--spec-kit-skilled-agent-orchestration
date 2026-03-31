@@ -1,5 +1,5 @@
 ---
-title: "Tasks: system-spec-kit References Reorganization [056-spec-kit-references-reorganization/tasks]"
+title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/tasks]"
 description: "All tasks above marked complete with"
 trigger_phrases:
   - "tasks"
@@ -15,6 +15,7 @@ contextType: "implementation"
 # Tasks: system-spec-kit References Reorganization
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Analyze Current Structure
 
 - [x] List all files in system-spec-kit `references/` folder
@@ -23,19 +24,24 @@ contextType: "implementation"
 - [x] Identify logical groupings based on content domains
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: Design Sub-folder Organization
 
 - [x] Define sub-folder categories based on Phase 1 analysis
 - [x] Map each file to its target sub-folder
 - [x] Review naming conventions for consistency with workflows-code pattern
 - [x] Document final proposed structure with rationale
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Move Files to Sub-folders
 
 - [x] Create new sub-folders in references/
 - [x] Move files to designated locations using git mv
 - [x] Verify all files successfully moved
 - [x] Confirm no files left in root references/ (except README if applicable)
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: Update SKILL.md Routing and Paths
 
@@ -53,6 +59,7 @@ contextType: "implementation"
 - [x] Create implementation-summary.md with final structure
 - [x] Mark all checklist.md items with completion evidence
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 All tasks above marked complete with:
@@ -60,3 +67,4 @@ All tasks above marked complete with:
 - [x] No broken links in SKILL.md
 - [x] Clean, organized sub-folder structure
 - [x] Documentation updated to reflect changes
+<!-- /ANCHOR:completion -->

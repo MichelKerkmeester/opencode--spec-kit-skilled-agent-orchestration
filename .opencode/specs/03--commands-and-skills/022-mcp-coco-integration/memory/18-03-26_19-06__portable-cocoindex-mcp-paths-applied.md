@@ -1,6 +1,5 @@
 ---
-title: "Portable Cocoindex Mcp Paths Applied"
-description: "The memory generator needs explicit FILES and structured observations to treat a JSON-mode save as primary evidence."
+title: "Portable Cocoind [03--commands-and-skills/022-mcp-coco-integration/18-03-26_19-06__portable-cocoindex-mcp-paths-applied]"
 trigger_phrases:
   - "commands and skills/022 mcp coco integration"
   - "json mode"
@@ -22,19 +21,18 @@ trigger_phrases:
   - "coco"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 0.60
 quality_flags:
   - "has_contamination"
+quality_score: 0.60
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # Portable Cocoindex Mcp Paths Applied
 
 ## SESSION SUMMARY

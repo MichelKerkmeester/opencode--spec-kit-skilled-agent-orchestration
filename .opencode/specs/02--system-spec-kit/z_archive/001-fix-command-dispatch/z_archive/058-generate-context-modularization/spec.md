@@ -1,5 +1,5 @@
 ---
-title: "Specification: generate-context.js Modularization [058-generate-context-modularization/spec]"
+title: "Specificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/spec]"
 description: "The generate-context.js script is a 4,837-line monolithic file containing 84 functions across 18 sections. This creates several problems"
 trigger_phrases:
   - "specification"
@@ -72,6 +72,7 @@ Each feature was added inline rather than extracted to modules, resulting in the
 3. **lib/ Reorganization**: Existing 10 lib/ modules remain unchanged
 4. **API Changes**: External interface (CLI arguments, output format) unchanged
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 | Criterion | Measurement | Required |
@@ -83,6 +84,7 @@ Each feature was added inline rather than extracted to modules, resulting in the
 | **Clean Imports** | All modules importable via index.js | P1 |
 | **Documentation** | All modules have JSDoc headers | P2 |
 | **Performance** | No regression (same or faster execution) | P2 |
+<!-- /ANCHOR:success-criteria -->
 
 ## Constraints
 
@@ -101,6 +103,7 @@ Each feature was added inline rather than extracted to modules, resulting in the
 3. **Rollback Ready**: Original script preserved until full validation complete
 4. **Git Branch**: Work on feature branch, merge only after validation
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -121,6 +124,7 @@ Each feature was added inline rather than extracted to modules, resulting in the
 - Performance optimization
 - Modifying MCP server code
 - Modifying templates
+<!-- /ANCHOR:scope -->
 
 ## Current State Analysis
 

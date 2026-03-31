@@ -1,9 +1,17 @@
 ---
-title: "Deep Research: Code Audit Gap Analysis"
+title: "Deep Research: Code Audit Gap [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/research]"
 description: "Progressive synthesis of gaps, missed features, inaccuracies, and systemic issues found in the 007-code-audit-per-feature-catalog"
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "code"
+  - "audit"
+  - "gap"
+  - "007"
+importance_tier: "normal"
+contextType: "research"
 status: complete
 ---
-
 # Deep Research: Code Audit Gap Analysis
 
 ## 1. Undocumented Features and Modules

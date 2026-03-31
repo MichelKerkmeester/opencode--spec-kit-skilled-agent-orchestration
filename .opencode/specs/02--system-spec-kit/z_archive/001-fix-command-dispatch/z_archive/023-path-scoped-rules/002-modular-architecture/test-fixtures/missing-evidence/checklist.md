@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Missing Evidence Fixture [missing-evidence/checklist]"
+title: "...x-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/missing-evidence/checklist]"
 description: "checklist document for missing-evidence."
 trigger_phrases:
   - "checklist"

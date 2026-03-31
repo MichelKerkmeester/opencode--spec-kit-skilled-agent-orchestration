@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 001-hybrid-rag-fusion-epic"
+title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/implementation-summary]"
 description: "Parent packet summary for the Hybrid RAG Fusion epic direct-child truth-sync pass."
 trigger_phrases:
   - "001 epic implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Task 02 — SKILL.md & References Audit [task-02-skill-speckit-alignment/tasks]"
+title: "Task [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook implement-and-remove-deprecated-features phase [template:level_2/checklist.md]"
+title: "...pec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/checklist]"
 description: "Verification checklist for Phase 022 deprecated-feature scenarios PB-022-01 through PB-022-03."
 trigger_phrases:
   - "phase 022 checklist"
   - "deprecated features checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook implement-and-remove-deprecated-features phase

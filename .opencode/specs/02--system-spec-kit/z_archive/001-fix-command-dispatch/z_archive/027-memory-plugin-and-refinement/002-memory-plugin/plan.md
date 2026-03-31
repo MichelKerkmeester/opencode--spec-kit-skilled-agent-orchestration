@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Plugin Dashboard Optimization - Technical Approach & Architecture [002-memory-plugin/plan]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/plan]"
 description: "Implementation plan for optimizing the semantic memory plugin to inject a compact dashboard instead of full memory content."
 trigger_phrases:
   - "implementation"
@@ -50,6 +50,7 @@ Refactor the semantic memory plugin to replace full content injection with a com
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before implementation.**
@@ -70,6 +71,7 @@ Refactor the semantic memory plugin to replace full content injection with a com
 - **Stop Signals**: Session start failures, token budget exceeded by >50%
 - **Recovery Procedure**: Comment out transform hook, restart OpenCode
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -99,6 +101,7 @@ Refactor the semantic memory plugin to replace full content injection with a com
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Helper Functions (30 min)
@@ -281,8 +284,10 @@ experimental: {
 | Database connection failure | Empty dashboard, no crash |
 | Token count (max load) | < 1,000 tokens |
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Manual Testing
@@ -313,6 +318,7 @@ experimental: {
 - Corrupt database, verify no crash
 - Kill database connection mid-query
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -364,6 +370,7 @@ experimental: {
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -378,6 +385,7 @@ experimental: {
 
 None - all dependencies are internal.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. IMPLEMENTATION CHECKLIST

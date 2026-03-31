@@ -1,5 +1,5 @@
 ---
-title: "Tasks: workflows-spec-kit → system-spec-kit Rename [007-system-spec-kit-rename/tasks]"
+title: "Tasks: workflows-spe [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/tasks]"
 description: "tasks document for 007-system-spec-kit-rename."
 trigger_phrases:
   - "tasks"
@@ -26,6 +26,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Directory Rename
 
 ### Task 1.1: Rename Skill Folder
@@ -39,8 +40,10 @@ contextType: "implementation"
 - **Expected**: All 30 files present (SKILL.md, assets/, checklists/, checklist-evidence/, references/, scripts/, templates/)
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Internal Skill Updates
 
 ### Task 2.1: Update SKILL.md
@@ -122,8 +125,10 @@ contextType: "implementation"
 - **References**: Check each for path references
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: External References
 
 ### Task 3.1: Update AGENTS.md
@@ -255,6 +260,7 @@ contextType: "implementation"
 - **Line**: 370
 - **Status**: [ ] Pending
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Verification

@@ -1,13 +1,13 @@
 ---
-title: "Decision Record: Architecture Boundary Remediation [template:level_2/decision-record.md]"
+title: "...on/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/decision-record]"
 description: "Architecture decision for regex-enforcement evasion vectors and AST upgrade timing."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "regex evasion"
   - "boundary enforcement decision"
   - "ast upgrade timeline"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: Architecture Boundary Remediation
 

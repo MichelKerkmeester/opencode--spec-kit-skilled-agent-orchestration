@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Remove Emoji Enforcement from /create Command [011-create-command-emoji-enforcement/decision-record]"
+title: "Decision Record: Remove Emoji Enforcement [03--commands-and-skills/012-cmd-create-emoji-enforcement/decision-record]"
 description: "The /create command currently enforces emoji usage in documentation through validation logic. Documentation standards have changed to make emoji usage optional rather than manda..."
 trigger_phrases:
   - "decision"
@@ -129,10 +129,10 @@ The `/create` command currently enforces emoji usage in documentation through va
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Template Backward Compatibility Strategy
 
-<!-- ANCHOR:adr-002-context -->
+### ADR-002: Template Backward Compatibility Strategy
+
+
 ### Metadata
 
 | Field | Value |
@@ -152,11 +152,11 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 - Should align with "no enforcement" policy
 - Should minimize manual work and risk
 - Should provide clear migration path
-<!-- /ANCHOR:adr-002-context -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
+
 ### Decision
 
 **Summary**: Leave existing emojis in template files; only remove validation requirements and enforcement language.
@@ -164,11 +164,11 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 **Details**: Emojis in existing templates will remain but will be treated as cosmetic rather than mandatory. Users can choose to keep, remove, or add emojis in their own generated content. Templates will not enforce emoji presence or absence. This allows natural gradual migration as templates are updated over time.
 
 **Implementation Status**: ✅ Complete - All validation requirements removed. Existing emojis preserved in templates as cosmetic elements per backward compatibility strategy.
-<!-- /ANCHOR:adr-002-decision -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
+
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -178,11 +178,11 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 | Add Opt-in Flag | Flexible | Against "no enforcement" goal, adds complexity | 3/10 |
 
 **Why Chosen**: Leaving emojis in place ensures zero breaking changes for users who depend on existing templates. It aligns with the "optional" policy (emojis are allowed but not required). Templates will naturally update over time without forced migration.
-<!-- /ANCHOR:adr-002-alternatives -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
+
 ### Consequences
 
 **Positive**:
@@ -199,11 +199,11 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 |------|--------|------------|
 | User confusion (some templates have emojis, some don't) | L | Document "optional" status clearly |
 | Perceived inconsistency | L | Update documentation to explain gradual migration |
-<!-- /ANCHOR:adr-002-consequences -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
+
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -215,11 +215,11 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 | 5 | **Open Horizons?** | PASS | Allows natural evolution of templates over time |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
+
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
+
 ### Implementation
 
 **Affected Systems**:
@@ -232,8 +232,8 @@ Existing templates in `.opencode/command/create/assets` may contain emojis in ti
 - ✅ Backward compatibility verified: existing emojis still functional
 
 **Rollback**: N/A (no changes to existing emojis; only validation removed)
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
+
+
 
 ---
 

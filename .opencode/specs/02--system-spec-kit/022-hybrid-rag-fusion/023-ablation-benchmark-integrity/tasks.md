@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Ablation Benchmark Integrity"
+title: "Tasks: Ablation Benchmark Integrity [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
   - "ablation benchmark"
   - "benchmark integrity"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: Ablation Benchmark Integrity

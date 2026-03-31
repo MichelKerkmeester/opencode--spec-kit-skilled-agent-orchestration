@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Notification System - Quality Gates [007-notification-system/checklist]"
+title: "Validation Checklist: Notification System - Quality Gates [01--anobel.com/z_archive/007-notification-system/checklist]"
 description: "Checklist for validating the notification system implementation."
 trigger_phrases:
   - "validation"
@@ -135,6 +135,7 @@ Systematic validation of the notification system to ensure all requirements are 
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## 4. VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -158,8 +159,12 @@ When marking items complete, include evidence:
 ---
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:protocol -->
 ## 5. VERIFICATION SUMMARY
 
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary (2025-12-21)
 
 | Category | Status |
@@ -179,3 +184,4 @@ When marking items complete, include evidence:
 4. **Office Hours**: Integration confirmed working - indicator found with correct data-status attribute
 5. **Toast Not Implemented**: Current Webflow only has banner-style alerts, no toast component
 <!-- /ANCHOR:verification-summary -->
+<!-- /ANCHOR:summary -->

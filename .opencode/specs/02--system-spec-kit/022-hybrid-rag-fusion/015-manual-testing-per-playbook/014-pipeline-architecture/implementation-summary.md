@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Manual Testing — Pipeline Architecture (Phase 014)"
+title: "...stem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture/implementation-summary]"
 description: "Post-execution summary for Phase 014 pipeline architecture manual testing. 18 scenarios executed via code analysis: 18 PASS, 0 PARTIAL, 0 FAIL. Pass rate 100%."
 trigger_phrases:
   - "pipeline-architecture implementation summary"

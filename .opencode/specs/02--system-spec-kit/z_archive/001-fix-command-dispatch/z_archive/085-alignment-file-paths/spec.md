@@ -1,5 +1,5 @@
 ---
-title: "085: Alignment Validator File Path Analysis [085-alignment-file-paths/spec]"
+title: "085: Alignment [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/085-alignment-file-paths/spec]"
 description: "Memory files are being saved to incorrect spec folders because the alignment scoring ignores file paths. When work is done on shared infrastructure (.opencode/skill/system-spec-..."
 trigger_phrases:
   - "085"
@@ -72,9 +72,11 @@ Add validation step in recovery that:
 1. `.opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.js`
 2. `.opencode/command/memory/continue.md`
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] Infrastructure work (files in `.opencode/`) is detected
 - [ ] Alignment scoring prefers infrastructure-related spec folders
 - [ ] Recovery command validates key_files vs spec_folder
 - [ ] Mismatch triggers user prompt with correction options
+<!-- /ANCHOR:success-criteria -->

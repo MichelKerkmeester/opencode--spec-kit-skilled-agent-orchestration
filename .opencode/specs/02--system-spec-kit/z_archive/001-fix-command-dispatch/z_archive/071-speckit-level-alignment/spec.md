@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/spec]"
+title: "Feature Specificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/spec]"
 description: "Align ALL SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069."
 trigger_phrases:
   - "feature"
@@ -77,6 +77,7 @@ Enable the SpecKit system to automatically use level-appropriate pre-expanded te
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -116,6 +117,7 @@ Enable the SpecKit system to automatically use level-appropriate pre-expanded te
 | `references/validation/validation_rules.md` | Modify | Update example |
 | `references/validation/phase_checklists.md` | Modify | Update link |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -160,6 +162,7 @@ As a SpecKit user, I need documentation to reference level-specific template pat
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** `create-spec-folder.sh` MUST copy templates from `templates/level_N/` based on `--level` flag
@@ -169,8 +172,10 @@ As a SpecKit user, I need documentation to reference level-specific template pat
 - **REQ-FUNC-005:** All documentation copy commands MUST reference level folder paths
 - **REQ-FUNC-006:** System MUST maintain backward compatibility with root templates
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -183,8 +188,10 @@ As a SpecKit user, I need documentation to reference level-specific template pat
 - **NFR-C01**: Root templates MUST continue to work as fallback
 - **NFR-C02**: Existing spec folders MUST not be affected
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Error Scenarios
@@ -194,8 +201,10 @@ As a SpecKit user, I need documentation to reference level-specific template pat
 ### State Transitions
 - Level 3+ specified: Map to `level_3+/` folder
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 1. ✅ `create-spec-folder.sh --level N` copies from `templates/level_N/`
@@ -206,6 +215,7 @@ As a SpecKit user, I need documentation to reference level-specific template pat
 6. ✅ All 171 existing tests pass
 7. ✅ Backward compatibility maintained (root templates still work)
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS

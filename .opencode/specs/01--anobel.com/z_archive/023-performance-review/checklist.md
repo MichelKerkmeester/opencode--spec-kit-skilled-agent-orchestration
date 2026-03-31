@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Performance Optimization Review - Spec 025 [025-performance-review/checklist]"
+title: "Verification Checklist: Performance Optimization Review - [01--anobel.com/z_archive/023-performance-review/checklist]"
 description: "Notes"
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -32,6 +33,7 @@ contextType: "implementation"
 <!-- /ANCHOR:verification-protocol -->
 
 <!-- ANCHOR:pre-implementation -->
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
@@ -95,6 +97,7 @@ contextType: "implementation"
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:documentation -->
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-050 [P0] Post-implementation metrics added to spec.md
@@ -107,6 +110,7 @@ contextType: "implementation"
 <!-- /ANCHOR:documentation -->
 
 <!-- ANCHOR:file-organization -->
+<!-- /ANCHOR:docs -->
 ## File Organization
 
 - [x] CHK-060 [P1] Lighthouse JSON files in scratch/
@@ -117,6 +121,7 @@ contextType: "implementation"
 <!-- /ANCHOR:file-organization -->
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -137,6 +142,7 @@ contextType: "implementation"
 <!-- /ANCHOR:verification-summary -->
 
 <!-- ANCHOR:version-verification-commands -->
+<!-- /ANCHOR:summary -->
 ## VERSION VERIFICATION COMMANDS
 
 ```bash

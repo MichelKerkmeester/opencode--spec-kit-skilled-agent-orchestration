@@ -1,5 +1,5 @@
 ---
-title: "Checklist - Gate 3 Enforcement [030-gate3-enforcement/checklist]"
+title: "Checklist - Gate 3 [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/checklist]"
 description: "All items must be checked before marking this spec as COMPLETE"
 trigger_phrases:
   - "checklist"
@@ -63,6 +63,7 @@ contextType: "implementation"
 - [x] **BH-003**: AI uses full question format (not simplified) ✓ User confirmed manual testing 2024-12-24
 - [x] **BH-004**: AI waits for A/B/C/D response before proceeding ✓ User confirmed manual testing 2024-12-24
 
+<!-- ANCHOR:docs -->
 ## P2: Documentation Items
 
 - [x] **DC-001**: spec.md created with problem statement
@@ -72,6 +73,7 @@ contextType: "implementation"
 - [x] **DC-005**: checklist.md created (this file)
 - [x] **DC-006**: Session memory generated via generate-context.js ✓ `24-12-25_12-44__gate3-enforcement.md`
 - [x] **DC-007**: spec.md status updated to COMPLETE ✓ All behavioral tests passed 2024-12-24
+<!-- /ANCHOR:docs -->
 
 ## Summary
 

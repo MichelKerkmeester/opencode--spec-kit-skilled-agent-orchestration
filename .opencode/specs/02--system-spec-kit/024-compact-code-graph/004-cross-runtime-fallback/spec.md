@@ -1,3 +1,16 @@
+---
+title: "Phase 4: Cross-Runtime Fallback [02--system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback/spec]"
+description: "Ensure all runtimes (OpenCode, Codex CLI, Copilot, Gemini CLI) get context injection via tool-based approach in CLAUDE.md/CODEX.md, complementing the hook-based approach for Cla..."
+trigger_phrases:
+  - "phase"
+  - "cross"
+  - "runtime"
+  - "fallback"
+  - "spec"
+  - "004"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 4: Cross-Runtime Fallback
 
 ## Summary

@@ -1,5 +1,16 @@
 ---
-title: "Checklist: Implement and Remove Deprecated Features"
+title: "...-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/checklist]"
+description: "title: \"Checklist: Implement and Remove Deprecated Features\""
+trigger_phrases:
+  - "kit"
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "checklist"
+  - "implement"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Implement and Remove Deprecated Features
 

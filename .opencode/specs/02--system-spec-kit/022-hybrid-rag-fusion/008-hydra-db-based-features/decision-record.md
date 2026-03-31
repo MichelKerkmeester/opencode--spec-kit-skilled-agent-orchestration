@@ -1,7 +1,6 @@
 ---
-title: "Decision Record: 008-hydra-db-based-features [template:level_3/decision-record.md]"
+title: "Decision Record: 008-hydra-db-ba [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/decision-record]"
 description: "Architecture decisions for HydraDB-inspired evolution of system-spec-kit Memory MCP server."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "decision"
   - "record"
@@ -10,6 +9,7 @@ trigger_phrases:
   - "architecture"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 008-hydra-db-based-features
 

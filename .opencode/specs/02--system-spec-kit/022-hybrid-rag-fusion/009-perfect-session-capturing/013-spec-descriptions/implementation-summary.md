@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary: Per-Folder Description Infrastructure"
+title: "I [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions/implementation-summary]"
 description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "description implementation"
   - "per-folder description"
   - "memory uniqueness"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary: Per-Folder Description Infrastructure
 
@@ -112,4 +112,11 @@ Code hardening: 8 fixes (C1-C8), 3 test fix groups, 13 findings from GPT 5.4 tri
 1. **L1, Spec-affinity schema gap**: `PerFolderDescription` lacks `triggerPhrases`. `spec-affinity.ts` falls back to spec.md frontmatter. Future enhancement.
 2. **L2, Broader stress scope**: The checklist-required two-writer proof now passes, but larger multi-process stress campaigns remain out of scope for this phase.
 3. **L3, Partial workflow E2E**: Deferred due to heavy MCP server module dependencies.
+<!-- /ANCHOR:limitations -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

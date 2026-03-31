@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Remaining Bugs Remediation [054-remaining-bugs-remediation/tasks]"
+title: "Tasks: Remaining [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/tasks]"
 description: "Note: All 50 tasks completed. Runtime tests passed via test-bug-fixes.js and MCP integration."
 trigger_phrases:
   - "tasks"
@@ -36,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical Fixes (P0)
 
 ### BUG-001: Race Condition - Dual Database Connection
@@ -59,8 +60,10 @@ contextType: "implementation"
 | T-010 | Add unit test for transaction rollback | ✅ Complete | | test-bug-fixes.js T-010a/b PASS |
 | T-011 | Add integration test for partial failure recovery | ✅ Complete | | Code verified, skipped in test |
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Major Fixes (P1)
 
 ### BUG-003: Embedding Dimension Mismatch at Startup
@@ -107,8 +110,10 @@ contextType: "implementation"
 | T-029 | Add validateQuery() call at start of handleMemorySearch | ✅ Complete | Agent | Lines 757-785 |
 | T-030 | Add unit tests for edge cases (whitespace, null, etc.) | ✅ Complete | | test-bug-fixes.js T-030a/b/c/d PASS |
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Minor Fixes (P2)
 
 ### BUG-008: UTF-8 BOM Detection
@@ -153,6 +158,7 @@ contextType: "implementation"
 | T-041 | Add autoClean option to verifyIntegrity() | ✅ Complete | Agent | vector-index.js:3230-3306 |
 | T-042 | Add unit test for auto-cleanup | ✅ Complete | | test-bug-fixes.js T-042a/b PASS |
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Verification

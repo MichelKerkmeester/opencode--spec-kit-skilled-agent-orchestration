@@ -1,12 +1,12 @@
 ---
-title: "Tasks: 006-shared-memory-rollout"
+title: "Tasks: 006-share [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/tasks]"
 description: "Phase 6 collaboration and staged-rollout task breakdown."
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "phase 6 tasks"
   - "shared memory tasks"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: 006-shared-memory-rollout
 

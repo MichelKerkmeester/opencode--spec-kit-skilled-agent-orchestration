@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - Gate 3 Enforcement [030-gate3-enforcement/plan]"
+title: "Implementation Plan - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/plan]"
 description: "Status: COMPLETE"
 trigger_phrases:
   - "implementation"
@@ -272,6 +272,7 @@ Phase 5: Documentation ───────────────────
         └── Update all docs, generate memory
 ```
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If enforcement is too aggressive:
@@ -282,3 +283,4 @@ If enforcement is too aggressive:
 4. **Revert AGENTS.md**: Remove failure pattern #19 if too restrictive
 
 Constitutional memories can be adjusted without full removal.
+<!-- /ANCHOR:rollback -->

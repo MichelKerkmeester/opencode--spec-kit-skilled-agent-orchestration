@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: OpenCode Documentation Quality Upgrade [122-upgrade-speckit-docs/checklist]"
+title: "Verification Checklist: OpenCode Documentation [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/checklist]"
 description: "Coverage Note: ~63% file coverage (46 of ~127 documentation files not yet modified). Remaining files documented as future work in spec.md; not a blocker for current scope."
 trigger_phrases:
   - "verification"

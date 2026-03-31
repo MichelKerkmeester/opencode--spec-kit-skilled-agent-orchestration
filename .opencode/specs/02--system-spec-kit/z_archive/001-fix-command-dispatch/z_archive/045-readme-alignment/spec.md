@@ -1,5 +1,5 @@
 ---
-title: "Spec: README & Install Guide Alignment [045-readme-alignment/spec]"
+title: "Spec: README & Install [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment/spec]"
 description: "Fix documentation misalignments, incorrect counts, and inconsistencies discovered by 10 parallel Opus agents auditing README files and install guides across the skill system."
 trigger_phrases:
   - "spec"
@@ -55,6 +55,7 @@ The README files contain multiple factual errors that cause user confusion:
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. Scope
 
 ### In Scope
@@ -72,6 +73,7 @@ The README files contain multiple factual errors that cause user confusion:
 - Code changes to MCP servers
 - LOW severity issues (can be deferred)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 4. Files to Modify

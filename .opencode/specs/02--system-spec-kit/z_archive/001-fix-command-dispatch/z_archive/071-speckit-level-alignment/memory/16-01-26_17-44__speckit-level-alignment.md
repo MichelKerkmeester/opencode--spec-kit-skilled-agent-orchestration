@@ -1,6 +1,5 @@
 ---
-title: "SpecKit level alignment completion 2026-01-16"
-description: "Captured the session that aligned SpecKit scripts, library modules, and documentation to the level-based template architecture. It records the completion state, the broad..."
+title: "...kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/16-01-26_17-44__speckit-level-alignment]"
 trigger_phrases:
   - "speckit level alignment"
   - "level based template architecture"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "template architecture migration"
 importance_tier: "important"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Speckit Level Alignment
 
 ## SESSION SUMMARY

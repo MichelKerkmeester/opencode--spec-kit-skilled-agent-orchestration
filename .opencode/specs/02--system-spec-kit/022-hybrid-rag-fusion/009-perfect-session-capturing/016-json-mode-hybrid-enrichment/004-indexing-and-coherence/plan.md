@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Indexing & Coherence — Embedding Visibility, Trigger Quality, Template Gaps, Cross-Session Validation"
+title: ".../022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/plan]"
 description: "Five-file implementation across MCP handler and pipeline scripts: expose RetryStats in memory_health, add trigger phrase filter pipeline, bind toolCalls/exchanges to Mustache renderer, clean OPTIONAL_PLACEHOLDERS, add observation dedup and pre-save overlap check."
 trigger_phrases:
   - "indexing coherence implementation plan"
   - "retry stats memory health plan"
   - "trigger phrase filter pipeline"
-  - "toolCalls exchanges mustache template"
-  - "OPTIONAL_PLACEHOLDERS cleanup"
+  - "toolcalls exchanges mustache template"
+  - "optional_placeholders cleanup"
   - "pre-save overlap check plan"
 importance_tier: "important"
 contextType: "implementation"
@@ -189,6 +189,7 @@ input-normalizer.ts observation array build → dedup by string equality → nor
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -211,6 +212,7 @@ Phase 3 (P1b Template Sections) ┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -323,6 +325,7 @@ Phase 3 (P1b Template Sections) ┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: RetryStats Exposed as Accessor, Not Event Bus
@@ -341,3 +344,4 @@ Phase 3 (P1b Template Sections) ┘
 **Alternatives Rejected**:
 - Query embedding_status table directly in handler: couples handler to DB schema, adds latency, races with background job
 - Push via event emitter: adds complexity, async timing mismatch with synchronous health response
+<!-- /ANCHOR:architecture -->

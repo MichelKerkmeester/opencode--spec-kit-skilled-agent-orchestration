@@ -1,5 +1,5 @@
 ---
-title: "Decision: Regex-Based Anchor Extraction - Architecture Decision [065-anchor-system-implementation/decision-record]"
+title: "Deci [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/decision-record]"
 description: "Architecture Decision Record (ADR) documenting the choice of parsing strategy for the Anchor System."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ Architecture Decision Record (ADR) documenting the choice of parsing strategy fo
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-001
@@ -28,8 +29,10 @@ Architecture Decision Record (ADR) documenting the choice of parsing strategy fo
 - **Deciders**: OpenCode Agent
 - **Related Feature**: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/spec.md`
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -44,8 +47,10 @@ The Anchor System requires extracting specific sections of content from Markdown
 - Anchor tags follow a strict format: `<!-- ANCHOR:id -->` and `<!-- /ANCHOR:id -->`.
 - Files are relatively small (max 100KB per spec validation rules).
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -75,6 +80,7 @@ function extract_anchors(content) {
 }
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -133,6 +139,7 @@ function extract_anchors(content) {
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -146,6 +153,7 @@ function extract_anchors(content) {
 ### Risks
 - **ReDoS**: Maliciously crafted regex inputs could cause CPU spikes (mitigated by simple, bounded regex patterns).
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES

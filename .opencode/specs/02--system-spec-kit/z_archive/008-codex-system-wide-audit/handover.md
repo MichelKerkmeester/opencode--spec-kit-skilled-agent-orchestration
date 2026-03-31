@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [125-codex-system-wide-audit/handover]"
+title: "Session Handover Document [125-codex-system-wide-au [02--system-spec-kit/z_archive/008-codex-system-wide-audit/handover]"
 description: "Session handover after runtime remediation and verification closure."
 trigger_phrases:
   - "session"

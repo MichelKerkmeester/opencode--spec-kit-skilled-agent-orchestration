@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Tooling & Scripts"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/implementation-summary]"
 description: "18 features audited: 18 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

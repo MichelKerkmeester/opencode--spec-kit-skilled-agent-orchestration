@@ -1,7 +1,7 @@
 ---
 title: "Tasks: Merge create README and install guide commands [017-create-readme-install-merger/tasks]"
 description: "Task Format: T### Description (file path or artifact)"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "task breakdown"
   - "merge tasks"
@@ -33,7 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Planning and Contract Definition
+## Phase 1: Setup
 
 - [x] T001 Capture merge objectives and scope in `spec.md` (`.opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/spec.md`)
 - [x] T002 Document canonical naming proposal and routing model in `plan.md` (`.opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/plan.md`)
@@ -43,10 +43,10 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Merge Design Preparation
+## Phase 2: Implementation
 
-- [x] T004 Define preferred unified command contract and alias mapping artifact (`.opencode/command/create/folder_readme.md`, `.opencode/command/create/doc.md`, `.opencode/command/create/install_guide.md`)
-- [x] T005 Define shared setup resolver and input normalization schema (canonical wrapper + alias wrappers in markdown and TOML command surfaces)
+- [x] T004 Define preferred unified command contract and alias mapping artifact (`.opencode/command/create/folder_readme.md` plus the retained runtime wrapper surfaces)
+- [x] T005 Define shared setup resolver and input normalization schema (canonical wrapper plus retained alias behavior in markdown and TOML command surfaces)
 - [x] T006 Define shared YAML kernel and operation branch boundaries (canonical wrapper routes README/install branches while legacy wrappers preserve entry compatibility)
 - [x] T007 Define migration and deprecation timeline with rollback triggers (catalog/runtime refs updated; alias retirement remains explicitly pending)
 <!-- /ANCHOR:phase-2 -->
@@ -54,7 +54,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Validation and Execution Readiness
+## Phase 3: Verification
 
 - [x] T008 Build parity validation matrix for legacy and canonical invocations (`validation-matrix` artifact)
 - [x] T009 Define DQI and structural validation gates for both operations (`validate_document.py` VALID for canonical + two legacy markdown wrappers; TOML parse check passed for three `.agents` wrappers)

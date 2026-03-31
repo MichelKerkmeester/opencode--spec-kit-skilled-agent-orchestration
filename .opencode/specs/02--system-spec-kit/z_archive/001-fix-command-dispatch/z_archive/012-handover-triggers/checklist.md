@@ -1,5 +1,5 @@
 ---
-title: "Implementation Checklist: Utility Template Trigger Keywords - Validation Items [012-handover-triggers/checklist]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/checklist]"
 description: "Validation checklist for adding automatic keyword detection for handover.md and debug-delegation.md templates to SKILL.md."
 trigger_phrases:
   - "implementation"
@@ -110,6 +110,7 @@ Verify all three SKILL.md modifications are complete and correctly integrated.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### AI Self-Verification Requirement
@@ -146,6 +147,8 @@ When marking items complete, include evidence:
 At completion, document verification status:
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:protocol -->
 ## Verification Summary
 - **Total Items**: 33
 - **Verified [x]**: 32
@@ -155,6 +158,7 @@ At completion, document verification status:
 - **Verification Date**: 2025-12-17
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 4. USAGE NOTES

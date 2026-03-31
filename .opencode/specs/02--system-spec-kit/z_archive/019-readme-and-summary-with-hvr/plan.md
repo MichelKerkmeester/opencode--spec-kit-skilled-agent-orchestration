@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Human Voice Rules — Template Integration [137-readme-and-summary-with-hvr/plan]"
+title: "Implementation Plan: Human Voice Rules — Template [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/plan]"
 description: "This plan covers two categories of work. First, extracting the Human Voice Rules from a Barter-specific context document into a standalone, system-agnostic file at the canonical..."
 trigger_phrases:
   - "implementation"
@@ -170,6 +170,7 @@ The SpecKit template system has level-specific files. Check which levels have th
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -191,6 +192,7 @@ Phase 2 (Draft blocks) ─────┤
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -286,6 +288,7 @@ Phase 2 (Draft blocks) ─────┤
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 See `decision-record.md` for the two key decisions: the standalone HVR asset approach and the annotation-based embedding strategy.
@@ -293,6 +296,7 @@ See `decision-record.md` for the two key decisions: the standalone HVR asset app
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation (this spec folder)

@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 1 — PreCompact Hook [02--system-spec-kit/024-compact-code-graph/001-precompact-hook/plan]"
+description: "1. Create hook script directory — mkdir -p mcp_server/scripts/hooks/"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "precompact"
+  - "hook"
+  - "001"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 1 — PreCompact Hook
 
 ## Steps
@@ -24,9 +36,11 @@
    - Empty transcript → minimal output
    - Large transcript → stays within 2s timeout
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Compiled dist of memory-surface.ts must be up to date
 - `.claude/settings.local.json` must be writable
+<!-- /ANCHOR:dependencies -->
 
 ## Budget Allocation (from iteration 049)
 - Implement floors + overflow pool allocator

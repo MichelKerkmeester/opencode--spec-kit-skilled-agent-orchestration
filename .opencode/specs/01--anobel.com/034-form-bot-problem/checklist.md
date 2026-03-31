@@ -1,7 +1,6 @@
 ---
-title: "Verification Checklist: Contact Form Bot Submission Investigation"
+title: "Verification Checklist: Contact Form Bot Submission Investigation [01--anobel.com/034-form-bot-problem/checklist]"
 description: "Verification Date: 2026-03-07"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -11,6 +10,7 @@ trigger_phrases:
   - "034"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: Contact Form Bot Submission Investigation
 
@@ -33,20 +33,20 @@ This checklist is phase-aligned: planning gates are active now, while implementa
 
 ---
 
-## Active Planning Blockers (current phase)
+### Active Planning Blockers (current phase)
 
 - CHK-001, CHK-002, CHK-003, CHK-040, CHK-041, CHK-050, CHK-051, CHK-100
 
-## Future Implementation/Deployment Blockers (tracked, not current planning blockers)
+### Future Implementation/Deployment Blockers (tracked, not current planning blockers)
 
 - CHK-010, CHK-011, CHK-020, CHK-021, CHK-031, CHK-120, CHK-121
 
-## P0
+### P0
 
 - Active now: CHK-001, CHK-002, CHK-003, CHK-040, CHK-041, CHK-050, CHK-051, CHK-100.
 - Future phase (tracked): CHK-010, CHK-011, CHK-020, CHK-021, CHK-031, CHK-120, CHK-121.
 
-## P1
+### P1
 
 - Planning-support checks include CHK-030, CHK-101, CHK-102, and CHK-140.
 - Future implementation/deployment required checks remain pending by design.

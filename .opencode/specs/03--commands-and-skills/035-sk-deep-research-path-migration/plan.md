@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-deep-research Path Migration"
+title: "Implementation Plan: sk-deep-research Path Migration [03--commands-and-skills/035-sk-deep-research-path-migration/plan]"
 description: "Plan the repo-wide migration from a root research document plus scratch iterations to a research packet root plus dedicated iteration folders, while standardizing review iterations under review/iterations/ and preserving the review report at the review packet root."
 trigger_phrases:
   - "deep-research migration plan"
@@ -213,6 +213,7 @@ Contract-first path migration with bounded legacy tolerance and one-shot corpus 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -231,6 +232,7 @@ Contract Freeze -> Command and Runtime Updates -> System-Spec-Kit Helper Updates
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -337,6 +339,7 @@ command workflows + command entrypoint
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Treat `research/` and `review/` as packet roots, not mixed root-plus-scratch contracts
@@ -354,3 +357,4 @@ command workflows + command entrypoint
 **Alternatives Rejected**:
 - Keep the former root research document and only move iterations: rejected because the packet root would still be split.
 - Add `output/` folders: rejected because the user explicitly ruled that out.
+<!-- /ANCHOR:architecture -->

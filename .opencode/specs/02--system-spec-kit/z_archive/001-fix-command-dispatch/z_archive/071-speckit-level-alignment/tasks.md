@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/tasks]"
+title: "Tasks: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/tasks]"
 description: "Implementation tasks for aligning SpecKit with level-based template architecture."
 trigger_phrases:
   - "tasks"
@@ -34,6 +34,7 @@ Implementation tasks for aligning SpecKit with level-based template architecture
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Script Updates (P0 - CRITICAL)
 
 ### TASK-001: Update create-spec-folder.sh [P0]
@@ -95,8 +96,10 @@ function getTemplatesDir(level = null) {
 node scripts/expand-template.js --template spec.md --level 2 --dry-run
 ```
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Lib Module Updates (P1 - HIGH)
 
 ### TASK-003: Update preprocessor.js [P1]
@@ -147,8 +150,10 @@ node scripts/expand-template.js --template spec.md --level 2 --dry-run
 
 **Evidence**: generatePlaceholder() updated lines 192-223, markers removed
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Documentation Updates (P1-P2)
 
 ### TASK-007: Update SKILL.md [P0]
@@ -272,6 +277,7 @@ Update checklist.md link at line 176
 
 **Evidence**: plan.md line 464, tasks.md line 359 updated
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Template Cleanup (P1)

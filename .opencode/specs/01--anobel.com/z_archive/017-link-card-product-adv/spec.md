@@ -1,5 +1,5 @@
 ---
-title: "Link Card Product/Adv - CTA Button Hover Animation [017-link-card-product-adv/spec]"
+title: "Link Card Product/Adv - CTA Button Hover Animation [01--anobel.com/z_archive/017-link-card-product-adv/spec]"
 description: "Extend the link card ad hover state to trigger the CTA button Secondary-Full animations, including"
 trigger_phrases:
   - "link"
@@ -43,3 +43,4 @@ Extend the link card ad hover state to trigger the CTA button Secondary-Full ani
 - Changes to `btn_cta.css` (existing styles remain unchanged)
 - JavaScript modifications
 <!-- /ANCHOR:out-of-scope -->
+<!-- /ANCHOR:scope -->

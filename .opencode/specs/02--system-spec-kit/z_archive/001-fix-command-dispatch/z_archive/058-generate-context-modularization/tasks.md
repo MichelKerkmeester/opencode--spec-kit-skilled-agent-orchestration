@@ -1,5 +1,5 @@
 ---
-title: "Tasks: generate-context.js Modularization [058-generate-context-modularization/tasks]"
+title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/tasks]"
 description: "Priority: P0"
 trigger_phrases:
   - "tasks"
@@ -31,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Preparation
 
 ### Task 1.1: Create Test Fixtures
@@ -88,8 +89,10 @@ contextType: "implementation"
 - Dependency relationships documented
 - Shared state identified
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Utility Extraction
 
 ### Task 2.1: Create utils/logger.js
@@ -174,8 +177,10 @@ contextType: "implementation"
 - All snapshot tests pass
 - Git commit created
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Normalizers & Prompts
 
 ### Task 3.1: Create utils/input-normalizer.js
@@ -242,6 +247,7 @@ contextType: "implementation"
 - All tests pass
 - Git commit created
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Extractors

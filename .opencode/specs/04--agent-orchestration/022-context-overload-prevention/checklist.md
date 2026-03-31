@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Context Overload Prevention [022-context-overload-prevention/checklist]"
+title: "Verification Checklist: Context Overload [04--agent-orchestration/022-context-overload-prevention/checklist]"
 description: "Verification Date: 2026-02-20"
 trigger_phrases:
   - "verification"
@@ -41,7 +41,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Content Quality
+## Code Quality
 
 - [x] CHK-010 [P0] All 5 sections present in Claude orchestrate.md
 - [x] CHK-011 [P0] All 5 sections present in Copilot orchestrate.md
@@ -63,15 +63,15 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:runtime-adaptation -->
-## Runtime Adaptation
+<!-- ANCHOR:security -->
+## Security
 
 - [x] CHK-030 [P0] Claude variant references CLAUDE.md + MEMORY.md in recovery protocol
 - [x] CHK-031 [P0] Copilot variant references AGENTS.md + project config in recovery protocol
 - [x] CHK-032 [P0] ChatGPT variant references AGENTS.md + project config in recovery protocol
 - [x] CHK-033 [P1] Claude variant uses `/compact` in pressure response
 - [x] CHK-034 [P1] Copilot/ChatGPT variants use "save context" in pressure response
-<!-- /ANCHOR:runtime-adaptation -->
+<!-- /ANCHOR:security -->
 
 ---
 

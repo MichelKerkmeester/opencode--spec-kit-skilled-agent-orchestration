@@ -1,5 +1,5 @@
 ---
-title: "Spec: Valid Priority Tags Fixture [valid-priority-tags/spec]"
+title: "...fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-priority-tags/spec]"
 description: "This fixture tests proper priority tag validation."
 trigger_phrases:
   - "spec"
@@ -26,11 +26,15 @@ contextType: "decision"
 This fixture tests proper priority tag validation.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 - All checklist items must have P0/P1/P2 tags
 - Format must be `- [ ] **P0**:` or `- [x] **P1**:`
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 Test fixture for priority tag validation.
+<!-- /ANCHOR:scope -->

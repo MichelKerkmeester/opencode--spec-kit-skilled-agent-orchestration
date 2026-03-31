@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Reimagined [082-speckit-reimagined/tasks]"
+title: "Tasks: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/tasks]"
 description: "Task Format: T### [P?] [B:T###?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -49,6 +49,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Quick Wins (Week 1)
 
 ### Day 1: Session Deduplication
@@ -151,8 +152,10 @@ contextType: "implementation"
   - `get_embedding_dim()` now checks `isProviderInitialized()` before accessing profile
   - Falls back to environment detection when provider not initialized
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Core Enhancements (Weeks 2-3)
 
 ### Week 2: RRF Search Fusion & Usage Boost
@@ -283,8 +286,10 @@ contextType: "implementation"
   - All causal-graph.js handlers updated with recovery hints
   - Global error handler in context-server.js uses build_error_response() with hints
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Strategic Enhancements (Weeks 4+)
 
 ### Week 4-5: Causal Memory Graph
@@ -389,6 +394,7 @@ contextType: "implementation"
   - Token budgets documented in each tool description
   - Layer comments added to tool definitions in context-server.js for organization
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Additional Features (Section 10 Extraction)
@@ -680,6 +686,7 @@ T126 (Causal Links) ──► T120 (/memory:why)
 
 ---
 
+<!-- ANCHOR:completion -->
 ## COMPLETION CRITERIA
 
 - [x] All P0 tasks (T001-T019) marked `[x]` - 19/19 complete
@@ -693,6 +700,7 @@ T126 (Causal Links) ──► T120 (/memory:why)
 - [x] Embedding fallback chain tested with each provider disabled - 28 tests in provider-chain.test.js
 - [x] context_template.md updated to v2.2 - ANCHOR format, 9 memory types, causal links
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## AI EXECUTION PROTOCOL
@@ -826,6 +834,7 @@ When a task fails or produces unexpected results:
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
@@ -847,3 +856,4 @@ LEVEL 3+ TEMPLATE (~340 lines)
 - AI execution protocol with pre-task checklist
 - Status reporting format for autonomous agents
 -->
+<!-- /ANCHOR:cross-refs -->

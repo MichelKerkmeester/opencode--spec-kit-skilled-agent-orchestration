@@ -1,7 +1,5 @@
 ---
-title: "Tasks: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/tasks.md]"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
-SPECKIT_LEVEL: "2"
+title: "Tasks: sk-doc Repo-Wide Rename and Visual Skill Cleanup [03--commands-and-skills/010-sk-doc-rename/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -10,6 +8,8 @@ trigger_phrases:
   - "tasks core"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_LEVEL: "2"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
@@ -29,6 +29,10 @@ contextType: "general"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
@@ -40,6 +44,10 @@ contextType: "general"
 - [x] T002 Capture baseline path inventory (`scratch/preflight-paths.txt`).
 - [x] T003 [P] Capture baseline runtime symlink inventory (`scratch/preflight-symlinks.txt`).
 - [x] T004 Define and persist rename map (`scratch/path-rename-map.tsv`, `scratch/path-rename-map-ordered.tsv`).
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -53,6 +61,10 @@ contextType: "general"
 - [x] T013 Replace scoped legacy identifier tokens in content/config files (`scratch/content-replacement-files.txt`).
 - [x] T014 Run external AGENTS match check and keep no-op on zero-match result (`/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md`).
 - [x] T015 Review rename output and ensure ordered map count equals execution log count (`wc -l` parity check).
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -60,12 +72,20 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
+### Phase 3: Verification
+
+### Phase 3: Verification
+
 - [x] T020 Verify final remnant policy shows all zeros (`scratch/final-remnant-counts.txt`).
 - [x] T021 Verify canonical skill directories and rename parity checks (`test -d`, `wc -l`).
 - [x] T022 Verify canonical runtime symlink state (`scratch/post-path-symlinks.txt`).
 - [x] T023 Verify external AGENTS no-match outcome (0 matches, no edit).
 - [x] T024 Run spec validation and strict completion checks (`validate.sh`, `check-completion.sh --strict`).
 - [x] T025 Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to completed state.
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -76,6 +96,10 @@ contextType: "general"
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] `PC-001` to `PC-006` all passing with recorded evidence
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -85,7 +109,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-<!-- /ANCHOR:cross-refs -->
 
 ---
 
@@ -95,3 +118,8 @@ CORE TEMPLATE (~60 lines)
 - 3 phases: Setup, Implementation, Verification
 - Add L2/L3 addendums for complexity
 -->
+
+---
+<!-- /ANCHOR:cross-refs -->
+
+---

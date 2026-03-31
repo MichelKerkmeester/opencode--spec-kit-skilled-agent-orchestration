@@ -1,5 +1,5 @@
 ---
-title: "State Simplification: Integrate State into Memory Files [001-state-simplification/spec]"
+title: "...2--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/001-state-simplification/spec]"
 description: "Current implementation has 3 context mechanisms"
 trigger_phrases:
   - "state"
@@ -26,6 +26,7 @@ contextType: "decision"
 | **Status** | Planning |
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. Problem Statement
 
 Current implementation has 3 context mechanisms:
@@ -34,6 +35,7 @@ Current implementation has 3 context mechanisms:
 3. memory/*.md - Full session context (~200-500 lines)
 
 This is potentially redundant. STATE.md and memory files both capture state information.
+<!-- /ANCHOR:problem -->
 
 ## 3. Solution
 
@@ -86,6 +88,7 @@ importanceTier: normal
 [... rest of memory file content ...]
 ```
 
+<!-- ANCHOR:scope -->
 ## 5. Scope
 
 ### In Scope
@@ -99,3 +102,4 @@ importanceTier: normal
 - Changes to quick-continue.md
 - Changes to /handover command
 - Changes to Gate 0 or Gate 7
+<!-- /ANCHOR:scope -->

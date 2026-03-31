@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Dynamic Capture Deprecation Branch [template:level_1/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/spec]"
 description: "Parent documentation for the archived dynamic-capture follow-up branch that now owns the moved child phases 001-005."
 trigger_phrases:
   - "dynamic capture deprecation"

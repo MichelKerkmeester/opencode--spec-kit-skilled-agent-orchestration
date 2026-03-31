@@ -25,7 +25,7 @@
       "env": {
         "COCOINDEX_CODE_ROOT_PATH": "."
       },
-      "disabled": true
+      "disabled": false
     },
     "code_mode": {
       "command": "node",

@@ -1,7 +1,6 @@
 ---
-title: "Verification Checklist: sk-code--review Promotion [014-code-review-skill/checklist]"
+title: "Verification Checklist: sk-code--review Promotion [03--commands-and-skills/016-sk-code-review-creation/checklist]"
 description: "Level 2 verification matrix for promoting sk-code--review and wiring baseline+overlay review contract across skill, agents, commands, and routing."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -9,15 +8,13 @@ trigger_phrases:
   - "041"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
-<!-- SPECKIT_LEVEL: 2 -->
 # Verification Checklist: sk-code--review Promotion
 
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
-## 1. OVERVIEW
-
-Verification matrix for completion evidence across rename, contract wiring, routing behavior, and spec closure.
 ---
 
 <!-- ANCHOR:protocol -->
@@ -28,6 +25,10 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 | **[P0]** | HARD BLOCKER | Required for implementation closure |
 | **[P1]** | Required | Must complete OR be documented with explicit rationale |
 | **[P2]** | Optional | May defer with justification |
+
+---
+
+---
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -38,11 +39,30 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 - [x] CHK-001 [P0] Scope and file list established in `spec.md` [Evidence: see verification notes]
 - [x] CHK-002 [P0] Phase plan captured in `plan.md` [Evidence: see verification notes]
 - [x] CHK-003 [P1] Execution tasks captured in `tasks.md` [Evidence: see verification notes]
+
+---
+
+### 1. OVERVIEW
+
+Verification matrix for completion evidence across rename, contract wiring, routing behavior, and spec closure.
+---
+
+---
 <!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P0 Requirement Evidence
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] Scope discipline maintained (scoped files only) [Evidence: see verification notes]
+- [x] CHK-011 [P0] SKILL.md section order and anchors align with skill standards [Evidence: see verification notes]
+- [x] CHK-012 [P1] Command YAML edits remain schema-safe and localized [Evidence: see verification notes]
+- [x] CHK-013 [P1] Naming conventions updated to `sk-code--review` [Evidence: see verification notes]
+
+---
+
+### P0 Requirement Evidence
 
 - [x] CHK-100 [P0] REQ-001 hard rename completed [Evidence: see verification notes]  
   Evidence: `ls -la .opencode/skill | rg "sk-code--review"` -> `sk-code--review` present; root artifact removed (`legacy-single-hyphen-review.zip` deleted).
@@ -64,7 +84,22 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 
 ---
 
-## P1 Requirement Evidence
+---
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] Advisor routing scenarios executed and validated [Evidence: see verification notes]
+- [x] CHK-021 [P0] Command contract grep checks executed [Evidence: see verification notes]
+- [x] CHK-022 [P1] Skill validator commands executed and documented (known mismatch) [Evidence: see verification notes]
+- [x] CHK-023 [P1] Spec validator run recorded (`validate.sh` -> exit 0, RESULT: PASSED) [Evidence: see verification notes]
+
+---
+
+### P1 Requirement Evidence
 
 - [x] CHK-110 [P1] REQ-006 skill indexes updated [Evidence: see verification notes]  
   Evidence: `.opencode/skill/README.md` and `.opencode/README.md` now include `sk-code--review` and 11-skill counts.
@@ -80,24 +115,7 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
-
-- [x] CHK-010 [P0] Scope discipline maintained (scoped files only) [Evidence: see verification notes]
-- [x] CHK-011 [P0] `SKILL.md` section order and anchors align with skill standards [Evidence: see verification notes]
-- [x] CHK-012 [P1] Command YAML edits remain schema-safe and localized [Evidence: see verification notes]
-- [x] CHK-013 [P1] Naming conventions updated to `sk-code--review` [Evidence: see verification notes]
-<!-- /ANCHOR:code-quality -->
-
 ---
-
-<!-- ANCHOR:testing -->
-## Testing
-
-- [x] CHK-020 [P0] Advisor routing scenarios executed and validated [Evidence: see verification notes]
-- [x] CHK-021 [P0] Command contract grep checks executed [Evidence: see verification notes]
-- [x] CHK-022 [P1] Skill validator commands executed and documented (known mismatch) [Evidence: see verification notes]
-- [x] CHK-023 [P1] Spec validator run recorded (`validate.sh` -> exit 0, RESULT: PASSED) [Evidence: see verification notes]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -108,6 +126,10 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 - [x] CHK-030 [P0] No secrets introduced in updated skill/agent/command docs [Evidence: see verification notes]
 - [x] CHK-031 [P0] Baseline security/correctness minimums explicitly preserved in precedence rules [Evidence: see verification notes]
 - [x] CHK-032 [P1] Security-focused review routing remains high-signal (`race conditions`, `auth bugs` test) [Evidence: see verification notes]
+
+---
+
+---
 <!-- /ANCHOR:security -->
 
 ---
@@ -118,6 +140,10 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md` synchronized [Evidence: see verification notes]
 - [x] CHK-041 [P1] `implementation-summary.md` created [Evidence: see verification notes]
 - [x] CHK-042 [P2] Catalog docs updated (`.opencode/skill/README.md`, `.opencode/README.md`) [Evidence: see verification notes]
+
+---
+
+---
 <!-- /ANCHOR:docs -->
 
 ---
@@ -128,6 +154,10 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 - [x] CHK-050 [P1] All changes remain within approved scope list [Evidence: see verification notes]
 - [x] CHK-051 [P1] No temporary artifacts left in spec root [Evidence: see verification notes]
 - [x] CHK-052 [P2] Context source under `context/` preserved [Evidence: see verification notes]
+
+---
+
+---
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -142,4 +172,8 @@ Verification matrix for completion evidence across rename, contract wiring, rout
 | P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-02-22
+
+---
 <!-- /ANCHOR:summary -->
+
+---

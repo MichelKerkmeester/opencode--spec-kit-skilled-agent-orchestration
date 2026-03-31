@@ -1,12 +1,12 @@
 ---
-title: "Consolidated tasks: 002-indexing-normalization [002-indexing-normalization/tasks.md]"
+title: "Consolidated tasks: 002-indexing-normalizat [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/tasks]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> tasks.md and former child spec 004-frontmatter-indexing -> tasks.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
   - "002-indexing-normalization"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 ---
 # Consolidated tasks.md
 

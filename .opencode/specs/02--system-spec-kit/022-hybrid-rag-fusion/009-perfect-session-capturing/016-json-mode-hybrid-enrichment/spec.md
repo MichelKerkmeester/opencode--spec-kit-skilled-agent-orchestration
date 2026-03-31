@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 016-json-mode-hybrid-enrichment"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec]"
 description: "Level 1 phase-container record for the JSON-mode hybrid-enrichment packet under 009-perfect-session-capturing, capturing the live child-phase map, shipped fixes, and remaining follow-on work."
 trigger_phrases:
   - "016 json mode hybrid enrichment"

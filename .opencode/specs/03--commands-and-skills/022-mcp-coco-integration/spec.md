@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: CocoIndex Code MCP Integration"
+title: "Feature Specification: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/spec]"
 description: "OpenCode had no semantic code search. This spec now covers Phase 1 installation/config registration, Phase 2 hardening, and the Phase 3 strict-readiness and adoption-packaging follow-up."
 trigger_phrases:
   - "cocoindex"
@@ -183,6 +183,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -211,6 +212,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

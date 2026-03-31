@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: Architecture Boundary Remediation"
+title: "...id-rag-fusion/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/spec]"
 description: "The ARCHITECTURE_BOUNDARIES.md doc is accurate but the codebase has two compliance gaps: unnecessary allowlist exceptions bypass api/ for functionality already exposed, and enforcement scripts lack CI/CD automation."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "architecture boundary"
   - "api boundary gaps"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "import policy remediation"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 # Feature Specification: Architecture Boundary Remediation
 
@@ -130,6 +130,7 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -147,6 +148,7 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

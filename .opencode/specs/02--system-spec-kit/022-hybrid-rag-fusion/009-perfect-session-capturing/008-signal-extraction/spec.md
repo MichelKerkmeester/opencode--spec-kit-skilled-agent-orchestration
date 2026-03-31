@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Signal Extraction"
+title: "Feature Specificati [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/spec]"
 description: "Tighten signal extraction behavior and evidence quality for session activity signals."
+trigger_phrases:
+  - "feature"
+  - "specificati"
+  - "spec"
+  - "008"
+  - "signal"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Signal Extraction
 

@@ -1,6 +1,14 @@
 ---
-title: "Implementation Summary: 011-skill-alignment"
+title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary]"
 description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 skill-alignment spec pack."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "011"
+  - "skill"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 011-skill-alignment

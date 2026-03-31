@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Post-Research Wave 3 (Outcome Confirmation) [006-post-research-wave-3-outcome-confirmation/spec]"
+title: "Pha [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/spec]"
 description: "This package defines final outcome confirmation work after controlled delivery evidence is complete."
 trigger_phrases:
   - "phase"

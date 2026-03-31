@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Utility Template Trigger Keywords - Implementation Breakdown [012-handover-triggers/tasks]"
+title: "Tasks: Utility Template [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/tasks]"
 description: "Task list for adding automatic keyword detection for handover.md and debug-delegation.md templates to SKILL.md."
 trigger_phrases:
   - "tasks"

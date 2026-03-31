@@ -1,6 +1,5 @@
 ---
-title: "Research and debug agent improvements for 003-agent-system-upgrade 2026-01-23"
-description: "This session completed research-agent improvements and added a dedicated debug sub-agent for the archived agent system upgrade work. It standardized agent model preferences,..."
+title: "Research and [04--agent-orchestration/z_archive/003-agent-system-upgrade/23-01-26_10-52__research-debug-improvements]"
 trigger_phrases:
   - "research agent improvements"
   - "debug sub-agent creation"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "agent model standardization"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Research Debug Improvements
 
 ## SESSION SUMMARY

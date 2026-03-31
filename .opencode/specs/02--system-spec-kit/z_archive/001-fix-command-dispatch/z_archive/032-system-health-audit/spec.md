@@ -1,5 +1,5 @@
 ---
-title: "System Health Audit - Comprehensive Bug Fix [032-system-health-audit/spec]"
+title: "System Health Audit - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/spec]"
 description: "Spec ID: 032-system-health-audit"
 trigger_phrases:
   - "system"
@@ -52,6 +52,7 @@ A comprehensive audit combining **20-agent deep analysis** and **System Health D
 2. **System Health Dashboard** - Parallel SpecKit analysis
 3. **10-Agent Implementation** - Parallel fix execution
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope (Completed)
@@ -68,7 +69,9 @@ A comprehensive audit combining **20-agent deep analysis** and **System Health D
 - New features
 - Performance optimization
 - UI changes
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria (All Met)
 
 - [x] Gate 2 skill routing works
@@ -82,6 +85,7 @@ A comprehensive audit combining **20-agent deep analysis** and **System Health D
 - [x] Windows compatible
 - [x] All templates created
 - [x] Quickstart added
+<!-- /ANCHOR:success-criteria -->
 
 ## Timeline (Actual)
 

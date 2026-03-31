@@ -1,5 +1,5 @@
 ---
-title: "Handover: Spec 126 — CONTINUATION - Attempt 4 [126-full-spec-doc-indexing/handover]"
+title: "Handover: Spec 126 — CONTINUATION - Attempt 4 [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/handover]"
 description: "Restart Verification: COMPLETE — DB health confirmed, 760 scanned (0 indexed), 7 updated, 753 unchanged, 0 failed"
 trigger_phrases:
   - "handover"

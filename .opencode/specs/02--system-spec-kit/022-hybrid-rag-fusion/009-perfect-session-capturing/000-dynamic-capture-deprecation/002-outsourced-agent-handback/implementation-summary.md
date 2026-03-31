@@ -1,7 +1,10 @@
 ---
-title: "Implementation Summary: Outsourced Agent Handback Protocol"
+title: "...n/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/implementation-summary]"
 description: "External CLI handback protocol: hard-fail JSON input, next-step persistence, richer caller guidance, and post-010 save-gate awareness."
-trigger_phrases: ["outsourced agent summary", "memory handback summary", "runtime memory inputs"]
+trigger_phrases:
+  - "outsourced agent summary"
+  - "memory handback summary"
+  - "runtime memory inputs"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -113,4 +116,11 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 1. **L1**: File-backed saves can still write successfully while logging `QUALITY_GATE_FAIL` and skipping production indexing if rendered validation rules fail.
 2. **L2**: Native capture mode for external CLIs (same workspace) is still outside this protocol’s scope.
 3. **L3**: Structured payloads that arrive pre-populated with `user_prompts`, `recent_context`, or `observations` need equivalent durable evidence because they bypass part of the manual-format synthesis path.
+<!-- /ANCHOR:limitations -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

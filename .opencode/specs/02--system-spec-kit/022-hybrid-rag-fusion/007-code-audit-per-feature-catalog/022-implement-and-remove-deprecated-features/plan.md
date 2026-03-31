@@ -1,5 +1,16 @@
 ---
-title: "Plan: Implement and Remove Deprecated Features"
+title: "...-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/plan]"
+description: "title: \"Plan: Implement and Remove Deprecated Features\""
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "plan"
+  - "implement"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Plan: Implement and Remove Deprecated Features
 

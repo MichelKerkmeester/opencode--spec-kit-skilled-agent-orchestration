@@ -1,3 +1,15 @@
+---
+title: "Phase 7: Testing & Validation [02--system-spec-kit/024-compact-code-graph/007-testing-validation/spec]"
+description: "Implement automated tests and run manual testing playbook scenarios for the entire hook system. Covers unit tests, integration tests, runtime smoke tests, and manual verification."
+trigger_phrases:
+  - "phase"
+  - "testing"
+  - "validation"
+  - "spec"
+  - "007"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 7: Testing & Validation
 
 ## Summary

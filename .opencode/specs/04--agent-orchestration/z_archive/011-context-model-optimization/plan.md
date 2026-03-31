@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context Agent Model Optimization [011-context-model-optimization/plan]"
+title: "Implementation Plan: Context Agent Model [04--agent-orchestration/z_archive/011-context-model-optimization/plan]"
 description: "Optimize the @context agent's model selection to reduce API cost (66.7% savings) and Copilot premium request consumption (67% reduction) while maintaining acceptable context ret..."
 trigger_phrases:
   - "implementation"
@@ -239,6 +239,7 @@ Orchestrator (Opus 4.6)
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -264,6 +265,7 @@ Phase 1 (Validation) ──► Go/No-Go ──► Phase 2 (Core) ──► Phase
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -376,6 +378,7 @@ If thorough mode specifically degrades but quick/medium is acceptable, consider 
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Full Haiku for @context (Chosen)
@@ -397,6 +400,7 @@ If thorough mode specifically degrades but quick/medium is acceptable, consider 
 
 See `decision-record.md` for full ADR with Five Checks evaluation.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## APPENDIX: COST ANALYSIS DETAIL

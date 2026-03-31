@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Context Overload Prevention [022-context-overload-prevention/spec]"
+title: "Feature Specification: Context Overload Prevention [04--agent-orchestration/022-context-overload-prevention/spec]"
 description: "Claude Code sessions frequently hit irrecoverable compaction failures when the orchestrator overloads its own context window. The orchestrate.md agent definition across all thre..."
 trigger_phrases:
   - "feature"
@@ -67,7 +67,7 @@ Prevent irrecoverable context window failures by adding self-protection guardrai
 |-----------|-------------|-------------|
 | `.claude/agents/orchestrate.md` | Modify | Add 5 sections: self-protection, recovery, output discipline, pressure response, anti-patterns |
 | `.opencode/agent/orchestrate.md` | Modify | Same additions adapted for Copilot runtime (~150K context, no `/compact`) |
-| `.opencode/agent/chatgpt/orchestrate.md` | Modify | Same additions adapted for Codex/ChatGPT runtime (~220K context, higher thresholds) |
+| `.opencode/agent/chatgpt/orchestrate` | Modify | Same additions adapted for Codex/ChatGPT runtime (~220K context, higher thresholds) |
 | `.opencode/changelog/03--agent-orchestration/v2.0.8.0.md` | Create | Changelog documenting all changes |
 <!-- /ANCHOR:scope -->
 
@@ -120,6 +120,7 @@ Prevent irrecoverable context window failures by adding self-protection guardrai
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Consistency
@@ -134,6 +135,7 @@ Prevent irrecoverable context window failures by adding self-protection guardrai
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Runtime Differences

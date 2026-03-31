@@ -1,5 +1,5 @@
 ---
-title: "Tab Menu Border Color Fix [002-tab-menu-border-fix/spec]"
+title: "Tab Menu Border Color Fix [002-tab-menu-border-fix/spec] [01--anobel.com/z_archive/002-tab-menu-border-fix/spec]"
 description: "Fix incorrect border color on filter tab buttons after they transition from active (SET) to inactive (ENABLED) state."
 trigger_phrases:
   - "tab"
@@ -79,6 +79,7 @@ When Motion.js animates a button back to UNSET state, it applies inline styles u
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:technical-requirements -->
+<!-- ANCHOR:requirements -->
 ## Technical Requirements
 - Replace `--_color-tokens---border-neutral--darkest` with `--_color-tokens---border-neutral--dark`
 - Maintain existing animation behavior
@@ -86,6 +87,7 @@ When Motion.js animates a button back to UNSET state, it applies inline styles u
 <!-- /ANCHOR:technical-requirements -->
 
 <!-- ANCHOR:reference -->
+<!-- /ANCHOR:requirements -->
 ## Reference
 - Affected page: https://a-nobel-en-zn.webflow.io/nl/blog
 - Source file: `src/2_javascript/menu/tab_menu.js:22,51,79,104,105,130,131`

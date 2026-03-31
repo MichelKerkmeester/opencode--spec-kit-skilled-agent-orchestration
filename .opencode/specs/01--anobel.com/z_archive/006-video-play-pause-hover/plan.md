@@ -1,5 +1,5 @@
 ---
-title: "Plan: Video Play/Pause Hover Effect [006-video-play-pause-hover/plan]"
+title: "Plan: Video Play/Pause Hover Effect [006-video-play-pause-hov [01--anobel.com/z_archive/006-video-play-pause-hover/plan]"
 description: "1. Create new CSS file following existing animation patterns"
 trigger_phrases:
   - "plan"

@@ -1,6 +1,15 @@
 ---
-title: "Feature Specification: GPT-5.4 Agent Model Upgrade"
+title: "Feature Specification: GPT-5.4 Agent Model Upgrade [04--agent-orchestration/027-copilot-gpt-5-4-agents/spec]"
 description: "Update Copilot OpenCode agents, ChatGPT OpenCode agents, and Codex agent config layers to GPT-5.4 while preserving target-specific reasoning behavior."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "gpt"
+  - "agent"
+  - "model"
+  - "spec"
+  - "027"
+  - "copilot"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -138,6 +147,7 @@ Move the requested agent surfaces to GPT-5.4 with the correct configuration form
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Reliability
@@ -154,6 +164,7 @@ Move the requested agent surfaces to GPT-5.4 with the correct configuration form
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

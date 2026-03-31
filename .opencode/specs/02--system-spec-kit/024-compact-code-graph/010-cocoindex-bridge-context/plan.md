@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 010 — CocoIndex Bridge + [02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/plan]"
+description: "1. Implement seed-resolver.ts"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "010"
+  - "cocoindex"
+  - "bridge"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 010 — CocoIndex Bridge + code_graph_context
 
 ## Steps
@@ -37,12 +49,14 @@
    - Budget of 0 → minimal response (root + one edge)
    - Multiple seeds resolving to same node → deduplicated
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 - Phase 008 indexer (for node data in graph)
 - Phase 009 storage + query tools (for graph queries)
 - CocoIndex Code MCP (for semantic seeds — already deployed)
 - Existing profile-formatters.ts patterns (for output style)
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation
 

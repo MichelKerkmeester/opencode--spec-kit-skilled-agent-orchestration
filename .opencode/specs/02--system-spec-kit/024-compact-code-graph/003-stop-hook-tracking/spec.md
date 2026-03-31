@@ -1,3 +1,17 @@
+---
+title: "Phase 3: Stop Hook + Token Tracking [02--system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/spec]"
+description: "Auto-save session context and track token usage when a Claude Code session ends, using the Stop lifecycle hook with async execution."
+trigger_phrases:
+  - "phase"
+  - "stop"
+  - "hook"
+  - "token"
+  - "tracking"
+  - "spec"
+  - "003"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 3: Stop Hook + Token Tracking
 
 ## Summary

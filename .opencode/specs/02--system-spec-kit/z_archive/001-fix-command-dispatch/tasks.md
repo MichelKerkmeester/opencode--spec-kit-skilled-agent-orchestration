@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Fix Command Dispatch Vulnerability [118-fix-command-dispatch/tasks]"
+title: "Tasks: Fix Command Dispatch Vulnerability [02--system-spec-kit/z_archive/001-fix-command-dispatch/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

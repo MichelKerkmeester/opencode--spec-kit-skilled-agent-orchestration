@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Task 04 — Agent Configs Audit [task-04-agent-alignment/tasks]"
+title: "Tasks: Task [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"

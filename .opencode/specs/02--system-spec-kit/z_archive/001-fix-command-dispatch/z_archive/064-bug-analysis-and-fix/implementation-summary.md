@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Bug Fix Project [064-bug-analysis-and-fix/implementation-summary]"
+title: "Imple [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/implementation-summary]"
 description: "title: \"Implementation Summary: SpecKit Bug Fix Project\""
 trigger_phrases:
   - "implementation"
@@ -350,6 +350,7 @@ Phase 4 (P2 Polish) -> 8 tasks -> 5 parallel agents (2 skipped)
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 ### What Was Verified
@@ -383,6 +384,7 @@ Upon further verification:
 | Embedding API Integration | Requires API calls | Verify rate limiting works |
 | Cross-Platform Scripts | macOS only tested | Test on Linux/Windows |
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Impact Assessment
@@ -420,7 +422,8 @@ Upon further verification:
 
 ---
 
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Worked Well
 
@@ -461,6 +464,7 @@ This 4-phase parallel dispatch approach can be templated for future large-scale 
    - Cross-reference validation for documentation
    - Checklist item verification with evidence
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## References
@@ -498,3 +502,10 @@ Run /spec_kit:resume .opencode/specs/02--system-spec-kit/z_archive/001-fix-comma
 ---
 
 *Generated: 2026-01-15 | Commit: d8ae33f | Status: COMPLETE*
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

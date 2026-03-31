@@ -1,5 +1,5 @@
 ---
-title: "Testing & QA Checklist: minify-javascript - Validation Items [005-minify-javascript/checklist]"
+title: "Testing & QA Checklist: minify-javascript - Validation [01--anobel.com/z_archive/005-minify-javascript/checklist]"
 description: "Validation checklist for in-place JS minification in src/2_javascript/z_minified/."
 trigger_phrases:
   - "testing"
@@ -63,9 +63,11 @@ Validation checklist for in-place JS minification in `src/2_javascript/z_minifie
 ---
 
 <!-- ANCHOR:verification-summary-fill-at-end -->
+<!-- ANCHOR:summary -->
 ## 3. VERIFICATION SUMMARY (fill at end)
 
 - **P0 Status**: COMPLETE
 - **P1 Status**: CHK022 pending
 - **Verification Date**: 2025-12-15
 <!-- /ANCHOR:verification-summary-fill-at-end -->
+<!-- /ANCHOR:summary -->

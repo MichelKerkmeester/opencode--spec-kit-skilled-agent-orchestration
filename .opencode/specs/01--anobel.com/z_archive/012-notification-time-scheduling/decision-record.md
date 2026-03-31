@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Notification Time-Based Scheduling [013-notification-time-scheduling/decision-record]"
+title: "Decision Record: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/decision-record]"
 description: "Key architectural and implementation decisions for the time-based scheduling feature."
 trigger_phrases:
   - "decision"

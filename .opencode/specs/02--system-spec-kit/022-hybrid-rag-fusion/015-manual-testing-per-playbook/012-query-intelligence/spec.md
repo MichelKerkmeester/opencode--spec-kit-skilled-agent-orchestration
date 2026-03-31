@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: query-intelligence manual testing [template:level_2/spec.md]"
+title: "Feature Specific [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence/spec]"
 description: "Phase 012 documents the 10 manual testing scenarios for query intelligence features in the Spec Kit Memory system. Maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
 trigger_phrases:
   - "query intelligence manual testing"
@@ -11,7 +11,7 @@ trigger_phrases:
   - "hyde shadow"
   - "query surrogates"
   - "query decomposition"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: query-intelligence manual testing
@@ -178,6 +178,7 @@ No P1 items defined for this phase; all 10 query-intelligence scenarios are mand
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -192,6 +193,7 @@ No P1 items defined for this phase; all 10 query-intelligence scenarios are mand
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

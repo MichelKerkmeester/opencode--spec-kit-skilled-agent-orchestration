@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Sprint 4 — Feedback and Quality"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/spec]"
 description: "Close the feedback loop with chunk aggregation, learned relevance feedback, and shadow scoring infrastructure."
 trigger_phrases:
   - "sprint 4"
   - "feedback and quality"
-  - "MPAB"
+  - "mpab"
   - "learned relevance"
-  - "R11"
+  - "r11"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -179,6 +179,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -197,6 +198,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

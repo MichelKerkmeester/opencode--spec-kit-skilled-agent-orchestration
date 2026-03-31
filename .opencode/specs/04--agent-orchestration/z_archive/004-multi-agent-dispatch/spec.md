@@ -1,5 +1,5 @@
 ---
-title: "Spec: Multi-Agent Dispatch for Research and Debug Commands [004-multi-agent-dispatch/spec]"
+title: "Spec: Multi-Agent Dispatch for Research and Debug [04--agent-orchestration/z_archive/004-multi-agent-dispatch/spec]"
 description: "Add user-selectable multi-agent dispatch to /spec_kit:research and /spec_kit:debug commands, allowing 1 Opus orchestrator + 2-3 Sonnet parallel workers."
 trigger_phrases:
   - "spec"

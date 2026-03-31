@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/plan]"
+title: "Implementation Plan: Full Spec Folder Document [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/plan]"
 description: "Add full spec folder document indexing to the MCP server's memory system. This involves an 8-phase implementation: schema migration, type configuration, document discovery, pars..."
 trigger_phrases:
   - "implementation"
@@ -164,6 +164,7 @@ Scan Request
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## 5. L2: PHASE DEPENDENCIES
 
 ```
@@ -197,6 +198,7 @@ Phase 6 (Scoring) ── parallel with Phase 5
 <!-- /ANCHOR:phase-deps -->
 
 <!-- ANCHOR:testing -->
+<!-- /ANCHOR:dependencies -->
 ## 6. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -211,6 +213,7 @@ Phase 6 (Scoring) ── parallel with Phase 5
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 7. L3: ARCHITECTURE DECISION RECORD
 
 See `decision-record.md` for full ADRs (5 decisions with Five Checks evaluation).
@@ -218,6 +221,7 @@ See `decision-record.md` for full ADRs (5 decisions with Five Checks evaluation)
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## 8. L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

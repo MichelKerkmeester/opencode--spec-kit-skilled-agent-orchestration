@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Plan-to-Implementation Gate Bypass Fix [134-command-adherence/tasks]"
+title: "Tasks: Plan-to-Implementation Gate Bypass Fix [02--system-spec-kit/z_archive/017-command-adherence/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

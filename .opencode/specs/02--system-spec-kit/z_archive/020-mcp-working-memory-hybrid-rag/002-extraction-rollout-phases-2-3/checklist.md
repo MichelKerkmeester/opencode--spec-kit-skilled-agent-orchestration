@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Extraction and Rollout Package [002-extraction-rollout-phases-2-3/checklist]"
+title: "Verificati [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/checklist]"
 description: "checklist document for 002-extraction-rollout-phases-2-3."
 trigger_phrases:
   - "verification"

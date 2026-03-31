@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Reimagined Refinement (089) [089-speckit-reimagined-refinement/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/implementation-summary]"
 description: "Key files that received edits (not pre-applied)"
 trigger_phrases:
   - "implementation"
@@ -104,3 +104,10 @@ Key files that received edits (not pre-applied):
 
 ## Status
 STATUS=OK
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,48 +1,89 @@
 ---
-title: "Tasks: Skill and Command README Rewrite"
-description: "Task breakdown for rewriting 23 READMEs across 5 batches."
+title: "Tasks: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/tasks]"
+description: "Task ledger for the batch README rewrite packet."
+trigger_phrases:
+  - "tasks"
+  - "readme"
+  - "033"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Skill and Command README Rewrite
 
-## Batch 1: CLI Skills (4 files)
-- [x] cli-claude-code/README.md -- rewritten from scratch
-- [x] cli-codex/README.md -- rewritten from scratch
-- [x] cli-copilot/README.md -- rewritten from scratch
-- [x] cli-gemini/README.md -- rewritten from scratch
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-## Batch 2: MCP Skills (5 files)
-- [x] mcp-chrome-devtools/README.md -- rewritten via write agent
-- [x] mcp-clickup/README.md -- rewritten via write agent
-- [x] mcp-coco-index/README.md -- rewritten via write agent
-- [x] mcp-code-mode/README.md -- rewritten via write agent
-- [x] mcp-figma/README.md -- rewritten via write agent
+---
 
-## Batch 3: sk-code + sk-doc Skills (5 files)
-- [x] sk-code--full-stack/README.md -- rewritten via write agent
-- [x] sk-code--opencode/README.md -- rewritten via write agent
-- [x] sk-code--review/README.md -- rewritten via write agent
-- [x] sk-code--web/README.md -- rewritten via write agent
-- [x] sk-doc/README.md -- rewritten via write agent
+<!-- ANCHOR:notation -->
+## Task Notation
 
-## Batch 4: Remaining Skills (5 files)
-- [x] sk-deep-research/README.md -- rewritten via write agent
-- [x] sk-git/README.md -- rewritten via write agent
-- [x] sk-prompt-improver/README.md -- rewritten via write agent
-- [x] skill/README.md (root) -- rewritten via write agent
-- [x] skill/scripts/README.md -- rewritten via write agent
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-## Batch 5: Command READMEs (4 files, .txt to .md)
-- [x] command/README.md -- converted from .txt, FAQ added
-- [x] command/create/README.md -- converted from .txt, FAQ added
-- [x] command/memory/README.md -- converted from .txt, FAQ added
-- [x] command/spec_kit/README.md -- converted from .txt, FAQ added
-- [x] Old .txt files deleted (4 files)
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-## Review and Fix
-- [x] HVR compliance verification (grep for banned words, em dashes, semicolons)
-- [x] P1 fixes: broken links (mcp-clickup), TOC anchors (mcp-coco-index), TOC casing (mcp-figma)
-- [x] P1 fixes: missing speckit row (cli-codex), semicolons in tables (mcp-clickup)
-- [x] P1 fixes: anchor/divider pattern corrected in 7 files (sk-doc, sk-deep-research, sk-git, sk-prompt-improver, skill/README, sk-code--opencode, sk-code--full-stack)
+---
 
-## Additional Work
-- [x] Root README.md updated with missing features from mcp_server/README.md (tool layers, response profiles, signals, flags, schema)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Lock the standards baseline from `.opencode/skill/sk-doc/references/specific/readme_creation.md`, `.opencode/skill/sk-doc/assets/documentation/readme_template.md`, and `.opencode/skill/sk-doc/references/global/hvr_rules.md`
+- [x] T002 Group the skill README rewrite into five delivery batches
+- [x] T003 Identify the command README surfaces under `.opencode/command/`
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Skill README Batches
+- [x] T004 Rewrite the CLI skill READMEs under `.opencode/skill/cli-*/README.md`
+- [x] T005 Rewrite the MCP skill READMEs under `.opencode/skill/mcp-*/README.md`
+- [x] T006 Rewrite the sk-code and sk-doc READMEs under `.opencode/skill/sk-*/README.md`
+- [x] T007 Rewrite the remaining skill READMEs under `.opencode/skill/README.md`, `.opencode/skill/scripts/README.md`, and related skill folders
+
+### Command and Follow-Up Work
+- [x] T008 Update the command README surfaces under `.opencode/command/README.txt`, `.opencode/command/create/README.txt`, `.opencode/command/memory/README.txt`, and `.opencode/command/spec_kit/README.txt`
+- [x] T009 Apply batch review fixes for links, TOC formatting, HVR wording, and anchor or divider cleanup
+- [x] T010 Record the root README follow-up additions from `.opencode/skill/system-spec-kit/mcp_server/README.md`
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T011 Re-run the verbose spec validator on this packet
+- [ ] T012 Confirm the packet references current skill and command repo paths
+- [ ] T013 Record remaining non-blocking warnings without reopening the rewrite scope
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] Packet docs are template-safe and anchor-complete
+- [ ] No hard validation errors remain for this folder
+- [ ] Rewrite history is preserved without stale markdown references
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

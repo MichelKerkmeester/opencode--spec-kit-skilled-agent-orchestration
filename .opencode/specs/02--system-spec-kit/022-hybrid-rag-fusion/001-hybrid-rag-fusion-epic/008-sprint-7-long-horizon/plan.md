@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Sprint 7 — Long Horizon"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/plan]"
 description: "Memory summaries, smarter content generation, cross-document entity linking, full reporting with ablation studies, and R5 INT8 quantization evaluation."
 trigger_phrases:
   - "sprint 7 plan"
   - "long horizon plan"
-  - "R5 evaluation plan"
+  - "r5 evaluation plan"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -191,6 +191,7 @@ All items are parallelizable — no dependencies between them.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -218,6 +219,7 @@ T-PI-S7 (2-4h) ───┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

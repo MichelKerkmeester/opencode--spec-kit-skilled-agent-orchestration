@@ -1,5 +1,5 @@
 ---
-title: "Research: Root Cause Analysis — Template/Anchor Non-Compliance & Speckit [132-anchor-enforcement-automation/research]"
+title: "Research: Root Cause Analysis — [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/research]"
 description: "This research documents WHY spec documentation can currently be created without proper template compliance or ANCHOR tags, and WHY the @speckit agent (designated as exclusive au..."
 trigger_phrases:
   - "research"

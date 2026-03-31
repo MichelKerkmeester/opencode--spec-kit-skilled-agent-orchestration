@@ -1,5 +1,5 @@
 ---
-title: "Spec: @write Agent Enforcement for /create Commands [002-write-agent-enforcement/spec]"
+title: "Spec: @write Agent Enforcement for /create [04--agent-orchestration/z_archive/002-write-agent-enforcement/spec]"
 description: "Enforce @write agent requirement for all /create commands to ensure template-first workflow, DQI scoring, and quality gates are consistently applied."
 trigger_phrases:
   - "spec"

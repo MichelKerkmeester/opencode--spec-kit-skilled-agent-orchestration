@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan"
+title: "Implementation Plan [02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor/plan]"
+description: "title: \"Implementation Plan\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "003"
+  - "constitutional"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---

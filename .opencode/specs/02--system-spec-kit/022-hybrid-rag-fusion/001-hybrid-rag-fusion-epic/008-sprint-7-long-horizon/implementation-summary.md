@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 7 Long Horizon"
+title: "...2--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "008-sprint-7-long-horizon implementation summary"

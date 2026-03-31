@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Skill Refinement [003-speckit-skill-refinement/tasks]"
+title: "Tasks: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/tasks]"
 description: "created: 2025-12-13"
 trigger_phrases:
   - "tasks"

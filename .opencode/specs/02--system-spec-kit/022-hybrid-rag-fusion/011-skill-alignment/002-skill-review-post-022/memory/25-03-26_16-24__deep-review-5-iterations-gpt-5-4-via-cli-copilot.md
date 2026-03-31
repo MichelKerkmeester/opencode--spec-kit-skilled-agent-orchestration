@@ -1,6 +1,5 @@
 ---
-title: "Deep Review 5 Iterations [002-skill-review-post-022/25-03-26_16-24__deep-review-5-iterations-gpt-5-4-via-cli-copilot]"
-description: "Deep review (5 iterations, GPT-5.4 via cli-copilot) of the parent 011-skill-alignment spec folder checking alignment with current repo reality. Verdict: CONDITIONAL. P0=0,..."
+title: "...usion/011-skill-alignment/002-skill-review-post-022/25-03-26_16-24__deep-review-5-iterations-gpt-5-4-via-cli-copilot]"
 trigger_phrases:
   - "map missing"
   - "cli copilot"
@@ -35,18 +34,17 @@ trigger_phrases:
   - "022"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
 ---
-
 # Deep Review 5 Iterations Gpt 5-4 Via Cli Copilot
 
 ## SESSION SUMMARY

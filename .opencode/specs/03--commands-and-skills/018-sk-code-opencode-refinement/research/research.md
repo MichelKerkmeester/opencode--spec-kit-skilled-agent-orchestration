@@ -1,10 +1,18 @@
 ---
-title: "Research: sk-code--opencode Refinement (043)"
+title: "Research: sk-code--opencode Refinement (043) [03--commands-and-skills/018-sk-code-opencode-refinement/research]"
 description: "Evidence-first investigation of concrete 139 patterns, review-skill detection gaps, and minimally invasive recommendations for sk-code--opencode (+ optional sk-code--review alignment)."
-status: "Complete"
-created: "2026-02-22"
-updated: "2026-02-22"
+trigger_phrases:
+  - "research"
+  - "code"
+  - "opencode"
+  - "refinement"
+  - "043"
+  - "018"
+importance_tier: "normal"
 contextType: "research"
+created: "2026-02-22"
+status: "Complete"
+updated: "2026-02-22"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 

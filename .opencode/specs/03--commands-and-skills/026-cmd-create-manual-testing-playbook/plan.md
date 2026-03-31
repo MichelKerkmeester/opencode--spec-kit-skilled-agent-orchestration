@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: /create:testing-playbook Command [template:level_3/plan.md]"
+title: "Implementation Plan: /create:testing-playbook [03--commands-and-skills/026-cmd-create-manual-testing-playbook/plan]"
 description: "Plan the new create command, its YAML pair, runtime mirror, and discovery-doc updates using the shipped sk-doc testing-playbook references and templates."
 trigger_phrases:
   - "testing playbook command plan"
@@ -88,7 +88,7 @@ User invokes `/create:testing-playbook` -> command captures target skill path, o
 - [x] Update `.opencode/command/create/README.txt`.
 - [x] Update `.opencode/command/README.txt`.
 - [x] Update `.opencode/README.md`.
-- [x] Update `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
+- [x] Update `.opencode/agent/write.md`, `.claude/agents/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
 
 ### Phase 4: Validation and closure
 - [x] Validate the command markdown doc.
@@ -150,6 +150,7 @@ User invokes `/create:testing-playbook` -> command captures target skill path, o
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -167,6 +168,7 @@ Contract Lock -> Command Family Implementation -> Runtime-Discovery Sync -> Vali
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

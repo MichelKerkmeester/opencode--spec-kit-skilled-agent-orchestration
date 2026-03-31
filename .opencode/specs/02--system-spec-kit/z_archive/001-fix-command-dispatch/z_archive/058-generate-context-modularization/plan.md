@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: generate-context.js Modularization [058-generate-context-modularization/plan]"
+title: "Implementati [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/plan]"
 description: "Strategy: Incremental extraction with validation between each phase"
 trigger_phrases:
   - "implementation"
@@ -464,6 +464,7 @@ git merge refactor/generate-context-modularization
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If any phase introduces regressions that can't be quickly fixed:
@@ -477,8 +478,10 @@ If any phase introduces regressions that can't be quickly fixed:
 git checkout main -- .opencode/skill/system-spec-kit/scripts/generate-context.js
 ```
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 | Phase | Depends On |
@@ -495,6 +498,7 @@ git checkout main -- .opencode/skill/system-spec-kit/scripts/generate-context.js
 - Phase 4 and Phase 5 can run in parallel after Phase 3
 - No other parallelization recommended (too risky)
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## Milestones

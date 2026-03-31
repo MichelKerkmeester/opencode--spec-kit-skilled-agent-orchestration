@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Notification System with In-App Alerts and Email Delivery [complete-happy/tasks]"
+title: "Tasks: [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -34,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
 - [x] T001 Create database migration for notifications table (src/migrations/20260214_notifications.sql)
@@ -41,8 +42,10 @@ contextType: "implementation"
 - [x] T003 [P] Install and configure SendGrid SDK, Socket.IO, BullMQ dependencies (package.json)
 - [x] T004 [P] Configure Redis connection for BullMQ worker queue (src/config/redis.ts)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
 - [x] T005 Implement NotificationService with dispatch, preference filtering, and channel routing (src/services/notification-service.ts)
@@ -56,8 +59,10 @@ contextType: "implementation"
 - [x] T013 Implement email digest batching logic for non-urgent notifications (src/workers/email-worker.ts)
 - [x] T014 Add notification grouping for repeated events within 5-minute window (src/services/notification-service.ts)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T015 Write unit tests for NotificationService dispatch and preference filtering (tests/notification-service.test.ts)
@@ -67,16 +72,20 @@ contextType: "implementation"
 - [x] T019 Manual end-to-end testing: create notification, verify in-app delivery, verify email receipt
 - [x] T020 Edge case testing: WebSocket reconnection, high-volume dispatch, preference changes mid-stream
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
 
+<!-- /ANCHOR:completion -->
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -90,3 +99,4 @@ CORE TEMPLATE (~60 lines)
 - 3 phases: Setup, Implementation, Verification
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:cross-refs -->

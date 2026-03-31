@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Extraction and Rollout (Phase 2, Phase 3) [002-extraction-rollout-phases-2-3/spec]"
+title: "Phase Package [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/spec]"
 description: "This package defines extraction, redaction, causal boost, and rollout operations after foundation hard-gates pass."
 trigger_phrases:
   - "phase"

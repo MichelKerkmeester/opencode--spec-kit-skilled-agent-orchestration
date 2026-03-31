@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: 004-adaptive-retrieval-loops"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/spec]"
 description: "Level 3+ phase spec for shadow-mode adaptive retrieval and bounded ranking updates."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 4"
   - "adaptive retrieval loops"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "feedback ranking"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 004-adaptive-retrieval-loops
 
@@ -27,6 +27,7 @@ Phase 4 introduces bounded retrieval learning without letting the system self-mo
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -63,6 +64,7 @@ This phase turns retrieval from a static scoring pipeline into a system that can
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -157,6 +159,7 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -175,8 +178,10 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 - **NFR-O41**: Maintainers can inspect why an adaptive update was proposed.
 - **NFR-O42**: Promotion decisions are documented and reproducible.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -194,8 +199,10 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 - Strong adaptive signals conflict with explicit product rules.
 - Adaptive learning begins before graph traces are stable enough.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -207,6 +214,7 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 | Coordination | 13/15 | Strong dependency on Phase 3 and soft dependency on governance work |
 | **Total** | **83/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -294,11 +302,13 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - What is the minimum signal volume that should allow promotion consideration?
 - Should adaptive evaluation live in the request path, a queue-driven batch job, or a hybrid model?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

@@ -1,10 +1,10 @@
 ---
-title: "AGENTS.md Alignment: Quick Reference Tables"
+title: "AGENTS.md Alignment: Quick Reference Tables [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/spec]"
 description: "Align Quick Reference tables, fix cross-file drift, overhaul skill sections in all 3 AGENTS.md governance files + CLAUDE.md."
 trigger_phrases:
   - "agents md alignment"
   - "014 agents md alignment"
-  - "AGENTS.md quick reference"
+  - "agents.md quick reference"
   - "memory command table"
 importance_tier: "important"
 contextType: "implementation"

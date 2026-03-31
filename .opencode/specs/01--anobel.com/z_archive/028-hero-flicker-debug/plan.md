@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [NAME] [030-hero-flicker-debug/plan]"
+title: "Implementation Plan: [NAME] [030-hero-flicker-debug/plan] [01--anobel.com/z_archive/028-hero-flicker-debug/plan]"
 description: "Level 2 Plan (+Verify) is appropriate when"
 trigger_phrases:
   - "implementation"
@@ -82,6 +82,7 @@ DO NOT use Level 2 Plan if:
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
@@ -103,6 +104,7 @@ DO NOT use Level 2 Plan if:
 ---
 
 <!-- ANCHOR:testing-strategy -->
+<!-- /ANCHOR:phases -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -137,6 +139,7 @@ DO NOT use Level 2 Plan if:
 ---
 
 <!-- ANCHOR:phase-dependencies -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -156,6 +159,7 @@ Phase 1.5 (Config) ───┘
 ---
 
 <!-- ANCHOR:effort-estimation -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

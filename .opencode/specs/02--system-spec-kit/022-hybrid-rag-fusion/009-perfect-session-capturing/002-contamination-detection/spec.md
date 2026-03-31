@@ -1,6 +1,13 @@
 ---
-title: "Feature Specification: Contamination Detection"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection/spec]"
 description: "Strengthen contamination detection to produce measurable score penalties and audit trail coverage."
+trigger_phrases:
+  - "feature"
+  - "spec"
+  - "002"
+  - "contamination"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Contamination Detection
 

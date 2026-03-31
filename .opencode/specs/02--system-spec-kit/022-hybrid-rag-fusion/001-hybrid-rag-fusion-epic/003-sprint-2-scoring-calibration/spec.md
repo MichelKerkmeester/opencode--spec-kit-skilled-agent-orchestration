@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Sprint 2 — Scoring Calibration"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/spec]"
 description: "Resolve dual scoring magnitude mismatch, add cold-start boost, embedding cache, and investigate double intent weighting."
 trigger_phrases:
   - "sprint 2"
@@ -155,6 +155,7 @@ Calibrate the scoring pipeline so both systems contribute proportionally to fina
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -177,6 +178,7 @@ Calibrate the scoring pipeline so both systems contribute proportionally to fina
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

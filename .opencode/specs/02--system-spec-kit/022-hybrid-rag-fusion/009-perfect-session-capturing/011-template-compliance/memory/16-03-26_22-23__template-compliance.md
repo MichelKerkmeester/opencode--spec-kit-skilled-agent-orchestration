@@ -1,9 +1,8 @@
 ---
-title: "Template Compliance [011-template-compliance/16-03-26_22-23__template-compliance]"
-description: "Let me identify all remaining deferred/outstanding items and fix them all. Outstanding items: 1. Level 1 + Level 3 compliant fixtures (P2 #10 — deferred as "future work") 2...."
+title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/16-03-26_22-23__template-compliance]"
 trigger_phrases:
-  - "RISK-1 validate.sh"
-  - "CHK-052 deferred"
+  - "risk-1 validate.sh"
+  - "chk-052 deferred"
   - "template structure"
   - "template compliance"
   - "check template headers"
@@ -13,19 +12,18 @@ trigger_phrases:
   - "inline scaffold strict"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated:
+_sourceSessionId: ""
 _sourceSessionUpdated:
+_sourceTranscriptPath: ""
 captured_file_count:
 filesystem_file_count:
 git_changed_file_count:
-quality_score: 0.60
 quality_flags:
   - "has_contamination"
+quality_score: 0.60
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 > **Warning:** Memory quality score is 55/100 (0.55), which is below the recommended threshold of 0.60. Content may have issues with: 0/7 files missing descriptions; Observation titles remain too generic — semantic diversity reduced; Contamination detected — quality score penalized and capped at 0.60.
 
 # Template Compliance

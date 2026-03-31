@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [010-explore-routing-fix/implementation-summary]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/010-explore-routing-fix/implementation-summary]"
 description: "Fixed two agent routing problems in orchestrate.md that caused the orchestrator to (1) dispatch @explore directly instead of routing through @context, and (2) dispatch custom ag..."
 trigger_phrases:
   - "implementation"
@@ -166,6 +166,7 @@ Fixed two agent routing problems in `orchestrate.md` that caused the orchestrato
 
 ---
 
+<!-- ANCHOR:verification -->
 ## L2: VERIFICATION EVIDENCE
 
 ### Text Quality Evidence
@@ -184,6 +185,7 @@ Fixed two agent routing problems in `orchestrate.md` that caused the orchestrato
 - **Section 3**: Agent Loading Protocol with 3-step mandatory process
 - **Section 10 PDR**: "Agent Def" check with loaded/built-in/prior-session states
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## L2: DEFERRED ITEMS

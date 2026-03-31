@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: JWT Authentication with RS256 Signing [plan-happy/spec]"
+title: "Feature Specific [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/spec]"
 description: "The application currently lacks a secure authentication mechanism. Users cannot authenticate with the API, and there is no way to protect routes from unauthorized access. Withou..."
 trigger_phrases:
   - "feature"
@@ -33,6 +33,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -41,8 +42,10 @@ The application currently lacks a secure authentication mechanism. Users cannot 
 ### Purpose
 Implement RS256-signed JWT authentication with token refresh capabilities and route protection to enable secure, stateless API access for all clients.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -70,8 +73,10 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 | src/auth/dto/token-response.dto.ts | Create | Token response DTO |
 | src/config/jwt.config.ts | Create | RS256 key configuration |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -91,16 +96,20 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 | REQ-006 | Refresh token rotation | Old refresh token invalidated upon use |
 | REQ-007 | Logout endpoint | Invalidates refresh token on server side |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Users can authenticate and receive RS256-signed JWT access + refresh tokens
 - **SC-002**: Protected routes reject requests without valid tokens (401 response within 5ms)
 - **SC-003**: Token refresh works correctly with automatic rotation of refresh tokens
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -112,8 +121,10 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 
 ---
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -129,8 +140,10 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 - **NFR-R01**: Auth service availability 99.9%
 - **NFR-R02**: Token validation error rate < 0.1%
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -147,8 +160,10 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 - Partial completion: Failed login attempts tracked, no partial token state
 - Session expiry: Client receives 401, must use refresh token or re-authenticate
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -158,8 +173,10 @@ Implement RS256-signed JWT authentication with token refresh capabilities and ro
 | Research | 10/20 | RS256 well-documented, NestJS patterns established |
 | **Total** | **48/70** | **Level 2** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None identified - requirements are clear based on standard JWT RS256 patterns.
@@ -172,3 +189,4 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:questions -->

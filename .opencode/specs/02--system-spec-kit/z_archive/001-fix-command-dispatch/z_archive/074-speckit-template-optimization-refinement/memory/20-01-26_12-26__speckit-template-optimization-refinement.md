@@ -1,6 +1,5 @@
 ---
-title: "SpecKit template optimization follow-up fixes 2026-01-20"
-description: "Captured the follow-up session that audited the SpecKit implementation and applied targeted fixes after the template optimization rollout. It preserves the remediation work..."
+title: "...atch/z_archive/074-speckit-template-optimization-refinement/20-01-26_12-26__speckit-template-optimization-refinement]"
 trigger_phrases:
   - "template optimization follow up"
   - "runtime path handling fix"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "template rollout remediation"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Speckit Template Optimization Refinement
 
 ## SESSION SUMMARY

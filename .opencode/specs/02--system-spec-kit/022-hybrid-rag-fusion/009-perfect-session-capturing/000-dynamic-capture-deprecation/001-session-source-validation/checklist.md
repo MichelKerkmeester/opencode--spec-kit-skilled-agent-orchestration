@@ -1,5 +1,17 @@
 ---
-title: "Verification Checklist: Session Source Validation [template:level_2/checklist.md]"
+title: "...rid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation/checklist]"
+description: "title: \"Verification Checklist: Session Source Validation [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "rid"
+  - "rag"
+  - "fusion"
+  - "009"
+  - "perfect"
+  - "checklist"
+  - "001"
+  - "session"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Session Source Validation
 

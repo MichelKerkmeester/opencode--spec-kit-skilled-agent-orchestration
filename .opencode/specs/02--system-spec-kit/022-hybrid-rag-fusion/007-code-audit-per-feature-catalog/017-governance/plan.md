@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Governance"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/plan]"
 description: "Technical plan for auditing 4 Governance features against source code"
 trigger_phrases:
   - "audit plan"
@@ -139,14 +139,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 4 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -164,3 +167,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 4 features) ──► Phase 3 (Synthesis
 | M1 | Audit spec created | All docs in place |
 | M2 | All features audited | 4/4 complete |
 | M3 | Synthesis delivered | Summary report finalized |
+<!-- /ANCHOR:effort -->

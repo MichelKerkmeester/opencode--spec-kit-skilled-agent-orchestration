@@ -1,5 +1,5 @@
 ---
-title: "Plan: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/plan]"
+title: "Plan: Context Loader Sub-Agent (@context_loader) [04--agent-orchestration/z_archive/007-explore-sub-agent/plan]"
 description: "Create a single agent definition file following the established agent structural patterns. The file defines the @context_loader agent as a fast, read-only context scout with thr..."
 trigger_phrases:
   - "plan"

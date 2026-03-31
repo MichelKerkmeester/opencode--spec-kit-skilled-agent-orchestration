@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [005-upgrade-speckit-docs/implementation-summary]"
+title: "Implementation Summary [005-upgrade-spec [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/implementation-summary]"
 description: "Systematic documentation quality upgrade across 85 OpenCode system files, applying Human Voice Rules (HVR) prose enforcement, style consistency patterns (Oxford comma removal, e..."
 trigger_phrases:
   - "implementation"

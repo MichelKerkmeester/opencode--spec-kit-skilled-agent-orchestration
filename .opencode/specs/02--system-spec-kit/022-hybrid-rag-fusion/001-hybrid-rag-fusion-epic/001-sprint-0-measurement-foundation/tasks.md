@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Sprint 0 — Measurement Foundation"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/tasks]"
 description: "Task breakdown for Sprint 0: graph ID fix, chunk collapse, eval infrastructure, BM25 baseline"
 trigger_phrases:
   - "sprint 0 tasks"
@@ -132,6 +132,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
+<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [x] All tasks T000a-T000d, T001-T009, T007b, T013, and T054 marked `[x]`

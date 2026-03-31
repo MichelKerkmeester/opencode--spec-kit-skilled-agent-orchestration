@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Working Memory + Hybrid RAG Automation [136-mcp-working-memory-hybrid-rag/decision-record]"
+title: "Decision Record: Working Memory + [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/decision-record]"
 description: "Reference systems analyzed for working memory and hybrid RAG patterns"
 trigger_phrases:
   - "decision"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Documentation Alignment for Spec 126 [010-documentation-alignment/spec]"
+title: "Feature Specification: Documentation Alignment for [02--system-spec-kit/z_archive/010-documentation-alignment/spec]"
 description: "Spec 126 added the largest single MCP server feature since the memory system was created: full spec folder document indexing with schema v13, 11 document types, scoring multipli..."
 trigger_phrases:
   - "feature"
@@ -124,6 +124,7 @@ Update all documentation to accurately reflect the post-126 state of the memory 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -143,6 +144,7 @@ Update all documentation to accurately reflect the post-126 state of the memory 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

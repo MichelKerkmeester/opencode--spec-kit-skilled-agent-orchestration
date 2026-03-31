@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: 020 Pre-Release Remediation"
+title: "Implementation Summary: 020 [02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/implementation-summary]"
 description: "Current implementation summary for the active remediation packet, including packet truth-sync plus seven narrow landed remediation slices."
 trigger_phrases:
   - "020 implementation summary"
   - "pre-release remediation summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary: 020 Pre-Release Remediation

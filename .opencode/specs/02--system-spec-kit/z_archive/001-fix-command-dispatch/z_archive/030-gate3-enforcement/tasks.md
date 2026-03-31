@@ -1,5 +1,5 @@
 ---
-title: "Tasks - Gate 3 Enforcement [030-gate3-enforcement/tasks]"
+title: "Tasks - Gate 3 Enforcemen [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/tasks]"
 description: "Phase 1 Status: COMPLETE"
 trigger_phrases:
   - "tasks"
@@ -25,6 +25,7 @@ contextType: "implementation"
 - `[!]` Needs Review
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Constitutional Memory Draft
 
 | ID | Task | Status | Notes |
@@ -37,7 +38,9 @@ contextType: "implementation"
 | 1.6 | Verify under 500 tokens | [x] | ~320 tokens confirmed |
 
 **Phase 1 Status**: COMPLETE
+<!-- /ANCHOR:phase-1 -->
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Update AGENTS.md
 
 | ID | Task | Status | Notes |
@@ -49,7 +52,9 @@ contextType: "implementation"
 | 2.5 | Test AGENTS.md still valid markdown | [ ] | No syntax errors |
 
 **Phase 2 Status**: PENDING
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Index Constitutional Memory
 
 | ID | Task | Status | Notes |
@@ -62,6 +67,7 @@ contextType: "implementation"
 | 3.6 | Confirm memory ID recorded | [ ] | For future reference |
 
 **Phase 3 Status**: PENDING
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: Testing
 

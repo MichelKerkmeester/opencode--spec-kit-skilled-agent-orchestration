@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Attribute Cleanup Deepdive [021-attribute-cleanup/plan]"
+title: "Implementation Plan: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/plan]"
 description: "USE LEVEL 2+ IF: Phase dependencies need tracking, effort estimation required, or multiple developers. -->"
 trigger_phrases:
   - "implementation"
@@ -52,6 +52,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 3. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
@@ -71,6 +72,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:dependencies -->
+<!-- /ANCHOR:phases -->
 ## 4. DEPENDENCIES
 
 | Dependency | Status | Impact if Blocked |

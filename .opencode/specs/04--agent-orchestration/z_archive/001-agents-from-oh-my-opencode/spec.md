@@ -1,5 +1,5 @@
 ---
-title: "Agent Architecture Analysis: oh-my-opencode [001-agents-from-oh-my-opencode/spec]"
+title: "Agent Architecture Analysis: oh-my-opencode [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/spec]"
 description: "Analysis of agent implementations from the oh-my-opencode repository to inform agent development for the anobel.com Webflow project environment."
 trigger_phrases:
   - "agent"

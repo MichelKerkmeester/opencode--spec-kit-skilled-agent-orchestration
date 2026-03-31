@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: JSON Mode Hybrid Enrichment (Phase 1B)"
+title: "...brid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/decision-record]"
 description: "Captures the corrected decision record for phase 016: document the narrower JSON-mode work that shipped and stop claiming the unimplemented file-backed hybrid enrichment path."
 trigger_phrases:
   - "decision"
@@ -17,6 +17,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:adr-001 -->
+<!-- ANCHOR:metadata -->
 ## ADR-001: Restore Metadata Through Safe Hybrid Enrichment
 
 ### Metadata
@@ -121,3 +122,4 @@ The original phase design targeted broader file-backed JSON enrichment than what
 **How to roll back**: Revert the documentation correction and restore the inaccurate earlier narrative. This is not recommended.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
+<!-- /ANCHOR:metadata -->

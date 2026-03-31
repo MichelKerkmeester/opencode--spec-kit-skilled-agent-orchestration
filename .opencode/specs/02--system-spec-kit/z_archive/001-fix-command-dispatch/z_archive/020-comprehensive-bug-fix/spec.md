@@ -1,5 +1,5 @@
 ---
-title: "Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands [020-comprehensive-bug-fix/spec]"
+title: "Comprehensive Bug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/020-comprehensive-bug-fix/spec]"
 description: "Comprehensive analysis and fix of the system-spec-kit skill and all spec_kit commands. This work identified and resolved 36+ issues across P0-P3 priority levels, using 40 parall..."
 trigger_phrases:
   - "comprehensive"
@@ -33,6 +33,7 @@ contextType: "decision"
 
 Comprehensive analysis and fix of the `system-spec-kit` skill and all `spec_kit` commands. This work identified and resolved **36+ issues** across P0-P3 priority levels, using **40 parallel AI agents** for analysis, implementation, and verification.
 
+<!-- ANCHOR:problem -->
 ## 2. Problem Statement
 
 The system-spec-kit skill and associated commands contained multiple bugs and inconsistencies that were degrading functionality:
@@ -43,7 +44,9 @@ The system-spec-kit skill and associated commands contained multiple bugs and in
 4. **Syntax Errors**: Task tool invocation in debug.md used incorrect JavaScript-style syntax
 5. **Cross-Platform Issues**: Windows path handling broken in generate-context.js
 6. **Consistency Issues**: Template counts mismatched across documentation files
+<!-- /ANCHOR:problem -->
 
+<!-- ANCHOR:scope -->
 ## 3. Scope
 
 ### In Scope
@@ -56,6 +59,7 @@ The system-spec-kit skill and associated commands contained multiple bugs and in
 - Other skills (workflows-code, sk-git, etc.)
 - MCP server configurations
 - Unrelated spec folders
+<!-- /ANCHOR:scope -->
 
 ## 4. Solution Approach
 
@@ -78,6 +82,7 @@ Deployed 15 agents to fix all identified issues:
 ### Phase 3: Verification (10 Parallel Agents)
 Deployed 10 agents to verify all fixes were correctly applied, plus 1 additional fix for README.md template count.
 
+<!-- ANCHOR:success-criteria -->
 ## 5. Success Criteria
 
 - [x] All P0 critical bugs fixed and verified
@@ -86,6 +91,7 @@ Deployed 10 agents to verify all fixes were correctly applied, plus 1 additional
 - [x] All P3 low-priority issues fixed and verified
 - [x] Cross-consistency verified (template counts, paths, references)
 - [x] No regressions introduced
+<!-- /ANCHOR:success-criteria -->
 
 ## 6. Related Documents
 

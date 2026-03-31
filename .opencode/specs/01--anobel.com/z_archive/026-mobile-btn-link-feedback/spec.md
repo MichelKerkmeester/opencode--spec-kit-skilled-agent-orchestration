@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Mobile Button/Link Tap Feedback [026-mobile-btn-link-feedback/spec]"
+title: "Feature Specification: Mobile Button/Link Tap Feedback [01--anobel.com/z_archive/026-mobile-btn-link-feedback/spec]"
 description: "On mobile/touch devices, the CSS :active pseudo-class fires on touchstart BEFORE the browser has determined whether the user is tapping or scrolling. This causes unwanted visual..."
 trigger_phrases:
   - "feature"
@@ -115,6 +115,7 @@ Eliminate unwanted active state flashes during scroll on touch devices while pre
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - None remaining (all resolved during implementation)
@@ -123,6 +124,7 @@ Eliminate unwanted active state flashes during scroll on touch devices while pre
 ---
 
 <!-- ANCHOR:related-documents -->
+<!-- /ANCHOR:questions -->
 ## 8. RELATED DOCUMENTS
 
 | Document | Purpose |

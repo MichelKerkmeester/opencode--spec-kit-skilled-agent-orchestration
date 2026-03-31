@@ -1,10 +1,10 @@
 ---
-title: "Checklist: 014-agents-md-alignment"
+title: "Checklist: 014-agents-md-alignment [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/checklist]"
 description: "Level 2 verification checklist for AGENTS.md Quick Reference alignment."
 trigger_phrases:
   - "014 checklist"
 importance_tier: "important"
-contextType: "checklist"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: generate-context.js Modularization [058-generate-context-modularization/decision-record]"
+title: "D [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/decision-record]"
 description: "The script contains 84 functions across 18 sections. We need to decide how to organize these into modules."
 trigger_phrases:
   - "decision"
@@ -263,6 +263,7 @@ module.exports = {
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | ADR | Decision | Date | Status |
@@ -273,3 +274,4 @@ module.exports = {
 | ADR-004 | Centralize Error Handling | 2026-01-01 | Approved |
 | ADR-005 | Snapshot + Integration Tests | 2026-01-01 | Approved |
 | ADR-006 | Centralized Config for Paths | 2026-01-01 | Approved |
+<!-- /ANCHOR:decision -->

@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Integration Testing [template:level_2/tasks.md]"
+title: "Tasks: Integrati [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing/tasks]"
+description: "title: \"Tasks: Integration Testing [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "integrati"
+  - "010"
+  - "integration"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Integration Testing
 

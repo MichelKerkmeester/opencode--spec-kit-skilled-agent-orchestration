@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Memory Quality and Indexing"
+title: "...--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/checklist]"
 description: "QA verification for Memory Quality and Indexing code audit"
 trigger_phrases:
   - "checklist"

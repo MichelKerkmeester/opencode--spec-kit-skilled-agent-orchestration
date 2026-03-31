@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Shared ESM Migration"
+title: "Tasks: Shared ESM Migration [02--system-spec-kit/023-esm-module-compliance/001-shared-esm-migration/tasks]"
 description: "Task breakdown for @spec-kit/shared native ESM migration."
 trigger_phrases:
   - "shared esm tasks"
   - "023 phase 1 tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Shared ESM Migration
 

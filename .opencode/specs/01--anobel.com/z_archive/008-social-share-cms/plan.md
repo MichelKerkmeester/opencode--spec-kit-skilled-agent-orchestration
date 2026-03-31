@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan [008-social-share-cms/plan]"
+title: "Implementation Plan [008-social-share-cms/plan] [01--anobel.com/z_archive/008-social-share-cms/plan]"
 description: "1. Check for direct link attribute (backwards compatible)"
 trigger_phrases:
   - "implementation"

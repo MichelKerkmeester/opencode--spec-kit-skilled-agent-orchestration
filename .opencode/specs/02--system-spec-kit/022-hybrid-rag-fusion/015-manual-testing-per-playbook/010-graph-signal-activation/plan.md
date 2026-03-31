@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: graph-signal-activation [template:level_2/plan.md]"
+title: "Implementat [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/plan]"
 description: "Phase 010 execution plan for manual testing coverage of graph-signal-activation scenarios. Organizes the preconditions, run sequence, evidence collection, and verdict process for the 15 mapped graph signal tests."
 trigger_phrases:
   - "graph signal activation implementation plan"
   - "phase 010 graph plan"
   - "manual testing graph workflow"
   - "graph playbook execution plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: graph-signal-activation
@@ -160,6 +160,7 @@ The pipeline stays consistent across all graph signal scenarios: establish the g
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -180,6 +181,7 @@ Phase 1 (Preconditions) ──► Phase 2 (Core Graph) ──► Phase 5 (Verdic
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

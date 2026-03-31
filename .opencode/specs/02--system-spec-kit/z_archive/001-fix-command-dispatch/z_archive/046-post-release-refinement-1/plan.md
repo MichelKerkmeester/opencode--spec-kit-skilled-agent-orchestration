@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post-Release Refinement 1 [046-post-release-refinement-1/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/plan]"
 description: "Execute systematic bug fixes across the OpenCode infrastructure in priority order, ensuring stability at each phase before proceeding to the next. Each phase includes validation..."
 trigger_phrases:
   - "implementation"
@@ -33,6 +33,7 @@ Execute systematic bug fixes across the OpenCode infrastructure in priority orde
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## QUALITY GATES
 
 | Gate | Criteria | Enforcement |
@@ -42,6 +43,7 @@ Execute systematic bug fixes across the OpenCode infrastructure in priority orde
 | G3 | No regressions introduced | Continuous |
 | G4 | Documentation matches implementation | Before completion |
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## PROJECT STRUCTURE
@@ -62,6 +64,7 @@ Execute systematic bug fixes across the OpenCode infrastructure in priority orde
 
 ---
 
+<!-- ANCHOR:phases -->
 ## IMPLEMENTATION PHASES
 
 ### Phase 1: Critical Bug Fixes (P0) - Week 1
@@ -320,6 +323,7 @@ class LRUCache {
 - Add regression tests for each bug fix
 - Document manual testing procedures
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## DEPENDENCY GRAPH
@@ -363,6 +367,7 @@ Phase 3 (Medium) - Depends on Phase 2
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## ROLLBACK PLAN
 
 ### Per-Phase Rollback
@@ -375,6 +380,7 @@ Phase 3 (Medium) - Depends on Phase 2
 2. Files: `git checkout` to pre-refinement commit
 3. Configuration: Restore `.utcp_config.json.backup`
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## MONITORING & VALIDATION
@@ -392,6 +398,7 @@ Phase 3 (Medium) - Depends on Phase 2
 
 ---
 
+<!-- ANCHOR:summary -->
 ## APPENDIX: File Change Summary
 
 | File | Changes | Phase |
@@ -409,3 +416,4 @@ Phase 3 (Medium) - Depends on Phase 2
 | `search/index.md` | Cross-platform commands | 3 |
 | `generate-context.js` | Temp file cleanup, JSON validation | 3 |
 | `check-files.sh` | L1 enforcement | 3 |
+<!-- /ANCHOR:summary -->

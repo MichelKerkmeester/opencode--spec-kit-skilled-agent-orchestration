@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Index TXT File Support [131-memory-index-txt-support/tasks]"
+title: "Tasks: Memory Index TXT File Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

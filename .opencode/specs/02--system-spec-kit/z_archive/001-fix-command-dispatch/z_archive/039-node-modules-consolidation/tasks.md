@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown [039-node-modules-consolidation/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/tasks]"
 description: "id: 039-node-modules-consolidation"
 trigger_phrases:
   - "task"
@@ -15,6 +15,7 @@ id: 039-node-modules-consolidation
 # Tasks
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Preparation
 
 - [ ] **TASK-001**: Verify current systems work
@@ -23,6 +24,8 @@ id: 039-node-modules-consolidation
   - Document current sizes
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: Implementation
 
 - [ ] **TASK-002**: Create root package.json
@@ -46,7 +49,9 @@ id: 039-node-modules-consolidation
 - [ ] **TASK-006**: Install from root
   - npm install at system-spec-kit level
   - Verify single node_modules created
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [ ] **TASK-007**: Test MCP server
@@ -60,6 +65,7 @@ id: 039-node-modules-consolidation
 - [ ] **TASK-009**: Verify disk savings
   - Compare before/after sizes
   - Target: ~900MB savings
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: Cleanup
 

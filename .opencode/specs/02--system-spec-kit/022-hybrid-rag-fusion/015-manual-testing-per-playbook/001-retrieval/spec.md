@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_2/spec.md]"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/spec]"
 description: "Test specification for the retrieval category: 13 playbook scenarios covering memory_context, memory_search, memory_match_triggers, /memory:search routing, memory_quick_search, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
 trigger_phrases:
   - "retrieval manual testing"

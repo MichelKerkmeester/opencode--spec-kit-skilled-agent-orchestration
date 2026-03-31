@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Skill Consolidation - Requirements & Migration Strategy [005-speckit-consolidation/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/spec]"
 description: "Consolidate the standalone .opencode/speckit/ folder into the .opencode/skills/workflows-spec-kit/ skill folder, following the self-contained architecture pattern established by..."
 trigger_phrases:
   - "feature"
@@ -49,6 +49,7 @@ Enable users to update the SpecKit functionality by updating a single skill fold
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -67,6 +68,7 @@ Enable users to update the SpecKit functionality by updating a single skill fold
 - Changing template content (only paths)
 - Removing the old `.opencode/speckit/` folder (user decision after verification)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. CURRENT STATE ANALYSIS
@@ -279,6 +281,7 @@ As a script user, I need internal script paths updated so that shell scripts wor
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 6. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST move all 9 templates to skill folder preserving content
@@ -297,6 +300,7 @@ As a script user, I need internal script paths updated so that shell scripts wor
 | Story 2 - References | REQ-FUNC-003, REQ-FUNC-005, REQ-FUNC-006, REQ-FUNC-007 |
 | Story 3 - Scripts | REQ-FUNC-004 |
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 7. FILES REQUIRING UPDATES
@@ -358,6 +362,7 @@ As a script user, I need internal script paths updated so that shell scripts wor
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 9. SUCCESS CRITERIA
 
 - [ ] All 24 files moved to skill folder
@@ -368,6 +373,7 @@ As a script user, I need internal script paths updated so that shell scripts wor
 - [ ] AGENTS.md path references verified
 - [ ] No broken links in skill documentation
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 10. RELATED DOCUMENTS

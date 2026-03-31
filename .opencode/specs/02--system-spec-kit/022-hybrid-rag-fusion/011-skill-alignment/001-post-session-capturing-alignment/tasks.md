@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 001-post-session-capturing-alignment"
+title: "Tasks: 001-po [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/tasks]"
 description: "Task list for the documentation-only post-session-capturing alignment packet."
 trigger_phrases:
   - "011 child 001 tasks"

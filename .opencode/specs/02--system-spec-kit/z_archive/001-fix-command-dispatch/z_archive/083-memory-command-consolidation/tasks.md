@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Command Consolidation [083-memory-command-consolidation/tasks]"
+title: "Tasks: Memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/tasks]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "tasks"
@@ -44,6 +44,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Search → Context (P0)  COMPLETE
 
 ### T1: Audit search.md patterns ✅
@@ -78,8 +79,10 @@ All patterns supported by `/memory:context`.
 - ✅ Alias not needed - direct deletion chosen
 - ✅ context.md handles all search patterns natively
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Database/Checkpoint → Manage (P0)  COMPLETE
 
 ### T4: Create manage.md from database.md ✅
@@ -117,8 +120,10 @@ All patterns supported by `/memory:context`.
 - ✅ database.md DELETED (absorbed by manage.md)
 - ✅ checkpoint.md DELETED (absorbed by manage.md)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Correct → Learn (P1)  COMPLETE
 
 ### T7: Add subcommand routing to learn.md ✅
@@ -157,6 +162,7 @@ All patterns supported by `/memory:context`.
 **Results:**
 - ✅ correct.md DELETED (absorbed by learn.md)
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Delete Why (P1)  COMPLETE

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook feature-flag-reference phase [template:level_2/implementation-summary.md]"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/implementation-summary]"
 description: "Phase 019 feature-flag-reference manual testing — 8/8 scenarios executed, 8/8 PASS, pass rate 100%."
 trigger_phrases:
   - "feature-flag-reference implementation summary"

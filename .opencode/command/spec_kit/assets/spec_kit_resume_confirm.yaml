@@ -81,7 +81,7 @@ memory_loading:
   mcp_integration:
     tool: memory_context
     note: "Call MCP tools directly - NEVER through Code Mode"
-    parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{spec_folder_path}", includeContent: true }
+    parameters: { input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder: "{spec_folder_path}", includeContent: true }
 
 smart_memory_logic:
   objective: "Recover enough state to continue safely, then let the user choose whether to deepen context"
@@ -182,7 +182,7 @@ workflow:
     mcp_tool:
       name: memory_context
       note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only when more detail is still needed."
-      parameters: { input: "resume previous work continue session", mode: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
+      parameters: { input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
     outputs: { memory_loaded: true, context_source: "handover|memory_context|continue_session|memory|combined", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
     validation: context_loaded
 

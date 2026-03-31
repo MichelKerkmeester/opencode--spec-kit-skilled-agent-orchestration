@@ -145,7 +145,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/agent/chatgpt/context.md, specs/.../021-codex-orchestrate/chatgpt-vs-copilot-agent-diff.md, specs/04--agent-orchestration/021-codex-orchestrate/handover.md
+- Files modified: .opencode/agent/chatgpt/context, specs/.../021-codex-orchestrate/chatgpt-vs-copilot-agent-diff.md, specs/04--agent-orchestration/021-codex-orchestrate/handover.md
 
 - Last: Appended session context for the codex-orchestrate workstream after additional a
 
@@ -160,7 +160,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/agent/chatgpt/context.md |
+| Active File | .opencode/agent/chatgpt/context |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -182,7 +182,7 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/agent/chatgpt/context.md` - React context provider
+- `.opencode/agent/chatgpt/context` - React context provider
 
 - `specs/.../021-codex-orchestrate/chatgpt-vs-copilot-agent-diff.md` - Documentation
 
@@ -224,7 +224,7 @@ Appended session context for the codex-orchestrate workstream after additional a
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/agent/chatgpt/context.md` | File modified (description pending) |
+| `.opencode/agent/chatgpt/context` | File modified (description pending) |
 | `specs/.../021-codex-orchestrate/chatgpt-vs-copilot-agent-diff.md` | File modified (description pending) |
 | `specs/04--agent-orchestration/021-codex-orchestrate/handover.md` | File modified (description pending) |
 | `specs/04--agent-orchestration/021-codex-orchestrate/checklist.md` | File modified (description pending) |
@@ -310,7 +310,7 @@ rootCause: The context agent budgets were conservative relative to current analy
 ---
 
 <!-- ANCHOR:decision-keep-changes-scoped-opencodeagentchatgptcontextmd-38a2f13c -->
-### Decision 2: Decision: Keep changes scoped to `.opencode/agent/chatgpt/context.md` for budget tuning to avoid cross
+### Decision 2: Decision: Keep changes scoped to `.opencode/agent/chatgpt/context` for budget tuning to avoid cross
 
 **Context**: agent scope creep.
 
@@ -321,7 +321,7 @@ rootCause: The context agent budgets were conservative relative to current analy
 #### Options Considered
 
 1. **Chosen Approach**
-   Decision: Keep changes scoped to `.opencode/agent/chatgpt/context.md` for budget tuning to avoid cross
+   Decision: Keep changes scoped to `.opencode/agent/chatgpt/context` for budget tuning to avoid cross
 
 #### Chosen Approach
 
@@ -672,7 +672,7 @@ trigger_phrases:
   - "orchestrate"
 
 key_files:
-  - ".opencode/agent/chatgpt/context.md"
+  - ".opencode/agent/chatgpt/context"
   - "specs/.../021-codex-orchestrate/chatgpt-vs-copilot-agent-diff.md"
   - "specs/04--agent-orchestration/021-codex-orchestrate/handover.md"
   - "specs/04--agent-orchestration/021-codex-orchestrate/checklist.md"

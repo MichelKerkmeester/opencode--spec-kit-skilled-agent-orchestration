@@ -1,6 +1,15 @@
 ---
-title: "Plan: Rewrite System Spec Kit README"
+title: "Plan: Rewrite System Spec Kit README [02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/plan]"
 description: "Implementation plan for a complete rewrite of the system-spec-kit README."
+trigger_phrases:
+  - "plan"
+  - "rewrite"
+  - "system"
+  - "spec"
+  - "kit"
+  - "018"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 018-rewrite-system-speckit-readme

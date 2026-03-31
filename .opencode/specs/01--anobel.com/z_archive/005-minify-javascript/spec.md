@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: minify-javascript - Requirements & User Stories [005-minify-javascript/spec]"
+title: "Feature Specification: minify-javascript - Requirements & User [01--anobel.com/z_archive/005-minify-javascript/spec]"
 description: "Minify the JavaScript files in src/2_javascript/z_minified/ (in-place) for smaller payloads when served from Cloudflare and embedded in Webflow, while preserving runtime behavior."
 trigger_phrases:
   - "feature"

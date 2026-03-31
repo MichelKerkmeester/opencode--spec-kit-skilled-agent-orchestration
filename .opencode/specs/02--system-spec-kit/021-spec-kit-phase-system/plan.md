@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Phase System [021-spec-kit-phase-system/plan]"
+title: "Implementation Plan: SpecKit Phase System [02--system-spec-kit/021-spec-kit-phase-system/plan]"
 description: "This plan covers formalizing the organic phase decomposition pattern that emerged from specs 136 and 138 into a first-class SpecKit behavioral layer. The technical approach adds..."
 trigger_phrases:
   - "implementation"
@@ -227,6 +227,7 @@ create.sh "Feature Name" --phase --level 3+ --phases 3 --phase-names "foundation
 
 **Phase Documentation Map format** (injected into parent spec.md):
 ```markdown
+<!-- /ANCHOR:phases -->
 ## PHASE DOCUMENTATION MAP
 
 | Phase | Folder | Scope | Dependencies | Status |
@@ -409,6 +410,7 @@ Run ALL existing 51 test fixtures with `--recursive` flag to verify no regressio
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -434,6 +436,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -539,6 +542,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 > **Note:** This section summarizes key architectural decisions. The authoritative source is [decision-record.md](./decision-record.md) which contains full ADR detail including context, constraints, alternatives analysis, consequences, and Five Checks evaluations. See ADR-001 and ADR-002 in that document for complete records.
@@ -546,6 +550,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation (Phase 1)

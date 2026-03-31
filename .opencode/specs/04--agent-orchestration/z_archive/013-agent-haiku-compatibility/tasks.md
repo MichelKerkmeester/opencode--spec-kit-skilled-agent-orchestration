@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent Haiku Compatibility [013-agent-haiku-compatibility/tasks]"
+title: "Tasks: Agent Haiku Compatibility [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

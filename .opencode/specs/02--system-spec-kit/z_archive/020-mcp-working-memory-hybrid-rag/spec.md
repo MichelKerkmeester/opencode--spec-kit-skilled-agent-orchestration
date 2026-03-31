@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Working Memory + Hybrid RAG Automation [020-mcp-working-memory-hybrid-rag/spec]"
+title: "Feature Specification: Working Memory + Hybrid [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/spec]"
 description: "Add session-cognitive automation to Spec Kit Memory MCP via selective pattern adoption from opencode-working-memory and graphrag-hybrid systems. Implements automatic context ext..."
 trigger_phrases:
   - "feature"
@@ -293,6 +293,7 @@ Wave ownership lock:
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -315,6 +316,7 @@ Wave ownership lock:
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

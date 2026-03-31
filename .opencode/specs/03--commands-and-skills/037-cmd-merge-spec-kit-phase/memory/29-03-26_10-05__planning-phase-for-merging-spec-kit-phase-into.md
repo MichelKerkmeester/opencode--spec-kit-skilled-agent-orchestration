@@ -1,6 +1,5 @@
 ---
-title: "Planning Phase For [037-cmd-merge-spec-kit-phase/29-03-26_10-05__planning-phase-for-merging-spec-kit-phase-into]"
-description: "Planning phase for merging spec kit:phase into plan and complete commands. Created Level 2 spec...; Use:with-phases flag pattern matching existing:with-research in complete.;..."
+title: "Pl [03--commands-and-skills/037-cmd-merge-spec-kit-phase/29-03-26_10-05__planning-phase-for-merging-spec-kit-phase-into]"
 trigger_phrases:
   - "with phases"
   - "with research"
@@ -33,18 +32,17 @@ trigger_phrases:
   - "phase"
 importance_tier: "important"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.85,"errors":1,"warnings":0}
 ---
-
 # Planning Phase For Merging Spec Kit Phase Into
 
 ## SESSION SUMMARY

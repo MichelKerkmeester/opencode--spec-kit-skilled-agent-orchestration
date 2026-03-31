@@ -1,5 +1,5 @@
 ---
-title: "Research: Cognitive Memory Upgrade for Spec Kit [055-cognitive-memory-upgrade/research]"
+title: "Research: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade/research]"
 description: "Request: Analyze claude-cognitive repository for transferable concepts to upgrade Spec Kit Memory, with the constraint that OpenCode does not have hooks."
 trigger_phrases:
   - "research"

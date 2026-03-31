@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 005-hierarchical-scope-governance"
+title: "Veri [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist]"
 description: "Readiness and execution evidence for Hydra Phase 5 governance rollout."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 5 checklist"
   - "governance checklist"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 005-hierarchical-scope-governance
 

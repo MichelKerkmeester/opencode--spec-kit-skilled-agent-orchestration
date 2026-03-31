@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook maintenance phase"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/checklist]"
 description: "Verification checklist for Phase 004 maintenance scenarios EX-014 and EX-035. All items unchecked — pending execution."
 trigger_phrases:
   - "maintenance checklist"
   - "phase 004 checklist"
-  - "EX-014 EX-035 checklist"
+  - "ex-014 ex-035 checklist"
 importance_tier: "normal"
 contextType: "general"
 ---

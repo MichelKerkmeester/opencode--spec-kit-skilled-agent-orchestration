@@ -1,5 +1,13 @@
 ---
-title: "Implementation Summary"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor/implementation-summary]"
+description: "title: \"Implementation Summary\""
+trigger_phrases:
+  - "implementation"
+  - "implementation summary"
+  - "003"
+  - "constitutional"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---

@@ -1,3 +1,15 @@
+---
+title: "Phase 6: Documentation Alignment [02--system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec]"
+description: "Update all documentation to reflect the new hook system. This covers the feature catalog, manual testing playbook, SKILL.md, ARCHITECTURE.md, README files, and agent reference d..."
+trigger_phrases:
+  - "phase"
+  - "documentation"
+  - "alignment"
+  - "spec"
+  - "006"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 6: Documentation Alignment
 
 ## Summary

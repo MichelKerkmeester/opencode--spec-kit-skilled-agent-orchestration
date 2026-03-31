@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Anchor Enforcement Automation [132-anchor-enforcement-automation/decision-record]"
+title: "Decision Record: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/decision-record]"
 description: "Spec folder documentation can be created without template compliance or proper ANCHOR tags. Need enforcement mechanism to guarantee 100% compliance. Critical question: implement..."
 trigger_phrases:
   - "decision"

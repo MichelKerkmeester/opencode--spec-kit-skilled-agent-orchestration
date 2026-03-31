@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-Research Wave 2 (Controlled [005-post-research-wave-2-controlled-delivery/decision-record]"
+title: "...em-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/decision-record]"
 description: "This phase package delegates decision records to the parent spec folder."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:delegation -->
+<!-- ANCHOR:decision -->
 ## Decision Record Delegation
 
 This phase package delegates decision records to the parent spec folder.
@@ -43,6 +44,7 @@ Decisions relevant to this wave's scope (mutation ledger, dark-launch, staged ro
 ---
 
 <!-- ANCHOR:context -->
+<!-- /ANCHOR:decision -->
 ## Context
 
 Wave 2 packages controlled-delivery proof and auditability evidence. Decisions about runtime behavior remain centralized at the root decision record to avoid diverging interpretations between rollout and governance streams.

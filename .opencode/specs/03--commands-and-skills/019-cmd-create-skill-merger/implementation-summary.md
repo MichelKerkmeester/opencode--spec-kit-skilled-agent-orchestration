@@ -21,7 +21,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `03--commands-and-skills/019-cmd-create-skill-merger` |
+| **Spec Folder** | 019-cmd-create-skill-merger |
 | **Completed** | 2026-03-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -30,6 +30,8 @@ contextType: "implementation"
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
+
+### What Was Built
 
 The implementation consolidated skill command creation and update flows into one canonical command: `/create:sk-skill`. You now have one deterministic entrypoint for four supported operations (`full-create`, `full-update`, `reference-only`, `asset-only`) with explicit mode routing for `:auto` and `:confirm`.
 
@@ -51,7 +53,7 @@ Deprecated command markdown files and legacy workflow YAML files were removed. R
 
 ### Cross-runtime active docs synchronization
 
-Active runtime and onboarding docs were synchronized to the same canonical command surface so users see one command contract regardless of runtime profile or setup entrypoint. Updated files are `.agents/agents/write.md`, `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, and `.opencode/install_guides/SET-UP - AGENTS.md`.
+Active runtime and onboarding docs were synchronized to the same canonical command surface so users see one command contract regardless of runtime profile or setup entrypoint. Updated files are `.agents/agents/write.md`, `.opencode/agent/write.md`, .opencode/agent/chatgpt/write.md, `.codex/agents/write.toml`, `.opencode/README.md`, `README.md`, `.opencode/install_guides/README.md`, and `.opencode/install_guides/SET-UP - AGENTS.md`.
 
 Directory verification also confirmed no remaining legacy `/create:skill*` references in `.agents/agents`, `.codex`, or `.claude`.
 
@@ -76,9 +78,9 @@ Implementation memory was saved under the spec folder and indexed:
 | `.opencode/command/create/sk-skill.md` | Modified | Canonical command aligned to template conventions and expanded to 523 lines |
 | `.opencode/command/create/assets/create_sk_skill_auto.yaml` | Modified | Unified autonomous workflow aligned and expanded to 470 lines |
 | `.opencode/command/create/assets/create_sk_skill_confirm.yaml` | Modified | Unified interactive workflow aligned and expanded to 519 lines |
-| `.opencode/command/create/skill.md` | Deleted | Remove deprecated legacy command |
-| `.opencode/command/create/skill_reference.md` | Deleted | Remove deprecated legacy command |
-| `.opencode/command/create/skill_asset.md` | Deleted | Remove deprecated legacy command |
+| .opencode/command/create/skill.md | Deleted | Remove deprecated legacy command |
+| .opencode/command/create/skill_reference.md | Deleted | Remove deprecated legacy command |
+| .opencode/command/create/skill_asset.md | Deleted | Remove deprecated legacy command |
 | `.opencode/command/create/assets/create_skill_auto.yaml` | Deleted | Remove deprecated legacy workflow |
 | `.opencode/command/create/assets/create_skill_confirm.yaml` | Deleted | Remove deprecated legacy workflow |
 | `.opencode/command/create/assets/create_skill_reference_auto.yaml` | Deleted | Remove deprecated legacy workflow |
@@ -88,7 +90,7 @@ Implementation memory was saved under the spec folder and indexed:
 | `.opencode/command/create/prompt.md` | Modified | Replace old create-skill references with canonical variants |
 | `.agents/agents/write.md` | Modified | Synchronize active write-agent docs to canonical `/create:sk-skill` |
 | `.opencode/agent/write.md` | Modified | Synchronize OpenCode runtime write-agent docs to canonical `/create:sk-skill` |
-| `.opencode/agent/chatgpt/write.md` | Modified | Synchronize ChatGPT runtime write-agent docs to canonical `/create:sk-skill` |
+| .opencode/agent/chatgpt/write.md | Modified | Synchronize ChatGPT runtime write-agent docs to canonical `/create:sk-skill` |
 | `.codex/agents/write.toml` | Modified | Synchronize Codex runtime write-agent config to canonical `/create:sk-skill` |
 | `.opencode/README.md` | Modified | Synchronize OpenCode docs to canonical `/create:sk-skill` |
 | `README.md` | Modified | Synchronize root docs to canonical `/create:sk-skill` |
@@ -96,6 +98,10 @@ Implementation memory was saved under the spec folder and indexed:
 | `.opencode/install_guides/SET-UP - AGENTS.md` | Modified | Synchronize setup guide docs to canonical `/create:sk-skill` |
 | `.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/*.md` | Created | Saved implementation context memory |
 | `.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json` | Modified | Recorded indexed embedding metadata for saved memory |
+
+---
+
+---
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -103,7 +109,13 @@ Implementation memory was saved under the spec folder and indexed:
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
+### How It Was Delivered
+
 Delivery followed a migration-first sequence: add canonical command and unified mode workflows, remove deprecated command/workflow files, update related references, then execute a second-pass alignment and expansion update on canonical artifacts. Verification confirmed canonical asset presence, deprecated asset absence, updated prompt references, exact line-count expansion targets, and indexed memory persistence.
+
+---
+
+---
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -111,18 +123,26 @@ Delivery followed a migration-first sequence: add canonical command and unified 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
+### Key Decisions
+
 | Decision | Why |
 |----------|-----|
 | Canonical command is `/create:sk-skill` | One entrypoint reduces routing drift and maintenance duplication |
 | Keep two mode-specific YAML files (`:auto`, `:confirm`) under one command | Behavior differs by interaction model, but operation contracts stay shared |
 | Remove legacy files instead of keeping parallel docs | Canonical-only strategy prevents users from selecting deprecated paths |
 | Keep explicit migration mapping in canonical command | Users can translate old invocation patterns to operation-based variants quickly |
+
+---
+
+---
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 | Check | Result |
 |-------|--------|
@@ -138,6 +158,10 @@ Delivery followed a migration-first sequence: add canonical command and unified 
 | Cross-runtime docs synchronized | PASS (all eight listed runtime/setup docs reference `/create:sk-skill`) |
 | Legacy reference directory scan clean | PASS (`/create:skill` search returns no matches in `.agents/agents`, `.codex`, `.claude`) |
 | Memory saved and indexed for spec folder | PASS (`latest memory/*.md artifact`, `memory/metadata.json`, `memory_index_scan`: `status complete`, `failed = 0`) |
+
+---
+
+---
 <!-- /ANCHOR:verification -->
 
 ---
@@ -145,5 +169,11 @@ Delivery followed a migration-first sequence: add canonical command and unified 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
+### Known Limitations
+
 1. Legacy command aliases are removed, so old invocations require user migration to `/create:sk-skill` operation-based forms.
+
+---
 <!-- /ANCHOR:limitations -->
+
+---

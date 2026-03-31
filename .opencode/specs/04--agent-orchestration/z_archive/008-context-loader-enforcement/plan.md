@@ -1,5 +1,5 @@
 ---
-title: "Plan: Aggressive @context_loader Enforcement [008-context-loader-enforcement/plan]"
+title: "Plan: Aggressive @context_loader Enforcement [04--agent-orchestration/z_archive/008-context-loader-enforcement/plan]"
 description: "Full audit of all agent and command files, applying the aggressive enforcement rule from spec.md §3. Each @explore reference is classified as KEEP (rule-compliant) or REPLACE (s..."
 trigger_phrases:
   - "plan"

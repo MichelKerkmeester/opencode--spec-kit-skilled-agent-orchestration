@@ -1,13 +1,13 @@
 ---
-title: "Feature Specification: Hybrid Search Pipeline Null DB Fix"
+title: "Feature Specification: Hybrid [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/spec]"
 description: "The hybrid search pipeline returns 0 results for ALL queries because module-level db/vectorSearchFn references in hybrid-search.js are null at search time, likely due to ESM module duplication."
 trigger_phrases:
   - "hybrid search null db"
   - "search returns 0 results"
   - "memory search broken"
-  - "ftsSearch db null"
+  - "ftssearch db null"
   - "vector search null reference"
-  - "ESM module duplication search"
+  - "esm module duplication search"
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -17,7 +17,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 7 of 7 |
 | **Predecessor** | 006-review-remediation |
-| **Successor** | None |
+| **Successor** | 008-spec-memory-compliance-audit |
 | **Handoff Criteria** | memory_search returns >0 results for queries matching existing memories |
 
 <!-- ANCHOR:phase-context -->

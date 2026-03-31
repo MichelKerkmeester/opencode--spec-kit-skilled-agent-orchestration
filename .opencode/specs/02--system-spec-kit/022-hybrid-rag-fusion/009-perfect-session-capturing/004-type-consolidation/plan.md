@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Type Consolidation"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation/plan]"
+description: "title: \"Implementation Plan: Type Consolidation\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "004"
+  - "type"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Type Consolidation
 

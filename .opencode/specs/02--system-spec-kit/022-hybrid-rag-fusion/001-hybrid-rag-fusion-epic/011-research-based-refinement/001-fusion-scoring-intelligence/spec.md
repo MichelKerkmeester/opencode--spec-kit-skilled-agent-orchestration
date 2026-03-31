@@ -249,6 +249,7 @@ The 8-feature vector captures all Stage 2 signals. A regularized linear model (L
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -270,6 +271,7 @@ The 8-feature vector captures all Stage 2 signals. A regularized linear model (L
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -303,12 +305,14 @@ The 8-feature vector captures all Stage 2 signals. A regularized linear model (L
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - What is the minimum number of judged queries needed before K-optimization results are trustworthy? (Proposed: 50 per intent class)
 - Should the fusion policy router use hard thresholds or a soft scoring approach for policy selection?
 - What is the acceptable shadow lab overhead budget per query? (Proposed: 15ms p95)
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 8. RELATED DOCUMENTS

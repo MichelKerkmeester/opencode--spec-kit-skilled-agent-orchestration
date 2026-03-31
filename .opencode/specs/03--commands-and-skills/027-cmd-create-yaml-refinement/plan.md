@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Create Command YAML Refinement [template:level_3/plan.md]"
+title: "Implementation Plan: Create Command YAML Refinement [03--commands-and-skills/027-cmd-create-yaml-refinement/plan]"
 description: "Plan the refinement pass that aligns the create-command YAML assets with a richer spec_kit-style top-level workflow contract."
 trigger_phrases:
   - "create yaml refinement plan"
@@ -149,6 +149,7 @@ Inspect `spec_kit` and the existing create assets -> identify missing shared sec
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -166,6 +167,7 @@ Audit and Contract Lock -> Newer Pair Rewrite -> Broader Suite Normalization -> 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

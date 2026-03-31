@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Level-Based Template Architecture [069-speckit-template-complexity/spec]"
+title: "Feature Specific [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/spec]"
 description: "Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level."
 trigger_phrases:
   - "feature"
@@ -62,6 +62,7 @@ Provide level-appropriate templates through dedicated folder structure, eliminat
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -95,6 +96,7 @@ Provide level-appropriate templates through dedicated folder structure, eliminat
 | `.opencode/skill/system-spec-kit/scripts/expand-template.js` | Create | CLI folder selection tool |
 | `.opencode/skill/system-spec-kit/config/complexity-config.jsonc` | Create | Configuration file |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -169,6 +171,7 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST calculate complexity score (0-100) from 5 weighted dimensions
@@ -190,8 +193,10 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 | US4 - Validation | REQ-FUNC-002 | Level consistency |
 | US5 - CLI Integration | REQ-FUNC-005, REQ-FUNC-006, REQ-FUNC-007 | User interface |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -210,8 +215,10 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 - **NFR-O01**: All JavaScript tools MUST work with Node.js 16+
 - **NFR-O02**: Bash scripts MUST work on macOS and Linux
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -228,8 +235,10 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 - User overrides detected level: Use override, document in spec metadata
 - Complexity changes during implementation: No automatic re-assessment, manual update
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -247,6 +256,7 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 | Compatibility | Existing specs pass validation | 100% | Integration tests |
 | Performance | Detection/expansion time | < 3 seconds combined | Benchmarks |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -277,6 +287,7 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -285,8 +296,10 @@ As a power user, I need CLI tools for detecting complexity and expanding templat
 - ML-based prediction - overkill for rule-based system
 - GUI configuration - CLI-first approach
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 Resolved during planning:
@@ -295,6 +308,7 @@ Resolved during planning:
 - Level 3+ threshold set at 80/100 points
 - Architecture changed from COMPLEXITY_GATE markers to dedicated level folders
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

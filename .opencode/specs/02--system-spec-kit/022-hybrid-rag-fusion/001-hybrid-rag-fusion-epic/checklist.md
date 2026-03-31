@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 001-hybrid-rag-fusion-epic"
+title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist]"
 description: "Parent packet verification checklist for the Hybrid RAG Fusion sprint family."
 trigger_phrases:
   - "001 epic checklist"

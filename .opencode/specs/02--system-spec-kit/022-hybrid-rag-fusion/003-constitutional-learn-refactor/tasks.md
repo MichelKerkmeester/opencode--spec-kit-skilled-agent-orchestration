@@ -1,5 +1,12 @@
 ---
-title: "Tasks"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor/tasks]"
+description: "title: \"Tasks\""
+trigger_phrases:
+  - "tasks"
+  - "003"
+  - "constitutional"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---

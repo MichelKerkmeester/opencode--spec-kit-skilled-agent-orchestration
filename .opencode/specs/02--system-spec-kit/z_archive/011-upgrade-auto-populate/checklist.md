@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: AI Auto-Populate on Spec Upgrade [128-upgrade-auto-populate/checklist]"
+title: "Verification Checklist: AI Auto-Populate on Spec [02--system-spec-kit/z_archive/011-upgrade-auto-populate/checklist]"
 description: "Verification Date: 2026-02-16"
 trigger_phrases:
   - "verification"

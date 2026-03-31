@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Template Optimization Refinement [074-speckit-template-optimization-refinement/decision-record]"
+title: "...m-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/decision-record]"
 description: "The refinement task required comprehensive analysis of ~450 files and 27,600 LOC across the SpecKit system. Sequential analysis by a single agent would require 15+ minutes per s..."
 trigger_phrases:
   - "decision"
@@ -410,6 +410,7 @@ The refinement work represents meaningful improvements to the SpecKit system fol
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary
 
 | ADR | Decision | Status | Impact |
@@ -420,6 +421,7 @@ The refinement work represents meaningful improvements to the SpecKit system fol
 | ADR-004 | Three analysis documents | Accepted | Medium - clear deliverables |
 | ADR-005 | Version bump to v1.9.0 | Accepted | Low - versioning housekeeping |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Approval Tracking

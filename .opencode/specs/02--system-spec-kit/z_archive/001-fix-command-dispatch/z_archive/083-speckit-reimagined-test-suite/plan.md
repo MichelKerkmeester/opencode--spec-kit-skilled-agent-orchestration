@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Reimagined Test Suite [083-speckit-reimagined-test-suite/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/plan]"
 description: "This test suite provides comprehensive coverage for the SpecKit Reimagined implementation (082-speckit-reimagined), covering all 33 features and 107 tasks across 5 workstreams. ..."
 trigger_phrases:
   - "implementation"
@@ -43,6 +43,7 @@ This test suite provides comprehensive coverage for the SpecKit Reimagined imple
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -59,8 +60,10 @@ This test suite provides comprehensive coverage for the SpecKit Reimagined imple
 - [ ] Test documentation complete
 - [ ] Performance benchmarks established
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -134,8 +137,10 @@ Test Runner (Jest)
    Functions     SQLite       Handlers        Runner
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Unit Tests (Weeks 1-2)
@@ -259,8 +264,10 @@ Test Runner (Jest)
 - [ ] Performance benchmark automation
 - [ ] Test result reporting to PR comments
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools | Coverage Target | Run Time |
@@ -296,8 +303,10 @@ Test Runner (Jest)
 - File system (in-memory for speed)
 - Database (SQLite in-memory mode)
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -308,8 +317,10 @@ Test Runner (Jest)
 | Mock embedding provider | Internal | Yellow | Must create mocks first |
 | CI/CD infrastructure | Internal | Green | Manual runs only |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Tests reveal critical bugs in implementation requiring fixes
@@ -319,8 +330,10 @@ Test Runner (Jest)
   3. Pause test development on affected components
   4. Resume after fixes merged
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -340,8 +353,10 @@ Phase 1 (Unit Tests) ───────────────────�
 | Phase 3: E2E | Phase 1 + Phase 2 | Phase 4 |
 | Phase 4: Coverage | Phase 1 + 2 + 3 | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | Calendar Time |
@@ -352,8 +367,10 @@ Phase 1 (Unit Tests) ───────────────────�
 | Phase 4: Coverage & CI | Low | 20 hours | Week 5 |
 | **Total** | | **128 hours (~16 days)** | **5 weeks** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -372,6 +389,7 @@ Phase 1 (Unit Tests) ───────────────────�
 - **Has data migrations?** No (tests use ephemeral DBs)
 - **Reversal procedure**: Delete test databases, clear fixture caches
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -465,6 +483,7 @@ Phase 1 (Unit Tests) ───────────────────�
 
 ---
 
+<!-- ANCHOR:summary -->
 ## L3: ARCHITECTURE DECISION SUMMARY
 
 ### ADR-001: Jest Over Node:test
@@ -503,6 +522,7 @@ Phase 1 (Unit Tests) ───────────────────�
 - Positive: Fast tests, no API dependency, deterministic results
 - Negative: Doesn't test real embedding quality (covered by manual validation)
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

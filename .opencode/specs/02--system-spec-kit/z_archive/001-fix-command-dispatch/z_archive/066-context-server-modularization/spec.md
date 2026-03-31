@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Context-Server Modularization - Requirements & User [066-context-server-modularization/spec]"
+title: "Feature Specif [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/spec]"
 description: "Decompose the monolithic context-server.js (2,703 LOC) into focused modules following the Spec 058 pattern."
 trigger_phrases:
   - "feature"
@@ -58,6 +58,7 @@ Reduce context-server.js to ~150-200 lines by extracting orchestration code into
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -101,6 +102,7 @@ Reduce context-server.js to ~150-200 lines by extracting orchestration code into
 | `mcp_server/hooks/index.js` | Create | Re-export hooks |
 | `mcp_server/hooks/memory-surface.js` | Create | SK-004 auto_surface_memories |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -147,6 +149,7 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST maintain identical MCP tool interface (no breaking changes)
@@ -164,8 +167,10 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 | Story 2 - Developer Maintainability | REQ-FUNC-005, REQ-FUNC-006 | Clean structure |
 | Story 3 - Testability | REQ-FUNC-001, REQ-FUNC-002 | No breaking changes |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -177,8 +182,10 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 - **NFR-R02**: Startup scan completes successfully
 - **NFR-R03**: SK-004 memory surfacing continues to work
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Module Dependencies
@@ -189,8 +196,10 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 - What happens when handler throws? → Error propagates to MCP layer as before
 - What happens when formatter receives null? → Existing null checks preserved
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -199,6 +208,7 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 - **SC-003**: All 12 MCP tools pass functional tests
 - **SC-004**: Zero behavior changes (same responses for same inputs)
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -224,6 +234,7 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 - lib/ module changes - already well-organized (28 modules)
@@ -231,8 +242,10 @@ As a developer, I need isolated modules so that I can unit test handlers and for
 - Performance optimizations beyond modularization
 - Database schema changes
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 All questions resolved through prior work analysis:
@@ -240,6 +253,7 @@ All questions resolved through prior work analysis:
 - lib/ status: Already modularized, leave unchanged
 - Module size target: <300 lines (proven in Spec 058)
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

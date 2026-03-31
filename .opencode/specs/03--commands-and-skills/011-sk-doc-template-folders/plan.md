@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-doc Template Folder Reorganization"
+title: "Implementation Plan: sk-doc Template Folder Reorganization [03--commands-and-skills/011-sk-doc-template-folders/plan]"
 description: "Move sk-doc templates from assets/opencode/ into assets/skill/ and assets/agents/, then update all path references across 21 files."
 trigger_phrases:
   - "sk-doc template plan"
@@ -117,6 +117,7 @@ Templates are referenced by: SKILL.md → references/*.md → command/*.yaml →
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -133,6 +134,7 @@ Phase 1 (File Moves) ──► Phase 2 (Reference Updates) ──► Phase 3 (Ve
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

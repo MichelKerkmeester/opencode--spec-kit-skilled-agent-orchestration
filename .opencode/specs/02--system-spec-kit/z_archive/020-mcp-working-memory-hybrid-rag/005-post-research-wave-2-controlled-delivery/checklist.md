@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post-Research Wave 2 Package [005-post-research-wave-2-controlled-delivery/checklist]"
+title: "...--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/checklist]"
 description: "checklist document for 005-post-research-wave-2-controlled-delivery."
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling |
@@ -31,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
+<!-- /ANCHOR:protocol -->
 ## P0 - Blockers
 
 - [x] W2-CHK-001 Root checks `CHK-223-224` mapped and verifiable in this package. [Evidence: `scratch/c136-04-dark-launch-evidence.md`, `scratch/c136-05-staged-rollout-evidence.md`]

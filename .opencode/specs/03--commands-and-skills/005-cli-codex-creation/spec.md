@@ -1,68 +1,157 @@
 ---
-title: "Specification: cli-gemini Model Consolidation + cli-codex Skill"
-description: "Consolidate cli-gemini to gemini-3.1-pro-preview only, and create a new cli-codex skill for OpenAI Codex CLI orchestration."
-trigger_phrases:
-  - "cli-codex spec"
-  - "codex skill spec"
-importance_tier: "normal"
-contextType: "implementation"
+title: "Feature Specification: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/spec]"
+description: "Consolidate cli-gemini to one model and create the cli-codex skill with matching ecosystem registration."
 ---
-# Specification: cli-gemini Model Consolidation + cli-codex Skill
+# Feature Specification: cli-gemini Model Consolidation + cli-codex Skill
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
-## 1. SUMMARY
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-03-01 |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+The existing `cli-gemini` skill referenced multiple Gemini model variants, which created avoidable decision overhead. At the same time, there was no companion `cli-codex` skill even though Codex CLI support already existed elsewhere in the repository.
 
-Two related needs:
-1. The `cli-gemini` skill references 5 different Gemini models, causing confusion. It should use only `gemini-3.1-pro-preview`.
-2. No `cli-codex` skill exists for OpenAI's Codex CLI, despite existing Codex infrastructure (`.codex/agents/*.toml`, `config.toml`).
-
-### Proposed Solution
-
-1. Replace all non-`gemini-3.1-pro-preview` model references in `cli-gemini` with the single model.
-2. Create a new `cli-codex` skill mirroring `cli-gemini`'s structure for OpenAI Codex CLI, standardized on `gpt-5.3-codex` with `xhigh` reasoning.
-
-### Success Criteria
-
-- Zero references to `gemini-2.5-*` or `gemini-3-pro-preview` in `cli-gemini` skill files
-- Complete `cli-codex` skill with SKILL.md + 4 reference files + 1 asset file
-- Ecosystem registration: skill_advisor.py, README files, symlink
-<!-- /ANCHOR:summary -->
+### Purpose
+Consolidate `cli-gemini` around a single model reference and create a parallel `cli-codex` skill with matching ecosystem registration and supporting documentation.
+<!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## 2. SCOPE
+## 3. SCOPE
 
 ### In Scope
-
-- cli-gemini: Model consolidation across SKILL.md, cli_reference.md, integration_patterns.md, gemini_tools.md, prompt_templates.md
-- cli-codex: New skill creation with full file structure
-- Ecosystem: skill_advisor.py entries, .claude/skills symlink, README updates
+- Normalize `cli-gemini` model references to `gemini-3.1-pro-preview`.
+- Create the `cli-codex` skill with its SKILL.md, references, and prompt templates.
+- Register `cli-codex` in advisor and README surfaces.
+- Align the spec folder documentation to the active Level 2 template.
 
 ### Out of Scope
+- Editing Codex runtime configuration files beyond registration/documentation touchpoints.
+- Creating an install guide for Codex CLI.
+- Changing `.codex/agents/*.toml` platform configuration.
 
-- Changes to .codex/agents/*.toml configurations
-- Changes to Gemini agent definitions in .gemini/agents/
-- Install guide creation for Codex CLI
-- Changelog entries
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/skill/cli-gemini/*` | Modify | Replace multi-model guidance with single-model references |
+| `.opencode/skill/cli-codex/SKILL.md` | Create | Main skill definition |
+| `.opencode/skill/cli-codex/references/*.md` | Create | Codex reference set |
+| `.opencode/skill/cli-codex/assets/prompt_templates.md` | Create | Prompt template library |
+| `.opencode/skill/scripts/skill_advisor.py` | Modify | Register `cli-codex` |
+| `README.md` and related skill catalogs | Modify | Add `cli-codex` documentation |
 <!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:technical-context -->
-## 3. TECHNICAL CONTEXT
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-| Aspect | Value |
-|--------|-------|
-| **Type** | Documentation-only skill (no MCP server, no scripts) |
-| **Pattern** | Progressive disclosure (SKILL.md → references → assets) |
-| **Standard** | 8-section SKILL.md format with smart routing |
-| **Models** | gemini-3.1-pro-preview (Gemini), gpt-5.3-codex xhigh (Codex) |
-<!-- /ANCHOR:technical-context -->
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | `cli-gemini` model references are consolidated | Old multi-model references are replaced by `gemini-3.1-pro-preview` |
+| REQ-002 | `cli-codex` skill exists with core documents | SKILL.md, references, and prompt templates are present |
+| REQ-003 | Ecosystem registration is updated | Advisor and README surfaces include `cli-codex` |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | `cli-codex` mirrors the documentation pattern used by sibling CLI skills | The new skill follows the established CLI skill structure |
+| REQ-005 | Spec folder documentation validates structurally | No validation errors remain in the spec folder |
+| REQ-006 | Cross-runtime discovery remains clear | Users can find `cli-codex` from catalog and advisor surfaces |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: `cli-gemini` points to one canonical model reference.
+- **SC-002**: `cli-codex` exists as a documented peer to the other CLI bridge skills.
+- **SC-003**: Skill discovery surfaces mention `cli-codex` consistently.
+
+### Acceptance Scenarios
+
+- **Given** a maintainer reviews the Gemini bridge skill, **when** the documentation is inspected, **then** it points to one canonical Gemini model instead of several competing model references.
+- **Given** a user searches for Codex CLI support in the skill ecosystem, **when** catalog and advisor surfaces are checked, **then** `cli-codex` appears as a discoverable peer to the other CLI bridge skills.
+- **Given** the new `cli-codex` skill package is opened, **when** the file tree is reviewed, **then** SKILL, references, and prompt templates follow the established sibling-skill pattern.
+- **Given** the spec folder is validated after normalization, **when** compliance checks run, **then** the packet stays aligned with the documented model-consolidation and `cli-codex` creation scope.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Codex CLI documentation accuracy | Incorrect guidance weakens the new skill | Mirror proven sibling skill patterns |
+| Risk | Model guidance drifts again in `cli-gemini` | Users face renewed confusion | Keep a single canonical model reference |
+| Risk | Registration surfaces diverge | Users cannot discover the skill reliably | Update advisor and README surfaces together |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Consistency
+- **NFR-C01**: `cli-codex` should match the CLI skill documentation conventions used by adjacent skills.
+
+### Usability
+- **NFR-U01**: The single-model `cli-gemini` guidance should reduce model-selection ambiguity.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+- Legacy references to older Gemini models must not survive in the normalized skill docs.
+- `cli-codex` must remain discoverable even if users search by Codex-specific phrases instead of the folder name.
+- Spec-folder compliance updates must not alter the implementation intent.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 14/25 | Skill creation plus sibling skill normalization and registration work |
+| Risk | 8/25 | Documentation-only changes with moderate discovery impact |
+| Research | 8/20 | Requires parallel skill-pattern alignment |
+| **Total** | **30/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None. The original implementation intent is preserved in this template-aligned version.
+<!-- /ANCHOR:questions -->
+
+---

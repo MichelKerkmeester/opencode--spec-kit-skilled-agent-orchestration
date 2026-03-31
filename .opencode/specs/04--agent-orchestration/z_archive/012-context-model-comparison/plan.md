@@ -1,5 +1,5 @@
 ---
-title: "Plan: Context Agent Model Comparison [012-context-model-comparison/plan]"
+title: "Plan: Context Agent Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/plan]"
 description: "Spec: 012-context-model-comparison"
 trigger_phrases:
   - "plan"

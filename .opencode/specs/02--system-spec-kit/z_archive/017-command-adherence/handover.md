@@ -1,5 +1,5 @@
 ---
-title: "Session Handover: Plan-to-Implementation Gate Bypass Fix [134-command-adherence/handover]"
+title: "Session Handover: Plan-to-Implementation Gate Bypass [02--system-spec-kit/z_archive/017-command-adherence/handover]"
 description: "1. Validate live behavior end-to-end: /spec_kit:plan -> free-text implement request -> enforced routing through /spec_kit:implement."
 trigger_phrases:
   - "session"

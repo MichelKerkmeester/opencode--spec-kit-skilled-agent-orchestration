@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Perfect Session Capturing"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/implementation-summary]"
 description: "Documentation-only phase-tree alignment pass for the perfect session capturing parent pack."
 trigger_phrases:
   - "implementation"
@@ -82,4 +82,11 @@ The work landed in four steps:
 1. **Historical narrative remains historical.** The repair updates current-navigation fields, not every historical phase-number mention in evidence text.
 2. **Strict completion was not rerun in this pass.** The primary gate for this repair is recursive validation plus the stale-reference sweep.
 3. **Live proof remains intentionally conservative.** The docs still do not claim flawless parity across every CLI and mode.
+<!-- /ANCHOR:limitations -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

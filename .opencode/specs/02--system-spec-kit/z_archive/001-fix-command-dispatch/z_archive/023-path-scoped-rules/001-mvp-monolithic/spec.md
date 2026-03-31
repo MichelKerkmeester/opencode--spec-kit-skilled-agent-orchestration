@@ -1,5 +1,5 @@
 ---
-title: "Path-Scoped Validation Rules [001-mvp-monolithic/spec]"
+title: "Path-Sc [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/spec]"
 description: "1. No quality enforcement: Incomplete specs pass silently"
 trigger_phrases:
   - "path"
@@ -57,6 +57,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 2. Requirements
 
 ### Functional Requirements
@@ -107,6 +108,7 @@ contextType: "decision"
 | NFR-4 | Backward compatible with existing spec folders | Compatibility |
 | NFR-5 | Works on macOS and Linux | Portability |
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 3. User Stories
@@ -155,6 +157,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 4. Scope
 
 ### In Scope
@@ -173,8 +176,10 @@ contextType: "decision"
 - Custom rule authoring (future)
 - Git hooks installation (user responsibility)
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. Success Criteria
 
 - [ ] `validate-spec.sh` passes own test suite
@@ -184,8 +189,10 @@ contextType: "decision"
 - [ ] Gate 6 can use validation results
 - [ ] Documentation complete and accurate
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. Risks and Mitigations
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -195,6 +202,7 @@ contextType: "decision"
 | Performance issues on large folders | Low | Medium | Profile and optimize; add timeouts |
 | Breaking existing workflows | Medium | High | Extensive backward compatibility testing |
 
+<!-- /ANCHOR:risks -->
 ---
 
 ## 7. Dependencies

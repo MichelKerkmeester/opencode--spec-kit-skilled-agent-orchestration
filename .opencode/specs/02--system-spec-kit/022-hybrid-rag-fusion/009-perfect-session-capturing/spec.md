@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Perfect Session Capturing [template:level_3/spec.md]"
+title: "Feature Specification: Perfect Session [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec]"
 description: "Authoritative phase-tree alignment for the current parent pack, including the archived dynamic-capture branch, the shipped/current 011-018 continuation, and the analysis-only architecture audit at 019."
 trigger_phrases:
   - "perfect session capturing"
@@ -30,6 +30,7 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -47,6 +48,7 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -213,6 +215,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 8. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -224,8 +227,10 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 ### Reliability
 - **NFR-R01**: Every implementation-status statement for phase `018` must be traceable to shipped code, tests, or retained-proof evidence and must remain conservative about live proof. Phase `019` is analysis-only.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 9. EDGE CASES
 
 ### Data Boundaries
@@ -238,8 +243,10 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 - The roadmap could quietly slip back into all-planned or all-complete language if the parent docs are only partially reconciled.
 - Live proof could still be missing even if all documentation validates cleanly.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 10. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -249,6 +256,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 | Coordination complexity | 4/5 | Runtime, operator docs, and three child phases must stay aligned |
 | Operational risk | 4/5 | Overclaiming live-proof closure would mislead future implementation work |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 11. RISK MATRIX

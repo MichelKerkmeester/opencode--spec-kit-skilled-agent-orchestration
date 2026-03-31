@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Task 06 — Root README Update [task-06-global-readme-update/implementation-summary]"
+title: "...spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/implementation-summary]"
 description: "Task 06 completed comprehensive updates to root README.md and .opencode/README.md, implementing 11 documented changes that simplify structure, improve clarity, and align with sp..."
 trigger_phrases:
   - "implementation"

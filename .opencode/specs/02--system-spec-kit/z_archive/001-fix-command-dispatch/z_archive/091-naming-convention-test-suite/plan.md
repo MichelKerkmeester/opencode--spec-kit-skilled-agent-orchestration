@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Naming Convention Test Suite [091-naming-convention-test-suite/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite/plan]"
 description: "Build 3 test files that comprehensively verify every script adjusted during the naming convention migration. Tests run without external dependencies (no DB, no API keys) where p..."
 trigger_phrases:
   - "implementation"
@@ -36,6 +36,7 @@ Build 3 test files that comprehensively verify every script adjusted during the 
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -49,8 +50,10 @@ Build 3 test files that comprehensively verify every script adjusted during the 
 - [ ] Zero false positives (tests that fail for non-migration reasons)
 - [ ] Can be re-run anytime via `node scripts/tests/test-naming-migration.js`
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. TEST ARCHITECTURE
 
 ### Test Files
@@ -114,8 +117,10 @@ T10: NAMING COMPLIANCE SWEEP
     └── Report any remaining violations
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Create test-naming-migration.js (T1, T2, T7, T9, T10)
@@ -184,8 +189,10 @@ Three targeted regression tests:
 - Ensure clear pass/fail output
 - Document results in checklist.md
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Runner | Pass Criteria |
@@ -196,13 +203,16 @@ Three targeted regression tests:
 | Regression | Source scan + unit test | Specific patterns match/don't match |
 | Compliance | Regex sweep | Zero matches for violation patterns |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 6. ROLLBACK PLAN
 
 - **Trigger**: Test suite itself has bugs
 - **Procedure**: Delete 3 test files, no impact on production code
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## 7. FILE OWNERSHIP

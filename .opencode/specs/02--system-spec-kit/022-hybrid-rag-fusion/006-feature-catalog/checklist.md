@@ -1,5 +1,14 @@
 ---
-title: "Verification Checklist: Feature Catalog Audit & Remediation"
+title: "Verification Checklist: Feature Catalog [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/checklist]"
+description: "title: \"Verification Checklist: Feature Catalog Audit & Remediation\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "feature"
+  - "catalog"
+  - "006"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Feature Catalog Audit & Remediation
 

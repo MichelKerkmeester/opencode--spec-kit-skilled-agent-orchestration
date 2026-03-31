@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-doc Feature Catalog + Testing Playbook Alignment [template:level_2/spec.md]"
+title: "Feature Specification: sk-doc Feature [03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook/spec]"
 description: "Align system-spec-kit and mcp-coco-index documentation around the shipped feature-catalog and manual-testing-playbook contracts, then update sk-doc templates, references, and routing docs to match the final structure."
 trigger_phrases:
   - "feature catalog"
@@ -137,6 +137,7 @@ Document the final contract so future maintenance reflects what actually shipped
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -155,6 +156,7 @@ Document the final contract so future maintenance reflects what actually shipped
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

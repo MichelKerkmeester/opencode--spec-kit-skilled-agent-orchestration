@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Utility Template Trigger Keywords - Technical Approach & Architecture [012-handover-triggers/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/plan]"
 description: "Implementation plan for adding automatic keyword detection for handover.md and debug-delegation.md templates to SKILL.md."
 trigger_phrases:
   - "implementation"
@@ -52,6 +52,7 @@ Add three targeted modifications to SKILL.md: (1) new "Utility Template Triggers
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before implementation.**
@@ -76,6 +77,7 @@ Add three targeted modifications to SKILL.md: (1) new "Utility Template Triggers
 
 No violations - this is a documentation-only change with no new abstractions.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -105,6 +107,7 @@ Single file modification to existing SKILL.md - no new files required.
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 0: Research & Discovery
@@ -151,8 +154,10 @@ Single file modification to existing SKILL.md - no new files required.
 - **Duration**: 5 minutes
 - **Parallel Tasks**: None
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Manual Verification
@@ -171,6 +176,7 @@ Single file modification to existing SKILL.md - no new files required.
 - [ ] No broken markdown formatting
 - [ ] Section numbers still sequential
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -210,6 +216,7 @@ Single file modification to existing SKILL.md - no new files required.
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -222,6 +229,7 @@ Single file modification to existing SKILL.md - no new files required.
 
 None.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

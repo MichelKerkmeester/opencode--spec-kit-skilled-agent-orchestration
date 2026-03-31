@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Context-Server Modularization - Verification Items [066-context-server-modularization/checklist]"
+title: "Validatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/checklist]"
 description: "Validation checklist for context-server.js modularization."
 trigger_phrases:
   - "validation"
@@ -134,6 +134,7 @@ Ensure context-server.js modularization maintains identical behavior while achie
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -153,13 +154,17 @@ When marking items complete, include evidence:
 - [x] CHK027 [P0] memory_search works | Evidence: Tested via Claude Code, returns expected results
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
+<!-- ANCHOR:summary -->
 ## VERIFICATION SUMMARY
 
 At completion, update this section:
 
 ```markdown
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 57
 - **Verified [x]**: 0
@@ -169,6 +174,7 @@ At completion, update this section:
 - **Verification Date**: [YYYY-MM-DD]
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## WHEN TO USE THIS CHECKLIST

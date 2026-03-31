@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Post-Rename Testing [009-speckit-testing/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/plan]"
 description: "Technical approach for comprehensive testing of system-spec-kit skill."
 trigger_phrases:
   - "implementation"

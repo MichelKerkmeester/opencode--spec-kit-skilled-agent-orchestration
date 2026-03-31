@@ -174,8 +174,7 @@ See `decision-record.md` for full ADR documentation.
 <!-- /ANCHOR:risks-realized -->
 ---
 
-<!-- ANCHOR:lessons -->
-## Lessons Learned
+## Key Decisions
 
 ### What Went Well
 - ADR documentation helped make trade-off discussions clear
@@ -193,7 +192,6 @@ See `decision-record.md` for full ADR documentation.
 - Consider authentication library (Passport.js) for OAuth integration
 
 
-<!-- /ANCHOR:lessons -->
 ---
 
 <!-- ANCHOR:deviations -->

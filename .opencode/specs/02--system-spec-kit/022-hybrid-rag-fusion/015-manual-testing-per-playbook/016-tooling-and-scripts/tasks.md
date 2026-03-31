@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 016-Tooling-and-Scripts Manual Testing"
+title: "Tasks: 016-Too [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts/tasks]"
 description: "Task list for executing all 65 tooling-and-scripts scenario IDs across 33 scenario files, organized by group across setup, implementation, and verification phases."
 trigger_phrases:
   - "tooling scripts manual testing"

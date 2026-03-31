@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Plugin Dashboard Optimization [002-memory-plugin/tasks]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/tasks]"
 description: "Task breakdown by user story for the Memory Plugin Dashboard Optimization feature."
 trigger_phrases:
   - "tasks"

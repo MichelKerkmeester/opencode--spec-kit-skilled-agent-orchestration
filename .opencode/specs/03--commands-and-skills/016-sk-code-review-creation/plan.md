@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: sk-code--review Promotion [014-code-review-skill/plan]"
+title: "Implementation Plan: sk-code--review Promotion [03--commands-and-skills/016-sk-code-review-creation/plan]"
 description: "Level 2 implementation plan for promoting sk-code--review to first-class review baseline with baseline+overlay runtime contract across skills, agents, commands, and routing."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation plan"
   - "sk-code--review"
@@ -9,13 +8,14 @@ trigger_phrases:
   - "041"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Plan: sk-code--review Promotion
 
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-## 1. OVERVIEW
+### Overview
 
 Implementation plan for hard-renaming the review skill package, rebuilding router logic to standards parity, wiring review runtime contracts, and closing with command-backed evidence.
 ---
@@ -36,7 +36,7 @@ Implementation plan for hard-renaming the review skill package, rebuilding route
 
 Execution is organized into six phases:
 1. Rename and normalize the skill package.
-2. Rebuild `SKILL.md` smart router + baseline/overlay precedence model.
+2. Rebuild SKILL.md smart router + baseline/overlay precedence model.
 3. Update review agents and orchestrators.
 4. Sweep all review-dispatch command YAML assets.
 5. Update advisor and catalog docs.
@@ -73,8 +73,8 @@ Review baseline + stack overlay contract.
 ### Key Components
 - **Baseline skill**: `.opencode/skill/sk-code--review/`
 - **Overlay skills**: `sk-code--opencode`, `sk-code--web`, `sk-code--full-stack`
-- **Review runtimes**: `.opencode/agent/review.md`, `.opencode/agent/chatgpt/review.md`, `.gemini/agents/review.md`, `.claude/agents/review.md`
-- **Orchestration docs**: `.opencode/agent/orchestrate.md`, `.opencode/agent/chatgpt/orchestrate.md`, `.gemini/agents/orchestrate.md`, `.claude/agents/orchestrate.md`
+- **Review runtimes**: `.opencode/agent/review.md`, .opencode/agent/chatgpt/review.md, `.gemini/agents/review.md`, `.claude/agents/review.md`
+- **Orchestration docs**: `.opencode/agent/orchestrate.md`, .opencode/agent/chatgpt/orchestrate.md, `.gemini/agents/orchestrate.md`, `.claude/agents/orchestrate.md`
 - **Codex wrappers**: `.codex/agents/review.toml`, `.codex/agents/orchestrate.toml`
 - **Workflow dispatch**: 18 YAMLs under `spec_kit/assets` and `create/assets`
 - **Routing engine**: `.opencode/skill/scripts/skill_advisor.py`
@@ -98,7 +98,7 @@ Review baseline + stack overlay contract.
 - [x] Update frontmatter/name and README package references.
 
 ### Phase 2: Router rebuild
-- [x] Rebuild `SKILL.md` with standards-parity smart routing structure.
+- [x] Rebuild SKILL.md with standards-parity smart routing structure.
 - [x] Add baseline+overlay logic and precedence matrix.
 - [x] Add `RELATED RESOURCES` section.
 
@@ -164,6 +164,7 @@ Review baseline + stack overlay contract.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -185,6 +186,7 @@ Phase 3 + Phase 4 + Phase 5 -> Phase 6 (validation + closure)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

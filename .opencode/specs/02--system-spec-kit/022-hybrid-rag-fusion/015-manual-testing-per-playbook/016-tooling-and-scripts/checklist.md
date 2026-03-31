@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 016-Tooling-and-Scripts Manual Testing"
+title: "Verificati [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts/checklist]"
 description: "P0/P1/P2 checklist for verifying all 65 tooling-and-scripts scenario IDs are executed with evidence, covering pre-implementation, code quality, testing, security, documentation, and file organisation checks."
 trigger_phrases:
   - "tooling scripts manual testing"

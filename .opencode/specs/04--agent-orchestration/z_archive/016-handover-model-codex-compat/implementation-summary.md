@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Spec 016 — Handover Haiku + Codex [016-handover-model-codex-compat/implementation-summary]"
+title: "Implementation Summary: [04--agent-orchestration/z_archive/016-handover-model-codex-compat/implementation-summary]"
 description: "Added to .codex/config.toml"
 trigger_phrases:
   - "implementation"
@@ -87,11 +87,19 @@ Added fields: `profile`, `approval_policy`, `sandbox_mode`
 <!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:limitations -->
-## Lessons Learned
+## Key Decisions
 
 - Codex CLI has no native sub-agent system; profile-based dispatch via MCP is the viable path
 - Claude Code YAML frontmatter fields are completely ignored by Codex (no partial parsing)
 - Agent body content is platform-agnostic; only frontmatter needs per-platform adaptation
 - Model differentiation is better achieved via reasoning effort and model variants than entirely separate model families
 
+<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:decisions -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

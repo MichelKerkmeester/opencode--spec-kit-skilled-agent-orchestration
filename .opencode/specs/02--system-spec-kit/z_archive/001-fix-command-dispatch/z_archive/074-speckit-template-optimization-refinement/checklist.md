@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Template Optimization [074-speckit-template-optimization-refinement/checklist]"
+title: "...-system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/checklist]"
 description: "Verification Date: 2026-01-20"
 trigger_phrases:
   - "verification"
@@ -30,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
@@ -39,8 +40,10 @@ contextType: "implementation"
 - [x] CHK-003 [P1] Dependencies identified and available
   - Evidence: Spec 073 complete, backup folder exists, API access confirmed
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks
@@ -52,8 +55,10 @@ contextType: "implementation"
 - [x] CHK-013 [P1] Code follows project patterns
   - Evidence: Template v2.0 structure followed, SKILL.md conventions maintained
 
+<!-- /ANCHOR:code-quality -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
@@ -65,8 +70,10 @@ contextType: "implementation"
 - [x] CHK-023 [P1] Error scenarios validated
   - Evidence: Agent timeout, merge conflict procedures in plan.md
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets
@@ -76,8 +83,10 @@ contextType: "implementation"
 - [x] CHK-032 [P1] Auth/authz working correctly
   - Evidence: N/A - no authentication in SpecKit
 
+<!-- /ANCHOR:security -->
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized
@@ -87,8 +96,10 @@ contextType: "implementation"
 - [x] CHK-042 [P2] README updated (if applicable)
   - Evidence: N/A - no README changes required
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-050 [P1] Temp files in scratch/ only
@@ -98,6 +109,7 @@ contextType: "implementation"
 - [x] CHK-052 [P2] Findings saved to memory/
   - Evidence: Memory save deferred - context captured in spec folder
 
+<!-- /ANCHOR:file-org -->
 ---
 
 ## L3+: ARCHITECTURE VERIFICATION
@@ -154,6 +166,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All spec documents synchronized
@@ -165,6 +178,7 @@ contextType: "implementation"
 - [x] CHK-143 [P2] Knowledge transfer documented
   - Evidence: Analysis docs serve as knowledge transfer
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## L3+: MULTI-AGENT VERIFICATION
@@ -195,6 +209,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -205,6 +220,7 @@ contextType: "implementation"
 
 **Verification Date**: 2026-01-20
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## L3+: SIGN-OFF

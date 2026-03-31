@@ -1,5 +1,5 @@
 ---
-title: "Specification: System-Spec-Kit Upgrade from Research Synthesis [077-speckit-upgrade-from-research/spec]"
+title: "Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/spec]"
 description: "This specification consolidates findings from four prior research specs (060-063) into a single implementation plan for upgrading the system-spec-kit skill. The research analyze..."
 trigger_phrases:
   - "specification"
@@ -45,6 +45,7 @@ The implementation prioritizes backwards compatibility with existing spec folder
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. Problem Statement
 
 ### Current Gaps in System-Spec-Kit
@@ -68,8 +69,10 @@ The current system-spec-kit was designed with memory files as the primary state 
 3. **No Learning Loop**: Pre/post task assessments not captured for improvement measurement
 4. **Subjective Confidence**: Confidence is a single percentage without objective uncertainty factors
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 3. Goals and Success Criteria
 
 ### Primary Goals
@@ -93,8 +96,10 @@ The current system-spec-kit was designed with memory files as the primary state 
 | **SC6** | Five Checks framework applied to significant decisions | Audit of decision-record.md entries |
 | **SC7** | skill_advisor.py includes uncertainty threshold check | Script execution with edge cases |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 4. Scope
 
 ### In-Scope
@@ -133,8 +138,10 @@ The current system-spec-kit was designed with memory files as the primary state 
 | Profile-based configuration | Nice-to-have, not critical path | v2.0 |
 | Carryover context windows | Requires more design | v2.0 |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. Requirements
 
 ### Functional Requirements
@@ -305,6 +312,7 @@ else:
 | **NFR-3** | Memory search with anchors < 200ms typical | Performance benchmark |
 | **NFR-4** | Resume detection < 500ms | Performance benchmark |
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 6. Architecture Overview
@@ -488,6 +496,7 @@ function updateState(specPath, updates) {
 
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. Complexity Assessment
 
 | Dimension | Score (0-20) | Rationale |
@@ -501,6 +510,7 @@ function updateState(specPath, updates) {
 
 **Total Score:** 85 / 100 (Level 3+ threshold: 80)
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. References

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: MCP Server ESM Migration"
+title: "Feature Specification: MCP Server [02--system-spec-kit/023-esm-module-compliance/002-mcp-server-esm-migration/spec]"
 description: "Migrate @spec-kit/mcp-server to package-local native ESM: package metadata, tsconfig, import rewrites, and CommonJS cleanup."
 trigger_phrases:
   - "mcp server esm migration"
   - "mcp_server esm"
   - "023 phase 2"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: MCP Server ESM Migration
 

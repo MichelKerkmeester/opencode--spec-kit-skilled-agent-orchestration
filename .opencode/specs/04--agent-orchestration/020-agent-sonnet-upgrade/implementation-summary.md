@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [020-agent-sonnet-upgrade/implementation-summary]"
+title: "Implementation Summary [020-agent-sonnet-upgra [020-agent-sonnet-upgrade/implementation-summary]"
 description: "All agent model fields across the Copilot and Claude Code agent systems were upgraded to align on claude-sonnet-4-6 as the standard fleet model. Five Copilot agents were pinned ..."
 trigger_phrases:
   - "implementation"
@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `04--agent-orchestration/020-agent-sonnet-upgrade` |
+| **Spec Folder** | 020-agent-sonnet-upgrade |
 | **Completed** | 2026-02-18 |
 | **Level** | 2 |
 | **Status** | Partially Reverted |
@@ -39,18 +39,26 @@ All agent model fields across the Copilot and Claude Code agent systems were upg
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/agent/copilot/context.md` | Modified | `github-copilot/claude-haiku-4.5` → `github-copilot/claude-sonnet-4-6` |
-| `.opencode/agent/copilot/handover.md` | Modified | `github-copilot/claude-haiku-4.5` → `github-copilot/claude-sonnet-4-6` |
-| `.opencode/agent/copilot/review.md` | Modified | Added `github-copilot/claude-sonnet-4-6` model field; removed stale "keep model-agnostic" comment |
-| `.opencode/agent/copilot/speckit.md` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
-| `.opencode/agent/copilot/write.md` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
-| `.opencode/agent/copilot/research/research/research.md` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
-| `.opencode/agent/copilot/debug.md` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
+| `Copilot context agent file` | Modified | `github-copilot/claude-haiku-4.5` → `github-copilot/claude-sonnet-4-6` |
+| `Copilot handover agent file` | Modified | `github-copilot/claude-haiku-4.5` → `github-copilot/claude-sonnet-4-6` |
+| `Copilot review agent file` | Modified | Added `github-copilot/claude-sonnet-4-6` model field; removed stale "keep model-agnostic" comment |
+| `Copilot speckit agent file` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
+| `Copilot write agent file` | Modified | `github-copilot/claude-sonnet-4.5` → `github-copilot/claude-sonnet-4-6` |
+| `Copilot research agent file` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
+| `Copilot debug agent file` | Modified | Deleted `model:` line (was `github-copilot/claude-opus-4.6`) to enable parent model inheritance |
 | `.claude/agents/context.md` | Modified | `haiku` → `sonnet` |
 | `.claude/agents/handover.md` | Modified | `haiku` → `sonnet` |
-| `.claude/agents/review.md` | Modified | `opus` → `sonnet` |
+| `.claude/agents/review agent` | Modified | `opus` → `sonnet` |
 | `.opencode/changelog/00--opencode-environment/v2.1.3.0.md` | Created | Release changelog entry for v2.1.3.0 |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The change was delivered as a metadata-only upgrade across the affected agent definitions. Each target file was inspected after editing so the final model assignment, removed model pins, and changelog record stayed aligned without changing agent behavior.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
@@ -61,7 +69,7 @@ All agent model fields across the Copilot and Claude Code agent systems were upg
 |----------|-----------|
 | Uniform `claude-sonnet-4-6` for Copilot fleet | Eliminates version fragmentation; sonnet-4.5 pinned agents missed the 4.6 capability improvement; haiku agents lacked sufficient reasoning depth for context and session work |
 | Remove model field from research and debug (not upgrade) | Hard-pinning opus prevented flexible model dispatch by the orchestrator; removing the field lets these agents inherit whichever model the parent dispatches, enabling cost/capability trade-offs without file edits |
-| Include review.md even though it had no prior model field | review.md was model-agnostic by prior convention (spec 015) but was explicitly included in the upgrade to provide consistent review quality via pinned sonnet-4-6 |
+| Include review agent even though it had no prior model field | review agent was model-agnostic by prior convention (spec 015) but was explicitly included in the upgrade to provide consistent review quality via pinned sonnet-4-6 |
 | `sonnet` (not `claude-sonnet-4-6`) for Claude Code agents | Claude Code agents use the short-form model alias; `sonnet` maps to the current latest sonnet in the Claude Code runtime, which is claude-sonnet-4-6 at time of release |
 <!-- /ANCHOR:decisions -->
 

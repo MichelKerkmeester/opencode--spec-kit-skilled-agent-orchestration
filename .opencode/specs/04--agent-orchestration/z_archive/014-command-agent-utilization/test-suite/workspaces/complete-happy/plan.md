@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification System with In-App Alerts and Email Delivery [complete-happy/plan]"
+title: "Implementati [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/plan]"
 description: "This plan implements a unified notification system with two delivery channels: real-time in-app alerts via WebSocket and email delivery via SendGrid. The architecture follows an..."
 trigger_phrases:
   - "implementation"
@@ -37,6 +37,7 @@ This plan implements a unified notification system with two delivery channels: r
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -49,8 +50,10 @@ This plan implements a unified notification system with two delivery channels: r
 - [x] Tests passing (unit + integration)
 - [x] Docs updated (spec/plan/tasks)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -72,8 +75,10 @@ Event-Driven Service Architecture with Worker Queue
 5. EmailWorker processes queue, sends via SendGrid, updates delivery status in DB
 6. Client-side NotificationBell receives WebSocket events and updates UI in real-time
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
@@ -97,8 +102,10 @@ Event-Driven Service Architecture with Worker Queue
 - [x] Edge case testing (disconnection, high volume, preference changes)
 - [x] Documentation updated
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -108,8 +115,10 @@ Event-Driven Service Architecture with Worker Queue
 | Component | NotificationBell, NotificationPanel | React Testing Library |
 | Manual | End-to-end notification flow, email delivery, preference management | Browser + SendGrid dashboard |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -120,8 +129,10 @@ Event-Driven Service Architecture with Worker Queue
 | Prisma ORM | Internal | Green | Database access blocked; core feature blocked |
 | PostgreSQL 15 | Internal | Green | All persistence blocked |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Critical bug in notification dispatch causing data loss or spam; SendGrid quota exhaustion
@@ -129,8 +140,10 @@ Event-Driven Service Architecture with Worker Queue
 
 ---
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -146,8 +159,10 @@ Phase 1.5 (Config) ───┘
 | Core | Setup, Config | Verify |
 | Verify | Core | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -157,8 +172,10 @@ Phase 1.5 (Config) ───┘
 | Verification | Medium | 2-4 hours |
 | **Total** | | **9-16 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -185,3 +202,4 @@ LEVEL 2 PLAN (~140 lines)
 - Phase dependencies, effort estimation
 - Enhanced rollback procedures
 -->
+<!-- /ANCHOR:enhanced-rollback -->

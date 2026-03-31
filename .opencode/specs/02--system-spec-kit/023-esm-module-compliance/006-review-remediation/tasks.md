@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Deep Review Remediation"
+title: "Tasks: Deep Review Remediation [02--system-spec-kit/023-esm-module-compliance/006-review-remediation/tasks]"
 description: "Task breakdown for fixing all 18 findings from the deep review, organized by implementation phase."
 trigger_phrases:
   - "remediation tasks"
   - "review fix tasks"
   - "023 phase 6 tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Deep Review Remediation
 

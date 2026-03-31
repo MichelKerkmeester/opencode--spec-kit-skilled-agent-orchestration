@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 006-shared-memory-rollout"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/plan]"
 description: "Execution plan for Hydra Phase 6 collaboration and staged rollout."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 6 plan"
   - "shared memory plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 006-shared-memory-rollout
 
@@ -137,6 +137,7 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -149,8 +150,10 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 | Conflict handling and telemetry | Shared-space model | Staged rollout |
 | Staged rollout and rollback | Conflict handling | Final roadmap sign-off |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -160,8 +163,10 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 | Staged rollout and rollback | High | 2-4 days |
 | **Total** | | **6-12 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -180,6 +185,7 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 - **Has data migrations?** Possibly additive shared-space metadata.
 - **Reversal procedure**: disable collaboration, revert shared-space metadata if necessary, and preserve audit evidence.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -242,6 +248,7 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-601: Keep Shared Memory Opt-In and Deny-by-Default
@@ -256,6 +263,7 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 - Safer release and clearer operator control.
 - Slower broad adoption until evidence supports expansion.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

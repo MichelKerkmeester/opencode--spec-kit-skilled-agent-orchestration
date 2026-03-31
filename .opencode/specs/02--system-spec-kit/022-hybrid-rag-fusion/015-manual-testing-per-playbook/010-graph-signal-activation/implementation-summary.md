@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "...em-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/implementation-summary]"
 description: "Phase 010 graph-signal-activation manual testing -- 15 scenarios analyzed, 15 PASS. Pass rate: 100%."
 trigger_phrases:
   - "graph-signal-activation implementation summary"
   - "phase 010 summary"
   - "manual testing graph-signal-activation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

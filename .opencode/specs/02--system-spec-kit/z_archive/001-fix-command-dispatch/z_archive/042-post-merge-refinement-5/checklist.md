@@ -1,5 +1,5 @@
 ---
-title: "QA Validation Checklist: Spec Kit Memory Refinement Phase 5 - Validation Items [042-post-merge-refinement-5/checklist]"
+title: "QA Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5/checklist]"
 description: "Comprehensive validation checklist for the Spec Kit and Memory System refinement project based on 10-agent analysis findings."
 trigger_phrases:
   - "validation"
@@ -453,6 +453,7 @@ Validate all critical bug fixes, significant improvements, and refinements ident
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### AI Self-Verification Requirement
@@ -486,6 +487,7 @@ When marking items complete, include evidence:
 - [ ] CHK092 [P2] Fuzzy matching | Deferred: Post-MVP scope per user approval
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## 4. SUMMARY STATISTICS
@@ -525,6 +527,7 @@ When marking items complete, include evidence:
 ### Verification Summary
 
 ```markdown
+<!-- ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 108
 - **Verified [x]**: 0
@@ -539,3 +542,4 @@ When marking items complete, include evidence:
 *Document created: 2025-12-25*
 *Spec folder: 042-post-merge-refinement-5*
 *Based on: analysis.md, recommendations.md*
+<!-- /ANCHOR:summary -->

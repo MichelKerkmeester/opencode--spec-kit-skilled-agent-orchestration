@@ -1,5 +1,5 @@
 ---
-title: "Plan: @write Agent Enforcement for /create Commands [002-write-agent-enforcement/plan]"
+title: "Plan: @write Agent Enforcement for /create [04--agent-orchestration/z_archive/002-write-agent-enforcement/plan]"
 description: "For each command, make these changes"
 trigger_phrases:
   - "plan"

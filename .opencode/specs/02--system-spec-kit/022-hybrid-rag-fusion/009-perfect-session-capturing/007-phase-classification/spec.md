@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Phase Classification"
+title: "Feature Specific [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification/spec]"
 description: "Stabilize phase classification and routing semantics for the memory pipeline."
+trigger_phrases:
+  - "feature"
+  - "specific"
+  - "spec"
+  - "007"
+  - "phase"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Phase Classification
 

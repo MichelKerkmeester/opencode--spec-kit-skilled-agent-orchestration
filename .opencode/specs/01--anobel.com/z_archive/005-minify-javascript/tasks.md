@@ -1,5 +1,5 @@
 ---
-title: "Tasks: minify-javascript - Implementation Breakdown [005-minify-javascript/tasks]"
+title: "Tasks: minify-javascript - Implementation Breakdown [01--anobel.com/z_archive/005-minify-javascript/tasks]"
 description: "Minify the JavaScript files in src/2_javascript/z_minified/ in-place, with conservative settings to avoid runtime regressions when embedded in Webflow."
 trigger_phrases:
   - "tasks"

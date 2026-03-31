@@ -1,5 +1,5 @@
 ---
-title: "Comprehensive Verification Checklist - Spec 072 [072-speckit-template-memory-ranking-release/checklist]"
+title: "...--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/072-speckit-template-memory-ranking-release/checklist]"
 description: "Issue: Spread operators could silently overwrite functions with same names"
 trigger_phrases:
   - "comprehensive"

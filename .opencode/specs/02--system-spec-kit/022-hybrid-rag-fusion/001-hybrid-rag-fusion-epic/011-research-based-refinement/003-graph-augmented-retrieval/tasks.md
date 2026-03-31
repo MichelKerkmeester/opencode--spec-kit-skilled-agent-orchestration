@@ -1,3 +1,18 @@
+---
+title: "...t/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval/tasks]"
+description: "------------------------------------------------------- | ------- | ---- | ------ |"
+trigger_phrases:
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "tasks"
+  - "003"
+  - "graph"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: Graph-Augmented Retrieval
 
 > Tracks all implementation tasks across plan phases A, B, and C.

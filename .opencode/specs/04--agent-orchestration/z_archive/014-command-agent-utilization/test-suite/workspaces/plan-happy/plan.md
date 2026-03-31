@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: JWT Authentication with RS256 Signing [plan-happy/plan]"
+title: "Implementation [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/plan]"
 description: "This plan implements JWT authentication using RS256 asymmetric signing within the NestJS framework. The approach follows NestJS module conventions: a dedicated AuthModule encaps..."
 trigger_phrases:
   - "implementation"
@@ -38,6 +38,7 @@ This plan implements JWT authentication using RS256 asymmetric signing within th
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -50,8 +51,10 @@ This plan implements JWT authentication using RS256 asymmetric signing within th
 - [ ] Tests passing (if applicable)
 - [ ] Docs updated (spec/plan/tasks)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -72,8 +75,10 @@ Modular Monolith (NestJS Module-based architecture)
 5. On token expiry, client calls POST /auth/refresh with refresh token
 6. JwtService validates refresh token, rotates it, issues new token pair
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
@@ -97,8 +102,10 @@ Modular Monolith (NestJS Module-based architecture)
 - [ ] Edge case testing (expired tokens, malformed tokens, reused refresh tokens)
 - [ ] Documentation updated (spec/plan/tasks marked complete)
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -107,8 +114,10 @@ Modular Monolith (NestJS Module-based architecture)
 | Integration | AuthController login/refresh/logout endpoints | Jest + supertest |
 | Manual | Full authentication flow, token expiry, protected routes | Postman / curl |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -118,8 +127,10 @@ Modular Monolith (NestJS Module-based architecture)
 | RSA Key Pair | Internal | Green | Generate during Phase 1 setup |
 | User Entity/Service | Internal | Yellow | Need basic user lookup - can stub initially |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Auth module causes application startup failures or security vulnerability discovered
@@ -128,8 +139,10 @@ Modular Monolith (NestJS Module-based architecture)
 ---
 
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -145,8 +158,10 @@ Phase 1.5 (Config) ───┘
 | Core | Setup, Config | Verify |
 | Verify | Core | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -156,8 +171,10 @@ Phase 1.5 (Config) ───┘
 | Verification | Medium | 2-3 hours |
 | **Total** | | **7-11 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -183,3 +200,4 @@ LEVEL 2 PLAN (~140 lines)
 - Phase dependencies, effort estimation
 - Enhanced rollback procedures
 -->
+<!-- /ANCHOR:enhanced-rollback -->

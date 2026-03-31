@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Description Enrichment"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment/spec]"
 description: "Improve description fidelity and enrichment quality for spec folder descriptions."
+trigger_phrases:
+  - "feature"
+  - "specif"
+  - "spec"
+  - "006"
+  - "description"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Description Enrichment
 

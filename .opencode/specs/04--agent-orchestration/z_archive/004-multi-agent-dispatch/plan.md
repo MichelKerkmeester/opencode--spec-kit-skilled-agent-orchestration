@@ -1,5 +1,5 @@
 ---
-title: "Plan: Multi-Agent Dispatch Implementation [004-multi-agent-dispatch/plan]"
+title: "Plan: Multi-Agent Dispatch Implementation [04--agent-orchestration/z_archive/004-multi-agent-dispatch/plan]"
 description: "User selects dispatch mode (A/B/C)"
 trigger_phrases:
   - "plan"

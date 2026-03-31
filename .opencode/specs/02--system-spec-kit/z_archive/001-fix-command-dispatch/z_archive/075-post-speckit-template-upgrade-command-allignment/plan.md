@@ -1,5 +1,5 @@
 ---
-title: "Plan: Post-SpecKit Template Upgrade - Command Alignment [075-post-speckit-template-upgrade-command-allignment/plan]"
+title: "...stem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment/plan]"
 description: "Multi-agent analysis (10 Opus agents) of specs 072-075 and current system-spec-kit state reveals 19 commands requiring alignment updates due to recent SpecKit v1.9.0 CORE + ADDE..."
 trigger_phrases:
   - "plan"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Kit Bug Remediation [080-speckit-bug-remediation/tasks]"
+title: "Tasks: Spec Kit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/tasks]"
 description: "Assigned Bugs: BUG-001, BUG-002, BUG-003"
 trigger_phrases:
   - "tasks"
@@ -32,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1 Tasks
 
 ### TASK-001: Cognitive Module Fixes (Agent 1)
@@ -178,8 +179,10 @@ Verify: Test with adversarial inputs, check no hangs
 
 **Status:** [ ] PENDING
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2 Tasks
 
 ### TASK-005: Cache/Weight Consolidation (Agent 5)
@@ -280,8 +283,10 @@ Verify: Test with adversarial inputs, check no hangs
 
 **Status:** [ ] PENDING
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3 Tasks
 
 ### TASK-008: Low Bugs Group A (Agent 8)
@@ -298,6 +303,7 @@ Verify: Test with adversarial inputs, check no hangs
 
 **Status:** [ ] PENDING
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Verification Task

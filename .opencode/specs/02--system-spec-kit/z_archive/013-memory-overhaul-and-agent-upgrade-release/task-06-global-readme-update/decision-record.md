@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Task 06 — Root README Update [task-06-global-readme-update/decision-record]"
+title: "...system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/decision-record]"
 description: "Task 06 requires systematic audit/creation of root README.md with consolidated environment changelog. The scope must be clearly defined to ensure complete coverage while avoidin..."
 trigger_phrases:
   - "decision"

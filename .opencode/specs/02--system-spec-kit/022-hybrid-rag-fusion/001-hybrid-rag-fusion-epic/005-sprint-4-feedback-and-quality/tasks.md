@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Sprint 4 — Feedback and Quality"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/tasks]"
 description: "Task breakdown for MPAB chunk aggregation, learned relevance feedback, and shadow scoring."
 trigger_phrases:
   - "sprint 4 tasks"
   - "feedback and quality tasks"
-  - "MPAB tasks"
-  - "R11 tasks"
+  - "mpab tasks"
+  - "r11 tasks"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -112,6 +112,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [ ] T004 Verify R1 dark-run: MRR@5 within 2%, N=1 no regression [included] {T001}
@@ -129,6 +130,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
+<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Phase System [021-spec-kit-phase-system/decision-record]"
+title: "Decision Record: SpecKit Phase System [02--system-spec-kit/021-spec-kit-phase-system/decision-record]"
 description: "The phase system needed a home in the existing SpecKit architecture. Three options existed: introduce a new Level 4 tier for \"phased\" specs, implement phases as a behavioral lay..."
 trigger_phrases:
   - "decision"
@@ -429,6 +429,7 @@ When `--phase` creates child spec folders, each child needs a documentation leve
 ---
 
 <!-- ANCHOR:adr-005 -->
+<!-- ANCHOR:context -->
 ## ADR-005: Gate 3 Option E Contextual Display
 
 <!-- ANCHOR:adr-005-context -->
@@ -528,8 +529,10 @@ Gate 3 in CLAUDE.md currently presents four options: A (existing spec), B (new s
 <!-- /ANCHOR:adr-005-impl -->
 <!-- /ANCHOR:adr-005 -->
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## SESSION DECISION LOG
 
 | # | Decision | Rationale | Timestamp |
@@ -546,3 +549,4 @@ Write in human voice: active, direct, specific. No em dashes, no hedging, no AI 
 State decisions with certainty. Be honest about trade-offs.
 HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
 -->
+<!-- /ANCHOR:decision -->

@@ -1,6 +1,14 @@
 ---
-title: "Tasks: Update Install Guide"
+title: "Tasks: Update Install Guide [02--system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide/tasks]"
 description: "Task breakdown for updating the MCP server installation guide."
+trigger_phrases:
+  - "tasks"
+  - "update"
+  - "install"
+  - "guide"
+  - "017"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Tasks: 017-update-install-guide

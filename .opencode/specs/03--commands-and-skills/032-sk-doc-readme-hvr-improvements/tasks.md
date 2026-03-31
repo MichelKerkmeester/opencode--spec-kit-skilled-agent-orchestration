@@ -1,6 +1,6 @@
 ---
-title: "Tasks: sk-doc README and HVR Improvements"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: sk-doc README and HVR Improvements [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/tasks]"
+description: "Task ledger for upgrading sk-doc HVR rules, README template guidance, and packet compliance."
 trigger_phrases:
   - "hvr tasks"
   - "readme upgrade tasks"
@@ -31,62 +31,55 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Research and Brief Preparation
+## Phase 1: Setup
 
-- [ ] T001 Read and annotate exemplar READMEs for pattern extraction
-- [ ] T002 Draft agent brief for D1: HVR rules upgrade (`hvr_rules.md`)
-- [ ] T003 Draft agent brief for D2: README template upgrade (`readme_template.md`)
-- [ ] T004 Draft agent brief for D3: readme_creation reference (`readme_creation.md`)
+### Research and Brief Preparation
+- [x] T001 Read and annotate the exemplar READMEs under `.opencode/skill/system-spec-kit/`
+- [x] T002 Draft the HVR rules upgrade brief for `.opencode/skill/sk-doc/references/global/hvr_rules.md`
+- [x] T003 Draft the README template upgrade brief for `.opencode/skill/sk-doc/assets/documentation/readme_template.md`
+- [x] T004 Draft the README creation reference brief for `.opencode/skill/sk-doc/references/specific/readme_creation.md`
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Parallel Agent Implementation
+## Phase 2: Implementation
 
-- [ ] T005 [P] Dispatch Agent 1 via cli-codex: HVR rules upgrade (`references/global/hvr_rules.md`)
-- [ ] T006 [P] Dispatch Agent 2 via cli-codex: README template upgrade (`assets/documentation/readme_template.md`)
-- [ ] T007 [P] Dispatch Agent 3 via cli-codex: readme_creation reference (`references/specific/readme_creation.md`)
-- [ ] T008 Collect and stage all agent outputs
+### Deliverable Workstreams
+- [x] T005 [P] Upgrade `.opencode/skill/sk-doc/references/global/hvr_rules.md`
+- [x] T006 [P] Upgrade `.opencode/skill/sk-doc/assets/documentation/readme_template.md`
+- [x] T007 [P] Create `.opencode/skill/sk-doc/references/specific/readme_creation.md`
+- [x] T008 Collect and stage the documentation changes for review
+
+### Review and Refinement
+- [x] T009 Review the HVR rules output for structure, format, and voice
+- [x] T010 Review the README template output for two-tier voice and structural patterns
+- [x] T011 Review the README creation reference for workflow completeness and cross-references
+- [x] T012 Refine prose and normalize path references across the packet
+- [x] T013 Sync related routing notes in `.opencode/skill/sk-doc/SKILL.md`
+- [x] T014 Record the codex flag warning in `.opencode/skill/cli-codex/SKILL.md` and `.opencode/skill/cli-codex/assets/prompt_templates.md`
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review and Refinement
+## Phase 3: Verification
 
-- [ ] T009 Review Agent 1 output: HVR compliance, format, content accuracy
-- [ ] T010 Review Agent 2 output: HVR compliance, format, two-tier voice
-- [ ] T011 Review Agent 3 output: HVR compliance, format, workflow completeness
-- [ ] T012 Refine voice and prose in all files (rewrite GPT-sounding passages)
-- [ ] T013 Fix cross-references between all three files
-- [ ] T014 Write final versions to disk
+### Packet Verification
+- [ ] T015 Verify frontmatter, anchors, and template headers in all packet docs
+- [ ] T016 Verify cited sk-doc, system-spec-kit, and cli-codex paths resolve in the repo
+- [ ] T017 Re-run the verbose spec validator on this folder
+- [ ] T018 Record any remaining non-blocking warnings for follow-up
 <!-- /ANCHOR:phase-3 -->
-
----
-
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Verification
-
-- [ ] T015 Verify frontmatter, anchors and heading format in all files
-- [ ] T016 Verify hvr_rules.md covers structural AND word-level AI tells
-- [ ] T017 Verify readme_template.md reflects two-tier voice pattern
-- [ ] T018 Verify readme_creation.md covers full README creation workflow
-- [ ] T019 Verify no regressions to install_guide_creation.md
-- [ ] T020 Cross-reference links all resolve
-- [ ] T021 Update spec folder docs (tasks.md, checklist.md, implementation-summary.md)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] All three deliverables pass HVR compliance (0 hard blockers)
-- [ ] All cross-references verified
-- [ ] Checklist.md P0 items all marked with evidence
+- [ ] All required packet docs are template-safe
+- [ ] No hard validation errors remain for this folder
+- [ ] The packet references only committed repo files or plain-text temporary artifacts
 <!-- /ANCHOR:completion -->
 
 ---
@@ -97,6 +90,7 @@ contextType: "general"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
 <!-- /ANCHOR:cross-refs -->
 
 ---

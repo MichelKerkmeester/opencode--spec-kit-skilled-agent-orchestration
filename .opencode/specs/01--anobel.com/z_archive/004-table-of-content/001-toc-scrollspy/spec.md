@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories [001-toc-scrollspy/spec]"
+title: "Feature Specification: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/spec]"
 description: "Custom Table of Contents implementation with flexible styling options, replacing Finsweet's Webflow-dependent approach with a standalone IntersectionObserver-based solution."
 trigger_phrases:
   - "feature"
@@ -134,6 +134,7 @@ As a developer, I need to configure the viewport detection zone via data attribu
 ---
 
 <!-- ANCHOR:functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### Core Detection
@@ -169,6 +170,8 @@ As a developer, I need to configure the viewport detection zone via data attribu
 ---
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -184,6 +187,7 @@ As a developer, I need to configure the viewport detection zone via data attribu
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -236,6 +240,7 @@ As a developer, I need to configure the viewport detection zone via data attribu
 ---
 
 <!-- ANCHOR:out-of-scope -->
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 - **Auto-generation of TOC**: Developer must create HTML structure manually
@@ -246,6 +251,8 @@ As a developer, I need to configure the viewport detection zone via data attribu
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
+<!-- /ANCHOR:scope -->
 ## 10. OPEN QUESTIONS
 
 All questions resolved during research phase.
@@ -254,6 +261,7 @@ All questions resolved during research phase.
 ---
 
 <!-- ANCHOR:appendix -->
+<!-- /ANCHOR:questions -->
 ## 11. APPENDIX
 
 ### References

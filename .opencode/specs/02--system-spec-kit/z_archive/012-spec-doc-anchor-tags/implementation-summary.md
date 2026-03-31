@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [012-spec-doc-anchor-tags/implementation-summary]"
+title: "Implementation Summary [012-spec-doc-anc [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/implementation-summary]"
 description: "Added <!-- ANCHOR:name --> / <!-- /ANCHOR:name --> tags to all spec kit templates (CORE, addendum, and composed level templates), enabling section-level retrieval for spec docum..."
 trigger_phrases:
   - "implementation"

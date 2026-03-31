@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Attribute Cleanup Deepdive [020-attribute-cleanup/tasks]"
+title: "Tasks: Attribute Cleanup Deepdive [020-attribute-cleanup/tasks] [01--anobel.com/z_archive/020-attribute-cleanup/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -18,6 +18,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -34,6 +35,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1-setup -->
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [x] T001 Create spec folder (`.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/`)
@@ -78,6 +80,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:cross-references -->
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -93,3 +96,4 @@ CORE TEMPLATE (~60 lines)
 - 3 phases: Setup, Implementation, Verification
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:cross-refs -->

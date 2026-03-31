@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Task 02 — SKILL.md & References Audit [task-02-skill-speckit-alignment/plan]"
+title: "Imple [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment/plan]"
 description: "system-spec-kit SKILL.md and reference docs audit/creation for spec 130 umbrella. Systematic review of SKILL.md + references/ directory to ensure alignment with post-implementat..."
 trigger_phrases:
   - "implementation"
@@ -126,6 +126,7 @@ Systematic file-by-file audit/creation
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -142,6 +143,7 @@ Phase 1 (Audit) ──► Phase 2 (Documentation) ──► Phase 3 (Verificatio
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

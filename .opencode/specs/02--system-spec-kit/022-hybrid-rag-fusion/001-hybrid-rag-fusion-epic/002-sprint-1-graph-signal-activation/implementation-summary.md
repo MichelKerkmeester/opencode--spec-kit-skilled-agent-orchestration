@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 1 Graph Signal Activation"
+title: "...pec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "002-sprint-1-graph-signal-activation implementation summary"

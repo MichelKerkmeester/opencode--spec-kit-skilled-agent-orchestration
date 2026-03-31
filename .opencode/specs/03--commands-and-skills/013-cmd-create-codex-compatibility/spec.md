@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Create Commands Codex Compatibility [013-cmd-create-codex-compatibility/spec]"
+title: "Feature Specification: Create Commands Codex [03--commands-and-skills/013-cmd-create-codex-compatibility/spec]"
 description: "level: 3"
 trigger_phrases:
   - "feature"
@@ -25,7 +25,7 @@ status: done
 
 ---
 
-<!-- ANCHOR:executive-summary -->
+
 ## EXECUTIVE SUMMARY
 
 Codex (OpenAI's coding agent) misinterprets agent routing metadata in `/create` command `.md` and `.yaml` files as dispatch instructions, causing unintended agent invocations. This spec applied the same three-pronged compatibility strategy from spec 010 (spec_kit commands) to all 20 create command files, and additionally cleaned up stale emoji optionality language aligned with spec 011.
@@ -33,11 +33,11 @@ Codex (OpenAI's coding agent) misinterprets agent routing metadata in `/create` 
 **Key Decisions**: Reuse spec 010 three-pronged approach for consistency; bundle emoji cleanup to avoid revisiting 14 YAML files in a separate pass.
 
 **Critical Dependencies**: Write access to `.opencode/command/create/` and `.opencode/command/create/assets/` directories. Symlink `.claude/commands/create` covers both locations.
-<!-- /ANCHOR:executive-summary -->
+
 
 ---
 
-<!-- ANCHOR:metadata -->
+
 ## 1. METADATA
 
 | Field | Value |
@@ -47,7 +47,7 @@ Codex (OpenAI's coding agent) misinterprets agent routing metadata in `/create` 
 | **Status** | Complete |
 | **Created** | 2026-02-17 |
 | **Completed** | 2026-02-17 |
-<!-- /ANCHOR:metadata -->
+
 
 ---
 
@@ -87,12 +87,12 @@ Prevent Codex from prematurely dispatching agents when reading create command fi
 
 | # | File Path | Change Type | Description |
 |---|-----------|-------------|-------------|
-| 1 | `.opencode/command/create/skill.md` | Modify | Strip 3-agent routing, remove guards, add CONSTRAINTS |
+| 1 | .opencode/command/create/skill.md | Modify | Strip 3-agent routing, remove guards, add CONSTRAINTS |
 | 2 | `.opencode/command/create/agent.md` | Modify | Strip 3-agent routing, remove guards, add CONSTRAINTS |
 | 3 | `.opencode/command/create/folder_readme.md` | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS, emoji cleanup |
-| 4 | `.opencode/command/create/install_guide.md` | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
-| 5 | `.opencode/command/create/skill_asset.md` | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
-| 6 | `.opencode/command/create/skill_reference.md` | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
+| 4 | .opencode/command/create/install_guide.md | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
+| 5 | .opencode/command/create/skill_asset.md | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
+| 6 | .opencode/command/create/skill_reference.md | Modify | Strip 1-agent routing, remove guards, add CONSTRAINTS |
 | 7 | `.opencode/command/create/assets/create_skill_auto.yaml` | Modify | 3 agent_routing blocks restructured |
 | 8 | `.opencode/command/create/assets/create_skill_confirm.yaml` | Modify | 3 agent_routing blocks restructured |
 | 9 | `.opencode/command/create/assets/create_agent_auto.yaml` | Modify | 3 agent_routing blocks restructured |
@@ -149,6 +149,15 @@ All 7 verification checks must pass:
 | SC-005 | `## CONSTRAINTS` in *.md | 6 | 6 |
 | SC-006 | `REFERENCE ONLY` in *.md | 0 | 0 |
 | SC-007 | `[Ee]moji` in create/ | 0 | 0 |
+
+### Acceptance Scenarios
+
+- **Given** Codex reads a create-command markdown file after the compatibility update, **when** it scans the command definition, **then** it no longer sees the old `## Agent Routing` metadata as actionable dispatch instructions.
+- **Given** Codex reads the updated YAML workflow files, **when** it inspects agent metadata, **then** the files expose availability information without imperative dispatch strings.
+- **Given** a maintainer verifies the create command family after the pass, **when** the documented grep checks are re-run, **then** the expected routing, constraints, and emoji-cleanup patterns remain true.
+- **Given** the optional emoji cleanup is bundled into the same scope, **when** the command files are reviewed, **then** the docs align with the no-enforcement policy without rewriting template content meaningfully.
+- **Given** the create command infrastructure is compared to the earlier spec-kit command fix, **when** the documented approach is reviewed, **then** the same three-pronged compatibility strategy is preserved.
+- **Given** the spec folder is validated after compliance normalization, **when** Level 3 checks run, **then** the packet stays faithful to the documented Codex-compatibility change set.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -166,15 +175,17 @@ All 7 verification checks must pass:
 
 ---
 
-<!-- ANCHOR:nfr -->
+
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 N/A -- This is a configuration refactoring spec with no runtime components. All changes are to static `.md` and `.yaml` files that are read at command invocation time. No performance, security, or reliability implications.
-<!-- /ANCHOR:nfr -->
+
 
 ---
 
-<!-- ANCHOR:edge-cases -->
+
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Two Complexity Levels of .md Files
@@ -188,11 +199,11 @@ N/A -- This is a configuration refactoring spec with no runtime components. All 
 ### Emoji Cleanup Scope
 - Emoji optionality language exists in both .md and .yaml files
 - Existing cosmetic emojis in template content are preserved (only enforcement/optionality language is removed)
-<!-- /ANCHOR:edge-cases -->
+
 
 ---
 
-<!-- ANCHOR:complexity -->
+
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -203,11 +214,11 @@ N/A -- This is a configuration refactoring spec with no runtime components. All 
 | Multi-Agent | 5/15 | Single workstream, but affects multi-agent metadata |
 | Coordination | 5/15 | Dependencies: Low (isolated to /create, follows spec 010 pattern) |
 | **Total** | **38/100** | **Level 3** (architecture decisions documented) |
-<!-- /ANCHOR:complexity -->
+
 
 ---
 
-<!-- ANCHOR:risk-matrix -->
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -215,11 +226,11 @@ N/A -- This is a configuration refactoring spec with no runtime components. All 
 | R-001 | Missed agent_routing occurrence | L | L | Grep verification counts all 20 expected occurrences |
 | R-002 | Command breaks after metadata changes | L | L | Changes are metadata-only; no logic affected |
 | R-003 | Emoji cleanup removes content emojis | L | L | Only optionality language removed, not cosmetic emojis |
-<!-- /ANCHOR:risk-matrix -->
+
 
 ---
 
-<!-- ANCHOR:user-stories -->
+
 ## 11. USER STORIES
 
 ### US-001: Create Commands Without Premature Agent Dispatch (Priority: P0)
@@ -240,7 +251,7 @@ N/A -- This is a configuration refactoring spec with no runtime components. All 
 **Acceptance Criteria**:
 1. Given a YAML workflow file, When I inspect it, Then `agent_availability:` blocks describe available agents with conditions
 2. Given the restructured metadata, When commands execute, Then agent availability is correctly referenced
-<!-- /ANCHOR:user-stories -->
+
 
 ---
 

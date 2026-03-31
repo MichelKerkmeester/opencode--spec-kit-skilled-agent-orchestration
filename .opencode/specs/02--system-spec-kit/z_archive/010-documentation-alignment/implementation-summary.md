@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Documentation Alignment for Spec 126 [010-documentation-alignment/implementation-summary]"
+title: "Implementation Summary: [02--system-spec-kit/z_archive/010-documentation-alignment/implementation-summary]"
 description: "Documentation-only update aligning all READMEs, SKILL.md, and reference files with spec 126 (full spec folder document indexing). No code changes."
 trigger_phrases:
   - "implementation"
@@ -37,7 +37,7 @@ Documentation-only update aligning all READMEs, SKILL.md, and reference files wi
 
 <!-- /ANCHOR:what-built -->
 
-## 2. FILES CHANGED
+## What Was Built
 
 | # | File | Action | Changes |
 |---|------|--------|---------|
@@ -61,6 +61,7 @@ Documentation-only update aligning all READMEs, SKILL.md, and reference files wi
 **Total: 10 files modified, 6 files created**
 
 <!-- ANCHOR:verification -->
+<!-- /ANCHOR:what-built -->
 ## 3. VERIFICATION
 
 ### Grep Sweep Results
@@ -107,3 +108,10 @@ All edited files verified: no ANCHOR tags were added, removed, or broken. Pre-ex
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Tasks**: See `tasks.md`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

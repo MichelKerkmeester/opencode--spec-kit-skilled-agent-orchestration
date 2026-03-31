@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Graph Signal Activation"
+title: "...spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/implementation-summary]"
 description: "16 features audited: 16 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Feature Flag Reference"
+title: "Implement [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/plan]"
 description: "Technical plan for auditing 7 Feature Flag Reference features against source code"
 trigger_phrases:
   - "audit plan"
@@ -129,14 +129,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 7 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -173,3 +176,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 7 features) ──► Phase 3 (Synthesis
 | F07 CI and Build | MATCH | 4 (exact fallback order) |
 
 **Systemic Pattern**: All flag categories are correctly implemented. The single PARTIAL finding (F05) is a catalog documentation issue — source file references in the feature catalog entry point to test files rather than production files. The flags themselves are present and functional.
+<!-- /ANCHOR:effort -->

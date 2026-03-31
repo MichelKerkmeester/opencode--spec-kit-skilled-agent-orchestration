@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Signal Extraction"
+title: "I [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary]"
 description: "Implementation summary for signal extraction phase of perfect session capturing"
-trigger_phrases: ["implementation", "summary", "signal", "extraction"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "signal"
+  - "extraction"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Signal Extraction
 
@@ -85,3 +91,10 @@ The delivery stayed intentionally narrow so `008` could unblock `007` without de
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

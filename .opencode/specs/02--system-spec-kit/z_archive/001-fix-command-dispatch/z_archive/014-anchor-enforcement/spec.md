@@ -1,5 +1,5 @@
 ---
-title: "Anchor System Enforcement [014-anchor-enforcement/spec]"
+title: "Anchor System Enforcement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/spec]"
 description: "Enforce correct anchor format throughout memory system to enable section-specific retrieval with 93% token savings."
 trigger_phrases:
   - "anchor"

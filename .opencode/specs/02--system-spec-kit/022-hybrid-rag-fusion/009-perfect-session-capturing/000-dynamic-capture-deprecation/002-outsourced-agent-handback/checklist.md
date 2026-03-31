@@ -1,7 +1,9 @@
 ---
-title: "Verification Checklist: Outsourced Agent Handback Protocol"
+title: "...rid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/checklist]"
 description: "Verification checklist for the outsourced agent handback protocol"
-trigger_phrases: ["outsourced agent checklist", "memory handback checklist"]
+trigger_phrases:
+  - "outsourced agent checklist"
+  - "memory handback checklist"
 importance_tier: "normal"
 contextType: "general"
 ---

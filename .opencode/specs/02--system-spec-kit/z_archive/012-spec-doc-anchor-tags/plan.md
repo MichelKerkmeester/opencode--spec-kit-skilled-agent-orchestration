@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Spec Document Anchor Tags [129-spec-doc-anchor-tags/plan]"
+title: "Implementation Plan: Spec Document Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/plan]"
 description: "Add <!-- ANCHOR:name --> / <!-- /ANCHOR:name --> tags to all spec kit templates, enabling section-level retrieval for spec documents. The anchor infrastructure (parser, indexer,..."
 trigger_phrases:
   - "implementation"

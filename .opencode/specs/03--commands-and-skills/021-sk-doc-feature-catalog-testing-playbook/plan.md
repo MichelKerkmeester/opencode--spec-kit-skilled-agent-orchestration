@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-doc Feature Catalog + Testing Playbook Alignment [template:level_2/plan.md]"
+title: "Implementation Plan: sk-doc Feature Catalog [03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook/plan]"
 description: "Align the shipped feature-catalog and manual-testing-playbook contracts across system-spec-kit, mcp-coco-index, sk-doc, and the downstream runtime consumers that rely on those docs."
 trigger_phrases:
   - "feature catalog plan"
@@ -153,6 +153,7 @@ Audit shipped contracts -> normalize feature catalogs and playbooks -> align tem
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -171,6 +172,7 @@ Contract Lock -> Package Alignment -> sk-doc Modernization -> Runtime Consumer A
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

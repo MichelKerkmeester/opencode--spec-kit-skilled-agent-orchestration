@@ -1,8 +1,17 @@
 ---
-title: "Research: UX Hook Improvement Opportunities"
+title: "Research: UX Hook Improvement Opportunities [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/research]"
 description: "Evidence-based investigation of current MCP UX hooks, ranked improvements, and proposed new hooks."
-status: "complete"
+trigger_phrases:
+  - "research"
+  - "hook"
+  - "improvement"
+  - "opportunities"
+  - "004"
+  - "hooks"
+importance_tier: "normal"
+contextType: "research"
 created: "2026-03-06"
+status: "complete"
 updated: "2026-03-06"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->

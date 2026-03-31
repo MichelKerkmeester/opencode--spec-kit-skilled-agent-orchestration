@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Manual Testing — Bug Fixes and Data Integrity"
+title: "Implem [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity/plan]"
 description: "Execution plan for running all 11 bug-fixes-and-data-integrity manual test scenarios from the hybrid-rag-fusion playbook."
 trigger_phrases:
   - "manual testing plan"

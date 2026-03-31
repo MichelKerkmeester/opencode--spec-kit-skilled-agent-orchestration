@@ -1,6 +1,15 @@
 ---
-title: "Tasks: Rewrite System Spec Kit README"
+title: "Tasks: Rewrite System Spec Kit [02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/tasks]"
 description: "Task breakdown for complete rewrite of the system-spec-kit README."
+trigger_phrases:
+  - "tasks"
+  - "rewrite"
+  - "system"
+  - "spec"
+  - "kit"
+  - "018"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Tasks: 018-rewrite-system-speckit-readme

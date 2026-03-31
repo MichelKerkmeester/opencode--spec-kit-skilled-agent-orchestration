@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Blog Sort Dropdown Fix [019-blog-sort-fix/tasks]"
+title: "Tasks: Blog Sort Dropdown Fix [019-blog-sort-fix/tasks] [01--anobel.com/z_archive/018-blog-sort-fix/tasks]"
 description: "┌─────────────────────────────────────────────────────────────────────────────┐"
 trigger_phrases:
   - "tasks"

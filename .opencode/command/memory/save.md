@@ -130,6 +130,15 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - WARN: "Filename collision detected"
   - ASK: `[A]uto-increment | [R]ename | [O]verwrite`
 
+#### Check 6: Stop Hook Double-Save Detection
+
+- Check if a Claude Code Stop hook recently saved session context (within last 5 minutes)
+- Detection method: look for hook state file at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json` with recent `updatedAt`
+- If recent auto-save detected:
+  - WARN: "Stop hook already saved session context at [timestamp]"
+  - ASK: `[M]erge (combine contexts) | [O]verwrite | [S]kip (trust hook save) | [C]ontinue as new`
+- If no hook state found or state is stale (>5 min): PASSED (proceed normally)
+
 **Phase 0 Output:**
 ```text
 anchor_validation: PASSED | WARNED
@@ -137,6 +146,7 @@ duplicate_check:   PASSED | DUPLICATE_RESOLVED
 token_budget:      PASSED | SPLIT_REQUESTED
 folder_existence:  PASSED
 filename_conflict:  PASSED | RENAMED_TO=[new_name]
+stop_hook_check:   PASSED | DUPLICATE_RESOLVED
 ```
 
 ### Spec Folder Validation (Phase 1)

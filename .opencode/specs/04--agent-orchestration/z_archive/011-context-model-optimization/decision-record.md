@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Context Agent Model Optimization [011-context-model-optimization/decision-record]"
+title: "Decision Record: Context Agent [04--agent-orchestration/z_archive/011-context-model-optimization/decision-record]"
 description: "The @context agent is the highest-frequency agent in the system, dispatched for every codebase exploration, file search, and context retrieval task. It currently runs on Sonnet ..."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:adr-001 -->
+<!-- ANCHOR:context -->
 ## ADR-001: Switch @context Agent from Sonnet to Haiku
 
 <!-- ANCHOR:adr-001-context -->
@@ -130,6 +131,7 @@ The @context agent is the highest-frequency agent in the system, dispatched for 
 ---
 
 <!-- ANCHOR:adr-002 -->
+<!-- /ANCHOR:context -->
 ## ADR-002: Reject "Mini Orchestrator" Pattern (Option B)
 
 <!-- ANCHOR:adr-002-context -->

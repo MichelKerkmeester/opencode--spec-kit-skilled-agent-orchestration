@@ -1,5 +1,5 @@
 ---
-title: "Decision: Level-Based Template Architecture Alignment - Architecture [071-speckit-level-alignment/decision-record]"
+title: "Decision: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/decision-record]"
 description: "Architecture Decision Record documenting the approach for aligning SpecKit scripts and documentation with level-based template folders."
 trigger_phrases:
   - "decision"
@@ -22,6 +22,7 @@ Architecture Decision Record documenting the approach for aligning SpecKit scrip
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-071
@@ -32,8 +33,10 @@ Architecture Decision Record documenting the approach for aligning SpecKit scrip
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -62,8 +65,10 @@ Spec 069 created a level-based template architecture with dedicated folders (`le
 - The marker-parser.js may still be used by some dynamic expansion workflows
 - Users will transition to level-based commands over time
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -111,6 +116,7 @@ function getTemplatesDir(level = null) {
 }
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -189,6 +195,7 @@ function getTemplatesDir(level = null) {
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -218,6 +225,7 @@ function getTemplatesDir(level = null) {
 - Deprecated marker-parser.js should be removed after 6-month deprecation period
 - Root templates should be evaluated for removal in future release
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES

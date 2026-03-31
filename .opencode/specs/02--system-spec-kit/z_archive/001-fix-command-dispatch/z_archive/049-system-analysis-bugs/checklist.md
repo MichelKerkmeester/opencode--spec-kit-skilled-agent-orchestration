@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: System-Spec-Kit Bug Remediation [049-system-analysis-bugs/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/checklist]"
 description: "node -e \"const {memory_health} = require('./.opencode/skill/system-spec-kit/mcp_server/context-server.js'); memory_health().then(console.log)\""
 trigger_phrases:
   - "verification"

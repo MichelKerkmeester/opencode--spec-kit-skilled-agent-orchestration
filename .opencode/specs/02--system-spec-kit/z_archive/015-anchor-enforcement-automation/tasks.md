@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Anchor Enforcement Automation [132-anchor-enforcement-automation/tasks]"
+title: "Tasks: Anchor Enforcement Automation [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/tasks]"
 description: "Task Format: T### [P?] [W:XXXX?] Description (file path) [Priority]"
 trigger_phrases:
   - "tasks"

@@ -1,6 +1,5 @@
 ---
-title: "SpecKit template optimization implementation 2026-01-20"
-description: "Captured the main implementation session for SpecKit template optimization refinements after a large multi-agent review of the template system. It summarizes the verbose..."
+title: "...atch/z_archive/074-speckit-template-optimization-refinement/20-01-26_09-10__speckit-template-optimization-refinement]"
 trigger_phrases:
   - "speckit template optimization"
   - "verbose template variants"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "template architecture refinement"
 importance_tier: "important"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Speckit Template Optimization Refinement
 
 ## SESSION SUMMARY

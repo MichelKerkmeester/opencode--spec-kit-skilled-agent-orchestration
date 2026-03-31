@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Post-Research Wave 2 (Controlled Delivery) [005-post-research-wave-2-controlled-delivery/spec]"
+title: "Phas [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/spec]"
 description: "This package defines controlled delivery execution after Wave 1 governance foundations are complete."
 trigger_phrases:
   - "phase"

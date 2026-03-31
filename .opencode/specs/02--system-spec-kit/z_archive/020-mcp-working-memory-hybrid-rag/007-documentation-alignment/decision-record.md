@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Documentation Alignment [007-documentation-alignment/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/decision-record]"
 description: "Documentation alignment follows completed Waves 1-3 and closes a doc-to-code drift gap. The goal is to restore accuracy of module inventories, feature flags, architecture flow d..."
 trigger_phrases:
   - "decision"

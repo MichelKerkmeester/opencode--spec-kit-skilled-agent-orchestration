@@ -1,5 +1,5 @@
 ---
-title: "Fix Plan - UX Deep Analysis [033-ux-deep-analysis/plan]"
+title: "Fix Plan - UX Deep [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/plan]"
 description: "1. Fix MCP tool naming in all memory commands"
 trigger_phrases:
   - "fix"
@@ -44,7 +44,9 @@ contextType: "decision"
 3. Add version history
 4. Improve progressive disclosure
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1 must complete before public release
 - Phase 2 recommended before public release
 - Phase 3-4 can be iterative post-release
+<!-- /ANCHOR:dependencies -->

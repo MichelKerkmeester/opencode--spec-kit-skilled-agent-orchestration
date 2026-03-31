@@ -1,3 +1,16 @@
+---
+title: "Plan: Phase 4 — Cross-Runtime Fallback [02--system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback/plan]"
+description: "1. Update CLAUDE.md compaction recovery"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "cross"
+  - "runtime"
+  - "fallback"
+  - "004"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 4 — Cross-Runtime Fallback
 
 ## Steps
@@ -25,9 +38,11 @@
    - If gap > threshold → auto-inject compaction context
    - Feature flag `SPECKIT_AUTO_COMPACT_DETECT` (default off for v1)
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1 (validates hook pattern works, informs CLAUDE.md wording)
 - Can run in parallel with Phases 2-3
+<!-- /ANCHOR:dependencies -->
 
 ## Test Files (iteration 015)
 - `tests/runtime-routing.vitest.ts`

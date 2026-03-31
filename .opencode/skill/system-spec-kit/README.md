@@ -87,7 +87,9 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 |---------|-------------|
 | **Spec Folder Workflow** | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs |
-| **Spec Kit Memory MCP** | 33-tool MCP server providing persistent semantic memory with hybrid search across sessions, models and tools |
+| **Spec Kit Memory MCP** | 37-tool MCP server providing persistent semantic memory with hybrid search across sessions, models and tools |
+| **Hook System** | Automated context preservation via Claude Code hooks (PreCompact, SessionStart, Stop) with cross-runtime tool fallback |
+| **Code Graph** | Structural code indexer + SQLite storage + 4 MCP query tools for call graphs, imports, and LLM-oriented neighborhoods |
 | **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
 | **Validation Scripts** | 20-rule validation, completeness checks and placeholder detection for spec folders |
 | **Phase Decomposition** | Parent/child spec folder structure for multi-session, multi-phase work |
@@ -292,7 +294,7 @@ The memory system lives in an MCP server that gives AI assistants persistent mem
 
 Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the memory stays the same because it lives on your machine, not inside any AI's context window.
 
-For full architecture details, the 33-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
+For full architecture details, the 37-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
 #### Hybrid Search
 
@@ -597,7 +599,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`README.md`](./README.md) | This file -- what Spec Kit does, how to use it, where to find things |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles and kill switch |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 33-tool API reference, search pipeline, cognitive memory, configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 37-tool API reference, search pipeline, cognitive memory, configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment |
 | [`templates/core/`](./templates/core/) | Four foundation templates used at all documentation levels |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh) | Create spec folders with level-appropriate template files |
@@ -979,7 +981,7 @@ A: The memory system can index any markdown file, beyond spec folder contents. B
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 33-tool API reference, 5-channel hybrid retrieval, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 37-tool API reference, 5-channel hybrid retrieval, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 
@@ -1023,7 +1025,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 |----------|---------|
 | [`SKILL.md`](./SKILL.md) | AI agent instructions: routing, gates, validation, template application |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 33-tool API reference, search pipeline, cognitive memory, configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 37-tool API reference, search pipeline, cognitive memory, configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment variables |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles, kill switch |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md) | Detailed memory system reference |

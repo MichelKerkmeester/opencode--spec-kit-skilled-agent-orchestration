@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook implement-and-remove-deprecated-features phase [template:level_2/plan.md]"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/plan]"
 description: "Execution plan for Phase 022 deprecated-feature scenarios covering identification, safe removal workflow verification, and post-removal reference cleanup."
 trigger_phrases:
   - "phase 022 plan"
   - "deprecated features plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook implement-and-remove-deprecated-features phase
@@ -121,6 +121,7 @@ Load target inventory -> inspect current state -> run the representative workflo
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -137,6 +138,7 @@ Phase 1 (Preconditions) ---> Phase 2 (Execute) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

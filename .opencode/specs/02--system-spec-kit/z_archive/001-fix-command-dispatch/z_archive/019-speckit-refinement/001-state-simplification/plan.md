@@ -1,5 +1,5 @@
 ---
-title: "State Simplification: Implementation Plan [001-state-simplification/plan]"
+title: "...2--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/001-state-simplification/plan]"
 description: "Current"
 trigger_phrases:
   - "state"
@@ -100,9 +100,11 @@ ${blockers || 'None'}
 | State data loss | Low | Low | Memory files more comprehensive than STATE.md |
 | Gate 0.5 validation issues | Low | Low | Simplify to quick-continue validation only |
 
+<!-- ANCHOR:rollback -->
 ## 4. Rollback Plan
 
 If issues arise:
 1. Restore updateStateFile() call in generate-context.js
 2. Revert resume priority chain
 3. STATE.md template still exists in archive
+<!-- /ANCHOR:rollback -->

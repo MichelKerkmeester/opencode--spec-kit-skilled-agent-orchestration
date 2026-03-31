@@ -12,3 +12,10 @@ Test fixture implementation complete.
 ## Testing
 
 - Verified structure
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: CV Upload Form File Type Validation Fix [035-form-upload-issues/tasks]"
+title: "Tasks: CV Upload Form File Type Validation Fix [01--anobel.com/033-form-upload-issues/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -36,7 +36,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Diagnose Root Cause
+## Phase 1: Setup
+
+### Diagnose Root Cause
 
 - [x] T001 Test .docx upload on live page `/nl/werkenbij` → Confirm rejection error
 - [x] T002 Inspect `data-accepted-types` attribute in Webflow Designer → Found missing MIME types
@@ -57,7 +59,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implement Fixes
+## Phase 2: Implementation
+
+### Implement Fixes
 
 ### Fix 1: MIME Types & Extension Map
 
@@ -93,7 +97,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Deployment
+## Phase 3: Verification
+
+### Deployment
 
 - [x] T029 Authenticate Wrangler CLI (already done via `wrangler login` in 034 session)
 - [x] T030 Deploy to R2 bucket `code`: `npx wrangler r2 object put code/input_upload.min.js --file=src/2_javascript/z_minified/form/input_upload.min.js`
@@ -107,7 +113,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Verification
+### Verification
 
 ### DevTools Verification
 
@@ -146,7 +152,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Phase 5: Documentation
+### Documentation
 
 - [x] T053 Create `spec.md` (Level 3) with complex problem statement documentation
 - [x] T054 Create `plan.md` (Level 3) with 3-phase approach and ADRs
@@ -162,7 +168,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-6 -->
-## Phase 6: Production Issue Discovery (2026-02-14 Evening)
+### Production Issue Discovery (2026-02-14 Evening)
 
 - [x] T060 Live debugging on `https://a-nobel-en-zn.webflow.io/nl/werkenbij`
 - [x] T061 Verify v1.3.4 deployed on CDN (contains removeAttribute, fileValidateTypeDetectType, replace(/\s+/g,''))
@@ -179,7 +185,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 7: PENDING — Worker CORS Fix
+### PENDING — Worker CORS Fix
 
 - [ ] T069 Access Cloudflare Workers dashboard for `worker--upload-form`
 - [ ] T070 Review current Worker CORS implementation
@@ -194,7 +200,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 8: PENDING — Frontend Error Handling Fix
+### PENDING — Frontend Error Handling Fix
 
 - [ ] T079 Locate `pond.on('processfile')` handler in `input_upload.js`
 - [ ] T080 Add error check: `if (_error) { set_state(ERROR); return; }`
@@ -208,7 +214,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 9: PENDING — Deployment & Verification
+### PENDING — Deployment & Verification
 
 - [ ] T088 Run minification script on updated source → Generate `input_upload.min.js`
 - [ ] T089 Verify minified output contains processfile error check

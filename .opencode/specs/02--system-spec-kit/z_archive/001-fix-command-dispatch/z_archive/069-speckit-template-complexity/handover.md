@@ -1,5 +1,5 @@
 ---
-title: "Session Handover: Dynamic Complexity-Based Template Scaling [069-speckit-template-complexity/handover]"
+title: "Session [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/handover]"
 description: "Spec Folder: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity"
 trigger_phrases:
   - "session"

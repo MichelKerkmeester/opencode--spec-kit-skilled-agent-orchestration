@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Spec 017 - Agent Provider Switching [017-agent-provider-switch/checklist]"
+title: "Checklist: Spec 017 - Agent Provider Switching [04--agent-orchestration/z_archive/017-agent-provider-switch/checklist]"
 description: "Verification Date: 2026-02-16"
 trigger_phrases:
   - "checklist"
@@ -55,6 +55,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -65,3 +66,4 @@ contextType: "implementation"
 
 **Verification Date**: 2026-02-16
 <!-- /ANCHOR:verification-summary -->
+<!-- /ANCHOR:summary -->

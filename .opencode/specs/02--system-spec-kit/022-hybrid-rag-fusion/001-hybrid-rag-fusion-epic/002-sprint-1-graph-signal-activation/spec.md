@@ -1,11 +1,10 @@
 ---
-title: "Feature Specification: Sprint 1 — Graph Signal Activation"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/spec]"
 description: "Activate typed-weighted degree as 5th RRF channel and measure graph signal contribution."
 trigger_phrases:
   - "sprint 1"
   - "graph signal"
   - "degree channel"
-  - "R4"
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -152,6 +151,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -169,6 +169,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

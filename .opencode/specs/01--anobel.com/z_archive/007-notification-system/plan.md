@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification System - Technical Approach & Architecture [007-notification-system/plan]"
+title: "Implementation Plan: Notification System - Technical Approach [01--anobel.com/z_archive/007-notification-system/plan]"
 description: "Implementation plan for CMS-driven notification system with office hours integration."
 trigger_phrases:
   - "implementation"
@@ -100,6 +100,7 @@ src/
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: CMS Setup (Webflow - Manual)
@@ -163,6 +164,7 @@ src/
 ---
 
 <!-- ANCHOR:technical-design -->
+<!-- /ANCHOR:phases -->
 ## 5. TECHNICAL DESIGN
 
 ### Architecture Diagram

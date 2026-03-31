@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory & Folder Ranking Implementation [070-memory-ranking/tasks]"
+title: "Tasks: Memory & Folder [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/tasks]"
 description: "Priority: P0"
 trigger_phrases:
   - "tasks"
@@ -20,6 +20,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Quick Wins (No MCP Changes)
 
 ### P1-1: Implement Archive Detection Function
@@ -293,6 +294,8 @@ Add option to show/hide archived folders in dashboard.
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: MCP Enhancements
 
 ### P2-1: Add Ranking Parameters to memory_stats()
@@ -479,8 +482,10 @@ Modify dashboard to use enhanced memory_stats parameters.
 - [x] Fallback to client-side if API unavailable
 - [x] Performance improved vs Phase 1
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Advanced Ranking (Future)
 
 ### P3-1: Implement Contextual Boost
@@ -587,3 +592,4 @@ Infrastructure for testing ranking algorithms.
 - [ ] A/B split works
 - [ ] Metrics collected
 - [ ] Easy to add new algorithms
+<!-- /ANCHOR:phase-3 -->

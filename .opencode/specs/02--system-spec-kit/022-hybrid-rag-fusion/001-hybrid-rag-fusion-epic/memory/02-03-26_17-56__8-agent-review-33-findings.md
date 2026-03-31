@@ -1,6 +1,5 @@
 ---
-title: "refinement phase 7 session 02-03-26"
-description: "Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-preview + 3 Opus claude-opus-4-6) of the Spec Kit Memory MCP server (50K+ LOC). Phase A launched..."
+title: "refine [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/02-03-26_17-56__8-agent-review-33-findings]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "gemini 3"
@@ -9,10 +8,9 @@ trigger_phrases:
   - "ultra think"
 importance_tier: "important"
 contextType: "research"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # 8 Agent Review 33 Findings
 
 ## SESSION SUMMARY

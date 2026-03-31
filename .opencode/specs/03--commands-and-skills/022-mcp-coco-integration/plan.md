@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: CocoIndex Code MCP Integration"
+title: "Implementation Plan: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/plan]"
 description: "Phased plan for CocoIndex integration: Phase 1 installation/config registration, Phase 2 hardening, and Phase 3 strict-readiness plus downstream adoption packaging."
 trigger_phrases:
   - "cocoindex"
@@ -224,6 +224,7 @@ CLI Agent Query ("find authentication middleware")
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -244,6 +245,7 @@ Phase 2 (Index) ─────────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

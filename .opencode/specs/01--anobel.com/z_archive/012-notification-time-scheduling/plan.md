@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification Time-Based Scheduling [013-notification-time-scheduling/plan]"
+title: "Implementation Plan: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/plan]"
 description: "Step-by-step implementation plan for adding time-based scheduling to the notification system."
 trigger_phrases:
   - "implementation"
@@ -38,6 +38,7 @@ Add time-based scheduling capability to nav_notifications.js by:
 <!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 2. IMPLEMENTATION PHASES
 
 ### Phase 1: Code Changes (nav_notifications.js)
@@ -162,6 +163,7 @@ nav_notifications.js?v=1.1.10
 <!-- /ANCHOR:implementation-phases -->
 
 <!-- ANCHOR:testing-strategy -->
+<!-- /ANCHOR:phases -->
 ## 3. TESTING STRATEGY
 
 ### Unit Tests (Manual)

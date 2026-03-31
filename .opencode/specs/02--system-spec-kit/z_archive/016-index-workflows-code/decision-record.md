@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Skill References & Assets Indexing [133-index-workflows-code/decision-record]"
+title: "Decision Record: Skill References & Assets [02--system-spec-kit/z_archive/016-index-workflows-code/decision-record]"
 description: "The system needs to store skill indexing configuration: which skills to index (indexedSkills[]), which file extensions to include (fileExtensions[]), and which subdirectories to..."
 trigger_phrases:
   - "decision"

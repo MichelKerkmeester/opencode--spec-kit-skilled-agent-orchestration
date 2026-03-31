@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook remediation-revalidation phase [template:level_2/plan.md]"
+title: "Implementa [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/plan]"
 description: "Execution plan for Phase 021 remediation-revalidation scenarios covering finding tracking, fixed-item revalidation, and closure workflow verification."
 trigger_phrases:
   - "phase 021 plan"
   - "remediation revalidation plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook remediation-revalidation phase
@@ -120,6 +120,7 @@ Load remediation matrix -> pick target findings -> verify current state -> compa
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -136,6 +137,7 @@ Phase 1 (Preconditions) ---> Phase 2 (Execute) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

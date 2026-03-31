@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: sk-deep-research Manual Testing Playbook"
+title: "Decision Record: sk-deep-research [03--commands-and-skills/028-sk-deep-research-testing-playbook/decision-record]"
 description: "Architectural decisions for the approved sk-deep-research manual testing playbook implementation."
 trigger_phrases:
   - "deep research playbook adr"

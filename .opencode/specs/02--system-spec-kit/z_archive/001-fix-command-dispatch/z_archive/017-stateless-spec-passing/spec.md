@@ -1,5 +1,5 @@
 ---
-title: "Stateless Spec Passing & System Alignment [017-stateless-spec-passing/spec]"
+title: "Stateless Spec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/spec]"
 description: "Remove all system reliance on the .spec-active marker file, enforcing a strictly stateless architecture. This aligns with AGENTS.md Gate 5: \"NEVER create/write to .spec-active f..."
 trigger_phrases:
   - "stateless"
@@ -23,6 +23,7 @@ contextType: "decision"
 Remove all system reliance on the `.spec-active` marker file, enforcing a strictly stateless architecture. This aligns with `AGENTS.md` Gate 5: "NEVER create/write to .spec-active file (Stateless only)".
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. Problem Statement
 
 ### Initial Discovery (009)
@@ -36,6 +37,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 - `research/research.md` actively CREATES `.spec-active` (violates Gate 5)
 - `generate-context.js` has fallback code that reads `.spec-active`
 - Multiple YAML prompts reference the marker file
+<!-- /ANCHOR:problem -->
 
 ## 3. Goals
 
@@ -44,6 +46,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 3. **Documentation Rewrite**: `spec_folder_detection.md` needs complete rewrite
 4. **Full Compliance**: Zero matches for `.spec-active` in active code/prompts
 
+<!-- ANCHOR:scope -->
 ## 4. Scope
 
 ### In Scope (13 files across 5 directories)
@@ -73,6 +76,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 - `create-spec-folder.sh` (verified clean)
 - `common.sh` (verified clean)
 - Informational lines in `complete.md`, `implement.md`, `plan.md` (document "Stateless - no .spec-active")
+<!-- /ANCHOR:scope -->
 
 ## 5. User Decisions (Confirmed)
 
@@ -80,6 +84,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 2. **generate-context.js fallback**: REMOVE entirely (lines 2251-2283)
 3. **Informational references**: KEEP in complete/implement/plan.md
 
+<!-- ANCHOR:success-criteria -->
 ## 6. Success Criteria
 
 - `grep -rn ".spec-active" .opencode/` returns zero matches in active code
@@ -87,6 +92,7 @@ Deep audit (`grep -rn ".spec-active"`) revealed **60+ references across 17 files
 - `generate-context.js` has no fallback reading `.spec-active`
 - `spec_folder_detection.md` documents CLI-first approach only
 - All commands pass `AGENTS.md` Gate 5 validation
+<!-- /ANCHOR:success-criteria -->
 
 ## 7. Merge Note
 

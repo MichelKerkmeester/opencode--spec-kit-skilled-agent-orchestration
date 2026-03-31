@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 6 Indexing And Graph"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "007-sprint-6-indexing-and-graph implementation summary"

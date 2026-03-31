@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Scratch Enforcement - Implementation Breakdown [001-scratch-enforcement/tasks]"
+title: "Tasks: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/tasks]"
 description: "Task list for scratch folder enforcement implementation - documentation-based enforcement for OpenCode compatibility."
 trigger_phrases:
   - "tasks"

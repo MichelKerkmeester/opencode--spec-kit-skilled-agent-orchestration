@@ -1,6 +1,12 @@
 ---
-title: "Implementation Summary: UX Hooks Automation"
+title: "Implementation Summary: UX [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/implementation-summary]"
 description: "Summary of shared mutation-hook automation, UX hint wiring, and verified close-out evidence for spec 007."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "004"
+  - "hooks"
 importance_tier: "normal"
 contextType: "implementation"
 ---

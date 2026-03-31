@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Review Agent Model-Agnostic [015-review-agent-model-agnostic/spec]"
+title: "Feature Specification: Review Agent [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/spec]"
 description: "The review agent (review.md) currently has a hardcoded model reference (model: github-copilot/claude-opus-4.6) in its YAML frontmatter (line 5). This prevents the review sub-age..."
 trigger_phrases:
   - "feature"

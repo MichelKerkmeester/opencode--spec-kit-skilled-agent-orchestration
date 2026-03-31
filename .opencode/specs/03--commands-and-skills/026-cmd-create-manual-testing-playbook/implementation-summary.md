@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: /create:testing-playbook Command [template:level_3/implementation-summary.md]"
+title: "Implementation Summary: [03--commands-and-skills/026-cmd-create-manual-testing-playbook/implementation-summary]"
 description: "The /create:testing-playbook command is now implemented, validated, and synchronized across command docs, workflow assets, runtime mirrors, and discovery surfaces."
 trigger_phrases:
   - "testing playbook command implementation summary"
@@ -43,7 +43,7 @@ The implementation added or updated:
 - `.opencode/command/README.txt`
 - `.opencode/README.md`
 - `.opencode/agent/write.md`
-- `.opencode/agent/chatgpt/write.md`
+- `.claude/agents/write.md`
 - `.codex/agents/write.toml`
 - `.agents/agents/write.md`
 

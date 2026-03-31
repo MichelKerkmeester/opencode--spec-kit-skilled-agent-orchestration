@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [009-claude-code-subagents/implementation-summary]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/009-claude-code-subagents/implementation-summary]"
 description: "[To be completed after implementation]"
 trigger_phrases:
   - "implementation"

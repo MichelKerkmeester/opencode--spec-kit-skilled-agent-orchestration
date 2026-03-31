@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook governance phase [template:level_2/plan.md]"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance/plan]"
 description: "Phase 017 defines the execution plan for five governance manual tests in the Spec Kit Memory system. It sequences preconditions, sandboxed execution, evidence capture, and review-protocol verdicting for governance-focused scenarios."
 trigger_phrases:
   - "governance execution plan"
   - "phase 017 manual tests"
   - "feature flag governance verdict plan"
   - "hybrid rag governance review"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook governance phase
@@ -135,6 +135,7 @@ Manual governance test execution pipeline with review-gated evidence collection.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -152,6 +153,7 @@ Phase 1 (Preconditions) ──► Phase 2 (Non-Destructive) ──► Phase 3 (S
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

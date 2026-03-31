@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Session Source Validation"
+title: "...n/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation/implementation-summary]"
 description: "Shipped session-source validation for phase 011 and the March 17, 2026 documentation closeout."
-trigger_phrases: ["implementation", "summary", "session", "validation"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "session"
+  - "validation"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Session Source Validation
 
@@ -75,3 +81,10 @@ The closeout work focused on reconciliation, not new runtime code. The shipped c
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

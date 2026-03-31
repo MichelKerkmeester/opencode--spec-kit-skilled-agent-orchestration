@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Remaining Bugs Remediation [054-remaining-bugs-remediation/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/plan]"
 description: "The implementation follows a 4-phase approach organized by severity and dependency"
 trigger_phrases:
   - "implementation"
@@ -359,6 +359,7 @@ async function verifyIntegrity(options = { autoClean: false }) {
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 6. Rollback Plan
 
 If issues are discovered:
@@ -369,6 +370,7 @@ If issues are discovered:
 
 Each phase can be rolled back independently.
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## 7. Definition of Done

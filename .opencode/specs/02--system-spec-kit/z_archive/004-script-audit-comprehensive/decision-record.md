@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Comprehensive Script Audit [121-script-audit-comprehensive/decision-record]"
+title: "Decision Record: Comprehensive Script [02--system-spec-kit/z_archive/004-script-audit-comprehensive/decision-record]"
 description: "System-spec-kit contains ~50+ scripts across 3 directories (scripts/, shared/, mcp_server/) with complex interdependencies. A comprehensive audit requires systematic investigati..."
 trigger_phrases:
   - "decision"

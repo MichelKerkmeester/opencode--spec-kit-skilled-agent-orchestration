@@ -1,5 +1,5 @@
 ---
-title: "Research Plan: AI Integration Patterns [080-ai-integration-patterns-research/plan]"
+title: "Research [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/plan]"
 description: "Extract actionable patterns from three AI-focused repositories to improve system-spec-kit MCP."
 trigger_phrases:
   - "research"
@@ -54,6 +54,7 @@ Extract actionable patterns from three AI-focused repositories to improve system
 6. **Task DAG** - seu-claude persists hierarchical tasks with tool output caching
 7. **RRF Fusion** - dotmd merges multi-engine results without requiring normalized scores
 
+<!-- ANCHOR:summary -->
 ## Recommendations Summary
 
 | Priority | Recommendation | Source |
@@ -63,3 +64,4 @@ Extract actionable patterns from three AI-focused repositories to improve system
 | Medium | Add intent parameter | drift |
 | Medium | Add usage boost to decay | drift |
 | Low | Consider RRF fusion | dotmd |
+<!-- /ANCHOR:summary -->

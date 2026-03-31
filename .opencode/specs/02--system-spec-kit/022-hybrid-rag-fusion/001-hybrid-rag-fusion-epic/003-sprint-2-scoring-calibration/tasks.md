@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Sprint 2 — Scoring Calibration"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/tasks]"
 description: "Task breakdown for Sprint 2: embedding cache, cold-start boost, G2 investigation, score normalization"
 trigger_phrases:
   - "sprint 2 tasks"
@@ -91,6 +91,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T007 Verify dark-run results for N4, normalization, and TM-01 — new memories visible, old not displaced, MRR@5 not regressed, interference penalty correct [included] {T002, T004, T005}
@@ -119,6 +120,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
+<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [x] All tasks T001-T009 (including T004a, T005, T006) marked `[x]` — T009 is required (PI-A1, P1)

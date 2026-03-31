@@ -1,5 +1,5 @@
 ---
-title: "Plan: Invalid Anchors Fixture [invalid-anchors/plan]"
+title: "...001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors/plan]"
 description: "Testing detection of malformed anchor tags in memory files."
 trigger_phrases:
   - "plan"
@@ -18,9 +18,11 @@ contextType: "decision"
 Testing detection of malformed anchor tags in memory files.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Level 1 spec with memory folder containing invalid anchors.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

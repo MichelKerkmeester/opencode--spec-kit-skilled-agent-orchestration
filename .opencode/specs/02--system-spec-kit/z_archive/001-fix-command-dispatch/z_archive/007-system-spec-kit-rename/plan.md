@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: workflows-spec-kit → system-spec-kit Rename [007-system-spec-kit-rename/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/plan]"
 description: "Phase 1: Directory Rename (BLOCKING)"
 trigger_phrases:
   - "implementation"
@@ -26,6 +26,7 @@ contextType: "decision"
 | **Parallelization** | Phases 2-3 fully parallelizable |
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Phase Architecture
 
 ```
@@ -67,6 +68,7 @@ Phase 5: Cleanup & Documentation
     └─► Save context, update .spec-active marker
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## Phase 1: Directory Rename
@@ -301,6 +303,7 @@ Document:
 | Commands break after rename | Commands use `/spec_kit:*` namespace, unchanged |
 | Grep misses edge cases | Multi-pattern search (spec-kit, speckit, SpecKit) |
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues discovered after Phase 3:
@@ -309,6 +312,7 @@ If issues discovered after Phase 3:
 3. Investigate and fix issue
 4. Re-attempt rename
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## Execution Checklist

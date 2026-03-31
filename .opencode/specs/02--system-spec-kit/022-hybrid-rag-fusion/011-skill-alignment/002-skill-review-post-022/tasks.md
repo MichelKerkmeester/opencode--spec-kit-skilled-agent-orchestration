@@ -1,10 +1,18 @@
 ---
-title: Tasks — 002-skill-review-post-022
+title: "Tasks — 002-skill-review [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/tasks]"
+description: "title: Tasks — 002-skill-review-post-022"
+trigger_phrases:
+  - "tasks"
+  - "002"
+  - "skill"
+  - "review"
+importance_tier: "normal"
+contextType: "implementation"
 status: Complete
 ---
-
 # Tasks
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Deep Review
 - [x] Initialize spec folder and state files (config, JSONL, strategy)
 - [x] Wave 1: A1 (SKILL.md correctness) + A2 (structure traceability)
@@ -13,7 +21,9 @@ status: Complete
 - [x] Wave 4: A7 (templates + assets traceability/maintainability)
 - [x] Synthesize review-report.md (CONDITIONAL: 21 P1, 12 P2)
 - [x] Save memory context
+<!-- /ANCHOR:phase-1 -->
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Remediation
 - [x] WS-1: SKILL.md core fixes (3 findings)
 - [x] WS-2: Structure references normalization (5 findings)
@@ -22,10 +32,13 @@ status: Complete
 - [x] WS-5: Security hardening (5 findings)
 - [x] WS-6: Workflow references phase-aware update (4 findings)
 - [x] WS-7: Templates + assets normalization (7 findings)
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 - [x] GPT 5.4 review agent verification — found 5 consistency issues
 - [x] Rework sweep: Gate 3 A/B/C/D→E, decision-record filename, YAML phase example, workspace-root fallback
 - [x] Commit remediation (b72f78571)
 - [x] Commit rework (70c078acc)
 - [x] Bump SKILL.md version to 2.2.27.0
+<!-- /ANCHOR:phase-3 -->

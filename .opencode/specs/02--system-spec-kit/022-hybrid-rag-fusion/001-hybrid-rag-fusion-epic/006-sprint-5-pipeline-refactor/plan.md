@@ -1,13 +1,13 @@
 ---
-title: "Implementation Plan: Sprint 5 — Pipeline Refactor"
+title: "Implementatio [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor/plan]"
 description: "4-stage pipeline refactor, spec folder pre-filter, query expansion, and spec-kit retrieval metadata implementation plan."
 trigger_phrases:
   - "sprint 5 plan"
   - "pipeline refactor plan"
-  - "R6 plan"
+  - "r6 plan"
   - "4-stage pipeline plan"
 importance_tier: "normal"
-contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
+contextType: "implementation"
 ---
 # Implementation Plan: Sprint 5 — Pipeline Refactor
 
@@ -166,6 +166,7 @@ Pipeline architecture — replace ad-hoc scoring/filtering with explicit 4-stage
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -182,6 +183,7 @@ Phase A (R6 Pipeline) ──[0 ordering diff GATE]──► Phase B (R9, R12, S2
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

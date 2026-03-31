@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec Kit Bug Fixes [083-speckit-reimagined-bug-fixes/decision-record]"
+title: "Deci [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/decision-record]"
 description: "The MCP server's memory-parser.js uses regex to extract ANCHOR-tagged sections. The current regex expects closing tags in /ANCHOR: format, but README.md documents ANCHOR_END for..."
 trigger_phrases:
   - "decision"
@@ -295,6 +295,7 @@ Multiple commands have step numbering inconsistencies between command files and 
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary
 
 | ADR | Decision | Status |
@@ -308,6 +309,7 @@ Multiple commands have step numbering inconsistencies between command files and 
 | ADR-007 | Update orphaned references | Accepted |
 | ADR-008 | Fix step numbering | Accepted |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Revision History

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: cli-copilot Skill"
+title: "Feature Specification: cli-copilot Skill [03--commands-and-skills/008-cli-copilot-creation/spec]"
 description: "No skill exists for AI assistants to delegate tasks to GitHub Copilot CLI, leaving multi-model selection, cloud delegation, plan mode, and autopilot capabilities inaccessible."
 trigger_phrases:
   - "cli-copilot spec"
@@ -24,6 +24,8 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-02 |
 | **Branch** | `main` |
+
+---
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,10 +34,14 @@ contextType: "implementation"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 No skill exists for AI assistants to delegate tasks to GitHub's Copilot CLI (`copilot`). The project has 3 CLI orchestration skills (cli-gemini, cli-codex, cli-claude-code) but no equivalent for Copilot CLI. This leaves Copilot's unique capabilities — multi-provider model selection (7+ models from Anthropic, OpenAI, Google), cloud delegation (`/delegate`), collaborative plan mode, autopilot execution, and repository memory — inaccessible to external orchestrators.
 
 ### Purpose
+
 Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-delegated background work, collaborative planning, and autonomous code generation through a documented skill with smart routing, reference materials, and prompt templates. This completes the 4-CLI cross-AI ecosystem.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -44,12 +50,14 @@ Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-de
 ## 3. SCOPE
 
 ### In Scope
+
 - New cli-copilot skill with full file structure (SKILL.md, README.md, 4 references, 1 asset)
 - Standard orchestration model: calling AI = conductor, Copilot CLI = executor
 - Ecosystem registration: skill_advisor.py entries, `.claude/skills` symlink, README updates (3 files)
 - Changelog entry in `.opencode/changelog/20--cli-copilot/`
 
 ### Out of Scope
+
 - Changes to Copilot CLI itself — documenting only
 - Copilot subscription management or billing
 - Custom agent definitions for Copilot — documenting the feature, not creating agents
@@ -72,6 +80,8 @@ Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-de
 | `.opencode/skill/README.md` | Modify | Add skill entry |
 | `.opencode/README.md` | Modify | Add skill entry |
 | `README.md` | Modify | Add skill entry |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -98,6 +108,8 @@ Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-de
 | REQ-008 | Multi-model documentation | All 7+ models from 3 providers documented with selection guidance |
 | REQ-009 | Core invocation pattern | `copilot -p "prompt" --allow-all-tools 2>&1` used consistently |
 | REQ-010 | AI-agnostic language | No specific AI hardcoded as conductor — uses "the calling AI" |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -110,6 +122,15 @@ Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-de
 - **SC-003**: 4-way comparison table (Copilot vs Claude Code vs Gemini CLI vs Codex CLI) in copilot_tools.md
 - **SC-004**: Cloud delegation (`/delegate`) documented as unique capability
 - **SC-005**: All 7+ model IDs with provider attribution in cli_reference.md
+
+---
+
+### Acceptance Scenarios
+
+- **Given** a calling AI wants to delegate a task to GitHub Copilot CLI, **when** it follows the `cli-copilot` skill guidance, **then** the orchestration model describes Copilot as the executor rather than the conductor.
+- **Given** a user needs model-selection guidance, **when** the Copilot CLI references are reviewed, **then** provider and model information is documented in one place.
+- **Given** a task would benefit from Copilot cloud delegation, **when** the capability matrix is read, **then** `/delegate` is documented as a distinct Copilot strength.
+- **Given** the skill package is compared to the other CLI bridge skills, **when** catalogs and references are checked, **then** `cli-copilot` is represented as a consistent member of the bridge ecosystem.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -124,69 +145,18 @@ Any AI assistant can invoke Copilot CLI for multi-model task execution, cloud-de
 | Risk | Copilot CLI flags/models change | Medium — multi-model landscape evolves fast | Version-pin references, centralize model list |
 | Risk | Cloud delegation availability | Low — GA feature | Document fallback to local execution |
 | Risk | Gemini CLI generates inaccurate content | Medium — delegated implementation | Claude reviews all output against research |
+
+---
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Performance
-- **NFR-P01**: Skill routing via skill_advisor.py returns in < 1 second
-- **NFR-P02**: Smart router pseudocode handles all 7 intent signals
-
-### Security
-- **NFR-S01**: No API keys, tokens, or credentials in any skill files
-- **NFR-S02**: `--allow-all-tools` always flagged as requiring explicit user approval
-- **NFR-S03**: GH_TOKEN/GITHUB_TOKEN never hardcoded
-
-### Reliability
-- **NFR-R01**: Error handling table covers all common failure modes (auth, rate limits, model unavailable)
-- **NFR-R02**: Subscription requirement documented in prerequisites
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
-
-### Data Boundaries
-- Empty prompt: CLI returns usage help; skill documents this
-- Very long prompts: File references recommended over inline content
-- Invalid model ID: Error message documented in troubleshooting
-
-### Error Scenarios
-- No Copilot subscription: Auth fails; document subscription requirement
-- Rate limiting: Documented with wait/retry guidance
-- Cloud delegation fails: Fallback to local execution documented
-- Model unavailable: Document model switching via `/model`
-
-### State Transitions
-- Session continuity: Conversation context maintained within sessions
-- Plan mode toggle: Shift+Tab behavior documented
-- Cloud delegation: Task handoff behavior documented
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 15/25 | 11 new files, 4 modified, documentation-only |
-| Risk | 8/25 | Multi-model complexity, delegated to Gemini CLI for implementation |
-| Research | 12/20 | New CLI with evolving features, web research required |
-| **Total** | **35/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
+## 7. OPEN QUESTIONS
 
 - None — research completed via web search and official documentation.
 <!-- /ANCHOR:questions -->
+
+---

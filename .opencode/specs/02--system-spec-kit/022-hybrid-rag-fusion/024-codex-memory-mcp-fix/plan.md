@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Codex Memory MCP Fix"
+title: "Implementation Plan: Codex Memory MCP Fix [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/plan]"
 description: "This plan updates the focused Level 3 packet so it truthfully captures the landed Codex startup remediation, the in-session DB-isolation fix, and the remaining broader cleanup as explicit follow-on recommendations."
 trigger_phrases:
   - "codex memory mcp fix plan"
@@ -166,6 +166,7 @@ current remediation evidence
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -182,6 +183,7 @@ Phase 1 (evidence capture) -> Phase 2 (packet authoring) -> Phase 3 (validation 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -269,6 +271,7 @@ landed runtime evidence -> 024 packet scope -> tasks/checklist -> future runtime
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Open a focused Codex remediation packet instead of expanding `020`
@@ -286,4 +289,5 @@ landed runtime evidence -> 024 packet scope -> tasks/checklist -> future runtime
 **Alternatives Rejected**:
 - Extend `020` further: rejected because it keeps the Codex slice buried inside a packet that intentionally remains broader and incomplete.
 
+<!-- /ANCHOR:architecture -->
 ---

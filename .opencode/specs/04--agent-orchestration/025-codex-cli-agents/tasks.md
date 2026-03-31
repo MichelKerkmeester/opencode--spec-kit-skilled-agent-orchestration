@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Codex CLI Agent Definitions"
+title: "Tasks: Codex CLI Agent Definitions [04--agent-orchestration/025-codex-cli-agents/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "codex agent tasks"
@@ -30,7 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Read Sources
+## Phase 1: Setup
 
 - [x] T001 Read all 9 source `.opencode/agent/chatgpt/*.md` files
 - [x] T002 Read existing `.codex/config.toml`
@@ -40,7 +40,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Convert and Create
+## Phase 2: Implementation
 
 - [x] T004 Define conversion mapping (agent name → sandbox_mode, reasoning_effort)
 - [x] T005 Define text substitution rules:

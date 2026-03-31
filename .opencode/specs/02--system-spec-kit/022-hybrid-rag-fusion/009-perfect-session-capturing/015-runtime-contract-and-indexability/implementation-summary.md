@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Runtime Contract And Indexability"
+title: "...kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability/implementation-summary]"
 description: "Phase 015 shipped the explicit write/index contract for session capturing."
 trigger_phrases:
   - "phase 015"

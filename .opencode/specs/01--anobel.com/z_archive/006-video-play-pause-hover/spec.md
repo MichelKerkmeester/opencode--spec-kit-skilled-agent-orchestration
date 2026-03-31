@@ -1,5 +1,5 @@
 ---
-title: "Video Play/Pause Button Hover Effect [006-video-play-pause-hover/spec]"
+title: "Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/spec]"
 description: "Add a scale animation to .video--pause and .video--play icons when hovering over .video--play-pause-btn."
 trigger_phrases:
   - "video"

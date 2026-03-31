@@ -5,6 +5,7 @@ trigger_phrases:
   - "level 1"
   - "small change"
   - "baseline docs"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Level 1 Templates

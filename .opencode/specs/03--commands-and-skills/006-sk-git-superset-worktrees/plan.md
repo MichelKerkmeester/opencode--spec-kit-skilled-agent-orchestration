@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-git Superset Worktree Alignment"
+title: "Implementation Plan: sk-git Superset Worktree Alignment [03--commands-and-skills/006-sk-git-superset-worktrees/plan]"
 description: "Restructure sk-git skill adapted from Superset IDE's worktree model: centralized storage, config-driven lifecycle, structured init/teardown flows."
 trigger_phrases:
   - "sk-git superset plan"
@@ -64,6 +64,25 @@ This plan restructures the sk-git skill's worktree documentation, adapted from S
 - [ ] Backward compatibility: `.worktrees/` path still works
 - [ ] Config template provides working example
 - [ ] Checklist.md items all verified
+
+### Pre-Task Checklist
+- Confirm scoped files and validation targets before editing.
+- Confirm the change is structure-only and does not alter feature intent.
+- Confirm the next validation batch is limited to the current spec folder.
+
+### Task Execution Rules
+- TASK-SEQ: Complete one compliance batch before re-validating.
+- TASK-SCOPE: Preserve document meaning while fixing structure and validator-facing metadata only.
+- TASK-VERIFY: Re-run `validate.sh --verbose` after each structural batch.
+
+### Status Reporting Format
+- STATUS=IN_PROGRESS when a compliance batch is underway.
+- STATUS=BLOCKED when a validator warning or document shape cannot be resolved safely.
+- STATUS=DONE only after the packet validates without blocking findings.
+
+### Blocked Task Protocol
+- BLOCKED: record the failing file, validator rule, and the smallest safe remediation path.
+- If a fix would change implementation meaning, stop and keep the packet structure-only.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -261,7 +280,7 @@ Priority: P1 | Estimated LOC: ~120
 ### Phase 5: Assets & Quick Reference
 Priority: P1 | Estimated LOC: ~160
 
-- [ ] **5.1** Update `worktree_checklist.md`:
+- [ ] **5.1** Update worktree_checklist.md:
   - Align checklist items with new 9-step init flow
   - Add worktree.json check step
   - Add branch sanitization verification
@@ -277,7 +296,7 @@ Priority: P1 | Estimated LOC: ~160
   ```
   With commented examples for Node.js, Python, Docker, and monorepo setups.
 
-- [ ] **5.3** Update `quick_reference.md`:
+- [ ] **5.3** Update quick_reference.md:
   - Add centralized dir commands
   - Add worktree.json commands
   - Add sanitization helper
@@ -323,6 +342,7 @@ Priority: P1 | Estimated LOC: ~160
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -346,6 +366,7 @@ Phase 2 (SKILL.md) ────────────────┤
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated LOC |
@@ -445,7 +466,8 @@ Phase 2 (SKILL.md) ────────────────┤
 
 ---
 
-## L3: ARCHITECTURE DECISION RECORDS
+<!-- ANCHOR:architecture -->
+### Architecture Decision Record Summary
 
 ### ADR-001: Centralized Worktree Storage
 
@@ -504,4 +526,5 @@ Phase 2 (SKILL.md) ────────────────┤
 - No sanitization: Leads to invalid branch names with special characters
 - Strict validation (reject invalid): Poor UX — better to auto-fix than reject
 
+<!-- /ANCHOR:architecture -->
 ---

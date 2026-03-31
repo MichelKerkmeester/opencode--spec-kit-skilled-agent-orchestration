@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: JSON Mode Hybrid Enrichment (Phase 1B)"
+title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/spec]"
 description: "This phase documented a broader hybrid-enrichment design, but the shipped implementation in this tree is narrower: JSON-mode type and normalization hardening landed, while the full file-backed hybrid enrichment path did not."
 trigger_phrases:
   - "json mode"
@@ -26,6 +26,7 @@ JSON-mode saves became the safe path for multi-spec sessions, but the implementa
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -44,6 +45,7 @@ JSON-mode saves became the safe path for multi-spec sessions, but the implementa
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -171,6 +173,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -185,8 +188,10 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 
 - **NFR-R01**: File-backed JSON saves must continue to work on the authoritative structured path without silently reopening stateless reconstruction.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -201,8 +206,10 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 - Research findings from the abandoned design are mistaken for current regressions: prevent this with explicit archival framing.
 - Truncated observation titles ending with `...`: use the longer narrative where available to avoid losing meaning.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -214,6 +221,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 | Coordination | 10/15 | Changes cross workflow, input normalization, and extraction boundaries |
 | **Total** | **72/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -259,6 +267,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None. The phase scope and delivery are complete, and remaining work moved into successor phases.

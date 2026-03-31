@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Spec Folder Level Upgrade Script [124-upgrade-level-script/checklist]"
+title: "Verification Checklist: Spec Folder Level Upgrade [02--system-spec-kit/z_archive/007-upgrade-level-script/checklist]"
 description: "Verification Date: 2026-02-15"
 trigger_phrases:
   - "verification"

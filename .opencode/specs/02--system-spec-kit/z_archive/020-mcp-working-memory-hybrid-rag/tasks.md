@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Working Memory + Hybrid RAG Automation [136-mcp-working-memory-hybrid-rag/tasks]"
+title: "Tasks: Working Memory + Hybrid RAG Automation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

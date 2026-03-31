@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [006-generate-context-subfolder/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/006-generate-context-subfolder/implementation-summary]"
 description: "Added nested spec folder path support to generate-context.ts and folder-detector.ts. The scripts now resolve parent/child folder paths (e.g., 003-parent/121-child), bare child n..."
 trigger_phrases:
   - "implementation"
@@ -140,11 +140,13 @@ Net LOC reduction: ~105 lines removed, ~135 lines added (shared module) = ~30 LO
 
 ---
 
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 1. The real bug was a 1-line oversight in `folder-detector.ts` (not in the new code) — `path.isAbsolute()` should have been the first check from the start.
 2. Bare child auto-resolution worked on first try because it takes a completely different code path (doesn't go through `detectSpecFolder`).
 3. Having a comprehensive test matrix (7 formats) caught the resolution bug immediately.
 4. The code duplication P1 was resolved in Phase 2b — consolidation into `subfolder-utils.ts` removed ~105 LOC of duplication and enabled a shared test suite (21 tests).
 
+<!-- /ANCHOR:decisions -->
 ---

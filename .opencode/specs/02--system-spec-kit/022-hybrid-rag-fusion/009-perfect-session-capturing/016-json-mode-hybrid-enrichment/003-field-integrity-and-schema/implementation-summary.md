@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: Field Integrity and Schema Validation"
+title: ".../009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/implementation-summary]"
 description: "Post-implementation record for Phase 003: fast-path filesModified fix, schema validation hardening, and V-rule additions across input-normalizer.ts and validate-memory-quality.ts."
 trigger_phrases:
   - "field integrity implementation summary"
   - "schema validation completed"
-  - "filesModified fix summary"
+  - "filesmodified fix summary"
   - "phase 003 summary"
 importance_tier: "normal"
 contextType: "implementation"

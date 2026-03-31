@@ -1,5 +1,5 @@
 ---
-title: "Tasks: manual-testing-per-playbook retrieval phase [template:level_2/tasks.md]"
+title: "Tasks: manual-testing-pe [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/tasks]"
 description: "Task tracker for 13 retrieval playbook scenarios. One task per scenario, all PENDING."
 trigger_phrases:
   - "retrieval tasks"

@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Confidence Calibration"
+title: "...ystem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration/implementation-summary]"
 description: "Implementation summary for confidence calibration phase of perfect session capturing"
-trigger_phrases: ["implementation", "summary", "confidence", "calibration"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "confidence"
+  - "calibration"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Confidence Calibration
 
@@ -87,3 +93,10 @@ Delivered through a focused compatibility-first pass that kept existing threshol
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

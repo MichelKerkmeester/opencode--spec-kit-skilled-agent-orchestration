@@ -1,10 +1,10 @@
 ---
-title: "Tasks: Code Audit per Feature Catalog"
+title: "Tasks: Code Audit per Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/tasks]"
 description: "Master task list for the full code audit across 22 child folders"
 trigger_phrases:
   - "tasks"
   - "code audit"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: Code Audit per Feature Catalog

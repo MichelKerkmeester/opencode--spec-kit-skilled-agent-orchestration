@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook"
+title: "Feature Specification: manual-testing-p [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/spec]"
 description: "Root wrapper spec for the live manual-testing playbook tree: 290 scenario files across 21 categories, with historical execution evidence and current traceability remediation kept separate."
 trigger_phrases:
   - "manual testing"
   - "testing playbook"
   - "phase parent"
   - "umbrella spec"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook
@@ -168,6 +168,7 @@ Historical execution note:
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Reliability
@@ -182,6 +183,7 @@ Historical execution note:
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -212,6 +214,7 @@ Historical execution note:
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - When the traceability backlog lands, should this wrapper preserve the duplicate `020-feature-flag-reference` folder or collapse it?

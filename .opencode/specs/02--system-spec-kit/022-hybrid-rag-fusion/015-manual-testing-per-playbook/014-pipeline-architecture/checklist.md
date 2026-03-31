@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Manual Testing — Pipeline Architecture (Phase 014)"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture/checklist]"
 description: "Verification checklist for Phase 014 pipeline architecture manual test execution. 18 scenarios: all PASS (100%). IDs: 049-054, 067, 071, 076, 078, 080, 087, 095, 112, 115, 129, 130, 146."
 trigger_phrases:
   - "pipeline architecture checklist"

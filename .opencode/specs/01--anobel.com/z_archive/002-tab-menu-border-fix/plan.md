@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Tab Menu Border Fix [002-tab-menu-border-fix/plan]"
+title: "Implementation Plan: Tab Menu Border Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/plan]"
 description: "Simple find-and-replace of the incorrect CSS variable name in tab_menu.js."
 trigger_phrases:
   - "implementation"

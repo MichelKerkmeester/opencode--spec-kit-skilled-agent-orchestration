@@ -1,5 +1,5 @@
 ---
-title: "Checklist [test-level3/checklist]"
+title: "...ive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-level3/checklist]"
 description: "checklist document for test-level3."
 trigger_phrases:
   - "checklist"

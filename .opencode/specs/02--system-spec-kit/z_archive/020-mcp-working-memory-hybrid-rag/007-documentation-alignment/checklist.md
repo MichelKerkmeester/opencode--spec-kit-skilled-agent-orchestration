@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Documentation Alignment [007-documentation-alignment/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/checklist]"
 description: "checklist document for 007-documentation-alignment."
 trigger_phrases:
   - "verification"
@@ -18,6 +18,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling |
@@ -30,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
+<!-- /ANCHOR:protocol -->
 ## P0 — Blockers
 
 - [x] CHK-301 Skill README module count matches Glob result — feature flags added, counts verified [EVIDENCE: `.opencode/skill/system-spec-kit/README.md`; verification method logged in `spec.md` and `tasks.md`]

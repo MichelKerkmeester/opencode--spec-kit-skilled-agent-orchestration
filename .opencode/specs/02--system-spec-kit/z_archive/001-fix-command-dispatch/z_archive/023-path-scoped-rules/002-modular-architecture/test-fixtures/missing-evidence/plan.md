@@ -1,5 +1,5 @@
 ---
-title: "Plan: Missing Evidence Fixture [missing-evidence/plan]"
+title: "...01-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/missing-evidence/plan]"
 description: "Testing detection of missing evidence tags on completed items."
 trigger_phrases:
   - "plan"
@@ -18,9 +18,11 @@ contextType: "decision"
 Testing detection of missing evidence tags on completed items.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Level 2 spec with checklist missing required evidence.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Foundation (Phase 0, Phase 1, Phase 1.5) [001-foundation-phases-0-1-1-5/plan]"
+title: "Phase Package [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/plan]"
 description: "Deliver prerequisite and hardening infrastructure that enables safe start of Phase 2 extraction work."
 trigger_phrases:
   - "phase"

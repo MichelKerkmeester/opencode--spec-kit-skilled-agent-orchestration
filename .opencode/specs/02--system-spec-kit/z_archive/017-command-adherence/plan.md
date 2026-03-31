@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Plan-to-Implementation Gate Bypass Fix [134-command-adherence/plan]"
+title: "Implementation Plan: Plan-to-Implementation Gate Bypass Fix [02--system-spec-kit/z_archive/017-command-adherence/plan]"
 description: "Fix gate bypass bug by adding phase boundary concept to CLAUDE.md Gate 3, scoping Memory Save Rule to memory saves only, and adding enforcement blocks to plan command YAML termi..."
 trigger_phrases:
   - "implementation"
@@ -185,6 +185,7 @@ Instruction-based behavioral enforcement via documentation + command configurati
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -209,6 +210,7 @@ Phase 4 (plan.md) ────────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -318,6 +320,7 @@ Phase 4 (plan.md) ────────┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Phase Boundary Rule vs Gate Expiry
@@ -390,3 +393,4 @@ LEVEL 3 PLAN (~280 lines)
 - Architecture decision records
 - Bug fix plan (pre-implementation)
 -->
+<!-- /ANCHOR:architecture -->

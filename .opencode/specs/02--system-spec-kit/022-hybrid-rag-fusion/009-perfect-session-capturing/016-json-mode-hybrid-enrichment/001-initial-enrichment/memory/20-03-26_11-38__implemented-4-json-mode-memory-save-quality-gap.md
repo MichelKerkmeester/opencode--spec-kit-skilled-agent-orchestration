@@ -1,6 +1,5 @@
 ---
-title: "Implemented 4 Json [021-json-mode-hybrid-enrichment/20-03-26_11-38__implemented-4-json-mode-memory-save-quality-gap]"
-description: "Implemented 4 JSON-mode memory save quality gap fixes plus a bonus template-level override fix....; Extended RC-9 pattern to also re-assert MESSAGE COUNT when sessionData has..."
+title: "...6-json-mode-hybrid-enrichment/001-initial-enrichment/20-03-26_11-38__implemented-4-json-mode-memory-save-quality-gap]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/021 json mode hybrid enrichment"
   - "session data"
@@ -36,19 +35,18 @@ trigger_phrases:
   - "enrichment"
 importance_tier: "critical"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 5
-quality_score: 1.00
 quality_flags:
   - "insufficient_capture"
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.8,"errors":1,"warnings":1}
 ---
-
 # Implemented 4 Json Mode Memory Save Quality Gap
 
 ## SESSION SUMMARY

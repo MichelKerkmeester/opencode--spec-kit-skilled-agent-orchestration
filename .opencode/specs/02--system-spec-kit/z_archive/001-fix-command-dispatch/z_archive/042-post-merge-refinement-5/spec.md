@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5) [042-post-merge-refinement-5/spec]"
+title: "Feature Specificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5/spec]"
 description: "Complete feature specification defining requirements, user stories, and success criteria for fixing critical bugs and improving quality following the Spec Kit Memory merger."
 trigger_phrases:
   - "feature"
@@ -74,6 +74,7 @@ Stabilize the Spec Kit Memory system by fixing all critical bugs, resolving sign
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -94,6 +95,7 @@ Stabilize the Spec Kit Memory system by fixing all critical bugs, resolving sign
 - Performance optimization beyond identified issues
 - UI/UX redesign of commands
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -145,6 +147,7 @@ As a developer using the memory system, I need improved search quality and bette
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### Critical Bug Fixes (P0)
@@ -184,8 +187,10 @@ As a developer using the memory system, I need improved search quality and bette
 | Story 2 - Documentation | REQ-FUNC-008 through REQ-FUNC-015 | All P1 requirements |
 | Story 3 - Refinements | REQ-FUNC-016 through REQ-FUNC-020 | Selected P2 requirements |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -218,8 +223,10 @@ As a developer using the memory system, I need improved search quality and bette
 - **NFR-O02**: Database migrations MUST be idempotent
 - **NFR-O03**: System MUST support backward compatibility with existing memory files
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -237,8 +244,10 @@ As a developer using the memory system, I need improved search quality and bette
 - How does system handle concurrent memory saves? MUST use database transactions
 - What happens when memory file is modified externally? MUST detect via content hash and offer re-index
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -260,6 +269,7 @@ As a developer using the memory system, I need improved search quality and bette
 | Reliability | Runtime errors | 0 | MCP server logs |
 | Consistency | Doc alignment score | 100% | Cross-reference audit |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -295,6 +305,7 @@ As a developer using the memory system, I need improved search quality and bette
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -306,14 +317,17 @@ As a developer using the memory system, I need improved search quality and bette
 - **Performance optimization** - Beyond fixing identified performance bugs
 - **UI/UX redesign** - Commands will work the same way, just correctly
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - **Resolved**: Gate numbering will standardize on Gates 1-4 (confirmed from AGENTS.md analysis)
 - **Resolved**: Memory file format will follow ANCHOR structure (confirmed from template analysis)
 - All major questions resolved during 10-agent analysis phase
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

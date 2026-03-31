@@ -1,6 +1,5 @@
 ---
-title: "Implemented Full Hybrid Rag"
-description: "Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...; Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in..."
+title: "...pec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "with timeout"
@@ -30,18 +29,17 @@ trigger_phrases:
   - "per-stage try/catch withtimeout 10s"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Implemented Full Hybrid Rag Fusion Pipeline
 
 ## SESSION SUMMARY

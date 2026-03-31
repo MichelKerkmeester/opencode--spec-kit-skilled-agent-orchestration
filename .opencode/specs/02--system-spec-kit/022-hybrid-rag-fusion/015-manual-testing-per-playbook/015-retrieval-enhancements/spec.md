@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Manual Testing — Retrieval Enhancements (Phase 015)"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements/spec]"
 description: "Manual test execution tracking for 11 retrieval enhancement scenarios covering dual-scope auto-surface, constitutional memory injection, spec folder hierarchy retrieval, lightweight consolidation, memory summary channel, cross-document entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection."
 trigger_phrases:
   - "retrieval enhancements testing"
@@ -174,6 +174,7 @@ Execute all 11 playbook scenarios for the retrieval enhancements category and re
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -187,6 +188,7 @@ Execute all 11 playbook scenarios for the retrieval enhancements category and re
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Scenario Boundaries

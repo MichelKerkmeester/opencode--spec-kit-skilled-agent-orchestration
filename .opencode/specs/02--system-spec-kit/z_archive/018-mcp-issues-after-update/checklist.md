@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: MCP Server Failures After Updates [135-mcp-issues-after-update/checklist]"
+title: "Verification Checklist: MCP Server Failures [02--system-spec-kit/z_archive/018-mcp-issues-after-update/checklist]"
 description: "Verification Date: 2026-02-18"
 trigger_phrases:
   - "verification"

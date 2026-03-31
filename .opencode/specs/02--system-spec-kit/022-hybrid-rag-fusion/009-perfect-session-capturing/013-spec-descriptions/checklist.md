@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Spec Descriptions [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions/checklist]"
 description: "Verification Date: 2026-03-17"
 trigger_phrases:
   - "description verification"

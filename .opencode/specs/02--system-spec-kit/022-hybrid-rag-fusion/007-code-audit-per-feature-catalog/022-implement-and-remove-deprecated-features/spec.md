@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Implement and Remove Deprecated Features"
+title: "...-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec]"
 description: "Release-control packet for the six deprecated-feature remediation targets identified by the hybrid-RAG audit: three implementation candidates and three retirement candidates."
 trigger_phrases:
   - "deprecated feature remediation"
@@ -140,6 +140,7 @@ Track the six deprecated-feature remediation targets, record their release-contr
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -155,6 +156,7 @@ Track the six deprecated-feature remediation targets, record their release-contr
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Historical Drift

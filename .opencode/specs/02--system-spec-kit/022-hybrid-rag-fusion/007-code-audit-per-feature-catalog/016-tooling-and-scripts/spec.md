@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Tooling and Scripts"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/spec]"
 description: "Systematic code audit of 17 Tooling and Scripts features against the current repository, covering validation scripts, admin tooling, filesystem watchers, source-dist alignment, and documentation-boundary helpers."
 trigger_phrases:
   - "tooling and scripts audit"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "architecture boundary enforcement"
   - "progressive validation"
   - "dead code removal"
-  - "admin CLI audit"
+  - "admin cli audit"
   - "session capturing pipeline"
   - "source-dist alignment"
 importance_tier: "normal"
@@ -147,6 +147,7 @@ Verify that each Tooling and Scripts feature remains accurately described, trace
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -162,6 +163,7 @@ Verify that each Tooling and Scripts feature remains accurately described, trace
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Cross-Cutting Features

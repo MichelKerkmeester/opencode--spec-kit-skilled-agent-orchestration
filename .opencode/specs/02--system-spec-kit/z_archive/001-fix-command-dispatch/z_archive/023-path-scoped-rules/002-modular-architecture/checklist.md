@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Modular Validation Architecture [002-modular-architecture/checklist]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/checklist]"
 description: "When marking items complete, add evidence"
 trigger_phrases:
   - "verification"

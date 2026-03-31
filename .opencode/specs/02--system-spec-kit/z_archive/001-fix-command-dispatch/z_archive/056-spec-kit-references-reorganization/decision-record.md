@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: system-spec-kit References Reorganization [056-spec-kit-references-reorganization/decision-record]"
+title: "...-system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/decision-record]"
 description: "Reorganize the system-spec-kit skill's references/ folder from a flat structure into logical sub-folders, following the pattern established in the workflows-code skill improvement."
 trigger_phrases:
   - "decision"
@@ -15,14 +15,17 @@ contextType: "decision"
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: system-spec-kit References Reorganization
 
+<!-- ANCHOR:decision -->
 ## Decision
 
 Reorganize the `system-spec-kit` skill's `references/` folder from a flat structure into logical sub-folders, following the pattern established in the `workflows-code` skill improvement.
+<!-- /ANCHOR:decision -->
 
 ## Status
 
 **Proposed** - Pending implementation
 
+<!-- ANCHOR:context -->
 ## Context
 
 The `system-spec-kit` skill is a core skill used across all spec folder operations. Its `references/` folder contains multiple markdown files covering different domains (memory system, validation, templates, workflows). Currently, all files exist at the root level of `references/`, making it difficult to:
@@ -32,13 +35,16 @@ The `system-spec-kit` skill is a core skill used across all spec folder operatio
 3. Navigate the skill's resources efficiently
 
 The `workflows-code` skill recently underwent a similar reorganization (spec 001-workflows-code-codebase-alignment) with positive results, establishing a pattern worth following.
+<!-- /ANCHOR:context -->
 
+<!-- ANCHOR:decision -->
 ## Decision Drivers
 
 - **Consistency**: Other skills use organized sub-folder structures
 - **Discoverability**: Flat structures scale poorly as documentation grows
 - **Maintainability**: Logical groupings make updates easier
 - **User Experience**: Clearer navigation improves skill usability
+<!-- /ANCHOR:decision -->
 
 ## Alternatives Considered
 
@@ -94,6 +100,7 @@ The `workflows-code` skill recently underwent a similar reorganization (spec 001
 | Consistency | Low | High |
 | Maintenance | Harder | Easier |
 
+<!-- ANCHOR:consequences -->
 ## Consequences
 
 ### Positive
@@ -114,6 +121,7 @@ The `workflows-code` skill recently underwent a similar reorganization (spec 001
 - File content remains unchanged
 - Skill functionality unaffected
 - Git history preserved with git mv
+<!-- /ANCHOR:consequences -->
 
 ## Implementation Notes
 

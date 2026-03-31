@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: sk-code--opencode refinement"
+title: "Implementation Plan: sk-code--opencode refinement [03--commands-and-skills/018-sk-code-opencode-refinement/plan]"
 description: "Execution plan for refining sk-code--opencode policy language and checklists based on completed spec and research artifacts. The plan sequences implementation, verification, and closure with a mandatory global quality sweep across all changed files."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "global quality sweep"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: sk-code--opencode refinement
 
@@ -58,7 +58,7 @@ This implementation applies the approved 043 policy refinements to `sk-code--ope
 Governance-first documentation refactor with deterministic verification and closure gating.
 
 ### Key Components
-- **Policy Core Workstream**: Updates `sk-code--opencode/SKILL.md` and shared references to enforce reduced inline-comment policy plus AI-oriented semantics.
+- **Policy Core Workstream**: Updates sk-code--opencode/SKILL.md and shared references to enforce reduced inline-comment policy plus AI-oriented semantics.
 - **Language Alignment Workstream**: Applies consistent guidance across JS, TS, Python, Shell, and Config style guides.
 - **Checklist Hardening Workstream**: Adds explicit KISS/DRY and SOLID gates to universal and language checklists.
 - **Optional Review Alignment Workstream**: Applies minimal, evidence-driven updates to `sk-code--review` only if baseline-overlay mismatch is detected.
@@ -190,6 +190,7 @@ rg -n "KISS|DRY|SOLID|module|adapter|interface|abstraction|responsibility|depend
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -210,6 +211,7 @@ Phase 1 (Preparation) -> Phase 2 (Core Policy) -> Phase 3 (Checklist/Optional Re
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -317,6 +319,7 @@ Phase 1 (Preparation) -> Phase 2 (Core Policy) -> Phase 3 (Checklist/Optional Re
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Inline Comment Policy and AI Semantics Contract
@@ -339,6 +342,7 @@ See `decision-record.md` for full ADR set and tradeoffs.
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation
@@ -349,7 +353,7 @@ See `decision-record.md` for full ADR set and tradeoffs.
 ### Tier 2: Parallel Execution
 | Agent | Focus | Files |
 |-------|-------|-------|
-| Primary | Policy Core | `sk-code--opencode/SKILL.md`, shared references |
+| Primary | Policy Core | sk-code--opencode/SKILL.md, shared references |
 | Primary | Language Alignment | `references/javascript|typescript|python|shell|config/style_guide.md` |
 | Primary | Checklist Hardening | `assets/checklists/*.md` + optional review references |
 
@@ -395,7 +399,7 @@ See `decision-record.md` for full ADR set and tradeoffs.
 | ID | Name | Owner | Files | Status |
 |----|------|-------|-------|--------|
 | W1 | Prior-work continuity lock | Primary | `spec.md`, `research/research.md`, `scratch/*.md` | Active |
-| W2 | Shared policy and header invariants | Primary | `sk-code--opencode/SKILL.md`, shared references | Planned |
+| W2 | Shared policy and header invariants | Primary | sk-code--opencode/SKILL.md, shared references | Planned |
 | W3 | Language style guide alignment | Primary | JS/TS/Python/Shell/Config style guides | Planned |
 | W4 | Checklist hardening | Primary | Universal + language checklists | Planned |
 | W5 | Optional review alignment | Primary | `sk-code--review` scoped files | Conditional |

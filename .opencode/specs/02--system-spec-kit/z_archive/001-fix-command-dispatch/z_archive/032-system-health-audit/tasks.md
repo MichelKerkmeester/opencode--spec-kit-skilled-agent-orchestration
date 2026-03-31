@@ -1,5 +1,5 @@
 ---
-title: "Tasks - System Health Audit (Completed) [032-system-health-audit/tasks]"
+title: "Tasks - System Health [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/tasks]"
 description: "All 34 tasks completed on 2025-12-25."
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook memory quality and indexing phase [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing/spec]"
 description: "Test specification for the memory quality and indexing category: 27 playbook scenario files covering 34 exact IDs including sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F."
 trigger_phrases:
   - "memory quality manual testing"

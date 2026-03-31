@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Haiku Compatibility [013-agent-haiku-compatibility/spec]"
+title: "Feature Specification: Agent Haiku [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/spec]"
 description: "The context agent was rewritten from a 3-mode system (quick/medium/thorough) to thorough-only after spec 012 A/B testing showed the narrowest Haiku-Sonnet gap in thorough mode. ..."
 trigger_phrases:
   - "feature"
@@ -137,6 +137,7 @@ Ensure all agent files are compatible with the thorough-only Haiku context agent
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Clarity
@@ -152,6 +153,7 @@ Ensure all agent files are compatible with the thorough-only Haiku context agent
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Context Agent Behavior

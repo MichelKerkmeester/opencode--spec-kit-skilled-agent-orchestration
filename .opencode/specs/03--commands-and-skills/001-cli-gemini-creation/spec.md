@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: cli-gemini Skill"
+title: "Feature Specification: cli-gemini Skill [03--commands-and-skills/001-cli-gemini-creation/spec]"
 description: "Create a skill that allows Claude Code and OpenCode to utilize Google's Gemini CLI for supplementary AI tasks including code generation, web research, architecture analysis, and cross-AI validation."
 trigger_phrases:
   - "gemini cli skill"
@@ -24,6 +24,8 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-02-28 |
+
+---
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,10 +34,14 @@ contextType: "implementation"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 Claude Code and OpenCode lack a structured way to delegate tasks to Google's Gemini CLI. Without a skill, agents have no guidance on when to use Gemini, how to invoke it correctly, or how to validate its output. This leads to missed opportunities for cross-AI validation, web research via Google Search grounding, and codebase investigation using Gemini's unique tools.
 
 ### Purpose
+
 Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini CLI for supplementary tasks, following established skill creation standards with proper progressive disclosure, smart routing, and validation patterns.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -44,6 +50,7 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 ## 3. SCOPE
 
 ### In Scope
+
 - SKILL.md with 8 standard sections following sk-doc conventions
 - references/cli_reference.md with complete CLI command and flag documentation
 - references/integration_patterns.md with Claude+Gemini orchestration patterns
@@ -51,6 +58,7 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 - assets/prompt_templates.md with reusable prompt templates
 
 ### Out of Scope
+
 - MCP server implementation - not needed (direct CLI invocation via Bash)
 - INSTALL_GUIDE.md - defer to later iteration
 - README.md - defer to later iteration
@@ -66,6 +74,8 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 | .opencode/skill/cli-gemini/references/integration_patterns.md | Create | Orchestration patterns |
 | .opencode/skill/cli-gemini/references/gemini_tools.md | Create | Tools documentation |
 | .opencode/skill/cli-gemini/assets/prompt_templates.md | Create | Prompt templates |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -90,6 +100,8 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 | REQ-006 | Reference files provide deep-dive content | Each reference covers its domain completely |
 | REQ-007 | Prompt templates are copy-paste ready | Templates work with `gemini` CLI directly |
 | REQ-008 | Integration patterns cover cross-AI workflows | Generate-Review-Fix and other patterns documented |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -100,6 +112,15 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 - **SC-001**: Skill can be invoked via Gate 2 skill_advisor.py with confidence >= 0.8 for Gemini-related requests
 - **SC-002**: All files follow snake_case naming and pass DQI structure checks
 - **SC-003**: SKILL.md under 5k words with progressive disclosure to references/
+
+---
+
+### Acceptance Scenarios
+
+- **Given** a developer asks for Gemini CLI help inside the supported runtime, **when** the `cli-gemini` skill is loaded, **then** the skill explains when Gemini is the right delegate instead of another CLI bridge.
+- **Given** a task needs Google-grounded research, **when** the user follows the routing guidance, **then** the skill points them to the documented Gemini web-research workflow.
+- **Given** a task needs Gemini-specific tool usage, **when** the reference set is consulted, **then** the user can find the relevant CLI flags, tools, and prompt templates without leaving the skill package.
+- **Given** the skill is reviewed alongside sibling CLI bridge skills, **when** structure and routing are compared, **then** `cli-gemini` follows the same ecosystem pattern while preserving Gemini-specific guidance.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -113,55 +134,18 @@ Create a skill that teaches Claude Code and OpenCode agents how to invoke Gemini
 | Dependency | Authentication configured | CLI fails without auth | Document auth setup in skill |
 | Risk | Gemini CLI API changes | Templates may break | Version-pin CLI reference |
 | Risk | --yolo mode security | Could modify files without approval | NEVER rules for dangerous operations |
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Security
-- **NFR-S01**: Never use --yolo on production codebases without explicit user approval
-- **NFR-S02**: Always validate Gemini-generated code before applying
-
-### Reliability
-- **NFR-R01**: Graceful fallback when Gemini CLI not installed
-- **NFR-R02**: Handle rate limits with model fallback strategy
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
-
-### CLI Unavailable
-- Gemini CLI not installed: Skill routing detects and suggests installation
-- Authentication expired: Provide re-auth instructions
-- Rate limited: Suggest model fallback (Pro -> Flash)
-
-### Output Handling
-- Large output: Use -o text to capture, validate before applying
-- JSON parsing: Handle malformed JSON from -o json mode
-- Timeout: Long-running tasks via background execution
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 15/25 | 5 files, multiple reference domains |
-| Risk | 8/25 | Low risk, documentation-only skill |
-| Research | 15/20 | Required studying reference repo + official docs |
-| **Total** | **38/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
 
 - None remaining (all resolved during research phase)
+
+---
+<!-- /ANCHOR:questions -->
 
 ---

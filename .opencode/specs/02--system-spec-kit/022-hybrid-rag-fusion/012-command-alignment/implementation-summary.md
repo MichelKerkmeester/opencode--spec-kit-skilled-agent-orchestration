@@ -1,6 +1,14 @@
 ---
-title: "Implementation Summary: 012-command-alignment"
+title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/implementation-summary]"
 description: "Post-review truth-reconciled summary of the 012 command-alignment pack against the live 33-tool, 4-command memory-command surface plus /spec_kit:resume recovery ownership."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "012"
+  - "command"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 012-command-alignment

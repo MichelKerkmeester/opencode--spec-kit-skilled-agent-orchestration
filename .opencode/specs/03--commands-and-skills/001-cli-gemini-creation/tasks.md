@@ -1,5 +1,5 @@
 ---
-title: "Tasks: cli-gemini Skill"
+title: "Tasks: cli-gemini Skill [03--commands-and-skills/001-cli-gemini-creation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "gemini cli tasks"
@@ -25,6 +25,10 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,6 +38,10 @@ contextType: "implementation"
 
 - [x] T001 Create skill directory structure (.opencode/skill/cli-gemini/)
 - [x] T002 Create references/ and assets/ subdirectories
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,6 +54,10 @@ contextType: "implementation"
 - [x] T005 [P] Create integration patterns (.opencode/skill/cli-gemini/references/integration_patterns.md)
 - [x] T006 [P] Create Gemini tools reference (.opencode/skill/cli-gemini/references/gemini_tools.md)
 - [x] T007 [P] Create prompt templates (.opencode/skill/cli-gemini/assets/prompt_templates.md)
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -53,22 +65,28 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
+### Phase 3: Verification
+
+### Phase 3: Verification
+
 - [x] T008 Verify SKILL.md word count under 5k (2395 words)
 - [x] T009 Verify all sections have proper anchors (8/8 verified)
 - [x] T010 Verify file naming follows snake_case convention (all files compliant)
-<!-- /ANCHOR:phase-3 -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Template Alignment & Skill Advisor
+### Phase 4: Template Alignment & Skill Advisor
 
 - [x] T011 Rewrite SKILL.md to align with sk-doc skill_md_template.md (8 sections, canonical smart routing, emoji-prefixed Rules)
 - [x] T012 Create references/agent_delegation.md (9 Gemini agents, conductor/executor model, routing table)
 - [x] T013 [P] Add YAML frontmatter to cli_reference.md, integration_patterns.md, gemini_tools.md
 - [x] T014 [P] Add cli-gemini entries to Public skill_advisor.py (SYNONYM_MAP, INTENT_BOOSTERS, MULTI_SKILL_BOOSTERS, PHRASE_INTENT_BOOSTERS)
 - [x] T015 [P] Add cli-gemini entries to Barter skill_advisor.py (same entries, adapted for sk-code naming)
-<!-- /ANCHOR:phase-4 -->
+
+---
+
+---
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
@@ -78,6 +96,10 @@ contextType: "implementation"
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -87,6 +109,10 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+
+---
+
+---
 <!-- /ANCHOR:cross-refs -->
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: OpenCode Agent Path Only [018-opencode-agent-path-only/tasks]"
+title: "Tasks: OpenCode Agent Path Only [018-opencode-agent-path-on [04--agent-orchestration/018-opencode-agent-path-only/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -34,7 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Discovery
+## Phase 1: Setup
 
 - [ ] T001 Run comprehensive grep to find all `.claude/agents` references
 - [ ] T002 Run comprehensive grep to find all `.codex/agents` references

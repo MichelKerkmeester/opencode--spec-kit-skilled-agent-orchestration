@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Manual Testing — Retrieval Enhancements (Phase 015)"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements/implementation-summary]"
 description: "Post-execution summary for Phase 015 retrieval enhancements manual testing. 11/11 scenarios PASS. Verdicts assigned by static code analysis against MCP server TypeScript source."
 trigger_phrases:
   - "retrieval-enhancements implementation summary"

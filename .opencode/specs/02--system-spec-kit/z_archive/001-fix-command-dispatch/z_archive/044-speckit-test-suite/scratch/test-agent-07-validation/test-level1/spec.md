@@ -1,5 +1,5 @@
 ---
-title: "Test Spec Level 1 [test-level1/spec]"
+title: "..._archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-level1/spec]"
 description: "Test specification for validation testing of Level 1 spec folders."
 trigger_phrases:
   - "test"
@@ -20,5 +20,7 @@ contextType: "decision"
 Test specification for validation testing of Level 1 spec folders.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 - R1: Test requirement for validation
+<!-- /ANCHOR:requirements -->

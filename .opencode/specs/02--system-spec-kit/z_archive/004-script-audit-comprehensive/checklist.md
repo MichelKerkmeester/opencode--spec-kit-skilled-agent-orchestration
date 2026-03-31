@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Comprehensive Script Audit [121-script-audit-comprehensive/checklist]"
+title: "Verification Checklist: Comprehensive Script [02--system-spec-kit/z_archive/004-script-audit-comprehensive/checklist]"
 description: "Verification Date: 2026-02-15"
 trigger_phrases:
   - "verification"

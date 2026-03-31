@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 002-versioned-memory-state"
+title: "Verificatio [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/checklist]"
 description: "Readiness and execution evidence for Hydra Phase 2 lineage rollout."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 2 checklist"
   - "lineage checklist"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 002-versioned-memory-state
 

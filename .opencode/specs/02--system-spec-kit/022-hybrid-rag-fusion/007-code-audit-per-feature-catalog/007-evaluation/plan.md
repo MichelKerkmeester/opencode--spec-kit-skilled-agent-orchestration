@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Evaluation"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation/plan]"
 description: "Technical plan for auditing 2 Evaluation features against source code"
 trigger_phrases:
   - "audit plan"
@@ -124,14 +124,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 2 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -160,3 +163,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 2 features) ──► Phase 3 (Synthesis
 | eval_reporting_dashboard | MATCH | Sprint grouping, metric summaries, trend analysis, SPECKIT_DASHBOARD_LIMIT, and format output all confirmed. Source list properly scoped (8 impl + 2 test). |
 
 **Overall**: 1 MATCH, 1 PARTIAL. No behavioral discrepancies. Sole open item: trim `eval_run_ablation` catalog source list.
+<!-- /ANCHOR:effort -->

@@ -1,4 +1,9 @@
 ---
+title: "Deep Resear [02--system-spec-kit/024-compact-code-graph/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual]"
+importance_tier: "important"
+contextType: "research"
+---
+---
 title: "Deep Research Evaluating [024-compact-code-graph/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual]"
 description: "Deep research evaluating Codex-CLI-Compact (Dual-Graph) for upgrading Spec Kit Memory MCP. 10...; REJECTED: Installing Dual-Graph standalone (CLAUDE.; REJECTED: Extracting..."
 trigger_phrases:

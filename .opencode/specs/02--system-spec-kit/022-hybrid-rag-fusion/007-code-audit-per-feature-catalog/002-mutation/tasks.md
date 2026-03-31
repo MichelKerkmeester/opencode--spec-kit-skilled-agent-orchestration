@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Mutation"
+title: "Tasks: Code Audit — [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation/tasks]"
 description: "Task breakdown for auditing 10 Mutation features"
 trigger_phrases:
   - "tasks"

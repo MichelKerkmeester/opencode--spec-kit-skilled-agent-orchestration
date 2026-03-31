@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Hook Cleanup - Implementation Breakdown [004-memory-hook-cleanup/tasks]"
+title: "Tasks: Memory Hook [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/tasks]"
 description: "Task list for removing Claude Code Hook references from workflows-memory skill."
 trigger_phrases:
   - "tasks"

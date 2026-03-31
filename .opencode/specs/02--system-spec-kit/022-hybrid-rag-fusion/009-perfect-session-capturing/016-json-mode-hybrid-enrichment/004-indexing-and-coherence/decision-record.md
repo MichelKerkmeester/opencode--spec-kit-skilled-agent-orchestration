@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: Indexing & Coherence — Embedding Visibility, Trigger Quality, Template Gaps, Cross-Session Validation"
+title: "...-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/decision-record]"
 description: "Three architecture decisions for the 004-indexing-and-coherence phase: RetryStats exposure strategy, trigger phrase filter placement, and Mustache template section design for toolCalls/exchanges."
 trigger_phrases:
   - "indexing coherence decision record"
-  - "RetryStats accessor decision"
+  - "retrystats accessor decision"
   - "trigger phrase filter architecture decision"
-  - "toolCalls exchanges template design decision"
-  - "OPTIONAL_PLACEHOLDERS ADR"
+  - "toolcalls exchanges template design decision"
+  - "optional_placeholders adr"
 importance_tier: "normal"
 contextType: "decision"
 ---

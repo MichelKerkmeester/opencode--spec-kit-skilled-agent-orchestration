@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Template Optimization Refinement [074-speckit-template-optimization-refinement/tasks]"
+title: "Ta [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -40,6 +40,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Research [W-A]
 
 ### Agent Dispatch (Parallel)
@@ -68,8 +69,10 @@ contextType: "implementation"
 - [x] T019 [W-A] Collect findings from Agent 9 (memory)
 - [x] T020 [W-A] Collect findings from Agent 10 (config)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Analysis Aggregation [SYNC-001]
 
 - [x] T021 [SYNC] Aggregate all 10 agent findings
@@ -81,8 +84,10 @@ contextType: "implementation"
 - [x] T027 [SYNC] Present findings to user for approval
 - [x] T028 [SYNC] User selects recommendations for implementation
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Implementation [W-B]
 
 ### P0 Critical Implementations
@@ -115,6 +120,7 @@ contextType: "implementation"
 - [x] T035 [W-B] Update changelog with refinement summary
 - [x] T036 [W-B] Update cross-references for new documents
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Verification [SYNC-002]
@@ -151,6 +157,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -160,6 +167,7 @@ contextType: "implementation"
 - [x] All 10 verification agents passed
 - [x] User approved release
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## Task Statistics
@@ -229,6 +237,7 @@ Time (seconds)  0   30   60   90   120  150  180  ...30min...
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -245,3 +254,4 @@ LEVEL 3+ TASKS - Enterprise Governance
 - Timeline visualization
 - Task statistics per phase
 -->
+<!-- /ANCHOR:cross-refs -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: OpenCode Agent Path Only [018-opencode-agent-path-only/plan]"
+title: "Implementation Plan: OpenCode Agent Path Only [04--agent-orchestration/018-opencode-agent-path-only/plan]"
 description: "This task involves a systematic search-and-replace operation across AGENTS.md, skill files, and command files to change agent path references from .claude/agents and .codex/agen..."
 trigger_phrases:
   - "implementation"

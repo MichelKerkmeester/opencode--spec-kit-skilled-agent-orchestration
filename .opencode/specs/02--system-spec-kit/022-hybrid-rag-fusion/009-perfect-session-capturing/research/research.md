@@ -1,8 +1,15 @@
 ---
-title: "Deep Research: Perfect Session Capturing Truth Reconciliation"
+title: "Deep Research: Perfect Session [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/research]"
 description: "Canonical synthesis of the deep-research audit for phases 001-017, covering spec truth vs runtime truth, remaining proof gaps, and design risks."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "perfect"
+  - "session"
+  - "009"
+importance_tier: "normal"
+contextType: "research"
 ---
-
 # Deep Research: Perfect Session Capturing Truth Reconciliation
 
 ## Executive Summary

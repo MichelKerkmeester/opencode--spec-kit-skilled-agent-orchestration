@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5) [001-foundation-phases-0-1-1-5/spec]"
+title: "Phase Package [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/spec]"
 description: "This package defines the foundation and hardening work required before extraction/rollout implementation begins. It covers prerequisite infrastructure, core cognitive automation..."
 trigger_phrases:
   - "phase"

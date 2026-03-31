@@ -184,7 +184,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
-- [`handover.md`](./handover.md) - Session handover notes
+- [handover agent](./handover.md) - Session handover notes
 
 **Key Topics:** `decision` | `memory` | `target` | `fallback option` | `json mode` | `app source` | `immediate indexing` | `agents/021 codex orchestrate` | `fallback` | `option` | `path` | `json` | 
 

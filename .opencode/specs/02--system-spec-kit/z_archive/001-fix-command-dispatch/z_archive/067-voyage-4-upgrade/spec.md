@@ -1,5 +1,5 @@
 ---
-title: "Voyage 4 Model Upgrade Analysis [067-voyage-4-upgrade/spec]"
+title: "Voyage 4 Model Upgrade [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade/spec]"
 description: "Objective: Evaluate and plan the upgrade from current Voyage models to the newly released Voyage 4 model family for both Spec Kit Memory MCP and Narsil MCP systems."
 trigger_phrases:
   - "voyage"
@@ -191,6 +191,7 @@ const MODEL_DIMENSIONS = {
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] Voyage 4 models added to `MODEL_DIMENSIONS` mapping
@@ -201,8 +202,10 @@ const MODEL_DIMENSIONS = {
 - [ ] Memory files re-indexed with new model
 - [ ] Search quality verified (no regressions)
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:scope -->
 ## Out of Scope
 
 - Narsil model change (no code-specific Voyage 4 yet)
@@ -210,6 +213,7 @@ const MODEL_DIMENSIONS = {
 - Binary quantization (future optimization)
 - `voyage-4-nano` local deployment (requires HuggingFace setup)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## References

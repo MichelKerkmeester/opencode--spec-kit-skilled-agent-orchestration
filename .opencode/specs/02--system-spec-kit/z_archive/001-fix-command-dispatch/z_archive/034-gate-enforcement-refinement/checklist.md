@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist [034-gate-enforcement-refinement/checklist]"
+title: "Verificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement/checklist]"
 description: "checklist document for 034-gate-enforcement-refinement."
 trigger_phrases:
   - "verification"

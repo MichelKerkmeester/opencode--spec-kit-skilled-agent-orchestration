@@ -1,5 +1,5 @@
 ---
-title: "Tasks: manual-testing-per-playbook governance phase [template:level_2/tasks.md]"
+title: "Tasks: manual-testing-p [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance/tasks]"
 description: "Task Format: T### [P?] Description"
 trigger_phrases:
   - "governance tasks"

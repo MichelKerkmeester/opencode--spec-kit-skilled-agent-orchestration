@@ -1,5 +1,5 @@
 ---
-title: "This is Phase 22 of the Perfect session capturing roadmap follow-up"
+title: "...fusion/009-perfect-session-capturing/scratch/phase-quarantine/022-source-capabilities-and-structured-preference/spec]"
 description: "This is Phase 22 of the Perfect session capturing roadmap follow-up specification."
 trigger_phrases:
   - "this"

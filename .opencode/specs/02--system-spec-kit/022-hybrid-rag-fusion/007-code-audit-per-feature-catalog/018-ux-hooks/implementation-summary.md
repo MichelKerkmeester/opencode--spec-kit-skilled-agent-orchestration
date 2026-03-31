@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — UX Hooks"
+title: "Imple [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/implementation-summary]"
 description: "19 features audited: 19 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

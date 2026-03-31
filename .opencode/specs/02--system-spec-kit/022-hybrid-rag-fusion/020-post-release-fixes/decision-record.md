@@ -1,6 +1,14 @@
 ---
-title: "Decision Record: 020 Pre-Release Remediation"
+title: "Decision Record: 020 Pre-Release [02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/decision-record]"
 description: "Architecture decisions for the consolidated pre-release remediation packet"
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "020"
+  - "pre"
+  - "release"
+  - "decision record"
+  - "post"
 importance_tier: "normal"
 contextType: "general"
 ---

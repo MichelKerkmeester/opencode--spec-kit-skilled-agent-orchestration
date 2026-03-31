@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Invalid Priority Tags Fixture [invalid-priority-tags/tasks]"
+title: "...-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-priority-tags/tasks]"
 description: "tasks document for invalid-priority-tags."
 trigger_phrases:
   - "tasks"

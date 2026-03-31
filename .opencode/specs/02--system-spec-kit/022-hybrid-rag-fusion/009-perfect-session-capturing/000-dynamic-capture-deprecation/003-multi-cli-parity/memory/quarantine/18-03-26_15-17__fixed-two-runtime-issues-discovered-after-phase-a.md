@@ -1,6 +1,5 @@
 ---
-title: "Fixed Two Runtime [025-capture-quality-parity/18-03-26_15-17__fixed-two-runtime-issues-discovered-after-phase-a]"
-description: "Fixed two runtime issues discovered after Phase A capture quality parity implementation. Fix 1: Rebuilt stale MCP server dist (10 days behind scripts/dist). Fix 2: Relaxed V10..."
+title: "...0-dynamic-capture-deprecation/003-multi-cli-parity/18-03-26_15-17__fixed-two-runtime-issues-discovered-after-phase-a]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/025 capture quality parity"
   - "has significant file count divergence"
@@ -34,18 +33,17 @@ trigger_phrases:
   - "parity"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 2
 filesystem_file_count: 2
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.65,"errors":1,"warnings":4}
 ---
-
 # Fixed Two Runtime Issues Discovered After Phase A
 
 ## SESSION SUMMARY

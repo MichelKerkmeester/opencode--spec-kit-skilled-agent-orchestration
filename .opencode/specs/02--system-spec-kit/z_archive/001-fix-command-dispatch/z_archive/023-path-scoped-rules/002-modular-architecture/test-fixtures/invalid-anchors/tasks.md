@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Invalid Anchors Fixture [invalid-anchors/tasks]"
+title: "...01-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors/tasks]"
 description: "tasks document for invalid-anchors."
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Manual Testing — Bug Fixes and Data Integrity"
+title: "...ec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity/implementation-summary]"
 description: "Post-execution summary for Phase 008 bug-fixes-and-data-integrity manual testing. To be filled in after all 11 scenarios are executed."
 trigger_phrases:
   - "bug fixes and data integrity implementation summary"

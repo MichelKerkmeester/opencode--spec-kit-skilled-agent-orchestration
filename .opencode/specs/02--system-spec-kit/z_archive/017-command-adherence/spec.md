@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Plan-to-Implementation Gate Bypass Fix [017-command-adherence/spec]"
+title: "Feature Specification: Plan-to-Implementation Gate Bypass [02--system-spec-kit/z_archive/017-command-adherence/spec]"
 description: "Fix critical gate bypass behavior where AI agents skip all mandatory gates (Gate 1 understanding, Gate 2 skill routing, Gate 3 spec folder question) when users request implement..."
 trigger_phrases:
   - "feature"
@@ -150,6 +150,7 @@ Enforce gate re-evaluation when transitioning from plan workflow phase to implem
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -165,6 +166,7 @@ Enforce gate re-evaluation when transitioning from plan workflow phase to implem
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

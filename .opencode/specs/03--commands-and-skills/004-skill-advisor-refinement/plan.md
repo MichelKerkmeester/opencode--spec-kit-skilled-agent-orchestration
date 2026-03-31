@@ -41,7 +41,7 @@ This implementation keeps the advisor conservative by default and adds explicit 
 ### Definition of Ready
 - [x] Problem statement clear and scope documented in `spec.md`
 - [x] Success criteria measurable with pass/fail thresholds
-- [x] Dependencies identified (`SKILL.md` structure, Python runtime)
+- [x] Dependencies identified (SKILL.md structure, Python runtime)
 
 ### Definition of Done
 - [x] All acceptance criteria met [E: regression-report top1_accuracy=1.0, p0_pass_rate=1.0]
@@ -132,6 +132,7 @@ CLI input -> normalize intent -> load cached skills/metadata -> score real skill
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -151,6 +152,7 @@ Phase 1.5 (Fixture Lock) ──┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -242,6 +244,7 @@ Phase 1.5 (Fixture Lock) ──┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Dual-threshold remains default; confidence-only is explicit override
@@ -259,9 +262,10 @@ Phase 1.5 (Fixture Lock) ──┘
 **Alternatives Rejected**:
 - Keep confidence-only behavior tied to explicit `--threshold`: rejected due to hidden safety downgrade.
 
+<!-- /ANCHOR:architecture -->
 ---
 
-## AI EXECUTION
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 - Confirm regression fixture path resolves and contains the protected case IDs (`U001-U004`, `C001-C010`) before changing scoring logic.

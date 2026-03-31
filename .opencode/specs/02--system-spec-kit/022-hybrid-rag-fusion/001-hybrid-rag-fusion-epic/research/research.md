@@ -1,5 +1,5 @@
 ---
-title: "Deep Research: Hybrid RAG Fusion System -- Comprehensive Analysis"
+title: "Deep Research: Hybrid RAG Fusion [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/research]"
 description: "20-iteration multi-agent deep research campaign analyzing the hybrid-rag-fusion retrieval pipeline: architecture, scoring, automation, bugs, dead code, and alignment with sk-code--opencode and sk-doc standards. 25 prioritized recommendations across 7 categories."
 trigger_phrases:
   - "hybrid"

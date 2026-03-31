@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook feature-flag-reference phase [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/spec]"
 description: "Phase 019 documents the feature-flag-reference manual test packet for the Spec Kit Memory system. It groups eight flag-catalog and Hydra roadmap scenarios from the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "feature flag reference manual testing"
   - "phase 019 feature flag reference"
-  - "SPECKIT flags classification tests"
+  - "speckit flags classification tests"
   - "hybrid rag fusion flag catalog playbook"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook feature-flag-reference phase
@@ -161,6 +161,7 @@ No P1 items are defined for this phase; all eight feature-flag-reference scenari
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -178,6 +179,7 @@ No P1 items are defined for this phase; all eight feature-flag-reference scenari
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

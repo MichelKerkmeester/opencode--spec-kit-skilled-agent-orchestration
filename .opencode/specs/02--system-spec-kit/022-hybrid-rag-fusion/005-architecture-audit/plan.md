@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Architecture Audit [template:level_3/plan.md]"
+title: "Implementation Plan: Architecture Audit [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/plan]"
 description: "Execution record for the completed scripts-versus-mcp_server architecture audit and its merged boundary-remediation follow-up work."
 trigger_phrases:
   - "architecture audit plan"
   - "boundary remediation plan"
   - "scripts mcp server boundary"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "decision"
 ---
 # Implementation Plan: Architecture Audit
 
@@ -163,6 +163,7 @@ The recoverable original phase map shows 15 completed architecture-audit phases:
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -196,6 +197,7 @@ Phase 9 -> Phase 10 -> Phase 11 -> Phase 12
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Task Range | Notes |

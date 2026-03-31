@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: ESM Module Compliance"
+title: "Verification Checklist: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/checklist]"
 description: "Verification gates for the pending shared plus mcp_server native ESM migration, with scripts retained as CommonJS and standards docs deferred until runtime proof."
 trigger_phrases:
   - "esm checklist"
   - "mcp_server esm verification"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: ESM Module Compliance
 

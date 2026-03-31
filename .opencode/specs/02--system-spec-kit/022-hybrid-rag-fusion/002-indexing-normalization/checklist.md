@@ -1,16 +1,16 @@
 ---
-title: "Indexing Normalization Checklist"
-status: "complete"
-level: 3
-created: "2025-12-01"
-updated: "2026-03-08"
+title: "Indexing Normalization Checklist [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/checklist]"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> checklist.md and former child spec 004-frontmatter-indexing -> checklist.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
   - "002-indexing-normalization"
 importance_tier: "important"
 contextType: "implementation"
+created: "2025-12-01"
+level: 3
+SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
+status: "complete"
+updated: "2026-03-08"
 ---
 # Verification Checklist: Indexing Normalization (Consolidated)
 

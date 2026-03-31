@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Post-Merge Refinement Final [043-post-merge-refinement-final/implementation-summary]"
+title: "...-system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/implementation-summary]"
 description: "This spec folder represents the final post-merge refinement of the Spec Kit & Memory system following the major merger in spec 035. A comprehensive 10-agent analysis reviewed al..."
 trigger_phrases:
   - "implementation"
@@ -144,6 +144,7 @@ After the Spec Kit Memory merger (spec 035), multiple refinement specs (036-042)
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Evidence
 
 ### Verification Method
@@ -169,6 +170,7 @@ After the Spec Kit Memory merger (spec 035), multiple refinement specs (036-042)
 
 **Total: 39/39 issues verified (100%)**
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Architecture Decisions
@@ -195,12 +197,14 @@ After the Spec Kit Memory merger (spec 035), multiple refinement specs (036-042)
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **Testing Infrastructure** (P2-011) - Deferred; documented as future work
 2. **Code Organization** (P2-012) - Deferred; some lint hints remain
 3. **Level 0 Protocol** (DR-011) - Not implemented; may revisit
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Future Recommendations

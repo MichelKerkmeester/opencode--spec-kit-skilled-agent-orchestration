@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - Performance Hacks [016-performance-hacks/plan]"
+title: "Implementation Plan - Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/plan]"
 description: "plan document for 016-performance-hacks."
 trigger_phrases:
   - "implementation"

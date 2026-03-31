@@ -1,11 +1,11 @@
 ---
-title: "Tasks: ESM Module Compliance"
+title: "Tasks: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/tasks]"
 description: "Subsystem-grouped worklist for the pending shared plus mcp_server native ESM migration and the deferred standards-doc follow-on."
 trigger_phrases:
   - "esm tasks"
   - "mcp_server esm migration tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: ESM Module Compliance
 

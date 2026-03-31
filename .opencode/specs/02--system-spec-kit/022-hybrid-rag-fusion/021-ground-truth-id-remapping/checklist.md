@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: Ground Truth ID Remapping"
+title: "Verification Checklist: Ground [02--system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/checklist]"
 description: "Quality gates for map-ground-truth-ids.ts and the updated ground-truth.json, ensuring stale memory IDs are replaced with valid live IDs and ablation metrics are non-zero."
 trigger_phrases:
   - "ground truth remapping checklist"
   - "map-ground-truth-ids verification"
   - "ablation fix quality gates"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
 ---
 # Verification Checklist: Ground Truth ID Remapping
 

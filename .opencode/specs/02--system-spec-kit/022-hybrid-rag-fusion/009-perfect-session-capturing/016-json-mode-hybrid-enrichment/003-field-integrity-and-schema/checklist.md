@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: Field Integrity and Schema Validation"
+title: "...id-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/checklist]"
 description: "Verification Date: 2026-03-21"
 trigger_phrases:
   - "field integrity checklist"
   - "schema validation checklist"
-  - "filesModified verification"
+  - "filesmodified verification"
   - "input-normalizer checklist"
 importance_tier: "important"
 contextType: "implementation"

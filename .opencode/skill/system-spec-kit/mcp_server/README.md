@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "33 tools"
+  - "37 tools"
   - "FSRS decay"
 ---
 
@@ -81,7 +81,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 ### How You Use It
 
-The memory system exposes 33 tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes 37 tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
@@ -504,7 +504,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 ### 3.2 TOOL REFERENCE
 
-All 33 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
+All 37 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
@@ -1073,7 +1073,7 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 33 tools. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 37 tools. |
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Path-Scoped Validation Rules [001-mvp-monolithic/tasks]"
+title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/tasks]"
 description: "L1: spec.md, plan.md, tasks.md"
 trigger_phrases:
   - "tasks"
@@ -23,6 +23,7 @@ contextType: "implementation"
 | **Created** | 2024-12-24 |
 | **Related** | [spec.md](./spec.md), [plan.md](./plan.md) |
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,8 +33,10 @@ contextType: "implementation"
 | `[P]` | Can be done in parallel with other [P] tasks |
 | `[B]` | Blocked - waiting on dependency |
 
+<!-- /ANCHOR:notation -->
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Core Validation Engine (P0)
 
 ### 1.1 Script Skeleton
@@ -124,8 +127,10 @@ contextType: "implementation"
 - [ ] Create `test-validation.sh` runner script
 - [ ] All tests pass
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Path Scoping (P1)
 
 ### 2.1 Configuration Schema
@@ -177,8 +182,10 @@ contextType: "implementation"
 - [ ] Verify IDs are unique within file
 - [ ] Report mismatched anchors as ERROR
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Integration (P1)
 
 ### 3.1 check-prerequisites.sh Integration
@@ -207,6 +214,7 @@ contextType: "implementation"
 - [ ] Verify no breaks to existing workflows
 - [ ] Document any behavioral changes
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Documentation (P2)

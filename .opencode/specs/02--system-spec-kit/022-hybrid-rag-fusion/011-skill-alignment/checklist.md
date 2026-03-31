@@ -1,7 +1,11 @@
 ---
-title: "Verification Checklist: Skill Alignment — system-spec-kit"
+title: "Verification Checklist: Skill Alignment — [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist]"
 description: "Verification checklist for the 2026-03-21 truth-reconciliation pass on 011-skill-alignment."
-trigger_phrases: ["verification", "checklist", "skill alignment", "011 alignment"]
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "skill alignment"
+  - "011 alignment"
 importance_tier: "normal"
 contextType: "general"
 ---

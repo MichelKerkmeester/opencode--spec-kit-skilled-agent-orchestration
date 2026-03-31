@@ -1,5 +1,5 @@
 ---
-title: "Research: Memory & Folder Ranking Approaches [070-memory-ranking/research]"
+title: "Research: Memory & [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/research]"
 description: "Ranking memories and folders for relevance requires balancing multiple, sometimes competing, factors"
 trigger_phrases:
   - "research"

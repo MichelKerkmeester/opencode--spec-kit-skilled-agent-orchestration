@@ -1,5 +1,5 @@
 ---
-title: "Lib Consolidation - Shared Module Unification [051-lib-consolidation/spec]"
+title: "Lib Consolidation - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation/spec]"
 description: "The system-spec-kit has shared JavaScript modules duplicated or re-exported across two separate lib folders, creating several issues"
 trigger_phrases:
   - "lib"
@@ -67,6 +67,7 @@ Create a new shared lib folder at `.opencode/skill/system-spec-kit/shared/` cont
         └── retry-manager.js # Full retry manager (uses vector-index)
 ```
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -82,6 +83,7 @@ Create a new shared lib folder at `.opencode/skill/system-spec-kit/shared/` cont
 - Full `retry-manager.js` stays in `mcp_server/shared/` (needs vector-index)
 - No functional changes to module behavior
 - No changes to external API/interface
+<!-- /ANCHOR:scope -->
 
 ## Files Affected
 
@@ -102,6 +104,7 @@ Create a new shared lib folder at `.opencode/skill/system-spec-kit/shared/` cont
 - `.opencode/skill/system-spec-kit/scripts/shared/README.md`
 - `.opencode/skill/system-spec-kit/mcp_server/shared/README.md`
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. **All tests pass** - Existing functionality preserved
@@ -110,6 +113,7 @@ Create a new shared lib folder at `.opencode/skill/system-spec-kit/shared/` cont
 4. **Clear ownership** - Each module has one canonical location
 5. **Updated documentation** - READMEs accurately describe current structure
 6. **Stable imports** - No `../../` paths crossing folder boundaries
+<!-- /ANCHOR:success-criteria -->
 
 ## Dependencies
 

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 002-versioned-memory-state"
+title: "...-system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/implementation-summary]"
 description: "Verified implementation summary for Phase 2 versioned memory state."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 2 summary"
   - "lineage summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: /create:feature-catalog Command [template:level_3/plan.md]"
+title: "Implementation Plan: /create:feature-catalog Command [03--commands-and-skills/025-cmd-create-feature-catalog/plan]"
 description: "Plan the new create command, its YAML pair, runtime mirror, and discovery-doc updates using the shipped sk-doc feature-catalog references and templates."
 trigger_phrases:
   - "feature catalog command plan"
@@ -88,7 +88,7 @@ User invokes `/create:feature-catalog` -> command captures target skill path, op
 - [x] Update `.opencode/command/create/README.txt`.
 - [x] Update `.opencode/command/README.txt`.
 - [x] Update `.opencode/README.md`.
-- [x] Update `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
+- [x] Update `.opencode/agent/write.md`, `.claude/agents/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
 
 ### Phase 4: Validation and closure
 - [x] Validate the command markdown doc.
@@ -147,6 +147,7 @@ User invokes `/create:feature-catalog` -> command captures target skill path, op
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -164,6 +165,7 @@ Contract Lock -> Command Family Implementation -> Runtime-Discovery Sync -> Vali
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

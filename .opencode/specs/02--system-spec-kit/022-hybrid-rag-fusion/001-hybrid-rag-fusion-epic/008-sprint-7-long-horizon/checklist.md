@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sprint 7 — Long Horizon"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/checklist]"
 description: "Verification checklist for Sprint 7: memory summaries, content generation, entity linking, full reporting, R5 INT8 evaluation"
 trigger_phrases:
   - "sprint 7 checklist"

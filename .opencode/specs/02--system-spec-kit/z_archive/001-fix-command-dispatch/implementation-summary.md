@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [001-fix-command-dispatch/implementation-summary]"
+title: "Implementation Summary [001-fix-command- [02--system-spec-kit/z_archive/001-fix-command-dispatch/implementation-summary]"
 description: "Fixed a command dispatch vulnerability where OpenCode's Go runtime injected phantom dispatch instructions at render time, causing wrong agent dispatch instead of following struc..."
 trigger_phrases:
   - "implementation"
@@ -44,6 +44,7 @@ Two-factor failure:
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Five fix types applied in four implementation waves, followed by style alignment:

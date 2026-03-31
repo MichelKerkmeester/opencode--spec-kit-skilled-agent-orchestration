@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: generate-context.ts Subfolder Support [123-generate-context-subfolder/checklist]"
+title: "Verification Checklist: generate-context.ts [02--system-spec-kit/z_archive/006-generate-context-subfolder/checklist]"
 description: "Verification Date: Pending"
 trigger_phrases:
   - "verification"

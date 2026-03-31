@@ -44,7 +44,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L1',
     name: 'Orchestration',
     description: 'Unified entry points with intent-aware routing. Start here for most tasks.',
-    tokenBudget: 3500,  // Raised from 2000 — memory_context modes override with their own budgets
+    tokenBudget: 3500,
     priority: 1,
     useCase: 'Default entry point for context retrieval. Automatically routes based on intent.',
     tools: ['memory_context']
@@ -53,7 +53,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L2',
     name: 'Core',
     description: 'Primary memory operations. Use when you need specific search or save functionality.',
-    tokenBudget: 3500,  // Raised from 2500 — includeContent=true can produce 2500+ per result
+    tokenBudget: 3500,
     priority: 2,
     useCase: 'Direct access to search, save, and trigger matching when L1 routing is not needed.',
     tools: ['memory_search', 'memory_quick_search', 'memory_save', 'memory_match_triggers']
@@ -62,7 +62,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L3',
     name: 'Discovery',
     description: 'Browse and explore the memory system. Use to understand what exists.',
-    tokenBudget: 800,
+    tokenBudget: 1000,
     priority: 3,
     useCase: 'Explore available memories, check system health, view statistics.',
     tools: ['memory_list', 'memory_stats', 'memory_health']
@@ -71,7 +71,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L4',
     name: 'Mutation',
     description: 'Modify existing memories. Use to update, delete, or validate memories.',
-    tokenBudget: 500,
+    tokenBudget: 1000,
     priority: 4,
     useCase: 'Make changes to existing memories when corrections or updates are needed.',
     tools: ['memory_update', 'memory_delete', 'memory_validate', 'memory_bulk_delete']
@@ -80,7 +80,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L5',
     name: 'Lifecycle',
     description: 'Checkpoint and version management. Use for state preservation and recovery.',
-    tokenBudget: 600,
+    tokenBudget: 1000,
     priority: 5,
     useCase: 'Create checkpoints before major changes, restore previous states.',
     tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'shared_memory_enable', 'shared_memory_status', 'shared_space_upsert', 'shared_space_membership_set']
@@ -89,7 +89,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     id: 'L6',
     name: 'Analysis',
     description: 'Deep inspection and causal analysis. Use to understand relationships and lineage.',
-    tokenBudget: 1200,
+    tokenBudget: 1500,
     priority: 6,
     useCase: 'Trace decision history, understand memory relationships, measure learning.',
     tools: [

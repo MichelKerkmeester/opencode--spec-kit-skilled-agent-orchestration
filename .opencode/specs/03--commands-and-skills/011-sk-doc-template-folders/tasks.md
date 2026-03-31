@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-doc Template Folder Reorganization"
+title: "Tasks: sk-doc Template Folder Reorganization [03--commands-and-skills/011-sk-doc-template-folders/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "sk-doc template tasks"
@@ -25,12 +25,16 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: File Moves
+## Phase 1: Setup
 
 - [x] T001 Move skill_md_template.md to assets/skill/
 - [x] T002 [P] Move skill_asset_template.md to assets/skill/
@@ -38,12 +42,16 @@ contextType: "implementation"
 - [x] T004 [P] Move agent_template.md to assets/agents/
 - [x] T005 [P] Move command_template.md to assets/agents/
 - [x] T006 Delete empty assets/opencode/ directory
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Reference Updates
+## Phase 2: Implementation
 
 - [x] T007 Update path references in sk-doc/SKILL.md (7 replacements)
 - [x] T008 [P] Update path references in sk-doc/references/quick_reference.md
@@ -58,6 +66,10 @@ contextType: "implementation"
 - [x] T019 [P] Update path references in install_guides/ (2 files)
 - [x] T020 [P] Update path references in agent/write.md and agent/chatgpt/write.md
 - [x] T021 [P] Update path references in skill/README.md
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -65,8 +77,16 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
+### Phase 3: Verification
+
+### Phase 3: Verification
+
 - [x] T017 Grep verification: zero active `assets/opencode` references in .opencode/ (27 remaining are historical: specs archives, changelogs, own spec folder)
 - [x] T018 Verify correct new paths exist and are valid (5 files confirmed in assets/skill/ and assets/agents/)
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -77,6 +97,10 @@ contextType: "implementation"
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -86,4 +110,8 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+
+---
 <!-- /ANCHOR:cross-refs -->
+
+---

@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Embedding Optimization [template:level_2/checklist.md]"
+title: "Verificat [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/checklist]"
+description: "title: \"Verification Checklist: Embedding Optimization [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verificat"
+  - "checklist"
+  - "009"
+  - "embedding"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Embedding Optimization
 

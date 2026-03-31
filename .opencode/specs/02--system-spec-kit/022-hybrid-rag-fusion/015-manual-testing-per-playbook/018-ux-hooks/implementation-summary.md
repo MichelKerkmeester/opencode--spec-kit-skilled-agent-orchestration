@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook ux-hooks phase [template:level_2/implementation-summary.md]"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks/implementation-summary]"
 description: "Phase 018 UX-hooks manual testing — static code analysis complete. 11 PASS, 0 PARTIAL, 0 FAIL across 11 scenarios."
 trigger_phrases:
   - "ux-hooks implementation summary"

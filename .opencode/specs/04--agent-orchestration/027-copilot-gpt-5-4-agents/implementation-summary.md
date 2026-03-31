@@ -1,6 +1,14 @@
 ---
-title: "Implementation Summary: GPT-5.4 Agent Model Upgrade"
+title: "Implementation Summary: GPT-5.4 Agent [04--agent-orchestration/027-copilot-gpt-5-4-agents/implementation-summary]"
 description: "Updated the requested OpenCode and Codex agent surfaces to GPT-5.4 while preserving runtime-specific reasoning settings and config conventions."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "gpt"
+  - "agent"
+  - "implementation summary"
+  - "027"
+  - "copilot"
 importance_tier: "normal"
 contextType: "implementation"
 ---

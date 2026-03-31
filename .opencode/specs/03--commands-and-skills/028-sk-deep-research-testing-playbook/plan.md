@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-deep-research Manual Testing Playbook"
+title: "Implementation Plan: sk-deep-research Manual [03--commands-and-skills/028-sk-deep-research-testing-playbook/plan]"
 description: "Plan the approved 19-scenario manual_testing_playbook package for sk-deep-research using the live skill and command docs plus the current sk-doc testing-playbook contract."
 trigger_phrases:
   - "deep research playbook plan"
@@ -178,6 +178,7 @@ Live deep-research docs are audited for shipped behavior and guardrails -> stabl
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -196,6 +197,7 @@ Contract Lock -> Package Scaffolding -> Root Playbook Authoring -> Per-Feature A
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -297,6 +299,7 @@ sk-deep-research command + skill + references + assets + Codex agent
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Build the playbook first and document the missing feature catalog explicitly
@@ -348,3 +351,4 @@ LEVEL 3 PLAN
 - Aligned to the approved 19-scenario implementation plan
 - Greenfield playbook implementation is in scope
 -->
+<!-- /ANCHOR:architecture -->

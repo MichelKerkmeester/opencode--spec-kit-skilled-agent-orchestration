@@ -1,5 +1,5 @@
 ---
-title: "Post-Merge Refinement Phase 2 (Library Unification) [037-post-merge-refinement-2/spec]"
+title: "Post-Merge Refinemen [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/spec]"
 description: "We have a \"Split-Brain\" issue with two versions of vector-index.js"
 trigger_phrases:
   - "post"

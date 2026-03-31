@@ -1,10 +1,10 @@
 ---
-title: "Tasks: manual-testing-per-playbook maintenance phase"
+title: "Tasks: manual-testing- [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/tasks]"
 description: "Task tracker for Phase 004 maintenance scenarios. One task per scenario (EX-014, EX-035), all pending."
 trigger_phrases:
   - "maintenance phase tasks"
   - "phase 004 tasks"
-  - "EX-014 EX-035 tasks"
+  - "ex-014 ex-035 tasks"
 importance_tier: "normal"
 contextType: "general"
 ---

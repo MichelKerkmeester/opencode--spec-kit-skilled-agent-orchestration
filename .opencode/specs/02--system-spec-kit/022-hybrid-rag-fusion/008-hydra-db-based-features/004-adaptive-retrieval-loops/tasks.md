@@ -1,12 +1,12 @@
 ---
-title: "Tasks: 004-adaptive-retrieval-loops"
+title: "Tasks: 004-ad [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/tasks]"
 description: "Phase 4 adaptive-learning task breakdown."
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "phase 4 tasks"
   - "adaptive tasks"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: 004-adaptive-retrieval-loops
 

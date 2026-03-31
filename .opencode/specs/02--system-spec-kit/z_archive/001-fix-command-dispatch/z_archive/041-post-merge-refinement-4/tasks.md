@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-Merge Refinement 4 - Implementation Breakdown [041-post-merge-refinement-4/tasks]"
+title: "Tasks: Post-Merge [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/tasks]"
 description: "Task list for resolving 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration."
 trigger_phrases:
   - "tasks"
@@ -105,6 +105,7 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical Fixes (P0)
 
 **Purpose**: Resolve blockers that prevent core system functionality
@@ -297,8 +298,10 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
 
 **Checkpoint P0**: All critical blockers resolved. System core functionality verified.
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: High Priority Documentation Fixes (P1-DOC)
 
 **Purpose**: Align documentation with implementation to prevent confusion
@@ -451,8 +454,10 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
   - [ ] Tool count accurate
 - **Verification:** `ls` commands match documented counts
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: High Priority Code Fixes (P1-CODE)
 
 **Purpose**: Fix code bugs that impact reliability
@@ -556,8 +561,10 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
   - [ ] Clean exit message logged
 - **Verification:** `kill -TERM <pid>` exits cleanly without error
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: High Priority UX Fixes (P1-UX)
 
 **Purpose**: Reduce friction in common workflows
@@ -624,8 +631,10 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
 
 ---
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Medium Priority Fixes (P2)
 
 **Purpose**: Improvements that enhance usability but don't block core functionality
@@ -832,6 +841,7 @@ Tasks organized by priority tier (P0 → P1 → P2) then by category (Documentat
   - [ ] Success message clear
 - **Verification:** Scan output is scannable at glance
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Validation

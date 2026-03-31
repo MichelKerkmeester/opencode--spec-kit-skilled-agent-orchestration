@@ -1,5 +1,5 @@
 ---
-title: "Research Summary: 10-Agent Performance Analysis - anobel.com [031-anobel-performance-analysis/research]"
+title: "Research Summary: 10-Agent Performance Analysis - anobel.com [01--anobel.com/029-anobel-performance-analysis/research]"
 description: "A comprehensive performance analysis was conducted using 10 parallel agents, each focusing on a specific performance domain. The analysis identified 50+ performance issues acros..."
 trigger_phrases:
   - "research"

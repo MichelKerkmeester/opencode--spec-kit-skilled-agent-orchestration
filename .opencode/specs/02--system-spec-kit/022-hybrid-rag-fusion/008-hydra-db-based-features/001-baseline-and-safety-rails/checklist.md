@@ -1,13 +1,13 @@
 ---
-title: "Verification Checklist: 001-baseline-and-safety-rails"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist]"
 description: "Verification evidence for Hydra Phase 1 baseline hardening and safety rails."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 1 checklist"
   - "baseline verification"
   - "safety rails checklist"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 001-baseline-and-safety-rails
 

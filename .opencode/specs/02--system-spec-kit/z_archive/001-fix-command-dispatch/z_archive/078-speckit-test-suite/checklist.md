@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: System Spec Kit v2.1.0 Test Suite [078-speckit-test-suite/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/checklist]"
 description: "Test Execution Summary (2026-01-24)"
 trigger_phrases:
   - "verification"
@@ -261,6 +261,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified | Status |
@@ -321,3 +322,4 @@ P1: 9 items (edge cases + error handling + integration + docs) - ALL COMPLETE
 P2: 6 items (performance + coverage + organization) - DEFERRED
 Total: 1087 tests across 8 files (4.2x original target of 259)
 -->
+<!-- /ANCHOR:summary -->

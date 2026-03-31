@@ -1,3 +1,17 @@
+---
+title: "...hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation/plan]"
+description: "Focus: Heuristic-only query improvements — no LLM calls in the query path."
+trigger_phrases:
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "plan"
+  - "002"
+  - "query"
+importance_tier: "important"
+contextType: "decision"
+---
 # Implementation Plan: Query Intelligence & Reformulation
 
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + phase-child-header | v2.2 -->
@@ -13,6 +27,7 @@
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 2. IMPLEMENTATION PHASES
 
 ### Phase A: Query Enhancement (REQ-D2-001, REQ-D2-002)
@@ -92,8 +107,10 @@
 - No runtime LLM calls for surrogate-based retrieval
 - All Phase C tests pass
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:summary -->
 ## 3. PHASE SUMMARY
 
 | Phase | Requirements | Focus | Est. | Dependencies |
@@ -104,8 +121,10 @@
 
 **Total Estimate:** ~20.5 days
 
+<!-- /ANCHOR:summary -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 4. CROSS-PHASE DEPENDENCIES
 
 | This Phase Needs | From | Status |
@@ -121,6 +140,7 @@
 | Concept routing data | D3 graph activation heuristics | D3 Phase B |
 | Surrogate schema | D5 explainability layer | D5 Phase B |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 5. FEATURE FLAGS

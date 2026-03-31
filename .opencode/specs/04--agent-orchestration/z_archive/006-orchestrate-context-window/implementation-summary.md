@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Orchestrate Agent Context Window [006-orchestrate-context-window/implementation-summary]"
+title: "Implementation Summary: [04--agent-orchestration/z_archive/006-orchestrate-context-window/implementation-summary]"
 description: "Added a Context Window Budget (CWB) system to .opencode/agent/orchestrate.md to prevent the orchestrator from exceeding its own context window when collecting sub-agent results...."
 trigger_phrases:
   - "implementation"
@@ -115,4 +115,11 @@ Added a **Context Window Budget (CWB)** system to `.opencode/agent/orchestrate.m
 
 2026-02-06
 
+<!-- /ANCHOR:limitations -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

@@ -1,13 +1,13 @@
 ---
-title: "Tasks: Sprint 6 — Indexing and Graph"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph/tasks]"
 description: "Task breakdown for Sprint 6: graph centrality, N3-lite consolidation, anchor-aware thinning, entity extraction, spec folder hierarchy"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "sprint 6 tasks"
   - "indexing and graph tasks"
   - "consolidation tasks"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: Sprint 6 — Indexing and Graph
 

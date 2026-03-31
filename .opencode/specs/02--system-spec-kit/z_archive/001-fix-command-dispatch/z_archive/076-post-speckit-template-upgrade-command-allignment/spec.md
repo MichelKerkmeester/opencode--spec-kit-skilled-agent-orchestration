@@ -1,5 +1,5 @@
 ---
-title: "Spec 076: Post-SpecKit Template Upgrade - Command Alignment [076-post-speckit-template-upgrade-command-allignment/spec]"
+title: "...stem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment/spec]"
 description: "Comprehensive alignment of 19 OpenCode commands with command_template.md standards following SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture upgrade."
 trigger_phrases:
   - "spec"
@@ -20,6 +20,7 @@ contextType: "decision"
 Comprehensive alignment of 19 OpenCode commands with command_template.md standards following SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture upgrade.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -33,13 +34,16 @@ Comprehensive alignment of 19 OpenCode commands with command_template.md standar
 - New feature development
 - Breaking changes to existing command interfaces
 - Changes to other skills outside system-spec-kit
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. ✅ All commands aligned with current system-spec-kit capabilities
 2. ✅ Command templates comply with command_template.md standards
 3. ✅ Documentation follows write.md workflow requirements
 4. ✅ No orphaned or deprecated functionality
+<!-- /ANCHOR:success-criteria -->
 
 ## Documentation Level
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: CocoIndex Code MCP Integration"
+title: "Implementation Summary: CocoIndex Code MCP [03--commands-and-skills/022-mcp-coco-integration/implementation-summary]"
 description: "Phase 1 installed CocoIndex across the repo; Phase 2 hardened the skill; Phase 3 added strict readiness semantics and downstream adoption packaging."
 trigger_phrases:
   - "cocoindex implementation"
@@ -167,8 +167,7 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 
 ---
 
-<!-- ANCHOR:cross-cli-findings -->
-## Cross-CLI Auto-Usage Test Findings (2026-03-18)
+### Cross-CLI Auto-Usage Test Findings (2026-03-18)
 
 A cross-CLI test validated whether AI models spontaneously use CocoIndex MCP without agent routing changes. Three prompts (implicit semantic, explicit mention, and skill-trigger guidance) were sent to Claude Code, Codex, Gemini, and Copilot.
 
@@ -218,7 +217,6 @@ When CocoIndex works, it eliminates the Grep-Read-Filter cascade entirely.
 | R5 | Retest Codex when billing resolved | Low | MCP wiring confirmed correct |
 | R6 | Redefine Phase 2 scope: reliability + query guidance | High | Replace agent routing with concrete fixes |
 
-<!-- /ANCHOR:cross-cli-findings -->
 
 ---
 

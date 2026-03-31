@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/decision-record]"
 description: "Three different documentation sources give conflicting template file counts and LOC estimates for the same template levels. This causes confusion for agents loading different fi..."
 trigger_phrases:
   - "decision"
@@ -179,6 +179,7 @@ The SPEC_KIT_DB_DIR environment variable is not set in opencode.json, so the SQL
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 | Timestamp | Gate | Decision | Confidence | Uncertainty | Evidence |
@@ -188,3 +189,4 @@ The SPEC_KIT_DB_DIR environment variable is not set in opencode.json, so the SQL
 | 11:00 | ADR-001 | Accepted | HIGH | 0.15 | SKILL.md Section 4 matches filesystem |
 | 11:05 | ADR-002 | Accepted | HIGH | 0.20 | Verified with threshold tests |
 | 11:10 | ADR-003 | Accepted | HIGH | 0.10 | Safest approach, no data loss |
+<!-- /ANCHOR:decision -->

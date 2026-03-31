@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Comprehensive Performance Optimization - anobel.com [029-anobel-performance-analysis/spec]"
+title: "Feature Specification: Comprehensive Performance Optimization - [01--anobel.com/029-anobel-performance-analysis/spec]"
 description: "A 10-agent deep analysis of anobel.com identified 50+ performance issues across JavaScript, CSS, images, third-party scripts, and network optimization. The mobile LCP of 20.2 se..."
 trigger_phrases:
   - "feature"
@@ -243,6 +243,7 @@ Achieve passing Core Web Vitals scores by:
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -281,6 +282,7 @@ Achieve passing Core Web Vitals scores by:
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Critical Path Edge Cases
@@ -357,7 +359,17 @@ Achieve passing Core Web Vitals scores by:
 
 ---
 
-## 11. ISSUE INVENTORY
+## 11. USER STORIES
+
+### Story Framing
+
+### US-001: Faster page reveal on constrained networks (Priority: P0)
+**As a** mobile visitor, **I want** the page to become visible quickly even when scripts or media are slow, **so that** I can use the site without waiting through blank or hidden states.
+
+### US-002: Preserve site behavior while optimizing delivery (Priority: P1)
+**As a** site owner, **I want** performance fixes to preserve the current Webflow functionality, **so that** optimization work does not break hero animations, forms, or video behavior.
+
+### Issue Inventory
 
 ### Category A: Critical Path Issues (7 issues)
 
@@ -548,7 +560,7 @@ Achieve passing Core Web Vitals scores by:
 
 ---
 
-## APPENDIX A: 10-AGENT ANALYSIS SUMMARY
+### Appendix A: 10-Agent Analysis Summary
 
 | Agent | Focus | Key Finding | Session |
 |-------|-------|-------------|---------|
@@ -565,7 +577,7 @@ Achieve passing Core Web Vitals scores by:
 
 ---
 
-## APPENDIX B: METRICS BASELINE
+### Appendix B: Metrics Baseline
 
 ### Pre-Optimization (Current State)
 

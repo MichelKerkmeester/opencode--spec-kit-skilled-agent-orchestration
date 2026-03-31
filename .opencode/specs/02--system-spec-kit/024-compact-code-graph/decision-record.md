@@ -1,3 +1,18 @@
+---
+title: "Decision Record: Hybrid Context Injection [02--system-spec-kit/024-compact-code-graph/decision-record]"
+description: "Decision: Do NOT adopt Dual-Graph (Codex-CLI-Compact) as a dependency"
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "hybrid"
+  - "context"
+  - "injection"
+  - "decision record"
+  - "024"
+  - "compact"
+importance_tier: "important"
+contextType: "decision"
+---
 # Decision Record: Hybrid Context Injection
 
 ## DR-001: Reject Dual-Graph Adoption

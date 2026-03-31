@@ -1,5 +1,5 @@
 ---
-title: "Plan: Cognitive Memory Upgrade Research [055-cognitive-memory-upgrade/plan]"
+title: "Plan: Cognitive [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade/plan]"
 description: "plan document for 055-cognitive-memory-upgrade."
 trigger_phrases:
   - "plan"

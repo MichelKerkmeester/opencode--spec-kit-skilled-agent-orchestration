@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook maintenance phase"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/spec]"
 description: "Phase 004 documents the maintenance manual test packet. Execute scenarios EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, and EX-045 against the Spec Kit Memory system to verify memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair."
 trigger_phrases:
   - "maintenance manual testing"
   - "phase 004 maintenance"
-  - "EX-014 EX-035 EX-041 EX-042 EX-043 EX-044 EX-045"
+  - "ex-014 ex-035 ex-041 ex-042 ex-043 ex-044 ex-045"
   - "memory_index_scan startup guards test"
   - "memory_update memory_delete test"
   - "bulk delete health check index repair"
@@ -161,6 +161,7 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -179,6 +180,7 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Sprint 2 — Scoring Calibration"
+title: "Implementat [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/plan]"
 description: "Implement embedding cache, cold-start boost, G2 investigation, and score normalization to resolve 15:1 magnitude mismatch."
 trigger_phrases:
   - "sprint 2 plan"
@@ -184,6 +184,7 @@ Four parallel feature tracks with G2 → normalization dependency
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -213,6 +214,7 @@ Phase 6 (TM-03 Decay) ───────────────────�
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

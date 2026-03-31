@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Manual Testing — Bug Fixes and Data Integrity"
+title: "Tasks [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity/tasks]"
 description: "Task Format: T### [P?] Description (scenario ID)"
 trigger_phrases:
   - "bug fixes and data integrity tasks"

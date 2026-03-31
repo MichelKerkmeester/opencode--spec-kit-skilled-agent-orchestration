@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Fix Command Dispatch Vulnerability [118-fix-command-dispatch/plan]"
+title: "Implementation Plan: Fix Command Dispatch Vulnerability [02--system-spec-kit/z_archive/001-fix-command-dispatch/plan]"
 description: "This plan addresses a command dispatch vulnerability where OpenCode's runtime injects phantom dispatch text based on structural patterns in command .md files. The approach is: (..."
 trigger_phrases:
   - "implementation"
@@ -208,6 +208,7 @@ User runs /spec_kit:complete
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -229,6 +230,7 @@ Audit (COMPLETED) ──► Phase 1 (Universal) ──► Phase 2 (Targeted) ─
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

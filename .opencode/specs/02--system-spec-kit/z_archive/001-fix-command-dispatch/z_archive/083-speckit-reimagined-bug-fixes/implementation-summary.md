@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Spec Kit Bug Fixes [083-speckit-reimagined-bug-fixes/implementation-summary]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/implementation-summary]"
 description: "All fixes verified with grep commands. Key evidence"
 trigger_phrases:
   - "implementation"
@@ -100,6 +100,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Evidence
 
 All fixes verified with grep commands. Key evidence:
@@ -130,6 +131,7 @@ grep -n "Five Checks" *.yaml
 → Present in implement YAML quality_gates
 ```
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Files Modified (Complete List)
@@ -206,13 +208,15 @@ grep -n "Five Checks" *.yaml
 
 ---
 
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 1. **YAML path migration** was incomplete in v1.2.1.0 migration
 2. **Task tool parameters** need validation against tool schema
 3. **Step numbering** requires consistency audit across command/YAML pairs
 4. **Tool naming** should enforce full MCP prefixes
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Next Steps
@@ -221,3 +225,10 @@ grep -n "Five Checks" *.yaml
 2. ✅ Documentation updated
 3. ⏳ Manual runtime testing
 4. ⏳ Git commit and tag v1.2.2.0
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Overhaul & Agent Upgrade Release [013-memory-overhaul-and-agent-upgrade-release/spec]"
+title: "Feature Specification: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/spec]"
 description: "Umbrella specification coordinating documentation alignment across 11 source specs (014–016 agent system, 122–129 spec-kit system) that have been implemented but whose documenta..."
 trigger_phrases:
   - "feature"
@@ -206,6 +206,7 @@ The specification defines 7 tasks executed in dependency order:
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Documentation Quality
@@ -223,6 +224,7 @@ The specification defines 7 tasks executed in dependency order:
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Spec 129 (Pending)

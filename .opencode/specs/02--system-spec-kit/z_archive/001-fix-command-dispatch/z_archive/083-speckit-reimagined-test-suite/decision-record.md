@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec Kit Memory Test Suite Architecture [083-speckit-reimagined-test-suite/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/decision-record]"
 description: "The Spec Kit Memory MCP server requires a comprehensive test suite covering unit, integration, and end-to-end tests. The test framework selection affects developer experience, C..."
 trigger_phrases:
   - "decision"
@@ -1145,6 +1145,7 @@ The test suite must integrate with CI/CD pipelines to provide automated quality 
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 > **Purpose**: Track all gate decisions made during this session for audit trail and learning.
@@ -1170,3 +1171,4 @@ One ADR per major decision
 Includes Session Decision Log for audit trail
 12 ADRs covering test suite architecture
 -->
+<!-- /ANCHOR:decision -->

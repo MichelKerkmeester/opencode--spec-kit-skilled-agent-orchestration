@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Governance"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/checklist]"
 description: "QA verification for Governance code audit"
 trigger_phrases:
   - "checklist"

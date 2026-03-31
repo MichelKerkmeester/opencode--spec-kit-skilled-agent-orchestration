@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Bug Fixes and Data Integrity"
+title: "Fea [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec]"
 description: "Systematic code audit of 11 Bug Fixes and Data Integrity features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -133,6 +133,7 @@ Verify that all 11 Bug Fixes and Data Integrity features are accurately document
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -141,8 +142,10 @@ Verify that all 11 Bug Fixes and Data Integrity features are accurately document
 ### Reliability
 - **NFR-R01**: Findings must be reproducible by re-reading same sources
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -153,8 +156,10 @@ Verify that all 11 Bug Fixes and Data Integrity features are accurately document
 - Source file referenced in catalog no longer exists: Document as finding
 - Feature partially implemented: Document completion percentage
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -223,7 +228,9 @@ Audit completed 2026-03-22. 11 features verified against source code.
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - F08: Are the remaining unfixed spread calls in `k-value-analysis.ts` and `graph-lifecycle.ts` intentional (safe data sizes) or an oversight?

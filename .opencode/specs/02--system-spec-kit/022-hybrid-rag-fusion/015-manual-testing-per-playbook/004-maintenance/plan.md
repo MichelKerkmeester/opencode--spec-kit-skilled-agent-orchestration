@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook maintenance phase"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/plan]"
 description: "Execution plan for Phase 004 maintenance scenarios EX-014 and EX-035. Read playbook context, set up environment, execute each scenario in order, record evidence and verdicts."
 trigger_phrases:
   - "maintenance phase execution plan"
   - "phase 004 plan"
-  - "EX-014 EX-035 execution"
+  - "ex-014 ex-035 execution"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -176,6 +176,7 @@ Tester reads playbook → Issues MCP tool call or triggers startup sequence → 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -192,6 +193,7 @@ Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

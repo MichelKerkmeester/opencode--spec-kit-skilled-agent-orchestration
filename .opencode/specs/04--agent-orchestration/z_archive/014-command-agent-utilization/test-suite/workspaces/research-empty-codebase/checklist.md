@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: GraphQL API Layer for Microservices Research [research-empty-codebase/checklist]"
+title: "...-agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Codex Memory MCP Fix"
+title: "Decision Record: Codex Memory MCP [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/decision-record]"
 description: "Why packet 024 exists: we opened a focused follow-on packet for the landed Codex MCP startup fix instead of stretching the broader 020 remediation packet further."
 trigger_phrases:
   - "codex spec kit memory adr"

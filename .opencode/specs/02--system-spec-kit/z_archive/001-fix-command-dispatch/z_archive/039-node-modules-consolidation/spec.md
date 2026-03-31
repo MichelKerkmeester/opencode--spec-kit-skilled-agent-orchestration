@@ -1,5 +1,5 @@
 ---
-title: "Node Modules Consolidation [039-node-modules-consolidation/spec]"
+title: "Node Modules [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/spec]"
 description: "id: 039-node-modules-consolidation"
 trigger_phrases:
   - "node"
@@ -97,6 +97,7 @@ Use npm workspaces to share a single node_modules at the root level.
 3. **CLI compatibility** - generate-context.js must work standalone
 4. **Version alignment** - Use newest compatible versions
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] Single node_modules at system-spec-kit root
@@ -105,6 +106,7 @@ Use npm workspaces to share a single node_modules at the root level.
 - [ ] CLI works: `node scripts/generate-context.js --help`
 - [ ] All 14 MCP tools functional
 - [ ] ~900MB disk savings verified
+<!-- /ANCHOR:success-criteria -->
 
 ## Risk Assessment
 

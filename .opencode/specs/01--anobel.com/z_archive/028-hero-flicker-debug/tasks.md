@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [NAME] [030-hero-flicker-debug/tasks]"
+title: "Tasks: [NAME] [030-hero-flicker-debug/tasks] [01--anobel.com/z_archive/028-hero-flicker-debug/tasks]"
 description: "Level 2 Tasks (+Verify) is appropriate when"
 trigger_phrases:
   - "tasks"
@@ -29,6 +29,7 @@ DO NOT use Level 2 Tasks if:
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -44,6 +45,7 @@ DO NOT use Level 2 Tasks if:
 ---
 
 <!-- ANCHOR:phase-1-setup -->
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [ ] T001 [P0] Create project structure → CHK-001
@@ -92,6 +94,7 @@ DO NOT use Level 2 Tasks if:
 ---
 
 <!-- ANCHOR:cross-references -->
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -105,6 +108,7 @@ DO NOT use Level 2 Tasks if:
 ---
 
 <!-- ANCHOR:task-checklist-mapping -->
+<!-- /ANCHOR:cross-refs -->
 ## L2: TASK-CHECKLIST MAPPING
 
 | Task ID | Checklist Item | Priority | Status |

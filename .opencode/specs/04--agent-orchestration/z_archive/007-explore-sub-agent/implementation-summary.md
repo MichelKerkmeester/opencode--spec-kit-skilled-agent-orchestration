@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/implementation-summary]"
+title: "Implementation Summary: Context [04--agent-orchestration/z_archive/007-explore-sub-agent/implementation-summary]"
 description: "A dedicated agent definition file for @context_loader — a fast, read-only context retrieval sub-agent that gathers codebase and memory context before implementation work begins...."
 trigger_phrases:
   - "implementation"
@@ -25,6 +25,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:metadata -->
+<!-- ANCHOR:what-built -->
 ## 1. What Was Built
 
 A dedicated agent definition file for `@context_loader` — a fast, read-only context retrieval sub-agent that gathers codebase and memory context before implementation work begins. The agent adds an intelligence layer on top of the built-in `subagent_type: "explore"` Task tool type, providing structured output, memory retrieval, thoroughness levels, and Active Dispatch capability.
@@ -170,4 +171,11 @@ No changes needed in:
 - No changes to the built-in `subagent_type: "explore"` Task tool type
 - No code implementation features — this was purely agent infrastructure work
 
+<!-- /ANCHOR:limitations -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
 <!-- /ANCHOR:limitations -->

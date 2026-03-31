@@ -1,5 +1,15 @@
 ---
-title: "Verification Checklist: sk-prompt-improver Initial Creation"
+title: "Verification Checklist: sk-prompt-improver Initial [03--commands-and-skills/003-sk-prompt-initial-creation/checklist]"
+description: "title: \"Verification Checklist: sk-prompt-improver Initial Creation\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "prompt"
+  - "improver"
+  - "initial"
+  - "003"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: sk-prompt-improver Initial Creation
 
@@ -9,7 +19,23 @@ title: "Verification Checklist: sk-prompt-improver Initial Creation"
 ---
 
 <!-- ANCHOR:protocol -->
-## P0: Hard Blockers
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+
+---
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+### P0: Hard Blockers
 
 These must be completed before claiming readiness.
 
@@ -46,8 +72,15 @@ These must be completed before claiming readiness.
 
 ---
 
-<!-- /ANCHOR:protocol -->
-## P1: Required Items
+---
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+### P1: Required Items
 
 These must be completed or explicitly deferred with user approval.
 
@@ -85,7 +118,15 @@ These must be completed or explicitly deferred with user approval.
 
 ---
 
-## P2: Nice-to-Have Items
+---
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+### P2: Nice-to-Have Items
 
 These enhance quality but are not blockers.
 
@@ -105,18 +146,15 @@ These enhance quality but are not blockers.
 
 ---
 
-## Verification Summary
-
-**Total Checklist Items:**
-- P0: 6 blockers
-- P1: 6 required
-- P2: 3 optional
-
-**Completion Rule:** All P0 items marked `[x]` + all P1 items marked `[x]` OR deferred with evidence = READY FOR HANDOVER
+---
+<!-- /ANCHOR:testing -->
 
 ---
 
-## Evidence Format
+<!-- ANCHOR:security -->
+## Security
+
+### Evidence Format
 
 For each checked item, provide:
 - Tool output or file excerpt
@@ -130,9 +168,136 @@ Example:
 
 ---
 
-## Cross-References
+---
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+### Cross-References
 
 - **Tasks**: See `tasks.md`
 - **Plan**: See `plan.md`
 - **Spec**: See `spec.md`
 - **Decisions**: See `decision-record.md`
+
+---
+
+- [ ] CHK-140 [P1] All spec documents synchronized
+- [ ] CHK-141 [P1] Usage docs updated where needed
+- [ ] CHK-142 [P2] User-facing docs updated where needed
+- [ ] CHK-143 [P2] Handover notes prepared if needed
+
+---
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Temp files constrained to allowed folders
+- [ ] CHK-051 [P1] No accidental file sprawl introduced
+- [ ] CHK-052 [P2] Findings saved to memory/ if applicable
+
+---
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+**Total Checklist Items:**
+- P0: 6 blockers
+- P1: 6 required
+- P2: 3 optional
+
+**Completion Rule:** All P0 items marked `[x]` + all P1 items marked `[x]` OR deferred with evidence = READY FOR HANDOVER
+
+---
+
+---
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [ ] CHK-100 [P0] Architecture decisions documented in decision-record.md
+- [ ] CHK-101 [P1] All ADRs have status and rationale
+- [ ] CHK-102 [P1] Alternatives documented with rejection rationale
+- [ ] CHK-103 [P2] Migration path documented if applicable
+
+---
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [ ] CHK-110 [P1] Performance expectations reviewed
+- [ ] CHK-111 [P1] Throughput or latency expectations documented
+- [ ] CHK-112 [P2] Benchmarks captured if applicable
+- [ ] CHK-113 [P2] Performance notes documented
+
+---
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [ ] CHK-120 [P0] Rollback procedure documented
+- [ ] CHK-121 [P0] Backward compatibility reviewed
+- [ ] CHK-122 [P1] Monitoring or runbook updated if applicable
+- [ ] CHK-123 [P1] Deployment notes documented
+- [ ] CHK-124 [P2] Release checklist reviewed
+
+---
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [ ] CHK-130 [P1] Security review completed
+- [ ] CHK-131 [P1] Dependency and compatibility review completed
+- [ ] CHK-132 [P2] Abuse and edge-case coverage documented
+- [ ] CHK-133 [P2] Sensitive data handling reviewed
+
+---
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [ ] CHK-140 [P1] All spec documents synchronized
+- [ ] CHK-141 [P1] Usage docs updated where needed
+- [ ] CHK-142 [P2] User-facing docs updated where needed
+- [ ] CHK-143 [P2] Handover notes prepared if needed
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+| Approver | Role | Status | Date |
+|----------|------|--------|------|
+| TBD | Technical Lead | [ ] Approved | |
+| TBD | Product Owner | [ ] Approved | |
+| TBD | QA Lead | [ ] Approved | |
+
+---
+<!-- /ANCHOR:sign-off -->
+
+---

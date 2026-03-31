@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Fix Command Dispatch Vulnerability [118-fix-command-dispatch/checklist]"
+title: "Verification Checklist: Fix Command Dispatch [02--system-spec-kit/z_archive/001-fix-command-dispatch/checklist]"
 description: "Audit Completion Date: 2026-02-13"
 trigger_phrases:
   - "verification"

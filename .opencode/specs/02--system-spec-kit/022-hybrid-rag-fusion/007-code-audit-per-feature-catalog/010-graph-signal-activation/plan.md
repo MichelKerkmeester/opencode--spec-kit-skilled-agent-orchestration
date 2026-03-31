@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Graph Signal Activation"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/plan]"
 description: "Technical plan for auditing 16 Graph Signal Activation features against source code"
 trigger_phrases:
   - "audit plan"
@@ -138,14 +138,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -184,3 +187,4 @@ F01 typed-weighted-degree, F02 co-activation-boost, F03 edge-density, F04 weight
 
 ### Systemic Pattern
 Two features (F11, F15) share the same failure mode: a CONFIRMED @deprecated module left in the codebase with an active-facing catalog entry that incorrectly presents it as a graduated feature. These must be handled together in a single catalog-correction pass to update status from active to DEPRECATED. The F14 contradiction and F13 comment are independent, lower-priority fixes.
+<!-- /ANCHOR:effort -->

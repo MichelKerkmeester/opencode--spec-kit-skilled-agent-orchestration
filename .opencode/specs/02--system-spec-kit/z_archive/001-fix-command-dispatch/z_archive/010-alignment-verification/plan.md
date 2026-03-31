@@ -1,5 +1,5 @@
 ---
-title: "Memory System Alignment Verification Plan [010-alignment-verification/plan]"
+title: "Memory System [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/010-alignment-verification/plan]"
 description: "Created: 2025-12-16"
 trigger_phrases:
   - "memory"

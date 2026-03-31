@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Constitutional Memory System README [047-constitutional-readme/tasks]"
+title: "Tasks: Constitutional [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme/tasks]"
 description: "All tasks completed. README.md created with comprehensive documentation for the constitutional memory system."
 trigger_phrases:
   - "tasks"

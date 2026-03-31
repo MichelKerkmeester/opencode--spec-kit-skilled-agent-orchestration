@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: sk-deep-research Path Migration"
+title: "Decision Record: sk-deep-research Path [03--commands-and-skills/035-sk-deep-research-path-migration/decision-record]"
 description: "Architectural decisions for moving deep-research into a packet-rooted research/ layout and review iterations into review/iterations/ while preserving the review report at the review packet root."
 trigger_phrases:
   - "deep-research path migration adr"

@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown [036-post-merge-refinement-1/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/tasks]"
 description: "id: 036-post-merge-refinement"
 trigger_phrases:
   - "task"

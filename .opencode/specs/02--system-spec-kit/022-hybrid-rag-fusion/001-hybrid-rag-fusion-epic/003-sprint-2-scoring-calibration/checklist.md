@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sprint 2 — Scoring Calibration"
+title: "Verifi [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/checklist]"
 description: "Verification checklist for Sprint 2: embedding cache, cold-start boost, G2 investigation, score normalization"
 trigger_phrases:
   - "sprint 2 checklist"

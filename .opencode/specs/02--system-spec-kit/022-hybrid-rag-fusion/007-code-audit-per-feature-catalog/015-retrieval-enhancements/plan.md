@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Retrieval Enhancements"
+title: "Implement [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/plan]"
 description: "Technical plan for auditing 9 Retrieval Enhancements features against source code"
 trigger_phrases:
   - "audit plan"
@@ -132,6 +132,7 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -139,8 +140,10 @@ Phase 1 (Prep) ──► Phase 2 (Audit 9 features) ──► Phase 3 (Synthesis
      [x]                      [x]                         [x]
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | Actual |
@@ -158,3 +161,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 9 features) ──► Phase 3 (Synthesis
 | M1 | Audit spec created | All docs in place | Done |
 | M2 | All features audited | 9/9 complete | Done — 8 MATCH, 1 PARTIAL |
 | M3 | Synthesis delivered | Summary report finalized | Done — spec.md §12 |
+<!-- /ANCHOR:effort -->

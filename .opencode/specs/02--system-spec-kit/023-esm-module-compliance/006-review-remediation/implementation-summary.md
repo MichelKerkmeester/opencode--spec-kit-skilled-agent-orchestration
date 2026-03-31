@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: Deep Review Remediation"
+title: "Implementation Summary: [02--system-spec-kit/023-esm-module-compliance/006-review-remediation/implementation-summary]"
 description: "Completion summary for Phase 6 — all 18 findings from the 10-iteration GPT-5.4 deep review remediated across 4 workstreams."
 trigger_phrases:
   - "phase 6 summary"
   - "review remediation summary"
   - "023 phase 6 implementation"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary
 

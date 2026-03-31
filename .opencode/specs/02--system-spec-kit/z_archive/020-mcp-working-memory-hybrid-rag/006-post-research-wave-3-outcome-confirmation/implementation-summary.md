@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [006-post-research-wave-3-outcome-confirmation/implementation-summary]"
+title: "...kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/implementation-summary]"
 description: "Wave 3 outcome-confirmation outputs are documented as complete in this package. Existing task evidence covers real-user survey outcomes, 14-day KPI closure reporting, and final ..."
 trigger_phrases:
   - "implementation"

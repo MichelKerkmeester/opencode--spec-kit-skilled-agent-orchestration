@@ -1,8 +1,15 @@
 ---
-title: Checklist — 002-skill-review-post-022
+title: "Checklist — 002-skil [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/checklist]"
+description: "title: Checklist — 002-skill-review-post-022"
+trigger_phrases:
+  - "checklist"
+  - "002"
+  - "skil"
+  - "skill"
+importance_tier: "normal"
+contextType: "implementation"
 status: Complete
 ---
-
 # Verification Checklist
 
 ## P0 — Must Pass

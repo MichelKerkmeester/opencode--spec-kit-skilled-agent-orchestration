@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan [034-gate-enforcement-refinement/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement/plan]"
 description: "1. [x] Read current gate-enforcement.md"
 trigger_phrases:
   - "implementation"

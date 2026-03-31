@@ -1,13 +1,13 @@
 ---
-title: "Implementation Plan: 002-versioned-memory-state"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/plan]"
 description: "Execution plan for Hydra Phase 2 lineage and temporal-state rollout."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 2 plan"
   - "lineage plan"
   - "versioned memory plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 002-versioned-memory-state
 
@@ -145,6 +145,7 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -157,8 +158,10 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 | Backfill and write path | Contract design | Query resolution and Phase 3 |
 | Temporal reads and verification | Write path | Phase 3 and Phase 5 |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -168,8 +171,10 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 | Query resolution and verification | High | 3-5 days |
 | **Total** | | **9-14 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -188,6 +193,7 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 - **Has data migrations?** Yes
 - **Reversal procedure**: Checkpoint restore, down migration if available, then replay-safe validation
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -250,6 +256,7 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-201: Separate Immutable Lineage from Active Projection
@@ -264,6 +271,7 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 - Improves clarity and query performance.
 - Requires extra integrity validation to keep projection and lineage synchronized.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

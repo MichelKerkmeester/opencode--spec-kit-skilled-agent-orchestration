@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Skill Alignment — system-spec-kit"
+title: "Tasks: Skill Alignment — system-spec-kit [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks]"
 description: "Reconciled task list for closing the last system-spec-kit documentation gaps."
-trigger_phrases: ["tasks", "skill alignment", "011 alignment"]
+trigger_phrases:
+  - "tasks"
+  - "skill alignment"
+  - "011 alignment"
 importance_tier: "important"
 contextType: "implementation"
 ---

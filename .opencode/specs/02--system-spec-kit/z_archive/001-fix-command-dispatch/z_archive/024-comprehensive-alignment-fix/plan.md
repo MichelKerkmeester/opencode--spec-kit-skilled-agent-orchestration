@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan [024-comprehensive-alignment-fix/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/plan]"
 description: "Three-phase approach addressing issues by priority. Each phase must complete before the next begins (P0 fixes may unblock P1 work)."
 trigger_phrases:
   - "implementation"
@@ -118,6 +118,7 @@ Three-phase approach addressing issues by priority. Each phase must complete bef
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 ```
@@ -129,10 +130,13 @@ P0.4 (Contradict)┘
 P1.3 (AGENTS.md) ──> P2.3 (Cross-refs depend on stable AGENTS.md)
 P1.4 (Templates) ──> P2.2 (Markers depend on template decisions)
 ```
+<!-- /ANCHOR:dependencies -->
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 Each fix is isolated. If a fix causes issues:
 1. Revert specific file(s) via git
 2. Document issue in `memory/` for next attempt
 3. Continue with other fixes
+<!-- /ANCHOR:rollback -->

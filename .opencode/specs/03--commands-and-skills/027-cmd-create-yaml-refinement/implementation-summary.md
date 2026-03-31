@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Create Command YAML Refinement [template:level_3/implementation-summary.md]"
+title: "Implementation Summary: Create Command [03--commands-and-skills/027-cmd-create-yaml-refinement/implementation-summary]"
 description: "The create-command YAML suite now reads much more like one coherent workflow family instead of a mix of thick and thin schemas."
 trigger_phrases:
   - "create yaml refinement summary"

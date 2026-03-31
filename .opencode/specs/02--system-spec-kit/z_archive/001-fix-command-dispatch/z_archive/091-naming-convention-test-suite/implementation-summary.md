@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Naming Convention Test Suite [091-naming-convention-test-suite/implementation-summary]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite/implementation-summary]"
 description: "Built a 3-file test suite that comprehensively verifies the naming convention migration (spec 090). Tests cover syntax validation, module imports, export contracts, backward-com..."
 trigger_phrases:
   - "implementation"
@@ -114,3 +114,10 @@ node scripts/tests/test-bug-regressions.js
 | 1 | `memory-context.js:299` | `normalized_input` → `normalizedInput` |
 | 2 | `memory-parser.js:348-411` | 9 refs `causal_links` → `causalLinks`, 1 ref `causal_block_match` → `causalBlockMatch` |
 | 3 | `causal-edges.js:561` | `stats.sourceCount` → `stats.source_count` (matches SQL alias) |
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

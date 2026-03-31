@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Memory Quality (QP-0 through QP-4) [003-memory-quality-qp-0-4/plan]"
+title: "Phase Package Plan: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/plan]"
 description: "Improve generated memory-file quality and retrieval usefulness by enforcing quality gates, reducing extraction noise, and adding measurable quality telemetry."
 trigger_phrases:
   - "phase"

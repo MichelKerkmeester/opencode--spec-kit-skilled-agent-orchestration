@@ -1,5 +1,5 @@
 ---
-title: "Tasks [.backup-20260216-113650/tasks]"
+title: "Tasks [.backup-20260216-113650/t [02--system-spec-kit/z_archive/011-upgrade-auto-populate/.backup-20260216-113650/tasks]"
 description: "N/A - legacy spec artifact."
 trigger_phrases:
   - "tasks"

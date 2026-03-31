@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Orchestration Upgrade [003-agent-system-upgrade/decision-record]"
+title: "Decision Record: Orchestration Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/decision-record]"
 description: "This document captures the 10 key architectural decisions for the multi-agent orchestration upgrade, establishing patterns for fault tolerance, quality assurance, and scalable a..."
 trigger_phrases:
   - "decision"
@@ -601,6 +601,7 @@ Each type has a dedicated prompt library, output schema, and performance metrics
 
 
 <!-- ANCHOR:adr-006 -->
+<!-- ANCHOR:context -->
 ## ADR-006: Context Preservation Strategy (Incremental Checkpoints)
 
 <!-- ANCHOR:adr-006-metadata -->
@@ -716,6 +717,7 @@ Long-running agent workflows can fail at any point, losing valuable intermediate
 
 
 <!-- ANCHOR:adr-007 -->
+<!-- /ANCHOR:context -->
 ## ADR-007: Workflow Visualization (Mermaid)
 
 <!-- ANCHOR:adr-007-metadata -->

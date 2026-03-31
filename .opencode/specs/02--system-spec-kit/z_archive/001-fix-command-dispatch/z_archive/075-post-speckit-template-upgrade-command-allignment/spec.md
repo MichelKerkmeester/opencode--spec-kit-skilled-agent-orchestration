@@ -1,5 +1,5 @@
 ---
-title: "Spec 076: Post-SpecKit Template Upgrade - Command Alignment [075-post-speckit-template-upgrade-command-allignment/spec]"
+title: "...stem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment/spec]"
 description: "Comprehensive analysis of specs 072-075 in 003-memory-and-spec-kit combined with current system-spec-kit state to determine command alignment needs."
 trigger_phrases:
   - "spec"
@@ -21,6 +21,7 @@ contextType: "decision"
 Comprehensive analysis of specs 072-075 in 003-memory-and-spec-kit combined with current system-spec-kit state to determine command alignment needs.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -34,13 +35,16 @@ Comprehensive analysis of specs 072-075 in 003-memory-and-spec-kit combined with
 - New feature development
 - Breaking changes to existing command interfaces
 - Changes to other skills outside system-spec-kit
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. All commands aligned with current system-spec-kit capabilities
 2. Command templates comply with command_template.md standards
 3. Documentation follows write.md workflow requirements
 4. No orphaned or deprecated functionality
+<!-- /ANCHOR:success-criteria -->
 
 ## Dependencies
 

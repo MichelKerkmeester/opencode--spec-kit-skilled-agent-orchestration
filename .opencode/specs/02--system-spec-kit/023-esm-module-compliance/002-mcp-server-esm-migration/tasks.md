@@ -1,11 +1,11 @@
 ---
-title: "Tasks: MCP Server ESM Migration"
+title: "Tasks: MCP Server ESM Migration [02--system-spec-kit/023-esm-module-compliance/002-mcp-server-esm-migration/tasks]"
 description: "Task breakdown for @spec-kit/mcp-server native ESM migration."
 trigger_phrases:
   - "mcp server esm tasks"
   - "023 phase 2 tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: MCP Server ESM Migration
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Level-Based Template Architecture [069-speckit-template-complexity/tasks]"
+title: "Tasks: Level-Ba [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/tasks]"
 description: "Implementation task breakdown for complexity detection and level-based template folder system."
 trigger_phrases:
   - "tasks"

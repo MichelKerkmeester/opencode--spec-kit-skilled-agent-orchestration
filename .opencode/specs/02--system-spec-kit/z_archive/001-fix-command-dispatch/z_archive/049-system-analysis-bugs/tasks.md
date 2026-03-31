@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Spec-Kit Bug Remediation [049-system-analysis-bugs/tasks]"
+title: "Tasks: System-Spec-Kit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/tasks]"
 description: "Existing Infrastructure"
 trigger_phrases:
   - "tasks"
@@ -25,6 +25,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical - Embedding Dimension Fix
 
 ### T001: Make EMBEDDING_DIM Dynamic
@@ -86,8 +87,10 @@ contextType: "implementation"
 - [x] Fails fast with clear error if mismatch
 - [x] Suggests resolution (re-index or change provider)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: High - Validation Alignment
 
 ### T005: Add Folder Naming Validation Rule
@@ -139,8 +142,10 @@ contextType: "implementation"
 - [x] Checks for required fields per file type
 - [x] WARNING severity (not blocking)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Medium - Documentation Fixes
 
 ### T009: Fix Broken Link in folder_routing.md
@@ -196,6 +201,7 @@ contextType: "implementation"
 - [x] Line 10 pipe characters escaped
 - [x] Table renders correctly in markdown
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Low - Enhancements

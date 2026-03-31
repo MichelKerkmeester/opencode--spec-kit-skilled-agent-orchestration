@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Convert OpenCode Agents to Claude Code Subagents [009-claude-code-subagents/plan]"
+title: "Implementation Plan: Convert OpenCode Agents to [04--agent-orchestration/z_archive/009-claude-code-subagents/plan]"
 description: "Overview: Convert 8 agent markdown files from OpenCode frontmatter format to Claude Code subagent frontmatter format. Source files in .opencode/agent/ remain unchanged. Target f..."
 trigger_phrases:
   - "implementation"

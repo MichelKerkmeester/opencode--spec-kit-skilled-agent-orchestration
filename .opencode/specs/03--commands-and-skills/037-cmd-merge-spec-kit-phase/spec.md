@@ -1,3 +1,17 @@
+---
+title: "Feature Specification: Merge spec_kit:phase into plan and [03--commands-and-skills/037-cmd-merge-spec-kit-phase/spec]"
+description: "The /spec_kit:phase command is a standalone 7-step workflow that only creates folder structure (parent + N children) without doing any planning or implementation. Users must the..."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "merge"
+  - "spec"
+  - "kit"
+  - "037"
+  - "cmd"
+importance_tier: "important"
+contextType: "decision"
+---
 # Feature Specification: Merge spec_kit:phase into plan and complete
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -114,11 +128,10 @@ Eliminate the standalone `/spec_kit:phase` command by absorbing its phase decomp
 
 ---
 
-<!-- ANCHOR:questions -->
-
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -134,6 +147,7 @@ Eliminate the standalone `/spec_kit:phase` command by absorbing its phase decomp
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -165,6 +179,7 @@ Eliminate the standalone `/spec_kit:phase` command by absorbing its phase decomp
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None — approach is clear, pattern is established.

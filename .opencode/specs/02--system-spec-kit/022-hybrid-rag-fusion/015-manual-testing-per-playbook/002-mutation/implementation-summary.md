@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/implementation-summary]"
 description: "Phase 002 mutation manual testing — 9/9 scenarios executed via code analysis. All scenarios PASS. 100% pass rate."
 trigger_phrases:
   - "mutation implementation summary"

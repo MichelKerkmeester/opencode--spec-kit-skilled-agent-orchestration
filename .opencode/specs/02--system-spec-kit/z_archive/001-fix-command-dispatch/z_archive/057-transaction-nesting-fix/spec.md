@@ -1,5 +1,5 @@
 ---
-title: "Spec: Fix SQLite Transaction Nesting Issue [057-transaction-nesting-fix/spec]"
+title: "Spec: Fix SQLite [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix/spec]"
 description: "The memory_index_scan MCP tool fails with SQLite error"
 trigger_phrases:
   - "spec"

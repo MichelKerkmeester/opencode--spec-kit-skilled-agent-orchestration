@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Stateless Quality Gate Fixes"
+title: "Implementatio [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/plan]"
 description: "Three targeted, independently deployable changes: tier Gate A into hard-block vs. soft-warning rule sets, add --stdin/--json CLI flags to generate-context.ts, and make the contamination filter source-aware for Claude Code captures."
 trigger_phrases:
   - "stateless quality gates plan"
@@ -218,6 +218,7 @@ Memory file written
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## 8. L2: PHASE DEPENDENCIES
 
 ```
@@ -239,6 +240,7 @@ Phase 3 (Source-aware filter) ────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -334,6 +336,7 @@ Phase 3 (Source-aware filter) ────┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Tier Rules Rather Than Disable Gate A
@@ -391,3 +394,4 @@ Phase 3 (Source-aware filter) ────┘
 **Alternatives Rejected**:
 - Remove the tool-title-with-path pattern entirely: would miss real contamination from other CLI sources.
 - Lower the contamination cap threshold globally: blunt instrument; would allow other genuinely contaminated saves through.
+<!-- /ANCHOR:architecture -->

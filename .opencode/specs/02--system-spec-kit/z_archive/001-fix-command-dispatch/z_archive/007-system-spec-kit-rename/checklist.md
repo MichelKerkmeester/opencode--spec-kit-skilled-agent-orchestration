@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: workflows-spec-kit → system-spec-kit Rename [007-system-spec-kit-rename/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/checklist]"
 description: "$ grep -r \"workflows-spec-kit\" .opencode/ | grep -v .sqlite | wc -l"
 trigger_phrases:
   - "verification"

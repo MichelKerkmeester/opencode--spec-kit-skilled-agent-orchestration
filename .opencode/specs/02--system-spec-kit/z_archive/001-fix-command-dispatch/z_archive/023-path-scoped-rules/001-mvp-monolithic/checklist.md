@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Path-Scoped Validation Rules [001-mvp-monolithic/checklist]"
+title: "Ve [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/checklist]"
 description: "When marking items complete, add evidence"
 trigger_phrases:
   - "verification"

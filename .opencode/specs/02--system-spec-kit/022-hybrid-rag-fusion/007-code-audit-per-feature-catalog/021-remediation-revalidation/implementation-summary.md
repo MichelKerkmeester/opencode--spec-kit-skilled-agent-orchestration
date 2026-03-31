@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Remediation & Revalidation"
+title: "...pec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/implementation-summary]"
 description: "Meta-phase: cross-cutting analysis across all audit phases"
 trigger_phrases:
   - "implementation summary"

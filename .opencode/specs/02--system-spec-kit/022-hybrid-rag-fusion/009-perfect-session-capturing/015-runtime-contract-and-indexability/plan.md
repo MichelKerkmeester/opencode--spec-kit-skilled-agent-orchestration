@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Runtime Contract and Indexability"
+title: "Imp [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability/plan]"
 description: "Add explicit rule metadata, write/index dispositions, and focused proof for session-capturing indexability."
 trigger_phrases:
   - "phase 015"

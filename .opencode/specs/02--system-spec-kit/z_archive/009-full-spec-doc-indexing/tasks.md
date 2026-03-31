@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/tasks]"
+title: "Tasks: Full Spec Folder Document Indexing [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/tasks]"
 description: "LEVEL 3+ TASKS"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Plan: Memory & Folder Ranking Implementation [070-memory-ranking/plan]"
+title: "Plan: Memory & Folder [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/plan]"
 description: "Phase 1: Quick Wins (No MCP changes)"
 trigger_phrases:
   - "plan"

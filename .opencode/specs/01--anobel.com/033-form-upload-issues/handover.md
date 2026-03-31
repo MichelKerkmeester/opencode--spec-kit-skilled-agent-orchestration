@@ -1,6 +1,6 @@
 ---
-title: "Handover: Form Upload File Type Issues [035-form-upload-issues/handover]"
-description: "Spec: 035-form-upload-issues"
+title: "Handover: Form Upload File Type Issues [033-form-upload-issues/handover] [01--anobel.com/033-form-upload-issues/handover]"
+description: "Spec: 033-form-upload-issues"
 trigger_phrases:
   - "handover"
   - "form"
@@ -14,7 +14,7 @@ contextType: "general"
 <!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Handover: Form Upload File Type Issues
 
-**Spec:** `035-form-upload-issues`
+**Spec:** `033-form-upload-issues`
 **Date:** 2026-02-14
 **Page:** https://a-nobel-en-zn.webflow.io/nl/werkenbij
 **Status:** REOPENED — Phase 1 complete (MIME validation), Phase 2 blocked (CORS + error handling)
@@ -341,7 +341,7 @@ TEST SUBMISSION GUARD:
 
 ## Webflow Attributes Reference
 
-See: `035-form-upload-issues/scratch/webflow-attributes.md`
+See: `scratch/webflow-attributes.md`
 
 Contains copy-paste values for:
 - `data-accepted-types` (8 MIME types)
@@ -353,7 +353,7 @@ Contains copy-paste values for:
 
 ## Cloudflare Setup Reference
 
-See: `034-cloudflare-r2-migration/` for full Cloudflare account details.
+See: `../032-cloudflare-r2-migration/` for full Cloudflare account details.
 
 | Resource | Value |
 |---|---|

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Agent System Improvements [005-agent-system-improvements/decision-record]"
+title: "Decision Record: Agent System [04--agent-orchestration/z_archive/005-agent-system-improvements/decision-record]"
 description: "Research identified gaps in agent system documentation (missing verification sections, naming inconsistencies, no workflow diagrams). The question was whether to address these v..."
 trigger_phrases:
   - "decision"
@@ -262,6 +262,7 @@ Initial research identified potential improvements to AGENTS.md (Never Touch lis
 
 
 <!-- ANCHOR:session-decision-log -->
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 > **Purpose**: Track all gate decisions made during this session for audit trail and learning.
@@ -289,3 +290,4 @@ Includes Session Decision Log for audit trail
 -->
 
 <!-- /ANCHOR:session-decision-log -->
+<!-- /ANCHOR:decision -->

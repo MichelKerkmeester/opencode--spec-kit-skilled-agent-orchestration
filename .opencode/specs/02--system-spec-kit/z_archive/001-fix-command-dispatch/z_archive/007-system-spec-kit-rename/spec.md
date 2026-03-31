@@ -1,5 +1,5 @@
 ---
-title: "Skill Rename: workflows-spec-kit → system-spec-kit [007-system-spec-kit-rename/spec]"
+title: "Skill Rename: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/spec]"
 description: "Rename the workflows-spec-kit skill to system-spec-kit across the entire codebase, ensuring all references are properly updated while preserving historical documentation."
 trigger_phrases:
   - "skill"
@@ -50,6 +50,7 @@ The skill currently named `workflows-spec-kit` provides mandatory spec folder wo
 **Total active references requiring update: ~215**
 **Total historical references to preserve: ~100+**
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -65,7 +66,9 @@ The skill currently named `workflows-spec-kit` provides mandatory spec folder wo
 2. **Command namespace**: `/spec_kit:*` commands remain unchanged
 3. **Brand name**: "SpecKit" in prose text remains unchanged
 4. **Cache files**: `.codebase/cache.json` regenerates automatically
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### Functional Requirements
@@ -86,7 +89,9 @@ The skill currently named `workflows-spec-kit` provides mandatory spec folder wo
 | NFR-1 | Historical documentation preserved unchanged | P0 |
 | NFR-2 | No breaking changes to command invocations | P0 |
 | NFR-3 | Parallel agent verification confirms functionality | P1 |
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] Zero grep matches for `workflows-spec-kit` in `.opencode/` directory
@@ -94,6 +99,7 @@ The skill currently named `workflows-spec-kit` provides mandatory spec folder wo
 - [ ] All `/spec_kit:*` commands execute without errors
 - [ ] Skill invocation `openskills read system-spec-kit` works
 - [ ] Historical spec folders unchanged (verified by content hash)
+<!-- /ANCHOR:success-criteria -->
 
 ## Reference: Previous Skill Rename
 

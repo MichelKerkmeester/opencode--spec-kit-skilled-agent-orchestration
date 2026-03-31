@@ -1,27 +1,43 @@
 ---
-title: "Implementation Summary: create:prompt Command"
+title: "Implementation Summary: create:prompt Command [03--commands-and-skills/017-cmd-create-prompt/implementation-summary]"
 description: "Summary of /create:prompt command implementation"
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "create"
+  - "prompt"
+  - "command"
+  - "implementation summary"
+  - "017"
+  - "cmd"
+importance_tier: "normal"
+contextType: "implementation"
 ---
+# Implementation Summary
+
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
-
-# Implementation Summary: create:prompt Command
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
-## 1. OVERVIEW
+<!-- ANCHOR:metadata -->
+## Metadata
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/` |
-| **Created** | 2026-03-01 |
-| **Status** | Complete |
-| **LOC** | ~338 lines (command file) |
+| **Spec Folder** | 017-cmd-create-prompt |
+| **Completed** | 2026-03-01 |
 | **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## 2. FILES MODIFIED/CREATED
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+### What Was Built
+
+### What Was Built/CREATED
 
 | File Path | Change Type | LOC | Description |
 |-----------|-------------|-----|-------------|
@@ -34,7 +50,7 @@ description: "Summary of /create:prompt command implementation"
 
 ---
 
-## 3. WHAT WAS IMPLEMENTED
+### 3. WHAT WAS IMPLEMENTED
 
 ### Command: `/create:prompt`
 
@@ -59,7 +75,41 @@ A mode-based workflow command in the `create/` namespace that provides a user-fa
 
 ---
 
-## 4. VERIFICATION
+---
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+### How It Was Delivered
+
+Delivery and verification details remain as documented in the spec-folder artifacts.
+
+---
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+### Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Structural compliance normalization | Preserved original meaning while aligning the document to the active template. |
+
+---
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+### Verification
 
 ### Checklist Results
 
@@ -80,17 +130,7 @@ All validation items pass:
 
 ---
 
-## 5. DEVIATIONS FROM PLAN
-
-| Deviation | Reason |
-|-----------|--------|
-| 6 instruction steps instead of planned 5 | Added explicit "Validate Input" step at start and "Return Status" at end for clarity |
-| 338 LOC instead of estimated 150-200 | Comprehensive examples, argument routing tree, and CLEAR scoring table added value; still appropriate for Level 2 |
-| Added EXAMPLE OUTPUT section | Not in original plan but improves user understanding of expected delivery format |
-
----
-
-## 6. TESTING RESULTS
+### 6. TESTING RESULTS
 
 | Test | Status | Notes |
 |------|--------|-------|
@@ -103,8 +143,36 @@ All validation items pass:
 
 ---
 
-## 7. NEXT STEPS
+---
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+### Known Limitations
+
+### 5. DEVIATIONS FROM PLAN
+
+| Deviation | Reason |
+|-----------|--------|
+| 6 instruction steps instead of planned 5 | Added explicit "Validate Input" step at start and "Return Status" at end for clarity |
+| 338 LOC instead of estimated 150-200 | Comprehensive examples, argument routing tree, and CLEAR scoring table added value; still appropriate for Level 2 |
+| Added EXAMPLE OUTPUT section | Not in original plan but improves user understanding of expected delivery format |
+
+---
+
+### 7. NEXT STEPS
 
 - User can test by running `/create:prompt "test prompt"`
 - If skill integration needs tuning, modify the command's INSTRUCTIONS section
 - Consider adding to `skill_advisor.py` intent boosters for "create prompt" queries
+---
+
+No known limitations.
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Anchor System Implementation [065-anchor-system-implementation/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/checklist]"
 description: "checklist document for 065-anchor-system-implementation."
 trigger_phrases:
   - "checklist"

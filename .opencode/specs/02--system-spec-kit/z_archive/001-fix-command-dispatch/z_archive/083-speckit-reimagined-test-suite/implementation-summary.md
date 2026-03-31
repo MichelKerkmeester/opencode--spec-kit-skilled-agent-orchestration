@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 083-speckit-reimagined-test-suite [083-speckit-reimagined-test-suite/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/implementation-summary]"
 description: "This spec folder documents the comprehensive test suite implementation for the Spec Kit Memory system. The test suite will validate all components implemented in 082-speckit-rei..."
 trigger_phrases:
   - "implementation"
@@ -282,12 +282,14 @@ Test files needed for modules without dedicated test coverage:
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - Coverage metrics require initial measurement (baseline TBD)
 - Some tests require mocking external embedding providers
 - E2E tests may need longer timeouts for full pipeline execution
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Success Criteria

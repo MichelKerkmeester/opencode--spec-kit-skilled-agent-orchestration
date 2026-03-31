@@ -244,7 +244,7 @@ Completed a full Claude runtime-path normalization workflow and release cycle. T
 | `.opencode/command/create/skill_reference.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/debug.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/handover.md` | File modified (description pending) |
-| `.opencode/command/memory/continue.md` | File modified (description pending) |
+| `memory continue command` | File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -675,7 +675,7 @@ key_files:
   - ".opencode/command/create/skill_reference.md"
   - ".opencode/command/spec_kit/debug.md"
   - ".opencode/command/spec_kit/handover.md"
-  - ".opencode/command/memory/continue.md"
+  - "memory continue command"
 
 # Relationships
 related_sessions:

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: 081 Pre-Analysis Recommendations [081-speckit-reimagined-pre-analysis/implementation-summary]"
+title: "...tem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/081-speckit-reimagined-pre-analysis/implementation-summary]"
 description: "All paths are relative to skill/system-spec-kit/."
 trigger_phrases:
   - "implementation"
@@ -69,3 +69,10 @@ The following pre-analysis documents contain the original recommendations:
 ## Archival Decision
 
 Per **DR-002**: Archive rather than update. All 081 recommendations have been implemented in the current codebase, making these documents entirely obsolete for forward-looking work. The successor spec `089-speckit-reimagined-refinement` contains the current audit and remediation plan.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

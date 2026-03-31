@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Manual Testing — Retrieval Enhancements (Phase 015)"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements/checklist]"
 description: "Verification checklist for Phase 015 retrieval enhancements manual test execution. One P0 item per scenario, all unchecked. 11 scenarios: 055, 056, 057, 058, 059, 060, 077, 093, 094, 096, 145."
 trigger_phrases:
   - "retrieval enhancements checklist"

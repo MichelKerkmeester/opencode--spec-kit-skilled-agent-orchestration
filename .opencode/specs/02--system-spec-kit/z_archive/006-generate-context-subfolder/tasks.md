@@ -1,5 +1,5 @@
 ---
-title: "Tasks: generate-context.ts Subfolder Support [123-generate-context-subfolder/tasks]"
+title: "Tasks: generate-context.ts Subfolder Support [02--system-spec-kit/z_archive/006-generate-context-subfolder/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

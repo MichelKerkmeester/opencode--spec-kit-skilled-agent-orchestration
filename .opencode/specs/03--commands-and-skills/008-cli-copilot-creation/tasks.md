@@ -1,5 +1,5 @@
 ---
-title: "Tasks: cli-copilot Skill"
+title: "Tasks: cli-copilot Skill [03--commands-and-skills/008-cli-copilot-creation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "cli-copilot tasks"
@@ -24,6 +24,10 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,12 +38,16 @@ contextType: "implementation"
 - [ ] T001 Create skill directory structure (.opencode/skill/cli-copilot/{references,assets})
 - [ ] T002 Read cli-claude-code as template reference (.opencode/skill/cli-claude-code/)
 - [ ] T003 [P] Compile Copilot CLI research data (web research)
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation (Gemini CLI)
+## Phase 2: Implementation
 
 - [ ] T004 Create SKILL.md with 8 sections and smart routing (.opencode/skill/cli-copilot/SKILL.md)
 - [ ] T005 [P] Create cli_reference.md — CLI flags, 7+ models, auth (.opencode/skill/cli-copilot/references/cli_reference.md)
@@ -48,12 +56,20 @@ contextType: "implementation"
 - [ ] T008 [P] Create integration_patterns.md — 10 orchestration patterns (.opencode/skill/cli-copilot/references/integration_patterns.md)
 - [ ] T009 Create prompt_templates.md — 10 template categories (.opencode/skill/cli-copilot/assets/prompt_templates.md)
 - [ ] T010 Create README.md companion guide (.opencode/skill/cli-copilot/README.md)
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review & Verification
+## Phase 3: Verification
+
+### Phase 3: Verification
+
+### Phase 3: Review & Verification
 
 - [ ] T011 Review Gemini output for structure and accuracy
 - [ ] T012 Verify AI-agnostic language (no hardcoded conductor)
@@ -65,6 +81,10 @@ contextType: "implementation"
 - [ ] T018 Run skill_advisor.py confidence test (>= 0.8)
 - [ ] T019 Create implementation-summary.md
 - [ ] T020 Create changelog v1.0.0.0.md
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,6 +95,10 @@ contextType: "implementation"
 - [ ] All tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
 - [ ] Manual verification passed (skill_advisor.py confidence >= 0.8, symlink resolves)
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -85,4 +109,8 @@ contextType: "implementation"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+---
 <!-- /ANCHOR:cross-refs -->
+
+---

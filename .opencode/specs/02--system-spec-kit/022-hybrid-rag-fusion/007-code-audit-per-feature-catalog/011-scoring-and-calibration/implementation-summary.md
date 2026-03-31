@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Scoring & Calibration"
+title: "...spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/implementation-summary]"
 description: "23 features audited: 23 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

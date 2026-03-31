@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 004-adaptive-retrieval-loops"
+title: "Dec [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/decision-record]"
 description: "Phase-local architecture decisions for Hydra Phase 4 adaptive learning."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "phase 4 adr"
   - "adaptive adr"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 <!-- ANCHOR:adr-001 -->
 # Decision Record: 004-adaptive-retrieval-loops

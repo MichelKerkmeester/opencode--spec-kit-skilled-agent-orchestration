@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [NAME] [template:level_1/tasks.md]"
+title: "...hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/024-runtime-contract-and-indexability/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

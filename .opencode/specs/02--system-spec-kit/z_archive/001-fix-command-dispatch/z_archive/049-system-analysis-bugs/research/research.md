@@ -1,5 +1,5 @@
 ---
-title: "Research Findings: System-Spec-Kit 20-Agent Analysis [049-system-analysis-bugs/research]"
+title: "Research Findings: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/research]"
 description: "A comprehensive parallel analysis using 20 specialized agents examined the system-spec-kit skill across all dimensions: documentation, scripts, templates, database, and integrat..."
 trigger_phrases:
   - "research"

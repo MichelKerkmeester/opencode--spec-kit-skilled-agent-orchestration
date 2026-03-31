@@ -1,6 +1,7 @@
 ---
-title: "Implementation Summary: Create Commands Codex Compatibility [012-create-codex-compatibility/implementation-summary]"
+title: "Implementation Summary: Create [03--commands-and-skills/013-cmd-create-codex-compatibility/implementation-summary]"
 description: "level: 3"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -16,12 +17,10 @@ created: 2026-02-17
 level: 3
 status: done
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: legacy-normalized | v2.2 -->
+# Implementation Summary
 
-# Implementation Summary: Create Commands Codex Compatibility
-
-<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 
 ---
 
@@ -30,9 +29,7 @@ status: done
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 012-create-codex-compatibility |
-| **Status** | Complete |
-| **Created** | 2026-02-17 |
+| **Spec Folder** | 013-cmd-create-codex-compatibility |
 | **Completed** | 2026-02-17 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -41,6 +38,8 @@ status: done
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
+
+### What Was Built
 
 Made 20 create command files Codex-compatible using the same three-pronged approach as spec 010 (spec_kit commands), plus cleaned up stale emoji optionality language aligned with spec 011.
 
@@ -59,12 +58,12 @@ Made 20 create command files Codex-compatible using the same three-pronged appro
 
 | File | Changes Applied |
 |------|-----------------|
-| `.opencode/command/create/skill.md` | Stripped 3-agent `## Agent Routing` table, removed guards, added `## CONSTRAINTS` |
+| .opencode/command/create/skill.md | Stripped 3-agent `## Agent Routing` table, removed guards, added `## CONSTRAINTS` |
 | `.opencode/command/create/agent.md` | Stripped 3-agent `## Agent Routing` table, removed guards, added `## CONSTRAINTS` |
 | `.opencode/command/create/folder_readme.md` | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS`, removed emoji line |
-| `.opencode/command/create/install_guide.md` | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
-| `.opencode/command/create/skill_asset.md` | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
-| `.opencode/command/create/skill_reference.md` | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
+| .opencode/command/create/install_guide.md | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
+| .opencode/command/create/skill_asset.md | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
+| .opencode/command/create/skill_reference.md | Stripped 1-agent routing, removed guards, added `## CONSTRAINTS` |
 
 #### YAML Workflow Files (14)
 
@@ -84,12 +83,30 @@ Made 20 create command files Codex-compatible using the same three-pronged appro
 | `create_skill_reference_confirm.yaml` | 1 (review) | emoji cleanup |
 
 **Total**: 20 `agent_routing:` blocks restructured to `agent_availability:` across 14 YAML files.
+
+---
+
+---
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+### How It Was Delivered
+
+Delivery and verification details remain as documented in the spec-folder artifacts.
+
+---
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
+
+### Key Decisions
 
 | Decision | Rationale |
 |----------|-----------|
@@ -97,12 +114,18 @@ Made 20 create command files Codex-compatible using the same three-pronged appro
 | ADR-002: Bundle emoji cleanup in same pass | Avoids revisiting 14 YAML files in a separate spec; aligns with spec 011 |
 
 See `decision-record.md` for full ADR documentation with five-checks evaluation.
+
+---
+
+---
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 All 7 checks passed on 2026-02-17:
 
@@ -115,6 +138,10 @@ All 7 checks passed on 2026-02-17:
 | 5 | `## CONSTRAINTS` in *.md | 6 | 6 | PASS |
 | 6 | `REFERENCE ONLY` in *.md | 0 | 0 | PASS |
 | 7 | `[Ee]moji` in create/ | 0 | 0 | PASS |
+
+---
+
+---
 <!-- /ANCHOR:verification -->
 
 ---
@@ -122,18 +149,18 @@ All 7 checks passed on 2026-02-17:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
+### Known Limitations
+
 None. All changes are metadata-only modifications to static configuration files:
 
 - No runtime code was changed
 - No logic was modified
 - Agent availability information is fully preserved in restructured YAML format
 - Existing cosmetic emojis in template content are preserved (only enforcement/optionality language was removed)
-<!-- /ANCHOR:limitations -->
 
 ---
 
-<!-- ANCHOR:next-steps -->
-## Next Steps
+### Next Steps
 
 No further action required. This spec is complete.
 
@@ -141,7 +168,6 @@ No further action required. This spec is complete.
 - Spec 010 (spec_kit commands) -- completed, same approach
 - Spec 011 (emoji enforcement removal) -- completed, emoji policy aligned
 - Future: If additional command families are added, apply the same three-pronged approach
-<!-- /ANCHOR:next-steps -->
 
 ---
 
@@ -151,3 +177,8 @@ IMPLEMENTATION SUMMARY - COMPLETE
 - 7/7 verification checks passed
 - Completed 2026-02-17
 -->
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

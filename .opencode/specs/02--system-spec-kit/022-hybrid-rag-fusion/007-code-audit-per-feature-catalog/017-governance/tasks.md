@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Governance"
+title: "Tasks: Code Audit [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/tasks]"
 description: "Task breakdown for auditing 4 Governance features"
 trigger_phrases:
   - "tasks"

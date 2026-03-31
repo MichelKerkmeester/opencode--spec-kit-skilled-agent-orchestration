@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook lifecycle phase"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/spec]"
 description: "Phase 005 documents the lifecycle manual test packet. Execute all 10 scenarios (EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144) to verify checkpoint management, async ingestion, path traversal guards, archival, startup recovery, and ingest forecast."
 trigger_phrases:
   - "lifecycle manual testing"
   - "phase 005 lifecycle"
-  - "EX-015 EX-016 EX-017 EX-018 lifecycle"
+  - "ex-015 ex-016 ex-017 ex-018 lifecycle"
   - "checkpoint lifecycle test"
 importance_tier: "normal"
 contextType: "general"
@@ -175,6 +175,7 @@ Execute all ten Phase 005 lifecycle scenarios, record verdicts and evidence, and
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -193,6 +194,7 @@ Execute all ten Phase 005 lifecycle scenarios, record verdicts and evidence, and
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

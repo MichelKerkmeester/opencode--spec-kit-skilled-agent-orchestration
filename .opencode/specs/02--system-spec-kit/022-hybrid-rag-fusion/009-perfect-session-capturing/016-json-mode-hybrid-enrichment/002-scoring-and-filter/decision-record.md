@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...brid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/decision-record]"
 description: "Three architecture decisions: bonus system removal from quality scorer, contamination filter scope expansion to 4 additional text fields, and post-save review penalty integration into quality_score."
 trigger_phrases:
   - "scoring filter decisions"
   - "quality scorer bonus removal decision"
   - "contamination filter scope decision"
   - "post-save penalty integration"
-  - "ADR-001 ADR-002 ADR-003 scoring filter"
+  - "adr-001 adr-002 adr-003 scoring filter"
 importance_tier: "important"
 contextType: "decision"
 ---

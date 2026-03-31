@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: /create:testing-playbook Command [template:level_3/checklist.md]"
+title: "Verification Checklist: /create:testing-playb [03--commands-and-skills/026-cmd-create-manual-testing-playbook/checklist]"
 description: "Verification Date: 2026-03-19"
 trigger_phrases:
   - "testing playbook command checklist"

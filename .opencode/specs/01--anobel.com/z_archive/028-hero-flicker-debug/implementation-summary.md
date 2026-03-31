@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [030-hero-flicker-debug/implementation-summary]"
+title: "Implementation Summary [030-hero-flicker-debug/ [01--anobel.com/z_archive/028-hero-flicker-debug/implementation-summary]"
 description: "Fixed the mobile image flickering issue in hero video cards by addressing two root causes: (1) immediate visibility: hidden setting during thumbnail fade transitions, and (2) la..."
 trigger_phrases:
   - "implementation"
@@ -31,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:what-was-built -->
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Fixed the mobile image flickering issue in hero video cards by addressing two root causes: (1) immediate `visibility: hidden` setting during thumbnail fade transitions, and (2) lack of debouncing for viewport-triggered pause events. The fix ensures smooth transitions between thumbnail and video states during scroll.
@@ -46,6 +47,8 @@ Fixed the mobile image flickering issue in hero video cards by addressing two ro
 ---
 
 <!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:decisions -->
+<!-- /ANCHOR:what-built -->
 ## Key Decisions
 
 | Decision | Rationale |
@@ -58,6 +61,7 @@ Fixed the mobile image flickering issue in hero video cards by addressing two ro
 ---
 
 <!-- ANCHOR:technical-changes -->
+<!-- /ANCHOR:decisions -->
 ## Technical Changes
 
 ### Fix 1: Delayed Visibility Hidden
@@ -97,6 +101,7 @@ In master cleanup function:
 ---
 
 <!-- ANCHOR:known-limitations -->
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - The 150ms debounce delay means videos pause 150ms after scrolling out of viewport (imperceptible to users)
@@ -106,6 +111,7 @@ In master cleanup function:
 ---
 
 <!-- ANCHOR:checklist-completion-summary -->
+<!-- /ANCHOR:limitations -->
 ## L2: CHECKLIST COMPLETION SUMMARY
 
 ### P0 Items (Hard Blockers)

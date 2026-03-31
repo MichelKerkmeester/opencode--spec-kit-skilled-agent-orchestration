@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Command Separation - Requirements & User Stories [068-memory-index-commands/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/spec]"
 description: "Separate the unified /memory:search command into two focused commands: a read-only search command and a database management command."
 trigger_phrases:
   - "feature"
@@ -66,6 +66,7 @@ Split the unified memory command into two focused commands with clear single res
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -89,6 +90,7 @@ Split the unified memory command into two focused commands with clear single res
 | `.opencode/command/memory/search.md` | Modify | Remove management operations, simplify to read-only |
 | `.opencode/command/memory/database.md` | Create | New database management command |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -148,6 +150,7 @@ As a developer, I want to check the health of my memory database, so that I can 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** `/memory:search` MUST be read-only with no write operations
@@ -168,8 +171,10 @@ As a developer, I want to check the health of my memory database, so that I can 
 | Story 3 - Index new files | REQ-FUNC-005 | Indexing operations |
 | Story 4 - Health check | REQ-FUNC-006 | Database health |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -188,8 +193,10 @@ As a developer, I want to check the health of my memory database, so that I can 
 - **NFR-U01**: Command help must clearly explain purpose and options
 - **NFR-U02**: Error messages must suggest correct command if user uses wrong one
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -204,8 +211,10 @@ As a developer, I want to check the health of my memory database, so that I can 
 - What happens when scan is interrupted? → Next scan picks up where it left off (hash-based)
 - What happens when cleanup is cancelled mid-review? → No changes made
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -223,6 +232,7 @@ As a developer, I want to check the health of my memory database, so that I can 
 | Quality | P0/P1 defect rate | 0 within 7 days | Issue tracking |
 | Usability | Users finding correct command | >90% first try | Manual observation |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -248,6 +258,7 @@ As a developer, I want to check the health of my memory database, so that I can 
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -257,12 +268,15 @@ As a developer, I want to check the health of my memory database, so that I can 
 - MCP tool changes - using existing APIs as-is
 - New MCP tools - not creating new server-side functionality
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None - requirements are clear
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

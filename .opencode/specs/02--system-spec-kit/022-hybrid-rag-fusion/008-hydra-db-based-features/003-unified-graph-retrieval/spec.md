@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: 003-unified-graph-retrieval"
+title: "Feature Specifi [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/spec]"
 description: "Level 3+ phase spec for deterministic graph-aware retrieval fusion."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 3"
   - "unified graph retrieval"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "deterministic ranking"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 003-unified-graph-retrieval
 
@@ -27,6 +27,7 @@ Phase 3 implements the deterministic graph-aware retrieval path for Hydra. It co
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -63,6 +64,7 @@ This phase pulls graph context into the main retrieval contract rather than leav
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -157,6 +159,7 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -175,8 +178,10 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 - **NFR-O31**: Maintainers can inspect graph contribution traces during debugging.
 - **NFR-O32**: Benchmarks and regression suites are easy to rerun locally.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -194,8 +199,10 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 - Summary nodes and entity nodes both reference the same concept with different confidence.
 - Historical `asOf` state affects which graph neighbors are valid.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -207,6 +214,7 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 | Coordination | 13/15 | Depends on Phase 2 and blocks Phase 4 and Phase 6 confidence |
 | **Total** | **82/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -294,11 +302,13 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - Should score traces be emitted inline, sampled, or written to a separate debug surface?
 - Which graph-health metrics are essential for Phase 3 versus nice-to-have for later phases?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

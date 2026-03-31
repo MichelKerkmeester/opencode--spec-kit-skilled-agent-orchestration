@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories [012-handover-triggers/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec]"
 description: "Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and ..."
 trigger_phrases:
   - "feature"
@@ -56,6 +56,7 @@ Enable AI agents to automatically suggest handover.md or debug-delegation.md tem
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -69,6 +70,7 @@ Enable AI agents to automatically suggest handover.md or debug-delegation.md tem
 - Changes to template files themselves
 - Integration with semantic memory system (separate concern)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -115,6 +117,7 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** SKILL.md MUST include a "Utility Template Triggers" subsection listing all handover trigger keywords
@@ -131,8 +134,10 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 | Story 2 - Debug Delegation | REQ-FUNC-002, REQ-FUNC-003 | Debug workflow extension |
 | Story 3 - Router Enhancement | REQ-FUNC-003 | Documentation consistency |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -142,8 +147,10 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 - **NFR-U01**: Keywords should be natural language phrases users would actually say
 - **NFR-U02**: False positive rate should be low (keywords specific enough to avoid accidental triggers)
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### False Positives
@@ -153,8 +160,10 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 ### Partial Matches
 - How does system handle "I'll hand this over to..." vs "handover document"? Both should trigger suggestion
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -170,6 +179,7 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 | Completeness | Trigger keywords documented | 5 categories, ~20 keywords | Manual review |
 | Quality | No placeholder text remaining | 0 placeholders | Grep for YOUR_VALUE_HERE |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -189,6 +199,7 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -197,12 +208,15 @@ As a SpecKit skill maintainer, I need the Resource Router pseudocode to include 
 - Integration with memory system triggers (handled by system-memory skill)
 - Changes to handover.md or debug-delegation.md template content
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None - analysis from Sequential Thinking is comprehensive
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

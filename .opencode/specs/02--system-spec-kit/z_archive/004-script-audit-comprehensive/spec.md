@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Comprehensive Script Audit [004-script-audit-comprehensive/spec]"
+title: "Feature Specification: Comprehensive Script Audit [02--system-spec-kit/z_archive/004-script-audit-comprehensive/spec]"
 description: "Comprehensive audit of all system-spec-kit scripts to identify bugs, broken features, and misalignments with sk-code--opencode standards. Investigation excludes issues solely ca..."
 trigger_phrases:
   - "feature"
@@ -136,6 +136,7 @@ Identify and document all script issues excluding those caused solely by ongoing
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -151,6 +152,7 @@ Identify and document all script issues excluding those caused solely by ongoing
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

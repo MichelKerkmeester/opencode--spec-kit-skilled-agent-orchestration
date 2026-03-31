@@ -1,11 +1,11 @@
 ---
-title: "Tasks: manual-testing-per-playbook analysis phase"
+title: "Tasks: manual-testing-per [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/tasks]"
 description: "7 manual test scenarios for analysis category. One task per scenario ID."
 trigger_phrases:
   - "analysis tasks"
   - "analysis test tasks"
   - "causal graph tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook analysis phase

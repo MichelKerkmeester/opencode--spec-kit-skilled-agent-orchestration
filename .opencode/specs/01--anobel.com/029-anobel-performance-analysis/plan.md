@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Comprehensive Performance Optimization - anobel.com [031-anobel-performance-analysis/plan]"
+title: "Implementation Plan: Comprehensive Performance Optimization - [01--anobel.com/029-anobel-performance-analysis/plan]"
 description: "This plan addresses 50+ performance issues identified by 10-agent parallel analysis. The implementation is organized into 6 phases, progressing from critical P0 JavaScript bugs ..."
 trigger_phrases:
   - "implementation"
@@ -360,6 +360,7 @@ aws s3 cp s3://anobel-scripts/backup/ s3://anobel-scripts/current/ --recursive
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -404,6 +405,7 @@ aws s3 cp s3://anobel-scripts/backup/ s3://anobel-scripts/current/ --recursive
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Issues Addressed | Estimated Effort | Cumulative |
@@ -568,7 +570,7 @@ The critical path determines minimum implementation time:
 ---
 
 <!-- ANCHOR:architecture -->
-## L3: ARCHITECTURE DECISION RECORDS
+## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Timeout Value Selection
 
@@ -735,7 +737,7 @@ The critical path determines minimum implementation time:
 
 <!-- /ANCHOR:communication -->
 
-## Status Update - [TIMESTAMP]
+### Status Update - [TIMESTAMP]
 - **Phase**: [Current phase]
 - **Workstream**: [W-A/B/C/D/E/F]
 - **Task**: T### - [Description]
@@ -761,7 +763,7 @@ All significant decisions logged in `decision-record.md` Session Decision Log wi
 
 ---
 
-## REVISION HISTORY
+### Revision History
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|

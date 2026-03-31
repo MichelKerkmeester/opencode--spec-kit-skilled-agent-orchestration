@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: query-intelligence manual testing [template:level_2/implementation-summary.md]"
+title: "...-system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence/implementation-summary]"
 description: "Phase 012 query-intelligence manual testing — 10/10 scenarios verdicted via source code analysis. 10 PASS, 0 PARTIAL, 0 FAIL."
 trigger_phrases:
   - "phase 012 implementation summary"
   - "query intelligence execution summary"
   - "query intelligence test results"
   - "phase 012 verdicts"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary: query-intelligence manual testing

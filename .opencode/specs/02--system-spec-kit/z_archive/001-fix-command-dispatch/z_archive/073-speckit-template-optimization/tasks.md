@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Template Optimization [073-speckit-template-optimization/tasks]"
+title: "Tasks: SpecKi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -32,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Research & Analysis
 
 - [x] T001 Analyze real spec folder usage patterns (9+ folders)
@@ -42,8 +43,10 @@ contextType: "implementation"
 
 **Checkpoint**: Research complete - CORE + ADDENDUM architecture validated
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Core Template Creation
 
 - [x] T010 Create templates/core/ directory
@@ -59,8 +62,10 @@ contextType: "implementation"
 
 **Checkpoint**: Core foundation ready (318 LOC total)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Level 2 Addendum Creation (+Verify)
 
 - [x] T020 Create templates/addendum/level2-verify/ directory
@@ -74,6 +79,7 @@ contextType: "implementation"
 
 **Checkpoint**: L2 verification addendum complete (184 LOC)
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Level 3 Addendum Creation (+Arch)
@@ -157,6 +163,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -165,6 +172,7 @@ contextType: "implementation"
 - [x] Checklist.md items verified
 - [x] Documentation synchronized
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## Summary
@@ -183,9 +191,11 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification**: See `checklist.md`
 - **Decisions**: See `decision-record.md`
+<!-- /ANCHOR:cross-refs -->

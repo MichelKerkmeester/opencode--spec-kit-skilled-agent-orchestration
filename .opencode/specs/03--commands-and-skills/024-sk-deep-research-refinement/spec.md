@@ -1,3 +1,17 @@
+---
+title: "Feature Specification: sk-deep-research Refinement via [03--commands-and-skills/024-sk-deep-research-refinement/spec]"
+description: "The sk-deep-research system (v1) is functional but has 18 documented improvement proposals (from spec 023) that need rigorous validation, prioritization refinement, and implemen..."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "deep"
+  - "research"
+  - "refinement"
+  - "spec"
+  - "024"
+importance_tier: "important"
+contextType: "decision"
+---
 # Feature Specification: sk-deep-research Refinement via Self-Research
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -72,7 +86,7 @@ Run rigorous autonomous deep-research rounds that investigate improvements to th
 | `.claude/agents/deep-research.md` | Analyze | Claude agent — cross-runtime consistency |
 | `.codex/agents/deep-research.toml` | Analyze | Codex agent — cross-runtime consistency |
 | `.opencode/agent/deep-research.md` | Analyze | OpenCode agent — primary definition |
-| `.opencode/agent/chatgpt/deep-research.md` | Analyze | ChatGPT agent — cross-runtime consistency |
+| `.claude/agents/deep-research.md` | Analyze | Claude runtime agent — canonical cross-runtime reference |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -136,10 +150,6 @@ Run rigorous autonomous deep-research rounds that investigate improvements to th
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
 <!-- ANCHOR:nfr -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
@@ -191,6 +201,7 @@ Run rigorous autonomous deep-research rounds that investigate improvements to th
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Q1: Should the research also investigate improvements to the YAML workflow engine itself (not just the protocol/agent)?

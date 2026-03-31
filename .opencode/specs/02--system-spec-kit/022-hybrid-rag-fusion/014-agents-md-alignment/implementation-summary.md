@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: 014-agents-md-alignment"
-description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 4-command memory surface and `/memory:manage shared` routing."
+title: "Implementation Summary: [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/implementation-summary]"
+description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 4-command memory surface and /memory:manage shared routing."
 trigger_phrases:
   - "014 summary"
   - "014 implementation"
 importance_tier: "important"
-contextType: "implementation-summary"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->

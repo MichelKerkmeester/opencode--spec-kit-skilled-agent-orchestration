@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [021-attribute-cleanup/implementation-summary]"
+title: "Implementation Summary [021-attribute-cleanup/im [01--anobel.com/z_archive/020-attribute-cleanup/implementation-summary]"
 description: "Expanded the global attribute cleanup script to remove empty value-based data-* attributes used for component variants/configuration across anobel.com (based on a CSS inventory)..."
 trigger_phrases:
   - "implementation"
@@ -31,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:what-was-built -->
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Expanded the global attribute cleanup script to remove empty value-based `data-*` attributes used for component variants/configuration across anobel.com (based on a CSS inventory), in addition to invalid `id=""`.
@@ -53,6 +54,8 @@ This reduces DOM noise from Webflow-exported empty custom attributes while keepi
 ---
 
 <!-- ANCHOR:key-decisions -->
+<!-- ANCHOR:decisions -->
+<!-- /ANCHOR:what-built -->
 ## Key Decisions
 
 | Decision | Rationale |
@@ -65,6 +68,7 @@ This reduces DOM noise from Webflow-exported empty custom attributes while keepi
 ---
 
 <!-- ANCHOR:verification -->
+<!-- /ANCHOR:decisions -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -78,6 +82,7 @@ This reduces DOM noise from Webflow-exported empty custom attributes while keepi
 ---
 
 <!-- ANCHOR:known-limitations -->
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - Does not regenerate `src/2_javascript/z_minified/global/attribute_cleanup.js` or bump the CDN version referenced in `src/0_html/global.html`.
@@ -92,3 +97,4 @@ CORE TEMPLATE (~40 lines)
 - Post-implementation documentation
 - Created AFTER implementation completes
 -->
+<!-- /ANCHOR:limitations -->

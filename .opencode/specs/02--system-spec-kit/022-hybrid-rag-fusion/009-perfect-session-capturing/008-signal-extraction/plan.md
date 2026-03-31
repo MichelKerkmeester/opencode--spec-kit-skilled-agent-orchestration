@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Signal Extraction"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/plan]"
+description: "title: \"Implementation Plan: Signal Extraction\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "008"
+  - "signal"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Signal Extraction
 

@@ -1,5 +1,6 @@
 ---
-title: "Decision Record: sk-prompt-improver Initial Creation"
+title: "Decision Record: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/decision-record]"
+description: "Architecture decisions for packaging the Prompt Improver system as an OpenCode skill."
 ---
 # Decision Record: sk-prompt-improver Initial Creation
 
@@ -8,219 +9,293 @@ title: "Decision Record: sk-prompt-improver Initial Creation"
 
 ---
 
-## Overview
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Use a lean orchestrator with progressive disclosure
 
-This document captures key architectural and design decisions for the sk-prompt-improver skill creation project.
+### Metadata
 
----
-
-## DR-001: Progressive Disclosure Architecture
-
-**Context:**
-Source Prompt Improver knowledge base contains ~250KB of content distributed across 7+ documents including System Prompt guidelines, DEPTH Framework specifications, pattern evaluation systems, and multiple operating mode (interactive, visual, image, video) documentation.
-
-**Problem:**
-How do we structure the skill while maintaining usability in a context-limited environment (Claude's token budget)?
-
-**Decision:**
-Adopt **Progressive Disclosure** architecture:
-- SKILL.md serves as orchestrator and entry point (<5000 words)
-- references/ directory contains adapted deep-dive documentation
-- Each reference file addresses a specific domain (e.g., system_prompt.md, depth_framework.md)
-- SKILL.md links to references; users access full content on-demand
-
-**Rationale:**
-- Keeps primary SKILL.md lean and context-window friendly
-- Follows established OpenCode skill best practices (e.g., sk-doc, sk-code--review)
-- Enables progressive learning: start with SKILL.md overview, deep-dive into references as needed
-- Reduces initial cognitive load when learning the skill
-
-**Alternatives Considered:**
-1. **Single monolithic file** - Rejected: exceeds 5000-word guideline, reduces usability in context-limited scenarios
-2. **Minimal subset only** - Rejected: loses key functionality (DEPTH Framework, multi-mode documentation), reduces skill coverage
-3. **External URL references** - Rejected: breaks offline functionality, dependency on external availability
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-01 |
+| **Deciders** | Spec author, prompt-skill maintainers |
 
 ---
 
-## DR-002: Reference Adaptation vs. Verbatim Copy
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Context:**
-Source Prompt Improver documentation was designed as a standalone Claude Project with custom system instructions. It assumes direct integration into Claude's system prompt or use as persistent context.
+The source Prompt Improver system contains a large knowledge base. Putting everything into one SKILL.md would overload the runtime context window and make the skill harder to maintain.
 
-**Problem:**
-Should we copy source material verbatim or adapt it for OpenCode skill architecture?
+### Constraints
 
-**Decision:**
-**Adapt** source documents rather than copy verbatim. Adaptations include:
-- Remove standalone context assumptions; integrate with AGENTS.md patterns
-- Convert first-person guidance ("I recommend") to third-person imperative ("Use")
-- Refactor for skill invocation paradigm rather than persistent context paradigm
-- Maintain original content fidelity while restructuring for skill consumption
-
-**Rationale:**
-- Source assumes custom instructions model; skills require orchestrated dispatch
-- OpenCode has different execution context than standalone Claude Project
-- Adaptation improves integration with existing CLAUDE.md, AGENTS.md, and SKILL.md conventions
-- Maintains intellectual honesty: adaptation credit preserves original author attribution
-
-**Alternatives Considered:**
-1. **Verbatim copy** - Rejected: creates impedance mismatch with OpenCode architecture
-2. **Complete rewrite** - Rejected: loses proven methodologies and precision of original content
-3. **Summary extraction** - Rejected: oversimplifies nuanced guidance, loses depth
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+- The orchestrator must stay under the project word-count expectations.
+- Deep framework material still needs to remain accessible.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-## DR-003: Consolidated Format Guides
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-**Context:**
-Source documentation includes 3 separate format guide files:
-- Format Guide: JSON
-- Format Guide: YAML
-- Format Guide: Markdown
+**We chose**: Keep SKILL.md lean and move deep framework content into reference files.
 
-These documents are complementary (covering different serialization formats) but distributed as separate files.
-
-**Problem:**
-Should we maintain 3 separate files or consolidate?
-
-**Decision:**
-**Consolidate** the 3 format guide documents into a single `references/format_guides.md` file with sections for each format.
-
-**Rationale:**
-- Reduces file count (3 files → 1 file)
-- Content is intrinsically cross-referenced (users typically need multiple formats)
-- Easier discovery: single reference file for "how do I format my prompt?"
-- Maintains parallel structure: each format gets equal treatment with dedicated subsection
-- Reduces directory clutter; improves navigation
-
-**Alternatives Considered:**
-1. **Keep 3 separate files** - Rejected: distribution creates discovery friction
-2. **Fold into SKILL.md** - Rejected: adds unnecessary length to primary file
-3. **Create meta-index file** - Rejected: adds one more file; consolidated version is simpler
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+**How it works**: SKILL.md performs routing and orchestration, while reference files hold the heavier framework, scoring, and mode details. This preserves the full capability set without forcing every invocation to load the entire corpus.
+<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
-## DR-004: Operating Mode Categorization
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
 
-**Context:**
-Source Prompt Improver defines 10+ operating modes that serve different user scenarios:
-- Core: System Prompt, DEPTH Framework, Patterns Evaluation
-- Interactive: 7 named variants (discovery, challenge, deepening, integration, cross-domain, refinement, mastery)
-- Visual/Multimedia: Visual mode, Image mode, Video mode
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Lean orchestrator + references** | Better context efficiency, easier maintenance | Requires more cross-file navigation | 9/10 |
+| Single-file skill | Easier single-file browsing | Too large and less maintainable | 4/10 |
 
-**Problem:**
-How do we organize documentation for so many modes?
-
-**Decision:**
-Organize operating modes across multiple reference files with clear categorical boundaries:
-- Core modes → references/ (system_prompt.md, depth_framework.md, patterns_evaluation.md)
-- Interactive modes → references/interactive_mode.md (7 variants as subsections)
-- Visual/multimedia modes → dedicated files per modality (visual_mode.md, image_mode.md, video_mode.md)
-- Cross-cutting concerns → format_guides.md (format specifications)
-
-**Rationale:**
-- Groups related modes together; improves discovery and organization
-- Interactive modes share common patterns (dialogue structure, feedback loops) → single file with subsections
-- Distinct modalities (visual, image, video) merit separate files due to unique implementation requirements
-- Allows users to navigate to their use case efficiently
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+**Why this one**: It preserves the system breadth while respecting runtime context constraints.
+<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
 
-## DR-005: skill_advisor.py Integration
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
 
-**Context:**
-OpenCode uses skill_advisor.py to route user requests to appropriate skills based on intent matching and confidence scoring.
+**What improves**:
+- Routing stays lightweight.
+- Reference material can grow without bloating the orchestrator.
 
-**Problem:**
-How do we ensure sk-prompt-improver is discovered and routed correctly?
+**What it costs**:
+- Users must sometimes load reference files explicitly. Mitigation: keep routing references explicit.
 
-**Decision:**
-Update skill_advisor.py with sk-prompt-improver entries including:
-- Skill name: "sk-prompt-improver"
-- Intent boosters: trigger phrases for prompt refinement, improvement, clarity, effectiveness, quality
-- Confidence tuning: ensure sk-prompt-improver scores >= 0.85 for on-target queries
-- Uncertainty bounds: configure uncertainty thresholds appropriately
+**Risks**:
 
-**Rationale:**
-- Skill discovery depends on skill_advisor.py configuration
-- Intent boosters ensure high precision matching for prompt-related queries
-- Confidence tuning ensures skill invocation when appropriate
-- Follows established OpenCode pattern (skills like sk-doc, sk-code--review already configured)
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Reference sprawl | M | Keep references grouped by concern |
+<!-- /ANCHOR:adr-001-consequences -->
 
 ---
 
-## DR-006: DEPTH Framework as First-Class Citizen
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
 
-**Context:**
-The DEPTH Framework is a central component of sk-prompt-improver but can be perceived as secondary to System Prompt guidance.
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Source corpus is large |
+| 2 | **Beyond Local Maxima?** | PASS | Single-file option was considered |
+| 3 | **Sufficient?** | PASS | Lean orchestrator covers routing needs |
+| 4 | **Fits Goal?** | PASS | Supports direct prompt-engineering workflows |
+| 5 | **Open Horizons?** | PASS | New references can be added later |
 
-**Problem:**
-How prominent should DEPTH Framework be in skill documentation?
-
-**Decision:**
-Treat DEPTH Framework as a **first-class citizen** with:
-- Dedicated references/depth_framework.md file
-- Explicit documentation of all depth levels (Surface, Intermediate, Expert, Mastery)
-- Integration into SMART ROUTING logic (offer DEPTH Framework mode as explicit routing option)
-- Cross-references from System Prompt and Interactive mode documentation
-
-**Rationale:**
-- DEPTH Framework is a core methodological contribution, not supporting material
-- Users solving "how do I structure complex prompts?" benefit from DEPTH Framework first
-- DEPTH Framework enables progressive elaboration, essential for skill effectiveness
-- Explicit routing ensures user awareness and availability
-
-**Status:** ACCEPTED
-
-**Decision Date:** 2026-03-01
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
 
-## Summary Table
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
 
-| Decision | Status | Key Insight |
-|----------|--------|-------------|
-| DR-001: Progressive Disclosure | ACCEPTED | Lean orchestrator + deep references = better UX |
-| DR-002: Adaptation vs. Copy | ACCEPTED | Respect original; adapt for context |
-| DR-003: Format Consolidation | ACCEPTED | Group cross-referenced content |
-| DR-004: Mode Organization | ACCEPTED | Categorical grouping improves navigation |
-| DR-005: skill_advisor.py Integration | ACCEPTED | Discovery requires explicit configuration |
-| DR-006: DEPTH as First-Class | ACCEPTED | Core methodology deserves prominence |
+**What changes**:
+- SKILL.md stays concise.
+- Framework and scoring material live in references.
 
----
-
-## Implementation Notes
-
-- All decisions support the specification in spec.md
-- Implementation plan in plan.md aligns with decision rationales
-- Task breakdown in tasks.md respects architectural boundaries set by these decisions
-- Checklist in checklist.md verifies decision implementation
+**How to roll back**: Merge reference material back into SKILL.md and simplify routing references.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
 
 ---
 
-## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
-- **Tasks**: See `tasks.md`
-- **Checklist**: See `checklist.md`
+### ADR-002: Adapt the source material instead of copying it verbatim
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-01 |
+| **Deciders** | Spec author, prompt-skill maintainers |
+
+---
+
+
+### Context
+
+The original Prompt Improver documents assumed a standalone Claude Project environment. A verbatim copy would preserve instructions and assumptions that do not fit the OpenCode skill system.
+
+### Constraints
+
+- The adapted skill must behave like a native OpenCode skill.
+- The original framework intent must remain intact.
+
+
+---
+
+
+### Decision
+
+**We chose**: Adapt the source material to OpenCode conventions instead of copying it line for line.
+
+**How it works**: Standalone-project assumptions were removed, routing and voice were converted to skill-friendly guidance, and the framework content was preserved in OpenCode-oriented references.
+
+
+---
+
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Adapt source material** | Native fit, clearer runtime guidance | Requires editorial effort | 9/10 |
+| Copy source material directly | Faster initial transfer | Preserves the wrong operational assumptions | 3/10 |
+
+**Why this one**: The skill needed to feel native inside OpenCode while preserving the source system’s useful content.
+
+
+---
+
+
+### Consequences
+
+**What improves**:
+- The skill reads like a native runtime artifact.
+- Frameworks remain usable in the OpenCode workflow.
+
+**What it costs**:
+- Adaptation introduces editorial work. Mitigation: document key differences clearly.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Important source nuance is lost | M | Keep the adaptation focused on runtime translation, not concept removal |
+
+
+---
+
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Source assumptions did not fit the target runtime |
+| 2 | **Beyond Local Maxima?** | PASS | Verbatim copy was considered and rejected |
+| 3 | **Sufficient?** | PASS | Adaptation preserves the core frameworks |
+| 4 | **Fits Goal?** | PASS | The result is an OpenCode-native skill |
+| 5 | **Open Horizons?** | PASS | Future framework updates can be adapted incrementally |
+
+**Checks Summary**: 5/5 PASS
+
+
+---
+
+
+### Implementation
+
+**What changes**:
+- Skill text is rewritten for OpenCode conventions.
+- Reference documents carry adapted framework content.
+
+**How to roll back**: Restore the prior direct-copy strategy and remove the adaptation-specific wording.
+
+
+
+---
+
+
+### ADR-003: Consolidate overlapping format guidance
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-01 |
+| **Deciders** | Spec author, prompt-skill maintainers |
+
+---
+
+
+### Context
+
+The source material included separate Markdown, JSON, and YAML guidance that overlapped heavily. Keeping them fully separate would increase reference count and maintenance effort.
+
+### Constraints
+
+- Format-specific examples still need to remain understandable.
+- The reference set should stay navigable.
+
+
+---
+
+
+### Decision
+
+**We chose**: Consolidate overlapping format guidance into a smaller, more maintainable structure.
+
+**How it works**: Related format instructions are grouped together where they share the same conceptual scaffolding, reducing duplication while preserving the important differences.
+
+
+---
+
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Consolidated guidance** | Less duplication, fewer files to maintain | Some sections become denser | 8/10 |
+| Separate guide per format | Clear format isolation | More duplication and file sprawl | 6/10 |
+
+**Why this one**: It reduced maintenance cost without removing format-specific guidance.
+
+
+---
+
+
+### Consequences
+
+**What improves**:
+- Reference set stays smaller.
+- Shared concepts appear once instead of several times.
+
+**What it costs**:
+- Combined docs are denser. Mitigation: keep headings explicit.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Users miss format-specific details | L | Use clear subsections and examples |
+
+
+---
+
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Multiple guides overlapped heavily |
+| 2 | **Beyond Local Maxima?** | PASS | Separate-file option remained on the table |
+| 3 | **Sufficient?** | PASS | Consolidation keeps examples and distinctions |
+| 4 | **Fits Goal?** | PASS | Improves maintainability of the skill package |
+| 5 | **Open Horizons?** | PASS | Additional formats can be folded in later if needed |
+
+**Checks Summary**: 5/5 PASS
+
+
+---
+
+
+### Implementation
+
+**What changes**:
+- Overlapping format references are consolidated.
+- Shared framework concepts are described once.
+
+**How to roll back**: Split the consolidated format material back into separate dedicated reference files.
+
+
+
+---

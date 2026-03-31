@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook analysis phase"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/spec]"
 description: "Execute 7 manual test scenarios for the analysis category, covering causal graph tools, epistemic measurement, and learning history."
 trigger_phrases:
   - "analysis testing"
   - "causal graph test"
   - "epistemic testing"
   - "learning history test"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook analysis phase
@@ -145,6 +145,7 @@ Execute all 7 analysis scenarios from the manual testing playbook, producing pas
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Test Execution
@@ -155,6 +156,7 @@ Execute all 7 analysis scenarios from the manual testing playbook, producing pas
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Scenario-Specific

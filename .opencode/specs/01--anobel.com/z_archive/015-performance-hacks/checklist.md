@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Performance Hacks [016-performance-hacks/checklist]"
+title: "Checklist: Performance Hacks [016-performance-hacks/checklist [01--anobel.com/z_archive/015-performance-hacks/checklist]"
 description: "checklist document for 016-performance-hacks."
 trigger_phrases:
   - "checklist"

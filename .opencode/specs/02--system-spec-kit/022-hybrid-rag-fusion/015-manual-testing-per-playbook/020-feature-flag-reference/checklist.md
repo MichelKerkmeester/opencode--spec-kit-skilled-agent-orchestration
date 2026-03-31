@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook feature-flag-reference audit phase [template:level_2/checklist.md]"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/checklist]"
 description: "Verification checklist for Phase 020 feature-flag-reference audit scenarios PB-020-01 through PB-020-03."
 trigger_phrases:
   - "phase 020 checklist"
   - "feature-flag-reference audit checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook feature-flag-reference audit phase

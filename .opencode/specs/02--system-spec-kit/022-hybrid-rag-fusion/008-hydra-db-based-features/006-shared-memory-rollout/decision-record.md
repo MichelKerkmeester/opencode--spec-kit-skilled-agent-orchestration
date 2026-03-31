@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 006-shared-memory-rollout"
+title: "Decisi [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/decision-record]"
 description: "Phase-local architecture decisions for Hydra Phase 6 collaboration rollout."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "phase 6 adr"
   - "shared memory adr"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 006-shared-memory-rollout
 

@@ -39,6 +39,13 @@ Primary MCP handler modules:
 - `eval-reporting.ts` - Ablation, k-sensitivity, and dashboard handlers.
 - `shared-memory.ts` - Shared-memory lifecycle handlers plus caller/admin auth validation.
 
+Code graph handlers (`code-graph/` subdirectory):
+
+- `code-graph/scan.ts` - `code_graph_scan`: index workspace files, build structural graph.
+- `code-graph/query.ts` - `code_graph_query`: query structural relationships (outline, calls, imports).
+- `code-graph/status.ts` - `code_graph_status`: report graph health and statistics.
+- `code-graph/context.ts` - `code_graph_context`: LLM-oriented compact graph neighborhoods.
+
 Internal helpers in this folder:
 
 - `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` - Focused CRUD implementations behind `memory-crud.ts`.

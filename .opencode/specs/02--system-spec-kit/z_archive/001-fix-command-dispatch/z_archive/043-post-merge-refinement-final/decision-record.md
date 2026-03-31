@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-Merge Refinement Final [043-post-merge-refinement-final/decision-record]"
+title: "Decis [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/decision-record]"
 description: "This document records architecture decisions made during the post-merge refinement phase, including accepted technical debt and deferred improvements."
 trigger_phrases:
   - "decision"

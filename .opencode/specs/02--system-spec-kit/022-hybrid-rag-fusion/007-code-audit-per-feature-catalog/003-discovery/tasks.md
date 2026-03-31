@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Discovery"
+title: "Tasks: Code Audit — [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/tasks]"
 description: "Task breakdown for auditing 3 Discovery features"
 trigger_phrases:
   - "tasks"

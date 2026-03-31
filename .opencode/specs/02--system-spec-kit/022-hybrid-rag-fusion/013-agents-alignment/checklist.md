@@ -1,6 +1,14 @@
 ---
-title: "Checklist: 013 — Agent Alignment"
+title: "Checklist: 013 — Agent Alignment [02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/checklist]"
 description: "Verification Date: 2026-03-25"
+trigger_phrases:
+  - "checklist"
+  - "013"
+  - "agent"
+  - "alignment"
+  - "agents"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

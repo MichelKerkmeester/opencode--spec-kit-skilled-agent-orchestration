@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Bug Fixes and Data Integrity"
+title: "...-system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/checklist]"
 description: "QA verification for Bug Fixes and Data Integrity code audit"
 trigger_phrases:
   - "checklist"

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Shared ESM Migration"
+title: "Feature Specification: Shared ESM [02--system-spec-kit/023-esm-module-compliance/001-shared-esm-migration/spec]"
 description: "Migrate @spec-kit/shared to package-local native ESM: package metadata, tsconfig, and import rewrites."
 trigger_phrases:
   - "shared esm migration"
   - "shared package esm"
   - "023 phase 1"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Shared ESM Migration
 

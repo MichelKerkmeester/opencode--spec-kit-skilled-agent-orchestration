@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - System Health Audit (Retrospective) [032-system-health-audit/plan]"
+title: "Implementation Plan - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/plan]"
 description: "Phase 1 (Analysis) Phase 2 (Implementation)"
 trigger_phrases:
   - "implementation"
@@ -81,6 +81,8 @@ All fixes verified by respective implementing agents:
 - Database: Stats comparison
 - Templates: Structure validation
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 Not needed - all fixes successful. Git history available for any rollback.
+<!-- /ANCHOR:rollback -->

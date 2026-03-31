@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 001-post-session-capturing-alignment"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/plan]"
 description: "Level 2 plan for documenting the post-session-capturing alignment work that was later absorbed into the parent 011 skill-alignment closeout."
 trigger_phrases:
   - "011 child 001 plan"
@@ -119,6 +119,7 @@ Live `system-spec-kit` doc state informed this child alignment pass, then the re
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -135,6 +136,7 @@ Phase 1 (Setup) ──► Phase 2 (Implementation) ──► Phase 3 (Verificati
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

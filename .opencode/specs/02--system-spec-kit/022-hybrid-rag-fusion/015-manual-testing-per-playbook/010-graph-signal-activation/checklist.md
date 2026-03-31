@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook graph-signal-activation phase [template:level_2/checklist.md]"
+title: "Verifi [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/checklist]"
 description: "Verification checklist for Phase 010 graph-signal-activation manual tests covering 016-022, 081, 091, 120, 156-158, 174, and 175."
 trigger_phrases:
   - "graph signal activation checklist"
   - "phase 010 verification"
   - "graph testing checklist"
   - "016 175 verification"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook graph-signal-activation phase

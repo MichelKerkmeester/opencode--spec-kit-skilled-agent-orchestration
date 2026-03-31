@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Tooling and Scripts"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts/plan]"
 description: "Technical plan for auditing 17 Tooling and Scripts features against source code"
 trigger_phrases:
   - "audit plan"
@@ -139,14 +139,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 17 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -181,3 +184,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 17 features) ──► Phase 3 (Synthesi
 **F05 PARTIAL detail**: `SPEC_FOLDER_LOCKS` was refactored from `memory-save.ts` into `spec-folder-mutex.ts`. All other code standards alignment claims (AI-intent comments, MODULE headers, import ordering) match. The catalog source-file reference for this symbol is stale and should be updated as a follow-up task.
 
 **Systemic patterns**: No systemic failures detected. The tooling and scripts category is well-aligned with its feature catalog. The single PARTIAL finding is an isolated refactoring artifact rather than a systematic documentation gap.
+<!-- /ANCHOR:effort -->

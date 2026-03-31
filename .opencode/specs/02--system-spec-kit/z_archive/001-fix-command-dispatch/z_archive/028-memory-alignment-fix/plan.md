@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - Memory Alignment Fix [028-memory-alignment-fix/plan]"
+title: "Implementation Plan - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/plan]"
 description: "Location: Lines around Gate 5 (Memory Save Validation)"
 trigger_phrases:
   - "implementation"
@@ -97,9 +97,11 @@ function suggestSpecFolder(jsonContent) {
 3. Save with correct folder → Should proceed normally
 4. Script always validates → Even when folder provided explicitly
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues arise:
 1. Revert AGENTS.md changes
 2. Revert save.md changes
 3. Revert generate-context.js changes (keep suggestSpecFolder for future use)
+<!-- /ANCHOR:rollback -->

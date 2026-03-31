@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: generate-context.ts Subfolder Support [006-generate-context-subfolder/spec]"
+title: "Feature Specification: generate-context.ts [02--system-spec-kit/z_archive/006-generate-context-subfolder/spec]"
 description: "The generate-context.js memory save script only handles flat spec folder paths (e.g., specs/003-name/). Every spec folder in the project uses nested subfolders (e.g., specs/003-..."
 trigger_phrases:
   - "feature"
@@ -134,6 +134,7 @@ Enable the memory save script to correctly resolve nested subfolder paths in all
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -153,6 +154,7 @@ Enable the memory save script to correctly resolve nested subfolder paths in all
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

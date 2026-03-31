@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 003-unified-graph-retrieval"
+title: "Verificati [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/checklist]"
 description: "Readiness and execution evidence for Hydra Phase 3 graph fusion."
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 3 checklist"
   - "graph checklist"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 003-unified-graph-retrieval
 

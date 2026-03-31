@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Manual Testing — Bug Fixes and Data Integrity"
+title: "V [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity/checklist]"
 description: "Verification Date: Not Started"
 trigger_phrases:
   - "bug fixes and data integrity checklist"

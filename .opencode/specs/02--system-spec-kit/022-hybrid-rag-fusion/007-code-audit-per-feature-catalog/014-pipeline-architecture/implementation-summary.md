@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Pipeline Architecture"
+title: "...m-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/implementation-summary]"
 description: "22 features audited: 22 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

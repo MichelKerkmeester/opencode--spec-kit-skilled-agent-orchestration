@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Post-Research Wave 1 (Governance Foundations) [004-post-research-wave-1-governance-foundations/plan]"
+title: "P [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/plan]"
 description: "Deliver deterministic runtime foundations and governance evidence required to unlock controlled post-research delivery waves."
 trigger_phrases:
   - "phase"

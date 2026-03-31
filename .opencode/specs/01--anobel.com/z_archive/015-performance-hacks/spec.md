@@ -1,5 +1,5 @@
 ---
-title: "Specification: Additional Performance Hacks [015-performance-hacks/spec]"
+title: "Specification: Additional Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/spec]"
 description: "Implementation of high-impact, low-effort performance optimizations (\"hacks\") for anobel.com to improve LCP and FCP scores."
 trigger_phrases:
   - "specification"

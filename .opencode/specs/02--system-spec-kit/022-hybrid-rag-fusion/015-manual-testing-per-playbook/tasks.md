@@ -1,11 +1,11 @@
 ---
-title: "Tasks: manual-testing-per-playbook"
+title: "Tasks: manual-testing-per-playbook [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/tasks]"
 description: "Task tracking for manual test execution across 19 phase folders (233 scenario files, 272 exact IDs)."
 trigger_phrases:
   - "manual testing tasks"
   - "playbook phase tasks"
   - "umbrella test tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook

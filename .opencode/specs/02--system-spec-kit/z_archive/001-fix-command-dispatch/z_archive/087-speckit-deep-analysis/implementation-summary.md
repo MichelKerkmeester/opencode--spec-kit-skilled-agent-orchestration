@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [087-speckit-deep-analysis/implementation-summary]"
+title: "Impl [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/implementation-summary]"
 description: "Comprehensive remediation of the system-spec-kit ecosystem in two phases"
 trigger_phrases:
   - "implementation"
@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -25,8 +26,10 @@ contextType: "implementation"
 | **Completed** | 2026-02-05 |
 | **Level** | 3+ |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Comprehensive remediation of the system-spec-kit ecosystem in two phases:
@@ -36,6 +39,7 @@ Comprehensive remediation of the system-spec-kit ecosystem in two phases:
 
 **Total scope:** 59 files modified across the `.opencode/` framework + 2 project-root files.
 
+<!-- /ANCHOR:what-built -->
 ---
 
 ## Phase 1: Bug Fixes & Misalignment Remediation
@@ -354,6 +358,7 @@ ls -la CLAUDE.md                  → symlink → AGENTS.md
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | # | Decision | Rationale |
@@ -365,8 +370,10 @@ ls -la CLAUDE.md                  → symlink → AGENTS.md
 
 **Full decision records:** See `decision-record.md` (ADRs 001-003 documented; ADR-004 is a session decision).
 
+<!-- /ANCHOR:decisions -->
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test | Result | Evidence |
@@ -387,8 +394,10 @@ ls -la CLAUDE.md                  → symlink → AGENTS.md
 | CLAUDE.md symlink valid | PASS | `ls -la` confirms symlink → AGENTS.md |
 | AGENTS.md is real file | PASS | 40,305 bytes, 582 lines |
 
+<!-- /ANCHOR:verification -->
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **Existing SQLite databases** still have the old CHECK constraint without `CREATE_LINKED`. They need manual `ALTER TABLE` or database recreation to pick up the fix. New databases created after this fix will have the correct constraint.
@@ -396,3 +405,4 @@ ls -la CLAUDE.md                  → symlink → AGENTS.md
 2. **Legacy install guide** (`install_guides/SET-UP - AGENTS.md`) still contains old gate numbering (Gates 4-6). This file was not modified as it's a legacy artifact outside the active framework.
 
 3. **Minor gaps N-1 through N-5** (memory_context documentation, layer architecture visibility in AGENTS.md, undocumented spec scripts, signal handler cleanup) were deferred for a future spec.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Codex CLI Agent Definitions"
+title: "Implementation Plan: Codex CLI Agent Definitions [04--agent-orchestration/025-codex-cli-agents/plan]"
 description: "Convert 9 ChatGPT agent markdown files to Codex CLI TOML config overlay format with automated text substitutions and TOML wrapping."
 trigger_phrases:
   - "codex agent plan"
@@ -130,6 +130,7 @@ Source .md files → Python script → Extract body after YAML frontmatter
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -146,6 +147,7 @@ Phase 1 (Read Sources) ──► Phase 2 (Convert & Create) ──► Phase 3 (V
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

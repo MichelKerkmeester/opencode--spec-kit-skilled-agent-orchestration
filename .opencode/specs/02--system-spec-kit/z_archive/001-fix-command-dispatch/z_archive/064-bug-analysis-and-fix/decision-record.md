@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: System-Spec-Kit Bug Fix Architectural Decisions [064-bug-analysis-and-fix/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/decision-record]"
 description: "Architecture Decision Records (ADRs) documenting significant technical decisions for the bug fix effort."
 trigger_phrases:
   - "decision"
@@ -23,6 +23,7 @@ Architecture Decision Records (ADRs) documenting significant technical decisions
 
 # ADR-001: Config System Resolution
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-001
@@ -33,8 +34,10 @@ Architecture Decision Records (ADRs) documenting significant technical decisions
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -62,8 +65,10 @@ This creates technical debt and misleading documentation suggesting the system i
 - The intent was to make the system configurable but implementation was incomplete
 - Full config implementation is not a current priority
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -96,6 +101,7 @@ export const DEFAULTS = {
 // Non-configurable values come from constants.js
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -172,6 +178,7 @@ export const DEFAULTS = {
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -194,6 +201,7 @@ export const DEFAULTS = {
 ### Technical Debt Introduced
 - None - this decision reduces technical debt
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES
@@ -218,6 +226,7 @@ export const DEFAULTS = {
 
 # ADR-002: ANCHOR System Scope (Defer Full Implementation)
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-002
@@ -228,8 +237,10 @@ export const DEFAULTS = {
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -243,8 +254,10 @@ The ANCHOR system is documented as enabling section-level retrieval and “93% t
 - Avoid schema migrations during bug-fix phase
 - Maintain truthful documentation
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -255,6 +268,7 @@ The ANCHOR system is documented as enabling section-level retrieval and “93% t
 2. Document anchors as validated syntax only
 3. Create a follow-up spec for full indexing and retrieval
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -269,6 +283,7 @@ The ANCHOR system is documented as enabling section-level retrieval and “93% t
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -279,6 +294,7 @@ The ANCHOR system is documented as enabling section-level retrieval and “93% t
 ### Negative Consequences
 - ANCHOR feature remains incomplete
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES
@@ -303,6 +319,7 @@ Git revert the commit if any issues discovered
 
 # ADR-002: ANCHOR System Resolution
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-002
@@ -313,8 +330,10 @@ Git revert the commit if any issues discovered
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -343,8 +362,10 @@ This represents either incomplete implementation or false documentation.
 - Current users are not depending on anchor-based retrieval (it doesn't work)
 - The "93% token savings" was a projection, not measured reality
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -374,6 +395,7 @@ Section-level retrieval is not yet implemented - full file content is retrieved.
 Future versions will enable retrieving individual sections by anchor ID."
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -450,6 +472,7 @@ Future versions will enable retrieving individual sections by anchor ID."
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -465,6 +488,7 @@ Future versions will enable retrieving individual sections by anchor ID."
 ### Technical Debt Introduced
 - None - this reduces technical debt (false documentation)
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES
@@ -483,6 +507,7 @@ Future versions will enable retrieving individual sections by anchor ID."
 
 # ADR-003: Debug Delegation Threshold
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-003
@@ -491,8 +516,10 @@ Future versions will enable retrieving individual sections by anchor ID."
 - **Deciders**: Engineering Team
 - **Related Feature**: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec.md`
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -506,8 +533,10 @@ This inconsistency causes unpredictable behavior depending on which document the
 - Must pick one value and apply consistently
 - Value should balance giving up too early vs. wasting time
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -523,6 +552,7 @@ The threshold of 3+ attempts:
 
 **All documentation will be updated to use "3+ failed fix attempts" consistently.**
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -543,6 +573,7 @@ The threshold of 3+ attempts:
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -554,6 +585,7 @@ The threshold of 3+ attempts:
 - One extra attempt before delegation vs. 2+
   - *Mitigation*: 3 attempts is still a reasonable cutoff
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES
@@ -570,6 +602,7 @@ The threshold of 3+ attempts:
 
 # ADR-004: Naming Convention Standardization
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-004
@@ -578,8 +611,10 @@ The threshold of 3+ attempts:
 - **Deciders**: Engineering Team
 - **Related Feature**: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec.md`
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -593,8 +628,10 @@ The codebase has inconsistent naming conventions:
 - Internal code can be standardized
 - Must maintain backward compatibility
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -614,6 +651,7 @@ The codebase has inconsistent naming conventions:
 - Do not change public-facing APIs
 - Add lint rules for future enforcement
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -650,6 +688,7 @@ The codebase has inconsistent naming conventions:
 
 # ADR-005: Memory Save Command Resolution
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-005
@@ -658,8 +697,10 @@ The codebase has inconsistent naming conventions:
 - **Deciders**: Engineering Team
 - **Related Feature**: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec.md`
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -671,8 +712,10 @@ SKILL.md references `/memory:save` command extensively (lines 109, 421-426, 787-
 - Actual memory save happens via `generate-context.js` script
 - This is confusing and inconsistent with other commands
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -691,6 +734,7 @@ This is preferred over removing SKILL.md references because:
 - Other commands follow this pattern
 - Removing references would be more disruptive
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -723,6 +767,7 @@ This is preferred over removing SKILL.md references because:
 
 ---
 
+<!-- ANCHOR:decision -->
 ## DECISION SUMMARY
 
 | ADR | Decision | Status |
@@ -733,6 +778,7 @@ This is preferred over removing SKILL.md references because:
 | ADR-004 | camelCase for JS, kebab-case for files, preserve APIs | Proposed |
 | ADR-005 | Create missing /memory:save command file | Proposed |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## APPROVAL & SIGN-OFF

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System Spec Kit v2.1.0 Test Suite [078-speckit-test-suite/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/plan]"
 description: "This plan implements a comprehensive test suite for System Spec Kit v2.1.0 features. The suite covers 8 test files totaling approximately 3,000 LOC across five phases: MCP handl..."
 trigger_phrases:
   - "implementation"
@@ -38,6 +38,7 @@ This plan implements a comprehensive test suite for System Spec Kit v2.1.0 featu
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -50,8 +51,10 @@ This plan implements a comprehensive test suite for System Spec Kit v2.1.0 featu
 - [ ] Tests synced to Public repo
 - [ ] Documentation updated (spec/plan/tasks)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -71,8 +74,10 @@ Test Runner → Test File → Module Under Test → Assertions → Results
                         Mock Database (SQLite)
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: MCP Handler Tests (~900 LOC)
@@ -93,8 +98,10 @@ Test Runner → Test File → Module Under Test → Assertions → Results
 ### Phase 5: Template Tests (~300 LOC)
 - [ ] test-template-comprehensive.js (~300 LOC) - Template composition and structure tests
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -121,8 +128,10 @@ pytest scripts/tests/test_dual_threshold.py -v
 npm test
 ```
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -133,15 +142,19 @@ npm test
 | better-sqlite3 | Internal | Green | Database mock tests skip |
 | fs/path modules | Internal | Green | All file tests fail |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Test implementation introduces regressions
 - **Procedure**: Revert test files, existing tests remain functional
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -159,8 +172,10 @@ Phase 4 (Framework) ────────┤                                 
 | Phase 4: Framework | None | Phase 5 |
 | Phase 5: Templates | Phase 2, 3, 4 | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | LOC |
@@ -172,8 +187,10 @@ Phase 4 (Framework) ────────┤                                 
 | Phase 5: Template Tests | Low | 1-2 hours | ~300 |
 | **Total** | | **12-17 hours** | **~3,000** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -191,6 +208,7 @@ Phase 4 (Framework) ────────┤                                 
 - **Has data migrations?** No
 - **Reversal procedure**: N/A - tests use isolated mock databases
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## Test File Specifications

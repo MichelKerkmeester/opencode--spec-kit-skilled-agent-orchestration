@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: AI Integration Patterns Research [080-ai-integration-patterns-research/implementation-summary]"
+title: "...em-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/implementation-summary]"
 description: "This research task analyzed three open-source AI integration repositories to extract patterns for improving the system-spec-kit MCP."
 trigger_phrases:
   - "implementation"
@@ -83,3 +83,10 @@ This research task analyzed three open-source AI integration repositories to ext
 ## No Changes Made
 
 This was a research-only task. No code modifications were made to the codebase.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

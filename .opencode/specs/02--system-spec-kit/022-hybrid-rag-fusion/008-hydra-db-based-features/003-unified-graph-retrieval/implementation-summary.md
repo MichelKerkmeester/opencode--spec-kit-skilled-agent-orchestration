@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 003-unified-graph-retrieval"
+title: "...system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/implementation-summary]"
 description: "Verified implementation summary for Phase 3 unified graph retrieval."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 3 summary"
   - "graph summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

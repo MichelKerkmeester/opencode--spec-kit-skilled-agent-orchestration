@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Ablation Benchmark Integrity"
+title: "Feature Specification: Ablation [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/spec]"
 description: "The ablation benchmark is currently mixing DB universes, stale or chunk-backed ground-truth IDs, and live search truncation behavior. That combination makes Recall@20 regressions unreadable and blocks any trustworthy verdict on the FTS5 weight retune."
 trigger_phrases:
   - "ablation benchmark"
   - "benchmark integrity"
   - "fts5 retune"
   - "recall@20 collapse"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: Ablation Benchmark Integrity
@@ -135,6 +135,7 @@ Restore a benchmark path that either runs against an aligned parent-memory datas
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -153,6 +154,7 @@ Restore a benchmark path that either runs against an aligned parent-memory datas
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -185,6 +187,7 @@ Restore a benchmark path that either runs against an aligned parent-memory datas
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None at spec time; verdict depends on post-fix reruns rather than unresolved product decisions.

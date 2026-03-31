@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/implementation-summary]"
+title: "Im [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/implementation-summary]"
 description: "Post-implementation summary documenting alignment of all SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069."
 trigger_phrases:
   - "implementation"
@@ -21,13 +21,16 @@ Post-implementation summary documenting alignment of all SpecKit scripts, lib mo
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 - **Spec Folder:** 071-speckit-level-alignment
 - **Completed:** 2026-01-16
 - **Duration:** ~4 hours (same-day implementation)
 - **Level:** 3
+<!-- /ANCHOR:metadata -->
 
+<!-- ANCHOR:what-built -->
 ## 1. What Was Built
 
 Aligned all SpecKit scripts, lib modules, and documentation with the new level-based template architecture created in Spec 069. The changes ensure that template copying and expansion use the appropriate level folders (`level_1/`, `level_2/`, `level_3/`, `level_3+/`) instead of the flat template structure, while maintaining backward compatibility with root templates.
@@ -54,7 +57,9 @@ Aligned all SpecKit scripts, lib modules, and documentation with the new level-b
 | `templates/plan.md` | Modified | Updated checklist.md reference |
 | `templates/tasks.md` | Modified | Updated checklist.md reference |
 | `templates/level_2/checklist.md` | Modified | Removed 6 COMPLEXITY_GATE markers, preserved section content |
+<!-- /ANCHOR:what-built -->
 
+<!-- ANCHOR:decisions -->
 ## 2. Key Decisions Made
 
 | Decision | Rationale | Alternatives Considered |
@@ -63,6 +68,7 @@ Aligned all SpecKit scripts, lib modules, and documentation with the new level-b
 | Keep marker-parser.js with deprecation notice | May still be used by dynamic expansion workflow | Remove entirely (rejected: breaks backward compat) |
 | Add `get_level_templates_dir()` function to shell script | Clean separation of level-folder logic | Inline level logic (rejected: harder to maintain) |
 | Remove COMPLEXITY_GATE markers from level_2/checklist.md | Level folders should have pre-expanded templates | Keep markers (rejected: defeats purpose of level folders) |
+<!-- /ANCHOR:decisions -->
 
 ## 3. Technical Details
 
@@ -80,6 +86,7 @@ None - all changes use existing Node.js and Bash capabilities.
 
 None - existing configuration preserved.
 
+<!-- ANCHOR:verification -->
 ## 4. Testing & Verification
 
 | Test Type | Status | Notes |
@@ -106,12 +113,15 @@ grep -r "templates/spec.md" .opencode/skill/system-spec-kit/scripts/
 bash .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/tests/run-tests.sh
 # Result: 171 passed, 0 failed
 ```
+<!-- /ANCHOR:verification -->
 
+<!-- ANCHOR:limitations -->
 ## 5. Known Limitations
 
 - **Root templates remain**: Cannot remove root templates without breaking backward compatibility
 - **marker-parser.js deprecated but kept**: May cause confusion about which system to use
 - **No auto-migration**: Existing spec folders using old paths need manual updates if referenced
+<!-- /ANCHOR:limitations -->
 
 ## 6. Next Steps
 
@@ -125,3 +135,10 @@ Implementation complete - no immediate follow-up needed.
 ---
 
 *Generated from Spec 071: SpecKit Level-Based Template Alignment*
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

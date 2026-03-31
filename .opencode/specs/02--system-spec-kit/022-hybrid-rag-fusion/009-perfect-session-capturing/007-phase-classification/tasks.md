@@ -1,5 +1,12 @@
 ---
-title: "Tasks: Phase Classification [template:level_2/tasks.md]"
+title: "Tasks: Phase [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification/tasks]"
+description: "title: \"Tasks: Phase Classification [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "phase"
+  - "007"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Phase Classification
 

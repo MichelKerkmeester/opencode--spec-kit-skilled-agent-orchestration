@@ -1,7 +1,9 @@
 ---
-title: "Tasks: Outsourced Agent Handback Protocol"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-trigger_phrases: ["outsourced agent tasks", "memory handback tasks"]
+trigger_phrases:
+  - "outsourced agent tasks"
+  - "memory handback tasks"
 importance_tier: "normal"
 contextType: "general"
 ---

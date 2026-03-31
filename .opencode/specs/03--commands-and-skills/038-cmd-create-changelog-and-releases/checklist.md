@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Upgrade create:changelog with GitHub Release Creation"
+title: "Verification Checklist: Upgrade [03--commands-and-skills/038-cmd-create-changelog-and-releases/checklist]"
 description: "Verification checklist for 038-cmd-create-changelog-and-releases — P0/P1/P2 items covering pre-implementation, code quality, testing, security, documentation, and file organization."
 trigger_phrases:
   - "changelog release checklist"
@@ -104,7 +104,7 @@ contextType: "implementation"
 | P1 Items | 10 | 0/10 |
 | P2 Items | 3 | 0/3 |
 
-**Verification Date**: [YYYY-MM-DD]
+**Verification Date**: 2026-03-31
 <!-- /ANCHOR:summary -->
 
 ---

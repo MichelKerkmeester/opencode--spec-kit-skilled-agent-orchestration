@@ -1,5 +1,5 @@
 ---
-title: "Checklist: README & Install Guide Alignment [045-readme-alignment/checklist]"
+title: "Checklist: README & [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment/checklist]"
 description: "Phase 1 Evidence"
 trigger_phrases:
   - "checklist"

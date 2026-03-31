@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Architecture Remediation Deep Dive [template:level_3/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/spec]"
 description: "Global architecture audit, bug detection, alignment verification, and type safety analysis across the perfect-session-capturing subsystem. Level 3 upgrade with 15-agent scope."
 trigger_phrases:
   - "architecture remediation"
@@ -39,6 +39,7 @@ Global architecture, bug fix, and alignment deep dive across the entire `009-per
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -54,8 +55,10 @@ Global architecture, bug fix, and alignment deep dive across the entire `009-per
 | **Predecessor** | [018-memory-save-quality-fixes](../018-memory-save-quality-fixes/spec.md) |
 | **Successor** | None |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 <!-- ANCHOR:problem -->
@@ -70,6 +73,7 @@ Produce a prioritized findings report that identifies every actionable bug, misa
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 <!-- ANCHOR:scope -->
@@ -91,6 +95,7 @@ Produce a prioritized findings report that identifies every actionable bug, misa
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 <!-- ANCHOR:requirements -->
@@ -142,6 +147,7 @@ Produce a prioritized findings report that identifies every actionable bug, misa
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 <!-- ANCHOR:success-criteria -->
@@ -168,6 +174,7 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 <!-- ANCHOR:risks -->
@@ -191,6 +198,7 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 - **Completeness**: All 8 subsystems (core, extractors, lib, utils, memory, renderers, spec-folder, tests) covered by at least one Wave 1 agent
@@ -198,8 +206,10 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 - **Consistency**: Finding IDs follow `{AGENT}-{NNN}` format throughout all scratch files
 - **Auditability**: All Wave 3 synthesis decisions recorded in `decision-record.md` with alternatives
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 - **Empty scratch output**: If a Wave 1 agent produces zero findings, treat as complete with explicit "No findings" entry — do not re-run unless scope was missed
@@ -207,8 +217,10 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 - **Deleted-then-recreated files**: Git diff analysis (OPUS-A4) may surface findings against files deleted in a prior commit that were subsequently recreated with different shape — Wave 3 must validate current file state
 - **Overlapping findings**: Two agents reporting the same issue with different IDs are merged by OPUS-B1 into a single canonical finding with both source references preserved
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Rationale |
@@ -221,6 +233,7 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
 **Overall Complexity Score: ~85/100** — Qualifies for Level 3 documentation. Multi-agent coordination, architectural decisions, and high finding volume all exceed Level 2 thresholds.
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -246,6 +259,7 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 <!-- ANCHOR:questions -->

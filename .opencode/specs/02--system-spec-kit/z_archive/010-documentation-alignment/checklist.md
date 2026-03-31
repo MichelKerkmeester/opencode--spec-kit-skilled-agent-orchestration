@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Spec 126 Documentation Alignment [127-documentation-alignment/checklist]"
+title: "Verification Checklist: Spec 126 Documentation [02--system-spec-kit/z_archive/010-documentation-alignment/checklist]"
 description: "Verification Date: 2026-02-16"
 trigger_phrases:
   - "verification"

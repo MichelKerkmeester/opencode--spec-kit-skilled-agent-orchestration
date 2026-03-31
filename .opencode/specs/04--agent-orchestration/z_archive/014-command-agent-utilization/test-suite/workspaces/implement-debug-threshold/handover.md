@@ -1,5 +1,5 @@
 ---
-title: "Session Handover: JWT Authentication [implement-debug-threshold/handover]"
+title: "...agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/handover]"
 description: "Spec Folder: specs/042-jwt-authentication"
 trigger_phrases:
   - "session"

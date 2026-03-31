@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification Time-Based Scheduling [012-notification-time-scheduling/spec]"
+title: "Feature Specification: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/spec]"
 description: "Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates."
 trigger_phrases:
   - "feature"
@@ -103,6 +103,7 @@ As a content manager with existing date-only alerts, I need them to continue wor
 <!-- /ANCHOR:users-stories -->
 
 <!-- ANCHOR:functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** System MUST detect time presence in date attribute strings using pattern matching
@@ -124,6 +125,8 @@ Matches:
 <!-- /ANCHOR:functional-requirements -->
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -138,6 +141,7 @@ Matches:
 <!-- /ANCHOR:non-functional-requirements -->
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 6. EDGE CASES
 
 | Scenario | Input | Expected Behavior |

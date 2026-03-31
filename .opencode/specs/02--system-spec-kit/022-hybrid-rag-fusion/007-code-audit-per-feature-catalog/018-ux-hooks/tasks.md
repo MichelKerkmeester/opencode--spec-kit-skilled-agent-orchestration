@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — UX Hooks"
+title: "Tasks: Code Audit — [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/tasks]"
 description: "Task breakdown for auditing 19 UX Hooks features"
 trigger_phrases:
   - "tasks"

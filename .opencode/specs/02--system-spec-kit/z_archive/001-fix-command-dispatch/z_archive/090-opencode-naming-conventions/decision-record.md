@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/decision-record]"
+title: "Decis [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/decision-record]"
 description: "The sk-code--opencode skill enforces snake_case for JavaScript functions, parameters, and exports. This is non-standard for JS — MDN, Airbnb style guide, Node.js core, and virtu..."
 trigger_phrases:
   - "decision"

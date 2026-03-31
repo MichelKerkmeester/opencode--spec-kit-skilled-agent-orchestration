@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 004-adaptive-retrieval-loops"
+title: "...ystem-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/implementation-summary]"
 description: "Verified implementation summary for Phase 4 adaptive retrieval loops."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 4 summary"
   - "adaptive summary"
 importance_tier: "critical"
 contextType: "general"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 

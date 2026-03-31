@@ -1,6 +1,5 @@
 ---
-title: "Implemented Weighted [009-embedding-optimization/16-03-26_20-38__implemented-weighted-document-embedding-input-for]"
-description: "Implemented weighted document embedding input for the scripts memory indexer and the MCP memory save pipeline. Added a shared weighted text builder, routed scripts indexing..."
+title: "...rfect-session-capturing/009-embedding-optimization/16-03-26_20-38__implemented-weighted-document-embedding-input-for]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/009 embedding optimization"
   - "generate document embedding"
@@ -35,12 +34,11 @@ trigger_phrases:
   - "optimization"
 importance_tier: "critical"
 contextType: "general"
-quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
+quality_score: 0.90
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Implemented Weighted Document Embedding Input For
 
 ## SESSION SUMMARY

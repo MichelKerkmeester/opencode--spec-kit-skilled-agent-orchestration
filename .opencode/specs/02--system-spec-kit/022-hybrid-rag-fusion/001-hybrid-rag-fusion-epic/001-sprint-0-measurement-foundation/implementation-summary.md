@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 0 Measurement Foundation"
+title: "...spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "001-sprint-0-measurement-foundation implementation summary"

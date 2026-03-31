@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/plan]"
 description: "Implements quality scorer recalibration by removing the +0.20 bonus system and adds contamination filter coverage to 4 uncleaned text fields plus 7 missing pattern categories. Sequential execution across 7 files, no new dependencies."
 trigger_phrases:
   - "scoring filter implementation plan"
   - "recalibrate quality scorer"
   - "extend contamination filter"
-  - "filterContamination workflow"
+  - "filtercontamination workflow"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -223,6 +223,7 @@ JSON input
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -247,6 +248,7 @@ Phase 1 (Foundation) ──► Phase 2 (Scorer) ──► Phase 3 (Filter Extens
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -350,6 +352,7 @@ extractors/quality-scorer.ts (bonus removal)
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Bonus Removal vs. Rebalancing
@@ -375,3 +378,4 @@ LEVEL 3 PLAN (~200 lines)
 - Dependency graphs, milestones
 - Architecture decision records
 -->
+<!-- /ANCHOR:architecture -->

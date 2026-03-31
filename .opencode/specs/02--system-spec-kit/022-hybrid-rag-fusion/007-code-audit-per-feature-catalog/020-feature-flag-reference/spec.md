@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Feature Flag Reference"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/spec]"
 description: "Systematic code audit of 7 Feature Flag Reference features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -130,6 +130,7 @@ Verify that all 7 Feature Flag Reference features are accurately documented in t
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -138,8 +139,10 @@ Verify that all 7 Feature Flag Reference features are accurately documented in t
 ### Reliability
 - **NFR-R01**: Findings must be reproducible by re-reading same sources
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -150,8 +153,10 @@ Verify that all 7 Feature Flag Reference features are accurately documented in t
 - Source file referenced in catalog no longer exists: Document as finding
 - Feature partially implemented: Document completion percentage
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -219,7 +224,9 @@ Commit `09acbe8ce` ("feat(system-spec-kit): graduate all Wave 1-4 feature flags 
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - F05 source file paths require a catalog update to point to production files (tracked finding, not a blocker).

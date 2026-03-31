@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: MCP Runtime Hardening"
+title: "Feature Specification: MCP Runtime Hardening [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/spec]"
 description: "Implements the follow-on recommendations from 024-codex-memory-mcp-fix: DB dimension integrity tests, lifecycle coverage tests, provider log sanitization, and launcher doc consolidation."
 trigger_phrases:
   - "mcp runtime hardening"
@@ -144,6 +144,7 @@ Close the T020-T025 gaps with targeted tests, one focused code change (log sanit
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -162,6 +163,7 @@ Close the T020-T025 gaps with targeted tests, one focused code change (log sanit
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -197,6 +199,7 @@ Close the T020-T025 gaps with targeted tests, one focused code change (log sanit
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None — scope fully defined by 024 follow-on recommendations

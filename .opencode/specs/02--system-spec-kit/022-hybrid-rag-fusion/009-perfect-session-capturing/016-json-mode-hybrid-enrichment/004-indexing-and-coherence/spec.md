@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Indexing & Coherence — Embedding Visibility, Trigger Quality, Template Gaps, Cross-Session Validation"
+title: ".../022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/spec]"
 description: "Four domains of the generate-context.js pipeline are degraded: embedding retry stats are invisible to operators, trigger phrase extraction produces 15-30 noisy phrases per memory that pollute binary matching, 15+ AI-composed fields are silently discarded by the template renderer, and cross-session deduplication is AI-dependent with zero automated verification of referenced memory IDs or causal links."
 trigger_phrases:
   - "indexing and coherence"
@@ -28,6 +28,7 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -45,6 +46,7 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -171,6 +173,7 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -184,8 +187,10 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 - **NFR-R01**: Trigger phrase filter must be idempotent — applying the filter twice to the same input produces the same output
 - **NFR-R02**: Template section additions for toolCalls/exchanges must be strictly additive — no changes to existing section rendering logic
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -198,8 +203,10 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 - Observation dedup at normalize time encounters non-string entries: Skip dedup for non-string values, preserve as-is
 - template-renderer.ts OPTIONAL_PLACEHOLDER list out of sync after phantom removal: Add a unit test that asserts every placeholder token exists in at least one template section
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -211,6 +218,7 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 | Coordination | 10/15 | Sibling phase dependency; must sequence after 003 |
 | **Total** | **60/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -267,6 +275,7 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Should the toolCalls Mustache section render the full ToolCallSummary[] or a condensed count + top-N by frequency? (Prefer top-3 by call count to avoid verbosity)

@@ -1,5 +1,5 @@
 ---
-title: "Test Plan [test-level3/plan]"
+title: "..._archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-level3/plan]"
 description: "Test approach for validation of Level 3 spec folders."
 trigger_phrases:
   - "test"

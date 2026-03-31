@@ -1,6 +1,5 @@
 ---
-title: "Deep Research V2 [030-sk-deep-research-review-mode/24-03-26_18-33__deep-research-v2-improving-review-logic-in-sk]"
-description: "Deep research v2: Improving review logic in sk-deep-research. 8 iterations via GPT-5.4 codex exec..."
+title: "...--commands-and-skills/030-sk-deep-research-review-mode/24-03-26_18-33__deep-research-v2-improving-review-logic-in-sk]"
 trigger_phrases:
   - "review logic improvement"
   - "deep-review taxonomy"
@@ -16,20 +15,19 @@ trigger_phrases:
   - "cross-reference verification"
   - "review report planner handoff"
   - "review taxonomy migration"
-importance_tier: critical
+importance_tier: "critical"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.45,"errors":3,"warnings":2}
 ---
-
 # Deep Research V2 Improving Review Logic In Sk
 
 ## SESSION SUMMARY

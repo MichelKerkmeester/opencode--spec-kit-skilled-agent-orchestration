@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 7 — Testing & Validation [02--system-spec-kit/024-compact-code-graph/007-testing-validation/plan]"
+description: "1. Create RuntimeFixture contract and shared test utilities"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "testing"
+  - "validation"
+  - "007"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 7 — Testing & Validation
 
 ## Steps
@@ -30,10 +42,12 @@
    - Document manual test results in scratch/ or research/
    - Verify all 7 scenarios from test matrix are covered
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1-4 (all hook implementations must exist to test)
 - Phase 5 (command/agent updates affect integration test expectations)
 - Phase 6 (manual testing playbook must exist before manual execution)
+<!-- /ANCHOR:dependencies -->
 
 ## Test Execution Order
 1. Unit tests first (no external dependencies)

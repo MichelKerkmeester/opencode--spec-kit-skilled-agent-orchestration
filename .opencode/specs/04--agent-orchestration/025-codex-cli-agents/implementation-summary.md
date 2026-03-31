@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Codex CLI Agent Definitions"
+title: "Implementation Summary: Codex CLI Agent [04--agent-orchestration/025-codex-cli-agents/implementation-summary]"
 description: "Nine Codex CLI agent TOML files created from ChatGPT markdown sources, completing the agent system for the Codex CLI runtime."
 trigger_phrases:
   - "codex agent summary"

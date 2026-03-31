@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook feature-flag-reference audit phase [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/spec]"
 description: "Phase 020 documents the feature-flag-reference audit manual test packet for the Spec Kit Memory system. It groups three flag-inventory and flag-lifecycle scenarios from the central playbook so testers can verify flag inventory accuracy, graduated flag documentation, and flag removal workflow."
 trigger_phrases:
   - "feature flag reference audit manual testing"
   - "phase 020 feature flag reference audit"
   - "flag inventory verification tests"
   - "hybrid rag fusion flag audit playbook"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook feature-flag-reference audit phase
@@ -162,6 +162,7 @@ No P1 items are defined for this phase; all three flag-reference audit scenarios
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -177,6 +178,7 @@ No P1 items are defined for this phase; all three flag-reference audit scenarios
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

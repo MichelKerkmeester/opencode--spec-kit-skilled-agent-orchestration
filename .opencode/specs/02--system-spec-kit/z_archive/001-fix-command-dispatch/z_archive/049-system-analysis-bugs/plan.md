@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System-Spec-Kit Bug Remediation [049-system-analysis-bugs/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/plan]"
 description: "This plan addresses bugs and misalignments discovered during a comprehensive 20-agent analysis of the system-spec-kit skill. The work is organized into 4 phases, prioritized by ..."
 trigger_phrases:
   - "implementation"
@@ -138,6 +138,7 @@ This plan addresses bugs and misalignments discovered during a comprehensive 20-
 - **File:** `SKILL.md` scripts inventory
 - **Add:** `test-embeddings-factory.js` entry
 
+<!-- ANCHOR:testing -->
 ## 3. TESTING STRATEGY
 
 ### Unit Tests
@@ -154,13 +155,16 @@ This plan addresses bugs and misalignments discovered during a comprehensive 20-
 - Existing memory files remain accessible
 - Existing spec folders pass validation
 - No breaking changes to workflows
+<!-- /ANCHOR:testing -->
 
+<!-- ANCHOR:rollback -->
 ## 4. ROLLBACK PLAN
 
 1. **Database:** Create backup before schema changes
 2. **Scripts:** Git commit before each phase
 3. **Revert:** `git revert` if issues discovered
 4. **Fallback:** Keep hardcoded 768 as default if profile lookup fails
+<!-- /ANCHOR:rollback -->
 
 ## 5. VERIFICATION
 

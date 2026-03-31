@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Command Dashboard Visual Design System [013-memory-command-output/tasks]"
+title: "Tasks: Memory Command Dashboard Visual Design System [03--commands-and-skills/014-cmd-memory-output/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -28,6 +28,10 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
@@ -38,6 +42,10 @@ contextType: "implementation"
 - [x] T001 Audit the active packet for stale references to removed memory command docs
 - [x] T002 Confirm the live memory command surface in `.opencode/command/memory/`
 - [x] T003 [P] Identify where `/memory:manage shared` must be treated as nested under the live `/memory:manage` surface
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -49,6 +57,10 @@ contextType: "implementation"
 - [x] T005 Update `plan.md` to remove deleted-command implementation references and reflect `/memory:manage shared`
 - [x] T006 Update `checklist.md` and `implementation-summary.md` so they no longer point to removed command docs
 - [x] T007 Add the missing `tasks.md` required for a Level 2 packet
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -56,9 +68,17 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
+### Phase 3: Verification
+
+### Phase 3: Verification
+
 - [ ] T008 Run packet-level stale-string checks against the active docs
 - [ ] T009 Run `validate.sh --strict` for `.opencode/specs/03--commands-and-skills/014-cmd-memory-output`
 - [ ] T010 Record the validation result and any remaining limitations in the packet summary
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -69,6 +89,10 @@ contextType: "implementation"
 - [ ] All tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
 - [ ] Manual verification passed
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -78,6 +102,10 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+
+---
+
+---
 <!-- /ANCHOR:cross-refs -->
 
 ---

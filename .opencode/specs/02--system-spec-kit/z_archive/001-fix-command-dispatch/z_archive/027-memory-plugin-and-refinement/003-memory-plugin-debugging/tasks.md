@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Plugin bun:sqlite Migration [003-memory-plugin-debugging/tasks]"
+title: "...-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/tasks]"
 description: "bun:sqlite is API-compatible with better-sqlite3!"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Reimagined [082-speckit-reimagined/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/spec]"
 description: "SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre-analysis documents examining dotmd, seu-claude, drift, and system-speckit architectures. This sp..."
 trigger_phrases:
   - "feature"
@@ -41,8 +41,10 @@ SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre
 | **Status** | Draft |
 | **Created** | 2026-02-01 |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -67,8 +69,10 @@ SpecKit currently lacks critical capabilities present in competitor systems: no 
 
 Transform SpecKit into a self-improving memory system with hybrid search (vector + BM25 + graph), session deduplication, causal lineage tracking, and multi-factor decay scoring, achieving 40-50% relevance improvement and 50% token reduction on follow-up queries.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -97,6 +101,7 @@ Transform SpecKit into a self-improving memory system with hybrid search (vector
 | `mcp_server/server.js` | Modify | Lazy model loading, layered tools |
 | `mcp_server/database/schema.sql` | Modify | v4.1 and v5 migrations |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## SKILL TRIGGERS
@@ -147,6 +152,7 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -197,8 +203,10 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 | REQ-032 | Retry Logic with Exponential Backoff | 3 retries with backoff (1s, 2s, 4s) for transient failures (5xx, timeouts); permanent failures (401, 403) fail fast |
 | REQ-033 | Memory Save Atomicity | File creation atomic with index insert; rollback file on indexing failure OR mark with `_pending` suffix for retry |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Search relevance improvement +40% (via user feedback sampling)
@@ -212,8 +220,10 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 - **SC-009**: Duplicate rate in results <5% (from ~20% baseline)
 - **SC-010**: Tokens per search configurable via compression tiers
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -230,8 +240,10 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 | Dependency | RRF implementation | Required before cross-encoder reranking | Phase 2 prerequisite |
 | Dependency | Type-specific half-lives | Required before multi-factor decay | Phase 1 then Phase 2 |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -253,8 +265,10 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 - **NFR-R04**: API key validation at startup with actionable error messages; fail-fast on invalid credentials
 - **NFR-R05**: Fallback chain must complete within 100ms of primary failure detection; no cascading delays
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -278,8 +292,10 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 - **Partial embedding failure**: Retry failed chunks up to 3x; if still failing, save with `embedding_status: 'partial'`
 - **Network timeout during embedding**: Apply 30s timeout per request; trigger fallback after 2 consecutive timeouts
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -291,6 +307,7 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 | Coordination | 13/15 | Dependencies: 5 (RRF→rerank, types→decay, lazy→startup, etc.) |
 | **Total** | **85/100** | **Level 3+ justified** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -401,6 +418,7 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 | ID | Question | Category | Recommended Default |
@@ -414,6 +432,7 @@ The following phrases and patterns should trigger SpecKit skill loading and spec
 | Q7 | Where to source learning training data? | Data | Existing memory files as seed |
 | Q8 | Are drift's half-life values appropriate for SpecKit? | Tuning | Test drift defaults first, iterate |
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 17. 20-AGENT ANALYSIS FINDINGS

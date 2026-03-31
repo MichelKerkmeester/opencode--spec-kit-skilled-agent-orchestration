@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 005-hierarchical-scope-governance"
+title: "...-system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/decision-record]"
 description: "Phase-local architecture decisions for Hydra Phase 5 governance rollout."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "phase 5 adr"
   - "governance adr"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: 005-hierarchical-scope-governance
 

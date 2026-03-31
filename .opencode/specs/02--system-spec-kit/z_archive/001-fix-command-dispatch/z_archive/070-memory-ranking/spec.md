@@ -1,5 +1,5 @@
 ---
-title: "Spec: Memory & Folder Ranking Improvements [070-memory-ranking/spec]"
+title: "Spec: Memory & Folder [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/spec]"
 description: "The memory dashboard displays \"top folders\" ranked purely by memory file count. This creates several issues"
 trigger_phrases:
   - "spec"
@@ -130,6 +130,7 @@ Enhance memory search results with multi-factor scoring:
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. Scope
 
 ### In Scope
@@ -148,8 +149,10 @@ Enhance memory search results with multi-factor scoring:
 - Cross-project memory ranking (different scope)
 - UI beyond CLI dashboard (Webflow integration)
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 4. Success Criteria
 
 | Criterion | Measurement | Target |
@@ -160,6 +163,7 @@ Enhance memory search results with multi-factor scoring:
 | Performance acceptable | Dashboard render time | <500ms |
 | Backward compatible | Existing API calls work unchanged | 100% |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 5. Technical Context

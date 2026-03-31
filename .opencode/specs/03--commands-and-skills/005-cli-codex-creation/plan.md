@@ -1,11 +1,6 @@
 ---
-title: "Implementation Plan: cli-gemini Model Consolidation + cli-codex Skill"
-description: "Plan for consolidating cli-gemini to single model and creating cli-codex skill."
-trigger_phrases:
-  - "cli-codex plan"
-  - "codex skill plan"
-importance_tier: "normal"
-contextType: "implementation"
+title: "Implementation Plan: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/plan]"
+description: "Plan for consolidating cli-gemini model guidance and creating the cli-codex skill."
 ---
 # Implementation Plan: cli-gemini Model Consolidation + cli-codex Skill
 
@@ -21,46 +16,134 @@ contextType: "implementation"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown (documentation-only skill) |
-| **Framework** | OpenCode Skill System (8-section SKILL.md standard) |
-| **Testing** | grep verification, skill_advisor.py test |
+| **Language/Stack** | Markdown documentation |
+| **Framework** | OpenCode CLI skill pattern |
+| **Storage** | Repository files only |
+| **Testing** | Manual checks + advisor/readme verification |
 
 ### Overview
-Two work items: (1) consolidate cli-gemini to use only `gemini-3.1-pro-preview`, (2) create cli-codex skill for OpenAI Codex CLI mirroring cli-gemini's structure.
+The plan combines two related documentation efforts: simplify `cli-gemini` model guidance to one canonical model, then create and register the new `cli-codex` skill by following the established CLI bridge pattern.
 <!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Existing `cli-gemini` scope reviewed.
+- [x] `cli-codex` documentation structure identified.
+- [x] Registration surfaces identified.
+
+### Definition of Done
+- [x] `cli-gemini` uses one canonical model reference.
+- [x] `cli-codex` skill files exist.
+- [x] Advisor and README surfaces are updated.
+- [x] Spec-folder compliance errors are resolved.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation-only CLI skill normalization and creation.
+
+### Key Components
+- **`cli-gemini` documentation**: normalized single-model guidance.
+- **`cli-codex` skill package**: SKILL.md, references, and prompt templates.
+- **Discovery surfaces**: advisor routing and README catalogs.
+
+### Data Flow
+User query -> skill advisor or README discovery -> CLI bridge skill loads -> external CLI usage guidance is followed.
+<!-- /ANCHOR:architecture -->
+
+---
+
 <!-- ANCHOR:phases -->
-## 2. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase A: cli-gemini Model Consolidation
-- [x] Replace model references in SKILL.md
-- [x] Replace model references in cli_reference.md
-- [x] Replace model references in integration_patterns.md
-- [x] Replace model references in gemini_tools.md
-- [x] Replace model references in prompt_templates.md
-- [x] Simplify model selection tables to single model
+### Phase 1: Setup
+- [x] Review sibling CLI skill structure.
+- [x] Identify all `cli-gemini` model references.
 
-### Phase B: cli-codex Skill Creation
-- [x] Create directory structure: cli-codex/{references,assets}
-- [x] Create SKILL.md (8 sections, smart routing)
-- [x] Create references/cli_reference.md
-- [x] Create references/agent_delegation.md
-- [x] Create references/codex_tools.md
-- [x] Create references/integration_patterns.md
-- [x] Create assets/prompt_templates.md
+### Phase 2: Core Implementation
+- [x] Normalize `cli-gemini` model references.
+- [x] Create the `cli-codex` skill files.
+- [x] Register `cli-codex` in advisor and catalogs.
 
-### Phase C: Ecosystem Registration
-- [x] Add entries to skill_advisor.py (INTENT_BOOSTERS, MULTI_SKILL_BOOSTERS, PHRASE_INTENT_BOOSTERS)
-- [x] Create .claude/skills/cli-codex symlink
-- [x] Update .opencode/skill/README.md
-- [x] Update root README.md
-- [x] Update .opencode/README.md
-
-### Phase D: Spec Folder Documentation
-- [x] Create spec.md
-- [x] Create plan.md
-- [x] Create tasks.md
-- [x] Create checklist.md
+### Phase 3: Verification
+- [x] Check skill files exist.
+- [x] Confirm registration surfaces are updated.
+- [x] Validate the spec-folder structure.
 <!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Documentation review | Model normalization and skill structure | Manual inspection |
+| Registration review | Advisor + README surfaces | Manual inspection |
+| Structural validation | Spec-folder markdown compliance | `validate.sh` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing CLI skill patterns | Internal | Green | The new skill would drift from established structure |
+| Advisor routing surfaces | Internal | Green | `cli-codex` would be harder to discover |
+| README catalogs | Internal | Green | Users would miss the new skill |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Model normalization or `cli-codex` registration introduces incorrect guidance.
+- **Procedure**: Revert the scoped documentation and catalog changes, then reapply with verified references only.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Implementation |
+| Implementation | Setup | Verification |
+| Verification | Implementation | Completion |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | Short |
+| Core Implementation | Medium | Moderate |
+| Verification | Low | Short |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+- Revert `cli-gemini`, `cli-codex`, advisor, and catalog edits as one scoped change set.
+- Re-check sibling skill consistency before reapplying.
+- Re-run structural validation after rollback or rework.
+<!-- /ANCHOR:enhanced-rollback -->
+
+---

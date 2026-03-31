@@ -1,11 +1,11 @@
 ---
-title: "Plan: 014-agents-md-alignment"
-description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 4-command memory surface and `/memory:manage shared` routing."
+title: "Plan: 014-agents-md-alignment [02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/plan]"
+description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 4-command memory surface and /memory:manage shared routing."
 trigger_phrases:
   - "014 plan"
   - "agents md plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

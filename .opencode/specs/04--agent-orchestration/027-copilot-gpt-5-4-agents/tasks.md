@@ -1,6 +1,14 @@
 ---
-title: "Tasks: GPT-5.4 Agent Model Upgrade"
+title: "Tasks: GPT-5.4 Agent Model Upgrade [04--agent-orchestration/027-copilot-gpt-5-4-agents/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "gpt"
+  - "agent"
+  - "model"
+  - "upgrade"
+  - "027"
+  - "copilot"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -27,7 +35,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Research and Inventory
+## Phase 1: Setup
 
 - [x] T001 Confirm Copilot and Codex config requirements from docs and local patterns
 - [x] T002 Inventory all target files and exclude non-pinned markdown agents from scope
@@ -37,7 +45,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: OpenCode Agent Updates
+## Phase 2: Implementation
 
 - [x] T004 Update Copilot OpenCode targets to `github-copilot/gpt-5.4` with explicit role-tuned `reasoningEffort` values (`.opencode/agent/*.md` subset)
 - [x] T005 Update ChatGPT OpenCode targets to `openai/gpt-5.4` while preserving original `reasoningEffort` values (`.opencode/agent/chatgpt/*.md` subset)
@@ -47,7 +55,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Codex Agent Updates and Verification
+## Phase 3: Verification
 
 - [x] T007 [P] Add `model = "gpt-5.4"` to all `.codex/agents/*.toml` files
 - [x] T008 Add top-level `model = "gpt-5.4"` to `.codex/config.toml` for direct Codex sessions

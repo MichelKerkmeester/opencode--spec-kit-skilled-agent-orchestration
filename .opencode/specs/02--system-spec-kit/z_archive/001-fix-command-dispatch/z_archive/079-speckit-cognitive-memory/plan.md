@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Cognitive Memory Upgrade [079-speckit-cognitive-memory/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/plan]"
 description: "This implementation adds FSRS-based memory decay, prediction error gating for conflict detection, and dual-strength tracking to the Spec Kit Memory MCP server. The approach prio..."
 trigger_phrases:
   - "implementation"
@@ -38,6 +38,7 @@ This implementation adds FSRS-based memory decay, prediction error gating for co
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -54,8 +55,10 @@ This implementation adds FSRS-based memory decay, prediction error gating for co
 - [ ] Code follows workflows-code standards
 - [ ] Documentation updated (spec/plan/tasks synchronized)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -100,8 +103,10 @@ This implementation adds FSRS-based memory decay, prediction error gating for co
 2. **Search**: Query → Hybrid Search → Score (with retrievability) → Tier Filter → Testing Effect → Results
 3. **Decay**: Periodic batch → Calculate R for all → Update states → Prune ARCHIVED
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Schema & Core FSRS (Days 1-2)
@@ -131,8 +136,10 @@ This implementation adds FSRS-based memory decay, prediction error gating for co
 - [ ] Full system integration testing
 - [ ] Documentation sync
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -163,8 +170,10 @@ assert(evaluate({sim: 0.85}).action === 'UPDATE' || 'CREATE_LINKED');
 assert(evaluate({sim: 0.60}).action === 'CREATE');
 ```
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -174,8 +183,10 @@ assert(evaluate({sim: 0.60}).action === 'CREATE');
 | attention-decay.js | Internal | Green | Must modify for FSRS |
 | composite-scoring.js | Internal | Green | Must add retrievability |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Data corruption, significant performance regression, breaking existing workflows
@@ -185,8 +196,10 @@ assert(evaluate({sim: 0.60}).action === 'CREATE');
   3. Restart MCP server
   4. Verify existing functionality
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -208,8 +221,10 @@ Phase 3 (Scoring + Testing Effect) ───────────────
 | Phase 3: Scoring | Phase 1 | Phase 4 |
 | Phase 4: State Model | Phase 1, 2, 3 | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -220,8 +235,10 @@ Phase 3 (Scoring + Testing Effect) ───────────────
 | Phase 4: State Model | Medium | 3-4 hours |
 | **Total** | | **13-19 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -243,6 +260,7 @@ Phase 3 (Scoring + Testing Effect) ───────────────
 - **Has data migrations?** Yes (new columns)
 - **Reversal procedure**: Columns are additive with defaults; no removal needed. Rollback code simply ignores new columns.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -307,6 +325,7 @@ Phase 3 (Scoring + Testing Effect) ───────────────
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: FSRS Power-Law Over Exponential Decay
@@ -356,6 +375,7 @@ Phase 3 (Scoring + Testing Effect) ───────────────
 - Gradual population as accessed
 - No migration downtime
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

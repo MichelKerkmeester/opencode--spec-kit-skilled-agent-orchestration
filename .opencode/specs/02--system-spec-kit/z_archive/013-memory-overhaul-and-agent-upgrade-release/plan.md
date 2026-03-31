@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Overhaul & Agent Upgrade Release [130-memory-overhaul-and-agent-upgrade-release/plan]"
+title: "Implementation Plan: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/plan]"
 description: "This umbrella specification coordinates 7 sequential/parallel documentation audit tasks across 11 implemented source specs (014-016, 122-129). The technical approach uses self-c..."
 trigger_phrases:
   - "implementation"
@@ -144,6 +144,7 @@ Specification-only umbrella with hierarchical task decomposition
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -169,6 +170,7 @@ Phase 1 (Root Docs) ────► Phase 2 (Tasks 01-04, Parallel)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

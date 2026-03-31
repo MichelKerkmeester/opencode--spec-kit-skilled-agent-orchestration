@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification System [complete-gate-fail/spec]"
+title: "Feature [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-gate-fail/spec]"
 description: "[NEEDS CLARIFICATION] - The exact scope of the notification system is unclear. Should it cover email, push, in-app, or all three?"
 trigger_phrases:
   - "feature"
@@ -32,6 +32,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -40,8 +41,10 @@ contextType: "decision"
 ### Purpose
 [NEEDS CLARIFICATION] - Success criteria depend on which notification channels are implemented.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -57,8 +60,10 @@ contextType: "decision"
 |-----------|-------------|-------------|
 | [NEEDS CLARIFICATION] | [TBD] | Depends on architecture decision |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -73,19 +78,24 @@ contextType: "decision"
 |----|-------------|---------------------|
 | REQ-002 | [NEEDS CLARIFICATION] - Notification preferences | [TBD] |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: [NEEDS CLARIFICATION] - Depends on channel selection
 - **SC-002**: [NEEDS CLARIFICATION] - Delivery SLA not defined
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Risk | [NEEDS CLARIFICATION] | Unknown | TBD |
 
+<!-- /ANCHOR:risks -->
 ---

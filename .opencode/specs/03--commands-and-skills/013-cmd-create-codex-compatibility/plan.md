@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Create Commands Codex Compatibility [012-create-codex-compatibility/plan]"
+title: "Implementation Plan: Create Commands Codex [03--commands-and-skills/013-cmd-create-codex-compatibility/plan]"
 description: "level: 3"
 trigger_phrases:
   - "implementation"
@@ -55,6 +55,25 @@ This implementation applies the proven three-pronged Codex compatibility approac
 - [x] All 7 verification checks pass
 - [x] All 20 files modified
 - [x] Documentation updated (spec/plan/tasks/checklist)
+
+### Pre-Task Checklist
+- Confirm scoped files and validation targets before editing.
+- Confirm the change is structure-only and does not alter feature intent.
+- Confirm the next validation batch is limited to the current spec folder.
+
+### Task Execution Rules
+- TASK-SEQ: Complete one compliance batch before re-validating.
+- TASK-SCOPE: Preserve document meaning while fixing structure and validator-facing metadata only.
+- TASK-VERIFY: Re-run `validate.sh --verbose` after each structural batch.
+
+### Status Reporting Format
+- STATUS=IN_PROGRESS when a compliance batch is underway.
+- STATUS=BLOCKED when a validator warning or document shape cannot be resolved safely.
+- STATUS=DONE only after the packet validates without blocking findings.
+
+### Blocked Task Protocol
+- BLOCKED: record the failing file, validator rule, and the smallest safe remediation path.
+- If a fix would change implementation meaning, stop and keep the packet structure-only.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -71,7 +90,7 @@ Three-pronged Codex compatibility approach (identical to spec 010):
 
 ### Key Differences from Spec 010
 - In create commands, `agent_routing:` is embedded inside individual workflow steps (better encapsulation than spec_kit top-level blocks)
-- Two complexity tiers: `skill.md` and `agent.md` have 3 agents each; 4 other `.md` files have 1 agent each
+- Two complexity tiers: skill.md and agent.md have 3 agents each; 4 other `.md` files have 1 agent each
 - Additional Change D (emoji cleanup) bundled to avoid revisiting 14 YAML files
 
 ### Data Flow
@@ -88,39 +107,39 @@ Command file read by agent --> `.md` read for instructions --> YAML loaded for w
 - [x] Write initial spec.md
 
 ### Phase 2: skill.md + 2 YAMLs (COMPLETE)
-- [x] Strip 3-agent `## Agent Routing` from `skill.md`
-- [x] Remove `<!-- REFERENCE ONLY/END -->` guards from `skill.md`
-- [x] Add `## CONSTRAINTS` section to `skill.md`
+- [x] Strip 3-agent `## Agent Routing` from skill.md
+- [x] Remove `<!-- REFERENCE ONLY/END -->` guards from skill.md
+- [x] Add `## CONSTRAINTS` section to skill.md
 - [x] Restructure 3 `agent_routing:` blocks in `create_skill_auto.yaml`
 - [x] Restructure 3 `agent_routing:` blocks in `create_skill_confirm.yaml`
 
 ### Phase 3: agent.md + 2 YAMLs (COMPLETE)
-- [x] Strip 3-agent `## Agent Routing` from `agent.md`
-- [x] Remove guards, add CONSTRAINTS to `agent.md`
+- [x] Strip 3-agent `## Agent Routing` from agent.md
+- [x] Remove guards, add CONSTRAINTS to agent.md
 - [x] Restructure 3 blocks in `create_agent_auto.yaml`
 - [x] Restructure 3 blocks in `create_agent_confirm.yaml`
 
 ### Phase 4: folder_readme.md + 2 YAMLs (COMPLETE)
-- [x] Strip 1-agent `## Agent Routing` from `folder_readme.md`
-- [x] Remove guards, add CONSTRAINTS, remove emoji line from `folder_readme.md`
+- [x] Strip 1-agent `## Agent Routing` from folder_readme.md
+- [x] Remove guards, add CONSTRAINTS, remove emoji line from folder_readme.md
 - [x] Restructure 1 block + emoji cleanup + rename `emoji_conventions:` to `section_icons:` in `create_folder_readme_auto.yaml`
 - [x] Restructure 1 block + emoji cleanup + rename in `create_folder_readme_confirm.yaml`
 
 ### Phase 5: install_guide.md + 2 YAMLs (COMPLETE)
-- [x] Strip 1-agent `## Agent Routing` from `install_guide.md`
-- [x] Remove guards, add CONSTRAINTS to `install_guide.md`
+- [x] Strip 1-agent `## Agent Routing` from install_guide.md
+- [x] Remove guards, add CONSTRAINTS to install_guide.md
 - [x] Restructure 1 block + emoji cleanup in `create_install_guide_auto.yaml`
 - [x] Restructure 1 block + emoji cleanup in `create_install_guide_confirm.yaml`
 
 ### Phase 6: skill_asset.md + 2 YAMLs (COMPLETE)
-- [x] Strip 1-agent `## Agent Routing` from `skill_asset.md`
-- [x] Remove guards, add CONSTRAINTS to `skill_asset.md`
+- [x] Strip 1-agent `## Agent Routing` from skill_asset.md
+- [x] Remove guards, add CONSTRAINTS to skill_asset.md
 - [x] Restructure 1 block + emoji cleanup in `create_skill_asset_auto.yaml`
 - [x] Restructure 1 block + emoji cleanup in `create_skill_asset_confirm.yaml`
 
 ### Phase 7: skill_reference.md + 2 YAMLs (COMPLETE)
-- [x] Strip 1-agent `## Agent Routing` from `skill_reference.md`
-- [x] Remove guards, add CONSTRAINTS to `skill_reference.md`
+- [x] Strip 1-agent `## Agent Routing` from skill_reference.md
+- [x] Remove guards, add CONSTRAINTS to skill_reference.md
 - [x] Restructure 1 block + emoji cleanup in `create_skill_reference_auto.yaml`
 - [x] Restructure 1 block + emoji cleanup in `create_skill_reference_confirm.yaml`
 
@@ -173,6 +192,7 @@ Command file read by agent --> `.md` read for instructions --> YAML loaded for w
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -193,6 +213,7 @@ Phases 2-7 (Per-command changes) ──► Phase 8 (Emoji cleanup) ──► Pha
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -301,7 +322,8 @@ Phases 2-7 (Per-command changes) ──► Phase 8 (Emoji cleanup) ──► Pha
 
 ---
 
-## L3: ARCHITECTURE DECISION RECORDS
+<!-- ANCHOR:architecture -->
+### Architecture Decision Record Summary
 
 ### ADR-001: Reuse Three-Pronged Approach from Spec 010
 
@@ -347,3 +369,4 @@ LEVEL 3 PLAN
 - Dependency graphs, milestones, ADRs
 - Status: COMPLETE (2026-02-17)
 -->
+<!-- /ANCHOR:architecture -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context Overload Prevention [022-context-overload-prevention/plan]"
+title: "Implementation Plan: Context Overload Prevention [04--agent-orchestration/022-context-overload-prevention/plan]"
 description: "This implements context overload prevention logic across all 3 orchestrator agent variants. The approach extracts proven patterns from the source prompt (007-enhanced-cc-context..."
 trigger_phrases:
   - "implementation"
@@ -135,6 +135,7 @@ Additive modification across parallel file variants. No new files created (excep
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -152,6 +153,7 @@ Phase 1 (Analysis) ──► Phase 2 (Claude) ──► Phase 3 (Copilot/ChatGPT
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

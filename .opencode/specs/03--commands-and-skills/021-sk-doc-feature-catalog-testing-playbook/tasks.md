@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-doc Feature Catalog + Testing Playbook Alignment [template:level_2/tasks.md]"
+title: "Tasks: sk-doc Feature Catalog + Testing [03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "feature catalog tasks"

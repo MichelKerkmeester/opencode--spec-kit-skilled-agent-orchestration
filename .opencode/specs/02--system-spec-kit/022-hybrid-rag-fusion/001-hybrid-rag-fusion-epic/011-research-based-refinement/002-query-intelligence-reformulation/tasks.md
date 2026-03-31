@@ -1,3 +1,18 @@
+---
+title: "...ybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation/tasks]"
+description: "A01 (facet detect) ──► A02 (decompose) ──► A03 (merge) ──► A04 (wire)"
+trigger_phrases:
+  - "ybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "hybrid"
+  - "tasks"
+  - "002"
+  - "query"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: Query Intelligence & Reformulation
 
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify + phase-child-header | v2.2 -->

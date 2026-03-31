@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: JSON Mode Hybrid Enrichment (Phase 1B)"
+title: "...022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/checklist]"
 description: "Verification Date: 2026-03-20"
 trigger_phrases:
   - "verification"

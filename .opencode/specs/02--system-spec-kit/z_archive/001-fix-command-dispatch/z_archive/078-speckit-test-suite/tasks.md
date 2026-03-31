@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System Spec Kit v2.1.0 Test Suite [078-speckit-test-suite/tasks]"
+title: "Tasks: System Spec Kit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/tasks]"
 description: "Task Format: T### [P?] [Priority] Description (file path) → CHK-###"
 trigger_phrases:
   - "tasks"
@@ -34,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: MCP Handler Tests (~900 LOC)
 
 - [ ] T001 [P0] Implement test-session-learning.js (~400 LOC) → CHK-020
@@ -48,8 +49,10 @@ contextType: "implementation"
 
 **Phase Gate**: Both T001 and T002 complete before proceeding to Phase 2
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Integration Tests (~350 LOC)
 
 - [ ] T003 [P0] Implement test-cognitive-integration.js (~350 LOC) → CHK-020
@@ -59,8 +62,10 @@ contextType: "implementation"
 
 **Phase Gate**: T003 complete, integration patterns validated → CHK-021
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Scripts Tests (~800 LOC)
 
 - [ ] T004 [P] [P0] Implement test-validation-system.js (~400 LOC) → CHK-020
@@ -75,6 +80,7 @@ contextType: "implementation"
 
 **Phase Gate**: T004 and T005 complete → CHK-022
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Framework Tests (~650 LOC)
@@ -126,6 +132,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks T001-T012 marked `[x]`
@@ -135,6 +142,7 @@ contextType: "implementation"
 - [ ] Tests synced to Public repo
 - [ ] All P0 checklist items verified
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## L2: TASK-CHECKLIST MAPPING
@@ -218,10 +226,12 @@ The following tasks can be executed in parallel:
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification**: See `checklist.md`
 
+<!-- /ANCHOR:cross-refs -->
 ---

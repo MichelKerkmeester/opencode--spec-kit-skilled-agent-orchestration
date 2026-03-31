@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Human Voice Rules — Template Integration [137-readme-and-summary-with-hvr/decision-record]"
+title: "Decision Record: Human Voice Rules — [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/decision-record]"
 description: "The Human Voice Rules exist in a single file at context/Rules - Human Voice - v0.101.md, written for the Barter project. Multiple documentation templates across two separate ski..."
 trigger_phrases:
   - "decision"
@@ -230,6 +230,7 @@ The HVR document is detailed and specific — it lists hard-blocker words, phras
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Future Decisions
 
 The following decisions are deferred and will need their own ADRs when addressed:
@@ -237,3 +238,4 @@ The following decisions are deferred and will need their own ADRs when addressed
 - **HVR Linter**: Build an automated checker for HVR compliance. Needs its own spec — the edge-case handling for technical terms and quoted examples is non-trivial.
 - **HVR Versioning**: The source document is v0.101. As the rules evolve, a propagation mechanism from `hvr_rules.md` to annotation blocks needs definition.
 - **Scope Expansion**: Whether to add HVR guidance to `spec.md`, `plan.md`, `tasks.md` and `checklist.md` templates (currently out of scope because those templates produce structured data rather than prose).
+<!-- /ANCHOR:decision -->

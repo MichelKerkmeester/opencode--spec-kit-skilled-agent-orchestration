@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary [03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook/implementation-summary]"
 description: "Completed the broader feature-catalog and manual-testing-playbook alignment across shipped examples, sk-doc template/reference surfaces, and downstream runtime consumers."
 trigger_phrases:
   - "implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks - Load Toggle Component [027-load-toggle/tasks]"
+title: "Tasks - Load Toggle Component [027-load-toggle/tasks] [01--anobel.com/z_archive/025-load-toggle/tasks]"
 description: "1. Remove data-target=\"load-toggle\" from button--w"
 trigger_phrases:
   - "tasks"

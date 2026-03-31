@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary - Load Toggle Component [027-load-toggle/implementation-summary]"
+title: "Implementation Summary - Load Toggle Component [01--anobel.com/z_archive/025-load-toggle/implementation-summary]"
 description: "This implementation provides a reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. The component enables..."
 trigger_phrases:
   - "implementation"
@@ -15,13 +15,11 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary - Load Toggle Component
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 This implementation provides a reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. The component enables "View More / View Less" patterns with dynamic text controlled via data attributes on the button element.
 
 **Key Feature:** Text attributes are placed on the button element (not the container), enabling CMS field binding in Webflow.
-<!-- /ANCHOR:overview -->
 
 ---
 
@@ -235,3 +233,10 @@ if (window.Webflow?.push) {
 
 Claude Opus 4 | 2025-02-01
 <!-- /ANCHOR:author -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

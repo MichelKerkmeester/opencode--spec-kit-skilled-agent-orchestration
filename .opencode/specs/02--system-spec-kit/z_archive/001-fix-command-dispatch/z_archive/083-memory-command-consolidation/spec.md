@@ -1,5 +1,5 @@
 ---
-title: "Memory Command Consolidation [083-memory-command-consolidation/spec]"
+title: "Memory Command [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/spec]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "memory"
@@ -228,6 +228,7 @@ AFTER:  /memory:manage checkpoint create "before-refactor"
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. Risks & Mitigations
 
 | Risk | Mitigation |
@@ -238,6 +239,7 @@ AFTER:  /memory:manage checkpoint create "before-refactor"
 | Loss of discoverability | Improve help text and examples |
 | spec_kit commands referencing /memory:why | Update all references |
 
+<!-- /ANCHOR:risks -->
 ---
 
 ## 7. Implementation Phases

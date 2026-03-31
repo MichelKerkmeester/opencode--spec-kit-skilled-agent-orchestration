@@ -1,3 +1,14 @@
+---
+title: "Research: Template Compliance [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/research]"
+description: "The validation system (validate.sh v2.0.0) is a modular orchestrator that sources rule scripts from rules/check-*.sh. Each rule implements a run_check() function and reports pas..."
+trigger_phrases:
+  - "research"
+  - "template"
+  - "compliance"
+  - "010"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Template Compliance Enforcement for SpecKit
 
 > How to ensure speckit documentation written by any agent, from any CLI, is always 100% template compliant.

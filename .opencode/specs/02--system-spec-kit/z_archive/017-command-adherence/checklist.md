@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Plan-to-Implementation Gate Bypass Fix [134-command-adherence/checklist]"
+title: "Verification Checklist: Plan-to-Implementation Gate [02--system-spec-kit/z_archive/017-command-adherence/checklist]"
 description: "Verification Date: [YYYY-MM-DD]"
 trigger_phrases:
   - "verification"

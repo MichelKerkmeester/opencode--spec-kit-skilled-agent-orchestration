@@ -41,7 +41,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
-## P0 Blockers
+#### P0 Blockers
 
 ### Pre-Implementation P0
 
@@ -67,7 +67,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p1-required -->
-## P1 Required
+#### P1 Required
 
 ### Pre-Implementation P1
 
@@ -90,7 +90,7 @@ contextType: "implementation"
 ### Documentation P1
 
 - [x] CHK-040 Spec/plan/tasks synchronized [Evidence:All five Level 2 files created retroactively; content consistent across spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md]
-- [x] CHK-041 Code comments adequate [Evidence:Stale "keep model-agnostic" comment removed from copilot/review.md as part of the upgrade]
+- [x] CHK-041 Code comments adequate [Evidence:Stale "keep model-agnostic" comment removed from the Copilot review agent file as part of the upgrade]
 
 ### File Organization P1
 
@@ -101,7 +101,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p2-optional -->
-## P2 Optional
+#### P2 Optional
 
 - [x] CHK-042 README updated (if applicable) [Evidence:N/A — agent files are self-contained; no top-level README references model assignments]
 - [x] CHK-052 Findings saved to memory/ [Evidence:Memory context generated via generate-context.js after spec folder completion]
@@ -145,7 +145,7 @@ contextType: "implementation"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence:All five Level 2 files created retroactively; content consistent across spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md]
-- [x] CHK-041 [P1] Code comments adequate [Evidence:Stale "keep model-agnostic" comment removed from copilot/review.md as part of the upgrade]
+- [x] CHK-041 [P1] Code comments adequate [Evidence:Stale "keep model-agnostic" comment removed from the Copilot review agent file as part of the upgrade]
 - [x] CHK-042 [P2] README updated (if applicable) [Evidence:N/A — agent files are self-contained; no top-level README references model assignments]
 <!-- /ANCHOR:docs -->
 

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: Spec Doc Indexing Bypass"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/implementation-summary]"
 description: "Completed warn-only bypass for all 4 rejection gates in processPreparedMemory, fixing 1,807 spec doc rejections during memory_index_scan."
 trigger_phrases:
   - "spec doc bypass summary"
   - "indexing bypass results"
   - "warn-only implementation"
 importance_tier: "critical"
-contextType: "implementation-summary"
+contextType: "implementation"
 ---
 # Implementation Summary
 

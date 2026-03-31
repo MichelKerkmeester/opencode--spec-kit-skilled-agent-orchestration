@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: ESM Module Compliance"
+title: "Implementation Plan: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/plan]"
 description: "Research-ordered implementation plan for the pending shared plus mcp_server native ESM migration, with scripts retained as CommonJS and standards docs deferred until runtime proof."
 trigger_phrases:
   - "esm plan"
   - "mcp_server esm migration plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: ESM Module Compliance
 
@@ -140,14 +140,17 @@ Coordinated sibling-package ESM migration with an explicit CommonJS-to-ESM inter
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 `Phase 0 -> Phase 1 -> Phase 2 -> Phase 3 -> Phase 4`
 
 Phase 4 cannot begin until `scripts` interoperability proof exists. Standards-doc updates outside 023 are downstream of the verification matrix, not peers of the runtime work.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -159,9 +162,12 @@ Phase 4 cannot begin until `scripts` interoperability proof exists. Standards-do
 | Phase 4: Verification matrix plus follow-on standards docs | Medium | 3-5 hours |
 | **Total Remaining** | **High** | **13-25 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 - Capture before/after package metadata and import-pattern diffs for `shared`, `mcp_server`, and scripts interop helpers before landing the runtime work.
 - If rollback is required, restore runtime truth first and leave packet docs implementation-pending rather than over-claiming partial migration progress.
+<!-- /ANCHOR:enhanced-rollback -->

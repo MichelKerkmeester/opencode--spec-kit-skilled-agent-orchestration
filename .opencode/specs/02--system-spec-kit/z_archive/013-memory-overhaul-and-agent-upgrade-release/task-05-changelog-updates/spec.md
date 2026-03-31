@@ -1,5 +1,5 @@
 ---
-title: "Task 05 — Changelog Creation [task-05-changelog-updates/spec]"
+title: "Task 05 — [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates/spec]"
 description: "After Tasks 01–04 identify all required documentation changes, create changelog entries for each affected track documenting the alignment work performed in spec 130."
 trigger_phrases:
   - "task"
@@ -59,6 +59,7 @@ Follow existing conventions from `v2.2.18.0.md`:
 
 > Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode-spec-kit-framework)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## [**VERSION**] - YYYY-MM-DD

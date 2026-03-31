@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Phase Classification"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification/plan]"
+description: "title: \"Implementation Plan: Phase Classification\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "007"
+  - "phase"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Phase Classification
 

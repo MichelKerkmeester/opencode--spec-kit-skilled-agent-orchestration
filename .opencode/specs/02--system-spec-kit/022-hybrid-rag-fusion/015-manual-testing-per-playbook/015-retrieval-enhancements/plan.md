@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Manual Testing — Retrieval Enhancements (Phase 015)"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements/plan]"
 description: "Execution plan for 11 retrieval enhancement scenarios. Sequences preconditions, non-stateful execution, stateful and flag-dependent execution, and evidence collection for PASS/FAIL/SKIP verdicts."
 trigger_phrases:
   - "retrieval enhancements execution plan"
@@ -158,6 +158,7 @@ Preconditions confirmed → execute exact scenario prompt and commands → colle
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -178,6 +179,7 @@ Phase 1 (Preconditions) ──────┤
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

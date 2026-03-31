@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Performance Optimization Review - Spec 025 [025-performance-review/tasks]"
+title: "Tasks: Performance Optimization Review - Spec 025 [01--anobel.com/z_archive/023-performance-review/tasks]"
 description: "Task Format: T### [P?] [Priority] Description (file path) → CHK-###"
 trigger_phrases:
   - "tasks"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:task-notation -->
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -35,6 +36,7 @@ contextType: "implementation"
 <!-- /ANCHOR:task-notation -->
 
 <!-- ANCHOR:phase-1-data-gathering -->
+<!-- /ANCHOR:notation -->
 ## Phase 1: Data Gathering
 
 - [x] T001 [P] [P0] Run Lighthouse mobile audit - Home page → CHK-010
@@ -105,6 +107,7 @@ contextType: "implementation"
 <!-- /ANCHOR:completion-criteria -->
 
 <!-- ANCHOR:cross-references -->
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -116,6 +119,7 @@ contextType: "implementation"
 <!-- /ANCHOR:cross-references -->
 
 <!-- ANCHOR:task-checklist-mapping -->
+<!-- /ANCHOR:cross-refs -->
 ## L2: TASK-CHECKLIST MAPPING
 
 | Task ID | Checklist Item | Priority | Status |

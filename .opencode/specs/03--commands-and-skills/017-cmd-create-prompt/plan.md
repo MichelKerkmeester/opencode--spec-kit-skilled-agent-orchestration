@@ -1,6 +1,16 @@
 ---
-title: "Implementation Plan: create:prompt Command [template:level_2/plan.md]"
+title: "Implementation Plan: create:prompt Command [03--commands-and-skills/017-cmd-create-prompt/plan]"
 description: "Mode-based command wrapping sk-prompt-improver with argument routing and CLEAR scoring"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "create"
+  - "prompt"
+  - "command"
+  - "017"
+  - "cmd"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -134,6 +144,7 @@ User invocation → Mandatory Gate → Argument Router → Skill Loader → Enha
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -150,6 +161,7 @@ Phase 1 (Structure) ──► Phase 2 (Core Logic) ──► Phase 3 (Polish & V
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

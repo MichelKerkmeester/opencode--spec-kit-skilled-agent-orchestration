@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Template Optimization [073-speckit-template-optimization/checklist]"
+title: "Verificat [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/checklist]"
 description: "Verification Date: 2026-01-19"
 trigger_phrases:
   - "verification"
@@ -30,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
@@ -41,8 +42,10 @@ contextType: "implementation"
 - [x] CHK-004 [P1] Dependencies identified and available
   - **Evidence**: Existing templates available as reference
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [x] CHK-010 [P0] Templates follow markdown standards
@@ -54,8 +57,10 @@ contextType: "implementation"
 - [x] CHK-013 [P1] Consistent section numbering
   - **Evidence**: All templates use hierarchical numbering
 
+<!-- /ANCHOR:code-quality -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
@@ -67,8 +72,10 @@ contextType: "implementation"
 - [x] CHK-023 [P1] Edge cases tested
   - **Evidence**: Templates compose correctly from core + addendums
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:security -->
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets
@@ -76,6 +83,7 @@ contextType: "implementation"
 - [x] CHK-031 [P1] No sensitive paths exposed
   - **Evidence**: All paths use relative references
 
+<!-- /ANCHOR:security -->
 ---
 
 ## Architecture Verification
@@ -89,6 +97,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation Verification
 
 - [x] CHK-140 [P1] All spec documents synchronized
@@ -100,8 +109,10 @@ contextType: "implementation"
 - [x] CHK-143 [P2] create.sh documentation updated
   - **Evidence**: Header and help text updated
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-050 [P1] Core templates in core/
@@ -111,6 +122,7 @@ contextType: "implementation"
 - [x] CHK-052 [P1] Composed templates in level folders
   - **Evidence**: level_1/, level_2/, level_3/, level_3+/ updated
 
+<!-- /ANCHOR:file-org -->
 ---
 
 ## Performance Verification
@@ -130,6 +142,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -140,6 +153,7 @@ contextType: "implementation"
 
 **Verification Date**: 2026-01-19
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Cross-References

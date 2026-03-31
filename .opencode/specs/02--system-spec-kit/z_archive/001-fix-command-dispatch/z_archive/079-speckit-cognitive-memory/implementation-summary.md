@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Cognitive Memory Upgrade [079-speckit-cognitive-memory/implementation-summary]"
+title: "I [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/implementation-summary]"
 description: "Successfully implemented a cognitive memory upgrade for the Spec Kit Memory MCP server, replacing arbitrary exponential decay with research-backed FSRS (Free Spaced Repetition S..."
 trigger_phrases:
   - "implementation"
@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS memory_conflicts (
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 ### Unit Tests (`fsrs-scheduler.test.js`)
@@ -251,6 +252,7 @@ TOTAL: 30/30 PASS
 ═══════════════════════════════════════════════════════════════════
 ```
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Architecture Decisions
@@ -339,3 +341,10 @@ Implementation Summary - Created after implementation completes
 Documents what was built, how it works, and verification results
 Required for all spec folder levels
 -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

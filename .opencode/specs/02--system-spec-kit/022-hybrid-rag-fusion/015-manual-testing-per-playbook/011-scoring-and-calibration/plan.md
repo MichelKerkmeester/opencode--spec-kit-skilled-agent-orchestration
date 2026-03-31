@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: scoring-and-calibration manual testing [template:level_2/plan.md]"
+title: "Implementat [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/plan]"
 description: "Execution plan for Phase 011 manual testing of 22 scoring-and-calibration scenarios. Covers preconditions, execution sequencing, evidence capture, and verdict assignment per the review protocol."
 trigger_phrases:
   - "phase 011 execution plan"
   - "scoring calibration manual test plan"
   - "scoring and calibration execution"
   - "phase 011 plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: scoring-and-calibration manual testing
@@ -197,6 +197,7 @@ For active scenarios: run with flag ON, capture trace; run with flag OFF, confir
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -218,6 +219,7 @@ Phase 1 (Setup) ─────────────┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

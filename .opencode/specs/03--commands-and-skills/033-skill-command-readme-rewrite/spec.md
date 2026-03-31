@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill and Command README Rewrite"
+title: "Feature Specification: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/spec]"
 description: "Rewrite all skill READMEs and command READMEs from scratch using the upgraded readme_creation.md standards, two-tier voice and HVR v0.210 compliance."
 trigger_phrases:
   - "skill readme rewrite"
@@ -25,7 +25,7 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-26 |
 | **Branch** | `main` |
-| **Predecessor** | `specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements` |
+| **Predecessor** | `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -35,11 +35,11 @@ contextType: "general"
 
 ### Problem Statement
 
-Skill READMEs and command READMEs vary in quality, structure and voice. Most lack two-tier voice, comparison tables, numbered Feature subsections and HVR compliance. The recently upgraded `readme_creation.md` and `hvr_rules.md` (spec 032) define production-quality standards that no existing skill README meets except the system-spec-kit exemplars.
+Skill READMEs and command READMEs vary in quality, structure and voice. Most lack two-tier voice, comparison tables, numbered Feature subsections and HVR compliance. The recently upgraded `.opencode/skill/sk-doc/references/specific/readme_creation.md` and `.opencode/skill/sk-doc/references/global/hvr_rules.md` from spec 032 define production-quality standards that no existing skill README meets except the system-spec-kit exemplars.
 
 ### Purpose
 
-Rewrite all 23 READMEs from scratch to match the quality demonstrated by `system-spec-kit/README.md` and `mcp_server/README.md`, applying the full `readme_creation.md` workflow and `hvr_rules.md` v0.210 standards.
+Rewrite all 23 READMEs from scratch to match the quality demonstrated by `.opencode/skill/system-spec-kit/README.md` and `.opencode/skill/system-spec-kit/mcp_server/README.md`, applying the full README creation workflow and HVR standards.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -73,29 +73,29 @@ Rewrite all 23 READMEs from scratch to match the quality demonstrated by `system
 | 18 | sk-git | `.opencode/skill/sk-git/README.md` |
 | 19 | sk-prompt-improver | `.opencode/skill/sk-prompt-improver/README.md` |
 
-**4 Command READMEs** (rewrite from scratch, convert `.txt` to `.md`):
+**4 Command README sources** (rewrite from scratch, with markdown conversion tracked from the current committed `.txt` files):
 
-| # | Command | Current Path | New Path |
-|---|---------|-------------|----------|
-| 20 | Command root | `.opencode/command/README.txt` | `.opencode/command/README.md` |
-| 21 | create | `.opencode/command/create/README.txt` | `.opencode/command/create/README.md` |
-| 22 | memory | `.opencode/command/memory/README.txt` | `.opencode/command/memory/README.md` |
-| 23 | spec_kit | `.opencode/command/spec_kit/README.txt` | `.opencode/command/spec_kit/README.md` |
+| # | Command | Tracked Path | Rewrite Intent |
+|---|---------|--------------|----------------|
+| 20 | Command root | `.opencode/command/README.txt` | Convert the committed text README into the markdown command reference |
+| 21 | create | `.opencode/command/create/README.txt` | Convert the committed text README into the markdown command reference |
+| 22 | memory | `.opencode/command/memory/README.txt` | Convert the committed text README into the markdown command reference |
+| 23 | spec_kit | `.opencode/command/spec_kit/README.txt` | Convert the committed text README into the markdown command reference |
 
 ### Out of Scope
 
-- `system-spec-kit/README.md` -- exemplar, do not touch
-- `system-spec-kit/mcp_server/README.md` -- exemplar, do not touch
-- `system-spec-kit/SHARED_MEMORY_DATABASE.md` -- exemplar, do not touch
+- `.opencode/skill/system-spec-kit/README.md` -- exemplar, do not touch
+- `.opencode/skill/system-spec-kit/mcp_server/README.md` -- exemplar, do not touch
+- `.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md` -- exemplar, do not touch
 - SKILL.md files -- only READMEs are in scope
 - Any non-README documentation
 
 ### Standards to Apply
 
 Every README must follow:
-- `readme_creation.md` workflow (Section 5 structural format rules, Section 7 pre-publish checklist)
-- `readme_template.md` 9-section structure (use Skill type: Overview, Quick Start, Features, Structure, Configuration, Usage Examples, Troubleshooting, FAQ, Related Documents)
-- `hvr_rules.md` v0.210 (0 hard blockers, structural patterns, voice personality)
+- `.opencode/skill/sk-doc/references/specific/readme_creation.md` workflow (Section 5 structural format rules, Section 7 pre-publish checklist)
+- `.opencode/skill/sk-doc/assets/documentation/readme_template.md` 9-section structure (use Skill type: Overview, Quick Start, Features, Structure, Configuration, Usage Examples, Troubleshooting, FAQ, Related Documents)
+- `.opencode/skill/sk-doc/references/global/hvr_rules.md` v0.210 (0 hard blockers, structural patterns, voice personality)
 - Two-tier voice (narrative + reference) for all Skill type READMEs
 - Blockquote tagline after H1
 - Numbered H2 ALL CAPS, numbered H3/H4 ALL CAPS for Feature subsections
@@ -113,9 +113,9 @@ Every README must follow:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Every README follows 9-section structure | All applicable sections present per readme_creation.md Section 3 type matrix |
+| REQ-001 | Every README follows 9-section structure | All applicable sections present per `.opencode/skill/sk-doc/references/specific/readme_creation.md` Section 3 type matrix |
 | REQ-002 | Every README has blockquote tagline after H1 | One-sentence tagline in `>` blockquote |
-| REQ-003 | Every README uses numbered H2 ALL CAPS with anchors | `## N. SECTION NAME` + `<!-- ANCHOR:slug -->` markers |
+| REQ-003 | Every README uses numbered H2 ALL CAPS with anchors | `## N. SECTION NAME` plus explicit anchor markers such as `ANCHOR:overview` |
 | REQ-004 | Every README passes HVR pre-publish checklist | 0 hard blocker words, 0 em dashes, 0 semicolons |
 | REQ-005 | Command READMEs converted from .txt to .md | Old .txt files removed, new .md files in place |
 | REQ-006 | Content sourced from each skill's SKILL.md | README explains the skill accurately based on its SKILL.md |
@@ -129,6 +129,13 @@ Every README must follow:
 | REQ-009 | TOC with double-dash anchor format | All H2 entries, subsection entries for Features |
 | REQ-010 | Troubleshooting section with 3+ entries | "What you see / Common causes / Fix" format |
 | REQ-011 | FAQ section with 2+ questions per category | Bold Q: / A: format |
+
+### Acceptance Scenarios
+
+1. **Given** a skill README source in `.opencode/skill/*/SKILL.md`, **when** the rewrite is drafted, **then** the resulting README reflects the source behavior and keeps the Level 2 documentation packet synchronized.
+2. **Given** a command README source in `.opencode/command/*/README.txt`, **when** the command packet is reviewed, **then** the spec references the committed source file and the migration intent remains explicit.
+3. **Given** the system-spec-kit exemplars at `.opencode/skill/system-spec-kit/README.md` and `.opencode/skill/system-spec-kit/mcp_server/README.md`, **when** quality is assessed, **then** structure and voice are evaluated against those committed references.
+4. **Given** validator enforcement for anchors and template headers, **when** the packet files are updated, **then** each required section and anchor is present without template drift.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -136,7 +143,7 @@ Every README must follow:
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 23 READMEs match the quality standard of system-spec-kit/README.md
+- **SC-001**: All 23 READMEs match the quality standard of `.opencode/skill/system-spec-kit/README.md`
 - **SC-002**: 0 HVR hard blocker violations across all files
 - **SC-003**: Every README is self-contained (understandable without reading SKILL.md)
 - **SC-004**: Command .txt files replaced with .md files
@@ -151,9 +158,37 @@ Every README must follow:
 |------|------|--------|------------|
 | Risk | Context window exhaustion (23 files) | High | Batch in groups of 4-5 per session, or use parallel agents |
 | Risk | Skill-specific content requires reading each SKILL.md | Med | Read SKILL.md before writing each README |
-| Dependency | readme_creation.md and hvr_rules.md (spec 032) | Green | Completed in this session |
-| Dependency | system-spec-kit READMEs as exemplars | Green | Stable, do not modify |
+| Dependency | `.opencode/skill/sk-doc/references/specific/readme_creation.md` and `.opencode/skill/sk-doc/references/global/hvr_rules.md` (spec 032) | Green | Completed in this session |
+| Dependency | `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/mcp_server/README.md`, and `.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md` | Green | Stable, do not modify |
 <!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Consistency
+- **NFR-C01**: The rewrite batch uses a uniform heading, TOC, and section structure.
+- **NFR-C02**: The rewrite batch uses consistent terminology across skill and command surfaces.
+
+### Traceability
+- **NFR-T01**: Each rewritten README remains traceable to its source SKILL.md or command folder.
+- **NFR-T02**: Converted command READMEs preserve working internal references after the `.md` migration.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Content Boundaries
+- Minimal skills still need enough content to support the 9-section structure.
+- Feature-heavy skills need deeper Feature subsections without collapsing into generic copy.
+
+### Migration Cases
+- Command READMEs converted from `.txt` to `.md` must update any internal references in the same pass.
+- Root documentation may require follow-up updates if the rewrite uncovers missing shared explanations.
+<!-- /ANCHOR:edge-cases -->
 
 ---
 
@@ -170,6 +205,7 @@ Every README must follow:
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None. Standards, exemplars and file list are all defined.

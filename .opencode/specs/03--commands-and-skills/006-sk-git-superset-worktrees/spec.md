@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-git Superset Worktree Alignment"
+title: "Feature Specification: sk-git Superset Worktree Alignment [03--commands-and-skills/006-sk-git-superset-worktrees/spec]"
 description: "The sk-git skill's worktree workflow is generic and manual. Superset IDE has a mature, agent-first worktree isolation model that should be adapted for consistency and improved parallel-agent support."
 trigger_phrases:
   - "sk-git superset alignment"
@@ -10,7 +10,7 @@ contextType: "implementation"
 ---
 # Feature Specification: sk-git Superset Worktree Alignment
 
-<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
@@ -27,6 +27,9 @@ Adapt the sk-git skill's worktree handling from Superset IDE's git worktree mode
 
 ---
 
+---
+
+
 ## 1. METADATA
 
 | Field | Value |
@@ -36,8 +39,9 @@ Adapt the sk-git skill's worktree handling from Superset IDE's git worktree mode
 | **Status** | Never Implemented |
 | **Created** | 2026-02-28 |
 | **Note** | Spec was written but no implementation files exist (no tasks.md, no implementation-summary.md). The sk-git skill was not updated per this spec. Work can be resumed from this spec if needed. |
-<!-- ANCHOR:metadata -->
-<!-- /ANCHOR:metadata -->
+
+---
+
 
 ---
 
@@ -45,10 +49,14 @@ Adapt the sk-git skill's worktree handling from Superset IDE's git worktree mode
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 The sk-git skill's worktree workflow is designed for manual, single-user operation. It treats worktrees as one of three workspace options (branch, worktree, current branch), uses project-local storage (`.worktrees/`), lacks lifecycle hooks (setup/teardown scripts), has no branch name sanitization, and provides no structured init flow with fallback handling. This doesn't align with Superset IDE's agent-first worktree isolation model, which is the reference standard for parallel agent execution.
 
 ### Purpose
+
 Adapt sk-git's worktree handling from Superset IDE's proven workspace model: centralized worktree storage, config-driven lifecycle, structured init phases, and robust error handling — translated for CLI/AI-skill context.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -57,6 +65,7 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 ## 3. SCOPE
 
 ### In Scope (This Spec)
+
 - Adopt centralized worktree directory convention (`~/.opencode/worktrees/<project>/<branch>/`)
 - Add `.opencode/worktree.json` support for `setup[]` and `teardown[]` lifecycle hooks
 - Add security gate: user confirmation required before executing lifecycle scripts
@@ -71,11 +80,13 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 - Document migration from legacy `~/.config/superpowers/worktrees/` path
 
 ### Deferred to Follow-up Spec
+
 - Branch name sanitization pipeline (sanitize → truncate → deduplicate)
 - Environment variable injection (`SK_GIT_ROOT_PATH`, `SK_GIT_WORKSPACE_NAME`)
 - Multi-level config resolution hierarchy (user override → worktree → project default)
 
 ### Out of Scope
+
 - Database-backed workspace tracking (Superset uses SQLite/Drizzle) — CLI uses filesystem state
 - UI progress streaming — CLI reports status via terminal output
 - Terminal session management (Unix domain sockets) — not applicable to AI skill
@@ -95,6 +106,8 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 | `.opencode/skill/sk-git/references/quick_reference.md` | Modify | Update commands for centralized dirs, config, sanitization |
 | `.opencode/skill/sk-git/assets/worktree_checklist.md` | Modify | Align checklist with new init flow phases |
 | `.opencode/skill/sk-git/assets/config_template.json` | Create | Example .opencode/worktree.json template |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -133,6 +146,8 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 | REQ-D01 | Branch name sanitization pipeline | Sanitize → truncate → deduplicate pipeline documented with shell commands |
 | REQ-D02 | Environment variable injection | `SK_GIT_ROOT_PATH` and `SK_GIT_WORKSPACE_NAME` injected into lifecycle scripts |
 | REQ-D03 | Multi-level config resolution hierarchy | First-match-wins: user override → worktree → project default |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -145,6 +160,17 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 - **SC-003**: worktree.json template and examples allow users to set up lifecycle hooks without external documentation
 - **SC-004**: Existing `.worktrees/` project-local setups continue to work without modification
 - **SC-005**: Lifecycle scripts require explicit user confirmation before execution (security gate)
+
+---
+
+### Acceptance Scenarios
+
+- **Given** a developer wants isolated parallel workspaces, **when** they read the updated sk-git worktree guidance, **then** centralized worktree storage is documented as the recommended default.
+- **Given** a project defines `.opencode/worktree.json`, **when** the workflow reaches setup or teardown hooks, **then** the guidance requires explicit user confirmation before any lifecycle command runs.
+- **Given** a repository still uses project-local `.worktrees/`, **when** the new documentation is followed, **then** backward-compatible fallback remains documented instead of being removed.
+- **Given** a worktree is created from an ambiguous base branch, **when** the branch-resolution guidance is used, **then** the multi-step fallback order is documented clearly.
+- **Given** a worktree is being removed, **when** the finish workflow is reviewed, **then** pre-deletion safety checks and configurable teardown behavior are described before deletion.
+- **Given** the spec folder is validated after compliance updates, **when** the Level 3 packet is checked, **then** the Superset-alignment intent remains intact while the structure follows current templates.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -160,42 +186,59 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 | Risk | Centralized dir creates cross-project clutter | Low | Organize by `<project>/<branch>/`; add cleanup guidance |
 | Risk | Legacy ~/.config/superpowers/ users stranded | Medium | Migration note in documentation |
 | Dependency | None | N/A | All changes are documentation-only within sk-git skill |
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
+
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Consistency
+
 - **NFR-C01**: Terminology matches Superset: "workspace" = worktree throughout documentation
 
 ### Backward Compatibility
+
 - **NFR-B01**: All existing sk-git workflows function without modification after update
 
 ### Clarity
+
 - **NFR-CL01**: Each command in the workflow has exact syntax — no ambiguous placeholders
 
 ---
 
+
+---
+
+
 ## 8. EDGE CASES
 
 ### Directory Boundaries
+
 - Centralized dir doesn't exist: Create `~/.opencode/worktrees/` on first use
 - Project name contains special characters: Sanitize project name same as branch names
 - Global dir conflicts with existing structure: Check before creating; warn if occupied
 
 ### Config Boundaries
+
 - No config.json found: Skip setup/teardown gracefully (no error)
 - worktree.json has empty arrays: Valid — means no lifecycle hooks
 - Setup script fails: Warn user, offer to continue or abort (mirror Superset's behavior)
 - Teardown script fails: Warn user, offer "force delete" option
 
 ### Branch Boundaries
+
 - Branch name already exists in another worktree: Git enforces 1:1 — dedup with suffix (-1, -2, etc.)
 - Branch name exceeds 100 chars after sanitization: Truncate while preserving meaning
 - Empty or whitespace-only input: Reject with clear error message
 
 ---
+
+
+---
+
 
 ## 9. COMPLEXITY ASSESSMENT
 
@@ -210,6 +253,10 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 
 ---
 
+
+---
+
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -221,6 +268,10 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 | R-005 | Legacy ~/.config/superpowers/worktrees/ users stranded | M | L | Migration note documenting path change |
 
 ---
+
+
+---
+
 
 ## 11. USER STORIES
 
@@ -259,10 +310,15 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 
 ---
 
+
+---
+
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None — all architectural decisions resolved through Superset source code analysis.
+
+---
 <!-- /ANCHOR:questions -->
 
 ---
@@ -270,9 +326,12 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 ## RELATED DOCUMENTS
 
 - **Implementation Plan**: See `plan.md`
-- **Task Breakdown**: See `tasks.md`
+- **Task Breakdown**: See tasks.md
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
 - **Research**: Superset IDE source analysis (3-agent parallel research)
+
+---
+
 
 ---

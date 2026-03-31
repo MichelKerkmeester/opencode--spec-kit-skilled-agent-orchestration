@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories [002-memory-plugin/spec]"
+title: "...system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/spec]"
 description: "Optimize the semantic memory plugin to inject a compact \"memory dashboard\" instead of full content, reducing token consumption while maintaining context visibility."
 trigger_phrases:
   - "feature"
@@ -56,6 +56,7 @@ Reduce token consumption from ~2,000-5,000 tokens to ~500-1,000 tokens per sessi
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -72,6 +73,7 @@ Reduce token consumption from ~2,000-5,000 tokens to ~500-1,000 tokens per sessi
 - Memory search improvements - separate enhancement
 - Dashboard interactivity - static ASCII output only
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -119,6 +121,7 @@ As a system administrator, I need the dashboard to stay within 500-1,000 tokens 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### Dashboard Format (Approved)
@@ -179,8 +182,10 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 | Story 2 - Memory ID Discovery | REQ-FUNC-002, REQ-FUNC-007 | ID display and command syntax |
 | Story 3 - Token Budget | REQ-FUNC-005, REQ-DATA-001 | Content truncation |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -201,8 +206,10 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 - **NFR-M02**: Dashboard format MUST be modular (separate format function)
 - **NFR-M03**: Time formatting MUST be in dedicated helper function
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -219,8 +226,10 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 - What happens when memories are added mid-session? → Dashboard is generated once at session start (static)
 - What happens when memory is deleted after dashboard shown? → Agent may get "not found" on load (acceptable)
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -238,6 +247,7 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 | Quality | P0/P1 defects | 0 within 7 days | Manual testing |
 | Usability | Memory load success rate | 100% | Test with displayed IDs |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -267,6 +277,7 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -277,12 +288,15 @@ LOAD: memory_load({ memoryId: # })  SEARCH: memory_search("...")
 - Dashboard styling/colors - ASCII only
 - Memory priority scoring changes - uses existing tier system
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 None - all design decisions approved by user.
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

@@ -1,5 +1,5 @@
 ---
-title: "Stateless Spec Passing & System Alignment Plan [017-stateless-spec-passing/plan]"
+title: "Stateless Spec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/plan]"
 description: "Core commands that actively read/write .spec-active - MUST be refactored."
 trigger_phrases:
   - "stateless"

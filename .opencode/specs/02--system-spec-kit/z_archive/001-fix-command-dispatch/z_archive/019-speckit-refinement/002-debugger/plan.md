@@ -1,5 +1,5 @@
 ---
-title: "Debug Delegation Implementation Plan [002-debugger/plan]"
+title: "Debug Delega [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/002-debugger/plan]"
 description: "plan document for 002-debugger."
 trigger_phrases:
   - "debug"

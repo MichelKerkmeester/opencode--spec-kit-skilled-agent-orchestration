@@ -1,5 +1,5 @@
 ---
-title: "Spec 003: Node Modules Relocation [003-node-modules-relocation/spec]"
+title: "Spec 003: Node Modules Relocation [02--system-spec-kit/z_archive/003-node-modules-relocation/spec]"
 description: "Move node_modules from system-spec-kit/node_modules/ (workspace-hoisted) into mcp_server/node_modules/ where dependencies actually belong."
 trigger_phrases:
   - "spec"

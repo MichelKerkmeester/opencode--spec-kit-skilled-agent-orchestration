@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Naming Convention Test Suite [091-naming-convention-test-suite/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite/checklist]"
 description: "CHK-001: PASS"
 trigger_phrases:
   - "checklist"

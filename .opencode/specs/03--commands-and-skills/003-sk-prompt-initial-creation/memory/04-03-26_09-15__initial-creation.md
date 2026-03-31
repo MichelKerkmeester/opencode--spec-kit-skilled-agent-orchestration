@@ -1,17 +1,15 @@
 ---
-title: "Text-only refocus for prompt-improver initial-creation 2026-03-04"
-description: "This session refocused sk-prompt-improver on text-only prompting by removing visual and creative mode concepts. It rewrote routing guidance, added missing framework deep dives..."
+title: "Text-only refocus for [03--commands-and-skills/003-sk-prompt-initial-creation/04-03-26_09-15__initial-creation]"
 trigger_phrases:
   - "text only refocus"
   - "visual mode removal"
   - "prompt framework deep dives"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Initial Creation
 
 ## SESSION SUMMARY

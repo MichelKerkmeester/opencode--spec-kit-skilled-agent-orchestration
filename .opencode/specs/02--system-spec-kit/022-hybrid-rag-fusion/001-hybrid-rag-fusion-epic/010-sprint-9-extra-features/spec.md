@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Sprint 9 -- Extra Features (Productization & Operational Tooling)"
+title: "Feature Specific [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/spec]"
 description: "Sprint 9 covers productization and operational tooling features."
 trigger_phrases:
   - "sprint 9 extra features"
@@ -24,6 +24,7 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 <!-- ANCHOR:metadata -->
@@ -203,6 +204,7 @@ interface PipelineRow {
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -219,8 +221,10 @@ interface PipelineRow {
 - **NFR-R01**: Async job queue persists state to SQLite — crash recovery within 1 restart
 - **NFR-R02**: All new features gated behind feature flags (opt-in, not breaking)
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -248,8 +252,10 @@ interface PipelineRow {
 - **Multiple `memory_ingest_start` calls**: Each gets unique jobId. Jobs process sequentially within the in-process queue. No parallel embedding to avoid SQLite write contention.
 - **Agent calls `memory_search` while async ingestion is running**: Search operates on committed data. In-progress ingestion files not yet visible until their embedding transaction commits.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -419,3 +425,4 @@ interface PipelineRow {
 | REQ-006 | Local GGUF reranker scores candidates without external APIs and falls back cleanly | T082–T098 (Phase 3: Local GGUF Reranker; T093–T098 cover latency/eval work) | CHK-061–CHK-069 | Implemented — latency + eval comparisons pending (T093–T098) |
 | REQ-007 | Server startup instructions summarize index state for calling LLMs | T033–T039 (Phase 1: Dynamic Server Instructions; T038–T039 track handshake tests) | CHK-070–CHK-076 | Implemented — handshake verification pending (T038–T039) |
 | REQ-008 | File watcher re-indexes changed spec files within 5 seconds | T066–T081 (Phase 2: Filesystem Watching; T077–T081 cover runtime/debounce tests) | CHK-077–CHK-087 | Implemented — runtime watcher verification pending (T077–T081) |
+<!-- /ANCHOR:complexity -->

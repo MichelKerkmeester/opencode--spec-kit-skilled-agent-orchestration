@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Notification Time-Based Scheduling [013-notification-time-scheduling/checklist]"
+title: "Validation Checklist: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/checklist]"
 description: "Quality gates for validating the time-based scheduling implementation."
 trigger_phrases:
   - "validation"
@@ -103,6 +103,7 @@ Quality gates for validating the time-based scheduling implementation.
 <!-- /ANCHOR:minification-deployment -->
 
 <!-- ANCHOR:browser-testing -->
+<!-- ANCHOR:testing -->
 ## 8. BROWSER TESTING
 
 - [ ] CHK060 [P0] No console errors on page load
@@ -114,6 +115,8 @@ Quality gates for validating the time-based scheduling implementation.
 <!-- /ANCHOR:browser-testing -->
 
 <!-- ANCHOR:documentation -->
+<!-- ANCHOR:docs -->
+<!-- /ANCHOR:testing -->
 ## 9. DOCUMENTATION
 
 - [ ] CHK070 [P1] webflow_guide.md created with testing instructions
@@ -124,6 +127,8 @@ Quality gates for validating the time-based scheduling implementation.
 <!-- /ANCHOR:documentation -->
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:docs -->
 ## 10. VERIFICATION SUMMARY
 
 | Category | Total | Completed | Status |
@@ -142,6 +147,7 @@ Quality gates for validating the time-based scheduling implementation.
 <!-- /ANCHOR:verification-summary -->
 
 <!-- ANCHOR:priority-enforcement -->
+<!-- /ANCHOR:summary -->
 ## 11. PRIORITY ENFORCEMENT
 
 | Priority | Handling | Items |

@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Contamination Detection [template:level_2/tasks.md]"
+title: "Tasks: Conta [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection/tasks]"
+description: "title: \"Tasks: Contamination Detection [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "conta"
+  - "002"
+  - "contamination"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Contamination Detection
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/decision-record]"
 description: "title: \"Decision Record: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "decision"

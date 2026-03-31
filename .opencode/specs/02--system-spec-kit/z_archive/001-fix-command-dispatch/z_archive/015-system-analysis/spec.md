@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit System Architecture Analysis [015-system-analysis/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/spec]"
 description: "To deconstruct and analyze the SpecKit system's architecture, identifying strengths, weaknesses, and structural risks (specifically the synchronization between Skills and Comman..."
 trigger_phrases:
   - "feature"
@@ -47,6 +47,7 @@ To deconstruct and analyze the SpecKit system's architecture, identifying streng
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -60,6 +61,7 @@ To deconstruct and analyze the SpecKit system's architecture, identifying streng
 - Implementation of recommended fixes (Level 0, Build Scripts)
 - Modification of existing YAML workflows
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. KEY FINDINGS

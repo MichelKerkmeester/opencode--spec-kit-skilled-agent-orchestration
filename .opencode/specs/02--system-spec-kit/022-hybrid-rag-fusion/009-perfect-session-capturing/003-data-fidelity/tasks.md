@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Data Fidelity [template:level_2/tasks.md]"
+title: "Tasks: Data Fidelity [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity/tasks]"
+description: "title: \"Tasks: Data Fidelity [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "data"
+  - "fidelity"
+  - "003"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Data Fidelity
 

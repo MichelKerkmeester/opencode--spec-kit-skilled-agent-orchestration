@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Memory Command Consolidation [083-memory-command-consolidation/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/checklist]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "checklist"
@@ -21,6 +21,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation Checklist
 
 - [x] CHK-001: Spec folder created and approved
@@ -33,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Phase 1: Search → Context (P0) 
 
 ### T1: Audit search.md patterns

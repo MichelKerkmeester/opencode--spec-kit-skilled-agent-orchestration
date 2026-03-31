@@ -1,5 +1,5 @@
 ---
-title: "Test Spec Evidence [test-evidence/spec]"
+title: "...rchive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-evidence/spec]"
 description: "Test specification for evidence validation testing."
 trigger_phrases:
   - "test"
@@ -19,5 +19,7 @@ contextType: "decision"
 Test specification for evidence validation testing.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 - R1: Test evidence requirement
+<!-- /ANCHOR:requirements -->

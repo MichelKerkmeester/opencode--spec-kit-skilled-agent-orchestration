@@ -1,5 +1,5 @@
 ---
-title: "This is Phase 25 of the Perfect Session Capturing Recommendation Roadmap"
+title: "...fusion/009-perfect-session-capturing/scratch/phase-quarantine/025-source-capabilities-and-structured-preference/spec]"
 description: "This is Phase 25 of the Perfect Session Capturing Recommendation Roadmap specification."
 trigger_phrases:
   - "this"

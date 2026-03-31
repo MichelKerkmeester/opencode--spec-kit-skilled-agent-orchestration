@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Architecture Remediation Deep Dive [template:level_3/checklist.md]"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/checklist]"
 description: "Quality gates for the 15-agent architecture audit and Wave 3 synthesis of the perfect-session-capturing subsystem. 90 items: 15 P0, 31 P1, 44 P2."
 trigger_phrases:
   - "019 checklist"

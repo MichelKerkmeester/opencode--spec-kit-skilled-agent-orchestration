@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: SpecKit Command Pattern Upgrade [015-system-analysis/tasks]"
+title: "Task Breakdown: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/tasks]"
 description: "tasks document for 015-system-analysis."
 trigger_phrases:
   - "task"

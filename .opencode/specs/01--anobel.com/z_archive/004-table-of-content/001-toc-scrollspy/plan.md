@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Custom TOC ScrollSpy - Technical Approach & Architecture [001-toc-scrollspy/plan]"
+title: "Implementation Plan: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/plan]"
 description: "Implementation plan for a custom Table of Contents scroll-spy solution using IntersectionObserver with flexible styling options."
 trigger_phrases:
   - "implementation"
@@ -93,6 +93,7 @@ src/
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Core Implementation
@@ -127,6 +128,7 @@ src/
 ---
 
 <!-- ANCHOR:architecture-design -->
+<!-- /ANCHOR:phases -->
 ## 5. ARCHITECTURE DESIGN
 
 ### Data Attributes API

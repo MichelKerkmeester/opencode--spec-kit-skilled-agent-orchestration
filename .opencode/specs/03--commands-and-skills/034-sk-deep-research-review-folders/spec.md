@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-deep-research Review Folder Contract"
+title: "Feature Specification: sk-deep-research Review [03--commands-and-skills/034-sk-deep-research-review-folders/spec]"
 description: "Review mode currently stores durable session artifacts in scratch even though system-spec-kit defines scratch as disposable temporary workspace. This spec plans a dedicated review/ subfolder for all deep-review outputs, plus a compatibility path for legacy scratch-based review sessions."
 trigger_phrases:
   - "deep review folder"
@@ -29,6 +29,7 @@ This packet plans a dedicated `review/` subfolder inside the target spec so all 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -38,6 +39,7 @@ This packet plans a dedicated `review/` subfolder inside the target spec so all 
 | **Status** | Approved |
 | **Created** | 2026-03-27 |
 | **Branch** | `034-sk-deep-research-review-folders` |
+<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -45,7 +47,7 @@ This packet plans a dedicated `review/` subfolder inside the target spec so all 
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Review mode is currently modeled as a `scratch/` workflow. The review auto YAML writes config, JSONL state, strategy, dashboard, and iteration files into `scratch/`, and the confirm YAML mirrors the same contract. The primary `deep-review` agent says it may write only `scratch/` artifacts inside the active spec folder, and the review-mode contract asset plus the deep-review strategy template both hard-code `scratch/` as the destination for durable review state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:82-120] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml:83-120] [SOURCE: .opencode/agent/deep-review.md:31-65] [SOURCE: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml:202-230] [SOURCE: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md:3-19]
+Review mode is currently modeled as a `scratch/` workflow. The review auto YAML writes config, JSONL state, strategy, dashboard, and iteration files into `scratch/`, and the confirm YAML mirrors the same contract. The primary `deep-review` agent says it may write only `scratch/` artifacts inside the active spec folder, and the review-mode contract asset plus the deep-review strategy template both hard-code `scratch/` as the destination for durable review state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:82-120] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml:83-120] [SOURCE: .opencode/agent/deep-review.md:31-65] [SOURCE: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml:202-230] [SOURCE: .opencode/skill/sk-deep-review/assets/deep_review_strategy.md:3-19]
 
 That contract conflicts with the repository's broader spec-folder rules. System-spec-kit defines `scratch/` as a directory for temporary, disposable files that should be cleaned up when work is done, not as the authoritative home for resumable review packets or finalized review artifacts. [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:565-589] [SOURCE: .opencode/skill/system-spec-kit/references/structure/folder_structure.md:139-152]
 
@@ -92,7 +94,7 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 | `.opencode/agent/deep-review.md` | Modify | Update the canonical OpenCode deep-review contract to write under `review/` |
 | `.claude/agents/deep-review.md`, `.codex/agents/deep-review.toml`, `.gemini/agents/deep-review.md` | Modify | Keep runtime parity with the canonical deep-review contract |
 | `.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml` | Modify | Change review output path patterns and any render-target expectations that describe them |
-| `.opencode/skill/sk-deep-research/assets/deep_review_strategy.md`, `.opencode/skill/sk-deep-research/assets/deep_review_dashboard.md` | Modify | Update review template descriptions and embedded path guidance |
+| `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`, `.opencode/skill/sk-deep-review/assets/deep_review_dashboard.md` | Modify | Update review template descriptions and embedded path guidance |
 | `.opencode/skill/sk-deep-research/SKILL.md`, `.opencode/skill/sk-deep-research/README.md` | Modify | Update review-mode resource descriptions and user-facing behavior |
 | `.opencode/skill/sk-deep-research/references/quick_reference.md`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`, `.opencode/skill/sk-deep-research/references/state_format.md`, `.opencode/skill/sk-deep-research/references/convergence.md` | Modify | Synchronize the documented review-mode state-file contract and troubleshooting guidance |
 | `.opencode/skill/sk-deep-research/manual_testing_playbook/07--review-mode/*.md` plus the shared pause/resume scenarios in `05--pause-resume-and-fault-tolerance/` | Modify | Update operator prompts and expected signals for the new review packet location |
@@ -156,12 +158,13 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 | Risk | Hidden consumers still expect a root-level review report | Downstream tooling or docs may break even if the core loop works | Search for root-level report references during implementation and either update or shim them explicitly |
 | Risk | Scratch contains unrelated temporary files | A naive migration could move or delete the wrong artifacts | Migrate only the review-specific whitelist and leave unrelated scratch contents untouched |
 | Risk | Review contract render targets are declarative but no generator was found during planning | Manual multi-file edits could drift later | Document manual sync as the current implementation reality and treat generator work as a separate follow-up unless it becomes necessary immediately |
+---
+
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:questions -->
-
+<!-- ANCHOR:nfr -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -173,8 +176,10 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 ### Reliability
 - **NFR-R01**: Review-mode session classification must treat `review/` as the single canonical runtime location after migration, so resume, completed-session detection, and invalid-state handling all agree on one path.
 
+<!-- /ANCHOR:nfr -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -187,8 +192,10 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 - Legacy scratch state exists for research mode rather than review mode; the review migration logic must ignore it.
 - First-party docs or playbook scenarios still reference `scratch/` after implementation; validation must fail the change until the drift is resolved.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -200,6 +207,7 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 | Coordination | 14/15 | Path contract must stay synchronized across workflows, runtime agents, docs, and playbook validations |
 | **Total** | **67/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -246,6 +254,7 @@ Define the Level 3 implementation plan for moving all `:review` mode outputs int
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - No generator or renderer for `review_mode_contract.yaml` render targets was found during this planning pass. Implementation should verify whether manual multi-file updates remain the intended workflow or whether a generator exists outside the scanned surfaces.

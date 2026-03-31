@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook governance phase [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance/checklist]"
 description: "Verification checklist for Phase 017 governance manual test packet covering 063, 064, 122, 123, and 148."
 trigger_phrases:
   - "governance verification checklist"

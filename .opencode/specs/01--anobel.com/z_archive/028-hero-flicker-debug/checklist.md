@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [NAME] [030-hero-flicker-debug/checklist]"
+title: "Verification Checklist: [NAME] [030-hero-flicker-debug/check [01--anobel.com/z_archive/028-hero-flicker-debug/checklist]"
 description: "Verification Date: [YYYY-MM-DD]"
 trigger_phrases:
   - "verification"
@@ -18,6 +18,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -30,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:pre-implementation -->
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md
@@ -72,6 +74,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:documentation -->
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [ ] CHK-040 [P1] Spec/plan/tasks synchronized
@@ -82,6 +85,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:file-organization -->
+<!-- /ANCHOR:docs -->
 ## File Organization
 
 - [ ] CHK-050 [P1] Temp files in scratch/ only
@@ -92,6 +96,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -110,3 +115,4 @@ Level 2 checklist - Verification focus
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
+<!-- /ANCHOR:summary -->

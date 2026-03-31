@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Sub-Agent Nesting Depth Control [019-incorrect-sub-agent-nesting/tasks]"
+title: "Tasks: Sub-Agent Nesting Depth Control [04--agent-orchestration/019-incorrect-sub-agent-nesting/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -35,7 +35,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: NDP Design
+## Phase 1: Setup
 
 - [x] T001 Define 3-tier agent classification (ORCHESTRATOR, DISPATCHER, LEAF) (spec.md)
 - [x] T002 Define absolute depth limit of 3 with counting rules (spec.md)
@@ -47,7 +47,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Update orchestrate.md Files
+## Phase 2: Implementation
 
 ### Base orchestrate.md (`.opencode/agent/orchestrate.md`)
 
@@ -59,11 +59,11 @@ contextType: "implementation"
 - [x] T011 Add anti-patterns — 2 NDP anti-patterns in §9
 - [x] T012 Add LEAF enforcement instruction — §2:168-172
 
-### ChatGPT orchestrate.md (`.opencode/agent/chatgpt/orchestrate.md`)
+### ChatGPT orchestrate.md (`.opencode/agent/chatgpt/orchestrate`)
 
 - [x] T013 [P] Apply T006-T012 changes (byte-identical to base)
 
-### Copilot orchestrate.md (`.opencode/agent/copilot/orchestrate.md`)
+### Copilot orchestrate.md (`.opencode/agent/copilot/orchestrate`)
 
 - [x] T014 [P] Apply T006-T012 changes (identical except frontmatter)
 - [x] T015 Fix Section 11 conflict — conditional branching now in §3 subsection, no separate section
@@ -85,10 +85,10 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: Cross-Cutting Improvements
+### Cross-Cutting Improvements
 
 - [x] T022 Full restructure 27→10 sections across all 3 orchestrate.md variants
-- [x] T023 Add 7 semantic emojis aligned with context.md conventions
+- [x] T023 Add 7 semantic emojis aligned with context-agent conventions
 - [x] T024 Replace `workflows-code--web-dev`/`--full-stack` with `workflows-code--*` wildcard in all agent files (6 files: 3 orchestrate + 3 review)
 - [x] T025 Sync all 8 copilot agents to `.claude/agents/` with CC frontmatter
 - [x] T026 Create `02--agents` changelog folder and v1.0.0.0 entry

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Autonomous Deep Research Loop"
+title: "Verification Checklist: Autonomous Deep Research Loop [03--commands-and-skills/023-sk-deep-research-creation/checklist]"
 description: "Verification Date: 2026-03-18"
 trigger_phrases:
   - "autoresearch checklist"
@@ -37,41 +37,20 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:code-quality -->
-<!-- /ANCHOR:code-quality -->
+## Code Quality
 
----
+### Artifact Completeness
 
-<!-- ANCHOR:testing -->
-<!-- /ANCHOR:testing -->
+- [x] CHK-010 [P0] @deep-research agent created at .claude/agents/deep-research.md [Evidence: File created with LEAF enforcement, state protocol, iteration workflow]
+- [x] CHK-011 [P0] /spec_kit:deep-research command created with auto + confirm YAML [Evidence: deep-research.md + 2 YAML workflows created]
+- [x] CHK-012 [P0] sk-deep-research SKILL.md created with 8 sections [Evidence: SKILL.md created following sk-git pattern]
+- [x] CHK-013 [P1] All 4 reference docs created [Evidence: loop_protocol.md, state_format.md, convergence.md, quick_reference.md]
+- [x] CHK-014 [P1] Both assets created [Evidence: deep_research_config.json and the deep-research strategy asset template]
 
----
+### Agent Compliance
 
-<!-- ANCHOR:security -->
-<!-- /ANCHOR:security -->
 
----
-
-<!-- ANCHOR:docs -->
-<!-- /ANCHOR:docs -->
-
----
-
-<!-- ANCHOR:file-org -->
-<!-- /ANCHOR:file-org -->
-
----
-
-## Artifact Completeness
-
-- [x] CHK-010 [P0] @deep-research agent created at .claude/agents/deep-research.md -- Evidence: File created with LEAF enforcement, state protocol, iteration workflow
-- [x] CHK-011 [P0] /spec_kit:deep-research command created with auto + confirm YAML -- Evidence: deep-research.md + 2 YAML workflows created
-- [x] CHK-012 [P0] sk-deep-research SKILL.md created with 8 sections -- Evidence: SKILL.md created following sk-git pattern
-- [x] CHK-013 [P1] All 4 reference docs created -- Evidence: loop_protocol.md, state_format.md, convergence.md, quick_reference.md
-- [x] CHK-014 [P1] Both assets created -- Evidence: deep_research_config.json, deep_research_strategy.md
-
----
-
-## Agent Compliance
+### Agent Compliance
 
 - [x] CHK-020 [P0] Agent is LEAF-only (no sub-agent dispatch) -- Evidence: Section 0 ILLEGAL NESTING block present
 - [x] CHK-021 [P0] Agent reads state files before acting -- Evidence: Section 1 CORE WORKFLOW step 1 is "Read state"
@@ -79,18 +58,22 @@ contextType: "general"
 - [x] CHK-023 [P1] Agent has correct tool set -- Evidence: Frontmatter lists Read, Write, Edit, Bash, Grep, Glob, WebFetch
 - [x] CHK-024 [P1] Agent uses opus model -- Evidence: Frontmatter specifies model: opus
 
----
 
-## Command Compliance
+### Command Compliance
 
 - [x] CHK-030 [P0] YAML manages loop lifecycle -- Evidence: phase_loop with convergence check in both YAML files
 - [x] CHK-031 [P0] Setup phase consolidates all questions -- Evidence: Single consolidated prompt in command spec
 - [x] CHK-032 [P1] TOML registration created -- Evidence: .agents/commands/spec_kit/deep-research.toml exists
 - [x] CHK-033 [P1] Both execution modes work -- Evidence: spec_kit_deep-research_auto.yaml and spec_kit_deep-research_confirm.yaml
 
+<!-- /ANCHOR:code-quality -->
+
 ---
 
-## Registration
+<!-- ANCHOR:testing -->
+## Testing
+
+### Registration
 
 - [x] CHK-040 [P0] skill_advisor.py routes "deep research" to sk-deep-research -- Evidence: Keywords added to INTENT_BOOSTERS and PHRASE_SKILL_MAP
 - [x] CHK-041 [P1] CLAUDE.md agent routing table updated -- Evidence: @deep-research added to Section 6
@@ -98,17 +81,21 @@ contextType: "general"
 - [x] CHK-043 [P1] Skill README catalog updated -- Evidence: sk-deep-research added, count 16 to 17
 - [x] CHK-044 [P2] descriptions.json entry added -- Evidence: 023-sk-deep-research-creation entry present
 
----
 
-## L3+: ARCHITECTURE VERIFICATION
+### L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P0] Architecture decisions documented in decision-record.md -- Evidence: 6 ADRs covering loop engine, LEAF agent, state format, MCP exclusion, namespace separation, iteration cap
 - [x] CHK-101 [P1] All ADRs have status (Proposed/Accepted) -- Evidence: All 6 ADRs have Status: Accepted
 - [x] CHK-102 [P1] Alternatives documented with rejection rationale -- Evidence: Each ADR has Alternatives Considered table
 
+<!-- /ANCHOR:testing -->
+
 ---
 
-## Legacy Removal (Phase 5.5)
+<!-- ANCHOR:security -->
+## Security
+
+### Legacy Removal (Phase 5.5)
 
 - [x] CHK-050 [P0] All 9 legacy @research files deleted (6 agent defs, 1 command, 2 YAMLs) -- Evidence: `git rm` confirmed, `ls` returns "No such file" for all paths
 - [x] CHK-051 [P0] All orchestrate agents updated (5 runtimes) -- Evidence: routing tables, dispatch templates, agent files tables all reference @deep-research
@@ -121,9 +108,14 @@ contextType: "general"
 - [x] CHK-058 [P0] Live runtime/docs paths are clean of stale references -- Evidence: active runtime and maintained docs no longer reference `@research` or `/spec_kit:research`; remaining matches are limited to archived `*.bak` files (`README.md.bak`, `.opencode/skill/system-spec-kit/README.md.bak`)
 - [x] CHK-059 [P1] spec_kit command README.txt updated -- Evidence: all 7 locations updated (trigger phrase, command table, dependencies table, file listing, workflow diagram, agent delegation table, usage example); independent review scored 100/100
 
+<!-- /ANCHOR:security -->
+
 ---
 
-## v2: Research-Validated Improvements
+<!-- ANCHOR:docs -->
+## Documentation
+
+### v2: Research-Validated Improvements
 
 > 18 proposals from 14-iteration deep research. Source: `scratch/improvement-proposals.md` v2
 
@@ -164,6 +156,19 @@ contextType: "general"
 - [ ] CHK-230 [P2] File mutability declarations in config -- Evidence: `fileProtection` map in config schema
 - [ ] CHK-231 [P2] Context isolation via `claude -p` dispatch option -- Evidence: Shell invocation in loop protocol
 - [ ] CHK-232 [P2] Simplicity criterion defined in assessment -- Evidence: Bonus for consolidation in agent definition
+
+---
+
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-300 [P1] Required Level 3 files are present in this spec folder [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` all exist]
+- [x] CHK-301 [P1] Research artifacts remain inside `research/` or `scratch/` as appropriate [Evidence: deep-research findings are stored under `research/` and proposal drafting stays in `scratch/improvement-proposals.md`]
+<!-- /ANCHOR:file-org -->
 
 ---
 

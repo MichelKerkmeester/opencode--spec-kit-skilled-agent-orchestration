@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Pipeline Architecture"
+title: "Verif [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/checklist]"
 description: "QA verification for Pipeline Architecture code audit"
 trigger_phrases:
   - "checklist"

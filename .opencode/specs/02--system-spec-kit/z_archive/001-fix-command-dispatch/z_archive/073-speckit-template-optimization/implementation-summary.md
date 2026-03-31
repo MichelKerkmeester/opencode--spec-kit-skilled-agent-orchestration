@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [073-speckit-template-optimization/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization/implementation-summary]"
 description: "Restructured the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. Created 4 core templates shared across all levels (~318 LOC),..."
 trigger_phrases:
   - "implementation"
@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -25,8 +26,10 @@ contextType: "implementation"
 | **Completed** | 2026-01-19 |
 | **Level** | 3+ |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Restructured the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. Created 4 core templates shared across all levels (~318 LOC), 9 level-specific addendum templates adding distinct value at each tier (~594 LOC), and regenerated all 21 composed templates across level_1, level_2, level_3, and level_3+ folders.
@@ -59,8 +62,10 @@ The optimization achieved 74-82% line reduction while ensuring each level now ad
 | `SKILL.md` | Modified | v1.8.0, new architecture |
 | `references/templates/level_specifications.md` | Modified | Template path updates |
 
+<!-- /ANCHOR:what-built -->
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale | ADR Reference |
@@ -69,6 +74,7 @@ The optimization achieved 74-82% line reduction while ensuring each level now ad
 | Value-based level scaling | Each level adds VALUE, not just length | ADR-002 |
 | Workstream notation | Enable parallel sub-agent creation | ADR-003 |
 
+<!-- /ANCHOR:decisions -->
 ---
 
 ## Architecture Changes
@@ -100,6 +106,7 @@ templates/
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -113,6 +120,7 @@ templates/
 - **P1 Items**: 14/14 complete
 - **P2 Deferred**: None
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Performance Metrics
@@ -134,12 +142,14 @@ templates/
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **Compose script not created**: Templates were manually composed rather than automated
 2. **Level calculator not unified**: Shell script and JSONC config remain separate
 3. **Research.md and handover.md**: Identified as useful but not added to core templates
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Next Steps

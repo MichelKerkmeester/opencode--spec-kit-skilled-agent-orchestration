@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sprint 8 — Deferred Features"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features/checklist]"
 description: "Verification checklist for Sprint 8: deferred backlog execution, dependency gates, validation readiness"
 trigger_phrases:
   - "sprint 8 checklist"

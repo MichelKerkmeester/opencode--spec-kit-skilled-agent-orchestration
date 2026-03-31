@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Scoring & Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/spec]"
 description: "Quality score has zero discriminative power due to bonus overcompensation, and the contamination filter covers only 2 of 8+ text fields. This phase fixes both: recalibrates the bonus/penalty system so quality_score reflects real session quality, and expands filterContamination to all uncleaned text fields."
 trigger_phrases:
   - "quality scorer recalibration"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "scoring and filter"
   - "bonus system overcompensation"
   - "hallucination prevention"
-  - "domain C domain E"
+  - "domain c domain e"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -28,6 +28,7 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -45,6 +46,7 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -166,6 +168,7 @@ Restore discriminative power to quality_score by removing the bonus system and r
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -177,8 +180,10 @@ Restore discriminative power to quality_score by removing the bonus system and r
 ### Maintainability
 - **NFR-M01**: Contamination pattern additions must follow the existing array-of-strings structure in contamination-filter.ts; no new abstraction layers
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Scoring Edge Cases
@@ -194,8 +199,10 @@ Restore discriminative power to quality_score by removing the bonus system and r
 - `projectPhase` supplied as empty string: treat as absent, use inferred value
 - `projectPhase` supplied with invalid enum value: log warning, fall back to inferred value
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -207,6 +214,7 @@ Restore discriminative power to quality_score by removing the bonus system and r
 | Coordination | 9/15 | 7-file spread requires careful order; sibling phases must not conflict |
 | **Total** | **55/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -262,6 +270,7 @@ Restore discriminative power to quality_score by removing the bonus system and r
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Should post-save review findings apply a fixed penalty (e.g., -0.10 per HIGH finding) or a scaled one? Document final decision in decision-record.md ADR-003.

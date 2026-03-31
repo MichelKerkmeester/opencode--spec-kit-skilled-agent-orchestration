@@ -1,3 +1,18 @@
+---
+title: "...it/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/research]"
+description: "Verify that the session capturing pipeline works across ALL five defined CLIs: Claude Code, OpenCode (Copilot profile), Codex CLI, Copilot CLI, and Gemini CLI. Produce a detaile..."
+trigger_phrases:
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "009"
+  - "research"
+  - "003"
+  - "multi"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Cross-CLI Parity Verification
 
 ## 1. Metadata

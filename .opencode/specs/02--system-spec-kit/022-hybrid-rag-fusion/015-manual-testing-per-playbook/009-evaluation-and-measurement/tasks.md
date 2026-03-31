@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Manual Testing — Evaluation and Measurement"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement/tasks]"
 description: "Task Format: T### [P?] Description (scenario ID)"
 trigger_phrases:
   - "evaluation and measurement tasks"

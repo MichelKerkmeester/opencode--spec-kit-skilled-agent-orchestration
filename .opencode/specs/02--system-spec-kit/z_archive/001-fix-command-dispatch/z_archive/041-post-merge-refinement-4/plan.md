@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post-Merge Refinement 4 - Systematic Issue Remediation [041-post-merge-refinement-4/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/plan]"
 description: "Implementation plan defining phased approach to resolve 75+ issues identified by 10-agent analysis."
 trigger_phrases:
   - "implementation"
@@ -51,6 +51,7 @@ Systematic remediation of issues discovered during post-merge analysis. Organize
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 1 implementation. Re-check after each phase.**
@@ -76,6 +77,7 @@ Systematic remediation of issues discovered during post-merge analysis. Organize
 
 No violations anticipated - this is remediation of existing complexity.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -147,6 +149,7 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Critical Fixes (P0) - Day 1
@@ -281,8 +284,10 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 
 **Phase 4 Total:** ~7 hours
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Pyramid
@@ -331,6 +336,7 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 - [ ] No breaking changes to existing workflows
 - [ ] Documentation matches implementation
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -386,6 +392,7 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -411,6 +418,7 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 ### Blockers
 - None identified
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW
@@ -503,6 +511,7 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 
 ---
 
+<!-- ANCHOR:summary -->
 ## APPENDIX B: ISSUE SUMMARY BY PRIORITY
 
 ### P0 Critical (11 items)
@@ -538,8 +547,10 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 - Mustache conditional complexity
 - Content hash tracking
 
+<!-- /ANCHOR:summary -->
 ---
 
+<!-- ANCHOR:summary -->
 ## TIMELINE SUMMARY
 
 | Phase         | Duration | Cumulative | Key Deliverable         |
@@ -550,3 +561,4 @@ Selected Option 1 (single project) - all changes within existing .opencode/ stru
 | Phase 4 (Val) | 7h       | 33h        | Full validation         |
 
 **Total Estimated:** 33 hours (~4 working days)
+<!-- /ANCHOR:summary -->

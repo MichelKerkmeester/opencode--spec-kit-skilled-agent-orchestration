@@ -1,5 +1,5 @@
 ---
-title: "Specification: Agent System Upgrade [003-agent-system-upgrade/spec]"
+title: "Specification: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/spec]"
 description: "Comprehensive upgrade to the multi-agent orchestration system, encompassing three major workstreams: (1) Enterprise-grade orchestration patterns with fault tolerance, (2) Comman..."
 trigger_phrases:
   - "specification"
@@ -250,6 +250,7 @@ All success criteria have been met:
 
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -275,6 +276,7 @@ All success criteria have been met:
 
 
 <!-- ANCHOR:complexity-assessment -->
+<!-- /ANCHOR:requirements -->
 ## 8. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |

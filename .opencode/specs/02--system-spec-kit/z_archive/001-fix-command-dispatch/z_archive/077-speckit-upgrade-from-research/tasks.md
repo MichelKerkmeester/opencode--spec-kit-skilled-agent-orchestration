@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Spec-Kit Upgrade from Research [077-speckit-upgrade-from-research/tasks]"
+title: "Tasks: System [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/tasks]"
 description: "Summary: 15 total tasks across 3 priority tiers and 4 implementation phases. ✅ ALL COMPLETE"
 trigger_phrases:
   - "tasks"
@@ -55,6 +55,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Core Epistemic (v1.0.7.0)
 
 **Estimated Effort:** 1-2 weeks
@@ -234,8 +235,10 @@ contextType: "implementation"
     - [ ] Deltas can be queried for calibration
   - **Verify**: Complete a task and verify POSTFLIGHT deltas appear in memory file
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Workflow & Gate Enhancement (v1.0.8.0)
 
 **Estimated Effort:** 1-2 weeks
@@ -336,8 +339,10 @@ contextType: "implementation"
     - [ ] CLI supports `--uncertainty` flag
   - **Verify**: `python3 skill_advisor.py "implement auth" --uncertainty 0.25`
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Decision Quality (v1.0.9.0)
 
 **Estimated Effort:** 1 week
@@ -376,8 +381,10 @@ contextType: "implementation"
     - [ ] Memory saves tracked
   - **Verify**: Complete a task and review decision log entries
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 ### Phase 1 Complete When: ✅ DONE
@@ -408,6 +415,7 @@ contextType: "implementation"
 - [x] Task 3.5 (Reference docs) - epistemic-vectors.md, five-checks.md, decision-format.md
 - [x] Task 3.6 (implement.md) - Steps 5.5 and 7.5 added for PREFLIGHT/POSTFLIGHT
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## Phase 4: Runtime Integration (v1.0.9.1)

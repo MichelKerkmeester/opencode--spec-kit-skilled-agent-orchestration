@@ -1,5 +1,5 @@
 ---
-title: "Tasks: CocoIndex Code MCP Integration"
+title: "Tasks: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/tasks]"
 description: "Phase-based task breakdown for CocoIndex installation, config registration, cross-CLI validation, Phase 2 hardening, and Phase 3 strict-readiness packaging."
 trigger_phrases:
   - "cocoindex tasks"
@@ -96,8 +96,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Cross-CLI Auto-Usage Validation
+### Phase 4: Cross-CLI Auto-Usage Validation
 
 ### Test Execution
 
@@ -127,12 +126,10 @@ contextType: "implementation"
 - [x] T045 Update `checklist.md` with cross-CLI validation items [5m]
 - [x] T046 Save context to memory via `generate-context.js` (JSON payload mode) [5m]
 
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Hardening
+### Phase 5: Hardening
 
 ### Runtime-Truth Documentation
 
@@ -161,12 +158,10 @@ contextType: "implementation"
 - [x] T060 Run advisor health and semantic/exact-match routing checks [5m]
 - [x] T061 Verify touched docs no longer claim nonexistent CLI/MCP behavior [5m]
 
-<!-- /ANCHOR:phase-6 -->
 
 ---
 
-<!-- ANCHOR:phase-6 -->
-## Phase 6: Strict Readiness & Adoption Packaging
+### Phase 6: Strict Readiness & Adoption Packaging
 
 ### Shared Readiness Engine
 
@@ -186,11 +181,10 @@ contextType: "implementation"
 - [x] T069 Verify temp-project strict config validation fails with exit `24` after bootstrap using `ensure_ready.sh --json --strict --require-config --root <tmpdir>` [10m]
 - [x] T070 Update the spec-folder docs to reflect the Phase 3 strict-readiness and adoption-packaging work [10m]
 
-<!-- /ANCHOR:phase-5 -->
 
 ---
 
-## Phase 7: Cross-CLI Adoption Boosting
+### Phase 7: Cross-CLI Adoption Boosting
 
 ### Skill Advisor Routing
 
@@ -226,9 +220,9 @@ contextType: "implementation"
 ### Multi-Runtime Agent Rollout
 
 - [x] T087 Apply CocoIndex integration to `.agents/agents/context.md` (Copilot) [5m]
-- [x] T088 Apply CocoIndex integration to `.claude/agents/context.md`, `.codex/agents/context.toml`, `.opencode/agent/chatgpt/context.md` [10m]
+- [x] T088 Apply CocoIndex integration to `.claude/agents/context.md`, `.codex/agents/context.toml`, and the aligned runtime context surfaces [10m]
 - [x] T089 Apply Code Search Protocol + skill_advisor changes to Barter codebase and `AGENTS_example_fs_enterprises.md` [10m]
-- [x] T090 Create changelog `v1.2.0.0.md` documenting Phase 7 work [10m]
+- [x] T090 Create changelog `.opencode/changelog/16--mcp-coco-index/v1.2.0.0.md` documenting Phase 7 work [10m]
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria

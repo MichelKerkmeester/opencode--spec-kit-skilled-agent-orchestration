@@ -1,3 +1,16 @@
+---
+title: "Tasks: 020 Pre-Release Remediation [02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/tasks]"
+description: "tasks document for 020-post-release-fixes."
+trigger_phrases:
+  - "tasks"
+  - "020"
+  - "pre"
+  - "release"
+  - "remediation"
+  - "post"
+importance_tier: "normal"
+contextType: "implementation"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 # Tasks: 020 Pre-Release Remediation

@@ -1,3 +1,16 @@
+---
+title: "Phase 009: Code Graph Storage + Query [02--system-spec-kit/024-compact-code-graph/009-code-graph-storage-query/spec]"
+description: "Implement SQLite-based persistent storage for the structural code graph and expose MCP query tools (code_graph_scan, code_graph_query, code_graph_status) for deterministic struc..."
+trigger_phrases:
+  - "phase"
+  - "009"
+  - "code"
+  - "graph"
+  - "storage"
+  - "spec"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 009: Code Graph Storage + Query
 
 ## Summary

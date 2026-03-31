@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Image Decoding Async Analysis [023-decoding-async-analysis/plan]"
+title: "Implementation Plan: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/plan]"
 description: "Overview: This plan documents the analysis of anobel.com's image usage patterns and provides recommendations for implementing decoding=\"async\" to improve scrolling performance. ..."
 trigger_phrases:
   - "implementation"
@@ -188,6 +188,7 @@ if (document.readyState === 'loading') {
 ---
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 6. IMPLEMENTATION PHASES
 
 ### Phase 1: Audit
@@ -209,6 +210,7 @@ if (document.readyState === 'loading') {
 ---
 
 <!-- ANCHOR:dependencies -->
+<!-- /ANCHOR:phases -->
 ## 7. DEPENDENCIES
 
 | Dependency | Status | Impact if Blocked |

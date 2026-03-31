@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Dynamic Capture Deprecation Branch [template:level_1/plan.md]"
+title: "Implement [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/plan]"
 description: "Minimal branch-parent documentation to restore recursive validation and navigation for the moved child phases."
 trigger_phrases:
   - "dynamic capture branch plan"

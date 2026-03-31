@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Blog Sort Dropdown Fix [019-blog-sort-fix/checklist]"
+title: "Checklist: Blog Sort Dropdown Fix [019-blog-sort-fix/checklist] [01--anobel.com/z_archive/018-blog-sort-fix/checklist]"
 description: "Evidence: Deep dive completed 2026-01-18. See research/research.md for full findings."
 trigger_phrases:
   - "checklist"
@@ -60,6 +60,7 @@ contextType: "implementation"
 <!-- /ANCHOR:phase-1-2-full-implementation-if-quick-fix-fails -->
 
 <!-- ANCHOR:functional-testing -->
+<!-- ANCHOR:testing -->
 ## Functional Testing
 
 ### Sort Functionality
@@ -80,6 +81,8 @@ contextType: "implementation"
 <!-- /ANCHOR:functional-testing -->
 
 <!-- ANCHOR:regression-testing -->
+<!-- ANCHOR:testing -->
+<!-- /ANCHOR:testing -->
 ## Regression Testing
 
 ### Form Selects (Must NOT trigger URL navigation)
@@ -97,6 +100,8 @@ contextType: "implementation"
 <!-- /ANCHOR:regression-testing -->
 
 <!-- ANCHOR:browser-testing -->
+<!-- ANCHOR:testing -->
+<!-- /ANCHOR:testing -->
 ## Browser Testing
 
 - [ ] **P0** Chrome desktop (latest)
@@ -109,6 +114,7 @@ contextType: "implementation"
 <!-- /ANCHOR:browser-testing -->
 
 <!-- ANCHOR:deployment -->
+<!-- /ANCHOR:testing -->
 ## Deployment
 
 - [ ] **P0** Minify using `minify-webflow.mjs`

@@ -1,3 +1,16 @@
+---
+title: "Plan: Phase 5 — Command & Agent Alignment [02--system-spec-kit/024-compact-code-graph/005-command-agent-alignment/plan]"
+description: "1. Audit memory commands"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "command"
+  - "agent"
+  - "alignment"
+  - "005"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 5 — Command & Agent Alignment
 
 ## Steps
@@ -27,7 +40,9 @@
    - Codex CLI (no hooks): verify resume still works via tool fallback
    - Verify no regression in any command's core behavior
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 - Phase 1 (hook scripts must exist to test hook awareness)
 - Phase 3 (Stop hook must exist for `/memory:save` double-save detection)
 - Phase 4 (runtime detection needed for conditional behavior)
+<!-- /ANCHOR:dependencies -->

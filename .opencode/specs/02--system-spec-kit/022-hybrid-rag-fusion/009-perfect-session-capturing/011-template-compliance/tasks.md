@@ -1,9 +1,9 @@
 ---
-title: "Tasks: Template Compliance"
+title: "Tasks: Template [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "template compliance"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: Template Compliance

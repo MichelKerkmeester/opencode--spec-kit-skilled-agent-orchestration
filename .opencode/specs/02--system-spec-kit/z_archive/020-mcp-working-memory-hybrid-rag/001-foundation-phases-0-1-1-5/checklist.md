@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Foundation Package [001-foundation-phases-0-1-1-5/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/checklist]"
 description: "checklist document for 001-foundation-phases-0-1-1-5."
 trigger_phrases:
   - "verification"

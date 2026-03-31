@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook analysis phase"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/plan]"
 description: "Execute 7 analysis scenarios from the manual testing playbook covering causal graph tools and epistemic measurement."
 trigger_phrases:
   - "analysis test plan"
   - "causal graph test plan"
   - "epistemic test plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook analysis phase
@@ -135,6 +135,7 @@ Read playbook scenario -> Execute MCP tool call -> Compare response to expected 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -156,6 +157,7 @@ Phase 1 (Pre-flight) --> Phase 2 (Non-Destructive Causal)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

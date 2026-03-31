@@ -1,11 +1,6 @@
 ---
-title: "Deep Research: Indexing-Normalization Improvement Audit"
-status: "complete"
-level: 3
-created: "2026-03-20"
-updated: "2026-03-20"
+title: "Deep Research: Indexing-Normalization [02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research]"
 description: "Comprehensive audit of indexing-normalization subsystem covering bugs, architecture, automation, UX, test coverage, and cross-skill alignment. 3 iterations, 14 agent runs, 70+ findings."
-SPECKIT_TEMPLATE_SOURCE: "research | v2.2"
 trigger_phrases:
   - "indexing normalization audit"
   - "002-indexing-normalization"
@@ -13,8 +8,12 @@ trigger_phrases:
   - "deep research"
 importance_tier: "important"
 contextType: "research"
+created: "2026-03-20"
+level: 3
+SPECKIT_TEMPLATE_SOURCE: "research | v2.2"
+status: "complete"
+updated: "2026-03-20"
 ---
-
 # Deep Research: Indexing-Normalization Improvement Audit
 
 > **Spec:** `002-indexing-normalization`

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-code--opencode refinement [018-sk-code-opencode-refinement/spec.md]"
+title: "Feature Specification: sk-code--opencode refinement [03--commands-and-skills/018-sk-code-opencode-refinement/spec]"
 description: "Level 3+ governance specification to refine sk-code--opencode with reduced inline-comment policy for AI parsing, preserve numbered ALL-CAPS section headers, harden KISS/DRY + SOLID checks, and optionally improve sk-code--review continuity."
 trigger_phrases:
   - "sk-code--opencode refinement"
@@ -7,13 +7,13 @@ trigger_phrases:
   - "all-caps numbered sections"
   - "solid checks"
   - "139-hybrid-rag-fusion pattern extraction"
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: sk-code--opencode refinement
 
+<!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
 
 ---
@@ -28,7 +28,9 @@ This specification defines a governance-first refinement of `sk-code--opencode` 
 
 ---
 
-<!-- ANCHOR:metadata -->
+---
+
+
 ## 1. METADATA
 
 | Field | Value |
@@ -37,7 +39,9 @@ This specification defines a governance-first refinement of `sk-code--opencode` 
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-22 |
-<!-- /ANCHOR:metadata -->
+
+---
+
 
 ---
 
@@ -45,10 +49,14 @@ This specification defines a governance-first refinement of `sk-code--opencode` 
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
+
 Current OpenCode standards provide strong cross-language structure, but inline comment rules are still broad enough to allow verbose human-style narration that reduces signal quality for AI-assisted parsing. At the same time, the numbered ALL-CAPS section convention is valuable for deterministic structure detection and must remain intact during refinement. Architecture checks are distributed across skills and need stronger KISS/DRY + SOLID enforcement across the primary standards path.
 
 ### Purpose
+
 Produce a precise, AI-optimized standards refinement for `sk-code--opencode` that preserves existing section structure conventions, narrows inline comment usage to high-value parseable intent, and strengthens design-quality gates with explicit SRP/OCP/LSP/ISP/DIP coverage.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -57,6 +65,7 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 ## 3. SCOPE
 
 ### In Scope
+
 1. Analyze prior work under `139-hybrid-rag-fusion`, including both code-adjustment outcomes and reusable governance/pattern structures.
 2. Analyze current `sk-code--review` baseline and SOLID references for compatibility and reuse.
 3. Update `sk-code--opencode` guidance to reduce inline comments while preserving numbered ALL-CAPS section headers.
@@ -66,6 +75,7 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 7. Allow optional, bounded improvements to `sk-code--review` when they improve baseline-overlay alignment.
 
 ### Out of Scope
+
 - Renaming skill directories or changing skill identity.
 - Rewriting unrelated skills outside `sk-code--opencode` and optional targeted `sk-code--review` alignment.
 - Changes to memory artifacts in any `memory/` subtree.
@@ -92,25 +102,9 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 | `.opencode/skill/sk-code--review/SKILL.md` | Modify (Optional) | Tighten baseline/overlay mapping language to reference strengthened KISS/DRY + SOLID policy. |
 | `.opencode/skill/sk-code--review/references/solid_checklist.md` | Modify (Optional) | Add concise prompts that better align with the refined opencode standard when useful. |
 | `.opencode/skill/sk-code--review/references/code_quality_checklist.md` | Modify (Optional) | Add minimal cross-reference for KISS/DRY signals if required for alignment. |
-<!-- /ANCHOR:scope -->
 
 ---
-
-## 3.5 PRIOR-WORK CONTINUITY (139-HYBRID-RAG-FUSION + REVIEW BASELINE)
-
-### Required Analysis Inputs
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/spec.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/implementation-summary.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-spec-kit-templates/spec.md`
-- `.opencode/skill/sk-code--review/SKILL.md`
-- `.opencode/skill/sk-code--review/references/solid_checklist.md`
-
-### Carry-Forward Pattern Targets
-| Pattern Area | Source Baseline | Refinement Reuse Target |
-|--------------|-----------------|-------------------------|
-| Deterministic structure contracts | `139` spec sectioning and traceability discipline | Non-regression rule for numbered ALL-CAPS headings across opencode references |
-| Governance-grade acceptance criteria | `139` measurable requirement style | Quantified policy checks for inline-comment reduction and SOLID/KISS/DRY coverage |
-| Findings-first quality lens | `sk-code--review` baseline | Optional alignment updates so review outputs match updated opencode policy vocabulary |
+<!-- /ANCHOR:scope -->
 
 ---
 
@@ -135,23 +129,9 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 | REQ-007 | Optional `sk-code--review` alignment improvements | If touched, review baseline files remain findings-first and include concise alignment language without relaxing security/correctness minimums. |
 | REQ-008 | Keep scope tight while improving clarity | All edits stay within scoped files; no unrelated content rewrites are introduced. |
 | REQ-009 | Provide verification evidence for policy non-regression | Validation output demonstrates no placeholder content and confirms updated files include required policy anchors and principle coverage. |
-<!-- /ANCHOR:requirements -->
 
 ---
-
-## 4.5 TRACEABILITY MATRIX (REQUIREMENTS -> WORKSTREAMS)
-
-| Requirement | Workstream | Primary File Groups |
-|-------------|------------|---------------------|
-| REQ-001 | W1 - Prior-work analysis and mapping | `139` artifacts + `sk-code--review` baseline files |
-| REQ-002 | W2 - Structural convention preservation | `references/*/style_guide.md`, `references/shared/code_organization.md` |
-| REQ-003 | W3 - Inline comment policy reduction | `SKILL.md`, `references/shared/universal_patterns.md`, language style guides |
-| REQ-004 | W3 - AI-parse policy codification | Language style guides + shared patterns |
-| REQ-005 | W4 - Quality gate hardening | `assets/checklists/*.md` + optional review checklists |
-| REQ-006 | W5 - Language and ecosystem consistency | JS/TS/Python/Shell/Config references and checklists |
-| REQ-007 | W6 - Optional review baseline alignment | `sk-code--review/SKILL.md`, review references |
-| REQ-008 | W7 - Scope guardrails | Change review against this spec scope table |
-| REQ-009 | W8 - Verification and evidence | Checklist/pattern verification commands and artifacts |
+<!-- /ANCHOR:requirements -->
 
 ---
 
@@ -164,6 +144,17 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 - **SC-004**: Shell, JavaScript, TypeScript, Python, and JSON/JSONC coverage remains complete and internally consistent.
 - **SC-005**: Optional `sk-code--review` changes, if made, are minimal, aligned, and do not dilute baseline security/correctness expectations.
 - **SC-006**: Scope remains constrained to the listed files and requested behavior changes.
+
+---
+
+### Acceptance Scenarios
+
+- **Given** an OpenCode coding agent reads the refined standard, **when** it applies comment rules, **then** the guidance prefers low-noise rationale comments over narrative inline commentary.
+- **Given** a maintainer checks the language guides after refinement, **when** section structure is reviewed, **then** the numbered ALL-CAPS header convention remains preserved where required.
+- **Given** the shared and language checklists are reviewed, **when** design-quality criteria are compared, **then** KISS, DRY, and the scoped SOLID prompts are present.
+- **Given** a mixed-language repository is evaluated, **when** the refined references are used together, **then** the guidance remains consistent across shell, JavaScript, TypeScript, Python, and config contexts.
+- **Given** optional `sk-code--review` alignment is considered, **when** evidence does not require extra review-skill edits, **then** the packet still documents the bounded optional scope instead of forcing unrelated changes.
+- **Given** the Level 3+ packet is validated after normalization, **when** the spec docs are checked, **then** the governance-oriented refinement intent remains intact while the structure matches current expectations.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -178,40 +169,55 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 | Risk | Over-tightening comments harms maintainability | Useful rationale could be removed | Define explicit allowed-comment categories and provide balanced examples |
 | Risk | Cross-language drift after policy changes | One language may diverge from the shared contract | Apply shared policy first, then language-specific deltas, then checklist verification |
 | Risk | Scope creep into unrelated skill rewrites | Delays and noisy diffs | Enforce scope lock to files in Section 3 only |
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
+
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
+
 - **NFR-P01**: Verification commands for scoped markdown checks complete in normal local CLI execution without manual patching loops.
 
 ### Security
+
 - **NFR-S01**: Security/correctness minimums from `sk-code--review` baseline remain intact if optional review files are edited.
 
 ### Reliability
+
 - **NFR-R01**: Re-running static checks on updated standards files yields consistent pass/fail outcomes for required policy markers.
 - **NFR-R02**: The refined policy remains deterministic for AI agents by using explicit, machine-detectable wording patterns.
-<!-- /ANCHOR:nfr -->
 
 ---
+
+
+---
+
 
 ## 8. EDGE CASES
 
 ### Policy Boundaries
+
 - JSON comments remain valid only in JSONC contexts and must stay concise and rationale-focused.
 - Example snippets that intentionally show bad comments are allowed only inside explicit good/bad demonstration blocks.
 
 ### Cross-Skill Alignment
+
 - `sk-code--review` may remain unchanged when alignment value is low; this does not block completion.
 - If review files are edited, they must preserve findings-first output contracts and severity-first behavior.
 
 ### Mixed-Language Repositories
+
 - Rules must remain usable when one change set spans shell scripts, TS/JS modules, Python tooling, and config files.
 
 ---
+
+
+---
+
 
 ## 9. COMPLEXITY ASSESSMENT
 
@@ -226,6 +232,10 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 
 ---
 
+
+---
+
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -236,6 +246,10 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 | R-004 | Optional review updates introduce baseline contract drift | High | Low | Require precedence model retention and minimal diff scope |
 
 ---
+
+
+---
+
 
 ## 11. USER STORIES
 
@@ -256,6 +270,50 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 
 ---
 
+
+---
+
+### 3.5 PRIOR-WORK CONTINUITY (139-HYBRID-RAG-FUSION + REVIEW BASELINE)
+
+### Required Analysis Inputs
+
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/spec.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-spec-kit-templates/spec.md
+- `.opencode/skill/sk-code--review/SKILL.md`
+- `.opencode/skill/sk-code--review/references/solid_checklist.md`
+
+### Carry-Forward Pattern Targets
+
+| Pattern Area | Source Baseline | Refinement Reuse Target |
+|--------------|-----------------|-------------------------|
+| Deterministic structure contracts | `139` spec sectioning and traceability discipline | Non-regression rule for numbered ALL-CAPS headings across opencode references |
+| Governance-grade acceptance criteria | `139` measurable requirement style | Quantified policy checks for inline-comment reduction and SOLID/KISS/DRY coverage |
+| Findings-first quality lens | `sk-code--review` baseline | Optional alignment updates so review outputs match updated opencode policy vocabulary |
+
+---
+
+---
+
+### 4.5 TRACEABILITY MATRIX (REQUIREMENTS -> WORKSTREAMS)
+
+| Requirement | Workstream | Primary File Groups |
+|-------------|------------|---------------------|
+| REQ-001 | W1 - Prior-work analysis and mapping | `139` artifacts + `sk-code--review` baseline files |
+| REQ-002 | W2 - Structural convention preservation | `references/*/style_guide.md`, references/shared/code_organization.md |
+| REQ-003 | W3 - Inline comment policy reduction | SKILL.md, references/shared/universal_patterns.md, language style guides |
+| REQ-004 | W3 - AI-parse policy codification | Language style guides + shared patterns |
+| REQ-005 | W4 - Quality gate hardening | `assets/checklists/*.md` + optional review checklists |
+| REQ-006 | W5 - Language and ecosystem consistency | JS/TS/Python/Shell/Config references and checklists |
+| REQ-007 | W6 - Optional review baseline alignment | sk-code--review/SKILL.md, review references |
+| REQ-008 | W7 - Scope guardrails | Change review against this spec scope table |
+| REQ-009 | W8 - Verification and evidence | Checklist/pattern verification commands and artifacts |
+
+---
+
+---
+
+
 ## 12. APPROVAL WORKFLOW
 
 | Checkpoint | Approver | Status | Date |
@@ -267,21 +325,28 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 
 ---
 
+---
+
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Security Compliance
+
 - [ ] Security/correctness baseline preserved in optional review alignment edits
 - [ ] No policy text introduces unsafe coding shortcuts
 
 ### Code Compliance
+
 - [ ] Numbered ALL-CAPS section convention preserved where currently mandated
 - [ ] KISS/DRY + SRP/OCP/LSP/ISP/DIP checks added in scoped checklists
 - [ ] Inline-comment policy updated to AI-parse-focused constraints
 
 ### Documentation Compliance
+
 - [ ] No placeholder tokens introduced
 - [ ] Scope table matches actual edited files
 - [ ] Verification evidence references included in completion artifacts
+
+---
 
 ---
 
@@ -296,16 +361,25 @@ Produce a precise, AI-optimized standards refinement for `sk-code--opencode` tha
 
 ---
 
+---
+
 ## 15. CHANGE LOG
 
 ### v1.0 (2026-02-22)
+
 Initial Level 3+ specification created for `018-sk-code-opencode-refinement` with scoped requirements and governance controls.
 
 ---
 
+---
+
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - None.
+
+---
+<!-- /ANCHOR:questions -->
 
 ---
 
@@ -316,3 +390,4 @@ Initial Level 3+ specification created for `018-sk-code-opencode-refinement` wit
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
 
+---

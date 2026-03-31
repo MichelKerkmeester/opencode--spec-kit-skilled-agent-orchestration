@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook retrieval phase [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/checklist]"
 description: "Verification checklist for phase 001 retrieval: 13 scenarios (EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143, 185, 187) — all items unchecked, awaiting execution."
 trigger_phrases:
   - "retrieval checklist"
   - "phase 001 verification"
   - "manual retrieval checklist"
-  - "EX-001 EX-002 EX-003 EX-004 EX-005 086 109 142 143 verification"
+  - "ex-001 ex-002 ex-003 ex-004 ex-005 086 109 142 143 verification"
 importance_tier: "normal"
 contextType: "implementation"
 ---

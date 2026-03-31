@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Manual Testing — Evaluation and Measurement"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement/plan]"
 description: "Execution plan for running all 16 evaluation-and-measurement manual test scenarios from the hybrid-rag-fusion playbook."
 trigger_phrases:
   - "evaluation and measurement plan"

@@ -1,5 +1,5 @@
 ---
-title: "Voyage 4 Upgrade Plan [067-voyage-4-upgrade/plan]"
+title: "Voyage 4 Upgrade Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade/plan]"
 description: "File: .opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.js"
 trigger_phrases:
   - "voyage"
@@ -108,6 +108,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 | Dependency | Status |
@@ -117,6 +118,7 @@ contextType: "decision"
 | Code Mode MCP | Not affected |
 | Narsil MCP | Optional (no change recommended) |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## Estimated Effort

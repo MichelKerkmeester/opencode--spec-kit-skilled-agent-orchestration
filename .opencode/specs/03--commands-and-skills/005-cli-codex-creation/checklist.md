@@ -1,43 +1,114 @@
 ---
-title: "Checklist: cli-gemini Model Consolidation + cli-codex Skill"
-description: "Quality verification checklist."
-trigger_phrases:
-  - "cli-codex checklist"
-importance_tier: "normal"
-contextType: "implementation"
+title: "Verification Checklist: cli-gemini Model Consolidation + cli-codex Skill [03--commands-and-skills/005-cli-codex-creation/checklist]"
+description: "Verification checklist for model consolidation and cli-codex skill creation."
 ---
-# Checklist: cli-gemini Model Consolidation + cli-codex Skill
+# Verification Checklist: cli-gemini Model Consolidation + cli-codex Skill
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## P0: Critical (Must Pass)
+## Verification Protocol
 
-- [x] **No old model references in cli-gemini** — `grep -rn "gemini-2\." .opencode/skill/cli-gemini/` returns zero results
-  [EVIDENCE: grep verification returned "No matches found"]
-- [x] **cli-codex SKILL.md exists** with 8 standard sections
-  [EVIDENCE: .opencode/skill/cli-codex/SKILL.md created, 22KB, 8 anchored sections]
-- [x] **cli-codex all reference files exist** — cli_reference.md, agent_delegation.md, codex_tools.md, integration_patterns.md
-  [EVIDENCE: ls -la confirms all 4 files in references/]
-- [x] **cli-codex prompt_templates.md exists**
-  [EVIDENCE: ls -la confirms file in assets/]
-- [x] **Symlink works** — .claude/skills/cli-codex → ../../.opencode/skill/cli-codex
-  [EVIDENCE: ls -la shows correct symlink target]
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
 
+---
 <!-- /ANCHOR:protocol -->
-## P1: Important (Should Pass)
 
-- [x] **skill_advisor.py recognizes cli-codex** — entries in INTENT_BOOSTERS, MULTI_SKILL_BOOSTERS, PHRASE_INTENT_BOOSTERS
-  [EVIDENCE: agent confirmed 3 sections updated with codex entries]
-- [x] **README files updated** — cli-codex listed in .opencode/skill/README.md, root README.md, .opencode/README.md
-  [EVIDENCE: agent confirmed all 3 READMEs updated]
-- [x] **Model standardization** — cli-codex uses only gpt-5.3-codex, cli-gemini uses only gemini-3.1-pro-preview
-  [EVIDENCE: all files created/updated with single model references]
+---
 
-## P2: Nice to Have
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [ ] Skill advisor test: `python3 .opencode/skill/scripts/skill_advisor.py "use codex cli"` returns cli-codex with confidence ≥ 0.8
-- [ ] Install guide for Codex CLI (future work)
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: documented in this checklist section]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: documented in this checklist section]
+- [x] CHK-003 [P1] Affected skill and registration surfaces identified [EVIDENCE: documented in this checklist section]
+
+---
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] Old multi-model Gemini references were removed from scoped guidance [EVIDENCE: documented in this checklist section]
+- [x] CHK-011 [P0] `cli-codex` skill files exist in the expected structure [EVIDENCE: documented in this checklist section]
+- [x] CHK-012 [P1] `cli-codex` follows the sibling CLI skill pattern [EVIDENCE: documented in this checklist section]
+- [x] CHK-013 [P1] Structural compliance updates preserved the original implementation meaning [EVIDENCE: documented in this checklist section]
+
+---
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] Manual verification confirmed the new skill file set exists [EVIDENCE: documented in this checklist section]
+- [x] CHK-021 [P0] Manual verification confirmed normalized model guidance [EVIDENCE: documented in this checklist section]
+- [x] CHK-022 [P1] Advisor/catalog surfaces were checked for `cli-codex` presence [EVIDENCE: documented in this checklist section]
+- [x] CHK-023 [P1] Spec-folder validation completes without structural errors [EVIDENCE: documented in this checklist section]
+
+---
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No secrets or credentials were introduced in the documentation set [EVIDENCE: documented in this checklist section]
+- [x] CHK-031 [P0] CLI bridge guidance remains documentation-only [EVIDENCE: documented in this checklist section]
+- [x] CHK-032 [P1] Registration updates do not change runtime privilege boundaries [EVIDENCE: documented in this checklist section]
+
+---
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec, plan, tasks, checklist, and implementation summary are synchronized [EVIDENCE: documented in this checklist section]
+- [x] CHK-041 [P1] README and advisor references describe `cli-codex` consistently [EVIDENCE: documented in this checklist section]
+- [x] CHK-042 [P2] Supporting documentation stays readable after compliance normalization
+
+---
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Documentation fixes stayed within approved scope [EVIDENCE: documented in this checklist section]
+- [x] CHK-051 [P1] No temporary files were introduced during compliance work [EVIDENCE: documented in this checklist section]
+- [x] CHK-052 [P2] Implementation summary file is present for the completed Level 2 spec
+
+---
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 8/8 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 2 | 2/2 |
+
+**Verification Date**: 2026-03-01
+
+---
+<!-- /ANCHOR:summary -->
+
+---

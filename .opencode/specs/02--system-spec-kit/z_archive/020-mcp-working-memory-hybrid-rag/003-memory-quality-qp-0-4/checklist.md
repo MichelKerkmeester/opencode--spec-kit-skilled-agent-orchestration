@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Memory Quality Package [003-memory-quality-qp-0-4/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/checklist]"
 description: "checklist document for 003-memory-quality-qp-0-4."
 trigger_phrases:
   - "verification"

@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: JSON-Primary Deprecation [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec]"
 description: "This phase deprecates direct stateless CLI capture, enforces structured JSON inputs for generate-context, and makes AI-composed JSON the authoritative save contract."
 trigger_phrases:
   - "json primary deprecation"
   - "017 json primary deprecation"
   - "dynamic capture deprecation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 ---
 # Feature Specification: JSON-Primary Deprecation
@@ -136,6 +136,7 @@ Make AI-composed JSON the routine save contract, hard-deprecate direct positiona
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -154,6 +155,7 @@ Make AI-composed JSON the routine save contract, hard-deprecate direct positiona
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

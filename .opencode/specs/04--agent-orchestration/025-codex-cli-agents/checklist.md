@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Codex CLI Agent Definitions"
+title: "Verification Checklist: Codex CLI Agent Definitions [04--agent-orchestration/025-codex-cli-agents/checklist]"
 description: "Verification Date: 2026-03-01"
 trigger_phrases:
   - "codex agent checklist"

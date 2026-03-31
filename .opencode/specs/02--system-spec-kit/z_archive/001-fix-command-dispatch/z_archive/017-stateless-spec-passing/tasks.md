@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Stateless Alignment [017-stateless-spec-passing/tasks]"
+title: "Tasks: Stateless [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/tasks]"
 description: "tasks document for 017-stateless-spec-passing."
 trigger_phrases:
   - "tasks"
@@ -13,6 +13,7 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.0.0 -->
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical Commands
 - [ ] Refactor `.opencode/command/spec_kit/resume.md` (7 refs) @critical
 - [ ] Clean up `.opencode/command/spec_kit/research/research/research.md` (2 refs - creates marker!) @critical
@@ -20,12 +21,17 @@ contextType: "implementation"
 - [ ] Update `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` (7 refs) @high
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: Script
 - [ ] Remove fallback from `.opencode/skills/system-memory/scripts/generate-context.js` (lines 2251-2283) @critical
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Supporting Commands
 - [ ] Update `.opencode/command/memory/save.md` (line 111) @medium
 - [ ] Update `.opencode/command/prompt/assets/improve_prompt.yaml` (2 refs) @low
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: system-spec-kit Docs
 - [ ] Update `.opencode/skills/system-spec-kit/SKILL.md` (2 refs) @medium

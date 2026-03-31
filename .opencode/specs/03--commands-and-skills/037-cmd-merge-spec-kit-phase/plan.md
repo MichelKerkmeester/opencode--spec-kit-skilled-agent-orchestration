@@ -1,3 +1,17 @@
+---
+title: "Implementation Plan: Merge spec_kit:phase into plan and [03--commands-and-skills/037-cmd-merge-spec-kit-phase/plan]"
+description: "Absorb the standalone /spec_kit:phase command into the plan and complete commands by adding a :with-phases optional workflow flag. This follows the identical pattern used by :wi..."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "merge"
+  - "spec"
+  - "kit"
+  - "037"
+  - "cmd"
+importance_tier: "important"
+contextType: "decision"
+---
 # Implementation Plan: Merge spec_kit:phase into plan and complete
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -132,6 +146,7 @@ User invokes /spec_kit:plan:auto "feature" :with-phases --phases 3
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -148,6 +163,7 @@ Phase 1 (Command files) ──► Phase 2 (YAML assets) ──► Phase 3 (Clean
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

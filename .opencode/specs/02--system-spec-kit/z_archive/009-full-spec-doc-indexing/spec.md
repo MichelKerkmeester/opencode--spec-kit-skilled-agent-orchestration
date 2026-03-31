@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Full Spec Folder Document Indexing [009-full-spec-doc-indexing/spec]"
+title: "Feature Specification: Full Spec Folder Document [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/spec]"
 description: "The MCP server's memory index currently only indexes 3 document types: memory files (specs/*/memory/*.md), READMEs, and constitutional files. This misses the most valuable proje..."
 trigger_phrases:
   - "feature"
@@ -146,6 +146,7 @@ Index all spec folder documents with higher priority than regular memories, enab
 <!-- /ANCHOR:risks -->
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -161,6 +162,7 @@ Index all spec folder documents with higher priority than regular memories, enab
 <!-- /ANCHOR:nfr -->
 
 <!-- ANCHOR:complexity -->
+<!-- /ANCHOR:requirements -->
 ## 8. COMPLEXITY ASSESSMENT
 
 | Category | Score | Notes |

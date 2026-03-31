@@ -1,7 +1,7 @@
 ---
 title: "Implementation Plan: Merge create README and install guide commands [017-create-readme-install-merger/plan]"
 description: "This plan defines how to consolidate duplicated command orchestration into a canonical workflow family while preserving current command behavior through aliases and staged deprecation."
-# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "create command plan"
   - "routing model"
@@ -108,7 +108,7 @@ Invocation enters canonical parser, normalization resolves operation and mode, s
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `.opencode/command/create/folder_readme.md` and `.opencode/command/create/install_guide.md` | Internal | Green | Merge contract cannot preserve current command semantics |
+| `.opencode/command/create/folder_readme.md` and the merged install-guide branch | Internal | Green | Merge contract cannot preserve current command semantics |
 | Four operation-mode YAML assets in `.opencode/command/create/assets/` | Internal | Green | Shared kernel design cannot be grounded in current behavior |
 | sk-doc DQI expectations in existing workflows | Internal | Yellow | Validation policy inconsistencies after merge |
 <!-- /ANCHOR:dependencies -->
@@ -193,36 +193,36 @@ Evidence Review ────────┘
 
 ---
 
-## 11. EVIDENCE BASELINE
+### Evidence Baseline
 
 | Evidence Asset | Key Finding |
 |----------------|-------------|
 | `.opencode/command/create/folder_readme.md` | Uses Phase 0 write verification + unified setup + mode split to two YAML files |
-| `.opencode/command/create/install_guide.md` | Mirrors setup protocol and mode split with operation-specific input fields |
+| merged install-guide branch inside `.opencode/command/create/folder_readme.md` | Mirrors the setup protocol and mode split with operation-specific input fields |
 | `.opencode/command/create/assets/create_folder_readme_auto.yaml` | Autonomous six-step workflow with README-specific section model and DQI gate |
 | `.opencode/command/create/assets/create_folder_readme_confirm.yaml` | Interactive variant with step checkpoints and same core structure |
 | `.opencode/command/create/assets/create_install_guide_auto.yaml` | Autonomous six-step workflow with install-guide-specific section model and platform logic |
 | `.opencode/command/create/assets/create_install_guide_confirm.yaml` | Interactive variant with checkpointed install guide flow and same core structure |
 
-## 12. IMPLEMENTATION EVIDENCE (CURRENT CYCLE)
+### Implementation Evidence (Current Cycle)
 
 | Evidence Asset | Result |
 |----------------|--------|
 | `.opencode/command/create/folder_readme.md` | Preferred unified user-facing command updated for README/install workflows (default `readme`) |
-| `.opencode/command/create/doc.md` | Retained as compatibility/internal workflow kernel entrypoint |
-| `.opencode/command/create/install_guide.md` | Converted to compatibility alias wrapper |
+| compatibility/internal workflow kernel behavior | Retired wrapper behavior remains preserved inside the canonical command flow |
+| install-guide compatibility alias behavior | Legacy wrapper retired after implementation; install routing remains available through the canonical command |
 | `.agents/commands/create/folder_readme.toml` | Preferred unified `.agents` wrapper updated |
 | `.agents/commands/create/doc.toml` | Retained as compatibility/internal `.agents` wrapper |
 | `.agents/commands/create/install_guide.toml` | Converted to compatibility alias wrapper |
 | Alias warning behavior in markdown/TOML wrappers | Implemented one-line deprecation warnings with canonical migration hints before routing |
-| `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/doc.md` | VALID |
+| `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/folder_readme.md` (canonical pass used for merged workflow) | VALID |
 | `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/folder_readme.md` | VALID |
-| `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/create/install_guide.md` | VALID |
+| install-guide branch validation via canonical command document review | VALID |
 | `python3.11 -c "import tomllib, pathlib; ..."` (three `.agents` files) | TOML_PARSE_VALID |
-| Static parity+safety suite | PASS (20 checks, 0 failed), including `route:readme:auto`, `route:readme:confirm`, `route:install:auto`, `route:install:confirm`; alias-token + alias-source checks for markdown and `.agents` wrappers; confirm-checkpoints + explicit-overwrite-options checks for both confirm YAML files; no-secret-field checks (`api key`, `password`, `secret key`, `credentials`) in `.opencode/command/create/doc.md` |
+| Static parity+safety suite | PASS (20 checks, 0 failed), including `route:readme:auto`, `route:readme:confirm`, `route:install:auto`, `route:install:confirm`; alias-token + alias-source checks for markdown and `.agents` wrappers; confirm-checkpoints + explicit-overwrite-options checks for both confirm YAML files; no-secret-field checks in the canonical merged command document |
 | Rollback dry-run simulation | PASS (non-destructive), wrappers + canonical present, simulated rollback commands listed, smoke readiness PASS for both operations in `:auto` + `:confirm`, status `ROLLBACK_DRY_RUN_STATUS PASS` |
 
-### Parity Matrix (Canonical + Legacy Alias Equivalence)
+#### Parity Matrix (Canonical + Legacy Alias Equivalence)
 
 | Operation | Mode | Canonical Route Expectation | Legacy Alias Equivalence | Evidence |
 |-----------|------|-----------------------------|--------------------------|----------|
@@ -231,6 +231,6 @@ Evidence Review ────────┘
 | Install guide | `:auto` | Routes to install auto branch | `/create:install_guide:auto` equivalent to canonical install auto path | static parity+safety PASS: `route:install:auto` + alias-token/source checks |
 | Install guide | `:confirm` | Routes to install confirm branch | `/create:install_guide:confirm` equivalent to canonical install confirm path | static parity+safety PASS: `route:install:confirm` + confirm-checkpoints + explicit-overwrite-options |
 
-## 13. OPEN EXECUTION ITEMS
+### Open Execution Items
 
 - No open execution items remain for this phase.

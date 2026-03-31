@@ -1,17 +1,15 @@
 ---
-title: "Doc-package remediation completed"
-description: "This session records the remediation of the form-bot planning documents after review. It captures the tightened evidence labeling, checklist alignment, and follow-up..."
+title: "Doc-package remediation [01--anobel.com/034-form-bot-problem/07-03-26_10-37__doc-package-remediation-completed]"
 trigger_phrases:
   - "form bot doc package remediation"
   - "botpoison planning evidence labeling"
   - "server side planning decision"
 importance_tier: "normal"
 contextType: "research"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Doc Package Remediation Completed
 
 ## SESSION SUMMARY

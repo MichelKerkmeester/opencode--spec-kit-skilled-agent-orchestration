@@ -795,6 +795,33 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 ---
 
+## 10b. HOOK-INJECTED CONTEXT & QUERY ROUTING
+
+### Context Recovery Priority
+
+If hook-injected context is present at the start of a session (injected by Claude Code SessionStart hook), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
+
+If hook context is NOT present (hooks disabled, different runtime, or unavailable), fall back to standard tool-based recovery:
+1. `memory_context({ mode: "resume", profile: "resume" })` for session recovery
+2. `memory_match_triggers()` for constitutional/triggered context
+
+### Query-Intent Routing
+
+Route context queries to the appropriate system based on intent:
+
+| Intent | Primary Source | Tool |
+|--------|---------------|------|
+| "Find code that..." / semantic discovery | CocoIndex | `mcp__cocoindex_code__search` |
+| "What calls/imports/extends..." / structural | Code Graph | `code_graph_query`, `code_graph_context` |
+| "Show file structure/outline" | Code Graph | `code_graph_query` (operation: outline) |
+| Session continuity / prior decisions | Memory | `memory_search`, `memory_context` |
+
+### Working-Set Awareness
+
+After compaction, the working set identifies which files/symbols were actively touched. When available, prioritize working-set files over generic search results.
+
+---
+
 ## 11. SUMMARY
 
 ```

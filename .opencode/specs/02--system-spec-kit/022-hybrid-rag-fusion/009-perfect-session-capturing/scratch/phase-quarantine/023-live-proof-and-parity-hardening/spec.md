@@ -1,5 +1,5 @@
 ---
-title: "This is Phase 23 of the Perfect session capturing roadmap follow-up"
+title: "...22-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/023-live-proof-and-parity-hardening/spec]"
 description: "This is Phase 23 of the Perfect session capturing roadmap follow-up specification."
 trigger_phrases:
   - "this"

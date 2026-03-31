@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Sprint 4 — Feedback and Quality"
+title: "Verif [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality/checklist]"
 description: "Verification checklist for MPAB chunk aggregation, learned relevance feedback, and shadow scoring."
 trigger_phrases:
   - "sprint 4 checklist"

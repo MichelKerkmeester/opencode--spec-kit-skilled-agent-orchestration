@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Template Compliance Enforcement"
+title: "Tasks: Template Compliance [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/tasks]"
 description: "Task breakdown for 3-layer template compliance enforcement across 4 implementation phases (A-D), 11 tasks total."
 trigger_phrases:
   - "template compliance tasks"

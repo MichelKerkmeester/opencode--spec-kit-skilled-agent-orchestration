@@ -1,9 +1,5 @@
 ---
-title: "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager"
-status: "Complete"
-level: 2
-created: "2025-12-01"
-updated: "2026-03-08"
+title: "Feature Specification: Refactor [02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor/spec]"
 description: "Refactor the /memory:learn command from a generic learning capture tool into a focused constitutional memory creator and manager."
 trigger_phrases:
   - "memory learn refactor"
@@ -12,6 +8,10 @@ trigger_phrases:
   - "memory learn constitutional"
 importance_tier: "critical"
 contextType: "implementation"
+created: "2025-12-01"
+level: 2
+status: "Complete"
+updated: "2026-03-08"
 ---
 # Feature Specification: Refactor /memory:learn → Constitutional Memory Manager
 
@@ -81,6 +81,7 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 ---
 
 <!-- ANCHOR:requirements -->
+<!-- /ANCHOR:scope -->
 ## 4. REQUIREMENTS
 
 - REQ-001: learn.md MUST be rewritten as a constitutional memory manager, replacing all 5 generic learning types

@@ -1,5 +1,5 @@
 ---
-title: "Modular Validation Architecture [002-modular-architecture/spec]"
+title: "M [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/spec]"
 description: "The current validate-spec.sh script is a monolithic ~600 line file. Adding all planned features (PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, .speckit.yaml config, glob pattern..."
 trigger_phrases:
   - "modular"
@@ -44,6 +44,7 @@ Refactor into a **modular architecture** with:
 2. **Libraries** (`lib/*.sh`) - Shared utilities, config, output formatting
 3. **Rules** (`rules/check-*.sh`) - Individual validation checks, one per file
 
+<!-- ANCHOR:requirements -->
 ## 3. Requirements
 
 ### Functional Requirements
@@ -72,7 +73,9 @@ Refactor into a **modular architecture** with:
 | NFR-3 | All existing tests continue to pass | P0 |
 | NFR-4 | Adding a new rule requires only creating one file in `rules/` | P1 |
 | NFR-5 | Total execution time < 2 seconds for typical spec | P1 |
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## 4. Scope
 
 ### In Scope
@@ -87,7 +90,9 @@ Refactor into a **modular architecture** with:
 - Custom rule plugins (external scripts) - covered in custom-rules-design.md
 - GUI or web interface
 - Integration with external CI systems (beyond exit codes)
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## 5. Success Criteria
 
 | Criterion | Measurement |
@@ -97,6 +102,7 @@ Refactor into a **modular architecture** with:
 | No file exceeds 200 lines | `wc -l` on all scripts |
 | Backward compatible | Existing command syntax works |
 | Checklist 100% complete | All P0/P1 items done |
+<!-- /ANCHOR:success-criteria -->
 
 ## 6. Architecture Overview
 

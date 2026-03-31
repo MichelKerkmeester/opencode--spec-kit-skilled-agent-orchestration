@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Sprint 8 - Deferred Features"
+title: "Tasks: Sprin [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "sprint 8 tasks"

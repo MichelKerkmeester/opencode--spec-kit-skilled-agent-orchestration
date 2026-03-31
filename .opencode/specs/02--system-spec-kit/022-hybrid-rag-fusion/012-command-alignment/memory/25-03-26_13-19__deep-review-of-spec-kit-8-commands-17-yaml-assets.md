@@ -1,6 +1,5 @@
 ---
-title: "Deep Review Of Spec Kit 8 [012-command-alignment/25-03-26_13-19__deep-review-of-spec-kit-8-commands-17-yaml-assets]"
-description: "Deep review of spec kit (8 commands + 17 YAML assets) and memory (6 commands) command directories for alignment with hybrid-rag-fusion program changes. Used 10 cli-copilot..."
+title: "...ec-kit/022-hybrid-rag-fusion/012-command-alignment/25-03-26_13-19__deep-review-of-spec-kit-8-commands-17-yaml-assets]"
 trigger_phrases:
   - "missing yaml"
   - "missing authorization"
@@ -31,18 +30,17 @@ trigger_phrases:
   - "fusion/012"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 ---
-
 # Deep Review Of Spec Kit 8 Commands 17 Yaml Assets
 
 ## SESSION SUMMARY

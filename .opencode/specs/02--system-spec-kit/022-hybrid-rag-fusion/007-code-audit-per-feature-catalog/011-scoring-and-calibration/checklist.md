@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Scoring and Calibration"
+title: "Ver [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/checklist]"
 description: "QA verification for Scoring and Calibration code audit"
 trigger_phrases:
   - "checklist"

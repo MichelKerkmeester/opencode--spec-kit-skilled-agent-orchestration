@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook evaluation phase"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/checklist]"
 description: "2 scenario verdicts (P0) plus evidence capture (P1) for evaluation category."
 trigger_phrases:
   - "evaluation checklist"
   - "evaluation verification"
   - "ablation dashboard checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook evaluation phase

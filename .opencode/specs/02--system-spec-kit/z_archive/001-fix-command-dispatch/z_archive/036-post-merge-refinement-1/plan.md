@@ -1,5 +1,5 @@
 ---
-title: "Post-Merger Refinement Plan [036-post-merge-refinement-1/plan]"
+title: "Post-Merger Refineme [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/plan]"
 description: "id: 036-post-merge-refinement"
 trigger_phrases:
   - "post"
@@ -116,6 +116,7 @@ phase: Planning
 ### 3.4 Document Undocumented MCP Parameters
 - Add missing parameters to memory command docs
 
+<!-- ANCHOR:testing -->
 ## Testing Strategy
 
 ### Validation Tests
@@ -132,6 +133,7 @@ phase: Planning
 1. Confirm existing functionality unchanged
 2. Memory search still works
 3. Checkpoint operations still work
+<!-- /ANCHOR:testing -->
 
 ## Risk Assessment
 

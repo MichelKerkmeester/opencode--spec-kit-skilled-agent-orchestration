@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Dynamic Capture Deprecation Branch [template:level_1/tasks.md]"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "dynamic capture branch tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Create Changelog Command [014-create-changelog-command/plan]"
+title: "Implementation Plan: Create Changelog Command [03--commands-and-skills/015-cmd-create-changelog/plan]"
 description: "Mode-based slash command with 7-step YAML workflow that dynamically detects recent work, resolves changelog component folders, calculates version numbers, and generates formatted changelog files."
 trigger_phrases:
   - "implementation"
@@ -202,6 +202,7 @@ User invokes /create:changelog <spec-folder> [:auto|:confirm]
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -219,6 +220,7 @@ Phase 1 (Command File) ──► Phase 2 (Auto YAML) ──► Phase 3 (Confirm 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

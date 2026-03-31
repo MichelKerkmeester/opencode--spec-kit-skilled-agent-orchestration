@@ -1,5 +1,5 @@
 ---
-title: "Memory Plugin Debugging - bun:sqlite Migration [003-memory-plugin-debugging/spec]"
+title: "...c-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/spec]"
 description: "The semantic memory plugin fails to load memories into the AI context dashboard, showing \"Loaded 0 memories for dashboard\" despite 66+ memories existing in the database. This pr..."
 trigger_phrases:
   - "memory"
@@ -33,6 +33,7 @@ The plugin uses `better-sqlite3`, a native Node.js addon that is incompatible wi
 - Reduces effectiveness of the semantic memory system
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -48,13 +49,16 @@ The plugin uses `better-sqlite3`, a native Node.js addon that is incompatible wi
 - Changes to memory database schema
 - New plugin features
 - Performance optimization beyond basic functionality
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. **Primary**: Plugin logs "Loaded N memories for dashboard" where N > 0
 2. **Verification**: Memory dashboard appears in AI system context
 3. **Functionality**: `memory_load({ memoryId: # })` works correctly from plugin context
 4. **Stability**: No errors or warnings related to SQLite in console
+<!-- /ANCHOR:success-criteria -->
 
 ## Technical Approach
 

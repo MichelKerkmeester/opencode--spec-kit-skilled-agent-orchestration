@@ -1,5 +1,5 @@
 ---
-title: "Specification: Font Performance Optimization [013-font-performance/spec]"
+title: "Specification: Font Performance Optimization [01--anobel.com/z_archive/013-font-performance/spec]"
 description: "This specification outlines the implementation of font performance optimizations for anobel.com. The goal is to improve the site's Core Web Vitals (specifically LCP) and user ex..."
 trigger_phrases:
   - "specification"

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Spec Kit Bug Remediation [080-speckit-bug-remediation/spec]"
+title: "Spec: Spec Kit Bug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/spec]"
 description: "Comprehensive audit by 10 parallel Opus agents identified 45+ bugs across the Spec Kit MCP server codebase. Issues range from critical data corruption risks to ReDoS vulnerabili..."
 trigger_phrases:
   - "spec"
@@ -46,6 +46,7 @@ Comprehensive audit by 10 parallel Opus agents identified **45+ bugs** across th
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. Scope
 
 ### In Scope
@@ -67,6 +68,7 @@ Comprehensive audit by 10 parallel Opus agents identified **45+ bugs** across th
 - Performance optimizations (unless directly related to bugs)
 - New features
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. Bug Registry

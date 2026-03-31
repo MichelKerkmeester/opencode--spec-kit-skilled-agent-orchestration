@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Icon Animation Isolation [003-icon-animation-isolation/tasks]"
+title: "Tasks: Icon Animation Isolation [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/tasks]"
 description: "tasks document for 003-icon-animation-isolation."
 trigger_phrases:
   - "tasks"

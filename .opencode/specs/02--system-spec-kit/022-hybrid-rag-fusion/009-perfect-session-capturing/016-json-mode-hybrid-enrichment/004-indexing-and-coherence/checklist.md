@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: Indexing & Coherence — Embedding Visibility, Trigger Quality, Template Gaps, Cross-Session Validation"
+title: "...hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence/checklist]"
 description: "Verification Date: 2026-03-21"
 trigger_phrases:
   - "indexing coherence checklist"
   - "embedding visibility checklist"
   - "trigger phrase filter checklist"
-  - "toolCalls exchanges checklist"
-  - "OPTIONAL_PLACEHOLDERS verification"
+  - "toolcalls exchanges checklist"
+  - "optional_placeholders verification"
 importance_tier: "normal"
 contextType: "implementation"
 ---

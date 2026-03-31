@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Spec Kit Test Suite [044-speckit-test-suite/checklist]"
+title: "Checklist: Spec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/checklist]"
 description: "Overall: 43/43 (100%) ✅ COMPLETE"
 trigger_phrases:
   - "checklist"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Performance Optimization Review - Spec 025 [025-performance-review/plan]"
+title: "Implementation Plan: Performance Optimization Review - Spec 025 [01--anobel.com/z_archive/023-performance-review/plan]"
 description: "This plan covers the post-implementation review of Spec 024 performance optimizations, remediation of discovered version inconsistencies, and addition of cleanup function to inp..."
 trigger_phrases:
   - "implementation"
@@ -82,6 +82,7 @@ Lighthouse → PageSpeed API/CLI → JSON output → scratch/ → spec.md metric
 <!-- /ANCHOR:architecture -->
 
 <!-- ANCHOR:implementation-phases -->
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Data Gathering
@@ -119,6 +120,7 @@ Lighthouse → PageSpeed API/CLI → JSON output → scratch/ → spec.md metric
 <!-- /ANCHOR:implementation-phases -->
 
 <!-- ANCHOR:testing-strategy -->
+<!-- /ANCHOR:phases -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -155,6 +157,7 @@ Lighthouse → PageSpeed API/CLI → JSON output → scratch/ → spec.md metric
 <!-- /ANCHOR:rollback-plan -->
 
 <!-- ANCHOR:phase-dependencies -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -175,6 +178,7 @@ Phase 2 (Versions) ──► Phase 3 (Cleanup) ──► Phase 4 (Docs)
 <!-- /ANCHOR:phase-dependencies -->
 
 <!-- ANCHOR:effort-estimation -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

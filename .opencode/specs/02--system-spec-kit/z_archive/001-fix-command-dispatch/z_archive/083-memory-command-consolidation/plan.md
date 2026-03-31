@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Command Consolidation [083-memory-command-consolidation/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/plan]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "implementation"
@@ -203,6 +203,7 @@ Consolidate 9 memory commands into 5 through absorption, subcommands, and deleti
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 ```mermaid
@@ -221,6 +222,7 @@ graph TD
 
 **Legend:** P1, P2 can run in parallel. P3, P4 can run in parallel. P5 depends on all.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## Resource Allocation
@@ -237,6 +239,7 @@ graph TD
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If consolidation causes issues:
@@ -247,6 +250,7 @@ If consolidation causes issues:
 
 All changes are reversible via git history.
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## Success Criteria

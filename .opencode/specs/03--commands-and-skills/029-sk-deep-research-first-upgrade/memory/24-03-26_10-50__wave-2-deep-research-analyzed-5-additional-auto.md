@@ -1,14 +1,13 @@
 ---
-title: "Wave 2 Deep Research [029-sk-deep-research-first-upgrade/24-03-26_10-50__wave-2-deep-research-analyzed-5-additional-auto]"
-description: "Wave 2 deep research: analyzed 5 additional auto-research repos (gpt-researcher, AutoResearchClaw,..."
+title: "...mmands-and-skills/029-sk-deep-research-first-upgrade/24-03-26_10-50__wave-2-deep-research-analyzed-5-additional-auto]"
 trigger_phrases:
   - "sk-deep-research upgrade"
   - "deep research improvement"
   - "gpt-researcher"
-  - "AutoResearchClaw"
-  - "AI-Research-SKILLs"
+  - "autoresearchclaw"
+  - "ai-research-skills"
   - "ralph loop"
-  - "ARIS portability"
+  - "aris portability"
   - "research skill modularization"
   - "diagnosis-led repair"
   - "protocol-first design"
@@ -16,18 +15,17 @@ trigger_phrases:
   - "typed pipeline"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
 ---
-
 # Wave 2 Deep Research Analyzed 5 Additional Auto
 
 ## SESSION SUMMARY

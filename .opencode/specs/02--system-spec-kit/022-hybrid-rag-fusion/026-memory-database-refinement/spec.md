@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Database Refinement"
+title: "Feature Specification: Memory Database [02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/spec]"
 description: "The Spec Kit Memory MCP server has 31 tools, 57-column schema, 5-channel hybrid search, causal graph, FSRS scheduling, and a 2,500-LOC save pipeline. A systematic deep-research review audit is needed to surface logic errors, integrity risks, and correctness issues across the full runtime surface before they manifest as production failures."
 trigger_phrases:
   - "memory database refinement"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "mcp server review"
   - "causal graph issues"
   - "search pipeline bugs"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: Memory Database Refinement
@@ -168,6 +168,7 @@ None at spec time. The review scope and iteration count are defined; findings wi
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Reliability
@@ -182,6 +183,7 @@ None at spec time. The review scope and iteration count are defined; findings wi
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

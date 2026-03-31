@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook implement-and-remove-deprecated-features phase [template:level_2/spec.md]"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec]"
 description: "Phase 022 documents the implement-and-remove-deprecated-features manual test packet for the Spec Kit Memory system. It groups three deprecated feature lifecycle scenarios from the central playbook so testers can verify deprecated feature identification, safe removal process, and post-removal reference cleanup."
 trigger_phrases:
   - "implement remove deprecated manual testing"
   - "phase 022 deprecated features"
   - "deprecated feature removal tests"
   - "hybrid rag deprecated playbook"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook implement-and-remove-deprecated-features phase
@@ -154,6 +154,7 @@ No P1 items are defined for this phase; all three deprecated-feature scenarios a
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -170,6 +171,7 @@ No P1 items are defined for this phase; all three deprecated-feature scenarios a
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

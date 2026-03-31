@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook ux-hooks phase [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks/checklist]"
 description: "Verification checklist for Phase 018 UX-hooks manual test packet covering scenarios 103, 104, 105, 106, 107, 166, 167, 168, 169, 179, and 180."
 trigger_phrases:
   - "ux hooks verification checklist"

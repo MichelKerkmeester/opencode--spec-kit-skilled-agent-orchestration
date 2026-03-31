@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook [template:level_2/implementation-summary.md]"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/implementation-summary]"
 description: "Post-implementation summary for manual testing across 24 top-level subdirectories covering 272 exact scenario IDs."
 trigger_phrases:
   - "manual testing implementation summary"
   - "playbook umbrella summary"
   - "phase documentation complete"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

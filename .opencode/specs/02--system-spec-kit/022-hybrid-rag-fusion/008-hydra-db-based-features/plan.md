@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 008-hydra-db-based-features"
+title: "Implementation Plan: 008-hydra-db-based-fea [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/plan]"
 description: "Closure plan for the Hydra parent pack, all six phase packs, supporting operator docs, and the remaining runtime truth-sync regressions."
 trigger_phrases:
   - "implementation plan"
@@ -146,6 +146,7 @@ Notes:
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -163,6 +164,7 @@ Audit -> Doc Normalization -> Runtime Fixes -> Verification -> Final Truth-Sync
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -257,6 +259,7 @@ Templates + Existing Hydra Docs + Runtime Review
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Build Versioned Memory State on Top of Current Schema
@@ -298,3 +301,4 @@ Templates + Existing Hydra Docs + Runtime Review
 **Consequences**:
 - Aligns rollout with safety and compliance requirements.
 - Adds governance implementation and validation work before broader collaboration enablement.
+<!-- /ANCHOR:architecture -->

@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: Sprint 6 — Indexing and Graph"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph/spec]"
 description: "Deepen graph with centrality, community detection, and consolidation. Optimize indexing with anchor-aware thinning, intent capture, and entity extraction."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + phase-child-header | v2.2"
 trigger_phrases:
   - "sprint 6"
   - "indexing and graph"
@@ -10,6 +9,7 @@ trigger_phrases:
   - "entity extraction"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + phase-child-header | v2.2"
 ---
 # Feature Specification: Sprint 6 — Indexing and Graph
 
@@ -192,6 +192,7 @@ Maximize graph channel contribution through centrality and community detection, 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -210,6 +211,7 @@ Maximize graph channel contribution through centrality and community detection, 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

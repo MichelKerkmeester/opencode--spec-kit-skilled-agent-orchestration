@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Embedding Optimization [template:level_2/tasks.md]"
+title: "Tasks: Embedd [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/tasks]"
+description: "title: \"Tasks: Embedding Optimization [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "embedd"
+  - "009"
+  - "embedding"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Embedding Optimization
 

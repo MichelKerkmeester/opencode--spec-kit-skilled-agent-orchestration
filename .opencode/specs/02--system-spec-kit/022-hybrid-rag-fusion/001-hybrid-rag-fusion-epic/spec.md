@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 001-hybrid-rag-fusion-epic"
+title: "Feature Specification: 001-hybrid-rag-fusion [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec]"
 description: "Parent Level 3 packet for the Hybrid RAG Fusion epic, tracking the live 12-child subtree: 11 sprint packets plus the phase-012 release-control child."
 trigger_phrases:
   - "001 hybrid rag fusion epic"
@@ -25,6 +25,7 @@ This parent packet is the entry point for the Hybrid RAG Fusion epic. It replace
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -43,6 +44,7 @@ This parent packet is the entry point for the Hybrid RAG Fusion epic. It replace
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -153,6 +155,7 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Documentation Integrity
@@ -166,8 +169,10 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 ### Scope Control
 - **NFR-S01**: Parent normalization must stay at the parent packet and root-facing sprint-child navigation layer.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Structural Edge Cases
@@ -178,8 +183,10 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 - Archival files such as `implementation-summary-sprints.md` remain useful reference material, but their metadata must not pretend to be the active parent packet.
 - The parent packet should not restate runtime implementation history already captured inside the sprint children.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -191,6 +198,7 @@ Provide a concise parent packet for the 12-child epic so the sprint subtree and 
 | Validation | 9/15 | Parent-level validator cleanup plus phase-link verification |
 | **Total** | **66/100** | **Level 3 parent coordination work** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

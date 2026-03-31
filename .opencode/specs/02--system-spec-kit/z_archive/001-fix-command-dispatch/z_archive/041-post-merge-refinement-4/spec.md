@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Post-Merge Refinement 4 - Comprehensive System Alignment [041-post-merge-refinement-4/spec]"
+title: "Feature Specificatio [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/spec]"
 description: "Complete specification for addressing 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration."
 trigger_phrases:
   - "feature"
@@ -66,6 +66,7 @@ Resolve all identified issues to achieve full alignment between documentation an
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -83,6 +84,7 @@ Resolve all identified issues to achieve full alignment between documentation an
 - UI/visual redesign of documentation
 - Breaking changes to MCP tool signatures
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -185,6 +187,7 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### Agent System Requirements
@@ -237,8 +240,10 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 | Story 6 - Quick Memory Save | REQ-FUNC-018 | P1 High |
 | Story 7 - Simplified Gate Documentation | N/A (documentation improvement) | P2 Medium |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -270,8 +275,10 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 - **NFR-O02**: Database migrations MUST be backward compatible
 - **NFR-O03**: Changes MUST be validated before deployment (checklist verification)
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -289,8 +296,10 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 - How does system handle upgrade from v15 to v16 memory format? Automatic migration
 - What happens when user deletes memory mid-search? Return partial results with warning
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -311,6 +320,7 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 | Consistency | Version number mismatches | 0 | Grep audit |
 | Usability | Average interactions for simple task | ≤3 | User testing |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -346,6 +356,7 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -357,8 +368,10 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 - **Breaking changes to MCP signatures** - Tool signatures must remain backward compatible.
 - **Gate system architectural simplification** - Documentation can be improved, but gate logic itself is not restructured in this pass.
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - **Q1**: Should we merge agent naming (Librarian vs research) by renaming the directory or updating AGENTS.md? Recommendation: Rename directory to match role name.
@@ -366,6 +379,7 @@ As an AI agent, I need gate system documentation to be more accessible so that I
 - **Q3**: Should validate-spec.sh be a bash script or Node.js for cross-platform compatibility? Recommendation: Node.js with npm script wrapper.
 - **Q4**: How should /memory:save:quick determine spec folder when multiple are active? Recommendation: Use most recent spec folder from session context.
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

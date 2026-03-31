@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-Merge Refinement 2 [037-post-merge-refinement-2/tasks]"
+title: "Tasks: Post-Merge [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/tasks]"
 description: "tasks document for 037-post-merge-refinement-2."
 trigger_phrases:
   - "tasks"

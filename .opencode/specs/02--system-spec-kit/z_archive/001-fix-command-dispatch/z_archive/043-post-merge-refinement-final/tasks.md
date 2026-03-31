@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Post-Merge Refinement Final [043-post-merge-refinement-final/tasks]"
+title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/tasks]"
 description: "1. [ ] Locate cached version at line 209"
 trigger_phrases:
   - "task"
@@ -26,6 +26,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical Fixes (P0)
 
 ### TASK-P0-001: Remove Duplicate getConstitutionalMemories
@@ -203,6 +204,8 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: Documentation Alignment (P1-DOC)
 
 ### TASK-P1-001: Fix Gate Numbering
@@ -362,8 +365,10 @@ contextType: "implementation"
   - Single terminology used across all files
   - No mixed terms for same concept
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Code Fixes (P1-CODE)
 
 ### TASK-P1-004: Fix includeContiguity Parameter
@@ -487,6 +492,7 @@ contextType: "implementation"
   - Accurately list all commands in namespace
   - Provide useful examples
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Quality Improvements (P2)

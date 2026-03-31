@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-Research Wave 1 (Governance [004-post-research-wave-1-governance-foundations/decision-record]"
+title: "...spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/decision-record]"
 description: "This phase package delegates decision records to the parent spec folder."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ contextType: "decision"
 ---
 
 <!-- ANCHOR:delegation -->
+<!-- ANCHOR:decision -->
 ## Decision Record Delegation
 
 This phase package delegates decision records to the parent spec folder.
@@ -42,6 +43,7 @@ Decisions relevant to this wave's scope (adaptive fusion, typed trace, artifact-
 ---
 
 <!-- ANCHOR:context -->
+<!-- /ANCHOR:decision -->
 ## Context
 
 Wave 1 exists to establish governance-safe runtime foundations before controlled delivery. The package intentionally references root ADRs so that contract, routing, and fusion decisions remain centralized in a single canonical record.

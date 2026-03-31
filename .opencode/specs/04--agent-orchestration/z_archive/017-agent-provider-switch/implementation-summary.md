@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Spec 017 - Agent Provider Switching [017-agent-provider-switch/implementation-summary]"
+title: "Implementation Summary: Spec 017 [04--agent-orchestration/z_archive/017-agent-provider-switch/implementation-summary]"
 description: "Implemented agent provider switching system enabling runtime toggle between Copilot and ChatGPT profiles while preserving .opencode/agent/*.md as the canonical runtime path."
 trigger_phrases:
   - "implementation"

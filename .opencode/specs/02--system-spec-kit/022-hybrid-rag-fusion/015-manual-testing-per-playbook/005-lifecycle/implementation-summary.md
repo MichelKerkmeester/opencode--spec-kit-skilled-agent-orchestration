@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook lifecycle phase"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/implementation-summary]"
 description: "Post-execution summary for Phase 005 lifecycle scenarios EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144. Status: Complete. Pass rate: 10/10 PASS."
 trigger_phrases:
   - "lifecycle implementation summary"

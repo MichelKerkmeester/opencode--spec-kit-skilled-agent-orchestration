@@ -1,5 +1,5 @@
 ---
-title: "Plan: Fix SQLite Transaction Nesting Issue [057-transaction-nesting-fix/plan]"
+title: "Plan: Fix SQLite [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix/plan]"
 description: "The memory_index_scan MCP tool fails with \"cannot start a transaction within a transaction\" when bulk indexing memory files. This prevents reindexing the memory database after s..."
 trigger_phrases:
   - "plan"

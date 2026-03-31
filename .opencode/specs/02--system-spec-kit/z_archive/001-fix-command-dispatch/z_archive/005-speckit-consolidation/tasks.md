@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: SpecKit Skill Consolidation [005-speckit-consolidation/tasks]"
+title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/tasks]"
 description: "Detailed task breakdown for migrating .opencode/speckit/ into .opencode/skills/workflows-spec-kit/."
 trigger_phrases:
   - "task"
@@ -21,6 +21,7 @@ Detailed task breakdown for migrating `.opencode/speckit/` into `.opencode/skill
 ---
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## PHASE 1: FILE MIGRATION
 
 ### Task 1.1: Create Directory Structure
@@ -104,6 +105,8 @@ find .opencode/skills/workflows-spec-kit -type f | wc -l
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## PHASE 2: SCRIPT PATH UPDATES
 
 ### Task 2.1: Update common.sh
@@ -152,8 +155,10 @@ PROJECT_ROOT="$SCRIPT_DIR/../../../.."
 - [ ] Test `create-spec-folder.sh --help`
 - [ ] Test `archive-spec.sh --help`
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## PHASE 3: DOCUMENTATION UPDATES
 
 ### Task 3.1: Update AGENTS.md
@@ -180,6 +185,7 @@ PROJECT_ROOT="$SCRIPT_DIR/../../../.."
 - [ ] Grep for orphaned old paths in AGENTS.md
 - [ ] Grep for orphaned old paths in AGENTS (Universal).md
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## PHASE 4: SKILL REFERENCE UPDATES

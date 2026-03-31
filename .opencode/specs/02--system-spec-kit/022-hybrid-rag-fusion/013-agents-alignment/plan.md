@@ -1,6 +1,14 @@
 ---
-title: "Plan: 013 — Agent Alignment"
+title: "Plan: 013 — Agent Alignment [02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/plan]"
 description: "Reconciliation plan for updating the 013 packet and the scoped runtime-facing agent docs to the live multi-runtime lineage model."
+trigger_phrases:
+  - "plan"
+  - "013"
+  - "agent"
+  - "alignment"
+  - "agents"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 013 — Agent Alignment

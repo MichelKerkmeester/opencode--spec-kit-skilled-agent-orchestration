@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: System-Spec-Kit Bug Remediation [049-system-analysis-bugs/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs/decision-record]"
 description: "The system has a hardcoded EMBEDDING_DIM = 768 constant in vector-index.js, but the active Voyage AI provider returns 1024-dimension embeddings. This causes 100% of memory index..."
 trigger_phrases:
   - "decision"
@@ -15,11 +15,13 @@ contextType: "decision"
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: System-Spec-Kit Bug Remediation
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 3
 - **Status:** Active
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## DR-001: Dynamic Embedding Dimension Strategy
@@ -59,6 +61,7 @@ We will:
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## DR-002: Template Metadata Format Standardization
 
 ### Context
@@ -86,6 +89,7 @@ Templates use inconsistent metadata formats: 6 use bulleted lists, 4 use tables.
 - Update 4 templates: `handover.md`, `implementation-summary.md`, `debug-delegation.md`, `context_template.md` (metadata section only)
 - Document exception for `context_template.md` in style guide
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## DR-003: Implementation-Summary Requirement Logic
@@ -171,6 +175,7 @@ When embedding provider dimension doesn't match database schema, should the syst
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | ID | Decision | Date | Status |
@@ -180,3 +185,4 @@ When embedding provider dimension doesn't match database schema, should the syst
 | DR-003 | Require impl-summary when complete | 2024-12-31 | Approved |
 | DR-004 | Validation severity levels | 2024-12-31 | Approved |
 | DR-005 | Fail fast on dimension mismatch | 2024-12-31 | Approved |
+<!-- /ANCHOR:decision -->

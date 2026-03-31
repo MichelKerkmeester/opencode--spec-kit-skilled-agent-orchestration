@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Sprint 3 — Query Intelligence"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/tasks]"
 description: "Task breakdown for query complexity routing, RSF evaluation, and channel min-representation."
 trigger_phrases:
   - "sprint 3 tasks"
@@ -100,6 +100,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T004 Run shadow comparison: RSF vs RRF on 100+ queries, compute Kendall tau [included] {T002c}
@@ -110,6 +111,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
+<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [x] All P1 tasks T001a-T001d, T002a-T002c, T003a-T003c, T004-T007 marked `[x]`

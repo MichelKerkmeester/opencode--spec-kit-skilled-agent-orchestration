@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Lib Consolidation [051-lib-consolidation/plan]"
+title: "Implementation Plan: Lib [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation/plan]"
 description: "mkdir -p .opencode/skill/system-spec-kit/lib"
 trigger_phrases:
   - "implementation"
@@ -172,6 +172,7 @@ node -e "require('./.opencode/skill/system-spec-kit/mcp_server/context-server');
 - Index a memory file (MCP)
 - Verify embeddings work with all providers
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues discovered post-implementation:
@@ -179,7 +180,9 @@ If issues discovered post-implementation:
 1. **Revert imports** - Git revert the import changes
 2. **Delete shared lib** - Remove `.opencode/skill/system-spec-kit/shared/`
 3. **Restore re-exports** - Put back wrapper modules in scripts/lib
+<!-- /ANCHOR:rollback -->
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies Between Phases
 
 ```
@@ -193,6 +196,7 @@ Phase 4 (Documentation) - Can parallelize with Phase 5
     ↓
 Phase 5 (Verification) - Must be last
 ```
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Assessment
 

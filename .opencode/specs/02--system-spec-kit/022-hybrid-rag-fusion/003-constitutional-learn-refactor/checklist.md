@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist"
+title: "Verification Checklist [02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor/checklist]"
+description: "title: \"Verification Checklist\""
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "003"
+  - "constitutional"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/checklist.md -->
 ---

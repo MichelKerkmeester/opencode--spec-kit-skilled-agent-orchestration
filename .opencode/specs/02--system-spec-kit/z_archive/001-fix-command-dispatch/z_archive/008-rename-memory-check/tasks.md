@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Rename Memory Command (Two-Phase Rename) [008-rename-memory-check/tasks]"
+title: "Tasks: Rename Memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check/tasks]"
 description: "tasks document for 008-rename-memory-check."
 trigger_phrases:
   - "tasks"
@@ -15,6 +15,7 @@ contextType: "implementation"
 # Tasks: Rename Memory Command (Two-Phase Rename)
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: `/memory` → `/memory:check` (COMPLETED)
 
 ### Task Breakdown
@@ -50,6 +51,8 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: `/memory:check` → `/memory:search` (COMPLETED)
 
 ### Task Breakdown
@@ -84,6 +87,7 @@ contextType: "implementation"
 - [x] Final grep sweep - zero stale `/memory:check` refs in active files
 - [x] Historical spec files preserved (intentional)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
 ## Summary

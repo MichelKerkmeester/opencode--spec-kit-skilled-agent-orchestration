@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Orchestrate Agent Context Window Protection [006-orchestrate-context-window/spec]"
+title: "Feature Specification: Orchestrate Agent [04--agent-orchestration/z_archive/006-orchestrate-context-window/spec]"
 description: "The orchestrate agent (orchestrate.md) can dispatch up to 20 sub-agents in parallel but has zero protection against its own context window overflow. When all agents return simul..."
 trigger_phrases:
   - "feature"
@@ -160,6 +160,7 @@ Add a **Context Window Budget (CWB)** system to `orchestrate.md` that prevents t
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -176,6 +177,7 @@ Add a **Context Window Budget (CWB)** system to `orchestrate.md` that prevents t
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

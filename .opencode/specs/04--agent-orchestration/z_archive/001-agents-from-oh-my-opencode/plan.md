@@ -1,5 +1,5 @@
 ---
-title: "Plan: Agent Architecture Analysis [001-agents-from-oh-my-opencode/plan]"
+title: "Plan: Agent Architecture Analysis [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/plan]"
 description: "Multi-agent parallel research using 5 specialized analysis agents"
 trigger_phrases:
   - "plan"

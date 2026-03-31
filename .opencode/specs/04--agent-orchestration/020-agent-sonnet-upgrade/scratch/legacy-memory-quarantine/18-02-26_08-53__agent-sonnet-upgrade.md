@@ -44,7 +44,7 @@ contextType: general
 |:--------------|:----------|
 | Session Date | 2026-02-18 |
 | Session ID | session-1771401185313-61ul0w9nk |
-| Spec Folder | 04--agent-orchestration/020-agent-sonnet-upgrade |
+| Spec Folder | 020-agent-sonnet-upgrade |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -134,13 +134,13 @@ I'll execute this step by step. Let me start by reading the current CHANGELOG fo
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 04--agent-orchestration/020-agent-sonnet-upgrade
+/spec_kit:resume 020-agent-sonnet-upgrade
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 04--agent-orchestration/020-agent-sonnet-upgrade
+Spec: 020-agent-sonnet-upgrade
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -362,9 +362,9 @@ Tool: bash
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 04--agent-orchestration/020-agent-sonnet-upgrade` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 020-agent-sonnet-upgrade` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "04--agent-orchestration/020-agent-sonnet-upgrade" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "020-agent-sonnet-upgrade" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -376,16 +376,16 @@ Tool: bash
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "04--agent-orchestration/020-agent-sonnet-upgrade", limit: 10 })
+memory_search({ specFolder: "020-agent-sonnet-upgrade", limit: 10 })
 
 # Verify memory file integrity
-ls -la 04--agent-orchestration/020-agent-sonnet-upgrade/memory/
+ls -la 020-agent-sonnet-upgrade/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 04--agent-orchestration/020-agent-sonnet-upgrade --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 020-agent-sonnet-upgrade --force
 ```
 
 ### Recovery Priority
@@ -458,7 +458,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771401185313-61ul0w9nk"
-spec_folder: "04--agent-orchestration/020-agent-sonnet-upgrade"
+spec_folder: "020-agent-sonnet-upgrade"
 channel: "main"
 
 # Classification
@@ -564,7 +564,7 @@ related_sessions:
 
   []
 
-parent_spec: "04--agent-orchestration/020-agent-sonnet-upgrade"
+parent_spec: "020-agent-sonnet-upgrade"
 child_sessions:
 
   []

@@ -1,6 +1,5 @@
 ---
-title: "Complete Rewrite Of Mcp [016-rewrite-memory-mcp-readme/25-03-26_18-12__complete-rewrite-of-mcp-server-readme-from]"
-description: "Complete rewrite of MCP server README from scratch in simple-terms voice. Two-tier architecture:...; Two-tier voice: simple narrative + technical tables; Section 4 split: 4."
+title: "...c-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/25-03-26_18-12__complete-rewrite-of-mcp-server-readme-from]"
 trigger_phrases:
   - "simple terms"
   - "two-tier voice"
@@ -34,18 +33,17 @@ trigger_phrases:
   - "readme"
 importance_tier: "important"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 2
 filesystem_file_count: 2
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 ---
-
 # Complete Rewrite Of Mcp Server Readme From
 
 ## SESSION SUMMARY

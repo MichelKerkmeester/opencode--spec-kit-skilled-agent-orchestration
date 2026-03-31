@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Command Agent Utilization Audit [014-command-agent-utilization/plan]"
+title: "Implementation Plan: Command Agent Utilization [04--agent-orchestration/z_archive/014-command-agent-utilization/plan]"
 description: "Audit all 18 create command files (12 YAML workflows + 6 MD references) to ensure compliance with AGENTS.md routing rules. Route spec folder creation through @speckit (Rule 5), ..."
 trigger_phrases:
   - "implementation"
@@ -157,6 +157,7 @@ Scope narrowed from plan's 12 files to 4 — only `create_skill` and `create_age
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -177,6 +178,7 @@ Phase 2 (@context) ──┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -278,6 +280,7 @@ Phase 2 (@context) ──┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Scope Reduction from 12 to 4 Files for Phase 1
@@ -311,3 +314,4 @@ See `decision-record.md` for full ADR details.
 <!--
 LEVEL 3 PLAN — Retroactive documentation for completed implementation
 -->
+<!-- /ANCHOR:architecture -->

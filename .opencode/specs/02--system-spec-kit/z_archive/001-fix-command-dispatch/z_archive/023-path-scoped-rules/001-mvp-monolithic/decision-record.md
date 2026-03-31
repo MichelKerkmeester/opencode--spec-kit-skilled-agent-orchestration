@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Path-Scoped Validation Rules [001-mvp-monolithic/decision-record]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/decision-record]"
 description: "We need to implement a validation script for spec folders. The validation logic needs to"
 trigger_phrases:
   - "decision"
@@ -16,6 +16,7 @@ contextType: "decision"
 # Decision Record: Path-Scoped Validation Rules
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record.md | v1.0 -->
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -25,6 +26,7 @@ contextType: "decision"
 | **Created** | 2024-12-24 |
 | **Deciders** | Developer, AI Assistant |
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## ADR-001: Validation Implementation Language
@@ -106,6 +108,7 @@ We need to determine the documentation level (1/2/3) of a spec folder to apply a
 ### Implementation
 
 ```markdown
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -129,6 +132,7 @@ Fallback inference:
 - Requires updating spec.md template
 - Inference might mismatch author intent
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## ADR-003: Configuration Approach

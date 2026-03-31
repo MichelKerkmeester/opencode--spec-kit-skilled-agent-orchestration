@@ -1,5 +1,5 @@
 ---
-title: "Performance Optimization Review - Spec 023 [023-performance-review/spec]"
+title: "Performance Optimization Review - Spec 023 [01--anobel.com/z_archive/023-performance-review/spec]"
 description: "Spec 024 implemented Phase 1 performance optimizations but lacks post-implementation verification. Additionally, version inconsistencies were discovered across HTML files, and s..."
 trigger_phrases:
   - "performance"
@@ -128,6 +128,7 @@ Document the performance impact of Spec 024 implementation, remediate discovered
 <!-- /ANCHOR:risks-dependencies -->
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -146,6 +147,7 @@ Document the performance impact of Spec 024 implementation, remediate discovered
 <!-- /ANCHOR:non-functional-requirements -->
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Version Update Scenarios
@@ -282,6 +284,7 @@ Document the performance impact of Spec 024 implementation, remediate discovered
 <!-- /ANCHOR:phase-2-candidates -->
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None currently
@@ -291,6 +294,7 @@ Document the performance impact of Spec 024 implementation, remediate discovered
 <!-- /ANCHOR:open-questions -->
 
 <!-- ANCHOR:revision-history -->
+<!-- /ANCHOR:questions -->
 ## REVISION HISTORY
 
 | Date | Author | Changes |

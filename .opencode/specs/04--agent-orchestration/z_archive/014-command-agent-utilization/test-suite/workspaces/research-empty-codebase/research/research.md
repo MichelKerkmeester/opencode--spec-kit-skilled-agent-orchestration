@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: GraphQL API Layer for Microservices - Comprehensive Technical [research-empty-codebase/research]"
+title: "...--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/research]"
 description: "Complete research documentation providing in-depth technical analysis, architecture patterns, and implementation guidance for a GraphQL API layer enabling microservices communic..."
 trigger_phrases:
   - "feature"

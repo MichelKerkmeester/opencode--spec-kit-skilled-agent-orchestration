@@ -1,5 +1,5 @@
 ---
-title: "Tasks: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/tasks]"
+title: "Tasks: system [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/tasks]"
 description: "title: \"Tasks: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "tasks"
@@ -20,6 +20,7 @@ total-tasks: 28
 ---
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: CRITICAL (P0)
 
 | # | Task | File(s) | Status | Notes |
@@ -31,6 +32,8 @@ total-tasks: 28
 | 1.5 | Fix Voyage model version contradiction | `embedding_resilience.md`, `environment_variables.md` | [ ] | voyage-3 vs voyage-4 |
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: HIGH (P1)
 
 | # | Task | File(s) | Status | Notes |
@@ -59,7 +62,9 @@ total-tasks: 28
 | 2.22 | Add @handover to orchestrate capability map | `agent/orchestrate.md` | [ ] | Agent missing from map |
 | 2.23 | Add Section 0 to orchestrate.md | `agent/orchestrate.md` | [ ] | Missing Model Preference |
 | 2.24 | Remove project-specific Spec 082 ref from speckit.md | `agent/speckit.md` | [ ] | Framework file, not project |
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: MEDIUM (P2)
 
 | # | Task | File(s) | Status | Notes |
@@ -70,6 +75,7 @@ total-tasks: 28
 | 3.4 | Remove phantom entries from scripts-registry.json | `scripts/scripts-registry.json` | [ ] | check-completion.sh, setup.sh |
 | 3.5 | Consolidate deprecated content in level_selection_guide | `references/templates/level_selection_guide.md` | [ ] | ~70 lines of deprecated COMPLEXITY_GATE |
 | 3.6 | Archive 081 pre-analysis as SUPERSEDED | `specs/003-*/081-*/` (8 files) | [ ] | Add headers, create summary |
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: LOW
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit & Memory System Remediation [048-system-analysis/decision-record]"
+title: "Decision Record: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/decision-record]"
 description: "48 unique issues identified across the SpecKit and Memory systems need to be organized for implementation. Multiple organization strategies were considered."
 trigger_phrases:
   - "decision"
@@ -21,6 +21,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary
 
 | ID | Decision | Status |
@@ -34,6 +35,7 @@ contextType: "decision"
 | DEC-007 | Use string includes for simple trigger phrases | ✅ Approved |
 | DEC-008 | Defer test fixtures to separate spec | ✅ Approved |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## DEC-001: Work Stream Organization
@@ -200,6 +202,7 @@ Constitutional memories rarely change but cache TTL is only 60 seconds, causing 
 
 ---
 
+<!-- ANCHOR:context -->
 ## DEC-006: Date Parsing in generate-context.js
 
 ### Context
@@ -229,6 +232,7 @@ Timestamps stored as formatted strings like "2025-11-08 @ 14:30:00" cannot be re
 - Display formatted for human consumption
 - Minor storage overhead (acceptable)
 
+<!-- /ANCHOR:context -->
 ---
 
 ## DEC-007: Trigger Phrase Matching Optimization

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: manual-testing-per-playbook mutation phase [template:level_2/tasks.md]"
+title: "Tasks: manual-testing-per [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/tasks]"
 description: "Task tracker for 9 mutation playbook scenarios. One task per scenario, all PENDING."
 trigger_phrases:
   - "mutation tasks"

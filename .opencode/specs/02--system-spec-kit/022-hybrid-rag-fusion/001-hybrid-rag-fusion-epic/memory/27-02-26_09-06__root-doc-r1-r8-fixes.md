@@ -1,18 +1,16 @@
 ---
-title: "Root docs R1-R8 fixes"
-description: "Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md,..."
+title: "Root docs [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]"
 trigger_phrases:
-  - "TM-04 sprint assignment"
-  - "CHK-S0F3 validation effort"
-  - "R1-R8 root spec fixes"
+  - "tm-04 sprint assignment"
+  - "chk-s0f3 validation effort"
+  - "r1-r8 root spec fixes"
   - "root doc ultra-think fixes"
   - "channel drop spec 140"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # Root Doc R1 R8 Fixes
 
 ## SESSION SUMMARY

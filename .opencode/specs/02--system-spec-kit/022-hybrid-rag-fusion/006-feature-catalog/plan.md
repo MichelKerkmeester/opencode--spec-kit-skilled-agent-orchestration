@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Feature Catalog Audit & Remediation"
+title: "Implementation Plan: Feature Catalog Audit & [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/plan]"
 description: "Historical 30-agent audit snapshot (2026-03-08) plus 2026-03-16 current-state addendum for omitted-snippet classification and remediation updates."
 trigger_phrases:
   - "feature catalog"
@@ -204,6 +204,7 @@ Phase E (Current-State) ──► Phase H (Deep Research Remediation)
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -224,8 +225,10 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 | H5-H8: P1 Required | H1-H4 | F |
 | D: Documentation | C | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -236,6 +239,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 | D: Documentation | Low | ~15 min |
 | **Total** | | **~1 hour** |
 
+<!-- /ANCHOR:effort -->
 ---
 
 ## L3: DEPENDENCY GRAPH

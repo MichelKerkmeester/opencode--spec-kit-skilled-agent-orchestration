@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-deep-research Review Folder Contract"
+title: "Tasks: sk-deep-research Review Folder Contract [03--commands-and-skills/034-sk-deep-research-review-folders/tasks]"
 description: "Task Format: T### [P?] Description (file path or file family)"
 trigger_phrases:
   - "review folder tasks"
@@ -47,7 +47,7 @@ contextType: "general"
 - [x] T006 Update review confirm workflow paths, messages, and migration hooks (`.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml`)
 - [x] T007 [P] Update the canonical OpenCode deep-review contract (`.opencode/agent/deep-review.md`)
 - [x] T008 [P] Update Claude, Codex, and Gemini deep-review runtime variants (`.claude/agents/deep-review.md`, `.codex/agents/deep-review.toml`, `.gemini/agents/deep-review.md`)
-- [x] T009 [P] Update review-mode assets and templates (`.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`, `.opencode/skill/sk-deep-research/assets/deep_review_strategy.md`, `.opencode/skill/sk-deep-research/assets/deep_review_dashboard.md`)
+- [x] T009 [P] Update review-mode assets and templates (`.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`, `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`, `.opencode/skill/sk-deep-review/assets/deep_review_dashboard.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---

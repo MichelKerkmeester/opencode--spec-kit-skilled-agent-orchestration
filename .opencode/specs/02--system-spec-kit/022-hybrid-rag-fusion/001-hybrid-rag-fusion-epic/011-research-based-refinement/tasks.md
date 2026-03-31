@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Research-Based Refinement"
+title: "Tasks: Resear [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/tasks]"
 description: "Cross-phase coordination tasks for 5 sub-phases implementing 29 research recommendations."
 trigger_phrases:
   - "research refinement tasks"

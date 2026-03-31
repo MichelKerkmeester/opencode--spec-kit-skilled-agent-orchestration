@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Script Analysis Testing - Technical Approach [053-script-analysis-testing/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing/plan]"
 description: "Implementation plan for end-to-end workflow testing of the Spec Kit Memory system."
 trigger_phrases:
   - "implementation"
@@ -48,6 +48,7 @@ Execute end-to-end testing of the complete Spec Kit Memory workflow as documente
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)
@@ -61,6 +62,7 @@ Execute end-to-end testing of the complete Spec Kit Memory workflow as documente
 - [ ] Auto-indexing verified
 - [ ] Test report generated
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -77,6 +79,7 @@ Execute end-to-end testing of the complete Spec Kit Memory workflow as documente
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Gate Testing (Steps 1-3)
@@ -107,8 +110,10 @@ Execute end-to-end testing of the complete Spec Kit Memory workflow as documente
   - Validation output
 - **Duration**: Immediate (single session)
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Test Approach
@@ -125,6 +130,7 @@ Each workflow step is tested in sequence:
 - **Skill query**: "save memory context"
 - **Spec folder**: "053-script-analysis-testing"
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS

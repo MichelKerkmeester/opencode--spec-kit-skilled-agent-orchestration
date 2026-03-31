@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Perfect Session Capturing [template:level_3/checklist.md]"
+title: "Verification Checklist: Perfect [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/checklist]"
 description: "Verification date: 2026-03-20; current scope is the authoritative phase-tree reference realignment pass."
 trigger_phrases:
   - "verification"

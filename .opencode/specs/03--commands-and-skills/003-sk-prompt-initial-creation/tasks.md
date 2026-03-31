@@ -1,5 +1,15 @@
 ---
-title: "Tasks: sk-prompt-improver Initial Creation"
+title: "Tasks: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/tasks]"
+description: "title: \"Tasks: sk-prompt-improver Initial Creation\""
+trigger_phrases:
+  - "tasks"
+  - "prompt"
+  - "improver"
+  - "initial"
+  - "creation"
+  - "003"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: sk-prompt-improver Initial Creation
 
@@ -22,7 +32,12 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
+---
 <!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
 - [x] T001 Create skill directory structure (.opencode/skill/sk-prompt-improver/)
@@ -31,7 +46,13 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
-## Phase 2: Core Implementation
+---
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T004 Create SKILL.md with all required sections (.opencode/skill/sk-prompt-improver/SKILL.md)
 - [x] T005 [P] Create references/system_prompt.md (adapted from System Prompt v0.200)
@@ -45,7 +66,17 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
-## Phase 3: Integration
+---
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Phase 3: Verification
+
+### Phase 3: Integration
 
 - [x] T013 Update skill_advisor.py with sk-prompt-improver intent boosters (.opencode/skill/scripts/skill_advisor.py)
 - [x] T014 Validate skill with package_skill.py
@@ -53,6 +84,12 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
+---
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -62,7 +99,18 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
+---
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+
+---
+<!-- /ANCHOR:cross-refs -->
+
+---

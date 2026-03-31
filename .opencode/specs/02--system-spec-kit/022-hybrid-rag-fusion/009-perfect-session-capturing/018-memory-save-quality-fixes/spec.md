@@ -1,17 +1,17 @@
 ---
-title: "Feature Specification: Memory Save Quality Root Cause Fixes"
-description: "This phase resolved eight backend extraction defects that degraded `/memory:save` output quality even after the earlier runtime fixes."
-level: 2
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes/spec]"
+description: "This phase resolved eight backend extraction defects that degraded /memory:save output quality even after the earlier runtime fixes."
 trigger_phrases:
   - "memory save quality fixes"
   - "018 memory save quality fixes"
   - "root cause fixes"
+importance_tier: "important"
+contextType: "implementation"
 key_topics:
   - "generate-context"
   - "quality remediation"
   - "validator compliance"
-importance_tier: "high"
-contextType: "implementation"
+level: 2
 ---
 # Feature Specification: Memory Save Quality Root Cause Fixes
 
@@ -161,6 +161,7 @@ Eliminate the eight root causes, preserve the existing pipeline shape, and raise
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -179,6 +180,7 @@ Eliminate the eight root causes, preserve the existing pipeline shape, and raise
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -211,6 +213,7 @@ Eliminate the eight root causes, preserve the existing pipeline shape, and raise
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - No open questions remain for this completed phase; any newly discovered save-quality regressions should start a new follow-up phase.

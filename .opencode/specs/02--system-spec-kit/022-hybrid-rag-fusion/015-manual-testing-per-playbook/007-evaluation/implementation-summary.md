@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook evaluation phase"
+title: "Implem [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/implementation-summary]"
 description: "Post-execution summary for 2 evaluation scenarios. Ablation studies and reporting dashboard both PASS."
 trigger_phrases:
   - "evaluation summary"
   - "evaluation results"
   - "ablation dashboard results"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

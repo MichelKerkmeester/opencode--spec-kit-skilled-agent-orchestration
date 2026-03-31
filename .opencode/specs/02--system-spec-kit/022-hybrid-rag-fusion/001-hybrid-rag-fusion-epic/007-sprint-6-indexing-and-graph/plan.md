@@ -1,13 +1,13 @@
 ---
-title: "Implementation Plan: Sprint 6 — Indexing and Graph"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph/plan]"
 description: "Graph centrality, community detection, N3-lite consolidation, anchor-aware thinning, encoding-intent capture, auto entity extraction, and spec folder hierarchy."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify | v2.2"
 trigger_phrases:
   - "sprint 6 plan"
   - "indexing and graph plan"
   - "consolidation plan"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify | v2.2"
 ---
 # Implementation Plan: Sprint 6 — Indexing and Graph
 
@@ -176,6 +176,7 @@ Two sequential sub-sprints: Sprint 6a (practical, no graph-scale dependency) →
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -203,6 +204,7 @@ Sprint 6b (Graph, GATED) ──────────────────�
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 ### Sprint 6a Effort

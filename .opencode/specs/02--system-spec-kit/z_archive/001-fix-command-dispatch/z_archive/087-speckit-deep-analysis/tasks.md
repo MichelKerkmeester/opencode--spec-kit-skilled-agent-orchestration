@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/tasks]"
+title: "Tasks: System-Spec-Ki [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -40,6 +40,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Critical Bug Fixes
 
 - [x] T002 Add `CREATE_LINKED` to CHECK constraint at line 431 (`vector-index.js`)
@@ -52,8 +53,10 @@ contextType: "implementation"
 - [x] T009 Replace AGENTS.md -> AGENTS.md at lines 772-773 (`SKILL.md`)
 - [x] T010 Replace AGENTS.md -> AGENTS.md at line 870 (`SKILL.md`)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Moderate Misalignments
 
 - [x] T011 Add tool prefix convention note in Section 8 (`AGENTS.md`)
@@ -75,8 +78,10 @@ contextType: "implementation"
 - [x] T027 Lower debug boost from 1.0 to 0.6 for chrome-devtools (`skill_advisor.py:223`)
 - [x] T028 Document shared-DB architecture in `opencode.json`
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2b: Extended AGENTS.md Migration
 
 - [x] T029 [P] Replace AGENTS.md in `handover.md` (2 locations)
@@ -89,8 +94,10 @@ contextType: "implementation"
 - [x] T036 Replace AGENTS.md in `skill_advisor.py` comments (4 locations)
 - [x] T037 Replace AGENTS.md in `README.md` (1 location)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T038 Verify 0 AGENTS.md refs in SKILL.md
@@ -102,8 +109,10 @@ contextType: "implementation"
 - [x] T044 Test `skill_advisor.py "debug this issue"` not routed to chrome-devtools
 - [x] T045 Final comprehensive grep for remaining AGENTS.md in active files
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -111,11 +120,14 @@ contextType: "implementation"
 - [x] All verification checks passing
 - [x] Spec folder documentation complete
 
+<!-- /ANCHOR:completion -->
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decisions**: See `decision-record.md`
+<!-- /ANCHOR:cross-refs -->

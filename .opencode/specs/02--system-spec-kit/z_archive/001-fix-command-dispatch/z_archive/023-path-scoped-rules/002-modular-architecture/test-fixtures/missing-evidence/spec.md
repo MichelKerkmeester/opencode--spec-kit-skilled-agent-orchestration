@@ -1,5 +1,5 @@
 ---
-title: "Spec: Missing Evidence Fixture [missing-evidence/spec]"
+title: "...01-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/missing-evidence/spec]"
 description: "This fixture tests detection of missing evidence on completed items."
 trigger_phrases:
   - "spec"
@@ -25,11 +25,15 @@ contextType: "decision"
 This fixture tests detection of missing evidence on completed items.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 - Validator must catch P0 completed items without evidence
 - Validator must catch P1 completed items without evidence
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 Test fixture for missing evidence detection.
+<!-- /ANCHOR:scope -->

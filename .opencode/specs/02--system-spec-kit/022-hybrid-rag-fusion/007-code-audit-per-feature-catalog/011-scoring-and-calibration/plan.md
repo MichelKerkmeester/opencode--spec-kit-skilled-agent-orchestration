@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Scoring and Calibration"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/plan]"
 description: "Technical plan for auditing 23 Scoring and Calibration features against source code"
 trigger_phrases:
   - "audit plan"
@@ -145,14 +145,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 23 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -190,3 +193,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 23 features) ──► Phase 3 (Synthesi
 - **F23** (Fusion policy shadow evaluation V2): Flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.
 
 **Conclusion**: All behavioral descriptions are accurate. The three PARTIAL findings are naming/path precision issues only — no functional discrepancies detected. No deprecated or undocumented features found.
+<!-- /ANCHOR:effort -->

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Comprehensive Performance Optimization - anobel.com [031-anobel-performance-analysis/decision-record]"
+title: "Decision Record: Comprehensive Performance [01--anobel.com/029-anobel-performance-analysis/decision-record]"
 description: "Hero scripts in anobel.com have inconsistent timeout behavior"
 trigger_phrases:
   - "decision"
@@ -159,7 +159,7 @@ This inconsistency causes mobile LCP of 20.2 seconds when resources are slow or 
 <!-- /ANCHOR:adr-001 -->
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Motion.dev Ready Event Pattern
+### ADR-002: Motion.dev Ready Event Pattern
 
 ### Metadata
 
@@ -323,7 +323,7 @@ if (window.Motion && typeof window.Motion.animate === 'function') {
 <!-- /ANCHOR:adr-002 -->
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Webflow Platform Constraints Acceptance
+### ADR-003: Webflow Platform Constraints Acceptance
 
 ### Metadata
 
@@ -449,7 +449,7 @@ Combined, these represent ~496KB of blocking resources that contribute to slow F
 <!-- /ANCHOR:adr-003 -->
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: Video Poster Strategy
+### ADR-004: Video Poster Strategy
 
 ### Metadata
 
@@ -542,7 +542,7 @@ Hero videos on anobel.com have no poster images, causing:
 <!-- /ANCHOR:adr-004 -->
 
 <!-- ANCHOR:adr-005 -->
-## ADR-005: Bundle Strategy
+### ADR-005: Bundle Strategy
 
 ### Metadata
 
@@ -641,7 +641,11 @@ Currently, all 48 JS files (236KB) and 47 CSS files (237KB) load on every page:
 
 ---
 
-## Session Decision Log
+<!-- /ANCHOR:adr-005-impl -->
+<!-- /ANCHOR:adr-005 -->
+
+<!-- ANCHOR:decision -->
+### Session Decision Log
 
 > **Purpose**: Track all gate decisions made during this session for audit trail and learning.
 
@@ -660,12 +664,12 @@ Currently, all 48 JS files (236KB) and 47 CSS files (237KB) load on every page:
 - Include both PASS and BLOCK decisions for completeness
 - Link to relevant ADR if decision resulted in new architecture record
 
+<!-- /ANCHOR:decision -->
 ---
 
-## Future Decisions (Pending)
+<!-- ANCHOR:decision -->
+### Future Decisions (Pending)
 
-
-<!-- /ANCHOR:adr-005-impl -->
 
 ### ADR-006: TypeKit Font Strategy (Pending)
 **Status**: Needs Investigation
@@ -689,4 +693,4 @@ LEVEL 3+ DECISION RECORD (~500 lines)
 -->
 
 
-<!-- /ANCHOR:adr-005 -->
+<!-- /ANCHOR:decision -->

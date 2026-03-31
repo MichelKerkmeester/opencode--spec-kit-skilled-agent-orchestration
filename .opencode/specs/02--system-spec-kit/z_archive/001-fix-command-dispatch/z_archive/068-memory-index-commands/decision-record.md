@@ -1,5 +1,5 @@
 ---
-title: "Decision: Memory Command Separation - Architecture Decision Record [068-memory-index-commands/decision-record]"
+title: "Decision: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/decision-record]"
 description: "Architecture Decision Record documenting the decision to separate /memory:search into two focused commands."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ Architecture Decision Record documenting the decision to separate `/memory:searc
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-070
@@ -30,8 +31,10 @@ Architecture Decision Record documenting the decision to separate `/memory:searc
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -72,8 +75,10 @@ All these operations share:
 - Two 350-400 line files are easier to maintain than one 667-line file
 - Users can learn the new `/memory:database` command quickly
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISION
 
 ### Summary
@@ -140,6 +145,7 @@ AFTER (Separated):
 └────────────────────────────────┘   └────────────────────────────────┘
 ```
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. ALTERNATIVES CONSIDERED
@@ -222,6 +228,7 @@ AFTER (Separated):
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -251,6 +258,7 @@ AFTER (Separated):
 ### Technical Debt Introduced
 - None - this decision reduces technical debt by improving separation of concerns
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES

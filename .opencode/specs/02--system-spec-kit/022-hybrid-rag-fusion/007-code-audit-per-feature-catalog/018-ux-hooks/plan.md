@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — UX Hooks"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks/plan]"
 description: "Technical plan for auditing 19 UX Hooks features against source code"
 trigger_phrases:
   - "audit plan"
@@ -156,14 +156,17 @@ The module header documents the feature as OFF (disabled), but the runtime defau
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 19 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -181,3 +184,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 19 features) ──► Phase 3 (Synthesi
 | M1 | Audit spec created | All docs in place |
 | M2 | All features audited | 19/19 complete |
 | M3 | Synthesis delivered | Summary report finalized |
+<!-- /ANCHOR:effort -->

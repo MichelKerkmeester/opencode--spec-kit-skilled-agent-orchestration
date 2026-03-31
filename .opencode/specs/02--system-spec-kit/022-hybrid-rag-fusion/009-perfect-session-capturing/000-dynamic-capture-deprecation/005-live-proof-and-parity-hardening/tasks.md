@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Live Proof And Parity Hardening [template:level_1/tasks.md]"
+title: "...d-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "retained live proof"

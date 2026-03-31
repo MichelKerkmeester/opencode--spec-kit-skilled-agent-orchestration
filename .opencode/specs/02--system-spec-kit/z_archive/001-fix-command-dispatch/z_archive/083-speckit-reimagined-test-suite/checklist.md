@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Reimagined Test Suite [083-speckit-reimagined-test-suite/checklist]"
+title: "Verificat [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/checklist]"
 description: "When marking items complete, include evidence references using this format"
 trigger_phrases:
   - "verification"
@@ -30,6 +30,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:docs -->
 ## Evidence Documentation
 
 When marking items complete, include evidence references using this format:
@@ -41,6 +42,7 @@ When marking items complete, include evidence references using this format:
 
 Example: `- [x] CHK-001: Session manager unit tests complete [E:session-manager.test.js] [E:pass:25/25] [E:coverage:85%]`
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## Test Verification Requirements
@@ -330,6 +332,7 @@ Example: `- [x] CHK-001: Session manager unit tests complete [E:session-manager.
 
 ---
 
+<!-- ANCHOR:code-quality -->
 ## Code Quality
 
 - [ ] CHK-161 [P0] All test files pass `node --check` syntax validation
@@ -338,6 +341,7 @@ Example: `- [x] CHK-001: Session manager unit tests complete [E:session-manager.
 - [ ] CHK-164 [P1] Assertion messages are descriptive
 - [ ] CHK-165 [P2] Tests grouped by functionality
 
+<!-- /ANCHOR:code-quality -->
 ---
 
 ## L3+: Performance Verification
@@ -453,6 +457,7 @@ The following test files from 082-speckit-reimagined must be verified as passing
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified | Status |
@@ -473,6 +478,7 @@ The following test files from 082-speckit-reimagined must be verified as passing
 
 **Verification Date**: Pending
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Evidence Log

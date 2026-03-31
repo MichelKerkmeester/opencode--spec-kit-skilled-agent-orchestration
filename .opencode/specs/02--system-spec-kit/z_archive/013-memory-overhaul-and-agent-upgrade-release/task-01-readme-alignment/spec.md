@@ -1,5 +1,5 @@
 ---
-title: "Task 01 — README Audit & Alignment [task-01-readme-alignment/spec]"
+title: "Task 01 — [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment/spec]"
 description: "Audit every README.md file in the .opencode/ directory tree to ensure all statistics, feature descriptions, version numbers, and cross-references reflect the post-implementation..."
 trigger_phrases:
   - "task"

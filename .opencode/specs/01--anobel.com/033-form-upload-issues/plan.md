@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: CV Upload Form File Type Validation Fix [035-form-upload-issues/plan]"
+title: "Implementation Plan: CV Upload Form File Type Validation Fix [01--anobel.com/033-form-upload-issues/plan]"
 description: "Phase 1 (COMPLETED): Fixed three independent MIME validation bugs — expanded MIME type configuration with extension fallback (MIME_TYPE_MAP), aggressive whitespace stripping for..."
 trigger_phrases:
   - "implementation"
@@ -253,6 +253,7 @@ R2 Bucket (anobel-uploads)
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -277,6 +278,7 @@ Phase 1 (Diagnose) ──────┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | Actual Effort |

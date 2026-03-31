@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: JSON-Primary Deprecation [template:level_2/checklist.md]"
+title: "Verific [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/checklist]"
 description: "Verification Date: 2026-03-20"
 trigger_phrases:
   - "verification"
   - "checklist"
   - "json primary deprecation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 ---
 # Verification Checklist: JSON-Primary Deprecation

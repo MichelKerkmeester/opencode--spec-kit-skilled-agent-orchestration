@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Modular Validation Architecture [002-modular-architecture/decision-record]"
+title: "...spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/decision-record]"
 description: "The MVP validation script (validate-spec.sh) is ~600 lines. Adding all planned features would grow it to ~1400 lines, making maintenance difficult."
 trigger_phrases:
   - "decision"
@@ -15,6 +15,7 @@ contextType: "decision"
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Modular Validation Architecture
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -23,6 +24,7 @@ contextType: "decision"
 | **Created** | 2024-12-24 |
 | **Status** | Active |
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## ADR-001: Modular vs Monolithic Architecture
@@ -261,6 +263,7 @@ Existing scripts and CI may depend on current validate-spec.sh behavior.
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | ID | Date | Decision | Status |
@@ -273,3 +276,4 @@ Existing scripts and CI may depend on current validate-spec.sh behavior.
 | ADR-006 | 2024-12-24 | Pure bash glob matching | Active |
 | ADR-007 | 2024-12-24 | Two fixtures per rule | Active |
 | ADR-008 | 2024-12-24 | Full backward compat | Active |
+<!-- /ANCHOR:decision -->

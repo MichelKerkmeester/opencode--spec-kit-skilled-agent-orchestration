@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: Code Audit per Feature Catalog"
+title: "Verification Checklist: Code [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/checklist]"
 description: "Master QA verification for the full code audit"
 trigger_phrases:
   - "checklist"
   - "code audit"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: Code Audit per Feature Catalog

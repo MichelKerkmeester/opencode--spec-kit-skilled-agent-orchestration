@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Download Button Mobile Fix [027-download-btn-on-mobile/spec]"
+title: "Feature Specification: Download Button Mobile Fix [01--anobel.com/z_archive/027-download-btn-on-mobile/spec]"
 description: "Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and..."
 trigger_phrases:
   - "feature"
@@ -114,6 +114,7 @@ Enable reliable PDF downloads on all mobile devices with proper visual feedback 
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - None - all issues resolved
@@ -122,6 +123,7 @@ Enable reliable PDF downloads on all mobile devices with proper visual feedback 
 ---
 
 <!-- ANCHOR:related-documents -->
+<!-- /ANCHOR:questions -->
 ## 8. RELATED DOCUMENTS
 
 | Document | Purpose |

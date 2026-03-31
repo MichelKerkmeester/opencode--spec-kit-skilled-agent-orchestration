@@ -1,6 +1,15 @@
 ---
-title: "Tasks: Rewrite Memory MCP README"
+title: "Tasks: Rewrite Memory MCP README [02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/tasks]"
 description: "Task breakdown for complete rewrite of the MCP server README covering all 33 tools in simple-terms voice."
+trigger_phrases:
+  - "tasks"
+  - "rewrite"
+  - "memory"
+  - "mcp"
+  - "readme"
+  - "016"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Tasks: 016-rewrite-memory-mcp-readme

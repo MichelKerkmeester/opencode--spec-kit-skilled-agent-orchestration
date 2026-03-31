@@ -1,5 +1,5 @@
 ---
-title: "QA Verification Checklist [077-speckit-upgrade-from-research/checklist]"
+title: "QA Verifi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/checklist]"
 description: "checklist document for 077-speckit-upgrade-from-research."
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation Checks
 
 ### P0 - Must Complete Before Starting
@@ -35,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Phase 1 Validation: Uncertainty Tracking & Core Epistemic
 
 ### P0 - Core Epistemic Infrastructure
@@ -93,6 +95,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:testing -->
 ## Integration Testing
 
 ### P1 - End-to-End Workflow Verification
@@ -106,8 +109,10 @@ contextType: "implementation"
 - [ ] Uncertainty thresholds validated in real usage
   - Evidence: _[Real task with uncertainty tracking output]_
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation Updates
 
 ### P1 - System Documentation
@@ -121,6 +126,7 @@ contextType: "implementation"
 - [ ] Release notes prepared
   - Evidence: _[Pending: Version tagging not yet performed]_
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## Level 3+ Verification: Architecture

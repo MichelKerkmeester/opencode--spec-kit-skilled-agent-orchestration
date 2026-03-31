@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Remove Emoji Enforcement from /create Command [011-create-command-emoji-enforcement/tasks]"
+title: "Tasks: Remove Emoji Enforcement from /create Command [03--commands-and-skills/012-cmd-create-emoji-enforcement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -30,12 +30,16 @@ contextType: "implementation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+
+---
+
+---
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Analysis & Documentation
+## Phase 1: Setup
 
 - [x] T001 Create spec folder structure (`.opencode/specs/03--commands-and-skills/012-cmd-create-emoji-enforcement/`)
 - [x] T002 Document requirements in spec.md
@@ -46,6 +50,10 @@ contextType: "implementation"
 - [x] T007 Create file map of all locations requiring changes [Evidence: All files mapped and updated]
 
 **Completion Criteria**: All enforcement locations identified and documented with file paths and line numbers.
+
+---
+
+---
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -62,12 +70,20 @@ contextType: "implementation"
 - [x] T014 Update any error messages that mention emoji requirements [Evidence: Updated guidance text in templates]
 
 **Completion Criteria**: No emoji validation logic remains; templates allow emoji-free content; all documentation reflects optional emoji usage.
+
+---
+
+---
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
+
+### Phase 3: Verification
+
+### Phase 3: Verification
 
 - [x] T015 Test `/create` command with emoji-free input (command creation) [Evidence: Strict compliance audit score 96, PASS]
 - [x] T016 Test `/create` command with emoji-free input (skill creation) [Evidence: Strict compliance audit score 96, PASS]
@@ -79,6 +95,10 @@ contextType: "implementation"
 - [x] T022 Complete implementation-summary.md with final results [Evidence: Final summary documented]
 
 **Completion Criteria**: Command executes successfully without emoji validation errors; all test cases pass; checklist P0 items verified.
+
+---
+
+---
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -90,6 +110,10 @@ contextType: "implementation"
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed (all P0 checklist items)
 - [x] implementation-summary.md documents final state
+
+---
+
+---
 <!-- /ANCHOR:completion -->
 
 ---
@@ -100,7 +124,6 @@ contextType: "implementation"
 - **Specification**: See `spec.md` (REQ-001 to REQ-005)
 - **Plan**: See `plan.md` (3-phase approach with ADRs)
 - **Verification**: See `checklist.md` (P0/P1/P2 items)
-<!-- /ANCHOR:cross-refs -->
 
 ---
 
@@ -110,3 +133,8 @@ LEVEL 3 TASKS
 - Clear completion criteria for each task
 - Parallelizable tasks marked [P]
 -->
+
+---
+<!-- /ANCHOR:cross-refs -->
+
+---

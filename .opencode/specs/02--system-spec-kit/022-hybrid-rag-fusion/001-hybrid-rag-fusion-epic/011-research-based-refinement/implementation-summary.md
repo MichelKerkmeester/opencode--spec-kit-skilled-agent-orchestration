@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Research Based Refinement"
+title: "...ystem-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "011-research-based-refinement implementation summary"

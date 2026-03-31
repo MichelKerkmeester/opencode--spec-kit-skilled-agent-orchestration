@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Form Input Components Enhancement [012-form-input-upload-select/implementation-summary]"
+title: "Implementation Summary: Form Input [01--anobel.com/z_archive/011-form-input-upload-select/implementation-summary]"
 description: "This spec folder documents the implementation of two enhanced form input components for anobel.com"
 trigger_phrases:
   - "implementation"
@@ -15,7 +15,6 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Form Input Components Enhancement
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 This spec folder documents the implementation of two enhanced form input components for anobel.com:
@@ -24,11 +23,11 @@ This spec folder documents the implementation of two enhanced form input compone
 2. **File Upload** - FilePond-based file upload with Cloudflare R2 storage
 
 **Implementation Status:** Code complete (v2.0), pending Webflow integration
-<!-- /ANCHOR:overview -->
 
 ---
 
 <!-- ANCHOR:what-was-built -->
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 ### Part A: Custom Select Component (v2.0)
@@ -55,6 +54,7 @@ A compact single-file upload component that:
 ---
 
 <!-- ANCHOR:final-architecture -->
+<!-- /ANCHOR:what-built -->
 ## Final Architecture
 
 ### Custom Select Flow (v2.0)
@@ -284,3 +284,10 @@ Tested in modern browsers. Uses:
 
 *Last updated: 2025-01-03*
 <!-- /ANCHOR:version-history -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

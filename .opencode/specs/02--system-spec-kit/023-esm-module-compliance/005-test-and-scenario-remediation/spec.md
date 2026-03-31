@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Test and Scenario Remediation"
+title: "Feature Specification: Test and [02--system-spec-kit/023-esm-module-compliance/005-test-and-scenario-remediation/spec]"
 description: "Fix all ESM-caused test failures, pre-existing test regressions, and manual playbook scenario gaps discovered during the ESM migration verification."
 trigger_phrases:
   - "test remediation"
@@ -7,8 +7,8 @@ trigger_phrases:
   - "023 phase 5"
   - "pre-existing test failures"
   - "playbook scenario gaps"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Test and Scenario Remediation
 

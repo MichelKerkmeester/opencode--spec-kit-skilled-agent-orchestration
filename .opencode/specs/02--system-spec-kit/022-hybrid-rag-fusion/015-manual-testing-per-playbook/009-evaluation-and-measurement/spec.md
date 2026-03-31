@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Manual Testing — Evaluation and Measurement"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement/spec]"
 description: "Test specification for the 16 manual test scenarios in the evaluation-and-measurement phase of the hybrid-rag-fusion playbook."
 trigger_phrases:
   - "manual testing"
@@ -169,6 +169,7 @@ All 16 scenarios must be executed and pass before this phase is marked complete.
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -187,6 +188,7 @@ All 16 scenarios must be executed and pass before this phase is marked complete.
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

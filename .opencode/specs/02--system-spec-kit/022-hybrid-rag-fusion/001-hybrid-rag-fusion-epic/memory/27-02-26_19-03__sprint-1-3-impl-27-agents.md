@@ -1,6 +1,5 @@
 ---
-title: "Sprint 1-3 Pipeline Implementation"
-description: "Completed the full 8-wave, 27-agent Hybrid RAG Fusion pipeline implementation across Sprints 1-3."
+title: "Sprint [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_19-03__sprint-1-3-impl-27-agents]"
 trigger_phrases:
   - "sprint 3 query intelligence"
   - "query complexity router"
@@ -9,10 +8,9 @@ trigger_phrases:
   - "confidence truncation"
 importance_tier: "critical"
 contextType: "general"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # Sprint 1-3 Impl 27 Agents
 
 ## SESSION SUMMARY

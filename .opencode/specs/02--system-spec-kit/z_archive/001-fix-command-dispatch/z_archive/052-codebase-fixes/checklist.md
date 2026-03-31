@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Codebase Fixes [052-codebase-fixes/checklist]"
+title: "Verification Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/checklist]"
 description: "All critical, high-priority, and documentation fixes have been implemented and verified"
 trigger_phrases:
   - "verification"
@@ -79,6 +79,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## P2 - Documentation Fixes (Added during verification)
 
 ### DOC001: Fix scripts/README.md
@@ -104,6 +105,7 @@ contextType: "implementation"
 - [x] Line 1300: 12.6.1 → 16.0.0
 - **Evidence:** Agent verified all version references updated
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## P1 - Performance Fixes (Added during comprehensive verification)
@@ -123,6 +125,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:code-quality -->
 ## P2 - Code Quality Fixes (Added during comprehensive verification)
 
 ### CODE001: Create shared/utils.js
@@ -141,6 +144,7 @@ contextType: "implementation"
 - [x] All other catches already had proper handling
 - **Evidence:** Both files pass syntax check
 
+<!-- /ANCHOR:code-quality -->
 ---
 
 ## Deferred Items (Documented for Future Work)

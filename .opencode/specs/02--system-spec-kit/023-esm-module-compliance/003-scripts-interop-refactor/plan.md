@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Scripts Interop Refactor"
+title: "Implementation Plan: Scripts Interop [02--system-spec-kit/023-esm-module-compliance/003-scripts-interop-refactor/plan]"
 description: "CJS-to-ESM interoperability helpers, scripts-side consumer refactors, and test rewrites for @spec-kit/scripts."
 trigger_phrases:
   - "scripts interop plan"
   - "023 phase 3 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Scripts Interop Refactor
 

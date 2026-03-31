@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Sprint 0 — Measurement Foundation"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/plan]"
 description: "Fix graph channel ID format, chunk collapse dedup, co-activation hub domination, and build evaluation infrastructure with BM25 baseline."
 trigger_phrases:
   - "sprint 0 plan"
@@ -155,6 +155,7 @@ Two independent subsystem tracks converging at verification
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -183,6 +184,7 @@ Phase 2 (Eval Infrastructure) ──────────┤
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: SpecKit Upgrade v1.0.7.0-v1.0.9.0 [077-speckit-upgrade-from-research/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/implementation-summary]"
 description: "This implementation adds epistemic awareness capabilities to the SpecKit framework, enabling agents to track not just confidence (\"how sure am I?\") but also uncertainty (\"how mu..."
 trigger_phrases:
   - "implementation"
@@ -112,6 +112,7 @@ Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (C
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 ### skill_advisor.py Test Output
@@ -140,6 +141,7 @@ $ python3 skill_advisor.py --health
 }
 ```
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## Code Review Results
@@ -225,3 +227,10 @@ git checkout HEAD~N -- .opencode/skill/system-spec-kit/
 
 *Implementation completed: 2026-01-23*
 *Implementer: Claude Opus 4.5*
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

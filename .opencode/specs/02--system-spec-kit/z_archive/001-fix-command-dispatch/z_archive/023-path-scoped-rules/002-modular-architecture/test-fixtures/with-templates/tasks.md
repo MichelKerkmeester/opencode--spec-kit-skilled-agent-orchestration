@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Template Test Fixture [with-templates/tasks]"
+title: "...001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/with-templates/tasks]"
 description: "tasks document for with-templates."
 trigger_phrases:
   - "tasks"

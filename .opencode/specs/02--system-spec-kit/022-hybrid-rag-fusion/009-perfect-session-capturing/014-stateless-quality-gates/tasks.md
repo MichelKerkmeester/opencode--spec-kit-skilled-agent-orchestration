@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Stateless Quality Gate Fixes"
+title: "Tasks: State [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "stateless quality gates tasks"

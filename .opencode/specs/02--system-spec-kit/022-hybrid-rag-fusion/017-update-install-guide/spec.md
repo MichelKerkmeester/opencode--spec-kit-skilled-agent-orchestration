@@ -1,5 +1,5 @@
 ---
-title: "Update Install Guide"
+title: "Update Install Guide [02--system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide/spec]"
 description: "Verify and update the MCP server installation guide against current build system and dependencies."
 trigger_phrases:
   - "install guide update"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Reimagined Test Suite [083-speckit-reimagined-test-suite/tasks]"
+title: "Tasks: SpecKi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/tasks]"
 description: "Task Format: T### [P?] [B:T###?] Description (target file)"
 trigger_phrases:
   - "tasks"
@@ -329,6 +329,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## COMPLETION CRITERIA
 
 - [ ] All W-TS tasks (T001-T020) marked `[x]` - Session Management tests
@@ -341,6 +342,7 @@ contextType: "implementation"
 - [ ] Test coverage report generated
 - [ ] Integration tests verified against live SQLite database
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## AI EXECUTION PROTOCOL
@@ -458,6 +460,7 @@ mcp_server/tests/
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## CROSS-REFERENCES
 
 - **Implementation Spec**: See `../082-speckit-reimagined/spec.md`
@@ -480,3 +483,4 @@ LEVEL 3+ TEST SUITE TEMPLATE (~450 lines)
 - Test file organization and naming conventions
 - AI execution protocol for test implementation
 -->
+<!-- /ANCHOR:cross-refs -->

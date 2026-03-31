@@ -1,5 +1,5 @@
 ---
-title: "Per-Folder Description Infrastructure"
+title: "Per-Folder Descript [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions/spec]"
 description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
 trigger_phrases:
   - "descriptions.json"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "spec folder descriptions"
   - "per-folder description"
   - "memory uniqueness"
-  - "memorySequence"
+  - "memorysequence"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -185,6 +185,7 @@ Give each spec folder its own `description.json` containing identity metadata (`
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -203,6 +204,7 @@ Give each spec folder its own `description.json` containing identity metadata (`
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. L2: EDGE CASES
 
 - Blank/whitespace-only spec.md: description.json is valid with empty `description`, empty `keywords`, intact identity metadata

@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Quality Scorer Unification"
+title: "Implementa [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/plan]"
+description: "title: \"Implementation Plan: Quality Scorer Unification\""
+trigger_phrases:
+  - "implementa"
+  - "plan"
+  - "001"
+  - "quality"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Quality Scorer Unification
 

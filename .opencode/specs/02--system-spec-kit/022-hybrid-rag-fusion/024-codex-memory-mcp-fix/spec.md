@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Codex Memory MCP Fix"
+title: "Feature Specification: Codex Memory MCP Fix [02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix/spec]"
 description: "Codex-facing spec_kit_memory reliability required both the earlier startup stabilization work and the newly landed DB-isolation fix that keeps initializeDb(':memory:') or custom-path connections from leaking fixture writes into the shared live DB. This packet records that narrow remediation slice, the verification evidence, and the remaining broader follow-on recommendations without rewriting the older 020 packet."
 trigger_phrases:
   - "codex memory mcp fix"
@@ -27,6 +27,7 @@ Codex-facing `spec_kit_memory` runtime reliability is now stable across the narr
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,6 +43,7 @@ Codex-facing `spec_kit_memory` runtime reliability is now stable across the narr
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -161,6 +163,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -176,8 +179,10 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 - **NFR-R02**: Follow-on recommendations must map to real files or review findings so the next implementation wave is auditable.
 - **NFR-R03**: Direct DB lifecycle helpers must keep `initializeDb(':memory:')` and custom-path flows isolated by promoting the active shared connection and DB path before later default reads or writes occur.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -194,8 +199,10 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 - The Codex startup slice stays green while broader remediation remains open: packet must avoid collapsing these two truths into one status line.
 - A future implementation wave grows beyond focused Codex MCP remediation: `tasks.md` must call out when a new numbered packet should be opened instead of overloading `024`.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -207,6 +214,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 | Coordination | 11/15 | Depends on `020`, Codex config surfaces, and future runtime follow-up sequencing |
 | **Total** | **61/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -251,6 +259,7 @@ Keep this Level 3 packet truthful by updating it to record the landed Codex `spe
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Should the next runtime implementation open `025` if it grows beyond the focused Codex MCP slice? Current routing guidance says yes.

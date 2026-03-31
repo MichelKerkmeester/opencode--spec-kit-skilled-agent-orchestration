@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Context-Server Modularization [066-context-server-modularization/implementation-summary]"
+title: "...ystem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/implementation-summary]"
 description: "Successfully decomposed the monolithic context-server.js (2,703 lines) into a modular architecture following the Spec 058 pattern."
 trigger_phrases:
   - "implementation"
@@ -70,12 +70,14 @@ Successfully decomposed the monolithic `context-server.js` (2,703 lines) into a 
 | memory-surface.js | 195 | SK-004 auto_surface_memories |
 | index.js | 28 | Re-exports |
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 - **Syntax check**: PASS
 - **Module imports**: PASS (85 exports across 5 directories)
 - **Server startup**: PASS (initializes correctly)
 - **All modules <300 lines**: PASS (largest: 287 lines)
+<!-- /ANCHOR:verification -->
 
 ## Architecture
 
@@ -128,3 +130,10 @@ context-server.js
 - Prior Work: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization
 - Spec: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/spec.md
 - Plan: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/plan.md
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

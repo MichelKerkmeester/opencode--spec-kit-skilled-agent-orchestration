@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Source Capabilities And Structured Preference [template:level_1/spec.md]"
+title: "...009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference/spec]"
 description: "Replace source-name policy branches with typed source capabilities and prefer structured save paths when curated input exists."
 trigger_phrases:
   - "source capabilities"

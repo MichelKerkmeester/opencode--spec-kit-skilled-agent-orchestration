@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: system-spec-kit References Reorganization [056-spec-kit-references-reorganization/plan]"
+title: "Implement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/plan]"
 description: "Reorganize the system-spec-kit references/ folder from a flat structure into logical sub-folders, following patterns established in workflows-code skill improvement."
 trigger_phrases:
   - "implementation"
@@ -101,9 +101,11 @@ references/
 | Phase 5 | 15 minutes |
 | **Total** | **~70 minutes** |
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues arise:
 1. Git provides full history of changes
 2. Can revert file moves with `git checkout`
 3. SKILL.md changes tracked in version control
+<!-- /ANCHOR:rollback -->

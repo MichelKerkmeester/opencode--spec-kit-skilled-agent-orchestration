@@ -1,5 +1,5 @@
 ---
-title: "Quality Checklist: Memory System Analysis & Roampal Comparison [001-memory-repo-analysis/checklist]"
+title: "...kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/checklist]"
 description: "Validation checklist for research task completion. All P0 items must be completed before claiming done."
 trigger_phrases:
   - "quality"

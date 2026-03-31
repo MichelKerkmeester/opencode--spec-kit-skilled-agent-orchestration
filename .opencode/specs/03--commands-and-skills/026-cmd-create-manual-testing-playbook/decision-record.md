@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: /create:testing-playbook Command [template:level_3/decision-record.md]"
+title: "Decision Record: /create:testing-playbo [03--commands-and-skills/026-cmd-create-manual-testing-playbook/decision-record]"
 description: "Accepted implementation decision covering naming, source inputs, integrated root guidance, and runtime scope for /create:testing-playbook."
 trigger_phrases:
   - "testing playbook command adr"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/spec]"
+title: "Feature Specification: ChatGPT Agent Suite Codex Optimization [04--agent-orchestration/021-codex-orchestrate/spec]"
 description: "The ChatGPT agent set had drift across files: orchestration was optimized in isolation while sibling agent documents still contained inconsistent thresholds, naming, fast-path b..."
 trigger_phrases:
   - "feature"
@@ -23,7 +23,7 @@ contextType: "decision"
 <!-- ANCHOR:executive-summary -->
 ## EXECUTIVE SUMMARY
 
-The ChatGPT agent set had drift across files: orchestration was optimized in isolation while sibling agent documents still contained inconsistent thresholds, naming, fast-path behavior, and completion rules. This spec expands from a single-file orchestrate update to a full eight-file audit and consistency pass under `.opencode/agent/chatgpt/` so the whole ChatGPT profile follows the same Codex-optimized operating model.
+The ChatGPT agent set had drift across files: orchestration was optimized in isolation while sibling agent documents still contained inconsistent thresholds, naming, fast-path behavior, and completion rules. This spec expands from a single-file orchestrate update to a full eight-file audit and consistency pass under the historical ChatGPT runtime directory so the whole ChatGPT profile follows the same Codex-optimized operating model.
 
 **Key Decisions**: consistency-first cross-agent edits; contradiction cleanup between orchestration and leaf-agent rules; Codex-calibrated defaults maintained across context/debug/handover/research/review/speckit/write/orchestrate.
 
@@ -61,7 +61,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 ## 3. SCOPE
 
 ### In Scope
-- Audit and update all 8 files under `.opencode/agent/chatgpt/`
+- Audit and update all 8 files under the historical ChatGPT runtime directory
 - Resolve contradictions between orchestrator policy and leaf-agent instructions
 - Normalize Codex optimization language and threshold behavior across the agent set
 - Ensure consistency across context/debug/handover/research/review/speckit/write/orchestrate
@@ -70,20 +70,20 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 ### Out of Scope
 - Changes to `.opencode/agent/orchestrate.md` or `.opencode/agent/copilot/*.md`
 - Runtime tooling changes, parser changes, or MCP/server implementation
-- Non-ChatGPT agent definitions outside `.opencode/agent/chatgpt/`
+- Non-ChatGPT agent definitions outside the historical ChatGPT runtime directory
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/agent/chatgpt/context.md` | Modify | Add adaptive retrieval modes and structured budget alignment |
-| `.opencode/agent/chatgpt/debug.md` | Modify | Clarify low-complexity fast path with explicit minimal analysis step |
-| `.opencode/agent/chatgpt/handover.md` | Modify | Align fast-path/tool-call bounds and context-package wording |
-| `.opencode/agent/chatgpt/research/research/research.md` | Modify | Add trivial-research exception semantics for memory-save step |
-| `.opencode/agent/chatgpt/review.md` | Modify | Codex model consistency and blocker-vs-required rule clarity |
-| `.opencode/agent/chatgpt/speckit.md` | Modify | Correct level semantics and validation completion wording |
-| `.opencode/agent/chatgpt/write.md` | Modify | Enforce template-first fast path and mode-aware DQI thresholds |
-| `.opencode/agent/chatgpt/orchestrate.md` | Modify | Direct-first dispatch profile, DEG, and CWB/TCB threshold updates |
+| `.opencode/agent/chatgpt/context` | Modify | Add adaptive retrieval modes and structured budget alignment |
+| `.opencode/agent/chatgpt/debug` | Modify | Clarify low-complexity fast path with explicit minimal analysis step |
+| `.opencode/agent/chatgpt/handover` | Modify | Align fast-path/tool-call bounds and context-package wording |
+| `.opencode/agent/chatgpt/research/research/research` | Modify | Add trivial-research exception semantics for memory-save step |
+| `.opencode/agent/chatgpt/review` | Modify | Codex model consistency and blocker-vs-required rule clarity |
+| `.opencode/agent/chatgpt/speckit` | Modify | Correct level semantics and validation completion wording |
+| `.opencode/agent/chatgpt/write` | Modify | Enforce template-first fast path and mode-aware DQI thresholds |
+| `.opencode/agent/chatgpt/orchestrate` | Modify | Direct-first dispatch profile, DEG, and CWB/TCB threshold updates |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -95,7 +95,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Expand optimization scope to all ChatGPT agent files | All 8 files under `.opencode/agent/chatgpt/` audited and updated where needed |
+| REQ-001 | Expand optimization scope to all ChatGPT agent files | All 8 files under the historical ChatGPT runtime directory audited and updated where needed |
 | REQ-002 | Fix contradiction drift across agent definitions | No unresolved policy contradictions between orchestrate and sibling agent guidance |
 | REQ-003 | Keep Codex optimization posture consistent | Direct-first, threshold, and fast-path guidance is compatible across agents |
 | REQ-004 | Preserve dispatch/safety invariants | NDP and LEAF constraints remain unweakened across updates |
@@ -138,6 +138,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -156,6 +157,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Dispatch Edge Cases
@@ -164,7 +166,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 - Recovery from aborted tasks: avoid reflexive over-splitting; prefer smallest viable fan-out
 
 ### Consistency Edge Cases
-- Retrieval mode policy updated in `context.md` but not reflected in integration behavior
+- Retrieval mode policy updated in context agent but not reflected in integration behavior
 - Fast-path exceptions allow skipping required validation/template gates
 - Old blocker semantics conflict with pass/fail guidance in review and write flows
 <!-- /ANCHOR:edge-cases -->
@@ -234,7 +236,7 @@ Apply a suite-level Codex optimization pass across all ChatGPT agent files to re
 ---
 
 <!-- ANCHOR:acceptance-scenarios -->
-## 12. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Given** the ChatGPT agent folder, **when** scope is reviewed, **then** all 8 files are included in the optimization audit.
 2. **Given** context/research/write/review/speckit/handover docs, **when** fast-path and completion semantics are checked, **then** contradictions are resolved.

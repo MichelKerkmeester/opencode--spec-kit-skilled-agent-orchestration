@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary - Performance Optimization [024-performance-optimization/implementation-summary]"
+title: "Implementation Summary - Performance [01--anobel.com/z_archive/022-performance-optimization/implementation-summary]"
 description: "This implementation addresses critical performance issues on anobel.com, specifically the 20.2s mobile LCP (Largest Contentful Paint) caused by a JavaScript-dependent page visib..."
 trigger_phrases:
   - "implementation"
@@ -14,7 +14,6 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary - Performance Optimization
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 This implementation addresses critical performance issues on anobel.com, specifically the 20.2s mobile LCP (Largest Contentful Paint) caused by a JavaScript-dependent page visibility pattern. The page was hidden via CSS (`opacity: 0`) until hero animations completed, creating a cascading dependency chain that blocked rendering.
@@ -25,7 +24,6 @@ This implementation addresses critical performance issues on anobel.com, specifi
 
 ---
 
-<!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:changes-made -->
 ## Changes Made
@@ -276,3 +274,10 @@ Extended async loading pattern to 12 additional pages:
 Claude Opus 4.5 | 2026-01-26
 
 <!-- /ANCHOR:author -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

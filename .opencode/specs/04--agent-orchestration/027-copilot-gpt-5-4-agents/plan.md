@@ -1,6 +1,14 @@
 ---
-title: "Implementation Plan: GPT-5.4 Agent Model Upgrade"
-description: "Apply runtime-specific GPT-5.4 model pins across Copilot, ChatGPT, and Codex agent definitions with minimal metadata-only edits and verification." 
+title: "Implementation Plan: GPT-5.4 Agent Model Upgrade [04--agent-orchestration/027-copilot-gpt-5-4-agents/plan]"
+description: "Apply runtime-specific GPT-5.4 model pins across Copilot, ChatGPT, and Codex agent definitions with minimal metadata-only edits and verification."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "gpt"
+  - "agent"
+  - "model"
+  - "027"
+  - "copilot"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -128,6 +136,7 @@ Requested scope
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -144,6 +153,7 @@ Research and Inventory -> OpenCode Agent Updates -> Codex Updates and Verificati
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

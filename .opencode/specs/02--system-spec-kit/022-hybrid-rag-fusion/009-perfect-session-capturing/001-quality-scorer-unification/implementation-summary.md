@@ -1,7 +1,13 @@
 ---
-title: "Implementation Summary: Quality Scorer Unification"
+title: "...m-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/implementation-summary]"
 description: "Implementation summary for quality scorer unification phase of perfect session capturing"
-trigger_phrases: ["implementation", "summary", "quality", "scorer"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "quality"
+  - "scorer"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Quality Scorer Unification
 
@@ -82,3 +88,10 @@ Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 
 
 Reference links: [spec.md](spec.md) and [plan.md](plan.md).
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [002-extraction-rollout-phases-2-3/implementation-summary]"
+title: "...system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/implementation-summary]"
 description: "This package already documented closed execution for Phase 2 and Phase 3 task ranges. This update does not change that execution record. It adds missing Level 3+ artifacts and A..."
 trigger_phrases:
   - "implementation"

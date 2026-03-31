@@ -1,5 +1,5 @@
 ---
-title: "Spec: Codebase Fixes - Embedding Dimension & Performance [052-codebase-fixes/spec]"
+title: "Spec: Codebase Fixes - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/spec]"
 description: "Fix critical bugs and performance issues identified during comprehensive codebase analysis."
 trigger_phrases:
   - "spec"
@@ -29,6 +29,7 @@ Fix critical bugs and performance issues identified during comprehensive codebas
 
 3. **P1-1: Sequential batch embeddings** - `generateBatchEmbeddings()` processes texts one at a time instead of in parallel, causing 10x slower performance.
 
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### Functional Requirements
@@ -47,6 +48,7 @@ Fix critical bugs and performance issues identified during comprehensive codebas
 | NFR-001 | Backward compatibility with existing checkpoints (created without dimension metadata) | P0 |
 | NFR-002 | Batch embeddings should process 5 texts concurrently by default | P1 |
 | NFR-003 | No breaking changes to existing API signatures | P0 |
+<!-- /ANCHOR:requirements -->
 
 ## Technical Approach
 
@@ -76,6 +78,7 @@ Fix critical bugs and performance issues identified during comprehensive codebas
 | `.opencode/skill/system-spec-kit/mcp_server/lib/checkpoints.js` | Remove hardcoded EMBEDDING_DIM, import from embeddings, store/use dynamic dimension |
 | `.opencode/skill/system-spec-kit/shared/embeddings.js` | Fix getEmbeddingDimension() default, add parallel batch processing |
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] Checkpoint restore works with Voyage (1024-dim) embeddings
@@ -83,9 +86,12 @@ Fix critical bugs and performance issues identified during comprehensive codebas
 - [ ] Batch embeddings are 3-5x faster
 - [ ] No syntax errors in modified files
 - [ ] Existing tests pass
+<!-- /ANCHOR:success-criteria -->
 
+<!-- ANCHOR:scope -->
 ## Out of Scope
 
 - God module refactoring (separate spec)
 - Embedding cache implementation (future iteration)
 - Test fixture creation (documentation task)
+<!-- /ANCHOR:scope -->

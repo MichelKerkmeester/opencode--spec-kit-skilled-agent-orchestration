@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook analysis phase"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis/checklist]"
 description: "7 scenario verdicts (P0) plus evidence capture (P1) for analysis category."
 trigger_phrases:
   - "analysis checklist"
   - "analysis verification"
   - "causal graph checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: manual-testing-per-playbook analysis phase

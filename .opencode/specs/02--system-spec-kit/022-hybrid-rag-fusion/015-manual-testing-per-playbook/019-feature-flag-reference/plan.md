@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook feature-flag-reference phase [template:level_2/plan.md]"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference/plan]"
 description: "Phase 019 defines the execution plan for eight feature-flag-reference manual tests in the Spec Kit Memory system. It sequences preconditions, read-only retrieval checks, and the Hydra roadmap snapshot scenario with evidence capture and review-protocol verdicting."
 trigger_phrases:
   - "feature flag reference execution plan"
   - "phase 019 manual tests"
-  - "SPECKIT flag audit verdict plan"
+  - "speckit flag audit verdict plan"
   - "hybrid rag flag catalog review"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook feature-flag-reference phase
@@ -148,6 +148,7 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -165,6 +166,7 @@ Phase 1 (Preconditions) ──► Phase 2 (Read-Only MCP) ──► Phase 3 (Hyd
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: cli-copilot Skill"
+title: "Implementation Summary: cli-copilot Skill [03--commands-and-skills/008-cli-copilot-creation/implementation-summary]"
 description: "Any AI assistant can now invoke GitHub Copilot CLI through a structured skill with multi-model routing, cloud delegation, plan mode, autopilot, and 10 prompt template categories."
 trigger_phrases:
   - "cli-copilot summary"
@@ -10,7 +10,6 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -19,7 +18,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 004-cli-copilot |
+| **Spec Folder** | 008-cli-copilot-creation |
 | **Completed** | 2026-03-02 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -28,6 +27,8 @@ contextType: "implementation"
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
+
+### What Was Built
 
 Any AI assistant can now delegate tasks to GitHub's Copilot CLI through a complete skill with smart routing, reference materials, and prompt templates. This completes the 4-CLI cross-AI ecosystem alongside cli-gemini, cli-codex, and cli-claude-code. Copilot's unique value is multi-provider model access (7+ models from Anthropic, OpenAI, Google), cloud delegation to GitHub infrastructure, and autonomous autopilot execution.
 
@@ -56,6 +57,10 @@ skill_advisor.py updated with 3 booster sections (INTENT_BOOSTERS, MULTI_SKILL_B
 | `.opencode/skill/README.md` | Modified | Catalog, routing table, related links, count |
 | `.opencode/README.md` | Modified | Skills table, count |
 | `README.md` | Modified | Skills table, count |
+
+---
+
+---
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -63,13 +68,21 @@ skill_advisor.py updated with 3 booster sections (INTENT_BOOSTERS, MULTI_SKILL_B
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
+### How It Was Delivered
+
 Spec docs created first as Level 2 documentation following the 003-cli-claude-code pattern. Gemini CLI generated 7 skill files via sequential `gemini -p` invocations with cli-claude-code files as structural templates. Claude reviewed all output, fixed frontmatter issues (preamble text, code fence wrappers), verified 8-section structure with anchors, confirmed AI-agnostic language, and validated model references against research. skill_advisor.py returns 0.95 confidence for "use copilot cli".
+
+---
+
+---
 <!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
+
+### Key Decisions
 
 | Decision | Why |
 |----------|-----|
@@ -79,12 +92,18 @@ Spec docs created first as Level 2 documentation following the 003-cli-claude-co
 | 4-way comparison table | With 4 CLI skills complete, copilot_tools.md includes all 4 CLIs instead of the 3-way comparison in earlier skills. |
 | AI-agnostic from the start | Learned from cli-codex/cli-gemini fixes. All references use "the calling AI" from day one. |
 | Both Public and Barter skill_advisor.py updated | Ensures cross-repo consistency even though CLI skills aren't yet in Barter. |
+
+---
+
+---
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 | Check | Result |
 |-------|--------|
@@ -96,6 +115,10 @@ Spec docs created first as Level 2 documentation following the 003-cli-claude-co
 | grep cli-copilot in .opencode/README.md | PASS — 1 match |
 | AI-agnostic language | PASS — zero "Claude Code" conductor violations |
 | SKILL.md 8 sections with anchors | PASS — 16 anchor tags (8 open + 8 close) |
+
+---
+
+---
 <!-- /ANCHOR:verification -->
 
 ---
@@ -103,8 +126,14 @@ Spec docs created first as Level 2 documentation following the 003-cli-claude-co
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
+### Known Limitations
+
 1. **Gemini-generated content is shorter than hand-written skills.** Reference files are 7-12 KB vs 14-15 KB for cli-claude-code. Content is complete but less detailed.
 2. **Copilot CLI flags may be approximate.** Some flags (--mode plan, --autopilot, --agent) are based on research and may differ from the actual CLI. Verify against `copilot --help` when Copilot CLI is installed.
 3. **Model IDs will change.** Multi-provider model landscape evolves fast. All 7+ model references across files need updating when models change.
 4. **Barter repo doesn't have CLI skill files yet.** Only skill_advisor.py was updated. The actual skill folders will be added later per user instruction.
+
+---
 <!-- /ANCHOR:limitations -->
+
+---

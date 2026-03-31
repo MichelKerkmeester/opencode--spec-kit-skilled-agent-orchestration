@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Kit Memory System - Post-Merge Refinement 5 [042-post-merge-refinement-5/tasks]"
+title: "Tasks: Spec Kit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5/tasks]"
 description: "Implementation breakdown for Spec Kit and Memory System bug fixes and refinements."
 trigger_phrases:
   - "tasks"
@@ -944,6 +944,7 @@ Phase 4 (P3) - Depends on Phase 3
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Analysis**: See `analysis.md` for detailed bug descriptions
@@ -955,3 +956,4 @@ Phase 4 (P3) - Depends on Phase 3
 
 *Document generated: 2025-12-25*
 *Spec Folder: 042-post-merge-refinement-5*
+<!-- /ANCHOR:cross-refs -->

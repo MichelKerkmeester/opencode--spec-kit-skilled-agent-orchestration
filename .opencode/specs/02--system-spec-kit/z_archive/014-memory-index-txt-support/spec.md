@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Index TXT File Support [014-memory-index-txt-support/spec]"
+title: "Feature Specification: Memory Index TXT File Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/spec]"
 description: "Add .txt file indexing support to the Spec Kit Memory memory_index_scan tool to enable command folder documentation (e.g., README.txt) to be discoverable via memory search, whil..."
 trigger_phrases:
   - "feature"
@@ -136,6 +136,7 @@ Enable `.txt` file indexing in `memory_index_scan` to surface command documentat
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -153,6 +154,7 @@ Enable `.txt` file indexing in `memory_index_scan` to surface command documentat
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

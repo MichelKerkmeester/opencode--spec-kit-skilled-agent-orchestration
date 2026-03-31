@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/decision-record]"
+title: "Decision Record: Full Spec Folder Document [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/decision-record]"
 description: "Context: Need to classify indexed files by their structural role in the spec lifecycle. The existing context_type column describes content nature (research/implementation/decisi..."
 trigger_phrases:
   - "decision"

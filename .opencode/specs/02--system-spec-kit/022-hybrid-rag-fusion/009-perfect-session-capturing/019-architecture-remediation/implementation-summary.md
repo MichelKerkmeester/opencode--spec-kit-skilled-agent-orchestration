@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Architecture Remediation Deep Dive [template:level_3/implementation-summary.md]"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/implementation-summary]"
 description: "Post-implementation summary for the 15-agent architecture audit. To be completed after Wave 3 synthesis and sprint remediation work."
 trigger_phrases:
   - "019 implementation summary"

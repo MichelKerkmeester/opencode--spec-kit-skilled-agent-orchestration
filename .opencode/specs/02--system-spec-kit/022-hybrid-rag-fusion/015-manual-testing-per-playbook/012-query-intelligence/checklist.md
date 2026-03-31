@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: query-intelligence manual testing [template:level_2/checklist.md]"
+title: "Verificatio [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence/checklist]"
 description: "Verification checklist for Phase 012 query-intelligence manual tests covering all 10 scenarios: 033, 034, 035, 036, 037, 038, 161, 162, 163, 173."
 trigger_phrases:
   - "phase 012 checklist"
   - "query intelligence verification checklist"
   - "query intelligence checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: query-intelligence manual testing

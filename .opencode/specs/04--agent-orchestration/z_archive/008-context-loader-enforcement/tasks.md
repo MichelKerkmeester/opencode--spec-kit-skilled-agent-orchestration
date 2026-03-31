@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Aggressive @context_loader Enforcement [008-context-loader-enforcement/tasks]"
+title: "Tasks: Aggressive @context_loader Enforcement [04--agent-orchestration/z_archive/008-context-loader-enforcement/tasks]"
 description: "Objective: Search all agent files in .opencode/agent/ for @explore references (excluding context_loader.md)"
 trigger_phrases:
   - "tasks"

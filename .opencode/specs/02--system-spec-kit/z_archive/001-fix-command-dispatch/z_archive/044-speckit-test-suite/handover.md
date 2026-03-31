@@ -1,5 +1,5 @@
 ---
-title: "Session Handover [044-speckit-test-suite/handover]"
+title: "Session Handover [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/handover]"
 description: "1. Comprehensive Parallel Testing"
 trigger_phrases:
   - "session"

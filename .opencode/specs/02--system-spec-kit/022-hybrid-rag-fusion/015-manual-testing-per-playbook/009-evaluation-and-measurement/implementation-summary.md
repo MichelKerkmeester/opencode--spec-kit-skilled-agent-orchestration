@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Manual Testing — Evaluation and Measurement"
+title: "...spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement/implementation-summary]"
 description: "Post-execution summary for Phase 009 evaluation-and-measurement manual testing. All 16 scenarios passed via source code analysis."
 trigger_phrases:
   - "evaluation and measurement implementation summary"

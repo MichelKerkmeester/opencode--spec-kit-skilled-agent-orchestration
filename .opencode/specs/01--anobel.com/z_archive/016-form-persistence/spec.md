@@ -1,5 +1,5 @@
 ---
-title: "Form Data Persistence [016-form-persistence/spec]"
+title: "Form Data Persistence [016-form-persistence/spec] [01--anobel.com/z_archive/016-form-persistence/spec]"
 description: "Implement automatic form data persistence to preserve user input across page refreshes, preventing data loss due to accidental navigation or browser refresh."
 trigger_phrases:
   - "form"
@@ -47,6 +47,7 @@ Create `form_persistence.js` that automatically saves form data to localStorage 
 <!-- /ANCHOR:out-of-scope -->
 
 <!-- ANCHOR:technical-approach -->
+<!-- /ANCHOR:scope -->
 ## Technical Approach
 
 ### Storage Strategy

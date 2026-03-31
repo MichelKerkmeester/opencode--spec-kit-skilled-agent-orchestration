@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Tab Main Component [002-tab-main-component/spec]"
+title: "Feature Specification: Tab Main Component [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/spec]"
 description: "Attribute-based tab component for linking tab buttons to content panels via matching data attribute values."
 trigger_phrases:
   - "feature"
@@ -111,6 +111,7 @@ As a keyboard user, I want to navigate tabs using arrow keys, so I can use the i
 ---
 
 <!-- ANCHOR:functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 4. Functional Requirements
 
 ### Core Functionality
@@ -136,6 +137,8 @@ As a keyboard user, I want to navigate tabs using arrow keys, so I can use the i
 ---
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
+<!-- /ANCHOR:requirements -->
 ## 5. Non-Functional Requirements
 
 ### Performance
@@ -154,6 +157,7 @@ As a keyboard user, I want to navigate tabs using arrow keys, so I can use the i
 ---
 
 <!-- ANCHOR:success-criteria -->
+<!-- /ANCHOR:requirements -->
 ## 6. Success Criteria
 
 - Tab click switches visible content panel

@@ -1,5 +1,5 @@
 ---
-title: "Plan: Fix generate-context.js Issues [084-generate-context-template-warnings/plan]"
+title: "Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/plan]"
 description: "Option A (Selected): Add snake_case aliases to vector-index.js exports"
 trigger_phrases:
   - "plan"

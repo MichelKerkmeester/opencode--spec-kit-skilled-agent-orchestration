@@ -1,5 +1,5 @@
 ---
-title: "Spec Kit Test Suite - Implementation Plan [044-speckit-test-suite/plan]"
+title: "Spec Kit Test Suite - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/plan]"
 description: "Comprehensive test suite covering 4 domains"
 trigger_phrases:
   - "spec"
@@ -45,6 +45,7 @@ Comprehensive test suite covering 4 domains:
 | Skill Advisor | Python | `.opencode/scripts/skill_advisor.py` |
 | Memory DB | SQLite + sqlite-vec | `.opencode/skill/system-spec-kit/database/` |
 
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 ### Test Architecture
@@ -80,6 +81,7 @@ Comprehensive test suite covering 4 domains:
 - Shell script tests use dedicated fixture directories
 - Integration tests reset state between scenarios
 - No shared mutable state between parallel agents
+<!-- /ANCHOR:architecture -->
 
 ## 2. Test Framework Selection
 
@@ -90,6 +92,7 @@ Comprehensive test suite covering 4 domains:
 | Memory MCP | Jest | Node.js native, good async support |
 | Integration | Mixed (shell + assertions) | Cross-component testing |
 
+<!-- ANCHOR:phases -->
 ## 3. Implementation Phases
 
 ### Phase 1: Foundation (Week 1)
@@ -119,6 +122,7 @@ Comprehensive test suite covering 4 domains:
 - Memory lifecycle tests
 - Checkpoint workflow tests
 - CI/CD GitHub Actions configuration
+<!-- /ANCHOR:phases -->
 
 ## 4. Coverage Targets
 
@@ -175,6 +179,7 @@ Comprehensive test suite covering 4 domains:
 - Coverage reporting to PR comments
 - Performance regression tracking
 
+<!-- ANCHOR:summary -->
 ## 7. Agent Deliverables Summary
 
 | Agent | Component | Test Cases | Status |
@@ -183,7 +188,9 @@ Comprehensive test suite covering 4 domains:
 | Agent 2 | Skill Advisor | ~250 | Complete |
 | Agent 3 | Memory MCP Server | 239 | Complete |
 | Agent 4 | Integration & E2E | 209 | Complete |
+<!-- /ANCHOR:summary -->
 
+<!-- ANCHOR:dependencies -->
 ## 8. Dependencies
 
 | Dependency | Version | Purpose |
@@ -195,6 +202,7 @@ Comprehensive test suite covering 4 domains:
 | Ollama | Latest | Embedding tests |
 | SQLite3 | 3.x | Database tests |
 | sqlite-vec | Latest | Vector search tests |
+<!-- /ANCHOR:dependencies -->
 
 ## 9. Risk Mitigation
 

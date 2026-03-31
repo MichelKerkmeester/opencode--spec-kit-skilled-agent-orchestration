@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Live Proof And Parity Hardening [template:level_1/spec.md]"
+title: "...id-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening/spec]"
 description: "Track the remaining retained live-proof work after the automated runtime contract was hardened."
 trigger_phrases:
   - "live proof"

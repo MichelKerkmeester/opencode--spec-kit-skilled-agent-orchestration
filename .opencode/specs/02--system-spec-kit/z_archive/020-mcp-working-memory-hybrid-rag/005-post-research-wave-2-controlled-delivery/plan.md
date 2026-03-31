@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Plan: Post-Research Wave 2 (Controlled Delivery) [005-post-research-wave-2-controlled-delivery/plan]"
+title: "Phas [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/plan]"
 description: "Execute controlled delivery evidence with explicit stage gates and append-only change auditability."
 trigger_phrases:
   - "phase"

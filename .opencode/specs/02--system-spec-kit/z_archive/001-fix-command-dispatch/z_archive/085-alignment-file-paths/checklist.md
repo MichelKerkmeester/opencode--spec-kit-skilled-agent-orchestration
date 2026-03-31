@@ -1,5 +1,5 @@
 ---
-title: "Checklist: 085 Alignment File Paths [085-alignment-file-paths/checklist]"
+title: "Checklist: 085 [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/085-alignment-file-paths/checklist]"
 description: "=== TEST SUITE: Alignment File Paths Fix ==="
 trigger_phrases:
   - "checklist"

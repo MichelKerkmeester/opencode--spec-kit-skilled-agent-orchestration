@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Command Separation - Technical Approach & Architecture [068-memory-index-commands/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/plan]"
 description: "Implementation plan for separating the unified /memory:search command into two focused commands."
 trigger_phrases:
   - "implementation"
@@ -51,6 +51,7 @@ Refactor the 667-line `/memory:search` command into two focused commands: a read
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**
@@ -75,6 +76,7 @@ Refactor the 667-line `/memory:search` command into two focused commands: a read
 
 No violations - this refactoring actually reduces complexity.
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -143,6 +145,7 @@ AFTER (Separated):
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Design & Setup
@@ -191,8 +194,10 @@ AFTER (Separated):
 - **Duration**: 30 minutes
 - **Parallel Tasks**: None
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Manual Testing
@@ -218,6 +223,7 @@ Since these are command definition files (not code), testing is manual:
 7. `/memory:database delete 42` → Gate blocks, confirms before delete
 8. `/memory:database health` → Shows health report
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -261,6 +267,7 @@ Since these are command definition files (not code), testing is manual:
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -275,6 +282,7 @@ Since these are command definition files (not code), testing is manual:
 |------------|------|--------|--------|----------|-------------------|
 | Spec Kit Memory MCP | External | MCP Server | Green | N/A | Required for operations |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

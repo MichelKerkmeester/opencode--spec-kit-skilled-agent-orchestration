@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [011-create-command-emoji-enforcement/implementation-summary]"
+title: "Implementation Summary [03--commands-and-skills/012-cmd-create-emoji-enforcement/implementation-summary]"
 description: "Emoji usage is optional, not required across all /create command templates and documentation."
 trigger_phrases:
   - "implementation"
@@ -22,17 +22,19 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 011-create-command-emoji-enforcement |
-| **Status** | Implementation Complete |
-| **Created** | 2026-02-17 |
+| **Spec Folder** | 012-cmd-create-emoji-enforcement |
 | **Completed** | 2026-02-17 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:baseline -->
-## Implementation Summary
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+### What Was Built
+
+### Implementation Summary
 
 ### Policy Enforced
 
@@ -48,9 +50,9 @@ contextType: "implementation"
 
 | Category | File | Changes |
 |----------|------|---------|
-| Documentation | `folder_readme.md` | Updated emoji guidance to "optional" |
-| Documentation | `skill.md` | Updated emoji guidance to "optional" |
-| Documentation | `skill_asset.md` | Updated emoji guidance to "optional" |
+| Documentation | folder_readme.md | Updated emoji guidance to "optional" |
+| Documentation | skill.md | Updated emoji guidance to "optional" |
+| Documentation | skill_asset.md | Updated emoji guidance to "optional" |
 | Templates | `create_folder_readme_auto.yaml` | Removed emoji requirement language |
 | Templates | `create_folder_readme_confirm.yaml` | Removed emoji requirement language |
 | Templates | `create_install_guide_auto.yaml` | Removed emoji requirement language |
@@ -112,20 +114,16 @@ contextType: "implementation"
 - Backward compatibility (existing emojis): ✅ Preserved
 - Mixed content (some emojis, some not): ✅ Accepted
 - Template structure validation: ✅ Maintained
-<!-- /ANCHOR:baseline -->
 
 ---
-
-<!-- ANCHOR:what-built -->
-## What Was Built
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
 | `.opencode/command/create/folder_readme.md` | Modified | Updated emoji guidance to "optional" |
-| `.opencode/command/create/skill.md` | Modified | Updated emoji guidance to "optional" |
-| `.opencode/command/create/skill_asset.md` | Modified | Updated emoji guidance to "optional" |
+| .opencode/command/create/skill.md | Modified | Updated emoji guidance to "optional" |
+| .opencode/command/create/skill_asset.md | Modified | Updated emoji guidance to "optional" |
 | `.opencode/command/create/assets/create_folder_readme_auto.yaml` | Modified | Removed emoji requirement from user/assistant instructions |
 | `.opencode/command/create/assets/create_folder_readme_confirm.yaml` | Modified | Removed emoji requirement from user/assistant instructions |
 | `.opencode/command/create/assets/create_install_guide_auto.yaml` | Modified | Removed emoji requirement from user/assistant instructions |
@@ -153,12 +151,29 @@ contextType: "implementation"
 - Maintained all other template functionality
 - Preserved existing emojis in content (cosmetic only)
 
+---
+
+---
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+### How It Was Delivered
+
+Delivery and verification details remain as documented in the spec-folder artifacts.
+
+---
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
+
+### Key Decisions
 
 **Documented in decision-record.md:**
 
@@ -167,12 +182,17 @@ contextType: "implementation"
 | ADR-001: Remove completely (not configurable) | Simplifies codebase, clear signal to users, reduces maintenance |
 | ADR-002: Leave existing emojis in templates | Backward compatible, gradual migration, zero breaking changes |
 
+---
+
+---
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 **STATUS**: Complete - All verification tests passed
 
@@ -192,12 +212,17 @@ contextType: "implementation"
 - **Files Validated:** All 13 modified files
 - **Policy Compliance:** Emoji usage optional, not required
 
+---
+
+---
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
+
+### Known Limitations
 
 **Post-Implementation:**
 
@@ -212,12 +237,9 @@ None identified. The implementation successfully:
 - Users can choose to use emojis or not in their generated content
 - No breaking changes to existing workflows or templates
 
-<!-- /ANCHOR:limitations -->
-
 ---
 
-<!-- ANCHOR:next-steps -->
-## Next Steps
+### Next Steps
 
 **Implementation Complete** - No further action required.
 
@@ -232,8 +254,6 @@ None identified. The implementation successfully:
 - Consider gradual removal of cosmetic emojis from templates over time
 - Document any policy changes in new ADRs if requirements change
 
-<!-- /ANCHOR:next-steps -->
-
 ---
 
 <!--
@@ -242,3 +262,8 @@ PRE-IMPLEMENTATION BASELINE DOCUMENT
 - Will be updated during and after implementation
 - Do NOT claim implementation is complete
 -->
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

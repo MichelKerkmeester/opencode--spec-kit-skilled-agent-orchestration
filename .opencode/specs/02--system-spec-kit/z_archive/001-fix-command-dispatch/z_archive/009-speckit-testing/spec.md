@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Post-Rename Testing [009-speckit-testing/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/spec]"
 description: "Comprehensive testing of system-spec-kit skill after rename from workflows-spec-kit."
 trigger_phrases:
   - "feature"
@@ -46,6 +46,7 @@ Total: 197 replacements across ~41 files
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -60,6 +61,7 @@ Total: 197 replacements across ~41 files
 - Performance benchmarking
 - New feature development
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. TEST AREAS
@@ -96,6 +98,7 @@ End-to-end workflow must function correctly.
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 4. SUCCESS CRITERIA
 
 - All 6 scripts run without errors
@@ -104,4 +107,5 @@ End-to-end workflow must function correctly.
 - Zero orphaned old path references found
 - Create-spec-folder workflow produces valid output
 
+<!-- /ANCHOR:success-criteria -->
 ---

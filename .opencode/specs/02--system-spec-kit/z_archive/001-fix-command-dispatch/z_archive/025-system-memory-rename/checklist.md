@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Rename workflows-memory → system-memory [025-system-memory-rename/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/checklist]"
 description: "These items MUST pass before claiming completion."
 trigger_phrases:
   - "checklist"

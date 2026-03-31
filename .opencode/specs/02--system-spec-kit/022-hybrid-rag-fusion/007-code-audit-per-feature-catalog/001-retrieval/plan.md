@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Retrieval"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval/plan]"
 description: "Technical plan for auditing 10 Retrieval features against source code"
 trigger_phrases:
   - "audit plan"
@@ -132,14 +132,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 10 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -200,3 +203,4 @@ Audit completed 2026-03-22. 10/10 features audited.
 - Correct Feature 08 catalog entry: replace `stage4-filter.ts` with the correct quality-fallback file.
 - Update Feature 05 catalog entry to include `stage2b-enrichment.ts` and `ranking-contract.ts`.
 - Optionally document the three undocumented constants above in their respective catalog entries.
+<!-- /ANCHOR:effort -->

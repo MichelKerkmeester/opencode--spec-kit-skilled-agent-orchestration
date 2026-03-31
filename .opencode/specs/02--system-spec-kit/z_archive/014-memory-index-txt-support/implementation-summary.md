@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory Index TXT File Support [014-memory-index-txt-support/implementation-summary]"
+title: "Implementation Summary: Memory [02--system-spec-kit/z_archive/014-memory-index-txt-support/implementation-summary]"
 description: "Status: ✅ COMPLETED"
 trigger_phrases:
   - "implementation"
@@ -19,7 +19,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:overview -->
 ## OVERVIEW
 
 **Status**: ✅ COMPLETED
@@ -27,7 +26,6 @@ contextType: "implementation"
 **Implementer**: Implementation Agent
 
 Successfully extended memory indexing subsystem to support `.txt` files alongside `.md` files across all allowed paths (specs/**/memory/, .opencode/skill/, .opencode/command/). All changes additive with zero regressions.
-<!-- /ANCHOR:overview -->
 
 ---
 
@@ -122,8 +120,8 @@ npm test -- tests/readme-discovery.vitest.ts tests/memory-parser-readme.vitest.t
 
 ---
 
-<!-- ANCHOR:lessons -->
-## LESSONS LEARNED
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 ### What Went Well
 
@@ -143,11 +141,11 @@ npm test -- tests/readme-discovery.vitest.ts tests/memory-parser-readme.vitest.t
 - **Type Inference Simplicity**: Expected complex logic for README.txt classification but existing patterns covered most cases
 - **Migration Backfill**: Backfill logic required update for README.txt to avoid type misclassification during database migrations
 - **Test Suite Coverage**: Existing test suite more comprehensive than expected - minimal new tests needed for .txt coverage
-<!-- /ANCHOR:lessons -->
 
 ---
 
 <!-- ANCHOR:future -->
+<!-- /ANCHOR:decisions -->
 ## FUTURE WORK
 
 ### Deferred Items
@@ -173,3 +171,10 @@ All P0 and P1 items completed. Implementation ready for production use.
 Implementation summary - completed post-implementation
 Captures actual changes, test results, and lessons learned
 -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

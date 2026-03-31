@@ -1,7 +1,5 @@
 ---
-title: "Implementation Plan: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/plan.md]"
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
-SPECKIT_LEVEL: "2"
+title: "Implementation Plan: sk-doc Repo-Wide Rename and Visual Skill Cleanup [03--commands-and-skills/010-sk-doc-rename/plan]"
 description: "Executed migration plan for canonical documentation-skill identifiers plus live-doc cleanup of stale visual-skill references, with artifact-backed validation and strict completion checks."
 trigger_phrases:
   - "implementation"
@@ -11,6 +9,8 @@ trigger_phrases:
   - "plan core"
 importance_tier: "normal"
 contextType: "general"
+SPECKIT_LEVEL: "2"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Implementation Plan: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
@@ -158,6 +158,7 @@ Preflight artifacts established baseline -> ordered path migration executed -> f
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -174,6 +175,7 @@ Phase 1 (Setup) -> Phase 2 (Core) -> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

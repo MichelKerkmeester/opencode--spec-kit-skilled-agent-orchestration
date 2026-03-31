@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Documentation Alignment for Spec 126 [127-documentation-alignment/plan]"
+title: "Implementation Plan: Documentation Alignment for Spec [02--system-spec-kit/z_archive/010-documentation-alignment/plan]"
 description: "Update all documentation files to reflect spec 126 features: 5-source indexing pipeline, 7 intent types, 11 document types with scoring multipliers, schema v13, spec document cr..."
 trigger_phrases:
   - "implementation"
@@ -127,6 +127,7 @@ Phase 8 (impl summary)    LAST
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -147,6 +148,7 @@ Phase 1.5 (Config) ───┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -242,6 +244,7 @@ Phase 1.5 (Config) ───┘
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: [Decision Title]
@@ -264,6 +267,7 @@ Phase 1.5 (Config) ───┘
 ---
 
 <!-- ANCHOR:ai-execution -->
+<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation

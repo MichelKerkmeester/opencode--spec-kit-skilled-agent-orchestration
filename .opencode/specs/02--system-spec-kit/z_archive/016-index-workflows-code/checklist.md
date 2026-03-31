@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Skill References & Assets Indexing [133-index-workflows-code/checklist]"
+title: "Verification Checklist: Skill References & Assets [02--system-spec-kit/z_archive/016-index-workflows-code/checklist]"
 description: "Verification Date: 2026-02-17"
 trigger_phrases:
   - "verification"

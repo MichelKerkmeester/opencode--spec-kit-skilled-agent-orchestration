@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Post-Rename Testing [009-speckit-testing/tasks]"
+title: "Tasks: SpecKit Post-Rename [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/tasks]"
 description: "Task breakdown for parallel agent testing."
 trigger_phrases:
   - "tasks"

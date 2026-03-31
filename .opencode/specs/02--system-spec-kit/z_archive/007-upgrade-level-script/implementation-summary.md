@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [007-upgrade-level-script/implementation-summary]"
+title: "Implementation Summary [007-upgrade-leve [02--system-spec-kit/z_archive/007-upgrade-level-script/implementation-summary]"
 description: "A bash script (upgrade-level.sh) that upgrades existing spec folders between documentation levels (L1->L2, L2->L3, L3->L3+, and skip-level L1->L3). The script is 1,490+ lines wi..."
 trigger_phrases:
   - "implementation"
@@ -109,7 +109,8 @@ A bash script (`upgrade-level.sh`) that upgrades existing spec folders between d
 
 ---
 
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 - Template composition model (core + addendum) requires careful understanding of heading numbering across levels; headings shift when sections are injected mid-document
 - Backward scanning for trailing HTML comments needs to find the opening `<!--`, not just `-->`; a `-->` could appear in content
@@ -123,3 +124,4 @@ CORE TEMPLATE (~40 lines)
 - Post-implementation documentation
 - Created AFTER implementation completes
 -->
+<!-- /ANCHOR:decisions -->

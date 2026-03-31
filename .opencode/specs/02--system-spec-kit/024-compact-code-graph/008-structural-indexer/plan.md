@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 008 — Structural Indexer [02--system-spec-kit/024-compact-code-graph/008-structural-indexer/plan]"
+description: "1. Set up tree-sitter WASM runtime"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "008"
+  - "structural"
+  - "indexer"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 008 — Structural Indexer
 
 ## Steps
@@ -35,11 +47,13 @@
    - Verify IMPORTS edges match actual import statements
    - Check CONTAINS relationships for nested symbols
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 - No runtime dependencies on Phases 001-007
 - Phase 009 must exist for persistent storage (can test with in-memory arrays)
 - tree-sitter WASM grammars must be available at runtime
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation
 

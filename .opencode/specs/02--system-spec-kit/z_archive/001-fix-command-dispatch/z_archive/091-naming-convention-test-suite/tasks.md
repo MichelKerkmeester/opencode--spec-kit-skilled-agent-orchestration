@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Naming Convention Test Suite [091-naming-convention-test-suite/tasks]"
+title: "Tasks: Naming [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite/tasks]"
 description: "tasks document for 091-naming-convention-test-suite."
 trigger_phrases:
   - "tasks"
@@ -31,6 +31,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Test Infrastructure
 
 - [x] T001 Create `test-naming-migration.js` scaffold (test runner, helpers, file discovery)
@@ -40,8 +41,10 @@ contextType: "implementation"
 - [x] T005 Implement T10: Naming compliance sweep (regex scan for remaining snake_case)
 - [x] T006 Implement T7: Cross-reference integrity (scan for orphaned snake_case calls)
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Export Contracts
 
 - [x] T010 Create `test-export-contracts.js` scaffold (source-level analysis, no DB deps)
@@ -50,8 +53,10 @@ contextType: "implementation"
 - [x] T016 Define export maps for scripts/ barrel index files (6 modules)
 - [x] T017 Implement T6: Backward-compat alias verification for handler exports
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Bug Regressions
 
 - [x] T020 Create `test-bug-regressions.js` scaffold (source-level pattern analysis)
@@ -59,6 +64,7 @@ contextType: "implementation"
 - [x] T022 Bug 2 regression: memory-parser.js:348,351 causalLinks/causalBlockMatch
 - [x] T023 Bug 3 regression: causal-edges.js:561 stats.source_count
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Validation
@@ -77,9 +83,11 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]` (except T041)
 - [x] No `[B]` blocked tasks remaining
 - [x] Test suite runs with clear output (pre-migration failures expected)
 - [x] 3 bug regressions verified (all 3 correctly detected)
+<!-- /ANCHOR:completion -->

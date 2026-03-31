@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories [011-docs-alignment/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/spec]"
 description: "Complete feature specification defining requirements, user stories, and success criteria."
 trigger_phrases:
   - "feature"
@@ -57,6 +57,7 @@ Complete feature specification defining requirements, user stories, and success 
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -76,6 +77,7 @@ Complete feature specification defining requirements, user stories, and success 
 [example: PDF export format - deferred to Phase 2]
 [example: Real-time metric streaming - different architectural approach needed]
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -150,6 +152,7 @@ Complete feature specification defining requirements, user stories, and success 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 <!--
@@ -183,8 +186,10 @@ Map User Stories to Functional Requirements to ensure all stories are supported 
 | Story 2 - [YOUR_VALUE_HERE: Title] | REQ-FUNC-002, REQ-DATA-001 | [OPTIONAL: additional notes] |
 | Story 3 - [YOUR_VALUE_HERE: Title] | REQ-FUNC-004, REQ-FUNC-005 | [OPTIONAL: additional notes] |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 <!--
@@ -222,8 +227,10 @@ Map User Stories to Functional Requirements to ensure all stories are supported 
 - **NFR-O02**: [NEEDS CLARIFICATION: What deployment strategy is required? (a) Manual deploy with downtime (b) Blue-green zero-downtime (c) Canary/progressive rollout (d) Follow existing CI/CD]
 - **NFR-O03**: [NEEDS CLARIFICATION: What logging requirements apply? (a) Basic console logs (b) Structured JSON logs (c) Centralized logging with correlation IDs (d) Follow existing logging standards]
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 <!--
@@ -246,8 +253,10 @@ Map User Stories to Functional Requirements to ensure all stories are supported 
 - How does system handle [YOUR_VALUE_HERE: rollback - example: "undo of multi-step operation when step 3 of 5 fails"]?
 - What happens when [YOUR_VALUE_HERE: state issue - example: "user session expires during form submission"]?
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -268,6 +277,7 @@ Select relevant KPIs and define measurable targets:
 | Performance | p95 latency | ≤ [NEEDS CLARIFICATION: (a) 100ms (b) 200ms (c) 500ms (d) 1000ms?] | [YOUR_VALUE_HERE: DataDog, New Relic, Grafana, etc.] |
 | Reliability | Error budget impact | ≤ [NEEDS CLARIFICATION: (a) 1% (b) 5% (c) 10% (d) N/A?] | [YOUR_VALUE_HERE: PagerDuty, Prometheus, CloudWatch, etc.] |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -299,6 +309,7 @@ Select relevant KPIs and define measurable targets:
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions** (reduces ambiguity and scope creep):
@@ -310,8 +321,10 @@ Select relevant KPIs and define measurable targets:
 [example: PDF export format - deferred to Phase 2 due to complex formatting requirements]
 [example: Real-time collaboration features - owned by Platform team]
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - [NEEDS CLARIFICATION: Question 1 - provide specific details needed]
@@ -320,6 +333,7 @@ Select relevant KPIs and define measurable targets:
 
 [example: NEEDS CLARIFICATION: Should we support Internet Explorer 11? Impacts development timeline by 2 weeks]
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

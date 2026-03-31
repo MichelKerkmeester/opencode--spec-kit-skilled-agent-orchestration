@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook remediation-revalidation phase [template:level_2/implementation-summary.md]"
+title: "...m-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation/implementation-summary]"
 description: "Current summary for Phase 021 packet scaffolding. Manual execution of PB-021-01 through PB-021-03 is still pending."
 trigger_phrases:
   - "phase 021 implementation summary"
   - "remediation revalidation summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

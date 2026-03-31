@@ -1,6 +1,14 @@
 ---
-title: "Feature Specification: Integration Testing"
+title: "Feature Specifica [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing/spec]"
 description: "Verify end-to-end integration behavior across the full pipeline."
+trigger_phrases:
+  - "feature"
+  - "specifica"
+  - "spec"
+  - "010"
+  - "integration"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Integration Testing
 

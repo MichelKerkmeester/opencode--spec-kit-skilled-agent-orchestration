@@ -27,12 +27,12 @@ contextType: "decision"
 |--------|-------|
 | **Language/Stack** | Markdown (agent configuration files) |
 | **Framework** | OpenCode agent system + GitHub Copilot Chat |
-| **Storage** | File system — `.opencode/agent/copilot/` and `.claude/agents/` |
+| **Storage** | File system — removed Copilot variants plus live `.claude/agents/` files |
 | **Testing** | Manual inspection; no automated tests for agent config |
 
 ### Overview
 
-This plan covers upgrading model field assignments across two agent directories: the Copilot fleet (`.opencode/agent/copilot/`) and the Claude Code agent set (`.claude/agents/`). The approach is a direct find-and-replace of model identifier strings within frontmatter or metadata sections of Markdown agent files, with two agents (research, debug) having their model field deleted to enable orchestrator-level dispatch. No code logic is changed — only configuration metadata.
+This plan covers upgrading model field assignments across the removed Copilot fleet plus the live Claude Code agent set (`.claude/agents/`). The approach is a direct find-and-replace of model identifier strings within frontmatter or metadata sections of Markdown agent files, with two agents (research, debug) having their model field deleted to enable orchestrator-level dispatch. No code logic is changed — only configuration metadata.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -64,7 +64,7 @@ Configuration management — flat file metadata update across two directory name
 
 ### Key Components
 
-- **Copilot agents** (`.opencode/agent/copilot/`): 7 files; 5 upgraded, 2 have model field removed
+- **Copilot agents** (historical removed variants): 7 files; 5 upgraded, 2 have model field removed
 - **Claude Code agents** (`.claude/agents/`): 3 files; all upgraded
 
 ### Data Flow
@@ -86,16 +86,16 @@ Agent loads → reads frontmatter `model:` field → dispatches to specified mod
 
 ### Phase 2: Core Implementation
 
-- [x] Update `.opencode/agent/copilot/context.md` — `haiku-4.5` → `sonnet-4-6`
-- [x] Update `.opencode/agent/copilot/handover.md` — `haiku-4.5` → `sonnet-4-6`
-- [x] Update `.opencode/agent/copilot/review.md` — add model field `sonnet-4-6`; remove stale comment
-- [x] Update `.opencode/agent/copilot/speckit.md` — `sonnet-4.5` → `sonnet-4-6`
-- [x] Update `.opencode/agent/copilot/write.md` — `sonnet-4.5` → `sonnet-4-6`
-- [x] Update `.opencode/agent/copilot/research/research/research.md` — delete `model:` line
-- [x] Update `.opencode/agent/copilot/debug.md` — delete `model:` line
+- [x] Update `Copilot context agent file` — `haiku-4.5` → `sonnet-4-6`
+- [x] Update `Copilot handover agent file` — `haiku-4.5` → `sonnet-4-6`
+- [x] Update `Copilot review agent file` — add model field `sonnet-4-6`; remove stale comment
+- [x] Update `Copilot speckit agent file` — `sonnet-4.5` → `sonnet-4-6`
+- [x] Update `Copilot write agent file` — `sonnet-4.5` → `sonnet-4-6`
+- [x] Update `Copilot research agent file` — delete `model:` line
+- [x] Update `Copilot debug agent file` — delete `model:` line
 - [x] Update `.claude/agents/context.md` — `haiku` → `sonnet`
 - [x] Update `.claude/agents/handover.md` — `haiku` → `sonnet`
-- [x] Update `.claude/agents/review.md` — `opus` → `sonnet`
+- [x] Update `.claude/agents/review agent` — `opus` → `sonnet`
 
 ### Phase 3: Verification
 
@@ -114,7 +114,7 @@ Agent loads → reads frontmatter `model:` field → dispatches to specified mod
 |-----------|-------|-------|
 | Manual inspection | All 10 agent files — model field value | Read tool (file-by-file) |
 | Diff review | Confirm only model-field lines changed | git diff pre/post |
-| Negative check | research/research.md and debug.md have no `model:` line | grep absence check |
+| Negative check | research agent and debug.md have no `model:` line | grep absence check |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -140,6 +140,7 @@ Agent loads → reads frontmatter `model:` field → dispatches to specified mod
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -156,6 +157,7 @@ Phase 1 (Inventory) ──► Phase 2 (Implementation) ──► Phase 3 (Verify
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

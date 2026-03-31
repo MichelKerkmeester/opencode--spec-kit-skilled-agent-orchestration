@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown [024-comprehensive-alignment-fix/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/tasks]"
 description: "Actionable tasks for each checklist item. Complete in order within each phase."
 trigger_phrases:
   - "task"
@@ -18,6 +18,7 @@ Actionable tasks for each checklist item. Complete in order within each phase.
 ---
 
 <!-- ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: P0 Critical
 
 ### P0.1 - Fix YAML Syntax Errors
@@ -55,6 +56,8 @@ Actionable tasks for each checklist item. Complete in order within each phase.
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-1 -->
 ## Phase 2: P1 High Priority
 
 ### P1.1 - Bash Version Compatibility
@@ -117,8 +120,10 @@ Actionable tasks for each checklist item. Complete in order within each phase.
 - [ ] Test with valid spec folder
 - [ ] Test with invalid spec folder
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: P2 Medium Priority
 
 ### P2.1 - Glob Tool Documentation
@@ -149,6 +154,7 @@ Actionable tasks for each checklist item. Complete in order within each phase.
 - [ ] Remove from active documentation
 - [ ] Update any remaining references
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Verification Tasks

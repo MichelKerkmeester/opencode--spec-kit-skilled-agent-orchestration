@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - Comprehensive Bug Fix [029-comprehensive-bug-fix/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/plan]"
 description: "Deploy 15 specialized agents to analyze different areas simultaneously"
 trigger_phrases:
   - "implementation"

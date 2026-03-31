@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Image Decoding Async Analysis [021-decoding-async-analysis/spec]"
+title: "Feature Specification: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/spec]"
 description: "The decoding=\"async\" HTML attribute for <img> elements is a performance optimization that may not be utilized on anobel.com. Without this attribute, the browser decodes images s..."
 trigger_phrases:
   - "feature"
@@ -115,6 +115,7 @@ Analyze anobel.com's image usage patterns and identify which images would benefi
 ---
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - Does anobel.com already use `decoding="async"` anywhere?
@@ -125,6 +126,7 @@ Analyze anobel.com's image usage patterns and identify which images would benefi
 ---
 
 <!-- ANCHOR:related-documents -->
+<!-- /ANCHOR:questions -->
 ## 8. RELATED DOCUMENTS
 
 | Document | Purpose |

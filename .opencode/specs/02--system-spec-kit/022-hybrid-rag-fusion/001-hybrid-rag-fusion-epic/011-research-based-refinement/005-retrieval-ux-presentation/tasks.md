@@ -1,3 +1,18 @@
+---
+title: "...t/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation/tasks]"
+description: "tasks document for 005-retrieval-ux-presentation."
+trigger_phrases:
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "tasks"
+  - "005"
+  - "retrieval"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: Retrieval UX & Result Presentation
 
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

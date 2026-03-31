@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [044-speckit-test-suite/implementation-summary]"
+title: "Impleme [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/implementation-summary]"
 description: "Comprehensive test suite for the Spec Kit ecosystem, executed via 10 parallel test agents covering all MCP tools, validation scripts, and integration workflows. The testing reve..."
 trigger_phrases:
   - "implementation"
@@ -128,6 +128,7 @@ Comprehensive test suite for the Spec Kit ecosystem, executed via 10 parallel te
 - `.opencode/skill/system-spec-kit/SKILL.md` - Checkpoint usage clarifications
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/checklist.md` - Evidence annotations
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 1. **Sandbox Isolation** - Each test agent assigned unique scratch/ directory to prevent test interference
@@ -136,6 +137,7 @@ Comprehensive test suite for the Spec Kit ecosystem, executed via 10 parallel te
 4. **Domain Separation** - Clear boundaries between agent responsibilities
 5. **Evidence-Based Checklist** - All checklist items annotated with specific test report references
 6. **Immediate Bug Fixes** - P0 checkpoint bug fixed during test execution, not deferred
+<!-- /ANCHOR:decisions -->
 
 ## Known Issues / Follow-ups
 
@@ -156,6 +158,7 @@ Comprehensive test suite for the Spec Kit ecosystem, executed via 10 parallel te
 - Decay scoring not observable in test results (implementation detail)
 - Some partial failures due to edge cases, not blocking issues
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 ### To Verify Bug Fixes
@@ -190,3 +193,11 @@ Comprehensive test suite for the Spec Kit ecosystem, executed via 10 parallel te
 **Completed:** 2025-12-26
 **Total Effort:** ~830 planned tests, 76 executed (MCP-focused scope)
 **Outcome:** 2 bugs found and fixed, 82% pass rate, production-ready with restart
+<!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

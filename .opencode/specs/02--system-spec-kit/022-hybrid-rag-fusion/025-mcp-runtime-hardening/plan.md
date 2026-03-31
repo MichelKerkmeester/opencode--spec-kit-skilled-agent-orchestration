@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: MCP Runtime Hardening"
+title: "Implementation Plan: MCP Runtime Hardening [02--system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening/plan]"
 description: "Parallel codex exec agents implement T020-T025: DB dimension tests, lifecycle tests, log sanitization, and doc consolidation."
 trigger_phrases:
   - "mcp runtime hardening plan"
@@ -129,6 +129,7 @@ codex agents (parallel) -> new test files + code changes + doc updates
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -145,6 +146,7 @@ Phase 1 (Agents A,B,C,D parallel) -> Phase 2 (Validation) -> Phase 3 (Finalize)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

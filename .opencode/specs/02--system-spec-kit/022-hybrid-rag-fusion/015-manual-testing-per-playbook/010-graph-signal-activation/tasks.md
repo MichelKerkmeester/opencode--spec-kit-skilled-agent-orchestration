@@ -1,12 +1,12 @@
 ---
-title: "Tasks: manual-testing-per-playbook graph-signal-activation phase [template:level_2/tasks.md]"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "graph signal activation tasks"
   - "phase 010 tasks"
   - "graph testing tasks"
   - "tasks core graph signal"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook graph-signal-activation phase

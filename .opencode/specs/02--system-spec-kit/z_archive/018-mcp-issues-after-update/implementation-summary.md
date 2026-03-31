@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [018-mcp-issues-after-update/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/018-mcp-issues-after-update/implementation-summary]"
 description: "Resolved MCP server failure issues after system updates through comprehensive investigation, documentation rewrite, and verification. The solution focuses on improving user reco..."
 trigger_phrases:
   - "implementation"

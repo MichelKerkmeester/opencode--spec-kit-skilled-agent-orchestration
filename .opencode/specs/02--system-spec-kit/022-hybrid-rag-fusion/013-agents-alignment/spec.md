@@ -1,6 +1,16 @@
 ---
-title: "013 — Agent Alignment: Runtime Lineage Truth Reconciliation"
+title: "013 — Agent Alignment: Runtime Lineage Truth [02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec]"
 description: "Reconcile the 013 agents-alignment packet and remaining runtime-facing agent-doc drift to the live multi-runtime lineage used by OpenCode, ChatGPT, Claude, Codex, and Gemini."
+trigger_phrases:
+  - "013"
+  - "agent"
+  - "alignment"
+  - "runtime"
+  - "lineage"
+  - "spec"
+  - "agents"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

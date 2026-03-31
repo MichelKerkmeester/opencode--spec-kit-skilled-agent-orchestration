@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [020-mcp-working-memory-hybrid-rag/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/implementation-summary]"
 description: "The memory engine got a significant upgrade. Search results are now traceable, artifact-aware and self-tuning. Every retrieval carries a typed trace showing exactly how it was f..."
 trigger_phrases:
   - "implementation"
@@ -94,6 +94,7 @@ The remaining deferred test drift is also closed: `mcp_server/tests/api-key-vali
 ---
 
 <!-- ANCHOR:delivery -->
+<!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
 All features shipped behind feature flags and went through a structured rollout:
@@ -110,6 +111,7 @@ All features shipped behind feature flags and went through a structured rollout:
 ---
 
 <!-- ANCHOR:decisions -->
+<!-- /ANCHOR:how-delivered -->
 ## Key Decisions
 
 | Decision | Why |

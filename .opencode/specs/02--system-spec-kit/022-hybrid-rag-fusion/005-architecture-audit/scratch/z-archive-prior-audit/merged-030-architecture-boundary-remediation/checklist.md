@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: Architecture Boundary Remediation"
+title: "...g-fusion/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/checklist]"
 description: "34 verification items across 9 categories for architecture boundary compliance remediation"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "boundary remediation checklist"
   - "architecture verification"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: Architecture Boundary Remediation
 
@@ -106,6 +106,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:tech-debt -->
+<!-- /ANCHOR:docs -->
 ## Technical Debt Remediation (Phase 5 — Cross-AI Review)
 
 - [x] CHK-070 [P2] Non-ASCII slug generation handles Unicode text without degradation → T030 [evidence: slug-utils.ts updated by Codex-5]

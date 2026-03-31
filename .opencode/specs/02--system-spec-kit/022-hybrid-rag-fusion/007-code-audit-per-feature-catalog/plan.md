@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Code Audit per Feature Catalog"
+title: "Implementation Plan: Code Audit [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/plan]"
 description: "Master plan for auditing the 222-feature live catalog across 19 categories of the Spec Kit Memory MCP server (updated from 218 on 2026-03-26)"
 trigger_phrases:
   - "audit plan"
   - "feature catalog"
   - "code audit"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: Code Audit per Feature Catalog

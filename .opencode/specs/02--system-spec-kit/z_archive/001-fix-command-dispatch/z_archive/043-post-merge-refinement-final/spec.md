@@ -1,5 +1,5 @@
 ---
-title: "Specification: Post-Merge Refinement Final [043-post-merge-refinement-final/spec]"
+title: "Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/spec]"
 description: "After the major Spec Kit + Memory system merger (spec 035), eight refinement attempts (036-042) identified ~300+ issues. However, many were"
 trigger_phrases:
   - "specification"
@@ -65,6 +65,7 @@ A comprehensive 10-agent research sweep across all 42 specs with code verificati
 3. Resolving P3/P4 polish items (deferred)
 4. Creating CI/CD pipeline (separate spec needed)
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 | Criterion | Target |
@@ -75,7 +76,9 @@ A comprehensive 10-agent research sweep across all 42 specs with code verificati
 | Documentation aligned | AGENTS.md = SKILL.md = Commands |
 | Code verification | All P0/P1 verified fixed |
 | No regressions | Existing tests pass |
+<!-- /ANCHOR:success-criteria -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -95,7 +98,9 @@ A comprehensive 10-agent research sweep across all 42 specs with code verificati
 | Other skills | Not affected by merger |
 | CI/CD pipeline | Requires separate spec (P2-012) |
 | New features | Bug fixes only |
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 ### Functional Requirements
@@ -125,6 +130,7 @@ A comprehensive 10-agent research sweep across all 42 specs with code verificati
 | NFR-002 | Backward compatible with existing data | P0 |
 | NFR-003 | Clear error messages | P1 |
 | NFR-004 | Database indexes for common queries | P2 |
+<!-- /ANCHOR:requirements -->
 
 ## Risks
 

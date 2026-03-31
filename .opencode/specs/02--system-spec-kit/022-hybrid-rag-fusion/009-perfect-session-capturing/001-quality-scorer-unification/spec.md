@@ -1,6 +1,13 @@
 ---
-title: "Feature Specification: Quality Scorer Unification"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/spec]"
 description: "Unify the dual quality scoring systems (V1 0-100, V2 0.0-1.0) onto a single canonical 0.0-1.0 scale with contamination score penalty."
+trigger_phrases:
+  - "feature"
+  - "spec"
+  - "001"
+  - "quality"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Quality Scorer Unification
 

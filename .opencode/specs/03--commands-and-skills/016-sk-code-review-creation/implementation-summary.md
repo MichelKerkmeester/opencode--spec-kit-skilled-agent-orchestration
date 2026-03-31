@@ -1,7 +1,6 @@
 ---
-title: "Implementation Summary: sk-code--review Promotion [014-code-review-skill/implementation-summary]"
+title: "Implementation Summary: sk-code--review [03--commands-and-skills/016-sk-code-review-creation/implementation-summary]"
 description: "Completion summary for promoting sk-code--review to first-class review baseline with baseline+overlay contract wiring across skill, agents, commands, advisor, and docs."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "implementation summary"
   - "sk-code--review"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "041"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 
@@ -22,10 +22,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `03--commands-and-skills/016-code-review-skill` |
-| **Completed** | Yes (2026-02-22) |
+| **Spec Folder** | 016-sk-code-review-creation |
+| **Completed** | 2026-02-22 |
 | **Level** | 2 |
-| **Current State** | Implemented with documented validator mismatch caveat |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,10 +32,12 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
+### What Was Built
+
 ### Delivered Changes
 
 - Hard rename completed: `.opencode/skill/legacy-single-hyphen-review/` -> `.opencode/skill/sk-code--review/`.
-- Rebuilt `SKILL.md` as stack-agnostic review baseline with:
+- Rebuilt SKILL.md as stack-agnostic review baseline with:
   - sk-doc-style smart routing structure,
   - weighted intent scoring,
   - ambiguity handling,
@@ -54,6 +55,10 @@ contextType: "implementation"
 - Updated `skill_advisor.py` review routing to prioritize `sk-code--review` for review intents while preserving git behavior and removing stale visual-skill claims from live docs.
 - Updated skill catalogs (`.opencode/skill/README.md`, `.opencode/README.md`) for new skill and 11-skill counts.
 - Finalized Level 2 spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`).
+
+---
+
+---
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,12 +66,18 @@ contextType: "implementation"
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
+### How It Was Delivered
+
 1. Read all scoped files.
 2. Performed hard rename and removed stale archive artifact.
 3. Rebuilt skill router and contract docs.
 4. Applied contract wiring across agents, orchestrators, and all listed command assets.
 5. Updated advisor intent boosts and validated with target prompts.
 6. Captured verification outcomes and synchronized spec documentation.
+
+---
+
+---
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -74,18 +85,26 @@ contextType: "implementation"
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
+### Key Decisions
+
 | Decision | Why |
 |----------|-----|
 | Hard rename with no compatibility alias | Required by approved plan; keeps canonical identity clear |
 | Baseline+overlay precedence model | Preserves stack-specific standards while enforcing universal security/correctness minimums |
 | Add `standards_contract` in each review-dispatch block | Makes command behavior explicit and consistent across workflows |
 | Keep validator mismatch as documented caveat | Out-of-scope validator rule conflicts with existing `sk-code--*` naming convention |
+
+---
+
+---
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 | Check | Result |
 |-------|--------|
@@ -98,11 +117,10 @@ contextType: "implementation"
 | `rg -n "sk-code--review|baseline\+overlay|overlay"` across `.opencode/agent/*.md`, `.opencode/agent/chatgpt/*.md`, `.gemini/agents/*.md`, `.claude/agents/*.md`, `.codex/agents/{review,orchestrate}.toml` | PASS: baseline+overlay contract present in all runtime agent locations |
 | `rg -n "standards_contract|baseline: \"sk-code--review\""` across 18 YAML assets | PASS: all target files matched |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/016-code-review-skill` | PASS (exit 0): all rules passed, no warnings |
-<!-- /ANCHOR:verification -->
 
 ---
 
-## Completion Criteria Status
+### Completion Criteria Status
 
 1. Skill rename and identity migration: complete.
 2. Router standards parity with baseline+overlay logic: complete.
@@ -114,9 +132,20 @@ contextType: "implementation"
 
 ---
 
+---
+<!-- /ANCHOR:verification -->
+
+---
+
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
+### Known Limitations
+
 1. Current `sk-doc` validators reject consecutive hyphens in skill `name`, which conflicts with established `sk-code--*` skill naming used in this repository.
 2. Because validator updates were not part of this scoped implementation, validation pass remains a documented caveat rather than a fixed item.
+
+---
 <!-- /ANCHOR:limitations -->
+
+---

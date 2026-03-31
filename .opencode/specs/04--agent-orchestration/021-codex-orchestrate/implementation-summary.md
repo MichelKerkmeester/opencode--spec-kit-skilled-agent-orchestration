@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [021-codex-orchestrate/implementation-summary]"
+title: "Implementation Summary [021-codex-orchestrate/imp [04--agent-orchestration/021-codex-orchestrate/implementation-summary]"
 description: "Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agent consistency pass, and (2) runtime-aware command path normalization across command markdown and ..."
 trigger_phrases:
   - "implementation"
@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `04--agent-orchestration/021-codex-orchestrate` |
+| **Spec Folder** | 021-codex-orchestrate |
 | **Completed** | 2026-02-19 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -37,22 +37,30 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 ### Runtime Path Mapping
 
 - Default/Copilot runtime: `.opencode/agent`
-- ChatGPT runtime: `.opencode/agent/chatgpt`
-- Claude runtime: `/.claude/agents`
+- Historical ChatGPT runtime: removed from the current repository
+- Claude runtime: `.claude/agents`
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/agent/chatgpt/{context,debug,handover,research,review,speckit,write,orchestrate}.md` | Modified | Agent-suite consistency pass (fast-path semantics, completion rules, exception handling, direct-first orchestrate guardrails) |
+| Historical ChatGPT agent files | Modified | Agent-suite consistency pass (fast-path semantics, completion rules, exception handling, direct-first orchestrate guardrails) |
 | `.opencode/specs/04--agent-orchestration/021-codex-orchestrate/{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Modified | Spec scope, execution records, and evidence updated to include suite + command runtime-path work |
 | `.opencode/command/create/*.md` | Modified | Added runtime path resolution sections so command behavior selects runtime-appropriate agent roots |
 | `.opencode/command/create/assets/*.yaml` | Modified | Replaced hardcoded `agent_file` values with runtime-path placeholders and normalized lookup fields |
 | `.opencode/command/spec_kit/*.md` | Modified | Added runtime path resolution guidance for spec-kit command execution flows |
 | `.opencode/command/spec_kit/assets/*.yaml` | Modified | Updated `agent_file` placeholder wiring for runtime-aware resolution |
-| `.opencode/command/memory/continue.md` | Modified | Expanded mismatch detection to include all supported runtime agent paths |
+| `memory continue command` | Modified | Expanded mismatch detection to include all supported runtime agent paths |
 | `.opencode/command/create/README.txt` | Modified | Added troubleshooting note for runtime-path mismatches and how to verify resolved paths |
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+This work was delivered in two documentation streams: the ChatGPT suite consistency pass and the follow-on runtime-path normalization notes captured in the same spec folder. Delivery confidence came from targeted contradiction sweeps, YAML and path checks recorded in the summary, and a final synchronization pass across the Level 3 artifacts.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
@@ -90,7 +98,7 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 ---
 
 <!-- ANCHOR:verification-steps -->
-## Verification Steps Taken
+### Verification Steps Taken
 
 1. Read all 8 ChatGPT agent files to identify contradiction and drift points.
 2. Applied targeted consistency edits across context/debug/handover/research/review/speckit/write/orchestrate.
@@ -99,12 +107,12 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 5. Verified command diff scope for runtime-path work: 33 files changed, 147 insertions, 71 deletions.
 6. Ran YAML parse validation on modified command YAML assets: `YAML_OK 23`.
 7. Ran pattern scan confirming no hardcoded `agent_file: ".opencode/agent/..."` values remain in command YAML assets.
-<!-- /ANCHOR:verification-steps -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:deviations -->
-## Deviations From Plan
+#### Deviations From Plan
 
 - Scope expanded from orchestrate-only to full ChatGPT suite by explicit user instruction.
 - Scope expanded again to include command runtime-path normalization across command markdown and YAML assets.
@@ -114,7 +122,7 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 ---
 
 <!-- ANCHOR:skill-updates -->
-## Skill Updates
+#### Skill Updates
 
 - No skill files were modified.
 - Workflow relied on system-spec-kit templates and validation scripts.
@@ -123,7 +131,7 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 ---
 
 <!-- ANCHOR:browser-testing -->
-## Browser Testing Results
+#### Browser Testing Results
 
 - Not applicable. Change set is documentation/policy only and has no browser runtime surface.
 <!-- /ANCHOR:browser-testing -->
@@ -131,7 +139,7 @@ Completed two finalized workstreams under this spec: (1) the 8-file ChatGPT agen
 ---
 
 <!-- ANCHOR:next-steps -->
-## Recommended Next Steps
+#### Recommended Next Steps
 
 1. Run final `scripts/spec/validate.sh --json .opencode/specs/04--agent-orchestration/021-codex-orchestrate` after any remaining documentation sync.
 2. Add a small regression check script to detect future hardcoded `agent_file` path regressions in command YAML assets.

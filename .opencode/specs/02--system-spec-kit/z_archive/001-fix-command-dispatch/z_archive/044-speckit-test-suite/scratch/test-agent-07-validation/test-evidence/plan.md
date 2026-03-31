@@ -1,5 +1,5 @@
 ---
-title: "Test Plan [test-evidence/plan]"
+title: "...rchive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-evidence/plan]"
 description: "Test approach for evidence validation."
 trigger_phrases:
   - "test"

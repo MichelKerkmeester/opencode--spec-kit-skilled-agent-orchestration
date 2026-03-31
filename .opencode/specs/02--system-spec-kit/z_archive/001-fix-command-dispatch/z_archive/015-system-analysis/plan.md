@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Command Pattern Reference Upgrade [015-system-analysis/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/plan]"
 description: "Inject a \"Command Pattern Reference Protocol\" into SKILL.md. This protocol instructs agents to use sub-agents to scan available commands, extract their underlying logic/sequenci..."
 trigger_phrases:
   - "implementation"

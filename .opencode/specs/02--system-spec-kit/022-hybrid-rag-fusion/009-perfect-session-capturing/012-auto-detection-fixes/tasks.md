@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Auto-Detection Fixes [template:level_2/tasks.md]"
+title: "Tasks: Auto-Det [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes/tasks]"
+description: "title: \"Tasks: Auto-Detection Fixes [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "auto"
+  - "det"
+  - "012"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Auto-Detection Fixes
 

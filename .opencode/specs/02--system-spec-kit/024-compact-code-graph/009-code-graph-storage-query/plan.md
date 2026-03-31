@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 009 — Code Graph Storage + [02--system-spec-kit/024-compact-code-graph/009-code-graph-storage-query/plan]"
+description: "1. Create code-graph-db.ts"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "009"
+  - "code"
+  - "graph"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 009 — Code Graph Storage + Query
 
 ## Steps
@@ -36,11 +48,13 @@
    - Check status output for accuracy
    - Verify incremental scan skips unchanged files
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 - Phase 008 indexer must produce `CodeNode[]` and `CodeEdge[]`
 - Existing `better-sqlite3` dependency (already used for memory DB)
 - `context-server.ts` must accept new tool registrations
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation
 

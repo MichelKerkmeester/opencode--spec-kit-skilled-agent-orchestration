@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: Architecture Boundary Remediation"
+title: "...architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/implementation-summary]"
 description: "Summary of cross-AI review remediation phases (0, 4, 5) for specs 029 and 030."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "030 implementation summary"
   - "boundary remediation summary"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary: Architecture Boundary Remediation
 
@@ -57,6 +57,7 @@ Second wave (5 more Codex agents) addressed completeness gaps: ADR-005 expansion
 | `shared/parsing/quality-extractors.ts` | Frontmatter regex anchored to string start |
 | `mcp_server/handlers/chunking-orchestrator.ts` | Chunk failure rollback guard added |
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
@@ -66,6 +67,7 @@ Second wave (5 more Codex agents) addressed completeness gaps: ADR-005 expansion
 | `validate.sh 030` | PASSED after fixes |
 | Ultra-think review | 93% confidence, all 16 tasks PASS |
 | Gemini cross-validation | ADR coherence fixed, all findings addressed |
+<!-- /ANCHOR:verification -->
 
 ## Status
 
@@ -73,3 +75,10 @@ Second wave (5 more Codex agents) addressed completeness gaps: ADR-005 expansion
 - **Phase 4 (P1):** 6/6 tasks complete
 - **Phase 5 (P2):** 5/5 tasks complete
 - **Phases 1-3:** Pending (core implementation not yet started)
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

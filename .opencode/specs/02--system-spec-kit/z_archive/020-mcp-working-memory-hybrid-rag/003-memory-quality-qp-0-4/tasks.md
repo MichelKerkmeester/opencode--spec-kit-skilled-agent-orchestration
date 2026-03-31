@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Quality Package (QP-0 to QP-4) [003-memory-quality-qp-0-4/tasks]"
+title: "Tasks: Memory [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/tasks]"
 description: "Tracking document synchronized with root execution state; administrative closure applied per user directive."
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Bug Fixes and Data Integrity"
+title: "Ta [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/tasks]"
 description: "Task breakdown for auditing 11 Bug Fixes and Data Integrity features"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [003-memory-quality-qp-0-4/implementation-summary]"
+title: "Imple [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/implementation-summary]"
 description: "This package remains the memory-quality documentation and synchronization artifact for QP-0 through QP-4 scope. No new runtime implementation was introduced in this folder by th..."
 trigger_phrases:
   - "implementation"

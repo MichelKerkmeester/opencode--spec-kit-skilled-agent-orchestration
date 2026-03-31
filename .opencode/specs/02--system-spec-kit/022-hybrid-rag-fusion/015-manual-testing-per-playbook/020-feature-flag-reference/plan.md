@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook feature-flag-reference audit phase [template:level_2/plan.md]"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/plan]"
 description: "Execution plan for the three Phase 020 feature-flag-reference audit scenarios covering inventory accuracy, graduated-flag defaults, and flag removal workflow evidence."
 trigger_phrases:
   - "phase 020 plan"
   - "feature-flag-reference audit plan"
   - "manual testing phase 020"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook feature-flag-reference audit phase
@@ -124,6 +124,7 @@ Open packet context -> run the exact playbook sequence -> capture raw evidence -
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -140,6 +141,7 @@ Phase 1 (Preconditions) ---> Phase 2 (Execute) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

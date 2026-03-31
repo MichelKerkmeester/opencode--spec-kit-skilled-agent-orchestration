@@ -1,58 +1,113 @@
 ---
-title: "Plan: CLI Self-Invocation Guards"
+title: "Implementation Plan: CLI Self-Invocation Guards [03--commands-and-skills/009-cli-self-invocation-guards/plan]"
+description: "Plan for adding consistent self-invocation guard language across the CLI bridge skills."
 ---
+# Implementation Plan: CLI Self-Invocation Guards
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: CLI Self-Invocation Guards
+
+---
 
 <!-- ANCHOR:summary -->
-## Approach
+## 1. SUMMARY
 
-Add consistent self-invocation guards to all 4 CLI SKILL.md files. Each guard follows the same pattern but is customized with CLI-specific native capabilities and env var detection.
+### Technical Context
 
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown documentation |
+| **Framework** | CLI bridge skill guidance |
+| **Storage** | Repository files only |
+| **Testing** | Manual document review + spec validation |
+
+### Overview
+The plan applies one self-invocation guard pattern across the CLI bridge skills, then customizes each instance with runtime-specific native capabilities and detection hints. The work is documentation-only and focuses on preventing circular delegation.
 <!-- /ANCHOR:summary -->
-## Guard Template
 
-Each skill gets:
+---
 
-1. **"When NOT to Use" entry** (first item, most prominent):
-   - States: "If you ARE [CLI], do not use this skill"
-   - Lists native capabilities the AI should use instead
-   - References env var detection where known
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-2. **NEVER rule**:
-   - Explicit rule: "NEVER invoke this skill from within [CLI] itself"
-   - Explanation: native access exists, self-delegation is circular
+### Definition of Ready
+- [x] Target CLI bridge skills identified.
+- [x] Guard pattern defined.
+- [x] Scope limited to documentation changes.
 
-3. **Prerequisite Detection** (where applicable):
-   - Env var checks for runtime detection
+### Definition of Done
+- [x] Guard language appears in all targeted skill docs.
+- [x] Native-capability fallback guidance is present.
+- [x] Spec folder validates structurally.
+<!-- /ANCHOR:quality-gates -->
 
-## Per-Skill Customization
+---
 
-### cli-claude-code
-- Enhance existing nesting guard to broader self-invocation guard
-- Native alternatives: Edit tool, Agent tool, extended thinking, structured output, skills
-- Detection: `$CLAUDECODE` env var (already exists)
-- Enhance existing NEVER rule #2
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### cli-gemini
-- Add new guard (none exists)
-- Native alternatives: google_web_search, codebase_investigator, save_memory, agents
-- Detection: no known env var — conceptual guard only
+### Pattern
+Documentation-only guidance normalization.
 
-### cli-codex
-- Add new guard (none exists)
-- Native alternatives: sandbox execution, /review, --search, session management, profiles
-- Detection: no known env var — conceptual guard only
+### Key Components
+- **Self-invocation guard**: tells the runtime not to delegate to itself.
+- **NEVER rule**: states the anti-pattern explicitly.
+- **Detection note**: references env vars or conceptual runtime checks where available.
 
-### cli-copilot
-- Enhance existing minimal guard
-- Native alternatives: Autopilot, Explore/Task agents, cloud delegation, repo memory
-- Detection: uncomment `$COPILOT_SESSION` check
+### Data Flow
+Runtime reads CLI bridge skill -> recognizes it is the targeted runtime -> uses native capabilities instead of self-delegating.
+<!-- /ANCHOR:architecture -->
 
-## Execution Order
+---
 
-1. Edit cli-claude-code (enhance existing guards)
-2. Edit cli-gemini (add new guards)
-3. Edit cli-codex (add new guards)
-4. Edit cli-copilot (enhance existing guards)
-5. Write implementation-summary.md
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Review all four CLI bridge skills for existing guard language.
+- [x] Define a common self-invocation pattern.
+
+### Phase 2: Core Implementation
+- [x] Update `cli-claude-code` guidance.
+- [x] Add or update guard language in `cli-gemini`, `cli-codex`, and `cli-copilot`.
+- [x] Reframe detection wording where available.
+
+### Phase 3: Verification
+- [x] Confirm all four targeted skills contain the guard pattern.
+- [x] Confirm native-capability fallback guidance is present.
+- [x] Validate the spec folder structure.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Documentation review | Guard presence and wording | Manual inspection |
+| Consistency review | Pattern alignment across four skills | Manual comparison |
+| Structural validation | Spec folder | `validate.sh` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing CLI bridge skill docs | Internal | Green | Guard language has nowhere to land |
+| Runtime detection hints | Internal | Yellow | Some runtimes rely on conceptual guidance only |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Guard wording becomes misleading or inconsistent.
+- **Procedure**: Revert the scoped skill-doc edits and reapply the shared pattern with corrected runtime wording.
+<!-- /ANCHOR:rollback -->
+
+---

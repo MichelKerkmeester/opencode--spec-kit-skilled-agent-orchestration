@@ -1,5 +1,5 @@
 ---
-title: "Tasks: SpecKit Refinement - Implementation Breakdown [019-speckit-refinement/tasks]"
+title: "Tasks: SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/tasks]"
 description: "Task list for Phase 1 MVP implementation of the Handover System based on ECP research."
 trigger_phrases:
   - "tasks"
@@ -273,6 +273,7 @@ PARALLEL GROUP B (documentation - can start after T001):
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## 7. CROSS-REFERENCES
 
 | Document | Purpose |
@@ -283,6 +284,7 @@ PARALLEL GROUP B (documentation - can start after T001):
 | `AGENTS.md` | Gate system to modify (Gates 0, 7) |
 | `SKILL.md` | SpecKit skill documentation to update |
 
+<!-- /ANCHOR:cross-refs -->
 ---
 
 ## 8. IMPLEMENTATION NOTES

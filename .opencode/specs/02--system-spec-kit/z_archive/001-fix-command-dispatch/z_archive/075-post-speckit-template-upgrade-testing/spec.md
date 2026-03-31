@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/spec]"
+title: "Featur [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/spec]"
 description: "This specification defines a comprehensive test suite to validate the system-spec-kit v1.9.0 after the CORE+ADDENDUM template architecture upgrade. The test suite covers 44 Java..."
 trigger_phrases:
   - "feature"
@@ -40,8 +40,10 @@ This specification defines a comprehensive test suite to validate the system-spe
 | **Status** | Draft |
 | **Created** | 2026-01-20 |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -50,8 +52,10 @@ The system-spec-kit has undergone a major template architecture upgrade to CORE+
 ### Purpose
 Validate that 100% of P0 functionality and 95%+ of P1 functionality operates correctly after the template upgrade, ensuring the system-spec-kit remains production-ready.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -74,8 +78,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 | .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing*.md | Create | Test specification and results documentation |
 | (No source files modified) | N/A | This is a testing-only spec |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -96,8 +102,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 | REQ-007 | Shell scripts execute correctly | All 17 shell scripts exit with code 0 on valid input |
 | REQ-008 | Memory search retrieval accurate | Search queries return relevant results from indexed memories |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: 100% of P0 tests pass (REQ-001 through REQ-004)
@@ -105,8 +113,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 - **SC-003**: Zero critical regressions in existing functionality
 - **SC-004**: All test results documented with evidence
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -116,8 +126,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 | Risk | Module interdependencies | Cascading failures | Test modules in dependency order |
 | Risk | Template syntax errors | Invalid output | Validate generated files against schema |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -132,8 +144,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 - **NFR-R01**: Tests produce deterministic results across runs
 - **NFR-R02**: Failed tests provide actionable error messages
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -145,8 +159,10 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 - Corrupted database: Recovery mechanism or clear reset instructions
 - Invalid template syntax: Specific error location reported
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -158,6 +174,7 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 | Coordination | 13/15 | Dependencies: Multiple module interdependencies |
 | **Total** | **80/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -244,12 +261,14 @@ Validate that 100% of P0 functionality and 95%+ of P1 functionality operates cor
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - Should we include stress testing for concurrent MCP tool calls?
 - What is the minimum embedding model version required for compatibility?
 - Should test results be persisted in spec folder or separate test-results directory?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

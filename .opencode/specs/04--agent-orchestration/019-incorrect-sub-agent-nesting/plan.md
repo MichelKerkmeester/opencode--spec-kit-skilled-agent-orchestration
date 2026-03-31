@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Sub-Agent Nesting Depth Control [019-incorrect-sub-agent-nesting/plan]"
+title: "Implementation Plan: Sub-Agent Nesting Depth Control [04--agent-orchestration/019-incorrect-sub-agent-nesting/plan]"
 description: "This implements the Nesting Depth Protocol (NDP) across all three orchestrate.md variants by: (1) adding a new dedicated NDP section that defines 3-tier agent classification, (2..."
 trigger_phrases:
   - "implementation"
@@ -111,7 +111,7 @@ User Request
 - [ ] Update Section 10 PDR template with Depth line
 - [ ] Add depth-violation anti-pattern to Section 24
 - [ ] Apply identical changes to chatgpt/orchestrate.md
-- [ ] Apply identical changes to copilot/orchestrate.md
+- [ ] Apply identical changes to copilot/orchestrate
 - [ ] Fix copilot Section 11 conflicting "3 levels" → align with NDP
 
 ### Phase 3: Verification
@@ -158,6 +158,7 @@ User Request
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -178,6 +179,7 @@ Phase 1 (Design) ──► Phase 2 (Update Files) ──► Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -198,7 +200,7 @@ Phase 1 (Design) ──► Phase 2 (Update Files) ──► Phase 3 (Verify)
 - [ ] All 3 files backed up before edit
 
 ### Rollback Procedure
-1. `git checkout -- .opencode/agent/orchestrate.md .opencode/agent/chatgpt/orchestrate.md .opencode/agent/copilot/orchestrate.md`
+1. `git checkout -- .opencode/agent/orchestrate.md .opencode/agent/chatgpt/orchestrate .opencode/agent/copilot/orchestrate`
 2. Verify rollback with diff
 3. No data migration needed
 
@@ -267,6 +269,7 @@ Phase 1 (Design) ──► Phase 2 (Update Files) ──► Phase 3 (Verify)
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Three-Tier Agent Classification
@@ -294,3 +297,4 @@ LEVEL 3 PLAN
 - Dependency graphs, milestones
 - Architecture decision records
 -->
+<!-- /ANCHOR:architecture -->

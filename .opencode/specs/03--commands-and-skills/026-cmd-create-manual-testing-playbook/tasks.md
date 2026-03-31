@@ -1,5 +1,5 @@
 ---
-title: "Tasks: /create:testing-playbook Command [template:level_3/tasks.md]"
+title: "Tasks: /create:testing-playbook Command [03--commands-and-skills/026-cmd-create-manual-testing-playbook/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "testing playbook command tasks"
@@ -62,7 +62,7 @@ contextType: "implementation"
 - [x] T021 Update `.opencode/command/README.txt`
 - [x] T022 Update `.opencode/README.md`
 - [x] T023 [P] Update `.opencode/agent/write.md`
-- [x] T024 [P] Update `.opencode/agent/chatgpt/write.md`
+- [x] T024 [P] Update `.claude/agents/write.md`
 - [x] T025 [P] Update `.codex/agents/write.toml`
 - [x] T026 [P] Update `.agents/agents/write.md`
 - [x] T030 Run `validate_document.py` for `.opencode/command/create/testing-playbook.md`

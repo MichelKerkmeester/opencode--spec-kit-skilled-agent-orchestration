@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: sk-doc Template Folder Reorganization"
+title: "Implementation Summary: sk-doc Template [03--commands-and-skills/011-sk-doc-template-folders/implementation-summary]"
 description: "Moved 5 templates from assets/opencode/ to assets/skill/ and assets/agents/, updated 26 files with path references."
 trigger_phrases:
   - "sk-doc template summary"
@@ -7,37 +7,51 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Implementation Summary: sk-doc Template Folder Reorganization
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:overview -->
-## Overview
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 011-sk-doc-template-folders |
+| **Completed** | 2026-03-01 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+### What Was Built
+
+### Overview
 
 Reorganized sk-doc template storage from a single `assets/opencode/` directory into two purpose-grouped directories:
 - `assets/skill/` — skill creation templates (SKILL.md, reference, asset)
 - `assets/agents/` — agent and command creation templates
 
 Updated all path references across 26 active files spanning sk-doc internals, command system, install guides, agent definitions, and skill README.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:files-changed -->
-## Files Changed
+### Files Changed
 
 ### Files Moved (5)
 
 | Source | Destination |
 |--------|-------------|
-| `assets/opencode/skill_md_template.md` | `assets/skill/skill_md_template.md` |
-| `assets/opencode/skill_asset_template.md` | `assets/skill/skill_asset_template.md` |
-| `assets/opencode/skill_reference_template.md` | `assets/skill/skill_reference_template.md` |
-| `assets/opencode/agent_template.md` | `assets/agents/agent_template.md` |
-| `assets/opencode/command_template.md` | `assets/agents/command_template.md` |
+| assets/opencode/skill_md_template.md | assets/skill/skill_md_template.md |
+| assets/opencode/skill_asset_template.md | assets/skill/skill_asset_template.md |
+| assets/opencode/skill_reference_template.md | assets/skill/skill_reference_template.md |
+| assets/opencode/agent_template.md | assets/agents/agent_template.md |
+| assets/opencode/command_template.md | assets/agents/command_template.md |
 
 ### Directory Deleted (1)
 
@@ -47,12 +61,12 @@ Updated all path references across 26 active files spanning sk-doc internals, co
 
 **sk-doc internal (7 files):**
 1. `.opencode/skill/sk-doc/SKILL.md` — 7 replacements across 6 locations
-2. `.opencode/skill/sk-doc/references/quick_reference.md` — 2 replacements + tree restructure
-3. `.opencode/skill/sk-doc/references/core_standards.md` — 4 replacements
-4. `.opencode/skill/sk-doc/references/optimization.md` — 3 replacements
-5. `.opencode/skill/sk-doc/references/validation.md` — 3 replacements
-6. `.opencode/skill/sk-doc/references/workflows.md` — 2 replacements
-7. `.opencode/skill/sk-doc/references/skill_creation.md` — 6 replacements + tree restructure
+2. .opencode/skill/sk-doc/references/quick_reference.md — 2 replacements + tree restructure
+3. .opencode/skill/sk-doc/references/core_standards.md — 4 replacements
+4. .opencode/skill/sk-doc/references/optimization.md — 3 replacements
+5. .opencode/skill/sk-doc/references/validation.md — 3 replacements
+6. .opencode/skill/sk-doc/references/workflows.md — 2 replacements
+7. .opencode/skill/sk-doc/references/skill_creation.md — 6 replacements + tree restructure
 
 **Command system (12 files):**
 8. `.opencode/command/create/assets/create_skill_auto.yaml` — 3 replacements
@@ -65,8 +79,8 @@ Updated all path references across 26 active files spanning sk-doc internals, co
 15. `.opencode/command/create/assets/create_skill_asset_confirm.yaml` — 2 replacements
 16. `.opencode/command/create/agent.md` — 2 replacements
 17. `.opencode/command/create/README.txt` — 2 replacements
-18. `.opencode/command/create/skill_asset.md` — 1 replacement
-19. `.opencode/command/create/skill_reference.md` — 1 replacement
+18. .opencode/command/create/skill_asset.md — 1 replacement
+19. .opencode/command/create/skill_reference.md — 1 replacement
 
 **Template self-references (2 files):**
 20. `.opencode/skill/sk-doc/assets/agents/agent_template.md` — 2 replacements
@@ -76,36 +90,82 @@ Updated all path references across 26 active files spanning sk-doc internals, co
 22. `.opencode/install_guides/SET-UP - Skill Creation.md` — 3 replacements
 23. `.opencode/install_guides/SET-UP - Opencode Agents.md` — 6 replacements
 24. `.opencode/agent/write.md` — 7 replacements
-25. `.opencode/agent/chatgpt/write.md` — 7 replacements
+25. .opencode/agent/chatgpt/write.md — 7 replacements
 26. `.opencode/skill/README.md` — 3 replacements
-<!-- /ANCHOR:files-changed -->
+
+---
+
+---
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+### How It Was Delivered
+
+Delivery and verification details remain as documented in the spec-folder artifacts.
+
+---
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+### Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Structural compliance normalization | Preserved original meaning while aligning the document to the active template. |
+
+---
+<!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
 
+### Verification
+
 - All 5 template files confirmed at new locations via `ls`
 - `assets/opencode/` directory confirmed deleted via `test -d`
 - Final grep: 27 matches remain, **all in historical/archived files** (specs archives, changelogs, own spec folder) — zero active/functional references
 - 8 parallel agents each independently verified zero remaining references in their scope
+
+---
+
+---
 <!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:deviations -->
-## Deviations from Plan
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+### Known Limitations
+
+### Deviations from Plan
 
 - **Scope expanded**: Original plan targeted 21 files. Discovery during verification found 5 additional active files (install guides, agent definitions, skill README) that also needed updating. These were addressed immediately with 3 additional parallel agents.
 - **Historical files preserved**: Spec archives, changelogs, and scratch files were intentionally NOT updated as they document the state at time of writing.
-<!-- /ANCHOR:deviations -->
 
 ---
 
-<!-- ANCHOR:notes -->
-## Notes
+### Notes
 
 - The `assets/` directory now has 4 subdirectories: `agents/`, `documentation/`, `flowcharts/`, `skill/`
 - Agent and command templates share `assets/agents/` because they are both "OpenCode component" templates (non-skill)
 - This reorganization aligns template storage with the logical grouping of OpenCode component types
-<!-- /ANCHOR:notes -->
+
+---
+
+No known limitations.
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

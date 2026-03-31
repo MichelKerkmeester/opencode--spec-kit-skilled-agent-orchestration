@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: MCP Server ESM Migration"
+title: "Implementation Plan: MCP Server ESM [02--system-spec-kit/023-esm-module-compliance/002-mcp-server-esm-migration/plan]"
 description: "Package metadata, compiler settings, import rewrites, and CommonJS cleanup for @spec-kit/mcp-server native ESM."
 trigger_phrases:
   - "mcp server esm plan"
   - "023 phase 2 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: MCP Server ESM Migration
 

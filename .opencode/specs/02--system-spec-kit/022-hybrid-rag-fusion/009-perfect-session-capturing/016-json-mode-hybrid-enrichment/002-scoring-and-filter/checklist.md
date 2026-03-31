@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion"
+title: "...022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter/checklist]"
 description: "Verification Date: 2026-03-21"
 trigger_phrases:
   - "scoring filter checklist"

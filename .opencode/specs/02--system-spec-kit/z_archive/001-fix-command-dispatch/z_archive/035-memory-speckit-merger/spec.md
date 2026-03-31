@@ -1,5 +1,5 @@
 ---
-title: "Memory System Integration into Spec-Kit [035-memory-speckit-merger/spec]"
+title: "Memory System [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/spec]"
 description: "The current architecture has two overlapping skill folders for documentation and context management"
 trigger_phrases:
   - "memory"
@@ -59,6 +59,7 @@ This separation creates:
 
 ---
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope (This Merger)
@@ -83,8 +84,10 @@ This separation creates:
 - [ ] Renaming MCP tool functions
 - [ ] Renaming /memory:* commands
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 ### P0 - Hard Blockers (Must Pass)
@@ -110,6 +113,7 @@ This separation creates:
 | S10 | Old skill archived to `z_archive/` | Directory exists with contents |
 | S11 | Documentation updated (this spec, SKILL.md) | Human review |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## Constraints

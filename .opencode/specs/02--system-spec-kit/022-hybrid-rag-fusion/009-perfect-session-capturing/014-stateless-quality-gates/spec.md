@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Stateless Quality Gate Fixes"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates/spec]"
 description: "Stateless mode memory saves from Claude Code sessions are consistently blocked by quality gates designed for curated JSON payloads. Gate A applies file-mode strictness to raw transcript captures, producing false-positive blocks on V10 (file-count divergence) and contamination (tool-title-with-path pattern)."
 trigger_phrases:
   - "stateless quality gates"
@@ -28,6 +28,7 @@ Stateless mode (`node generate-context.js "014-stateless-quality-gates"`) is blo
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -57,6 +58,7 @@ This is **Phase 14** of the Perfect Session Capturing specification.
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -172,6 +174,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -183,8 +186,10 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 ### Reliability
 - **NFR-R01**: `--stdin` / `--json` must handle broken pipe, empty input, malformed JSON, and invalid spec-folder targets without crashing the process; exit codes must remain consistent with file-mode behavior.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -197,8 +202,10 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 - `captureSource` is undefined or unknown: contamination filter falls back to original severity for all patterns.
 - Malformed JSON piped to `--stdin`: parse error surfaced to stderr with non-zero exit code.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -210,6 +217,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 | Coordination | 8/15 | Shared scripts/MCP baseline plus test-suite gate |
 | **Total** | **53/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

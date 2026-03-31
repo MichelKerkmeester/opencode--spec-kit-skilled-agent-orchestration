@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Multi-Agent Dispatch Implementation [004-multi-agent-dispatch/checklist]"
+title: "Checklist: Multi-Agent Dispatch Implementation [04--agent-orchestration/z_archive/004-multi-agent-dispatch/checklist]"
 description: "1. .opencode/command/spec_kit/research/research/research.md - Added Phase 3 (Dispatch Mode)"
 trigger_phrases:
   - "checklist"
@@ -84,6 +84,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Item | Status | File |
@@ -103,6 +104,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:files-modified -->
+<!-- /ANCHOR:summary -->
 ## Files Modified
 
 1. `.opencode/command/spec_kit/research/research/research.md` - Added Phase 3 (Dispatch Mode)

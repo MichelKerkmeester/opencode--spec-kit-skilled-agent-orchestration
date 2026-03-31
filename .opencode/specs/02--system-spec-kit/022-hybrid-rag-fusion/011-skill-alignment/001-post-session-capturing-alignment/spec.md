@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 001-post-session-capturing-alignment"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/spec]"
 description: "Level 2 child packet for the documentation-only alignment that rolled post-session-capturing guidance into the broader 011 skill-alignment closeout."
 trigger_phrases:
   - "post session capturing alignment"
@@ -134,6 +134,7 @@ Capture the narrow documentation-only alignment that imported the relevant post-
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Documentation Quality
@@ -149,6 +150,7 @@ Capture the narrow documentation-only alignment that imported the relevant post-
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Documentation Boundaries

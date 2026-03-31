@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Documentation Alignment [007-documentation-alignment/spec]"
+title: "Phase Package Spec: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/spec]"
 description: "Waves 1–3 shipped 5 new modules, 2 feature flags, and telemetry integration across the MCP server. The user-facing documentation was not updated. This phase aligns all READMEs, ..."
 trigger_phrases:
   - "phase"

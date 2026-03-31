@@ -1,5 +1,5 @@
 ---
-title: "Plan: Rename /memory Command to /memory:check [008-rename-memory-check/plan]"
+title: "Plan: Rename /memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check/plan]"
 description: "Parallel agent delegation with domain isolation"
 trigger_phrases:
   - "plan"

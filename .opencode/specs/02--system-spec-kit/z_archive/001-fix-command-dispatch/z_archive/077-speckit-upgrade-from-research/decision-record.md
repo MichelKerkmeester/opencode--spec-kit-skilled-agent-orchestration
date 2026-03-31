@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Upgrade from Research [077-speckit-upgrade-from-research/decision-record]"
+title: "Dec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/decision-record]"
 description: "This document records architectural decisions made during the consolidation of four research specifications (060-063) into a unified SpecKit upgrade implementation plan. Each de..."
 trigger_phrases:
   - "decision"
@@ -29,6 +29,7 @@ This document records architectural decisions made during the consolidation of f
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 1: Consolidate 4 Research Specs into Single Implementation Plan
 
 **Date:** 2026-01-22
@@ -82,8 +83,10 @@ Consolidate all four research specs into a single implementation specification (
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/hooks-synthesis.md`
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/superego-synthesis.md`
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 2: OpenCode Environment Constraint (No Hooks)
 
 **Date:** 2026-01-22
@@ -127,8 +130,10 @@ Mark all hook-based recommendations from 062 as N/A (Not Applicable). Adopt only
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/hooks-synthesis.md`
 - OpenCode documentation on hooks configuration
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 3: Adopt Uncertainty Tracking Separate from Confidence
 
 **Date:** 2026-01-22
@@ -177,8 +182,10 @@ Add uncertainty as a distinct field (0.0-1.0 scale) separate from confidence. Bo
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/empirica-synthesis.md`
 - Empirica epistemic vector documentation
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 4: Implement Dual-Threshold Validation
 
 **Date:** 2026-01-22
@@ -227,8 +234,10 @@ Both conditions must be met for autonomous execution.
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/empirica-synthesis.md`
 - Decision 3 (dependency)
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 5: State File (.spec-state.json) - SUPERSEDED
 
 **Date:** 2026-01-22
@@ -266,8 +275,10 @@ After scope refinement, the state file approach was deemed unnecessary complexit
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/smart-ralph-synthesis.md`
 - spec.md Section 4: Out-of-Scope (explicitly excludes `.spec-state.json`)
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 6: Adopt Five Checks Framework from Superego
 
 **Date:** 2026-01-22
@@ -319,8 +330,10 @@ Add Five Checks to significant decision points:
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/superego-synthesis.md`
 - Superego five-checks documentation
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 7: Skip Full Hook Integration
 
 **Date:** 2026-01-22
@@ -373,8 +386,10 @@ Do NOT implement:
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/hooks-synthesis.md`
 - Decision 2 (dependency)
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision 8: Defer LanceDB Migration
 
 **Date:** 2026-01-22
@@ -419,8 +434,10 @@ Keep current SQLite + better-sqlite3 implementation. Defer LanceDB evaluation to
 - `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/superego-synthesis.md`
 - Current SQLite implementation in `.opencode/skill/system-spec-kit/mcp_server/`
 
+<!-- /ANCHOR:decision -->
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Summary Table
 
 | # | Decision | Status | Priority | Source |
@@ -434,6 +451,7 @@ Keep current SQLite + better-sqlite3 implementation. Defer LanceDB evaluation to
 | 7 | Skip full hook integration | ACCEPTED | P0 | 062 |
 | 8 | Defer LanceDB migration | DEFERRED | P2 | 063 |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Revision History

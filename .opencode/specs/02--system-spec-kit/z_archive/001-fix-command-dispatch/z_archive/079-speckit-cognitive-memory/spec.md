@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Cognitive Memory Upgrade [079-speckit-cognitive-memory/spec]"
+title: "Feature Specificati [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/spec]"
 description: "Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory patterns: FSRS power-law decay, prediction error gating for conflict detection, and dual-strength t..."
 trigger_phrases:
   - "feature"
@@ -42,8 +42,10 @@ Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory pa
 | **Created** | 2026-01-27 |
 | **Research** | `001-analysis-cognitive-memory-systems.md`, `002-recommendations-cognitive-memory-upgrade.md` |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -54,8 +56,10 @@ The current Spec Kit Memory system stores memories indefinitely with arbitrary e
 
 Implement human-like memory characteristics where useful memories strengthen through retrieval, unused memories naturally fade, duplicates are intelligently detected, and the context window stays clean with only relevant content.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -87,8 +91,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 | `mcp_server/handlers/memory-search.js` | Modify | Add testing effect strengthening |
 | `mcp_server/core/index.js` | Modify | Schema migration for new columns |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -116,8 +122,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 | REQ-009 | Contradiction detection | NLP patterns detect conflicting content |
 | REQ-010 | Context encoding capture | Save encoding context with memories |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Memory bloat reduced - dormant memories excluded from context window
@@ -125,8 +133,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 - **SC-003**: Useful memories persist - accessed memories maintain high retrievability
 - **SC-004**: All existing tests pass - no regression in functionality
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -137,8 +147,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 | Risk | Performance degradation | Medium | Cache retrievability, batch updates |
 | Risk | FSRS parameters wrong | Medium | Use proven defaults from Anki research |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -157,8 +169,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 - **NFR-R01**: Schema migration is idempotent (can run multiple times safely)
 - **NFR-R02**: Graceful degradation if new columns missing
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -173,8 +187,10 @@ Implement human-like memory characteristics where useful memories strengthen thr
 - **Migration fails mid-run**: Transaction rollback, retry safe
 - **Calculation overflow**: Use Math.min/max bounds
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -186,6 +202,7 @@ Implement human-like memory characteristics where useful memories strengthen thr
 | Coordination | 12/15 | Dependencies: 3 internal modules |
 | **Total** | **75/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -274,12 +291,14 @@ Implement human-like memory characteristics where useful memories strengthen thr
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - [ ] Should FSRS difficulty be user-adjustable per memory?
 - [ ] What retention threshold for DORMANT → ARCHIVED transition? (Currently 90 days)
 - [ ] Should contradiction detection use embedding comparison or NLP patterns?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

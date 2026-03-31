@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Sprint 9 Extra Features"
+title: "...-system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/implementation-summary]"
 description: "Implementation summary normalized to the active Level 2 template while preserving recorded delivery evidence."
 trigger_phrases:
   - "010-sprint-9-extra-features implementation summary"

@@ -1,7 +1,7 @@
 ---
 title: "Feature Specification: Merge create README and install guide commands [017-create-readme-install-merger/spec]"
 description: "The create command family currently duplicates setup logic and routing across two command entry points. This spec defines a single canonical command/workflow family that preserves compatibility while reducing maintenance overhead."
-# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "create command merge"
   - "folder readme"
@@ -64,8 +64,8 @@ Define a canonical merged command/workflow family that consolidates shared orche
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/command/create/folder_readme.md` | Update | Preferred unified user-facing command for README/install workflows |
-| `.opencode/command/create/doc.md` | Update | Compatibility/internal workflow kernel entrypoint |
-| `.opencode/command/create/install_guide.md` | Update | Converted to compatibility alias to canonical command |
+| compatibility/internal workflow kernel entrypoint | Update | Legacy internal wrapper retired after implementation; behavior folded into the canonical command |
+| install-guide compatibility alias | Update | Legacy install-guide wrapper retired after implementation; install behavior now routes through the canonical command |
 | `.agents/commands/create/folder_readme.toml` | Update | Preferred unified `.agents` wrapper |
 | `.agents/commands/create/doc.toml` | Update | Compatibility/internal `.agents` wrapper |
 | `.agents/commands/create/install_guide.toml` | Update | Converted to compatibility alias wrapper |
@@ -75,7 +75,7 @@ Define a canonical merged command/workflow family that consolidates shared orche
 | `.opencode/install_guides/README.md` | Update | Install guide references updated |
 | `.opencode/install_guides/SET-UP - AGENTS.md` | Update | Setup reference updated for canonical path |
 | `.opencode/agent/write.md` | Update | Writer agent references updated |
-| `.opencode/agent/chatgpt/write.md` | Update | ChatGPT writer references updated |
+| `.claude/agents/write.md` | Update | Claude runtime writer references updated |
 | `.agents/agents/write.md` | Update | `.agents` writer references updated |
 | `.codex/agents/write.toml` | Update | Codex writer references updated |
 | `.opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/spec.md` | Update | Implementation-progress sync |
@@ -124,15 +124,13 @@ Define a canonical merged command/workflow family that consolidates shared orche
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## L2: ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **AS-001 - Legacy README Auto Path Parity**: **Given** a user invokes `/create:folder_readme :auto`, **When** canonical routing resolves aliases, **Then** the system dispatches to the README auto branch without changing setup or completion semantics.
 2. **AS-002 - Legacy Install Confirm Path Parity**: **Given** a user invokes `/create:install_guide :confirm`, **When** canonical routing resolves aliases, **Then** the system dispatches to the install confirm branch with checkpoint behavior preserved.
 3. **AS-003 - Preferred Explicit Operation Routing**: **Given** a user invokes `/create:folder_readme` with explicit operation and mode, **When** required arguments are provided, **Then** no additional setup prompt questions are asked.
 4. **AS-004 - Ambiguous Mixed-Flag Rejection**: **Given** inputs include conflicting operation flags, **When** router normalization runs, **Then** command execution halts with a deterministic guidance error asking for explicit operation selection.
 5. **AS-005 - Conflict Safety Enforcement**: **Given** target output already exists, **When** conflict handling is required, **Then** overwrite or merge only occurs after explicit user choice.
-<!-- /ANCHOR:acceptance-scenarios -->
 
 ---
 

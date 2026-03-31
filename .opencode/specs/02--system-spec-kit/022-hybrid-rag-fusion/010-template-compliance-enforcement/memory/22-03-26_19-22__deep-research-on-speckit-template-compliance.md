@@ -1,6 +1,5 @@
 ---
-title: "Deep Research On [010-template-compliance-enforcement/22-03-26_19-22__deep-research-on-speckit-template-compliance]"
-description: "Deep research on speckit template compliance enforcement across all agents and CLIs. 9 iterations,..."
+title: "...2-hybrid-rag-fusion/010-template-compliance-enforcement/22-03-26_19-22__deep-research-on-speckit-template-compliance]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/020 template compliance enforcement"
   - "template compliance"
@@ -21,18 +20,17 @@ trigger_phrases:
   - "enforcement"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
 ---
-
 # Deep Research On Speckit Template Compliance
 
 ## SESSION SUMMARY

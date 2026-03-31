@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Perfect Session Capturing [template:level_3/plan.md]"
+title: "Implementation Plan: Perfect Session [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/plan]"
 description: "Documentation integrity repair for the current direct-child phase tree under the perfect session capturing parent pack."
 trigger_phrases:
   - "implementation plan"
@@ -164,6 +164,7 @@ Mapping table -> root doc reconciliation -> branch-parent creation -> child meta
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -182,6 +183,7 @@ Build Mapping -> Reconcile Parent Docs -> Create Branch Parent Docs -> Repair Ch
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

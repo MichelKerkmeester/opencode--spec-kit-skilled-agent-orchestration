@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Description Enrichment [template:level_2/checklist.md]"
+title: "Verificat [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment/checklist]"
+description: "title: \"Verification Checklist: Description Enrichment [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verificat"
+  - "checklist"
+  - "006"
+  - "description"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Description Enrichment
 

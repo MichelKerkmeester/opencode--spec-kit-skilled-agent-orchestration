@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook memory quality and indexing phase [template:level_2/plan.md]"
+title: "Impleme [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing/plan]"
 description: "Execution plan for 34 exact IDs across 27 scenario files in the memory quality and indexing category, organized into six execution groups with sub-scenario tracking."
 trigger_phrases:
   - "memory quality execution plan"
@@ -215,6 +215,7 @@ Manual memory quality test execution pipeline with review-gated evidence collect
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -234,6 +235,7 @@ Phase 1 (Preconditions) --> Phase 2 (Core Pipeline) --> Phase 3 (Quality Loop) -
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

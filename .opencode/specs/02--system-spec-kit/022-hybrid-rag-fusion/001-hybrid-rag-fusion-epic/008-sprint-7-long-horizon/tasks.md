@@ -1,10 +1,10 @@
 ---
-title: "Tasks: Sprint 7 — Long Horizon"
+title: "Tasks: Sprint 7 [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/tasks]"
 description: "Task breakdown for Sprint 7: Long Horizon — COMPLETED. R8/S5 skipped (scale gates), S1/R13-S3/R5/T005a/DEF-014 completed. Exit gate and program completion verification passed."
 trigger_phrases:
   - "sprint 7 tasks"
   - "long horizon tasks"
-  - "R5 evaluation tasks"
+  - "r5 evaluation tasks"
 importance_tier: "normal"
 contextType: "implementation"
 ---

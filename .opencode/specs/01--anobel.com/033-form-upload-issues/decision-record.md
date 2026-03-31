@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: CV Upload Form File Type Validation Fix [035-form-upload-issues/decision-record]"
+title: "Decision Record: CV Upload Form File Type Validation Fix [01--anobel.com/033-form-upload-issues/decision-record]"
 description: "Browsers report inconsistent MIME types for document files, particularly Microsoft Office formats"
 trigger_phrases:
   - "decision"
@@ -214,7 +214,7 @@ FilePond validates uploaded files against `acceptedFileTypes` by comparing the b
 <!-- /ANCHOR:adr-001 -->
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Strip ALL Whitespace from Webflow Attributes
+### ADR-002: Strip ALL Whitespace from Webflow Attributes
 
 ### Metadata
 
@@ -415,7 +415,7 @@ attr.replace(/\s+/g, '').split(',');
 <!-- /ANCHOR:adr-002 -->
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Remove Native HTML `accept` Attribute Before FilePond Initialization
+### ADR-003: Remove Native HTML `accept` Attribute Before FilePond Initialization
 
 ### Metadata
 
@@ -629,7 +629,7 @@ console.log('FilePond config:', wrapper._pond.acceptedFileTypes.length);
 <!-- /ANCHOR:adr-003 -->
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: CORS Origin Allowlist Strategy for Webflow Multi-Domain Support
+### ADR-004: CORS Origin Allowlist Strategy for Webflow Multi-Domain Support
 
 ### Metadata
 

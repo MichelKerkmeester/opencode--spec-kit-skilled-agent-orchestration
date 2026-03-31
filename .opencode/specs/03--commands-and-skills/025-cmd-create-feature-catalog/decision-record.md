@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: /create:feature-catalog Command [template:level_3/decision-record.md]"
+title: "Decision Record: /create:feature-catalog [03--commands-and-skills/025-cmd-create-feature-catalog/decision-record]"
 description: "Accepted implementation decision covering naming, source inputs, and runtime-surface scope for /create:feature-catalog."
 trigger_phrases:
   - "feature catalog command adr"

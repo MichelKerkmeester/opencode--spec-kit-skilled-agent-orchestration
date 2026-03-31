@@ -1,5 +1,17 @@
 ---
-title: "Tasks: Session Source Validation [template:level_2/tasks.md]"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation/tasks]"
+description: "title: \"Tasks: Session Source Validation [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "009"
+  - "perfect"
+  - "tasks"
+  - "001"
+  - "session"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Session Source Validation
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Task 01 — README Audit & Alignment [task-01-readme-alignment/plan]"
+title: "Implementati [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment/plan]"
 description: "Audit 60+ README.md files in .opencode/ directory tree for stale source counts (4→5), stale intent counts (5→7), outdated schema versions, missing feature references (upgrade-le..."
 trigger_phrases:
   - "implementation"
@@ -138,6 +138,7 @@ Manual audit with systematic file-by-file review
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -158,6 +159,7 @@ Phase 1 (P0) ──────► Phase 2 (P1) ──────► Phase 3 (P
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

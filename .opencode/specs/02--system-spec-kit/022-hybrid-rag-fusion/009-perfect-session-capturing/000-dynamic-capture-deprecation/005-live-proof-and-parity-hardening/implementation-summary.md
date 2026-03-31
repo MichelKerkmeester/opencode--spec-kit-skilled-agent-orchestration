@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Live Proof And Parity Hardening"
+title: "...perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening/implementation-summary]"
 description: "This archived live-proof branch remains open and tracks the retained evidence work that still separates automated parity from universal CLI claims."
 trigger_phrases:
   - "retained live proof"

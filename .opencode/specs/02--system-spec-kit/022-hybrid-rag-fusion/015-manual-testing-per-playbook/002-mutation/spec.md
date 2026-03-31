@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook mutation phase [template:level_2/spec.md]"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation/spec]"
 description: "Test specification for the mutation category: 9 playbook scenarios covering memory_save, memory_update, memory_delete, memory_bulk_delete, memory_validate, transaction wrappers, delete schema tightening, and prediction-error save arbitration."
 trigger_phrases:
   - "mutation manual testing"

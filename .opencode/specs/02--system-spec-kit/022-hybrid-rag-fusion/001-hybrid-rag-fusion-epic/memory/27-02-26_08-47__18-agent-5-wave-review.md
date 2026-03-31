@@ -1,6 +1,5 @@
 ---
-title: "18-agent review across five waves"
-description: "Comprehensive multi-agent ultra-think review of spec 140 \"Hybrid RAG Fusion Refinement\" -- a 43+ recommendation program across 8 metric-gated sprints (458-700h) for upgrading..."
+title: "18-agent [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]"
 trigger_phrases:
   - "ultra-think review"
   - "multi-agent review"
@@ -16,10 +15,9 @@ trigger_phrases:
   - "pipeline refactor oversize"
 importance_tier: "critical"
 contextType: "research"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # 18 Agent 5 Wave Review
 
 ## SESSION SUMMARY

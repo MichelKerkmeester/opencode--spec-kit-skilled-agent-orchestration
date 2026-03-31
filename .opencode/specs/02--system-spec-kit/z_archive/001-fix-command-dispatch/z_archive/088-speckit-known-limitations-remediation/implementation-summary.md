@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [088-speckit-known-limitations-remediation/implementation-summary]"
+title: "...ec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/implementation-summary]"
 description: "Level 2 Summary (+Verify) is appropriate when"
 trigger_phrases:
   - "implementation"
@@ -29,6 +29,7 @@ DO NOT use Level 2 Summary if:
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -38,8 +39,10 @@ DO NOT use Level 2 Summary if:
 | **Level** | 2 |
 | **Checklist Status** | [All P0 verified / Partial / Deferred items] |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 [2-3 sentences summarizing what was implemented]
@@ -50,16 +53,20 @@ DO NOT use Level 2 Summary if:
 |------|--------|---------|
 | [path] | [Created/Modified/Deleted] | [Brief purpose] |
 
+<!-- /ANCHOR:what-built -->
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Rationale |
 |----------|-----------|
 | [What was decided] | [Why this choice] |
 
+<!-- /ANCHOR:decisions -->
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Test Type | Status | Notes |
@@ -68,12 +75,15 @@ DO NOT use Level 2 Summary if:
 | Unit | [Pass/Fail/Skip] | [Notes] |
 | Integration | [Pass/Fail/Skip] | [Notes] |
 
+<!-- /ANCHOR:verification -->
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 [Any limitations, tech debt, or future improvements - or "None"]
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## L2: CHECKLIST COMPLETION SUMMARY
@@ -106,6 +116,7 @@ DO NOT use Level 2 Summary if:
 
 ---
 
+<!-- ANCHOR:verification -->
 ## L2: VERIFICATION EVIDENCE
 
 ### Code Quality Evidence
@@ -122,6 +133,7 @@ DO NOT use Level 2 Summary if:
 - **Edge cases**: [List of edge cases tested]
 - **Error scenarios**: [Error handling verified]
 
+<!-- /ANCHOR:verification -->
 ---
 
 ## L2: NFR COMPLIANCE

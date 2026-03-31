@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [019-readme-and-summary-with-hvr/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/implementation-summary]"
 description: "The Human Voice Rules existed. They just sat inside a Barter-specific context document that no other system could reach. This spec changed that. The rules were extracted, cleane..."
 trigger_phrases:
   - "implementation"

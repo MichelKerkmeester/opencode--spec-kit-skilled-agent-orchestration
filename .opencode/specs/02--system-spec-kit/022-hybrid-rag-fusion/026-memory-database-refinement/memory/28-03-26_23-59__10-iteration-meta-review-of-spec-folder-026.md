@@ -1,6 +1,5 @@
 ---
-title: "10 Iteration Meta Review [026-memory-database-refinement/28-03-26_23-59__10-iteration-meta-review-of-spec-folder-026]"
-description: "10-iteration meta-review of spec folder 026-memory-database-refinement and all work done there. Reviewed fix quality across 27 modified MCP server files, 5 spec artifacts, and..."
+title: "...kit/022-hybrid-rag-fusion/026-memory-database-refinement/28-03-26_23-59__10-iteration-meta-review-of-spec-folder-026]"
 trigger_phrases:
   - "memory database refinement v2 review"
   - "checkpoint restore scope bug"
@@ -33,18 +32,17 @@ trigger_phrases:
   - "refinement"
 importance_tier: "critical"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # 10 Iteration Meta Review Of Spec Folder 026
 
 ## SESSION SUMMARY

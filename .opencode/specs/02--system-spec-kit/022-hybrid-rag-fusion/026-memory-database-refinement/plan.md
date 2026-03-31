@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Memory Database Refinement"
+title: "Implementation Plan: Memory Database [02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/plan]"
 description: "30-iteration deep-research review audit + 4 fix sprints + P2 triage + meta-review for the Spec Kit Memory MCP server. 121 original findings fixed, 29 meta-review findings pending remediation in Phase 12."
 trigger_phrases:
   - "memory database refinement plan"
   - "deep research review plan"
   - "mcp server audit plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: Memory Database Refinement
@@ -190,6 +190,7 @@ Autonomous deep-research review loop with externalized state. Each iteration get
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -208,6 +209,7 @@ Phase 1 (Setup) --> Phase 2 (Review, 30 iters) --> Phase 3 (Synthesis + Fix Spri
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

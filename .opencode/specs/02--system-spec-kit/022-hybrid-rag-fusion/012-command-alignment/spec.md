@@ -1,12 +1,12 @@
 ---
-title: "Command Alignment: Memory Commands vs MCP Tool Schemas"
+title: "Command Alignment: Memory Commands vs MCP Tool [02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec]"
 description: "Update the 012 command-alignment spec pack so it matches the live 33-tool, 4-command memory surface plus /spec_kit:resume recovery."
 trigger_phrases:
   - "command alignment"
   - "memory commands"
   - "012 command alignment"
   - "tool schema alignment"
-  - "MCP command reality"
+  - "mcp command reality"
 importance_tier: "important"
 contextType: "implementation"
 ---

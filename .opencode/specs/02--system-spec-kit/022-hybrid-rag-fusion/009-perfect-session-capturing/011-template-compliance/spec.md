@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: Template Compliance"
+title: "Feature Specifica [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/spec]"
 description: "Repo-aligned hardening for live template comparison, stricter structural validation, and inline scaffold prompt enforcement."
 trigger_phrases:
   - "template compliance"
   - "spec templates"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: Template Compliance
@@ -143,6 +143,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -161,6 +162,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. L2: EDGE CASES
 
 ### Data Boundaries

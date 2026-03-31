@@ -1,10 +1,10 @@
 ---
-title: "Tasks: Sprint 1 — Graph Signal Activation"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation/tasks]"
 description: "Task breakdown for Sprint 1: typed-weighted degree as 5th RRF channel, edge density, agent UX"
 trigger_phrases:
   - "sprint 1 tasks"
   - "graph signal tasks"
-  - "R4 tasks"
+  - "r4 tasks"
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -98,6 +98,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T005 Enable R4 in dark-run mode — three-measurement sequence: (a) Sprint 0 baseline MRR@5, (b) R4-only with A7 at 0.1x, (c) R4+A7 with A7 at 0.25-0.3x; verify MRR@5 delta >+2% and no single memory >60% presence [included] {T002, T003, T003a, T004, T005a} — R4 (REQ-S1-001)
@@ -132,6 +133,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:completion -->
+<!-- /ANCHOR:phase-3 -->
 ## Completion Criteria
 
 - [x] All tasks T001-T008 (including T003a and T005a) marked `[x]`

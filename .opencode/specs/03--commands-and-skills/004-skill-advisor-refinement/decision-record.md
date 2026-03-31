@@ -119,8 +119,8 @@ Explicit threshold use currently risks silently downgrading uncertainty safeguar
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Separate command bridges from real skills in ranking
+
+### ADR-002: Separate command bridges from real skills in ranking
 
 ### Metadata
 
@@ -186,12 +186,13 @@ Command bridges (`command-spec-kit`, `command-memory-save`) currently compete di
 - Update ranking merge logic and tests.
 
 **How to roll back**: Revert pool separation and restore prior rank merge, then rerun regression baseline.
-<!-- /ANCHOR:adr-002 -->
+
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Add per-process cache with mtime invalidation and precomputed metadata
+
+
+### ADR-003: Add per-process cache with mtime invalidation and precomputed metadata
 
 ### Metadata
 
@@ -258,12 +259,13 @@ Each request currently rescans skills and reprocesses metadata. This increases w
 - Update advisor load path to use cache API.
 
 **How to roll back**: Bypass runtime cache module and restore direct discovery path.
-<!-- /ANCHOR:adr-003 -->
+
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Add structural mode and permanent quality-performance harnesses
+
+
+### ADR-004: Add structural mode and permanent quality-performance harnesses
 
 ### Metadata
 
@@ -329,7 +331,7 @@ Repeated subprocess startup is expensive for bulk routing and there is no perman
 - Add `skill_advisor_regression.py` and `skill_advisor_bench.py` with dataset fixtures.
 
 **How to roll back**: Remove structural mode flags and harness scripts, restore one-shot-only contract.
-<!-- /ANCHOR:adr-004 -->
+
 
 <!--
 Level 3 Decision Record (Addendum): One ADR per major decision.

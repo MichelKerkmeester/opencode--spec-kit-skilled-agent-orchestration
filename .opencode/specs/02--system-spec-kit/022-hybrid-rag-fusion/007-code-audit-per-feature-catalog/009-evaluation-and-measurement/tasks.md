@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Evaluation and Measurement"
+title: "Task [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement/tasks]"
 description: "Task breakdown for auditing 16 Evaluation and Measurement features"
 trigger_phrases:
   - "tasks"

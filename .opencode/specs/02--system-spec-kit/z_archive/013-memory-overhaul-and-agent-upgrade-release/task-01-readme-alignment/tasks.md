@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Task 01 — README Audit & Alignment [task-01-readme-alignment/tasks]"
+title: "Tasks: [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Verification and Standards Sync"
+title: "Tasks: Verification and Standards [02--system-spec-kit/023-esm-module-compliance/004-verification-and-standards/tasks]"
 description: "Task breakdown for highest-risk retests, verification matrix, and deferred standards-doc sync."
 trigger_phrases:
   - "verification tasks"
   - "023 phase 4 tasks"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Verification and Standards Sync
 

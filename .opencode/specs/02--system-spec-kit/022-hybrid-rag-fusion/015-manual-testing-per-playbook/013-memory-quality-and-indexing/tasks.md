@@ -1,5 +1,5 @@
 ---
-title: "Tasks: manual-testing-per-playbook memory quality and indexing phase [template:level_2/tasks.md]"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing/tasks]"
 description: "Task tracker for 34 exact IDs across 27 scenario files in the memory quality and indexing category. Code analysis complete: 34 PASS, 0 PARTIAL, 0 FAIL."
 trigger_phrases:
   - "memory quality tasks"

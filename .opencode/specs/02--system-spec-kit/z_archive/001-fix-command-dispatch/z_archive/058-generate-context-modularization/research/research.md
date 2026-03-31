@@ -1,5 +1,5 @@
 ---
-title: "Research: generate-context.js Analysis [058-generate-context-modularization/research]"
+title: "Research [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/research]"
 description: "This document provides detailed analysis of the generate-context.js script to support the modularization effort. Key findings"
 trigger_phrases:
   - "research"

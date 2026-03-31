@@ -1,3 +1,15 @@
+---
+title: "Verification Checklist: sk-deep-research [03--commands-and-skills/024-sk-deep-research-refinement/checklist]"
+description: "Verification Date: 2026-03-18"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "deep"
+  - "research"
+  - "024"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Verification Checklist: sk-deep-research Refinement via Self-Research
 
 <!-- SPECKIT_LEVEL: 2 -->

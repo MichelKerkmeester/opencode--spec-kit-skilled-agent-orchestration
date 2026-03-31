@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: cli-copilot Skill"
+title: "Implementation Plan: cli-copilot Skill [03--commands-and-skills/008-cli-copilot-creation/plan]"
 description: "Create a cli-copilot skill enabling any AI assistant to invoke GitHub Copilot CLI, completing the 4-CLI cross-AI ecosystem."
 trigger_phrases:
   - "cli-copilot plan"
@@ -140,6 +140,7 @@ AI assistant request → skill_advisor.py routing → SKILL.md smart router
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -157,6 +158,7 @@ Phase 1 (Setup) ──► Phase 2 (Gemini Implementation) ──► Phase 3 (Rev
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

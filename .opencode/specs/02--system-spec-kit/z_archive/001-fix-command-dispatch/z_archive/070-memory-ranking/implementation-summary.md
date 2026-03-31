@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory & Folder Ranking [070-memory-ranking/implementation-summary]"
+title: "Implementat [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/implementation-summary]"
 description: "A composite ranking system for the Spec Kit Memory that replaces simple count-based folder ranking with a multi-factor algorithm prioritizing recency, importance, and activity."
 trigger_phrases:
   - "implementation"
@@ -22,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## 1. What Was Built
 
 A composite ranking system for the Spec Kit Memory that replaces simple count-based folder ranking with a multi-factor algorithm prioritizing **recency**, **importance**, and **activity**.
@@ -36,6 +37,7 @@ A composite ranking system for the Spec Kit Memory that replaces simple count-ba
 | Server-Side Scoring | MCP-integrated scoring with client-side fallback |
 | Backward Compatibility | All existing API calls work unchanged |
 
+<!-- /ANCHOR:what-built -->
 ---
 
 ## 2. Architecture
@@ -235,12 +237,14 @@ Duration: 6ms
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## 9. Known Limitations
 
 1. **Validation score** is hardcoded at 0.5 (Phase 3: real user feedback tracking)
 2. **Toggle persistence** not implemented (requires session state)
 3. **Personalized weights** not implemented (Phase 3)
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## 10. Usage Examples
@@ -284,3 +288,10 @@ memory_stats({ folderRanking: 'count' })
 - **Plan:** `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/plan.md`
 - **Decisions:** `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record.md`
 - **Tests:** `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/test/test-folder-scoring.js`
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

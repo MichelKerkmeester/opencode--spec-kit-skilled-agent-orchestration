@@ -1,3 +1,17 @@
+---
+title: "Plan: Hybrid Context Injection — Hook + Tool Architecture [02--system-spec-kit/024-compact-code-graph/plan]"
+description: "Phased approach: each phase is independently deployable and testable. Phase 1 (Compaction Context Injection) delivers the highest-value feature immediately."
+trigger_phrases:
+  - "plan"
+  - "hybrid"
+  - "context"
+  - "injection"
+  - "hook"
+  - "024"
+  - "compact"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Hybrid Context Injection — Hook + Tool Architecture
 
 ## Implementation Strategy
@@ -173,6 +187,7 @@ Compiled → scripts/dist/hooks/claude/*.js
 CLAUDE.md                ← Phase 4 updates
 ```
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 - Phase 1 has no dependencies — can start immediately
@@ -181,6 +196,7 @@ CLAUDE.md                ← Phase 4 updates
 - Phase 4 can run in parallel with Phases 1-3
 - Code Graph MVP depends on Phases 1-2 patterns; can start after Phase 2
 - CocoIndex bridge is independent — CocoIndex already deployed as MCP server
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation
 

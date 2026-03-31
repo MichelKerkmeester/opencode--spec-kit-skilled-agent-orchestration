@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Manual Testing — Evaluation and Measurement"
+title: "Ver [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement/checklist]"
 description: "Verification Date: Not Started"
 trigger_phrases:
   - "evaluation and measurement checklist"

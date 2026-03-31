@@ -1,5 +1,5 @@
 ---
-title: "Spec: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/spec]"
+title: "Spec: Fix @explore Direct Dispatch in Orchestrate [04--agent-orchestration/z_archive/010-explore-routing-fix/spec]"
 description: "The orchestrate agent (orchestrate.md) contains Rule 4 (\"Never Dispatch @explore Directly\") instructing the LLM to route all exploration through @context instead of dispatching ..."
 trigger_phrases:
   - "spec"

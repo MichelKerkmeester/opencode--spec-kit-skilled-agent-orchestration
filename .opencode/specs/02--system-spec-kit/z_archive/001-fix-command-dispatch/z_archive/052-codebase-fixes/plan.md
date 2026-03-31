@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Codebase Fixes [052-codebase-fixes/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/plan]"
 description: "File: mcp_server/lib/checkpoints.js"
 trigger_phrases:
   - "implementation"
@@ -131,9 +131,11 @@ async function generateBatchEmbeddings(texts, concurrency = 5) {
 | Provider not initialized when dimension needed | Environment-based fallback |
 | Rate limiting with parallel embeddings | Concurrency limit of 5 |
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If issues arise:
 1. Revert checkpoints.js to previous version
 2. Revert embeddings.js to previous version
 3. Both files are in git, easy rollback
+<!-- /ANCHOR:rollback -->

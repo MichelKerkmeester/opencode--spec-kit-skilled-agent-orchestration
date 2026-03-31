@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-deep-research Review Folder Contract"
+title: "Verification Checklist: sk-deep-research [03--commands-and-skills/034-sk-deep-research-review-folders/checklist]"
 description: "Verification Date: 2026-03-27"
 trigger_phrases:
   - "review folder verification"

@@ -1,5 +1,5 @@
 ---
-title: "MCP Embedding Failure Investigation [086-mcp-embedding-failure/spec]"
+title: "MCP Embedding [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure/spec]"
 description: "Users report that the spec_kit_memory MCP server fails to generate semantic embeddings due to a corrupted local HuggingFace embedding model cache. The ONNX model fails protobuf ..."
 trigger_phrases:
   - "mcp"
@@ -87,7 +87,9 @@ export VOYAGE_API_KEY=your-key    # or OPENAI_API_KEY
 }
 ```
 
+<!-- ANCHOR:requirements -->
 ## Node.js Requirements
 
 - Documented: `>=18.0.0` (package.json engines field)
 - User's version: `v25.5.0` (may have compatibility issues)
+<!-- /ANCHOR:requirements -->

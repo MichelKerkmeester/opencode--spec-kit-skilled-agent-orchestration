@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Comprehensive Performance Optimization - anobel.com [031-anobel-performance-analysis/tasks]"
+title: "Tasks: Comprehensive Performance Optimization - anobel.com [01--anobel.com/029-anobel-performance-analysis/tasks]"
 description: "Task Format: T### [Notation] Description (file path) — Issue ID"
 trigger_phrases:
   - "tasks"
@@ -39,7 +39,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Critical Path Fixes (P0)
+## Phase 1: Setup
+
+### Critical Path Fixes (P0)
 
 **Workstream**: W-A (Primary)
 **Goal**: Fix JavaScript bugs causing infinite waits and defeating safety timeout
@@ -200,7 +202,9 @@ Same pattern as T003.
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Resource Hints & LCP Optimization (P1)
+## Phase 2: Implementation
+
+### Resource Hints & LCP Optimization (P1)
 
 **Workstream**: W-B (Resource Agent)
 **Goal**: Enable browser to prioritize critical resources
@@ -331,7 +335,9 @@ if (!is_mobile) {
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: JavaScript Optimization (P1/P2)
+## Phase 3: Verification
+
+### JavaScript Optimization (P1/P2)
 
 **Workstream**: W-C (JS Agent)
 **Goal**: Eliminate redundant polling and reduce CPU waste
@@ -434,7 +440,7 @@ el1.style.height = measurements.rect1.height + 'px';
 ---
 
 <!-- ANCHOR:phase-4 -->
-## Phase 4: CSS Optimization (P2)
+### CSS Optimization (P2)
 
 **Workstream**: W-D (CSS Agent)
 **Goal**: Reduce CSS payload and eliminate render-blocking
@@ -485,7 +491,7 @@ Only needed on 3 pages: werken_bij, vacature, contact (if form)
 ---
 
 <!-- ANCHOR:phase-5 -->
-## Phase 5: Image & Media Optimization (P1/P2)
+### Image & Media Optimization (P1/P2)
 
 **Workstream**: W-E (Primary)
 **Goal**: Optimize media loading for mobile
@@ -550,7 +556,7 @@ Add `loading="lazy"` to all images NOT in the initial viewport:
 ---
 
 <!-- ANCHOR:phase-6 -->
-## Phase 6: Architecture Improvements (P2/P3)
+### Architecture Improvements (P2/P3)
 
 **Workstream**: W-F (Primary)
 **Goal**: Long-term performance architecture
@@ -622,7 +628,7 @@ Create bundles:
 
 ---
 
-## Additional Issues (Deferred/Monitoring)
+### Additional Issues (Deferred/Monitoring)
 
 ### Third-Party Issues (E-01 to E-06)
 
@@ -642,7 +648,7 @@ Create bundles:
 
 ---
 
-## AI Execution Protocol
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -672,7 +678,7 @@ Before starting each task, verify:
 ### Status Reporting Format
 
 ```markdown
-## Status Update - [TIMESTAMP]
+### Status Update - [TIMESTAMP]
 - **Phase**: [1-6]
 - **Workstream**: [W-A/B/C/D/E/F]
 - **Task**: T### - [Description]
@@ -685,7 +691,7 @@ Before starting each task, verify:
 
 ---
 
-## Workstream Organization
+### Workstream Organization
 
 ### Workstream A: Critical Fixes (Primary)
 **Phase 1 - Sequential execution required**
@@ -812,7 +818,7 @@ Before starting each task, verify:
 
 ---
 
-## Task Statistics
+### Task Statistics
 
 | Category | Total | P0 | P1 | P2 | P3 | Cancelled |
 |----------|-------|----|----|----|----|-----------|
@@ -828,7 +834,7 @@ Before starting each task, verify:
 > **Note**: 4 bundling-related tasks (T023, T030, T031, T034) were cancelled on 2025-01-20. 
 > See Phase 6 scope change note for details.
 
-## Progress Summary
+### Progress Summary
 
 *Last Updated: 2026-02-07 (image_lazy_load.js reversal)*
 

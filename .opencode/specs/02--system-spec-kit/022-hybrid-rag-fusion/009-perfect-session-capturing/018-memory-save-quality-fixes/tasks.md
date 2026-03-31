@@ -1,17 +1,17 @@
 ---
-title: "Tasks: Memory Save Quality Root Cause Fixes"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-level: 2
 trigger_phrases:
   - "memory save quality tasks"
   - "018 memory save quality fixes"
   - "root cause remediation tasks"
+importance_tier: "important"
+contextType: "implementation"
 key_topics:
   - "eight fixes"
   - "review tasks"
   - "test tasks"
-importance_tier: "high"
-contextType: "implementation"
+level: 2
 ---
 # Tasks: Memory Save Quality Root Cause Fixes
 

@@ -1,5 +1,5 @@
 ---
-title: "Plan: Constitutional Memory System README [047-constitutional-readme/plan]"
+title: "Plan: Constitutional [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme/plan]"
 description: "1. Analyze existing READMEs in the skill folder to understand patterns"
 trigger_phrases:
   - "plan"
@@ -60,6 +60,7 @@ Create README.md with sections:
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:phases -->
 ## 2. Implementation Phases
 
 ### Phase 1: Research (Complete)
@@ -81,8 +82,10 @@ Create README.md with sections:
 - [x] Follows established patterns
 - [x] All sections complete
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 3. Quality Gates
 
 | Gate | Status |
@@ -92,6 +95,7 @@ Create README.md with sections:
 | Template provided | ✅ Pass |
 | Troubleshooting included | ✅ Pass |
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 4. Files Created

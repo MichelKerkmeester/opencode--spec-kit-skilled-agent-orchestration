@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Perfect Session Capturing [template:level_3/decision-record.md]"
+title: "Decision Record: Perfect [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/decision-record]"
 description: "The parent pack remains audit-first and now treats the current on-disk phase layout as canonical navigation truth."
 trigger_phrases:
   - "decision"

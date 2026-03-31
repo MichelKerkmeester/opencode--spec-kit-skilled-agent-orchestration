@@ -1,3 +1,16 @@
+---
+title: "Verification Checklist: 020 Pre-Release [02--system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/checklist]"
+description: "checklist document for 020-post-release-fixes."
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "020"
+  - "pre"
+  - "release"
+  - "post"
+importance_tier: "normal"
+contextType: "implementation"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
 

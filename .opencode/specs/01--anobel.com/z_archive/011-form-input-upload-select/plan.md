@@ -1,5 +1,5 @@
 ---
-title: "Plan: Form Input Components Enhancement [012-form-input-upload-select/plan]"
+title: "Plan: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/plan]"
 description: "This plan covers two components"
 trigger_phrases:
   - "plan"
@@ -124,6 +124,7 @@ No syncing between separate elements needed.
 <!-- /ANCHOR:data-flow-v20-dr-015 -->
 
 <!-- ANCHOR:implementation-phases-custom-select -->
+<!-- ANCHOR:phases -->
 ## Implementation Phases - Custom Select
 
 ### Phase 1: CMS Setup
@@ -167,6 +168,7 @@ No syncing between separate elements needed.
 <!-- /ANCHOR:implementation-phases-custom-select -->
 
 <!-- ANCHOR:architecture-overview -->
+<!-- /ANCHOR:phases -->
 ## Architecture Overview
 
 ```
@@ -268,6 +270,7 @@ No syncing between separate elements needed.
 <!-- /ANCHOR:state-machine -->
 
 <!-- ANCHOR:implementation-phases-file-upload -->
+<!-- ANCHOR:phases -->
 ## Implementation Phases - File Upload
 
 ### Phase 6: Cloudflare R2 + Worker Setup ✅ COMPLETED
@@ -318,6 +321,7 @@ No syncing between separate elements needed.
 <!-- /ANCHOR:implementation-phases-file-upload -->
 
 <!-- ANCHOR:file-structure -->
+<!-- /ANCHOR:phases -->
 ## File Structure
 
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: JWT Authentication [debug-escalation/plan]"
+title: "Implementa [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation/plan]"
 description: "Implement JWT-based authentication using NestJS guards and passport strategies. The auth module will handle token generation (RS256), validation, and refresh flows, integrating ..."
 trigger_phrases:
   - "implementation"
@@ -36,6 +36,7 @@ Implement JWT-based authentication using NestJS guards and passport strategies. 
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -48,8 +49,10 @@ Implement JWT-based authentication using NestJS guards and passport strategies. 
 - [ ] Tests passing (unit + integration)
 - [ ] Docs updated (spec/plan/tasks)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -64,8 +67,10 @@ Clean Architecture with NestJS modules
 ### Data Flow
 User sends credentials -> AuthController validates via UsersService -> JwtService generates tokens -> Client stores tokens -> AuthGuard validates on subsequent requests
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
@@ -84,8 +89,10 @@ User sends credentials -> AuthController validates via UsersService -> JwtServic
 - [ ] Write integration tests for auth flow
 - [ ] Manual testing of full login/refresh cycle
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -94,8 +101,10 @@ User sends credentials -> AuthController validates via UsersService -> JwtServic
 | Integration | Login flow, token refresh | Jest + supertest |
 | Manual | Full auth cycle | Postman |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -105,8 +114,10 @@ User sends credentials -> AuthController validates via UsersService -> JwtServic
 | bcrypt | External | Green | Password hashing |
 | UsersService | Internal | Green | Credential lookup |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Auth failures affect >1% of requests
@@ -114,8 +125,10 @@ User sends credentials -> AuthController validates via UsersService -> JwtServic
 
 ---
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -128,8 +141,10 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
 | Core | Setup | Verify |
 | Verify | Core | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -139,8 +154,10 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
 | Verification | Medium | 2-3 hours |
 | **Total** | | **7-11 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -158,4 +175,5 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
 - **Has data migrations?** No
 - **Reversal procedure**: N/A
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---

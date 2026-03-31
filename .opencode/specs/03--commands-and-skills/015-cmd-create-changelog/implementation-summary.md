@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Create Changelog Command [014-create-changelog-command]"
+title: "Implementation Summary: Create Changelog [03--commands-and-skills/015-cmd-create-changelog/implementation-summary]"
 description: "New /create:changelog command with dynamic work detection, component resolution, version calculation, and formatted changelog generation."
 trigger_phrases:
   - "implementation"
@@ -16,17 +16,25 @@ status: done
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
+---
+
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/015-cmd-create-changelog` |
+| **Spec Folder** | 015-cmd-create-changelog |
 | **Completed** | 2026-03-01 |
 | **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
+---
+
+<!-- ANCHOR:what-built -->
 ## What Was Built
+
+### What Was Built
 
 A new `/create:changelog` slash command that automates changelog creation for the OpenCode Dev Environment. The command dynamically detects what was worked on (via spec folders or git history), resolves the correct changelog subfolder out of 18 components, calculates the next version number, and generates a properly formatted changelog file matching the established format used across 370+ existing entries.
 
@@ -39,7 +47,7 @@ A new `/create:changelog` slash command that automates changelog creation for th
 ### Confirm Workflow
 - **create_changelog_confirm.yaml** (631 lines): Same 7 steps with checkpoint gates at each step. User can Approve, Review, Modify, or Abort at each gate.
 
-## Files Changed
+### Files Changed
 
 | File | Action | Description |
 |------|--------|-------------|
@@ -48,7 +56,15 @@ A new `/create:changelog` slash command that automates changelog creation for th
 | `.opencode/command/create/assets/create_changelog_confirm.yaml` | Created | Interactive 7-step workflow with checkpoints (631 lines) |
 | `.opencode/command/create/README.txt` | Modified | Added changelog entry to command table, structure tree, examples, troubleshooting |
 
+---
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
+
+### How It Was Delivered
 
 ### Research Phase
 Three parallel sonnet agents explored: (1) existing create command patterns (7 sibling commands), (2) changelog folder structure (18 subfolders, 370+ files, format analysis), and (3) spec folder templates and sibling command specs. Additionally, the command_template.md reference was read for alignment.
@@ -59,7 +75,15 @@ Sequential Thinking (9 steps) designed the dynamic detection algorithm, componen
 ### Implementation
 Created in 4 phases following the plan: command file, auto YAML, confirm YAML, integration/verification.
 
+---
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
 ## Key Decisions
+
+### Key Decisions
 
 | Decision | Why |
 |----------|-----|
@@ -69,7 +93,15 @@ Created in 4 phases following the plan: command file, auto YAML, confirm YAML, i
 | Default to "00--opencode-environment" for unmatched paths | Safe fallback; umbrella folder handles cross-component work |
 | Auto-increment BUILD on version collision | Prevents overwriting while maintaining sequential numbering |
 
+---
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
+
+### Verification
 
 | Check | Result |
 |-------|--------|
@@ -81,8 +113,21 @@ Created in 4 phases following the plan: command file, auto YAML, confirm YAML, i
 | All 25 tasks complete | Pass (25/25 [x]) |
 | All P0 checklist items verified | Pass (7/7) |
 
+---
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
 ## Known Limitations
+
+### Known Limitations
 
 1. Umbrella releases (00--opencode-environment) that aggregate multiple component changelogs are not automated — they require manual creation
 2. The command creates new changelog files only; it cannot update or merge existing entries
 3. Component mapping is static (embedded in YAML); new components require manual YAML updates
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

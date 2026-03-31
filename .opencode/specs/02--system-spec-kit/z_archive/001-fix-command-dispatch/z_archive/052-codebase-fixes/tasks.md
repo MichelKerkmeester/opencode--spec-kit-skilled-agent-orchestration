@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Codebase Fixes [052-codebase-fixes/tasks]"
+title: "Tasks: Codebase Fixes [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/tasks]"
 description: "1. Add import for getEmbeddingDimension"
 trigger_phrases:
   - "tasks"

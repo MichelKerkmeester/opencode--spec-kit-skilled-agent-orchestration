@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Spec-Kit Known Limitations Remediation [088-speckit-known-limitations-remediation/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/tasks]"
 description: "Task Format: T### [P?] [Priority] Description (file path) → CHK-###"
 trigger_phrases:
   - "tasks"
@@ -34,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: SQLite Schema Unification (KL-1)
 
 - [x] T001 [P0] Design unified memory_conflicts DDL merging Schema A + Schema C columns → CHK-010
@@ -47,8 +48,10 @@ contextType: "implementation"
 
 **Phase Gate**: All INSERT paths use unified column names; migration v12 tested
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Gate Numbering Fixes (KL-2)
 
 ### Phase 2a — Active files
@@ -67,8 +70,10 @@ contextType: "implementation"
 
 **Phase Gate**: Zero Gate 4/5/6 references in active files
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Script Documentation (KL-3)
 
 - [x] T017 [P] [P1] Add archive.sh, check-completion.sh, recommend-level.sh to speckit.md Capability Scan → CHK-030
@@ -76,6 +81,7 @@ contextType: "implementation"
 
 **Phase Gate**: All 6 spec scripts listed in both capability tables
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Signal Handler Cleanup (KL-4)
@@ -96,6 +102,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
@@ -103,8 +110,10 @@ contextType: "implementation"
 - [x] All P0 checklist items verified
 - [x] Spec folder documentation complete
 
+<!-- /ANCHOR:completion -->
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -112,6 +121,7 @@ contextType: "implementation"
 - **Verification**: See `checklist.md`
 - **Detailed analysis**: See `087-speckit-deep-analysis/known-limitations.md`
 
+<!-- /ANCHOR:cross-refs -->
 ---
 
 ## L2: TASK-CHECKLIST MAPPING

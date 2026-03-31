@@ -1,5 +1,5 @@
 ---
-title: "Test Plan T10.1 [test-spec-t101/plan]"
+title: "...it/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-spec-t101/plan]"
 description: "1. Create spec folder structure"
 trigger_phrases:
   - "test"

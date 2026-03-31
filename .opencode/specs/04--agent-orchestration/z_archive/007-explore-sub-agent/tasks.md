@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/tasks]"
+title: "Tasks: Context Loader Sub-Agent (@context_loader) [04--agent-orchestration/z_archive/007-explore-sub-agent/tasks]"
 description: "Objective: Understand the structural template used by existing agent files"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Phase Package Spec: Memory Quality (QP-0 through QP-4) [003-memory-quality-qp-0-4/spec]"
+title: "Phase Package Spec: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/spec]"
 description: "This package defines memory-generation quality controls derived from research/research.md and source analysis artifacts in ../research/."
 trigger_phrases:
   - "phase"

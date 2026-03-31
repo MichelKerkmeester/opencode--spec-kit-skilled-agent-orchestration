@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-deep-research Path Migration"
+title: "Feature Specification: sk-deep-research Path [03--commands-and-skills/035-sk-deep-research-path-migration/spec]"
 description: "Deep research still mixes canonical output between a root research document and scratch iteration artifacts, while legacy review packets can also leave iteration files directly under review/. This packet freezes the repo-wide migration to a research packet root plus dedicated iteration folders without adding an output folder."
 trigger_phrases:
   - "deep-research path migration"
@@ -29,6 +29,7 @@ This is a repo-wide contract migration. The implementation must update command w
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,6 +43,7 @@ This is a repo-wide contract migration. The implementation must update command w
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -165,8 +167,7 @@ Define the Level 3 migration packet that makes `research/` the canonical researc
 
 ---
 
-<!-- ANCHOR:questions -->
-
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -181,8 +182,10 @@ Define the Level 3 migration packet that makes `research/` the canonical researc
 - **NFR-R01**: Both research and review workflows must converge on a single canonical packet root after migration, even when legacy packet artifacts are present.
 - **NFR-R02**: The shell helper surface must expose stable path variables so follow-on scripts do not infer packet structure independently.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -197,8 +200,10 @@ Define the Level 3 migration packet that makes `research/` the canonical researc
 - The command and skill docs advertise different packet layouts; verification must treat that as a blocker rather than a documentation follow-up.
 - Review-mode compatibility logic still assumes direct `review/iterations/iteration-*`; the implementation must normalize those artifacts before packet classification.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -210,6 +215,7 @@ Define the Level 3 migration packet that makes `research/` the canonical researc
 | Coordination | 15/15 | Command, skill, runtime, migration, and corpus updates must land together to avoid contract drift |
 | **Total** | **72/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -266,6 +272,7 @@ Define the Level 3 migration packet that makes `research/` the canonical researc
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Do any downstream tools outside the scanned first-party surfaces still assume a former root research document and need an explicit compatibility note?

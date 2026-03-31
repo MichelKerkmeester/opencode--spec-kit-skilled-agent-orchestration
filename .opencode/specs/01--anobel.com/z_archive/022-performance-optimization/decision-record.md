@@ -1,5 +1,5 @@
 ---
-title: "Decision Record - Performance Optimization [024-performance-optimization/decision-record]"
+title: "Decision Record - Performance Optimization [01--anobel.com/z_archive/022-performance-optimization/decision-record]"
 description: "This document records architectural and implementation decisions made during the performance optimization project for anobel.com."
 trigger_phrases:
   - "decision"

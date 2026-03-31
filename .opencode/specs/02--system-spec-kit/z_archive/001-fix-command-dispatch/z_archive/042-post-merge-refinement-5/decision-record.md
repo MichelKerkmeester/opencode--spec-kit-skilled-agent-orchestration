@@ -1,5 +1,5 @@
 ---
-title: "Spec Kit Memory System - Architecture Decision Record [042-post-merge-refinement-5/decision-record]"
+title: "Spec Kit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5/decision-record]"
 description: "Architecture Decision Record (ADR) documenting significant technical decisions for the post-merge refinement phase."
 trigger_phrases:
   - "spec"
@@ -21,6 +21,7 @@ Architecture Decision Record (ADR) documenting significant technical decisions f
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Decision ID**: ADR-042
@@ -31,8 +32,10 @@ Architecture Decision Record (ADR) documenting significant technical decisions f
 - **Supersedes**: N/A
 - **Superseded By**: N/A
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:context -->
 ## 2. CONTEXT
 
 ### Problem Statement
@@ -61,8 +64,10 @@ The Spec Kit Memory System analysis (042-post-merge-refinement-5) identified 34 
 - Generated content will continue to have poor-quality text for trigger extraction
 - Gate 5 numbering in AGENTS.md is authoritative
 
+<!-- /ANCHOR:context -->
 ---
 
+<!-- ANCHOR:decision -->
 ## 3. DECISIONS
 
 This ADR consolidates 8 related decisions addressing the identified critical issues.
@@ -476,6 +481,7 @@ CREATE INDEX IF NOT EXISTS idx_memory_spec_folder
 | No indexes, optimize queries | 4/10 | Limited improvement |
 | Partial indexes | 5/10 | SQLite support limited |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## 4. SUMMARY TABLE
@@ -493,6 +499,7 @@ CREATE INDEX IF NOT EXISTS idx_memory_spec_folder
 
 ---
 
+<!-- ANCHOR:consequences -->
 ## 5. CONSEQUENCES
 
 ### Positive Consequences
@@ -528,6 +535,7 @@ CREATE INDEX IF NOT EXISTS idx_memory_spec_folder
 | LRU change introduces new bugs | Medium | Low | Extensive testing, feature flag |
 | Fallback triggers low quality | Low | Medium | Manual review of generated triggers |
 
+<!-- /ANCHOR:consequences -->
 ---
 
 ## 6. IMPLEMENTATION NOTES

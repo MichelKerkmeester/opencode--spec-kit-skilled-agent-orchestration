@@ -1,6 +1,5 @@
 ---
-title: "Importance Tier Frontmatter Fix"
-description: "Fixed a bug where memory export generated two conflicting importance tier frontmatter fields: a hardcoded importance tier with value normal (snake case) and a dynamically..."
+title: "...-system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]"
 trigger_phrases:
   - "bug where"
   - "fixed memory export generated"
@@ -16,10 +15,9 @@ trigger_phrases:
   - "hardcoded importance tier value"
 importance_tier: "important"
 contextType: "general"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # Importance Tier Frontmatter Bugfix
 
 ## SESSION SUMMARY

@@ -1,7 +1,7 @@
 ---
 title: "Verification Checklist: Merge create README and install guide commands [017-create-readme-install-merger/checklist]"
 description: "Verification Date: 2026-03-03"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
+SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "verification checklist"
   - "p0 p1 p2"
@@ -40,33 +40,33 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Workflow Quality
+## Code Quality
 
 - [x] CHK-010 [P0] Canonical command parser handles operation and mode with deterministic precedence [Evidence: static parity+safety suite PASS (20 checks, 0 failed), including `route:readme:auto`, `route:readme:confirm`, `route:install:auto`, `route:install:confirm`]
 - [x] CHK-011 [P0] Shared setup prompt asks only missing fields and enforces explicit conflict handling [Evidence: static suite PASS, including `confirm-checkpoints` + `explicit-overwrite-options` checks for both confirm YAML variants]
 - [x] CHK-012 [P1] Shared YAML kernel keeps operation-specific behavior intact [Evidence: static suite PASS for all four operation/mode routes with canonical-to-legacy equivalence matrix documented in `plan.md`]
-- [x] CHK-013 [P1] No placeholder markers remain in merged command artifacts [Evidence: `validate_document.py` reported VALID for `.opencode/command/create/doc.md`, `.opencode/command/create/folder_readme.md`, `.opencode/command/create/install_guide.md`]
+- [x] CHK-013 [P1] No placeholder markers remain in merged command artifacts [Evidence: `validate_document.py` reported VALID for the canonical merged command and its retained wrapper surfaces]
 <!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## Validation and Testing
+## Testing
 
 - [x] CHK-020 [P0] Legacy alias parity passes for both operations in `:auto` and `:confirm` [Evidence: static parity+safety suite PASS (20 checks, 0 failed), alias-token + alias-source checks passed for markdown wrappers and `.agents` TOML wrappers]
 - [x] CHK-021 [P0] Preferred unified command path passes end-to-end dry-run checks [Evidence: rollback dry-run simulation PASS (non-destructive), smoke readiness reports `/create:folder_readme` and `/create:install_guide` available in both `:auto` and `:confirm`]
-- [x] CHK-022 [P1] DQI and structural validation gates documented and executed [Evidence: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` VALID for preferred unified markdown wrapper (`.opencode/command/create/folder_readme.md`) plus compatibility/internal wrappers (`.opencode/command/create/doc.md`, `.opencode/command/create/install_guide.md`); TOML parse check passed via `python3.11`/`tomllib` for preferred unified `.agents` wrapper (`.agents/commands/create/folder_readme.toml`) plus compatibility wrappers (`.agents/commands/create/doc.toml`, `.agents/commands/create/install_guide.toml`)]
+- [x] CHK-022 [P1] DQI and structural validation gates documented and executed [Evidence: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` VALID for preferred unified markdown wrapper (`.opencode/command/create/folder_readme.md`) plus the merged install-guide branch review; TOML parse check passed via `python3.11`/`tomllib` for preferred unified `.agents` wrapper (`.agents/commands/create/folder_readme.toml`) plus compatibility wrappers (`.agents/commands/create/doc.toml`, `.agents/commands/create/install_guide.toml`)]
 - [x] CHK-023 [P1] Rollback procedure tested and documented [Evidence: rollback dry-run simulation PASS with wrappers + canonical command present, simulated rollback commands listed, and `ROLLBACK_DRY_RUN_STATUS PASS`]
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Safety and Compatibility
+## Security
 
 - [x] CHK-030 [P0] No new secret collection fields introduced in setup contract [Evidence: static suite `no-secret-field` checks PASS for `api key`, `password`, `secret key`, `credentials` in `.opencode/command/create/folder_readme.md`]
 - [x] CHK-031 [P0] Overwrite and merge conflict prompts remain explicit opt-in [Evidence: static suite `explicit-overwrite-options` checks PASS for both confirm YAML assets]
-- [x] CHK-032 [P1] Deprecation window and warning messages documented before alias removal [Evidence: `plan.md` deprecation policy finalized (minimum 2 release cycles OR 30 days, whichever is longer); alias wrappers now emit deprecation warnings in `.opencode/command/create/folder_readme.md`, `.opencode/command/create/install_guide.md`, `.agents/commands/create/folder_readme.toml`, and `.agents/commands/create/install_guide.toml`]
+- [x] CHK-032 [P1] Deprecation window and warning messages documented before alias removal [Evidence: `plan.md` deprecation policy finalized (minimum 2 release cycles OR 30 days, whichever is longer); alias behavior is documented with deprecation guidance in `.opencode/command/create/folder_readme.md`, `.agents/commands/create/folder_readme.toml`, and the retained runtime wrapper surfaces]
 <!-- /ANCHOR:security -->
 
 ---
@@ -86,7 +86,7 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Level 2 required docs exist in target spec folder [Evidence: five required files present]
 - [x] CHK-051 [P1] No temporary artifacts stored outside spec folder [Evidence: no scratch files created]
-- [x] CHK-052 [P2] Memory snapshot saved after implementation phase starts [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger` generated `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json`; `memory_index_scan` for `03--commands-and-skills/020-cmd-create-readme-install-merger` returned `indexed=1 failed=0`]
+- [x] CHK-052 [P2] Memory snapshot saved after implementation phase starts [Evidence: `memory/metadata.json` records the generated context snapshot for this spec folder and the implementation phase captured memory metadata for later indexing]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -107,7 +107,7 @@ Current status: P0, P1, and P2 verification items are complete for this phase wi
 
 ---
 
-## P0
+### P0
 
 - Canonical routing correctness for both operations and both modes is required before implementation completion.
 - Conflict handling must remain explicit and non-destructive.
@@ -115,7 +115,7 @@ Current status: P0, P1, and P2 verification items are complete for this phase wi
 
 ---
 
-## P1
+### P1
 
 - Migration communications, timeline, and rollback rehearsal are required for release readiness.
 - DQI and structural validation gates must be documented and executed for both operation branches.

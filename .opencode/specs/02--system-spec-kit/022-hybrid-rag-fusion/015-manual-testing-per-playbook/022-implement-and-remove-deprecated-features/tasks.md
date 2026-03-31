@@ -1,10 +1,10 @@
 ---
-title: "Tasks: manual-testing-per-playbook implement-and-remove-deprecated-features phase [template:level_2/tasks.md]"
+title: "...em-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/tasks]"
 description: "Task tracker for Phase 022 deprecated-feature scenarios PB-022-01 through PB-022-03."
 trigger_phrases:
   - "phase 022 tasks"
   - "deprecated features tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook implement-and-remove-deprecated-features phase

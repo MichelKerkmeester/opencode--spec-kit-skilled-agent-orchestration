@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Agent System Upgrade [003-agent-system-upgrade/checklist]"
+title: "Verification Checklist: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/checklist]"
 description: "LEVEL 3+ CONSOLIDATED CHECKLIST"
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-summary -->
+<!-- ANCHOR:summary -->
 ## VERIFICATION SUMMARY
 
 | Category | Items | Verified | Status |
@@ -34,6 +35,7 @@ contextType: "implementation"
 
 
 <!-- ANCHOR:critical-requirements-must-complete -->
+<!-- /ANCHOR:summary -->
 ## P0 - CRITICAL REQUIREMENTS (Must Complete)
 
 ### Orchestration Patterns

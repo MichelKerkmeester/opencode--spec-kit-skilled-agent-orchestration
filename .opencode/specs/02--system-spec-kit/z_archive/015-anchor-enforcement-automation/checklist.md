@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Anchor Enforcement Automation [132-anchor-enforcement-automation/checklist]"
+title: "Verification Checklist: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/checklist]"
 description: "Total P0 Items: 28"
 trigger_phrases:
   - "verification"

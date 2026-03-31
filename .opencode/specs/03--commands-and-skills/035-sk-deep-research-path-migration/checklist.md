@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-deep-research Path Migration"
+title: "Verification Checklist: sk-deep-research Path [03--commands-and-skills/035-sk-deep-research-path-migration/checklist]"
 description: "Verification Date: 2026-03-28"
 trigger_phrases:
   - "deep-research path migration checklist"

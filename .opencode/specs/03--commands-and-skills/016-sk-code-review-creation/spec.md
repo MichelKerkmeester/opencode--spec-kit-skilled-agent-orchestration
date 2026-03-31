@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: sk-code--review Promotion [016-sk-code-review-creation/spec]"
+title: "Feature Specification: sk-code--review Promotion [03--commands-and-skills/016-sk-code-review-creation/spec]"
 description: "Level 2 specification for promoting sk-code--review to a first-class stack-agnostic review skill with baseline+overlay routing across agents, commands, and advisor logic."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "sk-code--review"
   - "code review skill"
@@ -10,13 +9,14 @@ trigger_phrases:
   - "041"
 importance_tier: "important"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: sk-code--review Promotion
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-## 1. OVERVIEW
+### Overview
 
 Level 2 specification for converting the draft `legacy-single-hyphen-review` package into `sk-code--review`, aligning router behavior to `sk-doc` standards, and wiring `@review` workflows to a baseline+overlay model.
 ---
@@ -56,7 +56,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 ### In Scope
 
 - Hard rename skill package: `legacy-single-hyphen-review` -> `sk-code--review`.
-- Rebuild `SKILL.md` router to `sk-doc` parity (resource domains, loading levels, weighted scoring, ambiguity handling, unknown fallback, guarded recursive discovery).
+- Rebuild SKILL.md router to `sk-doc` parity (resource domains, loading levels, weighted scoring, ambiguity handling, unknown fallback, guarded recursive discovery).
 - Add baseline+overlay contract and precedence matrix:
   - baseline: `sk-code--review`
   - overlay: one of `sk-code--opencode`, `sk-code--web`, `sk-code--full-stack`
@@ -79,7 +79,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | Group | Paths |
 |------|-------|
 | Skill package | `.opencode/skill/sk-code--review/SKILL.md`, `.opencode/skill/sk-code--review/README.md`, `.opencode/skill/sk-code--review/references/*.md` |
-| Review agents/orchestrators | `.opencode/agent/review.md`, `.opencode/agent/chatgpt/review.md`, `.opencode/agent/orchestrate.md`, `.opencode/agent/chatgpt/orchestrate.md`, `.gemini/agents/review.md`, `.gemini/agents/orchestrate.md`, `.claude/agents/review.md`, `.claude/agents/orchestrate.md`, `.codex/agents/review.toml`, `.codex/agents/orchestrate.toml` |
+| Review agents/orchestrators | `.opencode/agent/review.md`, .opencode/agent/chatgpt/review.md, `.opencode/agent/orchestrate.md`, .opencode/agent/chatgpt/orchestrate.md, `.gemini/agents/review.md`, `.gemini/agents/orchestrate.md`, `.claude/agents/review.md`, `.claude/agents/orchestrate.md`, `.codex/agents/review.toml`, `.codex/agents/orchestrate.toml` |
 | Review dispatch commands | 18 YAMLs under `.opencode/command/spec_kit/assets/` and `.opencode/command/create/assets/` (full list in `tasks.md`) |
 | Routing + catalogs | `.opencode/skill/scripts/skill_advisor.py`, `.opencode/skill/README.md`, `.opencode/README.md` |
 | Spec docs | `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/spec.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/plan.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/tasks.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/checklist.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/implementation-summary.md` |
@@ -95,7 +95,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Hard rename completed | Skill folder exists only as `.opencode/skill/sk-code--review/`; `legacy-single-hyphen-review.zip` removed |
-| REQ-002 | Router rebuilt to standards parity | `SKILL.md` includes required section order + smart routing model + baseline+overlay logic + precedence matrix + related resources |
+| REQ-002 | Router rebuilt to standards parity | SKILL.md includes required section order + smart routing model + baseline+overlay logic + precedence matrix + related resources |
 | REQ-003 | Review runtime contract updated | Review agents/orchestrators in `.opencode`, `.opencode/chatgpt`, `.gemini`, `.claude`, plus `.codex` wrapper configs, explicitly document/enforce baseline `sk-code--review` + one overlay model |
 | REQ-004 | Command review dispatch updated | All 18 listed command YAMLs include baseline+overlay review contract wording/config |
 | REQ-005 | Review routing updated | `skill_advisor.py` routes generic code-review intents to `sk-code--review`, preserves `sk-git` behavior, and live docs do not assert a removed visual target |
@@ -137,6 +137,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -155,6 +156,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -172,14 +174,14 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## L2: ACCEPTANCE SCENARIOS
+
+### Acceptance Scenarios
 
 1. **Given** a review request with security language, **When** advisor routing runs, **Then** `sk-code--review` is top skill.
 2. **Given** git workflow phrasing, **When** advisor routing runs, **Then** `sk-git` remains top skill.
 3. **Given** visual review phrasing, **When** advisor routing runs, **Then** this spec set does not rely on any removed visual skill target claim to prove success.
 4. **Given** review dispatch steps in all listed YAMLs, **When** inspected, **Then** each contains baseline+overlay standards contract.
-<!-- /ANCHOR:acceptance-scenarios -->
+
 
 ---
 

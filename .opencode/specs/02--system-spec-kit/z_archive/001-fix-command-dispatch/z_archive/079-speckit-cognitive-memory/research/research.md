@@ -1,5 +1,5 @@
 ---
-title: "Research: Memory Consolidation and Dormancy Patterns [079-speckit-cognitive-memory/research]"
+title: "Research: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/research]"
 description: "Request: Research how memories transition between active and dormant states in cognitive science and how to implement this for AI memory systems."
 trigger_phrases:
   - "research"

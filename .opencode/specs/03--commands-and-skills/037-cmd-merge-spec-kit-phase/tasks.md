@@ -1,3 +1,17 @@
+---
+title: "Tasks: Merge spec_kit:phase into plan and complete [03--commands-and-skills/037-cmd-merge-spec-kit-phase/tasks]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "merge"
+  - "spec"
+  - "kit"
+  - "phase"
+  - "037"
+  - "cmd"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: Merge spec_kit:phase into plan and complete
 
 <!-- SPECKIT_LEVEL: 2 -->

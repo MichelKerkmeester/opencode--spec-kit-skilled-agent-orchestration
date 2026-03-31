@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Gemini CLI Compatibility [023-gemini-cli-compatibility/plan]"
+title: "Implementation Plan: Gemini CLI Compatibility [04--agent-orchestration/023-gemini-cli-compatibility/plan]"
 description: "Add a Gemini CLI runtime layer to the existing multi-provider OpenCode architecture. This creates a .gemini/ directory with adapted agent definitions, TOML command wrappers, ski..."
 trigger_phrases:
   - "implementation"
@@ -69,14 +69,13 @@ Multi-Provider Runtime Adapter (existing pattern — mirrors `.claude/` provider
 - **`.gemini/skills/`**: Relative symlinks to `.opencode/skill/` directories (shared, not duplicated)
 - **`GEMINI.md`**: Symlink to `AGENTS.md` at project root (behavioral framework entry point)
 - **`.gemini/specs`**: Symlink to `../.opencode/specs` for spec access from Gemini context
-- **`.opencode/agent/gemini/`**: 8+ agent files for runtime path resolution (consistent with OpenCode directory convention)
 
 ### Data Flow
 1. Gemini CLI starts → reads `.gemini/settings.json` → enables agents, loads MCP servers
 2. Gemini CLI reads `GEMINI.md` → follows symlink to `AGENTS.md` → behavioral framework loaded
 3. User invokes `/spec_kit:plan` → reads `.gemini/commands/spec_kit/plan.toml` → `@{path}` injection pulls OpenCode command content
-4. Model activates skill → reads `.gemini/skills/sk-doc/SKILL.md` → follows symlink to `.opencode/skill/` source
-5. Model dispatches subagent → reads `.gemini/agents/research/research/research.md` → executes with Gemini frontmatter config
+4. Model activates skill → reads `.gemini/skills/sk-doc/skill index` → follows symlink to `.opencode/skill/` source
+5. Model dispatches subagent → reads `.gemini/agents/research/research/research` → executes with Gemini frontmatter config
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -167,7 +166,7 @@ Create 8 agent files in `.gemini/agents/` using Gemini-native frontmatter.
 - [ ] **orchestrate.md** — tools: `[read_file]`, model: `gemini-2.5-pro`, `max_turns: 25`, `timeout_mins: 10`. Body from `.opencode/agent/orchestrate.md`, add Gemini Optimization Profile section, replace path convention to `.gemini/agents/*.md`
 - [ ] **context.md** — tools: `[read_file, read_many_files, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/context.md`
 - [ ] **debug.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/debug.md`
-- [ ] **research.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/research/research/research.md`
+- [ ] **research.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-pro`, `max_turns: 15`, `timeout_mins: 10`. Body from `.opencode/agent/research/research/research`
 - [ ] **review.md** — tools: `[read_file, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/review.md`
 - [ ] **speckit.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/speckit.md`
 - [ ] **write.md** — tools: `[read_file, write_file, edit_file, run_shell_command, grep_search, list_directory, web_search]`, model: `gemini-2.5-flash`, `max_turns: 15`. Body from `.opencode/agent/write.md`
@@ -232,7 +231,7 @@ User request: {{args}}"""
   ```
   | **Gemini CLI** | `.gemini/agents/` | Load Gemini-specific agent definitions from this directory |
   ```
-- [ ] **`.opencode/command/create/agent.md`** — Add Gemini to runtime path resolution list:
+- [ ] **`.opencode/command/create agent command`** — Add Gemini to runtime path resolution list:
   ```
   - Gemini CLI: .gemini/agents
   ```
@@ -281,12 +280,13 @@ User request: {{args}}"""
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Broken symlinks unresolvable, invalid config incompatible with Gemini CLI, or fundamental schema incompatibility discovered
-- **Procedure**: `rm -rf .gemini/ GEMINI.md` at project root + revert `AGENTS.md` and `.opencode/command/create/agent.md` changes via git
+- **Procedure**: `rm -rf .gemini/ GEMINI.md` at project root + revert `AGENTS.md` and `.opencode/command/create agent command` changes via git
 <!-- /ANCHOR:rollback -->
 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -310,6 +310,7 @@ Phase 1 (Foundation) ──┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -329,7 +330,7 @@ Phase 1 (Foundation) ──┐
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] All changes are in new files/directories — no existing source files modified except `AGENTS.md` and `.opencode/command/create/agent.md`
+- [ ] All changes are in new files/directories — no existing source files modified except `AGENTS.md` and `.opencode/command/create agent command`
 - [ ] No data migrations involved (pure file/config additions)
 - [ ] Git status confirmed clean before starting (changes traceable via `git diff`)
 
@@ -337,7 +338,7 @@ Phase 1 (Foundation) ──┐
 1. Remove `.gemini/` directory: `rm -rf .gemini/`
 2. Remove `GEMINI.md` symlink: `rm GEMINI.md`
 3. Revert `AGENTS.md` changes: `git checkout AGENTS.md`
-4. Revert `.opencode/command/create/agent.md`: `git checkout .opencode/command/create/agent.md`
+4. Revert `.opencode/command/create agent command`: `git checkout .opencode/command/create agent command`
 
 ### Data Reversal
 - **Has data migrations?** No

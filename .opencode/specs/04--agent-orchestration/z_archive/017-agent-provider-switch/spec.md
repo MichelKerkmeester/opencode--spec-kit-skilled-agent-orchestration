@@ -1,5 +1,5 @@
 ---
-title: "Spec 017: Agent Provider Switching with Primary Runtime Path [017-agent-provider-switch/spec]"
+title: "Spec 017: Agent Provider Switching with Primary [04--agent-orchestration/z_archive/017-agent-provider-switch/spec]"
 description: "This spec introduces provider-aware agent profile switching while keeping .opencode/agent/*.md as the single runtime path used by commands and orchestration. The system will sta..."
 trigger_phrases:
   - "spec"
@@ -131,6 +131,7 @@ Provide a safe, deterministic provider switch workflow that preserves `.opencode
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -146,6 +147,7 @@ Provide a safe, deterministic provider switch workflow that preserves `.opencode
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries

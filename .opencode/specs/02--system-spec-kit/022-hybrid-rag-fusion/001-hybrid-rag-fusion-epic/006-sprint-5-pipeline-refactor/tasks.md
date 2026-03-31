@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Sprint 5 — Pipeline Refactor"
+title: "Tasks: Sprin [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor/tasks]"
 description: "Task breakdown for 4-stage pipeline refactor, spec folder pre-filter, query expansion, and spec-kit retrieval metadata."
 trigger_phrases:
   - "sprint 5 tasks"
   - "pipeline refactor tasks"
-  - "R6 tasks"
+  - "r6 tasks"
 importance_tier: "normal"
-contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+contextType: "implementation"
 ---
 # Tasks: Sprint 5 — Pipeline Refactor
 

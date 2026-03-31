@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: System-Wide Remediation [125-codex-system-wide-audit/checklist]"
+title: "Verification Checklist: System-Wide Remediation [02--system-spec-kit/z_archive/008-codex-system-wide-audit/checklist]"
 description: "All CHK-### [P0] items are hard blockers and must be closed with evidence before completion."
 trigger_phrases:
   - "verification"

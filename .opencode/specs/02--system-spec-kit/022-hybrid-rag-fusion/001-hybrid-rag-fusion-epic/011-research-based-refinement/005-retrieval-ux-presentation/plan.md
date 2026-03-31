@@ -1,3 +1,18 @@
+---
+title: "...it/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation/plan]"
+description: "Three phases, ordered by dependency chain and effort. Phase A establishes the foundation (recovery + confidence), Phase B adds explainability and profiles (depends on D1 channel..."
+trigger_phrases:
+  - "022"
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "001"
+  - "plan"
+  - "005"
+  - "retrieval"
+importance_tier: "important"
+contextType: "decision"
+---
 # Implementation Plan: Retrieval UX & Result Presentation
 
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

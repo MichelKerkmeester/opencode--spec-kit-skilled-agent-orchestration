@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Agent Haiku Compatibility [013-agent-haiku-compatibility/implementation-summary]"
+title: "Implementation Summary: Agent [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/implementation-summary]"
 description: "Updated orchestrate.md on both platforms to align with the thorough-only Haiku context agent (spec 012 outcome). Removed stale 3-mode dispatch limits and added Haiku-specific fa..."
 trigger_phrases:
   - "implementation"
@@ -66,3 +66,10 @@ All 6 non-context agents verified — no mode references found:
 | checklist.md | Complete (6/6 requirements [x], 4/4 verifications [x]) |
 | implementation-summary.md | This file |
 | memory/ | Generated |
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

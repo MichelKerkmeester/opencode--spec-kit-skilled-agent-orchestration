@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Command Agent Utilization Audit [014-command-agent-utilization/decision-record]"
+title: "Decision Record: Command Agent [04--agent-orchestration/z_archive/014-command-agent-utilization/decision-record]"
 description: "The original plan stated \"All 12 create YAML files have a spec_folder_setup step\" and planned to update all 12 with @speckit routing. This needed verification before implementat..."
 trigger_phrases:
   - "decision"

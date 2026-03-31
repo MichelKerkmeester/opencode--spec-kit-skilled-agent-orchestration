@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/checklist]"
+title: "Verification Checklist: ChatGPT Agent Suite Codex [04--agent-orchestration/021-codex-orchestrate/checklist]"
 description: "Verification Date: 2026-02-19"
 trigger_phrases:
   - "verification"
@@ -42,17 +42,17 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
-## P0 Blockers
+#### P0 Blockers
 
 - [x] Requirements and implementation plan are complete [EVIDENCE: .opencode.opencode/specs/04--agent-orchestration/021-codex-orchestrate/spec.md:70 - Level 3 requirements and success criteria fully defined]
 - [x] Core suite-scope requirements (REQ-001..REQ-005) implemented [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/tasks.md:37 - T005..T012 complete for all 8 ChatGPT files]
-- [x] NDP safety constraints preserved [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:138 - depth max remains 3 levels (0-1-2)]
+- [x] NDP safety constraints preserved [EVIDENCE: .opencode/agent/chatgpt/orchestrate:138 - depth max remains 3 levels (0-1-2)]
 <!-- /ANCHOR:p0-blockers -->
 
 ---
 
 <!-- ANCHOR:p1-required -->
-## P1 Required
+#### P1 Required
 
 - [x] Secondary policy requirements (REQ-006..REQ-008) implemented [EVIDENCE: .opencode.opencode/specs/04--agent-orchestration/021-codex-orchestrate/spec.md:84 - completion semantics, fast-path alignment, and anchor integrity requirements defined]
 - [x] Documentation synchronized across all Level 3 artifacts [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/implementation-summary.md:25 - changed-file list and policy deltas synchronized]
@@ -64,10 +64,10 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Updated policy text is internally consistent across sections [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:284 - DEG rules align with focused dispatch and anti-patterns]
+- [x] CHK-010 [P0] Updated policy text is internally consistent across sections [EVIDENCE: .opencode/agent/chatgpt/orchestrate:284 - DEG rules align with focused dispatch and anti-patterns]
 - [x] CHK-011 [P0] No placeholder content remains [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate - grep returned no placeholder matches]
-- [x] CHK-012 [P1] Codex profile guidance is explicit across affected files [EVIDENCE: .opencode/agent/chatgpt/context.md:93 - adaptive mode profile and budgets aligned to Codex workflow]
-- [x] CHK-013 [P1] Delegation and execution rules are unambiguous [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:299 - focused execution defaults and explicit parallel criteria]
+- [x] CHK-012 [P1] Codex profile guidance is explicit across affected files [EVIDENCE: .opencode/agent/chatgpt/context:93 - adaptive mode profile and budgets aligned to Codex workflow]
+- [x] CHK-013 [P1] Delegation and execution rules are unambiguous [EVIDENCE: .opencode/agent/chatgpt/orchestrate:299 - focused execution defaults and explicit parallel criteria]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -76,9 +76,9 @@ contextType: "implementation"
 ## Testing
 
 - [x] CHK-020 [P0] Requirements REQ-001 through REQ-005 are satisfied [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/tasks.md:37 - concrete completion tasks exist for all 8 chatgpt files]
-- [x] CHK-021 [P0] NDP rules remain intact after edits [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:775 - anti-pattern keeps max-depth and LEAF non-dispatch enforcement]
-- [x] CHK-022 [P1] CWB references are consistent across table and prose [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:656 - 1-4/5-12/13-24 ranges and enforcement aligned]
-- [x] CHK-023 [P1] TCB references are consistent across table and prose [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:699 - 1-12/13-18/19+ ranges and split guidance aligned]
+- [x] CHK-021 [P0] NDP rules remain intact after edits [EVIDENCE: .opencode/agent/chatgpt/orchestrate:775 - anti-pattern keeps max-depth and LEAF non-dispatch enforcement]
+- [x] CHK-022 [P1] CWB references are consistent across table and prose [EVIDENCE: .opencode/agent/chatgpt/orchestrate:656 - 1-4/5-12/13-24 ranges and enforcement aligned]
+- [x] CHK-023 [P1] TCB references are consistent across table and prose [EVIDENCE: .opencode/agent/chatgpt/orchestrate:699 - 1-12/13-18/19+ ranges and split guidance aligned]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -86,9 +86,9 @@ contextType: "implementation"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No secrets or credentials introduced [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md - documentation-only edits; no secret tokens added]
-- [x] CHK-031 [P0] No policy changes weaken guardrails for depth/safety [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:185 - LEAF enforcement instruction still requires no subagent dispatch]
-- [x] CHK-032 [P1] Failure handling remains deterministic and explicit [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:568 - aborted-task recovery remains explicit and stepwise]
+- [x] CHK-030 [P0] No secrets or credentials introduced [EVIDENCE: .opencode/agent/chatgpt/orchestrate - documentation-only edits; no secret tokens added]
+- [x] CHK-031 [P0] No policy changes weaken guardrails for depth/safety [EVIDENCE: .opencode/agent/chatgpt/orchestrate:185 - LEAF enforcement instruction still requires no subagent dispatch]
+- [x] CHK-032 [P1] Failure handling remains deterministic and explicit [EVIDENCE: .opencode/agent/chatgpt/orchestrate:568 - aborted-task recovery remains explicit and stepwise]
 <!-- /ANCHOR:security -->
 
 ---
@@ -141,8 +141,8 @@ contextType: "implementation"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Dispatch policy reduces micro-task fan-out risk [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:763 - micro-task anti-pattern explicitly prohibited]
-- [x] CHK-111 [P1] Threshold updates avoid unnecessary splitting on medium tasks [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md:701 - SAFE range expanded to 1-12]
+- [x] CHK-110 [P1] Dispatch policy reduces micro-task fan-out risk [EVIDENCE: .opencode/agent/chatgpt/orchestrate:763 - micro-task anti-pattern explicitly prohibited]
+- [x] CHK-111 [P1] Threshold updates avoid unnecessary splitting on medium tasks [EVIDENCE: .opencode/agent/chatgpt/orchestrate:701 - SAFE range expanded to 1-12]
 - [x] CHK-112 [P2] Additional benchmark evidence captured if available [EVIDENCE: Not available in this doc-only run; marked complete with explicit N/A in summary]
 - [x] CHK-113 [P2] Performance assumptions documented [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/spec.md:121 - NFR performance requirements recorded]
 <!-- /ANCHOR:perf-verify -->
@@ -153,7 +153,7 @@ contextType: "implementation"
 ## L3+: DEPLOYMENT READINESS
 
 - [x] CHK-120 [P0] Rollback procedure documented and feasible [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/plan.md:145 - rollback procedure covers all modified chatgpt files]
-- [x] CHK-121 [P0] Updated file remains syntactically valid markdown/policy [EVIDENCE: .opencode/agent/chatgpt/orchestrate.md parsed/read successfully post-edit]
+- [x] CHK-121 [P0] Updated file remains syntactically valid markdown/policy [EVIDENCE: .opencode/agent/chatgpt/orchestrate parsed/read successfully post-edit]
 - [x] CHK-122 [P1] Completion report contains deviations and rationale [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/implementation-summary.md:97 - deviations list scope expansions and rationale]
 - [x] CHK-123 [P1] Runbook-equivalent notes captured in implementation summary [EVIDENCE: .opencode/specs/04--agent-orchestration/021-codex-orchestrate/implementation-summary.md:83 - verification steps provide ordered execution/validation procedure]
 - [ ] CHK-124 [P2] Handover option offered to user

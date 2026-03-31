@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Reimagined [082-speckit-reimagined/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/plan]"
 description: "This plan implements a comprehensive enhancement to SpecKit's memory system based on consolidated analysis of dotmd, seu-claude, drift, and system-speckit architectures. The imp..."
 trigger_phrases:
   - "implementation"
@@ -40,6 +40,7 @@ This plan implements a comprehensive enhancement to SpecKit's memory system base
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -55,8 +56,10 @@ This plan implements a comprehensive enhancement to SpecKit's memory system base
 - [ ] All tests passing
 - [ ] Documentation updated
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -102,8 +105,10 @@ Query → QueryExpansion → [Vector|BM25|Graph] parallel search
                        Compression & Response
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Quick Wins (Week 1)
@@ -184,8 +189,10 @@ Query → QueryExpansion → [Vector|BM25|Graph] parallel search
 
 **Phase 5 Total: ~8 days / 1.5 weeks**
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -195,8 +202,10 @@ Query → QueryExpansion → [Vector|BM25|Graph] parallel search
 | Performance | Startup time, query latency | Custom benchmarks |
 | Manual | End-to-end memory workflows | MCP Inspector |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -206,15 +215,19 @@ Query → QueryExpansion → [Vector|BM25|Graph] parallel search
 | Cross-encoder (configurable provider) | External | Yellow | Optional - can skip reranking |
 | BM25-WASM | External | Green | JS fallback available |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: P95 latency > 500ms, token usage increase, search relevance decrease
 - **Procedure**: Disable via feature flags, revert to schema v4
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -248,8 +261,10 @@ Phase 3 (Weeks 4+)
 | Causal Memory Graph | None | Learning from Corrections |
 | Intent-Aware Retrieval | Multi-Factor Decay | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | Duration |
@@ -262,8 +277,10 @@ Phase 3 (Weeks 4+)
 
 > **[AUDIT 2026-02-01]:** Timeline corrected from 11 weeks → 8.5 weeks → 6-7 weeks. Phase 3 reduced from 4 weeks to 2-3 weeks due to parallel execution of independent components (Causal Graph, Cross-Encoder, Intent-Aware can run concurrently). Phase 5 runs parallel with Phase 3. Original estimates counted parallel workstreams sequentially.
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -325,6 +342,7 @@ When errors occur during implementation, follow this decision tree:
 
 > **Cross-reference:** See `tasks.md` → AI Execution Protocol → Failure Recovery Protocol for detailed severity definitions and recovery actions.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -447,6 +465,7 @@ When errors occur during implementation, follow this decision tree:
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Protocol-Based DI over Full Hexagonal
@@ -481,6 +500,7 @@ When errors occur during implementation, follow this decision tree:
 **Alternatives Rejected**:
 - LadybugDB: Only beneficial at >10K nodes (per consolidated-analysis.md Q6)
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

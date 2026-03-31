@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: Ablation Benchmark Integrity"
+title: "Verification Checklist: [02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity/checklist]"
 description: "Verification Date: 2026-03-28"
 trigger_phrases:
   - "verification checklist"
   - "ablation benchmark"
   - "benchmark integrity"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Verification Checklist: Ablation Benchmark Integrity

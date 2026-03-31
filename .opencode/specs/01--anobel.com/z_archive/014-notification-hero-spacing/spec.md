@@ -1,5 +1,5 @@
 ---
-title: "Notification Hero Spacing [014-notification-hero-spacing/spec]"
+title: "Notification Hero Spacing [014-notification-hero-spacing/s [01--anobel.com/z_archive/014-notification-hero-spacing/spec]"
 description: "When the notification bar is visible at the top of the page, the hero section content may overlap or be partially hidden. A spacing mechanism is needed to push hero content down..."
 trigger_phrases:
   - "notification"
@@ -117,6 +117,7 @@ body[data-notification-active] [data-notification-spacer] {
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:out-of-scope -->
+<!-- ANCHOR:scope -->
 ## Out of Scope
 
 - Notification bar styling changes
@@ -125,6 +126,7 @@ body[data-notification-active] [data-notification-spacer] {
 <!-- /ANCHOR:out-of-scope -->
 
 <!-- ANCHOR:references -->
+<!-- /ANCHOR:scope -->
 ## References
 
 - `src/2_javascript/navigation/nav_notifications.js` - Notification system

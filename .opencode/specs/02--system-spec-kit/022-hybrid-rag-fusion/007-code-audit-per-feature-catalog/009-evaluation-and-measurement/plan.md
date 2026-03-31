@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Evaluation and Measurement"
+title: "Imple [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement/plan]"
 description: "Technical plan for auditing 16 Evaluation and Measurement features against source code"
 trigger_phrases:
   - "audit plan"
@@ -138,14 +138,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -191,3 +194,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesi
 2. Increment metric count to 12, add MAP entry to `core-metrics` catalog (F02)
 3. Mark channel attribution as deprecated in `shadow-scoring` catalog (F11)
 4. Expand `eval-housekeeping` source file list to all 6 fix locations (F13)
+<!-- /ANCHOR:effort -->

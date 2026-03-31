@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System-Wide Remediation of Confirmed Findings [125-codex-system-wide-audit/plan]"
+title: "Implementation Plan: System-Wide Remediation of [02--system-spec-kit/z_archive/008-codex-system-wide-audit/plan]"
 description: "This plan executes remediation in a strict order"
 trigger_phrases:
   - "implementation"

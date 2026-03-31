@@ -1,5 +1,5 @@
 ---
-title: "Spec: Valid Anchors Fixture [valid-anchors/spec]"
+title: "...e/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors/spec]"
 description: "This fixture tests properly paired ANCHOR tags in memory files."
 trigger_phrases:
   - "spec"
@@ -25,11 +25,15 @@ contextType: "decision"
 This fixture tests properly paired ANCHOR tags in memory files.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 - All ANCHOR tags must have matching closing tags
 - Anchor IDs must be consistent between open and close
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 Test fixture for anchor validation.
+<!-- /ANCHOR:scope -->

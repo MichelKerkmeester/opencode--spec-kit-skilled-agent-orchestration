@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Field Integrity and Schema Validation"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/plan]"
 description: "Targets two TypeScript source files with eight surgical changes: one data-loss fix on the fast path, two new validation guards, two new V-rules, and three complementary hardening items. All changes are additive or narrow fixes with no API surface changes."
 trigger_phrases:
   - "field integrity plan"
   - "schema validation implementation"
-  - "filesModified fast-path fix"
+  - "filesmodified fast-path fix"
   - "input-normalizer changes"
   - "validate-memory-quality changes"
 importance_tier: "important"
@@ -209,6 +209,7 @@ Target: `validate-memory-quality.ts` lines 612-650 and new rule location
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -229,6 +230,7 @@ Phase 1 (P0 Fix) ────┐
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -332,6 +334,7 @@ Phase 1 (P0 Fix) ────┐
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Warn-Not-Error for Unknown Fields
@@ -369,3 +372,4 @@ Phase 1 (P0 Fix) ────┐
 **Alternatives Rejected**:
 - Keep regex but extend it: regex cannot reliably handle all valid YAML syntax; would require a near-complete YAML subset implementation.
 - Use async YAML parsing: unnecessary complexity; frontmatter is small and parse is fast.
+<!-- /ANCHOR:architecture -->

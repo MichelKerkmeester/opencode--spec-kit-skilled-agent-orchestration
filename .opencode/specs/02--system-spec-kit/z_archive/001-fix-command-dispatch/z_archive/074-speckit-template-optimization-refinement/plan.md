@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Template Optimization Refinement [074-speckit-template-optimization-refinement/plan]"
+title: "Imp [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/plan]"
 description: "Multi-agent orchestrated refinement of the SpecKit template optimization system. Leverages 20+ Opus 4.5 agents organized into three workstreams: Research [W-A], Implementation [..."
 trigger_phrases:
   - "implementation"
@@ -36,6 +36,7 @@ Multi-agent orchestrated refinement of the SpecKit template optimization system.
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -52,8 +53,10 @@ Multi-agent orchestrated refinement of the SpecKit template optimization system.
 - [x] Version bumped (v1.9.0)
 - [x] User approval obtained
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -78,8 +81,10 @@ User Request → Orchestrator → [W-A] Research (10 parallel)
               ← Final Report ← Aggregation → User Approval
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Research [W-A]
@@ -119,8 +124,10 @@ User Request → Orchestrator → [W-A] Research (10 parallel)
 - [x] Final user approval
 - [x] Complete spec folder documentation
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -130,8 +137,10 @@ User Request → Orchestrator → [W-A] Research (10 parallel)
 | Manual | All changed files | Agent visual inspection |
 | Integration | End-to-end spec creation | create.sh test run |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -142,8 +151,10 @@ User Request → Orchestrator → [W-A] Research (10 parallel)
 | Validation Rules | Internal | Green | Cannot verify changes |
 | Memory System | Internal | Green | Cannot save context |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Verification agents report failures OR validation rules fail OR user rejects changes
@@ -153,8 +164,10 @@ User Request → Orchestrator → [W-A] Research (10 parallel)
   3. Document rollback reason in checklist.md
   4. Iterate with narrower scope
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -182,8 +195,10 @@ Phase 5 (Release) ──────────────────┘ SYNC
 | Verification [SYNC] | Implementation | Release |
 | Release | Verification pass | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -195,8 +210,10 @@ Phase 5 (Release) ──────────────────┘ SYNC
 | Release | Low | ~15 minutes (docs + approval) |
 | **Total** | | **~45-60 minutes** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -215,6 +232,7 @@ Phase 5 (Release) ──────────────────┘ SYNC
 - **Has data migrations?** No
 - **Reversal procedure**: N/A - file-based changes only
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -275,6 +293,7 @@ Phase 5 (Release) ──────────────────┘ SYNC
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Multi-Agent Parallel Dispatch
@@ -294,6 +313,7 @@ Phase 5 (Release) ──────────────────┘ SYNC
 - Sequential single-agent: Too slow for scope
 - Manual review: Not feasible for file count
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

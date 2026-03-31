@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Skill References & Assets Indexing [133-index-workflows-code/tasks]"
+title: "Tasks: Skill References & Assets Indexing [02--system-spec-kit/z_archive/016-index-workflows-code/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 003-unified-graph-retrieval"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval/plan]"
 description: "Execution plan for Hydra Phase 3 deterministic graph fusion."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 3 plan"
   - "graph fusion plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 003-unified-graph-retrieval
 
@@ -143,6 +143,7 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -155,8 +156,10 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 | Pipeline integration | Scoring contract | Regression validation |
 | Regression validation | Pipeline integration | Phase 4 and Phase 6 confidence |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -166,8 +169,10 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 | Regression and benchmark coverage | Medium-High | 2-4 days |
 | **Total** | | **7-12 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -186,6 +191,7 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 - **Has data migrations?** No mandatory schema migration is planned for this phase.
 - **Reversal procedure**: Disable graph-fusion logic and revert in-process scoring changes.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -248,6 +254,7 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-301: Keep Graph Fusion In-Process and Deterministic
@@ -262,6 +269,7 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 - Faster delivery and simpler rollback.
 - Requires careful regression measurement and trace design.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

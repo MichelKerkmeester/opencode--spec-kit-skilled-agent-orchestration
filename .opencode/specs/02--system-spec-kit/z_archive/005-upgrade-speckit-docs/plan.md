@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: OpenCode Documentation Quality Upgrade [122-upgrade-speckit-docs/plan]"
+title: "Implementation Plan: OpenCode Documentation Quality [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/plan]"
 description: "Systematic documentation quality improvement across the OpenCode system. Applied prose tightening, conciseness improvements, and style consistency patterns to ~4,864 total LOC c..."
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent System Improvements [005-agent-system-improvements/spec]"
+title: "Feature Specification: Agent System [04--agent-orchestration/z_archive/005-agent-system-improvements/spec]"
 description: "This specification defines 9 targeted improvements to the OpenCode agent, command, and skill documentation. All changes are documentation/instruction-level refinements - no new ..."
 trigger_phrases:
   - "feature"
@@ -148,6 +148,7 @@ Improve agent system reliability by adding missing verification sections, visual
 
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -165,6 +166,7 @@ Improve agent system reliability by adding missing verification sections, visual
 
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -282,6 +284,7 @@ Improve agent system reliability by adding missing verification sections, visual
 
 
 <!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - None - all questions resolved in research phase
@@ -292,6 +295,7 @@ Improve agent system reliability by adding missing verification sections, visual
 
 
 <!-- ANCHOR:related-documents -->
+<!-- /ANCHOR:questions -->
 ## RELATED DOCUMENTS
 
 - **Analysis**: See `001-analysis-agent-system-architecture.md`

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Invalid Anchors Fixture [invalid-anchors/spec]"
+title: "...001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors/spec]"
 description: "This fixture tests detection of malformed ANCHOR tags."
 trigger_phrases:
   - "spec"
@@ -25,12 +25,16 @@ contextType: "decision"
 This fixture tests detection of malformed ANCHOR tags.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 
 - Validator must catch unclosed anchors
 - Validator must catch mismatched anchor IDs
 - Validator must catch orphaned closing tags
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 Test fixture for invalid anchor detection.
+<!-- /ANCHOR:scope -->

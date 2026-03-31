@@ -1,5 +1,5 @@
 ---
-title: "Security Remediation Tasks [009-security-remediation/tasks]"
+title: "Security Remediation Tasks [009-security-remediation/tasks] [01--anobel.com/z_archive/009-security-remediation/tasks]"
 description: "tasks document for 009-security-remediation."
 trigger_phrases:
   - "security"

@@ -1,6 +1,14 @@
 ---
-title: "Plan: Update Install Guide"
+title: "Plan: Update Install Guide [02--system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide/plan]"
 description: "Implementation plan for updating the MCP server installation guide against current dependencies."
+trigger_phrases:
+  - "plan"
+  - "update"
+  - "install"
+  - "guide"
+  - "017"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 017-update-install-guide

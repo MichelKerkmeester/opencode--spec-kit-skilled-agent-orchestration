@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: SpecKit Skill Consolidation [005-speckit-consolidation/checklist]"
+title: "Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/checklist]"
 description: "Quality assurance checklist for verifying the SpecKit consolidation migration."
 trigger_phrases:
   - "validation"

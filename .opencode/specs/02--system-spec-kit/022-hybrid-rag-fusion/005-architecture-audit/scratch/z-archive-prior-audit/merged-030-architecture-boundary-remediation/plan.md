@@ -1,13 +1,13 @@
 ---
-title: "Implementation Plan: Architecture Boundary Remediation"
+title: "...id-rag-fusion/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation/plan]"
 description: "Migrate unnecessary allowlist exceptions to api/ imports, move DB_UPDATED_FILE to shared/, and add automated enforcement via pre-commit hook or CI."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "boundary remediation plan"
   - "api migration plan"
   - "enforcement automation plan"
 importance_tier: "normal"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Implementation Plan: Architecture Boundary Remediation
 
@@ -131,6 +131,7 @@ No data flow changes. Import paths change but runtime behavior is identical.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -147,6 +148,7 @@ Phase 1 (Constant + Indexer) ──► Phase 2 (Reindex Audit) ──► Phase 3
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

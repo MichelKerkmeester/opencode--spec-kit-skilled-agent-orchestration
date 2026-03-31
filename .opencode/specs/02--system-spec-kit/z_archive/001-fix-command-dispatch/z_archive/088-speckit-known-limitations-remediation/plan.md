@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System-Spec-Kit Known Limitations Remediation [088-speckit-known-limitations-remediation/plan]"
+title: "Implem [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/plan]"
 description: "Fix 4 known limitations from the 087-speckit-deep-analysis: unify the memory_conflicts SQLite table schema via migration v12, fix stale Gate 4/6 references across 7+ files, add ..."
 trigger_phrases:
   - "implementation"
@@ -38,6 +38,7 @@ Fix 4 known limitations from the 087-speckit-deep-analysis: unify the `memory_co
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -50,8 +51,10 @@ Fix 4 known limitations from the 087-speckit-deep-analysis: unify the `memory_co
 - [ ] Verification greps pass (zero stale references)
 - [ ] Database migration tested (schema correct after migration)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -74,8 +77,10 @@ Memory save request
 
 After fix: both INSERT paths use the same unified column set.
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: SQLite Schema Unification (KL-1) [P0]
@@ -122,8 +127,10 @@ Phase 2b — Legacy install guide:
 3. Verify scripts: all 6 scripts listed in speckit.md and SKILL.md
 4. Verify handlers: read context-server.js shutdown section, confirm toolCache cleanup present
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Method |
@@ -134,8 +141,10 @@ Phase 2b — Legacy install guide:
 | Grep | Script documentation | `grep -n "archive.sh\|check-completion.sh\|recommend-level.sh"` in speckit.md, SKILL.md |
 | Read | Signal handlers | Verify context-server.js cleanup section |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -144,15 +153,19 @@ Phase 2b — Legacy install guide:
 | Shared `.opencode/` symlink | Infrastructure | Green | All changes propagate to all projects |
 | 087 known-limitations.md research | Documentation | Green | Complete |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Migration v12 causes unexpected errors or data loss beyond `memory_conflicts`
 - **Procedure**: `git revert` the commit; database stays at v12 but with correct schema (no rollback needed for schema itself)
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -172,8 +185,10 @@ Phase 4 (Signals) ─── (independent) ┘
 
 Phases 1-4 are fully independent and can be executed in parallel.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated LOC |
@@ -185,8 +200,10 @@ Phases 1-4 are fully independent and can be executed in parallel.
 | Phase 5 (Verify) | Low | 0 LOC (grep/read checks) |
 | **Total** | | **~145-185 LOC** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -202,3 +219,4 @@ Phases 1-4 are fully independent and can be executed in parallel.
 ### Data Reversal
 - **Has data migrations?** Yes (DROP+recreate `memory_conflicts`)
 - **Reversal procedure**: Restore from database backup. `memory_conflicts` is audit-only, so data loss is acceptable.
+<!-- /ANCHOR:enhanced-rollback -->

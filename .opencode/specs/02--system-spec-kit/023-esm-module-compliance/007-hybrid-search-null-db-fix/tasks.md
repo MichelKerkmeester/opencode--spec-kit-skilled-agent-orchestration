@@ -1,11 +1,11 @@
 ---
-title: "Tasks: Hybrid Search Pipeline Null DB Fix"
+title: "Tasks: Hybrid Search Pipeline Null [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/tasks]"
 description: "Task breakdown for diagnosing and fixing the 0-result search pipeline bug caused by scope enforcement and TRM state filtering."
 trigger_phrases:
   - "hybrid search fix tasks"
   - "search pipeline repair tasks"
   - "scope enforcement fix"
-  - "TRM state filter fix"
+  - "trm state filter fix"
 importance_tier: "critical"
 contextType: "implementation"
 ---

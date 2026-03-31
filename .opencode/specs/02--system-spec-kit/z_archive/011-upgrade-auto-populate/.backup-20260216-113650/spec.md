@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: AI Auto-Populate on Spec Upgrade [.backup-20260216-113650/spec]"
+title: "Feature Specification: AI [02--system-spec-kit/z_archive/011-upgrade-auto-populate/.backup-20260216-113650/spec]"
 description: "When upgrade-level.sh upgrades a spec folder (e.g., L1 → L3+), it injects template scaffolding with placeholder text like [Response time target], [Low/Med/High], [Component A]. ..."
 trigger_phrases:
   - "feature"
@@ -24,6 +24,7 @@ contextType: "decision"
 
 When `upgrade-level.sh` upgrades a spec folder (e.g., L1 → L3+), it injects template scaffolding with placeholder text like `[Response time target]`, `[Low/Med/High]`, `[Component A]`. These placeholders provide no value until manually filled in. The AI agent performing the upgrade should automatically populate these scaffolds with context-aware content derived from the existing spec folder documents.
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -33,7 +34,9 @@ When `upgrade-level.sh` upgrades a spec folder (e.g., L1 → L3+), it injects te
 | **Level** | 1 |
 | **Priority** | P1 |
 | **Triggered By** | Spec 127 upgrade revealed all injected sections were empty placeholders |
+<!-- /ANCHOR:metadata -->
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -50,7 +53,9 @@ The upgrade script is a shell script — it cannot reason about content. But the
 ### Purpose
 
 After the upgrade script runs, the AI agent should read the injected placeholder sections and replace them with content derived from the existing spec folder documents, producing a complete and useful upgraded spec folder rather than one full of `[placeholder]` text.
+<!-- /ANCHOR:problem -->
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -68,7 +73,9 @@ After the upgrade script runs, the AI agent should read the injected placeholder
 - Modifying `upgrade-level.sh` itself (shell script stays as-is, does structural scaffolding only)
 - Auto-populating during `spec_kit:complete` or `spec_kit:plan` workflows (separate concern)
 - Generating content when no existing context is available (new empty spec folders)
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers
@@ -87,13 +94,16 @@ After the upgrade script runs, the AI agent should read the injected placeholder
 | R-005 | Phase Dependencies reflect actual plan phases | Dependency table matches plan.md phase structure |
 | R-006 | Checklist items relevant to the specific spec | Generic items replaced or supplemented with spec-specific checks |
 | R-007 | Decision-record.md populated with actual decisions (if any exist) | ADRs reference real decisions from implementation-summary or plan |
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - SC-001: After upgrade, zero `[placeholder]` patterns remain in any spec file
 - SC-002: Populated content is factually accurate to the spec's actual scope and implementation
 - SC-003: The upgrade + populate flow completes without user intervention
 - SC-004: Works for all upgrade paths (L1→L2, L1→L3, L1→L3+, L2→L3, L2→L3+, L3→L3+)
+<!-- /ANCHOR:success-criteria -->
 
 ## 6. IMPLEMENTATION APPROACH
 

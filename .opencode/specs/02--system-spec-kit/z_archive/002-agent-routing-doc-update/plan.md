@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent Routing Documentation Update [119-agent-routing-doc-update/plan]"
+title: "Implementation Plan: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/plan]"
 description: "Update SKILL.md and README.md to document the agent routing changes from spec 014. Add @debug to agent exclusivity exceptions, create an Agent Dispatch subsection, update mode s..."
 trigger_phrases:
   - "implementation"
@@ -135,6 +135,7 @@ Documentation-only changes to existing Markdown files.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -150,6 +151,7 @@ Phase 3 (Changelog) ──┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

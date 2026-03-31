@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 001-hybrid-rag-fusion-epic"
+title: "Tasks: 001-hybrid-rag-fusion-epic [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks]"
 description: "Parent packet normalization tasks for the Hybrid RAG Fusion sprint family."
 trigger_phrases:
   - "001 epic tasks"

@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook feature-flag-reference audit phase [template:level_2/implementation-summary.md]"
+title: "...tem-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/implementation-summary]"
 description: "Current summary for Phase 020 packet scaffolding. Manual execution of PB-020-01 through PB-020-03 is still pending."
 trigger_phrases:
   - "phase 020 implementation summary"
   - "feature-flag-reference audit summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

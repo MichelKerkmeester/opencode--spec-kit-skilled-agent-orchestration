@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Modular Validation Architecture [002-modular-architecture/plan]"
+title: "I [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/plan]"
 description: ".opencode/skill/system-spec-kit/scripts/"
 trigger_phrases:
   - "implementation"
@@ -30,6 +30,7 @@ contextType: "decision"
 - Full feature complete at 100%
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 ### Directory Structure
@@ -104,7 +105,9 @@ run_check() {
     RULE_REMEDIATION=""
 }
 ```
+<!-- /ANCHOR:architecture -->
 
+<!-- ANCHOR:phases -->
 ## Implementation Phases
 
 ### Phase 1: Extract Libraries (Day 1)
@@ -209,6 +212,7 @@ run_check() {
 2. Update README.md with modular architecture
 3. Integrate with check-prerequisites.sh
 4. Final testing and cleanup
+<!-- /ANCHOR:phases -->
 
 ## File Size Targets
 
@@ -236,12 +240,14 @@ run_check() {
 | Variable scope conflicts | Use `local` for all function variables |
 | Performance regression | Benchmark: `time validate-spec.sh` before/after |
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If modular architecture causes issues:
 1. Keep `001-mvp-monolithic/` as reference
 2. Original validate-spec.sh can be restored from git
 3. Each phase is incremental - can stop at any point
+<!-- /ANCHOR:rollback -->
 
 ## Success Metrics
 

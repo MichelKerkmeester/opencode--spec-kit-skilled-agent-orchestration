@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Task 04 — Agent Configs Audit [task-04-agent-alignment/plan]"
+title: "Implementatio [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment/plan]"
 description: "agent configs across OpenCode/Claude/Codex audit/creation for spec 130 umbrella. Systematic review of .opencode/agent/*.md + .claude/agents/*.md + .codex/agents/*.md to ensure a..."
 trigger_phrases:
   - "implementation"
@@ -126,6 +126,7 @@ Systematic file-by-file audit/creation
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -142,6 +143,7 @@ Phase 1 (Audit) ──► Phase 2 (Documentation) ──► Phase 3 (Verificatio
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

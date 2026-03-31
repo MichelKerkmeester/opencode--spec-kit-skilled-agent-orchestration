@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Valid Priority Tags Fixture [valid-priority-tags/checklist]"
+title: "...ommand-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-priority-tags/checklist]"
 description: "checklist document for valid-priority-tags."
 trigger_phrases:
   - "checklist"

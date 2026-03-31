@@ -1,6 +1,17 @@
 ---
-title: "Feature Specification: Session Source Validation"
+title: "...2-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation/spec]"
 description: "Validate native session-source capture behavior across all 5 CLIs."
+trigger_phrases:
+  - "hybrid"
+  - "rag"
+  - "fusion"
+  - "009"
+  - "perfect"
+  - "spec"
+  - "001"
+  - "session"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Feature Specification: Session Source Validation
 

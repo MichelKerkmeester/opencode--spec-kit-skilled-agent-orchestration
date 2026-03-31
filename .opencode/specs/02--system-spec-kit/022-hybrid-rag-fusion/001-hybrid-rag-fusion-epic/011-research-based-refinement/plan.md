@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Research-Based Refinement"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/plan]"
 description: "Cross-phase coordination plan for 5 sub-phases implementing 29 research recommendations across fusion, query, graph, feedback, and UX dimensions."
 trigger_phrases:
   - "research refinement plan"

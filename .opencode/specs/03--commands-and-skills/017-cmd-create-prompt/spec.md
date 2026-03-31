@@ -1,11 +1,22 @@
 ---
-title: "Feature Specification: create:prompt Command [template:level_2/spec.md]"
+title: "Feature Specification: create:prompt Command [03--commands-and-skills/017-cmd-create-prompt/spec]"
 description: "Create a /create:prompt command wrapping sk-prompt-improver skill"
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "create"
+  - "prompt"
+  - "command"
+  - "spec"
+  - "017"
+  - "cmd"
+importance_tier: "important"
+contextType: "decision"
 ---
+# Feature Specification: create:prompt Command
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
-
-# Feature Specification: create:prompt Command
 
 ---
 
@@ -18,6 +29,8 @@ description: "Create a /create:prompt command wrapping sk-prompt-improver skill"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-01 |
+
+---
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,6 +45,8 @@ The sk-prompt-improver skill provides powerful prompt engineering capabilities (
 ### Purpose
 
 Create a `/create:prompt` command in the `create/` namespace that provides a streamlined, mode-aware entry point for prompt creation and improvement using the sk-prompt-improver skill, with argument routing, framework auto-selection, and structured CLEAR-scored output delivery.
+
+---
 <!-- /ANCHOR:problem -->
 
 ---
@@ -62,6 +77,8 @@ Create a `/create:prompt` command in the `create/` namespace that provides a str
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/command/create/prompt.md` | Create | New command file for `/create:prompt` |
+
+---
 <!-- /ANCHOR:scope -->
 
 ---
@@ -85,6 +102,8 @@ Create a `/create:prompt` command in the `create/` namespace that provides a str
 | REQ-005 | :auto/:confirm mode support | Mode detection from command suffix; autonomous executes without gates; interactive pauses for user approval |
 | REQ-006 | CLEAR scoring delivery | Enhanced prompt includes CLEAR score breakdown and transparency report |
 | REQ-007 | Example usage covers common scenarios | At least 4 examples showing different invocation patterns |
+
+---
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -95,6 +114,15 @@ Create a `/create:prompt` command in the `create/` namespace that provides a str
 - **SC-001**: `/create:prompt "my vague prompt"` invokes sk-prompt-improver and delivers an enhanced prompt with CLEAR score ≥ 40/50
 - **SC-002**: Command file passes command_template.md validation checklist (§15) — all required items checked
 - **SC-003**: Mode prefix detection correctly routes `$text`, `$improve`, `$refine`, `$short`, `$json`, `$yaml`, `$raw` to appropriate sk-prompt-improver modes
+
+---
+
+### Acceptance Scenarios
+
+- **Given** a user invokes `/create:prompt` with a vague prompt, **when** the command routes into `sk-prompt-improver`, **then** the workflow returns an enhanced prompt rather than a manual skill-loading detour.
+- **Given** the request includes an explicit mode prefix such as `$json` or `$refine`, **when** the command guidance is followed, **then** the correct prompt-improver mode is selected.
+- **Given** the command runs in `:confirm` mode, **when** the user reviews the workflow, **then** the command behavior pauses for approval instead of acting as autonomous mode.
+- **Given** the command wrapper is compared to the underlying skill, **when** the spec packet is reviewed, **then** it remains a thin entrypoint over the existing prompt-improver behavior rather than a new prompt engine.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -107,75 +135,18 @@ Create a `/create:prompt` command in the `create/` namespace that provides a str
 | Dependency | sk-prompt-improver skill must exist and be functional | Command cannot work without the skill | Skill already exists and is complete (verified in 001-initial-creation spec) |
 | Risk | Mode prefix conflicts with user prompt text | Low | Mode prefixes use $ symbol which is unlikely in natural prompt text |
 | Risk | Command complexity creep beyond 250 LOC | Medium | Keep command as thin wrapper; all logic lives in skill, not command |
+
+---
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Performance
-
-- **NFR-P01**: Command loads and begins execution in < 2s (skill file read time)
-
-### Security
-
-- **NFR-S01**: No API keys or credentials in command file
-- **NFR-S02**: Enhanced prompts not persisted without explicit user request
-
-### Reliability
-
-- **NFR-R01**: Command gracefully handles missing sk-prompt-improver skill with clear error message
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
-
-### Data Boundaries
-
-- Empty input: Mandatory gate triggers; user prompted for prompt text
-- Very long input (>2000 tokens): Skill handles truncation/summarization per its RULES
-- Mode prefix only (e.g., just `$improve`): Treat as empty prompt, trigger gate
-
-### Error Scenarios
-
-- sk-prompt-improver SKILL.md not found: Return STATUS=FAIL with clear error and skill path
-- Invalid mode prefix: Default to Interactive mode with notification
-- CLEAR score below threshold: Skill handles re-iteration; command relays result
-
-### State Transitions
-
-- User cancels during :confirm mode: Return STATUS=CANCELLED
-- Mode prefix + :auto/:confirm combined: Parse both (mode prefix first, execution suffix second)
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 5/25 | 1 file create, ~150-200 LOC, 1 system (command framework) |
-| Risk | 3/25 | No API, no auth, no breaking changes |
-| Research | 5/20 | Pattern analysis from existing create commands + sk-prompt-improver |
-| **Total** | **13/70** | **Level 2 Appropriate** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
 
 - None — all requirements are clear based on sk-prompt-improver SKILL.md and command_template.md patterns.
 
 ---
+<!-- /ANCHOR:questions -->
 
-## RELATED DOCUMENTS
-
-- **Implementation Plan**: See `plan.md`
-- **Task Breakdown**: See `tasks.md`
-- **Verification Checklist**: See `checklist.md`
-- **Skill Reference**: `.opencode/skill/sk-prompt-improver/SKILL.md`
-- **Command Template**: `.opencode/skill/sk-doc/assets/agents/command_template.md`
+---

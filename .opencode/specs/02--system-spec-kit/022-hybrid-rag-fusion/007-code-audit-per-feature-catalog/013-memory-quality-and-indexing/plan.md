@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Memory Quality and Indexing"
+title: "Impl [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/plan]"
 description: "Technical plan for auditing 24 Memory Quality and Indexing features against source code"
 trigger_phrases:
   - "audit plan"
@@ -146,14 +146,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 24 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -193,3 +196,4 @@ Phase 1 (Prep) ──► Phase 2 (Audit 24 features) ──► Phase 3 (Synthesi
 - Source list accuracy is the dominant issue class (F11, F12, F13, F14 all involve incorrect or incomplete source attribution).
 - F23 was originally flagged as PARTIAL but verification confirmed `applyHybridDecayPolicy` is a named export — the audit finding was hallucinated.
 - No features were found to be unimplemented or fundamentally misrepresented in behavior.
+<!-- /ANCHOR:effort -->

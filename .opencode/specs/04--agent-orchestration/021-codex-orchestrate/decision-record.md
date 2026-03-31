@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/decision-record]"
+title: "Decision Record: ChatGPT Agent Suite Codex [04--agent-orchestration/021-codex-orchestrate/decision-record]"
 description: "The current ChatGPT/Codex orchestrator policy tends to over-decompose work into too many small agent tasks. This behavior increases orchestration overhead and context fragmentat..."
 trigger_phrases:
   - "decision"
@@ -41,7 +41,7 @@ The current ChatGPT/Codex orchestrator policy tends to over-decompose work into 
 ### Constraints
 - NDP depth rules must remain unchanged
 - Safety and review sections must remain intact
-- Scope initially targeted `orchestrate.md`, then expanded to all 8 files under `.opencode/agent/chatgpt/`
+- Scope initially targeted orchestrate agent, then expanded to all 8 files under `.opencode/agent/chatgpt/`
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -110,7 +110,7 @@ The current ChatGPT/Codex orchestrator policy tends to over-decompose work into 
 ### Implementation
 
 **Affected Systems**:
-- `.opencode/agent/chatgpt/orchestrate.md`
+- `.opencode/agent/chatgpt/orchestrate`
 
 **Rollback**: Revert target file to previous revision.
 <!-- /ANCHOR:adr-001-impl -->
@@ -119,7 +119,8 @@ The current ChatGPT/Codex orchestrator policy tends to over-decompose work into 
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Raise CWB/TCB Thresholds for Codex Context Capacity
+<!-- ANCHOR:context -->
+#### ADR-002: Raise CWB/TCB Thresholds for Codex Context Capacity
 
 <!-- ANCHOR:adr-002-context -->
 ### Metadata
@@ -207,7 +208,7 @@ Current threshold values encourage conservative splitting behavior more suitable
 ### Implementation
 
 **Affected Systems**:
-- `.opencode/agent/chatgpt/orchestrate.md` sections: dispatch policy, failure handling, budget constraints, anti-patterns
+- `.opencode/agent/chatgpt/orchestrate` sections: dispatch policy, failure handling, budget constraints, anti-patterns
 
 **Rollback**: Revert thresholds and linked prose in target file to prior values.
 <!-- /ANCHOR:adr-002-impl -->
@@ -216,7 +217,8 @@ Current threshold values encourage conservative splitting behavior more suitable
 ---
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Consistency-First Cross-Agent Optimization Pass
+<!-- /ANCHOR:context -->
+#### ADR-003: Consistency-First Cross-Agent Optimization Pass
 
 <!-- ANCHOR:adr-003-context -->
 ### Metadata
@@ -305,14 +307,14 @@ After orchestrate-focused optimization, sibling ChatGPT agent files still carrie
 ### Implementation
 
 **Affected Systems**:
-- `.opencode/agent/chatgpt/context.md`
-- `.opencode/agent/chatgpt/debug.md`
-- `.opencode/agent/chatgpt/handover.md`
-- `.opencode/agent/chatgpt/research/research/research.md`
-- `.opencode/agent/chatgpt/review.md`
-- `.opencode/agent/chatgpt/speckit.md`
-- `.opencode/agent/chatgpt/write.md`
-- `.opencode/agent/chatgpt/orchestrate.md`
+- `.opencode/agent/chatgpt/context`
+- `.opencode/agent/chatgpt/debug`
+- `.opencode/agent/chatgpt/handover`
+- `.opencode/agent/chatgpt/research/research/research`
+- `.opencode/agent/chatgpt/review`
+- `.opencode/agent/chatgpt/speckit`
+- `.opencode/agent/chatgpt/write`
+- `.opencode/agent/chatgpt/orchestrate`
 
 **Rollback**: Revert only the changed ChatGPT agent files while preserving this decision record as an audit trail.
 <!-- /ANCHOR:adr-003-impl -->

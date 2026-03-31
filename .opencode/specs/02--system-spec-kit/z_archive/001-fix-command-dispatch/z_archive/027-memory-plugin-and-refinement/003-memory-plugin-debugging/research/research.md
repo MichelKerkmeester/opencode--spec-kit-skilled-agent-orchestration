@@ -1,5 +1,5 @@
 ---
-title: "OpenCode Plugin Memory Database Access - Research Document [003-memory-plugin-debugging/research]"
+title: "...t/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/research]"
 description: "Problem: The memory plugin shows \"Loaded 0 memories for dashboard\" despite 66 memories existing in the database."
 trigger_phrases:
   - "opencode"

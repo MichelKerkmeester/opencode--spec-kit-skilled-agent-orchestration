@@ -1,6 +1,15 @@
 ---
-title: "Plan: Rewrite Memory MCP README"
+title: "Plan: Rewrite Memory MCP README [02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/plan]"
 description: "Implementation plan for a complete rewrite of the MCP server README grounded in the feature catalog and readme template."
+trigger_phrases:
+  - "plan"
+  - "rewrite"
+  - "memory"
+  - "mcp"
+  - "readme"
+  - "016"
+importance_tier: "important"
+contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Plan: 016-rewrite-memory-mcp-readme

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System-Spec-Kit Known Limitations Remediation [088-speckit-known-limitations-remediation/spec]"
+title: "Featur [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/spec]"
 description: "The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs and 15+ moderate misalignments, but deferred 4 known limitations that require separate implementat..."
 trigger_phrases:
   - "feature"
@@ -33,6 +33,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -43,8 +44,10 @@ The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs a
 
 All 4 known limitations resolved: conflict tracking data writes succeed, gate numbering is consistent across the entire ecosystem, all spec scripts are discoverable by agents, and MCP server shutdown is fully clean.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -79,8 +82,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.js` | Modify | KL-4 | Add toolCache cleanup to SIGINT/SIGTERM handlers |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js` | Modify | KL-4 | Remove duplicate signal handlers |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -103,8 +108,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 | REQ-009 | Add toolCache cleanup to shutdown handlers | `stopCleanupInterval()` called in SIGINT/SIGTERM handlers |
 | REQ-010 | Remove duplicate access-tracker signal handlers | Only context-server.js registers SIGINT/SIGTERM handlers for access-tracker flush |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `memory_conflicts` INSERT succeeds for all 5 action types (CREATE, CREATE_LINKED, UPDATE, SUPERSEDE, REINFORCE) — verified via test or manual trigger
@@ -112,8 +119,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 - **SC-003**: All 6 spec scripts discoverable in speckit.md and SKILL.md capability tables
 - **SC-004**: MCP server SIGINT/SIGTERM handlers clean up all background intervals
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -123,8 +132,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 | Dependency | SQLite "12-step ALTER TABLE" limitation | Low | Using DROP+recreate (acceptable for audit table) |
 | Dependency | Shared `.opencode/` symlink | Medium | All changes are framework-wide via symlink; test on one project first |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Data Integrity
@@ -135,8 +146,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 - **NFR-C01**: Migration v12 must work on databases at any version from v4 to v11
 - **NFR-C02**: New databases (fresh install) must create the unified schema directly
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Database Migration
@@ -148,8 +161,10 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 - speckit.md line 534 uses "Gate 4" for its OWN internal gate numbering (not AGENTS.md gates): Must NOT be changed
 - `SET-UP - AGENTS.md` has "Gate 0" (Compaction Check): Replace with note that this is now handled by compaction recovery edge case in gate-enforcement.md
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -159,12 +174,15 @@ All 4 known limitations resolved: conflict tracking data writes succeed, gate nu
 | Research | 5/20 | Already fully researched in 087 known-limitations.md |
 | **Total** | **30/70** | **Level 2** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
 - None — all research completed in 087 known-limitations.md
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## Cross-References

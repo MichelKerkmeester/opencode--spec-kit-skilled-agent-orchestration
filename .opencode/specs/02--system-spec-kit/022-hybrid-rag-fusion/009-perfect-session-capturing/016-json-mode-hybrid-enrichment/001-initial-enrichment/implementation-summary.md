@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "...g-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/implementation-summary]"
 description: "This summary now reflects the narrower JSON-mode work that actually shipped: structured summary-field support and normalization hardening, not the full file-backed hybrid enrichment path originally described in phase 016."
 trigger_phrases:
   - "implementation"

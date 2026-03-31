@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-doc Feature Catalog + Testing Playbook Alignment [template:level_2/checklist.md]"
+title: "Verification Checklist: sk-doc Feature [03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook/checklist]"
 description: "Verification Date: 2026-03-19"
 trigger_phrases:
   - "feature catalog checklist"

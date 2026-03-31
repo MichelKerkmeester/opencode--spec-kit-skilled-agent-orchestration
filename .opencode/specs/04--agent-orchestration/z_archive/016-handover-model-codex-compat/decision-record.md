@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec 016 — Handover Haiku + Codex Agent Conversion [016-handover-model-codex-compat/decision-record]"
+title: "Decision Record: Spec 016 — [04--agent-orchestration/z_archive/016-handover-model-codex-compat/decision-record]"
 description: "Status: Accepted"
 trigger_phrases:
   - "decision"

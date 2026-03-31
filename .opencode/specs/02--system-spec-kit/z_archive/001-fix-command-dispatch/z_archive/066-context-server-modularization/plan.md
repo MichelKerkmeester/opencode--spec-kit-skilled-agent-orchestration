@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context-Server Modularization - Technical Approach & [066-context-server-modularization/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/plan]"
 description: "Implementation plan for decomposing context-server.js (2,703 LOC) into focused modules."
 trigger_phrases:
   - "implementation"
@@ -49,6 +49,7 @@ Decompose the monolithic context-server.js (2,703 lines) into 17 focused modules
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)
@@ -68,6 +69,7 @@ Decompose the monolithic context-server.js (2,703 lines) into 17 focused modules
 - **Stop Signals**: Any MCP tool fails, behavior change detected
 - **Recovery Procedure**: Git revert to pre-modularization commit
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
 ## 3. PROJECT STRUCTURE
@@ -136,6 +138,7 @@ context-server.js
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preparation
@@ -207,8 +210,10 @@ context-server.js
   - Documentation updated
 - **Duration**: 1 session
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 ### Snapshot Testing
@@ -229,6 +234,7 @@ After each phase, verify:
 - Execute all 12 tools via Claude Code
 - Verify no errors in console
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## 6. SUCCESS METRICS
@@ -268,6 +274,7 @@ After each phase, verify:
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 8. DEPENDENCIES
 
 ### Internal Dependencies
@@ -284,6 +291,7 @@ After each phase, verify:
 | @modelcontextprotocol/sdk | External | Anthropic | Green | MCP interface |
 | better-sqlite3 | External | npm | Green | Database operations |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 9. COMMUNICATION & REVIEW

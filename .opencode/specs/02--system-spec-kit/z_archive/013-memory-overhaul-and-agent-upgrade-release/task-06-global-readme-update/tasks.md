@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Task 06 — Root README Update [task-06-global-readme-update/tasks]"
+title: "Tasks: [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/tasks]"
 description: "Task Format: T### Description (file path)"
 trigger_phrases:
   - "tasks"

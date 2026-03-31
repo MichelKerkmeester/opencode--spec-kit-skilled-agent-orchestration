@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Feature Flag Reference"
+title: "Veri [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/checklist]"
 description: "QA verification for Feature Flag Reference code audit"
 trigger_phrases:
   - "checklist"

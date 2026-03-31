@@ -1,5 +1,5 @@
 ---
-title: "048: SpecKit & Memory System Remediation [048-system-analysis/spec]"
+title: "048: SpecKit & Memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/spec]"
 description: "A comprehensive audit of the SpecKit and Memory systems identified 16 verified bugs, 10 alignment issues, and 9 improvement opportunities (35 total tasks). While the systems are..."
 trigger_phrases:
   - "048"
@@ -41,6 +41,7 @@ A comprehensive audit of the SpecKit and Memory systems identified **16 verified
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:success-criteria -->
 ## 2. Success Criteria
 
 ### Must Have (P0)
@@ -60,8 +61,10 @@ A comprehensive audit of the SpecKit and Memory systems identified **16 verified
 - [ ] UX improvements implemented
 - [ ] Technical debt addressed
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. Scope
 
 ### In Scope
@@ -83,6 +86,7 @@ A comprehensive audit of the SpecKit and Memory systems identified **16 verified
 | Test Fixtures Creation | Separate spec folder needed |
 | Major Performance Refactoring | Embedding generation is model-bound |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 4. Work Streams

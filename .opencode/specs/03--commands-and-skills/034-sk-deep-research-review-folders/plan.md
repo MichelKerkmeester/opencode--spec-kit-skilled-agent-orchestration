@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-deep-research Review Folder Contract"
+title: "Implementation Plan: sk-deep-research Review Folder [03--commands-and-skills/034-sk-deep-research-review-folders/plan]"
 description: "Plan the review-mode path migration from scratch/ to review/, including runtime parity, legacy-state migration, and doc synchronization across command, skill, reference, and playbook surfaces."
 trigger_phrases:
   - "review folder plan"
@@ -132,7 +132,7 @@ Contract-first folder relocation with targeted legacy migration.
 - [ ] Synchronize the shared deep-research auto and confirm preflight guards so both `specs/` and `.opencode/specs/` alias roots remain valid without changing research-mode storage paths.
 - [ ] Update `.opencode/agent/deep-review.md` to reference `review/` instead of `scratch/`.
 - [ ] Update `.claude/agents/deep-review.md`, `.codex/agents/deep-review.toml`, and `.gemini/agents/deep-review.md` for the same contract.
-- [ ] Update `.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`, `.opencode/skill/sk-deep-research/assets/deep_review_strategy.md`, and `.opencode/skill/sk-deep-research/assets/deep_review_dashboard.md` so the asset layer matches the runtime layer.
+- [ ] Update `.opencode/skill/sk-deep-research/assets/review_mode_contract.yaml`, `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`, and `.opencode/skill/sk-deep-review/assets/deep_review_dashboard.md` so the asset layer matches the runtime layer.
 
 ### Phase 3: Synchronize docs and verification surfaces
 - [ ] Update the review sections of `.opencode/command/spec_kit/deep-research.md`, `.opencode/skill/sk-deep-research/SKILL.md`, and `.opencode/skill/sk-deep-research/README.md`.
@@ -204,6 +204,7 @@ Contract-first folder relocation with targeted legacy migration.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -221,6 +222,7 @@ Contract Freeze -> Workflow and Agent Updates -> Docs and Playbook Sync -> Valid
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -315,6 +317,7 @@ review_mode_contract.yaml -----> review auto YAML ----\
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Move the full review packet under `review/` and keep current review-mode basenames
@@ -349,3 +352,4 @@ Use `DONE`, `IN_PROGRESS`, or `BLOCKED`, always paired with the file family or v
 1. Stop on legacy-migration ambiguity, runtime parity drift, or unresolved report-path consumers.
 2. Record the blocked surface and the failing validation or dependency.
 3. Resolve the blocker before moving to downstream doc or playbook sync work.
+<!-- /ANCHOR:architecture -->

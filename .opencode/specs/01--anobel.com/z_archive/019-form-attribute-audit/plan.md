@@ -1,5 +1,5 @@
 ---
-title: "Plan: Form Attribute Audit - Consolidated Findings [020-form-attribute-audit/plan]"
+title: "Plan: Form Attribute Audit - Consolidated Findings [01--anobel.com/z_archive/019-form-attribute-audit/plan]"
 description: "Comprehensive audit of form input components on anobel.com/nl/werkenbij completed via 10 parallel analysis agents. Critical issues found requiring immediate attention."
 trigger_phrases:
   - "plan"
@@ -15,6 +15,7 @@ contextType: "decision"
 # Plan: Form Attribute Audit - Consolidated Findings
 
 <!-- ANCHOR:executive-summary -->
+<!-- ANCHOR:summary -->
 ## Executive Summary
 
 Comprehensive audit of form input components on anobel.com/nl/werkenbij completed via 10 parallel analysis agents. **Critical issues found** requiring immediate attention.
@@ -24,6 +25,7 @@ Comprehensive audit of form input components on anobel.com/nl/werkenbij complete
 ---
 
 <!-- ANCHOR:critical-findings-p0---must-fix -->
+<!-- /ANCHOR:summary -->
 ## Critical Findings (P0 - Must Fix)
 
 ### 1. Empty `data-value` on Custom Select Options
@@ -168,6 +170,7 @@ name="personalization" but fs-consent-element="checkbox-analytics"
 ---
 
 <!-- ANCHOR:attribute-inventory-summary -->
+<!-- ANCHOR:summary -->
 ## Attribute Inventory Summary
 
 ### Required Attributes Found
@@ -208,6 +211,7 @@ name="personalization" but fs-consent-element="checkbox-analytics"
 ---
 
 <!-- ANCHOR:recommended-action-plan -->
+<!-- /ANCHOR:summary -->
 ## Recommended Action Plan
 
 ### Phase 1: Critical Fixes (Immediate)

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Remove Emoji Enforcement from /create Command [012-cmd-create-emoji-enforcement/spec]"
+title: "Feature Specification: Remove Emoji Enforcement from [03--commands-and-skills/012-cmd-create-emoji-enforcement/spec]"
 description: "The /create command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the remova..."
 trigger_phrases:
   - "feature"
@@ -20,7 +20,7 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:executive-summary -->
+
 ## EXECUTIVE SUMMARY
 
 The `/create` command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the removal of all emoji enforcement logic from the command infrastructure while preserving the command's core functionality.
@@ -28,11 +28,11 @@ The `/create` command currently enforces emoji usage in documentation titles and
 **Key Decisions**: Preserve backward compatibility; remove validation but keep emoji display if already present; update templates to remove emoji requirements.
 
 **Critical Dependencies**: Access to `.opencode/command/create` and `.opencode/command/create/assets` directories.
-<!-- /ANCHOR:executive-summary -->
+
 
 ---
 
-<!-- ANCHOR:metadata -->
+
 ## 1. METADATA
 
 | Field | Value |
@@ -41,7 +41,7 @@ The `/create` command currently enforces emoji usage in documentation titles and
 | **Priority** | P1 |
 | **Status** | Draft |
 | **Created** | 2026-02-17 |
-<!-- /ANCHOR:metadata -->
+
 
 ---
 
@@ -100,6 +100,9 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 |----|-------------|---------------------|
 | REQ-004 | Maintain backward compatibility | Existing templates with emojis still render correctly |
 | REQ-005 | Update inline documentation | Help text and comments reflect removal of emoji requirement |
+| REQ-006 | Preserve existing template content where emojis are cosmetic only | Existing template content may keep decorative emojis without restoring enforcement |
+| REQ-007 | Preserve non-emoji validation behavior | Other required-field and path-validation guidance remains intact |
+| REQ-008 | Spec folder documentation validates structurally after normalization | No structural compliance errors remain in the packet |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -111,6 +114,15 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 - **SC-002**: Generated outputs (commands, skills, agents) are valid without emojis
 - **SC-003**: Existing functionality preserved (all other validations pass)
 - **SC-004**: No console errors when running command without emojis
+
+### Acceptance Scenarios
+
+- **Given** a user runs `/create` without emojis in the requested output, **when** the updated templates are followed, **then** the command guidance no longer treats emoji absence as a validation failure.
+- **Given** an existing template already contains cosmetic emojis, **when** the cleanup policy is applied, **then** those decorative characters remain allowed even though enforcement language is removed.
+- **Given** a maintainer reviews the create command docs after cleanup, **when** emoji-related guidance is searched, **then** enforcement language is gone from the scoped files.
+- **Given** non-emoji validation behavior is reviewed, **when** required structure and field guidance is inspected, **then** the rest of the command validation contract remains intact.
+- **Given** the spec packet is compared to the implementation intent, **when** the compliance-only changes are reviewed, **then** the packet still documents removal of enforcement rather than a broader create-command redesign.
+- **Given** the Level 3 packet is validated after normalization, **when** compliance checks run, **then** the documentation reflects the same emoji-enforcement-removal outcome with current template structure.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -128,7 +140,8 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 
 ---
 
-<!-- ANCHOR:nfr -->
+
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -139,11 +152,12 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 
 ### Reliability
 - **NFR-R01**: Maintain 100% backward compatibility with existing command usage
-<!-- /ANCHOR:nfr -->
+
 
 ---
 
-<!-- ANCHOR:edge-cases -->
+
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -155,11 +169,11 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 - Invalid file paths: Existing error handling preserved
 - Missing required fields (non-emoji): Existing validation preserved
 - File write failures: Existing error handling preserved
-<!-- /ANCHOR:edge-cases -->
+
 
 ---
 
-<!-- ANCHOR:complexity -->
+
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -170,11 +184,11 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 | Multi-Agent | 0/15 | Single workstream |
 | Coordination | 5/15 | Dependencies: Low (isolated to /create) |
 | **Total** | **42/100** | **Level 3** (architecture decisions needed) |
-<!-- /ANCHOR:complexity -->
+
 
 ---
 
-<!-- ANCHOR:risk-matrix -->
+
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -182,11 +196,11 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 | R-001 | Missed validation logic in nested files | M | M | Comprehensive grep for emoji-related patterns |
 | R-002 | Breaking templates that depend on validation | M | L | Test suite with templates before/after |
 | R-003 | Unclear validation logic location | L | M | Document current mechanism in baseline |
-<!-- /ANCHOR:risk-matrix -->
+
 
 ---
 
-<!-- ANCHOR:user-stories -->
+
 ## 11. USER STORIES
 
 ### US-001: Create Command Without Emoji Validation (Priority: P0)
@@ -207,7 +221,7 @@ Remove all emoji enforcement logic from `/create` command while maintaining back
 **Acceptance Criteria**:
 1. Given template files in assets/, When I read them, Then emoji requirements are removed or marked optional
 2. Given inline help text, When I view command documentation, Then emoji enforcement is not mentioned
-<!-- /ANCHOR:user-stories -->
+
 
 ---
 

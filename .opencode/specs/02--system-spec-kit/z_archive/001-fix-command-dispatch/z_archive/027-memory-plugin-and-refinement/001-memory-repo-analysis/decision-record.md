@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory System Analysis & Improvement Strategy [001-memory-repo-analysis/decision-record]"
+title: "...archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/decision-record]"
 description: "Architecture Decision Record (ADR) documenting decisions from roampal memory system analysis and planned improvements for system-memory."
 trigger_phrases:
   - "decision"
@@ -20,6 +20,7 @@ Architecture Decision Record (ADR) documenting decisions from roampal memory sys
 
 ---
 t
+<!-- ANCHOR:metadata -->
 ## 1. METADATA (Document-Level)
 
 - **Document Created**: 2025-12-17
@@ -27,6 +28,7 @@ t
 - **Related Feature**: [spec.md](./spec.md)
 - **Analysis Source**: roampal memory system comparison
 
+<!-- /ANCHOR:metadata -->
 ---
 
 ## ADR-001: Adopt Outcome-Based Learning Pattern
@@ -280,6 +282,7 @@ Rather than waiting for or depending on framework changes:
 
 ---
 
+<!-- ANCHOR:context -->
 ## ADR-002-REVISED: Implement Hybrid Context Injection Strategy
 
 ### Metadata
@@ -396,6 +399,7 @@ export default {
 - Not as seamless as roampal's automatic injection
 - Requires AGENTS.md updates for enforcement
 
+<!-- /ANCHOR:context -->
 ---
 
 ## ADR-003: Implement Knowledge Graph for Query Routing
@@ -763,6 +767,7 @@ Rather than blocking the plugin release or implementing a suboptimal workaround:
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Summary of Decisions
 
 | ADR             | Decision                             | Status     | Priority        |
@@ -774,6 +779,7 @@ Rather than blocking the plugin release or implementing a suboptimal workaround:
 | ADR-004         | Keep SQLite over ChromaDB            | ACCEPTED   | N/A (no action) |
 | ADR-005         | Defer exchange recording pending SDK | ACCEPTED   | N/A (blocked)   |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Implementation Sequence

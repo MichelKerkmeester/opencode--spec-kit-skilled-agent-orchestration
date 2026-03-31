@@ -1,5 +1,5 @@
 ---
-title: "This is Phase 24 of the Perfect Session Capturing Recommendation Roadmap"
+title: "...-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/024-runtime-contract-and-indexability/spec]"
 description: "This is Phase 24 of the Perfect Session Capturing Recommendation Roadmap specification."
 trigger_phrases:
   - "this"

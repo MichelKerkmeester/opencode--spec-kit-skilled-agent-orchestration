@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: 001-hybrid-rag-fusion-epic"
+title: "Decision Record: 001-hybrid-rag-f [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record]"
 description: "Parent packet ADRs for the Hybrid RAG Fusion sprint family normalization."
 trigger_phrases:
   - "001 epic adr"

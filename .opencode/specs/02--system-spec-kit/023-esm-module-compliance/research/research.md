@@ -1,12 +1,12 @@
 ---
-title: "Deep Research: MCP Server ESM Module Compliance"
+title: "Deep Research: MCP Server ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/research]"
 description: "Twenty-iteration research synthesis for what actually has to change to make @spec-kit/mcp-server ESM-compliant without breaking @spec-kit/scripts."
 trigger_phrases:
   - "esm deep research"
   - "mcp server esm recommendation"
   - "023 research"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "research"
 ---
 # Deep Research: MCP Server ESM Module Compliance
 

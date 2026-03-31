@@ -1,3 +1,14 @@
+---
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/plan]"
+description: "This plan implements 7 active items (3 P0, 4 P1) from the 016 definitive synthesis in 4 phases. Each phase is independently deployable and testable. All changes are additive (no..."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "010"
+  - "sprint"
+importance_tier: "important"
+contextType: "decision"
+---
 # Implementation Plan: Sprint 9 — Extra Features
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -446,6 +457,7 @@ Depends on Phase 1 test infrastructure (eval framework verification).
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -460,8 +472,10 @@ Phase 1 (Hardening) ────────────────────
                                                 └── P1-5: GGUF reranker (needs eval baseline)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -557,3 +571,4 @@ Status Reporting Format: `DONE | IN_PROGRESS | BLOCKED` with file path and valid
 
 ### Blocked Task Protocol
 If BLOCKED, record blocker, attempted remediation, and next safe action before proceeding.
+<!-- /ANCHOR:effort -->

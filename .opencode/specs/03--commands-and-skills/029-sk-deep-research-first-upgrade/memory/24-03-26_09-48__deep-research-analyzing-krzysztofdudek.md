@@ -1,10 +1,9 @@
 ---
-title: "Deep Research Analyzing [029-sk-deep-research-first-upgrade/24-03-26_09-48__deep-research-analyzing-krzysztofdudek]"
-description: "Deep research analyzing krzysztofdudek/ResearcherSkill and pjhoberman/autoresearch to identify..."
+title: "Deep [03--commands-and-skills/029-sk-deep-research-first-upgrade/24-03-26_09-48__deep-research-analyzing-krzysztofdudek]"
 trigger_phrases:
   - "sk-deep-research upgrade"
   - "deep research improvement"
-  - "ResearcherSkill"
+  - "researcherskill"
   - "autoresearch"
   - "convergence guards"
   - "research quality"
@@ -14,18 +13,17 @@ trigger_phrases:
   - "guard metrics"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
 ---
-
 # Deep Research Analyzing Krzysztofdudek
 
 ## SESSION SUMMARY

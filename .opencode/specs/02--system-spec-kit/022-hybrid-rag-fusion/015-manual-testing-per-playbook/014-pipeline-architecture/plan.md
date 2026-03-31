@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Manual Testing — Pipeline Architecture (Phase 014)"
+title: "Implementatio [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture/plan]"
 description: "Execution plan for 18 pipeline architecture scenarios. Sequences preconditions, non-destructive execution, destructive execution, and evidence collection for PASS/FAIL/SKIP verdicts."
 trigger_phrases:
   - "pipeline architecture execution plan"
@@ -166,6 +166,7 @@ Preconditions confirmed → execute exact scenario prompt and commands → colle
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -186,6 +187,7 @@ Phase 1 (Preconditions) ──────┤
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

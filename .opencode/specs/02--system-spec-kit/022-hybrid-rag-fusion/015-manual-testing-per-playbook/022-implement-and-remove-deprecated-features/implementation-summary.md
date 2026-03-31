@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook implement-and-remove-deprecated-features phase [template:level_2/implementation-summary.md]"
+title: "...ybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/implementation-summary]"
 description: "Current summary for Phase 022 packet scaffolding. Manual execution of PB-022-01 through PB-022-03 is still pending."
 trigger_phrases:
   - "phase 022 implementation summary"
   - "deprecated features summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Summary

@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Memory & Folder Ranking Implementation [070-memory-ranking/checklist]"
+title: "Checklist: Memory & [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/checklist]"
 description: "checklist document for 070-memory-ranking."
 trigger_phrases:
   - "checklist"

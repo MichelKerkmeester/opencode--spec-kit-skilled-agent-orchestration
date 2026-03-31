@@ -1,6 +1,5 @@
 ---
-title: "Tri-agent review with 28 amendments"
-description: "Implemented 28 spec amendments across 10 files from a tri-agent ultra-think review of the Hybrid RAG Fusion Refinement spec (Spec 140). Three independent ultra-think agents..."
+title: "Tr [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_08-05__tri-agent-review-28-amendments]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "equal"
@@ -9,10 +8,9 @@ trigger_phrases:
   - "build gate"
 importance_tier: "critical"
 contextType: "implementation"
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 ---
-
 # Tri Agent Review 28 Amendments
 
 ## SESSION SUMMARY

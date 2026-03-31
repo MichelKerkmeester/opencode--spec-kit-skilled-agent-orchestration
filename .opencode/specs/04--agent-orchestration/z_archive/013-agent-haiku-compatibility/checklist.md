@@ -1,5 +1,5 @@
 ---
-title: "Implementation Checklist: Agent Haiku Compatibility [013-agent-haiku-compatibility/checklist]"
+title: "Implementation Checklist: Agent Haiku [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/checklist]"
 description: "checklist document for 013-agent-haiku-compatibility."
 trigger_phrases:
   - "implementation"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: /create:feature-catalog Command [template:level_3/checklist.md]"
+title: "Verification Checklist: /create:feature-catalog [03--commands-and-skills/025-cmd-create-feature-catalog/checklist]"
 description: "Verification Date: 2026-03-19"
 trigger_phrases:
   - "feature catalog command checklist"

@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Verification and Standards Sync"
+title: "Implementation Plan: Verification [02--system-spec-kit/023-esm-module-compliance/004-verification-and-standards/plan]"
 description: "Highest-risk retests, full verification matrix, and deferred standards-doc sync after ESM runtime proof."
 trigger_phrases:
   - "verification plan"
   - "023 phase 4 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Verification and Standards Sync
 

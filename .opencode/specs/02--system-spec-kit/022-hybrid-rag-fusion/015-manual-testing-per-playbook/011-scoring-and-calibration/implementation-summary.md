@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: scoring-and-calibration manual testing [template:level_2/implementation-summary.md]"
+title: "...em-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/implementation-summary]"
 description: "Phase 011 scoring-and-calibration manual testing -- 22 playbook rows reviewed via source code analysis. 21 active PASS, 1 retired row (170)."
 trigger_phrases:
   - "phase 011 implementation summary"

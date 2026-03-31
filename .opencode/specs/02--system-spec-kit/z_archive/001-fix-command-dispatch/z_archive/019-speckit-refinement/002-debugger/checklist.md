@@ -1,5 +1,5 @@
 ---
-title: "Debug Delegation Checklist [002-debugger/checklist]"
+title: "Debug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/002-debugger/checklist]"
 description: "checklist document for 002-debugger."
 trigger_phrases:
   - "debug"

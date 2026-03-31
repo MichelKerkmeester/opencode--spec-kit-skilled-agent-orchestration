@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User [064-bug-analysis-and-fix/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec]"
 description: "Complete feature specification for addressing ~231 identified issues across the system-spec-kit skill and spec_kit commands."
 trigger_phrases:
   - "feature"
@@ -71,6 +71,7 @@ Systematically fix all identified issues (including re-analysis findings) to ens
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -92,6 +93,7 @@ Systematically fix all identified issues (including re-analysis findings) to ens
 - Performance optimization beyond fixing identified bugs
 - Changes to external MCP servers (Narsil, Figma, etc.)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -235,6 +237,7 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### Critical Requirements
@@ -296,8 +299,10 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 | Story 9 - Batch Rate Limiting | REQ-FUNC-033 | Provider protection |
 | Story 10 - vec_memories Cleanup | REQ-FUNC-034 | Database integrity |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -323,8 +328,10 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 - **NFR-M02**: Documentation changes must update CHANGELOG sections
 - **NFR-M03**: Code changes must follow existing style conventions
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -341,8 +348,10 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 - What happens during migration from old schema to new? Should preserve existing data
 - What happens if fix is partially applied (crash mid-update)? Should be idempotent on retry
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -362,6 +371,7 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 | Quality | Documentation accuracy | 100% | Cross-reference audit |
 | Reliability | MCP crash rate | 0 | Error log monitoring |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS
@@ -395,6 +405,7 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 9. OUT OF SCOPE
 
 **Explicit Exclusions**:
@@ -405,8 +416,10 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 - Changes to external MCP integrations (Narsil, Figma, etc.)
 - Refactoring code that isn't part of a bug fix
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Should config system be fully implemented or should unused code be removed?
@@ -414,6 +427,7 @@ As a developer, I need vec_memories rows to be cleaned up when memories are dele
 - What is the canonical debug threshold: 2+ or 3+ failed attempts?
 - Should `/memory:save` be a new command or should references be updated to existing workflow?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## 11. APPENDIX

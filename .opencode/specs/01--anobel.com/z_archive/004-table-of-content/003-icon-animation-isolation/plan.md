@@ -1,5 +1,5 @@
 ---
-title: "Plan: Icon Animation Isolation [003-icon-animation-isolation/plan]"
+title: "Plan: Icon Animation Isolation [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/plan]"
 description: "Remove all button-level styling from btn_download.css (staging), keeping only the pure icon animation for the download state machine."
 trigger_phrases:
   - "plan"

@@ -1,5 +1,5 @@
 ---
-title: "MCP Embedding Failure - Implementation Summary [086-mcp-embedding-failure/implementation-summary]"
+title: "MCP [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure/implementation-summary]"
 description: "This spec addressed two issues"
 trigger_phrases:
   - "mcp"
@@ -86,3 +86,10 @@ rm -rf "/path/to/project/node_modules/@huggingface/transformers/.cache/nomic-ai/
 - [x] Fix instructions provided
 - [x] 5 code bugs fixed
 - [ ] Documentation updates (T002-T005) - deferred
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

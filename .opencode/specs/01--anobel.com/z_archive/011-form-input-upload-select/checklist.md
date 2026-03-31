@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Form Input Components Enhancement [012-form-input-upload-select/checklist]"
+title: "Checklist: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/checklist]"
 description: "Bottom Line: All code development is complete. JS files renamed and refactored to code standards (2025-01-03). Remaining work is Webflow Designer integration and live testing."
 trigger_phrases:
   - "checklist"
@@ -77,6 +77,7 @@ contextType: "implementation"
 <!-- /ANCHOR:javascript-implementation---select -->
 
 <!-- ANCHOR:functional-testing---select -->
+<!-- ANCHOR:testing -->
 ## Functional Testing - Select
 
 > **Note:** Testing items require Webflow integration to verify
@@ -103,6 +104,7 @@ contextType: "implementation"
 # Part B: FilePond File Upload
 
 <!-- ANCHOR:pre-implementation---file-upload -->
+<!-- /ANCHOR:testing -->
 ## Pre-Implementation - File Upload
 
 - [x] **P0** Cloudflare R2 bucket created (`uploads`) ✅ 2025-12-27
@@ -151,6 +153,7 @@ contextType: "implementation"
 <!-- /ANCHOR:javascript-implementation---file-upload -->
 
 <!-- ANCHOR:functional-testing---file-upload -->
+<!-- ANCHOR:testing -->
 ## Functional Testing - File Upload
 
 > **Note:** Testing items require Webflow integration to verify
@@ -170,6 +173,7 @@ contextType: "implementation"
 <!-- /ANCHOR:functional-testing---file-upload -->
 
 <!-- ANCHOR:error-handling---file-upload -->
+<!-- /ANCHOR:testing -->
 ## Error Handling - File Upload
 
 - [x] **P1** Network error shows friendly Dutch message (in code)
@@ -198,6 +202,7 @@ contextType: "implementation"
 <!-- /ANCHOR:integration -->
 
 <!-- ANCHOR:accessibility-testing -->
+<!-- ANCHOR:testing -->
 ## Accessibility Testing
 
 > **Note:** ARIA implementation complete in code (v1.1.0), testing requires live site
@@ -215,6 +220,8 @@ contextType: "implementation"
 <!-- /ANCHOR:accessibility-testing -->
 
 <!-- ANCHOR:cross-browser-testing -->
+<!-- ANCHOR:testing -->
+<!-- /ANCHOR:testing -->
 ## Cross-Browser Testing
 
 > **Note:** Requires Webflow deployment to test
@@ -228,6 +235,7 @@ contextType: "implementation"
 <!-- /ANCHOR:cross-browser-testing -->
 
 <!-- ANCHOR:performance -->
+<!-- /ANCHOR:testing -->
 ## Performance
 
 - [~] **P2** Select JS < 5KB minified - *5.2KB (slightly over)*
@@ -239,6 +247,7 @@ contextType: "implementation"
 <!-- /ANCHOR:performance -->
 
 <!-- ANCHOR:documentation -->
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] **P1** Webflow implementation guide complete (`webflow-guide.md`)
@@ -250,6 +259,7 @@ contextType: "implementation"
 <!-- /ANCHOR:documentation -->
 
 <!-- ANCHOR:cleanup -->
+<!-- /ANCHOR:docs -->
 ## Cleanup
 
 - [ ] **P2** Remove Finsweet select from page (if replacing)

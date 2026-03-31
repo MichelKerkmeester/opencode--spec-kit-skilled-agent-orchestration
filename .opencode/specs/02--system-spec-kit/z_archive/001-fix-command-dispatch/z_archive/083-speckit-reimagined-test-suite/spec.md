@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Reimagined Test Suite [083-speckit-reimagined-test-suite/spec]"
+title: "Feature Specif [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite/spec]"
 description: "This specification defines comprehensive test coverage for the SpecKit Reimagined implementation (082-speckit-reimagined). The test suite covers 33 features across 8 categories ..."
 trigger_phrases:
   - "feature"
@@ -41,8 +41,10 @@ This specification defines comprehensive test coverage for the SpecKit Reimagine
 | **Created** | 2026-02-01 |
 | **Parent Spec** | 082-speckit-reimagined |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -80,8 +82,10 @@ Create a comprehensive test suite that:
 4. Provides executable documentation of system behavior
 5. Validates NFRs (performance, reliability, security)
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -133,8 +137,10 @@ Create a comprehensive test suite that:
 | `tests/provider-chain.test.js` | Unit | Retry logic (T101-T104) |
 | `tests/archival-manager.test.js` | Unit | Consolidation integration |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Coverage Targets (MUST complete)
@@ -168,8 +174,10 @@ Create a comprehensive test suite that:
 | REQ-T015 | Performance Benchmarks | NFR-P01, NFR-P02, NFR-P03 validated with timing tests |
 | REQ-T016 | Backward Compatibility | Legacy API tests verify no breaking changes |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 | ID | Metric | Target | Measurement Method |
@@ -182,8 +190,10 @@ Create a comprehensive test suite that:
 | SC-T006 | P0 requirement coverage | 100% | Traceability matrix verification |
 | SC-T007 | Bug detection rate | >90% | Mutation testing score |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -197,8 +207,10 @@ Create a comprehensive test suite that:
 | Dependency | D-T002: Test framework (Node.js built-in or Jest) | Blocks test execution | Verify framework availability |
 | Dependency | D-T003: SQLite better-sqlite3 for test databases | Blocks DB tests | Include as dev dependency |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -222,6 +234,7 @@ Create a comprehensive test suite that:
 - **NFR-T11**: Mock implementations in `tests/mocks/` directory
 - **NFR-T12**: Test utilities in `tests/helpers/` directory
 
+<!-- /ANCHOR:requirements -->
 ---
 
 ## 8. TEST CATEGORIES
@@ -381,6 +394,7 @@ Create a comprehensive test suite that:
 
 ---
 
+<!-- ANCHOR:complexity -->
 ## 10. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -392,8 +406,10 @@ Create a comprehensive test suite that:
 | Coordination | 10/15 | Dependencies on 082 implementation, test data fixtures |
 | **Total** | **63/100** | **Level 3+ appropriate for comprehensive test coverage** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 11. EDGE CASES
 
 ### Data Boundaries
@@ -416,6 +432,7 @@ Create a comprehensive test suite that:
 - Concurrent memory saves -> transaction-safe indexing
 - Background job conflicts -> job lock mechanism
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
 ## 12. APPROVAL WORKFLOW

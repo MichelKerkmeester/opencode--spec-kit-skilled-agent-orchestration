@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Task 05 — Changelog Creation [task-05-changelog-updates/checklist]"
+title: "Verifi [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates/checklist]"
 description: "Verification Date: 2026-02-16 (manual execution)"
 trigger_phrases:
   - "verification"
@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -26,6 +27,7 @@ contextType: "implementation"
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## P0 — Changelog Entries
@@ -49,6 +51,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -62,6 +65,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P1] Changelog creation methodology documented in plan.md [Evidence: task-05/plan.md phases and quality gates]

@@ -1,6 +1,5 @@
 ---
-title: "Haiku vs Sonnet context comparison setup for 012-context-model-comparison 2026-02-14"
-description: "This session implemented the Haiku-versus-Sonnet comparison harness for the context agent. It created four model-specific agent variants plus the spec, checklist, test..."
+title: "Haiku vs [04--agent-orchestration/z_archive/012-context-model-comparison/14-02-26_13-23__context-model-comparison]"
 trigger_phrases:
   - "haiku vs sonnet comparison"
   - "context agent variants"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "verbatim body verification"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Context Model Comparison
 
 ## SESSION SUMMARY

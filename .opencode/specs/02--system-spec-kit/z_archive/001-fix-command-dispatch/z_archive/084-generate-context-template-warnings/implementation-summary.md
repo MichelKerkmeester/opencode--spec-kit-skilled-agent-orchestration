@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Fix generate-context.js Warnings [084-generate-context-template-warnings/implementation-summary]"
+title: "...-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/implementation-summary]"
 description: "File: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js"
 trigger_phrases:
   - "implementation"
@@ -48,6 +48,7 @@ get_db_path,
 
 **Result:** 17 template warnings suppressed; only legitimate missing data triggers warnings.
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 ```bash
@@ -62,6 +63,7 @@ get_db_path,
 ✓ Updated metadata.json with embedding info
 # No errors or template warnings
 ```
+<!-- /ANCHOR:verification -->
 
 ## Files Modified
 
@@ -73,3 +75,10 @@ get_db_path,
 ## Future Work
 
 The V2.2 template features (memory classification, session deduplication, postflight learning delta) are now documented in the template but not implemented. When these features are built, the corresponding placeholders should be removed from `OPTIONAL_PLACEHOLDERS`.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

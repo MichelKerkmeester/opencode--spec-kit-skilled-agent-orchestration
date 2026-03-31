@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Extraction and Rollout Package (Phase 2, 3) [002-extraction-rollout-phases-2-3/tasks]"
+title: "Tasks: Extract [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/tasks]"
 description: "Tracking document synchronized with root execution state; historical execution closure retained and post-research wave transition mapping recorded."
 trigger_phrases:
   - "tasks"

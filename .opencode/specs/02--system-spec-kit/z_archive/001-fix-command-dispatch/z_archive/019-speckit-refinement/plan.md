@@ -1,5 +1,5 @@
 ---
-title: "SpecKit Refinement: Implementation Plan [019-speckit-refinement/plan]"
+title: "SpecKit Refinement: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/plan]"
 description: "After deep analysis using Sequential Thinking, the full design risks over-engineering. A phased approach"
 trigger_phrases:
   - "speckit"
@@ -265,6 +265,7 @@ Action: Single soft reminder, user can ignore
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 7. Task Dependencies (Phase 1 Only)
 
 ```
@@ -284,6 +285,7 @@ Phase 1 (MVP)
 
 ---
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## 8. Appendix: Full System Specifications (Phase 2-3)

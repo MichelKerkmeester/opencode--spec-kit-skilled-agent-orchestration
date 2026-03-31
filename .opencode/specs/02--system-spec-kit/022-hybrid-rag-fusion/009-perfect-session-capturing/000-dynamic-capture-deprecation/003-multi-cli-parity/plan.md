@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Multi-CLI Parity Hardening"
+title: "...ec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/plan]"
 description: "Re-open phase 016 to add direct parity regression coverage, reconcile the phase docs, and validate the already-shipped runtime behavior."
 trigger_phrases:
   - "parity hardening plan"
@@ -125,6 +125,7 @@ Additive regression-hardening on existing seams
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## 8. L2: PHASE DEPENDENCIES
 
 N/A. Phase 016 does not decompose into sub-phases. The implementation phases in section 4 are sequential steps within a single pass.
@@ -133,6 +134,7 @@ N/A. Phase 016 does not decompose into sub-phases. The implementation phases in 
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## 9. L2: EFFORT ESTIMATION
 
 | Phase | Estimated | Actual |

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 016-json-mode-hybrid-enrichment"
+title: "Implement [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/plan]"
 description: "Level 1 normalization plan for the JSON-mode hybrid-enrichment phase container, focused on container-doc repair and child metadata integrity inside the 009 packet family."
 trigger_phrases:
   - "016 json mode plan"

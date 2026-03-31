@@ -1,6 +1,5 @@
 ---
-title: "Memory ranking validation and bug fixes 2026-01-16"
-description: "Captured the validation and bug-fixing pass for the memory and folder ranking implementation. It summarizes the parallel-agent review, the overall quality score achieved, and..."
+title: "Mem [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/16-01-26_16-09__memory-ranking]"
 trigger_phrases:
   - "memory ranking bug fixes"
   - "folder ranking validation"
@@ -8,11 +7,10 @@ trigger_phrases:
   - "ranking implementation quality review"
 importance_tier: "normal"
 contextType: "general"
-quality_score: 0.60
 quality_flags:
   - "legacy_migration"
+quality_score: 0.60
 ---
-
 # Memory Ranking
 
 ## SESSION SUMMARY

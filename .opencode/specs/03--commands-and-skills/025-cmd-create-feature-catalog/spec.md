@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: /create:feature-catalog Command [template:level_3/spec.md]"
+title: "Feature Specification: /create:feature-catalog Command [03--commands-and-skills/025-cmd-create-feature-catalog/spec]"
 description: "Define a Level 3 implementation packet for a new create command that scaffolds feature_catalog packages from the shipped sk-doc references and templates aligned in spec 021."
 trigger_phrases:
   - "create feature catalog command"
@@ -26,6 +26,7 @@ This packet defines the implementation contract for a new `/create:feature-catal
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,6 +41,7 @@ This packet defines the implementation contract for a new `/create:feature-catal
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -91,7 +93,7 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 | `.opencode/command/README.txt` | Modify | Keep top-level command catalog aligned |
 | `.opencode/README.md` | Modify | Reflect the new create command in runtime-facing docs |
 | `.opencode/agent/write.md` | Modify | Add the command to write-agent guidance where create commands are enumerated |
-| `.opencode/agent/chatgpt/write.md` | Modify | Keep ChatGPT runtime write guidance aligned |
+| `.claude/agents/write.md` | Modify | Keep ChatGPT runtime write guidance aligned |
 | `.codex/agents/write.toml` | Modify | Keep Codex runtime create-command inventory aligned |
 | `.agents/agents/write.md` | Modify | Keep `.agents` runtime guidance aligned |
 <!-- /ANCHOR:scope -->
@@ -158,6 +160,7 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -172,8 +175,10 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 - **NFR-R01**: The generated root catalog and per-feature files use stable folder and file naming conventions from the shipped contract.
 - **NFR-R02**: All declared command paths and asset references resolve cleanly in documentation validation and path sweeps.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -191,8 +196,10 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 - Update path: catalog exists -> refresh/extend based on current package state without changing the canonical folder name.
 - Runtime sync: new command files land -> runtime command inventories update in the same implementation phase.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -204,6 +211,7 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 | Coordination | 8/15 | Requires synchronized markdown, YAML, TOML, and runtime-doc updates |
 | **Total** | **66/100** | **Level 3** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX

@@ -1,5 +1,5 @@
 ---
-title: "Gate Enforcement Constitutional Memory Refinement [034-gate-enforcement-refinement/spec]"
+title: "Gate Enforcement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement/spec]"
 description: "Refine the gate-enforcement.md constitutional memory to cover ALL 4 HARD BLOCK gates (0, 3, 5, 6) instead of just 2 (3, 5)."
 trigger_phrases:
   - "gate"
@@ -33,7 +33,9 @@ Current file only covers 50% of HARD BLOCK gates, missing:
 4. Deprecate duplicate file
 5. Re-index and verify
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 - All 4 HARD BLOCKS covered
 - Constitutional memory surfaces on relevant queries
 - No duplicate constitutional files active
+<!-- /ANCHOR:success-criteria -->

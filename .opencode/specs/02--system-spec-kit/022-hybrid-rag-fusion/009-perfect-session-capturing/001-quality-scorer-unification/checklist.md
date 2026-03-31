@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Quality Scorer Unification [template:level_2/checklist.md]"
+title: "Verif [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/checklist]"
+description: "title: \"Verification Checklist: Quality Scorer Unification [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verif"
+  - "checklist"
+  - "001"
+  - "quality"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Quality Scorer Unification
 

@@ -1,5 +1,13 @@
 ---
-title: "Implementation Plan: Confidence Calibration"
+title: "Implementation [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration/plan]"
+description: "title: \"Implementation Plan: Confidence Calibration\""
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "005"
+  - "confidence"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Confidence Calibration
 

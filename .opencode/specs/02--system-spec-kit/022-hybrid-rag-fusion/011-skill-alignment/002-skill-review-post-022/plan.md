@@ -1,8 +1,18 @@
 ---
-title: Post-022 Review and Remediation Plan
+title: "Post-022 Review and [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/plan]"
+description: "title: Post-022 Review and Remediation Plan"
+trigger_phrases:
+  - "post"
+  - "022"
+  - "review"
+  - "and"
+  - "plan"
+  - "002"
+  - "skill"
+importance_tier: "important"
+contextType: "decision"
 status: Complete
 ---
-
 # Plan — 002-skill-review-post-022
 
 ## 1. OVERVIEW

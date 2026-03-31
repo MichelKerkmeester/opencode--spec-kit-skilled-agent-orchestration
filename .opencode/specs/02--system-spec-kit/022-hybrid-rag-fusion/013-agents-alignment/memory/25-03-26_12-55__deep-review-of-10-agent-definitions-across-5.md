@@ -1,6 +1,5 @@
 ---
-title: "Deep Review Of 10 Agent [013-agents-alignment/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5]"
-description: "Deep review of 10 agent definitions across 5 runtimes for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high, GPT-5.3-Codex xhigh..."
+title: "...tem-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5]"
 trigger_phrases:
   - "hybrid rag fusion"
   - "cross agent"
@@ -30,18 +29,17 @@ trigger_phrases:
   - "fusion/013"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
-
 # Deep Review Of 10 Agent Definitions Across 5
 
 ## SESSION SUMMARY

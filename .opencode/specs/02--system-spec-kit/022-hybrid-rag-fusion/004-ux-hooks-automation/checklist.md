@@ -1,11 +1,6 @@
 ---
-title: "UX Hooks Automation Checklist"
-status: "complete"
-level: 2
-created: "2025-12-01"
-updated: "2026-03-13"
+title: "UX Hooks Automation Checklist [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/checklist]"
 description: "Verification Date: 2026-03-13"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -13,6 +8,11 @@ trigger_phrases:
   - "template"
 importance_tier: "normal"
 contextType: "general"
+created: "2025-12-01"
+level: 2
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+status: "complete"
+updated: "2026-03-13"
 ---
 # Verification Checklist: UX Hooks Automation
 

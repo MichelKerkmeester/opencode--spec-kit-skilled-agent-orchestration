@@ -1,5 +1,5 @@
 ---
-title: "QA Checklist: Post-Merge Refinement Final [043-post-merge-refinement-final/checklist]"
+title: "QA Checklis [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/checklist]"
 description: "Method: 10 parallel verification agents read all modified files and confirmed fixes with line-number evidence."
 trigger_phrases:
   - "checklist"
@@ -80,6 +80,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:docs -->
 ## P1 - Documentation Alignment
 
 ### P1-001: Gate Numbering
@@ -164,6 +165,7 @@ contextType: "implementation"
 - [x] /memory:help created → `.opencode/command/memory/help.md` (144 lines)
 - [x] /search:help created OR documented as not needed
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## P2 - Quality Improvements
@@ -239,6 +241,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 **Method:** 10 parallel verification agents read all modified files and confirmed fixes with line-number evidence.
@@ -250,3 +253,4 @@ contextType: "implementation"
 | P2 Medium | 12 | 12 | ✅ 100% |
 | P3 Low | 5 | 5 | ✅ 100% |
 | **TOTAL** | **39** | **39** | ✅ **100%** |
+<!-- /ANCHOR:summary -->

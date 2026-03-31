@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Autonomous Deep Research Loop"
+title: "Decision Record: Autonomous Deep Research Loop [03--commands-and-skills/023-sk-deep-research-creation/decision-record]"
 description: "Architecture decisions for 3-layer autoresearch system"
 trigger_phrases:
   - "autoresearch decisions"
@@ -136,7 +136,7 @@ Research state must persist across fresh-context iterations. We needed a format 
 
 **We chose**: Dual format with JSONL for structured data and strategy.md for agent context.
 
-**How it works**: `deep-research-state.jsonl` stores iteration metadata (run number, findingsCount, newInfoRatio). `deep-research-strategy.md` stores what worked, what failed, exhausted approaches, and next focus area.
+**How it works**: `deep-research-state.jsonl` stores iteration metadata (run number, findingsCount, newInfoRatio). `research/deep-research-strategy.md` stores what worked, what failed, exhausted approaches, and next focus area.
 
 ### Alternatives Considered
 
@@ -260,6 +260,7 @@ AGR case study data shows diminishing returns past 15 iterations. We needed a se
 
 ---
 
+<!-- ANCHOR:decision -->
 ## v2 Decisions (from 14-Iteration Deep Research)
 
 > These ADRs are derived from code-level analysis of 4 autoresearch repos + 322 community issues. See `scratch/improvement-proposals.md` v2 and `research/research.md` Section 18.
@@ -267,6 +268,7 @@ AGR case study data shows diminishing returns past 15 iterations. We needed a se
 ---
 
 <!-- ANCHOR:adr-007 -->
+<!-- /ANCHOR:decision -->
 ## ADR-007: 3-Signal Composite Convergence (Drop CUSUM)
 
 ### Metadata

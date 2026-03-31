@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: scoring-and-calibration manual testing [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration/spec]"
 description: "Phase 011 documents the 22 manual testing scenarios for scoring and calibration features in the Spec Kit Memory system. Maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
 trigger_phrases:
   - "manual testing scoring and calibration"
   - "phase 011 scoring calibration"
   - "023-032 066 074 079 098 102 118 121 159 160 170-172"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: scoring-and-calibration manual testing
@@ -212,6 +212,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -226,6 +227,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

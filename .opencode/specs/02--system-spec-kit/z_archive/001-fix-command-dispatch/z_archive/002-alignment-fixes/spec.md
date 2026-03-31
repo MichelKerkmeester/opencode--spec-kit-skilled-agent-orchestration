@@ -1,5 +1,5 @@
 ---
-title: "Memory Command Alignment Fixes [002-alignment-fixes/spec]"
+title: "Memory Command Alignment [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/002-alignment-fixes/spec]"
 description: "This spec documents the alignment fixes applied to memory command files to ensure consistency with"
 trigger_phrases:
   - "memory"
@@ -42,6 +42,7 @@ This spec documents the alignment fixes applied to memory command files to ensur
 - [x] `SKILL.md` routing diagram updated with HOME SCREEN
 - [x] `AGENTS.md` updated with `memory_list`, `memory_stats`
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -56,6 +57,7 @@ This spec documents the alignment fixes applied to memory command files to ensur
 - save.md (no changes needed)
 - checkpoint.md (separate functionality)
 - Actual MCP server implementation changes
+<!-- /ANCHOR:scope -->
 
 ## Technical Notes
 

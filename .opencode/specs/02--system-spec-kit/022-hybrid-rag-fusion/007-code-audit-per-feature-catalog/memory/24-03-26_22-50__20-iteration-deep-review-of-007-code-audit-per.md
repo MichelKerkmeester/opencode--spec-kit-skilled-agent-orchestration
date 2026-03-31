@@ -1,6 +1,5 @@
 ---
-title: "20 Iteration Deep [007-code-audit-per-feature-catalog/24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per]"
-description: "20-iteration deep review of 007-code-audit-per-feature-catalog. Dispatched 20 GPT-5.4 agents (10 codex xhigh + 5 copilot high + 5 targeted verification) across all 22 child..."
+title: "...-hybrid-rag-fusion/007-code-audit-per-feature-catalog/24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per]"
 trigger_phrases:
   - "deep review 007"
   - "code audit review"
@@ -36,18 +35,17 @@ trigger_phrases:
   - "stale audit verdicts"
 importance_tier: "critical"
 contextType: "decision"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 ---
-
 # 20 Iteration Deep Review Of 007 Code Audit Per
 
 ## SESSION SUMMARY

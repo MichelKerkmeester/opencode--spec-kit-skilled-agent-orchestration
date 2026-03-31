@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Retrieval"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval/checklist]"
 description: "QA verification for Retrieval code audit"
 trigger_phrases:
   - "checklist"

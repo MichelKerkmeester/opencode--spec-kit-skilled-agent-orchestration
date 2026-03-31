@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/checklist]"
+title: "V [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/checklist]"
 description: "Total Items: 48"
 trigger_phrases:
   - "verification"
@@ -176,6 +176,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [ ] CHK-140 [P1] Spec/plan/tasks synchronized
@@ -185,8 +186,10 @@ contextType: "implementation"
 - [ ] CHK-142 [P2] Knowledge transfer documented
   - Evidence: _Findings saved to memory/ for future sessions_
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -199,6 +202,7 @@ contextType: "implementation"
 **Verified Items**: 19
 **Verification Date**: 2026-01-20
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## L3+: SIGN-OFF

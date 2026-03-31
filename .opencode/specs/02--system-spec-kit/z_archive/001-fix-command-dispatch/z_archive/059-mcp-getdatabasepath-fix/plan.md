@@ -1,5 +1,5 @@
 ---
-title: "Plan: Fix MCP Server Method Name Mismatches [059-mcp-getdatabasepath-fix/plan]"
+title: "Plan: Fix MCP [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/059-mcp-getdatabasepath-fix/plan]"
 description: "The Spec Kit Memory MCP server fails with multiple errors due to import naming mismatches"
 trigger_phrases:
   - "plan"

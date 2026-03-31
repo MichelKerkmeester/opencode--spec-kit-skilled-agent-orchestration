@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook evaluation phase"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation/plan]"
 description: "Execute 2 evaluation scenarios from the manual testing playbook covering ablation studies and reporting dashboard."
 trigger_phrases:
   - "evaluation test plan"
   - "ablation test plan"
   - "dashboard test plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook evaluation phase
@@ -157,6 +157,7 @@ Read playbook scenario -> Verify preconditions (flag, data) -> Execute MCP tool 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -178,6 +179,7 @@ Phase 1 (Pre-flight) --> Phase 2 (Ablation EX-026) --> Phase 3 (Dashboard EX-027
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

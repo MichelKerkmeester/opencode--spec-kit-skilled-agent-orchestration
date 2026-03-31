@@ -1,5 +1,5 @@
 ---
-title: "Plan: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/plan]"
+title: "Plan: Fix @explore Direct Dispatch in Orchestrate [04--agent-orchestration/z_archive/010-explore-routing-fix/plan]"
 description: "The fix applies a three-pronged approach to LLM prompt engineering"
 trigger_phrases:
   - "plan"

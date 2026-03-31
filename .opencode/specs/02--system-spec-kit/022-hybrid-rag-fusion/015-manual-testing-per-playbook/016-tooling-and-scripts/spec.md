@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 016-Tooling-and-Scripts Manual Testing"
+title: "Feature Specifi [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts/spec]"
 description: "Manual test execution tracking for 65 exact scenario IDs across 33 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, template compliance enforcement, runtime audits, memory command routing, and JSON mode structured summary hardening."
 trigger_phrases:
   - "tooling scripts manual testing"
@@ -285,6 +285,7 @@ Playbook-only operator audits without dedicated feature catalog entries: M-009, 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -299,6 +300,7 @@ Playbook-only operator audits without dedicated feature catalog entries: M-009, 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Sub-Scenario Boundaries

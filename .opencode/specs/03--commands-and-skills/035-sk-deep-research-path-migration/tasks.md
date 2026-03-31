@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-deep-research Path Migration"
+title: "Tasks: sk-deep-research Path Migration [03--commands-and-skills/035-sk-deep-research-path-migration/tasks]"
 description: "Task Format: T### [P?] Description (file path or file family)"
 trigger_phrases:
   - "deep-research migration tasks"

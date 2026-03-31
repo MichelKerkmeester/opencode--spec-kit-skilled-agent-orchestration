@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory System Integration [035-memory-speckit-merger/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/plan]"
 description: "This merger is a pure file migration with path updates. No functional changes."
 trigger_phrases:
   - "implementation"
@@ -28,6 +28,7 @@ This merger is a **pure file migration** with path updates. No functional change
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture: Final Directory Structure
 
 ```
@@ -87,6 +88,7 @@ This merger is a **pure file migration** with path updates. No functional change
     └── *.md                          # Constitutional memory files
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## Migration Phases
@@ -319,6 +321,7 @@ mv .opencode/skill/system-memory .opencode/skill/z_archive/
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies Between Phases
 
 ```
@@ -352,6 +355,7 @@ Phase 1 (dirs) ─┬─> Phase 2 (MCP server)
                Phase 12 (archive)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
 ## Estimated Total Effort

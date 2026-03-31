@@ -1,5 +1,5 @@
 ---
-title: "Test Spec Invalid [test-invalid/spec]"
+title: "...archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-invalid/spec]"
 description: "Test specification for validation testing of invalid spec folders."
 trigger_phrases:
   - "test"
@@ -20,5 +20,7 @@ Test specification for validation testing of invalid spec folders.
 This folder intentionally lacks plan.md and tasks.md.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:requirements -->
 ## Requirements
 - R1: Test requirement
+<!-- /ANCHOR:requirements -->

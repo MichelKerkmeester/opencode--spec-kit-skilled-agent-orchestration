@@ -5,6 +5,7 @@ trigger_phrases:
   - "memory"
   - "save context"
   - "generate-context"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Memory

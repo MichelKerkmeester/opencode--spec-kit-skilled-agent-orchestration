@@ -1,5 +1,5 @@
 ---
-title: "Tasks: MCP Server Rename [040-mcp-server-rename/tasks]"
+title: "Tasks: MCP Server [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/tasks]"
 description: "tasks document for 040-mcp-server-rename."
 trigger_phrases:
   - "tasks"

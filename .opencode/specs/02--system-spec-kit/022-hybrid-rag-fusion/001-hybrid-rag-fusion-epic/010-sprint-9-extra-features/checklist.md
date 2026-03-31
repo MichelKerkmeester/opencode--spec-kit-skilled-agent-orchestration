@@ -1,3 +1,14 @@
+---
+title: "Verificatio [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/checklist]"
+description: "Baseline (BEFORE any changes)"
+trigger_phrases:
+  - "verificatio"
+  - "checklist"
+  - "010"
+  - "sprint"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Verification Checklist: Sprint 9 — Extra Features
 
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,17 +1,17 @@
 ---
-title: "Verification Checklist: Memory Save Quality Root Cause Fixes"
+title: "Verifi [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes/checklist]"
 description: "Verification Date: 2026-03-20"
-level: 2
 trigger_phrases:
   - "memory save quality checklist"
   - "018 memory save quality fixes"
   - "verification evidence"
+importance_tier: "important"
+contextType: "implementation"
 key_topics:
   - "test results"
   - "review evidence"
   - "scope control"
-importance_tier: "high"
-contextType: "implementation"
+level: 2
 ---
 # Verification Checklist: Memory Save Quality Root Cause Fixes
 

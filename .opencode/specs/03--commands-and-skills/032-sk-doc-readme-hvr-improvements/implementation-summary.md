@@ -1,101 +1,92 @@
 ---
-title: "Implementation Summary: sk-doc README and HVR Improvements"
-description: "Summary of changes to hvr_rules.md, readme_template.md and the new readme_creation.md reference."
+title: "Implementation Summary: sk-doc README and HVR Improvements [03--commands-and-skills/032-sk-doc-readme-hvr-improvements/implementation-summary]"
+description: "Summary of the sk-doc HVR, README template, and README creation guidance upgrade plus packet repair."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "032"
+  - "sk-doc"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: sk-doc README and HVR Improvements
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## What Changed
+<!-- ANCHOR:metadata -->
+## Metadata
 
-Three sk-doc documentation files were modified or created, HVR rules were expanded with v0.210 patterns, structural format patterns were relocated, SKILL.md smart routing was integrated, and cli-codex skill got flag warnings.
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 032-sk-doc-readme-hvr-improvements |
+| **Completed** | 2026-03-31 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
-### D1: HVR Rules Upgrade (hvr_rules.md)
+---
 
-**File**: `.opencode/skill/sk-doc/references/global/hvr_rules.md`
-**Change**: Modified (332 lines to 551 lines)
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-Added two new sections and updated existing content:
+This work upgraded the sk-doc standards stack and then repaired this Level 2 packet so it accurately describes the landed files. You can now trace the HVR rules update, the README template adjustments, and the new README creation guide through committed repo paths instead of stale shorthand references.
 
-- **Section 5: Structural Format Patterns** -- Document-level formatting rules: heading hierarchy (H2 numbered ALL CAPS, H3/H4 numbered ALL CAPS for subsections), blockquote tagline after H1, TOC format with double-dash anchors, section dividers, two-tier voice pattern, Feature subsection numbering.
-- **Section 6: Recommended Table Patterns** -- Five table patterns: "How This Compares", Key Statistics, Key Features, Before/After and Parameter tables with examples.
-- **Updated Section 4** -- Added triple-header pattern fix, "In simple terms" to setup language list, analogy overuse rules (max 1 per concept, max 2 "Think of it as/like" per document, place after technical statement).
-- **Updated Section 10 (Pre-Publish Checklist)** -- Added scoring weights (Punctuation 15%, Structure 25%, Content 25%, Words 20%, Voice 15%), pass thresholds (85+ publish-ready, 70-84 needs revision, below 70 failing), structural checklist items.
-- **Renumbered** sections 5-9 to 7-11 to accommodate the two new sections.
+### sk-doc Standards Upgrade
 
-### D2: README Template Upgrade (readme_template.md)
+The packet records three primary documentation changes: expanded HVR guidance in `.opencode/skill/sk-doc/references/global/hvr_rules.md`, targeted README template updates in `.opencode/skill/sk-doc/assets/documentation/readme_template.md`, and the new workflow reference in `.opencode/skill/sk-doc/references/specific/readme_creation.md`. It also records the related routing and cli-codex follow-up notes in `.opencode/skill/sk-doc/SKILL.md`, `.opencode/skill/cli-codex/SKILL.md`, and `.opencode/skill/cli-codex/assets/prompt_templates.md`.
 
-**File**: `.opencode/skill/sk-doc/assets/documentation/readme_template.md`
-**Change**: Modified (2 targeted additions)
+### Files Changed
 
-- Added cross-reference to `readme_creation.md` in Section 10 (Patterns from Existing READMEs)
-- Added `readme_creation.md` link in Section 15 (Related Resources) under Standards
+| File | Action | Purpose |
+|------|--------|---------|
+| `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements/spec.md` | Modified | Repaired stale references and anchor-safe wording |
+| `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements/plan.md` | Modified | Restored template-compliant structure and committed repo paths |
+| `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements/tasks.md` | Modified | Normalized phase headers and preserved the delivery history |
+| `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements/checklist.md` | Modified | Restored required anchors and template headers |
+| `.opencode/specs/03--commands-and-skills/032-sk-doc-readme-hvr-improvements/implementation-summary.md` | Modified | Recast the summary into the Level 2 template structure |
+<!-- /ANCHOR:what-built -->
 
-The template already had two-tier voice, numbered subsections, comparison tables and correct heading format. No structural changes needed.
+---
 
-### D3: README Creation Reference (readme_creation.md)
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-**File**: `.opencode/skill/sk-doc/references/specific/readme_creation.md`
-**Change**: Created (388 lines)
+The repair pass read the committed packet docs, replaced shorthand or stale markdown references with actual repo paths, normalized the required Level 2 headers and anchors, and then revalidated the folder. The underlying sk-doc and cli-codex file changes remained untouched during this packet-only repair.
+<!-- /ANCHOR:how-delivered -->
 
-New reference file with 8 sections modeled on `install_guide_creation.md`:
+---
 
-1. **Overview** -- Purpose, goals, requirements
-2. **Core Principles** -- Decision tree for README types, progressive disclosure, two-tier voice
-3. **Required Sections** -- 9-section matrix showing Required/Optional per README type
-4. **Section Writing Standards** -- Per-section guidance for all 9 README sections
-5. **Writing Patterns** -- Two-tier voice examples, analogy patterns, table-first approach, code block standards
-6. **Quality Criteria** -- DQI components (Structure 40%, Content 35%, Style 25%), minimum requirements per section
-7. **Pre-Publish Checklist** -- Structure, content, quality, style and HVR compliance checks
-8. **Cross-References** -- Links to template, HVR rules, core standards, validation and related creation guides
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-### Phase 2: v0.210 HVR Pattern Integration
+| Decision | Why |
+|----------|-----|
+| Used full `.opencode/...` paths for cited sk-doc, system-spec-kit, and cli-codex files | The validator resolves committed repo paths, not shorthand file names from the original working notes |
+| Preserved the packet as a documentation-upgrade record rather than recreating the sk-doc deliverables here | The real content already exists in the target skill folders, so the packet only needed structural and reference repairs |
+| Kept checklist items conservative and mostly unverified | This pass focuses on removing validator errors, not restating unverified completion evidence |
+<!-- /ANCHOR:decisions -->
 
-Ported high-value patterns from the Barter HVR v0.210 source into `hvr_rules.md`:
+---
 
-- **Section 4 additions**: Copula avoidance ban, synonym cycling fix, false ranges, generic positive conclusions, fragmented headers, significance inflation, knowledge-cutoff disclaimers
-- **Section 5 (new)**: Voice Personality (replaced removed table patterns section). Have opinions, acknowledge complexity, controlled imperfection, emotional specificity, rule precedence (first-match-wins)
-- **Section 3 additions**: Quotation marks (straight only), emoji (max 1)
-- **Section 7 additions**: 4 new phrase hard blockers ("The real question is", "Here's what you need to know", etc.)
-- **Section 8 additions**: "discover" (-2), "put"/"take" (vague verbs), "Let me help you with that" (AI phrase), "undoubtedly" (modifier)
-- **Removed**: Section 5 (Structural Format Patterns) and Section 6 (Table Patterns) -- these are documentation formatting, not voice rules
-- **Renumbered**: 10 sections total (was 11)
-
-### Phase 3: Structural Patterns Relocation
-
-Moved the removed structural format patterns and table patterns into their proper home:
-
-- **readme_creation.md Section 5**: Added "Structural Format Rules" subsection (heading hierarchy table, blockquote tagline, TOC anchor format, section dividers) and "Recommended Table Patterns" subsection (5 patterns with examples)
-- **readme_creation.md Sections 3-4**: Deduplicated by removing the type matrix table and "Must include" lists that repeated readme_template.md content. Replaced with cross-references.
-
-### Phase 4: Smart Router Integration
-
-Integrated `readme_creation.md` into the sk-doc SKILL.md smart routing system:
-
-- **SKILL.md "When to Use"**: README Creation entry now references both files with direct links
-- **INTENT_SIGNALS**: Added `README_CREATION` (weight 3, keywords: "create readme", "write readme", "add documentation", "folder readme")
-- **RESOURCE_MAP**: Added `README_CREATION` mapping to both `readme_creation.md` and `readme_template.md`
-- **ON_DEMAND**: Removed `readme_template.md` (now routed via intent, not ON_DEMAND)
-
-### Phase 5: cli-codex Skill Update
-
-Added prominent flag warning to `cli-codex/SKILL.md` and `cli-codex/assets/prompt_templates.md`:
-- `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist in codex exec
-- Correct alternative: `-c model_reasoning_effort="high"` or config.toml default
-
+<!-- ANCHOR:verification -->
 ## Verification
 
-- All files have correct frontmatter, anchors and numbered H2 ALL CAPS sections
-- Zero HVR hard blocker words in output files
-- All cross-references verified (bidirectional links between hvr_rules.md, readme_creation.md, readme_template.md)
-- `install_guide_creation.md` unchanged (no regressions)
-- SKILL.md smart router routes "create readme" to both creation workflow and template
-- skill_advisor.py already has readme/documentation boosters for Gate 2
+| Check | Result |
+|-------|--------|
+| Packet path repair | PASS, cited markdown paths now point at committed `.opencode/skill/` files |
+| Template compliance | PASS, required Level 2 headers and anchors restored in `tasks.md`, `checklist.md`, and this summary |
+| Spec validation | PASS after this repair pass on `032-sk-doc-readme-hvr-improvements` with warnings only allowed |
+<!-- /ANCHOR:verification -->
 
-## Delegation Note
+---
 
-GPT-5.4 agents via cli-codex were dispatched for the initial implementation but got blocked by Gate 3 (the project's CLAUDE.md intercepted their execution). All deliverables were written directly by Claude instead.
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Warning-only follow-up remains** Section-count and checklist-evidence warnings may remain until a later evidence-focused pass updates the packet.
+<!-- /ANCHOR:limitations -->
+
+---

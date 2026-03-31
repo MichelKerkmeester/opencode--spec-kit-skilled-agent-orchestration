@@ -1,5 +1,5 @@
 ---
-title: "Spec: Rename workflows-memory → system-memory [025-system-memory-rename/spec]"
+title: "Spec: Rename workflows- [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/spec]"
 description: "The workflows-memory skill needs to be renamed to system-memory to align with the naming convention established by the recent workflows-spec-kit → system-spec-kit rename. The \"s..."
 trigger_phrases:
   - "spec"
@@ -31,6 +31,7 @@ contextType: "decision"
 
 The `workflows-memory` skill needs to be renamed to `system-memory` to align with the naming convention established by the recent `workflows-spec-kit` → `system-spec-kit` rename. The "system-" prefix better reflects that this is a core infrastructure skill rather than a domain workflow.
 
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -47,6 +48,7 @@ The `workflows-memory` skill needs to be renamed to `system-memory` to align wit
 - `semantic_memory` MCP server name - Different concept (MCP server vs skill)
 - Historical references in `specs/` directories - Reflect state at time of writing
 - Brand names in prose (if any)
+<!-- /ANCHOR:scope -->
 
 ## Reference Inventory
 
@@ -173,6 +175,7 @@ The `workflows-memory` skill needs to be renamed to `system-memory` to align wit
 | `semantic-memory-mcp` | npm package name for MCP server |
 | Historical references in `specs/` | Reflect state at time of writing |
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 1. Directory renamed successfully
@@ -183,6 +186,7 @@ The `workflows-memory` skill needs to be renamed to `system-memory` to align wit
 6. Other skills can invoke `openskills read system-memory`
 7. generate-context.js script works correctly
 8. Memory context saved for future sessions
+<!-- /ANCHOR:success-criteria -->
 
 ## Risks & Mitigations
 

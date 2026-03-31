@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Task 05 — Changelog Creation [task-05-changelog-updates/plan]"
+title: "Implementat [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates/plan]"
 description: "3-track changelog files audit/creation for spec 130 umbrella. Systematic review of CHANGELOG-03--, CHANGELOG-00--, CHANGELOG-SPECKIT to ensure alignment with post-implementation..."
 trigger_phrases:
   - "implementation"
@@ -126,6 +126,7 @@ Systematic file-by-file audit/creation
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -142,6 +143,7 @@ Phase 1 (Audit) ──► Phase 2 (Documentation) ──► Phase 3 (Verificatio
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

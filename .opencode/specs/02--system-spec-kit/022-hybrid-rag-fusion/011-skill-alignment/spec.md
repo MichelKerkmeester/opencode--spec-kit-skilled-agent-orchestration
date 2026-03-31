@@ -1,7 +1,11 @@
 ---
-title: "Feature Specification: Skill Alignment — system-spec-kit"
+title: "Feature Specification: Skill Alignment — [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec]"
 description: "Truth-reconciled Level 2 specification for closing the last system-spec-kit documentation gaps after current memory, command, and agent alignment landed."
-trigger_phrases: ["skill alignment", "011 alignment", "system-spec-kit backlog", "system skill guide update"]
+trigger_phrases:
+  - "skill alignment"
+  - "011 alignment"
+  - "system-spec-kit backlog"
+  - "system skill guide update"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -175,6 +179,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Documentation Quality
@@ -193,6 +198,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Documentation Boundaries

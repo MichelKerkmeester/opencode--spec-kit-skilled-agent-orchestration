@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: SpecKit Scratch Enforcement - Implementation Verification [001-scratch-enforcement/checklist]"
+title: "Validation Checklis [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/checklist]"
 description: "Custom checklist for scratch folder enforcement implementation validation."
 trigger_phrases:
   - "validation"
@@ -97,9 +97,12 @@ Verify that all scratch folder enforcement rules are properly implemented across
 
 ---
 
+<!-- ANCHOR:summary -->
 ## VERIFICATION SUMMARY
 
 ```
+<!-- ANCHOR:summary -->
+<!-- /ANCHOR:summary -->
 ## Verification Summary
 - **Total Items**: 22
 - **Verified [x]**: 22
@@ -110,6 +113,7 @@ Verify that all scratch folder enforcement rules are properly implemented across
 - **Final Close-out**: 2025-12-13
 ```
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 4. EVIDENCE LINKS

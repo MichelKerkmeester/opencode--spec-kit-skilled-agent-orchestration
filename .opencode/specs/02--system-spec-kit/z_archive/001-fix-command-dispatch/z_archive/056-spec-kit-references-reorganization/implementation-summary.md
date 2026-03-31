@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: system-spec-kit References [056-spec-kit-references-reorganization/implementation-summary]"
+title: "...-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/implementation-summary]"
 description: "Reorganized the system-spec-kit skill's 18 reference files from a flat structure into 7 logical sub-folders, improving navigation and maintainability. Fixed 69 broken internal l..."
 trigger_phrases:
   - "implementation"
@@ -126,6 +126,7 @@ Fixed priority inconsistency in 3 template files where P3 was used but P2 is the
 chmod +x .opencode/skill/system-spec-kit/scripts/check-completion.sh
 ```
 
+<!-- ANCHOR:verification -->
 ## Verification Results
 
 | Check | Result |
@@ -139,6 +140,7 @@ chmod +x .opencode/skill/system-spec-kit/scripts/check-completion.sh
 | Template files fixed | 3 files (P3 → P2) |
 | Script permissions | Fixed (executable) |
 | Broken links remaining | 0 |
+<!-- /ANCHOR:verification -->
 
 ## Benefits
 
@@ -162,6 +164,7 @@ chmod +x .opencode/skill/system-spec-kit/scripts/check-completion.sh
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Phase 2: Deep Verification Audit
 
 ### Audit Methodology
@@ -217,3 +220,11 @@ chmod +x .opencode/skill/system-spec-kit/scripts/check-completion.sh
 | Phase 1 | 40 | 69 links + 3 P3→P2 |
 | Phase 2 | 7 | 10 links + 6 other |
 | **Total** | **47** | **88** |
+<!-- /ANCHOR:verification -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

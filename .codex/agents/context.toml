@@ -332,6 +332,18 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, use th
 
 ---
 
+## 10b. COCOINDEX-FIRST ROUTING
+
+When the query intent is semantic (find code by concept, understand implementations, discover patterns), ALWAYS try CocoIndex FIRST before falling back to Grep/Glob:
+
+1. **Semantic discovery** ("find code that...", "how is X implemented", "similar to") → `mcp__cocoindex_code__search` FIRST
+2. Only if CocoIndex unavailable or returns no results → fall back to Grep/Glob
+3. **Structural queries** ("what calls...", "what imports...") → `code_graph_query` / `code_graph_context`
+4. **Exact text/symbol** → Grep
+5. **File name** → Glob
+
+---
+
 ## 11. RELATED RESOURCES
 
 ### Primary Consumer

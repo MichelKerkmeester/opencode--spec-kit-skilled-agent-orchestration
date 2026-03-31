@@ -1,5 +1,5 @@
 ---
-title: "SpecKit Refinement: Implementation Summary [019-speckit-refinement/implementation-summary]"
+title: "SpecKit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/implementation-summary]"
 description: "This implementation transforms SpecKit's session management from a manual, error-prone process into an automated, validated workflow. The project addressed critical gaps identif..."
 trigger_phrases:
   - "speckit"
@@ -212,6 +212,7 @@ From ECP (Extended Context Protocol) research:
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 | Item | Reason |
@@ -221,6 +222,7 @@ From ECP (Extended Context Protocol) research:
 | Project type modules | Over-engineering risk |
 | /handover:auto variant | Can add if users request |
 
+<!-- /ANCHOR:limitations -->
 ---
 
 ## Conclusion

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post-Research Wave 1 Package [004-post-research-wave-1-governance-foundations/checklist]"
+title: "...ystem-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/checklist]"
 description: "checklist document for 004-post-research-wave-1-governance-foundations."
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling |
@@ -31,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
+<!-- /ANCHOR:protocol -->
 ## P0 - Blockers
 
 - [x] W1-CHK-001 Root checks `CHK-220-222` mapped and verifiable in this package with typed trace-stage and degraded-mode contract expectations. [Evidence: `mcp_server/lib/contracts/retrieval-trace.ts`, `mcp_server/lib/search/artifact-routing.ts`, `mcp_server/lib/search/adaptive-fusion.ts` + tests]

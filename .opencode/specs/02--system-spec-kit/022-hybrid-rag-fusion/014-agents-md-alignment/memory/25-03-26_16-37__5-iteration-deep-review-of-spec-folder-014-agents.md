@@ -1,11 +1,10 @@
 ---
-title: "Deep Review: 014-agents-md-alignment CONDITIONAL verdict"
-description: "5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked alignment with current AGENTS.md file state and phase system conventions."
+title: "...-kit/022-hybrid-rag-fusion/014-agents-md-alignment/25-03-26_16-37__5-iteration-deep-review-of-spec-folder-014-agents]"
 trigger_phrases:
   - "014 deep review"
   - "agents md alignment review"
   - "014 review report"
-  - "AGENTS.md review"
+  - "agents.md review"
   - "014 agents md alignment"
   - "deep review"
   - "partial revert"
@@ -16,18 +15,17 @@ trigger_phrases:
   - "fusion/014"
 importance_tier: "important"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 ---
-
 # 5 Iteration Deep Review Of Spec Folder 014 Agents
 
 ## SESSION SUMMARY

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Download Button Code Standards Alignment [003-btn-download-alignment/spec]"
+title: "Spec: Download Button Code Standards Alignment [01--anobel.com/z_archive/003-btn-download-alignment/spec]"
 description: "Align btn_download.js and btn_download.css with project code quality standards."
 trigger_phrases:
   - "spec"
@@ -54,7 +54,9 @@ Align `btn_download.js` and `btn_download.css` with project code quality standar
 <!-- /ANCHOR:technical-context -->
 
 <!-- ANCHOR:out-of-scope -->
+<!-- ANCHOR:scope -->
 ## Out of Scope
 - Functionality changes
 - New features
 <!-- /ANCHOR:out-of-scope -->
+<!-- /ANCHOR:scope -->

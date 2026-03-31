@@ -1,5 +1,5 @@
 ---
-title: "UX Deep Analysis - Memory & SpecKit Systems [033-ux-deep-analysis/spec]"
+title: "UX Deep Analysis - Memory [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/spec]"
 description: "The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-..."
 trigger_phrases:
   - "deep"
@@ -21,6 +21,7 @@ contextType: "decision"
 The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-time experience.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 - Memory Skill (.opencode/skill/system-memory/)
 - Memory MCP Server (mcp_server/)
@@ -29,6 +30,7 @@ The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive 
 - AGENTS.md alignment
 - Cross-platform compatibility
 - First-time user experience
+<!-- /ANCHOR:scope -->
 
 ## Analysis Method
 20 parallel Opus agents with specialized focus areas:
@@ -37,11 +39,13 @@ The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive 
 - Agents 12-15: Commands
 - Agents 16-20: Cross-cutting concerns
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 - All P0 issues identified and documented
 - All P1 issues categorized with fix recommendations
 - Actionable fix plan created
 - Public repo readiness assessment complete
+<!-- /ANCHOR:success-criteria -->
 
 ## Status
 - [x] Analysis complete (20 agents)

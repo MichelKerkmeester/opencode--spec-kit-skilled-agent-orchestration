@@ -1,26 +1,24 @@
 ---
-title: "Implemented 034 Sk [034-sk-deep-research-review-folders/27-03-26_11-29__implemented-034-sk-deep-research-review-folders]"
-description: "Review workflows now treat review/ as the durable packet; Legacy review state migration is bounded and conflict-safe; Runtime deep-review agents were synchronized across providers"
+title: "...mands-and-skills/034-sk-deep-research-review-folders/27-03-26_11-29__implemented-034-sk-deep-research-review-folders]"
 trigger_phrases:
   - "sk-deep-research review folder implementation"
   - "deep-review review subfolder"
   - "spec_kit deep-research review migration"
   - "review packet contract"
   - "legacy scratch-to-review migration"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 ---
-
 # Implemented 034 Sk Deep Research Review Folders
 
 ## SESSION SUMMARY

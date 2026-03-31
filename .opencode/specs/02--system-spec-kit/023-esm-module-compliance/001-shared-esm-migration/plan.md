@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: Shared ESM Migration"
+title: "Implementation Plan: Shared ESM Migration [02--system-spec-kit/023-esm-module-compliance/001-shared-esm-migration/plan]"
 description: "Package metadata, compiler settings, and import specifier rewrites for @spec-kit/shared native ESM."
 trigger_phrases:
   - "shared esm plan"
   - "023 phase 1 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Shared ESM Migration
 

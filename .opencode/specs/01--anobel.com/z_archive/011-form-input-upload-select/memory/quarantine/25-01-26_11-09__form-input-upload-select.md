@@ -1,15 +1,14 @@
 ---
-title: "Mobile label fix for FilePond upload select"
-description: "This archived session documents the fix for mobile labels not appearing on the FilePond upload component. It records the duplicate Webflow DOM root cause, the switch from..."
+title: "Mobile label fix for [01--anobel.com/z_archive/011-form-input-upload-select/25-01-26_11-09__form-input-upload-select]"
 trigger_phrases:
   - "mobile filepond labels fix"
   - "webflow duplicate dom labels"
   - "queryselectorall upload labels"
 importance_tier: "normal"
 contextType: "implementation"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
 # SESSION SUMMARY
 

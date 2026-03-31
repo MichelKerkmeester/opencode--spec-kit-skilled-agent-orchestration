@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Research-Based Refinement"
+title: "Feature Specif [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/spec]"
 description: "Parent phase coordinating 5 sub-phases of research-driven improvements to the Hybrid RAG Fusion system across fusion scoring, query intelligence, graph retrieval, feedback learning, and retrieval UX."
 trigger_phrases:
   - "research refinement"
-  - "D1 D2 D3 D4 D5"
+  - "d1 d2 d3 d4 d5"
   - "29 recommendations"
   - "research-based improvements"
-  - "fusion query graph feedback UX"
+  - "fusion query graph feedback ux"
 importance_tier: "important"
 contextType: "decision"
 ---

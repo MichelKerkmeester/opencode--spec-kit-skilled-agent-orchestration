@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Maintenance"
+title: "Im [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance/implementation-summary]"
 description: "2 features audited: 2 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

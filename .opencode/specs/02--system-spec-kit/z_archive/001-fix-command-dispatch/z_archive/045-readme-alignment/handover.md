@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [045-readme-alignment/handover]"
+title: "Session Handover [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment/handover]"
 description: "1. Phase 1: Fix system-spec-kit/README.md (8 tasks - 3 P0, 4 P1, 1 P2)"
 trigger_phrases:
   - "session"

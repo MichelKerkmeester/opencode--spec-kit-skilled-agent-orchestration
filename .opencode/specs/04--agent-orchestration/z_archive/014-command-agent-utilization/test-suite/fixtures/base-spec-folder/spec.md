@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: JWT Authentication [base-spec-folder/spec]"
+title: "Feature [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder/spec]"
 description: "The application currently lacks a secure authentication mechanism. Users cannot log in, and API endpoints are unprotected, allowing unauthorized access to sensitive data and ope..."
 trigger_phrases:
   - "feature"
@@ -31,6 +31,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -39,8 +40,10 @@ The application currently lacks a secure authentication mechanism. Users cannot 
 ### Purpose
 Implement JWT-based authentication to secure API endpoints and provide user login/logout functionality with token refresh capabilities.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -65,8 +68,10 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 | src/auth/auth.module.ts | Create | Auth module configuration |
 | src/users/users.service.ts | Modify | Add password verification method |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -85,16 +90,20 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 | REQ-005 | Token refresh endpoint | POST /auth/refresh extends session without re-login |
 | REQ-006 | Logout with token invalidation | POST /auth/logout blacklists current token |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All API endpoints return 401 for requests without valid JWT
 - **SC-002**: Login flow completes in under 200ms p95
 - **SC-003**: Token refresh works without user re-authentication
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -105,8 +114,10 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 
 ---
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -121,8 +132,10 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 - **NFR-R01**: Auth service 99.9% uptime
 - **NFR-R02**: Graceful degradation on token service failure
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -139,8 +152,10 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 - Expired token + valid refresh: Issue new access token
 - Expired token + expired refresh: Require full re-login
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -150,11 +165,14 @@ Implement JWT-based authentication to secure API endpoints and provide user logi
 | Research | 8/20 | JWT well-documented |
 | **Total** | **41/70** | **Level 2** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Should we use RS256 or HS256 for JWT signing?
 - What should the token expiry duration be? (suggested: 15min access, 7d refresh)
 
+<!-- /ANCHOR:questions -->
 ---

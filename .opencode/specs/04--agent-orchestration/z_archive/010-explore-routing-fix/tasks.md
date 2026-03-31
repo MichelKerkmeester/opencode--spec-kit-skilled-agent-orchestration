@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/tasks]"
+title: "Tasks: Fix @explore Direct Dispatch in Orchestrate [04--agent-orchestration/z_archive/010-explore-routing-fix/tasks]"
 description: "Phase: 1 (High-Impact)"
 trigger_phrases:
   - "tasks"

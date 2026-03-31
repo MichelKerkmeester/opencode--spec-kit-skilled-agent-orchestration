@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: JSON-Primary Deprecation [template:level_2/plan.md]"
+title: "Implementati [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/plan]"
 description: "This phase shifts routine saves to JSON-primary behavior and aligns the runtime, operator docs, and archived follow-up phase map."
 trigger_phrases:
   - "plan"
   - "json primary deprecation"
   - "017 json primary deprecation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 ---
 # Implementation Plan: JSON-Primary Deprecation
@@ -120,6 +120,7 @@ The runtime surfaces its new posture first, the structured JSON path carries the
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -138,6 +139,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

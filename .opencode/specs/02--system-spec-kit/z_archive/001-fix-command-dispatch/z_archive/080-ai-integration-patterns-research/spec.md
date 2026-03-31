@@ -1,5 +1,5 @@
 ---
-title: "AI Integration Patterns Research [080-ai-integration-patterns-research/spec]"
+title: "AI Integrat [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/spec]"
 description: "Cross-repository analysis of AI assistant integration patterns from three open-source projects to inform improvements to the system-spec-kit MCP."
 trigger_phrases:
   - "integration"
@@ -20,6 +20,7 @@ contextType: "decision"
 Cross-repository analysis of AI assistant integration patterns from three open-source projects to inform improvements to the system-spec-kit MCP.
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -33,6 +34,7 @@ Cross-repository analysis of AI assistant integration patterns from three open-s
 - Implementation of recommendations
 - Performance benchmarking
 - Security analysis of external code
+<!-- /ANCHOR:scope -->
 
 ## Repositories Analyzed
 
@@ -47,6 +49,7 @@ Cross-repository analysis of AI assistant integration patterns from three open-s
 3. Anti-patterns to avoid
 4. Specific recommendations for system-spec-kit MCP improvements
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [x] All three repositories analyzed
@@ -54,6 +57,7 @@ Cross-repository analysis of AI assistant integration patterns from three open-s
 - [x] Recommendations prioritized by effort/impact
 - [x] Code examples provided for key patterns
 - [x] Anti-patterns identified
+<!-- /ANCHOR:success-criteria -->
 
 ## Documentation Level
 

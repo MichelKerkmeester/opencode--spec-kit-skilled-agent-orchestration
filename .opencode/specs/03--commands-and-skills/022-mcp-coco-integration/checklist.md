@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: CocoIndex Code MCP Integration"
+title: "Verification Checklist: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/checklist]"
 description: "Verification Date: 2026-03-18"
 trigger_phrases:
   - "cocoindex checklist"
@@ -116,8 +116,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:cross-cli-validation -->
-## Cross-CLI Auto-Usage Validation
+### Cross-CLI Auto-Usage Validation
 
 - [x] CHK-060 [P0] Cross-CLI test executed across all 4 CLIs with 3 prompts each
   - **Evidence**: `scratch/cross-cli-auto-usage-test-results.md` documents all 12 test runs with tool call counts, result counts, and token usage
@@ -134,12 +133,10 @@ contextType: "implementation"
 - [x] CHK-066 [P1] Memory saved for session continuity
   - **Evidence**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/022-cocoindex-fixes-memory.json '.opencode/specs/03--commands-and-skills/022-mcp-coco-integration'` created `memory/18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md`
 
-<!-- /ANCHOR:cross-cli-validation -->
 
 ---
 
-<!-- ANCHOR:phase-2-hardening -->
-## Phase 2 Hardening Verification
+### Phase 2 Hardening Verification
 
 - [x] CHK-070 [P0] Touched CocoIndex docs match the installed runtime contract
   - **Evidence**: Verified touched docs no longer claim MCP exposes `index`, `status`, or `reset`; no touched docs document `ccc daemon start` or `ccc index --refresh`
@@ -152,12 +149,10 @@ contextType: "implementation"
 - [x] CHK-074 [P1] Semantic exploration prompts route to CocoIndex without strongly routing exact-text prompts
   - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-coco-index` at 0.95 confidence; `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
 
-<!-- /ANCHOR:phase-2-hardening -->
 
 ---
 
-<!-- ANCHOR:phase-3-strict-readiness -->
-## Phase 3 Strict Readiness & Adoption Packaging Verification
+### Phase 3 Strict Readiness & Adoption Packaging Verification
 
 - [x] CHK-080 [P0] Strict readiness issue codes and shared state are implemented centrally
   - **Evidence**: `scripts/common.sh` defines exit codes `20` through `25` and computes shared `status`, `blockingIssues`, `warnings`, `detectedConfigs`, `expectedConfigs`, and `recommendedNextStep`
@@ -168,7 +163,6 @@ contextType: "implementation"
 - [x] CHK-083 [P1] Downstream adoption guidance is published without hidden config-writing automation
   - **Evidence**: `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` documents the minimum sibling-repo payload/config/gitignore bundle, explicitly states the shared helpers verify readiness but do not write config files, and is referenced from `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md`
 
-<!-- /ANCHOR:phase-3-strict-readiness -->
 
 ---
 

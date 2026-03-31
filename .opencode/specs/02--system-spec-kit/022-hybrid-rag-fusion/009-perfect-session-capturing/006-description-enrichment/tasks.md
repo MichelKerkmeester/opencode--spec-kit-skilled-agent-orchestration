@@ -1,5 +1,13 @@
 ---
-title: "Tasks: Description Enrichment [template:level_2/tasks.md]"
+title: "Tasks: Descri [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment/tasks]"
+description: "title: \"Tasks: Description Enrichment [template:level_2/tasks.md]\""
+trigger_phrases:
+  - "tasks"
+  - "descri"
+  - "006"
+  - "description"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Description Enrichment
 

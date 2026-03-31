@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post-Merge Refinement 4 [041-post-merge-refinement-4/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/decision-record]"
 description: "This document captures key architectural and implementation decisions made during the Post-Merge Refinement 4 project."
 trigger_phrases:
   - "decision"
@@ -327,6 +327,7 @@ Users have existing memories and spec folders. Breaking changes would require mi
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Decision Log
 
 | Date | Decision | Outcome |
@@ -338,6 +339,7 @@ Users have existing memories and spec folders. Breaking changes would require mi
 | 2025-12-25 | DR-005 proposed | Pending approval |
 | 2025-12-25 | DR-006 proposed | Pending approval |
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Appendix: Analysis Source

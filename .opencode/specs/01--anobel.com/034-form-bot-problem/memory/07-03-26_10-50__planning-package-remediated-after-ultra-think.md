@@ -1,17 +1,15 @@
 ---
-title: "Planning package remediated after Ultra-Think review"
-description: "This session captures the Ultra-Think review follow-up that corrected the planning package for the form-bot investigation. It records the evidence-labeling changes, checklist..."
+title: "Planning package [01--anobel.com/034-form-bot-problem/07-03-26_10-50__planning-package-remediated-after-ultra-think]"
 trigger_phrases:
   - "ultra think planning remediation"
   - "form bot provider evidence prerequisites"
   - "server side first investigation"
 importance_tier: "normal"
 contextType: "research"
-quality_score: 0.60
 quality_flags:
   - "needs_review"
+quality_score: 0.60
 ---
-
 # Planning Package Remediated After Ultra Think
 
 ## SESSION SUMMARY

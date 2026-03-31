@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/checklist]"
 description: "Verification Date: 2026-02-05"
 trigger_phrases:
   - "verification"
@@ -31,12 +31,14 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md created with full requirements]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md created with 4 phases]
 - [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: symlink architecture confirmed]
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## Critical Bug Fixes
@@ -50,6 +52,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation Fixes
 
 - [x] CHK-020 [P1] Gate 4 Option B fixed in AGENTS.md [EVIDENCE: grep "Gate 4" AGENTS.md returns 0]
@@ -60,6 +63,7 @@ contextType: "implementation"
 - [x] CHK-025 [P1] Template counts standardized [EVIDENCE: speckit.md, SKILL.md, README.md all show same counts]
 - [x] CHK-026 [P1] Gate numbering corrected in gate-enforcement.md [EVIDENCE: All body headings, inline references, AND Quick Reference table now match AGENTS.md gate order (Gate 1=Understanding, Gate 2=Skill Routing, Gate 3=Spec Folder)]
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## Script & Config Fixes
@@ -81,14 +85,17 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-050 [P1] No temp files in project root
 - [x] CHK-051 [P1] Spec folder documentation complete
 - [x] CHK-052 [P2] Findings available for future sessions
 
+<!-- /ANCHOR:file-org -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -99,6 +106,7 @@ contextType: "implementation"
 
 **Verification Date**: 2026-02-05
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## L3+: ARCHITECTURE VERIFICATION

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Lib Consolidation [051-lib-consolidation/checklist]"
+title: "Verification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation/checklist]"
 description: "npx madge --circular .opencode/skill/system-spec-kit/"
 trigger_phrases:
   - "verification"

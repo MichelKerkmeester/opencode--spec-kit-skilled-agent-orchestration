@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System Spec Kit Comprehensive Test Suite [078-speckit-test-suite/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/spec]"
 description: "The system-spec-kit has grown to ~10,500 LOC across MCP handlers (2,208 LOC) and scripts (8,500 LOC), but test coverage is incomplete. While 14 existing test files cover ~1,027 ..."
 trigger_phrases:
   - "feature"
@@ -33,6 +33,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -50,8 +51,10 @@ Without comprehensive coverage, regressions in the memory system, cognitive proc
 ### Purpose
 Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) that validate all system-spec-kit functionality including MCP handlers, cognitive systems, validation logic, and script modules.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -85,8 +88,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 
 **Total Estimated LOC:** ~3,000
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -109,8 +114,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 | REQ-009 | Test README updated | README.md documents all 8 new test files and how to run them |
 | REQ-010 | Tests synced to Public repo | All test files exist in both anobel.com and Public repo |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 | ID | Criterion | Validation Method |
@@ -119,8 +126,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 | SC-002 | All Python tests pass | `pytest scripts/tests/test_dual_threshold.py` exits 0 |
 | SC-003 | Tests complete in reasonable time | Full suite < 30 seconds (no network calls, mocked dependencies) |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 ### Dependencies
@@ -140,8 +149,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 | Floating point precision | Medium | Low | Use pytest.approx() with abs=0.01 |
 | Mock complexity | Medium | Medium | Keep mocks minimal, test interfaces not internals |
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## L3: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -159,8 +170,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 - **NFR-M02**: Test fixtures are reusable and documented
 - **NFR-M03**: Error messages are descriptive for debugging
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L3: EDGE CASES
 
 ### Data Boundaries
@@ -179,8 +192,10 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 | Missing skill files | Skip tests gracefully with skip message |
 | Invalid spec folder path | Return error with valid path suggestions |
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L3: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -191,6 +206,7 @@ Achieve comprehensive test coverage by creating 8 new test files (~3,000 LOC) th
 | Integration | 15/20 | Cross-system tests, dual-language (JS + Python) |
 | **Total** | **60/90** | **Level 3** (High complexity testing effort) |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. TECHNICAL NOTES
@@ -234,8 +250,10 @@ pytest test_dual_threshold.py -v
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 11. OPEN QUESTIONS
 
 None - All requirements derived from codebase discovery and gap analysis.
 
+<!-- /ANCHOR:questions -->
 ---

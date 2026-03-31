@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Custom TOC ScrollSpy [001-toc-scrollspy/implementation-summary]"
+title: "Implementation Summary: [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/implementation-summary]"
 description: "A custom Table of Contents scroll-spy implementation using IntersectionObserver with flexible styling options, providing more control than Finsweet's Webflow-dependent approach."
 trigger_phrases:
   - "implementation"
@@ -15,11 +15,9 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Custom TOC ScrollSpy
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 A custom Table of Contents scroll-spy implementation using IntersectionObserver with flexible styling options, providing more control than Finsweet's Webflow-dependent approach.
-<!-- /ANCHOR:overview -->
 
 ---
 
@@ -189,3 +187,10 @@ A custom Table of Contents scroll-spy implementation using IntersectionObserver 
 
 `.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/`
 <!-- /ANCHOR:spec-folder -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post-Research Wave 3 Package [006-post-research-wave-3-outcome-confirmation/checklist]"
+title: "...-system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/checklist]"
 description: "checklist document for 006-post-research-wave-3-outcome-confirmation."
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:verification-protocol -->
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling |
@@ -31,6 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:p0-blockers -->
+<!-- /ANCHOR:protocol -->
 ## P0 - Blockers
 
 - [x] W3-CHK-001 Root check `CHK-227` mapped and verifiable in this package. [Evidence: `scratch/c136-06-survey-outcomes.md` + `scratch/c136-07-kpi-closure-evidence.md`]

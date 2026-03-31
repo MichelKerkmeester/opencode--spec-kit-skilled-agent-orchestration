@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/plan]"
+title: "Implem [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/plan]"
 description: "This plan implements a comprehensive 5-phase test suite covering the entire SpecKit system post-template-upgrade. The testing strategy validates 44 JavaScript modules across 6 s..."
 trigger_phrases:
   - "implementation"
@@ -37,6 +37,7 @@ This plan implements a comprehensive 5-phase test suite covering the entire Spec
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -53,8 +54,10 @@ This plan implements a comprehensive 5-phase test suite covering the entire Spec
 - [ ] Test coverage report generated
 - [ ] Verification agents confirm quality
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -77,8 +80,10 @@ Test Inputs (fixtures, configs)
     --> Coverage Report + Pass/Fail Summary
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Template System Tests
@@ -123,8 +128,10 @@ Test Inputs (fixtures, configs)
 - [ ] Test cross-workstream synchronization points
 - [ ] Verify no regressions from Spec 073/074 changes
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -140,8 +147,10 @@ Test Inputs (fixtures, configs)
 - `database/context-index.sqlite` - Memory persistence testing
 - `templates/` - Template composition sources
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -153,8 +162,10 @@ Test Inputs (fixtures, configs)
 | OpenCode MCP server | Internal | Green | MCP tool tests blocked |
 | Test fixtures (51) | Internal | Green | Validation tests incomplete |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Test harness failures, critical module regressions, database corruption
@@ -165,8 +176,10 @@ Test Inputs (fixtures, configs)
   4. Fix identified issues
   5. Re-run affected test phase only
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -187,8 +200,10 @@ Phase 4 (Scripts) ---------+
 | Phase 4: Scripts | None | Phase 5 |
 | Phase 5: Integration | Phases 1-4 | None |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -200,8 +215,10 @@ Phase 4 (Scripts) ---------+
 | Phase 5: Integration Tests | High | 3-4 hours |
 | **Total** | | **14-19 hours** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -220,6 +237,7 @@ Phase 4 (Scripts) ---------+
 - **Has data migrations?** No
 - **Reversal procedure**: Database backup restore only
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -284,6 +302,7 @@ Phase 4 (Scripts) ---------+
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Custom Test Harness vs External Framework
@@ -315,6 +334,7 @@ Phase 4 (Scripts) ---------+
 - Positive: Integration phase validates cross-domain interactions
 - Negative: Coordination overhead; mitigated by workstream notation
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

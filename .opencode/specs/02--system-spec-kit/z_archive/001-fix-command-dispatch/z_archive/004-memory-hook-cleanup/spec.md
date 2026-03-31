@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References [004-memory-hook-cleanup/spec]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/spec]"
 description: "Remove outdated Claude Code Hook references from workflows-memory skill for OpenCode compatibility."
 trigger_phrases:
   - "feature"
@@ -48,6 +48,7 @@ Remove misleading Claude Code Hook references from the workflows-memory skill do
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -59,6 +60,7 @@ Remove misleading Claude Code Hook references from the workflows-memory skill do
 - Modifying test file references (just documentation, not functional code)
 - Changes to other skill files (no problematic references found)
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -77,6 +79,7 @@ As a developer using OpenCode, I need the workflows-memory documentation to accu
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** README.md MUST NOT contain architecture diagrams referencing Claude Code hooks
@@ -88,8 +91,10 @@ As a developer using OpenCode, I need the workflows-memory documentation to accu
 |------------|---------------------|-------|
 | Story 1 - Accurate Documentation | REQ-FUNC-001, REQ-FUNC-002 | Documentation cleanup |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -97,6 +102,7 @@ As a developer using OpenCode, I need the workflows-memory documentation to accu
 - **SC-001**: No "UserPromptSubmit Hook" in README.md architecture diagram
 - **SC-002**: "hook execution" replaced with "trigger execution" in README.md
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 6. ANALYSIS RESULTS

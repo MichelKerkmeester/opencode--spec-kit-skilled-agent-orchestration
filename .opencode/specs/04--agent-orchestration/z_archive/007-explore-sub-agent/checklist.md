@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Context Loader Sub-Agent (@context_loader) [007-explore-sub-agent/checklist]"
+title: "Checklist: Context Loader Sub-Agent [04--agent-orchestration/z_archive/007-explore-sub-agent/checklist]"
 description: "checklist document for 007-explore-sub-agent."
 trigger_phrases:
   - "checklist"

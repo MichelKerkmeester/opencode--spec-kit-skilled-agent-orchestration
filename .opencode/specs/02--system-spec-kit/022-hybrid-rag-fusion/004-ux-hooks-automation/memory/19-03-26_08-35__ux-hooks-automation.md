@@ -1,6 +1,5 @@
 ---
-title: "Ux Hooks Automation"
-description: "Implemented UX hooks automation for 004-ux-hooks-automation: post-mutation hook wiring, atomic-save, confirmName safety parameter, and centralized feedback/hint builders. All tests pass."
+title: "Ux Hooks Automat [02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/19-03-26_08-35__ux-hooks-automation]"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/004 ux hooks automation"
   - "ux hooks automation"
@@ -16,19 +15,18 @@ trigger_phrases:
   - "automation"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/c98949ff-4611-4fef-b5b7-c3b4c2fcb962.jsonl"
-_sourceSessionId: "c98949ff-4611-4fef-b5b7-c3b4c2fcb962"
 _sourceSessionCreated: 1773899783403
+_sourceSessionId: "c98949ff-4611-4fef-b5b7-c3b4c2fcb962"
 _sourceSessionUpdated: 1773903544239
+_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/c98949ff-4611-4fef-b5b7-c3b4c2fcb962.jsonl"
 captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags:
   - "has_contamination"
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 ---
-
 # Ux Hooks Automation
 
 ## SESSION SUMMARY

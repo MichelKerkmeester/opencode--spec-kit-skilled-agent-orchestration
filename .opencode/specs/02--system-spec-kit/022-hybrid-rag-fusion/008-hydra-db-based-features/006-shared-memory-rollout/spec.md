@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: 006-shared-memory-rollout"
+title: "Feature Specifica [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/spec]"
 description: "Level 3+ phase spec for shared-memory spaces, conflict handling, and staged rollout."
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 6"
   - "shared memory rollout"
@@ -9,6 +8,7 @@ trigger_phrases:
   - "shared memory"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Feature Specification: 006-shared-memory-rollout
 
@@ -27,6 +27,7 @@ Phase 6 documents and implements the shared-memory collaboration surfaces for Hy
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -64,6 +65,7 @@ This phase packages the roadmap's collaboration surfaces as code and documentati
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -154,6 +156,7 @@ Deliver shared memory as an opt-in, policy-guarded capability that operators can
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -172,8 +175,10 @@ Deliver shared memory as an opt-in, policy-guarded capability that operators can
 - **NFR-O61**: Operators can inspect membership, conflict, and rollback state.
 - **NFR-O62**: Rollout decisions are documented and reversible.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -191,8 +196,10 @@ Deliver shared memory as an opt-in, policy-guarded capability that operators can
 - Conflict resolution needs to preserve both versions rather than pick one winner.
 - A rollout cohort should be expanded or contracted quickly based on evidence.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -204,6 +211,7 @@ Deliver shared memory as an opt-in, policy-guarded capability that operators can
 | Coordination | 14/15 | Hard-blocked on earlier phases and requires careful release control |
 | **Total** | **89/100** | **Level 3+** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -291,11 +299,13 @@ Deliver shared memory as an opt-in, policy-guarded capability that operators can
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
 - What is the simplest initial conflict strategy that still remains auditable and safe?
 - Which rollout metrics should gate cohort expansion or contraction?
 
+<!-- /ANCHOR:questions -->
 ---
 
 ## RELATED DOCUMENTS

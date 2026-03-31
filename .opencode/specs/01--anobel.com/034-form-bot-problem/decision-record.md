@@ -1,7 +1,6 @@
 ---
-title: "Decision Record: Contact Form Bot Submission Investigation"
+title: "Decision Record: Contact Form Bot Submission Investigation [01--anobel.com/034-form-bot-problem/decision-record]"
 description: "Record planning decisions for root-cause validation and mitigation sequencing for /nl/contact bot-spam handling."
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "decision"
   - "record"
@@ -11,6 +10,7 @@ trigger_phrases:
   - "034"
 importance_tier: "critical"
 contextType: "decision"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 ---
 # Decision Record: Contact Form Bot Submission Investigation
 
@@ -131,7 +131,7 @@ Known evidence points:
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Treat Botpoison Client Token as Advisory Unless Enforced Server-Side
+### ADR-002: Treat Botpoison Client Token as Advisory Unless Enforced Server-Side
 
 ### Metadata
 

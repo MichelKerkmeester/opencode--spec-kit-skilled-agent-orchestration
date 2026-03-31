@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary - Voyage 4 Upgrade [067-voyage-4-upgrade/implementation-summary]"
+title: "Implement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade/implementation-summary]"
 description: "Completed (Requires Restart)"
 trigger_phrases:
   - "implementation"
@@ -41,9 +41,11 @@ contextType: "implementation"
    - Added note clarifying `voyage-code-2` remains recommended for code search
    - Mentioned Voyage 4 availability for testing
 
+<!-- ANCHOR:verification -->
 ## Verification
 - Code changes verified on disk
 - `memory_health` check confirms current state (requires restart to switch)
+<!-- /ANCHOR:verification -->
 
 ## Next Steps
 1. **Restart OpenCode** to reload the Spec Kit Memory MCP server.
@@ -52,3 +54,10 @@ contextType: "implementation"
    - Create a new database file: `context-index__voyage__voyage-4__1024.sqlite`
    - Start fresh (old memories preserved in `voyage-3.5` database)
 3. **Optional**: Run `memory_index_scan({ force: true })` to bulk re-index existing memory files into the new database.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

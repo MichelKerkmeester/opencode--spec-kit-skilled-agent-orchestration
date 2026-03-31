@@ -1,5 +1,5 @@
 ---
-title: "Plan: Spec Kit Bug Remediation [080-speckit-bug-remediation/plan]"
+title: "Plan: Spec Kit Bug [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/plan]"
 description: "Given the scope (30 bugs across 13 files), use parallel agent delegation with phased rollout"
 trigger_phrases:
   - "plan"
@@ -214,6 +214,7 @@ npm test
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 6. Rollback Plan
 
 If any fix causes regressions:
@@ -224,6 +225,7 @@ If any fix causes regressions:
 4. Identify problematic fix
 5. Revert specific fix, document for investigation
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## 7. Success Metrics

@@ -5,6 +5,7 @@ trigger_phrases:
   - "core templates"
   - "base structure"
   - "composition source"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Core Templates

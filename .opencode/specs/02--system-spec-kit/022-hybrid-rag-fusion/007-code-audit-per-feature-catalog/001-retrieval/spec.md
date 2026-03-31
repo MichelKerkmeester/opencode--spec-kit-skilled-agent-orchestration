@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Audit — Retrieval"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval/spec]"
 description: "Systematic code audit of 11 live Retrieval features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
@@ -132,6 +132,7 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -140,8 +141,10 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 ### Reliability
 - **NFR-R01**: Findings must be reproducible by re-reading same sources
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -152,8 +155,10 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 - Source file referenced in catalog no longer exists: Document as finding
 - Feature partially implemented: Document completion percentage
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -194,7 +199,9 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 - **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
 - **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
 - **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+<!-- /ANCHOR:complexity -->
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - ~~Are there undocumented features in this category not yet in the catalog?~~ **Answered**: No new features found; 15+ source files are missing from the Feature 02 catalog entry (see AUDIT FINDINGS).

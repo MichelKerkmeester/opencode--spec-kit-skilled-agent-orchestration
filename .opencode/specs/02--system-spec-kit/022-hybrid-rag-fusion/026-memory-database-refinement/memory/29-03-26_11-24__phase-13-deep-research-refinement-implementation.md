@@ -1,4 +1,9 @@
 ---
+title: "...22-hybrid-rag-fusion/026-memory-database-refinement/29-03-26_11-24__phase-13-deep-research-refinement-implementation]"
+importance_tier: "critical"
+contextType: "implementation"
+---
+---
 title: "Phase 13 Deep Research [026-memory-database-refinement/29-03-26_11-24__phase-13-deep-research-refinement-implementation]"
 description: "Phase 13: Deep Research Refinement Implementation. Fixed all 28 research findings from 5-iteration...; BM25 demoted to opt-in behind ENABLE BM25 flag; FTS5 is now default..."
 trigger_phrases:

@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: Sprint 3 — Query Intelligence"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/spec]"
 description: "Add query complexity routing, evaluate Relative Score Fusion alternative, and enforce channel diversity."
 trigger_phrases:
   - "sprint 3"
   - "query intelligence"
   - "complexity router"
-  - "RSF fusion"
+  - "rsf fusion"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -139,6 +139,7 @@ Route simple queries to fewer channels for speed improvement, evaluate RSF as a 
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -166,6 +167,7 @@ Sprint 3 introduces 5 feature flags (all disabled by default):
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

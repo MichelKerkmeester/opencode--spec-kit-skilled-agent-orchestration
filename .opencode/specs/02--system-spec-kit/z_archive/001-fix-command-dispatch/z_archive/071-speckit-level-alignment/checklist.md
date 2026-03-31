@@ -1,5 +1,5 @@
 ---
-title: "Implementation Checklist: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/checklist]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/checklist]"
 description: "Validation checklist for ensuring SpecKit alignment with level-based template architecture."
 trigger_phrases:
   - "implementation"
@@ -105,6 +105,7 @@ Verify that all SpecKit scripts, lib modules, and documentation are aligned with
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -137,6 +138,7 @@ When marking items complete, include evidence:
 | Final Verification | 3/3 | 2/2 | 0/0 | 0/0 | 5/5 |
 | **Total** | **11/11** | **13/13** | **6/6** | **2/2** | **32/32** |
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## 4. USAGE NOTES

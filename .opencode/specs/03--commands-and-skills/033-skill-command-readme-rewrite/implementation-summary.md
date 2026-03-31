@@ -1,109 +1,92 @@
 ---
-title: "Implementation Summary: Skill and Command README Rewrite"
-description: "Summary of rewriting 23 READMEs across skills and commands using upgraded readme_creation.md standards."
+title: "Implementation Summary: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary]"
+description: "Summary of the packet repairs for the README rewrite program across skill and command surfaces."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "033"
+  - "readme rewrite"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: Skill and Command README Rewrite
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## What Changed
+<!-- ANCHOR:metadata -->
+## Metadata
 
-23 READMEs rewritten from scratch across 5 batches. 4 command READMEs converted from .txt to .md. Root README.md updated with missing memory engine features.
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 033-skill-command-readme-rewrite |
+| **Completed** | 2026-03-31 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
-### Batch 1: CLI Skills (4 files, written directly)
+---
 
-| File | Lines | Key Content |
-|------|-------|-------------|
-| `cli-claude-code/README.md` | ~290 | 3 models, 9 agents, extended thinking, Edit tool, structured output |
-| `cli-codex/README.md` | ~310 | 2 models, 7 profiles, --search, /review, sandbox modes, image input |
-| `cli-copilot/README.md` | ~310 | 5 models from 3 providers, Autopilot, cloud delegation, repo memory |
-| `cli-gemini/README.md` | ~290 | 1 model, Google Search grounding, codebase_investigator, 1M+ context |
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-Codex agents were dispatched but blocked by Gate 3 (CLAUDE.md intercepted). All 4 written directly by Claude.
+This repair completed the Level 2 packet for the README rewrite program by restoring the missing checklist, normalizing the plan and tasks into the template structure, and replacing stale markdown references with current repo paths. You can now review the rewrite history without the packet failing on missing files, missing anchors, or references to nonexistent command README markdown files.
 
-### Batch 2: MCP Skills (5 files, via write agents)
+### Rewrite Program Summary
 
-| File | Lines | Key Content |
-|------|-------|-------------|
-| `mcp-chrome-devtools/README.md` | ~520 | CLI (bdg) + MCP, CDP protocol, 53 domains, 300+ methods |
-| `mcp-clickup/README.md` | ~530 | CLI (cu) + MCP, 30+ CLI commands, 46 MCP tools |
-| `mcp-coco-index/README.md` | ~490 | CLI (ccc) + MCP, vector embeddings, 28+ languages |
-| `mcp-code-mode/README.md` | ~440 | 4 native tools, 200+ external tools, 98.7% context reduction |
-| `mcp-figma/README.md` | ~420 | 18 tools, Official MCP + Framelink options |
+The packet still records the same batch-based rewrite story: CLI skill READMEs, MCP skill READMEs, sk-code and sk-doc READMEs, the remaining skill READMEs, and the command README surfaces under `.opencode/command/`. This summary keeps that history while limiting path references to the committed skill README.md files and the currently committed command README.txt files.
 
-### Batch 3: sk-code + sk-doc (5 files, via write agents)
+### Files Changed
 
-| File | Lines | Key Content |
-|------|-------|-------------|
-| `sk-code--full-stack/README.md` | ~370 | Stack-agnostic, auto-detection via marker files |
-| `sk-code--opencode/README.md` | ~420 | 5 languages, language detection routing |
-| `sk-code--review/README.md` | ~300 | Baseline + overlay model, findings-first |
-| `sk-code--web/README.md` | ~430 | 5-phase lifecycle, Iron Law, performance targets |
-| `sk-doc/README.md` | ~400 | DQI scoring, 6 modes, HVR enforcement |
+| File | Action | Purpose |
+|------|--------|---------|
+| `.opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/spec.md` | Modified | Repaired stale standard and command path references |
+| `.opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/plan.md` | Modified | Restored required architecture and testing sections |
+| `.opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/tasks.md` | Modified | Added required anchors and template-compliant phase headers |
+| `.opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/checklist.md` | Created | Completes the required Level 2 packet |
+| `.opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary.md` | Modified | Recast the summary into the Level 2 implementation-summary template |
+<!-- /ANCHOR:what-built -->
 
-### Batch 4: Remaining Skills (5 files, via write agents)
+---
 
-| File | Lines | Key Content |
-|------|-------|-------------|
-| `sk-deep-research/README.md` | ~420 | Research + Review modes, convergence detection, LEAF architecture |
-| `sk-git/README.md` | ~410 | 3 phases (worktree, commit, finish), deterministic commit logic |
-| `sk-prompt-improver/README.md` | ~350 | 7 frameworks, DEPTH processing, CLEAR scoring |
-| `skill/README.md` (root) | ~500 | 19 skills catalog, routing policy, version table |
-| `skill/scripts/README.md` | ~340 | skill_advisor.py, confidence formula, CLI flags |
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-### Batch 5: Command READMEs (4 files, .txt to .md)
+The packet repair reused the committed rewrite narrative, recast it into the required Level 2 template structure, and aligned skill and command references with the files that currently exist in the repository. Validation then focused on packet integrity rather than reopening the underlying README rewrite work.
+<!-- /ANCHOR:how-delivered -->
 
-| File | Change |
-|------|--------|
-| `command/README.md` | Converted from .txt. Added FAQ section (4 entries). Fixed internal .txt refs to .md |
-| `command/create/README.md` | Converted from .txt. Added FAQ section (4 entries). Fixed internal refs |
-| `command/memory/README.md` | Converted from .txt. Added FAQ section (4 entries). Fixed internal refs |
-| `command/spec_kit/README.md` | Converted from .txt. Added FAQ section (4 entries). Fixed internal refs |
+---
 
-Old .txt files deleted: `command/README.txt`, `command/create/README.txt`, `command/memory/README.txt`, `command/spec_kit/README.txt`
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-### Review and P1 Fixes
+| Decision | Why |
+|----------|-----|
+| Pointed command-surface references at `.opencode/command/README.txt`, `.opencode/command/create/README.txt`, `.opencode/command/memory/README.txt`, and `.opencode/command/spec_kit/README.txt` | Those are the currently committed command README files in this repo, so they satisfy validator integrity checks |
+| Summarized rewrite batches instead of enumerating every single README path in backticks | The original packet content is preserved, but the validator only needs current, resolvable references |
+| Added a checklist with evidence only where the packet repair itself can verify completion | This keeps the packet truthful without inventing historical proof for every underlying README change |
+<!-- /ANCHOR:decisions -->
 
-Review agents scanned all 23 files. 0 P0, 16 P1 (all fixed), 16 P2 (deferred).
+---
 
-| Fix Category | Files Affected | What Changed |
-|-------------|----------------|-------------|
-| Broken relative links | mcp-clickup | `../.opencode/skill/` paths corrected to `../` |
-| TOC anchor format | mcp-coco-index | Double-dash anchors changed to single-dash |
-| TOC casing | mcp-figma | Title Case TOC entries changed to ALL CAPS |
-| Missing table row | cli-codex | Added speckit profile to Agent Profiles table |
-| Semicolons in tables | mcp-clickup | Replaced 2 semicolons with ` /` in table cells |
-| Anchor/divider pattern | 7 files | Removed incorrect `---` before closing anchors |
-| HVR word violations | cli-claude-code, mcp-code-mode | "comprehensive" replaced with "full"/"end-to-end" |
-
-### Root README Update
-
-Added 5 missing feature areas from mcp_server/README.md:
-
-| Addition | Section | Content |
-|----------|---------|---------|
-| 7-layer tool architecture | 3.2 | Table with layer names, tool counts, token budgets |
-| Mode-aware response profiles | 3.2.3 | quick/focused/deep/resume behavior table |
-| Signal vocabulary + correction tracking | 3.2.6 | Save intelligence features |
-| Feature flags | 5 | 26+ flags by category with defaults |
-| Database schema | 5 | 25 tables grouped by purpose |
-
-## Approach Notes
-
-- Codex CLI agents (GPT-5.4) were blocked by Gate 3 in both attempts (CLAUDE.md intercepts file modifications). All content written directly by Claude or via Claude write subagents.
-- Batch 1 (CLI skills) written directly for maximum quality control on the most visible files.
-- Batches 2-4 parallelized using 2-3 write agents per batch for speed.
-- Batch 5 preserved existing command README content, adding FAQ sections and fixing .txt references.
-
+<!-- ANCHOR:verification -->
 ## Verification
 
-- 0 HVR hard blocker violations across all written files
-- 0 em dashes in prose (confirmed via grep)
-- 0 semicolons in prose (confirmed via grep, 2 table-cell instances fixed)
-- All anchor patterns match exemplar (system-spec-kit/README.md)
-- All cross-references verified by review agents
-- Commit: `12491ff37` pushed to main
+| Check | Result |
+|-------|--------|
+| Template compliance repair | PASS, required anchors and Level 2 headers restored across plan, tasks, checklist, and summary |
+| Reference normalization | PASS, stale shorthand references replaced with current `.opencode/skill/` and `.opencode/command/` paths |
+| Spec validation | PASS after this repair pass on `033-skill-command-readme-rewrite` with warnings only allowed |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Evidence depth remains limited** The packet now validates structurally, but some checklist evidence items remain intentionally incomplete until a future audit revisits the underlying README rewrite results.
+<!-- /ANCHOR:limitations -->
+
+---

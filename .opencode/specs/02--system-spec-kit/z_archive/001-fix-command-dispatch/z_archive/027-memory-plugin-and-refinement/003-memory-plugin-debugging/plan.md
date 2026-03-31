@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - bun:sqlite Migration [003-memory-plugin-debugging/plan]"
+title: "...c-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/plan]"
 description: "Migrate the semantic memory plugin from better-sqlite3 to bun:sqlite to fix the \"Loaded 0 memories\" issue."
 trigger_phrases:
   - "implementation"
@@ -109,6 +109,7 @@ memory_load({ memoryId: 1 })
 - [ ] Dashboard visible in new conversations
 - [ ] Memory load functionality works
 
+<!-- ANCHOR:rollback -->
 ## Rollback Plan
 
 If migration fails:
@@ -116,6 +117,7 @@ If migration fails:
 1. Restore original plugin file from backup
 2. Restart OpenCode
 3. Document failure reason for further investigation
+<!-- /ANCHOR:rollback -->
 
 ## Post-Implementation
 

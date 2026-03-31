@@ -1,5 +1,5 @@
 ---
-title: "Research: Memory Index TXT File Support [131-memory-index-txt-support/research]"
+title: "Research: Memory Index TXT File Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/research]"
 description: "This research document captures technical investigation into adding .txt file indexing support to the Spec Kit Memory system. Focus areas: command folder structure, existing fil..."
 trigger_phrases:
   - "research"

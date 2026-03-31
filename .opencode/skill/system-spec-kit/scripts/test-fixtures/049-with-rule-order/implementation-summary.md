@@ -14,3 +14,10 @@ Test fixture implementation complete.
 ## Testing
 
 - Verified with validate-spec.sh
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

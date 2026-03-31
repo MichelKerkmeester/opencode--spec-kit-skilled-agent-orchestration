@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Audit — Decisions and Deferrals"
+title: "Implemen [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan]"
 description: "Technical plan for auditing 5 Decisions and Deferrals features against source code"
 trigger_phrases:
   - "audit plan"
@@ -127,14 +127,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Prep) ──► Phase 2 (Audit 5 features) ──► Phase 3 (Synthesis)
 ```
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -189,3 +192,4 @@ v0.x (early audit)   → PE gating 5-action model finalized; namespace CRUD defe
 v1 (pre-production)  → Graduated rollout policy enforced; deprecated modules removed
 Ongoing (deferred)   → AST retrieval, daemon mode, anchor-graph, full CRUD
 ```
+<!-- /ANCHOR:effort -->

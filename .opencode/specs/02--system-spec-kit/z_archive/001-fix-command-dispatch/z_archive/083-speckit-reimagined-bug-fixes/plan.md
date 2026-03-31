@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Spec Kit Bug Fixes [083-speckit-reimagined-bug-fixes/plan]"
+title: "Implementation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/plan]"
 description: "Phase 1: CRITICAL Fixes (P0)"
 trigger_phrases:
   - "implementation"
@@ -445,6 +445,7 @@ See tasks.md for all P3 fixes.
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. Rollback Plan
 
 If issues are discovered post-implementation:
@@ -453,6 +454,7 @@ If issues are discovered post-implementation:
 2. **Partial**: Cherry-pick only working fixes
 3. **Documentation**: Revert README/CHANGELOG changes independently
 
+<!-- /ANCHOR:rollback -->
 ---
 
 ## 8. Communication Plan

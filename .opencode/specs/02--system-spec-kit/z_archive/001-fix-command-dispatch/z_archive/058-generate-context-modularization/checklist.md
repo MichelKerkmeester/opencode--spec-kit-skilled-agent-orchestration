@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: generate-context.js Modularization [058-generate-context-modularization/checklist]"
+title: "Verific [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/checklist]"
 description: "find .opencode/skill/system-spec-kit/scripts -name \"*.js\" -exec wc -l {} \\\\\\\\; | sort -n"
 trigger_phrases:
   - "verification"

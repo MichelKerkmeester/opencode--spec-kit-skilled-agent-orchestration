@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown by Agent [031-comprehensive-bug-fix/tasks]"
+title: "Task Breakdown by [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/tasks]"
 description: "tasks document for 031-comprehensive-bug-fix."
 trigger_phrases:
   - "task"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Hero Video Card Image Flickering Fix [028-hero-flicker-debug/spec]"
+title: "Feature Specification: Hero Video Card Image Flickering Fix [01--anobel.com/z_archive/028-hero-flicker-debug/spec]"
 description: "On mobile devices, when scrolling through video cards in the hero section (both \"hero cards\" and \"hero general\" variants), the thumbnail images flicker rapidly. This occurs on p..."
 trigger_phrases:
   - "feature"
@@ -135,6 +135,7 @@ The IntersectionObserver (lines 772-787) fires callbacks at multiple thresholds 
 ---
 
 <!-- ANCHOR:non-functional-requirements -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -149,6 +150,7 @@ The IntersectionObserver (lines 772-787) fires callbacks at multiple thresholds 
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### State Transitions

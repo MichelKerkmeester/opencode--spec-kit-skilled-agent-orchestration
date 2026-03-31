@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Command Agent Utilization Audit [014-command-agent-utilization/checklist]"
+title: "Verification Checklist: Command Agent [04--agent-orchestration/z_archive/014-command-agent-utilization/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"

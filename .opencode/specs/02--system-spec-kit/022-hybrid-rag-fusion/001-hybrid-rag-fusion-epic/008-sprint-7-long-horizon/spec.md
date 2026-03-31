@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Sprint 7 — Long Horizon"
+title: "Feature Specificat [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/spec]"
 description: "Address scale-dependent features (memory summaries, content generation, entity linking), complete evaluation infrastructure, and evaluate INT8 quantization."
 trigger_phrases:
   - "sprint 7"
   - "long horizon"
   - "memory summaries"
   - "entity linking"
-  - "R5 evaluation"
+  - "r5 evaluation"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -173,6 +173,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -191,6 +192,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

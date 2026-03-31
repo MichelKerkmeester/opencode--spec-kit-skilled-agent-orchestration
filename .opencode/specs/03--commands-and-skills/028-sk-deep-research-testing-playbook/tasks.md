@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-deep-research Manual Testing Playbook"
+title: "Tasks: sk-deep-research Manual Testing Playbook [03--commands-and-skills/028-sk-deep-research-testing-playbook/tasks]"
 description: "Task format: T### Description (target path)"
 trigger_phrases:
   - "deep research playbook tasks"

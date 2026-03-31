@@ -1,5 +1,5 @@
 ---
-title: "Checklist - System Health Audit (COMPLETED) [032-system-health-audit/checklist]"
+title: "Checklist - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/checklist]"
 description: "checklist document for 032-system-health-audit."
 trigger_phrases:
   - "checklist"

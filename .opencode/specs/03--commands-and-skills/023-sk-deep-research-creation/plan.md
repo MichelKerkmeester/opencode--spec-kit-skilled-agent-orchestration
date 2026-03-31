@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Autonomous Deep Research Loop"
+title: "Implementation Plan: Autonomous Deep Research Loop [03--commands-and-skills/023-sk-deep-research-creation/plan]"
 description: "5-phase plan for 3-layer autoresearch integration (agent + command + skill) with ~2800 LOC across 18 files"
 trigger_phrases:
   - "autoresearch plan"
@@ -15,26 +15,60 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:summary -->
-## 1. APPROACH
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown specs, YAML workflows, and skill references |
+| **Primary Runtime Surface** | `.claude/agents/deep-research.md`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/skill/sk-deep-research/` |
+| **State Model** | `deep-research-state.jsonl` plus `research/deep-research-strategy.md` |
+| **Verification Basis** | Spec docs, ADRs, research synthesis, and legacy-reference cleanup evidence |
+
+### Overview
 
 Create 3 artifacts that enable autonomous iterative deep research:
 1. **`@deep-research` agent** -- LEAF agent executing single research iterations
 2. **`/spec_kit:deep-research` command** -- YAML workflow managing the loop lifecycle
 3. **`sk-deep-research` skill** -- Protocol documentation, templates, reference docs
 
-**Core insight**: Fresh context per iteration + externalized state solves context degradation. Our existing orchestrator dispatch model maps naturally -- each Task dispatch IS a fresh context.
+**Core insight**: Fresh context per iteration + externalized state solves context degradation. Our existing orchestrator dispatch model maps naturally because each Task dispatch is a fresh context.
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- Level 3 spec docs are populated and synchronized.
+- The deep-research architecture, state model, and legacy-removal scope are documented before follow-on implementation.
+- The v2 research findings are captured in `research/research.md` and `scratch/improvement-proposals.md`.
+
+### Definition of Done
+- v1 creation and legacy-removal work are documented with verification evidence in this spec folder.
+- Required Level 3 files exist and validate without structural errors.
+- Remaining v2 proposals are clearly marked as planned, not implemented.
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+A three-layer architecture: orchestrator-routed LEAF agent, command-managed loop, and skill-backed protocol documentation.
+
+### Key Components
+- **Agent layer**: `@deep-research` runs one research iteration per dispatch with fresh context.
+- **Command layer**: `/spec_kit:deep-research` owns loop lifecycle, convergence checks, and synthesis flow.
+- **Skill layer**: `sk-deep-research` documents the state format, loop protocol, and operator-facing guidance.
+
+### Data Flow
+The command initializes state files, dispatches the LEAF agent for each iteration, records structured state in JSONL plus strategy markdown, and synthesizes the final findings into `research/research.md`.
 <!-- /ANCHOR:architecture -->
 
 ---
 
 <!-- ANCHOR:phases -->
-## 2. PHASE BREAKDOWN
+## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Spec Folder Completion
 Complete Level 3 documentation before implementation.
@@ -50,7 +84,7 @@ Build skill first because agent and command reference skill templates/docs.
 ### Phase 3: Agent (@deep-research)
 LEAF agent for single-iteration execution.
 - `.claude/agents/deep-research.md` (~400 LOC)
-- Pattern: `.claude/agents/research/research/research.md` (483 lines, deleted in Phase 5.5)
+- Pattern: `.claude/agents/deep-research.md` with legacy `@research` behavior retained only as archived historical context
 
 ### Phase 4: Command (/spec_kit:deep-research)
 YAML workflows managing the loop.
@@ -113,12 +147,20 @@ Ideas to monitor, not implement now.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Evidence Source |
+|-----------|-------|-----------------|
+| Structural validation | Required Level 3 sections, anchors, and headers | `validate.sh` and checklist evidence |
+| Reference integrity | Active spec-doc links, research links, and runtime-path references | spec validator integrity pass |
+| Architecture verification | ADR coverage, legacy-reference cleanup, and routing updates | `decision-record.md`, `checklist.md`, `implementation-summary.md` |
+| Research-backed planning | v2 proposal traceability to deep-research findings | `research/research.md`, `scratch/improvement-proposals.md` |
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## 3. DEPENDENCY GRAPH
+## 6. DEPENDENCIES
 
 ```
 Phase 1 (Spec Docs) -- no dependencies
@@ -146,11 +188,16 @@ Phase 9 (P4 Track) -- future, no immediate dependencies
 <!-- /ANCHOR:dependencies -->
 
 <!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Structural validation fails, legacy research references must be restored, or the deep-research replacement path proves incomplete.
+- **Procedure**: Revert the spec-folder edits, restore the prior command/agent documentation from version control, and re-run validation before resuming implementation work.
+- **Scope**: Documentation and routing artifacts only; no production data migration is involved.
 <!-- /ANCHOR:rollback -->
 
 ---
 
-## 4. KEY DESIGN DECISIONS
+### Key Design Decisions
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
@@ -163,7 +210,7 @@ Phase 9 (P4 Track) -- future, no immediate dependencies
 
 ---
 
-## 5. ESTIMATED LOC
+### Estimated LOC
 
 | Component | Files | LOC |
 |-----------|-------|-----|
@@ -182,12 +229,40 @@ Phase 9 (P4 Track) -- future, no immediate dependencies
 
 ---
 
-## 6. CRITICAL REFERENCES
+### Critical References
 
 | File | Purpose |
 |------|---------|
-| `.claude/agents/research/research/research.md` | Agent definition pattern (483 LOC) — **DELETED in Phase 5.5** |
-| `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` | YAML workflow pattern (453 LOC) — **DELETED in Phase 5.5** |
+| `.claude/agents/deep-research.md` | Active agent definition and pattern reference for the iterative research loop |
+| `.opencode/command/spec_kit/deep-research.md` | Command workflow reference for the iterative research loop |
 | `.opencode/skill/sk-git/SKILL.md` | 8-section SKILL.md pattern (478 LOC) |
-| `023-sk-deep-research-creation/research/research/research.md` | Source design with all state formats |
+| `research/research.md` | Source design and synthesis reference for the shipped state model |
 | `.claude/agents/orchestrate.md` | NDP/CWB/TCB constraints |
+
+---
+
+### Pre-Task Checklist
+
+- Confirm the active phase before editing runtime docs or references.
+- Re-read the relevant state, research, and ADR context before changing loop behavior.
+- Validate the current file after each structural repair.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| 1 | Preserve shipped v1 facts and mark v2 work as planned until implemented. |
+| 2 | Keep runtime-path references aligned to existing `.claude/agents/*.md` surfaces. |
+| 3 | Treat legacy `@research` references as historical context only; do not restore them without rollback. |
+
+### Status Reporting Format
+
+- Report which phase section was updated.
+- Report validation outcome with exit code and remaining warnings.
+- Flag any deferred v2 items as planned, not shipped.
+
+### Blocked Task Protocol
+
+1. Stop at the failing validator issue.
+2. Repair the current document before editing another spec doc.
+3. Re-run validation and only then continue to the next file.

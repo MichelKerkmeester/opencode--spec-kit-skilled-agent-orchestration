@@ -1,65 +1,94 @@
 ---
-title: "Implementation Summary: CLI Self-Invocation Guards"
+title: "Implementation Summary [03--commands-and-skills/009-cli-self-invocation-guards/implementation-summary]"
+description: "Closeout summary for CLI self-invocation guard normalization."
 ---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-# Implementation Summary: CLI Self-Invocation Guards
 
-## Overview
+---
 
-Added self-invocation guards to all 4 CLI orchestration skills (`cli-claude-code`, `cli-gemini`, `cli-codex`, `cli-copilot`) to prevent an AI agent from invoking a skill that delegates to the very CLI it is already running inside.
+<!-- ANCHOR:metadata -->
+## Metadata
 
-## Problem Solved
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 009-cli-self-invocation-guards |
+| **Completed** | 2026-03-02 |
+| **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
-The shared skill system (symlinked across `.claude/skills`, `.codex/skills`, `.gemini/agents/`) means `skill_advisor.py` can recommend a CLI skill to the AI that IS that CLI. This creates circular self-delegation — wasteful and potentially causing runtime errors.
+---
 
-## Changes Made
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### All 4 SKILL.md files — "When NOT to Use" section
+### What Was Built
 
-Added a prominent **Self-invocation guard** as the first entry in each "When NOT to Use" section. Each guard:
-- Identifies the specific CLI runtime
-- Lists native capabilities the AI should use instead
-- States that the skill is for EXTERNAL AIs only
-- Includes env var detection where applicable
+Self-invocation guards were added or strengthened across the CLI bridge skills so each runtime is told not to delegate to the bridge that targets itself. The documentation now explains that the bridge skills are for external runtimes and points each runtime back to its own native capabilities instead of creating a circular delegation loop.
 
-### All 4 SKILL.md files — NEVER rules
+### Targeted skills
 
-Added explicit NEVER rule against self-invocation to each skill's rules section.
+The work covered `cli-claude-code`, `cli-gemini`, `cli-codex`, and `cli-copilot`. Existing nesting checks were reframed where possible, and explicit anti-self-delegation guidance was added where it was missing.
 
-### cli-claude-code — Prerequisite Detection
+---
+<!-- /ANCHOR:what-built -->
 
-Reframed both `$CLAUDECODE` env var checks (in Smart Routing and How It Works) from "nesting prevention" to "self-invocation guard" framing.
+---
 
-### cli-copilot — Prerequisite Detection
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-Updated the commented env var check comment to reference self-invocation.
+### How It Was Delivered
 
-### cli-copilot — "When NOT to Use"
+The change was delivered as a documentation-only normalization pass: review current guard wording, define one consistent pattern, customize it for each CLI bridge skill, then validate the spec-folder structure.
 
-Removed the old "When already running inside a Copilot CLI session (to avoid nesting)" bullet, replaced with the comprehensive self-invocation guard entry.
+---
+<!-- /ANCHOR:how-delivered -->
 
-## Files Modified
+---
 
-| File | Changes |
-|------|---------|
-| `.opencode/skill/cli-claude-code/SKILL.md` | Enhanced "When NOT to Use" (replaced nesting bullet with self-invocation guard), enhanced NEVER rule #2, reframed 2 prerequisite detection comments |
-| `.opencode/skill/cli-gemini/SKILL.md` | Added self-invocation guard to "When NOT to Use", added NEVER rule #7 |
-| `.opencode/skill/cli-codex/SKILL.md` | Added self-invocation guard to "When NOT to Use", added NEVER rule #7 |
-| `.opencode/skill/cli-copilot/SKILL.md` | Replaced nesting bullet with self-invocation guard in "When NOT to Use", added NEVER rule #5, updated prerequisite detection comment |
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-## Guard Pattern (consistent across all 4)
+### Key Decisions
 
-**"When NOT to Use" entry:**
-> **Self-invocation guard**: If you ARE [CLI] (running natively inside a [CLI] session), do NOT use this skill. You already have direct access to all capabilities described here — [native capabilities list]. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs ([other CLIs]) to delegate TO [CLI].
+| Decision | Why |
+|----------|-----|
+| Use one shared guard pattern across all CLI bridges | Prevented inconsistent anti-self-delegation language |
+| Point each runtime to native capabilities instead of generic warnings | Made the guard actionable rather than purely prohibitive |
+| Preserve the work as documentation-only | The original scope did not include runtime-detection logic changes |
 
-**NEVER rule:**
-> **NEVER invoke this skill from within [CLI] itself** — If you ARE [CLI], you already have native access to all capabilities — do not self-delegate via CLI. Self-invocation creates a circular, wasteful loop; use your native tools directly instead.
+---
+<!-- /ANCHOR:decisions -->
 
-## Native Capabilities Referenced
+---
 
-| CLI | Native Capabilities Cited |
-|-----|--------------------------|
-| Claude Code | Edit tool, Agent tool, extended thinking, structured output, skills system, Spec Kit Memory |
-| Gemini CLI | google_web_search, codebase_investigator, save_memory, agent system |
-| Codex CLI | Sandbox execution, /review workflow, --search, session management, profile system |
-| Copilot CLI | Autopilot, Explore/Task agents, cloud delegation, repo memory, multi-model selection |
+<!-- ANCHOR:verification -->
+## Verification
+
+### Verification
+
+| Check | Result |
+|-------|--------|
+| Targeted CLI bridge skills updated | PASS |
+| Native-capability fallback guidance present | PASS |
+| Spec-folder structural compliance restored | PASS |
+
+---
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+### Known Limitations
+
+1. **Runtime-awareness is still documentation-driven.** This work did not add runtime-detection logic to `skill_advisor.py`.
+
+---
+<!-- /ANCHOR:limitations -->
+
+---

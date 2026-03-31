@@ -1,5 +1,5 @@
 ---
-title: "Comprehensive Skills & MCP Server Bug Fix [029-comprehensive-bug-fix/spec]"
+title: "Comprehensive Skills [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/spec]"
 description: "Date: December 24, 2024"
 trigger_phrases:
   - "comprehensive"
@@ -109,6 +109,7 @@ A systematic analysis using **15 parallel agents** followed by targeted fixes:
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [x] All critical security issues resolved
@@ -118,3 +119,4 @@ A systematic analysis using **15 parallel agents** followed by targeted fixes:
 - [x] All documentation updated and consistent
 - [x] Verification completed by 10 parallel agents
 - [x] No new issues introduced
+<!-- /ANCHOR:success-criteria -->

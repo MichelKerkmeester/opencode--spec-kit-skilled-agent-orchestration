@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-SpecKit Template Upgrade - Command Alignment [075-post-speckit-template-upgrade-command-allignment/tasks]"
+title: "...tem-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment/tasks]"
 description: "Agent: Agent 1 (Opus)"
 trigger_phrases:
   - "tasks"
@@ -44,6 +44,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Section Structure Standardization [PENDING]
 
 ### Task 1.1: Update spec_kit namespace (7 commands)
@@ -82,8 +83,10 @@ Changes per command:
 - [ ] Remove parenthetical text from section headers
 - [ ] Verify section numbering is sequential
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Mandatory Gate Fixes [PENDING]
 
 ### Task 2.1: Add mandatory gate to /memory:search
@@ -96,8 +99,10 @@ Changes:
 - [ ] Phase 2: VALIDATION
 - [ ] Add VIOLATION SELF-DETECTION section
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Frontmatter Corrections [PENDING]
 
 ### Task 3.1: Fix /create:skill argument-hint
@@ -114,6 +119,7 @@ Changes:
 Changes:
 - [ ] Change `agent-name` to `<agent-name>` in argument-hint
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Spec_Kit Command Enhancements [PENDING]

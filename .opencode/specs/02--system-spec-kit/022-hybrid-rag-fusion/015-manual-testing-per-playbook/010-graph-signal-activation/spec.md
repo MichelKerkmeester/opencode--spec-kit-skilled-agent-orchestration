@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: graph-signal-activation [template:level_2/spec.md]"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation/spec]"
 description: "Phase 010 manual testing packet for graph-signal-activation coverage. Documents the 15 mapped playbook scenarios, feature catalog links, and evidence-driven acceptance criteria for graph and causal linking validation."
 trigger_phrases:
   - "graph signal activation manual testing"
   - "phase 010 graph tests"
   - "manual testing playbook 016"
   - "manual testing playbook 175"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: graph-signal-activation
@@ -195,6 +195,7 @@ Provide a single Phase 010 specification that maps every graph-signal-activation
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -213,6 +214,7 @@ Provide a single Phase 010 specification that maps every graph-signal-activation
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

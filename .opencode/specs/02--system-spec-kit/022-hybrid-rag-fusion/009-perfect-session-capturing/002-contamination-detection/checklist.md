@@ -1,5 +1,13 @@
 ---
-title: "Verification Checklist: Contamination Detection [template:level_2/checklist.md]"
+title: "Verifica [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection/checklist]"
+description: "title: \"Verification Checklist: Contamination Detection [template:level_2/checklist.md]\""
+trigger_phrases:
+  - "verifica"
+  - "checklist"
+  - "002"
+  - "contamination"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: Contamination Detection
 

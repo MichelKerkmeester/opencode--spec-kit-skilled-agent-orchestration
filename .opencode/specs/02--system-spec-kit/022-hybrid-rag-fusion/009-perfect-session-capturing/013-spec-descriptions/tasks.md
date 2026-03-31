@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Folder Description System Refactor"
+title: "Tasks: Spec [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions/tasks]"
 description: "Implementation tasks derived from plan.md phases."
 trigger_phrases:
   - "description tasks"

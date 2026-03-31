@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill References & Assets Indexing [133-index-workflows-code/plan]"
+title: "Implementation Plan: Skill References & Assets Indexing [02--system-spec-kit/z_archive/016-index-workflows-code/plan]"
 description: "Extend the memory indexing subsystem to support a 6th source: skill references/ and assets/ directories. Implementation adds config-driven skill selection, three new document ty..."
 trigger_phrases:
   - "implementation"
@@ -156,6 +156,7 @@ Layered Architecture: Config Layer → Parser Layer → Handler Layer → File D
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -180,6 +181,7 @@ Phase 3 (Weights) ───────┘
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort | Actual Effort |
@@ -330,6 +332,7 @@ Phase 3 (Weights) ───────┘
 ---
 
 <!-- ANCHOR:adr-summary -->
+<!-- ANCHOR:summary -->
 ## ARCHITECTURE DECISION RECORD SUMMARY
 
 ### ADR-001: Config Location (config.jsonc vs SKILL.md)
@@ -384,3 +387,4 @@ LEVEL 3+ PLAN (~430 lines)
 - Architecture decision record summaries
 - Monitoring & observability
 -->
+<!-- /ANCHOR:summary -->

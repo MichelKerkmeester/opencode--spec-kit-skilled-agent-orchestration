@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Context Agent Model Optimization [011-context-model-optimization/checklist]"
+title: "Verification Checklist: Context Agent [04--agent-orchestration/z_archive/011-context-model-optimization/checklist]"
 description: "Verification Date: 2026-02-14"
 trigger_phrases:
   - "verification"

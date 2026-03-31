@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Foundation Package (Phase 0, 1, 1.5) [001-foundation-phases-0-1-1-5/tasks]"
+title: "Tasks: Foundation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/tasks]"
 description: "Tracking document synchronized with root execution state; remaining open items are human/ops-gated."
 trigger_phrases:
   - "tasks"

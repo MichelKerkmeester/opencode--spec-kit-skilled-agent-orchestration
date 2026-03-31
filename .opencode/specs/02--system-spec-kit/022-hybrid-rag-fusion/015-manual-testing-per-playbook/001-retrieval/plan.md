@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook retrieval phase [template:level_2/plan.md]"
+title: "Implementation Plan: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval/plan]"
 description: "Execution plan for 13 retrieval playbook scenarios: preconditions, non-destructive tests, destructive/stateful tests, and evidence-plus-verdict collection."
 trigger_phrases:
   - "retrieval execution plan"
@@ -166,6 +166,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -184,6 +185,7 @@ Phase 1 (Preconditions) ──► Phase 2 (Baseline) ──► Phase 3 (Fallback
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

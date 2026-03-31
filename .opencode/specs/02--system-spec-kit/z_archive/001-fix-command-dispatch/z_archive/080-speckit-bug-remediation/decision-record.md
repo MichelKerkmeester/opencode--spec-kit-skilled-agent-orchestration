@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Spec Kit Bug Remediation [080-speckit-bug-remediation/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/decision-record]"
 description: "10 parallel Opus agents identified 45+ bugs across the Spec Kit MCP server. The bugs range from critical (data corruption risk) to low (code style). Fixing all bugs sequentially..."
 trigger_phrases:
   - "decision"

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Fix Command Dispatch Vulnerability [118-fix-command-dispatch/decision-record]"
+title: "Decision Record: Fix Command Dispatch [02--system-spec-kit/z_archive/001-fix-command-dispatch/decision-record]"
 description: "When /spec_kit:complete and other spec_kit commands execute, OpenCode's runtime injects phantom dispatch text (\"Use the above message and context to generate a prompt and call t..."
 trigger_phrases:
   - "decision"

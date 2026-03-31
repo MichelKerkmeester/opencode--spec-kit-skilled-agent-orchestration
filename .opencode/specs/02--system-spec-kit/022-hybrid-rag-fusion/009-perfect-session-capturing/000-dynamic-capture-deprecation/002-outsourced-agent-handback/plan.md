@@ -1,7 +1,10 @@
 ---
-title: "Implementation Plan: Outsourced Agent Memory Capture"
+title: "...2-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/plan]"
 description: "Align runtime memory-input handling, CLI handback docs, and spec evidence so explicit JSON-mode failures, next-step persistence, and verification status are all documented consistently."
-trigger_phrases: ["outsourced agent memory", "memory handback plan", "cli agent protocol"]
+trigger_phrases:
+  - "outsourced agent memory"
+  - "memory handback plan"
+  - "cli agent protocol"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -145,6 +148,7 @@ Caller prepares /tmp/save-context-data.json
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## 8. L2: PHASE DEPENDENCIES
 
 ```text
@@ -161,6 +165,7 @@ Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconc
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

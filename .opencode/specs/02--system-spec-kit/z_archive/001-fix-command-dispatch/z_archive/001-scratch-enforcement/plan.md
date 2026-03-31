@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Scratch Folder Enforcement - Technical Approach [001-scratch-enforcement/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/plan]"
 description: "Implementation plan defining the recommended changes to enforce scratch folder usage across the SpecKit system, with full OpenCode compatibility (no hooks required)."
 trigger_phrases:
   - "implementation"
@@ -92,6 +92,7 @@ Based on analysis from 8 parallel agents, implement documentation-based enforcem
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 3. IMPLEMENTATION PHASES
 
 ### Phase 1: AGENTS.md Updates (P0 - PRIMARY)
@@ -145,6 +146,7 @@ Based on analysis from 8 parallel agents, implement documentation-based enforcem
 
 **Change:** Add scratch folder guidance to implementation steps
 
+<!-- /ANCHOR:phases -->
 ---
 
 ## 4. SPECIFIC CHANGES

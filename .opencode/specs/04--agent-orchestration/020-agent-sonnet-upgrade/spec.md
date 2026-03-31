@@ -37,7 +37,7 @@ contextType: "decision"
 
 ### Problem Statement
 
-Multiple agents across the Copilot and Claude Code agent systems were pinned to outdated or mismatched models: context and handover agents used `haiku-4.5` (insufficient reasoning depth for retrieval and session work), speckit and write used `sonnet-4.5` (missed 4.6 improvements), and research/debug hard-pinned `opus-4.6` which prevented flexible model dispatch by the orchestrator. The `review.md` Copilot agent had no model field and contained a stale "keep model-agnostic" comment that no longer reflected intended behaviour.
+Multiple agents across the Copilot and Claude Code agent systems were pinned to outdated or mismatched models: context and handover agents used `haiku-4.5` (insufficient reasoning depth for retrieval and session work), speckit and write used `sonnet-4.5` (missed 4.6 improvements), and research/debug hard-pinned `opus-4.6` which prevented flexible model dispatch by the orchestrator. The `review agent` Copilot agent had no model field and contained a stale "keep model-agnostic" comment that no longer reflected intended behaviour.
 
 ### Purpose
 
@@ -54,7 +54,7 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 - Upgrade five Copilot agents to `github-copilot/claude-sonnet-4-6`: context, handover, review, speckit, write
 - Remove hard-pinned `model:` field from Copilot research and debug agents (parent model inheritance)
 - Upgrade three Claude Code agents to `sonnet`: context, handover, review
-- Update stale convention comment in `copilot/review.md`
+- Update stale convention comment in `the Copilot review agent file`
 
 ### Out of Scope
 
@@ -66,16 +66,16 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/agent/copilot/context.md` | Modify | `haiku-4.5` → `sonnet-4-6` |
-| `.opencode/agent/copilot/handover.md` | Modify | `haiku-4.5` → `sonnet-4-6` |
-| `.opencode/agent/copilot/review.md` | Modify | Add model field `sonnet-4-6`; remove stale comment |
-| `.opencode/agent/copilot/speckit.md` | Modify | `sonnet-4.5` → `sonnet-4-6` |
-| `.opencode/agent/copilot/write.md` | Modify | `sonnet-4.5` → `sonnet-4-6` |
-| `.opencode/agent/copilot/research/research/research.md` | Modify | Delete `model:` line (opus-4.6 → inherit) |
-| `.opencode/agent/copilot/debug.md` | Modify | Delete `model:` line (opus-4.6 → inherit) |
+| `Copilot context agent file` | Modify | `haiku-4.5` → `sonnet-4-6` |
+| `Copilot handover agent file` | Modify | `haiku-4.5` → `sonnet-4-6` |
+| `Copilot review agent file` | Modify | Add model field `sonnet-4-6`; remove stale comment |
+| `Copilot speckit agent file` | Modify | `sonnet-4.5` → `sonnet-4-6` |
+| `Copilot write agent file` | Modify | `sonnet-4.5` → `sonnet-4-6` |
+| `Copilot research agent file` | Modify | Delete `model:` line (opus-4.6 → inherit) |
+| `Copilot debug agent file` | Modify | Delete `model:` line (opus-4.6 → inherit) |
 | `.claude/agents/context.md` | Modify | `haiku` → `sonnet` |
 | `.claude/agents/handover.md` | Modify | `haiku` → `sonnet` |
-| `.claude/agents/review.md` | Modify | `opus` → `sonnet` |
+| `.claude/agents/review agent` | Modify | `opus` → `sonnet` |
 
 > **Note (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. The seven files listed above under `.opencode/agent/copilot/` are therefore no longer present in the repository. Status updated to "Partially Reverted".
 <!-- /ANCHOR:scope -->
@@ -97,7 +97,7 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Stale comment in `copilot/review.md` removed or updated | Comment no longer references "keep model-agnostic" convention |
+| REQ-004 | Stale comment in `the Copilot review agent file` removed or updated | Comment no longer references "keep model-agnostic" convention |
 | REQ-005 | Changelog entry created for v2.1.3.0 | Entry present at `.opencode/changelog/00--opencode-environment/v2.1.3.0.md` |
 <!-- /ANCHOR:requirements -->
 
@@ -126,6 +126,7 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -146,6 +147,7 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

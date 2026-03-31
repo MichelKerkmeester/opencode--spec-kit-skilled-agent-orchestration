@@ -1,5 +1,5 @@
 ---
-title: "This is Phase 26 of the Perfect Session Capturing Recommendation Roadmap"
+title: "...22-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/026-live-proof-and-parity-hardening/spec]"
 description: "This is Phase 26 of the Perfect Session Capturing Recommendation Roadmap specification."
 trigger_phrases:
   - "this"

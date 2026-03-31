@@ -1,5 +1,5 @@
 ---
-title: "Finsweet Performance Optimization [001-finsweet-performance/spec]"
+title: "Finsweet Performance Optimization [001-finsweet-performance/spe [01--anobel.com/z_archive/001-finsweet-performance/spec]"
 description: "Optimize Finsweet Attributes loading to improve PageSpeed scores by deferring script execution until after page load."
 trigger_phrases:
   - "finsweet"
@@ -60,6 +60,7 @@ Finsweet Attributes are currently loaded in the HEADER section with `async`, whi
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:technical-requirements -->
+<!-- ANCHOR:requirements -->
 ## Technical Requirements
 - Use `window.addEventListener("load", ...)` pattern
 - Dynamic script creation with `document.createElement("script")`
@@ -68,6 +69,7 @@ Finsweet Attributes are currently loaded in the HEADER section with `async`, whi
 <!-- /ANCHOR:technical-requirements -->
 
 <!-- ANCHOR:reference -->
+<!-- /ANCHOR:requirements -->
 ## Reference
 Based on Dmytro Bala's Finsweet performance optimization technique.
 <!-- /ANCHOR:reference -->

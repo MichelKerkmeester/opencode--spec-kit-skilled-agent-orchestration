@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Spec 016 — Handover Haiku + Codex Agent Conversion [016-handover-model-codex-compat/checklist]"
+title: "Checklist: Spec 016 — Handover Haiku + [04--agent-orchestration/z_archive/016-handover-model-codex-compat/checklist]"
 description: "checklist document for 016-handover-model-codex-compat."
 trigger_phrases:
   - "checklist"

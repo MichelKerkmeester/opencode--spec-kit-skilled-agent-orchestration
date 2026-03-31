@@ -1,7 +1,11 @@
 ---
-title: "Implementation Plan: Skill Alignment — system-spec-kit"
+title: "Implementation Plan: Skill Alignment — [02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/plan]"
 description: "Truth-reconciled plan for closing the last system-spec-kit documentation gaps after the current memory command surface and agent/runtime alignment landed."
-trigger_phrases: ["implementation", "plan", "skill alignment", "011 alignment"]
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "skill alignment"
+  - "011 alignment"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -143,6 +147,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -164,6 +169,7 @@ Phase 1 (Pack Reconciliation) ──► Phase 2 (Skill Guide)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

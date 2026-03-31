@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Task 06 — Root README Update [task-06-global-readme-update/checklist]"
+title: "Ver [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/checklist]"
 description: "Verification Date: 2026-02-16"
 trigger_phrases:
   - "verification"
@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -27,6 +28,7 @@ contextType: "implementation"
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
 
+<!-- /ANCHOR:protocol -->
 ---
 
 ## P0 — Statistics Accuracy
@@ -54,6 +56,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -67,6 +70,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P1] Audit methodology documented in plan.md [Evidence: plan.md Section 4 defines 3-phase implementation approach]

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Cognitive Memory Upgrade [079-speckit-cognitive-memory/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory/decision-record]"
 description: "The current Spec Kit Memory system uses an arbitrary exponential decay formula (score × rate^turns) which does not accurately model human memory behavior. Research shows that ag..."
 trigger_phrases:
   - "decision"
@@ -378,6 +378,7 @@ The current system uses a 3-tier model (HOT/WARM/COLD) with fixed thresholds. Th
 
 ---
 
+<!-- ANCHOR:decision -->
 ## Session Decision Log
 
 > **Purpose**: Track all gate decisions made during this session for audit trail and learning.
@@ -396,6 +397,7 @@ The current system uses a 3-tier model (HOT/WARM/COLD) with fixed thresholds. Th
 - Include both PASS and BLOCK decisions for completeness
 - Link to relevant ADR if decision resulted in new architecture record
 
+<!-- /ANCHOR:decision -->
 ---
 
 ## Research Sources

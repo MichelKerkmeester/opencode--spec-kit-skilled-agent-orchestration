@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: cli-gemini Skill"
+title: "Implementation Plan: cli-gemini Skill [03--commands-and-skills/001-cli-gemini-creation/plan]"
 description: "Create a documentation-only skill for Gemini CLI integration with Claude Code and OpenCode, following sk-doc standards with progressive disclosure."
 trigger_phrases:
   - "gemini cli plan"
@@ -130,6 +130,7 @@ User request → Gate 2 skill_advisor.py → cli-gemini SKILL.md loads
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -146,6 +147,7 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

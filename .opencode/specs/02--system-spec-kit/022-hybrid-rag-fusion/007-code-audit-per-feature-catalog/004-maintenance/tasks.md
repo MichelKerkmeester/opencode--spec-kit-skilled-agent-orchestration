@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Audit — Maintenance"
+title: "Tasks: Code Audit [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance/tasks]"
 description: "Task breakdown for auditing 2 Maintenance features"
 trigger_phrases:
   - "tasks"

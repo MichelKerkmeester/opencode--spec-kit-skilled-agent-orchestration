@@ -1,7 +1,6 @@
 ---
-title: "Tasks: Contact Form Bot Submission Investigation"
+title: "Tasks: Contact Form Bot Submission Investigation [01--anobel.com/034-form-bot-problem/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "contact form"
@@ -11,6 +10,7 @@ trigger_phrases:
   - "034"
 importance_tier: "important"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: Contact Form Bot Submission Investigation
 
@@ -35,7 +35,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Baseline Evidence Consolidation
+## Phase 1: Setup
+
+### Baseline Evidence Consolidation
 
 - [x] T001 Capture intended contact script versions from source (`src/0_html/contact.html`)
 - [x] T002 Capture live contact script versions from session output artifact
@@ -54,7 +56,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Hypothesis Validation (RC-A to RC-D)
+## Phase 2: Implementation
+
+### Hypothesis Validation (RC-A to RC-D)
 
 - [x] T013 Define evidence schema for verdict-ready analysis (timestamp, request fingerprint, assurance result, delivery decision)
 - [B] T014 Confirm provider/inbox evidence access path and export format [BLOCKED: external Formspark/inbox access confirmation still required; repo evidence alone is insufficient]
@@ -68,7 +72,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Mitigation Design and Prioritization
+## Phase 3: Verification
+
+### Mitigation Design and Prioritization
 
 - [ ] T020 Define Formspark-enforced honeypot-first mitigation with a real DOM field that is not CSS-hidden by brittle selectors
 - [ ] T021 Select honeypot field naming strategy (prefer custom name; `_honeypot` or `_gotcha` as supported defaults) and document rationale
@@ -79,7 +85,7 @@ contextType: "implementation"
 - [ ] T026 Define service-worker and asset-version governance controls
 - [ ] T027 Create mitigation rollout sequence and finalize `webflow-honeypot-guide.md` (field insertion, naming, safe hiding, architecture alignment, Formspark config, publish and verification checklists) ordered by risk reduction and implementation cost
 
-### Phase 3A: Concrete Contact Form Integration Tasks
+### Concrete Contact Form Integration Tasks
 
 - [ ] T032 Add real honeypot field markup to the `/nl/contact` form with final field name `contact_website_check`, neutral label text, `required` disabled, and field enabled (`src/0_html/contact.html`)
 - [ ] T033 Apply stable off-screen wrapper styling for `.hp-field-wrap` and avoid anti-patterns (`display: none`, `visibility: hidden`, `disabled`) so the field remains in form payload (`src/0_html/contact.html` or linked stylesheet)
@@ -93,14 +99,12 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Verification and Handoff Readiness
+### Verification and Handoff Readiness
 
 - [ ] T028 Define success metrics (spam reduction, false-positive rate, response latency)
 - [ ] T029 Define rollback triggers and emergency fallback policy
 - [ ] T030 Update checklist evidence for completed planning gates
 - [ ] T031 Produce implementation-ready handoff packet from this spec folder
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

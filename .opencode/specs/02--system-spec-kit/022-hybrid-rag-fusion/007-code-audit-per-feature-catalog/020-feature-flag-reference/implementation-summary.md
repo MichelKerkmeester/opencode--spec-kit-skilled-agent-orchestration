@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Audit — Feature Flag Reference"
+title: "...-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/implementation-summary]"
 description: "10 features audited: 10 MATCH, 0 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"

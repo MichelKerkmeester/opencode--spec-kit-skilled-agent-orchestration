@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Anchor System Implementation - Targeted Memory Retrieval [065-anchor-system-implementation/spec]"
+title: "Feature Specifi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/spec]"
 description: "Complete feature specification defining requirements, user stories, and success criteria for the Anchor System implementation."
 trigger_phrases:
   - "feature"
@@ -51,6 +51,7 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 ### In Scope
@@ -71,6 +72,7 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.js` | Modify | Update `memory_search` schema and handler |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/token-budget.js` | Modify | Add token calculation for anchor savings (if needed) |
 
+<!-- /ANCHOR:scope -->
 ---
 
 ## 3. USERS & STORIES
@@ -98,6 +100,7 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. FUNCTIONAL REQUIREMENTS
 
 - **REQ-FUNC-001:** `memory-parser.js` MUST export an `extract_anchors(content)` function that returns a map of anchor IDs to their content.
@@ -107,8 +110,10 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 - **REQ-FUNC-005:** If multiple anchors are requested, they MUST be joined with a separator (e.g., `\n\n...\n\n`).
 - **REQ-FUNC-006:** The response MUST include metadata indicating the token savings achieved.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -119,8 +124,10 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 - **NFR-R01**: The system MUST handle malformed anchors gracefully (e.g., missing closing tag) without crashing.
 - **NFR-R02**: If a requested anchor is not found, the system MUST NOT fail the entire request.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 6. EDGE CASES
 
 ### Data Boundaries
@@ -131,8 +138,10 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 - **No Anchors Found:** Return empty content or a specific message.
 - **Partial Match:** Requested `['A', 'B']` but only `A` exists. Return `A` and a warning about `B`.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 7. SUCCESS CRITERIA
 
 ### Measurable Outcomes
@@ -140,6 +149,7 @@ Implement the backend logic to enable **targeted retrieval** of specific memory 
 - **SC-002**: Token savings are calculated and reported.
 - **SC-003**: System handles missing/invalid anchors without crashing.
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 8. DEPENDENCIES & RISKS

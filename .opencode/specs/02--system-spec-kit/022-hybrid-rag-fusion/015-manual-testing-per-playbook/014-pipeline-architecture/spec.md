@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Manual Testing — Pipeline Architecture (Phase 014)"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture/spec]"
 description: "Manual test execution tracking for 18 pipeline architecture scenarios covering 4-stage pipeline refactor, MPAB aggregation, chunk ordering, schema validation, DB path standardisation, cross-process rebinding, and lineage state projection."
 trigger_phrases:
   - "pipeline architecture testing"
@@ -198,6 +198,7 @@ Execute all 18 playbook scenarios for the pipeline architecture category and rec
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -210,6 +211,7 @@ Execute all 18 playbook scenarios for the pipeline architecture category and rec
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Scenario Boundaries

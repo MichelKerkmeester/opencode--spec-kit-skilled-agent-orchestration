@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Command Agent Utilization Audit [014-command-agent-utilization/spec]"
+title: "Feature Specification: Command Agent [04--agent-orchestration/z_archive/014-command-agent-utilization/spec]"
 description: "Create commands bypassed three AGENTS.md routing rules: spec folder docs were created inline (violating Rule 5: @speckit exclusive), codebase discovery used inline Glob/Grep (vi..."
 trigger_phrases:
   - "feature"
@@ -164,6 +164,7 @@ Bring all create commands into compliance with AGENTS.md routing rules by routin
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Consistency
@@ -181,6 +182,7 @@ Bring all create commands into compliance with AGENTS.md routing rules by routin
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Scope Discovery

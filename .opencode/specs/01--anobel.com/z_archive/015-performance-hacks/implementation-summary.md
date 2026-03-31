@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary - Performance Hacks [016-performance-hacks/implementation-summary]"
+title: "Implementation Summary - Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/implementation-summary]"
 description: "I cannot perform these changes via code because they are managed inside Webflow or external settings."
 trigger_phrases:
   - "implementation"
@@ -52,4 +52,10 @@ I cannot perform these changes via code because they are managed inside Webflow 
 ### 3. Publish Site
 **Action:** Publish to production to see the results.
 <!-- /ANCHOR:required-actions-webflow-designer -->
+---
 
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

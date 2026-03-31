@@ -1,13 +1,13 @@
 ---
-title: "Implementation Plan: 001-baseline-and-safety-rails"
+title: "Implementatio [02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/plan]"
 description: "Execution plan for Hydra Phase 1 baseline hardening, verification, and rollout safety rails."
-SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "phase 1 plan"
   - "baseline plan"
   - "safety rails plan"
 importance_tier: "critical"
 contextType: "implementation"
+SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 ---
 # Implementation Plan: 001-baseline-and-safety-rails
 
@@ -147,6 +147,7 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -160,8 +161,10 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 | Checkpoint/schema validation | Inventory | Phase 2 lineage start |
 | Verification and docs sync | Build and flag hardening, checkpoint/schema validation | Phase 2 handoff |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Workstream | Complexity | Estimated Effort |
@@ -172,8 +175,10 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 | Tests and docs alignment | Medium | 1-2 days |
 | **Total** | | **2.5-5 days** |
 
+<!-- /ANCHOR:effort -->
 ---
 
+<!-- ANCHOR:enhanced-rollback -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -192,6 +197,7 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 - **Has data migrations?** No new data migrations in the delivered slice.
 - **Reversal procedure**: Restore prior checkpoint-script behavior and remove any new helper exports if the phase is backed out.
 
+<!-- /ANCHOR:enhanced-rollback -->
 ---
 
 ## L3: DEPENDENCY GRAPH
@@ -252,6 +258,7 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Baseline Safety Rails Before Data-Plane Evolution
@@ -266,6 +273,7 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 - Improves trust in future rollout evidence.
 - Delays visible roadmap functionality slightly, but lowers risk sharply.
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

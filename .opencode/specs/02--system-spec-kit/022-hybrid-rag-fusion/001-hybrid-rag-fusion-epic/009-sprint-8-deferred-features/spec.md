@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Sprint 8 - Deferred Features"
+title: "Feature [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features/spec]"
 description: "Execute deferred items from prior sprints with strict scope, safety, and validation gates."
 trigger_phrases:
   - "sprint 8"

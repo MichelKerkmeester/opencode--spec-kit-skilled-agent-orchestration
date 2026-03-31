@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 001-hybrid-rag-fusion-epic"
+title: "Implementation Plan: 001-hybrid-rag-fusion-e [02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan]"
 description: "Parent packet normalization plan for the Hybrid RAG Fusion sprint family."
 trigger_phrases:
   - "001 epic plan"
@@ -163,6 +163,7 @@ Acceptance rule: the parent packet should pass without structural errors, and re
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```text
@@ -175,3 +176,4 @@ Parent Packet Truth -> Sprint Navigation -> Parent Verification
 | Sprint Navigation | Parent Packet Truth | Parent Verification |
 | Parent Verification | Sprint Navigation | None |
 <!-- /ANCHOR:phase-deps -->
+<!-- /ANCHOR:dependencies -->

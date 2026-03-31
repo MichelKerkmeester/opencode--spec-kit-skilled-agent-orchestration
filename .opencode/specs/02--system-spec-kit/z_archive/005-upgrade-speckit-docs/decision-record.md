@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: OpenCode Documentation Quality Upgrade [122-upgrade-speckit-docs/decision-record]"
+title: "Decision Record: OpenCode Documentation [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/decision-record]"
 description: "Several anchor IDs in README.md files were inconsistent in naming conventions. Some used short names (e.g., examples, level-selection-guide) while others used more descriptive n..."
 trigger_phrases:
   - "decision"

@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Hybrid Context Injection Implementation [001-memory-repo-analysis/tasks]"
+title: "...pec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/tasks]"
 description: "Task breakdown by user story for implementing the hybrid 3-layer context injection strategy."
 trigger_phrases:
   - "task"

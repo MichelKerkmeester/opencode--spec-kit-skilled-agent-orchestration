@@ -1,3 +1,15 @@
+---
+title: "Research: Memory Search [02--system-spec-kit/023-esm-module-compliance/007-hybrid-search-null-db-fix/research]"
+description: "10 GPT-5.4 agents (5 research + 5 review) investigated the memory search pipeline. While agents focused on code exploration rather than producing structured documents, the colle..."
+trigger_phrases:
+  - "research"
+  - "memory"
+  - "search"
+  - "007"
+  - "hybrid"
+importance_tier: "normal"
+contextType: "research"
+---
 # Research: Memory Search Pipeline — 10 Agent Deep Investigation
 
 ## Summary

@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Test and Scenario Remediation"
+title: "Tasks: Test and Scenario [02--system-spec-kit/023-esm-module-compliance/005-test-and-scenario-remediation/tasks]"
 description: "Fix pre-existing test failures, triage doc consistency tests, and verify manual playbook scenarios."
 trigger_phrases:
   - "test remediation tasks"
   - "023 phase 5 tasks"
   - "fix failing tests"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: Test and Scenario Remediation
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification System with In-App Alerts and Email Delivery [complete-happy/spec]"
+title: "Feature [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/spec]"
 description: "Users currently have no way to receive timely updates about system events, resulting in missed deadlines and poor engagement. There is no centralized notification mechanism for ..."
 trigger_phrases:
   - "feature"
@@ -33,6 +33,7 @@ contextType: "decision"
 ---
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -41,8 +42,10 @@ Users currently have no way to receive timely updates about system events, resul
 ### Purpose
 Implement a unified notification system that delivers in-app alerts and email notifications to users based on configurable preferences, ensuring timely awareness of relevant system events.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -75,8 +78,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 | tests/notification-service.test.ts | Create | Unit tests for notification service |
 | tests/email-service.test.ts | Create | Unit tests for email service |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -96,8 +101,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 | REQ-006 | Email digest batching for non-urgent notifications | Non-urgent emails grouped into hourly digest; urgent emails sent immediately |
 | REQ-007 | Notification grouping for repeated events | Similar notifications within 5-minute window grouped with count badge |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: In-app notifications delivered to connected users within 2 seconds of event trigger (p95)
@@ -105,8 +112,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 - **SC-003**: Users can configure per-channel, per-event-type preferences with changes taking effect immediately
 - **SC-004**: Notification bell displays accurate unread count, updating in real-time across browser tabs
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -118,8 +127,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 
 ---
 
+<!-- /ANCHOR:risks -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -134,8 +145,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 - **NFR-R01**: Notification service uptime target 99.9%; worker auto-restarts on crash
 - **NFR-R02**: Failed email deliveries retried 3 times with exponential backoff before dead-lettering
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -152,8 +165,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 - Partial completion: Half-sent batch emails tracked; resume from last successful send
 - Session expiry: Missed WebSocket notifications fetched via REST on reconnect
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -163,8 +178,10 @@ Implement a unified notification system that delivers in-app alerts and email no
 | Research | 10/20 | SendGrid API well-documented; WebSocket patterns established |
 | **Total** | **43/70** | **Level 2** |
 
+<!-- /ANCHOR:complexity -->
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - All questions resolved during clarification phase. No outstanding items.
@@ -177,3 +194,4 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+<!-- /ANCHOR:questions -->

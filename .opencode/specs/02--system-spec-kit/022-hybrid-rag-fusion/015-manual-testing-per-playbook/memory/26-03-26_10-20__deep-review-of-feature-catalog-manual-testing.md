@@ -1,6 +1,5 @@
 ---
-title: "Deep Review Of Feature [015-manual-testing-per-playbook/26-03-26_10-20__deep-review-of-feature-catalog-manual-testing]"
-description: "Deep review of feature catalog ↔ manual testing playbook ↔ spec phase traceability for system-spec-kit. Found 54/222 features (24.3%) lack playbook scenarios. Verdict:..."
+title: ".../022-hybrid-rag-fusion/015-manual-testing-per-playbook/26-03-26_10-20__deep-review-of-feature-catalog-manual-testing]"
 trigger_phrases:
   - "scenarios missing"
   - "phases missing"
@@ -35,18 +34,17 @@ trigger_phrases:
   - "playbook"
 importance_tier: "normal"
 contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
 _sourceSessionCreated: 0
+_sourceSessionId: ""
 _sourceSessionUpdated: 0
+_sourceTranscriptPath: ""
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
 quality_flags: []
+quality_score: 1.00
 spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 ---
-
 # Deep Review Of Feature Catalog Manual Testing
 
 ## SESSION SUMMARY

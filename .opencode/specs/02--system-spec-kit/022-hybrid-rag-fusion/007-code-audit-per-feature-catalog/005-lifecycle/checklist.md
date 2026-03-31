@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Audit — Lifecycle"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/checklist]"
 description: "QA verification for Lifecycle code audit"
 trigger_phrases:
   - "checklist"

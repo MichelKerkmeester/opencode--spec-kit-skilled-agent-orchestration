@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Naming Convention Test Suite [091-naming-convention-test-suite/spec]"
+title: "Feature Specifi [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite/spec]"
 description: "Comprehensive test suite to verify all ~246 files adjusted during the OpenCode naming convention migration (spec 090). Tests confirm that every JS, shell, and Python script work..."
 trigger_phrases:
   - "feature"
@@ -40,8 +40,10 @@ Comprehensive test suite to verify all ~246 files adjusted during the OpenCode n
 | **Created** | 2026-02-06 |
 | **Parent Spec** | `090-opencode-naming-conventions` |
 
+<!-- /ANCHOR:metadata -->
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -55,8 +57,10 @@ The naming convention migration (spec 090) renames identifiers across ~206 JS fi
 ### Purpose
 Create an automated, repeatable test suite that validates every adjusted script post-migration. This test suite becomes the Definition of Done for spec 090.
 
+<!-- /ANCHOR:problem -->
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -88,8 +92,10 @@ Create an automated, repeatable test suite that validates every adjusted script 
 | `scripts/tests/test-export-contracts.js` | Export contract verification |
 | `scripts/tests/test-bug-regressions.js` | 3 specific bug regression tests |
 
+<!-- /ANCHOR:scope -->
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -114,8 +120,10 @@ Create an automated, repeatable test suite that validates every adjusted script 
 | REQ-011 | Key export contracts match | 40+ modules export expected function names |
 | REQ-012 | Shell scripts pass `bash -n` | Zero syntax errors across 28 files |
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Test suite runs end-to-end with zero failures
@@ -123,8 +131,10 @@ Create an automated, repeatable test suite that validates every adjusted script 
 - **SC-003**: MCP server starts successfully
 - **SC-004**: Zero snake_case function definitions remain (except backward-compat aliases)
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -133,6 +143,7 @@ Create an automated, repeatable test suite that validates every adjusted script 
 | Risk | Some modules need DB connection to import | Medium | Wrap require() in try-catch, distinguish import errors from DB errors |
 | Risk | better-sqlite3 native module issues | Low | Test on same Node.js version as production |
 
+<!-- /ANCHOR:risks -->
 ---
 
 ## RELATED DOCUMENTS

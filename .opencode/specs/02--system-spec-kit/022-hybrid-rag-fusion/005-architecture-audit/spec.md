@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Architecture Audit [template:level_3/spec.md]"
+title: "Feature Specification: Architecture Audit [02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/spec]"
 description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030."
 trigger_phrases:
   - "architecture audit"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "boundary enforcement"
   - "handler cycle removal"
 importance_tier: "critical"
-contextType: "architecture"
+contextType: "decision"
 ---
 # Feature Specification: Architecture Audit
 
@@ -27,6 +27,7 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,6 +43,7 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 ---
 
 <!-- ANCHOR:problem -->
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -131,6 +133,7 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 ---
 
 <!-- ANCHOR:questions -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -143,8 +146,10 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 - **NFR-R01**: Verification should catch new cross-boundary regressions before they become default behavior.
 - **NFR-R02**: Source-of-truth docs and enforcement scripts should remain synchronized enough for maintainers to trust the contract.
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -156,8 +161,10 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 - A helper extraction breaks locality or creates a new cycle: keep handler utilities narrowly scoped and re-run cycle checks.
 - Documentation says a boundary exists but automation does not enforce it: treat this as incomplete, not finished.
 
+<!-- /ANCHOR:edge-cases -->
 ---
 
+<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Assessment | Notes |
@@ -170,6 +177,7 @@ Define the boundary contract clearly, remediate the highest-risk violations, aut
 
 Archived review notes scored the completed audit at **87/100**, which remains a fair summary of its Level 3 complexity and scope evolution.
 
+<!-- /ANCHOR:complexity -->
 ---
 
 ## 10. RISK MATRIX
@@ -208,6 +216,7 @@ Archived review notes scored the completed audit at **87/100**, which remains a 
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None for this restored standalone spec. The audit is complete; remaining work is future maintenance, not unresolved restructuring.

@@ -1,3 +1,16 @@
+---
+title: "Phase 5: Command & Agent Alignment [02--system-spec-kit/024-compact-code-graph/005-command-agent-alignment/spec]"
+description: "Update commands and agent definitions across all runtimes to work with the new hook system. Commands like /spec_kit:resume and /memory:save need hook-awareness, and agent defini..."
+trigger_phrases:
+  - "phase"
+  - "command"
+  - "agent"
+  - "alignment"
+  - "spec"
+  - "005"
+importance_tier: "important"
+contextType: "decision"
+---
 # Phase 5: Command & Agent Alignment
 
 ## Summary

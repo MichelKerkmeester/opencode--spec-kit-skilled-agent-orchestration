@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [007-documentation-alignment/implementation-summary]"
+title: "Imp [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/implementation-summary]"
 description: "This package remains a completed documentation-alignment phase for post-research Waves 1 through 3. The documented task set covers top-level skill docs, MCP server docs, library..."
 trigger_phrases:
   - "implementation"

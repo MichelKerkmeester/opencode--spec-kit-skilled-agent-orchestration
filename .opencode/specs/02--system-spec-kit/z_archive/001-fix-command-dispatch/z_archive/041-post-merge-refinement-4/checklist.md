@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Post-Merge Refinement 4 [041-post-merge-refinement-4/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/checklist]"
 description: "Approved By: _______________"
 trigger_phrases:
   - "checklist"
@@ -29,6 +29,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation Checks
 
 ### Environment Verification
@@ -43,6 +44,7 @@ contextType: "implementation"
 - [ ] **PRE-007**: SKILL.md backup created
 - [ ] **PRE-008**: Git branch created for changes
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## Phase 1: Critical Fixes (P0)

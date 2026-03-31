@@ -1,5 +1,5 @@
 ---
-title: "Checklist: Remaining Bugs Remediation [054-remaining-bugs-remediation/checklist]"
+title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/checklist]"
 description: "Code Implementation: 100% Complete"
 trigger_phrases:
   - "checklist"
@@ -164,6 +164,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## 5. Documentation
 
 | ID | Check | Priority | Status | Evidence |
@@ -174,8 +175,10 @@ contextType: "implementation"
 | CHK-051 | implementation-summary.md created | P0 | [x] | Created with full details |
 | CHK-052 | Memory file saved | P0 | [x] | memory #9 indexed |
 
+<!-- /ANCHOR:docs -->
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Priority | Total | Complete | Remaining |
@@ -214,6 +217,7 @@ contextType: "implementation"
 | Tester | test-bug-fixes.js | 2026-01-01 | 26/27 tests passed |
 | Reviewer | MCP Integration | 2026-01-01 | All integration tests pass |
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## Test Commands

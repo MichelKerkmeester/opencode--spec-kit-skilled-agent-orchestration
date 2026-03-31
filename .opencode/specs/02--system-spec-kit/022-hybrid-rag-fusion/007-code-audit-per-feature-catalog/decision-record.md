@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Code Audit Per Feature Catalog"
+title: "Decision Record: Code [02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/decision-record]"
 description: "Key decisions made during the 22-category code audit of the Hybrid RAG Fusion feature catalog"
 trigger_phrases:
   - "code audit decisions"

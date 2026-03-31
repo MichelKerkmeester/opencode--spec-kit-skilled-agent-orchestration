@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Orchestrate Agent Context Window Protection [006-orchestrate-context-window/checklist]"
+title: "Verification Checklist: Orchestrate Agent [04--agent-orchestration/z_archive/006-orchestrate-context-window/checklist]"
 description: "Verification Date: 2026-02-06"
 trigger_phrases:
   - "verification"
@@ -118,6 +118,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:sign-off -->
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -131,6 +132,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
 ## L3+: ARCHITECTURE VERIFICATION
 
 - [x] CHK-100 [P0] ADR-001 (file-based collection) documented in decision-record.md — Status: Proposed, Score: 9/10, 5/5 Five Checks

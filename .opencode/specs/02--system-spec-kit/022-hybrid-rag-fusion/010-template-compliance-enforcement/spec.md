@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Template Compliance Enforcement"
+title: "Feature Specification: Template [02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/spec]"
 description: "Agents across all CLIs produce structurally non-compliant spec folder documents, requiring multi-wave post-hoc fixes. This spec defines a 2-layer enforcement architecture to achieve 100% template compliance at generation time."
 trigger_phrases:
   - "template compliance"
@@ -135,6 +135,7 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -150,6 +151,7 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries
@@ -181,6 +183,7 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None -- all 8 research questions answered across 9 deep research iterations (see `research/research.md`)

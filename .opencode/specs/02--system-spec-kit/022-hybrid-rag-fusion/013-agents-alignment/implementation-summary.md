@@ -1,6 +1,14 @@
 ---
-title: "Implementation Summary: 013 — Agent Alignment"
+title: "Implementation Summary: 013 — [02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/implementation-summary]"
 description: "Truth-reconciled summary of the 013 agent-alignment packet against the live multi-runtime lineage model."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "013"
+  - "implementation summary"
+  - "agents"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 013 — Agent Alignment

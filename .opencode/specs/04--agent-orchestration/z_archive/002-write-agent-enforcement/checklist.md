@@ -1,5 +1,5 @@
 ---
-title: "Checklist: @write Agent Enforcement for /create Commands [002-write-agent-enforcement/checklist]"
+title: "Checklist: @write Agent Enforcement for [04--agent-orchestration/z_archive/002-write-agent-enforcement/checklist]"
 description: "All changes implemented and synced to both repositories."
 trigger_phrases:
   - "checklist"

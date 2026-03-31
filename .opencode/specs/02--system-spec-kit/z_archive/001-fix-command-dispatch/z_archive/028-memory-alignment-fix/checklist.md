@@ -1,5 +1,5 @@
 ---
-title: "Checklist - Memory Alignment Fix [028-memory-alignment-fix/checklist]"
+title: "Checklist - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/checklist]"
 description: "Originally planned as separate layers"
 trigger_phrases:
   - "checklist"

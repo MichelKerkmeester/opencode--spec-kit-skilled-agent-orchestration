@@ -1,5 +1,5 @@
 ---
-title: "Research: Oh My Opencode Agent System (2026 Analysis) [005-agent-system-improvements/research]"
+title: "Research: Oh My Opencode Agent System (2026 [04--agent-orchestration/z_archive/005-agent-system-improvements/research]"
 description: "Research ID: OMO-AGENT-2026-01"
 trigger_phrases:
   - "research"

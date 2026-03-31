@@ -1,11 +1,6 @@
 {
   "experimental": {
-    "enableAgents": true,
-    "codebaseInvestigatorSettings": {
-      "enabled": true,
-      "maxNumTurns": 20,
-      "model": "gemini-3.1-pro-preview"
-    }
+    "enableAgents": true
   },
   "skills": {
     "enabled": true
@@ -61,6 +56,19 @@
         "UTCP_CONFIG_FILE": ".utcp_config.json"
       },
       "trust": true
+    }
+  },
+  "agents": {
+    "overrides": {
+      "codebase_investigator": {
+        "enabled": true,
+        "runConfig": {
+          "maxTurns": 20
+        },
+        "modelConfig": {
+          "model": "gemini-3.1-pro-preview"
+        }
+      }
     }
   }
 }

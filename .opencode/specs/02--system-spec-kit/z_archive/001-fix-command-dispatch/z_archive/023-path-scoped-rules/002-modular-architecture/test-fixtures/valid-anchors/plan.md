@@ -1,5 +1,5 @@
 ---
-title: "Plan: Valid Anchors Fixture [valid-anchors/plan]"
+title: "...e/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors/plan]"
 description: "Testing that properly paired anchors pass validation."
 trigger_phrases:
   - "plan"
@@ -18,9 +18,11 @@ contextType: "decision"
 Testing that properly paired anchors pass validation.
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 Level 1 spec with memory folder containing valid anchors.
+<!-- /ANCHOR:architecture -->
 
 ## Implementation
 

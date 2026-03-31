@@ -1,5 +1,5 @@
 ---
-title: "Checklist - Performance Optimization [024-performance-optimization/checklist]"
+title: "Checklist - Performance Optimization [01--anobel.com/z_archive/022-performance-optimization/checklist]"
 description: "1. [ ] Browser test all functionality"
 trigger_phrases:
   - "checklist"
@@ -149,6 +149,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:documentation-updated -->
+<!-- ANCHOR:docs -->
 ## Documentation Updated
 
 - [x] spec.md - Updated with implementation status
@@ -164,6 +165,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:next-steps -->
+<!-- /ANCHOR:docs -->
 ## Next Steps
 
 1. [ ] Browser test all functionality

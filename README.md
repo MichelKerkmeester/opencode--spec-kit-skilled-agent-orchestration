@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 19 commands, 42 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 19 commands, 46 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -60,11 +60,13 @@ The framework adds three layers on top of the base platform:
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
 | **🎯 19 Skills** | Code, docs, git, prompts, MCP, research, review, cross-AI |
 | **⌨️ 20 Commands** | 8 spec_kit + 4 memory + 7 create + 1 utility |
-| **🔧 42 MCP Tools** | 33 memory + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🔧 46 MCP Tools** | 37 memory & code graph + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🔍 CocoIndex Code** | Semantic code search via vector embeddings — natural-language discovery across 28+ languages |
+| **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
 | **⚡ 4 Runtimes** | OpenCode, Codex CLI, Claude Code, Gemini CLI |
 | **📄 81 Templates** | CORE + ADDENDUM v2.2 |
-| **📦 255 Features** | Across 21 categories |
+| **📦 266 Features** | Across 22 categories |
 
 
 ### How It All Connects
@@ -95,7 +97,7 @@ The framework adds three layers on top of the base platform:
                  │                           │
                  ▼                           ▼
          ┌──────────────────────────────────────────┐
-         │       MEMORY ENGINE (42 MCP tools)       │
+         │       MEMORY ENGINE (46 MCP tools)       │
          │  5-channel hybrid: Vector, BM25, FTS5,   │
          │  Causal Graph, Degree                    │
          │  FSRS decay ─ RRF fusion ─ query intel   │
@@ -995,7 +997,7 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 
 **Q: How many MCP tools are there and where are they defined?**
 
-A: 42 total across 4 native MCP servers: 33 memory tools (spec_kit_memory), 7 code mode tools, 1 semantic code search tool (cocoindex_code) and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 33 memory tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`.
+A: 46 total across 4 native MCP servers: 37 memory + code graph tools (spec_kit_memory), 7 code mode tools, 1 semantic code search tool (cocoindex_code) and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 37 memory and code graph tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`. The 4 code graph tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) provide structural code analysis via tree-sitter indexing and SQLite storage.
 
 ---
 
@@ -1035,4 +1037,4 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.0 | Last updated: 2026-03-28 | Framework: 12 agents, 19 skills, 20 commands, 42 MCP tools (33 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.1 | Last updated: 2026-03-31 | Framework: 12 agents, 19 skills, 20 commands, 46 MCP tools (37 memory & code graph + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

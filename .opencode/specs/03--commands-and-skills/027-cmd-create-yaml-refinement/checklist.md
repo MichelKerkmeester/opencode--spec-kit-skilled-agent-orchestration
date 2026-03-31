@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Create Command YAML Refinement [template:level_3/checklist.md]"
+title: "Verification Checklist: Create Command YAML [03--commands-and-skills/027-cmd-create-yaml-refinement/checklist]"
 description: "Verification Date: 2026-03-19"
 trigger_phrases:
   - "create yaml refinement checklist"

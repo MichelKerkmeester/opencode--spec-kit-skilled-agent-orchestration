@@ -1,5 +1,5 @@
 ---
-title: "Rewrite Repo README"
+title: "Rewrite Repo README [02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/spec]"
 description: "Complete rewrite of the repository root README to provide a top-level overview of the OpenCode system: 12 agents, 18 skills, 40 MCP tools, gate system, and code mode."
 trigger_phrases:
   - "repo readme rewrite"

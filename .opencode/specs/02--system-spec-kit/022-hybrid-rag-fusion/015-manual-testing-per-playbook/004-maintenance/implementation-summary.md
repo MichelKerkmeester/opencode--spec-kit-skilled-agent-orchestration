@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: manual-testing-per-playbook maintenance phase"
+title: "Imple [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/implementation-summary]"
 description: "Post-execution summary for Phase 004 maintenance scenarios EX-014 and EX-035. Status: Complete. Both scenarios PASS."
 trigger_phrases:
   - "maintenance implementation summary"
   - "phase 004 results"
-  - "EX-014 EX-035 results"
+  - "ex-014 ex-035 results"
 importance_tier: "normal"
 contextType: "general"
 ---

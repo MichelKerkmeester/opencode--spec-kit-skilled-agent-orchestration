@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Task 06 — Root README Update [task-06-global-readme-update/plan]"
+title: "Implemen [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update/plan]"
 description: "root README.md with environment changelog audit/creation for spec 130 umbrella. Systematic review of README.md (root) to ensure alignment with post-implementation state of specs..."
 trigger_phrases:
   - "implementation"
@@ -127,6 +127,7 @@ Systematic file-by-file audit/creation
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -143,6 +144,7 @@ Phase 1 (Audit) ──► Phase 2 (Documentation) ──► Phase 3 (Verificatio
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

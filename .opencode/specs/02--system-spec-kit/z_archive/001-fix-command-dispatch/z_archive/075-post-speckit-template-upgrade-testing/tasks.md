@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -33,6 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Template System Tests
 
 **Objective**: Verify CORE+ADDENDUM v2.0 template composition and file requirements
@@ -55,8 +56,10 @@ contextType: "implementation"
 - [ ] T016 Verify Level 3 adds: decision-record.md, optional research/research.md
 - [ ] T017 Verify Level 3+ adds: AI protocols, extended checklist, sign-offs
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Validation Rule Tests
 
 **Objective**: Verify all 13 validation rules function correctly against 52 test fixtures
@@ -84,8 +87,10 @@ contextType: "implementation"
 - [ ] T038 Test single-file validation mode
 - [ ] T039 Test directory validation mode (recursive)
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: MCP Tool Tests
 
 **Objective**: Verify all 14 MCP tools in spec_kit_memory server function correctly
@@ -149,6 +154,7 @@ contextType: "implementation"
 - [ ] T079 Test memory_stats storage size
 - [ ] T080 Test memory_stats by folder breakdown
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## Phase 4: Script Module Tests
@@ -279,6 +285,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`
@@ -288,6 +295,7 @@ contextType: "implementation"
 - [ ] Integration tests pass (Phase 5)
 - [ ] Manual verification completed for critical paths
 
+<!-- /ANCHOR:completion -->
 ---
 
 ## Test Evidence Requirements
@@ -303,6 +311,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -310,6 +319,7 @@ contextType: "implementation"
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
 
+<!-- /ANCHOR:cross-refs -->
 ---
 
 ## Task Dependencies

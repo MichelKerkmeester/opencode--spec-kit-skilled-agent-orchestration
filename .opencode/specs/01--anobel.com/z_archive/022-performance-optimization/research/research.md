@@ -1,5 +1,5 @@
 ---
-title: "Research Summary - Performance Optimization [022-performance-optimization/research]"
+title: "Research Summary - Performance Optimization [01--anobel.com/z_archive/022-performance-optimization/research]"
 description: "Date: January 26, 2026"
 trigger_phrases:
   - "research"

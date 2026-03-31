@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Multi-Agent Dispatch Implementation [004-multi-agent-dispatch/tasks]"
+title: "Tasks: Multi-Agent Dispatch Implementation [04--agent-orchestration/z_archive/004-multi-agent-dispatch/tasks]"
 description: "Task 1, Task 2 (commands) - No dependencies ✅"
 trigger_phrases:
   - "tasks"

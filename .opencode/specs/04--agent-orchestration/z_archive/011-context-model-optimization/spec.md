@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Context Agent Model Optimization [011-context-model-optimization/spec]"
+title: "Feature Specification: Context Agent Model [04--agent-orchestration/z_archive/011-context-model-optimization/spec]"
 description: "Investigate whether switching the @context agent from Sonnet to Haiku reduces API cost (66.7% savings, ~$918/month) and Copilot premium request consumption (67% reduction) witho..."
 trigger_phrases:
   - "feature"
@@ -136,6 +136,7 @@ Determine the optimal model strategy for the @context agent that minimizes API c
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -151,6 +152,7 @@ Determine the optimal model strategy for the @context agent that minimizes API c
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### @context Reasoning Demands by Mode

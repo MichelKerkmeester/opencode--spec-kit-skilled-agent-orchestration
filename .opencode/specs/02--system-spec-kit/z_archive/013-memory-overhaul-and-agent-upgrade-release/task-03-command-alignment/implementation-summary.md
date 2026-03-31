@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Task 03 — Command Configs Audit [task-03-command-alignment/implementation-summary]"
+title: "...em-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-03-command-alignment/implementation-summary]"
 description: "[Implementer: Summarize what was completed for this task. Document all files audited/created/modified and the nature of changes made.]"
 trigger_phrases:
   - "implementation"

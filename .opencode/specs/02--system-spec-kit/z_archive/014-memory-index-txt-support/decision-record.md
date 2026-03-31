@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory Index TXT File Support [131-memory-index-txt-support/decision-record]"
+title: "Decision Record: Memory Index TXT File [02--system-spec-kit/z_archive/014-memory-index-txt-support/decision-record]"
 description: "The memory indexing system currently discovers .md files via three functions: findMemoryFiles(), findSkillReadmes(), and findProjectReadmes(). We need to add .txt file support. ..."
 trigger_phrases:
   - "decision"

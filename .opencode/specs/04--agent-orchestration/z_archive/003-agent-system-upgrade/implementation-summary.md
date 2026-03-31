@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Agent System Upgrade [003-agent-system-upgrade/implementation-summary]"
+title: "Implementation Summary: Agent [04--agent-orchestration/z_archive/003-agent-system-upgrade/implementation-summary]"
 description: "This spec folder consolidates three previously separate implementations"
 trigger_phrases:
   - "implementation"
@@ -20,7 +20,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:overview -->
 ## Overview
 
 | Attribute | Value |
@@ -32,7 +31,6 @@ contextType: "implementation"
 
 ---
 
-<!-- /ANCHOR:overview -->
 
 
 <!-- ANCHOR:consolidation-summary -->
@@ -256,7 +254,8 @@ ls -la .claude/agents/  # 7 symlinks
 
 
 <!-- ANCHOR:lessons-learned -->
-## Lessons Learned
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
 1. **Parallel dispatch accelerates work**: 10+ agents in parallel significantly speeds implementation
 2. **Verification timing matters**: Run verification after implementation, not in parallel
@@ -270,6 +269,7 @@ ls -la .claude/agents/  # 7 symlinks
 
 
 <!-- ANCHOR:sign-off -->
+<!-- /ANCHOR:decisions -->
 ## Sign-Off
 
 | Role | Status | Date |
@@ -291,3 +291,10 @@ Status: Complete
 -->
 
 <!-- /ANCHOR:sign-off -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

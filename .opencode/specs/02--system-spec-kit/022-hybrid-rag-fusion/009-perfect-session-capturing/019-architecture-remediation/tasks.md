@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Architecture Remediation Deep Dive [template:level_3/tasks.md]"
+title: "Tasks: [02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/tasks]"
 description: "Task breakdown for 15-agent architecture audit of the perfect-session-capturing subsystem."
 trigger_phrases:
   - "019 tasks"

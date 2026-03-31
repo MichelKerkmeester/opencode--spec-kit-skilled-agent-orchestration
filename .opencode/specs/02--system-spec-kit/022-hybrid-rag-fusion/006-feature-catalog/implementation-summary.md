@@ -1,5 +1,14 @@
 ---
-title: "Implementation Summary: Feature Catalog Audit & Remediation"
+title: "Implementation Summary: Feature [02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/implementation-summary]"
+description: "title: \"Implementation Summary: Feature Catalog Audit & Remediation\""
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "feature"
+  - "implementation summary"
+  - "006"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Summary: Feature Catalog Audit & Remediation
 

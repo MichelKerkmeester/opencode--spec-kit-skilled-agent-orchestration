@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Post-Release Refinement 1 [046-post-release-refinement-1/tasks]"
+title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/tasks]"
 description: "Description"
 trigger_phrases:
   - "task"
@@ -47,6 +47,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
 ## PHASE 1: CRITICAL BUG FIXES (P0)
 
 ### C1: Fix Duplicate Entries on Checkpoint Restore
@@ -242,8 +243,10 @@ recordValidation(memoryId, wasUseful) {
 - [ ] No lost updates under load
 - [ ] Transaction properly rolls back on error
 
+<!-- /ANCHOR:phase-1 -->
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## PHASE 2: HIGH SEVERITY BUG FIXES (P1)
 
 ### H1: Create Missing Validation Scripts
@@ -571,8 +574,10 @@ Both timeout and other Botpoison errors silently return null without logging.
 - [ ] Form submission continues (graceful degradation)
 - [ ] Errors can be monitored in production
 
+<!-- /ANCHOR:phase-2 -->
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## PHASE 3: MEDIUM SEVERITY BUG FIXES (P1/P2)
 
 ### M1: Fix Step Count Mismatch
@@ -724,6 +729,7 @@ fi
 | M19 | Add migration versioning | vector-index.js | 2h |
 | M20 | Add Code Mode tools to mcp-narsil | mcp-narsil/SKILL.md | 30m |
 
+<!-- /ANCHOR:phase-3 -->
 ---
 
 ## PHASE 4: LOW SEVERITY TASKS (P2/P3)

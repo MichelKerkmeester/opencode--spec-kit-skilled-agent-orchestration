@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [008-codex-system-wide-audit/implementation-summary]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/008-codex-system-wide-audit/implementation-summary]"
 description: "This session completed the runtime remediation backlog captured in spec 125 and closed verification tasks across shell and MCP layers."
 trigger_phrases:
   - "implementation"
@@ -92,3 +92,10 @@ Known residual observations (non-blocking):
 ## Next Steps
 
 1. If desired, open a focused follow-up spec to eliminate current `validate.sh` warning-only debt in 121/124.
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

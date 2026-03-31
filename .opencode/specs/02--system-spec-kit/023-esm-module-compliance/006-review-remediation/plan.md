@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Deep Review Remediation"
+title: "Implementation Plan: Deep Review Remediation [02--system-spec-kit/023-esm-module-compliance/006-review-remediation/plan]"
 description: "Ordered implementation plan for fixing all 18 findings from the 10-iteration deep review, grouped by workstream with dependency ordering."
 trigger_phrases:
   - "remediation plan"
   - "review fix plan"
   - "023 phase 6 plan"
-importance_tier: "standard"
-contextType: "architecture"
+importance_tier: "important"
+contextType: "decision"
 ---
 # Implementation Plan: Deep Review Remediation
 
@@ -222,6 +222,7 @@ Fix all 18 findings from the deep review in dependency order: runtime correctnes
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -233,8 +234,10 @@ Phase D (performance)┘
 
 Phases A-D are independently implementable but must all complete before Phase E (docs) can truth-sync.
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -246,3 +249,4 @@ Phases A-D are independently implementable but must all complete before Phase E 
 | E: Documentation truth-sync | Low | 1-2h |
 | F: Final verification | Low | 1h |
 | **Total** | **Medium** | **10-16h** |
+<!-- /ANCHOR:effort -->

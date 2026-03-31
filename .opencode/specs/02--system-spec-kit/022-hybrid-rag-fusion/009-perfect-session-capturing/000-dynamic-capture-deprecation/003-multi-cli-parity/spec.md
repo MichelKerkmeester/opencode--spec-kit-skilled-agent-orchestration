@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Multi-CLI Parity Hardening"
+title: "...ec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/spec]"
 description: "Re-open phase 016 to prove the shipped multi-CLI parity behavior with direct regression coverage and bring the phase docs back into Level 2 compliance."
 trigger_phrases:
   - "multi-cli parity"
@@ -139,6 +139,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 N/A. This phase adds regression tests and documentation only. No new runtime performance, scalability, or availability requirements apply.
@@ -147,6 +148,7 @@ N/A. This phase adds regression tests and documentation only. No new runtime per
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## 8. L2: EDGE CASES
 
 N/A. Edge case handling is covered by the test assertions themselves (empty XML wrappers, low-signal exchanges, empty next-steps arrays).

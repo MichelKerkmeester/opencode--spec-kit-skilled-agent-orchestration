@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Comprehensive Script Audit [004-script-audit-comprehensive/implementation-summary]"
+title: "Implementation Summary: [02--system-spec-kit/z_archive/004-script-audit-comprehensive/implementation-summary]"
 description: "Status: Audit Complete — Remediation Pending"
 trigger_phrases:
   - "implementation"
@@ -170,7 +170,7 @@ Ten independent review agents evaluated 30 audit shards (10 context + 10 build +
 ---
 
 <!-- ANCHOR:decisions -->
-## LESSONS LEARNED
+## Key Decisions
 
 ### What Worked Well
 
@@ -276,3 +276,10 @@ Ten independent review agents evaluated 30 audit shards (10 context + 10 build +
 Implementation summary completed after audit synthesis.
 Remediation phase tracked in tasks.md T033-T036.
 -->
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+No known limitations.
+<!-- /ANCHOR:limitations -->

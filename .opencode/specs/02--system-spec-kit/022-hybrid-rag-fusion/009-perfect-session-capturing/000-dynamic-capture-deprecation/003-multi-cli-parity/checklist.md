@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Multi-CLI Parity Hardening"
+title: "...t/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/checklist]"
 description: "Verification Date: 2026-03-17"
 trigger_phrases:
   - "phase 016 checklist"

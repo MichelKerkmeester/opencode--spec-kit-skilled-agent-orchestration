@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: JSON Mode Hybrid Enrichment (Phase 1B)"
+title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/plan]"
 description: "This corrected plan reflects the narrower phase-016 scope that actually shipped: structured JSON summary support, downstream hardening, and documentation alignment rather than a dedicated file-backed hybrid enrichment branch."
 trigger_phrases:
   - "implementation"
@@ -176,6 +176,7 @@ The caller submits structured JSON data. The shared contract accepts richer summ
 ---
 
 <!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -193,6 +194,7 @@ Types ───► Structured JSON Contract ───► Wave 2 Hardening ──
 ---
 
 <!-- ANCHOR:effort -->
+<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |

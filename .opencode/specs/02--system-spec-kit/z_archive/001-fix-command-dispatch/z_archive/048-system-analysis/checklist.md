@@ -1,5 +1,5 @@
 ---
-title: "QA Validation Checklist: SpecKit & Memory System Remediation [048-system-analysis/checklist]"
+title: "QA Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/checklist]"
 description: "cp .opencode/skill/system-spec-kit/database/context-index.sqlite \\\\\\\\"
 trigger_phrases:
   - "validation"
@@ -44,6 +44,7 @@ contextType: "implementation"
 ---
 
 <!-- /ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation Checks
 
 - [ ] **CHK-PRE-001**: Git branch created for changes (`git checkout -b fix/048-system-remediation`)
@@ -59,6 +60,7 @@ contextType: "implementation"
 - [ ] **CHK-PRE-007**: Constitutional memories surface at top
 - [ ] **CHK-PRE-008**: Performance baseline recorded (search latency, embedding time)
 
+<!-- /ANCHOR:pre-impl -->
 ---
 
 ## Work Stream 1: MCP Server Core
@@ -112,6 +114,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Work Stream 5: Documentation Alignment
 
 ### SKILL.md
@@ -137,6 +140,7 @@ contextType: "implementation"
 - [ ] **CHK-WS5-012**: Template guide notes templates are "aspirational"
 - [ ] **CHK-WS5-013**: AGENTS.md and SKILL.md terminology aligned
 
+<!-- /ANCHOR:docs -->
 ---
 
 ## Work Stream 6: Memory Files & Anchors
@@ -157,6 +161,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:security -->
 ## Work Stream 8: Security & Config
 
 - [ ] **CHK-WS8-001**: `.env.example` created with all expected variables
@@ -166,6 +171,7 @@ contextType: "implementation"
 - [ ] **CHK-WS8-005**: `search-weights.json` version = 16.0.0
 - [ ] **CHK-WS8-006**: Version aligned with parent package
 
+<!-- /ANCHOR:security -->
 ---
 
 ## Work Stream 9: UX Improvements
@@ -179,6 +185,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:testing -->
 ## Integration Testing
 
 - [ ] **CHK-INT-001**: Memory save operation succeeds
@@ -193,8 +200,10 @@ contextType: "implementation"
 - [ ] **CHK-INT-010**: Constitutional memories always appear at top
 - [ ] **CHK-INT-011**: All /spec_kit:* commands execute without error
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:testing -->
 ## Regression Testing
 
 - [ ] **CHK-REG-001**: Existing memory files still indexed correctly
@@ -208,6 +217,7 @@ contextType: "implementation"
 - [ ] **CHK-REG-009**: No new console errors or warnings
 - [ ] **CHK-REG-010**: Database integrity check passes
 
+<!-- /ANCHOR:testing -->
 ---
 
 ## Final Verification

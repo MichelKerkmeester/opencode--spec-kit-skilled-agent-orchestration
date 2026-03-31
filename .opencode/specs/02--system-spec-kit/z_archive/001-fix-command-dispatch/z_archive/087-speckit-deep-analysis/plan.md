@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/plan]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/plan]"
 description: "Fix 3 critical bugs (SQL constraint, ghost tools, stale references), 15+ moderate misalignments (gate numbering, thresholds, missing commands), and perform ecosystem-wide AGENTS..."
 trigger_phrases:
   - "implementation"
@@ -37,6 +37,7 @@ Fix 3 critical bugs (SQL constraint, ghost tools, stale references), 15+ moderat
 ---
 
 <!-- /ANCHOR:summary -->
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -49,8 +50,10 @@ Fix 3 critical bugs (SQL constraint, ghost tools, stale references), 15+ moderat
 - [x] Verification tests passing
 - [x] Docs updated (spec/plan/tasks)
 
+<!-- /ANCHOR:quality-gates -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -68,8 +71,10 @@ Multi-file documentation and code remediation across a symlinked framework direc
 Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Moderate) → Verification
 ```
 
+<!-- /ANCHOR:architecture -->
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 0: Spec Folder Creation
@@ -112,8 +117,10 @@ Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Mo
 - [x] skill_advisor.py "save memory context" -> 0.95 confidence (passes 0.8)
 - [x] skill_advisor.py "debug this issue" -> below threshold (correct)
 
+<!-- /ANCHOR:phases -->
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -122,8 +129,10 @@ Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Mo
 | Threshold test | skill_advisor.py | CLI invocation |
 | Negative test | No false routing | CLI invocation |
 
+<!-- /ANCHOR:testing -->
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -131,15 +140,19 @@ Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Mo
 | .opencode symlink | Internal | Green | Cannot edit framework files |
 | Existing SQLite databases | Internal | Yellow | Old DBs keep old constraint |
 
+<!-- /ANCHOR:dependencies -->
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Any file modification causes framework breakage
 - **Procedure**: `git checkout` in Public repo to revert all .opencode changes
 
+<!-- /ANCHOR:rollback -->
 ---
 
+<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 ### ADR-001: Standardize on SKILL.md Section 4 for Template Counts
@@ -180,6 +193,7 @@ Analysis Reports → Prioritized Bug List → Phase 1 (Critical) → Phase 2 (Mo
 - Negative: Memories from different projects share one database
 - Mitigation: Note in opencode.json explains how to enable project isolation
 
+<!-- /ANCHOR:architecture -->
 ---
 
 ## L3+: AI EXECUTION FRAMEWORK

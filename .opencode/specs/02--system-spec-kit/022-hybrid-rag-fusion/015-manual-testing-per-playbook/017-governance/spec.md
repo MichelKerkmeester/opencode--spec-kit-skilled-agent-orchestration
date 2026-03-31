@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook governance phase [template:level_2/spec.md]"
+title: "Feature Specification: [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance/spec]"
 description: "Phase 017 documents the governance manual test packet for the Spec Kit Memory system. It isolates five governance scenarios from the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "governance manual testing"
   - "phase 017 governance"
   - "feature flag governance tests"
   - "hybrid rag governance playbook"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook governance phase
@@ -152,6 +152,7 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 ---
 
 <!-- ANCHOR:nfr -->
+<!-- ANCHOR:requirements -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -168,6 +169,7 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 ---
 
 <!-- ANCHOR:edge-cases -->
+<!-- /ANCHOR:requirements -->
 ## L2: EDGE CASES
 
 ### Data Boundaries

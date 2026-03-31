@@ -1,3 +1,15 @@
+---
+title: "Plan: Phase 011 — Compaction Working-Set [02--system-spec-kit/024-compact-code-graph/011-compaction-working-set/plan]"
+description: "1. Implement working-set-tracker.ts"
+trigger_phrases:
+  - "plan"
+  - "phase"
+  - "011"
+  - "compaction"
+  - "working"
+importance_tier: "important"
+contextType: "decision"
+---
 # Plan: Phase 011 — Compaction Working-Set Integration
 
 ## Steps
@@ -41,12 +53,14 @@
    - Verify cached compact brief has all sections
    - Verify total token count ≤ 4000
 
+<!-- ANCHOR:dependencies -->
 ## Dependencies
 
 - Phase 001 hook-state for session state storage
 - Phase 008-010 for code graph structural context
 - CocoIndex Code MCP for semantic search
 - Existing `autoSurfaceAtCompaction` in memory-surface.ts
+<!-- /ANCHOR:dependencies -->
 
 ## Risk Mitigation
 

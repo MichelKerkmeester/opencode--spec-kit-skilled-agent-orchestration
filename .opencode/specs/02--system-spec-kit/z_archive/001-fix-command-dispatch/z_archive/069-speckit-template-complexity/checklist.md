@@ -1,5 +1,5 @@
 ---
-title: "Validation Checklist: Level-Based Template Architecture [069-speckit-template-complexity/checklist]"
+title: "Validation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/checklist]"
 description: "Verification items for complexity detection and level-based template folder implementation."
 trigger_phrases:
   - "validation"
@@ -158,6 +158,7 @@ Verify that the complexity detection and level-based template folder system meet
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 4. VERIFICATION PROTOCOL
 
 ### Priority Enforcement
@@ -177,8 +178,10 @@ When marking items complete, include evidence:
 - [x] CHK011 [P0] Scorers implemented | Evidence: All 5 scorers in lib/complexity/scorers/
 ```
 
+<!-- /ANCHOR:protocol -->
 ---
 
+<!-- ANCHOR:summary -->
 ## 5. VERIFICATION SUMMARY
 
 **Status**: Complete
@@ -198,6 +201,7 @@ When marking items complete, include evidence:
 | Code Quality | 0/0 | 2/2 | 2/2 | 4/4 |
 | **Total** | **24/24** | **21/21** | **7/7** | **52/52** |
 
+<!-- /ANCHOR:summary -->
 ---
 
 ## 6. SIGN-OFF

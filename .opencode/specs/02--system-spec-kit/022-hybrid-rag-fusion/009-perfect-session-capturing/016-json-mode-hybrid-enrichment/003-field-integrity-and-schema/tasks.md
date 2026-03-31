@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Field Integrity and Schema Validation"
+title: "...hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "field integrity tasks"
   - "schema validation tasks"
-  - "filesModified fast-path task"
+  - "filesmodified fast-path task"
   - "unknown-field warning task"
-  - "contextType validation task"
+  - "contexttype validation task"
 importance_tier: "important"
 contextType: "implementation"
 ---

@@ -30,6 +30,7 @@ Six requirements span traversal policy, lifecycle management, enrichment, calibr
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 2. Requirements
 
 ### REQ-D3-001: Sparse-First Graph Policy
@@ -186,8 +187,10 @@ if (component.density > threshold && size > minSize) {
 }
 ```
 
+<!-- /ANCHOR:requirements -->
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 3. Success Criteria
 
 | Criterion                     | Target                                              |
@@ -198,6 +201,7 @@ if (component.density > threshold && size > minSize) {
 | Deterministic enrichment      | All save-time extractions reproducible without LLM   |
 | Calibration coverage          | Ablation results available per intent category       |
 
+<!-- /ANCHOR:success-criteria -->
 ---
 
 ## 4. Risks

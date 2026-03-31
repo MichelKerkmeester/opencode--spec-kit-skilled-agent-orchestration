@@ -1,5 +1,5 @@
 ---
-title: "Spec-Kit Comprehensive Alignment Fix [024-comprehensive-alignment-fix/spec]"
+title: "Spec-Kit Compreh [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/spec]"
 description: "A comprehensive audit identified 49 issues across the Spec-Kit command/skill ecosystem. These issues fall into categories of"
 trigger_phrases:
   - "spec"
@@ -32,6 +32,7 @@ This spec addresses the **16 prioritized fixes** organized by severity:
 - **P2 Medium**: 4 issues (quality improvements)
 
 <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:scope -->
 ## Scope
 
 ### In Scope
@@ -65,7 +66,9 @@ This spec addresses the **16 prioritized fixes** organized by severity:
 - Refactoring beyond what's needed for fixes
 - Performance optimizations
 - UI/UX improvements
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:success-criteria -->
 ## Success Criteria
 
 - [ ] All 4 P0 issues resolved and verified
@@ -75,6 +78,7 @@ This spec addresses the **16 prioritized fixes** organized by severity:
 - [ ] AGENTS.md accurately reflects current system
 - [ ] Templates match actual folder structures
 - [ ] No documentation contradictions remain
+<!-- /ANCHOR:success-criteria -->
 
 ## References
 

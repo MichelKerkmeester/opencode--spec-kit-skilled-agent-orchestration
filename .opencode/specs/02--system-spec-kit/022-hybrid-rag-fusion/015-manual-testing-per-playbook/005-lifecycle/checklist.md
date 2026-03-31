@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook lifecycle phase"
+title: "Verification [02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle/checklist]"
 description: "Verification checklist for Phase 005 lifecycle scenarios EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144. All items unchecked — pending execution."
 trigger_phrases:
   - "lifecycle checklist"

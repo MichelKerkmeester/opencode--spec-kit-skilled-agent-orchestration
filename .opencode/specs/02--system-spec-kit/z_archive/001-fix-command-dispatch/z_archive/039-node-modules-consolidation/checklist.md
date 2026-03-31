@@ -1,5 +1,5 @@
 ---
-title: "Completion Checklist [039-node-modules-consolidation/checklist]"
+title: "Completion [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/checklist]"
 description: "id: 039-node-modules-consolidation"
 trigger_phrases:
   - "completion"
@@ -15,6 +15,7 @@ level: 2
 # Completion Checklist
 
 <!-- ANCHOR:protocol -->
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] **PRE.1**: Current MCP server works
@@ -27,6 +28,7 @@ level: 2
   - **Total before: 1.878GB**
 
 <!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:pre-impl -->
 ## Implementation
 
 - [x] **IMPL.1**: Root package.json created with workspaces config
