@@ -33,8 +33,8 @@ contextType: "implementation"
 ## P2 — Nice to Have
 
 - [x] `ccc_status` MCP tool returns index stats — handlers/code-graph/ccc-status.ts
-- [ ] `ccc_reindex` MCP tool triggers incremental re-index
-- [ ] `ccc_feedback` MCP tool accepts result quality feedback
+- [x] `ccc_reindex` MCP tool triggers incremental re-index — handlers/code-graph/ccc-reindex.ts
+- [x] `ccc_feedback` MCP tool accepts result quality feedback — handlers/code-graph/ccc-feedback.ts
 - [ ] SessionStart auto-detects stale index (>24h) and triggers background re-index
 - [ ] Freshness strategy documented in search_patterns.md
 - [ ] Agent routing tests validate CocoIndex-first behavior
