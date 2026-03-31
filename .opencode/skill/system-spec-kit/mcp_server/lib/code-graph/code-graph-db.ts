@@ -73,7 +73,7 @@ export function initDb(dbDir: string): Database.Database {
 
   dbPath = join(dbDir, 'code-graph.sqlite');
   db = new Database(dbPath);
-  db.pragma('journal_mode = WAL');
+  db.pragma('journal_mode = WAL'); // WAL enables concurrent readers without locks
   db.pragma('foreign_keys = ON');
   db.exec(SCHEMA_SQL);
   return db;
@@ -325,4 +325,14 @@ function rowToEdge(r: Record<string, unknown>): CodeEdge {
     weight: r.weight as number,
     metadata: r.metadata ? JSON.parse(r.metadata as string) : undefined,
   };
+}
+
+/** Compute token usage ratio (completion / total) for budget allocator consumption */
+export function getTokenUsageRatio(
+  sessionMetrics: { estimatedPromptTokens: number; estimatedCompletionTokens: number } | null,
+): number {
+  if (!sessionMetrics) return 0;
+  const total = sessionMetrics.estimatedPromptTokens + sessionMetrics.estimatedCompletionTokens;
+  if (total === 0) return 0;
+  return sessionMetrics.estimatedCompletionTokens / total;
 }

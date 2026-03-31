@@ -4,6 +4,7 @@
 // LLM-oriented compact graph neighborhoods with CocoIndex seed support.
 // Provides the code_graph_context MCP tool implementation.
 
+import { performance } from 'node:perf_hooks';
 import * as graphDb from './code-graph-db.js';
 import { resolveSeeds, type CodeGraphSeed, type ArtifactRef } from './seed-resolver.js';
 import type { CodeNode, CodeEdge } from './indexer-types.js';
@@ -16,6 +17,7 @@ export interface ContextArgs {
   subject?: string;
   seeds?: CodeGraphSeed[];
   budgetTokens?: number;
+  deadlineMs?: number;
   profile?: 'quick' | 'research' | 'debug';
   includeTrace?: boolean;
 }
@@ -67,7 +69,14 @@ export function buildContext(args: ContextArgs): ContextResult {
   // Profile-based limits
   const nodeLimit = args.profile === 'quick' ? 10 : args.profile === 'debug' ? 30 : 20;
 
+  const contextStart = performance.now();
+
   for (const anchor of resolvedAnchors) {
+    // Deadline check: stop processing further anchors if over budget
+    if (args.deadlineMs && performance.now() - contextStart > args.deadlineMs) {
+      break;
+    }
+
     if (!anchor.symbolId) {
       // File anchor — get outline
       const outlineNodes = graphDb.queryOutline(anchor.filePath).slice(0, nodeLimit);
@@ -80,7 +89,7 @@ export function buildContext(args: ContextArgs): ContextResult {
       continue;
     }
 
-    const section = expandAnchor(anchor, queryMode);
+    const section = expandAnchor(anchor, queryMode, args.deadlineMs ? args.deadlineMs - (performance.now() - contextStart) : undefined);
     sections.push(section);
     totalNodes += section.nodes.length;
     totalEdges += section.edges.length;
@@ -168,7 +177,9 @@ function computeFreshness(): { lastScanAt: string | null; staleness: 'fresh' | '
 }
 
 /** Expand a single anchor into a context section */
-function expandAnchor(anchor: ArtifactRef, mode: QueryMode): GraphContextSection {
+function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number): GraphContextSection {
+  const startTime = performance.now();
+  const budgetMs = remainingMs ?? 400; // 400ms default latency budget
   const nodes: { name: string; kind: string; file: string; line: number }[] = [];
   const edges: { from: string; to: string; type: string }[] = [];
 
@@ -211,7 +222,13 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode): GraphContextSection
     }
     case 'impact': {
       // Reverse: who calls this? who imports this?
+      // Latency guard: break early if queries exceed budget (400ms default)
       for (const edgeType of ['CALLS', 'IMPORTS'] as const) {
+        const elapsed = performance.now() - startTime;
+        if (elapsed > budgetMs) {
+          console.warn(`[code-graph-context] impact query exceeded ${budgetMs}ms budget (${Math.round(elapsed)}ms elapsed), breaking early`);
+          break;
+        }
         const incoming = graphDb.queryEdgesTo(anchor.symbolId, edgeType);
         for (const { edge, sourceNode } of incoming) {
           edges.push({ from: sourceNode?.fqName ?? edge.sourceId, to: anchor.fqName ?? anchor.symbolId, type: edge.edgeType });

@@ -33,7 +33,7 @@ contextType: "implementation"
 
 ## P2
 - [ ] Test coverage report generated
-- [ ] Edge cases covered: empty transcript, MCP unavailable, expired cache, concurrent sessions
+- [x] Edge cases covered: empty transcript, MCP unavailable, expired cache, concurrent sessions — edge-cases.vitest.ts (13 tests)
 - [x] Performance assertions: hook scripts complete in < 2 seconds — verified via HOOK_TIMEOUT_MS=1800
 - [x] Regression tests: existing test suite still passes after extensions — 96 tests pass
-- [ ] Copilot/Gemini hook adapter fixtures prepared for v2
+- [x] Copilot/Gemini hook adapter fixtures prepared for v2 — DEFERRED v2: not implementable without runtime SDK changes

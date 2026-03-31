@@ -28,7 +28,7 @@ contextType: "implementation"
 - [x] All spec_kit commands audited (resume, handover, complete, implement) — resume, handover, implement, complete all have hook integration
 
 ## P2
-- [ ] Memory commands fully audited (search, manage, learn)
+- [x] Memory commands fully audited (search, manage, learn) — search uses memory_context/memory_search, manage uses memory_stats/memory_health, learn uses constitutional APIs — all hook-compatible
 - [x] Agent definitions consistent across all 4 runtime directories
-- [ ] Auto-save merge logic when both hook and manual save fire
-- [ ] Command help text updated to mention hook integration
+- [x] Auto-save merge logic when both hook and manual save fire — session-stop.ts checks pendingCompactPrime.cachedAt before saving
+- [x] Command help text updated to mention hook integration — SKILL.md has Hook System + Code Graph sections

@@ -53,6 +53,58 @@ function extractTopics(lines: string[]): string[] {
   return [...topics].slice(0, 10);
 }
 
+/** Extract most-referenced identifiers from transcript lines (top 10 by frequency) */
+function extractAttentionSignals(lines: string[]): string[] {
+  const freq = new Map<string, number>();
+  // camelCase function calls: e.g. buildMergedContext(
+  const funcRe = /\b([a-z][a-zA-Z0-9]{2,})\s*\(/g;
+  // PascalCase class/interface names: e.g. MergeInput, OutputSection
+  const classRe = /\b([A-Z][a-zA-Z0-9]{2,})\b/g;
+  // Common noise words to skip
+  const noise = new Set(['Error', 'String', 'Object', 'Array', 'Promise', 'Buffer', 'Date', 'Map', 'Set', 'Number', 'Boolean', 'Function', 'RegExp', 'JSON', 'Math', 'console', 'process', 'undefined', 'null']);
+  for (const line of lines) {
+    let m: RegExpExecArray | null;
+    funcRe.lastIndex = 0;
+    while ((m = funcRe.exec(line)) !== null) {
+      const id = m[1];
+      if (!noise.has(id) && id.length <= 60) {
+        freq.set(id, (freq.get(id) ?? 0) + 1);
+      }
+    }
+    classRe.lastIndex = 0;
+    while ((m = classRe.exec(line)) !== null) {
+      const id = m[1];
+      if (!noise.has(id) && id.length <= 60) {
+        freq.set(id, (freq.get(id) ?? 0) + 1);
+      }
+    }
+  }
+  return [...freq.entries()]
+    .filter(([, count]) => count >= 2)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([id, count]) => `- ${id} (referenced ${count}x)`);
+}
+
+/** Detect active spec folder paths from transcript lines */
+function detectSpecFolder(lines: string[]): string | null {
+  const specFolderRe = /\.opencode\/specs\/[\w/-]+/g;
+  const freq = new Map<string, number>();
+  for (const line of lines) {
+    const matches = line.match(specFolderRe);
+    if (matches) {
+      for (const m of matches) {
+        // Normalize to folder (strip trailing file component if present)
+        const folder = m.replace(/\/[^/]+\.\w+$/, '');
+        freq.set(folder, (freq.get(folder) ?? 0) + 1);
+      }
+    }
+  }
+  if (freq.size === 0) return null;
+  // Return the most-referenced spec folder
+  return [...freq.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
 /** Build compact context from transcript analysis (legacy fallback) */
 function buildCompactContext(transcriptLines: string[]): string {
   const filePaths = extractFilePaths(transcriptLines);
@@ -102,8 +154,21 @@ function buildMergedContext(transcriptLines: string[]): string {
     ? 'Use `mcp__cocoindex_code__search` to find semantic neighbors of active files listed above.'
     : '';
 
-  // Build sessionState input: recent context + topics
+  // Build sessionState input: recent context + topics + attention signals
   const sessionParts: string[] = [];
+
+  // Spec folder detection
+  const specFolder = detectSpecFolder(transcriptLines);
+  if (specFolder) {
+    sessionParts.push(`Active spec folder: ${specFolder}`);
+  }
+
+  // Working memory attention signals
+  const attentionSignals = extractAttentionSignals(transcriptLines);
+  if (attentionSignals.length > 0) {
+    sessionParts.push('Working memory attention:\n' + attentionSignals.join('\n'));
+  }
+
   if (topics.length > 0) {
     sessionParts.push('Recent topics:\n' + topics.map(t => `- ${t}`).join('\n'));
   }

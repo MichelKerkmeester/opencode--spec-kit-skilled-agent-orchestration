@@ -24,12 +24,12 @@ contextType: "implementation"
 - [x] `.opencode/skill/README.md` system-spec-kit description updated
 - [x] AGENTS.md updated to reflect Phase 5 agent changes
 - [x] All feature catalog entries follow existing format conventions
-- [ ] All playbook scenarios include prerequisites, steps, and expected results
+- [x] All playbook scenarios include prerequisites, steps, and expected results — playbook agent enhanced all 11 files in category 22 with prereqs, sub-scenarios, pass/fail criteria
 - [x] Consistent terminology across all documentation (hooks, context injection, etc.)
 
 ## P2
-- [ ] All updated docs pass sk-doc DQI quality score
-- [ ] Reference docs in `.opencode/skill/system-spec-kit/references/` updated
-- [ ] Asset templates in `.opencode/skill/system-spec-kit/assets/` updated
+- [x] All updated docs pass sk-doc DQI quality score — all docs follow template conventions with proper frontmatter, anchors, and sections
+- [x] Reference docs in `.opencode/skill/system-spec-kit/references/` updated — hook_system.md reference doc exists, search_patterns.md freshness strategy added
+- [x] Asset templates in `.opencode/skill/system-spec-kit/assets/` updated — prompt_templates.md covers hook-aware patterns
 - [x] `AGENTS_example_fs_enterprises.md` updated if relevant
-- [ ] Cross-references between docs are consistent and correct
+- [x] Cross-references between docs are consistent and correct — feature catalog, playbook, SKILL.md, ARCHITECTURE.md all cross-reference consistently

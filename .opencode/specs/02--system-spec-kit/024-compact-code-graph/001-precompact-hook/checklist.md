@@ -28,5 +28,5 @@ contextType: "implementation"
 - [x] Error logging for debugging (stderr, not stdout)
 
 ## P2
-- [ ] Working memory attention signals included in context extraction
+- [x] Working memory attention signals included in context extraction — extractAttentionSignals() in compact-inject.ts scans for camelCase/PascalCase identifiers
 - [x] Hook output format matches CLAUDE.md compaction recovery expectations

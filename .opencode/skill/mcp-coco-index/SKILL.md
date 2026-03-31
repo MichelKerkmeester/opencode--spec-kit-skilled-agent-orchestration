@@ -452,11 +452,16 @@ bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh [--json] [--refresh-
 
 ### MCP Tool Summary
 
-Only `search` is exposed as an MCP tool. Use CLI commands for `status`, `index`, and `reset`.
+The CocoIndex MCP server exposes `search` as its primary tool. Additionally, 3 management tools are available via the Spec Kit Memory MCP server's code graph module:
 
-| Tool     | Description                    | Key Parameters                                                                  |
-| -------- | ------------------------------ | ------------------------------------------------------------------------------- |
-| `search` | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default True) |
+| Tool     | Server | Description                    | Key Parameters                                                                  |
+| -------- | ------ | ------------------------------ | ------------------------------------------------------------------------------- |
+| `search` | CocoIndex | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default false) |
+| `ccc_status` | Spec Kit Memory | Check CocoIndex availability and index stats | none |
+| `ccc_reindex` | Spec Kit Memory | Trigger incremental or full re-indexing | `full` (bool, default false) |
+| `ccc_feedback` | Spec Kit Memory | Submit search result quality feedback | `query` (str), `rating` (helpful\|not_helpful\|partial), `comment` (str, optional) |
+
+> **Note**: `refresh_index` defaults to `false` to avoid `ComponentContext` errors. The index refreshes automatically on first query per session.
 
 ### Supported Languages
 

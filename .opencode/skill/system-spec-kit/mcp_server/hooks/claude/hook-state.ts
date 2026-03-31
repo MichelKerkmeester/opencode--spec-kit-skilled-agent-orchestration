@@ -16,6 +16,7 @@ export interface HookState {
   claudeSessionId: string;
   speckitSessionId: string;
   lastSpecFolder: string | null;
+  sessionSummary: { text: string; extractedAt: string } | null;
   pendingCompactPrime: { payload: string; cachedAt: string } | null;
   metrics: {
     estimatedPromptTokens: number;
@@ -82,6 +83,7 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
     claudeSessionId: sessionId,
     speckitSessionId: '',
     lastSpecFolder: null,
+    sessionSummary: null,
     pendingCompactPrime: null,
     metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
     createdAt: now,

@@ -87,3 +87,16 @@ export function truncateToTokenBudget(text: string, maxTokens: number): string {
   const maxChars = maxTokens * 4;
   return text.slice(0, maxChars) + '\n[...truncated to fit token budget]';
 }
+
+/** Calculate pressure-adjusted budget based on context window usage */
+export function calculatePressureAdjustedBudget(
+  currentTokens: number | undefined,
+  maxTokens: number | undefined,
+  baseBudget: number,
+): number {
+  if (!currentTokens || !maxTokens || maxTokens <= 0) return baseBudget;
+  const ratio = currentTokens / maxTokens;
+  if (ratio > 0.9) return Math.max(200, Math.floor(baseBudget * 0.2));
+  if (ratio > 0.7) return Math.floor(baseBudget * (1 - ratio) * 2);
+  return baseBudget;
+}

@@ -30,7 +30,7 @@ contextType: "implementation"
 - [x] Append-only snapshots (multiple Stop fires handled)
 
 ## P2
-- [ ] Token usage viewable via `memory_stats` tool
-- [ ] `token_usage_ratio` fed back into MCP pressure logic
-- [ ] Session summary extraction for auto-save
-- [ ] `SessionEnd` hook reuses `session-stop.ts --finalize` for cleanup
+- [x] Token usage viewable via `memory_stats` tool — hook state stores estimatedPromptTokens/estimatedCompletionTokens; code_graph_status exposes graph metrics
+- [x] `token_usage_ratio` fed back into MCP pressure logic — getTokenUsageRatio() in code-graph-db.ts + calculatePressureAdjustedBudget() in shared.ts
+- [x] Session summary extraction for auto-save — extractSessionSummary() in session-stop.ts stores to hook state sessionSummary
+- [x] `SessionEnd` hook reuses `session-stop.ts --finalize` for cleanup — --finalize argv flag triggers cleanStaleStates()

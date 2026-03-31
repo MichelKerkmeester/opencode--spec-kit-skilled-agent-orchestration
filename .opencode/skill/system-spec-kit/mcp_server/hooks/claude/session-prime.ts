@@ -10,9 +10,30 @@ import { resolve } from 'node:path';
 import {
   parseHookStdin, hookLog, formatHookOutput, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
-  type OutputSection,
+  type HookInput, type OutputSection,
 } from './shared.js';
 import { ensureStateDir, loadState, updateState } from './hook-state.js';
+
+// Dynamic import for code-graph-db — may not be available
+let getStats: (() => { lastScanTimestamp: string | null; [key: string]: unknown }) | null = null;
+try {
+  const mod = await import('../../lib/code-graph/code-graph-db.js');
+  getStats = mod.getStats;
+} catch {
+  // Code graph module not available — skip stale index detection
+}
+
+/** Calculate token budget adjusted for context window pressure */
+function calculatePressureBudget(input: HookInput, baseBudget: number): number {
+  const usage = input.context_window_tokens as number | undefined;
+  const max = input.context_window_max as number | undefined;
+  if (usage == null || max == null || max <= 0) return baseBudget;
+
+  const ratio = usage / max;
+  if (ratio > 0.9) return 200;
+  if (ratio > 0.7) return Math.max(200, Math.floor(baseBudget * (1 - ratio) * 2));
+  return baseBudget;
+}
 
 /** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
 function handleCompact(sessionId: string): OutputSection[] {
@@ -60,9 +81,9 @@ function checkCocoIndexAvailable(): string {
 }
 
 /** Handle source=startup: prime new session with constitutional memories + overview */
-function handleStartup(): OutputSection[] {
+function handleStartup(sessionId?: string): OutputSection[] {
   const cocoStatus = checkCocoIndexAvailable();
-  return [
+  const sections: OutputSection[] = [
     {
       title: 'Session Priming',
       content: [
@@ -77,6 +98,41 @@ function handleStartup(): OutputSection[] {
       ].join('\n'),
     },
   ];
+
+  // Stale code graph index detection
+  try {
+    if (getStats) {
+      const stats = getStats();
+      const ts = stats.lastScanTimestamp;
+      const isStale = !ts || (Date.now() - new Date(ts).getTime() > 24 * 60 * 60 * 1000);
+      if (isStale) {
+        sections.push({
+          title: 'Stale Code Graph Warning',
+          content: 'Code graph index is >24h old. Run `code_graph_scan` for fresh structural context.',
+        });
+      }
+    }
+  } catch {
+    // DB not initialized or not available — skip silently
+  }
+
+  // Working memory attention signals
+  if (sessionId) {
+    try {
+      const state = loadState(sessionId);
+      const workingSet = (state as Record<string, unknown> | null)?.workingSet;
+      if (workingSet && Array.isArray(workingSet) && workingSet.length > 0) {
+        sections.push({
+          title: 'Working Memory',
+          content: `Recently active files:\n${workingSet.map((f: unknown) => `- ${String(f)}`).join('\n')}`,
+        });
+      }
+    } catch {
+      // No working set data — skip
+    }
+  }
+
+  return sections;
 }
 
 /** Handle source=resume: load resume context for continued session */
@@ -131,7 +187,7 @@ async function main(): Promise<void> {
       budget = COMPACTION_TOKEN_BUDGET;
       break;
     case 'startup':
-      sections = handleStartup();
+      sections = handleStartup(sessionId);
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     case 'resume':
@@ -143,11 +199,17 @@ async function main(): Promise<void> {
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     default:
-      sections = handleStartup();
+      sections = handleStartup(sessionId);
       budget = SESSION_PRIME_TOKEN_BUDGET;
   }
 
-  const output = truncateToTokenBudget(formatHookOutput(sections), budget);
+  // Apply token pressure awareness — reduce budget when context window is filling up
+  const adjustedBudget = calculatePressureBudget(input, budget);
+  if (adjustedBudget !== budget) {
+    hookLog('info', 'session-prime', `Token pressure: budget ${budget} → ${adjustedBudget} (window ${input.context_window_tokens}/${input.context_window_max})`);
+  }
+
+  const output = truncateToTokenBudget(formatHookOutput(sections), adjustedBudget);
 
   // Write to stdout for Claude Code to inject into conversation
   process.stdout.write(output);

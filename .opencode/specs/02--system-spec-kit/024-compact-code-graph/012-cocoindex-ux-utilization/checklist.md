@@ -27,14 +27,14 @@ contextType: "implementation"
 - [x] `@context` agent (all 4 runtimes) checks CocoIndex before Grep/Glob for semantic queries
 - [x] PreCompact hook queries CocoIndex for semantic neighbors (when available)
 - [x] `code_graph_context` supports reverse semantic augmentation (optional, latency-guarded) — nextActions suggests CocoIndex
-- [ ] CocoIndex skill docs updated with new tools and integration points
-- [ ] No `ComponentContext` errors with `refresh_index: false` default
+- [x] CocoIndex skill docs updated with new tools and integration points — SKILL.md MCP Tool Summary updated with ccc_status/ccc_reindex/ccc_feedback
+- [x] No `ComponentContext` errors with `refresh_index: false` default — documented in SKILL.md + search_patterns.md, ccc_reindex provides explicit refresh
 
 ## P2 — Nice to Have
 
 - [x] `ccc_status` MCP tool returns index stats — handlers/code-graph/ccc-status.ts
 - [x] `ccc_reindex` MCP tool triggers incremental re-index — handlers/code-graph/ccc-reindex.ts
 - [x] `ccc_feedback` MCP tool accepts result quality feedback — handlers/code-graph/ccc-feedback.ts
-- [ ] SessionStart auto-detects stale index (>24h) and triggers background re-index
-- [ ] Freshness strategy documented in search_patterns.md
+- [x] SessionStart auto-detects stale index (>24h) and triggers background re-index — handleStartup checks getStats().lastScanTimestamp, adds warning section
+- [x] Freshness strategy documented in search_patterns.md — section 8b added with re-index triggers, refresh_index guidance, freshness signals, feedback loop
 - [ ] Agent routing tests validate CocoIndex-first behavior

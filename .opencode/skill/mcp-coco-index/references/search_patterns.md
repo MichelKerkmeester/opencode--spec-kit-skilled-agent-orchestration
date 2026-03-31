@@ -327,6 +327,50 @@ ccc search "configuration validation"
 ---
 
 <!-- /ANCHOR:common-query-patterns -->
+<!-- ANCHOR:freshness-strategy -->
+## 8b. INDEX FRESHNESS STRATEGY
+
+### When to Re-index
+
+| Condition | Action | Tool |
+|-----------|--------|------|
+| First query in session | Auto-refresh (if `refresh_index: true`) | `search` |
+| Index >24h old | `ccc_status` will report stale; run `ccc_reindex` | `ccc_status`, `ccc_reindex` |
+| After significant code changes | Run `ccc_reindex` for incremental update | `ccc_reindex` |
+| After branch switch | Run `ccc_reindex --full` for complete rebuild | `ccc_reindex` with `full: true` |
+| Search results seem outdated | Check `ccc_status`, then re-index if needed | `ccc_status` |
+
+### refresh_index Parameter
+
+**Default: `false`** — This prevents `ComponentContext` initialization errors that can occur when the index refreshes during a query.
+
+```bash
+# Safe: search without refreshing (recommended)
+ccc search "authentication flow"
+
+# Only refresh when explicitly needed
+ccc search "authentication flow" --refresh-index
+```
+
+### Freshness Signals in Code Graph Context
+
+When using `code_graph_context`, the response includes freshness metadata:
+- `freshness.lastScanAt` — ISO timestamp of last code graph scan
+- `freshness.staleness` — `fresh` (<5min), `recent` (<1h), `stale` (>1h), `unknown`
+
+Use `code_graph_scan` to refresh the structural index, and `ccc_reindex` for the semantic index.
+
+### Quality Feedback Loop
+
+Use `ccc_feedback` to improve search quality over time:
+```json
+{ "query": "retry logic", "rating": "helpful", "resultFile": "src/utils/retry.ts" }
+{ "query": "auth flow", "rating": "not_helpful", "comment": "returned test fixtures instead of implementation" }
+```
+
+Feedback is stored in `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl` for analysis.
+
+<!-- /ANCHOR:freshness-strategy -->
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 

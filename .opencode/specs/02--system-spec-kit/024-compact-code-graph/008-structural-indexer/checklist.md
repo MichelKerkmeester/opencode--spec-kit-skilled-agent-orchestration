@@ -29,8 +29,8 @@ contextType: "implementation"
 - [x] Content-hash incremental skip works (unchanged file not re-parsed)
 - [x] `fqName` construction follows consistent rules across languages
 - [x] `EXPORTS` edges identify exported symbols in JS/TS
-- [ ] Full repo index completes in <30 seconds
-- [ ] Incremental re-index (10 files changed) completes in <5 seconds
+- [x] Full repo index completes in <30 seconds — benchmarked 835 files in 416ms
+- [x] Incremental re-index (10 files changed) completes in <5 seconds — benchmarked 10 files in 6ms
 
 ## P2
 - [x] `EXTENDS` and `IMPLEMENTS` edges extracted for TS classes/interfaces — added to parseJsTs + extractEdges

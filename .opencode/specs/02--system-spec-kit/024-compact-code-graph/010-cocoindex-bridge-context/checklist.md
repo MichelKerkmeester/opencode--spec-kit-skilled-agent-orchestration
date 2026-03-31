@@ -35,7 +35,7 @@ contextType: "implementation"
 
 ## P2
 - [x] Reverse semantic augmentation: graph neighbors → scoped CocoIndex query — nextActions suggests CocoIndex
-- [ ] Latency guard: skip reverse augmentation if <400ms budget remains
+- [x] Latency guard: skip reverse augmentation if <400ms budget remains — expandAnchor checks performance.now() with remainingMs budget, breaks early if exceeded
 - [x] `profile` parameter controls output density (quick/research/debug) — profile parameter in ContextArgs
 - [x] Empty seeds with no subject falls back to outline mode gracefully — buildEmptyFallback()
 - [x] Trace metadata included when `includeTrace: true` — includeTrace parameter supported

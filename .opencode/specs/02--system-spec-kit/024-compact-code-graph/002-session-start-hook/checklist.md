@@ -31,6 +31,6 @@ contextType: "implementation"
 - [x] `/spec_kit:resume` command updated to pass `profile: "resume"` (fix gap from iter 012)
 
 ## P2
-- [ ] Token pressure awareness (reduce output when context window filling)
-- [ ] Spec folder auto-detected from project context
-- [ ] Working memory attention signals included
+- [x] Token pressure awareness (reduce output when context window filling) — calculatePressureBudget() scales budget at >70%/>90% usage
+- [x] Spec folder auto-detected from project context — detectSpecFolder() in compact-inject.ts, lastSpecFolder in hook state
+- [x] Working memory attention signals included — handleStartup loads workingSet from hook state
