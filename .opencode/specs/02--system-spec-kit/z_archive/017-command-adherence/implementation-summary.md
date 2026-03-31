@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [template:level_1/im [02--system-spec-kit/z_archive/017-command-adherence/implementation-summary]"
 description: "Archive normalization summary for Command Adherence."
 trigger_phrases:
   - "017-command-adherence"

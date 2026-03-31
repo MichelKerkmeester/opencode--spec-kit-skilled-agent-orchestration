@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Form Attribute Audit [.opencode/specs/01--anobel.com/z_archive/019-form-attribute-audit/plan]"
+title: "Implementation Plan: Form Attribute Audit [01--anobel.com/z_archive/019-form-attribute-audit/plan]"
 description: "Spec: Form Attribute Audit"
 trigger_phrases:
   - "spec"

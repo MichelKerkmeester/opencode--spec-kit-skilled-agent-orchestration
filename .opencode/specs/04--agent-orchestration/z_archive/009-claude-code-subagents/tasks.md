@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Claude Code Subagents [template:level_1/tasks.md]"
+title: "Tasks: Claude Code Subagents [template:level_1/tasks [04--agent-orchestration/z_archive/009-claude-code-subagents/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

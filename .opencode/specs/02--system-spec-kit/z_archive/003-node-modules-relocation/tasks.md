@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Node Modules Relocation [archive]"
+title: "Tasks: Node Modules Relocation [archive] [02--system-spec-kit/z_archive/003-node-modules-relocation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

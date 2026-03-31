@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Imple [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/implementation-summary]"
 description: "Archive normalization summary for Memory Quality QP 0 4."
 trigger_phrases:
   - "003-memory-quality-qp-0-4"

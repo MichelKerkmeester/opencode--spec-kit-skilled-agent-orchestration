@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Security Vulnerability [01--anobel.com/z_archive/009-security-remediation/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Security Vulnerability Remediation\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "security"
+  - "vulnerability"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Security Vulnerability Remediation"
         description: "Remediation of security vulnerabilities discovered by Narsil MCP security scan."
         trigger_phrases:

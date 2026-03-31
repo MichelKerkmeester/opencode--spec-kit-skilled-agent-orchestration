@@ -3,7 +3,7 @@ title: "Deep Review Report: 011-skill-alignment Alignment with Current Reality"
 description: "5-iteration deep review checking 011-skill-alignment spec folder alignment with current repo state and 021-spec-kit-phase-system conventions."
 trigger_phrases: ["review report", "011 skill alignment review", "deep review 011"]
 importance_tier: "important"
-contextType: "decision"
+contextType: "research"
 ---
 # Deep Review Report: 011-skill-alignment
 

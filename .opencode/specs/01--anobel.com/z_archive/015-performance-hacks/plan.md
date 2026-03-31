@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/plan]"
+title: "Implementation Plan: Specification: Additional Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/plan]"
 description: "Specification: Additional Performance Hacks"
 trigger_phrases:
   - "specification"

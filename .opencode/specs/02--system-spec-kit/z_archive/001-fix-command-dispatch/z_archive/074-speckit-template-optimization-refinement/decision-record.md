@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "074"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: SpecKit Template Optimization Refinement
 

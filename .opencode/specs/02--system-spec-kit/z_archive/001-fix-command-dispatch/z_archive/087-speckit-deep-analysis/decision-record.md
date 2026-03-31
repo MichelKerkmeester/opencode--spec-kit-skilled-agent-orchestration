@@ -11,7 +11,7 @@ trigger_phrases:
   - "087"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: System-Spec-Kit Deep Analysis & Remediation
 

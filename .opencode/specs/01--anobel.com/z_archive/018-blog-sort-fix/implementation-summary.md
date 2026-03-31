@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/018-blog-sort-fix/implementation-summary]"
 description: "Archived implementation summary for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "spec"

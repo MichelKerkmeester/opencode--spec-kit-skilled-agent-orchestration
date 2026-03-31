@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/plan]"
 description: "This merger is a pure file migration with path updates. No functional changes."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "integration"
   - "035"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Memory System Integration

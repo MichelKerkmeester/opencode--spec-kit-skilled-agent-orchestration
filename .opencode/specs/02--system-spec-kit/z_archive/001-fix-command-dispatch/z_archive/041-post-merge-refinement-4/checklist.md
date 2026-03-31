@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/checklist]"
 description: "Approved By: _______________"
 trigger_phrases:
   - "checklist"

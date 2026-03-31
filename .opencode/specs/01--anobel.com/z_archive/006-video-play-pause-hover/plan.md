@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Video Play/Pause Button Hover Effect [.opencode/specs/01--anobel.com/z_archive/006-video-play-pause-hover/plan]"
+title: "Implementation Plan: Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/plan]"
 description: "Video Play/Pause Button Hover Effect"
 trigger_phrases:
   - "video"

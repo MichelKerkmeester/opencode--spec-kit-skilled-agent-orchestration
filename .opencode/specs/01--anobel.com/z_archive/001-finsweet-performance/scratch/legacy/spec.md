@@ -1,5 +1,5 @@
 ---
-title: "Finsweet Performance Optimization [001-finsweet-performance/spe [01--anobel.com/z_archive/001-finsweet-performance/spec]"
+title: "Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/scratch/legacy/spec]"
 description: "Optimize Finsweet Attributes loading to improve PageSpeed scores by deferring script execution until after page load."
 trigger_phrases:
   - "finsweet"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "spec"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

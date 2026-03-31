@@ -11,7 +11,7 @@ trigger_phrases:
   - "069"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Dynamic Complexity-Based Template Scaling
 

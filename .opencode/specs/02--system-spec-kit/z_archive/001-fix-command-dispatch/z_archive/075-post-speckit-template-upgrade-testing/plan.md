@@ -9,7 +9,7 @@ trigger_phrases:
   - "template"
   - "075"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Post-SpecKit Template Upgrade Testing
 

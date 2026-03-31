@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Specification: Additional Performance Hacks"
+title: "Verification Checklist: Specification: [01--anobel.com/z_archive/015-performance-hacks/scratch/legacy/checklist]"
 description: "Archive verification checklist for Specification: Additional Performance Hacks."
 trigger_phrases:
   - "015-performance-hacks"

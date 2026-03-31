@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/plan]"
 description: "Fix 3 critical bugs (SQL constraint, ghost tools, stale references), 15+ moderate misalignments (gate numbering, thresholds, missing commands), and perform ecosystem-wide AGENTS..."
 trigger_phrases:
   - "implementation"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "087"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: System-Spec-Kit Deep Analysis & Remediation
 

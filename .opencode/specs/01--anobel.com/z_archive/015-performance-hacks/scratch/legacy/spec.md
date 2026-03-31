@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Specification: Additional [01--anobel.com/z_archive/015-performance-hacks/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Specification: Additional Performance Hacks\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "additional"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Specification: Additional Performance Hacks"
         description: "Implementation of high-impact, low-effort performance optimizations (\"hacks\") for anobel.com to improve LCP and FCP scores."
         trigger_phrases:

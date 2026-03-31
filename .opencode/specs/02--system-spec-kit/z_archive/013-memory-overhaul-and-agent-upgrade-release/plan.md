@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Overhaul And Agent Upgrade Release [template:level_1/plan.md]"
+title: "Implementation Plan: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Memory Overhaul And Agent Upgrade Release so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "013-memory-overhaul-and-agent-upgrade-release"

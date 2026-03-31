@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Blog Sort Dropdown Fix"
+title: "Verification Checklist: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/scratch/legacy/checklist]"
 description: "Archive verification checklist for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "018-blog-sort-fix"

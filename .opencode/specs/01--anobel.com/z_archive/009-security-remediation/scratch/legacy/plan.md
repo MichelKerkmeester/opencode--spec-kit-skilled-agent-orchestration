@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Security Vulnerability Remediation"
+title: "Implementation Plan: Security Vulnerability [01--anobel.com/z_archive/009-security-remediation/scratch/legacy/plan]"
 description: "Remediation of security vulnerabilities discovered by Narsil MCP security scan."
 trigger_phrases:
   - "009-security-remediation"

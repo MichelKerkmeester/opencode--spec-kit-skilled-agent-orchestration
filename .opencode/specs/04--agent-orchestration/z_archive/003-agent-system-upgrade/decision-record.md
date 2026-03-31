@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Agent System Upgrade [template:level_3/decision-record.md]"
+title: "Decision Record: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/decision-record]"
 description: "Archive normalization decision record for Agent System Upgrade."
 trigger_phrases:
   - "decision record"

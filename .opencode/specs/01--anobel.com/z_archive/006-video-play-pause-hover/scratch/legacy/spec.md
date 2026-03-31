@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Video Play/Pause [01--anobel.com/z_archive/006-video-play-pause-hover/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Video Play/Pause Button Hover Effect\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "video"
+  - "play"
+  - "pause"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Video Play/Pause Button Hover Effect"
         description: "Add a scale animation to .video--pause and .video--play icons when hovering over .video--play-pause-btn."
         trigger_phrases:

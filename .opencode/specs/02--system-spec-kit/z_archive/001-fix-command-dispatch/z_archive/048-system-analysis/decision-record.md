@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/decision-record]"
+title: "Decision Record [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/decision-record]"
 description: "48 unique issues identified across the SpecKit and Memory systems need to be organized for implementation. Multiple organization strategies were considered."
 trigger_phrases:
   - "decision"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "048"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: SpecKit & Memory System Remediation

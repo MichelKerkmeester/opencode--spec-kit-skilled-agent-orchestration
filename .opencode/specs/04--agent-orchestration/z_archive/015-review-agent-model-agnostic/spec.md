@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Review Agent Model Agnostic [template:level_1/spec.md]"
+title: "Feature Specification: Review Agent Model [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/spec]"
 description: "Archived record for Review Agent Model Agnostic. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "015-review-agent-model-agnostic"

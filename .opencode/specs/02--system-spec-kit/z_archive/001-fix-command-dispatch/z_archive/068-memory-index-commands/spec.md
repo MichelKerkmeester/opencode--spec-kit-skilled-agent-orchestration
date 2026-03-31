@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/spec]"
 description: "Separate the unified /memory:search command into two focused commands: a read-only search command and a database management command."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "068"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Memory Command Separation - Requirements & User Stories

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Overhaul And Agent Upgrade Release [template:level_1/tasks.md]"
+title: "Tasks: Memory Overhaul And Agent [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "013-memory-overhaul-and-agent-upgrade-release"

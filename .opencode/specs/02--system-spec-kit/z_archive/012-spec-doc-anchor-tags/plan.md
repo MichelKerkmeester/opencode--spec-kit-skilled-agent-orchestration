@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Spec Doc Anchor Tags [template:level_1/plan.md]"
+title: "Implementation Plan: Spec Doc Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Spec Doc Anchor Tags so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "012-spec-doc-anchor-tags"

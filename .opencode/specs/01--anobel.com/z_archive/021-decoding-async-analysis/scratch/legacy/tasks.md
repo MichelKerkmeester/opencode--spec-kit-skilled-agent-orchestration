@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Image Decoding Async Analysis"
+title: "Tasks: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/scratch/legacy/tasks]"
 description: "Archived task record for Image Decoding Async Analysis."
 trigger_phrases:
   - "021-decoding-async-analysis"

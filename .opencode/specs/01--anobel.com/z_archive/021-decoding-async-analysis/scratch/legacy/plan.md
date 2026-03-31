@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Image Decoding Async Analysis"
+title: "Implementation Plan: Image Decoding Async [01--anobel.com/z_archive/021-decoding-async-analysis/scratch/legacy/plan]"
 description: "The decoding=\"async\" HTML attribute for <img> elements is a performance optimization that may not be utilized on anobel.com. Without this attribute, the browser decodes images s."
 trigger_phrases:
   - "021-decoding-async-analysis"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/tasks]"
+title: "Tasks: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/scratch/legacy/tasks]"
 description: "tasks document for 001-finsweet-performance."
 trigger_phrases:
   - "tasks"

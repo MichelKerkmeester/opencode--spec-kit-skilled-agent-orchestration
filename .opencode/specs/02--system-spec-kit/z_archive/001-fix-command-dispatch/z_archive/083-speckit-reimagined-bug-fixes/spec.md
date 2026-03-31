@@ -10,7 +10,7 @@ trigger_phrases:
   - "083"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

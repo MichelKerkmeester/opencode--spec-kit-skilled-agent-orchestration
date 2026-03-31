@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Tab [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Tab Main Component\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "tab"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Tab Main Component"
         description: "Attribute-based tab component for linking tab buttons to content panels via matching data attribute values."
         trigger_phrases:

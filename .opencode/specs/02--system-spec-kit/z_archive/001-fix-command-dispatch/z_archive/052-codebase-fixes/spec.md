@@ -1,5 +1,5 @@
 ---
-title: "Spec: Codebase Fixes - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/spec]"
+title: "Spec: Codebase Fixes [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/spec]"
 description: "Fix critical bugs and performance issues identified during comprehensive codebase analysis."
 trigger_phrases:
   - "spec"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "dimension"
   - "052"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

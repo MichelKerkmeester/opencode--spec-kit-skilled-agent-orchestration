@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context Model Comparison [template:level_1/tasks.md]"
+title: "Tasks: Context Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "012-context-model-comparison"

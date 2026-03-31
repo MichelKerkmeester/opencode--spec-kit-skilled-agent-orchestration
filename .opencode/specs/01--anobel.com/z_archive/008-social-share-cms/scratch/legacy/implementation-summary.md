@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/008-social-share-cms/scratch/legacy/implementation-summary]"
 description: "Archived implementation summary for Social Share CMS Integration."
 trigger_phrases:
   - "008-social-share-cms"

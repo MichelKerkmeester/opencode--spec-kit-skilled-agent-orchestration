@@ -10,7 +10,7 @@ trigger_phrases:
   - "backup"
   - "20260216"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 

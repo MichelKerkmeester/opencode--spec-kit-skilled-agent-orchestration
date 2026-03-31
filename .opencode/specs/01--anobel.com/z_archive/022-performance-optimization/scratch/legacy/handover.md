@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [022-performance-optimization [01--anobel.com/z_archive/022-performance-optimization/handover]"
+title: "Session Handover Document [01--anobel.com/z_archive/022-performance-optimization/scratch/legacy/handover]"
 description: "CONTINUATION - Attempt 1"
 trigger_phrases:
   - "session"

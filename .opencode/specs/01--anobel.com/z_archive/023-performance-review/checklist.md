@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Performance Optimization Review - Spec 025 [.opencode/specs/01--anobel.com/z_archive/023-performance-review/checklist]"
+title: "Verification Checklist: Performance Optimization Review - [01--anobel.com/z_archive/023-performance-review/checklist]"
 description: "Archived verification checklist for Performance Optimization Review - Spec 025."
 trigger_phrases:
   - "performance"

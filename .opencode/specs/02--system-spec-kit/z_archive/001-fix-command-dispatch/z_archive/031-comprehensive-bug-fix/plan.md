@@ -8,7 +8,7 @@ trigger_phrases:
   - "plan"
   - "031"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Comprehensive Bug Fix Plan

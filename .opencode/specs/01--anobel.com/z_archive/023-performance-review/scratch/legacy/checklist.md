@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Performance Optimization Review - Spec 025"
+title: "Verification Checklist: Performance [01--anobel.com/z_archive/023-performance-review/scratch/legacy/checklist]"
 description: "Archive verification checklist for Performance Optimization Review - Spec 025."
 trigger_phrases:
   - "023-performance-review"

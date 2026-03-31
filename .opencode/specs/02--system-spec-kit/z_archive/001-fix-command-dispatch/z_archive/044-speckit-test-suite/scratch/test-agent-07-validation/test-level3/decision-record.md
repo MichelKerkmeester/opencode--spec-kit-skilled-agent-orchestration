@@ -8,7 +8,7 @@ trigger_phrases:
   - "test"
   - "level3"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record

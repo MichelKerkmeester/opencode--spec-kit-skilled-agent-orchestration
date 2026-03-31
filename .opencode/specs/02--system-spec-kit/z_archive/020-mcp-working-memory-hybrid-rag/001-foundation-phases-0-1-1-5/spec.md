@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Foundation Phases 0 1 1 5 [template:level_1/spec.md]"
+title: "Feature Specificati [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/spec]"
 description: "Archived child phase record for Foundation Phases 0 1 1 5. This phase folder was normalized to current validator-compliant Level 1 structure."
 trigger_phrases:
   - "001-foundation-phases-0-1-1-5"

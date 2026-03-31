@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Explore Sub-Agent [template:level_1/tasks.md]"
+title: "Tasks: Explore Sub-Agent [template:level_1/tasks.md] [04--agent-orchestration/z_archive/007-explore-sub-agent/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/017-agent-provider-switch/implementation-summary]"
 description: "Archive normalization summary for Agent Provider Switch."
 trigger_phrases:
   - "017-agent-provider-switch"

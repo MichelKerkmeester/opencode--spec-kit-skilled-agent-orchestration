@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Write Agent Enforcement [template:level_1/spec.md]"
+title: "Feature Specification: Write Agent Enforcement [04--agent-orchestration/z_archive/002-write-agent-enforcement/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

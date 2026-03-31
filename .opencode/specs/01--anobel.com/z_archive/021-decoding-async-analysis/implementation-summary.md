@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/021-decoding-async-analysis/implementation-summary]"
 description: "Archived implementation summary for Image Decoding Async Analysis."
 trigger_phrases:
   - "feature"

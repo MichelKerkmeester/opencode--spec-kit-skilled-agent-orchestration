@@ -1,5 +1,5 @@
 ---
-title: "Plan: Rename workflows- [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/plan]"
+title: "Plan: Rename workflows [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/plan]"
 description: "Based on the proven pattern from .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename, this rename will follow a 5-phase architecture with parallel agent execution where possible."
 trigger_phrases:
   - "plan"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "system"
   - "025"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Rename workflows-memory → system-memory

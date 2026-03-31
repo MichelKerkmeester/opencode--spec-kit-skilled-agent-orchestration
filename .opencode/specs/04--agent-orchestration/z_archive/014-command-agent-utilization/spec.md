@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Command Agent Utilization [template:level_1/spec.md]"
+title: "Feature Specification: Command Agent [04--agent-orchestration/z_archive/014-command-agent-utilization/spec]"
 description: "Archived record for Command Agent Utilization. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "014-command-agent-utilization"

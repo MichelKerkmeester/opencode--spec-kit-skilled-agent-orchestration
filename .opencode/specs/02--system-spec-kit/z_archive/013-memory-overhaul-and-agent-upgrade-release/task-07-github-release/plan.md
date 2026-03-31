@@ -8,7 +8,7 @@ trigger_phrases:
   - "github"
   - "release"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 07 — GitHub Release
 

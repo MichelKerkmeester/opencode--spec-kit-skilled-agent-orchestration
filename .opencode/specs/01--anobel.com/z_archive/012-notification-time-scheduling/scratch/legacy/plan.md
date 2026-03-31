@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification Time-Based Scheduling"
+title: "Implementation Plan: Notification [01--anobel.com/z_archive/012-notification-time-scheduling/scratch/legacy/plan]"
 description: "Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates."
 trigger_phrases:
   - "012-notification-time-scheduling"

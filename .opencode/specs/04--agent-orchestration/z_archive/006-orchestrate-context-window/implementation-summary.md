@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/006-orchestrate-context-window/implementation-summary]"
 description: "Archive normalization summary for orchestrate context window."
 trigger_phrases:
   - "implementation"

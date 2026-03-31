@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/tasks]"
+title: "Tasks: Social Share CMS Integration [.opencode/specs/01--anobel.co [01--anobel.com/z_archive/008-social-share-cms/tasks]"
 description: "Archived normalization task list for Social Share CMS Integration."
 trigger_phrases:
   - "social"

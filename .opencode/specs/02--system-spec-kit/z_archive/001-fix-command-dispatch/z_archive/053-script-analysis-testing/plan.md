@@ -9,7 +9,7 @@ trigger_phrases:
   - "testing"
   - "053"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Script Analysis Testing - Technical Approach
 

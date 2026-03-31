@@ -10,7 +10,7 @@ trigger_phrases:
   - "implement"
   - "happy"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: JWT Authentication
 

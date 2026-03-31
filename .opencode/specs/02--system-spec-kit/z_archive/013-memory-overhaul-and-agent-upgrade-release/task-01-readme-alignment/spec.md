@@ -8,7 +8,7 @@ trigger_phrases:
   - "alignment"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Task 01 — README Audit & Alignment

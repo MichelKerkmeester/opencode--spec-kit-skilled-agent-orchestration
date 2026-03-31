@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Multi-Agent Dispatch [template:level_1/tasks.md]"
+title: "Tasks: Multi-Agent Dispatch [template:level_1/tasks.m [04--agent-orchestration/z_archive/004-multi-agent-dispatch/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

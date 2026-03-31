@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Notification Hero Spacing [.opencode/specs/01--anobel.com/z_archive/014-notification-hero-spacing/tasks]"
+title: "Tasks: Notification Hero Spacing [.opencode/specs/01--ano [01--anobel.com/z_archive/014-notification-hero-spacing/tasks]"
 description: "Archived normalization task list for Notification Hero Spacing."
 trigger_phrases:
   - "notification"

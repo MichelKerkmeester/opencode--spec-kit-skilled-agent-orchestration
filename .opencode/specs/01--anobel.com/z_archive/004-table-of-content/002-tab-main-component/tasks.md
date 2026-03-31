@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Tab Main Component [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/tasks]"
+title: "Tasks: Tab Main Component [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/tasks]"
 description: "Archived normalization task list for Tab Main Component."
 trigger_phrases:
   - "feature"

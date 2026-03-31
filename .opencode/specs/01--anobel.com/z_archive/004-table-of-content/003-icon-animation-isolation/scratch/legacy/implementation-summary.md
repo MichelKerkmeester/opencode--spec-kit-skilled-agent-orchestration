@@ -1,4 +1,14 @@
 ---
+title: "Imple [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/scratch/legacy/implementation-summary]"
+description: "title: \"Implementation Summary\""
+trigger_phrases:
+  - "imple"
+  - "implementation summary"
+  - "legacy"
+importance_tier: "normal"
+contextType: "implementation"
+---
+---
     title: "Implementation Summary"
     description: "Archived implementation summary for Icon Animation Isolation for Download Button."
     trigger_phrases:

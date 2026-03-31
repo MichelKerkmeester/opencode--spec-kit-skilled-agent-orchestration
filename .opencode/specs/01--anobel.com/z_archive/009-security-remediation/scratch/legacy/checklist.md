@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Security Vulnerability Remediation"
+title: "Verification Checklist: Security [01--anobel.com/z_archive/009-security-remediation/scratch/legacy/checklist]"
 description: "Archive verification checklist for Security Vulnerability Remediation."
 trigger_phrases:
   - "009-security-remediation"

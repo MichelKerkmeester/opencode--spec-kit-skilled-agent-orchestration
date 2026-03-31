@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Upgrade Auto Populate [template:level_1/plan.md]"
+title: "Implementation Plan: Upgrade Auto Populate [02--system-spec-kit/z_archive/011-upgrade-auto-populate/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Upgrade Auto Populate so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "011-upgrade-auto-populate"

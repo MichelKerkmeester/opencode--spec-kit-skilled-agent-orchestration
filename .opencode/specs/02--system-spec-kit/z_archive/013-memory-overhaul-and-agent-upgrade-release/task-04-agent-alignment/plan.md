@@ -8,7 +8,7 @@ trigger_phrases:
   - "agent"
   - "configs"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 04 — Agent Configs Audit
 

@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Specification: Font [01--anobel.com/z_archive/013-font-performance/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Specification: Font Performance Optimization\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "font"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Specification: Font Performance Optimization"
         description: "This specification outlines the implementation of font performance optimizations for anobel.com. The goal is to improve the site's Core Web Vitals (specifically LCP) and user ex."
         trigger_phrases:

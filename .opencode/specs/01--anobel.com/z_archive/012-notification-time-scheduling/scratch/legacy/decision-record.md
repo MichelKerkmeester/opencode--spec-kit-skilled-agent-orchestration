@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Notification Time-Based Scheduling"
+title: "Decision Record: Notification [01--anobel.com/z_archive/012-notification-time-scheduling/scratch/legacy/decision-record]"
 description: "Archived decision record for Notification Time-Based Scheduling."
 trigger_phrases:
   - "012-notification-time-scheduling"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/010-documentation-alignment/implementation-summary]"
 description: "Archive repair summary for the Documentation Alignment for Spec 126 folder."
 trigger_phrases:
   - "implementation summary"

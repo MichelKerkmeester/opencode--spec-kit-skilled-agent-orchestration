@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Spec Doc Anchor Tags [template:level_2/checklist.md]"
+title: "Verification Checklist: Spec Doc Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

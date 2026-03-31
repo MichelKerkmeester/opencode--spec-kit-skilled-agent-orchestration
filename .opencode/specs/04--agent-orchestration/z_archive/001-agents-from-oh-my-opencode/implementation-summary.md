@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/implementation-summary]"
 description: "Archive normalization summary for the Oh My Opencode agent import record."
 trigger_phrases:
   - "implementation"

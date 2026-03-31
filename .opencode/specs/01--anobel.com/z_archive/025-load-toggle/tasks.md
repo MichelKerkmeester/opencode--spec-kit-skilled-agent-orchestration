@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.com/z_archive/025-load-toggle/tasks]"
+title: "Tasks: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.c [01--anobel.com/z_archive/025-load-toggle/tasks]"
 description: "Archived normalization task list for Load Toggle Component - anobel.com."
 trigger_phrases:
   - "load"

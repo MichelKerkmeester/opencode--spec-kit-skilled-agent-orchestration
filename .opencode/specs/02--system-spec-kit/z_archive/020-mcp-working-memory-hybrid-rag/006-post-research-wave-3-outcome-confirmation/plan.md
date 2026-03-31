@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post Research Wave 3 Outcome Confirmation [template:level_1/plan.md]"
+title: "Imp [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/plan]"
 description: "Normalize archived phase folder 006-post-research-wave-3-outcome-confirmation so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "006-post-research-wave-3-outcome-confirmation"

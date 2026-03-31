@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/checklist]"
+title: "Verification Checklist: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/checklist]"
 description: "Archived verification checklist for Notification Time-Based Scheduling."
 trigger_phrases:
   - "feature"

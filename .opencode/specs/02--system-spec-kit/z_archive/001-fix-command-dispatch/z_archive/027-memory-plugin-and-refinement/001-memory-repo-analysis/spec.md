@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & User Stories

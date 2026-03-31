@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Handover Model Codex Compat [template:level_1/spec.md]"
+title: "Feature Specification: Handover Model Codex [04--agent-orchestration/z_archive/016-handover-model-codex-compat/spec]"
 description: "Archived record for Handover Model Codex Compat. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "016-handover-model-codex-compat"

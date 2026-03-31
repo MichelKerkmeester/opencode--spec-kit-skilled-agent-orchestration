@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/spec]"
+title: "Feature Specification: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/spec]"
 description: "Feature Specification: Notification Time-Based Scheduling"
 trigger_phrases:
   - "feature"

@@ -8,7 +8,7 @@ trigger_phrases:
   - "audit"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Task 04 — Agent Configs Audit

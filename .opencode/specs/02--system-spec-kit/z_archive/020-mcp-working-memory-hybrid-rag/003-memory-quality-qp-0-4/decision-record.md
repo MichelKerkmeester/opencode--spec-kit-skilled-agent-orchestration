@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory Quality QP 0 4 [template:level_3/decision-record.md]"
+title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/decision-record]"
 description: "Archive normalization decision record for Memory Quality QP 0 4."
 trigger_phrases:
   - "decision record"

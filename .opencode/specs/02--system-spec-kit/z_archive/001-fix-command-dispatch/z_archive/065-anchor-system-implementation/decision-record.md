@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "065"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision: Regex-Based Anchor Extraction - Architecture Decision Record
 

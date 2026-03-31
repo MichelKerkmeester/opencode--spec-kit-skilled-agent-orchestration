@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Custom TOC ScrollSpy - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/plan]"
+title: "Implementation Plan: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/plan]"
 description: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: MCP Working Memory Hybrid Rag [template:level_1/spec.md]"
+title: "Feature Specification: MCP Working Memory [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/spec]"
 description: "Archived record for MCP Working Memory Hybrid Rag. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "020-mcp-working-memory-hybrid-rag"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/spec]"
+title: "Feature Specification: Specification: Font Performance [01--anobel.com/z_archive/013-font-performance/spec]"
 description: "Specification: Font Performance Optimization"
 trigger_phrases:
   - "specification"

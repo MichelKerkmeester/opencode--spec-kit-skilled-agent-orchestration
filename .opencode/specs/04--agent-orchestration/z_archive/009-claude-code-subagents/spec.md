@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Claude Code Subagents [template:level_1/spec.md]"
+title: "Feature Specification: Claude Code Subagents [04--agent-orchestration/z_archive/009-claude-code-subagents/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

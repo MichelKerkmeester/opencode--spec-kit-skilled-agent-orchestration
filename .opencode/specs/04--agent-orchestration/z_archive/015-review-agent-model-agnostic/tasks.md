@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Review Agent Model Agnostic [template:level_1/tasks.md]"
+title: "Tasks: Review Agent Model Agnostic [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "015-review-agent-model-agnostic"

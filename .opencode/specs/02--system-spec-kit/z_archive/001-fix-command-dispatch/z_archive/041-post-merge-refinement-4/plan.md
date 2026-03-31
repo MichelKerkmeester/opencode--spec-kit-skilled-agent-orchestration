@@ -9,7 +9,7 @@ trigger_phrases:
   - "refinement"
   - "041"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Post-Merge Refinement 4 - Systematic Issue Remediation
 

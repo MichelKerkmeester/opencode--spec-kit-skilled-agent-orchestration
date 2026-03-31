@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/007-upgrade-level-script/implementation-summary]"
 description: "Archive repair summary for the Spec Folder Level Upgrade Script folder."
 trigger_phrases:
   - "implementation summary"

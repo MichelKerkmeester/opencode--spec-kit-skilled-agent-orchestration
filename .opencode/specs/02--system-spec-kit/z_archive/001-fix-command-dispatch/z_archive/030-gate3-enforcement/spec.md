@@ -1,5 +1,5 @@
 ---
-title: "Gate 3 Enforcement - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/spec]"
+title: "Gate 3 Enforcement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/spec]"
 description: "During a comprehensive bug fix session (63+ bugs, 25+ files, 15 parallel agents), the AI"
 trigger_phrases:
   - "gate"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "030"
   - "gate3"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

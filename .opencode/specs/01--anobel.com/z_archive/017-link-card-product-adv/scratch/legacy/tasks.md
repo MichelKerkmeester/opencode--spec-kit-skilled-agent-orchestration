@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Link Card Product/Adv - CTA Button Hover Animation"
+title: "Tasks: Link Card Product/Adv - CTA Button [01--anobel.com/z_archive/017-link-card-product-adv/scratch/legacy/tasks]"
 description: "Archived task record for Link Card Product/Adv - CTA Button Hover Animation."
 trigger_phrases:
   - "017-link-card-product-adv"

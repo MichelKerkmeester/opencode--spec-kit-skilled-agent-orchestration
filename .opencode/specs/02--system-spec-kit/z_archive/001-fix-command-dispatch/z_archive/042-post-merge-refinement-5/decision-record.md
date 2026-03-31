@@ -11,7 +11,7 @@ trigger_phrases:
   - "042"
   - "post"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Spec Kit Memory System - Architecture Decision Record
 

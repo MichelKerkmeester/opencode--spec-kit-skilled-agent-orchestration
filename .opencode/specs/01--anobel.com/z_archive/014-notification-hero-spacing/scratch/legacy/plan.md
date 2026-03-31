@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification Hero Spacing"
+title: "Implementation Plan: Notification Hero [01--anobel.com/z_archive/014-notification-hero-spacing/scratch/legacy/plan]"
 description: "When the notification bar is visible at the top of the page, the hero section content may overlap or be partially hidden. A spacing mechanism is needed to push hero content down."
 trigger_phrases:
   - "014-notification-hero-spacing"

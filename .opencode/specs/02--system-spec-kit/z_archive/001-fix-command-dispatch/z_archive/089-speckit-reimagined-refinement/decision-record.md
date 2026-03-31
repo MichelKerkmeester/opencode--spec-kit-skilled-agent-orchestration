@@ -11,7 +11,7 @@ trigger_phrases:
   - "089"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 spec: "089"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post Research Wave 3 Outcome Confirmation [template:level_2/checklist.md]"
+title: "...-system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

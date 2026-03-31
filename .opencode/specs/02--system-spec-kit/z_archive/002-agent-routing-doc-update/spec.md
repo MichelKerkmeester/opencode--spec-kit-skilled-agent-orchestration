@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Agent Routing Documentation Update [archive]"
+title: "Feature Specification: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/spec]"
 description: "Archived record for the Agent Routing Documentation Update work, normalized to the current Level 1 template."
 trigger_phrases:
   - "agent routing documentation update"
   - "agent routing"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Agent Routing Documentation Update
 

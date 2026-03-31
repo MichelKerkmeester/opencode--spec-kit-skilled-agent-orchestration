@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Fix Command Dispatch Vulnerability [archive]"
+title: "Implementation Plan: Fix Command Dispatch Vulnerability [02--system-spec-kit/z_archive/001-fix-command-dispatch/plan]"
 description: "Archive normalization plan for the Fix Command Dispatch Vulnerability folder."
 trigger_phrases:
   - "implementation plan"
   - "fix command dispatch"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Fix Command Dispatch Vulnerability
 

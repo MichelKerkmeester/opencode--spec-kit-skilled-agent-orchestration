@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Quality QP 0 4 [template:level_1/plan.md]"
+title: "Implementation Plan: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/plan]"
 description: "Normalize archived phase folder 003-memory-quality-qp-0-4 so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "003-memory-quality-qp-0-4"

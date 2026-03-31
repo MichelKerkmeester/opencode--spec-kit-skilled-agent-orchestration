@@ -10,7 +10,7 @@ trigger_phrases:
   - "plan"
   - "017"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Stateless Spec Passing & System Alignment Plan
 <!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.0.0 -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Icon Animation Isolation for Download Button"
+title: "Implementation Plan: [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/scratch/legacy/plan]"
 description: "Refactor btn_download.css to isolate only the icon animation logic, removing all button-level hover/focus/active styling so the download icon can be embedded inside another butt."
 trigger_phrases:
   - "003-icon-animation-isolation"

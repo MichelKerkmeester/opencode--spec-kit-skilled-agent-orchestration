@@ -1,9 +1,8 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/004-table-of-content/implementation-summary]"
 description: "Archived implementation summary for Table Of Content."
 trigger_phrases:
   - "table"
-  - "of"
   - "content"
   - "anobel"
   - "reference"

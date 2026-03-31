@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Index Workflows Code [template:level_3/decision-record.md]"
+title: "Decision Record: Index Workflows Code [02--system-spec-kit/z_archive/016-index-workflows-code/decision-record]"
 description: "Archive normalization decision record for Index Workflows Code."
 trigger_phrases:
   - "decision record"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Folder Level Upgrade Script [archive]"
+title: "Tasks: Spec Folder Level Upgrade Script [archive] [02--system-spec-kit/z_archive/007-upgrade-level-script/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

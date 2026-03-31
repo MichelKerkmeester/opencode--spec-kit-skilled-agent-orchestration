@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/plan]"
+title: "Implementation Plan: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/plan]"
 description: "Feature Specification: Notification Time-Based Scheduling"
 trigger_phrases:
   - "feature"

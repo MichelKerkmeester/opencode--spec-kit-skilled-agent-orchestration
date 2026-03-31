@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Memory System Analysis & Improvement Strategy
 

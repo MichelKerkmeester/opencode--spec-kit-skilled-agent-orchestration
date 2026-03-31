@@ -10,7 +10,7 @@ trigger_phrases:
   - "080"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: Spec Kit Bug Remediation
 

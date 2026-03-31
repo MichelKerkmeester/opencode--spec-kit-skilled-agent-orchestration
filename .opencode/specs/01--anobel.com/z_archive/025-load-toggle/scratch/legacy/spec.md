@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Load Toggle Component - anobel.com [01--anobel.com/z_archive/025-load-toggle/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Load Toggle Component - anobel.com\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "load"
+  - "toggle"
+  - "component"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Load Toggle Component - anobel.com"
         description: "A reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. Enables \"View More / View Less\" patterns with dyna."
         trigger_phrases:

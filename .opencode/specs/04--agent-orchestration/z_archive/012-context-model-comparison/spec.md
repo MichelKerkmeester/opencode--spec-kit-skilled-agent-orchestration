@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Context Model Comparison [template:level_1/spec.md]"
+title: "Feature Specification: Context Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/spec]"
 description: "Archived record for Context Model Comparison. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "012-context-model-comparison"

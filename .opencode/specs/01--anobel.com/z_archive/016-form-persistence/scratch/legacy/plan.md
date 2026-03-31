@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Form Data Persistence"
+title: "Implementation Plan: Form Data Persistence [01--anobel.com/z_archive/016-form-persistence/scratch/legacy/plan]"
 description: "Implement automatic form data persistence to preserve user input across page refreshes, preventing data loss due to accidental navigation or browser refresh."
 trigger_phrases:
   - "016-form-persistence"

@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "019"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # SpecKit Refinement: ECP Analysis & Improvements

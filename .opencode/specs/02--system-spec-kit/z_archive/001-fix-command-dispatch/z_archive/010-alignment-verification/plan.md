@@ -9,7 +9,7 @@ trigger_phrases:
   - "plan"
   - "010"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Memory System Alignment Verification Plan

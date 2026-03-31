@@ -1,5 +1,5 @@
 ---
-title: "Tasks: System-Wide Remediation of Audit Findings [archive]"
+title: "Tasks: System-Wide Remediation of Audit Findings [02--system-spec-kit/z_archive/008-codex-system-wide-audit/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

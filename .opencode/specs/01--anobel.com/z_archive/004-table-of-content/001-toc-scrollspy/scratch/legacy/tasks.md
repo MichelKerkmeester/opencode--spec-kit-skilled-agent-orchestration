@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Custom TOC ScrollSpy - Requirements & User Stories"
+title: "Tasks: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/scratch/legacy/tasks]"
 description: "Archived task record for Custom TOC ScrollSpy - Requirements & User Stories."
 trigger_phrases:
   - "001-toc-scrollspy"

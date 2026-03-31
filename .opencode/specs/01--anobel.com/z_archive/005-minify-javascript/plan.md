@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/plan]"
+title: "Implementation Plan: minify-javascript - Requirements & User [01--anobel.com/z_archive/005-minify-javascript/plan]"
 description: "Feature Specification: minify-javascript - Requirements & User Stories"
 trigger_phrases:
   - "feature"

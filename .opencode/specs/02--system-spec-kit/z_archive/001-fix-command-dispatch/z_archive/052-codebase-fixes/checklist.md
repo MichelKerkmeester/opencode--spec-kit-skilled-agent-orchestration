@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/checklist]"
+title: "Verification Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/checklist]"
 description: "All critical, high-priority, and documentation fixes have been implemented and verified"
 trigger_phrases:
   - "verification"

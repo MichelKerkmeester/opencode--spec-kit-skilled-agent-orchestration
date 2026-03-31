@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Comprehensive Script Audit [archive]"
+title: "Tasks: Comprehensive Script Audit [archive] [02--system-spec-kit/z_archive/004-script-audit-comprehensive/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

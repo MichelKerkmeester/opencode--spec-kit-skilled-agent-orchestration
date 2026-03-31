@@ -11,7 +11,7 @@ trigger_phrases:
   - "083"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Spec Kit Bug Fixes

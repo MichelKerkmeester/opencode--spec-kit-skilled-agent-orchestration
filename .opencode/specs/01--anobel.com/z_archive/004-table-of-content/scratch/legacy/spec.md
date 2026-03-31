@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Table Of Content [01--anobel.com/z_archive/004-table-of-content/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Table Of Content\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "table"
+  - "content"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Table Of Content"
         description: "This archived specification captures the work documented for 004-table-of-content."
         trigger_phrases:

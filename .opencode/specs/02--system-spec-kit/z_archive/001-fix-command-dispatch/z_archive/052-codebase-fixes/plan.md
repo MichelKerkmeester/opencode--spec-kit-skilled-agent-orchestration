@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/plan]"
 description: "File: mcp_server/lib/checkpoints.js"
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "fixes"
   - "052"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Codebase Fixes

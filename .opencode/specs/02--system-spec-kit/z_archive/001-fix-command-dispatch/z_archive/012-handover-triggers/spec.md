@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec]"
 description: "Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and ..."
 trigger_phrases:
   - "feature"
@@ -11,7 +11,7 @@ trigger_phrases:
   - "012"
   - "handover"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories

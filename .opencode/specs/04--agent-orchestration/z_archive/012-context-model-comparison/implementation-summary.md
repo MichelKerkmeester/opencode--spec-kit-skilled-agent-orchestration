@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/012-context-model-comparison/implementation-summary]"
 description: "Archive normalization summary for Context Model Comparison."
 trigger_phrases:
   - "012-context-model-comparison"

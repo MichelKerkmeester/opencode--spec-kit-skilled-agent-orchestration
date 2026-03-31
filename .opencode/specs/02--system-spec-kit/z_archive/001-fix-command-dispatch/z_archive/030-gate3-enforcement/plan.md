@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/plan]"
 description: "Status: COMPLETE"
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "030"
   - "gate3"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Gate 3 Enforcement

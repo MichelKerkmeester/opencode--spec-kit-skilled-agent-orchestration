@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix/checklist]"
 description: "Why no README updates needed"
 trigger_phrases:
   - "checklist"

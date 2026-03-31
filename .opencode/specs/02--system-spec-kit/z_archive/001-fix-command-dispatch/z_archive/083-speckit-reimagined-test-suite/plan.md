@@ -9,7 +9,7 @@ trigger_phrases:
   - "test"
   - "083"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Reimagined Test Suite
 

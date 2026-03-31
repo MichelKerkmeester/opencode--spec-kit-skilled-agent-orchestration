@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: MCP Issues After Update [template:level_1/spec.md]"
+title: "Feature Specification: MCP Issues After Update [02--system-spec-kit/z_archive/018-mcp-issues-after-update/spec]"
 description: "Archived record for MCP Issues After Update. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "018-mcp-issues-after-update"

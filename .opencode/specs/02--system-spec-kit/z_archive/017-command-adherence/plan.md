@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Command Adherence [template:level_1/plan.md]"
+title: "Implementation Plan: Command Adherence [02--system-spec-kit/z_archive/017-command-adherence/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Command Adherence so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "017-command-adherence"

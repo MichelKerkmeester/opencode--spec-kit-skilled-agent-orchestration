@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Node Modules Relocation [archive]"
+title: "Feature Specification: Node Modules Relocation [02--system-spec-kit/z_archive/003-node-modules-relocation/spec]"
 description: "Archived record for the Node Modules Relocation work, normalized to the current Level 1 template."
 trigger_phrases:
   - "node modules relocation"
   - "dependency relocation"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Node Modules Relocation
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/tasks]"
 description: "L1: spec.md, plan.md, tasks.md"
 trigger_phrases:
   - "tasks"

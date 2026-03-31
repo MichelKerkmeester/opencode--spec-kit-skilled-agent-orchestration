@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Download Button Code Standards Alignment [.opencode/specs/01--anobel.com/z_archive/003-btn-download-alignment/spec]"
+title: "Feature Specification: Download Button Code Standards [01--anobel.com/z_archive/003-btn-download-alignment/spec]"
 description: "Spec: Download Button Code Standards Alignment"
 trigger_phrases:
   - "spec"

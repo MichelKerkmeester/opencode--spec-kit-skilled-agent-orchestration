@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Link Card Product/Adv - CTA Button Hover Animation"
+title: "Implementation Plan: Link Card Product/Adv - [01--anobel.com/z_archive/017-link-card-product-adv/scratch/legacy/plan]"
 description: "Extend the link card ad hover state to trigger the CTA button Secondary-Full animations, including."
 trigger_phrases:
   - "017-link-card-product-adv"

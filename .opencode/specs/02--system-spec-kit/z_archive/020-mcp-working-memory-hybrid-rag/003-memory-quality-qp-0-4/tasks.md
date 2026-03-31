@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory Quality QP 0 4 [template:level_1/tasks.md]"
+title: "Tasks: Memory [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "003-memory-quality-qp-0-4"

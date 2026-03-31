@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Extraction Rollout Phases 2 3 [template:level_1/plan.md]"
+title: "Implementation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/plan]"
 description: "Normalize archived phase folder 002-extraction-rollout-phases-2-3 so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "002-extraction-rollout-phases-2-3"

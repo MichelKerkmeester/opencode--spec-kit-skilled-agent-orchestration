@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/plan]"
 description: "This plan addresses 35 verified issues identified in the system analysis, organized into 9 work streams across 4 phases. The approach prioritizes critical bug fixes first, follo..."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "system"
   - "048"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: SpecKit & Memory System Remediation

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/checklist]"
+title: "Verification Checklist: Specification: Additional [01--anobel.com/z_archive/015-performance-hacks/checklist]"
 description: "Archived verification checklist for Specification: Additional Performance Hacks."
 trigger_phrases:
   - "specification"

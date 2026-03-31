@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Language Selector - [01--anobel.com/z_archive/024-language-selector-hover/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Language Selector - Desktop Hover to Open\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "language"
+  - "selector"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Language Selector - Desktop Hover to Open"
         description: "Modify nav_language_selector.js to open the dropdown on hover (desktop only), matching the behavior of nav_dropdown.js."
         trigger_phrases:

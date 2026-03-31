@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/checklist]"
+title: "Verification Checklist: minify-javascript - Requirements & [01--anobel.com/z_archive/005-minify-javascript/checklist]"
 description: "Archived verification checklist for minify-javascript - Requirements & User Stories."
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Index Workflows Code [template:level_1/spec.md]"
+title: "Feature Specification: Index Workflows Code [02--system-spec-kit/z_archive/016-index-workflows-code/spec]"
 description: "Archived record for Index Workflows Code. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "016-index-workflows-code"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/001-fix-command-dispatch/implementation-summary]"
 description: "Archive repair summary for the Fix Command Dispatch Vulnerability folder."
 trigger_phrases:
   - "implementation summary"

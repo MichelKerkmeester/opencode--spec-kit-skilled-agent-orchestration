@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Form Input Components Enhancement [.opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/checklist]"
+title: "Verification Checklist: Form Input Components [01--anobel.com/z_archive/011-form-input-upload-select/checklist]"
 description: "Archived verification checklist for Form Input Components Enhancement."
 trigger_phrases:
   - "spec"

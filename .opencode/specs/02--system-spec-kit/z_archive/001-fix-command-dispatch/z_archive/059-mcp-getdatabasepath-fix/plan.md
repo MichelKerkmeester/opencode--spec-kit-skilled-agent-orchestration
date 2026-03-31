@@ -9,7 +9,7 @@ trigger_phrases:
   - "method"
   - "059"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Fix MCP Server Method Name Mismatches

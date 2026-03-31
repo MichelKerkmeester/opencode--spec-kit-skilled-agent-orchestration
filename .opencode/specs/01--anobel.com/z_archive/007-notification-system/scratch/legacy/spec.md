@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Notification System - [01--anobel.com/z_archive/007-notification-system/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Notification System - Requirements & User Stories\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "notification"
+  - "system"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Notification System - Requirements & User Stories"
         description: "CMS-driven notification system for navbar banners and hero toasts with office hours integration."
         trigger_phrases:

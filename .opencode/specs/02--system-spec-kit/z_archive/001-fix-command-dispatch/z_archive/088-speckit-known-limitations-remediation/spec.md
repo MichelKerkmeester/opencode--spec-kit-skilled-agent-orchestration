@@ -10,7 +10,7 @@ trigger_phrases:
   - "088"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: System-Spec-Kit Known Limitations Remediation
 

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: minify-javascript - Requirements & User Stories"
+title: "Verification Checklist: minify-javascript - [01--anobel.com/z_archive/005-minify-javascript/scratch/legacy/checklist]"
 description: "Archive verification checklist for minify-javascript - Requirements & User Stories."
 trigger_phrases:
   - "005-minify-javascript"

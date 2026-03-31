@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/implementation-summary]"
 description: "Archive normalization summary for Readme And Summary With HVR."
 trigger_phrases:
   - "019-readme-and-summary-with-hvr"

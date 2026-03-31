@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Performance Optimization - anobel.com [.opencode/specs/01--anobel.com/z_archive/022-performance-optimization/decision-record]"
+title: "Decision Record: Performance Optimization - [01--anobel.com/z_archive/022-performance-optimization/decision-record]"
 description: "Archived decision record for Performance Optimization - anobel.com."
 trigger_phrases:
   - "performance"

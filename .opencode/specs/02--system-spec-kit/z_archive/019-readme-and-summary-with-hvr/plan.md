@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Readme And Summary With HVR [template:level_1/plan.md]"
+title: "Implementation Plan: Readme And Summary With HVR [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Readme And Summary With HVR so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "019-readme-and-summary-with-hvr"

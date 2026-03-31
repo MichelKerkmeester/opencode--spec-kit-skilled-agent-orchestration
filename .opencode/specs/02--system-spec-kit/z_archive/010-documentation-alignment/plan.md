@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Documentation Alignment for Spec 126 [archive]"
+title: "Implementation Plan: Documentation Alignment for Spec [02--system-spec-kit/z_archive/010-documentation-alignment/plan]"
 description: "Archive normalization plan for the Documentation Alignment for Spec 126 folder."
 trigger_phrases:
   - "implementation plan"
   - "documentation alignment"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Documentation Alignment for Spec 126
 

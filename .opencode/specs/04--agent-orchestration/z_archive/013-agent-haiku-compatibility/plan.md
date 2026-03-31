@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent Haiku Compatibility [template:level_1/plan.md]"
+title: "Implementation Plan: Agent Haiku Compatibility [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/plan]"
 description: "Normalize the archived agent orchestration archive folder for Agent Haiku Compatibility so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "013-agent-haiku-compatibility"

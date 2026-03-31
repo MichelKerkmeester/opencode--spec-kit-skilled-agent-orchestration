@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Form Input Components Enhancement [.opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/tasks]"
+title: "Tasks: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/tasks]"
 description: "Archived normalization task list for Form Input Components Enhancement."
 trigger_phrases:
   - "spec"

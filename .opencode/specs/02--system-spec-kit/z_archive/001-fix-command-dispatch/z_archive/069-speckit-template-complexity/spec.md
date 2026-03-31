@@ -11,7 +11,7 @@ trigger_phrases:
   - "069"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Level-Based Template Architecture

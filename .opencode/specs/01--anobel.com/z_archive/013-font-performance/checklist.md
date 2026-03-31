@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/checklist]"
+title: "Verification Checklist: Specification: Font Performance [01--anobel.com/z_archive/013-font-performance/checklist]"
 description: "Archived verification checklist for Specification: Font Performance Optimization."
 trigger_phrases:
   - "specification"

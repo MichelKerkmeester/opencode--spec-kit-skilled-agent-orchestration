@@ -9,7 +9,7 @@ trigger_phrases:
   - "convention"
   - "090"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: OpenCode Naming Convention Alignment
 

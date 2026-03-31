@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/tasks]"
+title: "Tasks: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archi [01--anobel.com/z_archive/018-blog-sort-fix/tasks]"
 description: "Archived normalization task list for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "spec"

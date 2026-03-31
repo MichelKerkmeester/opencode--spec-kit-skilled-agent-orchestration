@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification System - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/007-notification-system/plan]"
+title: "Implementation Plan: Notification System - Requirements & User [01--anobel.com/z_archive/007-notification-system/plan]"
 description: "Feature Specification: Notification System - Requirements & User Stories"
 trigger_phrases:
   - "feature"

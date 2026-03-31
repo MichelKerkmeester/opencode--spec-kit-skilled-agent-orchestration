@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context Model Optimization [template:level_1/plan.md]"
+title: "Implementation Plan: Context Model [04--agent-orchestration/z_archive/011-context-model-optimization/plan]"
 description: "Normalize the archived agent orchestration archive folder for Context Model Optimization so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "011-context-model-optimization"

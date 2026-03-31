@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/028-hero-flicker-debug/implementation-summary]"
 description: "Archived implementation summary for Hero Video Card Image Flickering Fix."
 trigger_phrases:
   - "feature"

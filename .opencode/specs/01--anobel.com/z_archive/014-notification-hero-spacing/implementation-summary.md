@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/014-notification-hero-spacing/implementation-summary]"
 description: "Archived implementation summary for Notification Hero Spacing."
 trigger_phrases:
   - "notification"

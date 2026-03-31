@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Notification Time-Based Scheduling"
+title: "Verification Checklist: [01--anobel.com/z_archive/012-notification-time-scheduling/scratch/legacy/checklist]"
 description: "Archive verification checklist for Notification Time-Based Scheduling."
 trigger_phrases:
   - "012-notification-time-scheduling"

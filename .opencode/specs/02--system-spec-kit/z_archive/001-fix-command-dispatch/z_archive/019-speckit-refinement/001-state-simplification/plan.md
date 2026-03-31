@@ -8,7 +8,7 @@ trigger_phrases:
   - "plan"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # State Simplification: Implementation Plan
 <!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->

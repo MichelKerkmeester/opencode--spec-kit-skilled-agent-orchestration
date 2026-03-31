@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Index Txt Support [template:level_1/spec.md]"
+title: "Feature Specification: Memory Index Txt Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/spec]"
 description: "Archived record for Memory Index Txt Support. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "014-memory-index-txt-support"

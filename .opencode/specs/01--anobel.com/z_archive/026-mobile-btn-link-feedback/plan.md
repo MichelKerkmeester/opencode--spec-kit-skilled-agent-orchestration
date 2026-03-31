@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Mobile Button/Link Tap Feedback [.opencode/specs/01--anobel.com/z_archive/026-mobile-btn-link-feedback/plan]"
+title: "Implementation Plan: Mobile Button/Link Tap Feedback [01--anobel.com/z_archive/026-mobile-btn-link-feedback/plan]"
 description: "Feature Specification: Mobile Button/Link Tap Feedback"
 trigger_phrases:
   - "feature"

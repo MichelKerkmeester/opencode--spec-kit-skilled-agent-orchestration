@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Form Input [01--anobel.com/z_archive/011-form-input-upload-select/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Form Input Components Enhancement\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "form"
+  - "input"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
     title: "Feature Specification: Form Input Components Enhancement"
     description: "Enhance form input capabilities with two new components."
     trigger_phrases:

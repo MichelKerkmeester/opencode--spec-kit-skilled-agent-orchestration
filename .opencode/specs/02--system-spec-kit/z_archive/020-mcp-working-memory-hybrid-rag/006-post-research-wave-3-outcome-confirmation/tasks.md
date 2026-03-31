@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Post Research Wave 3 Outcome Confirmation [template:level_1/tasks.md]"
+title: "Ta [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "006-post-research-wave-3-outcome-confirmation"

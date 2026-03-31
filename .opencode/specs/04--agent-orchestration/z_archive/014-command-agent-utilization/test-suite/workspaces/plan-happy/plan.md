@@ -9,7 +9,7 @@ trigger_phrases:
   - "with"
   - "happy"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: JWT Authentication with RS256 Signing
 

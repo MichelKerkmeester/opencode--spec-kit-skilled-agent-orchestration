@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/tasks]"
+title: "Tasks: Security Vulnerability Remediation [01--anobel.com/z_archive/009-security-remediation/tasks]"
 description: "Archived normalization task list for Security Vulnerability Remediation."
 trigger_phrases:
   - "security"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research/tasks]"
 description: "tasks document for 080-ai-integration-patterns-research."
 trigger_phrases:
   - "tasks"

@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "error"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Notification System
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Extraction Rollout Phases 2 3 [template:level_3/decision-record.md]"
+title: "Deci [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/decision-record]"
 description: "Archive normalization decision record for Extraction Rollout Phases 2 3."
 trigger_phrases:
   - "decision record"

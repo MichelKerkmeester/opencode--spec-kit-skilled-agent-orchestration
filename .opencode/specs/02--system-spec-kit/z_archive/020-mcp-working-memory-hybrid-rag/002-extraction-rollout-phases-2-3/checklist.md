@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Extraction Rollout Phases 2 3 [template:level_2/checklist.md]"
+title: "Verificati [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

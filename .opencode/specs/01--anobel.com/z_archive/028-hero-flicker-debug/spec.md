@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Hero Video Card Image Flickering Fix [.opencode/specs/01--anobel.com/z_archive/028-hero-flicker-debug/spec]"
+title: "Feature Specification: Hero Video Card Image Flickering Fix [01--anobel.com/z_archive/028-hero-flicker-debug/spec]"
 description: "Feature Specification: Hero Video Card Image Flickering Fix"
 trigger_phrases:
   - "feature"

@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Download Button [01--anobel.com/z_archive/027-download-btn-on-mobile/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Download Button Mobile Fix\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "download"
+  - "button"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Download Button Mobile Fix"
         description: "Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and."
         trigger_phrases:

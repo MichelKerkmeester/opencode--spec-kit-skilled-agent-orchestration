@@ -10,7 +10,7 @@ trigger_phrases:
   - "complete"
   - "happy"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Notification System with In-App Alerts and Email Delivery
 

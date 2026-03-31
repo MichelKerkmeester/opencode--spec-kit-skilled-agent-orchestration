@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Hero Video Card Image [01--anobel.com/z_archive/028-hero-flicker-debug/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Hero Video Card Image Flickering Fix\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "hero"
+  - "video"
+  - "card"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Hero Video Card Image Flickering Fix"
         description: "On mobile devices, when scrolling through video cards in the hero section (both \"hero cards\" and \"hero general\" variants), the thumbnail images flicker rapidly. This occurs on p."
         trigger_phrases:

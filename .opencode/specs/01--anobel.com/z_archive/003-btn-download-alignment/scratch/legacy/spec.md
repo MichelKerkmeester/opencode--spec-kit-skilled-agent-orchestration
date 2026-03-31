@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Download Button Code [01--anobel.com/z_archive/003-btn-download-alignment/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Download Button Code Standards Alignment\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "download"
+  - "button"
+  - "code"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Download Button Code Standards Alignment"
         description: "Align btn_download.js and btn_download.css with project code quality standards."
         trigger_phrases:

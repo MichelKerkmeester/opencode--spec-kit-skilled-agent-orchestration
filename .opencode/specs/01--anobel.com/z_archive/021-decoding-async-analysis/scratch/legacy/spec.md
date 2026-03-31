@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Image Decoding Async [01--anobel.com/z_archive/021-decoding-async-analysis/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Image Decoding Async Analysis\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "image"
+  - "decoding"
+  - "async"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Image Decoding Async Analysis"
         description: "The decoding=\"async\" HTML attribute for <img> elements is a performance optimization that may not be utilized on anobel.com. Without this attribute, the browser decodes images s."
         trigger_phrases:

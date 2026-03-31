@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/tasks]"
+title: "Tasks [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

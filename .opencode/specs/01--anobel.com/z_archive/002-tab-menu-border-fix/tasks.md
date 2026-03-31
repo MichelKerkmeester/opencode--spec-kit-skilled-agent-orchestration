@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/tasks]"
+title: "Tasks: Tab Menu Border Color Fix [.opencode/specs/01--anobel.co [01--anobel.com/z_archive/002-tab-menu-border-fix/tasks]"
 description: "Archived normalization task list for Tab Menu Border Color Fix."
 trigger_phrases:
   - "tab"

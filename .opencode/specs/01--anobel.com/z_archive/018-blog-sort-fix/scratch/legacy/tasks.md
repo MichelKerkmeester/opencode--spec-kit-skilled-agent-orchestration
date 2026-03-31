@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Blog Sort Dropdown Fix"
+title: "Tasks: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/scratch/legacy/tasks]"
 description: "Archived task record for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "018-blog-sort-fix"

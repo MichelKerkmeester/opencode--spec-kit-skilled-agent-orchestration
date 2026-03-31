@@ -1,5 +1,5 @@
 ---
-title: "System Health Audit - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/spec]"
+title: "System Health Audit [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/spec]"
 description: "Spec ID: 032-system-health-audit"
 trigger_phrases:
   - "system"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "032"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Agent Routing Documentation Update [archive]"
+title: "Implementation Plan: Agent Routing Documentation [02--system-spec-kit/z_archive/002-agent-routing-doc-update/plan]"
 description: "Archive normalization plan for the Agent Routing Documentation Update folder."
 trigger_phrases:
   - "implementation plan"
   - "agent routing documentation update"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Agent Routing Documentation Update
 

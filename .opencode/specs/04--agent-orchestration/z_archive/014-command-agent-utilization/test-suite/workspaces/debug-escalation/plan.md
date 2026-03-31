@@ -9,7 +9,7 @@ trigger_phrases:
   - "debug"
   - "escalation"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: JWT Authentication
 

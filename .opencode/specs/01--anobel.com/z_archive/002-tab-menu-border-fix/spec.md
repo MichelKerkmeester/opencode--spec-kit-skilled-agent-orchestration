@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/spec]"
+title: "Feature Specification: Tab Menu Border Color Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/spec]"
 description: "Tab Menu Border Color Fix"
 trigger_phrases:
   - "tab"

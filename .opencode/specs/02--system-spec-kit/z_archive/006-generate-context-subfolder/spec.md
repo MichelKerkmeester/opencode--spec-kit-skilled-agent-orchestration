@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Generate Context Subfolder Support [archive]"
+title: "Feature Specification: Generate Context Subfolder [02--system-spec-kit/z_archive/006-generate-context-subfolder/spec]"
 description: "Archived record for the Generate Context Subfolder Support work, normalized to the current Level 1 template."
 trigger_phrases:
   - "generate context subfolder"
   - "generate context"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Generate Context Subfolder Support
 

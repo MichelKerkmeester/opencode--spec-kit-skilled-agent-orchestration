@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "046"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Post-Release Refinement 1: Infrastructure Bug Fixes

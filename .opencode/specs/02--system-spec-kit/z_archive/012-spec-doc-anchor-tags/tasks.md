@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Spec Doc Anchor Tags [template:level_1/tasks.md]"
+title: "Tasks: Spec Doc Anchor Tags [template:level_1/tasks.md] [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "012-spec-doc-anchor-tags"

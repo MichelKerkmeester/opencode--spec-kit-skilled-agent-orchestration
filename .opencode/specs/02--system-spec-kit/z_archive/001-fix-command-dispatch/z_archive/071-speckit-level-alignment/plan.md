@@ -9,7 +9,7 @@ trigger_phrases:
   - "template"
   - "071"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Plan: SpecKit Level-Based Template Alignment
 

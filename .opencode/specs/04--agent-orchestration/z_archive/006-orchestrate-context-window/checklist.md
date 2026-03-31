@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Orchestrate Context Window [template:level_2/checklist.md]"
+title: "Verification Checklist: Orchestrate [04--agent-orchestration/z_archive/006-orchestrate-context-window/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

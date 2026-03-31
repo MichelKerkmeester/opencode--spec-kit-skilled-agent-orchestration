@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/checklist]"
 description: "checklist document for 017-stateless-spec-passing."
 trigger_phrases:
   - "checklist"

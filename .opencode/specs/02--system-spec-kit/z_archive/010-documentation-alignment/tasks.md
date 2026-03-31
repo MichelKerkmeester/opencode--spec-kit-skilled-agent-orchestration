@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Documentation Alignment for Spec 126 [archive]"
+title: "Tasks: Documentation Alignment for Spec 126 [archive] [02--system-spec-kit/z_archive/010-documentation-alignment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: minify-javascript - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/005-minify-javascript/tasks]"
+title: "Tasks: minify-javascript - Requirements & User Stories [01--anobel.com/z_archive/005-minify-javascript/tasks]"
 description: "Archived normalization task list for minify-javascript - Requirements & User Stories."
 trigger_phrases:
   - "feature"

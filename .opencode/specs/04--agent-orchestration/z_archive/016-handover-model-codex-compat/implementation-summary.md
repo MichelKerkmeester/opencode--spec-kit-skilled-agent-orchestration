@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/016-handover-model-codex-compat/implementation-summary]"
 description: "Archive normalization summary for Handover Model Codex Compat."
 trigger_phrases:
   - "016-handover-model-codex-compat"

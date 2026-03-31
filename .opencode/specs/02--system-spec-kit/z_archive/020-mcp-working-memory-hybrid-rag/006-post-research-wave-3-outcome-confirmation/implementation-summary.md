@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "...kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/implementation-summary]"
 description: "Archive normalization summary for Post Research Wave 3 Outcome Confirmation."
 trigger_phrases:
   - "006-post-research-wave-3-outcome-confirmation"

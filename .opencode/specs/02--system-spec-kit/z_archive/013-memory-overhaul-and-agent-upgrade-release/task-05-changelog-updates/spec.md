@@ -7,7 +7,7 @@ trigger_phrases:
   - "creation"
   - "spec"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Task 05 — Changelog Creation

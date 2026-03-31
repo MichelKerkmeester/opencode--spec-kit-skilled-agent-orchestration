@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post Research Wave 3 Outcome Confirmation [template:level_3/decision-record.md]"
+title: "...m-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation/decision-record]"
 description: "Archive normalization decision record for Post Research Wave 3 Outcome Confirmation."
 trigger_phrases:
   - "decision record"

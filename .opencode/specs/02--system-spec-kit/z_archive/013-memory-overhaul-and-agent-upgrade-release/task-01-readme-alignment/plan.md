@@ -8,7 +8,7 @@ trigger_phrases:
   - "readme"
   - "audit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 01 — README Audit & Alignment
 

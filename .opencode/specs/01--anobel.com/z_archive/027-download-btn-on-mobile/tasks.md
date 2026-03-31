@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Download Button Mobile Fix [.opencode/specs/01--anobel.com/z_archive/027-download-btn-on-mobile/tasks]"
+title: "Tasks: Download Button Mobile Fix [.opencode/specs/01--anobe [01--anobel.com/z_archive/027-download-btn-on-mobile/tasks]"
 description: "Archived normalization task list for Download Button Mobile Fix."
 trigger_phrases:
   - "feature"

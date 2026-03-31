@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Comprehensive Script Audit [archive]"
+title: "Feature Specification: Comprehensive Script Audit [02--system-spec-kit/z_archive/004-script-audit-comprehensive/spec]"
 description: "Archived record for the Comprehensive Script Audit work, normalized to the current Level 1 template."
 trigger_phrases:
   - "comprehensive script audit"
   - "script audit"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Comprehensive Script Audit
 

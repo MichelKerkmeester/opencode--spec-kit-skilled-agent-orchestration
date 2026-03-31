@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Image Decoding Async Analysis [.opencode/specs/01--anobel.com/z_archive/021-decoding-async-analysis/spec]"
+title: "Feature Specification: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/spec]"
 description: "Feature Specification: Image Decoding Async Analysis"
 trigger_phrases:
   - "feature"

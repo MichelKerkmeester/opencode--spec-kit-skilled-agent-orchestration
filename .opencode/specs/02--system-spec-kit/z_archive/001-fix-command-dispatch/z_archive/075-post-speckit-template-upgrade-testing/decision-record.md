@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "075"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Post-SpecKit Template Upgrade Testing
 

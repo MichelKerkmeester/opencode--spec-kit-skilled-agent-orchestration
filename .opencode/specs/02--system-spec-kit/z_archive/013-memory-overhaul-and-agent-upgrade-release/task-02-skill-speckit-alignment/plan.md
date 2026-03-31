@@ -8,7 +8,7 @@ trigger_phrases:
   - "skill"
   - "references"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 02 — SKILL.md & References Audit
 

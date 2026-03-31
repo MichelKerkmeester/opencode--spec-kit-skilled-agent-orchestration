@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Language Selector - Desktop Hover to Open"
+title: "Implementation Plan: Language Selector - [01--anobel.com/z_archive/024-language-selector-hover/scratch/legacy/plan]"
 description: "Modify nav_language_selector.js to open the dropdown on hover (desktop only), matching the behavior of nav_dropdown.js."
 trigger_phrases:
   - "024-language-selector-hover"

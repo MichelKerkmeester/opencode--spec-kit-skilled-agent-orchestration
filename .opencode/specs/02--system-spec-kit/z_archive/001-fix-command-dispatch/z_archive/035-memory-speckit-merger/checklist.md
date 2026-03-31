@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/checklist]"
 description: "Implementation Note: The actual implementation uses a different structure than originally planned"
 trigger_phrases:
   - "checklist"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Form Attribute Audit [.opencode/specs/01--anobel.com/z_archive/019-form-attribute-audit/spec]"
+title: "Feature Specification: Form Attribute Audit [01--anobel.com/z_archive/019-form-attribute-audit/spec]"
 description: "Spec: Form Attribute Audit"
 trigger_phrases:
   - "spec"

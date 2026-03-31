@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Performance Optimization Review - Spec 025 [.opencode/specs/01--anobel.com/z_archive/023-performance-review/plan]"
+title: "Implementation Plan: Performance Optimization Review - Spec 025 [01--anobel.com/z_archive/023-performance-review/plan]"
 description: "Performance Optimization Review - Spec 025"
 trigger_phrases:
   - "performance"

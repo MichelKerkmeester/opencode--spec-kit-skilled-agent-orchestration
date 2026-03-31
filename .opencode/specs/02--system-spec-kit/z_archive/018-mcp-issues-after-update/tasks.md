@@ -1,5 +1,5 @@
 ---
-title: "Tasks: MCP Issues After Update [template:level_1/tasks.md]"
+title: "Tasks: MCP Issues After Update [template:level_1/tasks [02--system-spec-kit/z_archive/018-mcp-issues-after-update/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "018-mcp-issues-after-update"

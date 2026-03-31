@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Doc Anchor Tags [template:level_1/spec.md]"
+title: "Feature Specification: Spec Doc Anchor Tags [02--system-spec-kit/z_archive/012-spec-doc-anchor-tags/spec]"
 description: "Archived record for Spec Doc Anchor Tags. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "012-spec-doc-anchor-tags"

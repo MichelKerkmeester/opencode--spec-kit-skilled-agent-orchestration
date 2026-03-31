@@ -10,7 +10,7 @@ trigger_phrases:
   - "001"
   - "memory"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Roampal Analysis - Technical Approach & Architecture
 

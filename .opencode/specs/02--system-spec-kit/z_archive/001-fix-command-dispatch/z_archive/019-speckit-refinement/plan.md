@@ -1,5 +1,5 @@
 ---
-title: "SpecKit Refinement: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/plan]"
+title: "SpecKit Refinement [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/plan]"
 description: "After deep analysis using Sequential Thinking, the full design risks over-engineering. A phased approach"
 trigger_phrases:
   - "speckit"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "plan"
   - "019"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # SpecKit Refinement: Implementation Plan
 <!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->

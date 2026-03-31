@@ -10,7 +10,7 @@ trigger_phrases:
   - "069"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Level-Based Template Architecture
 

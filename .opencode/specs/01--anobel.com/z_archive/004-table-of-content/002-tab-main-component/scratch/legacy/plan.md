@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Tab Main Component"
+title: "Implementation Plan: Tab [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/scratch/legacy/plan]"
 description: "Attribute-based tab component for linking tab buttons to content panels via matching data attribute values."
 trigger_phrases:
   - "002-tab-main-component"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/026-mobile-btn-link-feedback/implementation-summary]"
 description: "Archived implementation summary for Mobile Button/Link Tap Feedback."
 trigger_phrases:
   - "feature"

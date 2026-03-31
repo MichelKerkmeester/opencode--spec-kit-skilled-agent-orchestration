@@ -9,7 +9,7 @@ trigger_phrases:
   - "research"
   - "055"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Cognitive Memory Upgrade Research

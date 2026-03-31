@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Performance Optimization [01--anobel.com/z_archive/023-performance-review/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Performance Optimization Review - Spec 025\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "performance"
+  - "optimization"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Performance Optimization Review - Spec 025"
         description: "Spec 024 implemented Phase 1 performance optimizations but lacks post-implementation verification. Additionally, version inconsistencies were discovered across HTML files, and s."
         trigger_phrases:

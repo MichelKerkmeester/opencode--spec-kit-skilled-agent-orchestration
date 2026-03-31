@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post Research Wave 1 Governance Foundations [template:level_1/plan.md]"
+title: "I [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/plan]"
 description: "Normalize archived phase folder 004-post-research-wave-1-governance-foundations so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "004-post-research-wave-1-governance-foundations"

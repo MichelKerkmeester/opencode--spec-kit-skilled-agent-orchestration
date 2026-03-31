@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Blog Sort Dropdown Fix\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "blog"
+  - "sort"
+  - "dropdown"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
     title: "Feature Specification: Blog Sort Dropdown Fix"
     description: "Fix the blog page sort dropdown to properly trigger Finsweet fs-list sorting. Currently, selecting a sort option updates the hidden select value but does not trigger list re-sor."
     trigger_phrases:

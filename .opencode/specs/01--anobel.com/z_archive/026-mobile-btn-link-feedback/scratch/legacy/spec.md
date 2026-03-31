@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Mobile Button/Link [01--anobel.com/z_archive/026-mobile-btn-link-feedback/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Mobile Button/Link Tap Feedback\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "mobile"
+  - "button"
+  - "link"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Mobile Button/Link Tap Feedback"
         description: "On mobile/touch devices, the CSS :active pseudo-class fires on touchstart BEFORE the browser has determined whether the user is tapping or scrolling. This causes unwanted visual."
         trigger_phrases:

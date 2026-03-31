@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Performance Optimization Review - Spec 025"
+title: "Tasks: Performance Optimization Review - Spec 025 [01--anobel.com/z_archive/023-performance-review/scratch/legacy/tasks]"
 description: "Archived task record for Performance Optimization Review - Spec 025."
 trigger_phrases:
   - "023-performance-review"

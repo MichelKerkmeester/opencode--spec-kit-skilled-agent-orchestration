@@ -9,7 +9,7 @@ trigger_phrases:
   - "dashboard"
   - "002"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Memory Plugin Dashboard Optimization - Technical Approach & Architecture
 

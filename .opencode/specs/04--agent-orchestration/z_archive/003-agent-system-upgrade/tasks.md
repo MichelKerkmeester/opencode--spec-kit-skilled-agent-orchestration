@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent System Upgrade [template:level_1/tasks.md]"
+title: "Tasks: Agent System Upgrade [template:level_1/tasks.m [04--agent-orchestration/z_archive/003-agent-system-upgrade/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/plan]"
+title: "Implementation Plan: Specification: Font Performance Optimization [01--anobel.com/z_archive/013-font-performance/plan]"
 description: "Specification: Font Performance Optimization"
 trigger_phrases:
   - "specification"

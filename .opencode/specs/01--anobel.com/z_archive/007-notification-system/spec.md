@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification System - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/007-notification-system/spec]"
+title: "Feature Specification: Notification System - Requirements & [01--anobel.com/z_archive/007-notification-system/spec]"
 description: "Feature Specification: Notification System - Requirements & User Stories"
 trigger_phrases:
   - "feature"

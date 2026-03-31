@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post Research Wave 1 Governance Foundations [template:level_3/decision-record.md]"
+title: "...spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/decision-record]"
 description: "Archive normalization decision record for Post Research Wave 1 Governance Foundations."
 trigger_phrases:
   - "decision record"

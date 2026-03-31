@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/012-notification-time-scheduling/implementation-summary]"
 description: "Archived implementation summary for Notification Time-Based Scheduling."
 trigger_phrases:
   - "feature"

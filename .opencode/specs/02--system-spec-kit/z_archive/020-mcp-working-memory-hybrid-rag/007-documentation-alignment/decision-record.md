@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Documentation Alignment [template:level_3/decision-record.md]"
+title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/decision-record]"
 description: "Archive normalization decision record for Documentation Alignment."
 trigger_phrases:
   - "decision record"

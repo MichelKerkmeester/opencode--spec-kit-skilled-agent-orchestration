@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Write Agent Enforcement [template:level_1/tasks.md]"
+title: "Tasks: Write Agent Enforcement [04--agent-orchestration/z_archive/002-write-agent-enforcement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

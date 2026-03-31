@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Form Input Components Enhancement"
+title: "Decision Record: Form Input [01--anobel.com/z_archive/011-form-input-upload-select/scratch/legacy/decision-record]"
 description: "Archived decision record for Form Input Components Enhancement."
 trigger_phrases:
   - "011-form-input-upload-select"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/plan]"
+title: "Implementation Plan: Finsweet Performance [01--anobel.com/z_archive/001-finsweet-performance/scratch/legacy/plan]"
 description: "Defer Finsweet Attributes loading to improve PageSpeed by 10-20 points."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "optimization"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Finsweet Performance Optimization

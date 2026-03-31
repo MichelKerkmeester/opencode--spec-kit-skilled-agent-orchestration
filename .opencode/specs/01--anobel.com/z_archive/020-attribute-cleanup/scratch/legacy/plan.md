@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Attribute Cleanup Deepdive"
+title: "Implementation Plan: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/scratch/legacy/plan]"
 description: "Level 1 (Core) is appropriate when."
 trigger_phrases:
   - "020-attribute-cleanup"

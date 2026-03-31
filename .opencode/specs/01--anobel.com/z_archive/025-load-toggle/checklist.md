@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.com/z_archive/025-load-toggle/checklist]"
+title: "Verification Checklist: Load Toggle Component - anobel.com [01--anobel.com/z_archive/025-load-toggle/checklist]"
 description: "Archived verification checklist for Load Toggle Component - anobel.com."
 trigger_phrases:
   - "load"

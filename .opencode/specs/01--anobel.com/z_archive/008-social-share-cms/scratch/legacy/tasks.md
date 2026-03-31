@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Social Share CMS Integration"
+title: "Tasks: Social Share CMS Integration [01--anobel.com/z_archive/008-social-share-cms/scratch/legacy/tasks]"
 description: "Archived task record for Social Share CMS Integration."
 trigger_phrases:
   - "008-social-share-cms"

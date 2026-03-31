@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Video Play/Pause Button Hover Effect [.opencode/specs/01--anobel.com/z_archive/006-video-play-pause-hover/tasks]"
+title: "Tasks: Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/tasks]"
 description: "Archived normalization task list for Video Play/Pause Button Hover Effect."
 trigger_phrases:
   - "video"

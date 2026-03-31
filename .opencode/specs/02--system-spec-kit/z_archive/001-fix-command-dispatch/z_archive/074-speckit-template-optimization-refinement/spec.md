@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "074"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Template Optimization Refinement

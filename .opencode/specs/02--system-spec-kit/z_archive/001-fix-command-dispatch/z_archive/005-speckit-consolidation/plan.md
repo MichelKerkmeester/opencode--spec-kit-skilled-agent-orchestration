@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/plan]"
 description: "Implementation plan for consolidating .opencode/speckit/ into .opencode/skills/workflows-spec-kit/."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "consolidation"
   - "005"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Skill Consolidation - Technical Approach & Migration Strategy
 

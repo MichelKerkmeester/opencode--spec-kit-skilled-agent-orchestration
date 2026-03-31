@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/014-command-agent-utilization/implementation-summary]"
 description: "Archive normalization summary for Command Agent Utilization."
 trigger_phrases:
   - "014-command-agent-utilization"

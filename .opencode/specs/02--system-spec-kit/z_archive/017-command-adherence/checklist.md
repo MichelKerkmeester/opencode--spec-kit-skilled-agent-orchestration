@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Command Adherence [template:level_2/checklist.md]"
+title: "Verification Checklist: Command Adherence [02--system-spec-kit/z_archive/017-command-adherence/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

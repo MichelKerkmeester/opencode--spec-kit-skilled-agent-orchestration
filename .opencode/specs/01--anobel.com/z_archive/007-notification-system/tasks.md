@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Notification System - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/007-notification-system/tasks]"
+title: "Tasks: Notification System - Requirements & User Stories [01--anobel.com/z_archive/007-notification-system/tasks]"
 description: "Archived normalization task list for Notification System - Requirements & User Stories."
 trigger_phrases:
   - "feature"

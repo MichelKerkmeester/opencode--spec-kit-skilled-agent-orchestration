@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Download Button Code Standards Alignment"
+title: "Implementation Plan: Download Button Code [01--anobel.com/z_archive/003-btn-download-alignment/scratch/legacy/plan]"
 description: "Align btn_download.js and btn_download.css with project code quality standards."
 trigger_phrases:
   - "003-btn-download-alignment"

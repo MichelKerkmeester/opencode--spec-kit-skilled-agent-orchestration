@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "083"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Reimagined Test Suite

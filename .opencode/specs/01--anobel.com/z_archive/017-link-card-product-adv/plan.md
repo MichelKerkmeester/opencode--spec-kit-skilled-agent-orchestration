@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Link Card Product/Adv - CTA Button Hover Animation [.opencode/specs/01--anobel.com/z_archive/017-link-card-product-adv/plan]"
+title: "Implementation Plan: Link Card Product/Adv - CTA Button [01--anobel.com/z_archive/017-link-card-product-adv/plan]"
 description: "Link Card Product/Adv - CTA Button Hover Animation"
 trigger_phrases:
   - "link"

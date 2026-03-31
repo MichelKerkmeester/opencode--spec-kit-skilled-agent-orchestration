@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent Provider Switch [template:level_1/tasks.md]"
+title: "Tasks: Agent Provider Switch [template:level_1/tasks [04--agent-orchestration/z_archive/017-agent-provider-switch/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "017-agent-provider-switch"

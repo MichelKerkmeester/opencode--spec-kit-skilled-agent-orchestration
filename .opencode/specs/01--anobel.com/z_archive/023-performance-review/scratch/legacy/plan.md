@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Performance Optimization Review - Spec 025"
+title: "Implementation Plan: Performance Optimization [01--anobel.com/z_archive/023-performance-review/scratch/legacy/plan]"
 description: "Spec 024 implemented Phase 1 performance optimizations but lacks post-implementation verification. Additionally, version inconsistencies were discovered across HTML files, and s."
 trigger_phrases:
   - "023-performance-review"

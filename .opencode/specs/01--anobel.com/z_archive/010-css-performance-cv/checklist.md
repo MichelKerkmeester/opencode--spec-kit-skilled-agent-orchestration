@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Specification: CSS Performance Upgrade (Content Visibility) [.opencode/specs/01--anobel.com/z_archive/010-css-performance-cv/checklist]"
+title: "Verification Checklist: Specification: CSS Performance [01--anobel.com/z_archive/010-css-performance-cv/checklist]"
 description: "Archived verification checklist for Specification: CSS Performance Upgrade (Content Visibility)."
 trigger_phrases:
   - "specification"

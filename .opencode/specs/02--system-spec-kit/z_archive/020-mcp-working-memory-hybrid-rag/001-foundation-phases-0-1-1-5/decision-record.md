@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Foundation Phases 0 1 1 5 [template:level_3/decision-record.md]"
+title: "Decision [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/decision-record]"
 description: "Archive normalization decision record for Foundation Phases 0 1 1 5."
 trigger_phrases:
   - "decision record"

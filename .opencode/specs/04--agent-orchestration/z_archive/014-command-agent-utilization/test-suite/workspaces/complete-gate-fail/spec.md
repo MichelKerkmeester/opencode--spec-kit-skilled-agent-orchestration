@@ -10,7 +10,7 @@ trigger_phrases:
   - "complete"
   - "gate"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Notification System
 

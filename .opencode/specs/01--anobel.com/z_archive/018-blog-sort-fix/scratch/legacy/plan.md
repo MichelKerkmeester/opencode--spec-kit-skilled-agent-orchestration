@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Blog Sort Dropdown Fix"
+title: "Implementation Plan: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/scratch/legacy/plan]"
 description: "Fix the blog page sort dropdown to properly trigger Finsweet fs-list sorting. Currently, selecting a sort option updates the hidden select value but does not trigger list re-sor."
 trigger_phrases:
   - "018-blog-sort-fix"

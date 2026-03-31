@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/tasks]"
+title: "Tasks [04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

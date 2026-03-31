@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/spec]"
+title: "Feature Specification: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/spec]"
 description: "Feature Specification: Attribute Cleanup Deepdive"
 trigger_phrases:
   - "feature"

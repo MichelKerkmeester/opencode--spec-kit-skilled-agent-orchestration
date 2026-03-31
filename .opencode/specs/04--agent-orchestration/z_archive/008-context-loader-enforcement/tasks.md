@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context Loader Enforcement [template:level_1/tasks.md]"
+title: "Tasks: Context Loader Enforcement [04--agent-orchestration/z_archive/008-context-loader-enforcement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

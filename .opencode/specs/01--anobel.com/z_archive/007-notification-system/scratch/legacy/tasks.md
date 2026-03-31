@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Notification System - Requirements & User Stories"
+title: "Tasks: Notification System - Requirements & [01--anobel.com/z_archive/007-notification-system/scratch/legacy/tasks]"
 description: "Archived task record for Notification System - Requirements & User Stories."
 trigger_phrases:
   - "007-notification-system"

@@ -9,7 +9,7 @@ trigger_phrases:
   - "release"
   - "decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 07 — GitHub Release
 

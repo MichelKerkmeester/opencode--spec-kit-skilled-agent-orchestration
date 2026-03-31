@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Performance Optimization - anobel.com [.opencode/specs/01--anobel.com/z_archive/022-performance-optimization/spec]"
+title: "Feature Specification: Performance Optimization - [01--anobel.com/z_archive/022-performance-optimization/spec]"
 description: "Performance Optimization - anobel.com"
 trigger_phrases:
   - "performance"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Hero Video Card Image Flickering Fix"
+title: "Tasks: Hero Video Card Image Flickering Fix [01--anobel.com/z_archive/028-hero-flicker-debug/scratch/legacy/tasks]"
 description: "Archived task record for Hero Video Card Image Flickering Fix."
 trigger_phrases:
   - "028-hero-flicker-debug"

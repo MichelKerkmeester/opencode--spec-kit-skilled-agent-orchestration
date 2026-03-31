@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Quality QP 0 4 [template:level_1/spec.md]"
+title: "Feature Specification: [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4/spec]"
 description: "Archived child phase record for Memory Quality QP 0 4. This phase folder was normalized to current validator-compliant Level 1 structure."
 trigger_phrases:
   - "003-memory-quality-qp-0-4"

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Upgrade Auto Populate [template:level_3/decision-record.md]"
+title: "Decision Record: Upgrade Auto Populate [02--system-spec-kit/z_archive/011-upgrade-auto-populate/decision-record]"
 description: "Archive normalization decision record for Upgrade Auto Populate."
 trigger_phrases:
   - "decision record"

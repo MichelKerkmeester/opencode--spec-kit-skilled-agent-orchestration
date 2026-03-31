@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context Model Comparison [template:level_1/plan.md]"
+title: "Implementation Plan: Context Model Comparison [04--agent-orchestration/z_archive/012-context-model-comparison/plan]"
 description: "Normalize the archived agent orchestration archive folder for Context Model Comparison so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "012-context-model-comparison"

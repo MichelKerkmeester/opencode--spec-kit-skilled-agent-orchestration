@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agents from Oh My Opencode [template:level_1/spec.md]"
+title: "Feature Specification: Agents from Oh My [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

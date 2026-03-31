@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/plan]"
+title: "Implementation Plan: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/plan]"
 description: "Feature Specification: Attribute Cleanup Deepdive"
 trigger_phrases:
   - "feature"

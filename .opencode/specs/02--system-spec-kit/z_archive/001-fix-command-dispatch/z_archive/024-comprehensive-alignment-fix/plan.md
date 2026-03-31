@@ -7,7 +7,7 @@ trigger_phrases:
   - "024"
   - "comprehensive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan

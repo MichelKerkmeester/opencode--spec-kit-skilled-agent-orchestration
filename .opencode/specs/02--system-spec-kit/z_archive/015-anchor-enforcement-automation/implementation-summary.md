@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/implementation-summary]"
 description: "Archive normalization summary for Anchor Enforcement Automation."
 trigger_phrases:
   - "015-anchor-enforcement-automation"

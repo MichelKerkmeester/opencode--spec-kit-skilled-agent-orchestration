@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/checklist]"
 description: "Code Implementation: 100% Complete"
 trigger_phrases:
   - "checklist"

@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Social Share CMS Integration [01--anobel.com/z_archive/008-social-share-cms/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Social Share CMS Integration\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "social"
+  - "share"
+  - "cms"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Social Share CMS Integration"
         description: "Enhance the social share component to support separate URL and slug CMS fields in Webflow, enabling more flexible CMS binding while maintaining backwards compatibility."
         trigger_phrases:

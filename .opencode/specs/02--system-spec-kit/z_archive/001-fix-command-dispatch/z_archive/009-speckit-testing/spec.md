@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/spec]"
 description: "Comprehensive testing of system-spec-kit skill after rename from workflows-spec-kit."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "009"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: SpecKit Post-Rename Testing

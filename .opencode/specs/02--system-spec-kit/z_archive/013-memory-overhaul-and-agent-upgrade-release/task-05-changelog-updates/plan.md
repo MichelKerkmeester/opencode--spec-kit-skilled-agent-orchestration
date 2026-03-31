@@ -8,7 +8,7 @@ trigger_phrases:
   - "changelog"
   - "creation"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 05 — Changelog Creation
 

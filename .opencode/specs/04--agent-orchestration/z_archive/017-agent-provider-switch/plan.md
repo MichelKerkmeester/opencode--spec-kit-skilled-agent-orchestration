@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent Provider Switch [template:level_1/plan.md]"
+title: "Implementation Plan: Agent Provider Switch [04--agent-orchestration/z_archive/017-agent-provider-switch/plan]"
 description: "Normalize the archived agent orchestration archive folder for Agent Provider Switch so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "017-agent-provider-switch"

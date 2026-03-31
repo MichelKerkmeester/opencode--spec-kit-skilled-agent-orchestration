@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Custom TOC ScrollSpy - Requirements & User Stories"
+title: "Implementation Plan: Custom TOC [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/scratch/legacy/plan]"
 description: "Custom Table of Contents implementation with flexible styling options, replacing Finsweet's Webflow-dependent approach with a standalone IntersectionObserver-based solution."
 trigger_phrases:
   - "001-toc-scrollspy"

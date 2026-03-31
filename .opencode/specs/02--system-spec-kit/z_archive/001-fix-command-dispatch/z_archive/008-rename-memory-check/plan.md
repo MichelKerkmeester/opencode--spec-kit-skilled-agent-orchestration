@@ -8,7 +8,7 @@ trigger_phrases:
   - "command"
   - "008"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Rename `/memory` Command to `/memory:check`

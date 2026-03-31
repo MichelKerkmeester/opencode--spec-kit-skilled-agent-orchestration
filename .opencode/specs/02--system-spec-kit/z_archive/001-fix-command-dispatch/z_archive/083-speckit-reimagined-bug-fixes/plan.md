@@ -10,7 +10,7 @@ trigger_phrases:
   - "083"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Spec Kit Bug Fixes

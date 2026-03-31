@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "041"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record.md | v1.0 -->
 

@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "053"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: CORE -->
 # Feature Specification: Script Analysis Testing - End-to-End Workflow Validation

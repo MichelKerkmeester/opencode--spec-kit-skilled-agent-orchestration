@@ -1,5 +1,5 @@
 ---
-title: "Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/spec]"
+title: "Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/spec]"
 description: "After the major Spec Kit + Memory system merger (spec 035), eight refinement attempts (036-042) identified ~300+ issues. However, many were"
 trigger_phrases:
   - "specification"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "043"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Context Model Optimization [template:level_1/spec.md]"
+title: "Feature Specification: Context Model [04--agent-orchestration/z_archive/011-context-model-optimization/spec]"
 description: "Archived record for Context Model Optimization. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "011-context-model-optimization"

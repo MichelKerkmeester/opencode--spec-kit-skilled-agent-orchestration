@@ -9,7 +9,7 @@ trigger_phrases:
   - "optimization"
   - "074"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Template Optimization Refinement
 

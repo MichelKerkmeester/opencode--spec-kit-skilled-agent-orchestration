@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/004-multi-agent-dispatch/implementation-summary]"
 description: "Archive normalization summary for multi-agent dispatch."
 trigger_phrases:
   - "implementation"

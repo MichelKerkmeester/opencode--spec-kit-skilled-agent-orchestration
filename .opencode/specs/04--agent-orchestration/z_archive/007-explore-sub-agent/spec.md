@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Explore Sub-Agent [template:level_1/spec.md]"
+title: "Feature Specification: Explore Sub-Agent [04--agent-orchestration/z_archive/007-explore-sub-agent/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

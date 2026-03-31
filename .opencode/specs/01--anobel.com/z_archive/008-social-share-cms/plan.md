@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/plan]"
+title: "Implementation Plan: Social Share CMS Integration [01--anobel.com/z_archive/008-social-share-cms/plan]"
 description: "Social Share CMS Integration"
 trigger_phrases:
   - "social"

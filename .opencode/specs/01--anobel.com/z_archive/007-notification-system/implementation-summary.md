@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/007-notification-system/implementation-summary]"
 description: "Archived implementation summary for Notification System - Requirements & User Stories."
 trigger_phrases:
   - "feature"

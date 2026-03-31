@@ -8,7 +8,7 @@ trigger_phrases:
   - "plan"
   - "036"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 id: 036-post-merge-refinement
 phase: Planning
 ---

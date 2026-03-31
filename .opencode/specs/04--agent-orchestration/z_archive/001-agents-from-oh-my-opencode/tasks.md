@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agents from Oh My Opencode [template:level_1/tasks.md]"
+title: "Tasks: Agents from Oh My Opencode [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

@@ -9,7 +9,7 @@ trigger_phrases:
   - "upgrade"
   - "075"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Post-SpecKit Template Upgrade - Command Alignment

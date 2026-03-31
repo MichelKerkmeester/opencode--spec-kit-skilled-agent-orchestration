@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Anchor Enforcement Automation [template:level_1/plan.md]"
+title: "Implementation Plan: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Anchor Enforcement Automation so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "015-anchor-enforcement-automation"

@@ -9,7 +9,7 @@ trigger_phrases:
   - "test"
   - "091"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Naming Convention Test Suite
 

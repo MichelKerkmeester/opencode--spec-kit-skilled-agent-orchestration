@@ -6,9 +6,8 @@ trigger_phrases:
   - "confidence override"
   - "command bridge ranking"
   - "runtime cache"
-# <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 importance_tier: "critical"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Skill Advisor Refinement
 

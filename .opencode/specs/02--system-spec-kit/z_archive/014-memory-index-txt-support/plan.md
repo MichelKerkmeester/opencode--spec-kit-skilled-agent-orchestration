@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory Index Txt Support [template:level_1/plan.md]"
+title: "Implementation Plan: Memory Index Txt Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Memory Index Txt Support so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "014-memory-index-txt-support"

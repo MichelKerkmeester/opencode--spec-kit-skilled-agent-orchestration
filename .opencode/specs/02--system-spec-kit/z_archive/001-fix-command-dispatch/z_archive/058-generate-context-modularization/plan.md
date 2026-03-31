@@ -9,7 +9,7 @@ trigger_phrases:
   - "modularization"
   - "058"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: generate-context.js Modularization

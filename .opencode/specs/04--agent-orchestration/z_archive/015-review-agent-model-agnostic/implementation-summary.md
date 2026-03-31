@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/implementation-summary]"
 description: "Archive normalization summary for Review Agent Model Agnostic."
 trigger_phrases:
   - "015-review-agent-model-agnostic"

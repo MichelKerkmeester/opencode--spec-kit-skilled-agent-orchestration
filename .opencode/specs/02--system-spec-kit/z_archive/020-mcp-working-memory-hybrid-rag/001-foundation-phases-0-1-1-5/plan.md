@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Foundation Phases 0 1 1 5 [template:level_1/plan.md]"
+title: "Implementation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5/plan]"
 description: "Normalize archived phase folder 001-foundation-phases-0-1-1-5 so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "001-foundation-phases-0-1-1-5"

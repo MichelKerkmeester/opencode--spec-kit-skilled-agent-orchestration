@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: MCP Issues After Update [template:level_1/plan.md]"
+title: "Implementation Plan: MCP Issues After Update [02--system-spec-kit/z_archive/018-mcp-issues-after-update/plan]"
 description: "Normalize the archived system-spec-kit archive folder for MCP Issues After Update so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "018-mcp-issues-after-update"

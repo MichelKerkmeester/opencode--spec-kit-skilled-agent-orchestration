@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/005-minify-javascript/implementation-summary]"
 description: "Archived implementation summary for minify-javascript - Requirements & User Stories."
 trigger_phrases:
   - "feature"

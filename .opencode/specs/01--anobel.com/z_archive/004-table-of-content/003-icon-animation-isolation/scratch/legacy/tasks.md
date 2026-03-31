@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Icon Animation Isolation for Download Button"
+title: "Tasks: Icon Animation [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/scratch/legacy/tasks]"
 description: "Archived task record for Icon Animation Isolation for Download Button."
 trigger_phrases:
   - "003-icon-animation-isolation"

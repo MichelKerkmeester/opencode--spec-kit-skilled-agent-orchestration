@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: anobel.com"
+title: "Decision Record: anobel.com [01--anobel.com/z_archive/022-performance-optimization/scratch/legacy/decision-record]"
 description: "Archived decision record for anobel.com."
 trigger_phrases:
   - "022-performance-optimization"

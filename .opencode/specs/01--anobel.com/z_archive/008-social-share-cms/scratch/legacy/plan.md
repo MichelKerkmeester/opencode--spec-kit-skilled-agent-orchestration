@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Social Share CMS Integration"
+title: "Implementation Plan: Social Share CMS Integration [01--anobel.com/z_archive/008-social-share-cms/scratch/legacy/plan]"
 description: "Enhance the social share component to support separate URL and slug CMS fields in Webflow, enabling more flexible CMS binding while maintaining backwards compatibility."
 trigger_phrases:
   - "008-social-share-cms"

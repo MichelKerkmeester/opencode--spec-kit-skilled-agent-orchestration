@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Language Selector - Desktop Hover to Open [.opencode/specs/01--anobel.com/z_archive/024-language-selector-hover/plan]"
+title: "Implementation Plan: Language Selector - Desktop Hover to [01--anobel.com/z_archive/024-language-selector-hover/plan]"
 description: "Spec: Language Selector - Desktop Hover to Open"
 trigger_phrases:
   - "spec"

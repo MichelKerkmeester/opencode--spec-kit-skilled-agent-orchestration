@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/spec]"
+title: "Feature Specification: Specification: Additional Performance [01--anobel.com/z_archive/015-performance-hacks/spec]"
 description: "Specification: Additional Performance Hacks"
 trigger_phrases:
   - "specification"

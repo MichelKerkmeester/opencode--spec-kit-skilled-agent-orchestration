@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Language Selector - Desktop Hover to Open [.opencode/specs/01--anobel.com/z_archive/024-language-selector-hover/tasks]"
+title: "Tasks: Language Selector - Desktop Hover to Open [01--anobel.com/z_archive/024-language-selector-hover/tasks]"
 description: "Archived normalization task list for Language Selector - Desktop Hover to Open."
 trigger_phrases:
   - "spec"

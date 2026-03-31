@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/checklist]"
 description: "Spec ID: 083-memory-command-consolidation"
 trigger_phrases:
   - "checklist"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Post Research Wave 2 Controlled Delivery [template:level_1/plan.md]"
+title: "Impl [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/plan]"
 description: "Normalize archived phase folder 005-post-research-wave-2-controlled-delivery so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "005-post-research-wave-2-controlled-delivery"

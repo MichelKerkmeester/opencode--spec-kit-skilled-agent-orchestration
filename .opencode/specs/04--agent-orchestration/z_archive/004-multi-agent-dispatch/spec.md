@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Multi-Agent Dispatch [template:level_1/spec.md]"
+title: "Feature Specification: Multi-Agent Dispatch [04--agent-orchestration/z_archive/004-multi-agent-dispatch/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

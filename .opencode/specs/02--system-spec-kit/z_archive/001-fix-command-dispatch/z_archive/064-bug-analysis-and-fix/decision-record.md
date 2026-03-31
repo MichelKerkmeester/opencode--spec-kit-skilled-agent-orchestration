@@ -11,7 +11,7 @@ trigger_phrases:
   - "064"
   - "bug"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: System-Spec-Kit Bug Fix Architectural Decisions
 

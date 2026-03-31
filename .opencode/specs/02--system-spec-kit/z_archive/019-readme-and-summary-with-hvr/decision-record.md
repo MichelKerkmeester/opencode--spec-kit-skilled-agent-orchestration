@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Readme And Summary With HVR [template:level_3/decision-record.md]"
+title: "Decision Record: Readme And Summary [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/decision-record]"
 description: "Archive normalization decision record for Readme And Summary With HVR."
 trigger_phrases:
   - "decision record"

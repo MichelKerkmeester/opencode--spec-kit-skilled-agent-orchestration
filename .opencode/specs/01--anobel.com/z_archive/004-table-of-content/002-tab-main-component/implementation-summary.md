@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/implementation-summary]"
 description: "Archived implementation summary for Tab Main Component."
 trigger_phrases:
   - "feature"

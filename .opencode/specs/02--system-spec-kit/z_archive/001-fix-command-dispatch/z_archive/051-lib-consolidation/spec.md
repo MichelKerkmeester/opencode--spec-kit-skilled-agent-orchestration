@@ -1,5 +1,5 @@
 ---
-title: "Lib Consolidation - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation/spec]"
+title: "Lib Consolidation [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation/spec]"
 description: "The system-spec-kit has shared JavaScript modules duplicated or re-exported across two separate lib folders, creating several issues"
 trigger_phrases:
   - "lib"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "051"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

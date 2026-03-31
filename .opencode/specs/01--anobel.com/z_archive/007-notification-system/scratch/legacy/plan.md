@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification System - Requirements & User Stories"
+title: "Implementation Plan: Notification System - [01--anobel.com/z_archive/007-notification-system/scratch/legacy/plan]"
 description: "CMS-driven notification system for navbar banners and hero toasts with office hours integration."
 trigger_phrases:
   - "007-notification-system"

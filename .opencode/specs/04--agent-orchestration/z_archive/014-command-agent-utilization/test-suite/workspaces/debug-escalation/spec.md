@@ -10,7 +10,7 @@ trigger_phrases:
   - "debug"
   - "escalation"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: JWT Authentication
 

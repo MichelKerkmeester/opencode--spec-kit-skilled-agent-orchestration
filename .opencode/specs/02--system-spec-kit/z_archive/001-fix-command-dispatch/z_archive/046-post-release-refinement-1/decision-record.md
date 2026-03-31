@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "046"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Post-Release Refinement 1
 

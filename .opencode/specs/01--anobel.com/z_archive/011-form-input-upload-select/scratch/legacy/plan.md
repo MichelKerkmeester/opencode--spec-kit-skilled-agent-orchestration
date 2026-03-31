@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Form Input Components Enhancement"
+title: "Implementation Plan: Form Input Components [01--anobel.com/z_archive/011-form-input-upload-select/scratch/legacy/plan]"
 description: "Enhance form input capabilities with two new components."
 trigger_phrases:
   - "011-form-input-upload-select"

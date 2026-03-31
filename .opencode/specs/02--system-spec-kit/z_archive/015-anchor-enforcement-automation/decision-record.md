@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Anchor Enforcement Automation [template:level_3/decision-record.md]"
+title: "Decision Record: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/decision-record]"
 description: "Archive normalization decision record for Anchor Enforcement Automation."
 trigger_phrases:
   - "decision record"

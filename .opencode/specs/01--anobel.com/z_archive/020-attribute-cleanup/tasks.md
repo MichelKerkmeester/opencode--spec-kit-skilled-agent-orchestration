@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com/z_archive/020-attribute-cleanup/tasks]"
+title: "Tasks: Attribute Cleanup Deepdive [.opencode/specs/01--anobel.com [01--anobel.com/z_archive/020-attribute-cleanup/tasks]"
 description: "Archived normalization task list for Attribute Cleanup Deepdive."
 trigger_phrases:
   - "feature"

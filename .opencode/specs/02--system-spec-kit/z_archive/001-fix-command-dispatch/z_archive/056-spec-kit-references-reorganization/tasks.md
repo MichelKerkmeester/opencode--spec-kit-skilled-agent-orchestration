@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/tasks]"
 description: "All tasks above marked complete with"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Load Toggle Component - anobel.com"
+title: "Implementation Plan: Load Toggle Component - anobel.com [01--anobel.com/z_archive/025-load-toggle/scratch/legacy/plan]"
 description: "A reusable expand/collapse component for Webflow with CMS-bindable button text, smooth animations, and multi-instance support. Enables \"View More / View Less\" patterns with dyna."
 trigger_phrases:
   - "025-load-toggle"

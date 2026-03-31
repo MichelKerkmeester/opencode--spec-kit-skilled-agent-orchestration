@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Tab Main Component"
+title: "Tasks: Tab Main Component [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/scratch/legacy/tasks]"
 description: "Archived task record for Tab Main Component."
 trigger_phrases:
   - "002-tab-main-component"

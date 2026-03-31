@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/009-claude-code-subagents/implementation-summary]"
 description: "Archive normalization summary for claude code subagents."
 trigger_phrases:
   - "implementation"

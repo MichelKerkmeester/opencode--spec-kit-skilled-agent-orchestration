@@ -9,7 +9,7 @@ trigger_phrases:
   - "implementation"
   - "070"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Memory & Folder Ranking Implementation

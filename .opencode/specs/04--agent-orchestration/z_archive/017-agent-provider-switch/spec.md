@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Provider Switch [template:level_1/spec.md]"
+title: "Feature Specification: Agent Provider Switch [04--agent-orchestration/z_archive/017-agent-provider-switch/spec]"
 description: "Archived record for Agent Provider Switch. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "017-agent-provider-switch"

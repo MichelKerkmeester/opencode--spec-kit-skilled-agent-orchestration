@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory Index Txt Support [template:level_3/decision-record.md]"
+title: "Decision Record: Memory Index Txt Support [02--system-spec-kit/z_archive/014-memory-index-txt-support/decision-record]"
 description: "Archive normalization decision record for Memory Index Txt Support."
 trigger_phrases:
   - "decision record"

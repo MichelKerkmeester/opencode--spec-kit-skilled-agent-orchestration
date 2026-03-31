@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Command Agent Utilization [template:level_1/plan.md]"
+title: "Implementation Plan: Command Agent Utilization [04--agent-orchestration/z_archive/014-command-agent-utilization/plan]"
 description: "Normalize the archived agent orchestration archive folder for Command Agent Utilization so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "014-command-agent-utilization"

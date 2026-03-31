@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Upgrade Auto Populate [template:level_1/tasks.md]"
+title: "Tasks: Upgrade Auto Populate [template:level_1/tasks.md] [02--system-spec-kit/z_archive/011-upgrade-auto-populate/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "011-upgrade-auto-populate"

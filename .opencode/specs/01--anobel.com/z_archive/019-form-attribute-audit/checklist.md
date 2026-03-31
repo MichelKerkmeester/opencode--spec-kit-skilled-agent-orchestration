@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Form Attribute Audit [.opencode/specs/01--anobel.com/z_archive/019-form-attribute-audit/checklist]"
+title: "Verification Checklist: Form Attribute Audit [01--anobel.com/z_archive/019-form-attribute-audit/checklist]"
 description: "Archived verification checklist for Form Attribute Audit."
 trigger_phrases:
   - "spec"

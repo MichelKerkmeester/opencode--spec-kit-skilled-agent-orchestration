@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Notification Hero Spacing [.opencode/specs/01--anobel.com/z_archive/014-notification-hero-spacing/plan]"
+title: "Implementation Plan: Notification Hero Spacing [01--anobel.com/z_archive/014-notification-hero-spacing/plan]"
 description: "Notification Hero Spacing"
 trigger_phrases:
   - "notification"

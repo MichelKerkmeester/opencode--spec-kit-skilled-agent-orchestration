@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post Research Wave 1 Governance Foundations [template:level_2/checklist.md]"
+title: "...ystem-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

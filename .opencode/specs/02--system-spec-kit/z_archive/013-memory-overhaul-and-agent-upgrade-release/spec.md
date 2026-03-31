@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Overhaul And Agent Upgrade Release [template:level_1/spec.md]"
+title: "Feature Specification: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/spec]"
 description: "Archived record for Memory Overhaul And Agent Upgrade Release. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "013-memory-overhaul-and-agent-upgrade-release"

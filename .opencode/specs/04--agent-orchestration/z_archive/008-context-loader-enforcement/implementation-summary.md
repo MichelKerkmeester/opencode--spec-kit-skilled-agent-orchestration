@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/008-context-loader-enforcement/implementation-summary]"
 description: "Archive normalization summary for context loader enforcement."
 trigger_phrases:
   - "implementation"

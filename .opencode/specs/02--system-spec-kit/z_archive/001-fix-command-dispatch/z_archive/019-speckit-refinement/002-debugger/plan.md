@@ -9,7 +9,7 @@ trigger_phrases:
   - "002"
   - "debugger"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Debug Delegation Implementation Plan

@@ -8,7 +8,7 @@ trigger_phrases:
   - "command"
   - "configs"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 03 — Command Configs Audit
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: OpenCode Documentation Quality Upgrade [archive]"
+title: "Tasks: OpenCode Documentation Quality Upgrade [archive] [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

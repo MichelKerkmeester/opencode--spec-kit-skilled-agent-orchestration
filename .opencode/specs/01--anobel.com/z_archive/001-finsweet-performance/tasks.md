@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/tasks]"
+title: "Tasks: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/tasks]"
 description: "Archived normalization task list for Finsweet Performance Optimization."
 trigger_phrases:
   - "finsweet"

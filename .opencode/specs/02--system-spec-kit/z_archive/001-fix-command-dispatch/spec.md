@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Fix Command Dispatch Vulnerability [archive]"
+title: "Feature Specification: Fix Command Dispatch [02--system-spec-kit/z_archive/001-fix-command-dispatch/spec]"
 description: "Archived record for the Fix Command Dispatch Vulnerability work, normalized to the current Level 1 template."
 trigger_phrases:
   - "fix command dispatch"
   - "command dispatch vulnerability"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Fix Command Dispatch Vulnerability
 

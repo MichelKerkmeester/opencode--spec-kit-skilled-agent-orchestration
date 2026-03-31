@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Full Spec Folder Document Indexing [archive]"
+title: "Tasks: Full Spec Folder Document Indexing [archive] [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

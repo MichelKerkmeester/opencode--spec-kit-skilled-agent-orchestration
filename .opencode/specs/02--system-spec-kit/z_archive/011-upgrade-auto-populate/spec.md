@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Upgrade Auto Populate [template:level_1/spec.md]"
+title: "Feature Specification: Upgrade Auto Populate [02--system-spec-kit/z_archive/011-upgrade-auto-populate/spec]"
 description: "Archived record for Upgrade Auto Populate. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "011-upgrade-auto-populate"

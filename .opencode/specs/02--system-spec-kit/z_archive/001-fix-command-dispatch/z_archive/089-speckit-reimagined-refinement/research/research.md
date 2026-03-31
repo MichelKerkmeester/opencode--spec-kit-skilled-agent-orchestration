@@ -1,5 +1,5 @@
 ---
-title: "Research: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/research]"
+title: "Research [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/research]"
 description: "title: \"Research: system-spec-kit Ecosystem Audit\""
 trigger_phrases:
   - "research"

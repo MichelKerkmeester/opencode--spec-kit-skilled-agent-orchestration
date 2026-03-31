@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Specification: Additional Performance Hacks [.opencode/specs/01--anobel.com/z_archive/015-performance-hacks/tasks]"
+title: "Tasks: Specification: Additional Performance Hacks [01--anobel.com/z_archive/015-performance-hacks/tasks]"
 description: "Archived normalization task list for Specification: Additional Performance Hacks."
 trigger_phrases:
   - "specification"

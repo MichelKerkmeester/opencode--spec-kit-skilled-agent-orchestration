@@ -7,7 +7,7 @@ trigger_phrases:
   - "034"
   - "gate"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan

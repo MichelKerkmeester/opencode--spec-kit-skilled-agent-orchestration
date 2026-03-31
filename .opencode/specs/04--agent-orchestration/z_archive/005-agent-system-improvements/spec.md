@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent System Improvements [template:level_1/spec.md]"
+title: "Feature Specification: Agent System [04--agent-orchestration/z_archive/005-agent-system-improvements/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

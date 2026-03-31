@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/decision-record]"
+title: "Decision Record: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/decision-record]"
 description: "Archived decision record for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "spec"

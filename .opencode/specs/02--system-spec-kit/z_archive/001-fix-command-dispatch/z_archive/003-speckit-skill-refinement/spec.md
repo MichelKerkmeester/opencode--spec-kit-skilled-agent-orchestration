@@ -8,7 +8,7 @@ trigger_phrases:
   - "refinement"
   - "003"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 complexity: medium
 created: 2025-12-13
 estimated_loc: 400

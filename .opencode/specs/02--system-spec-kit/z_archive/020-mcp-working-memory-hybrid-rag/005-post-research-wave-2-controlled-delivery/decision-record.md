@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Post Research Wave 2 Controlled Delivery [template:level_3/decision-record.md]"
+title: "...em-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/decision-record]"
 description: "Archive normalization decision record for Post Research Wave 2 Controlled Delivery."
 trigger_phrases:
   - "decision record"

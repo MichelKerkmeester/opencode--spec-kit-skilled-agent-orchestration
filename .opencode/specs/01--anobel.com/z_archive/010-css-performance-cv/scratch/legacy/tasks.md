@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Specification: CSS Performance Upgrade (Content Visibility)"
+title: "Tasks: Specification: CSS Performance Upgrade [01--anobel.com/z_archive/010-css-performance-cv/scratch/legacy/tasks]"
 description: "Archived task record for Specification: CSS Performance Upgrade (Content Visibility)."
 trigger_phrases:
   - "010-css-performance-cv"

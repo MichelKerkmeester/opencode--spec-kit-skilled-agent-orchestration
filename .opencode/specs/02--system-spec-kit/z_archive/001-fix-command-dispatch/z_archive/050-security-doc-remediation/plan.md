@@ -9,7 +9,7 @@ trigger_phrases:
   - "remediation"
   - "050"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Security & Documentation Remediation

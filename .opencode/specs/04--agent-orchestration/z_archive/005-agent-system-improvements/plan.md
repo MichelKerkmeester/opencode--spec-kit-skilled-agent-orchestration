@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent System Improvements [template:level_1/plan.md]"
+title: "Implementation Plan: Agent System Improvements [04--agent-orchestration/z_archive/005-agent-system-improvements/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

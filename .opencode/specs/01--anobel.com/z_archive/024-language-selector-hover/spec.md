@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Language Selector - Desktop Hover to Open [.opencode/specs/01--anobel.com/z_archive/024-language-selector-hover/spec]"
+title: "Feature Specification: Language Selector - Desktop Hover [01--anobel.com/z_archive/024-language-selector-hover/spec]"
 description: "Spec: Language Selector - Desktop Hover to Open"
 trigger_phrases:
   - "spec"

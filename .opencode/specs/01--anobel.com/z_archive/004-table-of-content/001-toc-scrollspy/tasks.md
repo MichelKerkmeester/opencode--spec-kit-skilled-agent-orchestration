@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Custom TOC ScrollSpy - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/tasks]"
+title: "Tasks: Custom TOC ScrollSpy - Requirements & [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/tasks]"
 description: "Archived normalization task list for Custom TOC ScrollSpy - Requirements & User Stories."
 trigger_phrases:
   - "feature"

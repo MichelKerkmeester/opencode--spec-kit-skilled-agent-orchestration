@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Context Loader Enforcement [template:level_1/plan.md]"
+title: "Implementation Plan: Context Loader [04--agent-orchestration/z_archive/008-context-loader-enforcement/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

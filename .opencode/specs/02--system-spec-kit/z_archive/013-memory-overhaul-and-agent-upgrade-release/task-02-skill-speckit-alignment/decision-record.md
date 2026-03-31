@@ -9,7 +9,7 @@ trigger_phrases:
   - "references"
   - "decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 02 — SKILL.md & References Audit
 

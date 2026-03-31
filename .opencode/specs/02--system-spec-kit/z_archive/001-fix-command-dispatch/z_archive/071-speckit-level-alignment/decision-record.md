@@ -1,5 +1,5 @@
 ---
-title: "Decision: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/decision-record]"
 description: "Architecture Decision Record documenting the approach for aligning SpecKit scripts and documentation with level-based template folders."
 trigger_phrases:
   - "decision"
@@ -11,7 +11,7 @@ trigger_phrases:
   - "071"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision: Level-Based Template Architecture Alignment - Architecture Decision Record
 

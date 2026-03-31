@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis/spec]"
 description: "To deconstruct and analyze the SpecKit system's architecture, identifying strengths, weaknesses, and structural risks (specifically the synchronization between Skills and Comman..."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "015"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: SpecKit System Architecture Analysis

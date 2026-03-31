@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Download Button Mobile Fix [.opencode/specs/01--anobel.com/z_archive/027-download-btn-on-mobile/plan]"
+title: "Implementation Plan: Download Button Mobile Fix [01--anobel.com/z_archive/027-download-btn-on-mobile/plan]"
 description: "Feature Specification: Download Button Mobile Fix"
 trigger_phrases:
   - "feature"

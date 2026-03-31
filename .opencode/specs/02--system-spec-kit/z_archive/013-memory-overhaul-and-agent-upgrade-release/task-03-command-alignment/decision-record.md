@@ -9,7 +9,7 @@ trigger_phrases:
   - "configs"
   - "decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 03 — Command Configs Audit
 

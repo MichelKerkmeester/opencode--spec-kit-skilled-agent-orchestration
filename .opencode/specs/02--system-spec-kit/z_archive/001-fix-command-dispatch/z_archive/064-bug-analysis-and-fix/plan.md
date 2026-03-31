@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/plan]"
 description: "Implementation plan for systematically addressing ~231 identified issues across system-spec-kit skill and spec_kit commands."
 trigger_phrases:
   - "implementation"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "064"
   - "bug"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: System-Spec-Kit Bug Fix - Technical Approach & Architecture
 

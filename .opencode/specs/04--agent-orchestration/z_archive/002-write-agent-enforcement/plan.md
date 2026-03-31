@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Write Agent Enforcement [template:level_1/plan.md]"
+title: "Implementation Plan: Write Agent Enforcement [04--agent-orchestration/z_archive/002-write-agent-enforcement/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

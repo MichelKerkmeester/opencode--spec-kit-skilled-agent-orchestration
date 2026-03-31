@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/decision-record]"
+title: "Decision Record: Notification Time-Based [01--anobel.com/z_archive/012-notification-time-scheduling/decision-record]"
 description: "Archived decision record for Notification Time-Based Scheduling."
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/checklist]"
+title: "Verification Checklist: Security Vulnerability [01--anobel.com/z_archive/009-security-remediation/checklist]"
 description: "Archived verification checklist for Security Vulnerability Remediation."
 trigger_phrases:
   - "security"

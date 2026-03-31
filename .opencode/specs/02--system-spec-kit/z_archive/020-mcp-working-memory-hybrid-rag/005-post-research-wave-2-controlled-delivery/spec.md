@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Post Research Wave 2 Controlled Delivery [template:level_1/spec.md]"
+title: "Feat [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/spec]"
 description: "Archived child phase record for Post Research Wave 2 Controlled Delivery. This phase folder was normalized to current validator-compliant Level 1 structure."
 trigger_phrases:
   - "005-post-research-wave-2-controlled-delivery"

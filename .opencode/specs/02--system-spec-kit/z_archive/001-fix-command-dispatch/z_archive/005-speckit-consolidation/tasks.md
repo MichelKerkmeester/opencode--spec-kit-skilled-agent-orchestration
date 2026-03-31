@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/tasks]"
 description: "Detailed task breakdown for migrating .opencode/speckit/ into .opencode/skills/workflows-spec-kit/."
 trigger_phrases:
   - "task"

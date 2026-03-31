@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Specification: Additional Performance Hacks"
+title: "Implementation Plan: Specification: Additional [01--anobel.com/z_archive/015-performance-hacks/scratch/legacy/plan]"
 description: "Implementation of high-impact, low-effort performance optimizations (\"hacks\") for anobel.com to improve LCP and FCP scores."
 trigger_phrases:
   - "015-performance-hacks"

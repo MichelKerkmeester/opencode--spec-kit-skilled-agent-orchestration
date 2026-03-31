@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Tab Menu Border Color Fix [.opencode/specs/01--anobel.com/z_archive/002-tab-menu-border-fix/plan]"
+title: "Implementation Plan: Tab Menu Border Color Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/plan]"
 description: "Tab Menu Border Color Fix"
 trigger_phrases:
   - "tab"

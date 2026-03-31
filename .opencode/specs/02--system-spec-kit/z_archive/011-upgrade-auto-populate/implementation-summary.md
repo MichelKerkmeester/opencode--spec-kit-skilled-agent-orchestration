@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [template:level_ [02--system-spec-kit/z_archive/011-upgrade-auto-populate/implementation-summary]"
 description: "Archive normalization summary for Upgrade Auto Populate."
 trigger_phrases:
   - "011-upgrade-auto-populate"

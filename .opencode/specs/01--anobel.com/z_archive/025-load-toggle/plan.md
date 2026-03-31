@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Load Toggle Component - anobel.com [.opencode/specs/01--anobel.com/z_archive/025-load-toggle/plan]"
+title: "Implementation Plan: Load Toggle Component - anobel.com [01--anobel.com/z_archive/025-load-toggle/plan]"
 description: "Load Toggle Component - anobel.com"
 trigger_phrases:
   - "load"

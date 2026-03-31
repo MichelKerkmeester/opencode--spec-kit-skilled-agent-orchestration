@@ -11,7 +11,7 @@ trigger_phrases:
   - "083"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Spec Kit Memory Test Suite Architecture
 

@@ -1,4 +1,14 @@
 ---
+title: "Implementation [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/scratch/legacy/implementation-summary]"
+description: "title: \"Implementation Summary\""
+trigger_phrases:
+  - "implementation"
+  - "implementation summary"
+  - "legacy"
+importance_tier: "normal"
+contextType: "implementation"
+---
+---
     title: "Implementation Summary"
     description: "Archived implementation summary for Custom TOC ScrollSpy - Requirements & User Stories."
     trigger_phrases:

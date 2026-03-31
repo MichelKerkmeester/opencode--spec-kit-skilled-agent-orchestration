@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Generate Context Subfolder Support [archive]"
+title: "Implementation Plan: Generate Context Subfolder [02--system-spec-kit/z_archive/006-generate-context-subfolder/plan]"
 description: "Archive normalization plan for the Generate Context Subfolder Support folder."
 trigger_phrases:
   - "implementation plan"
   - "generate context subfolder"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Generate Context Subfolder Support
 

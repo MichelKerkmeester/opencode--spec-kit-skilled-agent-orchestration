@@ -1,5 +1,5 @@
 ---
-title: "Decision: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/decision-record]"
+title: "Decision [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands/decision-record]"
 description: "Architecture Decision Record documenting the decision to separate /memory:search into two focused commands."
 trigger_phrases:
   - "decision"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "068"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision: Memory Command Separation - Architecture Decision Record
 

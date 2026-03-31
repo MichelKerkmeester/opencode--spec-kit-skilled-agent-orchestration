@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/implementation-summary]"
 description: "Archive normalization summary for Memory Overhaul And Agent Upgrade Release."
 trigger_phrases:
   - "013-memory-overhaul-and-agent-upgrade-release"

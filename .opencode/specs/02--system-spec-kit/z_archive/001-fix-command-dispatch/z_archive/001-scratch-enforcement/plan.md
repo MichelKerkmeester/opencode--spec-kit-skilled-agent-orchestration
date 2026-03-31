@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/plan]"
 description: "Implementation plan defining the recommended changes to enforce scratch folder usage across the SpecKit system, with full OpenCode compatibility (no hooks required)."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "folder"
   - "001"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Scratch Folder Enforcement - Technical Approach
 

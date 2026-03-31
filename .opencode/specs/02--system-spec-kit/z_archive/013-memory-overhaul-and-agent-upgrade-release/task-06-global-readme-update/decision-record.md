@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "global"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 06 — Root README Update
 

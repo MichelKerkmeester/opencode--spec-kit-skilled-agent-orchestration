@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/spec]"
+title: "Feature Specification: Custom TOC ScrollSpy - [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/spec]"
 description: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
 trigger_phrases:
   - "feature"

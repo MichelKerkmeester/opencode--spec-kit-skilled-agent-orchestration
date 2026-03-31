@@ -9,7 +9,7 @@ trigger_phrases:
   - "decision record"
   - "051"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Lib Consolidation

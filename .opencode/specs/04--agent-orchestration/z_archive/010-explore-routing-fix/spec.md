@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Explore Routing Fix [template:level_1/spec.md]"
+title: "Feature Specification: Explore Routing Fix [04--agent-orchestration/z_archive/010-explore-routing-fix/spec]"
 description: "Archived record for Explore Routing Fix. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "010-explore-routing-fix"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Post Research Wave 2 Controlled Delivery [template:level_2/checklist.md]"
+title: "...--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

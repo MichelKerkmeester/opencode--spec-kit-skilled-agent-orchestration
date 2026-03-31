@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Form Data Persistence [.opencode/specs/01--anobel.com/z_archive/016-form-persistence/plan]"
+title: "Implementation Plan: Form Data Persistence [01--anobel.com/z_archive/016-form-persistence/plan]"
 description: "Form Data Persistence"
 trigger_phrases:
   - "form"

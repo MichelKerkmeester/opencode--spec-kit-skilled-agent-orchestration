@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/018-mcp-issues-after-update/implementation-summary]"
 description: "Archive normalization summary for MCP Issues After Update."
 trigger_phrases:
   - "018-mcp-issues-after-update"

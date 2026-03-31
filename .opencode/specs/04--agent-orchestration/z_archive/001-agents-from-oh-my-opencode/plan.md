@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agents from Oh My Opencode [template:level_1/plan.md]"
+title: "Implementation Plan: Agents from Oh My [04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

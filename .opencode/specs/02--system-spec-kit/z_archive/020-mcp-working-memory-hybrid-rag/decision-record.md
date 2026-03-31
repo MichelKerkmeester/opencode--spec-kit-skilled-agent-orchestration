@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: MCP Working Memory Hybrid Rag [template:level_3/decision-record.md]"
+title: "Decision Record: MCP Working Memory [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/decision-record]"
 description: "Archive normalization decision record for MCP Working Memory Hybrid Rag."
 trigger_phrases:
   - "decision record"

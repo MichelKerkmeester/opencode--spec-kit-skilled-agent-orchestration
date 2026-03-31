@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/003-btn-download-alignment/implementation-summary]"
 description: "Archived implementation summary for Download Button Code Standards Alignment."
 trigger_phrases:
   - "spec"

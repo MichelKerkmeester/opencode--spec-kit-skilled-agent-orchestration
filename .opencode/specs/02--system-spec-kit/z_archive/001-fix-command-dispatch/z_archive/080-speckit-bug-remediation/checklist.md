@@ -1,5 +1,5 @@
 ---
-title: "Checklist: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/checklist]"
 description: "Checklist created: 2026-01-28"
 trigger_phrases:
   - "checklist"

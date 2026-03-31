@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Documentation Alignment for Spec 126 [archive]"
+title: "Feature Specification: Documentation Alignment for [02--system-spec-kit/z_archive/010-documentation-alignment/spec]"
 description: "Archived record for the Documentation Alignment for Spec 126 work, normalized to the current Level 1 template."
 trigger_phrases:
   - "documentation alignment"
   - "spec 126"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Documentation Alignment for Spec 126
 

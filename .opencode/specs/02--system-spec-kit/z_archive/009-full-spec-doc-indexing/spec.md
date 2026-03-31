@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Full Spec Folder Document Indexing [archive]"
+title: "Feature Specification: Full Spec Folder Document [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/spec]"
 description: "Archived record for the Full Spec Folder Document Indexing work, normalized to the current Level 1 template."
 trigger_phrases:
   - "full spec doc indexing"
   - "document indexing"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Full Spec Folder Document Indexing
 

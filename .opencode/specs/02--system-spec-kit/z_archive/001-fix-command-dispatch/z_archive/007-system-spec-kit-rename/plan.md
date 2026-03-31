@@ -10,7 +10,7 @@ trigger_phrases:
   - "007"
   - "system"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: workflows-spec-kit → system-spec-kit Rename

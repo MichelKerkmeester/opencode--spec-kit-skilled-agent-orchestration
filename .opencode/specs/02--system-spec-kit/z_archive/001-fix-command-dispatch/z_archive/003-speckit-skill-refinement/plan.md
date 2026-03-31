@@ -9,7 +9,7 @@ trigger_phrases:
   - "conservative"
   - "003"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 approach: conservative
 created: 2025-12-13
 level: 2

@@ -11,7 +11,7 @@ trigger_phrases:
   - "079"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Cognitive Memory Upgrade
 

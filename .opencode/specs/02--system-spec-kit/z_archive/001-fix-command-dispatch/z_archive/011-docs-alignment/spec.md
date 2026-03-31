@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/spec]"
 description: "Complete feature specification defining requirements, user stories, and success criteria."
 trigger_phrases:
   - "feature"
@@ -11,7 +11,7 @@ trigger_phrases:
   - "011"
   - "docs"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories

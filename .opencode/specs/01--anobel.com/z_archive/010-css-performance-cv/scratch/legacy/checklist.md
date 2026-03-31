@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Specification: CSS Performance Upgrade (Content Visibility)"
+title: "Verification Checklist: Specification: CSS [01--anobel.com/z_archive/010-css-performance-cv/scratch/legacy/checklist]"
 description: "Archive verification checklist for Specification: CSS Performance Upgrade (Content Visibility)."
 trigger_phrases:
   - "010-css-performance-cv"

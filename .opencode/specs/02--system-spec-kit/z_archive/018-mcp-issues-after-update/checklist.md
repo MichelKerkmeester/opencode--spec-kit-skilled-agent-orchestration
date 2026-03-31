@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: MCP Issues After Update [template:level_2/checklist.md]"
+title: "Verification Checklist: MCP Issues After Update [02--system-spec-kit/z_archive/018-mcp-issues-after-update/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

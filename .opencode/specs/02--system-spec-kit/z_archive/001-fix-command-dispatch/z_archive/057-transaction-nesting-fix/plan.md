@@ -9,7 +9,7 @@ trigger_phrases:
   - "nesting"
   - "057"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Fix SQLite Transaction Nesting Issue

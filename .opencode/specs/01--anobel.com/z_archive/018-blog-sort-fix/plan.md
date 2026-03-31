@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/plan]"
+title: "Implementation Plan: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/plan]"
 description: "Spec: Blog Sort Dropdown Fix"
 trigger_phrases:
   - "spec"

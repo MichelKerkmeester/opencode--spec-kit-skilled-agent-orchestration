@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Explore Routing Fix [template:level_1/plan.md]"
+title: "Implementation Plan: Explore Routing Fix [04--agent-orchestration/z_archive/010-explore-routing-fix/plan]"
 description: "Normalize the archived agent orchestration archive folder for Explore Routing Fix so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "010-explore-routing-fix"

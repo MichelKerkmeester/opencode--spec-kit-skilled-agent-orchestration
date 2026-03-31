@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Notification [01--anobel.com/z_archive/012-notification-time-scheduling/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Notification Time-Based Scheduling\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "notification"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
     title: "Feature Specification: Notification Time-Based Scheduling"
     description: "Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates."
     trigger_phrases:

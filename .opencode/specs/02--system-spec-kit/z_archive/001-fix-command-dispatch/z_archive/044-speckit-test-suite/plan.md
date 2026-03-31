@@ -1,5 +1,5 @@
 ---
-title: "Spec Kit Test Suite - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/plan]"
+title: "Spec Kit Test Suite [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/plan]"
 description: "Comprehensive test suite covering 4 domains"
 trigger_phrases:
   - "spec"
@@ -11,7 +11,7 @@ trigger_phrases:
   - "044"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Spec Kit Test Suite - Implementation Plan

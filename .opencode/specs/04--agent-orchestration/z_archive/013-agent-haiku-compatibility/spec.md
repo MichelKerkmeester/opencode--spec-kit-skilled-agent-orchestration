@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Haiku Compatibility [template:level_1/spec.md]"
+title: "Feature Specification: Agent Haiku [04--agent-orchestration/z_archive/013-agent-haiku-compatibility/spec]"
 description: "Archived record for Agent Haiku Compatibility. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "013-agent-haiku-compatibility"

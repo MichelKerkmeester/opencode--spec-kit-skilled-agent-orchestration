@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification Hero Spacing [.opencode/specs/01--anobel.com/z_archive/014-notification-hero-spacing/spec]"
+title: "Feature Specification: Notification Hero Spacing [01--anobel.com/z_archive/014-notification-hero-spacing/spec]"
 description: "Notification Hero Spacing"
 trigger_phrases:
   - "notification"

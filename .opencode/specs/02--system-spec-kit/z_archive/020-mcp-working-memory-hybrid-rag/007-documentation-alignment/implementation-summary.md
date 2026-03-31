@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Imp [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/implementation-summary]"
 description: "Archive normalization summary for Documentation Alignment."
 trigger_phrases:
   - "007-documentation-alignment"

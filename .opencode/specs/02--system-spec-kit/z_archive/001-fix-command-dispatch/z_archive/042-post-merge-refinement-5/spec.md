@@ -10,7 +10,7 @@ trigger_phrases:
   - "042"
   - "post"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5)

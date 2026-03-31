@@ -1,5 +1,5 @@
 ---
-title: "Checklist - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/checklist]"
+title: "Checklist [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/checklist]"
 description: "checklist document for 029-comprehensive-bug-fix."
 trigger_phrases:
   - "checklist"

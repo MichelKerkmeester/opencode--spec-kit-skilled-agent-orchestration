@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record]"
+title: "Decision Record [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record]"
 description: "Date: 2026-01-16"
 trigger_phrases:
   - "decision"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "070"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Memory & Folder Ranking

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/spec]"
 description: "Consolidate the standalone .opencode/speckit/ folder into the .opencode/skills/workflows-spec-kit/ skill folder, following the self-contained architecture pattern established by..."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "005"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: SpecKit Skill Consolidation - Requirements & Migration Strategy

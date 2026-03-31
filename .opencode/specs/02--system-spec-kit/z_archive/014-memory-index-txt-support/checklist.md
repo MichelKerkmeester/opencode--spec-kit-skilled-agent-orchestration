@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Memory Index Txt Support [template:level_2/checklist.md]"
+title: "Verification Checklist: Memory Index Txt [02--system-spec-kit/z_archive/014-memory-index-txt-support/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

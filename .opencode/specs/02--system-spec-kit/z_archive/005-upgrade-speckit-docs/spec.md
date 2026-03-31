@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: OpenCode Documentation Quality Upgrade [archive]"
+title: "Feature Specification: OpenCode Documentation Quality [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/spec]"
 description: "Archived record for the OpenCode Documentation Quality Upgrade work, normalized to the current Level 1 template."
 trigger_phrases:
   - "documentation quality upgrade"
   - "upgrade speckit docs"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: OpenCode Documentation Quality Upgrade
 

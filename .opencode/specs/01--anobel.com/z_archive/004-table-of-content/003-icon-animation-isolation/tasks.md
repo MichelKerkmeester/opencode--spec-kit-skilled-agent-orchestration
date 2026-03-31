@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Icon Animation Isolation for Download Button [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/tasks]"
+title: "Tasks: Icon Animation Isolation for [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/tasks]"
 description: "Archived normalization task list for Icon Animation Isolation for Download Button."
 trigger_phrases:
   - "spec"

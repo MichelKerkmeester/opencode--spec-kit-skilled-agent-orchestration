@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/025-load-toggle/implementation-summary]"
 description: "Archived implementation summary for Load Toggle Component - anobel.com."
 trigger_phrases:
   - "load"

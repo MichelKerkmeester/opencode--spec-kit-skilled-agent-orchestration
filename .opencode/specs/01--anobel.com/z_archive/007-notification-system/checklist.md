@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Notification System - Requirements & User Stories [.opencode/specs/01--anobel.com/z_archive/007-notification-system/checklist]"
+title: "Verification Checklist: Notification System - [01--anobel.com/z_archive/007-notification-system/checklist]"
 description: "Archived verification checklist for Notification System - Requirements & User Stories."
 trigger_phrases:
   - "feature"

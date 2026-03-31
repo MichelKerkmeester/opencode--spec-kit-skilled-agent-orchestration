@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/plan]"
 description: "This plan implements a comprehensive enhancement to SpecKit's memory system based on consolidated analysis of dotmd, seu-claude, drift, and system-speckit architectures. The imp..."
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "reimagined"
   - "082"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: SpecKit Reimagined
 

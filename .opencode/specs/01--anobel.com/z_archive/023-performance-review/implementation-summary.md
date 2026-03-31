@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/023-performance-review/implementation-summary]"
 description: "Archived implementation summary for Performance Optimization Review - Spec 025."
 trigger_phrases:
   - "performance"

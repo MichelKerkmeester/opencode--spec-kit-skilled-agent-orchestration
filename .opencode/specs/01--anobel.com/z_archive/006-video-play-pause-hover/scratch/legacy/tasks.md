@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Video Play/Pause Button Hover Effect"
+title: "Tasks: Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/scratch/legacy/tasks]"
 description: "Archived task record for Video Play/Pause Button Hover Effect."
 trigger_phrases:
   - "006-video-play-pause-hover"

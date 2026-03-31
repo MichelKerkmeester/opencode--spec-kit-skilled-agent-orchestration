@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: anobel.com"
+title: "Verification Checklist: anobel.com [01--anobel.com/z_archive/022-performance-optimization/scratch/legacy/checklist]"
 description: "Archive verification checklist for anobel.com."
 trigger_phrases:
   - "022-performance-optimization"

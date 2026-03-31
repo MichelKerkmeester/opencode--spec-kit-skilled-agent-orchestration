@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/004-table-of-content/scratch/legacy/implementation-summary]"
 description: "Archived implementation summary for Table Of Content."
 trigger_phrases:
   - "004-table-of-content"

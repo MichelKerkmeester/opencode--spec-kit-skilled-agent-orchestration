@@ -1,5 +1,5 @@
 ---
-title: "Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/spec]"
+title: "Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/spec]"
 description: "This specification consolidates findings from four prior research specs (060-063) into a single implementation plan for upgrading the system-spec-kit skill. The research analyze..."
 trigger_phrases:
   - "specification"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "077"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

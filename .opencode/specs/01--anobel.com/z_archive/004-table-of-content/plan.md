@@ -1,9 +1,8 @@
 ---
-title: "Implementation Plan: Table Of Content [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/plan]"
+title: "Implementation Plan: Table Of Content [.opencode/specs/01--anobel.c [01--anobel.com/z_archive/004-table-of-content/plan]"
 description: "Feature Specification: Table Of Content"
 trigger_phrases:
   - "table"
-  - "of"
   - "content"
   - "anobel"
   - "reference"

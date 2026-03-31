@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Form Input Components Enhancement [.opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/spec]"
+title: "Feature Specification: Form Input Components Enhancement [01--anobel.com/z_archive/011-form-input-upload-select/spec]"
 description: "Spec: Form Input Components Enhancement"
 trigger_phrases:
   - "spec"

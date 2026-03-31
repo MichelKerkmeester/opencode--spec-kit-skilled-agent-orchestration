@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Context Model Optimization [template:level_1/tasks.md]"
+title: "Tasks: Context Model Optimization [04--agent-orchestration/z_archive/011-context-model-optimization/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "011-context-model-optimization"

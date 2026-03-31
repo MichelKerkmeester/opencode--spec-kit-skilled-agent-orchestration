@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/plan]"
 description: "Implementation plan for adding automatic keyword detection for handover.md and debug-delegation.md templates to SKILL.md."
 trigger_phrases:
   - "implementation"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "012"
   - "handover"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Utility Template Trigger Keywords - Technical Approach & Architecture
 

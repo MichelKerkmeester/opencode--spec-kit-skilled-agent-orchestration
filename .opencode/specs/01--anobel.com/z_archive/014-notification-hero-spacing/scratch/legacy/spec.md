@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: Notification Hero [01--anobel.com/z_archive/014-notification-hero-spacing/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Notification Hero Spacing\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "notification"
+  - "hero"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Notification Hero Spacing"
         description: "When the notification bar is visible at the top of the page, the hero section content may overlap or be partially hidden. A spacing mechanism is needed to push hero content down."
         trigger_phrases:

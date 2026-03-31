@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: System-Wide Remediation of Audit Findings [archive]"
+title: "Implementation Plan: System-Wide Remediation of Audit [02--system-spec-kit/z_archive/008-codex-system-wide-audit/plan]"
 description: "Archive normalization plan for the System-Wide Remediation of Audit Findings folder."
 trigger_phrases:
   - "implementation plan"
   - "system wide remediation"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: System-Wide Remediation of Audit Findings
 

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Rename workflows- [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/spec]"
+title: "Spec: Rename workflows [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/spec]"
 description: "The workflows-memory skill needs to be renamed to system-memory to align with the naming convention established by the recent workflows-spec-kit → system-spec-kit rename. The \"s..."
 trigger_phrases:
   - "spec"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "system"
   - "025"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

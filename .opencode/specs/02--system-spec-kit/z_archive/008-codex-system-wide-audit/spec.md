@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: System-Wide Remediation of Audit Findings [archive]"
+title: "Feature Specification: System-Wide Remediation of [02--system-spec-kit/z_archive/008-codex-system-wide-audit/spec]"
 description: "Archived record for the System-Wide Remediation of Audit Findings work, normalized to the current Level 1 template."
 trigger_phrases:
   - "system wide remediation"
   - "audit findings remediation"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: System-Wide Remediation of Audit Findings
 

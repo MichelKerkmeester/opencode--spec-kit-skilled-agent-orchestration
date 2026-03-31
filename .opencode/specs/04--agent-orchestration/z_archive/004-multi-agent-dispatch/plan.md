@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Multi-Agent Dispatch [template:level_1/plan.md]"
+title: "Implementation Plan: Multi-Agent Dispatch [04--agent-orchestration/z_archive/004-multi-agent-dispatch/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

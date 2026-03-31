@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [template:level_1 [02--system-spec-kit/z_archive/016-index-workflows-code/implementation-summary]"
 description: "Archive normalization summary for Index Workflows Code."
 trigger_phrases:
   - "016-index-workflows-code"

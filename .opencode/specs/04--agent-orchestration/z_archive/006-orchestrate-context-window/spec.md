@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Orchestrate Context Window [template:level_1/spec.md]"
+title: "Feature Specification: Orchestrate Context [04--agent-orchestration/z_archive/006-orchestrate-context-window/spec]"
 description: "Archived specification normalized to the current Level 1 template so this folder remains readable and validates cleanly."
 trigger_phrases:
   - "feature"

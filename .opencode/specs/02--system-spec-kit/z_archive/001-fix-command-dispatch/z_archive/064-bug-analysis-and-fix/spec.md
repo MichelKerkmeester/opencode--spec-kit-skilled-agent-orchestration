@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/spec]"
 description: "Complete feature specification for addressing ~231 identified issues across the system-spec-kit skill and spec_kit commands."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "064"
   - "bug"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User Stories

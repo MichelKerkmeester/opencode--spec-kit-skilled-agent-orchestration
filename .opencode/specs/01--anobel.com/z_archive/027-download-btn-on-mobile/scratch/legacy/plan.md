@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Download Button Mobile Fix"
+title: "Implementation Plan: Download Button Mobile [01--anobel.com/z_archive/027-download-btn-on-mobile/scratch/legacy/plan]"
 description: "Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and."
 trigger_phrases:
   - "027-download-btn-on-mobile"

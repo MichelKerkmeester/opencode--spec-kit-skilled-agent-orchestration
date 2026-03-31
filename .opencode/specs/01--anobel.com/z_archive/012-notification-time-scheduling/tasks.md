@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Notification Time-Based Scheduling [.opencode/specs/01--anobel.com/z_archive/012-notification-time-scheduling/tasks]"
+title: "Tasks: Notification Time-Based Scheduling [01--anobel.com/z_archive/012-notification-time-scheduling/tasks]"
 description: "Archived normalization task list for Notification Time-Based Scheduling."
 trigger_phrases:
   - "feature"

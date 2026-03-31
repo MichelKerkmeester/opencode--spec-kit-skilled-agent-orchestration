@@ -9,7 +9,7 @@ trigger_phrases:
   - "creation"
   - "decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 05 — Changelog Creation
 

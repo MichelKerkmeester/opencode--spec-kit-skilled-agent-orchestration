@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Custom [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "custom"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
         description: "Custom Table of Contents implementation with flexible styling options, replacing Finsweet's Webflow-dependent approach with a standalone IntersectionObserver-based solution."
         trigger_phrases:

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Index Workflows Code [template:level_1/plan.md]"
+title: "Implementation Plan: Index Workflows Code [02--system-spec-kit/z_archive/016-index-workflows-code/plan]"
 description: "Normalize the archived system-spec-kit archive folder for Index Workflows Code so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "016-index-workflows-code"

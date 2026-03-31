@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/spec]"
 description: "The system-spec-kit has grown to ~10,500 LOC across MCP handlers (2,208 LOC) and scripts (8,500 LOC), but test coverage is incomplete. While 14 existing test files cover ~1,027 ..."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "078"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: System Spec Kit Comprehensive Test Suite
 

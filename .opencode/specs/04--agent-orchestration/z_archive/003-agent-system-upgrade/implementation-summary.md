@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [04--agent-orchestration/z_archive/003-agent-system-upgrade/implementation-summary]"
 description: "Archive normalization summary for agent system upgrade."
 trigger_phrases:
   - "implementation"

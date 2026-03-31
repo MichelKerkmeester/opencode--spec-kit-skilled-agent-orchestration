@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite/plan]"
 description: "This plan implements a comprehensive test suite for System Spec Kit v2.1.0 features. The suite covers 8 test files totaling approximately 3,000 LOC across five phases: MCP handl..."
 trigger_phrases:
   - "implementation"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "078"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: System Spec Kit v2.1.0 Test Suite
 

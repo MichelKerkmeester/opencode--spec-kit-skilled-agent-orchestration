@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Link Card Product/Adv [01--anobel.com/z_archive/017-link-card-product-adv/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Link Card Product/Adv - CTA Button Hover Animation\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "link"
+  - "card"
+  - "product"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Link Card Product/Adv - CTA Button Hover Animation"
         description: "Extend the link card ad hover state to trigger the CTA button Secondary-Full animations, including."
         trigger_phrases:

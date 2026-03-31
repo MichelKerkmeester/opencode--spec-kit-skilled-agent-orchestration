@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "020"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: CORE -->
 # Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands

@@ -1,4 +1,15 @@
 ---
+title: "Feature Specification: [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Icon Animation Isolation for Download Button\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Icon Animation Isolation for Download Button"
         description: "Refactor btn_download.css to isolate only the icon animation logic, removing all button-level hover/focus/active styling so the download icon can be embedded inside another butt."
         trigger_phrases:

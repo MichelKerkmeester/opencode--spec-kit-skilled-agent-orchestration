@@ -43,7 +43,7 @@ trigger_phrases:
   - "compliance/008"
   - "compliance"
 importance_tier: "important"
-contextType: "decision"
+contextType: "implementation"
 _sourceTranscriptPath: ""
 _sourceSessionId: ""
 _sourceSessionCreated: 0

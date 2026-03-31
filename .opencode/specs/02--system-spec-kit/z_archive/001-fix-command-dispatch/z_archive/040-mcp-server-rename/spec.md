@@ -1,5 +1,5 @@
 ---
-title: "MCP Server Rename: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/spec]"
+title: "MCP Server Rename [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename/spec]"
 description: "Rename the semantic memory MCP server from semantic_memory to spec_kit_memory across all configuration files, documentation, and code references."
 trigger_phrases:
   - "mcp"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "040"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

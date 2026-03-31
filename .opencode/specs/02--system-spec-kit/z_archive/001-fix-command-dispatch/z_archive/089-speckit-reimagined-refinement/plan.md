@@ -10,7 +10,7 @@ trigger_phrases:
   - "089"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 estimated-effort: "3-5 sessions"
 phases: 4
 spec: "089"

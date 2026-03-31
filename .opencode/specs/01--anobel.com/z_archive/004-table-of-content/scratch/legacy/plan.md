@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Table Of Content"
+title: "Implementation Plan: Table Of Content [01--anobel.com/z_archive/004-table-of-content/scratch/legacy/plan]"
 description: "This archived specification captures the work documented for 004-table-of-content."
 trigger_phrases:
   - "004-table-of-content"

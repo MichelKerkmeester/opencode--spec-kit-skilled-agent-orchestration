@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Icon Animation Isolation for Download Button [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/spec]"
+title: "Feature Specification: Icon [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/spec]"
 description: "Spec: Icon Animation Isolation for Download Button"
 trigger_phrases:
   - "spec"

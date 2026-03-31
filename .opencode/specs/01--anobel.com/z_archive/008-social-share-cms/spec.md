@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Social Share CMS Integration [.opencode/specs/01--anobel.com/z_archive/008-social-share-cms/spec]"
+title: "Feature Specification: Social Share CMS Integration [01--anobel.com/z_archive/008-social-share-cms/spec]"
 description: "Social Share CMS Integration"
 trigger_phrases:
   - "social"

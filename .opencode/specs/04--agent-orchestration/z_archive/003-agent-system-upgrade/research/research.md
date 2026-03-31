@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: Agent System Upgrade - [04--agent-orchestration/z_archive/003-agent-system-upgrade/research]"
+title: "Feature Research: Agent System Upgrade [04--agent-orchestration/z_archive/003-agent-system-upgrade/research]"
 description: "Complete research documentation for upgrading the multi-agent orchestration system with advanced patterns from industry frameworks and community implementations, plus research/d..."
 trigger_phrases:
   - "feature"

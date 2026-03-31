@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Documentation Alignment [template:level_2/checklist.md]"
+title: "Verification [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

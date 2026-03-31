@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/010-css-performance-cv/implementation-summary]"
 description: "Archived implementation summary for Specification: CSS Performance Upgrade (Content Visibility)."
 trigger_phrases:
   - "specification"

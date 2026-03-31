@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/implementation-summary]"
 description: "Archived implementation summary for Custom TOC ScrollSpy - Requirements & User Stories."
 trigger_phrases:
   - "feature"

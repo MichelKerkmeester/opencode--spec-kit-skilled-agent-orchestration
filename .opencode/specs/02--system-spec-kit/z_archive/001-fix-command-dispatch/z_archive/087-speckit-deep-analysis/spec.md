@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis/spec]"
 description: "Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP server code, skill files, agent definitions, command files, constitutional memories, scripts, an..."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "087"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: System-Spec-Kit Deep Analysis & Remediation

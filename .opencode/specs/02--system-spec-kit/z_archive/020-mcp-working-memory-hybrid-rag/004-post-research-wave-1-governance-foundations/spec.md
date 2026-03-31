@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Post Research Wave 1 Governance Foundations [template:level_1/spec.md]"
+title: "F [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations/spec]"
 description: "Archived child phase record for Post Research Wave 1 Governance Foundations. This phase folder was normalized to current validator-compliant Level 1 structure."
 trigger_phrases:
   - "004-post-research-wave-1-governance-foundations"

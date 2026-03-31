@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/implementation-summary]"
 description: "Archive normalization summary for MCP Working Memory Hybrid Rag."
 trigger_phrases:
   - "020-mcp-working-memory-hybrid-rag"

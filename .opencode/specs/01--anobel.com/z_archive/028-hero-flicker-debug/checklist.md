@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Hero Video Card Image Flickering Fix [.opencode/specs/01--anobel.com/z_archive/028-hero-flicker-debug/checklist]"
+title: "Verification Checklist: Hero Video Card Image Flickering [01--anobel.com/z_archive/028-hero-flicker-debug/checklist]"
 description: "Archived verification checklist for Hero Video Card Image Flickering Fix."
 trigger_phrases:
   - "feature"

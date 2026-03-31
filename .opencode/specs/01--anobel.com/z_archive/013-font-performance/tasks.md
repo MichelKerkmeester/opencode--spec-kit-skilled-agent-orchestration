@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Specification: Font Performance Optimization [.opencode/specs/01--anobel.com/z_archive/013-font-performance/tasks]"
+title: "Tasks: Specification: Font Performance Optimization [01--anobel.com/z_archive/013-font-performance/tasks]"
 description: "Archived normalization task list for Specification: Font Performance Optimization."
 trigger_phrases:
   - "specification"

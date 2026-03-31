@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Tab Menu Border Color Fix"
+title: "Implementation Plan: Tab Menu Border Color Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/scratch/legacy/plan]"
 description: "Fix incorrect border color on filter tab buttons after they transition from active (SET) to inactive (ENABLED) state."
 trigger_phrases:
   - "002-tab-menu-border-fix"

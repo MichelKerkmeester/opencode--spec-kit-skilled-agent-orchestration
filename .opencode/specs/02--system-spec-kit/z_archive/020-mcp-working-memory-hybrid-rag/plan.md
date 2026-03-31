@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: MCP Working Memory Hybrid Rag [template:level_1/plan.md]"
+title: "Implementation Plan: MCP Working Memory Hybrid [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/plan]"
 description: "Normalize the archived system-spec-kit archive folder for MCP Working Memory Hybrid Rag so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "020-mcp-working-memory-hybrid-rag"

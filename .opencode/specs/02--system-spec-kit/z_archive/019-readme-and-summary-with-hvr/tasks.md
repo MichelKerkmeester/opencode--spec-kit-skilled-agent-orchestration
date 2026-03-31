@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Readme And Summary With HVR [template:level_1/tasks.md]"
+title: "Tasks: Readme And Summary With HVR [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "019-readme-and-summary-with-hvr"

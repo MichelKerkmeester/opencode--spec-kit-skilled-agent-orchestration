@@ -6,7 +6,7 @@ trigger_phrases:
   - "plan"
   - "evidence"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Test Plan

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/spec]"
+title: "Feature Specification: Security Vulnerability Remediation [01--anobel.com/z_archive/009-security-remediation/spec]"
 description: "Security Vulnerability Remediation"
 trigger_phrases:
   - "security"

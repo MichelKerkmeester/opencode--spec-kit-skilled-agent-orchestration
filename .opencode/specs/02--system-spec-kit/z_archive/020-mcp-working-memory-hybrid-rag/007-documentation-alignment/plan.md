@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Documentation Alignment [template:level_1/plan.md]"
+title: "Implementation [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment/plan]"
 description: "Normalize archived phase folder 007-documentation-alignment so validation passes without preserving drifted phase-package structure."
 trigger_phrases:
   - "007-documentation-alignment"

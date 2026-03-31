@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Specification: CSS Performance Upgrade (Content Visibility) [.opencode/specs/01--anobel.com/z_archive/010-css-performance-cv/plan]"
+title: "Implementation Plan: Specification: CSS Performance Upgrade [01--anobel.com/z_archive/010-css-performance-cv/plan]"
 description: "Specification: CSS Performance Upgrade (Content Visibility)"
 trigger_phrases:
   - "specification"

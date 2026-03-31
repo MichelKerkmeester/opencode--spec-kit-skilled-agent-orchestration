@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/005-upgrade-speckit-docs/implementation-summary]"
 description: "Archive repair summary for the OpenCode Documentation Quality Upgrade folder."
 trigger_phrases:
   - "implementation summary"

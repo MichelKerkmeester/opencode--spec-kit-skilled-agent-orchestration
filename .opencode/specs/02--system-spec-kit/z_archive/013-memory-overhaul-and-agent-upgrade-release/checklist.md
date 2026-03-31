@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Memory Overhaul And Agent Upgrade Release [template:level_2/checklist.md]"
+title: "Verification Checklist: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

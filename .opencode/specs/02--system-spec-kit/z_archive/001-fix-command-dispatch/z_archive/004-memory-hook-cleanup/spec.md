@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/spec]"
 description: "Remove outdated Claude Code Hook references from workflows-memory skill for OpenCode compatibility."
 trigger_phrases:
   - "feature"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "004"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References

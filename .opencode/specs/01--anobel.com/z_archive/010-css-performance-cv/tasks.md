@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Specification: CSS Performance Upgrade (Content Visibility) [.opencode/specs/01--anobel.com/z_archive/010-css-performance-cv/tasks]"
+title: "Tasks: Specification: CSS Performance Upgrade (Content [01--anobel.com/z_archive/010-css-performance-cv/tasks]"
 description: "Archived normalization task list for Specification: CSS Performance Upgrade (Content Visibility)."
 trigger_phrases:
   - "specification"

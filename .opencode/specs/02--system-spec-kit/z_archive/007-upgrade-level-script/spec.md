@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Spec Folder Level Upgrade Script [archive]"
+title: "Feature Specification: Spec Folder Level Upgrade Script [02--system-spec-kit/z_archive/007-upgrade-level-script/spec]"
 description: "Archived record for the Spec Folder Level Upgrade Script work, normalized to the current Level 1 template."
 trigger_phrases:
   - "upgrade level script"
   - "spec folder level upgrade"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: Spec Folder Level Upgrade Script
 

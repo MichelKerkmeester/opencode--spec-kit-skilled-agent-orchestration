@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Explore Routing Fix [template:level_1/tasks.md]"
+title: "Tasks: Explore Routing Fix [template:level_1/tasks.md] [04--agent-orchestration/z_archive/010-explore-routing-fix/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "010-explore-routing-fix"

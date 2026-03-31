@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Command Adherence [template:level_3/decision-record.md]"
+title: "Decision Record: Command Adherence [02--system-spec-kit/z_archive/017-command-adherence/decision-record]"
 description: "Archive normalization decision record for Command Adherence."
 trigger_phrases:
   - "decision record"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Index Workflows Code [template:level_1/tasks.md]"
+title: "Tasks: Index Workflows Code [template:level_1/tasks.md] [02--system-spec-kit/z_archive/016-index-workflows-code/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "016-index-workflows-code"

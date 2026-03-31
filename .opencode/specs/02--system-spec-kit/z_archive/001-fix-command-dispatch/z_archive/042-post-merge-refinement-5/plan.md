@@ -9,7 +9,7 @@ trigger_phrases:
   - "refinement"
   - "042"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: post-merge-refinement-5 - Technical Approach & Architecture
 

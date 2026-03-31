@@ -1,9 +1,8 @@
 ---
-title: "Tasks: Table Of Content [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/tasks]"
+title: "Tasks: Table Of Content [.opencode/specs/01--anobel.com/z_archive/ [01--anobel.com/z_archive/004-table-of-content/tasks]"
 description: "Archived normalization task list for Table Of Content."
 trigger_phrases:
   - "table"
-  - "of"
   - "content"
   - "anobel"
   - "reference"

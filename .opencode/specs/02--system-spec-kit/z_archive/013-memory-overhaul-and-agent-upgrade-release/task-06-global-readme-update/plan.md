@@ -9,7 +9,7 @@ trigger_phrases:
   - "readme"
   - "global"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Task 06 — Root README Update
 

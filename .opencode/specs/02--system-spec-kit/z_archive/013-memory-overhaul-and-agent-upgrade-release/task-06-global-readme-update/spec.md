@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "global"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Task 06 — Root README Update

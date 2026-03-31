@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup/plan]"
 description: "Implementation plan for removing Claude Code Hook references from workflows-memory skill."
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "cleanup"
   - "004"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Memory Hook Cleanup - Technical Approach
 

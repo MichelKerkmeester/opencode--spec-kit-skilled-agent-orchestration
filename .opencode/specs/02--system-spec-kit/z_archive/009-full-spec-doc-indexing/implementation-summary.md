@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/009-full-spec-doc-indexing/implementation-summary]"
 description: "Archive repair summary for the Full Spec Folder Document Indexing folder."
 trigger_phrases:
   - "implementation summary"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Form Attribute Audit [.opencode/specs/01--anobel.com/z_archive/019-form-attribute-audit/tasks]"
+title: "Tasks: Form Attribute Audit [.opencode/specs/01--anobel.com/z_ [01--anobel.com/z_archive/019-form-attribute-audit/tasks]"
 description: "Archived normalization task list for Form Attribute Audit."
 trigger_phrases:
   - "spec"

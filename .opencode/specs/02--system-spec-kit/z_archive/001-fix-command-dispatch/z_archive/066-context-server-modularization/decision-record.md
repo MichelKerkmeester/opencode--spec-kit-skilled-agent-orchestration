@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "066"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision: Context-Server Modularization Architecture - ADR
 

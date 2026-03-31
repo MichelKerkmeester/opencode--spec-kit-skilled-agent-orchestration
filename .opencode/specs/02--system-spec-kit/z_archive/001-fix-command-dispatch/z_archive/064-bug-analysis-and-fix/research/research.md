@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/research]"
+title: "Feature Research [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/research]"
 description: "Complete research documentation providing in-depth analysis of bugs, inconsistencies, and issues across the SpecKit system."
 trigger_phrases:
   - "feature"

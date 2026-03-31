@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Upgrade Auto Populate [template:level_2/checklist.md]"
+title: "Verification Checklist: Upgrade Auto Populate [02--system-spec-kit/z_archive/011-upgrade-auto-populate/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

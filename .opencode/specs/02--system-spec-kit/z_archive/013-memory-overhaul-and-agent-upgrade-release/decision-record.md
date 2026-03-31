@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory Overhaul And Agent Upgrade Release [template:level_3/decision-record.md]"
+title: "Decision Record: Memory [02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/decision-record]"
 description: "Archive normalization decision record for Memory Overhaul And Agent Upgrade Release."
 trigger_phrases:
   - "decision record"

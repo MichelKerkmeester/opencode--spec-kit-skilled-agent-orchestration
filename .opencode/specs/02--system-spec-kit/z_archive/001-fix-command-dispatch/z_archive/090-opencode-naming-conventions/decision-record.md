@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "090"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: OpenCode Naming Convention Alignment
 

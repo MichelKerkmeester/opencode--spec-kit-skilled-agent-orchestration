@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/plan]"
+title: "Implementation Plan: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/plan]"
 description: "Finsweet Performance Optimization"
 trigger_phrases:
   - "finsweet"

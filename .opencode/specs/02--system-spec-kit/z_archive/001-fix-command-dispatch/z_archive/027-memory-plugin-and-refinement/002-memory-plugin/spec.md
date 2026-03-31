@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "002"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories

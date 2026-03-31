@@ -9,7 +9,7 @@ trigger_phrases:
   - "refinement"
   - "046"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Post-Release Refinement 1
 

@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1/tasks]"
 description: "Description"
 trigger_phrases:
   - "task"

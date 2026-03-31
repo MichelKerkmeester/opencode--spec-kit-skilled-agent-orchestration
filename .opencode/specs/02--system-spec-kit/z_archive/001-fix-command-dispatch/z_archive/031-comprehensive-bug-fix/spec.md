@@ -10,7 +10,7 @@ trigger_phrases:
   - "spec"
   - "031"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 created: 2024-12-24
 id: 018-comprehensive-bug-fix
 priority: P0

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/015-performance-hacks/implementation-summary]"
 description: "Archived implementation summary for Specification: Additional Performance Hacks."
 trigger_phrases:
   - "specification"

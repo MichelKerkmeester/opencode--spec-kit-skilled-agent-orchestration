@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Readme And Summary With HVR [template:level_1/spec.md]"
+title: "Feature Specification: Readme And Summary With [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/spec]"
 description: "Archived record for Readme And Summary With HVR. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "019-readme-and-summary-with-hvr"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Notification System - Requirements & User Stories"
+title: "Verification Checklist: Notification [01--anobel.com/z_archive/007-notification-system/scratch/legacy/checklist]"
 description: "Archive verification checklist for Notification System - Requirements & User Stories."
 trigger_phrases:
   - "007-notification-system"

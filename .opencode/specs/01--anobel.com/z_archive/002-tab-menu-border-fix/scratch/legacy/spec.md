@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Tab Menu Border Color Fix [01--anobel.com/z_archive/002-tab-menu-border-fix/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Tab Menu Border Color Fix\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "tab"
+  - "menu"
+  - "border"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Tab Menu Border Color Fix"
         description: "Fix incorrect border color on filter tab buttons after they transition from active (SET) to inactive (ENABLED) state."
         trigger_phrases:

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/spec]"
+title: "Feature Specification: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/spec]"
 description: "Spec: Blog Sort Dropdown Fix"
 trigger_phrases:
   - "spec"

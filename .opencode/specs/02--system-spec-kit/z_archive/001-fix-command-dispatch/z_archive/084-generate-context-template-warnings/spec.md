@@ -1,5 +1,5 @@
 ---
-title: "Spec: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/spec]"
+title: "Spec [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/spec]"
 description: "When running generate-context.js, two issues occur"
 trigger_phrases:
   - "spec"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "template"
   - "084"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

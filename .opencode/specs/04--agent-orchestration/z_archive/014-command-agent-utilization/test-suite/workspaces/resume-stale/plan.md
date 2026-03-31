@@ -9,7 +9,7 @@ trigger_phrases:
   - "resume"
   - "stale"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: JWT Authentication
 

@@ -7,7 +7,7 @@ trigger_phrases:
   - "039"
   - "node"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 id: 039-node-modules-consolidation
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Download Button Code Standards Alignment [.opencode/specs/01--anobel.com/z_archive/003-btn-download-alignment/tasks]"
+title: "Tasks: Download Button Code Standards Alignment [01--anobel.com/z_archive/003-btn-download-alignment/tasks]"
 description: "Archived normalization task list for Download Button Code Standards Alignment."
 trigger_phrases:
   - "spec"

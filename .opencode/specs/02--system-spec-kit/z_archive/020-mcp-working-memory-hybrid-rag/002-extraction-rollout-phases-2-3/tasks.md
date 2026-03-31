@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Extraction Rollout Phases 2 3 [template:level_1/tasks.md]"
+title: "Tasks: Extract [02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "002-extraction-rollout-phases-2-3"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Icon Animation Isolation for Download Button [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/plan]"
+title: "Implementation Plan: Icon Animation [01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/plan]"
 description: "Spec: Icon Animation Isolation for Download Button"
 trigger_phrases:
   - "spec"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Review Agent Model Agnostic [template:level_1/plan.md]"
+title: "Implementation Plan: Review Agent Model [04--agent-orchestration/z_archive/015-review-agent-model-agnostic/plan]"
 description: "Normalize the archived agent orchestration archive folder for Review Agent Model Agnostic so current validation passes without reopening implementation scope."
 trigger_phrases:
   - "015-review-agent-model-agnostic"

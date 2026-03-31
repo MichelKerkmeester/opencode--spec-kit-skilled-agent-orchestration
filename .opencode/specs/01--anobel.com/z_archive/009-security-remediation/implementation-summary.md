@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/009-security-remediation/implementation-summary]"
 description: "Archived implementation summary for Security Vulnerability Remediation."
 trigger_phrases:
   - "security"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Tab Main Component [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/spec]"
+title: "Feature Specification: Tab Main Component [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/spec]"
 description: "Feature Specification: Tab Main Component"
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Mobile Button/Link Tap Feedback [.opencode/specs/01--anobel.com/z_archive/026-mobile-btn-link-feedback/tasks]"
+title: "Tasks: Mobile Button/Link Tap Feedback [01--anobel.com/z_archive/026-mobile-btn-link-feedback/tasks]"
 description: "Archived normalization task list for Mobile Button/Link Tap Feedback."
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Anchor Enforcement Automation [template:level_1/spec.md]"
+title: "Feature Specification: Anchor Enforcement [02--system-spec-kit/z_archive/015-anchor-enforcement-automation/spec]"
 description: "Archived record for Anchor Enforcement Automation. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "015-anchor-enforcement-automation"

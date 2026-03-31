@@ -9,7 +9,7 @@ trigger_phrases:
   - "audit"
   - "decision record"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: Task 01 — README Audit & Alignment
 

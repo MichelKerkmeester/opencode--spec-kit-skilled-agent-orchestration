@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Blog Sort Dropdown Fix [.opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/checklist]"
+title: "Verification Checklist: Blog Sort Dropdown Fix [01--anobel.com/z_archive/018-blog-sort-fix/checklist]"
 description: "Archived verification checklist for Blog Sort Dropdown Fix."
 trigger_phrases:
   - "spec"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: minify-javascript - Requirements & User Stories"
+title: "Implementation Plan: minify-javascript - [01--anobel.com/z_archive/005-minify-javascript/scratch/legacy/plan]"
 description: "Minify the JavaScript files in src/2_javascript/z_minified/ (in-place) for smaller payloads when served from Cloudflare and embedded in Webflow, while preserving runtime behavior."
 trigger_phrases:
   - "005-minify-javascript"

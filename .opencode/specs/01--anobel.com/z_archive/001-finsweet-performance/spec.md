@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Finsweet Performance Optimization [.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/spec]"
+title: "Feature Specification: Finsweet Performance Optimization [01--anobel.com/z_archive/001-finsweet-performance/spec]"
 description: "Finsweet Performance Optimization"
 trigger_phrases:
   - "finsweet"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Download Button Mobile Fix [.opencode/specs/01--anobel.com/z_archive/027-download-btn-on-mobile/spec]"
+title: "Feature Specification: Download Button Mobile Fix [01--anobel.com/z_archive/027-download-btn-on-mobile/spec]"
 description: "Feature Specification: Download Button Mobile Fix"
 trigger_phrases:
   - "feature"

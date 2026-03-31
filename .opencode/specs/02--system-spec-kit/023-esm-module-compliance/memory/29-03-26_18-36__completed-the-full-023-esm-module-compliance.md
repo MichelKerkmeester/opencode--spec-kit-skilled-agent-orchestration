@@ -43,7 +43,7 @@ trigger_phrases:
   - "module"
   - "compliance"
 importance_tier: "critical"
-contextType: "decision"
+contextType: "implementation"
 _sourceTranscriptPath: ""
 _sourceSessionId: ""
 _sourceSessionCreated: 0

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Orchestrate Context Window [template:level_1/tasks.md]"
+title: "Tasks: Orchestrate Context Window [04--agent-orchestration/z_archive/006-orchestrate-context-window/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

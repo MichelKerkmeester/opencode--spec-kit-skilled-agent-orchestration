@@ -10,7 +10,7 @@ trigger_phrases:
   - "088"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: System-Spec-Kit Known Limitations Remediation
 

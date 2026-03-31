@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/001-finsweet-performance/implementation-summary]"
 description: "Archived implementation summary for Finsweet Performance Optimization."
 trigger_phrases:
   - "finsweet"

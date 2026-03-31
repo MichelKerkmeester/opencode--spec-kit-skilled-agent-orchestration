@@ -10,7 +10,7 @@ trigger_phrases:
   - "decision record"
   - "049"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: System-Spec-Kit Bug Remediation

@@ -1,4 +1,16 @@
 ---
+title: "Feature Specification: Specification: CSS [01--anobel.com/z_archive/010-css-performance-cv/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Specification: CSS Performance Upgrade (Content Visibility)\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "css"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Specification: CSS Performance Upgrade (Content Visibility)"
         description: "The content-visibility CSS property is a powerful performance primitive that allows the browser to skip the rendering work of an element's subtree until it is needed (i.e., when."
         trigger_phrases:

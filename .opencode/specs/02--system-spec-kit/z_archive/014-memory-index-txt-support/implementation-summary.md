@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [02--system-spec-kit/z_archive/014-memory-index-txt-support/implementation-summary]"
 description: "Archive normalization summary for Memory Index Txt Support."
 trigger_phrases:
   - "014-memory-index-txt-support"

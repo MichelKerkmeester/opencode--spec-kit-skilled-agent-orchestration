@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Load Toggle Component - anobel.com"
+title: "Tasks: Load Toggle Component - anobel.com [01--anobel.com/z_archive/025-load-toggle/scratch/legacy/tasks]"
 description: "Archived task record for Load Toggle Component - anobel.com."
 trigger_phrases:
   - "025-load-toggle"

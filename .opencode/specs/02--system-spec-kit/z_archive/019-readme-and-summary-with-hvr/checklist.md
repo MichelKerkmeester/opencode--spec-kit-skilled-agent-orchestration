@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Readme And Summary With HVR [template:level_2/checklist.md]"
+title: "Verification Checklist: Readme And Summary [02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

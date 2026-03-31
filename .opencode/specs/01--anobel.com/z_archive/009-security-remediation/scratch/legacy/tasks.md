@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Security Vulnerability Remediation"
+title: "Tasks: Security Vulnerability Remediation [01--anobel.com/z_archive/009-security-remediation/scratch/legacy/tasks]"
 description: "Archived task record for Security Vulnerability Remediation."
 trigger_phrases:
   - "009-security-remediation"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Claude Code Subagents [template:level_1/plan.md]"
+title: "Implementation Plan: Claude Code Subagents [04--agent-orchestration/z_archive/009-claude-code-subagents/plan]"
 description: "Archive-fix plan that rewrites the required Level 1 documents and keeps the historical topic easy to review."
 trigger_phrases:
   - "implementation"

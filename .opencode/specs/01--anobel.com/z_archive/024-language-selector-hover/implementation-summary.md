@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/024-language-selector-hover/implementation-summary]"
 description: "Archived implementation summary for Language Selector - Desktop Hover to Open."
 trigger_phrases:
   - "spec"

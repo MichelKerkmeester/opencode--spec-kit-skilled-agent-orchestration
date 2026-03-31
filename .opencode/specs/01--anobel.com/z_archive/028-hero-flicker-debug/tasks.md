@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Hero Video Card Image Flickering Fix [.opencode/specs/01--anobel.com/z_archive/028-hero-flicker-debug/tasks]"
+title: "Tasks: Hero Video Card Image Flickering Fix [01--anobel.com/z_archive/028-hero-flicker-debug/tasks]"
 description: "Archived normalization task list for Hero Video Card Image Flickering Fix."
 trigger_phrases:
   - "feature"

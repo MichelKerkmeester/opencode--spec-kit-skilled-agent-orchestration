@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Handover Model Codex Compat [template:level_1/tasks.md]"
+title: "Tasks: Handover Model Codex Compat [04--agent-orchestration/z_archive/016-handover-model-codex-compat/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "016-handover-model-codex-compat"

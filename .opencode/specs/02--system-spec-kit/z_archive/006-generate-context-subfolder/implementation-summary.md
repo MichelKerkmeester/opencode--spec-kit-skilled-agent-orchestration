@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/006-generate-context-subfolder/implementation-summary]"
 description: "Archive repair summary for the Generate Context Subfolder Support folder."
 trigger_phrases:
   - "implementation summary"

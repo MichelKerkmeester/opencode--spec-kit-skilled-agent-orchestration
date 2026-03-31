@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Language Selector - Desktop Hover to Open"
+title: "Tasks: Language Selector - Desktop Hover [01--anobel.com/z_archive/024-language-selector-hover/scratch/legacy/tasks]"
 description: "Archived task record for Language Selector - Desktop Hover to Open."
 trigger_phrases:
   - "024-language-selector-hover"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/spec]"
+title: "Feature Specification [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/spec]"
 description: "SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre-analysis documents examining dotmd, seu-claude, drift, and system-speckit architectures. This sp..."
 trigger_phrases:
   - "feature"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "082"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Reimagined

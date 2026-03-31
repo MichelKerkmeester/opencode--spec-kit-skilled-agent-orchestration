@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/004-script-audit-comprehensive/implementation-summary]"
 description: "Archive repair summary for the Comprehensive Script Audit folder."
 trigger_phrases:
   - "implementation summary"

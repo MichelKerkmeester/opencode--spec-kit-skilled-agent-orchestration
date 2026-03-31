@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [01--anobel.com/z_archive/017-link-card-product-adv/implementation-summary]"
 description: "Archived implementation summary for Link Card Product/Adv - CTA Button Hover Animation."
 trigger_phrases:
   - "link"

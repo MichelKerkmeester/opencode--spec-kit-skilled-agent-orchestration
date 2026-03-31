@@ -1,5 +1,5 @@
 ---
-title: "Spec 089: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/spec]"
+title: "Spec 089 [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/spec]"
 description: "title: \"Spec 089: system-spec-kit Reimagined Refinement\""
 trigger_phrases:
   - "spec"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "kit"
   - "speckit"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 complexity: "High (85+)"
 created: "2026-02-06"
 estimated-loc: ">500"

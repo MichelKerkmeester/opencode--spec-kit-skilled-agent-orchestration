@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Command Adherence [template:level_1/spec.md]"
+title: "Feature Specification: Command Adherence [02--system-spec-kit/z_archive/017-command-adherence/spec]"
 description: "Archived record for Command Adherence. This version preserves the intent of the work while restoring current validator compliance."
 trigger_phrases:
   - "017-command-adherence"

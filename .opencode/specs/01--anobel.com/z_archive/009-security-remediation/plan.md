@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Security Vulnerability Remediation [.opencode/specs/01--anobel.com/z_archive/009-security-remediation/plan]"
+title: "Implementation Plan: Security Vulnerability Remediation [01--anobel.com/z_archive/009-security-remediation/plan]"
 description: "Security Vulnerability Remediation"
 trigger_phrases:
   - "security"

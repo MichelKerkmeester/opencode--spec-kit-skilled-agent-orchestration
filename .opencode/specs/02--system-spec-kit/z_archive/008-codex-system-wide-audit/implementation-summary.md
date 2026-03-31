@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Implementation Summary [02--system-spec-kit/z_archive/008-codex-system-wide-audit/implementation-summary]"
 description: "Archive repair summary for the System-Wide Remediation of Audit Findings folder."
 trigger_phrases:
   - "implementation summary"

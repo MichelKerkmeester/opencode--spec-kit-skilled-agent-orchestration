@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Video Play/Pause Button Hover Effect [.opencode/specs/01--anobel.com/z_archive/006-video-play-pause-hover/spec]"
+title: "Feature Specification: Video Play/Pause Button Hover Effect [01--anobel.com/z_archive/006-video-play-pause-hover/spec]"
 description: "Video Play/Pause Button Hover Effect"
 trigger_phrases:
   - "video"

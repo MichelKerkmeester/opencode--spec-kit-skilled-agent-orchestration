@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Image Decoding Async Analysis [.opencode/specs/01--anobel.com/z_archive/021-decoding-async-analysis/tasks]"
+title: "Tasks: Image Decoding Async Analysis [01--anobel.com/z_archive/021-decoding-async-analysis/tasks]"
 description: "Archived normalization task list for Image Decoding Async Analysis."
 trigger_phrases:
   - "feature"

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Index Workflows Code [template:level_2/checklist.md]"
+title: "Verification Checklist: Index Workflows Code [02--system-spec-kit/z_archive/016-index-workflows-code/checklist]"
 description: "Verification Date: 2026-03-31"
 trigger_phrases:
   - "verification"

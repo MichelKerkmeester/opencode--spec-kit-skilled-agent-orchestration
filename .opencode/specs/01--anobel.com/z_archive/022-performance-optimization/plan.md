@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Performance Optimization - anobel.com [.opencode/specs/01--anobel.com/z_archive/022-performance-optimization/plan]"
+title: "Implementation Plan: Performance Optimization - [01--anobel.com/z_archive/022-performance-optimization/plan]"
 description: "Performance Optimization - anobel.com"
 trigger_phrases:
   - "performance"

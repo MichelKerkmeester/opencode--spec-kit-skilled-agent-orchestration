@@ -1,9 +1,8 @@
 ---
-title: "Feature Specification: Table Of Content [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/spec]"
+title: "Feature Specification: Table Of Content [.opencode/specs/01--anobel [01--anobel.com/z_archive/004-table-of-content/spec]"
 description: "Feature Specification: Table Of Content"
 trigger_phrases:
   - "table"
-  - "of"
   - "content"
   - "anobel"
   - "reference"

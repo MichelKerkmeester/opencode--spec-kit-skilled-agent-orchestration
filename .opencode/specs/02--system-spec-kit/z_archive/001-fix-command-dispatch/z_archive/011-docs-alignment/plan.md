@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/plan]"
 description: "Implementation plan defining technical approach, project structure, and execution strategy."
 trigger_phrases:
   - "implementation"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "011"
   - "docs"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: [YOUR_VALUE_HERE: feature-name] - Technical Approach & Architecture
 

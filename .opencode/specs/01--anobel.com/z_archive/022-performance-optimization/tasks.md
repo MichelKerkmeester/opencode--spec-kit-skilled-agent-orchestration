@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Performance Optimization - anobel.com [.opencode/specs/01--anobel.com/z_archive/022-performance-optimization/tasks]"
+title: "Tasks: Performance Optimization - anobel.com [01--anobel.com/z_archive/022-performance-optimization/tasks]"
 description: "Archived normalization task list for Performance Optimization - anobel.com."
 trigger_phrases:
   - "performance"

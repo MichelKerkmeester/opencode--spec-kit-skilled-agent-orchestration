@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Download Button Code Standards Alignment [.opencode/specs/01--anobel.com/z_archive/003-btn-download-alignment/plan]"
+title: "Implementation Plan: Download Button Code Standards [01--anobel.com/z_archive/003-btn-download-alignment/plan]"
 description: "Spec: Download Button Code Standards Alignment"
 trigger_phrases:
   - "spec"

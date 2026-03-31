@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Mobile Button/Link Tap Feedback"
+title: "Implementation Plan: Mobile Button/Link [01--anobel.com/z_archive/026-mobile-btn-link-feedback/scratch/legacy/plan]"
 description: "On mobile/touch devices, the CSS :active pseudo-class fires on touchstart BEFORE the browser has determined whether the user is tapping or scrolling. This causes unwanted visual."
 trigger_phrases:
   - "026-mobile-btn-link-feedback"

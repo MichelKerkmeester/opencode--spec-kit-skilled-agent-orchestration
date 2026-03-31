@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/tasks]"
+title: "Task Breakdown [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/tasks]"
 description: "1. [ ] Locate cached version at line 209"
 trigger_phrases:
   - "task"

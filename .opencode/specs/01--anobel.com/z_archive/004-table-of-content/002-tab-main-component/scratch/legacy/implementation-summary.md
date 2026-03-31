@@ -1,4 +1,14 @@
 ---
+title: "Implementat [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/scratch/legacy/implementation-summary]"
+description: "title: \"Implementation Summary\""
+trigger_phrases:
+  - "implementat"
+  - "implementation summary"
+  - "legacy"
+importance_tier: "normal"
+contextType: "implementation"
+---
+---
     title: "Implementation Summary"
     description: "Archived implementation summary for Tab Main Component."
     trigger_phrases:

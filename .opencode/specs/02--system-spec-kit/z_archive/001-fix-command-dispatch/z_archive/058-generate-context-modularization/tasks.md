@@ -1,5 +1,5 @@
 ---
-title: "Tasks: [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/tasks]"
+title: "Tasks [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/tasks]"
 description: "Priority: P0"
 trigger_phrases:
   - "tasks"

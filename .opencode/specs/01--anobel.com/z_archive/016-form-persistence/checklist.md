@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Form Data Persistence [.opencode/specs/01--anobel.com/z_archive/016-form-persistence/checklist]"
+title: "Verification Checklist: Form Data Persistence [01--anobel.com/z_archive/016-form-persistence/checklist]"
 description: "Archived verification checklist for Form Data Persistence."
 trigger_phrases:
   - "form"

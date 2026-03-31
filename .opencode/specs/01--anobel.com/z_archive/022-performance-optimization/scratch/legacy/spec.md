@@ -1,4 +1,17 @@
 ---
+title: "Feature Specification: anobel.com [01--anobel.com/z_archive/022-performance-optimization/scratch/legacy/spec]"
+description: "title: \"Feature Specification: anobel.com\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "anobel"
+  - "com"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
     title: "Feature Specification: anobel.com"
     description: "Comprehensive performance analysis and optimization for anobel.com based on Google PageSpeed Insights results. The site had critical LCP issues (20.2s mobile) primarily caused b."
     trigger_phrases:

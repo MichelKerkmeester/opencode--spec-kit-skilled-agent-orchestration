@@ -9,7 +9,7 @@ trigger_phrases:
   - "015"
   - "system"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Architecture Decision Record
 

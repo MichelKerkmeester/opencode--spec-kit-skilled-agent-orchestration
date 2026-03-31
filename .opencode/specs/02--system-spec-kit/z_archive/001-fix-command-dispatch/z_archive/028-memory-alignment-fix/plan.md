@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan - [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/plan]"
+title: "Implementation Plan [02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/plan]"
 description: "Location: Lines around Gate 5 (Memory Save Validation)"
 trigger_phrases:
   - "implementation"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "fix"
   - "028"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Memory Alignment Fix

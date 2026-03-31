@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Hero Video Card Image Flickering Fix"
+title: "Implementation Plan: Hero Video Card Image [01--anobel.com/z_archive/028-hero-flicker-debug/scratch/legacy/plan]"
 description: "On mobile devices, when scrolling through video cards in the hero section (both \"hero cards\" and \"hero general\" variants), the thumbnail images flicker rapidly. This occurs on p."
 trigger_phrases:
   - "028-hero-flicker-debug"

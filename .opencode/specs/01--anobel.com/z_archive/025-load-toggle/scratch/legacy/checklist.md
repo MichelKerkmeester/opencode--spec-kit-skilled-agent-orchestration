@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Load Toggle Component - anobel.com"
+title: "Verification Checklist: Load Toggle Component - [01--anobel.com/z_archive/025-load-toggle/scratch/legacy/checklist]"
 description: "Archive verification checklist for Load Toggle Component - anobel.com."
 trigger_phrases:
   - "025-load-toggle"

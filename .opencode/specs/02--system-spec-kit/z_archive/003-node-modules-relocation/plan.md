@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: Node Modules Relocation [archive]"
+title: "Implementation Plan: Node Modules Relocation [archive] [02--system-spec-kit/z_archive/003-node-modules-relocation/plan]"
 description: "Archive normalization plan for the Node Modules Relocation folder."
 trigger_phrases:
   - "implementation plan"
   - "node modules relocation"
   - "archive"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Node Modules Relocation
 

@@ -9,7 +9,7 @@ trigger_phrases:
   - "with"
   - "templates"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Template Test Fixture

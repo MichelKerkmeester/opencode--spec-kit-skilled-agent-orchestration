@@ -8,7 +8,7 @@ trigger_phrases:
   - "spec"
   - "039"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 created: 2025-12-25
 id: 039-node-modules-consolidation
 level: 2

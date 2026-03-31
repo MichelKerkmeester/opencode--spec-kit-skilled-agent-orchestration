@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [012-form-input-upload-select [01--anobel.com/z_archive/011-form-input-upload-select/handover]"
+title: "Session Handover Document [01--anobel.com/z_archive/011-form-input-upload-select/scratch/legacy/handover]"
 description: "1. Upload minified files to R2 CDN for deployment"
 trigger_phrases:
   - "session"

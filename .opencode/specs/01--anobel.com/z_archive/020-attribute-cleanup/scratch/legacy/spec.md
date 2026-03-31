@@ -1,4 +1,18 @@
 ---
+title: "Feature Specification: Attribute Cleanup Deepdive [01--anobel.com/z_archive/020-attribute-cleanup/scratch/legacy/spec]"
+description: "title: \"Feature Specification: Attribute Cleanup Deepdive\""
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "attribute"
+  - "cleanup"
+  - "deepdive"
+  - "spec"
+  - "legacy"
+importance_tier: "important"
+contextType: "implementation"
+---
+---
         title: "Feature Specification: Attribute Cleanup Deepdive"
         description: "Level 1 (Core) is appropriate when."
         trigger_phrases:

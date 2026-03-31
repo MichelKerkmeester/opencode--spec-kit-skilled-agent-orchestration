@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Tab Main Component [.opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/plan]"
+title: "Implementation Plan: Tab Main Component [01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/plan]"
 description: "Feature Specification: Tab Main Component"
 trigger_phrases:
   - "feature"

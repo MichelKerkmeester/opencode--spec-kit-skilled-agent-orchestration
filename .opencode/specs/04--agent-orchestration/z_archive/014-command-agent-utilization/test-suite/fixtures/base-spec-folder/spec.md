@@ -9,7 +9,7 @@ trigger_phrases:
   - "spec"
   - "base"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Feature Specification: JWT Authentication
 

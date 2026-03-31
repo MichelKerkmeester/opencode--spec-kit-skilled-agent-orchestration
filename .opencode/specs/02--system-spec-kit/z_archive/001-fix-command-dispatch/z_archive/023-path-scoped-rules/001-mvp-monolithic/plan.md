@@ -10,7 +10,7 @@ trigger_phrases:
   - "001"
   - "mvp"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Implementation Plan: Path-Scoped Validation Rules
 <!-- SPECKIT_TEMPLATE_SOURCE: plan.md | v1.0 -->
