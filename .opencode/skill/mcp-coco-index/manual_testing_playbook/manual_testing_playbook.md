@@ -19,6 +19,7 @@ Canonical package artifacts:
 - `04--daemon-lifecycle/`
 - `05--skill-advisor-integration/`
 - `06--error-handling/`
+- `07--code-graph-integration/`
 
 ---
 
@@ -36,14 +37,15 @@ Canonical package artifacts:
 - [10. DAEMON LIFECYCLE](#10--daemon-lifecycle)
 - [11. SKILL ADVISOR INTEGRATION](#11--skill-advisor-integration)
 - [12. ERROR HANDLING](#12--error-handling)
-- [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
-- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
+- [13. CODE GRAPH INTEGRATION](#13--code-graph-integration)
+- [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
+- [15. FEATURE CATALOG CROSS-REFERENCE INDEX](#15--feature-catalog-cross-reference-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 20 deterministic scenarios across 6 categories validating the `mcp-coco-index` skill surface. Each feature keeps its original ID and links to a dedicated snippet with the full execution contract.
+This playbook provides 23 deterministic scenarios across 7 categories validating the `mcp-coco-index` skill surface. Each feature keeps its original ID and links to a dedicated snippet with the full execution contract.
 
 Coverage note (2026-03-18): scenarios validate the upstream doc overhaul and skill advisor `--semantic` and `--semantic-hits` integration.
 
@@ -156,6 +158,7 @@ This section records wave planning and capacity guidance for the manual testing 
 | Wave 1 (parallel-safe) | CCC-001..CCC-004, MCP-001..MCP-007, CFG-001..CFG-003, ADV-001..ADV-002, ERR-001 | 1-5 | Safe to parallelize when each worker gets explicit scenario ownership |
 | Wave 2 (shared-daemon) | DMN-001..DMN-002 | 1 | Run serially because these scenarios mutate or inspect shared daemon state |
 | Wave 3 (destructive) | CCC-005 | 1 | Must run in isolation because it resets the index |
+| Wave 4 (integration) | INT-001..INT-003 | 1-2 | Requires both CocoIndex daemon and Spec Kit Memory MCP server running |
 
 ### Operational Rules
 
@@ -462,7 +465,52 @@ Response is valid (not an exception or error); result array is empty or contains
 
 ---
 
-## 13. AUTOMATED TEST CROSS-REFERENCE
+## 13. CODE GRAPH INTEGRATION
+
+These scenarios validate CocoIndex behavior when the Spec Kit Memory query-intent classifier and code graph are active. They ensure semantic queries continue routing to CocoIndex, hybrid queries merge both backends, and session_resume includes CocoIndex status.
+
+### INT-001 | Semantic queries route to CocoIndex
+
+#### Description
+Verify that semantic/conceptual queries are classified as intent=semantic and routed to CocoIndex vector search, not the structural code graph.
+
+#### Current Reality
+Prompt: `Send "find examples of error handling patterns in this codebase" to memory_context. Confirm intent is classified as semantic and CocoIndex results are present.`
+
+Intent classified as 'semantic', results include vector similarity file matches, no structural graph data in primary results.
+
+#### Test Execution
+> **Feature File:** [INT-001](07--code-graph-integration/001-query-intent-semantic-routing.md)
+
+### INT-002 | Hybrid queries merge code graph and CocoIndex
+
+#### Description
+Verify that hybrid intent queries trigger both the structural code graph and CocoIndex, merging results from both backends.
+
+#### Current Reality
+Prompt: `Send "find all validation functions and explain their error handling approach" to memory_context. Confirm intent=hybrid and both code graph and CocoIndex results are present.`
+
+Intent classified as 'hybrid', response contains code graph symbols and CocoIndex semantic matches merged together.
+
+#### Test Execution
+> **Feature File:** [INT-002](07--code-graph-integration/002-hybrid-query-merges-results.md)
+
+### INT-003 | Session resume includes CocoIndex status
+
+#### Description
+Verify that session_resume includes CocoIndex availability (available boolean, binaryPath) in its composite response and degrades gracefully when CocoIndex is unavailable.
+
+#### Current Reality
+Prompt: `Call session_resume and verify the cocoIndex field contains available and binaryPath. Stop daemon and verify graceful degradation.`
+
+cocoIndex.available matches daemon state, binaryPath is valid string, session_resume succeeds even when CocoIndex unavailable.
+
+#### Test Execution
+> **Feature File:** [INT-003](07--code-graph-integration/003-session-resume-includes-cocoindex.md)
+
+---
+
+## 14. AUTOMATED TEST CROSS-REFERENCE
 
 The playbook complements (not replaces) the upstream pytest modules in `tests/`:
 
@@ -480,7 +528,7 @@ The playbook complements (not replaces) the upstream pytest modules in `tests/`:
 
 ---
 
-## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 15. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 | Feature ID | Feature Name | Category | Feature File |
 |---|---|---|---|
@@ -504,3 +552,6 @@ The playbook complements (not replaces) the upstream pytest modules in `tests/`:
 | ADV-001 | Semantic flag routing | Skill Advisor Integration | [ADV-001](05--skill-advisor-integration/001-semantic-flag-routing.md) |
 | ADV-002 | Pre-computed hits routing | Skill Advisor Integration | [ADV-002](05--skill-advisor-integration/002-pre-computed-hits-routing.md) |
 | ERR-001 | No results graceful handling | Error Handling | [ERR-001](06--error-handling/001-no-results-graceful-handling.md) |
+| INT-001 | Semantic queries route to CocoIndex | Code Graph Integration | [INT-001](07--code-graph-integration/001-query-intent-semantic-routing.md) |
+| INT-002 | Hybrid query result merging | Code Graph Integration | [INT-002](07--code-graph-integration/002-hybrid-query-merges-results.md) |
+| INT-003 | Session resume CocoIndex status | Code Graph Integration | [INT-003](07--code-graph-integration/003-session-resume-includes-cocoindex.md) |

@@ -340,19 +340,19 @@ describe('CONTEXT_MODES', () => {
     expect(memoryContext.CONTEXT_MODES.quick.tokenBudget).toBe(800);
   });
 
-  it('deep tokenBudget is 2000', () => {
+  it('deep tokenBudget is 3500', () => {
     if (!memoryContext?.CONTEXT_MODES) return;
-    expect(memoryContext.CONTEXT_MODES.deep.tokenBudget).toBe(2000);
+    expect(memoryContext.CONTEXT_MODES.deep.tokenBudget).toBe(3500);
   });
 
-  it('focused tokenBudget is 1500', () => {
+  it('focused tokenBudget is 3000', () => {
     if (!memoryContext?.CONTEXT_MODES) return;
-    expect(memoryContext.CONTEXT_MODES.focused.tokenBudget).toBe(1500);
+    expect(memoryContext.CONTEXT_MODES.focused.tokenBudget).toBe(3000);
   });
 
-  it('resume tokenBudget is 1200', () => {
+  it('resume tokenBudget is 2000', () => {
     if (!memoryContext?.CONTEXT_MODES) return;
-    expect(memoryContext.CONTEXT_MODES.resume.tokenBudget).toBe(1200);
+    expect(memoryContext.CONTEXT_MODES.resume.tokenBudget).toBe(2000);
   });
 
   it('auto has no tokenBudget (delegates to sub-strategy)', () => {

@@ -8,7 +8,11 @@ import {
   waitForEmbeddingModel,
   checkDatabaseUpdated,
 } from '../../core/index.js';
-import { buildAdaptiveShadowProposal } from '../cognitive/adaptive-ranking.js';
+import {
+  buildAdaptiveShadowProposal,
+  getAdaptiveMode,
+  tuneAdaptiveThresholdsAfterEvaluation,
+} from '../cognitive/adaptive-ranking.js';
 import { isEnabled as isSessionBoostEnabled } from '../search/session-boost.js';
 import { isEnabled as isCausalBoostEnabled } from '../search/causal-boost.js';
 import { executePipeline, type PipelineConfig } from '../search/pipeline/index.js';
@@ -90,6 +94,90 @@ let evaluationInFlight = false;
    4. HELPERS
 ──────────────────────────────────────────────────────────────── */
 
+function normalizeMemoryId(value: number | string | undefined): number | null {
+  if (typeof value === 'number' && Number.isSafeInteger(value) && value > 0) {
+    return value;
+  }
+
+  if (typeof value === 'string' && /^\d+$/.test(value)) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : null;
+  }
+
+  return null;
+}
+
+function getRelevanceFeedback(
+  database: Database.Database,
+  memoryIds: number[],
+  queryText?: string | null,
+): Map<number, number> {
+  if (memoryIds.length === 0) {
+    return new Map();
+  }
+
+  const adaptiveSignalEventsTable = database.prepare(`
+    SELECT 1
+    FROM sqlite_master
+    WHERE type = 'table'
+      AND name = 'adaptive_signal_events'
+    LIMIT 1
+  `).get();
+
+  if (!adaptiveSignalEventsTable) {
+    return new Map();
+  }
+
+  const placeholders = memoryIds.map(() => '?').join(', ');
+  const queryFilterClause = queryText == null
+    ? ''
+    : ` AND (
+      query = ?
+      OR json_extract(metadata, '$.queryText') = ?
+    )`;
+  const signalRows = database.prepare(`
+    SELECT
+      memory_id,
+      COALESCE(SUM(CASE WHEN signal_type = 'outcome' THEN signal_value ELSE 0 END), 0) AS outcome_total,
+      COALESCE(SUM(CASE WHEN signal_type = 'correction' THEN signal_value ELSE 0 END), 0) AS correction_total
+    FROM adaptive_signal_events
+    WHERE signal_type IN ('outcome', 'correction')
+      AND memory_id IN (${placeholders})
+      ${queryFilterClause}
+    GROUP BY memory_id
+  `).all(...memoryIds, ...(queryText == null ? [] : [queryText, queryText])) as Array<{
+    memory_id: number;
+    outcome_total: number;
+    correction_total: number;
+  }>;
+
+  if (signalRows.length === 0) {
+    return new Map();
+  }
+
+  const rawSignalTotals = signalRows.map((row) => ({
+    memoryId: row.memory_id,
+    raw: row.outcome_total - row.correction_total,
+  }));
+  const maxAbsoluteSignalTotal = Math.max(...rawSignalTotals.map((row) => Math.abs(row.raw)), 0);
+
+  const relevanceByMemoryId = new Map<number, number>();
+  if (maxAbsoluteSignalTotal === 0) {
+    for (const row of rawSignalTotals) {
+      relevanceByMemoryId.set(row.memoryId, 0.5);
+    }
+
+    return relevanceByMemoryId;
+  }
+
+  for (const row of rawSignalTotals) {
+    const normalizedScore = (row.raw + maxAbsoluteSignalTotal) / (2 * maxAbsoluteSignalTotal);
+    relevanceByMemoryId.set(row.memoryId, normalizedScore);
+  }
+
+  return relevanceByMemoryId;
+}
+
 /**
  * Determine whether a new weekly evaluation cycle is due.
  */
@@ -141,7 +229,7 @@ function buildReplayPipelineConfig(query: string, searchLimit: number): Pipeline
     includeArchived: false,
     includeConstitutional: true,
     includeContent: false,
-    // minState omitted — memoryState column not yet in schema
+    minState: 'ARCHIVED',
     applyStateLimits: false,
     useDecay: true,
     rerank: true,
@@ -160,18 +248,26 @@ function buildReplayPipelineConfig(query: string, searchLimit: number): Pipeline
  * Extract live results plus the adaptive shadow proposal from a replayed query.
  */
 function buildReplayRanks(
+  database: Database.Database,
   liveRows: ShadowSearchResultRow[],
   shadowRows: ShadowProposalRow[],
+  queryText?: string,
 ): ShadowReplayRanks | null {
   if (liveRows.length === 0 || shadowRows.length === 0) {
     return null;
   }
 
-  const shadowScoreById = new Map<string, number>();
-  for (const row of shadowRows) {
-    if ((typeof row.memoryId === 'number' || typeof row.memoryId === 'string') && typeof row.shadowScore === 'number') {
-      shadowScoreById.set(String(row.memoryId), row.shadowScore);
-    }
+  const memoryIds = Array.from(new Set([
+    ...liveRows
+      .map((row) => normalizeMemoryId(row.id))
+      .filter((memoryId): memoryId is number => memoryId !== null),
+    ...shadowRows
+      .map((row) => normalizeMemoryId(row.memoryId))
+      .filter((memoryId): memoryId is number => memoryId !== null),
+  ]));
+  const relevanceFeedbackById = getRelevanceFeedback(database, memoryIds, queryText);
+  if (relevanceFeedbackById.size === 0) {
+    return null;
   }
 
   const live: RankedItem[] = [];
@@ -182,16 +278,15 @@ function buildReplayRanks(
     }
 
     const resultId = String(row.id);
-    const fallbackScore = typeof row.score === 'number'
-      ? row.score
-      : typeof row.similarity === 'number'
-        ? row.similarity
-        : 0;
+    const memoryId = normalizeMemoryId(row.id);
+    const relevanceScore = memoryId !== null
+      ? relevanceFeedbackById.get(memoryId)
+      : undefined;
 
     live.push({
       resultId,
       rank: index + 1,
-      relevanceScore: shadowScoreById.get(resultId) ?? fallbackScore,
+      relevanceScore,
     });
   }
 
@@ -205,7 +300,12 @@ function buildReplayRanks(
     .map((row) => ({
       resultId: String(row.memoryId),
       rank: row.shadowRank,
-      relevanceScore: row.shadowScore,
+      relevanceScore: (() => {
+        const memoryId = normalizeMemoryId(row.memoryId);
+        return memoryId !== null
+          ? relevanceFeedbackById.get(memoryId)
+          : undefined;
+      })(),
     }));
 
   if (live.length === 0 || shadow.length === 0) {
@@ -235,7 +335,7 @@ async function replayQueryForShadowEvaluation(
     return null;
   }
 
-  return buildReplayRanks(liveRows, shadowProposal.rows as ShadowProposalRow[]);
+  return buildReplayRanks(db, liveRows, shadowProposal.rows as ShadowProposalRow[], queryText);
 }
 
 /**
@@ -322,13 +422,13 @@ async function runScheduledShadowEvaluationCycle(
 
     const queryRows = loadRecentSearchQueries(db, now, queryLookbackMs, maxQueryPoolSize);
     if (queryRows.length === 0) {
-      console.error('[shadow-evaluation-runtime] skipped cycle: no recent search queries available');
+      console.warn('[shadow-evaluation-runtime] skipped cycle: no recent search queries available');
       return null;
     }
 
     const replayed = await buildHoldoutReplayMap(db, queryRows, holdoutPercent, seed, searchLimit);
     if (replayed.size === 0) {
-      console.error('[shadow-evaluation-runtime] skipped cycle: no holdout queries produced shadow proposals');
+      console.warn('[shadow-evaluation-runtime] skipped cycle: no holdout queries produced shadow proposals');
       return null;
     }
 
@@ -349,11 +449,19 @@ async function runScheduledShadowEvaluationCycle(
     );
 
     if (report) {
-      console.error(
+      console.warn(
         `[shadow-evaluation-runtime] cycle ${report.cycleId}: ${report.cycleResult.queryCount} holdout queries, `
         + `meanNdcgDelta=${report.cycleResult.meanNdcgDelta.toFixed(4)}, `
         + `recommendation=${report.promotionGate.recommendation}`,
       );
+
+      if (getAdaptiveMode() !== 'disabled' && report.promotionGate?.ready) {
+        try {
+          tuneAdaptiveThresholdsAfterEvaluation(db, report.promotionGate);
+        } catch (err) {
+          console.warn('[shadow-evaluation-runtime] threshold tuning skipped/failed:', err);
+        }
+      }
     }
 
     return report;

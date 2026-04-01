@@ -201,6 +201,11 @@ export interface SharedMemoryStatusArgs {
   actorAgentId?: string;
 }
 
+/** Arguments for session resume requests. */
+export interface SessionResumeArgs {
+  specFolder?: string;
+}
+
 /** Arguments for checkpoint creation requests. */
 export interface CheckpointCreateArgs {
   name: string;

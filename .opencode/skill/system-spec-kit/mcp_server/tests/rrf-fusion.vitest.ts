@@ -26,8 +26,8 @@ function expectDefined<T>(value: T | undefined, label: string): T {
 }
 
 describe('RRF Fusion Core Tests (T021-T030)', () => {
-  it('T021: RRF fusion with default k=60 parameter', () => {
-    expect(DEFAULT_K).toBe(60);
+  it('T021: RRF fusion with default k=40 parameter', () => {
+    expect(DEFAULT_K).toBe(40);
   });
 
   it('T022: RRF score formula 1/(k+rank) produces correct values', () => {
@@ -47,10 +47,10 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const doc3 = expectDefined(fused.find((r: FusedResult) => r.id === 'doc3'), 'doc3');
 
     // Doc1: vector rank=0, fts rank=1 => 1/61 + 1/62 + 0.10 convergence bonus
-    const expectedDoc1Base = 1 / (60 + 0 + 1) + 1 / (60 + 1 + 1);
+    const expectedDoc1Base = 1 / (DEFAULT_K + 0 + 1) + 1 / (DEFAULT_K + 1 + 1);
     const expectedDoc1WithBonus = expectedDoc1Base + 0.10;
     // Doc3: vector rank=2 only => 1/63
-    const expectedDoc3 = 1 / (60 + 2 + 1);
+    const expectedDoc3 = 1 / (DEFAULT_K + 2 + 1);
 
     expect(doc1.rrfScore).toBeCloseTo(expectedDoc1WithBonus, 3);
     expect(doc3.rrfScore).toBeCloseTo(expectedDoc3, 3);
@@ -97,7 +97,7 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const fused = fuseResults(vectorResults, ftsResults);
     const dualDoc = expectDefined(fused.find((r: FusedResult) => r.id === 'dual'), 'dual');
 
-    const baseRrf = 1 / (60 + 0 + 1) + 1 / (60 + 0 + 1);
+    const baseRrf = 1 / (DEFAULT_K + 0 + 1) + 1 / (DEFAULT_K + 0 + 1);
     const expectedWithBonus = baseRrf + CONVERGENCE_BONUS;
 
     expect(dualDoc.rrfScore).toBeCloseTo(expectedWithBonus, 3);
@@ -110,7 +110,7 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const fused = fuseResults(vectorResults, ftsResults);
     const singleDoc = expectDefined(fused.find((r: FusedResult) => r.id === 'single'), 'single');
 
-    const expectedNoBonus = 1 / (60 + 0 + 1);
+    const expectedNoBonus = 1 / (DEFAULT_K + 0 + 1);
 
     expect(singleDoc.rrfScore).toBeCloseTo(expectedNoBonus, 3);
   });

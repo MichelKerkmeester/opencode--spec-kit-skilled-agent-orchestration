@@ -17,6 +17,8 @@ import {
   handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,
+  handleSessionHealth,
+  handleSessionResume,
 } from '../handlers/index.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
@@ -35,6 +37,7 @@ import type {
   SharedSpaceMembershipArgs,
   SharedSpaceUpsertArgs,
   SharedMemoryStatusArgs,
+  SessionResumeArgs,
 } from './types.js';
 
 /** Tool names handled by this module */
@@ -52,6 +55,8 @@ export const TOOL_NAMES = new Set([
   'shared_space_membership_set',
   'shared_memory_status',
   'shared_memory_enable',
+  'session_health',
+  'session_resume',
 ]);
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
@@ -70,6 +75,8 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'shared_space_membership_set': return handleSharedSpaceMembershipSet(parseArgs<SharedSpaceMembershipArgs>(validateToolArgs('shared_space_membership_set', args)));
     case 'shared_memory_status':       return handleSharedMemoryStatus(parseArgs<SharedMemoryStatusArgs>(validateToolArgs('shared_memory_status', args)));
     case 'shared_memory_enable':       return handleSharedMemoryEnable(parseArgs<Record<string, unknown>>(validateToolArgs('shared_memory_enable', args)));
+    case 'session_health':             return handleSessionHealth();
+    case 'session_resume':             return handleSessionResume(parseArgs<SessionResumeArgs>(validateToolArgs('session_resume', args)));
     default: return null;
   }
 }

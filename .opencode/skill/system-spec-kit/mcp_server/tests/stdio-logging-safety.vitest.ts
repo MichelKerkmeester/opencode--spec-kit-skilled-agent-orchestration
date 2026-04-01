@@ -10,6 +10,8 @@ const EXCLUDED_SEGMENTS = new Set(['dist', 'node_modules', 'tests']);
 const EXCLUDED_BASENAMES = new Set(['README.md', 'INSTALL_GUIDE.md', 'cli.ts']);
 const EXCLUDED_PATH_SNIPPETS = [
   `${path.sep}scripts${path.sep}migrations${path.sep}`,
+  `${path.sep}hooks${path.sep}claude${path.sep}`,
+  `${path.sep}hooks${path.sep}gemini${path.sep}`,
 ];
 const STDOUT_LOG_PATTERN = /\bconsole\.(log|info|debug)\s*\(|process\.stdout\.write\s*\(/;
 

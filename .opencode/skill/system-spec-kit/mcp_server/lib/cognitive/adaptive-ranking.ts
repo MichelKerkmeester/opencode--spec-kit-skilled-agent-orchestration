@@ -88,20 +88,93 @@ const ADAPTIVE_SIGNAL_WEIGHTS: Record<AdaptiveSignalType, number> = {
   outcome: 0.02,
   correction: -0.03,
 };
+const DEFAULT_ADAPTIVE_THRESHOLDS: AdaptiveThresholdSnapshot = {
+  maxAdaptiveDelta: MAX_ADAPTIVE_DELTA,
+  minSignalsForPromotion: MIN_SIGNALS_FOR_PROMOTION,
+  signalWeights: { ...ADAPTIVE_SIGNAL_WEIGHTS },
+};
 const MIN_ALLOWED_ADAPTIVE_DELTA = 0.02;
 const MAX_ALLOWED_ADAPTIVE_DELTA = 0.12;
 const MIN_ALLOWED_SIGNALS_FOR_PROMOTION = 1;
 const MAX_ALLOWED_SIGNALS_FOR_PROMOTION = 8;
 
-const adaptiveThresholdOverridesMap = new WeakMap<object, AdaptiveThresholdOverrides>();
-
-function getOverridesForDb(database?: object): AdaptiveThresholdOverrides {
-  if (!database) return {};
-  return adaptiveThresholdOverridesMap.get(database) ?? {};
+interface AdaptiveThresholdCacheEntry {
+  config: AdaptiveThresholdSnapshot;
+  updatedAt: string | null;
 }
 
-function setOverridesForDb(database: object, overrides: AdaptiveThresholdOverrides): void {
-  adaptiveThresholdOverridesMap.set(database, overrides);
+const adaptiveThresholdCache = new WeakMap<object, AdaptiveThresholdCacheEntry>();
+
+interface AdaptiveThresholdRow {
+  max_adaptive_delta: number;
+  outcome_weight: number;
+  correction_weight: number;
+  access_weight: number;
+  min_signals_for_promotion: number;
+  updated_at?: string;
+  last_tune_watermark?: string | null;
+}
+
+function getCachedThresholdForDb(database?: object): AdaptiveThresholdCacheEntry | undefined {
+  if (!database) return undefined;
+  return adaptiveThresholdCache.get(database);
+}
+
+function setCachedThresholdForDb(database: object, config: AdaptiveThresholdSnapshot, updatedAt: string | null): void {
+  adaptiveThresholdCache.set(database, { config, updatedAt });
+}
+
+function parseAdaptiveTimestamp(value?: string | null): number | null {
+  if (!value) return null;
+  const normalizedValue = value.includes('T') ? value : `${value.replace(' ', 'T')}Z`;
+  const parsedValue = Date.parse(normalizedValue);
+  return Number.isFinite(parsedValue) ? parsedValue : null;
+}
+
+function isCachedThresholdFresh(cachedUpdatedAt: string | null, persistedUpdatedAt: string | null): boolean {
+  if (!persistedUpdatedAt) {
+    return cachedUpdatedAt === null;
+  }
+  if (!cachedUpdatedAt) {
+    return false;
+  }
+
+  const cachedMillis = parseAdaptiveTimestamp(cachedUpdatedAt);
+  const persistedMillis = parseAdaptiveTimestamp(persistedUpdatedAt);
+  if (cachedMillis === null || persistedMillis === null) {
+    return cachedUpdatedAt === persistedUpdatedAt;
+  }
+  return persistedMillis <= cachedMillis;
+}
+
+function mapAdaptiveThresholdRowToSnapshot(row: AdaptiveThresholdRow): AdaptiveThresholdSnapshot {
+  return mergeAdaptiveThresholds({
+    maxAdaptiveDelta: row.max_adaptive_delta,
+    minSignalsForPromotion: row.min_signals_for_promotion,
+    signalWeights: {
+      access: row.access_weight,
+      outcome: row.outcome_weight,
+      correction: row.correction_weight,
+    },
+  });
+}
+
+function mergeAdaptiveThresholds(overrides: AdaptiveThresholdOverrides = {}): AdaptiveThresholdSnapshot {
+  return {
+    maxAdaptiveDelta: clampAdaptiveDelta(overrides.maxAdaptiveDelta ?? DEFAULT_ADAPTIVE_THRESHOLDS.maxAdaptiveDelta),
+    minSignalsForPromotion: clampSignalThreshold(
+      overrides.minSignalsForPromotion ?? DEFAULT_ADAPTIVE_THRESHOLDS.minSignalsForPromotion,
+    ),
+    signalWeights: {
+      access: roundAdaptiveNumber(overrides.signalWeights?.access ?? DEFAULT_ADAPTIVE_THRESHOLDS.signalWeights.access),
+      outcome: roundAdaptiveNumber(
+        overrides.signalWeights?.outcome ?? DEFAULT_ADAPTIVE_THRESHOLDS.signalWeights.outcome,
+      ),
+      correction: roundAdaptiveNumber(
+        overrides.signalWeights?.correction ?? DEFAULT_ADAPTIVE_THRESHOLDS.signalWeights.correction,
+      ),
+    },
+  };
 }
 
 function isAdaptiveFlagEnabled(...flagNames: string[]): boolean {
@@ -133,21 +206,100 @@ function clampSignalThreshold(value: number): number {
   );
 }
 
-function getAdaptiveThresholdConfig(database?: Database.Database): AdaptiveThresholdSnapshot {
-  const adaptiveThresholdOverrides = getOverridesForDb(database);
+function getAdaptiveThresholdMetadata(
+  database: Database.Database,
+): { updatedAt: string | null; lastTuneWatermark: string | null } {
+  const metadataRow = database.prepare(`
+    SELECT updated_at, last_tune_watermark
+    FROM adaptive_thresholds
+    WHERE id = 1
+  `).get() as { updated_at?: string; last_tune_watermark?: string | null } | undefined;
+
   return {
-    maxAdaptiveDelta: clampAdaptiveDelta(adaptiveThresholdOverrides.maxAdaptiveDelta ?? MAX_ADAPTIVE_DELTA),
-    minSignalsForPromotion: clampSignalThreshold(
-      adaptiveThresholdOverrides.minSignalsForPromotion ?? MIN_SIGNALS_FOR_PROMOTION,
-    ),
-    signalWeights: {
-      access: roundAdaptiveNumber(adaptiveThresholdOverrides.signalWeights?.access ?? ADAPTIVE_SIGNAL_WEIGHTS.access),
-      outcome: roundAdaptiveNumber(adaptiveThresholdOverrides.signalWeights?.outcome ?? ADAPTIVE_SIGNAL_WEIGHTS.outcome),
-      correction: roundAdaptiveNumber(
-        adaptiveThresholdOverrides.signalWeights?.correction ?? ADAPTIVE_SIGNAL_WEIGHTS.correction,
-      ),
-    },
+    updatedAt: metadataRow?.updated_at ?? null,
+    lastTuneWatermark: metadataRow?.last_tune_watermark ?? null,
   };
+}
+
+function persistAdaptiveThresholdConfig(
+  database: Database.Database,
+  config: AdaptiveThresholdSnapshot,
+  options: { lastTuneWatermark?: string | null } = {},
+): AdaptiveThresholdSnapshot {
+  ensureAdaptiveTables(database);
+  const updatedAt = new Date().toISOString();
+  const lastTuneWatermark = options.lastTuneWatermark ?? null;
+
+  database.prepare(`
+    INSERT INTO adaptive_thresholds (
+      id,
+      max_adaptive_delta,
+      outcome_weight,
+      correction_weight,
+      access_weight,
+      min_signals_for_promotion,
+      updated_at,
+      last_tune_watermark
+    )
+    VALUES (1, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      max_adaptive_delta = excluded.max_adaptive_delta,
+      outcome_weight = excluded.outcome_weight,
+      correction_weight = excluded.correction_weight,
+      access_weight = excluded.access_weight,
+      min_signals_for_promotion = excluded.min_signals_for_promotion,
+      updated_at = excluded.updated_at,
+      last_tune_watermark = COALESCE(excluded.last_tune_watermark, adaptive_thresholds.last_tune_watermark)
+  `).run(
+    config.maxAdaptiveDelta,
+    config.signalWeights.outcome,
+    config.signalWeights.correction,
+    config.signalWeights.access,
+    config.minSignalsForPromotion,
+    updatedAt,
+    lastTuneWatermark,
+  );
+
+  setCachedThresholdForDb(database, config, updatedAt);
+  return config;
+}
+
+function getAdaptiveThresholdConfig(database?: Database.Database): AdaptiveThresholdSnapshot {
+  if (!database) {
+    return mergeAdaptiveThresholds();
+  }
+
+  ensureAdaptiveTables(database);
+  const cachedThreshold = getCachedThresholdForDb(database);
+  if (cachedThreshold) {
+    const { updatedAt } = getAdaptiveThresholdMetadata(database);
+    if (isCachedThresholdFresh(cachedThreshold.updatedAt, updatedAt)) {
+      return cachedThreshold.config;
+    }
+  }
+
+  const persistedRow = database.prepare(`
+    SELECT
+      max_adaptive_delta,
+      outcome_weight,
+      correction_weight,
+      access_weight,
+      min_signals_for_promotion,
+      updated_at,
+      last_tune_watermark
+    FROM adaptive_thresholds
+    WHERE id = 1
+  `).get() as AdaptiveThresholdRow | undefined;
+
+  if (!persistedRow) {
+    const defaultThresholds = mergeAdaptiveThresholds();
+    setCachedThresholdForDb(database, defaultThresholds, null);
+    return defaultThresholds;
+  }
+
+  const persistedThresholds = mapAdaptiveThresholdRowToSnapshot(persistedRow);
+  setCachedThresholdForDb(database, persistedThresholds, persistedRow.updated_at ?? null);
+  return persistedThresholds;
 }
 
 function compareAdaptiveRows(
@@ -204,6 +356,24 @@ export function ensureAdaptiveTables(database: Database.Database): void {
   `);
 
   database.exec(`
+    CREATE TABLE IF NOT EXISTS adaptive_thresholds (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      max_adaptive_delta REAL NOT NULL,
+      outcome_weight REAL NOT NULL,
+      correction_weight REAL NOT NULL,
+      access_weight REAL NOT NULL,
+      min_signals_for_promotion INTEGER NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      last_tune_watermark TEXT
+    )
+  `);
+
+  const thresholdColumns = database.prepare(`PRAGMA table_info(adaptive_thresholds)`).all() as Array<{ name: string }>;
+  if (!thresholdColumns.some((column) => column.name === 'last_tune_watermark')) {
+    database.exec('ALTER TABLE adaptive_thresholds ADD COLUMN last_tune_watermark TEXT');
+  }
+
+  database.exec(`
     CREATE TABLE IF NOT EXISTS adaptive_shadow_runs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       query TEXT NOT NULL,
@@ -214,6 +384,9 @@ export function ensureAdaptiveTables(database: Database.Database): void {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  database.exec(
+    'CREATE INDEX IF NOT EXISTS idx_adaptive_signal_events_memory_type ON adaptive_signal_events(memory_id, signal_type)',
+  );
 }
 
 /**
@@ -257,6 +430,11 @@ export function resetAdaptiveState(
   const resetTx = database.transaction(() => {
     const clearedSignals = database.prepare('DELETE FROM adaptive_signal_events').run().changes;
     const clearedRuns = database.prepare('DELETE FROM adaptive_shadow_runs').run().changes;
+    database.prepare(`
+      UPDATE adaptive_thresholds
+      SET last_tune_watermark = NULL
+      WHERE id = 1
+    `).run();
     return { clearedSignals, clearedRuns };
   });
   return resetTx();
@@ -301,10 +479,11 @@ export function setAdaptiveThresholdOverrides(
         }
       : undefined,
   };
+  const nextThresholds = mergeAdaptiveThresholds(nextOverrides);
   if (database) {
-    setOverridesForDb(database, nextOverrides);
+    persistAdaptiveThresholdConfig(database, nextThresholds);
   }
-  return getAdaptiveThresholdConfig(database);
+  return nextThresholds;
 }
 
 /**
@@ -314,7 +493,9 @@ export function setAdaptiveThresholdOverrides(
  */
 export function resetAdaptiveThresholdOverrides(database?: Database.Database): AdaptiveThresholdSnapshot {
   if (database) {
-    adaptiveThresholdOverridesMap.delete(database);
+    ensureAdaptiveTables(database);
+    adaptiveThresholdCache.delete(database);
+    database.prepare('DELETE FROM adaptive_thresholds WHERE id = 1').run();
   }
   return getAdaptiveThresholdConfig(database);
 }
@@ -412,13 +593,35 @@ export function summarizeAdaptiveSignalQuality(
  */
 export function tuneAdaptiveThresholdsAfterEvaluation(
   database: Database.Database,
+  gateResult?: {
+    ready?: boolean;
+    consecutiveWeeks?: number;
+    recommendation?: string;
+  },
 ): AdaptiveThresholdTuningResult {
+  ensureAdaptiveTables(database);
   const previous = getAdaptiveThresholdConfig(database);
+  const signalCount = database.prepare(`
+    SELECT COUNT(*) AS cnt
+    FROM adaptive_signal_events
+  `).get() as { cnt?: number } | undefined;
+  const gateKey = gateResult?.recommendation ?? 'none';
+  const watermark = `${signalCount?.cnt ?? 0}:${gateKey}`;
+  const metadata = getAdaptiveThresholdMetadata(database);
   const summary = summarizeAdaptiveSignalQuality(database);
+
+  if (metadata.lastTuneWatermark === watermark) {
+    return {
+      summary,
+      previous,
+      next: previous,
+    };
+  }
 
   let nextMinSignals = previous.minSignalsForPromotion;
   let nextMaxAdaptiveDelta = previous.maxAdaptiveDelta;
   const nextSignalWeights = { ...previous.signalWeights };
+  const relaxationMultiplier = gateResult?.recommendation === 'promote' ? 1.5 : 1;
 
   // B16: Per-evaluation signal weight adjustment is clamped to ±0.05 from defaults.
   const WEIGHT_CLAMP_RANGE = 0.05;
@@ -428,25 +631,38 @@ export function tuneAdaptiveThresholdsAfterEvaluation(
       Math.min(ADAPTIVE_SIGNAL_WEIGHTS[key] + WEIGHT_CLAMP_RANGE, value),
     ));
 
-  if (
+  const hasStrongSignals = (
     summary.totalSignals >= previous.minSignalsForPromotion * 2
     && summary.weightedSignalScore >= 0.04
     && summary.distinctMemories >= 2
-  ) {
+  );
+  const shouldRelaxThresholds = gateResult?.ready === true || gateResult?.recommendation === 'promote' || hasStrongSignals;
+  const shouldTightenThresholds = gateResult != null
+    ? !shouldRelaxThresholds
+    : summary.totalSignals < previous.minSignalsForPromotion * 2;
+
+  if (shouldRelaxThresholds) {
     nextMinSignals = Math.max(2, previous.minSignalsForPromotion - 1);
-    nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta + 0.02);
-    nextSignalWeights.outcome = clampWeight('outcome', previous.signalWeights.outcome + 0.005);
-  } else if (summary.totalSignals < previous.minSignalsForPromotion * 2) {
+    nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta + (0.02 * relaxationMultiplier));
+    nextSignalWeights.outcome = clampWeight(
+      'outcome',
+      previous.signalWeights.outcome + (0.005 * relaxationMultiplier),
+    );
+  } else if (shouldTightenThresholds) {
     nextMinSignals = clampSignalThreshold(previous.minSignalsForPromotion + 1);
     nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta - 0.02);
     nextSignalWeights.correction = clampWeight('correction', previous.signalWeights.correction - 0.005);
   }
 
-  const next = setAdaptiveThresholdOverrides({
-    maxAdaptiveDelta: nextMaxAdaptiveDelta,
-    minSignalsForPromotion: nextMinSignals,
-    signalWeights: nextSignalWeights,
-  }, database);
+  const next = persistAdaptiveThresholdConfig(
+    database,
+    mergeAdaptiveThresholds({
+      maxAdaptiveDelta: nextMaxAdaptiveDelta,
+      minSignalsForPromotion: nextMinSignals,
+      signalWeights: nextSignalWeights,
+    }),
+    { lastTuneWatermark: watermark },
+  );
 
   return {
     summary,
@@ -455,30 +671,44 @@ export function tuneAdaptiveThresholdsAfterEvaluation(
   };
 }
 
-function getSignalDelta(database: Database.Database, memoryId: number): number {
+function getSignalDeltas(database: Database.Database, memoryIds: readonly number[]): Map<number, number> {
   ensureAdaptiveTables(database);
-  const thresholds = getAdaptiveThresholdConfig(database);
-  const rows = database.prepare(`
-    SELECT signal_type, COUNT(*) AS count, COALESCE(SUM(signal_value), 0) AS total
-    FROM adaptive_signal_events
-    WHERE memory_id = ?
-    GROUP BY signal_type
-  `).all(memoryId) as Array<{ signal_type: AdaptiveSignalType; count: number; total: number }>;
-
-  let accessTotal = 0;
-  let outcomeTotal = 0;
-  let correctionTotal = 0;
-  for (const row of rows) {
-    if (row.signal_type === 'access') accessTotal = row.total;
-    if (row.signal_type === 'outcome') outcomeTotal = row.total;
-    if (row.signal_type === 'correction') correctionTotal = row.total;
+  if (memoryIds.length === 0) {
+    return new Map();
   }
 
-  const rawDelta =
-    (accessTotal * thresholds.signalWeights.access) +
-    (outcomeTotal * thresholds.signalWeights.outcome) +
-    (correctionTotal * thresholds.signalWeights.correction);
-  return Math.max(-thresholds.maxAdaptiveDelta, Math.min(thresholds.maxAdaptiveDelta, rawDelta));
+  const thresholds = getAdaptiveThresholdConfig(database);
+  const rows = database.prepare(`
+    SELECT memory_id, signal_type, COALESCE(SUM(signal_value), 0) AS total
+    FROM adaptive_signal_events
+    WHERE memory_id IN (${memoryIds.map(() => '?').join(', ')})
+    GROUP BY memory_id, signal_type
+  `).all(...memoryIds) as Array<{ memory_id: number; signal_type: AdaptiveSignalType; total: number }>;
+
+  const totalsByMemory = new Map<number, Record<AdaptiveSignalType, number>>();
+  for (const row of rows) {
+    const memoryTotals = totalsByMemory.get(row.memory_id) ?? {
+      access: 0,
+      outcome: 0,
+      correction: 0,
+    };
+    memoryTotals[row.signal_type] = row.total;
+    totalsByMemory.set(row.memory_id, memoryTotals);
+  }
+
+  const deltaMap = new Map<number, number>();
+  for (const memoryId of memoryIds) {
+    const totals = totalsByMemory.get(memoryId);
+    if (!totals) continue;
+
+    const rawDelta =
+      (totals.access * thresholds.signalWeights.access) +
+      (totals.outcome * thresholds.signalWeights.outcome) +
+      (totals.correction * thresholds.signalWeights.correction);
+    deltaMap.set(memoryId, Math.max(-thresholds.maxAdaptiveDelta, Math.min(thresholds.maxAdaptiveDelta, rawDelta)));
+  }
+
+  return deltaMap;
 }
 
 /**
@@ -497,6 +727,7 @@ export function buildAdaptiveShadowProposal(
   const mode = getAdaptiveMode();
   if (mode === 'disabled' || results.length === 0) return null;
   const thresholds = getAdaptiveThresholdConfig(database);
+  const signalDeltaMap = getSignalDeltas(database, results.map((row) => row.id));
 
   const production = results.map((row, index) => ({
     ...row,
@@ -510,7 +741,7 @@ export function buildAdaptiveShadowProposal(
   }));
 
   const shadow = production.map((row) => {
-    const delta = getSignalDelta(database, row.id);
+    const delta = signalDeltaMap.get(row.id) ?? 0;
     return {
       ...row,
       shadowScore: Math.max(0, Math.min(1, row.score + delta)),

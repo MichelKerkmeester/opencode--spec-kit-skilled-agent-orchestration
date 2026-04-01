@@ -4,18 +4,13 @@
 // MCP tool handler for code_graph_status — reports graph health.
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { getGraphFreshness } from '../../lib/code-graph/ensure-ready.js';
 
 /** Handle code_graph_status tool call */
 export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: string; text: string }> }> {
   try {
     const stats = graphDb.getStats();
-    const d = graphDb.getDb();
-
-    // Get stale file count (files that exist in DB but may need re-indexing)
-    const staleCount = (d.prepare(`
-      SELECT COUNT(*) as c FROM code_files
-      WHERE parse_health = 'error' OR parse_health = 'recovered'
-    `).get() as { c: number }).c;
+    const freshness = getGraphFreshness(process.cwd());
 
     return {
       content: [{
@@ -26,8 +21,9 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
             totalFiles: stats.totalFiles,
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
-            staleFiles: staleCount,
+            freshness,
             lastScanAt: stats.lastScanTimestamp,
+            lastGitHead: stats.lastGitHead,
             dbFileSize: stats.dbFileSize,
             schemaVersion: stats.schemaVersion,
             nodesByKind: stats.nodesByKind,

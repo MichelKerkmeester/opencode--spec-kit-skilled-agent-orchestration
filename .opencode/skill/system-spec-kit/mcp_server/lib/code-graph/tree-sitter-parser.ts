@@ -9,28 +9,13 @@
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type {
-  CodeNode, CodeEdge, ParseResult, SupportedLanguage, SymbolKind,
+  ParseResult, SupportedLanguage, SymbolKind,
 } from './indexer-types.js';
-import { generateContentHash, generateSymbolId } from './indexer-types.js';
-import { extractEdges } from './structural-indexer.js';
+import { generateContentHash } from './indexer-types.js';
+import { extractEdges, capturesToNodes, type RawCapture } from './structural-indexer.js';
 
 // ── Types ──────────────────────────────────────────────────────
-
-/** Same RawCapture shape used by the regex parser */
-interface RawCapture {
-  name: string;
-  kind: SymbolKind;
-  startLine: number;
-  endLine: number;
-  startColumn: number;
-  endColumn: number;
-  signature?: string;
-  parentName?: string;
-  extendsName?: string;
-  implementsNames?: string[];
-  decoratorNames?: string[];
-  typeRefs?: string[];
-}
+// F043: RawCapture is now imported from structural-indexer.ts (single source of truth)
 
 /** ParserAdapter interface — mirrors structural-indexer.ts:16-18 */
 interface ParserAdapter {
@@ -65,10 +50,17 @@ async function ensureInit(): Promise<void> {
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
-    const mod = await import('web-tree-sitter');
-    ParserClass = mod.default ?? mod;
-    await ParserClass.init();
-    parserInstance = new ParserClass();
+    try {
+      const mod = await import('web-tree-sitter');
+      ParserClass = mod.default ?? mod;
+      await ParserClass.init();
+      parserInstance = new ParserClass();
+    } catch (err) {
+      // Reset so the next call retries instead of being stuck with a rejected promise
+      initPromise = null;
+      parserInstance = null;
+      throw err;
+    }
   })();
 
   return initPromise;
@@ -92,6 +84,7 @@ const JS_TS_KIND_MAP: Record<string, SymbolKind> = {
   function_declaration: 'function',
   generator_function_declaration: 'function',
   method_definition: 'method',
+  abstract_method_signature: 'method',
   class_declaration: 'class',
   abstract_class_declaration: 'class',
   interface_declaration: 'interface',
@@ -106,7 +99,6 @@ const JS_TS_KIND_MAP: Record<string, SymbolKind> = {
 const PYTHON_KIND_MAP: Record<string, SymbolKind> = {
   function_definition: 'function',
   class_definition: 'class',
-  decorated_definition: 'function',
   import_statement: 'import',
   import_from_statement: 'import',
 };
@@ -302,8 +294,14 @@ function resolveKind(node: TSNode, language: SupportedLanguage): SymbolKind | nu
 
   if (node.type === 'variable_declarator') {
     const value = node.childForFieldName('value');
-    if (value && (value.type === 'arrow_function' || value.type === 'function_expression' || value.type === 'function')) {
-      return 'function';
+    if (value) {
+      if (value.type === 'arrow_function' || value.type === 'function_expression'
+        || value.type === 'function' || value.type === 'generator_function') {
+        return 'function';
+      }
+      if (value.type === 'class') {
+        return 'class';
+      }
     }
     return 'variable';
   }
@@ -312,8 +310,15 @@ function resolveKind(node: TSNode, language: SupportedLanguage): SymbolKind | nu
     for (const child of node.namedChildren) {
       if (child.type === 'variable_declarator') {
         const value = child.childForFieldName('value');
-        if (value && (value.type === 'arrow_function' || value.type === 'function_expression' || value.type === 'function')) {
-          return 'function';
+        if (value) {
+          // F031-ext: Match all expression forms that resolveKind(variable_declarator) handles
+          if (value.type === 'arrow_function' || value.type === 'function_expression'
+            || value.type === 'function' || value.type === 'generator_function') {
+            return 'function';
+          }
+          if (value.type === 'class') {
+            return 'class';
+          }
         }
         return 'variable';
       }
@@ -325,6 +330,135 @@ function resolveKind(node: TSNode, language: SupportedLanguage): SymbolKind | nu
   }
 
   return kindMap[node.type] ?? null;
+}
+
+// ── F032: Per-specifier import/export helpers ─────────────────
+
+function emitImportCaptures(
+  node: TSNode,
+  _language: SupportedLanguage,
+  lines: string[],
+  captures: RawCapture[],
+): void {
+  const sig = extractSignature(node, lines);
+  const startLine = node.startPosition.row + 1;
+  const endLine = node.endPosition.row + 1;
+
+  function pushImport(name: string): void {
+    captures.push({
+      name,
+      kind: 'import',
+      startLine, endLine,
+      startColumn: node.startPosition.column,
+      endColumn: node.endPosition.column,
+      signature: sig,
+    });
+  }
+
+  // Walk all children to find import specifiers, namespace imports, and default identifiers
+  let emitted = false;
+  for (const child of node.namedChildren) {
+    if (child.type === 'import_clause') {
+      for (const inner of child.namedChildren) {
+        if (inner.type === 'named_imports') {
+          for (const spec of inner.namedChildren) {
+            if (spec.type === 'import_specifier') {
+              const n = spec.childForFieldName('name') ?? spec.childForFieldName('local');
+              if (n) { pushImport(n.text); emitted = true; }
+            }
+          }
+        } else if (inner.type === 'namespace_import') {
+          const n = inner.childForFieldName('name') ?? inner.namedChildren[0];
+          if (n) { pushImport(n.text); emitted = true; }
+        } else if (inner.type === 'identifier') {
+          // Default import
+          pushImport(inner.text); emitted = true;
+        }
+      }
+    }
+    // Python: import_specifier at top level of import_from_statement
+    if (child.type === 'import_specifier') {
+      const n = child.childForFieldName('name') ?? child.childForFieldName('local');
+      if (n) { pushImport(n.text); emitted = true; }
+    }
+  }
+
+  // Fallback for Python import_statement / import_from_statement with dotted_name
+  if (!emitted) {
+    for (const child of node.namedChildren) {
+      if (child.type === 'dotted_name' || child.type === 'identifier') {
+        pushImport(child.text); emitted = true;
+      }
+    }
+  }
+}
+
+function emitExportCaptures(
+  node: TSNode,
+  language: SupportedLanguage,
+  lines: string[],
+  captures: RawCapture[],
+  parentClassName?: string,
+): void {
+  const sig = extractSignature(node, lines);
+  const startLine = node.startPosition.row + 1;
+  const endLine = node.endPosition.row + 1;
+
+  // Check for named_exports (export { x, y }) — emit per specifier
+  for (const child of node.namedChildren) {
+    if (child.type === 'export_clause' || child.type === 'named_exports') {
+      for (const spec of child.namedChildren) {
+        if (spec.type === 'export_specifier') {
+          const n = spec.childForFieldName('name') ?? spec.namedChildren[0];
+          if (n) {
+            captures.push({
+              name: n.text,
+              kind: 'export',
+              startLine, endLine,
+              startColumn: node.startPosition.column,
+              endColumn: node.endPosition.column,
+              signature: sig,
+            });
+          }
+        }
+      }
+      return;
+    }
+  }
+
+  // Single declaration export (export function/class/const)
+  const decl = node.childForFieldName('declaration');
+  if (decl) {
+    const name = extractName(decl, language);
+    if (name) {
+      captures.push({
+        name,
+        kind: 'export',
+        startLine, endLine,
+        startColumn: node.startPosition.column,
+        endColumn: node.endPosition.column,
+        signature: sig,
+      });
+    }
+    // visit is not accessible here — caller handles inner declaration visit
+    return;
+  }
+
+  // Fallback: try extracting name from the node itself
+  const name = extractName(node, language);
+  if (name) {
+    captures.push({
+      name,
+      kind: 'export',
+      startLine, endLine,
+      startColumn: node.startPosition.column,
+      endColumn: node.endPosition.column,
+      signature: sig,
+    });
+  }
+
+  // Suppress unused variable warning
+  void parentClassName;
 }
 
 // ── AST walk to RawCapture[] ───────────────────────────────────
@@ -342,6 +476,22 @@ function walkAST(
     const isRelevant = nodeType in kindMap
       || nodeType === 'variable_declarator'
       || nodeType === 'lexical_declaration';
+
+    // F032: Emit one capture per import specifier / namespace import / default import
+    if (nodeType === 'import_statement' || nodeType === 'import_declaration'
+      || nodeType === 'import_from_statement') {
+      emitImportCaptures(node, language, lines, captures);
+      return;
+    }
+
+    // F032: Export with named_exports → emit one capture per export_specifier
+    if (nodeType === 'export_statement' || nodeType === 'export_declaration') {
+      emitExportCaptures(node, language, lines, captures, parentClassName);
+      // Also visit inner declaration (e.g. `export function foo()`)
+      const decl = node.childForFieldName('declaration');
+      if (decl) visit(decl, parentClassName);
+      return;
+    }
 
     if (isRelevant && node.isNamed) {
       const kind = resolveKind(node, language);
@@ -380,9 +530,10 @@ function walkAST(
         typeRefs: extractTypeRefs(node),
       });
 
-      // Recurse into class body with class name as parent
+      // Recurse into class body with fully qualified class name as parent
       if (kind === 'class') {
-        for (const child of node.namedChildren) visit(child, name);
+        const fqClassName = parentClassName ? `${parentClassName}.${name}` : name;
+        for (const child of node.namedChildren) visit(child, fqClassName);
         return;
       }
 
@@ -417,29 +568,21 @@ function walkAST(
       }
     }
 
-    // Export: emit export capture, then visit inner declaration
-    if (nodeType === 'export_statement' || nodeType === 'export_declaration') {
-      const name = extractName(node, language);
-      if (name) {
-        captures.push({
-          name,
-          kind: 'export',
-          startLine: node.startPosition.row + 1,
-          endLine: node.endPosition.row + 1,
-          startColumn: node.startPosition.column,
-          endColumn: node.endPosition.column,
-          signature: extractSignature(node, lines),
-        });
-      }
-      const decl = node.childForFieldName('declaration');
-      if (decl) visit(decl, parentClassName);
-      return;
-    }
-
-    // Decorated definition: visit inner (skip decorator nodes)
+    // Decorated definition: extract decorators, then visit ONLY the inner definition
     if (nodeType === 'decorated_definition') {
+      const decoratorNames: string[] = [];
+      let innerDef: TSNode | null = null;
       for (const child of node.namedChildren) {
-        if (child.type !== 'decorator') visit(child, parentClassName);
+        if (child.type === 'decorator') {
+          const nameNode = child.childForFieldName('name') ?? child.namedChildren[0];
+          if (nameNode) decoratorNames.push(nameNode.text.replace(/^@/, ''));
+        } else if (child.type === 'function_definition' || child.type === 'class_definition') {
+          innerDef = child;
+        }
+      }
+      if (innerDef) {
+        // Stash decorator names so extractDecoratorNames picks them up from parent
+        visit(innerDef, parentClassName);
       }
       return;
     }
@@ -454,59 +597,7 @@ function walkAST(
   return captures;
 }
 
-// ── capturesToNodes (mirrors structural-indexer logic) ──────────
-
-function getModuleName(filePath: string): string {
-  const fileName = filePath.split('/').pop() ?? filePath;
-  return fileName.replace(/\.[^.]+$/, '') || fileName || 'module';
-}
-
-function getCaptureFqName(capture: Pick<RawCapture, 'name' | 'parentName'>): string {
-  return capture.parentName ? `${capture.parentName}.${capture.name}` : capture.name;
-}
-
-function capturesToNodes(
-  captures: RawCapture[],
-  language: SupportedLanguage,
-  content: string,
-): CodeNode[] {
-  const filePath = ''; // attachFilePath fills this later
-  const lines = content.split('\n');
-  const moduleNode: CodeNode = {
-    symbolId: generateSymbolId(filePath, getModuleName(filePath), 'module'),
-    filePath,
-    fqName: getModuleName(filePath),
-    kind: 'module',
-    name: getModuleName(filePath),
-    startLine: 1,
-    endLine: Math.max(lines.length, 1),
-    startColumn: 0,
-    endColumn: lines[lines.length - 1]?.length ?? 0,
-    language,
-    contentHash: generateContentHash(content),
-  };
-
-  const symbolNodes = captures.map(c => {
-    const rangeText = lines.slice(c.startLine - 1, c.endLine).join('\n');
-    return {
-      symbolId: generateSymbolId(filePath, getCaptureFqName(c), c.kind),
-      filePath,
-      fqName: getCaptureFqName(c),
-      kind: c.kind,
-      name: c.name,
-      startLine: c.startLine,
-      endLine: c.endLine,
-      startColumn: c.startColumn,
-      endColumn: c.endColumn,
-      language,
-      signature: c.signature,
-      contentHash: generateContentHash(rangeText),
-    };
-  });
-
-  if (content.trim().length === 0) return symbolNodes;
-  return [moduleNode, ...symbolNodes];
-}
+// F043: capturesToNodes and RawCapture are now imported from structural-indexer.ts
 
 // ── TreeSitterParser class ─────────────────────────────────────
 
@@ -548,7 +639,7 @@ export class TreeSitterParser implements ParserAdapter {
       const lines = content.split('\n');
 
       const captures = walkAST(tree.rootNode as TSNode, language, lines);
-      const nodes = capturesToNodes(captures, language, content);
+      const nodes = capturesToNodes(captures, '', language, content);
       const edges = extractEdges(nodes, lines, captures);
 
       const hasError = (tree.rootNode as TSNode).hasError;

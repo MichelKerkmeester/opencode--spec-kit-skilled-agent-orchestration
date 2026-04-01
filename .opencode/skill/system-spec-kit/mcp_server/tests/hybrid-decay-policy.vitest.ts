@@ -206,6 +206,6 @@ describe('Hybrid Decay Policy — separation from TM-03', () => {
     // TypeScript guarantees this via the type system; verify runtime immutability
     // by checking the prototype chain
     expect(HYBRID_NO_DECAY_CONTEXT_TYPES).toBeInstanceOf(Set);
-    expect(Object.isFrozen(HYBRID_NO_DECAY_CONTEXT_TYPES) || HYBRID_NO_DECAY_CONTEXT_TYPES.size === 3).toBe(true);
+    expect(Object.isFrozen(HYBRID_NO_DECAY_CONTEXT_TYPES) || HYBRID_NO_DECAY_CONTEXT_TYPES.size === 4).toBe(true);
   });
 });

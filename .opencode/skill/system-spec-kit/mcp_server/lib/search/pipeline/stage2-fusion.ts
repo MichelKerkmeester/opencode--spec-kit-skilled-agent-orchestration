@@ -60,6 +60,7 @@ import {
   resolveCoActivationBoostFactor,
 } from '../../cognitive/co-activation.js';
 import type { SpreadResult } from '../../cognitive/co-activation.js';
+import { ensureAdaptiveTables, getAdaptiveMode } from '../../cognitive/adaptive-ranking.js';
 import * as fsrsScheduler from '../../cognitive/fsrs-scheduler.js';
 import { queryLearnedTriggers } from '../learned-feedback.js';
 import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback.js';
@@ -676,6 +677,41 @@ function applyTestingEffect(
   }
 }
 
+function recordAdaptiveAccessSignals(
+  db: Database.Database,
+  results: PipelineRow[],
+  query: string | undefined
+): void {
+  if (!db || !Array.isArray(results) || results.length === 0) return;
+
+  if (getAdaptiveMode() === 'disabled') return;
+
+  ensureAdaptiveTables(db);
+  const insertAdaptiveSignal = db.prepare(`
+    INSERT INTO adaptive_signal_events (memory_id, signal_type, signal_value, query, actor, metadata)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+  const writeAdaptiveSignals = db.transaction((accessedResults: PipelineRow[]) => {
+    for (const result of accessedResults) {
+      insertAdaptiveSignal.run(
+        result.id,
+        'access',
+        1.0,
+        query || '',
+        '',
+        '{}',
+      );
+    }
+  });
+
+  try {
+    writeAdaptiveSignals(results);
+  } catch (err: unknown) {
+    // Adaptive signal capture must never block the core search pipeline.
+    console.warn('[stage2-fusion] adaptive access signal write failed:', (err as Error)?.message ?? err);
+  }
+}
+
 // -- Main Stage 2 entry point --
 
 /**
@@ -904,6 +940,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     try {
       const db = requireDb();
       applyTestingEffect(db, results);
+      recordAdaptiveAccessSignals(db, results, config.query);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] testing effect skipped (db unavailable): ${message}`);

@@ -9,8 +9,14 @@ export {
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
   MEMORY_AWARE_TOOLS,
+  // T018: Session tracking for session_health tool
+  recordToolCall,
+  getSessionTimestamps,
+  isSessionPrimed,
+  getCodeGraphStatusSnapshot,
 } from './memory-surface.js';
 export { buildMutationHookFeedback } from './mutation-feedback.js';
+// Gemini hooks are standalone scripts invoked directly by Gemini CLI — not barrel-exported
 export {
   appendAutoSurfaceHints,
   syncEnvelopeTokenCount,

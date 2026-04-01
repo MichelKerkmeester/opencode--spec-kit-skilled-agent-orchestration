@@ -47,7 +47,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 3500,
     priority: 1,
     useCase: 'Default entry point for context retrieval. Automatically routes based on intent.',
-    tools: ['memory_context']
+    tools: ['memory_context', 'session_resume']
   },
   L2: {
     id: 'L2',
@@ -65,7 +65,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 1000,
     priority: 3,
     useCase: 'Explore available memories, check system health, view statistics.',
-    tools: ['memory_list', 'memory_stats', 'memory_health']
+    tools: ['memory_list', 'memory_stats', 'memory_health', 'session_health']
   },
   L4: {
     id: 'L4',
@@ -100,7 +100,9 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
       'task_preflight',
       'task_postflight',
       'eval_run_ablation',
-      'eval_reporting_dashboard'
+      'eval_reporting_dashboard',
+      'code_graph_query',
+      'code_graph_context'
     ]
   },
   L7: {
@@ -110,7 +112,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 1000,
     priority: 7,
     useCase: 'Re-index memories, view learning history, perform bulk operations.',
-    tools: ['memory_index_scan', 'memory_get_learning_history', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
+    tools: ['memory_index_scan', 'memory_get_learning_history', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel', 'code_graph_scan', 'code_graph_status', 'ccc_status', 'ccc_reindex', 'ccc_feedback']
   }
 } as const;
 

@@ -18,7 +18,7 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 // 2026-03-03: Thresholds audited — memory-crud.js tightened from 760→40 after decomposition into sub-modules.
 // TODO: Extract quality gate, reconsolidation, chunked-indexing from memory-save (2,553 LOC source).
 const EXTENDED_LIMITS: Record<string, number> = {
-  'context-server.js': 1065,        // actual: 1050 — Main entry point wiring for tools, hooks, startup lifecycle, startup root discovery, and remediation hooks
+  'context-server.js': 1300,        // actual: 1268 — Main entry point wiring for tools, hooks, startup lifecycle, startup root discovery, session priming, and remediation hooks
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
   'core/db-state.js': 500,          // actual: 449 — Database state tracking and rebinding lifecycle remain centralized pending deeper decomposition
   'formatters/search-results.js': 536, // actual: 536 — Search result formatting + Sprint 019/020 trace and session-transition envelope support

@@ -109,9 +109,9 @@ describe('isBm25Enabled', () => {
     restoreEnv();
   });
 
-  it('BM01: returns false when ENABLE_BM25 not set (BM25 is opt-in)', () => {
+  it('BM01: returns true when ENABLE_BM25 not set (BM25 is enabled by default)', () => {
     delete process.env.ENABLE_BM25;
-    expect(isBm25Enabled()).toBe(false);
+    expect(isBm25Enabled()).toBe(true);
     expect(typeof isBm25Enabled()).toBe('boolean');
   });
 

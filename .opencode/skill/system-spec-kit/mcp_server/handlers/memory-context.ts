@@ -12,6 +12,10 @@ import { toErrorMessage } from '../utils/index.js';
 // Intent classifier
 import * as intentClassifier from '../lib/search/intent-classifier.js';
 
+// Query-intent routing (Phase 020: structural/semantic/hybrid classification)
+import { classifyQueryIntent } from '../lib/code-graph/query-intent-classifier.js';
+import { buildContext } from '../lib/code-graph/code-graph-context.js';
+
 // Core handlers for routing
 import { handleMemorySearch } from './memory-search.js';
 import { handleMemoryMatchTriggers } from './memory-triggers.js';
@@ -1080,6 +1084,83 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
 
   const normalizedInput = input.trim();
 
+  // ── Phase 020: Query-Intent Routing ──────────────────────────
+  // Classify query intent and optionally augment response with code
+  // graph context for structural/hybrid queries. Entire block is
+  // wrapped in try/catch — any failure silently falls through to
+  // existing semantic logic.
+  let queryIntentMetadata: {
+    queryIntent: string;
+    routedBackend: string;
+    confidence: number;
+    matchedKeywords?: string[];
+  } | null = null;
+  let graphContextResult: Record<string, unknown> | null = null;
+
+  if (requested_mode !== 'resume') {
+    try {
+      const classification = classifyQueryIntent(normalizedInput);
+      queryIntentMetadata = {
+        queryIntent: classification.intent,
+        routedBackend: classification.intent === 'structural' && classification.confidence > 0.65
+          ? 'structural'
+          : classification.intent === 'hybrid'
+            ? 'hybrid'
+            : 'semantic',
+        confidence: classification.confidence,
+        matchedKeywords: classification.matchedKeywords,
+      };
+
+      // F050: Extract a symbol-like token from the query instead of passing
+      // raw prose to buildContext({ subject }). resolveSubjectToRef() matches
+      // against code_nodes.name / fq_name, so prose never resolves.
+      // Heuristic: pick the first token that looks like a code identifier
+      // (contains uppercase, underscore, or dot — e.g. "buildContext", "fq_name",
+      // "code-graph-db.ts"). Falls back to first matched keyword, then normalizedInput.
+      const codeIdentifierPattern = /[A-Z_.]|^[a-z]+[A-Z]/;
+      const inputTokens = normalizedInput.split(/\s+/).filter(t => t.length >= 2);
+      const extractedSubject =
+        inputTokens.find(t => codeIdentifierPattern.test(t)) ??
+        (classification.matchedKeywords?.[0]) ??
+        normalizedInput;
+
+      if (classification.intent === 'structural' && classification.confidence > 0.65) {
+        try {
+          const cgResult = buildContext({ input: normalizedInput, subject: extractedSubject });
+          if (cgResult.metadata.totalNodes > 0) {
+            graphContextResult = {
+              graphContext: cgResult.graphContext,
+              textBrief: cgResult.textBrief,
+              combinedSummary: cgResult.combinedSummary,
+              nextActions: cgResult.nextActions,
+              metadata: cgResult.metadata,
+            };
+          }
+        } catch {
+          // Code graph unavailable — fall through to semantic
+        }
+      } else if (classification.intent === 'hybrid') {
+        try {
+          const cgResult = buildContext({ input: normalizedInput, subject: extractedSubject });
+          if (cgResult.metadata.totalNodes > 0) {
+            graphContextResult = {
+              graphContext: cgResult.graphContext,
+              textBrief: cgResult.textBrief,
+              combinedSummary: cgResult.combinedSummary,
+              nextActions: cgResult.nextActions,
+              metadata: cgResult.metadata,
+            };
+          }
+        } catch {
+          // Code graph unavailable — hybrid degrades to semantic-only
+        }
+      }
+      // 'semantic' or low-confidence: no graph context, fall through
+    } catch {
+      // Classification failed — fall through to existing logic entirely
+    }
+  }
+
   // Eval logger — capture context query at entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
@@ -1204,6 +1285,11 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
 
   const discoveredFolder = maybeDiscoverSpecFolder(options, { ...args, input: normalizedInput });
+  // Propagate discovered folder into options so strategy executors (handleMemorySearch)
+  // receive it as a spec-folder filter, and session state captures it.
+  if (discoveredFolder && !options.specFolder) {
+    options.specFolder = discoveredFolder;
+  }
   const sessionStateResult = sessionManager.saveSessionState(effectiveSessionId, {
     specFolder: options.specFolder ?? spec_folder,
     tenantId: args.tenantId,
@@ -1315,13 +1401,22 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const { result: budgetedResult, enforcement } = enforceTokenBudget(tracedResult0, effectiveBudget);
   const tracedResult = budgetedResult;
 
+  // Phase 020: Attach graph context and query-intent routing metadata
+  const responseData: ContextResult & Record<string, unknown> = { ...tracedResult };
+  if (graphContextResult) {
+    responseData.graphContext = graphContextResult;
+  }
+  if (queryIntentMetadata) {
+    responseData.queryIntentRouting = queryIntentMetadata;
+  }
+
   // Build response with layer metadata
   const _contextResponse = createMCPResponse({
     tool: 'memory_context',
     summary: enforcement.truncated
       ? `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy) [truncated${enforcement.originalResultCount !== undefined ? `: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results` : ''} to fit ${effectiveBudget} token budget]`
       : `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy)`,
-    data: tracedResult,
+    data: responseData,
     hints: [
       `Mode: ${CONTEXT_MODES[effectiveMode].description}`,
       `For more granular control, use L2 tools: memory_search, memory_match_triggers`,

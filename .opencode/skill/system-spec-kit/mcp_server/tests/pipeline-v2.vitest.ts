@@ -206,58 +206,63 @@ describe('R6: Stage 4 — Filter + Annotate', () => {
       }
     });
 
-    it('R6-T16: missing memoryState rows are treated as UNKNOWN and filtered by minState', () => {
+    it('R6-T16: missing memoryState rows are treated as UNKNOWN and pass all filters (priority above HOT)', () => {
       const rowsWithMissing: Stage4ReadonlyRow[] = [
         { id: 1, similarity: 90, memoryState: 'HOT' },
-        { id: 2, similarity: 80 }, // no memoryState
+        { id: 2, similarity: 80 }, // no memoryState → UNKNOWN (priority 6, above HOT=5)
       ];
       const result = filterByMemoryState(rowsWithMissing, 'WARM', false);
-      expect(result.filtered).toHaveLength(1);
-      expect(result.filtered.map(r => r.id)).toEqual([1]);
+      // UNKNOWN_STATE_PRIORITY=6 > HOT=5 > WARM=4, so both rows pass
+      expect(result.filtered).toHaveLength(2);
+      expect(result.filtered.map(r => r.id)).toEqual([1, 2]);
       expect(result.statsBefore.UNKNOWN).toBe(1);
-      expect(result.statsAfter.UNKNOWN).toBeUndefined();
+      expect(result.statsAfter.UNKNOWN).toBe(1);
     });
 
-    it('R6-T16a: invalid memoryState values are treated as UNKNOWN and filtered out', () => {
+    it('R6-T16a: invalid memoryState values are treated as UNKNOWN and pass all filters', () => {
       const rowsWithInvalidState: Stage4ReadonlyRow[] = [
         { id: 1, similarity: 90, memoryState: 'INVALID' },
         { id: 2, similarity: 80, memoryState: 'COLD' },
       ];
       const result = filterByMemoryState(rowsWithInvalidState, 'WARM', false);
-      expect(result.filtered).toHaveLength(0);
+      // UNKNOWN (priority 6) passes WARM (4). COLD (3) does NOT pass WARM (4).
+      expect(result.filtered).toHaveLength(1);
       expect(result.statsBefore.UNKNOWN).toBe(1);
-      expect(result.statsAfter.UNKNOWN).toBeUndefined();
+      expect(result.statsAfter.UNKNOWN).toBe(1);
     });
 
-    it('R6-T16b: focused/deep minState filtering drops rows with missing state', () => {
+    it('R6-T16b: focused/deep minState filtering keeps rows with missing state (UNKNOWN priority above HOT)', () => {
       const mixedRows: Stage4ReadonlyRow[] = [
         { id: 1, similarity: 91, memoryState: 'HOT' },
         { id: 2, similarity: 81, memoryState: 'WARM' },
         { id: 3, similarity: 71, memoryState: 'COLD' },
-        { id: 4, similarity: 61 }, // no memoryState
+        { id: 4, similarity: 61 }, // no memoryState → UNKNOWN (priority 6)
       ];
 
       const focused = filterByMemoryState(mixedRows, 'WARM', false);
       const deep = filterByMemoryState(mixedRows, 'COLD', false);
 
-      expect(focused.filtered.map(r => r.id)).toEqual([1, 2]);
-      expect(deep.filtered.map(r => r.id)).toEqual([1, 2, 3]);
+      // UNKNOWN (6) and HOT (5) pass WARM (4); WARM (4) passes too; COLD (3) does not
+      expect(focused.filtered.map(r => r.id)).toEqual([1, 2, 4]);
+      // UNKNOWN (6), HOT (5), WARM (4), COLD (3) all pass COLD min (3)
+      expect(deep.filtered.map(r => r.id)).toEqual([1, 2, 3, 4]);
 
       for (const focusedRow of focused.filtered) {
         expect(deep.filtered.some(r => r.id === focusedRow.id)).toBe(true);
       }
     });
 
-    it('R6-T16c: applyStateLimits does not re-admit rows without a valid state', () => {
+    it('R6-T16c: applyStateLimits does not filter out UNKNOWN rows (they pass all state filters)', () => {
       const rowsWithMissingState: Stage4ReadonlyRow[] = Array.from({ length: 35 }, (_, index) => ({
         id: index + 1,
         similarity: 100 - index,
       }));
 
       const result = filterByMemoryState(rowsWithMissingState, 'WARM', true);
-      expect(result.filtered).toHaveLength(0);
+      // UNKNOWN_STATE_PRIORITY=6 means all pass, but STATE_LIMITS for UNKNOWN is unlimited (Infinity)
+      expect(result.filtered).toHaveLength(35);
       expect(result.statsBefore.UNKNOWN).toBe(35);
-      expect(result.statsAfter.UNKNOWN).toBeUndefined();
+      expect(result.statsAfter.UNKNOWN).toBe(35);
     });
 
     it('R6-T17: case-insensitive state matching', () => {

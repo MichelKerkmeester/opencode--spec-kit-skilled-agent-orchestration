@@ -19,7 +19,8 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
         content_text TEXT,
         file_path TEXT,
         spec_folder TEXT,
-        is_archived INTEGER DEFAULT 0
+        is_archived INTEGER DEFAULT 0,
+        importance_tier TEXT DEFAULT NULL
       );
     `);
 

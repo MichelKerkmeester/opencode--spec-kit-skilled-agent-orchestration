@@ -5,6 +5,7 @@
 
 import { buildContext, type ContextArgs, type QueryMode } from '../../lib/code-graph/code-graph-context.js';
 import type { CodeGraphSeed } from '../../lib/code-graph/seed-resolver.js';
+import { ensureCodeGraphReady } from '../../lib/code-graph/ensure-ready.js';
 
 export interface ContextHandlerArgs {
   input?: string;
@@ -85,6 +86,13 @@ function resolveSeedSource(args: ContextHandlerArgs, anchor: {
 /** Handle code_graph_context tool call */
 export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   try {
+    // Auto-trigger: ensure graph is fresh before querying
+    try {
+      await ensureCodeGraphReady(process.cwd());
+    } catch {
+      // Non-blocking: continue with potentially stale data
+    }
+
     const queryMode = (['neighborhood', 'outline', 'impact'].includes(args.queryMode ?? '')
       ? args.queryMode as QueryMode
       : 'neighborhood');

@@ -4,6 +4,7 @@
 // MCP tool handler for code_graph_query — queries structural relationships.
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { ensureCodeGraphReady } from '../../lib/code-graph/ensure-ready.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to';
@@ -98,6 +99,13 @@ function transitiveTraversal(
 
 /** Handle code_graph_query tool call */
 export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
+  // Auto-trigger: ensure graph is fresh before querying
+  try {
+    await ensureCodeGraphReady(process.cwd());
+  } catch {
+    // Non-blocking: continue with potentially stale data
+  }
+
   const { operation, subject, limit = 50 } = args;
 
   if (operation === 'outline') {

@@ -117,22 +117,22 @@ describe('T001-T010: Context Modes Configuration [deferred - requires DB test fi
     expect(quickMode.tokenBudget).toBe(800);
   });
 
-  it('T004: deep mode has search strategy and 2000 token budget', () => {
+  it('T004: deep mode has search strategy and 3500 token budget', () => {
     const deepMode: ContextMode = CONTEXT_MODES.deep;
     expect(deepMode.strategy).toBe('search');
-    expect(deepMode.tokenBudget).toBe(2000);
+    expect(deepMode.tokenBudget).toBe(3500);
   });
 
-  it('T005: focused mode has intent-search strategy and 1500 token budget', () => {
+  it('T005: focused mode has intent-search strategy and 3000 token budget', () => {
     const focusedMode: ContextMode = CONTEXT_MODES.focused;
     expect(focusedMode.strategy).toBe('intent-search');
-    expect(focusedMode.tokenBudget).toBe(1500);
+    expect(focusedMode.tokenBudget).toBe(3000);
   });
 
-  it('T006: resume mode has resume strategy and 1200 token budget', () => {
+  it('T006: resume mode has resume strategy and 2000 token budget', () => {
     const resumeMode: ContextMode = CONTEXT_MODES.resume;
     expect(resumeMode.strategy).toBe('resume');
-    expect(resumeMode.tokenBudget).toBe(1200);
+    expect(resumeMode.tokenBudget).toBe(2000);
   });
 
   it('T007: All modes have name and description', () => {
@@ -163,11 +163,11 @@ describe('T001-T010: Context Modes Configuration [deferred - requires DB test fi
     }
   });
 
-  it('T010: Token budgets are reasonable (500-2500 range)', () => {
+  it('T010: Token budgets are reasonable (500-4000 range)', () => {
     for (const [modeName, mode] of Object.entries(CONTEXT_MODES) as [string, ContextMode][]) {
       if (mode.tokenBudget !== undefined) {
         expect(mode.tokenBudget).toBeGreaterThanOrEqual(500);
-        expect(mode.tokenBudget).toBeLessThanOrEqual(2500);
+        expect(mode.tokenBudget).toBeLessThanOrEqual(4000);
       }
     }
   });
@@ -469,8 +469,8 @@ describe('T041-T050: Deep Mode Configuration Tests [deferred - requires DB test 
     expect(desc.includes('semantic') || desc.includes('comprehensive') || desc.includes('full')).toBe(true);
   });
 
-  it('T044: Deep mode token budget is 2000', () => {
-    expect(CONTEXT_MODES.deep.tokenBudget).toBe(2000);
+  it('T044: Deep mode token budget is 3500', () => {
+    expect(CONTEXT_MODES.deep.tokenBudget).toBe(3500);
   });
 
   it('T045: Deep mode has highest token budget', () => {
@@ -524,8 +524,8 @@ describe('T051-T060: Focused Mode Configuration Tests [deferred - requires DB te
     expect(desc.includes('intent') || desc.includes('task')).toBe(true);
   });
 
-  it('T054: Focused mode token budget is 1500', () => {
-    expect(CONTEXT_MODES.focused.tokenBudget).toBe(1500);
+  it('T054: Focused mode token budget is 3000', () => {
+    expect(CONTEXT_MODES.focused.tokenBudget).toBe(3000);
   });
 
   it('T055: Focused mode budget is between quick and deep', () => {
@@ -583,8 +583,8 @@ describe('T061-T070: Resume Mode Configuration Tests [deferred - requires DB tes
     ).toBe(true);
   });
 
-  it('T064: Resume mode token budget is 1200', () => {
-    expect(CONTEXT_MODES.resume.tokenBudget).toBe(1200);
+  it('T064: Resume mode token budget is 2000', () => {
+    expect(CONTEXT_MODES.resume.tokenBudget).toBe(2000);
   });
 
   it('T065: Resume mode budget is less than deep', () => {
@@ -712,9 +712,9 @@ describe('T081-T090: L1 Orchestration Token Budget Tests [deferred - requires DB
     expect(handleMemoryContext).toHaveLength(1);
   });
 
-  it('T084: CHK-072 - L1 token budget is 2000 (from layer-definitions)', () => {
-    // Deep mode has 2000 which aligns with L1 Orchestration budget
-    expect(CONTEXT_MODES.deep.tokenBudget).toBe(2000);
+  it('T084: CHK-072 - L1 token budget is 3500 (from layer-definitions)', () => {
+    // Deep mode has 3500 which aligns with L1 Orchestration budget
+    expect(CONTEXT_MODES.deep.tokenBudget).toBe(3500);
   });
 
   it('T085: CHK-074 - Progressive disclosure supported via mode selection', () => {
@@ -997,9 +997,9 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
     // Verify that enforcement uses the correct budget per mode
     const expectedBudgets: Record<string, number> = {
       quick: 800,
-      deep: 2000,
-      focused: 1500,
-      resume: 1200
+      deep: 3500,
+      focused: 3000,
+      resume: 2000
     };
     for (const [modeName, budget] of Object.entries(expectedBudgets)) {
       const mode = CONTEXT_MODES[modeName];

@@ -59,6 +59,20 @@ export interface RankedItem {
   relevanceScore?: number;
 }
 
+function isJudgedItem(item: RankedItem): item is RankedItem & { relevanceScore: number } {
+  return typeof item.relevanceScore === 'number' && Number.isFinite(item.relevanceScore);
+}
+
+function condenseJudgedRanking(rankedItems: RankedItem[]): RankedItem[] {
+  return rankedItems
+    .filter(isJudgedItem)
+    .sort((left, right) => left.rank - right.rank)
+    .map((item, index) => ({
+      ...item,
+      rank: index + 1,
+    }));
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. DIRECTION CLASSIFICATION
 ----------------------------------------------------------------*/
@@ -248,14 +262,18 @@ export function compareRanks(
   // Kendall tau
   const kendallTau = computeKendallTau(liveRankMap, shadowRankMap);
 
+  // Skip unlabeled items so evaluation only reflects real feedback labels.
+  const liveJudged = condenseJudgedRanking(liveRanked);
+  const shadowJudged = condenseJudgedRanking(shadowRanked);
+
   // NDCG delta
-  const liveNdcg = computeNDCG(liveRanked);
-  const shadowNdcg = computeNDCG(shadowRanked);
+  const liveNdcg = computeNDCG(liveJudged);
+  const shadowNdcg = computeNDCG(shadowJudged);
   const ndcgDelta = shadowNdcg - liveNdcg;
 
   // MRR delta
-  const liveMrr = computeMRR(liveRanked);
-  const shadowMrr = computeMRR(shadowRanked);
+  const liveMrr = computeMRR(liveJudged);
+  const shadowMrr = computeMRR(shadowJudged);
   const mrrDelta = shadowMrr - liveMrr;
 
   return {

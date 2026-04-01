@@ -76,6 +76,8 @@ type EvalReportingModule = typeof import('./eval-reporting.js');
 type CausalGraphModule = typeof import('./causal-graph.js');
 type MemoryContextModule = typeof import('./memory-context.js');
 type SharedMemoryModule = typeof import('./shared-memory.js');
+type SessionHealthModule = typeof import('./session-health.js');
+type SessionResumeModule = typeof import('./session-resume.js');
 
 let memorySearchModule: Promise<MemorySearchModule> | null = null;
 let memoryTriggersModule: Promise<MemoryTriggersModule> | null = null;
@@ -91,6 +93,8 @@ let evalReportingModule: Promise<EvalReportingModule> | null = null;
 let causalGraphModule: Promise<CausalGraphModule> | null = null;
 let memoryContextModule: Promise<MemoryContextModule> | null = null;
 let sharedMemoryModule: Promise<SharedMemoryModule> | null = null;
+let sessionHealthModule: Promise<SessionHealthModule> | null = null;
+let sessionResumeModule: Promise<SessionResumeModule> | null = null;
 
 function getMemorySearchModule(): Promise<MemorySearchModule> {
   if (!memorySearchModule) {
@@ -188,6 +192,20 @@ function getSharedMemoryModule(): Promise<SharedMemoryModule> {
     sharedMemoryModule = loadHandlerModule<SharedMemoryModule>('shared-memory');
   }
   return sharedMemoryModule;
+}
+
+function getSessionHealthModule(): Promise<SessionHealthModule> {
+  if (!sessionHealthModule) {
+    sessionHealthModule = loadHandlerModule<SessionHealthModule>('session-health');
+  }
+  return sessionHealthModule;
+}
+
+function getSessionResumeModule(): Promise<SessionResumeModule> {
+  if (!sessionResumeModule) {
+    sessionResumeModule = loadHandlerModule<SessionResumeModule>('session-resume');
+  }
+  return sessionResumeModule;
 }
 
 // Memory search handlers
@@ -297,6 +315,12 @@ export const handleSharedMemoryEnable = lazyFunction(getSharedMemoryModule, 'han
 export const handleSharedMemoryStatus = lazyFunction(getSharedMemoryModule, 'handleSharedMemoryStatus');
 export const handleSharedSpaceMembershipSet = lazyFunction(getSharedMemoryModule, 'handleSharedSpaceMembershipSet');
 export const handleSharedSpaceUpsert = lazyFunction(getSharedMemoryModule, 'handleSharedSpaceUpsert');
+
+// Session health handler
+export const handleSessionHealth = lazyFunction(getSessionHealthModule, 'handleSessionHealth');
+
+// Session resume handler
+export const handleSessionResume = lazyFunction(getSessionResumeModule, 'handleSessionResume');
 
 // Sub-module references
 export const memorySave = lazyModule(getMemorySaveModule);

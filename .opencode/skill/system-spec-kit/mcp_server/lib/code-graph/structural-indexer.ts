@@ -18,7 +18,7 @@ interface ParserAdapter {
   parse(content: string, language: SupportedLanguage): ParseResult;
 }
 
-interface RawCapture {
+export interface RawCapture {
   name: string;
   kind: SymbolKind;
   startLine: number;
@@ -554,10 +554,21 @@ function parseBash(content: string): RawCapture[] {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const lineNum = i + 1;
+    // Match 'foo() {' or 'function foo() {' form
     const funcMatch = line.match(/^(?:function\s+)?(\w+)\s*\(\s*\)/);
     if (funcMatch) {
       captures.push({
         name: funcMatch[1], kind: 'function', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+      });
+      continue;
+    }
+    // F042: Match 'function foo { }' and 'function foo() { }' (function keyword form without prior match)
+    const funcKeywordMatch = line.match(/^function\s+(\w+)\s*(?:\(\s*\))?\s*\{?/);
+    if (funcKeywordMatch) {
+      captures.push({
+        name: funcKeywordMatch[1], kind: 'function', startLine: lineNum,
         endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
         endColumn: line.length,
       });
@@ -620,6 +631,15 @@ class RegexParser implements ParserAdapter {
 /** Cached tree-sitter parser instance (lazy-loaded to avoid circular import at module init) */
 let treeSitterParser: ParserAdapter | null = null;
 
+/**
+ * Returns the active parser backend.
+ *
+ * SPECKIT_PARSER env var controls which backend is used:
+ *   - 'treesitter' (default): AST-accurate parsing via web-tree-sitter WASM grammars
+ *   - 'regex': Lightweight regex-based fallback with no WASM dependencies
+ *
+ * Tree-sitter is lazy-loaded on first call. If WASM init fails, falls back to regex automatically.
+ */
 export async function getParser(): Promise<ParserAdapter> {
   const parserEnv = process.env.SPECKIT_PARSER ?? 'treesitter';
 
@@ -636,6 +656,8 @@ export async function getParser(): Promise<ParserAdapter> {
       treeSitterParser = new TreeSitterParser();
       return treeSitterParser;
     } catch (err: unknown) {
+      // Reset so next call retries instead of returning a broken cached instance
+      treeSitterParser = null;
       console.warn(`[structural-indexer] Tree-sitter init failed, falling back to regex: ${err instanceof Error ? err.message : String(err)}`);
       return new RegexParser();
     }
@@ -664,7 +686,7 @@ function attachFilePath(result: ParseResult, filePath: string): ParseResult {
 }
 
 /** Convert raw captures to CodeNode[] */
-function capturesToNodes(
+export function capturesToNodes(
   captures: RawCapture[],
   filePath: string,
   language: SupportedLanguage,

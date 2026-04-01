@@ -15,23 +15,23 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
   describe('T205-A: Layer Token Budgets', () => {
     it('T205-A1: All layer token budgets correct', () => {
       const budgets: Record<string, number> = {
-        memory_context: 2000,
-        memory_search: 1500,
-        memory_save: 1500,
-        memory_match_triggers: 1500,
-        memory_list: 800,
-        memory_stats: 800,
-        memory_health: 800,
-        memory_update: 500,
-        memory_delete: 500,
-        memory_validate: 500,
-        checkpoint_create: 600,
-        checkpoint_list: 600,
-        checkpoint_restore: 600,
-        checkpoint_delete: 600,
-        memory_drift_why: 1200,
-        task_preflight: 1200,
-        task_postflight: 1200,
+        memory_context: 3500,
+        memory_search: 3500,
+        memory_save: 3500,
+        memory_match_triggers: 3500,
+        memory_list: 1000,
+        memory_stats: 1000,
+        memory_health: 1000,
+        memory_update: 1000,
+        memory_delete: 1000,
+        memory_validate: 1000,
+        checkpoint_create: 1000,
+        checkpoint_list: 1000,
+        checkpoint_restore: 1000,
+        checkpoint_delete: 1000,
+        memory_drift_why: 1500,
+        task_preflight: 1500,
+        task_postflight: 1500,
         memory_index_scan: 1000,
       };
 
@@ -211,9 +211,9 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
 
       const modes = memoryContext.CONTEXT_MODES;
       expect(modes.quick.tokenBudget).toBe(800);
-      expect(modes.deep.tokenBudget).toBe(2000);
-      expect(modes.focused.tokenBudget).toBe(1500);
-      expect(modes.resume.tokenBudget).toBe(1200);
+      expect(modes.deep.tokenBudget).toBe(3500);
+      expect(modes.focused.tokenBudget).toBe(3000);
+      expect(modes.resume.tokenBudget).toBe(2000);
     });
 
     it('T205-D2: Auto mode delegates budget (undefined)', () => {

@@ -2,7 +2,7 @@
 // Converted from: unit-rrf-fusion.test.ts (custom runner)
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
-import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES } from '@spec-kit/shared/algorithms/rrf-fusion';
+import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES, DEFAULT_K } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 function requireResult<T>(value: T | undefined): T {
   expect(value).toBeDefined();
@@ -353,7 +353,7 @@ describe('C138-P3: fuseResultsCrossVariant', () => {
     ], { k: Number.NaN });
 
     const first = requireResult(fused.find(r => r.id === 'a'));
-    expect(first.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(1 / 61, 6);
+    expect(first.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(1 / (DEFAULT_K + 1), 6);
   });
 
   it('C138-CV11: invalid convergenceBonus falls back to the default bonus', () => {
@@ -372,7 +372,7 @@ describe('C138-P3: fuseResultsCrossVariant', () => {
     ], { graphWeightBoost: Number.POSITIVE_INFINITY });
 
     const graphItem = requireResult(fused.find(r => r.id === 'g1'));
-    expect(graphItem.sourceScores[SOURCE_TYPES.GRAPH]).toBeCloseTo(1.5 / 61, 6);
+    expect(graphItem.sourceScores[SOURCE_TYPES.GRAPH]).toBeCloseTo(1.5 / (DEFAULT_K + 1), 6);
   });
 
   it('C138-CV13: invalid list weights are sanitized to zero contribution', () => {

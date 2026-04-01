@@ -154,7 +154,7 @@ describe('Context Server', () => {
   // =================================================================
   // GROUP 2: Tool Definition Completeness
   // =================================================================
-  describe('Group 2: Tool Definitions (33 tools)', () => {
+  describe('Group 2: Tool Definitions (42 tools)', () => {
     const EXPECTED_TOOLS = [
       'memory_context',
       'memory_search',
@@ -189,6 +189,15 @@ describe('Context Server', () => {
       'memory_ingest_start',
       'memory_ingest_status',
       'memory_ingest_cancel',
+      'code_graph_scan',
+      'code_graph_query',
+      'code_graph_status',
+      'code_graph_context',
+      'ccc_status',
+      'ccc_reindex',
+      'ccc_feedback',
+      'session_health',
+      'session_resume',
     ]
 
     // T11: TOOL_DEFINITIONS export exists
@@ -261,7 +270,7 @@ describe('Context Server', () => {
   // =================================================================
   describe('Group 3: Tool Dispatch Coverage', () => {
     const EXPECTED_CASES = [
-      'memory_context', 'memory_search', 'memory_match_triggers',
+      'memory_context', 'memory_search', 'memory_quick_search', 'memory_match_triggers',
       'memory_delete', 'memory_update', 'memory_bulk_delete', 'memory_list', 'memory_stats',
       'checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete',
       'memory_validate', 'memory_save', 'memory_index_scan', 'memory_health',
@@ -270,6 +279,9 @@ describe('Context Server', () => {
       'memory_drift_why', 'memory_causal_link', 'memory_causal_stats', 'memory_causal_unlink',
       'eval_run_ablation', 'eval_reporting_dashboard',
       'shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status', 'shared_memory_enable',
+      'code_graph_scan', 'code_graph_query', 'code_graph_status', 'code_graph_context',
+      'ccc_status', 'ccc_reindex', 'ccc_feedback',
+      'session_health', 'session_resume',
     ]
 
     // T16: CallToolRequestSchema handler exists
@@ -341,6 +353,7 @@ describe('Context Server', () => {
       '../handlers',
       '../utils',
       '../hooks',
+      '../hooks/memory-surface',
       '../lib/architecture/layer-definitions',
       '../startup-checks',
       '../lib/search/vector-index',
@@ -361,6 +374,9 @@ describe('Context Server', () => {
       '../lib/cognitive/archival-manager',
       '../lib/providers/retry-manager',
       '../lib/session/session-manager',
+      '../lib/session/context-metrics',
+      '../lib/feedback/shadow-evaluation-runtime',
+      '../lib/feedback/batch-learning',
       '../lib/storage/incremental-index',
       '../lib/storage/learned-triggers-schema',
       '../lib/storage/transaction-manager',
@@ -372,6 +388,14 @@ describe('Context Server', () => {
       '../lib/ops/file-watcher',
       '../lib/telemetry/scoring-observability',
       '../lib/errors',
+      '../lib/utils/canonical-path',
+      '../lib/utils/cleanup-helpers',
+      '../lib/code-graph/code-graph-db',
+      '../lib/storage/history',
+      '../handlers/memory-index-discovery',
+      '../handlers/mutation-hooks',
+      '../lib/response/envelope',
+      '../lib/search/local-reranker',
       '@spec-kit/shared/embeddings/factory',
     ] as const
 
@@ -581,6 +605,10 @@ describe('Context Server', () => {
         appendAutoSurfaceHints: appendAutoSurfaceHintsMock,
         syncEnvelopeTokenCount: syncEnvelopeTokenCountMock,
         serializeEnvelopeWithTokenCount: serializeEnvelopeWithTokenCountMock,
+        recordToolCall: vi.fn(),
+      }))
+      vi.doMock('../hooks/memory-surface', () => ({
+        primeSessionIfNeeded: vi.fn(async () => null),
       }))
 
       vi.doMock('../lib/architecture/layer-definitions', () => ({
@@ -660,6 +688,42 @@ describe('Context Server', () => {
         shutdown: vi.fn(),
       }))
       vi.doMock('../lib/extraction/extraction-adapter', () => ({ initExtractionAdapter: vi.fn() }))
+      vi.doMock('../lib/session/context-metrics', () => ({ recordMetricEvent: vi.fn() }))
+      vi.doMock('../lib/feedback/shadow-evaluation-runtime', () => ({
+        init: vi.fn(),
+        isEnabled: vi.fn(() => false),
+        scheduleEvaluation: vi.fn(),
+        shutdown: vi.fn(),
+      }))
+      vi.doMock('../lib/feedback/batch-learning', () => ({ runBatchLearning: vi.fn(async () => ({ processed: 0 })) }))
+      vi.doMock('../lib/utils/canonical-path', () => ({ getCanonicalPathKey: vi.fn((p: string) => p) }))
+      vi.doMock('../lib/utils/cleanup-helpers', () => ({
+        runCleanupStep: vi.fn((label: string, fn: () => void) => {
+          try { fn() } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e)
+            console.error(`[context-server] ${label} cleanup failed:`, msg)
+          }
+        }),
+        runAsyncCleanupStep: vi.fn(async (label: string, fn: () => Promise<void>) => {
+          try { await fn() } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e)
+            console.error(`[context-server] ${label} cleanup failed:`, msg)
+          }
+        }),
+      }))
+      vi.doMock('../lib/code-graph/code-graph-db', () => ({
+        init: vi.fn(),
+        getDb: vi.fn(() => null),
+        close: vi.fn(),
+      }))
+      vi.doMock('../lib/storage/history', () => ({ recordHistory: vi.fn(), getHistory: vi.fn(() => []) }))
+      vi.doMock('../handlers/memory-index-discovery', () => ({ discoverMemoryFiles: vi.fn(async () => []) }))
+      vi.doMock('../handlers/mutation-hooks', () => ({ runPostMutationHooks: vi.fn(async () => {}) }))
+      vi.doMock('../lib/response/envelope', () => ({
+        createMCPErrorResponse: vi.fn((data: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: true })),
+        wrapForMCP: vi.fn((data: unknown, isError?: boolean) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: isError ?? false })),
+      }))
+      vi.doMock('../lib/search/local-reranker', () => ({ disposeLocalReranker: vi.fn() }))
       vi.doMock('../lib/ops/job-queue', () => ({ initIngestJobQueue: vi.fn(() => ({ resetCount: 0 })) }))
       vi.doMock('../lib/search/folder-discovery', () => ({ getSpecsBasePaths: vi.fn(() => options?.watchPaths ?? []) }))
       vi.doMock('../lib/ops/file-watcher', () => ({
@@ -1466,28 +1530,28 @@ describe('Context Server', () => {
     })
 
     // T28: getTokenBudget direct tests
-    it('T28: L1 budget = 2000 (memory_context)', async () => {
+    it('T28: L1 budget = 3500 (memory_context)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('memory_context')).toBe(2000)
+      expect(layerDefs!.getTokenBudget!('memory_context')).toBe(3500)
     })
 
-    it('T28b: L2 budget = 1500 (memory_search)', async () => {
+    it('T28b: L2 budget = 3500 (memory_search)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('memory_search')).toBe(1500)
+      expect(layerDefs!.getTokenBudget!('memory_search')).toBe(3500)
     })
 
-    it('T28c: L3 budget = 800 (memory_list)', async () => {
+    it('T28c: L3 budget = 1000 (memory_list)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('memory_list')).toBe(800)
+      expect(layerDefs!.getTokenBudget!('memory_list')).toBe(1000)
     })
 
     it('T28d: Unknown tool budget = 1000 (default)', async () => {
@@ -1498,28 +1562,28 @@ describe('Context Server', () => {
       expect(layerDefs!.getTokenBudget!('nonexistent_tool')).toBe(1000)
     })
 
-    it('T28e: L4 budget = 500 (memory_delete)', async () => {
+    it('T28e: L4 budget = 1000 (memory_delete)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('memory_delete')).toBe(500)
+      expect(layerDefs!.getTokenBudget!('memory_delete')).toBe(1000)
     })
 
-    it('T28f: L5 budget = 600 (checkpoint_create)', async () => {
+    it('T28f: L5 budget = 1000 (checkpoint_create)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('checkpoint_create')).toBe(600)
+      expect(layerDefs!.getTokenBudget!('checkpoint_create')).toBe(1000)
     })
 
-    it('T28g: L6 budget = 1200 (memory_drift_why)', async () => {
+    it('T28g: L6 budget = 1500 (memory_drift_why)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
       expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
-      expect(layerDefs!.getTokenBudget!('memory_drift_why')).toBe(1200)
+      expect(layerDefs!.getTokenBudget!('memory_drift_why')).toBe(1500)
     })
 
     it('T28h: L7 budget = 1000 (memory_index_scan)', async () => {

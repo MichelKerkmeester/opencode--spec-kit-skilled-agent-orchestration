@@ -8,6 +8,7 @@ import * as vectorIndexMod from '../lib/search/vector-index';
 import * as bm25IndexMod from '../lib/search/bm25-index';
 import * as triggerMatcherMod from '../lib/parsing/trigger-matcher';
 import * as checkpointStorageMod from '../lib/storage/checkpoints';
+import { initConsumptionLog } from '../lib/telemetry/consumption-logger';
 import * as core from '../core';
 import type { CheckpointEntry, CheckpointInfo, RestoreResult } from '../lib/storage/checkpoints';
 
@@ -581,6 +582,58 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
     it('T521-V4: Non-integer string id throws', async () => {
       await expect(handler.handleMemoryValidate({ id: '7abc', wasUseful: true })).rejects.toThrow(/id.*integer|id.*number/i);
+    });
+
+    it('T521-V5: Stores resolved query text for adaptive validation signals', async () => {
+      const db = vectorIndexMod.getDb();
+      const memoryId = 900051;
+      const queryLogId = 900151;
+      const now = new Date().toISOString();
+      const previousAdaptiveFlag = process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING;
+
+      initConsumptionLog(db);
+      db.prepare(`
+        INSERT INTO memory_index (id, spec_folder, file_path, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(memoryId, 'specs/test', `specs/test/memory-${memoryId}.md`, now, now);
+      db.prepare(`
+        INSERT INTO consumption_log (id, event_type, query_text, result_count, timestamp)
+        VALUES (?, 'search', ?, 1, ?)
+      `).run(queryLogId, 'resolved validation query', now);
+
+      try {
+        process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+        const response = await handler.handleMemoryValidate({
+          id: memoryId,
+          wasUseful: true,
+          queryId: `consumption:${queryLogId}`,
+        });
+        const parsed = JSON.parse(response.content[0].text);
+        const signal = db.prepare(`
+          SELECT query, metadata
+          FROM adaptive_signal_events
+          WHERE memory_id = ?
+          ORDER BY id DESC
+          LIMIT 1
+        `).get(memoryId) as { query?: string | null; metadata?: string | null } | undefined;
+
+        expect(response.isError).toBeFalsy();
+        expect(parsed.data?.memoryId).toBe(memoryId);
+        expect(signal?.query).toBe('resolved validation query');
+        expect(JSON.parse(signal?.metadata ?? '{}')).toMatchObject({
+          queryId: `consumption:${queryLogId}`,
+          queryText: 'resolved validation query',
+        });
+      } finally {
+        if (previousAdaptiveFlag === undefined) {
+          delete process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING;
+        } else {
+          process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = previousAdaptiveFlag;
+        }
+        db.prepare('DELETE FROM adaptive_signal_events WHERE memory_id = ?').run(memoryId);
+        db.prepare('DELETE FROM consumption_log WHERE id = ?').run(queryLogId);
+        db.prepare('DELETE FROM memory_index WHERE id = ?').run(memoryId);
+      }
     });
   });
 

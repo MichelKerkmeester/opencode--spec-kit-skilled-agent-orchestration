@@ -152,13 +152,14 @@ describe('Search Feature Flags', () => {
     expect(isLocalRerankerEnabled()).toBe(true);
   });
 
-  it('applies rollout policy to opt-in wrappers and fails closed on partial rollout without identity', () => {
+  it('applies rollout policy to opt-in wrappers and defaults to enabled on partial rollout without identity', () => {
     process.env.SPECKIT_FILE_WATCHER = 'true';
     process.env.RERANKER_LOCAL = 'true';
     process.env.SPECKIT_ROLLOUT_PERCENT = '50';
 
-    expect(isFileWatcherEnabled()).toBe(false);
-    expect(isLocalRerankerEnabled()).toBe(false);
+    // With no identity, rollout policy defaults to enabled (fail-open for missing identity)
+    expect(isFileWatcherEnabled()).toBe(true);
+    expect(isLocalRerankerEnabled()).toBe(true);
   });
 
   it('defaults graph-walk rollout to bounded_runtime when graph signals are enabled', () => {

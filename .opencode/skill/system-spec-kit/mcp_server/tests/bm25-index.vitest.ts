@@ -397,9 +397,9 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(typeof isBm25Enabled()).toBe('boolean');
     });
 
-    it('T037.2: BM25 is disabled by default until explicitly enabled', () => {
+    it('T037.2: BM25 is enabled by default when ENABLE_BM25 is unset', () => {
       delete process.env.ENABLE_BM25;
-      expect(isBm25Enabled()).toBe(false);
+      expect(isBm25Enabled()).toBe(true);
     });
 
     it('T037.2b: BM25 enables when the experimental flag is set', () => {

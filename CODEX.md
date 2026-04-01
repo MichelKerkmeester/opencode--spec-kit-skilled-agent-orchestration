@@ -32,8 +32,22 @@ Route queries to the appropriate system:
 - **Structural navigation** ("what calls...", "what imports...") → `code_graph_query`, `code_graph_context`
 - **Session continuity** ("previous work", "resume") → `memory_search`, `memory_context`
 
+## No Hook Transport — Session Lifecycle
+
+| When | What to Call |
+|------|-------------|
+| **Fresh session start** | `session_resume()` or manual: `memory_context({ mode: "resume", profile: "resume" })` + `code_graph_status()` |
+| **After resume/reconnect** | `session_resume()` |
+| **Suspected context loss** | `session_health()` → if warning/stale, call `memory_context({ mode: "resume" })` |
+| **After `/clear`** | Same as fresh session start |
+| **Before structural search** | `code_graph_context({ subject: "..." })` — auto-indexes if stale |
+| **Before saving context** | Use `generate-context.js` via Spec Kit Memory |
+
+The MCP server auto-primes on the first tool call per session — no manual action needed for basic context loading.
+
 ## Available MCP Tools
 
-- **Spec Kit Memory**: 37 tools for semantic memory, context retrieval, session management
+- **Spec Kit Memory**: 37+ tools for semantic memory, context retrieval, session management
 - **CocoIndex Code**: `search` tool for semantic code search across 28+ languages
 - **Code Graph**: `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`
+- **Lifecycle**: `session_health`, `session_resume`

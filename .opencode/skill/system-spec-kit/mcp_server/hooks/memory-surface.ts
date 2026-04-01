@@ -2,6 +2,9 @@
 // MODULE: Memory Surface
 // ───────────────────────────────────────────────────────────────
 // Lib modules
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives.js';
@@ -50,8 +53,19 @@ interface AutoSurfaceResult {
   };
   sessionPrimed?: boolean;
   primedTool?: string;
+  /** T018: Structured Prime Package returned on first tool call */
+  primePackage?: PrimePackage;
   surfaced_at: string;
   latencyMs: number;
+}
+
+/** T018: Structured session prime payload for non-hook CLI auto-priming */
+interface PrimePackage {
+  specFolder: string | null;
+  currentTask: string | null;
+  codeGraphStatus: 'fresh' | 'stale' | 'empty';
+  cocoIndexAvailable: boolean;
+  recommendedCalls: string[];
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -79,6 +93,25 @@ let constitutionalCache: ConstitutionalMemory[] | null = null;
 let constitutionalCacheTime = 0;
 const CONSTITUTIONAL_CACHE_TTL = 60000; // 1 minute
 let sessionPrimed = false;
+
+// T018: Session-level tracking for prime package and session_health
+const serverStartedAt = Date.now();
+let lastToolCallAt = Date.now();
+
+/** T018: Update last tool call timestamp (called from context-server dispatch). */
+function recordToolCall(): void {
+  lastToolCallAt = Date.now();
+}
+
+/** T018: Get session tracking timestamps */
+function getSessionTimestamps(): { serverStartedAt: number; lastToolCallAt: number } {
+  return { serverStartedAt, lastToolCallAt };
+}
+
+/** T018: Check if the session has been primed */
+function isSessionPrimed(): boolean {
+  return sessionPrimed;
+}
 
 /* ───────────────────────────────────────────────────────────────
    3. CONTEXT EXTRACTION
@@ -279,6 +312,56 @@ async function autoSurfaceMemories(
   }
 }
 
+/** T018: Build structured Prime Package for non-hook CLI auto-priming */
+function buildPrimePackage(
+  toolArgs: Record<string, unknown>,
+  graphSnapshot: NonNullable<AutoSurfaceResult['codeGraphStatus']>,
+): PrimePackage {
+  // Derive specFolder from tool args if provided
+  const specFolder = typeof toolArgs.specFolder === 'string' ? toolArgs.specFolder : null;
+
+  // Derive currentTask from input/query/prompt fields
+  const taskFields = ['input', 'query', 'prompt'] as const;
+  let currentTask: string | null = null;
+  for (const f of taskFields) {
+    if (typeof toolArgs[f] === 'string' && (toolArgs[f] as string).length >= 3) {
+      currentTask = (toolArgs[f] as string).slice(0, 200);
+      break;
+    }
+  }
+
+  // Code graph freshness
+  let codeGraphStatus: PrimePackage['codeGraphStatus'] = 'empty';
+  if (graphSnapshot.status === 'ok' && graphSnapshot.data) {
+    const lastScan = graphSnapshot.data.lastScanAt;
+    const totalFiles = graphSnapshot.data.totalFiles ?? 0;
+    if (totalFiles === 0) {
+      codeGraphStatus = 'empty';
+    } else if (!lastScan || (Date.now() - new Date(lastScan).getTime() > 24 * 60 * 60 * 1000)) {
+      codeGraphStatus = 'stale';
+    } else {
+      codeGraphStatus = 'fresh';
+    }
+  }
+
+  // F046: CocoIndex availability via shared helper (no process.cwd())
+  const cocoIndexAvailable = isCocoIndexAvailable();
+
+  // Build recommended calls based on state
+  const recommendedCalls: string[] = [];
+  if (codeGraphStatus === 'stale' || codeGraphStatus === 'empty') {
+    recommendedCalls.push('code_graph_scan');
+  }
+  if (!specFolder) {
+    recommendedCalls.push('memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })');
+  }
+  if (cocoIndexAvailable && recommendedCalls.length === 0) {
+    recommendedCalls.push('memory_match_triggers({ prompt: "<your task>" })');
+  }
+
+  return { specFolder, currentTask, codeGraphStatus, cocoIndexAvailable, recommendedCalls };
+}
+
 async function primeSessionIfNeeded(
   toolName: string,
   toolArgs: Record<string, unknown>
@@ -287,7 +370,6 @@ async function primeSessionIfNeeded(
     return null;
   }
 
-  sessionPrimed = true;
   const startTime = Date.now();
   const contextHint = extractContextHint(toolArgs);
 
@@ -297,8 +379,24 @@ async function primeSessionIfNeeded(
     const codeGraphStatus = getCodeGraphStatusSnapshot();
     const latencyMs = Date.now() - startTime;
 
+    // T018: Build structured Prime Package
+    const primePackage = buildPrimePackage(toolArgs, codeGraphStatus);
+
+    // F045: Mark session as primed AFTER successful execution (not before try)
+    sessionPrimed = true;
+
     if (enrichedConstitutional.length === 0 && codeGraphStatus.status !== 'ok') {
-      return null;
+      // Still return the prime package even when no constitutional memories
+      return enforceAutoSurfaceTokenBudget({
+        constitutional: [],
+        triggered: [],
+        codeGraphStatus,
+        sessionPrimed: true,
+        primedTool: toolName,
+        primePackage,
+        surfaced_at: new Date().toISOString(),
+        latencyMs,
+      }, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
     }
 
     return enforceAutoSurfaceTokenBudget({
@@ -307,6 +405,7 @@ async function primeSessionIfNeeded(
       codeGraphStatus,
       sessionPrimed: true,
       primedTool: toolName,
+      primePackage,
       surfaced_at: new Date().toISOString(),
       latencyMs,
     }, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
@@ -432,4 +531,13 @@ export {
   resetSessionPrimed,
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
+
+  // T018: Session tracking for session_health tool
+  recordToolCall,
+  getSessionTimestamps,
+  isSessionPrimed,
+  getCodeGraphStatusSnapshot,
 };
+
+// T018: Export types for session-health handler
+export type { PrimePackage, AutoSurfaceResult };

@@ -100,6 +100,53 @@ interface ValidationResult {
   promotionEligible: boolean;
 }
 
+function resolveValidationQueryText(
+  database: ReturnType<typeof requireDb>,
+  queryId?: string,
+): string | null {
+  if (typeof queryId !== 'string') {
+    return null;
+  }
+
+  const normalizedQueryId = queryId.trim();
+  if (normalizedQueryId.length === 0) {
+    return null;
+  }
+
+  if (/\s/.test(normalizedQueryId)) {
+    return normalizedQueryId;
+  }
+
+  const consumptionMatch = normalizedQueryId.match(/^(?:consumption:)?(\d+)$/);
+  if (!consumptionMatch) {
+    return null;
+  }
+
+  const consumptionLogTable = database.prepare(`
+    SELECT 1
+    FROM sqlite_master
+    WHERE type = 'table'
+      AND name = 'consumption_log'
+    LIMIT 1
+  `).get();
+  if (!consumptionLogTable) {
+    return null;
+  }
+
+  const row = database.prepare(`
+    SELECT query_text
+    FROM consumption_log
+    WHERE id = ?
+      AND query_text IS NOT NULL
+      AND TRIM(query_text) != ''
+    LIMIT 1
+  `).get(Number.parseInt(consumptionMatch[1], 10)) as { query_text?: string } | undefined;
+
+  return typeof row?.query_text === 'string' && row.query_text.trim().length > 0
+    ? row.query_text
+    : null;
+}
+
 function parseMemoryId(rawId: number | string): number {
   const numericId = typeof rawId === 'string'
     ? Number.parseInt(rawId.trim(), 10)
@@ -627,15 +674,21 @@ async function handleMemoryValidate(args: MemoryValidateArgs): Promise<MCPRespon
 
   vectorIndex.initializeDb();
   const database = requireDb();
+  const normalizedQueryId = typeof queryId === 'string' && queryId.trim().length > 0
+    ? queryId.trim()
+    : null;
+  const queryText = resolveValidationQueryText(database, normalizedQueryId ?? undefined);
   const result: ValidationResult = confidenceTracker.recordValidation(database, memoryId, wasUseful);
   try {
     recordAdaptiveSignal(database, {
       memoryId,
       signalType: wasUseful ? 'outcome' : 'correction',
       signalValue: 1,
-      query: queryId ?? null,
+      query: queryText,
       actor: sessionId ?? 'memory_validate',
       metadata: {
+        queryId: normalizedQueryId,
+        queryText,
         resultRank: typeof resultRank === 'number' ? resultRank : null,
         totalResultsShown: typeof totalResultsShown === 'number' ? totalResultsShown : null,
         intent: intent ?? null,

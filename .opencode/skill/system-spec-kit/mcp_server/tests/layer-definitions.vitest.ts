@@ -76,7 +76,7 @@ describe('Layer Definitions Tests', () => {
 
     it('T08: Specific token budget values match', () => {
       const expectedBudgets: Record<string, number> = {
-        L1: 2000, L2: 1500, L3: 800, L4: 500, L5: 600, L6: 1200, L7: 1000,
+        L1: 3500, L2: 3500, L3: 1000, L4: 1000, L5: 1000, L6: 1500, L7: 1000,
       };
       for (const [layerId, expected] of Object.entries(expectedBudgets) as [LayerId, number][]) {
         expect(LD[layerId]?.tokenBudget).toBe(expected);
@@ -234,12 +234,12 @@ describe('Layer Definitions Tests', () => {
 
     it('T20: Known tools return correct token budgets', () => {
       const cases = [
-        { tool: 'memory_context', expected: 2000 },
-        { tool: 'memory_search', expected: 1500 },
-        { tool: 'memory_list', expected: 800 },
-        { tool: 'memory_update', expected: 500 },
-        { tool: 'checkpoint_create', expected: 600 },
-        { tool: 'memory_drift_why', expected: 1200 },
+        { tool: 'memory_context', expected: 3500 },
+        { tool: 'memory_search', expected: 3500 },
+        { tool: 'memory_list', expected: 1000 },
+        { tool: 'memory_update', expected: 1000 },
+        { tool: 'checkpoint_create', expected: 1000 },
+        { tool: 'memory_drift_why', expected: 1500 },
         { tool: 'memory_index_scan', expected: 1000 },
       ];
       for (const { tool, expected } of cases) {
@@ -266,7 +266,7 @@ describe('Layer Definitions Tests', () => {
       expect(info).toBeDefined();
       expect(info.id).toBe('L1');
       expect(info.name).toBe('Orchestration');
-      expect(info.tokenBudget).toBe(2000);
+      expect(info.tokenBudget).toBe(3500);
       expect(info.priority).toBe(1);
       expect(Array.isArray(info.tools)).toBe(true);
       expect(info.tools).toContain('memory_context');
@@ -401,13 +401,9 @@ describe('Layer Definitions Tests', () => {
     it('T37: Contains Token Budget lines for each layer', () => {
       const doc = mod.getLayerDocumentation();
       const budgetPatterns = [
-        '**Token Budget:** 2000',
-        '**Token Budget:** 1500',
-        '**Token Budget:** 800',
-        '**Token Budget:** 500',
-        '**Token Budget:** 600',
-        '**Token Budget:** 1200',
+        '**Token Budget:** 3500',
         '**Token Budget:** 1000',
+        '**Token Budget:** 1500',
       ];
       for (const pattern of budgetPatterns) {
         expect(doc).toContain(pattern);

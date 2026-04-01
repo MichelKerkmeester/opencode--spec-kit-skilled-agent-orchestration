@@ -236,8 +236,11 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'focused-intent-auto-detect'
       );
 
+      // Intent classifier auto-detects intent for non-quick modes, so
+      // autoDetectIntent is false (intent was pre-classified) and the
+      // detected intent is forwarded to the search handler.
       expect(mockedHandleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
-        autoDetectIntent: true,
+        autoDetectIntent: false,
       }));
     });
   });
@@ -311,9 +314,9 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       const expectedBudgets: Record<string, number | undefined> = {
         auto: undefined,
         quick: 800,
-        deep: 2000,
-        focused: 1500,
-        resume: 1200,
+        deep: 3500,
+        focused: 3000,
+        resume: 2000,
       };
 
       for (const [modeName, expectedBudget] of Object.entries(expectedBudgets)) {
@@ -404,7 +407,8 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('T017: absent tokenUsage uses estimator fallback from runtime stats', async () => {
-      const highPressureInput = 'x'.repeat(7000);
+      // L1 token budget is 3500 — need ~0.8*3500=2800 tokens (~11200 chars) for quick pressure
+      const highPressureInput = 'x'.repeat(12000);
 
       const result = await withTimeout(
         handler.handleMemoryContext({

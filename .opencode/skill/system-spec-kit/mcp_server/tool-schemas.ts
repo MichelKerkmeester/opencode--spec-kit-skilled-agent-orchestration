@@ -618,10 +618,10 @@ const memoryIngestCancel: ToolDefinition = {
   },
 };
 
-// L8: Code Graph - Structural code analysis tools
+// Code Graph - Structural code analysis tools
 const codeGraphScan: ToolDefinition = {
   name: 'code_graph_scan',
-  description: '[L8:CodeGraph] Scan workspace files and build structural code graph index (functions, classes, imports, calls). Supports incremental re-indexing via content hash. Token Budget: 1000.',
+  description: '[L7:Maintenance] Scan workspace files and build structural code graph index (functions, classes, imports, calls). Supports incremental re-indexing via content hash. Token Budget: 1000.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -636,7 +636,7 @@ const codeGraphScan: ToolDefinition = {
 
 const codeGraphQuery: ToolDefinition = {
   name: 'code_graph_query',
-  description: '[L8:CodeGraph] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Supports includeTransitive for multi-hop BFS traversal. Token Budget: 1200.',
+  description: '[L6:Analysis] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Supports includeTransitive for multi-hop BFS traversal. Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -653,13 +653,13 @@ const codeGraphQuery: ToolDefinition = {
 
 const codeGraphStatus: ToolDefinition = {
   name: 'code_graph_status',
-  description: '[L8:CodeGraph] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp, DB file size, schema version. Token Budget: 500.',
+  description: '[L7:Maintenance] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp, DB file size, schema version. Token Budget: 500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
 const codeGraphContext: ToolDefinition = {
   name: 'code_graph_context',
-  description: '[L8:CodeGraph] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds (provider: cocoindex), manual seeds (provider: manual), or graph seeds (provider: graph). Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
+  description: '[L6:Analysis] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds (provider: cocoindex), manual seeds (provider: manual), or graph seeds (provider: graph). Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -694,13 +694,13 @@ const codeGraphContext: ToolDefinition = {
 
 const cccStatus: ToolDefinition = {
   name: 'ccc_status',
-  description: '[L8:CodeGraph] Check CocoIndex availability, binary path, and index status.',
+  description: '[L7:Maintenance] Check CocoIndex availability, binary path, and index status.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
 const cccReindex: ToolDefinition = {
   name: 'ccc_reindex',
-  description: '[L8:CodeGraph] Trigger CocoIndex incremental (or full) re-indexing of the workspace.',
+  description: '[L7:Maintenance] Trigger CocoIndex incremental (or full) re-indexing of the workspace.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -712,7 +712,7 @@ const cccReindex: ToolDefinition = {
 
 const cccFeedback: ToolDefinition = {
   name: 'ccc_feedback',
-  description: '[L8:CodeGraph] Submit quality feedback on CocoIndex search results to improve future searches.',
+  description: '[L7:Maintenance] Submit quality feedback on CocoIndex search results to improve future searches.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
@@ -722,6 +722,27 @@ const cccFeedback: ToolDefinition = {
       comment: { type: 'string', description: 'Optional free-form feedback' },
     },
     required: ['query', 'rating'],
+  },
+};
+
+// T018: Session health diagnostic tool
+const sessionHealth: ToolDefinition = {
+  name: 'session_health',
+  description: '[L3:Discovery] Check session readiness: priming status, code graph freshness, time since last tool call. Returns ok/warning/stale with actionable hints. No arguments required.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+};
+
+// Phase 020: Composite session resume tool
+const sessionResume: ToolDefinition = {
+  name: 'session_resume',
+  description: '[L1:Orchestration] Resume session with combined memory, code graph, and CocoIndex status. Returns merged context from memory_context (resume mode), code graph statistics, and CocoIndex availability in a single call.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', description: 'Optional spec folder to scope the resume context' },
+    },
+    required: [],
   },
 };
 
@@ -735,6 +756,7 @@ const cccFeedback: ToolDefinition = {
 export const TOOL_DEFINITIONS: ToolDefinition[] = [
   // L1: Orchestration
   memoryContext,
+  sessionResume,
   // L2: Core
   memorySearch,
   memoryQuickSearch,
@@ -744,6 +766,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   memoryList,
   memoryStats,
   memoryHealth,
+  sessionHealth,
   // L4: Mutation
   memoryDelete,
   memoryUpdate,

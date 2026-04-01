@@ -164,7 +164,7 @@ describe('Public API barrel exports', () => {
     expect(api.LAYER_DEFINITIONS.L5.tools).toContain('shared_memory_status');
     expect(api.TOOL_LAYER_MAP.shared_memory_status).toBe('L5');
     expect(api.getLayerForTool('shared_memory_status')).toBe('L5');
-    expect(api.getLayerTokenBudget('shared_memory_status')).toBe(600);
+    expect(api.getLayerTokenBudget('shared_memory_status')).toBe(1000);
     expect(typeof api.getSharedRolloutMetrics).toBe('function');
     expect(typeof api.getSharedRolloutCohortSummary).toBe('function');
     expect(typeof api.getMemoryRoadmapPhase).toBe('function');

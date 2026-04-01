@@ -458,7 +458,7 @@ export async function formatSearchResults(
       const anchorsInfo = extractAnchorDetails(rawResult);
       formattedResult.scores = {
         semantic: toNullableNumber(rawResult.similarity ?? rawResult.averageSimilarity),
-        lexical: toNullableNumber(rawResult.fts_score ?? rawResult.bm25_score),
+        lexical: toNullableNumber(rawResult.fts_score ?? rawResult.bm25_score ?? (rawResult.sourceScores as Record<string, number> | undefined)?.keyword ?? (rawResult.sourceScores as Record<string, number> | undefined)?.fts ?? (rawResult.sourceScores as Record<string, number> | undefined)?.bm25),
         fusion: toNullableNumber(rawResult.rrfScore),
         intentAdjusted: toNullableNumber(rawResult.intentAdjustedScore),
         composite: resolveCompositeScore(rawResult),

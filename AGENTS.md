@@ -295,6 +295,7 @@ Use the agent directory that matches the active runtime/provider profile:
 
 - **`@general`** — Implementation, complex tasks
 - **`@context`** — LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading
+- **`@context-prime`** — Lightweight bootstrap agent for session start or after `/clear`. Loads memory context, checks code graph and CocoIndex health, returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)
@@ -379,3 +380,20 @@ For ALL git workflows, `sk-git` orchestrates workspace setup, commit hygiene, an
 **Trigger Keywords:** worktree, branch, commit, merge, pr, pull request, git workflow, conventional commits, finish work, integrate changes
 
 **Invocation:** Automatic via Gate 2 routing when git tasks detected, or manually via `Read(".opencode/skill/sk-git/SKILL.md")`.
+
+---
+
+## No Hook Transport — Session Lifecycle
+
+When hooks are not available (OpenCode, Codex CLI, Copilot CLI, Gemini CLI without hooks), use these MCP tool calls:
+
+| When | What to Call |
+|------|-------------|
+| **Fresh session start** | `session_resume()` or `memory_context({ mode: "resume", profile: "resume" })` + `code_graph_status()` |
+| **After resume/reconnect** | `session_resume()` |
+| **Suspected context loss** | `session_health()` → if warning/stale, call `memory_context({ mode: "resume" })` |
+| **After `/clear`** | Same as fresh session start |
+| **Before structural search** | `code_graph_context({ subject: "..." })` — auto-indexes if stale |
+| **Before saving context** | Use `generate-context.js` via Spec Kit Memory |
+
+The MCP server auto-primes on the first tool call per session. Use `session_health()` to check if context has drifted during long sessions.

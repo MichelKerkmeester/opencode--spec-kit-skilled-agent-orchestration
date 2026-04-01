@@ -260,6 +260,7 @@ Use the agent directory that matches the active runtime/provider profile:
 
 - **`@general`** — Implementation, complex tasks
 - **`@context`** — LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading
+- **`@context-prime`** — Lightweight bootstrap agent for session start or after `/clear`. Loads memory context, checks code graph and CocoIndex health, returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)

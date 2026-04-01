@@ -94,13 +94,14 @@ describe('rollout policy', () => {
     }
   });
 
-  it('fails closed for partial rollout when identity is missing', () => {
+  it('defaults to enabled for partial rollout when identity is missing', () => {
     process.env.SPECKIT_ROLLOUT_PERCENT = '50';
     process.env.SPECKIT_EXTRACTION = 'true';
 
-    expect(isFeatureEnabled('SPECKIT_EXTRACTION')).toBe(false);
-    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '')).toBe(false);
-    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '   ')).toBe(false);
+    // With no identity, rollout policy defaults to enabled (fail-open for missing identity)
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION')).toBe(true);
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '')).toBe(true);
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '   ')).toBe(true);
   });
 
   it("treats '0' as an explicit feature disable signal", () => {

@@ -4,6 +4,9 @@
 // Heuristic pre-classifier that routes queries to the optimal
 // retrieval backend: structural (code graph) vs semantic
 // (CocoIndex) vs hybrid (both).
+//
+// Phase 020: Integrated into memory_context handler for query-intent
+// routing between structural (code graph) and semantic backends.
 
 export type QueryIntent = 'structural' | 'semantic' | 'hybrid';
 
@@ -32,6 +35,10 @@ const STRUCTURAL_KEYWORDS = new Set([
   'edges', 'nodes', 'symbols', 'hierarchy',
   // Structural patterns
   'inheritance', 'call chain', 'import tree', 'export map',
+  // F038: Missing inflections
+  'import', 'export', 'caller', 'callee', 'decorator',
+  'type_alias', 'defined', 'inherit', 'override',
+  'superclass', 'subclass',
 ]);
 
 const SEMANTIC_KEYWORDS = new Set([
@@ -61,10 +68,12 @@ const STRUCTURAL_PATTERNS = [
 
 const SEMANTIC_PATTERNS = [
   /similar\s+to/i,
-  /(?:how|where)\s+(?:is|are|do|does|to)/i,
+  // F035: Narrowed — require semantic noun after opener to avoid matching structural queries
+  /(?:how|where)\s+(?:is|are|do|does|to)\s+(?:similar|pattern|approach|example|concept|usage|technique|strategy)/i,
   /(?:find|search)\s+(?:code|files|implementations)\s+(?:that|for|about|related)/i,
   /(?:examples?|patterns?|usage)\s+of/i,
-  /what\s+(?:is|are|does)/i,
+  // F035: Narrowed — require semantic noun after "what is/are/does"
+  /what\s+(?:is|are|does)\s+(?:the\s+)?(?:pattern|approach|concept|purpose|meaning|intent|strategy)/i,
 ];
 
 // ── Classification logic ───────────────────────────────────────
@@ -78,11 +87,14 @@ function countKeywordHits(tokens: string[], keywords: Set<string>): { count: num
   for (const token of tokens) {
     if (keywords.has(token)) matched.push(token);
   }
-  // Also check multi-word phrases
+  // F036: Multi-word phrases with word-boundary matching to avoid false positives
   const lowerQuery = tokens.join(' ');
   for (const kw of keywords) {
-    if (kw.includes(' ') && lowerQuery.includes(kw)) {
-      matched.push(kw);
+    if (kw.includes(' ')) {
+      const pattern = new RegExp('\\b' + kw.replace(/\s+/g, '\\s+') + '\\b', 'i');
+      if (pattern.test(lowerQuery)) {
+        matched.push(kw);
+      }
     }
   }
   return { count: matched.length, matched };
@@ -129,11 +141,17 @@ export function classifyQueryIntent(query: string): ClassificationResult {
   const structuralRatio = structuralScore / total;
   const semanticRatio = semanticScore / total;
 
+  // F037: Confidence depends on BOTH ratio AND absolute count.
+  // Single-hit max ~0.60, requires multiple signals to reach 0.95.
+  // Formula: 0.5 + ratio * 0.25 + min(total, 5) * 0.05
+  const computeConfidence = (ratio: number): number =>
+    Math.min(0.95, 0.5 + ratio * 0.25 + Math.min(total, 5) * 0.05);
+
   // Clear structural signal (>65% structural)
   if (structuralRatio > 0.65) {
     return {
       intent: 'structural',
-      confidence: Math.min(0.95, 0.6 + structuralRatio * 0.35),
+      confidence: computeConfidence(structuralRatio),
       structuralScore,
       semanticScore,
       matchedKeywords,
@@ -144,7 +162,7 @@ export function classifyQueryIntent(query: string): ClassificationResult {
   if (semanticRatio > 0.65) {
     return {
       intent: 'semantic',
-      confidence: Math.min(0.95, 0.6 + semanticRatio * 0.35),
+      confidence: computeConfidence(semanticRatio),
       structuralScore,
       semanticScore,
       matchedKeywords,

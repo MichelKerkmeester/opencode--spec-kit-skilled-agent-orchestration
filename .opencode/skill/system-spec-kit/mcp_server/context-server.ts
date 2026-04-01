@@ -54,6 +54,7 @@ import {
   appendAutoSurfaceHints,
   syncEnvelopeTokenCount,
   serializeEnvelopeWithTokenCount,
+  recordToolCall,
 } from './hooks/index.js';
 import { primeSessionIfNeeded } from './hooks/memory-surface.js';
 
@@ -102,6 +103,8 @@ import { buildErrorResponse, getDefaultErrorCodeForTool, getRecoveryHint } from 
 // T001-T004: Session deduplication
 import * as sessionManager from './lib/session/session-manager.js';
 import * as shadowEvaluationRuntime from './lib/feedback/shadow-evaluation-runtime.js';
+// Phase 023: Context metrics — lightweight session quality tracking
+import { recordMetricEvent } from './lib/session/context-metrics.js';
 
 // P4-12/P4-19: Incremental index (passed to db-state for stale handle refresh)
 import * as incrementalIndex from './lib/storage/incremental-index.js';
@@ -155,6 +158,14 @@ interface AutoSurfaceResult {
   };
   sessionPrimed?: boolean;
   primedTool?: string;
+  /** T018: Structured Prime Package for non-hook CLI auto-priming */
+  primePackage?: {
+    specFolder: string | null;
+    currentTask: string | null;
+    codeGraphStatus: 'fresh' | 'stale' | 'empty';
+    cocoIndexAvailable: boolean;
+    recommendedCalls: string[];
+  };
   surfaced_at?: string;
   latencyMs?: number;
 }
@@ -538,6 +549,18 @@ function injectSessionPrimeHints(
     `Session priming: loaded ${constitutionalCount} constitutional memories and ${codeGraphState}`
   );
 
+  // T018: Include Prime Package hints for non-hook CLIs
+  const pkg = sessionPrimeContext.primePackage;
+  if (pkg) {
+    if (pkg.specFolder) {
+      hints.push(`Active spec folder: ${pkg.specFolder}`);
+    }
+    hints.push(`Code graph: ${pkg.codeGraphStatus}, CocoIndex: ${pkg.cocoIndexAvailable ? 'available' : 'not installed'}`);
+    if (pkg.recommendedCalls.length > 0) {
+      hints.push(`Recommended next calls: ${pkg.recommendedCalls.join(', ')}`);
+    }
+  }
+
   meta.sessionPriming = sessionPrimeContext;
 }
 
@@ -660,6 +683,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // T304: Zod validation is applied per-tool inside each dispatch module
     // (tools/*.ts) to avoid double-validation overhead at the server layer.
 
+    // T018: Track last tool call timestamp for session_health
+    recordToolCall();
+
+    // Phase 023: Record metric event for context quality tracking
+    recordMetricEvent({ kind: 'tool_call', toolName: name });
+    // Classify specific tool calls for finer-grained metrics
+    if (name === 'memory_context' && args.mode === 'resume') {
+      recordMetricEvent({ kind: 'memory_recovery' });
+    }
+    if (name.startsWith('code_graph_')) {
+      recordMetricEvent({ kind: 'code_graph_query' });
+    }
+    if (typeof args.specFolder === 'string' && args.specFolder) {
+      recordMetricEvent({ kind: 'spec_folder_change', specFolder: args.specFolder as string });
+    }
+
     const dbReinitialized = await checkDatabaseUpdated();
     if (dbReinitialized) {
       await invalidateReinitializedDbCaches();
@@ -725,6 +764,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     }
 
     runAfterToolCallbacks(name, callId, structuredClone(result));
+
+    // F057: Passive context enrichment pipeline — adds code graph symbols
+    // near mentioned file paths and session continuity warnings.
+    if (result && !result.isError && result.content?.[0]?.text) {
+      try {
+        const { runPassiveEnrichment } = await import('./lib/enrichment/passive-enrichment.js');
+        const enrichment = await runPassiveEnrichment(result.content[0].text);
+        if (!enrichment.skipped && enrichment.hints.length > 0) {
+          try {
+            const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+            if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+              const existingHints = Array.isArray(envelope.hints) ? envelope.hints as string[] : [];
+              envelope.hints = [...existingHints, ...enrichment.hints];
+              result.content[0].text = JSON.stringify(envelope, null, 2);
+            }
+          } catch {
+            // Response is not JSON envelope — skip enrichment injection
+          }
+        }
+      } catch (enrichErr: unknown) {
+        // Passive enrichment is strictly non-fatal
+        const msg = enrichErr instanceof Error ? enrichErr.message : String(enrichErr);
+        console.warn(`[context-server] Passive enrichment failed (non-fatal): ${msg}`);
+      }
+    }
 
     // SK-004: Inject auto-surface hints before token-budget enforcement so
     // The final envelope metadata reflects the fully decorated response.

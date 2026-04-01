@@ -150,7 +150,9 @@ describe('Memory Context Session State Persistence', () => {
     );
     expect(handleMemorySearch).toHaveBeenCalledWith(
       expect.objectContaining({
-        specFolder: '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
+        folderBoost: expect.objectContaining({
+          folder: '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
+        }),
       }),
     );
   });

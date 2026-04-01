@@ -33,6 +33,22 @@ interface MemoryRoadmapDefaults {
 const PHASE_ENV = 'SPECKIT_MEMORY_ROADMAP_PHASE';
 const LEGACY_PHASE_ENV = 'SPECKIT_HYDRA_PHASE';
 
+/**
+ * SPECKIT_PARSER — Structural parser backend selector.
+ *
+ * Controls which parsing backend the structural indexer uses for code-graph
+ * symbol extraction. Evaluated at first parse call; cannot be changed mid-session.
+ *
+ * | Value        | Description                                                 |
+ * |--------------|-------------------------------------------------------------|
+ * | `treesitter` | (default) AST-accurate parsing via web-tree-sitter WASM    |
+ * | `regex`      | Lightweight regex-based fallback — no WASM dependencies     |
+ *
+ * Runtime: `lib/code-graph/structural-indexer.ts::getParser()`
+ * Example: `SPECKIT_PARSER=regex node context-server.js`
+ */
+const SPECKIT_PARSER_ENV = 'SPECKIT_PARSER' as const;
+
 // Keep roadmap controls distinct from existing runtime feature flags so
 // Telemetry/checkpoints describe roadmap rollout state rather than unrelated
 // Default-on retrieval behavior.
@@ -165,6 +181,8 @@ export {
   getMemoryRoadmapPhase,
   /** @internal — exposed for test utilities only */
   isMemoryRoadmapCapabilityEnabled,
+  /** F044: Documented parser backend env var name */
+  SPECKIT_PARSER_ENV,
 };
 
 export type {

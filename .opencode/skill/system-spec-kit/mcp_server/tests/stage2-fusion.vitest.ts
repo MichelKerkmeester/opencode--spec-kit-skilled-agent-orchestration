@@ -9,6 +9,8 @@ const mockApplyCommunityBoost = vi.fn();
 const mockCoActivationEnabled = vi.fn(() => false);
 const mockSpreadActivation = vi.fn(() => []);
 const mockGetRelatedMemoryCounts = vi.fn(() => new Map<number, number>());
+const mockGetAdaptiveMode = vi.fn(() => 'disabled');
+const mockEnsureAdaptiveTables = vi.fn();
 
 vi.mock('../utils/db-helpers', () => ({
   requireDb: mockRequireDb,
@@ -32,6 +34,11 @@ vi.mock('../lib/cognitive/co-activation', () => ({
   getRelatedMemoryCounts: mockGetRelatedMemoryCounts,
   resolveCoActivationBoostFactor: () => 0.25,
   CO_ACTIVATION_CONFIG: { boostFactor: 0.25 },
+}));
+
+vi.mock('../lib/cognitive/adaptive-ranking.js', () => ({
+  getAdaptiveMode: mockGetAdaptiveMode,
+  ensureAdaptiveTables: mockEnsureAdaptiveTables,
 }));
 
 vi.mock('../lib/search/session-boost', () => ({
@@ -95,6 +102,8 @@ describe('Stage 2 fusion regression coverage', () => {
     mockCoActivationEnabled.mockReset();
     mockSpreadActivation.mockReset();
     mockGetRelatedMemoryCounts.mockReset();
+    mockGetAdaptiveMode.mockReset();
+    mockEnsureAdaptiveTables.mockReset();
 
     mockRequireDb.mockReturnValue({} as Record<string, unknown>);
     mockQueryLearnedTriggers.mockReturnValue([]);
@@ -103,6 +112,7 @@ describe('Stage 2 fusion regression coverage', () => {
     mockCoActivationEnabled.mockReturnValue(false);
     mockSpreadActivation.mockReturnValue([]);
     mockGetRelatedMemoryCounts.mockReturnValue(new Map());
+    mockGetAdaptiveMode.mockReturnValue('disabled');
 
     process.env = {
       ...originalEnv,
@@ -317,5 +327,35 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(mockGetRelatedMemoryCounts).toHaveBeenCalledWith([2]);
     const boosted = result.scored.find((row) => row.id === 2);
     expect(boosted?.score).toBeCloseTo(0.55, 9);
+  });
+
+  it('batches adaptive access signal writes into a single transaction', async () => {
+    mockGetAdaptiveMode.mockReturnValue('shadow');
+
+    const insertRun = vi.fn();
+    const prepare = vi.fn().mockReturnValue({ run: insertRun });
+    const transaction = vi.fn((callback: (rows: Array<Record<string, unknown>>) => void) =>
+      (rows: Array<Record<string, unknown>>) => callback(rows)
+    );
+    const mockDb = { prepare, transaction };
+    mockRequireDb.mockReturnValue(mockDb);
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const input = createStage2Input([
+      { id: 1, score: 0.9, similarity: 90 },
+      { id: 2, score: 0.8, similarity: 80 },
+    ]);
+    input.config.trackAccess = true;
+
+    await executeStage2(input);
+
+    expect(mockGetAdaptiveMode).toHaveBeenCalledTimes(1);
+    expect(mockEnsureAdaptiveTables).toHaveBeenCalledTimes(1);
+    expect(mockEnsureAdaptiveTables).toHaveBeenCalledWith(mockDb);
+    expect(prepare).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO adaptive_signal_events'));
+    expect(transaction).toHaveBeenCalledTimes(1);
+    expect(insertRun).toHaveBeenCalledTimes(2);
+    expect(insertRun).toHaveBeenNthCalledWith(1, 1, 'access', 1.0, 'graph rollout regression', '', '{}');
+    expect(insertRun).toHaveBeenNthCalledWith(2, 2, 'access', 1.0, 'graph rollout regression', '', '{}');
   });
 });

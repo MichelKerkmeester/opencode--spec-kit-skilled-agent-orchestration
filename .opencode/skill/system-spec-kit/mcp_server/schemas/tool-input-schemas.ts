@@ -448,6 +448,10 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
     actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
   }),
   shared_memory_enable: getSchema({}) as unknown as ToolInputSchema,
+  session_health: getSchema({}) as unknown as ToolInputSchema,
+  session_resume: getSchema({
+    specFolder: optionalPathString(),
+  }) as unknown as ToolInputSchema,
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
@@ -484,6 +488,8 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   shared_space_membership_set: ['spaceId', 'tenantId', 'actorUserId', 'actorAgentId', 'subjectType', 'subjectId', 'role'],
   shared_memory_status: ['tenantId', 'actorUserId', 'actorAgentId'],
   shared_memory_enable: [],
+  session_health: [],
+  session_resume: ['specFolder'],
 };
 
 /* ───────────────────────────────────────────────────────────────
