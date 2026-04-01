@@ -23,6 +23,11 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
 }));
 
 vi.mock('../lib/session/context-metrics.js', () => ({
+  computeQualityScore: vi.fn(() => ({
+    level: 'degraded',
+    score: 0.5,
+    factors: { recency: 0, recovery: 0, graphFreshness: 0, continuity: 0 },
+  })),
   recordMetricEvent: vi.fn(),
   recordBootstrapEvent: vi.fn(),
 }));
@@ -30,6 +35,7 @@ vi.mock('../lib/session/context-metrics.js', () => ({
 import { handleSessionResume } from '../handlers/session-resume.js';
 import { handleMemoryContext } from '../handlers/memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
+import { computeQualityScore, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 
 describe('session-resume handler', () => {
   beforeEach(() => {
@@ -89,5 +95,21 @@ describe('session-resume handler', () => {
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.data.codeGraph.status).toBe('error');
     expect(parsed.data.hints.some((h: string) => h.includes('Code graph unavailable'))).toBe(true);
+  });
+
+  it('records bootstrap telemetry for full resume requests', async () => {
+    await handleSessionResume({});
+    expect(recordBootstrapEvent).toHaveBeenCalledWith('tool', expect.any(Number), 'full');
+  });
+
+  it('skips bootstrap telemetry and includes sessionQuality in minimal mode', async () => {
+    const result = await handleSessionResume({ minimal: true });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(handleMemoryContext).not.toHaveBeenCalled();
+    expect(computeQualityScore).toHaveBeenCalledTimes(1);
+    expect(parsed.data.memory).toEqual({ skipped: true, reason: 'minimal mode' });
+    expect(parsed.data.sessionQuality).toBe('degraded');
+    expect(recordBootstrapEvent).not.toHaveBeenCalled();
   });
 });

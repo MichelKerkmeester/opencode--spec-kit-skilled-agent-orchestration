@@ -93,4 +93,4 @@ tmp/
 .opencode/specs/00--barter-dev
 .claude/specs/00--barter-dev
 .codex/specs/00--barter-dev
-.agents/specs/00--barter-dev
+.agents/specs/00--barter-devcode-graph.sqlite

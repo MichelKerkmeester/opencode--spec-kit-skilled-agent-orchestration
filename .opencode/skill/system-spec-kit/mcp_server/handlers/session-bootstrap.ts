@@ -82,7 +82,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   // Deduplicate hints
   const uniqueHints = [...new Set(allHints)];
 
-  // Record bootstrap telemetry
+  // Record bootstrap telemetry once for the composite call.
   const durationMs = Date.now() - startMs;
   const completeness = resumeData.error || healthData.error ? 'partial' : 'minimal';
   recordBootstrapEvent('tool', durationMs, completeness);

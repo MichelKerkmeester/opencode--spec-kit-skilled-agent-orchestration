@@ -9,7 +9,7 @@ description: "Structural code indexer extracts symbols from JS/TS/Python/Bash vi
 
 Structural code indexer extracts symbols from JS/TS/Python/Bash via regex-based parsing with deterministic symbolIds.
 
-Regex-based parser extracts functions, classes, methods, interfaces, type aliases, enums, imports, and exports. Generates deterministic symbolIds via SHA-256 hash. Content hashes enable incremental re-indexing. Tree-sitter WASM parser is now available as an alternative (see 13-tree-sitter-wasm-parser.md); the regex parser remains as fallback.
+Regex-based parser extracts functions, classes, methods, interfaces, type aliases, enums, imports, and exports. Generates deterministic symbolIds via SHA-256 hash. Content hashes enable incremental re-indexing. Tree-sitter WASM parser is now available as an alternative (see 13-tree-sitter-wasm-parser.md); the regex parser remains as fallback. Incremental scans now skip unchanged files via mtime comparison, and deleted files are automatically purged during incremental re-indexing.
 
 ---
 

@@ -973,11 +973,13 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
+  // P0 fix: sessionId is for dedup/state tracking, NOT a governance boundary.
+  // Including it here caused all candidates to be filtered out when memory_context
+  // passed an ephemeral sessionId, because memories don't have session-scoped access.
   const hasGovernanceScope = Boolean(
     tenantId
     || userId
     || agentId
-    || config.sessionId
     || sharedSpaceId
   );
   const shouldApplyScopeFiltering = hasGovernanceScope || isScopeEnforcementEnabled();
@@ -985,7 +987,6 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     tenantId,
     userId,
     agentId,
-    sessionId: config.sessionId,
     sharedSpaceId,
   };
   let allowedSharedSpaceIds: Set<string> | undefined;
@@ -1387,11 +1388,17 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
+  // P1 fix: activeChannels counts actual retrieval channels (vector, keyword/BM25),
+  // while channelCount counts parallel query variants. In hybrid mode both vector
+  // and keyword channels are always active regardless of query variant count.
+  const activeChannels = searchType === 'hybrid' ? 2 : 1;
+
   return {
     candidates,
     metadata: {
       searchType,
       channelCount,
+      activeChannels,
       candidateCount: candidates.length,
       constitutionalInjected: constitutionalInjectedCount,
       durationMs,

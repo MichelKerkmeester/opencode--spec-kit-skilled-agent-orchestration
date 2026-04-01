@@ -96,7 +96,7 @@ Eliminate AI tool misjudgment by adding active enforcement at three MCP enforcem
 | `CLAUDE.md` (root) | Modify | Strengthen CocoIndex/Code Graph enforcement language |
 | `.claude/CLAUDE.md` | Modify | Add hook-aware routing reinforcement |
 | `.codex/CODEX.md` | Modify | Add non-hook routing enforcement |
-| `.gemini/GEMINI.md` | Modify | Add non-hook routing enforcement |
+| `GEMINI.md` | Modify | Add non-hook routing enforcement |
 | Runtime agent files (context-prime.md x5) | Modify | Add routing directives to prime output |
 
 ---
@@ -108,7 +108,7 @@ Eliminate AI tool misjudgment by adding active enforcement at three MCP enforcem
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | `buildServerInstructions()` includes tool-routing rules | Server instructions contain "Use CocoIndex for semantic/concept searches" and "Use Code Graph for structural queries" |
-| REQ-002 | PrimePackage includes routing directives | `primePackage.routingRules` array present with CocoIndex and Code Graph rules |
+| REQ-002 | PrimePackage includes routing directives | `primePackage.routingRules` object present with named `graphRetrieval`, `communitySearch`, and `toolRouting` fields |
 | REQ-003 | Tool response hints redirect misjudgment | When `memory_search` or `memory_context` is called with a code-search query, response includes hint about CocoIndex |
 | REQ-004 | All runtimes receive enforcement | Claude Code (hooks), Codex (no hooks), Copilot (no hooks), Gemini (partial hooks) all get routing rules via MCP |
 
@@ -125,7 +125,7 @@ Eliminate AI tool misjudgment by adding active enforcement at three MCP enforcem
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `buildServerInstructions()` output contains tool-routing section (verified by unit test)
-- **SC-002**: PrimePackage includes `routingRules` field with >= 3 rules (verified by unit test)
+- **SC-002**: PrimePackage includes a `routingRules` object with named graph retrieval, community search, and tool routing fields (verified by unit test)
 - **SC-003**: At least one tool response hint fires when semantic search is appropriate (verified by integration test)
 - **SC-004**: All 4 runtime instruction files contain active enforcement language (verified by grep)
 

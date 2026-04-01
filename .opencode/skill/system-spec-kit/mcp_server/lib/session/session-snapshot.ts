@@ -59,10 +59,13 @@ export function getSessionSnapshot(): SessionSnapshot {
   let specFolder: string | null = null;
   let currentTask: string | null = null;
   try {
-    const metrics = getSessionMetrics();
+    const metrics = getSessionMetrics() as ReturnType<typeof getSessionMetrics> & {
+      currentTask?: unknown;
+    };
     specFolder = metrics.currentSpecFolder;
-    // currentTask is not tracked by metrics; leave null
-    currentTask = null;
+    if (typeof metrics.currentTask === 'string' || metrics.currentTask === null) {
+      currentTask = metrics.currentTask;
+    }
   } catch { /* metrics unavailable */ }
 
   // Graph freshness

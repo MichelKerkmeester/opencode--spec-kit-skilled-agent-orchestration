@@ -9,7 +9,7 @@ description: "MCP tool (session_health) that reports session readiness with ok/w
 
 MCP tool (session_health) that reports session readiness with ok/warning/stale status, code graph freshness, priming status, and quality score.
 
-The session_health handler computes session status based on three time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). It returns structured details including sessionAgeMs, lastToolCallAgoMs, graphFreshness (fresh/stale/empty/error), specFolder, primingStatus, and a QualityScore with 4 weighted factors (recency, recovery, graphFreshness, continuity). Actionable hints guide the user toward recovery actions.
+The session_health handler computes session status based on three time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). It returns structured details including sessionAgeMs, lastToolCallAgoMs, graphFreshness (fresh/stale/empty/error), specFolder, primingStatus, and a QualityScore with 4 weighted factors (recency, recovery, graphFreshness, continuity). Actionable hints guide the user toward recovery actions. The session_health tool call is excluded from recordToolCall() to prevent idle timer reset — health checks no longer artificially extend session freshness.
 
 ---
 

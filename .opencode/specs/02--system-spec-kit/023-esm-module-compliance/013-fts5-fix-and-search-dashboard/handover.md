@@ -1,8 +1,15 @@
+---
+title: "Session Handover: FTS5 Fix, Search Dashboard, and DB Path Drift Fix"
+description: "Attempt 2 — P0/P1/P2 channel audit fixes applied, pending MCP server restart verification"
+trigger_phrases:
+  - "fts5 fix handover"
+  - "search dashboard handover"
+  - "db path drift handover"
+  - "memory_context focused mode fix"
+importance_tier: "important"
+contextType: "handover"
+---
 # Session Handover: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
-
-**Spec Folder**: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/013-fts5-fix-and-search-dashboard/`
-**Created**: 2026-04-01T19:30:00Z
-**Session Duration**: ~4 hours
 
 <!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 
@@ -10,139 +17,165 @@
 
 ## 1. Session Summary
 
-**Objective**: Fix memory search returning 0 results + redesign search dashboard
-**Progress**: 85%
+| Field | Value |
+| --- | --- |
+| **Objective** | Fix memory search returning 0 results + redesign search dashboard + fix channel audit issues |
+| **Progress** | 95% (all code complete, pending runtime verification after MCP server restart) |
+| **Session** | 2026-04-01 (Attempt 2, continuing from Attempt 1 handover) |
 
 ### Key Accomplishments
-- Diagnosed and fixed FTS5 double-quoting bug in `sqlite-fts.ts` (P0, completed)
-- Designed and applied search dashboard visualization (Design 10: folder-as-tree-group) across all runtimes
-- Ran 10 deep-research + 10 deep-review iterations via Copilot CLI GPT 5.4 — identified DB path drift as true root cause
-- Applied 4 P0 fixes (DB path stabilization, reinitialize guard, startup health check, warning logs)
-- Applied 5 P1 fixes (FTS scope filter, 15+ silent failure warnings across 3 files, DB path startup log)
-- Updated spec folder to Level 2 with full plan, tasks, checklist
-- All 3 packages build cleanly
+
+- Verified `memory_search("semantic search")` returns 5 results (Attempt 1 fixes confirmed working)
+- Ran full channel audit: vector, FTS5/BM25, graph across 3 search modes (auto, focused, deep)
+- Discovered and fixed 3 new issues (P0, P1, P2) found during channel audit
+- Updated all spec folder docs: checklist.md (11/11 P0, 10/10 P1), tasks.md (all complete), implementation-summary.md (all 4 items documented)
 
 ---
 
 ## 2. Current State
 
 | Field | Value |
-|-------|-------|
-| Phase | IMPLEMENTATION (P0+P1 fixes applied, verification pending) |
-| Active File | `mcp_server/lib/search/vector-index-store.ts` |
-| Last Action | P0+P1 fixes compiled, build passes |
-| System State | Fixes in compiled dist, MCP server needs restart to test |
+| --- | --- |
+| Phase | IMPLEMENTATION (fixes compiled, awaiting server restart for verification) |
+| Active Files | `memory-context.ts`, `stage1-candidate-gen.ts`, `stage2-fusion.ts`, `types.ts` |
+| Last Action | Killed all context-server.js processes to force restart; MCP server disconnected |
+| System State | Dist compiled with all fixes; MCP server needs reconnection in new session |
 
 ---
 
 ## 3. Completed Work
 
-### Tasks Completed
-- [x] T001 FTS5 double-quoting guard (`sqlite-fts.ts` line 58)
-- [x] T002 Compile dist after FTS5 fix
-- [x] T003-T005 Dashboard Design 10 applied to `search.md` and `search.toml`
-- [x] Fix 1: Stabilize `resolve_database_path()` — never drift to empty DB
-- [x] Fix 2: Guard `reinitializeDatabase()` — refuse empty DB rebind
-- [x] Fix 3: Startup health check + auto-backfill `active_memory_projection`
-- [x] Fix 4: Warn on uninitialized db in `hybrid-search.ts`
-- [x] Fix 5: FTS scope filter — descendant matching
-- [x] Fix 6-8: 15+ silent failure warnings in `hybrid-search.ts`, `stage1-candidate-gen.ts`, `vector-index-queries.ts`
-- [x] Fix 9: DB path logged on startup
+### Attempt 1 Fixes (verified this session)
 
-### Files Modified
-- `mcp_server/lib/search/sqlite-fts.ts` — FTS5 guard + scope filter
-- `mcp_server/lib/search/vector-index-store.ts` — stable `resolve_database_path()`
-- `mcp_server/core/db-state.ts` — empty DB rebind guard
-- `mcp_server/context-server.ts` — startup health check + DB path log
-- `mcp_server/lib/search/hybrid-search.ts` — warning logs on silent returns
-- `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` — warning logs
-- `mcp_server/lib/search/vector-index-queries.ts` — warning logs
-- `.opencode/command/memory/search.md` — Design 10 dashboard template
-- `.agents/commands/memory/search.toml` — Design 10 dashboard template
+- [x] FTS5 double-quoting guard (`sqlite-fts.ts` line 58)
+- [x] Search dashboard Design 10 (`search.md`, `search.toml`)
+- [x] DB path stabilization (`vector-index-store.ts` lines 277-289)
+- [x] Empty DB rebind guard (`db-state.ts` lines 294-310)
+- [x] Startup health check + DB path log (`context-server.ts` lines 1368-1374)
+- [x] FTS scope filter descendant matching (`sqlite-fts.ts` lines 63-65)
+- [x] 31+ silent failure warnings across 5 search pipeline files
+- [x] Runtime verification: `memory_search("semantic search")` returns 5 results via hybrid pipeline (812ms)
+
+### Attempt 2 Fixes (compiled, pending verification)
+
+- [x] **P0 Fix 1** — `memory-context.ts:1306-1311`: Folder discovery no longer promotes discovered folder to `options.specFolder` (restrictive exact-match filter). Now only sets `folderBoost` for scoring.
+- [x] **P0 Fix 2** — `stage1-candidate-gen.ts:976-990`: Removed `sessionId` from governance scope check (`hasGovernanceScope`) and `scopeFilter`. Session IDs are for dedup/state tracking, not access control. When present, they incorrectly activated `filterRowsByScope` which filtered out ALL candidates.
+- [x] **P0 Recovery cleanup** — `memory-context.ts:1370-1383`: Removed now-unnecessary RC1-A recovery retry (folder discovery no longer sets specFolder).
+- [x] **P1** — `stage1-candidate-gen.ts:1390` + `types.ts:205`: Added `activeChannels` field to stage1 metadata (2 for hybrid, 1 for vector-only).
+- [x] **P2** — `stage2-fusion.ts:1326`: Diagnostic `console.warn` when graph channel is active (`bounded_runtime`) but contributes zero (causal/co-activation/community/signals all 0).
+
+### Files Modified (This Session)
+
+| File | Changes |
+|------|---------|
+| `handlers/memory-context.ts` | P0: folder discovery no longer sets specFolder; recovery retry removed |
+| `lib/search/pipeline/stage1-candidate-gen.ts` | P0: sessionId removed from scope check; P1: activeChannels metric |
+| `lib/search/pipeline/types.ts` | P1: `activeChannels` optional field in Stage1Output |
+| `lib/search/pipeline/stage2-fusion.ts` | P2: graph zero-contribution diagnostic warning |
+| `checklist.md` | All P0 (11/11) and P1 (10/10) items verified with evidence |
+| `tasks.md` | All T001-T027 marked complete with evidence |
+| `implementation-summary.md` | Updated with Items 3 and 4 details, verification results |
+
+### Build Status
+
+`bun run build` (tsc --build) passes cleanly. All dist files compiled at 21:39 local time.
 
 ---
 
 ## 4. Pending Work
 
 ### Immediate Next Action
-> **Restart the MCP server and verify that `memory_search("semantic search")` returns results.** This is the critical validation — all fixes are compiled but untested at runtime.
+
+> **Restart IDE/terminal to reconnect MCP server, then verify the 3 new fixes work:**
+> 1. `memory_context({ input: "semantic search", mode: "focused" })` should return >0 results
+> 2. Check `stage1.activeChannels` appears in pipeline metadata (expect: 2 for hybrid)
+> 3. Check server logs for `[stage2-fusion] Graph channel active (bounded_runtime) but zero contribution` warning
 
 ### Remaining Tasks
-- [ ] Restart MCP server to pick up compiled fixes
-- [ ] Run `memory_search("semantic search")` — verify >0 results returned
-- [ ] Check startup logs for `[context-server] Database path:` and `[context-server] Startup health:` lines
-- [ ] Verify `resolve_database_path()` stays on `context-index.sqlite` (not drift to provider-specific DB)
-- [ ] Update checklist.md items CHK-011 through CHK-028 with evidence
-- [ ] Run spec folder validation (`validate.sh --strict`)
-- [ ] Create implementation-summary.md
+
+- [ ] Verify P0 fix: `memory_context` focused mode returns results (was 0, root cause: sessionId in scope filter + folder-as-filter)
+- [ ] Verify P1 fix: `activeChannels` field in stage1 metadata
+- [ ] Verify P2 fix: Graph warning in server logs
+- [ ] Update checklist.md with channel audit verification evidence
 - [ ] Save memory context via `generate-context.js`
-- [ ] Commit changes
+- [ ] Commit all changes
 
 ### Effort Estimate
-~1-2 hours for verification + documentation closure
+
+~30 minutes for verification + documentation closure + commit
 
 ---
 
 ## 5. Key Decisions
 
-### DB Path Stabilization over Migration
-- **Choice**: Make `resolve_database_path()` always return stable path; never drift
-- **Rationale**: Provider-specific DBs were empty with no migration path. Simpler to pin to populated DB than build migration.
-- **Alternatives rejected**: Build DB migration/backfill between provider-specific DBs (too complex, unnecessary)
+### Two Root Causes for P0 (Not One)
 
-### Design 10 for Dashboard
-- **Choice**: Folder-as-tree-group with leaf folder names, no metadata
-- **Rationale**: User feedback: "too much info, no reason to display metadata." Full paths wrap on narrow viewports.
-- **Alternatives rejected**: 29 other designs evaluated in scratch/
+- **Choice**: Fix both folder-as-filter AND sessionId-in-scope rather than just the folder issue
+- **Rationale**: First fix alone didn't resolve the issue. Deep investigation revealed `sessionId` in governance scope check was the true root cause — it activated `filterRowsByScope` which filtered ALL candidates. Both fixes are needed.
+- **Alternatives rejected**: Only fixing folder promotion (insufficient — sessionId scope filter was the actual blocker)
 
-### Defense-in-Depth Fix Strategy
-- **Choice**: 4-layer fix (path resolution → rebind guard → health check → warning logs)
-- **Rationale**: Single fix insufficient — multiple independent failure modes across the pipeline
+### activeChannels vs Renaming channelCount
+
+- **Choice**: Add new `activeChannels` field alongside existing `channelCount` (backward compatible)
+- **Rationale**: `channelCount` tracks parallel query variants; consumers may depend on it. New field clarifies actual retrieval channels.
+- **Alternatives rejected**: Renaming `channelCount` (breaks consumers), adding it only to trace (not visible enough)
+
+### Graph Warning vs Graph Fix
+
+- **Choice**: Add diagnostic warning rather than fixing graph to contribute data
+- **Rationale**: Graph contributing zero is data-dependent (sparse causal_edges), not a code bug. Warning helps users understand the state.
+- **Alternatives rejected**: Populating graph data (out of scope), disabling graph channel (reduces future capability)
 
 ---
 
 ## 6. Blockers & Risks
 
 ### Current Blockers
-None — all fixes compiled, awaiting runtime verification.
+
+- MCP server disconnected after `pkill -f context-server.js`. New session required to reconnect and verify fixes.
 
 ### Risks
-- P0 fixes may introduce regressions in edge cases where provider-specific DBs were intentionally used → Mitigation: `SPECKIT_FORCE_REBIND=true` env var allows override
-- FTS scope filter change (descendant matching) may return more results than expected → Mitigation: Matches existing BM25 behavior
-- Silent failure warnings add console output → Mitigation: Only fires on actual failures, not normal operation
+
+- P0 Fix 2 (removing sessionId from scope) may have unintended effects if any code relies on session-scoped memory filtering. Mitigation: `isScopeEnforcementEnabled()` is off by default; session-based dedup still works via handler-level dedup (not stage1 scope).
+- `activeChannels` field is optional (`activeChannels?: number`) so existing consumers won't break, but they also won't see it unless updated.
 
 ---
 
 ## 7. Continuation Instructions
 
 ### To Resume
+
 ```
 /spec_kit:resume .opencode/specs/02--system-spec-kit/023-esm-module-compliance/013-fts5-fix-and-search-dashboard/
 ```
 
 ### Files to Review First
-1. `scratch/p0-fix-summary.md` — all P0 changes with line numbers
-2. `scratch/p1-fix-summary.md` — all P1 changes with line numbers
-3. `checklist.md` — pending verification items
-4. `tasks.md` — remaining tasks in Phase 2-3
+
+1. `handlers/memory-context.ts` lines 1306-1311 — P0 folder discovery fix
+2. `lib/search/pipeline/stage1-candidate-gen.ts` lines 976-990 — P0 sessionId scope fix
+3. `lib/search/pipeline/stage1-candidate-gen.ts` lines 1390-1400 — P1 activeChannels
+4. `lib/search/pipeline/stage2-fusion.ts` lines 1326-1340 — P2 graph warning
 
 ### Quick-Start Checklist
-- [ ] Load this handover document
-- [ ] Restart MCP server (or restart the IDE/terminal to trigger auto-restart)
-- [ ] Run `/memory:search "semantic search"` — expect >0 results
-- [ ] Check server logs for health check output
-- [ ] Update checklist.md with verification evidence
-- [ ] Create implementation-summary.md
-- [ ] Save context and commit
 
-### Key Evidence Files
-- `scratch/deep-research/research-01.md` through `research-10.md` — root cause investigation
-- `scratch/review-01.md` through `review-10.md` — code review findings
-- `scratch/p0-fix-summary.md` — P0 fix details
-- `scratch/p1-fix-summary.md` — P1 fix details
+- [ ] Start new session (MCP server auto-reconnects)
+- [ ] Run `memory_context({ input: "semantic search", mode: "focused" })` — expect >0 results
+- [ ] Check `stage1.activeChannels` = 2 in pipeline metadata
+- [ ] Check server stderr for graph zero-contribution warning
+- [ ] Update checklist.md with verification evidence
+- [ ] Save context via `generate-context.js`
+- [ ] Commit all changes with conventional commit message
+
+### Channel Audit Reference (from this session)
+
+| Mode | Before Fix | Expected After Fix |
+|------|-----------|-------------------|
+| `memory_search` (auto) | 7 candidates, 5 results | Same (unaffected) |
+| `memory_context` (focused) | 0 candidates, 0 results | >0 candidates, >0 results |
+| `memory_search` (deep) | 15 candidates, 2 results | Same + `activeChannels: 2` |
 
 ---
 
-*CONTINUATION - Attempt 1 | Spec: 013-fts5-fix-and-search-dashboard | Last: P0+P1 fixes compiled | Next: Restart server + verify search returns results*
+*CONTINUATION - Attempt 2 | Spec: 013-fts5-fix-and-search-dashboard | Last: P0/P1/P2 channel fixes compiled, MCP server killed for restart | Next: New session -> verify focused mode returns results*
 
 *Generated by /spec_kit:handover*

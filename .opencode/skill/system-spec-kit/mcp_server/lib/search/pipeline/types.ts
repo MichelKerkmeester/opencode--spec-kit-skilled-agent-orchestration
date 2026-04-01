@@ -203,6 +203,8 @@ export interface Stage1Output {
   metadata: {
     searchType: string;
     channelCount: number;
+    /** Actual retrieval channels active (vector=1, hybrid=2). Unlike channelCount which tracks query variants. */
+    activeChannels?: number;
     candidateCount: number;
     constitutionalInjected: number;
     durationMs: number;

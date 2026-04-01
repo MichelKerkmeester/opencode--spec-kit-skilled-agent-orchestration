@@ -299,6 +299,11 @@ describe('Context Server', () => {
       expect(sourceCode).toMatch(/import\s+\{[^}]*dispatchTool[^}]*\}\s*from\s+['"]\.\/tools\/index\.js['"]/)
     })
 
+    it('T16d: only session_health is excluded from tool-call tracking', () => {
+      expect(sourceCode).toMatch(/if \(name !== 'session_health'\) \{/)
+      expect(sourceCode).not.toMatch(/name !== 'session_health' && name !== 'session_bootstrap'/)
+    })
+
     // T17: All tools dispatched via tool modules
     it('T17: All expected tools dispatched via modules', () => {
       const toolsDir = path.join(SERVER_DIR, 'tools')

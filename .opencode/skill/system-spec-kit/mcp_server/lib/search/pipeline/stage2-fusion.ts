@@ -1329,6 +1329,21 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     metadata.graphContribution.communityInjected = countGraphContribution(results, 'communityDelta');
     metadata.graphContribution.graphSignalsBoosted = countGraphContribution(results, 'graphSignalDelta');
     metadata.graphContribution.totalGraphInjected = countGraphInjected(results);
+
+    // P2 fix: Diagnostic when graph is activated but contributes nothing
+    if (
+      !metadata.graphContribution.killSwitchActive &&
+      metadata.graphContribution.rolloutState === 'bounded_runtime' &&
+      metadata.graphContribution.causalBoosted === 0 &&
+      metadata.graphContribution.coActivationBoosted === 0 &&
+      metadata.graphContribution.communityInjected === 0 &&
+      metadata.graphContribution.graphSignalsBoosted === 0 &&
+      results.length > 0
+    ) {
+      console.warn(
+        '[stage2-fusion] Graph channel active (bounded_runtime) but zero contribution — causal_edges table may be sparse or candidates lack graph connectivity'
+      );
+    }
   }
 
   // -- Trace --

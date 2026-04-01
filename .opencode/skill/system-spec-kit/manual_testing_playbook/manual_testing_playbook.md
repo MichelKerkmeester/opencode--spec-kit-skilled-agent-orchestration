@@ -149,7 +149,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 290 scenario files while the feature catalog contains 255 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 311 scenario files while the feature catalog contains 255 feature files.
 5. No unresolved blocking triage item remains.
 6. Orphan scenario count is zero (every scenario file is linked in Section 12).
 
@@ -170,8 +170,8 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 290 ]; then
-  echo "Expected 290 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 311 ]; then
+  echo "Expected 311 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
@@ -3747,5 +3747,6 @@ This split playbook keeps automated coverage references in three places:
 | 264 | Context Preservation | Query-intent routing in memory_context | [264](22--context-preservation-and-code-graph/264-query-intent-routing.md) | [22--context-preservation-and-code-graph/19-query-intent-routing.md](../feature_catalog/22--context-preservation-and-code-graph/19-query-intent-routing.md) |
 | 265 | Context Preservation | Gemini CLI hooks session-prime | [265](22--context-preservation-and-code-graph/265-gemini-hooks.md) | [22--context-preservation-and-code-graph/21-gemini-cli-hooks.md](../feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md) |
 | 266 | Context Preservation | Context preservation metrics quality score | [266](22--context-preservation-and-code-graph/266-context-metrics.md) | [22--context-preservation-and-code-graph/22-context-preservation-metrics.md](../feature_catalog/22--context-preservation-and-code-graph/22-context-preservation-metrics.md) |
+| 267 | Context Preservation | Tool routing enforcement | [267](22--context-preservation-and-code-graph/267-tool-routing-enforcement.md) | [22--context-preservation-and-code-graph/23-tool-routing-enforcement.md](../feature_catalog/22--context-preservation-and-code-graph/23-tool-routing-enforcement.md) |
 
 ---

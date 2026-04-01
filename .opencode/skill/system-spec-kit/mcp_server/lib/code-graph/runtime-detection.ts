@@ -57,7 +57,11 @@ function detectGeminiHookPolicy(): HookPolicy {
     if (!existsSync(settingsPath)) return 'unavailable';
     const raw = readFileSync(settingsPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    if (parsed && (typeof parsed.hooks === 'object' || typeof parsed.hooksConfig === 'object')) {
+    const hasHooksBlock = parsed && (
+      (parsed.hooks !== null && typeof parsed.hooks === 'object') ||
+      (parsed.hooksConfig !== null && typeof parsed.hooksConfig === 'object')
+    );
+    if (hasHooksBlock) {
       return 'enabled';
     }
     return 'disabled_by_scope';

@@ -1304,13 +1304,12 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
 
   const discoveredFolder = maybeDiscoverSpecFolder(options, { ...args, input: normalizedInput });
-  // Propagate discovered folder into options so strategy executors (handleMemorySearch)
-  // receive it as a spec-folder filter, and session state captures it.
-  if (discoveredFolder && !options.specFolder) {
-    options.specFolder = discoveredFolder;
-  }
+  // FIX P0: Folder discovery sets options.folderBoost for scoring only.
+  // Do NOT propagate as options.specFolder — that becomes an exact-match filter
+  // in vector-index-queries.ts (m.spec_folder = ?) which silently drops all
+  // results when the discovered path has no indexed memories.
   const sessionStateResult = sessionManager.saveSessionState(effectiveSessionId, {
-    specFolder: options.specFolder ?? spec_folder,
+    specFolder: options.specFolder ?? discoveredFolder ?? spec_folder,
     tenantId: args.tenantId,
     userId: args.userId,
     agentId: args.agentId,
@@ -1367,20 +1366,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     });
   }
 
-  // FIX RC1-A: Folder discovery recovery — retry without folder filter when discovery yields 0 results
-  if (discoveredFolder && extractResultCount(result) === 0) {
-    options.specFolder = undefined;
-    try {
-      result = await executeStrategy(effectiveMode, options, {
-        ...args,
-        input: normalizedInput,
-        intent: detectedIntent,
-      });
-    } catch (retryError: unknown) {
-      console.error('[memory-context] Folder discovery recovery retry failed:', toErrorMessage(retryError));
-      // Keep original 0-result response rather than crashing
-    }
-  }
+  // FIX RC1-A (superseded by P0 fix): Folder discovery no longer promotes to
+  // options.specFolder, so the recovery retry is no longer needed. The folder
+  // boost still applies via options.folderBoost for scoring prioritization.
 
   try {
     workingMemory.setSessionInferredMode(effectiveSessionId, effectiveMode);

@@ -733,8 +733,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // T304: Zod validation is applied per-tool inside each dispatch module
     // (tools/*.ts) to avoid double-validation overhead at the server layer.
 
-    // T018: Track last tool call timestamp for session_health
-    if (name !== 'session_health' && name !== 'session_bootstrap') {
+    // T018: Track last tool call timestamp for all tools except session_health.
+    if (name !== 'session_health') {
       recordToolCall();
 
       // Phase 023: Record metric event for context quality tracking

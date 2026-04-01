@@ -7,7 +7,7 @@
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
-import { recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
+import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -36,6 +36,7 @@ interface SessionResumeResult {
   memory: Record<string, unknown>;
   codeGraph: CodeGraphStatus;
   cocoIndex: CocoIndexStatus;
+  sessionQuality?: 'healthy' | 'degraded' | 'critical' | 'unknown';
   hints: string[];
 }
 
@@ -119,20 +120,32 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     hints.push('CocoIndex not installed. Install: `bash .opencode/skill/mcp-coco-index/scripts/install.sh`');
   }
 
+  let sessionQuality: SessionResumeResult['sessionQuality'];
+  if (args.minimal) {
+    try {
+      sessionQuality = computeQualityScore().level;
+    } catch {
+      sessionQuality = 'unknown';
+    }
+  }
+
   // ── Build composite result ──────────────────────────────────
   const result: SessionResumeResult = {
     memory: memoryResult,
     codeGraph,
     cocoIndex,
+    ...(sessionQuality ? { sessionQuality } : {}),
     hints,
   };
 
   // Phase 024 / Item 9: Record bootstrap telemetry
-  recordBootstrapEvent(
-    'tool',
-    Date.now() - startMs,
-    args.minimal ? 'minimal' : 'full',
-  );
+  if (!args.minimal) {
+    recordBootstrapEvent(
+      'tool',
+      Date.now() - startMs,
+      'full',
+    );
+  }
 
   return {
     content: [{

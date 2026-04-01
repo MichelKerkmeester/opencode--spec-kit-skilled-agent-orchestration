@@ -456,14 +456,21 @@ function buildPrimePackage(
     recommendedCalls.push('memory_match_triggers({ prompt: "<your task>" })');
   }
 
+  const toolRoutingRules: string[] = [];
+  if (cocoIndexAvailable) {
+    toolRoutingRules.push('semantic/concept queries → mcp__cocoindex_code__search');
+  }
+  if (codeGraphStatus !== 'empty') {
+    toolRoutingRules.push('structural queries (callers, deps) → code_graph_query');
+  }
+  toolRoutingRules.push('exact text/regex → Grep');
+
   return {
     specFolder, currentTask, codeGraphStatus, cocoIndexAvailable, recommendedCalls,
     routingRules: {
       graphRetrieval: 'For broad topic questions, use memory_search with retrievalLevel: "global" for community-level results. For specific memories, use "local" (default). Use "auto" for automatic fallback.',
       communitySearch: 'When primary search returns weak results, community search fallback activates automatically (SPECKIT_COMMUNITY_SEARCH_FALLBACK). Graph provenance is visible in graphEvidence field.',
-      toolRouting: cocoIndexAvailable
-        ? 'SEARCH ROUTING: semantic/concept queries → mcp__cocoindex_code__search | structural queries (callers, deps) → code_graph_query | exact text/regex → Grep'
-        : 'SEARCH ROUTING: structural queries (callers, deps) → code_graph_query | exact text/regex → Grep',
+      toolRouting: `SEARCH ROUTING: ${toolRoutingRules.join(' | ')}`,
     },
   };
 }

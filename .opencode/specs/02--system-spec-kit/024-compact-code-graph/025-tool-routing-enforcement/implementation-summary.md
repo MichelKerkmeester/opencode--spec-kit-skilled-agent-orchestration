@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -22,9 +22,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 025-tool-routing-enforcement |
+| **Completed** | 2026-04-01 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -40,20 +40,15 @@ contextType: "general"
      For Level 1-2, a Files Changed table after the narrative is fine.
      Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+This phase turned passive search guidance into an active 5-layer enforcement model. The core rollout changed 12 files and pushed routing rules into the places where tool choice actually happens, so semantic searches steer toward CocoIndex, structural questions steer toward Code Graph, and exact text stays with Grep. The task ledger is now at 28 of 30 tasks complete.
 
-### [Feature Name]
+### Routing Enforcement
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+You now get the same routing logic through MCP server instructions, session priming, tool-response hints, runtime instruction files, and context-prime agent outputs. That matches the plan and decision record: enforce at the MCP layer first, keep the guidance layered, and use hints as course correction instead of hard blocks.
 
-### Files Changed
+### Delivery State
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
-| File | Action | Purpose |
-|------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+The implementation work covered T-001 through T-023 and T-025 through T-029. Two items remain intentionally open: T-024 stays deferred because `.gemini/agents/context-prime.md` does not exist, and T-030 is still waiting on a fresh-session manual check in Claude Code.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -67,7 +62,7 @@ Explain what the user gains, not what files you touched.]
      For Level 1: a single sentence is enough.
      For Level 3+: describe stages (testing, rollout, verification). -->
 
-[How was this tested, verified and shipped? What was the rollout approach?]
+The rollout followed the phase plan from core enforcement outward: server instructions and tool descriptions first, then PrimePackage and session snapshot updates, then reactive hints, then runtime docs and agent outputs. Verification is grounded in the current ledger: unit coverage for `buildServerInstructions()` and the `routingRules` object, code verification for hint firing, and grep verification across runtime instruction files. No manual fresh-session pass is claimed yet because T-030 remains open.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -80,7 +75,9 @@ Explain what the user gains, not what files you touched.]
 
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Use a 5-layer enforcement model | It gives routing coverage in every surface named by the phase tasks, so one missed instruction source does not collapse the whole behavior. |
+| Keep enforcement active but non-blocking | DR-004 keeps the system corrective without breaking normal tool flow. |
+| Leave open work visible in the summary | The task ledger still has a real deferral and a real manual check outstanding, so the summary should match that state exactly. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -93,7 +90,9 @@ Explain what the user gains, not what files you touched.]
 
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| Task ledger state | PASS: T-001 through T-023 and T-025 through T-029 are complete; T-024 and T-030 remain open. |
+| Phase verification evidence | PASS: T-026 and T-027 unit checks, T-028 integration verification, T-029 runtime-doc grep verification. |
+| Fresh-session manual proof | OPEN: T-030 is not complete yet. |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -106,7 +105,8 @@ Explain what the user gains, not what files you touched.]
      not "Some features may require configuration."
      Write "None identified." if nothing applies. -->
 
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Missing Gemini agent file** `.gemini/agents/context-prime.md` does not exist in this workspace, so T-024 stays deferred.
+2. **Manual runtime confirmation still pending** The fresh Claude Code session check for CocoIndex-first routing is still open as T-030.
 <!-- /ANCHOR:limitations -->
 
 ---

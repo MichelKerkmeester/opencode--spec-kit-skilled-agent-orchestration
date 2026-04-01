@@ -9,7 +9,7 @@ description: "Structural code parser using web-tree-sitter with prebuilt WASM gr
 
 Structural code parser using web-tree-sitter with prebuilt WASM grammars for JS/TS/Python/Bash, replacing regex-based extraction with cursor-based AST walks.
 
-The tree-sitter parser implements the ParserAdapter interface, lazily initializing WASM grammars on first use. It performs cursor-based AST traversal to extract RawCapture arrays compatible with capturesToNodes() and extractEdges() from the structural indexer. Grammar WASM files are loaded from tree-sitter-wasms and cached per language. Content hashing enables incremental re-indexing. This replaces the regex-based parser for higher accuracy on nested constructs and edge cases.
+The tree-sitter parser implements the ParserAdapter interface, lazily initializing WASM grammars on first use. It performs cursor-based AST traversal to extract RawCapture arrays compatible with capturesToNodes() and extractEdges() from the structural indexer. Grammar WASM files are loaded from tree-sitter-wasms and cached per language. Content hashing enables incremental re-indexing. This replaces the regex-based parser for higher accuracy on nested constructs and edge cases. The isReady() check now verifies ALL registered grammars are loaded rather than just the first one, preventing false-ready states when only a subset of grammars initialized.
 
 ---
 
