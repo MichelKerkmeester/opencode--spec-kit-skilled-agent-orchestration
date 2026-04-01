@@ -24,7 +24,7 @@ contextType: "planning"
    - Add `profile: "resume"` parameter (fixes gap from research iter 012)
    - Verify the resume brief format is returned instead of raw search results
 3. **Update `/memory:save` for Stop hook awareness:**
-   - Add check for recent Stop hook auto-save (inspect temp state or `session_token_snapshots`)
+   - Add check for recent Stop hook auto-save by inspecting hook state and `pendingStopSave.cachedAt`
    - If auto-save occurred within last 60 seconds: prompt user about merge/skip
    - Preserve existing save behavior as default when no hooks active
 4. **Audit agent definitions for compaction recovery instructions:**

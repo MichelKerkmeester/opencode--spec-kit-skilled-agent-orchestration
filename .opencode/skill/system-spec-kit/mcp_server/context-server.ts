@@ -20,6 +20,7 @@ import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprot
 import {
   DEFAULT_BASE_PATH,
   ALLOWED_BASE_PATHS,
+  DATABASE_PATH,
   checkDatabaseUpdated,
   setEmbeddingModelReady, waitForEmbeddingModel,
   init as initDbState
@@ -75,10 +76,12 @@ import * as vectorIndex from './lib/search/vector-index.js';
 import * as _embeddings from './lib/providers/embeddings.js';
 import * as checkpointsLib from './lib/storage/checkpoints.js';
 import * as accessTracker from './lib/storage/access-tracker.js';
+import { runLineageBackfill } from './lib/storage/lineage-state.js';
 import * as hybridSearch from './lib/search/hybrid-search.js';
 import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
 import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
 import * as graphDb from './lib/code-graph/code-graph-db.js';
+import { detectRuntime, type RuntimeInfo } from './lib/code-graph/runtime-detection.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';
@@ -242,6 +245,11 @@ function isMutationStatus(status: string | undefined): boolean {
 }
 
 let generatedCallIdCounter = 0;
+let detectedRuntime: RuntimeInfo | null = null;
+
+export function getDetectedRuntime(): RuntimeInfo | null {
+  return detectedRuntime;
+}
 
 function resolveToolCallId(request: { id?: unknown }): string {
   const requestId = request.id;
@@ -621,6 +629,7 @@ async function buildServerInstructions(): Promise<string> {
     `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
     `Search channels: ${channels.join(', ')}.`,
     'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+    'Graph retrieval: memory_search supports retrievalLevel (local/global/auto) for entity-level or community-level search. Graph provenance visible via graphEvidence in results.',
     staleWarning.trim(),
   ];
 
@@ -641,6 +650,27 @@ async function buildServerInstructions(): Promise<string> {
       lines.push(`- Recommended: ${recommended}`);
     }
   } catch { /* session-snapshot not available — skip digest */ }
+
+  // Phase 024: Tool routing decision tree
+  try {
+    const { getSessionSnapshot: getSnap } = await import('./lib/session/session-snapshot.js');
+    const snap = getSnap();
+    const routingRules: string[] = [];
+    if (snap.cocoIndexAvailable) {
+      routingRules.push('Semantic/concept code search → mcp__cocoindex_code__search');
+    }
+    if (snap.graphFreshness === 'fresh' || snap.graphFreshness === 'stale') {
+      routingRules.push('Structural queries (callers, imports, deps) → code_graph_query');
+    }
+    routingRules.push('Exact text/regex matching → Grep tool');
+    if (routingRules.length > 0) {
+      lines.push('');
+      lines.push('## Tool Routing');
+      for (const rule of routingRules) {
+        lines.push(`- ${rule}`);
+      }
+    }
+  } catch { /* tool routing snapshot unavailable — skip */ }
 
   return lines.filter(Boolean).join(' ');
 }
@@ -784,6 +814,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     }
 
     runAfterToolCallbacks(name, callId, structuredClone(result));
+
+    // Phase 024: Code-search redirect hint for memory tools
+    if ((name === 'memory_search' || name === 'memory_context') && result && !result.isError && result.content?.[0]?.text) {
+      const queryStr = typeof args.query === 'string' ? args.query : typeof args.input === 'string' ? args.input : '';
+      const codeSearchPattern = /\b(find code|implementation of|function that|where is|how does .+ work|class that|method for)\b/i;
+      if (queryStr && codeSearchPattern.test(queryStr)) {
+        try {
+          const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+          if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+            const existingHints = Array.isArray(envelope.hints) ? envelope.hints as string[] : [];
+            existingHints.push('Tip: For code search queries, consider using mcp__cocoindex_code__search for semantic code search or code_graph_query for structural lookups.');
+            envelope.hints = existingHints;
+            result.content[0].text = JSON.stringify(envelope, null, 2);
+          }
+        } catch {
+          // Response is not JSON envelope — skip hint injection
+        }
+      }
+    }
 
     // F057: Passive context enrichment pipeline — adds code graph symbols
     // near mentioned file paths and session continuity warnings.
@@ -1246,6 +1295,10 @@ process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) =>
 async function main(): Promise<void> {
   // Node version mismatch detection (non-blocking)
   detectNodeVersionMismatch();
+  detectedRuntime = detectRuntime();
+  console.error(
+    `[context-server] Detected runtime: ${detectedRuntime.runtime} (hookPolicy=${detectedRuntime.hookPolicy})`,
+  );
 
   validateConfiguredEmbeddingsProvider();
 
@@ -1316,6 +1369,7 @@ async function main(): Promise<void> {
   vectorIndex.initializeDb();
   dbInitialized = true;
   console.error('[context-server] Database initialized');
+  console.error('[context-server] Database path: ' + DATABASE_PATH);
 
   // Initialize db-state module with dependencies
   // P4-12/P4-19 FIX: Pass sessionManager and incrementalIndex so db-state can
@@ -1396,6 +1450,29 @@ async function main(): Promise<void> {
     if (journalMode !== 'wal') {
       database.pragma('journal_mode = WAL');
       console.warn('[context-server] journal_mode was not WAL; forcing WAL mode');
+    }
+
+    const memoryCountRow = database.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as { cnt?: number } | undefined;
+    const memoryCount = Number(memoryCountRow?.cnt ?? 0);
+    let projectionCount = 0;
+    let projectionTableExists = true;
+
+    try {
+      const projectionCountRow = database.prepare('SELECT COUNT(*) as cnt FROM active_memory_projection').get() as { cnt?: number } | undefined;
+      projectionCount = Number(projectionCountRow?.cnt ?? 0);
+    } catch {
+      projectionTableExists = false;
+    }
+
+    console.error('[context-server] Startup health: memory_index=%d, active_memory_projection=%d', memoryCount, projectionCount);
+
+    if (memoryCount > 0 && (!projectionTableExists || projectionCount === 0)) {
+      const result = runLineageBackfill(database);
+      console.error('[context-server] Auto-backfill triggered: %d rows seeded into active_memory_projection', result.seeded);
+    }
+
+    if (memoryCount === 0 && projectionCount === 0) {
+      console.error('[context-server] WARNING: Database has 0 memories — search will return no results until memories are saved');
     }
 
     const graphSearchFn = isGraphUnifiedEnabled()

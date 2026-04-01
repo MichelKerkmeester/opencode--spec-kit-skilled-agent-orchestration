@@ -151,6 +151,12 @@ export interface MemoryResultEnvelope extends FormattedSearchResult {
   scores?: MemoryResultScores;
   source?: MemoryResultSource;
   trace?: MemoryResultTrace;
+  /** Phase C T025: Graph evidence provenance — edges, communities, and boost factors. */
+  graphEvidence?: {
+    edges: Array<{ sourceId: number; targetId: number; relation: string; strength: number }>;
+    communities: Array<{ communityId: number; summary?: string }>;
+    boostFactors: Array<{ type: string; delta: number }>;
+  };
 }
 
 /** Memory parser interface (for optional override) */
@@ -475,6 +481,34 @@ export async function formatSearchResults(
         memoryState: typeof rawResult.memoryState === 'string' ? rawResult.memoryState : null,
       };
       formattedResult.trace = extractTrace(rawResult, extraData);
+    }
+
+    // Phase C T029: Include graphEvidence provenance when present on the pipeline row.
+    // The field is populated by Stage 2 when SPECKIT_RESULT_PROVENANCE is enabled.
+    if (rawResult.graphEvidence && typeof rawResult.graphEvidence === 'object') {
+      const evidence = rawResult.graphEvidence as Record<string, unknown>;
+      formattedResult.graphEvidence = {
+        edges: Array.isArray(evidence.edges)
+          ? (evidence.edges as Array<Record<string, unknown>>).map((e) => ({
+              sourceId: typeof e.sourceId === 'number' ? e.sourceId : 0,
+              targetId: typeof e.targetId === 'number' ? e.targetId : 0,
+              relation: typeof e.relation === 'string' ? e.relation : 'unknown',
+              strength: typeof e.strength === 'number' ? e.strength : 1.0,
+            }))
+          : [],
+        communities: Array.isArray(evidence.communities)
+          ? (evidence.communities as Array<Record<string, unknown>>).map((c) => ({
+              communityId: typeof c.communityId === 'number' ? c.communityId : 0,
+              ...(typeof c.summary === 'string' ? { summary: c.summary } : {}),
+            }))
+          : [],
+        boostFactors: Array.isArray(evidence.boostFactors)
+          ? (evidence.boostFactors as Array<Record<string, unknown>>).map((b) => ({
+              type: typeof b.type === 'string' ? b.type : 'unknown',
+              delta: typeof b.delta === 'number' ? b.delta : 0,
+            }))
+          : [],
+      };
     }
 
     // Include file content if requested.

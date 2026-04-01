@@ -8,6 +8,8 @@ trigger_phrases:
 importance_tier: 'critical'
 contextType: 'research'
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 
 ## 1. Metadata
 
@@ -25,67 +27,22 @@ The main diagnosis is that Spec Kit Memory already appears structurally healthy,
 
 ### Ranked Improvement Backlog
 
-Ranked by expected impact × inverse complexity.
+Dependency-ordered rather than pure impact ordering: build the graph retrieval artifacts first, then route queries through them, then surface the evidence cleanly, then maintain freshness and reinforcement.
 
-1. **Promote graph-side retrieval artifacts into the main retrieval path, especially for zero-hit recovery**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: Multiple systems converge on graph-assisted rescue when lexical or vector matching is sparse. Spec Kit already has graph signals and fallback, but the baseline miss on `memory_search('Semantic Search')` suggests graph results are not yet rescuing empty-result cases aggressively enough.
-
-2. **Synthesize searchable text surfaces for graph objects: node summaries, edge/fact summaries, neighborhood summaries, and topic/community summaries**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: Zep, GraphRAG, LightRAG, and Cognee all benefit from searchable abstractions above raw memory text. This is likely the most direct fix for concept-addressability gaps.
-
-3. **Expand query-to-graph bridging via alias normalization / ontology grounding / concept routing**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: Mem0, Cognee, and Memoripy all highlight the importance of mapping user wording to graph anchors. Spec Kit already has `SPECKIT_GRAPH_CONCEPT_ROUTING`, `SPECKIT_QUERY_SURROGATES`, and entity normalization primitives, so this is high leverage.
-
-4. **Add graph-first fallback cascade for empty or weak results**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: LightRAG-, Mem0-, and GraphRAG-style fallback behavior directly targets the observed failure mode. This should include node search, relation search, summary search, one-hop traversal, and community/topic fallback.
-
-5. **Expose graph evidence transparently in every graph-assisted answer**  
-   - Impact: H  
-   - Complexity: L  
-   - Why ranked here: The external systems repeatedly show that provenance and explanation are essential. Spec Kit already has `SPECKIT_RESPONSE_TRACE`, `SPECKIT_RESULT_EXPLAIN_V1`, `SPECKIT_RESULT_CONFIDENCE_V1`, and `SPECKIT_PROGRESSIVE_DISCLOSURE_V1`, making this unusually cheap relative to impact.
-
-6. **Generate and retrieve community/topic summaries as first-class bridge objects**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: GraphRAG and Zep are strongest here; LightRAG and Cognee support lighter summary-bridge variants. Spec Kit already has community detection, but the comparison suggests it needs more user-visible, searchable summary outputs.
-
-7. **Fuse graph evidence into final ranking, not just side-channel augmentation**  
-   - Impact: H  
-   - Complexity: M  
-   - Why ranked here: Mem0 is a useful cautionary example: graph augmentation can remain secondary. Given Spec Kit’s issue is underutilization, graph evidence should participate more directly in final ordering.
-
-8. **Add stronger provenance/episode lineage for graph edges and derived summaries**  
-   - Impact: M  
-   - Complexity: M  
-   - Why ranked here: Zep/Graphiti show the value of raw-ingest provenance. Spec Kit already has provenance-rich response envelopes and trace surfaces, but not a clearly articulated episode-style layer.
-
-9. **Add session-aware graph co-activation from recent working-memory anchors and recent retrieval hits**  
-   - Impact: M  
-   - Complexity: L  
-   - Why ranked here: Zep and Memoripy both reinforce active regions; Spec Kit already has `SPECKIT_COACTIVATION`, `SPECKIT_SESSION_BOOST`, and `SPECKIT_SESSION_RETRIEVAL_STATE_V1`.
-
-10. **Introduce temporal/currentness semantics for changing graph truths and terminology drift**  
-   - Impact: M  
-   - Complexity: M  
-   - Why ranked here: Graphiti and Zep are strongest on this. This matters more if Spec Kit’s retrieval concepts evolve over time and stale terms silently degrade recall.
-
-11. **Log graph-assisted retrieval failures and use feedback to promote aliases, summaries, and bridge nodes**  
-   - Impact: M  
-   - Complexity: L  
-   - Why ranked here: Cognee and Mem0 both point toward iterative refinement. Spec Kit already has extensive telemetry and feedback scaffolding.
-
-12. **Add debug views for graph activation flow: normalization -> seeds -> expansion -> rerank -> final context**  
-   - Impact: M  
-   - Complexity: L  
-   - Why ranked here: High operator value, low implementation friction given current trace/explainability flags.
+| Rank | Phase | Improvement | Impact | Complexity | Why ranked here |
+|---|---|---|---|---|---|
+| 1 | Phase A (Build) | Community detection + summaries | H | M | GraphRAG and Zep show that higher-order summaries are the bridge from dense graph structure to concept-addressable retrieval. |
+| 2 | Phase A (Build) | Searchable node/edge summaries | H | M | Zep, LightRAG, and Cognee all benefit when graph objects have natural-language retrieval surfaces instead of only raw memory text or relation labels. |
+| 3 | Phase A (Build) | Entity dedup / alias consolidation | H | M | Mem0, Cognee, and Graphiti all suggest recall degrades quickly when equivalent concepts fragment across nodes and aliases. |
+| 4 | Phase B (Retrieve) | Dual-level retrieval (local + thematic) | H | M | LightRAG and GraphRAG both show that underspecified queries need both local evidence access and higher-level thematic access. |
+| 5 | Phase B (Retrieve) | Query expansion + fallback | H | M | Mem0, Cognee, and Memoripy all highlight the need to map user wording to graph anchors before declaring a miss. |
+| 6 | Phase B (Retrieve) | Zero-result recovery for weak/empty searches | H | M | The known miss on `memory_search('Semantic Search')` indicates the current pipeline still needs a graph-assisted rescue path that can fire when primary retrieval returns nothing useful. |
+| 7 | Phase C (Surface) | Provenance-bearing answers | H | M | Zep, Graphiti, and GraphRAG all show that graph outputs become trustworthy when the answer carries source lineage instead of only conclusions. |
+| 8 | Phase C (Surface) | Graph evidence in payloads | H | L | Spec Kit already has response traces and explainability surfaces, so returning matched nodes, edges, and paths is relatively cheap and high value. |
+| 9 | Phase C (Surface) | Confidence surfaces | M | L | Once graph rescue participates in retrieval, users and operators need calibrated visibility into confidence and fallback mode to trust or debug results. |
+| 10 | Phase D (Maintain) | Temporal edges / currentness semantics | M | M | Graphiti and Zep show that changing truths and term drift need explicit currentness handling or stale graph facts keep competing in retrieval. |
+| 11 | Phase D (Maintain) | Contradiction detection / invalidation | M | M | Graphiti and Mem0 both show that contradiction handling keeps historical state without letting outdated relations pollute active retrieval. |
+| 12 | Phase D (Maintain) | Reinforcement from access and failure feedback | M | L | Cognee, Mem0, and Memoripy all point toward iterative strengthening of aliases, summaries, and neighborhoods that repeatedly resolve weak queries. |
 
 ### Synthesis Notes
 
@@ -259,6 +216,12 @@ If I had to prioritize for Spec Kit, I would do this in order:
 
 That sequence attacks the exact failure mode you described: **good graph, weak retrieval, zero user-visible graph value**.
 
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Construction, retrieval, provenance, and managed-context claims are backed by the cited Zep/Graphiti paper, official docs, README, and SDK/API references in this section.
+- **Training-knowledge-only or synthesis claims:** Comparative judgments such as “Zep is strongest as a product” and the transfer recommendations for Spec Kit are synthesis, not direct vendor claims.
+- **Thin or unavailable documentation:** Managed-dashboard/debug UX and managed-community visibility are thinner in public docs than the OSS Graphiti surfaces, so those claims remain lighter-verified than the core retrieval and data-model claims.
+
 ### 4.2 Mem0
 
 
@@ -424,6 +387,12 @@ Mem0’s graph deletes are really invalidations (`valid=false`, `invalidated_at`
 
 **Bottom line:** Mem0’s most transferable ideas for Spec Kit are **query-time concept extraction over graph nodes, graph-as-parallel-retrieval-channel, normalization/consolidation, and transparent surfaced relations**. But Mem0 also shows a limit: if graph stays auxiliary and non-ranking, a healthy graph can still remain underutilized. For your system, the right move is to adopt Mem0’s bridge patterns and then be **more graph-forward than Mem0 itself**.
 
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Write-time graph construction, node normalization, relation extraction/update behavior, graph-side retrieval, and side-channel `relations` behavior are backed by the cited OSS docs, README, `main.py`, `graph_memory.py`, `graphs/utils.py`, DeepWiki references, and the Mem0 paper.
+- **Training-knowledge-only or synthesis claims:** Comparative judgments about Mem0 being “pragmatic,” “graph-secondary,” or a limit case for Spec Kit are synthesis based on the cited sources rather than explicit Mem0 claims.
+- **Thin or unavailable documentation:** Public material is thinner on hosted-platform graph UX, exact multi-hop reasoning behavior, explicit provenance/path explanation, and whether semantic vs episodic layers are distinct first-class runtime types in the OSS API.
+
 ### 4.3 GraphRAG
 
 
@@ -538,6 +507,12 @@ Here are the GraphRAG ideas most worth borrowing:
 **I’m uncertain about one direct transfer:** GraphRAG specifically uses **Hierarchical Leiden**, but your graph is a **typed causal/support graph**, not just an entity co-occurrence graph. The higher-level pattern — **cluster -> summarize -> search hierarchically** — is very likely portable, but the exact clustering algorithm may need to be relation-aware or weight-aware rather than copied blindly from GraphRAG.[^3][^4]
 
 **Bottom line:** GraphRAG would not mainly help you by adding *more edges*. It would help by turning your existing graph into a **visible, summarized, query-routable layer** that can answer both local and global questions and explain itself while doing so.[^2][^3][^5][^7][^8]
+
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Graph extraction, hierarchical Leiden clustering, community reports, local/global/DRIFT search behavior, and citation-bearing prompt behavior are backed by the cited paper, Microsoft docs, output schemas, and prompt templates.
+- **Training-knowledge-only or synthesis claims:** Comparative judgments about what GraphRAG would help “most” with in Spec Kit are synthesis. The portability warning about typed causal graphs vs entity graphs is also an inference rather than a direct GraphRAG claim.
+- **Thin or unavailable documentation:** I did not find strong evidence of a default automatic query router across local/global/DRIFT modes, and frontend UX expectations remain thin because the public repo is a framework rather than a polished end-user product.[^6][^13][^14]
 
 ---
 
@@ -712,6 +687,12 @@ If you adopt LightRAG-style:
 
 you are much more likely to turn your existing `3,854` causal edges from passive structure into active recall.
 
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Construction, deduplication, incremental updates, query modes, context/prompt exposure, and dual-level retrieval claims are backed by the cited LightRAG paper and repository code references in this section.
+- **Training-knowledge-only or synthesis claims:** Comparative statements about what LightRAG “suggests” for Spec Kit are synthesis from the cited paper and code, not vendor-authored prescriptions.
+- **Thin or unavailable documentation:** Public materials are thinner on exact multi-hop depth in the main answer path, the precise distinction between `hybrid` and `mix` terminology across paper vs repo, and rich step-by-step retrieval observability beyond context/prompt exposure.
+
 #### Sources
 
 - HKUDS/LightRAG GitHub repo: `README.md`
@@ -878,6 +859,12 @@ What I would **not** copy directly:
 - LLM concept extraction without strong observability, because that adds cost and variance.
 
 In short: the best Memoripy-inspired improvement for your retrieval gap is a **graph-expanded, concept-aware fallback path** plus **cluster/neighborhood summaries**. Memoripy is weakest where Spec Kit is already strongest: explicit structure and traceability. Spec Kit should borrow its query broadening and consolidation instincts, not its full architecture.
+
+#### Confidence Notes
+
+- **Primary-source-backed claims:** The interaction store, concept extraction, concept graph, reinforcement/decay scoring, cluster fallback, and promotion logic claims are backed by the cited public repository code and PyPI materials.
+- **Training-knowledge-only or synthesis claims:** The transfer recommendations for Spec Kit are synthesis. I did not rely on uncited external literature for system-specific claims.
+- **Thin or unavailable documentation:** Memoripy has the thinnest documentation in the survey: no paper or formal whitepaper was found, clustering/long-term retrieval behavior is only inferable from code, and some README claims are broader than what I could verify in the implementation.
 
 #### Sources
 
@@ -1129,6 +1116,12 @@ One likely reason a concept query fails is that raw memories are too specific. C
 **My bottom-line recommendation:**  
 The most useful Cognee-inspired improvements for Spec Kit Memory are **ontology grounding, multi-mode retrieval fallback, graph-path context assembly, and summary-node generation**. Given your graph coverage, I would prioritize those over simply adding more causal edges.
 
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Pipeline construction, ontology support, search-type diversity, retriever stages, logging/tracing, and verbose retrieval payload behavior are backed by the cited README, docs, API code, ontology modules, observability modules, and paper.
+- **Training-knowledge-only or synthesis claims:** Comparative judgments about which Cognee patterns are highest value for Spec Kit are synthesis rather than direct Cognee claims.
+- **Thin or unavailable documentation:** Public evidence is thinner on the depth of graph visualization in the UI, whether there is a single fused ranker versus a routed retriever family, explicit confidence UX, and how far “continuous learning” goes beyond logging plus ranking influence.
+
 ---
 
 #### Sources
@@ -1292,6 +1285,12 @@ Graphiti is strongest where memory systems usually struggle: **change over time,
 
 If your graph already has high structural coverage but query recall is poor, Graphiti’s lesson is straightforward: **more edges are not enough; you need better ingestion provenance, alias resolution, and hybrid retrieval fusion**.
 
+#### Confidence Notes
+
+- **Primary-source-backed claims:** Temporal graph objects, contradiction invalidation, episode-backed provenance, hybrid search, reranker types, filters, and context-string generation are backed by the cited OSS README and code references in this section.
+- **Training-knowledge-only or synthesis claims:** Comparative statements about what is most transferable to Spec Kit and the broader “engine vs product” framing are synthesis from the cited materials rather than explicit Graphiti claims.
+- **Thin or unavailable documentation:** Public OSS docs are thinner on polished resolution-audit UX, full verification workflow surfaces, and any explicit age-based decay ranker beyond temporal filtering and context exposure.
+
 ---
 
 [^1]: `getzep/graphiti`, `graphiti_core/nodes.py:315-325`
@@ -1408,27 +1407,31 @@ Track which fallback paths, graph paths, and aliases actually resolve weak queri
 
 ## 8. Gap Analysis
 
-| External pattern | Current Spec Kit state |
-|---|---|
-| Hybrid lexical + semantic + graph retrieval | Present |
-| Query-time concept alias routing | Present |
-| Graph rescue when semantic search returns zero | Partial |
-| Edge/node/community search as first-class retrieval objects | Partial |
-| Searchable node/edge summaries | Partial |
-| Searchable community/topic summaries | Absent |
-| Graph community summaries as answer artifacts | Absent |
-| Distinct global thematic search mode | Absent |
-| DRIFT-style broad-then-local recovery traversal | Absent |
-| Episode/provenance-backed raw evidence layer | Absent |
-| Temporal invalidation / currentness on graph truth | Partial |
-| Focal-node / graph-distance reranking | Partial |
-| Session-aware co-activation / recent-region bias | Present |
-| Graph evidence in answer payloads | Present |
-| Confidence / explainability surfaces | Present |
-| Debug activation-flow trace | Partial |
-| Ontology-backed alias normalization | Absent |
-| Feedback-driven promotion of graph aliases / summaries | Partial |
-| Incremental graph refresh and enrichment | Present |
+| External pattern | Current Spec Kit state | Priority | Why now |
+|---|---|---|---|
+| Hybrid lexical + semantic + graph retrieval | Present | P2 | Already exists, so the immediate problem is utilization quality rather than feature absence. |
+| Query-time concept alias routing | Present | P1 | The `Semantic Search` miss suggests the current routing layer may exist but still not bridge user phrasing reliably. |
+| Graph rescue when semantic search returns zero | Partial | P0 | This maps directly to the observed user-facing failure: `memory_search("Semantic Search")` still returns nothing. |
+| Edge/node/community search as first-class retrieval objects | Partial | P0 | Retrieval cannot exploit graph structure consistently if only documents are first-class search targets. |
+| Searchable node/edge summaries | Partial | P0 | The known gap looks like a text-surface problem as much as a graph-coverage problem. |
+| Searchable community/topic summaries | Absent | P0 | Broad concept queries need bridge artifacts above single memories or edges to avoid zero-hit responses. |
+| Graph community summaries as answer artifacts | Absent | P1 | Once summaries exist, surfacing them improves user understanding and makes graph retrieval visible. |
+| Distinct global thematic search mode | Absent | P1 | Thematic and architectural questions are likely to remain under-served by local retrieval alone. |
+| DRIFT-style broad-then-local recovery traversal | Absent | P1 | This is a strong recovery pattern for sparse or vocabulary-mismatched queries like `Semantic Search`. |
+| Episode/provenance-backed raw evidence layer | Absent | P1 | Provenance becomes more important as graph-derived summaries and paths start to influence final answers. |
+| Temporal invalidation / currentness on graph truth | Partial | P2 | Currentness matters, but it is less urgent than fixing the immediate recall failure for active users. |
+| Focal-node / graph-distance reranking | Partial | P1 | Precision after first recall will matter once graph rescue begins surfacing larger candidate sets. |
+| Session-aware co-activation / recent-region bias | Present | P2 | Helpful for quality, but not the first bottleneck when the system still misses obvious zero-result cases. |
+| Graph evidence in answer payloads | Present | P1 | Visibility is needed as soon as graph retrieval starts rescuing results so users can trust what changed. |
+| Confidence / explainability surfaces | Present | P1 | Confidence should surface alongside graph rescue to distinguish strong matches from fallback-based rescues. |
+| Debug activation-flow trace | Partial | P0 | Diagnosis is blocked without seeing normalization, seed selection, expansion, and filter decisions on failed queries. |
+| Ontology-backed alias normalization | Absent | P0 | Alias mismatch is a top candidate root cause for the `Semantic Search` family of misses. |
+| Feedback-driven promotion of graph aliases / summaries | Partial | P1 | Once rescue paths exist, learned promotion is the cheapest way to keep repeated misses from recurring. |
+| Incremental graph refresh and enrichment | Present | P2 | Important for long-term quality, but not the most likely immediate bottleneck for the current zero-hit case. |
+
+### Diagnosis Gate for the `Semantic Search` Zero-Result Path
+
+Before implementing any 3-step fix for the `Semantic Search` query family, first trace the existing retrieval pipeline end to end. The system already has empty-result recovery payloads, concept routing, query surrogates, and memory-summary search, so the diagnosis should determine whether the current failure is caused by filters, flag gating, alias mismatch, or genuinely missing graph artifacts. That diagnosis gate matters because the right fix differs by bottleneck: filter bugs need pipeline correction, flag gating needs runtime enablement, alias mismatch needs normalization or surrogate repair, and missing artifacts need new node/edge/community summary generation.
 
 ## 9. Sources
 

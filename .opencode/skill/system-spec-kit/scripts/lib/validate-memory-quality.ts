@@ -27,6 +27,7 @@ type ValidationDisposition = 'abort_write' | 'write_skip_index' | 'write_and_ind
 
 interface ValidationRuleMetadata {
   ruleId: QualityRuleId;
+  name: string;
   severity: ValidationRuleSeverity;
   blockOnWrite: boolean;
   blockOnIndex: boolean;
@@ -44,6 +45,7 @@ interface ValidationDispositionResult {
 const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = {
   V1: {
     ruleId: 'V1',
+    name: 'placeholder-leakage-required-fields',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -52,6 +54,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V2: {
     ruleId: 'V2',
+    name: 'placeholder-leakage-with-tools',
     severity: 'medium',
     blockOnWrite: false,
     blockOnIndex: true,
@@ -60,6 +63,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V3: {
     ruleId: 'V3',
+    name: 'malformed-spec-folder',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -68,6 +72,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V4: {
     ruleId: 'V4',
+    name: 'fallback-decision-text',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -76,6 +81,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V5: {
     ruleId: 'V5',
+    name: 'sparse-semantic-fields',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -84,6 +90,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V6: {
     ruleId: 'V6',
+    name: 'template-placeholder-remnants',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -92,6 +99,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V7: {
     ruleId: 'V7',
+    name: 'contradictory-tool-state',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -100,6 +108,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V8: {
     ruleId: 'V8',
+    name: 'cross-spec-contamination',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -108,6 +117,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V9: {
     ruleId: 'V9',
+    name: 'title-contamination',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -116,6 +126,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V10: {
     ruleId: 'V10',
+    name: 'session-source-mismatch',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -124,6 +135,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V11: {
     ruleId: 'V11',
+    name: 'api-error-content-leakage',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -132,6 +144,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V12: {
     ruleId: 'V12',
+    name: 'topical-coherence-mismatch',
     severity: 'medium',
     blockOnWrite: false,
     blockOnIndex: true,
@@ -140,6 +153,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V13: {
     ruleId: 'V13',
+    name: 'malformed-frontmatter',
     severity: 'high',
     blockOnWrite: true,
     blockOnIndex: true,
@@ -148,6 +162,7 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
   },
   V14: {
     ruleId: 'V14',
+    name: 'status-percentage-contradiction',
     severity: 'low',
     blockOnWrite: false,
     blockOnIndex: false,
@@ -162,6 +177,7 @@ const HARD_BLOCK_RULES: readonly QualityRuleId[] = Object.values(VALIDATION_RULE
 
 interface RuleResult {
   ruleId: QualityRuleId;
+  name?: string;
   passed: boolean;
   message: string;
 }
@@ -542,6 +558,29 @@ function extractAllowedSpecIds(specFolder: string): Set<string> {
         allowedSpecIds.add(entry.name);
       }
     }
+
+    // Rec 5: Also scan sibling phases under the parent spec folder.
+    // When saving memory for "023/012-memory-save-quality-pipeline",
+    // references to "011-skill-alignment" should be allowed (same parent 023).
+    const parentDir = path.dirname(resolvedSpecFolder);
+    if (parentDir !== resolvedSpecFolder) {
+      try {
+        const siblingEntries = fs.readdirSync(parentDir, { withFileTypes: true });
+        for (const sibling of siblingEntries) {
+          if (!sibling.isDirectory() || !/^\d{3}-/.test(sibling.name)) {
+            continue;
+          }
+          allowedSpecIds.add(sibling.name);
+          // Also allow the display name without numeric prefix (e.g., "memory-save-quality-pipeline")
+          const displayName = sibling.name.replace(/^\d{3}-/, '');
+          if (displayName.length > 0) {
+            allowedSpecIds.add(displayName);
+          }
+        }
+      } catch (_siblingError: unknown) {
+        // Parent directory scan failure is non-fatal
+      }
+    }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     structuredLog('warn', 'Failed to scan child phase folders during V8 allowlist extraction', {
@@ -621,7 +660,7 @@ function hasExecutionSignals(content: string): boolean {
   return EXECUTION_SIGNAL_PATTERNS.some((pattern) => pattern.test(content));
 }
 
-function validateMemoryQualityContent(content: string, options?: { filePath?: string }): ValidationResult {
+function validateMemoryQualityContent(content: string, options?: { filePath?: string; source?: DataSource | string | null }): ValidationResult {
   const { parseError: frontMatterParseError } = extractAndValidateFrontMatter(content);
   const toolCount = parseToolCount(content);
   let specFolder = extractYamlValueFromContent(content, 'spec_folder') || '';
@@ -631,7 +670,7 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
   // the spec_folder frontmatter field — without it, V8 sees current_spec as unknown
   // and treats all cross-references as foreign contamination.
   if (!specFolder && options?.filePath) {
-    const specsMatch = options.filePath.match(/[/\\]specs[/\\](.+?[/\\](?:\d{3}-[^/\\]+))/);
+    const specsMatch = options.filePath.match(/[/\\]specs[/\\]((?:.+?[/\\])?(?:\d{3}-[^/\\]+))/);
     if (specsMatch) {
       specFolder = specsMatch[1];
     }
@@ -760,6 +799,16 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
     dominatesForeignSpec = strongestForeignMentions >= 3 && strongestForeignMentions >= currentSpecMentions + 2;
     scatteredForeignSpec = scatteredForeignMentions.length >= 2 && totalForeignMentions >= 2 && strongestForeignMentions <= 2;
   }
+
+  // Rec 5: Skip scattered foreign spec detection for structured input mode.
+  // JSON-mode content is AI-composed and may legitimately reference sibling specs
+  // in descriptive context (e.g., "related to 011-skill-alignment work").
+  // Only genuine dominance-based contamination (dominatesForeignSpec) is kept.
+  const sourceCapabilities = getSourceCapabilities(options?.source);
+  if (sourceCapabilities.inputMode === 'structured') {
+    scatteredForeignSpec = false;
+  }
+
   const frontmatterForeignSpec = foreignFrontmatterMentions.length > 0;
   const v8Matches = [
     ...(frontmatterForeignSpec ? foreignFrontmatterMentions.map((match) => `frontmatter:${match}`) : []),
@@ -914,6 +963,11 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
     passed: !v14Failed,
     message: v14Message,
   });
+
+  // Enrich rule results with descriptive names from metadata for log output
+  for (const result of ruleResults) {
+    result.name = VALIDATION_RULE_METADATA[result.ruleId]?.name;
+  }
 
   const failedRules = ruleResults.filter((rule) => !rule.passed).map((rule) => rule.ruleId);
   const contaminationAudit: ContaminationAuditRecord = {

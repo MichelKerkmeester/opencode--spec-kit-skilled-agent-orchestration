@@ -70,7 +70,7 @@ PreCompact has a 2-second hard cap. Recommended warm-cache allocation:
 
 ```
 Auto-compact triggered by Claude Code:
-  1. PreCompact hook fires → compact-precompute.js
+  1. PreCompact hook fires → hooks/claude/compact-inject.ts
      - Reads transcript tail for session context
      - Calls autoSurfaceAtCompaction(context)
      - Optionally queries CocoIndex for semantic neighbors of active symbols
@@ -78,7 +78,7 @@ Auto-compact triggered by Claude Code:
      - Output: nothing (PreCompact stdout is NOT injected)
 
   2. SessionStart(source=compact) fires immediately after
-     → compact-inject.js
+     → hooks/claude/session-prime.ts
      - Reads .claude/compact-context-cache.json
      - Outputs cached context to stdout
      - Claude Code injects this into the new compacted conversation
@@ -87,7 +87,7 @@ Auto-compact triggered by Claude Code:
 
 ## What to Build
 
-### 1. `scripts/hooks/compact-precompute.js`
+### 1. `hooks/claude/compact-inject.ts`
 ```
 Input:  stdin JSON from Claude Code PreCompact event
         { "trigger": "auto"|"manual", "custom_instructions": "..." }
@@ -102,7 +102,7 @@ Timeout: <2 seconds
 4. Write surfaced memories + constitutional context to cache file
 5. Exit cleanly (no stdout output)
 
-### 2. `scripts/hooks/compact-inject.js`
+### 2. `hooks/claude/session-prime.ts`
 ```
 Input:  stdin JSON from Claude Code SessionStart event (source=compact)
         { "source": "compact", "session_id": "...", ... }
@@ -128,14 +128,14 @@ Add to `.claude/settings.local.json`:
       "matcher": "",
       "hooks": [{
         "type": "command",
-        "command": "node .opencode/skill/system-spec-kit/mcp_server/scripts/hooks/compact-precompute.js"
+        "command": "node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/compact-inject.js"
       }]
     }],
     "SessionStart": [{
       "matcher": "compact",
       "hooks": [{
         "type": "command",
-        "command": "node .opencode/skill/system-spec-kit/mcp_server/scripts/hooks/compact-inject.js"
+        "command": "node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js"
       }]
     }]
   }
@@ -155,9 +155,9 @@ Add to `.claude/settings.local.json`:
 - [ ] Existing hooks in settings.local.json preserved (merge-safe)
 
 ## Files Modified
-- NEW: `.opencode/skill/system-spec-kit/mcp_server/scripts/hooks/compact-precompute.js`
-- NEW: `.opencode/skill/system-spec-kit/mcp_server/scripts/hooks/compact-inject.js`
+- NEW: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`
+- NEW: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`
 - EDIT: `.claude/settings.local.json` (add PreCompact + SessionStart hooks)
 
 ## LOC Estimate
-~80-100 lines (compact-precompute.js) + ~60-80 lines (compact-inject.js) + ~15 lines (settings.json)
+~80-100 lines (compact-inject.ts) + ~60-80 lines (session-prime.ts) + ~15 lines (settings.json)

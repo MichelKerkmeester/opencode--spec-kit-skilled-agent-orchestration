@@ -81,7 +81,11 @@ export interface ParsedMemoryValidation {
 }
 
 /** Context type string value */
-export type ContextType = 'implementation' | 'research' | 'planning' | 'general' | 'decision' | 'discovery';
+// P1-3: Import canonical context type definitions from shared source of truth.
+// Re-export ContextType for consumers that import it from this module.
+export type { ContextType } from '@spec-kit/shared/context-types';
+import type { ContextType } from '@spec-kit/shared/context-types';
+import { LEGACY_CONTEXT_TYPE_ALIASES } from '@spec-kit/shared/context-types';
 
 interface ExtractImportanceTierOptions {
   documentType?: string | null;
@@ -106,12 +110,14 @@ export const MAX_CONTENT_LENGTH: number = Number.isFinite(_parsedMaxLen) && _par
  * Defines the CONTEXT_TYPE_MAP constant.
  */
 export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
+  // Canonical self-mappings
   'implementation': 'implementation',
   'research': 'research',
   'planning': 'planning',
   'general': 'general',
-  'decision': 'planning',    // legacy migration: decision → planning
-  'discovery': 'general',    // legacy migration: discovery → general
+  // Legacy aliases (from shared source of truth)
+  ...LEGACY_CONTEXT_TYPE_ALIASES,
+  // Convenience aliases (parser-specific)
   'debug': 'implementation',
   'analysis': 'research',
   'bug': 'implementation',

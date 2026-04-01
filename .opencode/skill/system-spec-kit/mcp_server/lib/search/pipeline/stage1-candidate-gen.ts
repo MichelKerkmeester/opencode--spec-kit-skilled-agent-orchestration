@@ -39,7 +39,7 @@ import * as vectorIndex from '../vector-index.js';
 import * as embeddings from '../../providers/embeddings.js';
 import * as hybridSearch from '../hybrid-search.js';
 import { vectorSearchWithContiguity } from '../../cognitive/temporal-contiguity.js';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled, isTemporalContiguityEnabled } from '../search-flags.js';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled, isTemporalContiguityEnabled, isQueryConceptExpansionEnabled } from '../search-flags.js';
 import { expandQuery } from '../query-expander.js';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion.js';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries.js';
@@ -55,7 +55,7 @@ import {
   mergeByFacetCoverage as mergeFacetCoveragePools,
   MAX_FACETS,
 } from '../query-decomposer.js';
-import { routeQueryConcepts } from '../entity-linker.js';
+import { routeQueryConcepts, nounPhrases, getConceptExpansionTerms } from '../entity-linker.js';
 import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation.js';
 import { runHyDE } from '../hyde.js';
 import { matchSurrogates } from '../query-surrogates.js';
@@ -376,7 +376,7 @@ async function buildDeepQueryVariants(query: string): Promise<string[]> {
       if (words.length >= 2) {
         variants.add(words.slice().reverse().join(' '));
       } else {
-        variants.add(`about ${query}`);
+        variants.add(`what is ${query}`);
       }
     }
 
@@ -503,7 +503,15 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   // matched, log them to the trace for downstream use (graph channel activation
   // is surfaced via trace metadata; actual graph channel is handled in Stage 2).
   //
+  // Phase B T016: When SPECKIT_QUERY_CONCEPT_EXPANSION is also enabled,
+  // matched concepts are reverse-mapped to their alias terms and appended to
+  // the query for the hybrid search channel, improving recall for alias-rich
+  // queries (e.g. "semantic search" → also searches "retrieval", "query", etc.).
+  //
   // Fail-open: any error leaves candidates unchanged.
+
+  /** Effective query for hybrid search — may be expanded by concept routing. */
+  let effectiveQuery = query;
 
   if (isGraphConceptRoutingEnabled() && searchType === 'hybrid') {
     try {
@@ -515,6 +523,33 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       }
       const routing = routeQueryConcepts(query, routingDb);
       if (routing.graphActivated && routing.concepts.length > 0) {
+        // Phase B T016: Expand query with concept alias terms
+        if (isQueryConceptExpansionEnabled()) {
+          try {
+            const originalTokens = nounPhrases(query);
+            const expansionTerms = getConceptExpansionTerms(
+              routing.concepts,
+              originalTokens,
+              5,
+            );
+            if (expansionTerms.length > 0) {
+              effectiveQuery = `${query} ${expansionTerms.join(' ')}`;
+              if (trace) {
+                addTraceEntry(trace, 'candidate', 0, 0, 0, {
+                  channel: 'd2-concept-expansion',
+                  originalQuery: query,
+                  expandedQuery: effectiveQuery,
+                  expansionTerms,
+                  matchedConcepts: routing.concepts,
+                });
+              }
+            }
+          } catch (expansionErr: unknown) {
+            const expansionMsg = expansionErr instanceof Error ? expansionErr.message : String(expansionErr);
+            console.warn(`[stage1-candidate-gen] D2 concept expansion failed (fail-open): ${expansionMsg}`);
+          }
+        }
+
         if (trace) {
           addTraceEntry(trace, 'candidate', 0, 0, 0, {
             channel: 'd2-concept-routing',
@@ -624,7 +659,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               Promise.allSettled(
                 allQueries.map(async (q): Promise<PipelineRow[]> => {
                   const facetEmbedding = await embeddings.generateQueryEmbedding(q);
-                  if (!facetEmbedding) return [];
+                  if (!facetEmbedding) {
+                    console.warn('[stage1-candidate-gen] D2 facet embedding generation returned null');
+                    return [];
+                  }
                   return hybridSearch.collectRawCandidates(
                     q,
                     facetEmbedding,
@@ -684,7 +722,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             Promise.allSettled(
               queryVariants.map(async (variant): Promise<PipelineRow[]> => {
                 const variantEmbedding = await embeddings.generateQueryEmbedding(variant);
-                if (!variantEmbedding) return [];
+                if (!variantEmbedding) {
+                  console.warn('[stage1-candidate-gen] Deep variant embedding generation returned null');
+                  return [];
+                }
                 const variantResults = await hybridSearch.collectRawCandidates(
                   variant,
                   variantEmbedding,
@@ -771,17 +812,32 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                 query,
                 effectiveEmbedding,
                 { limit, specFolder, includeArchived }
-              ).catch((): PipelineRow[] => []),
+              ).catch((err: unknown): PipelineRow[] => {
+                console.warn(
+                  '[stage1-candidate-gen] Baseline candidate collection failed:',
+                  err instanceof Error ? err.message : String(err)
+                );
+                return [];
+              }),
               embeddings.generateQueryEmbedding(expanded.combinedQuery).then(
                 async (expandedEmb): Promise<PipelineRow[]> => {
-                  if (!expandedEmb) return [];
+                  if (!expandedEmb) {
+                    console.warn('[stage1-candidate-gen] Expanded query embedding generation returned null');
+                    return [];
+                  }
                   return hybridSearch.collectRawCandidates(
                     expanded.combinedQuery,
                     expandedEmb,
                     { limit, specFolder, includeArchived }
                   ) as Promise<PipelineRow[]>;
                 }
-              ).catch((): PipelineRow[] => []),
+              ).catch((err: unknown): PipelineRow[] => {
+                console.warn(
+                  '[stage1-candidate-gen] Expansion candidate collection failed:',
+                  err instanceof Error ? err.message : String(err)
+                );
+                return [];
+              }),
             ]);
 
             channelCount = 2;
@@ -812,11 +868,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
       // Standard hybrid search — runs when R12 is off, suppressed by R15,
       // Or produced no results (candidates still empty from the try block above).
+      // Phase B T016: Uses effectiveQuery (concept-expanded) for BM25 recall.
       if (!r12ExpansionApplied) {
         try {
           channelCount = 1;
           const hybridResults = (await hybridSearch.collectRawCandidates(
-            query,
+            effectiveQuery,
             effectiveEmbedding,
             { limit, specFolder, includeArchived }
           )) as PipelineRow[];
@@ -1044,7 +1101,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             allQueries.map(async (q, idx): Promise<PipelineRow[]> => {
               // Reuse cached embedding for original query (idx 0); generate fresh for variants
               const emb = idx === 0 ? reformEmbedding : await embeddings.generateQueryEmbedding(q);
-              if (!emb) return [];
+              if (!emb) {
+                console.warn('[stage1-candidate-gen] LLM reform embedding generation returned null');
+                return [];
+              }
               return hybridSearch.collectRawCandidates(
                 q,
                 emb,

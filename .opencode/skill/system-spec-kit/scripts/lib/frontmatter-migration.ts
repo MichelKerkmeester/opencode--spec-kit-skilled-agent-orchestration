@@ -8,6 +8,7 @@
 // Shared helpers for safe markdown frontmatter normalization.
 
 import * as path from 'path';
+import { CANONICAL_CONTEXT_TYPES, LEGACY_CONTEXT_TYPE_ALIASES } from '@spec-kit/shared/context-types';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -98,13 +99,11 @@ const VALID_IMPORTANCE_TIERS = new Set([
   'deprecated',
 ]);
 
+// P1-3: Derive VALID_CONTEXT_TYPES from shared source of truth.
+// Accepts both canonical types and legacy aliases for backward compatibility.
 const VALID_CONTEXT_TYPES = new Set([
-  'implementation',
-  'research',
-  'planning',
-  'general',
-  'decision',   // legacy — accepted but not assigned as default
-  'discovery',  // legacy — accepted but not assigned as default
+  ...CANONICAL_CONTEXT_TYPES,
+  ...Object.keys(LEGACY_CONTEXT_TYPE_ALIASES),
 ]);
 
 const SPEC_DOC_BASENAMES = new Set([
@@ -828,11 +827,12 @@ function normalizeContextType(rawValue: string | null | undefined): string | nul
 
   const normalized = rawValue.toLowerCase().trim();
 
+  // P1-3: Use shared legacy aliases + local convenience aliases
   const aliasMap: Record<string, string> = {
+    ...LEGACY_CONTEXT_TYPE_ALIASES,
     debug: 'implementation',
     analysis: 'research',
-    decision: 'planning',   // legacy "decision" migrates to "planning"
-    bug: 'discovery',
+    bug: 'general',
     feature: 'implementation',
   };
 

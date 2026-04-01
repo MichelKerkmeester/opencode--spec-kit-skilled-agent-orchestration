@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Tool-result extraction to working memory
 import type Database from 'better-sqlite3';
-import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
+import { isSessionBoostEnabled } from './search-flags.js';
 
 const SESSION_BOOST_MULTIPLIER = 0.15;
 const MAX_COMBINED_BOOST = 0.20;
@@ -30,9 +30,11 @@ interface SessionBoostMetadata {
  * Default: ON (graduated). Set SPECKIT_SESSION_BOOST=false to disable.
  * When enabled, session attention scores from working_memory are used
  * to boost results that the user recently interacted with.
+ *
+ * Delegates to the canonical flag check in search-flags.ts.
  */
-function isEnabled(sessionId?: string | null): boolean {
-  return isFeatureEnabled('SPECKIT_SESSION_BOOST', sessionId ?? undefined);
+function isEnabled(_sessionId?: string | null): boolean {
+  return isSessionBoostEnabled();
 }
 
 function init(database: Database.Database): void {

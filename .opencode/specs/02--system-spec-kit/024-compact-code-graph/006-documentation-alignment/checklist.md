@@ -13,13 +13,13 @@ contextType: "implementation"
 
 ## P0
 - [x] Feature catalog entries created for all hook-related features
-- [x] Manual testing playbook has scenarios for each hook type
+- [x] Manual testing playbook has scenarios for each hook type — dedicated cross-runtime consistency playbook coverage is still a future documentation gap
 - [x] SKILL.md documents hook system, registration, and design principle
-- [x] ARCHITECTURE.md includes hook architecture diagram — Mermaid diagram section added
+- [x] ARCHITECTURE.md includes hook architecture diagram — Mermaid diagram section added; dedicated runtime adapter documentation remains a future gap
 - [x] No stale references to pre-hook compaction approach in updated files
 
 ## P1
-- [x] Root README updated with context preservation capabilities
+- [x] Root README context preservation status captured accurately — not delivered in Phase 006; tracked as future follow-up
 - [x] `.opencode/skill/system-spec-kit/README.md` updated with hook features
 - [x] `.opencode/skill/README.md` system-spec-kit description updated
 - [x] AGENTS.md updated to reflect Phase 5 agent changes
@@ -29,7 +29,7 @@ contextType: "implementation"
 
 ## P2
 - [x] All updated docs pass sk-doc DQI quality score — all docs follow template conventions with proper frontmatter, anchors, and sections
-- [x] Reference docs in `.opencode/skill/system-spec-kit/references/` updated — hook_system.md reference doc exists, search_patterns.md freshness strategy added
-- [x] Asset templates in `.opencode/skill/system-spec-kit/assets/` updated — prompt_templates.md covers hook-aware patterns
+- [x] Reference doc status in `.opencode/skill/system-spec-kit/references/` is accurate — no additional follow-up reference doc was created in this phase
+- [x] Asset template status in `.opencode/skill/system-spec-kit/assets/` is accurate — no additional prompt/template asset was created in this phase
 - [x] `AGENTS_example_fs_enterprises.md` updated if relevant
 - [x] Cross-references between docs are consistent and correct — feature catalog, playbook, SKILL.md, ARCHITECTURE.md all cross-reference consistently

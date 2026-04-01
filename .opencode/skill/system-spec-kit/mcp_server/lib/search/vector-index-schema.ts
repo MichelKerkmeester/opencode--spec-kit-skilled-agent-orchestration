@@ -424,7 +424,7 @@ function getMigrationAllowedBasePaths(): string[] {
 // V23: One-time spec_folder re-canonicalization + session_state migration
 // V24: Add trigger-cache source and temporal contiguity indexes
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 24;
+export const SCHEMA_VERSION = 25;
 
 // Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
@@ -1147,6 +1147,79 @@ export function run_migrations(database: Database.Database, from_version: number
       'Migration v24',
     );
     logger.info('Migration v24: Created trigger-cache source and temporal contiguity indexes');
+  };
+
+  migrations[25] = () => {
+    // P1-5: Normalize legacy context_type values and rebuild CHECK constraint.
+    // Step 1: UPDATE legacy values to canonical forms
+    const updated = database.prepare(`
+      UPDATE memory_index SET context_type = 'planning' WHERE context_type = 'decision'
+    `).run();
+    const updatedDiscovery = database.prepare(`
+      UPDATE memory_index SET context_type = 'general' WHERE context_type = 'discovery'
+    `).run();
+    logger.info(`Migration v25: Normalized context_type values (${updated.changes} decision→planning, ${updatedDiscovery.changes} discovery→general)`);
+
+    // Step 2: Rebuild table with strict CHECK constraint (canonical types only).
+    // SQLite doesn't support ALTER CONSTRAINT, so we rebuild the table.
+    const hasContextTypeColumn = database.prepare(
+      `SELECT COUNT(*) as cnt FROM pragma_table_info('memory_index') WHERE name = 'context_type'`
+    ).get() as { cnt: number };
+
+    if (hasContextTypeColumn.cnt > 0) {
+      // Get current table SQL to check if CHECK constraint needs updating
+      const tableInfo = database.prepare(
+        `SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_index'`
+      ).get() as { sql: string } | undefined;
+
+      if (tableInfo?.sql && !tableInfo.sql.includes("context_type IN ('research', 'implementation', 'planning', 'general')")) {
+        // Table needs rebuilding — current CHECK is either missing or includes legacy values
+        // Get all column names from the existing table
+        const columns = database.prepare(`PRAGMA table_info(memory_index)`).all() as Array<{ name: string }>;
+        const columnNames = columns.map(c => c.name).join(', ');
+
+        // Get all indexes to recreate after rebuild
+        const indexes = database.prepare(
+          `SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name='memory_index' AND sql IS NOT NULL`
+        ).all() as Array<{ sql: string }>;
+
+        // Rebuild: rename → create new → copy → drop old
+        database.exec(`ALTER TABLE memory_index RENAME TO memory_index_v24_backup`);
+
+        // Get the CREATE TABLE statement and replace the CHECK constraint
+        let createSql = tableInfo.sql;
+        // Replace any existing CHECK on context_type with strict canonical-only constraint
+        createSql = createSql.replace(
+          /CHECK\s*\(\s*context_type\s+IN\s*\([^)]+\)\s*\)/i,
+          "CHECK(context_type IN ('research', 'implementation', 'planning', 'general'))"
+        );
+        // If no CHECK existed (column added via ALTER TABLE), add one
+        if (!createSql.includes('CHECK(context_type')) {
+          createSql = createSql.replace(
+            /context_type\s+TEXT\s+DEFAULT\s+'general'/i,
+            "context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general'))"
+          );
+        }
+        database.exec(createSql);
+
+        // Copy data
+        database.exec(`INSERT INTO memory_index SELECT ${columnNames} FROM memory_index_v24_backup`);
+        database.exec(`DROP TABLE memory_index_v24_backup`);
+
+        // Recreate indexes
+        for (const idx of indexes) {
+          try {
+            database.exec(idx.sql);
+          } catch {
+            // Index may already exist or reference dropped columns — skip
+          }
+        }
+
+        logger.info('Migration v25: Rebuilt memory_index with strict CHECK(context_type) — canonical types only');
+      } else {
+        logger.info('Migration v25: CHECK constraint already correct, skipping table rebuild');
+      }
+    }
   };
 
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
@@ -2251,7 +2324,7 @@ export function create_schema(
       agent_id TEXT,
       session_id TEXT,
       shared_space_id TEXT,
-      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general', 'decision', 'discovery')),
+      context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,
       provenance_source TEXT,

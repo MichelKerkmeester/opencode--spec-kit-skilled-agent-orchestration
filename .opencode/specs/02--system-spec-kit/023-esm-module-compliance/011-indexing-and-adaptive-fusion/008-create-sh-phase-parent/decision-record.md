@@ -6,7 +6,7 @@ trigger_phrases:
   - "create sh nested append decision"
   - "parent-derived resolution adr"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Decision Record: Append Nested Child Phases in create.sh
 
@@ -111,7 +111,7 @@ contextType: "planning"
 - `create.sh:157-168`: Added `--phase-parent` parser case (alias for `--parent`)
 - `create.sh:218,264`: Help text and nested example added
 - `create.sh:291`: Error message updated for both flags
-- `create.sh:372,407-409`: `skip_basename_validation` parameter added to `resolve_and_validate_spec_path()`
+- `create.sh:372,406-414`: `allow_nested_parent` parameter added to `resolve_and_validate_spec_path()` — validates leaf against spec/track folder pattern
 - `create.sh:641`: Parent resolution passes `"true"` to skip basename validation
 
 **How to roll back**: `git revert` the commit containing these changes. All 4 modifications are isolated to the phase append flow.

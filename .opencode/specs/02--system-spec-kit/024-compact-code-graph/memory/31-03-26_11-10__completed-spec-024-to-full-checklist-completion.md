@@ -1,5 +1,5 @@
 ---
-title: "Final Compl [02--system-spec-kit/024-compact-code-graph/31-03-26_11-10__completed-spec-024-to-full-checklist-completion]"
+title: "Completed Spec 024 to Full Checklist Completion [024-compact-code-graph]"
 trigger_phrases:
   - "catch unknown type annotation"
   - "cleanup orphans"

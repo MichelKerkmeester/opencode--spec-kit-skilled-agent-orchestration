@@ -1,0 +1,31 @@
+{
+  "topic": "Review: 012-memory-save-quality-pipeline implementation",
+  "mode": "review",
+  "reviewTarget": "012-memory-save-quality-pipeline",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability", "completeness"],
+  "reviewScopeFiles": [
+    ".opencode/skill/system-spec-kit/scripts/types/session-types.ts",
+    ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+    ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+    ".opencode/skill/system-spec-kit/scripts/extractors/conversation-extractor.ts",
+    ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+    ".opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts",
+    ".opencode/skill/system-spec-kit/scripts/core/workflow-path-utils.ts",
+    ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts",
+    ".opencode/skill/system-spec-kit/scripts/core/quality-scorer.ts",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/spec.md",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/plan.md",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/tasks.md",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/checklist.md",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/implementation-summary.md",
+    ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/decision-record.md"
+  ],
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "specFolder": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline",
+  "createdAt": "2026-04-01T08:45:00.000Z",
+  "status": "initialized",
+  "executionMode": "auto"
+}

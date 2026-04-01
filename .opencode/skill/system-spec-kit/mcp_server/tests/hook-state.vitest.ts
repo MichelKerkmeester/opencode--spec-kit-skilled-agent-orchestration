@@ -93,6 +93,7 @@ describe('hook state management', () => {
         claudeSessionId: testSessionId,
         speckitSessionId: 'sk-123',
         lastSpecFolder: 'specs/test',
+        sessionSummary: null,
         pendingCompactPrime: null,
         metrics: { estimatedPromptTokens: 100, estimatedCompletionTokens: 50, lastTranscriptOffset: 0 },
         createdAt: new Date().toISOString(),

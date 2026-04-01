@@ -33,7 +33,7 @@ The Spec Kit Memory causal graph currently has 3,854 edges at 79.92% coverage, d
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-01 |
 | **Branch** | `011-007-external-graph-memory-research` |
 
@@ -228,7 +228,9 @@ Produce a research report that maps external graph memory solutions to concrete,
 ## 12. OPEN QUESTIONS
 
 - Should Graphiti (by Zep, open-sourced) be treated as a separate system from Zep or as an implementation detail of it?
+  **Resolution**: Graphiti is reviewed as a separate system (section 4.7 in research.md) because its open-source temporal-first design is architecturally distinct from Zep Cloud.
 - Is the improvement backlog consumed directly as phase 009+ tasks, or does it need a separate planning phase first?
+  **Resolution**: The backlog feeds follow-on phases (see ADR-002 in decision-record.md). A separate planning phase is recommended before implementation per the diagnosis gate recommendation.
 
 ---
 
@@ -238,7 +240,7 @@ Produce a research report that maps external graph memory solutions to concrete,
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Findings**: Planned future artifact at `research/research.md`
+- **Research Findings**: See `research/research.md`
 - **Parent Phase**: See `../spec.md`
 
 <!-- /ANCHOR:questions -->

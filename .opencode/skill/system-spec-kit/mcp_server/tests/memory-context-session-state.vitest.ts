@@ -126,11 +126,15 @@ describe('Memory Context Session State Persistence', () => {
       getSpecsBasePaths: vi.fn(() => ['/tmp/specs']),
       discoverSpecFolder: vi.fn(() => '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement'),
     }));
-    vi.doMock('../lib/search/search-flags', () => ({
-      isAutoResumeEnabled: vi.fn(() => false),
-      isFolderDiscoveryEnabled: vi.fn(() => true),
-      isPressurePolicyEnabled: vi.fn(() => false),
-    }));
+    vi.doMock('../lib/search/search-flags', async (importOriginal) => {
+      const actual = await importOriginal() as Record<string, unknown>;
+      return {
+        ...actual,
+        isAutoResumeEnabled: vi.fn(() => false),
+        isFolderDiscoveryEnabled: vi.fn(() => true),
+        isPressurePolicyEnabled: vi.fn(() => false),
+      };
+    });
     vi.doMock('../utils', () => ({
       toErrorMessage: vi.fn((error: unknown) => error instanceof Error ? error.message : String(error)),
     }));

@@ -20,6 +20,7 @@
 // The 14-day graduation countdown survives server restarts.
 import { isSaveQualityGateEnabled } from '../search/search-flags.js';
 import * as vectorIndex from '../search/vector-index.js';
+import { resolveCanonicalContextType } from '@spec-kit/shared/context-types';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -349,7 +350,8 @@ export function isShortCriticalException(params: {
   anchor?: string | null;
 }): boolean {
   if (!isSaveQualityGateExceptionsEnabled()) return false;
-  if (params.contextType !== 'planning' && params.contextType !== 'decision') return false;
+  // P1-3: Use shared resolver instead of hardcoded check
+  if (!params.contextType || resolveCanonicalContextType(params.contextType) !== 'planning') return false;
 
   const signals = countStructuralSignals({
     title: params.title,
@@ -386,8 +388,8 @@ export function shouldBypassShortDecisionLengthGate(params: {
  * - Spec folder path is valid format
  *
  * REQ-D4-003: When SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS is enabled, the
- * minimum content length check is bypassed for `decision` context_type
- * documents that have >= 2 structural signals (title + specFolder + anchor).
+ * minimum content length check is bypassed for `planning` (or legacy `decision`)
+ * context_type documents that have >= 2 structural signals (title + specFolder + anchor).
  * Bypass events are logged as warnings (warn-only initially).
  *
  * @param params - The memory parameters to validate
@@ -420,7 +422,7 @@ export function validateStructural(params: {
     if (exceptionApplies) {
       // Warn-only: log bypass event but do not add rejection reason
       console.warn(
-        `${SHORT_DECISION_EXCEPTION_LOG_PREFIX} | context_type=decision | content_length=${params.content.trim().length} | bypassing min-length check`
+        `${SHORT_DECISION_EXCEPTION_LOG_PREFIX} | context_type=${params.contextType ?? 'unknown'} | content_length=${params.content.trim().length} | bypassing min-length check`
       );
     } else {
       reasons.push(

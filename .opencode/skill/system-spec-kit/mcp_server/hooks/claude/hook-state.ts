@@ -18,7 +18,6 @@ export interface HookState {
   lastSpecFolder: string | null;
   sessionSummary: { text: string; extractedAt: string } | null;
   pendingCompactPrime: { payload: string; cachedAt: string } | null;
-  pendingStopSave?: { payload: string; cachedAt: string } | null;
   metrics: {
     estimatedPromptTokens: number;
     estimatedCompletionTokens: number;
@@ -108,7 +107,6 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
     lastSpecFolder: null,
     sessionSummary: null,
     pendingCompactPrime: null,
-    pendingStopSave: null,
     metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
     createdAt: now,
     updatedAt: now,

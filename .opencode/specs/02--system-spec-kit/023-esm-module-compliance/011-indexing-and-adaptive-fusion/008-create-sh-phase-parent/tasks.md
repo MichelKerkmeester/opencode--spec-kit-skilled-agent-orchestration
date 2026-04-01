@@ -6,7 +6,7 @@ trigger_phrases:
   - "nested append task list"
   - "create sh phase planning tasks"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Tasks: Append Nested Child Phases in create.sh
 
@@ -60,7 +60,7 @@ contextType: "planning"
 - [x] T011 Verify flat append under `specs/` still works
 - [x] T012 Verify invalid parent paths fail cleanly
 - [x] T013 Run `validate.sh --strict` for the phase folder after documentation updates
-- [ ] T014 Save context to memory once implementation work closes
+- [x] T014 Save context to memory once implementation work closes [EVIDENCE: memory/01-04-26_11-16__phase-008-create-sh-phase-parent-support-is.md created, quality 97/100]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -68,10 +68,10 @@ contextType: "planning"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remain
-- [ ] Both flat and nested append flows are verified
-- [ ] No unrelated `create.sh` behavior changed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remain
+- [x] Both flat and nested append flows are verified
+- [x] No unrelated `create.sh` behavior changed
 <!-- /ANCHOR:completion -->
 
 ---

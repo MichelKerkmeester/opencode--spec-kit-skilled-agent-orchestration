@@ -10,7 +10,7 @@
     "phases",
     "create"
   ],
-  "lastUpdated": "2026-04-01T06:21:34.288Z",
+  "lastUpdated": "2026-04-01T12:51:27.072Z",
   "specId": "008",
   "folderSlug": "create-sh-phase-parent",
   "parentChain": [
@@ -18,8 +18,9 @@
     "023-esm-module-compliance",
     "011-indexing-and-adaptive-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "01-04-26_07-21__prepared-the-create-sh-nested-phase-parent.md"
+    "01-04-26_07-21__prepared-the-create-sh-nested-phase-parent.md",
+    "01-04-26_11-16__phase-008-create-sh-phase-parent-support-is.md"
   ]
 }

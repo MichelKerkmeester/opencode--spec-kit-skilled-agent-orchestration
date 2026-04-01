@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline",
+  "description": "Spec: Phase 012 — Memory Save Quality Pipeline",
+  "keywords": [
+    "spec",
+    "phase",
+    "012",
+    "memory",
+    "save",
+    "quality",
+    "pipeline"
+  ],
+  "lastUpdated": "2026-04-01T08:40:52.928Z",
+  "specId": "012",
+  "folderSlug": "memory-save-quality-pipeline",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "01-04-26_09-40__implemented-all-6-recommendations-from-phase-012.md",
+    "01-04-26_11-36__deep-review-of-phase-012-implementation-five.md"
+  ]
+}

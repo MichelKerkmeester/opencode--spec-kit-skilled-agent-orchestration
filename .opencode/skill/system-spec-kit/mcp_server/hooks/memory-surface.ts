@@ -72,6 +72,7 @@ interface PrimePackage {
   routingRules?: {
     graphRetrieval: string;
     communitySearch: string;
+    toolRouting: string;
   };
 }
 
@@ -445,6 +446,9 @@ function buildPrimePackage(
     routingRules: {
       graphRetrieval: 'For broad topic questions, use memory_search with retrievalLevel: "global" for community-level results. For specific memories, use "local" (default). Use "auto" for automatic fallback.',
       communitySearch: 'When primary search returns weak results, community search fallback activates automatically (SPECKIT_COMMUNITY_SEARCH_FALLBACK). Graph provenance is visible in graphEvidence field.',
+      toolRouting: cocoIndexAvailable
+        ? 'SEARCH ROUTING: semantic/concept queries → mcp__cocoindex_code__search | structural queries (callers, deps) → code_graph_query | exact text/regex → Grep'
+        : 'SEARCH ROUTING: structural queries (callers, deps) → code_graph_query | exact text/regex → Grep',
     },
   };
 }

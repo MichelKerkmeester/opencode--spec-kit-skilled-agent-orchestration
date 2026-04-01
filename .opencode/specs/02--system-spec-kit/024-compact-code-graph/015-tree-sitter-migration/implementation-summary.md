@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Tree-Sitter Migration Foundation [024/015]"
-description: "Parser adapter interface, 3 new edge types, 4 ghost SymbolKinds, indexer cleanup. Tree-sitter WASM impl deferred. 9/13 checklist items completed."
+description: "Parser adapter interface, 3 new edge types, 4 ghost SymbolKinds, indexer cleanup. Tree-sitter WASM subsequently completed in Phase 017. 12/13 checklist items completed."
 ---
 # Implementation Summary
 
@@ -15,7 +15,7 @@ description: "Parser adapter interface, 3 new edge types, 4 ghost SymbolKinds, i
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 024-compact-code-graph/015-tree-sitter-migration |
-| **Completed** | 2026-03-31 (foundation items; tree-sitter WASM deferred) |
+| **Completed** | 2026-03-31 (foundation); tree-sitter WASM completed in Phase 017 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -88,7 +88,7 @@ Two Codex CLI agents (GPT-5.4, high reasoning) working in parallel. Agent 015-A 
 |-------|--------|
 | `tests/code-graph-indexer.vitest.ts` | PASS (18/18) |
 | ESLint on structural-indexer.ts, indexer-types.ts | PASS (0 errors) |
-| Phase 015 checklist | 9/13 items (4 deferred: tree-sitter WASM) |
+| Phase 015 checklist | 12/13 items (tree-sitter WASM completed in Phase 017; 1 deferred: additional SymbolKinds) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -96,8 +96,8 @@ Two Codex CLI agents (GPT-5.4, high reasoning) working in parallel. Agent 015-A 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Tree-sitter WASM not yet implemented (Item 32).** Requires `web-tree-sitter` package + grammar downloads (~1.5MB). The adapter interface is ready.
+1. **Tree-sitter WASM implemented in Phase 017.** `tree-sitter-parser.ts` (696 LOC) with `web-tree-sitter` + `tree-sitter-wasms` deps. Now the default parser; regex remains as fallback via `SPECKIT_PARSER=regex`.
 2. **OVERRIDES detection requires extends chain.** Only works when the parent class is defined in the same file or the extends relationship is captured. Cross-file inheritance detection is approximate.
 3. **TYPE_OF captures type names, not resolved types.** Type aliases and re-exports may create edges to the alias rather than the underlying type.
-4. **Regex removal (Item 35) deferred.** The regex parser stays as permanent fallback until tree-sitter proves stable.
+4. **Additional SymbolKinds (decorator, property, constant) still deferred.** Tree-sitter can capture these but dedicated kind mappings not yet added.
 <!-- /ANCHOR:limitations -->

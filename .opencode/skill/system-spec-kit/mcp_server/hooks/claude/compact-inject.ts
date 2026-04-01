@@ -162,6 +162,29 @@ function renderConstitutionalMemories(
   return `## Constitutional Rules\n${lines.join('\n')}`;
 }
 
+function renderTriggeredMemories(
+  autoSurfaced: AutoSurfaceAtCompactionResult,
+): string {
+  const triggered = autoSurfaced?.triggered ?? [];
+  if (triggered.length === 0) {
+    return '';
+  }
+
+  const lines = triggered.map((memory) => {
+    const matchedPhrases = [...new Set(memory.matched_phrases
+      .map((phrase) => phrase.trim())
+      .filter((phrase) => phrase.length > 0))];
+
+    if (matchedPhrases.length === 0) {
+      return `- ${memory.title}`;
+    }
+
+    return `- ${memory.title} (matched: ${matchedPhrases.join(', ')})`;
+  });
+
+  return `## Relevant Memories\n${lines.join('\n')}`;
+}
+
 /**
  * Build merged context using the 3-source merge pipeline.
  * Extracts session state from transcript, then delegates budget allocation
@@ -240,13 +263,19 @@ async function buildMergedContext(transcriptLines: string[]): Promise<string> {
   );
 
   const constitutionalSection = renderConstitutionalMemories(autoSurfaced);
-  if (!constitutionalSection) {
+  const triggeredSection = renderTriggeredMemories(autoSurfaced);
+  const surfacedSections = [constitutionalSection, triggeredSection]
+    .filter((section) => section.length > 0);
+
+  if (surfacedSections.length === 0) {
     return merged.text;
   }
 
+  const surfacedContext = surfacedSections.join('\n\n');
+
   return merged.text
-    ? `${constitutionalSection}\n\n${merged.text}`
-    : constitutionalSection;
+    ? `${surfacedContext}\n\n${merged.text}`
+    : surfacedContext;
 }
 
 async function main(): Promise<void> {

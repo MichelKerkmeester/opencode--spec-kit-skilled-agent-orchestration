@@ -76,6 +76,8 @@ import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
 import type { ThinFileInput, ThinningResult } from './tree-thinning';
 import { getSourceCapabilities } from '../utils/source-capabilities';
+import { normalizeInputData } from '../utils/input-normalizer';
+import type { RawInputData } from '../utils/input-normalizer';
 
 // Extracted modules
 import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner';
@@ -611,8 +613,27 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     let collectedData: CollectedDataFull | null;
     if (preloadedData) {
-      collectedData = preloadedData;
-      log('   Using pre-loaded data');
+      // Rec 1: Normalize JSON-derived preloaded data so sessionSummary → userPrompts,
+      // keyDecisions → _manualDecisions, filesChanged → FILES, etc.
+      const normalized = normalizeInputData(preloadedData as unknown as RawInputData);
+      // P1-001 fix: Explicit field projection instead of unsafe spread merge.
+      // Only overlay normalized fields that the normalizer actually produces,
+      // preserving preloadedData's non-normalized fields (e.g., _source, _sessionId).
+      const n = normalized as Record<string, unknown>;
+      collectedData = Object.assign({}, preloadedData, {
+        userPrompts: n.userPrompts ?? preloadedData.userPrompts,
+        observations: n.observations ?? preloadedData.observations,
+        recentContext: n.recentContext ?? preloadedData.recentContext,
+        FILES: n.FILES ?? preloadedData.FILES,
+        SPEC_FOLDER: n.SPEC_FOLDER ?? preloadedData.SPEC_FOLDER,
+        _manualDecisions: n._manualDecisions ?? preloadedData._manualDecisions,
+        _manualTriggerPhrases: n._manualTriggerPhrases ?? preloadedData._manualTriggerPhrases,
+        TECHNICAL_CONTEXT: n.TECHNICAL_CONTEXT ?? preloadedData.TECHNICAL_CONTEXT,
+        importanceTier: n.importanceTier ?? preloadedData.importanceTier,
+        contextType: n.contextType ?? preloadedData.contextType,
+        projectPhase: n.projectPhase ?? preloadedData.projectPhase,
+      }) as CollectedDataFull;
+      log('   Using pre-loaded data (normalized)');
     } else if (loadDataFn) {
       // F-22: Guard loadDataFn result with explicit null check
       collectedData = (await loadDataFn()) || null;

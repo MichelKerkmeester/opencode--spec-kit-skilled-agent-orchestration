@@ -4,7 +4,8 @@
 // Parses Claude Code transcript JSONL files to extract token usage,
 // model info, and conversation content.
 
-import { readFileSync } from 'node:fs';
+import { createReadStream, statSync } from 'node:fs';
+import { createInterface } from 'node:readline';
 import { hookLog } from './shared.js';
 
 /** Token usage from a single assistant message */
@@ -53,10 +54,10 @@ interface TranscriptLine {
 
 /** Parse a transcript JSONL file and extract token usage.
  *  Supports incremental parsing via startOffset (byte offset). */
-export function parseTranscript(
+export async function parseTranscript(
   filePath: string,
   startOffset: number = 0,
-): { usage: TranscriptUsage; newOffset: number } {
+): Promise<{ usage: TranscriptUsage; newOffset: number }> {
   const usage: TranscriptUsage = {
     promptTokens: 0,
     completionTokens: 0,
@@ -68,15 +69,22 @@ export function parseTranscript(
   };
 
   try {
-    const content = readFileSync(filePath, 'utf-8');
-    const lines = content.split('\n');
-    let currentOffset = 0;
+    const { size: fileSize } = statSync(filePath);
+    if (startOffset >= fileSize) {
+      return { usage, newOffset: fileSize };
+    }
 
-    for (const line of lines) {
-      const lineEnd = currentOffset + Buffer.byteLength(line + '\n', 'utf-8');
+    const stream = createReadStream(filePath, {
+      encoding: 'utf-8',
+      start: startOffset,
+    });
+    const lineReader = createInterface({
+      input: stream,
+      crlfDelay: Infinity,
+    });
 
-      if (currentOffset < startOffset || !line.trim()) {
-        currentOffset = lineEnd;
+    for await (const line of lineReader) {
+      if (!line.trim()) {
         continue;
       }
 
@@ -105,11 +113,9 @@ export function parseTranscript(
       } catch {
         // Skip malformed JSON lines
       }
-
-      currentOffset = lineEnd;
     }
 
-    return { usage, newOffset: currentOffset };
+    return { usage, newOffset: fileSize };
   } catch (err: unknown) {
     hookLog('warn', 'transcript', `Failed to parse transcript: ${err instanceof Error ? err.message : String(err)}`);
     return { usage, newOffset: startOffset };

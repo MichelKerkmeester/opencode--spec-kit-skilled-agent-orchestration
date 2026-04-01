@@ -2,65 +2,57 @@
 // TEST: Query-Intent Routing
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect } from 'vitest';
-
-/** Simple query-intent router for testing routing logic */
-function routeQuery(query: string): 'cocoindex' | 'code_graph' | 'memory' {
-  const structural = /what (calls|imports|extends|implements)|show.*outline|file structure|dependency/i;
-  const session = /previous work|resume|last session|prior decision|what was I/i;
-  if (structural.test(query)) return 'code_graph';
-  if (session.test(query)) return 'memory';
-  return 'cocoindex';
-}
+import { classifyQueryIntent } from '../lib/code-graph/query-intent-classifier.js';
 
 describe('query-intent routing', () => {
-  describe('routes semantic queries to CocoIndex', () => {
-    it('find code queries', () => { expect(routeQuery('find code that handles authentication')).toBe('cocoindex'); });
-    it('how is X implemented', () => { expect(routeQuery('how is retry logic implemented')).toBe('cocoindex'); });
-    it('similar to X', () => { expect(routeQuery('find functions similar to parseFile')).toBe('cocoindex'); });
+  describe('maps semantic queries to semantic intent', () => {
+    it('find code queries', () => { expect(classifyQueryIntent('find code that handles authentication').intent).toBe('semantic'); });
+    it('find retry logic implementation', () => { expect(classifyQueryIntent('find code related to retry logic').intent).toBe('semantic'); });
+    it('similar to X', () => { expect(classifyQueryIntent('find functions similar to parseFile').intent).toBe('semantic'); });
   });
 
-  describe('routes structural queries to code graph', () => {
-    it('what calls', () => { expect(routeQuery('what calls parseFile')).toBe('code_graph'); });
-    it('what imports', () => { expect(routeQuery('what imports this module')).toBe('code_graph'); });
-    it('show outline', () => { expect(routeQuery('show file outline')).toBe('code_graph'); });
-    it('file structure', () => { expect(routeQuery('show me the file structure')).toBe('code_graph'); });
-    it('what extends', () => { expect(routeQuery('what extends BaseClass')).toBe('code_graph'); });
+  describe('maps structural queries to structural intent', () => {
+    it('what calls', () => { expect(classifyQueryIntent('what calls parseFile').intent).toBe('structural'); });
+    it('what imports', () => { expect(classifyQueryIntent('what imports this module').intent).toBe('structural'); });
+    it('show outline', () => { expect(classifyQueryIntent('show outline of this file').intent).toBe('structural'); });
+    it('file structure', () => { expect(classifyQueryIntent('show structure of this file').intent).toBe('structural'); });
+    it('what extends', () => { expect(classifyQueryIntent('what extends BaseClass').intent).toBe('structural'); });
   });
 
-  describe('routes session queries to memory', () => {
-    it('previous work', () => { expect(routeQuery('what was I working on in the previous session')).toBe('memory'); });
-    it('resume', () => { expect(routeQuery('resume my last session')).toBe('memory'); });
-    it('prior decisions', () => { expect(routeQuery('what was the prior decision about auth')).toBe('memory'); });
+  describe('maps session queries to hybrid intent', () => {
+    it('previous work', () => { expect(classifyQueryIntent('what was I working on in the previous session').intent).toBe('hybrid'); });
+    it('resume', () => { expect(classifyQueryIntent('resume my last session').intent).toBe('hybrid'); });
+    it('prior decisions', () => { expect(classifyQueryIntent('what was the prior decision about auth').intent).toBe('hybrid'); });
   });
 });
 
-describe('agent routing validates CocoIndex-first behavior', () => {
-  describe('semantic queries default to CocoIndex', () => {
-    it('explain error handling patterns', () => { expect(routeQuery('explain error handling patterns')).toBe('cocoindex'); });
-    it('find similar authentication code', () => { expect(routeQuery('find similar authentication code')).toBe('cocoindex'); });
-    it('what does the budget allocator do', () => { expect(routeQuery('what does the budget allocator do')).toBe('cocoindex'); });
+describe('agent routing validates classifier-backed intent mapping', () => {
+  describe('semantic queries map to semantic intent', () => {
+    it('explain error handling patterns', () => { expect(classifyQueryIntent('explain error handling patterns').intent).toBe('semantic'); });
+    it('find similar authentication code', () => { expect(classifyQueryIntent('find similar authentication code').intent).toBe('semantic'); });
+    it('what is the purpose of the budget allocator', () => { expect(classifyQueryIntent('what is the purpose of the budget allocator').intent).toBe('semantic'); });
   });
 
-  describe('structural queries go to code_graph, not CocoIndex', () => {
-    it('what calls allocateBudget', () => { expect(routeQuery('what calls allocateBudget')).toBe('code_graph'); });
-    it('show outline of session-prime.ts', () => { expect(routeQuery('show outline of session-prime.ts')).toBe('code_graph'); });
-    it('what implements the RuntimeInfo interface', () => { expect(routeQuery('what implements the RuntimeInfo interface')).toBe('code_graph'); });
+  describe('structural queries map to structural intent', () => {
+    it('what calls allocateBudget', () => { expect(classifyQueryIntent('what calls allocateBudget').intent).toBe('structural'); });
+    it('show outline of session-prime.ts', () => { expect(classifyQueryIntent('show outline of session-prime.ts').intent).toBe('structural'); });
+    it('what implements the RuntimeInfo interface', () => { expect(classifyQueryIntent('what implements the RuntimeInfo interface').intent).toBe('structural'); });
   });
 
-  describe('session queries bypass both CocoIndex and code_graph', () => {
-    it('resume my previous work', () => { expect(routeQuery('resume my previous work')).toBe('memory'); });
-    it('what was I doing last session', () => { expect(routeQuery('what was I doing last session')).toBe('memory'); });
+  describe('session queries map to hybrid intent', () => {
+    it('resume my previous work', () => { expect(classifyQueryIntent('resume my previous work').intent).toBe('hybrid'); });
+    it('what was I doing last session', () => { expect(classifyQueryIntent('what was I doing last session').intent).toBe('hybrid'); });
   });
 
-  describe('ambiguous queries favor CocoIndex', () => {
-    it('how does the hook system work', () => { expect(routeQuery('how does the hook system work')).toBe('cocoindex'); });
-    it('tell me about the token budget', () => { expect(routeQuery('tell me about the token budget')).toBe('cocoindex'); });
-    it('where is authentication handled', () => { expect(routeQuery('where is authentication handled')).toBe('cocoindex'); });
+  describe('content-oriented queries still map to semantic intent', () => {
+    it('explain the hook system purpose', () => { expect(classifyQueryIntent('explain the hook system purpose').intent).toBe('semantic'); });
+    it('what is the purpose of the token budget', () => { expect(classifyQueryIntent('what is the purpose of the token budget').intent).toBe('semantic'); });
+    it('where is authentication handled', () => { expect(classifyQueryIntent('where is authentication handled').intent).toBe('semantic'); });
   });
 
   describe('routing is case-insensitive', () => {
-    it('WHAT CALLS parseFile → code_graph', () => { expect(routeQuery('WHAT CALLS parseFile')).toBe('code_graph'); });
-    it('Find Similar Code → cocoindex', () => { expect(routeQuery('Find Similar Code')).toBe('cocoindex'); });
-    it('Resume My Session → memory', () => { expect(routeQuery('Resume My Session')).toBe('memory'); });
+    it('WHAT CALLS parseFile → structural', () => { expect(classifyQueryIntent('WHAT CALLS parseFile').intent).toBe('structural'); });
+    it('Find Similar Code → semantic', () => { expect(classifyQueryIntent('Find Similar Code').intent).toBe('semantic'); });
+    it('Resume My Session → hybrid', () => { expect(classifyQueryIntent('Resume My Session').intent).toBe('hybrid'); });
   });
 });

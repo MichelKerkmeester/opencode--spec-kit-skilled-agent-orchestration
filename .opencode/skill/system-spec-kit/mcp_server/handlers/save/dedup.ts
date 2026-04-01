@@ -223,7 +223,10 @@ export function checkExistingRow(
     ? isSamePathMetadataEquivalent(existing, parsed)
     : false;
 
-  if (existing && existing.content_hash === parsed.contentHash && isUnchangedEligible && isMetadataEquivalent && !force) {
+  // P1-4 FIX: Check content hash even during force reindex to prevent duplicate
+  // row accumulation. If content AND metadata are identical, the embedding would
+  // not change either, so re-indexing provides no value and creates duplicates.
+  if (existing && existing.content_hash === parsed.contentHash && isUnchangedEligible && isMetadataEquivalent) {
     return {
       status: 'unchanged',
       id: existing.id,

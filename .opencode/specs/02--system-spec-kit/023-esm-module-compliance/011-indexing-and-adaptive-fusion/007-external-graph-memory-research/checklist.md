@@ -94,8 +94,8 @@ contextType: "research"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 11 | 8/11 |
-| P1 Items | 20 | 16/20 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 18/20 |
 | P2 Items | 10 | 6/10 |
 
 **Verification Date**: 2026-04-01

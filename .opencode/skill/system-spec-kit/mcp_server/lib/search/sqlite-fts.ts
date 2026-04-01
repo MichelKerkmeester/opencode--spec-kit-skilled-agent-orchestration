@@ -55,12 +55,14 @@ function fts5Bm25Search(
   // Sanitize via shared tokenizer, then wrap each token in quotes and join with OR for recall
   const tokens = normalizeLexicalQueryTokens(query).fts;
   const sanitized = tokens
-    .map(t => `"${t}"`)
+    .map(t => (t.startsWith('"') && t.endsWith('"')) ? t : `"${t}"`)
     .join(' OR ');
 
   if (!sanitized) return [];
 
-  const folderFilter = specFolder ? 'AND m.spec_folder = ?' : '';
+  const folderFilter = specFolder
+    ? 'AND (m.spec_folder = ? OR m.spec_folder LIKE ? || "/%")'
+    : '';
   const archivalFilter = !includeArchived
     ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)'
     : '';
@@ -68,7 +70,7 @@ function fts5Bm25Search(
     "AND (m.importance_tier IS NULL OR m.importance_tier != 'deprecated')";
 
   const params: (string | number)[] = specFolder
-    ? [sanitized, specFolder, limit]
+    ? [sanitized, specFolder, specFolder, limit]
     : [sanitized, limit];
 
   // Bm25() returns negative scores (lower = better), so we negate

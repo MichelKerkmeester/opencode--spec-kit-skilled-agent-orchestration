@@ -3,23 +3,22 @@
 // MODULE: Stop Hook — Session Stop
 // ───────────────────────────────────────────────────────────────
 // Runs on Claude Code Stop event (async). Parses transcript for
-// token usage, stores snapshot, and optionally saves session context.
+// token usage, stores a snapshot, and updates lightweight session state.
 
-import { readFileSync } from 'node:fs';
+import { openSync, fstatSync, readSync, closeSync } from 'node:fs';
 import {
   parseHookStdin, hookLog, withTimeout, HOOK_TIMEOUT_MS,
 } from './shared.js';
 import { ensureStateDir, loadState, updateState, cleanStaleStates } from './hook-state.js';
 import { parseTranscript, estimateCost } from './claude-transcript.js';
 
-/** Auto-save output token threshold */
-const AUTO_SAVE_TOKEN_THRESHOLD = 1000;
-
-/** Window (ms) within which a recent auto-save suppresses duplicates */
-const RECENT_SAVE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
-
 /** Default max age (ms) for stale state cleanup in --finalize mode */
 const FINALIZE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+/** Limit spec-folder detection to the transcript tail where recent messages live. */
+const SPEC_FOLDER_TAIL_BYTES = 50 * 1024;
+const SPEC_FOLDER_PREFIX = '.opencode/specs/';
+const SPEC_FOLDER_SEGMENT_RE = /^\d{2,3}(?:--|-)[\w-]+$/;
 
 /**
  * Extract a brief summary from the last assistant message.
@@ -99,7 +98,7 @@ async function main(): Promise<void> {
     const startOffset = state?.metrics?.lastTranscriptOffset ?? 0;
 
     try {
-      const { usage, newOffset } = parseTranscript(
+      const { usage, newOffset } = await parseTranscript(
         input.transcript_path as string,
         startOffset,
       );
@@ -143,53 +142,84 @@ async function main(): Promise<void> {
     hookLog('info', 'session-stop', `Session summary extracted (${text.length} chars)`);
   }
 
-  // Auto-save when output tokens exceed threshold (with merge detection)
-  const state = loadState(sessionId);
-
-  // Skip auto-save if a recent save already exists (prevents double-saves)
-  if (state?.pendingStopSave?.cachedAt) {
-    const cachedAge = Date.now() - new Date(state.pendingStopSave.cachedAt).getTime();
-    if (cachedAge < RECENT_SAVE_WINDOW_MS) {
-      hookLog('info', 'session-stop', `Recent auto-save exists (cached at ${state.pendingStopSave.cachedAt}), skipping duplicate`);
-      hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
-      return;
-    }
-  }
-
-  if (state?.metrics?.estimatedCompletionTokens && state.metrics.estimatedCompletionTokens > AUTO_SAVE_TOKEN_THRESHOLD) {
-    hookLog('info', 'session-stop', `Completion tokens (${state.metrics.estimatedCompletionTokens}) exceed threshold (${AUTO_SAVE_TOKEN_THRESHOLD}) — auto-save recommended`);
-    updateState(sessionId, {
-      pendingStopSave: {
-        payload: `Session had ${state.metrics.estimatedCompletionTokens} completion tokens. Use memory_context({ mode: "resume", profile: "resume" }) to recover full context.`,
-        cachedAt: new Date().toISOString(),
-      },
-    });
-  }
-
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
 }
 
 /** Detect active spec folder from transcript content */
 function detectSpecFolder(transcriptPath: string): string | null {
+  let fileDescriptor: number | undefined;
+
   try {
-    const content = readFileSync(transcriptPath, 'utf-8');
-    // Look for spec folder paths mentioned in recent messages
-    const specMatch = content.match(/\.opencode\/specs\/[\w-]+\/[\w-]+\//g);
-    if (specMatch && specMatch.length > 0) {
-      // Return the most frequently mentioned spec folder
-      const counts = new Map<string, number>();
-      for (const p of specMatch) {
-        counts.set(p, (counts.get(p) ?? 0) + 1);
-      }
-      let best = '';
-      let bestCount = 0;
-      for (const [path, count] of counts) {
-        if (count > bestCount) { best = path; bestCount = count; }
-      }
-      return best || null;
+    fileDescriptor = openSync(transcriptPath, 'r');
+    const { size } = fstatSync(fileDescriptor);
+    if (size === 0) {
+      return null;
     }
-  } catch { /* transcript not readable */ }
+
+    const bytesToRead = Math.min(size, SPEC_FOLDER_TAIL_BYTES);
+    const startPosition = Math.max(0, size - bytesToRead);
+    const buffer = Buffer.alloc(bytesToRead);
+    const bytesRead = readSync(fileDescriptor, buffer, 0, bytesToRead, startPosition);
+    const content = buffer.toString('utf-8', 0, bytesRead);
+    const specMatches = content.match(/\.opencode\/specs\/[^\s"'`]+/g) ?? [];
+    if (specMatches.length === 0) {
+      return null;
+    }
+
+    const counts = new Map<string, number>();
+    for (const rawPath of specMatches) {
+      const normalizedPath = normalizeSpecFolderPath(rawPath);
+      if (!normalizedPath) {
+        continue;
+      }
+      counts.set(normalizedPath, (counts.get(normalizedPath) ?? 0) + 1);
+    }
+
+    let bestMatch: string | null = null;
+    let bestCount = 0;
+    for (const [path, count] of counts) {
+      if (count > bestCount) {
+        bestMatch = path;
+        bestCount = count;
+      }
+    }
+
+    return bestMatch;
+  } catch {
+    /* transcript not readable */
+  } finally {
+    if (fileDescriptor !== undefined) {
+      closeSync(fileDescriptor);
+    }
+  }
+
   return null;
+}
+
+function normalizeSpecFolderPath(rawPath: string): string | null {
+  const prefixIndex = rawPath.indexOf(SPEC_FOLDER_PREFIX);
+  if (prefixIndex === -1) {
+    return null;
+  }
+
+  const relativeSegments = rawPath
+    .slice(prefixIndex + SPEC_FOLDER_PREFIX.length)
+    .split('/')
+    .filter(Boolean);
+  const specSegments: string[] = [];
+
+  for (const segment of relativeSegments) {
+    if (!SPEC_FOLDER_SEGMENT_RE.test(segment)) {
+      break;
+    }
+    specSegments.push(segment);
+  }
+
+  if (specSegments.length === 0) {
+    return null;
+  }
+
+  return `${SPEC_FOLDER_PREFIX}${specSegments.join('/')}`;
 }
 
 // Run — exit cleanly even on error (async hook, but still must not crash)

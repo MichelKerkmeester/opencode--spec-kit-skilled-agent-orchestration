@@ -241,3 +241,47 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 - Token tracking dashboard UI — future work
 - Copilot/Gemini native hook adapters — deferred until runtime SDK changes
 <!-- /ANCHOR:scope -->
+
+---
+title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
+description: "Template document for addendum/phase/phase-parent-section.md."
+trigger_phrases:
+  - "phase"
+  - "parent"
+  - "section"
+  - "template"
+  - "phase parent section"
+importance_tier: "normal"
+contextType: "general"
+---
+<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
+<!-- Append to parent spec.md after SCOPE section -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 25 | 025-phase-25/ | [Phase 25 scope] | [deps] | Pending |
+| 26 | 026-phase-26/ | [Phase 26 scope] | [deps] | Pending |
+| 27 | 027-phase-27/ | [Phase 27 scope] | [deps] | Pending |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 024-hookless-priming-optimization | 025-phase-25 | [Criteria TBD] | [Verification TBD] |
+| 025-phase-25 | 026-phase-26 | [Criteria TBD] | [Verification TBD] |
+| 026-phase-26 | 027-phase-27 | [Criteria TBD] | [Verification TBD] |
+<!-- /ANCHOR:phase-map -->

@@ -1,5 +1,6 @@
 ---
 title: "Full Esm [02--system-spec-kit/023-esm-module-compliance/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec]"
+description: "Full ESM migration of spec-kit-shared and mcp_server packages to native ESM with Node 25 CJS interop. Covers import.meta.dirname, fileURLToPath, superRefine schema fixes, and search-weights.json path fallback."
 trigger_phrases:
   - "esm module compliance"
   - "esm migration complete"
@@ -14,16 +15,6 @@ trigger_phrases:
   - "v-rule bridge bypass warning"
   - "super refine"
   - "file u r l to path"
-  - "mcp server"
-  - "system speckit"
-  - "search weights"
-  - "tree thinning"
-  - "system spec kit"
-  - "fix was removing"
-  - "evidence parser"
-  - "moved validation"
-  - "workflow decoupling"
-  - "modified config system"
   - "used import.meta.dirname"
   - "codex parallel agents esm rewrite"
   - "30 iteration deep review"

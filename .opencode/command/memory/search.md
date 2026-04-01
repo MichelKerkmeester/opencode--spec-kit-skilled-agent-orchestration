@@ -285,29 +285,33 @@ spec_kit_memory_memory_context({
 Format response:
 
 ```text
-MEMORY:SEARCH
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MEMORY:SEARCH  "<query>"  <detected-intent>  <N> found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Query       "<query>"
-  Intent      <detected-intent> (auto)
-  Weights     <anchor1> ×1.5 · <anchor2> ×1.3 · <anchor3> ×1.2
+  <leaf-folder>/
+    <score>  #<id>  <title>
 
-→ Results ──────────────────────────────── <N> found
+  <leaf-folder>/
+    <score>  #<id>  <title>
+    <score>  #<id>  <title>
+    <score>  #<id>  <title>
 
-  #<id>  <title>
-         █████████░  <score>%  ·  <spec-folder>  ·  <context_type>
-         <content-preview>
+  <leaf-folder>/
+    <score>  #<id>  <title>
+    <score>  #<id>  <title>
 
-  #<id>  <title>
-         ███████░░░  <score>%  ·  <spec-folder>  ·  <context_type>
-         <content-preview>
-
-→ Token Budget ──────────────────────────────────────
-
-  ████████████░░░░░░░░  <used> / <budget> tokens (<percentage>%)
-
-STATUS=OK INTENT=<intent> RESULTS=<count>
+STATUS=OK RESULTS=<count>
 ```
+
+**Folder display rules:**
+- Results grouped by spec folder
+- **Leaf folder name only** as group header (last path segment, e.g., `010-search-retrieval-quality-fixes/`)
+- Drop all parent path prefixes (`02--system-spec-kit/023-esm-module-compliance/` etc.)
+- Top-level folders (like `system-spec-kit/`) shown as-is
+- If two leaf names collide, prefix with parent number: `023/010-search-quality/`
+- Results indented under their folder group
+- Each result shows only: score, ID, title
+- No other metadata (no type, bars, previews, weights, or token budget)
 
 ### Token Budget Enforcement
 

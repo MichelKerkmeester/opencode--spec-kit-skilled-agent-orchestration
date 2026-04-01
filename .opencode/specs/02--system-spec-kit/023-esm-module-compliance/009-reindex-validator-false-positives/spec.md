@@ -14,6 +14,9 @@ contextType: "implementation"
 ---
 # Phase 009: Reindex Validator False Positives
 
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
 ## Problem
 
 Running `reindex-embeddings.js` discovers 184 memory files on disk but only 56 end up in the database. Two validation rules cause false-positive rejections during bulk reindex:
@@ -84,6 +87,9 @@ Gap:         36 files never indexed
 - Retroactive backfill across all spec docs
 - Ensure all memory files on disk get indexed after fix
 - Ensure spec docs get indexed with correct document_type
+- Deep review P1 remediation: regex fix, dedup fix, test coverage, log fixes, descriptive V-rule names
+- Extract shared `CONTEXT_TYPE_CANONICAL_MAP` constant across 6 consumers (P1-3)
+- Schema migration v25 to retrofit strict CHECK constraint on existing databases (P1-5)
 
 **Out of scope:**
 - Changing validation behavior during interactive `memory_save` (single-file saves work correctly)
@@ -111,6 +117,18 @@ All issues resolved. Changes made:
 15. **fsrs-scheduler.ts** — `CONTEXT_TYPE_STABILITY_MULTIPLIER` and `HYBRID_NO_DECAY_CONTEXT_TYPES` include `'planning'` with `'decision'` as legacy alias
 16. **memory-state-baseline.ts** — validation query includes `'planning'` in valid context_type set
 
+### Phase 3: Deep Review Remediation
+
+17. **Parser test T08** — `memory-parser-extended.vitest.ts`: removed legacy `decision`/`discovery` from canonical valid types set
+18. **V8 regex fix** — `validate-memory-quality.ts`: fixed regex to match single-level spec paths like `specs/001-feature/`
+19. **Force reindex dedup** — `dedup.ts`: removed `!force` bypass from `checkExistingRow` to prevent duplicate row accumulation
+20. **filePath test coverage** — `validate-memory-quality.vitest.ts`: added 5 new tests for V8 multi/single-level paths, V12 memory/spec-doc skip, descriptive name field
+21. **Log message fix** — `save-quality-gate.ts`: replaced hardcoded `context_type=decision` with `context_type=${params.contextType}`, updated to use `resolveCanonicalContextType()`
+22. **V-rule descriptive names** — `validate-memory-quality.ts`: added `name` field to `ValidationRuleMetadata` and `RuleResult` interfaces for all 14 V-rules
+23. **Shared context types** — `shared/context-types.ts`: single source of truth for `CanonicalContextType`, `LEGACY_CONTEXT_TYPE_ALIASES`, `resolveCanonicalContextType()`. 5 consumers updated to import from shared
+24. **Schema migration v25** — `vector-index-schema.ts`: UPDATEs legacy values then rebuilds `memory_index` table with strict `CHECK(context_type IN ('research', 'implementation', 'planning', 'general'))`. `SCHEMA_VERSION` bumped to 25
+25. **CHECK constraint cleanup** — `vector-index-schema.ts` + `schema-downgrade.ts`: CREATE TABLE now uses canonical-only CHECK constraint
+
 ## Success Criteria — All Met
 
 - Force reindex: 0 V-rule blocks, 0 failures (was 1106 blocks + 90 failures)
@@ -120,3 +138,8 @@ All issues resolved. Changes made:
 - 0 duplicates, 0 test files, 0 orphaned entries
 - All runtime consumers (session extractor, intent classifier, quality gate, FSRS scheduler, eval baseline) updated to use "planning"
 - Templates, assets, references, README.md, SKILL.md verified clean
+- Deep review P1 findings: 8/8 addressed (6 fixed, 2 resolved via shared constant + migration)
+- Shared `context-types.ts` module created as single source of truth for contextType definitions
+- Schema migration v25 rebuilds CHECK constraint to canonical-only types
+- 139 tests pass across 4 suites (validate-memory-quality 7, memory-parser-extended 46, content-hash-dedup 31, fsrs-scheduler 55)
+- sk-code--opencode alignment verifier: PASS (0 findings)

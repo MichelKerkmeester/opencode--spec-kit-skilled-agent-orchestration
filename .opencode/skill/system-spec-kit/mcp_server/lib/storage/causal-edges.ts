@@ -6,6 +6,9 @@
 import type Database from 'better-sqlite3';
 import { clearDegreeCacheForDb } from '../search/graph-search-fn.js';
 import { clearGraphSignalsCache } from '../graph/graph-signals.js';
+import { detectContradictions } from '../graph/contradiction-detection.js';
+import { ensureTemporalColumns } from '../graph/temporal-edges.js';
+import { isTemporalEdgesEnabled } from '../search/search-flags.js';
 import { runInTransaction } from './transaction-manager.js';
 
 /* ───────────────────────────────────────────────────────────────
@@ -142,6 +145,7 @@ function init(database: Database.Database): void {
   try {
     database.exec('CREATE INDEX IF NOT EXISTS idx_causal_source ON causal_edges(source_id)');
     database.exec('CREATE INDEX IF NOT EXISTS idx_causal_target ON causal_edges(target_id)');
+    ensureTemporalColumns(database);
   } catch (_e: unknown) {
     // Best-effort: table may not exist yet during early startup sequencing
   }
@@ -197,6 +201,15 @@ function insertEdge(
 
     // Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
     const rowId = database.transaction(() => {
+      if (isTemporalEdgesEnabled()) {
+        detectContradictions(
+          database,
+          Number.parseInt(sourceId, 10),
+          Number.parseInt(targetId, 10),
+          relation,
+        );
+      }
+
       // Check if edge exists (for weight_history logging on conflict update).
       // This SELECT is intentional: we need the old strength to decide whether
       // To write a weight_history row after the upsert. The subsequent INSERT

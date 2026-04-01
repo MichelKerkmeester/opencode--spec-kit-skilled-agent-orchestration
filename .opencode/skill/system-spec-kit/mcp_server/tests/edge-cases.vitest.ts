@@ -9,19 +9,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // ── Hook shared utilities ──
 
 describe('edge-cases: empty transcript', () => {
-  it('extractFilePaths returns empty array for empty input', async () => {
-    const { extractFilePaths } = await import('../hooks/claude/compact-inject.js') as any;
-    // compact-inject doesn't export extractFilePaths directly, test via buildCompactContext
-    // Instead test the pattern: empty lines → no crash
-    expect([]).toHaveLength(0);
-  });
-
-  it('tailFile returns empty array for non-existent file', async () => {
-    const { tailFile } = await import('../hooks/claude/compact-inject.js') as any;
-    // tailFile is not exported, but the hook handles missing transcript gracefully
-    // Verify the hook pattern: transcript_path missing → skip parsing
-    expect(true).toBe(true);
-  });
+  it.todo('buildCompactContext should ignore empty transcript content without extracting file paths');
+  it.todo('compact-inject should treat a missing transcript file as an empty tail without throwing');
 });
 
 describe('edge-cases: hook stdin parsing', () => {

@@ -1,11 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// TEST: Session Token Resume
+// TEST: Hook-State Session Resume
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ensureStateDir, updateState, loadState, getStatePath } from '../hooks/claude/hook-state.js';
 import { rmSync } from 'node:fs';
 
-describe('session token resume', () => {
+describe('hook-state session resume', () => {
   const sessionId = 'test-resume-session';
 
   beforeEach(() => { ensureStateDir(); });

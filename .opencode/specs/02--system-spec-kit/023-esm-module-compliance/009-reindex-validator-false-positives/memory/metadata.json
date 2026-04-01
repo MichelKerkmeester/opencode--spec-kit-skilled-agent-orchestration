@@ -1,7 +1,7 @@
 {
-  "timestamp": "31-03-26 15-13",
+  "timestamp": "01-04-26 11-03",
   "messageCount": 1,
-  "decisionCount": 5,
+  "decisionCount": 4,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 40,
+    "qualityScore": 70,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-31T14:13:44.171Z",
+        "timestamp": "2026-04-01T10:03:33.456Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-31T14:13:44.133Z",
+      "timestamp": "2026-04-01T10:03:33.413Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:38"
+        "processed_fields:34"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-31T14:13:44.171Z",
+      "timestamp": "2026-04-01T10:03:33.456Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-31T14:13:44.199Z",
+      "timestamp": "2026-04-01T10:03:33.488Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,16 +191,16 @@
       ],
       "passedThrough": [
         "current_spec:009-reindex-validator-false-positives",
-        "trigger_phrases:33",
+        "trigger_phrases:31",
         "key_topics:12",
-        "captured_file_count:10",
-        "filesystem_file_count:10"
+        "captured_file_count:5",
+        "filesystem_file_count:5"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 0,
+    "filesCreated": 2,
     "filesModified": 0,
     "decisions": 0,
     "messageStats": {
@@ -213,9 +213,9 @@
     }
   },
   "fileCounts": {
-    "fileCount": 10,
-    "capturedFileCount": 10,
-    "filesystemFileCount": 10,
+    "fileCount": 5,
+    "capturedFileCount": 5,
+    "filesystemFileCount": 5,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -229,8 +229,8 @@
     "model": "voyage-4",
     "dimensions": 768,
     "memoryId": null,
-    "updatedAt": "2026-03-31T14:13:44.233Z",
-    "lastAttemptedAt": "2026-03-31T14:13:44.233Z",
+    "updatedAt": "2026-04-01T10:03:33.519Z",
+    "lastAttemptedAt": "2026-04-01T10:03:33.519Z",
     "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

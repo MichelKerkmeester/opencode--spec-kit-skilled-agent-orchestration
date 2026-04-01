@@ -1,19 +1,19 @@
 {
-  "timestamp": "01-04-26 07-21",
-  "messageCount": 0,
-  "decisionCount": 1,
+  "timestamp": "01-04-26 11-16",
+  "messageCount": 1,
+  "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 0,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 70,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-01T06:21:34.234Z",
+        "timestamp": "2026-04-01T10:16:28.360Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:0",
-          "kept_items:0"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-01T06:21:34.196Z",
+      "timestamp": "2026-04-01T10:16:28.320Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:16"
+        "processed_fields:4"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-01T06:21:34.234Z",
+      "timestamp": "2026-04-01T10:16:28.360Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:0",
-        "kept_items:0"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-01T06:21:34.264Z",
+      "timestamp": "2026-04-01T10:16:28.383Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -193,29 +193,29 @@
         "current_spec:008-create-sh-phase-parent",
         "trigger_phrases:36",
         "key_topics:12",
-        "captured_file_count:5",
-        "filesystem_file_count:5"
+        "captured_file_count:0",
+        "filesystem_file_count:0"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 0,
-    "filesModified": 5,
+    "filesCreated": 1,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 0,
+      "implementation": 1,
       "result": 0,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "fileCounts": {
-    "fileCount": 5,
-    "capturedFileCount": 5,
-    "filesystemFileCount": 5,
+    "fileCount": 0,
+    "capturedFileCount": 0,
+    "filesystemFileCount": 0,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -225,12 +225,12 @@
     "sessionUpdated": 0
   },
   "embedding": {
-    "status": "indexed",
+    "status": "skipped_index_policy",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 63,
-    "updatedAt": "2026-04-01T06:21:36.439Z",
-    "generatedAt": "2026-04-01T06:21:36.439Z",
-    "reason": "Indexed after all write and semantic-index gates passed."
+    "memoryId": null,
+    "updatedAt": "2026-04-01T10:16:28.414Z",
+    "lastAttemptedAt": "2026-04-01T10:16:28.414Z",
+    "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

@@ -328,6 +328,7 @@ function bm25Search(
   options: { limit?: number; specFolder?: string } = {}
 ): HybridSearchResult[] {
   if (!isBm25Enabled()) {
+    console.warn('[hybrid-search] BM25 not enabled — returning empty bm25Search results');
     return [];
   }
 
@@ -424,7 +425,10 @@ function isBm25Available(): boolean {
  * @returns True if the memory_fts table exists in the connected database.
  */
 function isFtsAvailable(): boolean {
-  if (!db) return false;
+  if (!db) {
+    console.warn('[hybrid-search] db not initialized — isFtsAvailable returning false');
+    return false;
+  }
 
   try {
     const result = (db.prepare(`
@@ -447,7 +451,10 @@ function ftsSearch(
   query: string,
   options: { limit?: number; specFolder?: string; includeArchived?: boolean } = {}
 ): HybridSearchResult[] {
-  if (!db || !isFtsAvailable()) return [];
+  if (!db || !isFtsAvailable()) {
+    console.warn('[hybrid-search] db not initialized or FTS unavailable — returning empty ftsSearch results');
+    return [];
+  }
 
   const { limit = DEFAULT_LIMIT, specFolder, includeArchived = false } = options;
 
@@ -1789,7 +1796,10 @@ async function searchWithFallback(
 function structuralSearch(
   options: Pick<HybridSearchOptions, 'specFolder' | 'limit'> = {}
 ): HybridSearchResult[] {
-  if (!db) return [];
+  if (!db) {
+    console.warn('[hybrid-search] db not initialized — returning empty structuralSearch results');
+    return [];
+  }
 
   const limit = options.limit ?? DEFAULT_LIMIT;
 

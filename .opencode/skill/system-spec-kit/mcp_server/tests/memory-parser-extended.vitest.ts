@@ -228,7 +228,7 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
 
     it('T08: all map values are valid ContextType', () => {
-      const validTypes = new Set<ContextType>(['implementation', 'research', 'planning', 'general', 'decision', 'discovery']);
+      const validTypes = new Set<ContextType>(['implementation', 'research', 'planning', 'general']);
       const allValid = Object.values(map).every((v) => validTypes.has(v));
       expect(allValid).toBe(true);
     });

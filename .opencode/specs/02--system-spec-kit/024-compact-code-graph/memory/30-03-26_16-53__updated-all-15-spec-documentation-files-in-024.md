@@ -1,5 +1,5 @@
 ---
-title: "Documentatio [02--system-spec-kit/024-compact-code-graph/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024]"
+title: "Updated All 15 Spec Documentation Files in 024 [024-compact-code-graph]"
 trigger_phrases:
   - "cocoindex integration"
   - "code graph cocoindex"

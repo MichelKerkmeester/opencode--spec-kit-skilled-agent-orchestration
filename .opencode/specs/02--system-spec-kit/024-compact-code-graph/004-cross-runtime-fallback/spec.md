@@ -46,7 +46,7 @@ interface RuntimeCapability {
 | Claude Code | 25 events, 4 handler types | `enabled` |
 | Codex CLI | None confirmed | `unavailable` |
 | Copilot CLI | Has hooks (guardrails focus) | `disabled_by_scope` (v1 policy) |
-| Gemini CLI | Has hooks (v0.33.1+, `/hooks` UI) | `disabled_by_scope` (v1 policy) |
+| Gemini CLI | Has hooks (v0.33.1+, `/hooks` UI) | `unavailable` when no `.gemini/settings.json` exists |
 
 **Note:** CocoIndex Code MCP is available across all runtimes as a shared semantic search capability.
 

@@ -275,18 +275,27 @@ export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH || DATABASE_PATH;
 const DB_PERMISSIONS = 0o600;
 
 function resolve_database_path() {
-  if (process.env.MEMORY_DB_PATH) {
-    return process.env.MEMORY_DB_PATH;
+  const resolved_path = process.env.MEMORY_DB_PATH || DEFAULT_DB_PATH;
+  const profile = embeddingsProvider.getEmbeddingProfile();
+
+  if (profile && 'getDatabasePath' in profile && typeof profile.getDatabasePath === 'function') {
+    const provider_specific_path = profile.getDatabasePath(DEFAULT_DB_DIR);
+    const normalized_resolved_path = resolved_path === ':memory:' ? resolved_path : path.resolve(resolved_path);
+    const normalized_provider_path = provider_specific_path === ':memory:' ? provider_specific_path : path.resolve(provider_specific_path);
+
+    if (normalized_provider_path !== normalized_resolved_path) {
+      const provider_name = 'provider' in profile && typeof profile.provider === 'string'
+        ? profile.provider
+        : 'unknown';
+      console.error(
+        '[vector-index] WARNING: Provider-specific DB path differs from resolved path (provider=%s, resolved=%s). Using resolved path to prevent mid-session drift.',
+        provider_name,
+        resolved_path
+      );
+    }
   }
 
-  const embeddings = embeddingsProvider;
-  const profile = embeddings.getEmbeddingProfile();
-
-  if (!profile || !('getDatabasePath' in profile)) {
-    return DEFAULT_DB_PATH;
-  }
-
-  return (profile as { getDatabasePath: (dir: string) => string }).getDatabasePath(DEFAULT_DB_DIR);
+  return resolved_path;
 }
 
 // P1-06 FIX: Unified allowed paths

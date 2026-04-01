@@ -30,38 +30,29 @@ Implement `code_graph_context`, the LLM-oriented orchestration tool that bridges
 - **Native seed acceptance**: CocoIndex MCP results accepted directly — no intermediate conversion required by callers
 - **Three query modes**: `neighborhood` (default), `outline` (structure-first), `impact` (reverse dependencies)
 - **Two-layer budget**: Tool-local shaping (default 1200 tokens) + outer envelope truncation at compaction
+- **Formatter helpers are inlined**: `formatTextBrief()`, `buildCombinedSummary()`, and related response-formatting logic live inside `code-graph-context.ts`; there is no standalone `context-formatter.ts`
 
 ## Seed Types
 
 ```typescript
-type CodeGraphSeed = CocoIndexSeed | ManualSeed | GraphSeed;
-
 interface CocoIndexSeed {
   provider: 'cocoindex';
   file: string;
-  lines: [number, number];
+  range: { start: number; end: number };
+  score: number;
   snippet?: string;
-  score?: number;
-  language?: string;
 }
 
 interface ManualSeed {
   provider: 'manual';
-  filePath: string;
-  startLine: number;
-  endLine: number;
-  snippet?: string;
-  relevance?: number;
-  language?: string;
+  symbolName: string;
+  filePath?: string;
+  kind?: SymbolKind;
 }
 
 interface GraphSeed {
   provider: 'graph';
-  symbolId?: string;
-  fqName?: string;
-  filePath?: string;
-  startLine?: number;
-  endLine?: number;
+  symbolId: string;
 }
 ```
 
@@ -72,9 +63,11 @@ interface ArtifactRef {
   filePath: string;
   startLine: number;
   endLine: number;
-  symbolId?: string;
-  fqName?: string;
-  language?: string;
+  symbolId: string | null;
+  fqName: string | null;
+  kind: string | null;
+  confidence: number;
+  resolution: 'exact' | 'near_exact' | 'enclosing' | 'file_anchor';
 }
 ```
 
@@ -83,9 +76,9 @@ interface ArtifactRef {
 All seed types normalize to `ArtifactRef` using this resolution chain:
 
 1. **Exact symbol overlap**: Seed line range matches a graph node exactly
-2. **Enclosing symbol**: Seed falls within a larger function/class boundary
-3. **Nearest file-level outline node**: No containing symbol; anchor to file outline
-4. **Raw file anchor**: No graph nodes at all for this file; use file-level reference
+2. **Near-exact symbol**: Seed start line lands within ±5 lines of a graph node start
+3. **Enclosing symbol**: Seed falls within a larger function/class boundary
+4. **Raw file anchor**: No graph nodes resolve; use file-level reference
 
 ## Query Modes
 
@@ -101,30 +94,14 @@ All seed types normalize to `ArtifactRef` using this resolution chain:
 interface CodeGraphContextArgs {
   input: string;
   queryMode?: 'neighborhood' | 'outline' | 'impact';
-  intent?: 'understand' | 'fix_bug' | 'refactor' | 'add_feature';
-  subject?: {
-    symbolId?: string;
-    fqName?: string;
-    filePath?: string;
-    position?: { line: number; column: number };
-  };
+  subject?: string;
   seeds?: CodeGraphSeed[];
-  pathGlobs?: string[];
-  languages?: string[];
-  maxSeeds?: number;
-  maxNodes?: number;
-  maxEdges?: number;
   budgetTokens?: number;
-  includeOutline?: boolean;
-  includeCallers?: boolean;
-  includeCallees?: boolean;
-  includeImports?: boolean;
-  includeTests?: boolean;
-  includeTrace?: boolean;
-  freshness?: 'prefer_cached' | 'if_stale' | 'rebuild_scope';
   profile?: 'quick' | 'research' | 'debug';
 }
 ```
+
+> Note: `ContextArgs` in `code-graph-context.ts` also defines `includeTrace?: boolean`, but `tool-schemas.ts` sets `additionalProperties: false` and does not expose `includeTrace`, so MCP calls that pass it are currently rejected at schema validation time.
 
 ## Output Format
 
@@ -132,14 +109,36 @@ interface CodeGraphContextArgs {
 
 ```json
 {
-  "query": { "input": "...", "queryMode": "neighborhood", "intent": "understand" },
-  "semanticSeeds": [{ "provider": "cocoindex", "file": "...", "lines": [10, 42], "score": 0.91 }],
-  "resolvedAnchors": [{ "artifact": { "filePath": "...", "symbolId": "..." }, "resolution": "enclosing_symbol", "confidence": 0.94 }],
-  "graphContext": { "roots": [], "nodes": [], "edges": [], "outline": [], "tests": [] },
-  "combinedSummary": "AuthMiddleware.handle is the main request gate...",
-  "nextActions": ["Inspect callers of AuthMiddleware.handle"],
-  "freshness": { "state": "hot", "partial": false },
-  "warnings": []
+  "queryMode": "neighborhood",
+  "resolvedAnchors": [
+    {
+      "filePath": "src/auth/middleware.ts",
+      "startLine": 10,
+      "endLine": 42,
+      "symbolId": "auth:middleware:handle",
+      "fqName": "AuthMiddleware.handle",
+      "kind": "function",
+      "confidence": 0.94,
+      "resolution": "near_exact"
+    }
+  ],
+  "graphContext": [
+    {
+      "anchor": "src/auth/middleware.ts:10 (AuthMiddleware.handle)",
+      "nodes": [{ "name": "TokenVerifier.verify", "kind": "function", "file": "src/auth/token.ts", "line": 18 }],
+      "edges": [{ "from": "AuthMiddleware.handle", "to": "TokenVerifier.verify", "type": "CALLS" }]
+    }
+  ],
+  "textBrief": "### src/auth/middleware.ts:10 (AuthMiddleware.handle)\nSymbols:\n  function TokenVerifier.verify (src/auth/token.ts:18)",
+  "combinedSummary": "1 anchor(s) across 1 file(s): AuthMiddleware.handle + 1 symbols, 1 relationships",
+  "nextActions": ["Use `mcp__cocoindex_code__search` for semantic discovery of related code"],
+  "metadata": {
+    "totalNodes": 1,
+    "totalEdges": 1,
+    "budgetUsed": 42,
+    "budgetLimit": 1200,
+    "freshness": { "lastScanAt": "2025-02-10T10:15:00.000Z", "staleness": "fresh" }
+  }
 }
 ```
 
@@ -190,31 +189,25 @@ Main orchestration handler:
 
 Seed normalization and graph resolution:
 - Accept `CodeGraphSeed[]` → produce `ArtifactRef[]`
-- Resolution chain: exact → enclosing → file outline → file anchor
+- Resolution chain: exact → near_exact → enclosing → file_anchor
 - Deduplication across seeds
 - Confidence scoring per resolution
 
-### 3. `context-formatter.ts`
-
-Output formatting:
-- Structured JSON response with provenance sections
-- Compact text brief (repo-map style)
-- Budget-aware truncation with deterministic order
-
-### 4. Tool schema + server integration
+### 3. Tool schema + server integration
 
 - Add `code_graph_context` schema to `tool-schemas.ts`
 - Register handler in `context-server.ts`
+- Keep formatter helpers in `code-graph-context.ts` rather than splitting a separate formatter module
 
 ## Acceptance Criteria
 
 - [ ] `code_graph_context` accepts native CocoIndex MCP result objects in `seeds[]`
 - [ ] All seed types (CocoIndex, Manual, Graph) normalize to `ArtifactRef`
-- [ ] Seed resolution chain works: exact → enclosing → file outline → file anchor
+- [ ] Seed resolution chain works: exact → near_exact → enclosing → file_anchor
 - [ ] `neighborhood` mode returns 1-hop structural expansion
 - [ ] `outline` mode returns file/package structure
 - [ ] `impact` mode returns reverse dependencies (callers, importers)
-- [ ] Structured output separates semanticSeeds, resolvedAnchors, graphContext
+- [ ] Structured output matches handler shape: `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`
 - [ ] Text fallback renders compact repo-map style brief
 - [ ] Budget enforcement truncates deterministically within target
 - [ ] Tool registered in MCP server and callable by clients
@@ -223,10 +216,9 @@ Output formatting:
 
 - NEW: `mcp_server/lib/code-graph/code-graph-context.ts`
 - NEW: `mcp_server/lib/code-graph/seed-resolver.ts`
-- NEW: `mcp_server/lib/code-graph/context-formatter.ts`
 - EDIT: `mcp_server/tool-schemas.ts` (add code_graph_context schema)
 - EDIT: `mcp_server/context-server.ts` (register handler)
 
 ## LOC Estimate
 
-330-460 lines (context handler + seed resolver + formatter + schema)
+330-460 lines (context handler + seed resolver + inline formatting + schema)

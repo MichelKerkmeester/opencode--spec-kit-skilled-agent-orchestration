@@ -24,6 +24,8 @@
 // Factor), tier-classifier.ts (state classification),
 // Vector-index-impl.js (SQL search ranking).
 
+import { LEGACY_CONTEXT_TYPE_ALIASES } from '@spec-kit/shared/context-types';
+
 /* --- 1. CONSTANTS --- */
 
 /** FSRS v4 algorithm constants */
@@ -270,10 +272,15 @@ const TIER_MULTIPLIER: Readonly<Record<string, number>> = {
  */
 const CONTEXT_TYPE_STABILITY_MULTIPLIER: Record<string, number> = {
   planning: Infinity,    // no decay — planning/decisions are permanent
-  decision: Infinity,    // legacy alias — same as planning
   research: 2.0,         // 2x stability — research context decays slower
   implementation: 1.0,   // standard decay
   general: 1.0,          // standard decay
+  // P1-3: Legacy aliases inherit their canonical type's multiplier
+  ...Object.fromEntries(
+    Object.entries(LEGACY_CONTEXT_TYPE_ALIASES).map(
+      ([legacy, canonical]) => [legacy, canonical === 'planning' ? Infinity : canonical === 'research' ? 2.0 : 1.0]
+    )
+  ),
 };
 
 /**
@@ -382,7 +389,7 @@ function applyClassificationDecay(
  */
 const HYBRID_NO_DECAY_CONTEXT_TYPES: ReadonlySet<string> = new Set([
   'planning',
-  'decision',     // legacy alias for planning
+  ...Object.keys(LEGACY_CONTEXT_TYPE_ALIASES).filter(k => LEGACY_CONTEXT_TYPE_ALIASES[k] === 'planning'),
   'constitutional',
   'critical',
 ]);

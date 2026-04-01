@@ -10,6 +10,9 @@ importance_tier: "normal"
 contextType: "implementation"
 ---
 
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
 <!-- SPECKIT_ADDENDUM: Phase - Child Header -->
 
 | **Parent Spec** | ../spec.md |

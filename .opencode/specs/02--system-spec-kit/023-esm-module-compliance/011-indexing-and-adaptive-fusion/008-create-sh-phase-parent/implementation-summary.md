@@ -4,9 +4,9 @@ description: "Implementation complete: --phase-parent flag added to create.sh wi
 trigger_phrases:
   - "phase 008 implementation summary"
   - "create sh nested append status"
-  - "planning-only summary"
+  - "phase 008 nested append summary"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Implementation Summary
 
@@ -31,16 +31,17 @@ contextType: "planning"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Four surgical changes to `.opencode/skill/system-spec-kit/scripts/spec/create.sh`:
+Changes to `.opencode/skill/system-spec-kit/scripts/spec/create.sh`:
 
-1. **`--phase-parent` flag** (lines 157-168): New parser case that sets `PHASE_PARENT`, identical to `--parent` but with a phase-specific name for clarity.
-2. **Skip basename validation for parent paths** (line 372): Added `skip_basename_validation` third parameter to `resolve_and_validate_spec_path()`. When `"true"`, skips `validate_spec_folder_basename()` — the approved-root check is sufficient for parent paths with track folders like `02--system-spec-kit`.
-3. **Parent resolution uses relaxed validation** (line 641): `resolve_and_validate_spec_path "$PHASE_PARENT" "--parent folder" "true"` passes the skip flag.
-4. **Help text updated** (lines 218, 264): Added `--phase-parent` description and nested `.opencode/specs/` example.
+1. **`--parent|--phase-parent` merged parser**: Single case block with `phase_parent_flag` tracking which flag was used. Duplicate code eliminated. Conflict check rejects both flags simultaneously.
+2. **`allow_nested_parent` validation mode**: Third parameter to `resolve_and_validate_spec_path()`. When `"true"`, validates leaf basename against `^[0-9]{2,3}[-]+[A-Za-z0-9._-]+$` — accepts both spec folders (`NNN-name`) and track folders (`NN--name`) while rejecting non-spec directories like `z_archive/` or `scratch/`.
+3. **Parent resolution uses relaxed validation**: `resolve_and_validate_spec_path "$PHASE_PARENT" "--parent folder" "true"` passes the nested-parent flag.
+4. **Help text updated**: Added `--phase-parent` description and nested `.opencode/specs/` example.
+5. **Empty-string guard**: Rejects `--parent ""` and `--phase-parent ""` before filesystem access.
 
 ### Current State
 
-`--phase-parent` is now a working alias for `--parent` in phase mode. Nested parent paths under `.opencode/specs/` with track folder prefixes (e.g., `02--system-spec-kit`) are accepted without basename validation failure. Backward compatibility with `--parent` is preserved.
+`--phase-parent` is a working alias for `--parent` in phase mode. Nested parent paths under `.opencode/specs/` with track folder prefixes are accepted. Non-spec leaf directories are rejected. Backward compatibility with `--parent` is preserved.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -48,7 +49,7 @@ Four surgical changes to `.opencode/skill/system-spec-kit/scripts/spec/create.sh
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-GPT 5.4 (via Copilot CLI) implemented the 4 changes autonomously. Changes were verified via `bash -n` syntax check and `--help` output inspection. All modifications stayed within scope — no unrelated code was touched.
+AI agents implemented and iteratively reviewed the changes. Two review passes (10 iterations total) drove refinements: parser consolidation, leaf validation tightening, empty-string guard, and dual-flag conflict check. All modifications stayed within nested append scope.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -60,7 +61,6 @@ GPT 5.4 (via Copilot CLI) implemented the 4 changes autonomously. Changes were v
 |----------|-----|
 | Plan for `--phase-parent` support while keeping `--parent` compatible | The new name is clearer for append mode and the old one still needs to work |
 | Resolve append output from the validated parent tree | It fixes the wrong-root problem for nested `.opencode/specs/` parents |
-| Keep this task documentation-only | It avoids mixing planning and script changes in one step |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -73,8 +73,10 @@ GPT 5.4 (via Copilot CLI) implemented the 4 changes autonomously. Changes were v
 | `bash -n` syntax check | PASS |
 | `--phase-parent` in help output | PASS |
 | `--phase-parent` without `--phase` gives error | PASS |
-| `--parent` backward compatibility | PASS, both flags set same `PHASE_PARENT` variable |
-| `resolve_and_validate_spec_path()` skips basename when 3rd arg is `"true"` | PASS |
+| `--parent` backward compatibility | PASS, merged parser sets same `PHASE_PARENT` variable |
+| `allow_nested_parent` validates leaf against spec/track pattern | PASS, rejects `z_archive/` etc. |
+| Dual-flag conflict check | PASS, rejects `--parent X --phase-parent Y` |
+| Empty-string guard | PASS, rejects `--phase-parent ""` |
 <!-- /ANCHOR:verification -->
 
 ---

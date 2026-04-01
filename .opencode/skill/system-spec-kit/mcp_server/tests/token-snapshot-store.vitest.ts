@@ -1,11 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// TEST: Token Snapshot Store
+// TEST: Hook-State Token Persistence
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ensureStateDir, updateState, loadState, getStatePath } from '../hooks/claude/hook-state.js';
 import { rmSync } from 'node:fs';
 
-describe('token snapshot store', () => {
+describe('hook-state token persistence', () => {
   const sessionId = 'test-snapshot-store';
 
   beforeEach(() => { ensureStateDir(); });

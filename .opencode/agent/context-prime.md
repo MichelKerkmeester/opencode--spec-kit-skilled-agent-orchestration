@@ -130,6 +130,13 @@ Session Event
 1. {most important action based on findings}
 2. {second priority action}
 3. {third priority action}
+
+## Tool Routing
+| Query Type | Tool | Examples |
+|-----------|------|----------|
+| Semantic/concept | `mcp__cocoindex_code__search` | "find auth logic", "code handling payments" |
+| Structural | `code_graph_query` | "what calls X", "imports of Y" |
+| Exact text | `Grep` | "find TODO", "occurrences of API_KEY" |
 ```
 
 ---

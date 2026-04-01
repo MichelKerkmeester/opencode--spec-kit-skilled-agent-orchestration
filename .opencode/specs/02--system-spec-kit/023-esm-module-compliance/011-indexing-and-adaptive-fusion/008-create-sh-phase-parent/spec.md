@@ -1,13 +1,13 @@
 ---
 title: "Feature Specification: Append Nested Child Phases in create.sh [02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent]"
-description: "Document the planned create.sh changes needed to append child phases under existing nested parent folders in .opencode/specs without breaking current flat-spec behavior."
+description: "Document the implemented create.sh changes that append child phases under existing nested parent folders in .opencode/specs without breaking current flat-spec behavior."
 trigger_phrases:
   - "phase parent alias"
   - "nested phase append"
   - "create sh nested specs"
   - "phase-parent planning"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Feature Specification: Append Nested Child Phases in create.sh
 
@@ -18,7 +18,7 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-`create.sh` can create phases and append phases under flat parent folders, but it does not cleanly support nested parent folders under `.opencode/specs`. The current behavior assumes `SPECS_DIR="$REPO_ROOT/specs"`, validates only the basename in `resolve_and_validate_spec_path()`, and exposes `--parent` rather than the requested `--phase-parent` intent. This phase defines the implementation plan for fixing nested parent path acceptance, output tree resolution, and child phase numbering without modifying `create.sh` yet.
+`create.sh` can create phases and append phases under flat parent folders, but it did not cleanly support nested parent folders under `.opencode/specs`. The delivered implementation updates nested parent path acceptance, output tree resolution, and child phase numbering while preserving current flat-spec behavior.
 
 **Key Decisions**: Accept `--phase-parent` as the public flag surface, and resolve append targets from the validated parent path instead of a single global specs root.
 
@@ -32,7 +32,7 @@ contextType: "planning"
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-01 |
 | **Branch** | `011-008-create-sh-phase-parent` |
 
@@ -64,23 +64,21 @@ Define the documentation, decisions, and task plan for a safe `create.sh` update
 - Define verification coverage for flat and nested append cases
 
 ### Out of Scope
-- Editing `create.sh` in this task
-- Shipping tests or runtime changes in this task
 - Changing unrelated spec creation behavior outside phase append handling
 - Refactoring the whole script beyond what nested append support needs
+- End-to-end integration testing with real folder creation
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Modify | Future implementation target for nested append handling |
-| `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Review | Future verification dependency if create behavior changes need validation support |
-| `spec.md` | Create | Phase specification |
-| `plan.md` | Create | Technical implementation plan |
-| `tasks.md` | Create | Future implementation task list |
-| `checklist.md` | Create | Verification tracking |
-| `decision-record.md` | Create | ADR for path and flag behavior |
-| `implementation-summary.md` | Create | Honest status stub |
+| `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Modified | Added `--phase-parent`, `allow_nested_parent` validation, parser consolidation |
+| `spec.md` | Updated | Phase specification — reflects implemented state |
+| `plan.md` | Updated | Implementation plan with completed phases |
+| `tasks.md` | Updated | Task tracking with completion evidence |
+| `checklist.md` | Updated | Verification with evidence |
+| `decision-record.md` | Updated | ADR-001 accepted |
+| `implementation-summary.md` | Updated | Delivered implementation summary |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -114,9 +112,9 @@ Define the documentation, decisions, and task plan for a safe `create.sh` update
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Documentation fully describes the nested phase append problem and intended behavior
-- **SC-002**: Future implementation can add `--phase-parent` support without ambiguity about aliasing, validation, or numbering
+- **SC-002**: `--phase-parent` support is implemented with clear aliasing, validation, and numbering behavior
 - **SC-003**: Planned verification covers both flat and nested parent trees
-- **SC-004**: No document in this phase claims `create.sh` has already been fixed
+- **SC-004**: All documents accurately reflect the implemented state of `create.sh`
 - **SC-005**: Phase artifacts are placeholder-free and aligned with the real current behavior of the script
 <!-- /ANCHOR:success-criteria -->
 

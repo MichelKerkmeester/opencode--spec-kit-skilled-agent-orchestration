@@ -71,7 +71,7 @@ contextType: "implementation"
 - [x] T013 Code verified: `isFeatureEnabled` returns false when env var is 'false' (rollout-policy.ts L62). Guard at L774 blocks entry → metadata stays 'off'.
 - [x] T014 Code verified: same pattern as T013 for causal boost guard at L795.
 - [x] T015 Code verified: when env vars unset, `isFeatureEnabled` returns true (rollout-policy.ts L60-66). Guards pass → metadata = 'enabled' or 'applied'.
-- [ ] T016 [P] Update feature catalog entry for session boost and causal boost to reflect graduated status [DEFERRED: P1, no blocking impact]
+- [x] T016 [P] Update feature catalog entry for session boost and causal boost to reflect graduated status [EVIDENCE: Created feature_catalog/15--retrieval-enhancements/10-session-boost-graduated.md and 11-causal-boost-graduated.md]
 - [x] T025 Code verified: "semantic search" now matches `research` class via keywords "search" + "semantic" (score=2, confidence=0.33). If keyword match fails, intent "understand" → research via INTENT_TO_ARTIFACT fallback.
 - [x] T026 Code verified: "vector retrieval" → research (keywords "vector"+"retrieval"), "find the config" → implementation-summary (keyword "config"), varied queries covered by expanded keywords + intent fallback.
 <!-- /ANCHOR:phase-3 -->

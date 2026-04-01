@@ -75,6 +75,8 @@ export interface RawInputData {
   SPEC_FOLDER?: string;
   filesModified?: string[];
   files_modified?: string[];
+  filesChanged?: string[];
+  files_changed?: string[];
   sessionSummary?: string;
   session_summary?: string;
   keyDecisions?: Array<string | DecisionItemObject>;
@@ -514,6 +516,24 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
         }
       }
     }
+    // Rec 1: Map filesChanged to FILES on fast-path when no filesModified present
+    if (!cloned.FILES || (Array.isArray(cloned.FILES) && cloned.FILES.length === 0)) {
+      const fcFast = Array.isArray(data.filesChanged)
+        ? data.filesChanged
+        : Array.isArray((data as Record<string, unknown>).files_changed)
+          ? (data as Record<string, unknown>).files_changed as string[]
+          : undefined;
+      if (fcFast !== undefined && fcFast.length > 0) {
+        cloned.FILES = fcFast.map((entry: string) => {
+          const basename = entry.replace(/\\/g, '/').split('/').pop()?.replace(/\.[^.]+$/, '') || '';
+          return {
+            FILE_PATH: entry,
+            DESCRIPTION: basename ? `Modified ${basename.replace(/[-_]/g, ' ')}` : 'File changed',
+            ACTION: 'Changed',
+          };
+        });
+      }
+    }
 
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
       cloned.observations.push(buildNextStepsObservation(nextSteps));
@@ -616,6 +636,31 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       }
       return { FILE_PATH: filePath, DESCRIPTION: description, ACTION: 'Modified' };
     });
+  }
+
+  // Rec 1: Map filesChanged to FILES when filesModified not provided
+  if ((!normalized.FILES || normalized.FILES.length === 0) && !filesModified.length) {
+    const filesChanged = Array.isArray(data.filesChanged)
+      ? data.filesChanged
+      : Array.isArray(data.files_changed)
+        ? (data.files_changed as string[])
+        : [];
+    if (filesChanged.length > 0) {
+      normalized.FILES = filesChanged.map((entry: string) => {
+        const sepMatch = entry.match(/^(.+?)\s+(?:[-\u2013\u2014]|:)\s+(.+)$/);
+        let filePath: string;
+        let description: string;
+        if (sepMatch && (sepMatch[1].includes('.') || sepMatch[1].includes('/'))) {
+          filePath = sepMatch[1].trim();
+          description = sepMatch[2].trim();
+        } else {
+          filePath = entry;
+          const basename = filePath.replace(/\\/g, '/').split('/').pop()?.replace(/\.[^.]+$/, '') || '';
+          description = basename ? `Modified ${basename.replace(/[-_]/g, ' ')}` : 'File changed';
+        }
+        return { FILE_PATH: filePath, DESCRIPTION: description, ACTION: 'Changed' };
+      });
+    }
   }
 
   const observations: Observation[] = [];
@@ -749,7 +794,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 // P1: Known fields for unknown-field detection (T007)
 const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'specFolder', 'spec_folder', 'SPEC_FOLDER',
-  'filesModified', 'files_modified',
+  'filesModified', 'files_modified', 'filesChanged', 'files_changed',
   'sessionSummary', 'session_summary',
   'keyDecisions', 'key_decisions',
   'nextSteps', 'next_steps',
@@ -857,6 +902,27 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   }
   if (data.files_modified !== undefined && !Array.isArray(data.files_modified)) {
     errors.push('files_modified must be an array');
+  }
+  if (data.filesChanged !== undefined && !Array.isArray(data.filesChanged)) {
+    errors.push('filesChanged must be an array');
+  }
+  if (data.files_changed !== undefined && !Array.isArray(data.files_changed)) {
+    errors.push('files_changed must be an array');
+  }
+
+  // P2-004: Array-length caps to prevent memory pressure from oversized inputs
+  const ARRAY_LENGTH_CAP = 500;
+  if (Array.isArray(data.keyDecisions) && data.keyDecisions.length > ARRAY_LENGTH_CAP) {
+    errors.push(`keyDecisions exceeds maximum length of ${ARRAY_LENGTH_CAP} (got ${data.keyDecisions.length})`);
+  }
+  if (Array.isArray(data.key_decisions) && data.key_decisions.length > ARRAY_LENGTH_CAP) {
+    errors.push(`key_decisions exceeds maximum length of ${ARRAY_LENGTH_CAP} (got ${data.key_decisions.length})`);
+  }
+  if (Array.isArray(data.filesModified) && data.filesModified.length > ARRAY_LENGTH_CAP) {
+    errors.push(`filesModified exceeds maximum length of ${ARRAY_LENGTH_CAP} (got ${data.filesModified.length})`);
+  }
+  if (Array.isArray(data.filesChanged) && data.filesChanged.length > ARRAY_LENGTH_CAP) {
+    errors.push(`filesChanged exceeds maximum length of ${ARRAY_LENGTH_CAP} (got ${data.filesChanged.length})`);
   }
 
   if (data.nextSteps !== undefined && !Array.isArray(data.nextSteps)) {

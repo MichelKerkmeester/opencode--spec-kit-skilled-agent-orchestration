@@ -22,6 +22,7 @@ export interface SessionSnapshot {
   sessionQuality: 'healthy' | 'degraded' | 'critical' | 'unknown';
   lastToolCallAgoMs: number | null;
   primed: boolean;
+  routingRecommendation: string;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -93,6 +94,17 @@ export function getSessionSnapshot(): SessionSnapshot {
     primed = isSessionPrimed();
   } catch { /* not primed */ }
 
+  // Build routing recommendation
+  const routingParts: string[] = [];
+  if (cocoIndexAvailable) {
+    routingParts.push('semantic/concept search → mcp__cocoindex_code__search');
+  }
+  if (graphFreshness === 'fresh') {
+    routingParts.push('structural queries (callers, deps) → code_graph_query');
+  }
+  routingParts.push('exact text/regex → Grep');
+  const routingRecommendation = routingParts.join(' | ');
+
   return {
     specFolder,
     currentTask,
@@ -101,5 +113,6 @@ export function getSessionSnapshot(): SessionSnapshot {
     sessionQuality,
     lastToolCallAgoMs,
     primed,
+    routingRecommendation,
   };
 }

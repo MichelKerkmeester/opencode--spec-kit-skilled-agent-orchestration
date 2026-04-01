@@ -17,37 +17,34 @@ contextType: "planning"
 1. **Implement `seed-resolver.ts`:**
    - Accept `CodeGraphSeed[]` from any provider
    - Normalize each seed to `ArtifactRef` (filePath, startLine, endLine, symbolId, fqName)
-   - Resolution chain: exact symbol → enclosing symbol → file outline → file anchor
+   - Resolution chain: exact symbol → near-exact symbol → enclosing symbol → file anchor
    - Deduplicate overlapping seeds
    - Score each resolution with confidence value
 2. **Implement `code-graph-context.ts`:**
-   - Parse MCP tool input (input, queryMode, intent, subject, seeds)
+   - Parse MCP tool input (input, queryMode, subject, seeds, budget params)
    - Call seed-resolver for all seeds
    - Select expansion behavior based on queryMode:
-     - `neighborhood`: 1-hop CALLS + IMPORTS + CONTAINS from resolved anchors
-     - `outline`: file/package CONTAINS + EXPORTS
-     - `impact`: reverse CALLS + reverse IMPORTS + TESTED_BY
-   - Execute graph queries via Phase 009 `code_graph_query`
-   - Optional reverse semantic augmentation: expanded graph neighbors → CocoIndex search
-   - Collect results into structured response envelope
-3. **Implement `context-formatter.ts`:**
-   - Structured JSON: separate semanticSeeds, resolvedAnchors, graphContext sections
-   - Compact text brief: path-first, symbol-rich, repo-map style
-   - Budget-aware truncation with deterministic order
-   - Never drop: top seed, root anchor, one edge, one next action
-4. **Register tool in MCP server:**
-   - Add `code_graph_context` schema to `tool-schemas.ts`
-   - Wire handler in `context-server.ts`
-5. **Test with real CocoIndex results:**
-   - Run CocoIndex search → feed results as seeds to code_graph_context
-   - Verify resolution chain produces correct graph anchors
-   - Check that expanded neighborhood includes relevant structural neighbors
-   - Verify text fallback is readable and within budget
-6. **Test edge cases:**
-   - Seeds with no graph node match → file anchor fallback
-   - Empty seeds array → outline mode fallback
-   - Budget of 0 → minimal response (root + one edge)
-   - Multiple seeds resolving to same node → deduplicated
+      - `neighborhood`: 1-hop CALLS + IMPORTS + CONTAINS from resolved anchors
+      - `outline`: file/package CONTAINS + EXPORTS
+      - `impact`: reverse CALLS + reverse IMPORTS + TESTED_BY
+    - Execute graph queries via Phase 009 `code_graph_query`
+    - Optional reverse semantic augmentation: expanded graph neighbors → CocoIndex search
+    - Collect results into structured response envelope (`queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`)
+    - Keep formatting helpers inline in `code-graph-context.ts`
+    - Note: `ContextArgs` accepts `includeTrace`, but MCP schema does not expose it because `additionalProperties: false` blocks undeclared fields
+3. **Register tool in MCP server:**
+    - Add `code_graph_context` schema to `tool-schemas.ts`
+    - Wire handler in `context-server.ts`
+4. **Test with real CocoIndex results:**
+    - Run CocoIndex search → feed results as seeds to code_graph_context
+    - Verify resolution chain produces correct graph anchors
+    - Check that expanded neighborhood includes relevant structural neighbors
+    - Verify text fallback is readable and within budget
+5. **Test edge cases:**
+    - Seeds with no graph node match → file anchor fallback
+    - Empty seeds array → outline mode fallback
+    - Budget of 0 → minimal response (root + one edge)
+    - Multiple seeds resolving to same node → deduplicated
 
 <!-- ANCHOR:dependencies -->
 ## Dependencies

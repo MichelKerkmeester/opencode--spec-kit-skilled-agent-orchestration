@@ -163,6 +163,99 @@ function recommendAction(status: RecoveryStatus, reason: RecoveryReason): Recove
   return 'retry_broader';
 }
 
+// -- Graph-Expanded Fallback (Phase B T017) -----------------------------------
+
+import type Database from 'better-sqlite3';
+import { routeQueryConcepts } from './entity-linker.js';
+import { isGraphFallbackEnabled } from './search-flags.js';
+
+/**
+ * Phase B T017: Build graph-expanded fallback query terms on zero/weak results.
+ *
+ * When the search produces no results or low-confidence results, this function
+ * queries the causal_edges table for nodes related to the matched concepts from
+ * concept routing, returning up to 5 expanded query terms derived from neighbor
+ * node titles.
+ *
+ * Feature-gated by SPECKIT_GRAPH_FALLBACK (default ON).
+ * Fail-open: returns empty array on any error.
+ *
+ * @param ctx - Recovery context with query and result state.
+ * @param db - SQLite database instance for graph lookups.
+ * @returns Array of up to 5 expanded query terms from graph neighbors.
+ */
+export function buildGraphExpandedFallback(
+  ctx: RecoveryContext,
+  db: Database.Database,
+): string[] {
+  if (!isGraphFallbackEnabled()) return [];
+
+  const status = classifyStatus(ctx);
+  if (status !== 'no_results' && status !== 'low_confidence') return [];
+
+  try {
+    const routing = routeQueryConcepts(ctx.query ?? '', db);
+    if (!routing.graphActivated || routing.concepts.length === 0) return [];
+
+    // Find memory IDs matching the routed concepts via title keyword search,
+    // then walk causal_edges to find neighbors with distinct titles.
+
+    // Step 1: Find seed memory IDs whose titles contain matched concepts
+    const likeClauses = routing.concepts.map(() => 'LOWER(mi.title) LIKE ?').join(' OR ');
+    const likeParams = routing.concepts.map((c) => `%${c.toLowerCase()}%`);
+
+    const seedRows = (db.prepare(`
+      SELECT mi.id FROM memory_index mi
+      WHERE (${likeClauses})
+      LIMIT 10
+    `) as Database.Statement).all(...likeParams) as Array<{ id: number }>;
+
+    if (seedRows.length === 0) return [];
+
+    const seedIds = seedRows.map((r) => String(r.id));
+    const seedPlaceholdersSql = seedIds.map(() => '?').join(', ');
+
+    // Step 2: Walk 1-hop causal edges from seeds to find neighbor nodes
+    const neighborRows = (db.prepare(`
+      SELECT DISTINCT mi.title
+      FROM causal_edges ce
+      JOIN memory_index mi ON (
+        (ce.source_id IN (${seedPlaceholdersSql}) AND mi.id = CAST(ce.target_id AS INTEGER))
+        OR
+        (ce.target_id IN (${seedPlaceholdersSql}) AND mi.id = CAST(ce.source_id AS INTEGER))
+      )
+      WHERE mi.id NOT IN (${seedPlaceholdersSql})
+      LIMIT 10
+    `) as Database.Statement).all(
+      ...seedIds,
+      ...seedIds,
+      ...seedIds,
+    ) as Array<{ title: string }>;
+
+    if (neighborRows.length === 0) return [];
+
+    // Step 3: Extract short keyword phrases from neighbor titles
+    const terms: string[] = [];
+    const seen = new Set<string>();
+
+    for (const row of neighborRows) {
+      if (!row.title || terms.length >= 5) break;
+      // Take the first 3 words of the title as a search term
+      const words = row.title.trim().split(/\s+/).slice(0, 3).join(' ').toLowerCase();
+      if (words.length > 0 && !seen.has(words)) {
+        seen.add(words);
+        terms.push(words);
+      }
+    }
+
+    return terms;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[recovery-payload] buildGraphExpandedFallback failed (fail-open): ${message}`);
+    return [];
+  }
+}
+
 // -- Public API --
 
 /**

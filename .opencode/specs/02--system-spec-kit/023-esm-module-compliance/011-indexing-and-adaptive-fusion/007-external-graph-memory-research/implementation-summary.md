@@ -37,11 +37,11 @@ Complete comparative survey of 7 external graph memory systems: Zep, Mem0, Graph
 
 - **`research/research.md`**: Full research document with all 7 system reviews, 12-item ranked improvement backlog, gap analysis, UX transparency patterns, automatic utilization patterns, and complete bibliography
 - **`decision-record.md`**: ADR-001 (fixed baseline + rubric approach) and ADR-002 (retrieval-first implementation priority)
-- **Top 4 P0 improvements identified**: Community summarization, dual-level retrieval, query expansion with fallback, pre-computed summaries
+- **Top 4 high-priority improvements identified**: Community summarization, dual-level retrieval, query expansion with fallback, pre-computed summaries
 
 ### Current State
 
-Research is complete. The ranked improvement backlog provides concrete implementation guidance for follow-on phases. The known "Semantic Search" zero-result gap has a clear fix path via concept expansion + community fallback + graph-expanded retry.
+Research output is complete. Phase closeout pending (memory save via generate-context.js). The ranked improvement backlog provides concrete implementation guidance for follow-on phases. The known "Semantic Search" zero-result gap has a clear fix path via concept expansion + community fallback + graph-expanded retry.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -49,7 +49,7 @@ Research is complete. The ranked improvement backlog provides concrete implement
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-7 GPT 5.4 agents (via Copilot CLI) researched one system each in parallel, using web search, GitHub API, paper analysis, and source code inspection. Claude Opus 4.6 synthesized findings into the unified research document with ranked backlog, gap analysis, and ADRs. No code or runtime behavior was changed.
+Multiple AI agents researched one system each in parallel; findings were synthesized into the unified document with ranked backlog, gap analysis, and ADRs. No code or runtime behavior was changed.
 <!-- /ANCHOR:how-delivered -->
 
 ---

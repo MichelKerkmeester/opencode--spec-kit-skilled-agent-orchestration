@@ -25,9 +25,9 @@ New feature entries needed:
 |---------|----------|-------------|
 | PreCompact Hook | Context Preservation | Precomputes critical context before compaction and caches to temp file |
 | SessionStart Priming | Context Preservation | Injects relevant prior work at session startup/resume/compaction |
-| Stop Token Tracking | Observability | Tracks token usage via transcript parsing and saves snapshots |
-| Cross-Runtime Fallback | Compatibility | Tool-based context injection for runtimes without hook support |
-| Runtime Detection | Infrastructure | Capability-based runtime identification with hook policy classification |
+| Stop Token Tracking | Observability | Tracks token usage via `session-stop.ts`, uses the `pendingStopSave` state flag, and persists JSON hook-state files |
+| Cross-Runtime Fallback | Compatibility | Tool-based context injection for runtimes without native hook support while keeping runtime-specific capability notes accurate |
+| Runtime Detection | Infrastructure | Capability-based runtime identification, including Gemini support detected dynamically from `.gemini/settings.json` |
 | CocoIndex Integration | Context Enrichment | CocoIndex provides semantic code search complementing structural code graph and memory context |
 
 ### 2. Manual Testing Playbook (`.opencode/skill/system-spec-kit/manual_testing_playbook/`)
@@ -59,9 +59,9 @@ Add section covering:
 
 Add hook architecture:
 - Hook lifecycle diagram (PreCompact -> cache -> SessionStart -> inject)
-- Hook state management (temp files, session ID mapping)
-- Runtime adapter pattern (hooks vs tool fallback)
-- Token tracking data flow (transcript -> parse -> snapshot table)
+- Hook state management (JSON hook-state files, session ID mapping, `pendingStopSave`)
+- Runtime adapter pattern (hooks vs tool fallback) if delivered in this phase; otherwise note as follow-up gap
+- Token tracking data flow (`session-stop.ts` -> parse -> JSON hook-state files)
 - Three-system integration diagram showing CocoIndex, Code Graph, and Memory as parallel context sources
 - Query-intent routing documentation
 
@@ -69,21 +69,21 @@ Add hook architecture:
 
 - `.opencode/skill/system-spec-kit/README.md` — Hook capabilities in feature list
 - `.opencode/skill/README.md` — Updated system-spec-kit description
-- `README.md` (root) — New capabilities mentioned
+- `README.md` (root) — Context preservation mention remains a follow-up gap unless explicitly added
 - `AGENTS.md` — Updated if agent definitions changed in Phase 5
 - `AGENTS_example_fs_enterprises.md` — Updated if relevant
 
 ### 6. Reference and Template Updates
 
-- `.opencode/skill/system-spec-kit/references/` — Any reference docs mentioning compaction
-- `.opencode/skill/system-spec-kit/assets/` — Templates referencing compaction recovery
+- `.opencode/skill/system-spec-kit/references/` — Any reference docs mentioning compaction; if no additional reference doc ships in this phase, record that as not created
+- `.opencode/skill/system-spec-kit/assets/` — Templates referencing compaction recovery; if no additional prompt/template asset ships in this phase, record that as not created
 
 ## Acceptance Criteria
 - [ ] Feature catalog entries created for all 5 hook-related features
 - [ ] Manual testing playbook has scenarios for each hook and cross-runtime fallback
 - [ ] SKILL.md documents hook system and registration
 - [ ] ARCHITECTURE.md includes hook architecture diagram
-- [ ] Root README mentions new context preservation capabilities
+- [ ] Root README mentions new context preservation capabilities, or this remains explicitly documented as a follow-up gap
 - [ ] AGENTS.md updated if agent definitions changed
 - [ ] All docs pass sk-doc quality standards (DQI score)
 - [ ] No stale references to pre-hook compaction approach remain
@@ -95,10 +95,16 @@ Add hook architecture:
 - EDIT: `.opencode/skill/system-spec-kit/ARCHITECTURE.md`
 - EDIT: `.opencode/skill/system-spec-kit/README.md`
 - EDIT: `.opencode/skill/README.md`
-- EDIT: `README.md` (root)
+- EDIT: `README.md` (root) if context preservation mention is actually added in this phase
 - EDIT: `AGENTS.md` (if needed)
-- EDIT: `.opencode/skill/system-spec-kit/references/` (if needed)
-- EDIT: `.opencode/skill/system-spec-kit/assets/` (if needed)
+- EDIT: `.opencode/skill/system-spec-kit/references/` (if needed; otherwise leave additional reference docs marked as not created)
+- EDIT: `.opencode/skill/system-spec-kit/assets/` (if needed; otherwise leave additional prompt/template assets marked as not created)
 
 ## LOC Estimate
 ~200-300 lines (feature catalog + playbook entries) + ~100-150 lines (SKILL.md/ARCHITECTURE.md updates) + ~50-80 lines (README updates)
+
+## Follow-up Gaps to Track
+
+- Cross-runtime consistency playbook coverage may remain a future documentation gap if no dedicated scenario was added.
+- ARCHITECTURE.md runtime adapter documentation may remain a future gap if only the lifecycle diagram shipped.
+- Root README context preservation mention may remain a future gap if Phase 006 did not update the root README.

@@ -21,47 +21,54 @@ describe('stop hook token tracking', () => {
   });
 
   describe('parseTranscript', () => {
-    it('extracts token usage from assistant messages', () => {
+    it('extracts token usage from assistant messages', async () => {
       createTestTranscript([
         JSON.stringify({ message: { role: 'assistant', usage: { input_tokens: 100, output_tokens: 50 }, model: 'claude-sonnet-4-6' } }),
         JSON.stringify({ message: { role: 'assistant', usage: { input_tokens: 200, output_tokens: 100 } } }),
       ]);
 
-      const { usage } = parseTranscript(testFile);
+      const { usage, newOffset } = await parseTranscript(testFile);
       expect(usage.promptTokens).toBe(300);
       expect(usage.completionTokens).toBe(150);
       expect(usage.totalTokens).toBe(450);
       expect(usage.messageCount).toBe(2);
       expect(usage.model).toBe('claude-sonnet-4-6');
+      expect(newOffset).toBe(Buffer.byteLength(
+        [
+          JSON.stringify({ message: { role: 'assistant', usage: { input_tokens: 100, output_tokens: 50 }, model: 'claude-sonnet-4-6' } }),
+          JSON.stringify({ message: { role: 'assistant', usage: { input_tokens: 200, output_tokens: 100 } } }),
+        ].join('\n') + '\n',
+        'utf-8',
+      ));
     });
 
-    it('handles empty transcript', () => {
+    it('handles empty transcript', async () => {
       createTestTranscript([]);
-      const { usage } = parseTranscript(testFile);
+      const { usage } = await parseTranscript(testFile);
       expect(usage.totalTokens).toBe(0);
       expect(usage.messageCount).toBe(0);
     });
 
-    it('skips malformed JSON lines', () => {
+    it('skips malformed JSON lines', async () => {
       createTestTranscript([
         'not json',
         JSON.stringify({ message: { role: 'assistant', usage: { input_tokens: 50, output_tokens: 25 } } }),
         '{ broken json',
       ]);
 
-      const { usage } = parseTranscript(testFile);
+      const { usage } = await parseTranscript(testFile);
       expect(usage.promptTokens).toBe(50);
       expect(usage.completionTokens).toBe(25);
       expect(usage.messageCount).toBe(1);
     });
 
-    it('supports incremental parsing via startOffset', () => {
+    it('supports incremental parsing via startOffset', async () => {
       createTestTranscript([
         JSON.stringify({ message: { usage: { input_tokens: 100, output_tokens: 50 } } }),
         JSON.stringify({ message: { usage: { input_tokens: 200, output_tokens: 100 } } }),
       ]);
 
-      const { usage: full } = parseTranscript(testFile, 0);
+      const { usage: full, newOffset } = await parseTranscript(testFile, 0);
       expect(full.totalTokens).toBe(450);
 
       // Parse from offset past first line
@@ -69,12 +76,19 @@ describe('stop hook token tracking', () => {
         JSON.stringify({ message: { usage: { input_tokens: 100, output_tokens: 50 } } }) + '\n',
         'utf-8'
       );
-      const { usage: partial } = parseTranscript(testFile, firstLineBytes);
+      const { usage: partial } = await parseTranscript(testFile, firstLineBytes);
       expect(partial.promptTokens).toBe(200);
       expect(partial.completionTokens).toBe(100);
+      expect(newOffset).toBe(Buffer.byteLength(
+        [
+          JSON.stringify({ message: { usage: { input_tokens: 100, output_tokens: 50 } } }),
+          JSON.stringify({ message: { usage: { input_tokens: 200, output_tokens: 100 } } }),
+        ].join('\n') + '\n',
+        'utf-8',
+      ));
     });
 
-    it('handles cache tokens', () => {
+    it('handles cache tokens', async () => {
       createTestTranscript([
         JSON.stringify({
           message: {
@@ -88,7 +102,7 @@ describe('stop hook token tracking', () => {
         }),
       ]);
 
-      const { usage } = parseTranscript(testFile);
+      const { usage } = await parseTranscript(testFile);
       expect(usage.cacheCreationTokens).toBe(500);
       expect(usage.cacheReadTokens).toBe(300);
     });

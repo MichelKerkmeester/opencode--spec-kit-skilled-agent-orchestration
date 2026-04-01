@@ -12,6 +12,9 @@ contextType: "planning"
 ---
 # Plan: Phase 009 — Reindex Validator False Positives
 
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
 ## Approach
 
 Two targeted fixes in the validation pipeline. No architectural changes.

@@ -61,10 +61,10 @@ contextType: "research"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T015 Verify that every surveyed system includes citations and confidence notes in `research/research.md`
+- [x] T015 Verify that every surveyed system includes citations and confidence notes in `research/research.md` [EVIDENCE: All 7 system reviews include source citations; confidence notes added per review iteration]
 - [x] T016 Verify that backlog items are concrete, non-duplicative, and scoped for follow-on phases in `research/research.md`
 - [x] T017 Run `validate.sh --strict` for the phase folder and fix any errors
-- [ ] T018 Save research context with `generate-context.js` after findings are complete
+- [x] T018 Save research context with `generate-context.js` after findings are complete [EVIDENCE: memory/01-04-26_11-16__phase-007-external-graph-memory-research-is.md created, quality 100/100, indexed as memory #69]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -72,10 +72,10 @@ contextType: "research"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remain
-- [ ] Research output is honest about unknowns and evidence gaps
-- [ ] No code files were changed during the phase
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remain
+- [x] Research output is honest about unknowns and evidence gaps
+- [x] No code files were changed during the phase
 <!-- /ANCHOR:completion -->
 
 ---

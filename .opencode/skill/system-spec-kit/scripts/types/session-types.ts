@@ -132,6 +132,8 @@ export interface CollectedDataBase {
   SUMMARY?: string;
   importanceTier?: string;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
+  /** Alias for filesModified — accepted in JSON payloads, mapped during normalization */
+  filesChanged?: string[];
   _manualDecisions?: Array<string | Record<string, unknown>>;
   _manualTriggerPhrases?: string[];
   _isSimulation?: boolean;

@@ -106,6 +106,10 @@ CREATE INDEX IF NOT EXISTS idx_sts_runtime ON session_token_snapshots (runtime, 
 - Resume flows are easier to debug with append-only data
 - Multi-session reporting becomes a query problem, not an overwrite problem
 
+### Design Decision
+
+Implementation uses per-session JSON hook-state files instead of the specified SQLite `session_token_snapshots` table. This kept the first iteration simpler and avoided schema migration complexity while still supporting the session-local tracking needed for the shipped hook flow.
+
 ### 4. Hook Registration
 
 ```json

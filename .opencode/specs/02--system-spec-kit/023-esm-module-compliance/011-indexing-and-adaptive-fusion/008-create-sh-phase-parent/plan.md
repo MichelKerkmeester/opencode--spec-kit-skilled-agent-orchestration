@@ -6,7 +6,7 @@ trigger_phrases:
   - "nested phase append plan"
   - "phase-parent alias plan"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Implementation Plan: Append Nested Child Phases in create.sh
 
@@ -54,14 +54,14 @@ This phase defines how `create.sh` should support appending child phases to nest
 ### AI Execution Protocol
 
 ### Pre-Task Checklist
-- Confirm the phase stays planning-only and does not modify `create.sh` yet.
+- Confirm the phase modifications to `create.sh` stay within nested append scope
 - Confirm the known current facts still match the script: no `--phase-parent`, current `--parent`, and `SPECS_DIR` rooted at `$REPO_ROOT/specs`.
 - Confirm the target nested parent example remains the same reproduction case.
 
 ### Execution Rules
 - Keep edits scoped to nested phase append behavior only.
 - Preserve backward compatibility expectations for `--phase --parent`.
-- Do not claim the script is fixed until parser, path, and numbering behavior are actually verified.
+- Verify parser, path, and numbering behavior after each change.
 
 ### Status Reporting Format
 - Use `IN_PROGRESS`, `BLOCKED`, or `DONE` with the target script area, such as parser, path validation, or append numbering.

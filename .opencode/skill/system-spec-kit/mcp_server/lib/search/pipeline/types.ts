@@ -43,6 +43,12 @@ export interface PipelineRow extends Record<string, unknown> {
   intentAdjustedScore?: number;
   /** P1-015: Stage 2 composite score preserved for auditability when Stage 3 overwrites score */
   stage2Score?: number;
+  /** Phase C T025: Graph evidence provenance — edges and communities that contributed to graph-based boosts. */
+  graphEvidence?: {
+    edges: Array<{ sourceId: number; targetId: number; relation: string; strength: number }>;
+    communities: Array<{ communityId: number; summary?: string }>;
+    boostFactors: Array<{ type: string; delta: number }>;
+  };
 }
 
 /**

@@ -34,7 +34,10 @@
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`** — NEVER manually create memory files.
   - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
-- **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
+- **Code Search Decision Tree** (MANDATORY):
+  - Semantic/concept search → `mcp__cocoindex_code__search` (CocoIndex). Skill: `.opencode/skill/mcp-coco-index/`
+  - Structural queries (callers, imports, deps) → `code_graph_query` (Code Graph)
+  - Exact text/regex → `Grep`
 
 **GIT WORKFLOW:** 
 Full details: `.opencode/skill/sk-git/`
@@ -47,7 +50,7 @@ Full details: `.opencode/skill/sk-git/`
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
-| **Code search**           | `CocoIndex search` for semantic/intent queries → `Grep()` for exact text → `Glob()` for file paths → `Read()` for contents         |
+| **Code search**           | Semantic/concept → `CocoIndex search` · Structural (callers/imports/deps) → `code_graph_query` · Exact text → `Grep` · File paths → `Glob` · Read contents → `Read` |
 | **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder })` → Review checklist → Continue |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |

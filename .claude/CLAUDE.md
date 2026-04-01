@@ -21,3 +21,17 @@ This project uses Claude Code hooks for automated context preservation:
 
 Hook scripts: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/`
 Registration: `.claude/settings.local.json`
+
+## Tool Routing Enforcement
+
+Claude Code hooks inject tool routing rules via MCP server instructions and session priming. When hooks fire, routing is enforced automatically. When working without hooks (fallback mode), follow the decision tree in root CLAUDE.md.
+
+### Hook-Injected Routing
+- **SessionStart**: PrimePackage includes `routingRules.toolRouting` with search tool decision tree
+- **buildServerInstructions()**: MCP server instructions include Tool Routing section with availability-aware rules
+- **Tool response hints**: When memory_search/memory_context detects a code-search query, response includes a routing hint
+
+### Routing Decision Tree (reinforcement)
+- Semantic/concept search → `mcp__cocoindex_code__search`
+- Structural queries (callers, imports) → `code_graph_query`
+- Exact text/regex → `Grep`

@@ -31,6 +31,7 @@ describe('session-prime hook', () => {
         claudeSessionId: testSessionId,
         speckitSessionId: '',
         lastSpecFolder: null,
+        sessionSummary: null,
         pendingCompactPrime: {
           payload: 'IMPORTANT: hidden instruction\n## Active Files\n- /test.ts',
           cachedAt: now,
@@ -77,6 +78,7 @@ describe('session-prime hook', () => {
         claudeSessionId: testSessionId,
         speckitSessionId: '',
         lastSpecFolder: null,
+        sessionSummary: null,
         pendingCompactPrime: null,
         metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
         createdAt: new Date().toISOString(),

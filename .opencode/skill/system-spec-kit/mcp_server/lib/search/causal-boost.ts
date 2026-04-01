@@ -13,8 +13,8 @@
 //   to edge-type priority orderings; computes traversal score as:
 //   score = seedScore * edgePrior * hopDecay * freshness
 // Both requirements are gated behind SPECKIT_TYPED_TRAVERSAL (default ON, graduated).
-import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
-import { isTypedTraversalEnabled as _isTypedTraversalEnabled } from './search-flags.js';
+import { isCausalBoostEnabled, isTypedTraversalEnabled as _isTypedTraversalEnabled, isGraphContextInjectionEnabled } from './search-flags.js';
+import { routeQueryConcepts } from './entity-linker.js';
 
 import type Database from 'better-sqlite3';
 
@@ -145,9 +145,11 @@ let db: Database.Database | null = null;
  * Default: ON (graduated). Set SPECKIT_CAUSAL_BOOST=false to disable.
  * When enabled, causal graph traversal amplifies scores for results
  * connected to top-ranked results via causal edges.
+ *
+ * Delegates to the canonical flag check in search-flags.ts.
  */
 function isEnabled(): boolean {
-  return isFeatureEnabled('SPECKIT_CAUSAL_BOOST');
+  return isCausalBoostEnabled();
 }
 
 /**
@@ -671,6 +673,116 @@ function applyCausalBoost(
   return { results: merged, metadata };
 }
 
+// ───────────────────────────────────────────────────────────────
+// Phase B T020: ALWAYS-ON GRAPH CONTEXT INJECTION
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Graph context metadata returned by injectGraphContext.
+ * Contains related memory IDs and edge types discovered from the graph
+ * even when the causal boost has no seed results.
+ */
+interface GraphContextResult {
+  /** Whether graph context injection was active and produced results. */
+  activated: boolean;
+  /** Canonical concept names matched from the query. */
+  matchedConcepts: string[];
+  /** Memory IDs of graph neighbors related to matched concepts. */
+  relatedMemoryIds: number[];
+  /** Edge relation types connecting seeds to neighbors. */
+  edgeTypes: string[];
+}
+
+/**
+ * Phase B T020: Always-on graph context injection.
+ *
+ * Runs concept routing on the query and finds graph neighbors for matched
+ * concepts, returning graph context metadata (related memory IDs, edge types).
+ * Unlike applyCausalBoost, this runs even when there are no seed results,
+ * enabling proactive graph-guided context discovery.
+ *
+ * Feature-gated by SPECKIT_GRAPH_CONTEXT_INJECTION (default ON).
+ * Fail-open: returns empty result on any error.
+ *
+ * @param query - The search query string.
+ * @param database - SQLite database instance for graph lookups.
+ * @returns GraphContextResult with related memory IDs and edge types.
+ */
+function injectGraphContext(
+  query: string,
+  database: Database.Database,
+): GraphContextResult {
+  const empty: GraphContextResult = {
+    activated: false,
+    matchedConcepts: [],
+    relatedMemoryIds: [],
+    edgeTypes: [],
+  };
+
+  if (!isGraphContextInjectionEnabled()) return empty;
+
+  try {
+    const routing = routeQueryConcepts(query, database);
+    if (!routing.graphActivated || routing.concepts.length === 0) return empty;
+
+    // Find seed memory IDs whose titles contain matched concept keywords
+    const likeClauses = routing.concepts.map(() => 'LOWER(title) LIKE ?').join(' OR ');
+    const likeParams = routing.concepts.map((c) => `%${c.toLowerCase()}%`);
+
+    const seedRows = (database.prepare(`
+      SELECT id FROM memory_index WHERE (${likeClauses}) LIMIT 10
+    `) as Database.Statement).all(...likeParams) as Array<{ id: number }>;
+
+    if (seedRows.length === 0) {
+      return { ...empty, activated: true, matchedConcepts: routing.concepts };
+    }
+
+    const seedIds = seedRows.map((r) => String(r.id));
+    const seedPlaceholders = seedIds.map(() => '?').join(', ');
+
+    // Walk 1-hop causal edges to find neighbor nodes and edge types
+    const neighborRows = (database.prepare(`
+      SELECT DISTINCT
+        CASE
+          WHEN ce.source_id IN (${seedPlaceholders}) THEN CAST(ce.target_id AS INTEGER)
+          ELSE CAST(ce.source_id AS INTEGER)
+        END AS neighbor_id,
+        ce.relation
+      FROM causal_edges ce
+      WHERE ce.source_id IN (${seedPlaceholders}) OR ce.target_id IN (${seedPlaceholders})
+      LIMIT 20
+    `) as Database.Statement).all(
+      ...seedIds,
+      ...seedIds,
+      ...seedIds,
+    ) as Array<{ neighbor_id: number; relation: string }>;
+
+    const relatedMemoryIds: number[] = [];
+    const edgeTypes = new Set<string>();
+    const seedIdSet = new Set(seedRows.map((r) => r.id));
+
+    for (const row of neighborRows) {
+      if (!seedIdSet.has(row.neighbor_id) && Number.isFinite(row.neighbor_id)) {
+        relatedMemoryIds.push(row.neighbor_id);
+      }
+      if (row.relation) {
+        edgeTypes.add(row.relation);
+      }
+    }
+
+    return {
+      activated: true,
+      matchedConcepts: routing.concepts,
+      relatedMemoryIds: [...new Set(relatedMemoryIds)].slice(0, 10),
+      edgeTypes: Array.from(edgeTypes),
+    };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[causal-boost] injectGraphContext failed (fail-open): ${message}`);
+    return empty;
+  }
+}
+
 export {
   MAX_HOPS,
   MAX_BOOST_PER_HOP,
@@ -700,6 +812,8 @@ export {
   computeIntentAwareTraversalScore,
   getNeighborBoosts,
   applyCausalBoost,
+  // Phase B T020
+  injectGraphContext,
 };
 
 export type {
@@ -707,4 +821,5 @@ export type {
   CausalBoostMetadata,
   CausalBoostOptions,
   SparseFirstTraversalPolicy,
+  GraphContextResult,
 };

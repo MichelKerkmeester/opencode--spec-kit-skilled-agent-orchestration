@@ -6,7 +6,7 @@ trigger_phrases:
   - "create sh nested append verification"
   - "phase-parent planning checklist"
 importance_tier: "critical"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Verification Checklist: Append Nested Child Phases in create.sh
 
@@ -51,8 +51,8 @@ contextType: "planning"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: --phase-parent flag added, basename validation relaxed for parent paths, help text updated, backward compatibility preserved]
-- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: bash -n syntax check PASS, --help output shows --phase-parent, --phase-parent without --phase gives correct error]
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: `--phase-parent` flag added, parent-path validation updated for nested append scope, help text updated, backward compatibility preserved for existing `--phase --parent` flow. End-to-end nested folder creation not tested (would create permanent folders)]
+- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: `bash -n` syntax check PASS, `--help` output shows `--phase-parent`, `--phase-parent` without `--phase` gives the correct error. End-to-end nested folder creation not tested (would create permanent folders)]
 - [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Nested path validation skips basename for parent paths; flat --parent still works unchanged]
 - [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: --phase-parent without --phase triggers "can only be used with --phase" error]
 <!-- /ANCHOR:testing -->
@@ -94,8 +94,8 @@ contextType: "planning"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 11 | 8/11 |
-| P1 Items | 20 | 16/20 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 18/20 |
 | P2 Items | 10 | 6/10 |
 
 **Verification Date**: 2026-04-01
@@ -117,8 +117,8 @@ contextType: "planning"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Response time targets met (NFR-P01) [EVIDENCE: Not applicable because this is a planning-only phase]
-- [x] CHK-111 [P1] Throughput targets met (NFR-P02) [EVIDENCE: Not applicable because this is a planning-only phase]
+- [x] CHK-110 [P1] Response time targets met (NFR-P01) [EVIDENCE: Not applicable — script change has no runtime performance impact]
+- [x] CHK-111 [P1] Throughput targets met (NFR-P02) [EVIDENCE: Not applicable — script change has no runtime performance impact]
 - [x] CHK-112 [P2] Load testing completed [EVIDENCE: Not applicable because no runtime change exists yet]
 - [x] CHK-113 [P2] Performance benchmarks documented [EVIDENCE: Not applicable because no runtime change exists yet]
 <!-- /ANCHOR:perf-verify -->
@@ -131,8 +131,8 @@ contextType: "planning"
 - [x] CHK-120 [P0] Rollback procedure documented and tested [EVIDENCE: Rollback documented in plan.md; changes are minimal and reversible via git revert]
 - [x] CHK-121 [P0] Feature flag configured (if applicable) [EVIDENCE: Not applicable because no feature flag is planned for this script change]
 - [ ] CHK-122 [P1] Monitoring/alerting configured [Pending: not relevant until implementation is real]
-- [ ] CHK-123 [P1] Runbook created [Pending: not created in planning-only phase]
-- [ ] CHK-124 [P2] Deployment runbook reviewed [Pending: not created in planning-only phase]
+- [ ] CHK-123 [P1] Runbook created [Pending: not applicable for a CLI script change]
+- [ ] CHK-124 [P2] Deployment runbook reviewed [Pending: not applicable for a CLI script change]
 <!-- /ANCHOR:deploy-ready -->
 
 ---
@@ -151,7 +151,7 @@ contextType: "planning"
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All spec documents synchronized [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` align on planning-only scope]
+- [x] CHK-140 [P1] All spec documents synchronized [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` align on implemented nested append scope]
 - [x] CHK-141 [P1] API documentation complete (if applicable) [EVIDENCE: Not applicable because no API change is in scope]
 - [ ] CHK-142 [P2] User-facing documentation updated [Pending: help text update belongs to future implementation]
 - [ ] CHK-143 [P2] Knowledge transfer documented [Pending: save context after implementation]

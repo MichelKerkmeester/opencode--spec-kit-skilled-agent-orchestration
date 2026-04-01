@@ -197,7 +197,26 @@ const QUERY_PATTERNS: Array<{ keywords: string[]; patterns: RegExp[]; artifactCl
 ];
 
 /* ───────────────────────────────────────────────────────────────
-   5. CLASSIFICATION FUNCTIONS
+   5. INTENT-TO-ARTIFACT FALLBACK
+----------------------------------------------------------------*/
+
+/**
+ * Intent-based fallback mapping for artifact class detection.
+ * Used when keyword/pattern scoring yields zero matches but an
+ * intent classifier result is available. Confidence: 0.4.
+ */
+const INTENT_TO_ARTIFACT: Record<string, ArtifactClass> = {
+  understand: 'research',
+  find_spec: 'spec',
+  find_decision: 'decision-record',
+  add_feature: 'implementation-summary',
+  fix_bug: 'memory',
+  refactor: 'implementation-summary',
+  security_audit: 'research',
+};
+
+/* ───────────────────────────────────────────────────────────────
+   6. CLASSIFICATION FUNCTIONS
 ----------------------------------------------------------------*/
 
 /**
@@ -282,17 +301,7 @@ function getStrategyForQuery(query: string, specFolder?: string, intent?: string
   // Use a soft cap at 6 to map to 0-1 range.
   const confidence = bestScore > 0 ? Math.min(1, bestScore / 6) : 0;
 
-  // Intent-based fallback: map detected intent to artifact class
-  const INTENT_TO_ARTIFACT: Record<string, ArtifactClass> = {
-    understand: 'research',
-    find_spec: 'spec',
-    find_decision: 'decision-record',
-    add_feature: 'implementation-summary',
-    fix_bug: 'memory',
-    refactor: 'implementation-summary',
-    security_audit: 'research',
-  };
-
+  // Intent-based fallback: use module-level INTENT_TO_ARTIFACT map
   if (bestScore === 0 && intent && INTENT_TO_ARTIFACT[intent]) {
     const mappedClass = INTENT_TO_ARTIFACT[intent];
     return {
@@ -359,13 +368,14 @@ function applyRoutingWeights(
 }
 
 /* ───────────────────────────────────────────────────────────────
-   6. EXPORTS
+   7. EXPORTS
 ----------------------------------------------------------------*/
 
 export {
   ROUTING_TABLE,
   FILE_PATH_PATTERNS,
   QUERY_PATTERNS,
+  INTENT_TO_ARTIFACT,
 
   // Classification
   classifyArtifact,

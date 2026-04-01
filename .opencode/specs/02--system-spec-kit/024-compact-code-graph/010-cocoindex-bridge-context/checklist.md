@@ -16,11 +16,11 @@ contextType: "implementation"
 - [x] Accepts native CocoIndex MCP result objects in `seeds[]` (provider: 'cocoindex') — context handler maps provider-typed seeds
 - [x] Accepts ManualSeed and GraphSeed types — seed-resolver updated
 - [x] All seed types normalize to `ArtifactRef` via seed-resolver
-- [x] Seed resolution chain: exact → enclosing → file anchor
+- [x] Seed resolution chain: exact → near_exact → enclosing → file_anchor
 - [x] `neighborhood` mode returns 1-hop structural expansion from resolved anchors
 - [x] `outline` mode returns file/package structure without deep expansion
 - [x] `impact` mode returns reverse dependencies (callers, importers)
-- [x] Structured JSON output separates semanticSeeds, resolvedAnchors, graphContext — context handler returns structured data
+- [x] Structured output matches handler shape: `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`
 - [x] Text fallback renders compact brief (not raw JSON dump) — formatTextBrief with never-drops
 - [x] Budget enforcement stays within `budgetTokens` target
 
@@ -38,4 +38,4 @@ contextType: "implementation"
 - [x] Latency guard: skip reverse augmentation if <400ms budget remains — expandAnchor checks performance.now() with remainingMs budget, breaks early if exceeded
 - [x] `profile` parameter controls output density (quick/research/debug) — profile parameter in ContextArgs
 - [x] Empty seeds with no subject falls back to outline mode gracefully — buildEmptyFallback()
-- [x] Trace metadata included when `includeTrace: true` — includeTrace parameter supported
+- [x] `includeTrace` exists in `ContextArgs`, but MCP schema currently rejects it because `tool-schemas.ts` uses `additionalProperties: false` and omits that field

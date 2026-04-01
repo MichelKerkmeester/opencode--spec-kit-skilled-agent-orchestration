@@ -282,6 +282,33 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
       return false;
     }
 
+    let memoryCount = 0;
+    try {
+      const row = database.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as { cnt?: number | bigint } | undefined;
+      const rawCount = row?.cnt ?? 0;
+      memoryCount = typeof rawCount === 'bigint' ? Number(rawCount) : Number(rawCount);
+    } catch {
+      memoryCount = 0;
+    }
+
+    if (memoryCount === 0) {
+      try {
+        const expectedDatabasePath = resolveDatabasePaths().databasePath;
+        const databaseList = database.prepare('PRAGMA database_list').all() as Array<{ name?: string; file?: string }>;
+        const mainDatabasePath = databaseList.find(row => row.name === 'main')?.file;
+        if (mainDatabasePath && mainDatabasePath !== expectedDatabasePath) {
+          console.error(`[db-state] Empty database path drift detected: expected ${expectedDatabasePath}, got ${mainDatabasePath}`);
+        }
+      } catch {
+        // Ignore PRAGMA lookup failures; the empty-database guard below remains authoritative.
+      }
+
+      console.error('[db-state] WARNING: New database has 0 memories — refusing to rebind consumers to empty DB. This may indicate provider-specific DB path drift.');
+      if (process.env.SPECKIT_FORCE_REBIND !== 'true') {
+        return false;
+      }
+    }
+
     if (!rebindDatabaseConsumers(database)) {
       return false;
     }

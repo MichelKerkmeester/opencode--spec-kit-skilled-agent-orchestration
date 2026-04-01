@@ -123,6 +123,11 @@ const BUILTIN_CONCEPT_ALIASES: Record<string, string> = {
   'checkpoints': 'checkpoint',
   'snapshot': 'checkpoint',
   'snapshots': 'checkpoint',
+  // Search quality / ranking domain (Phase B T015)
+  'semantic': 'search',
+  'semantics': 'search',
+  'ranking': 'search',
+  'relevance': 'search',
 };
 
 /**
@@ -347,6 +352,42 @@ export function routeQueryConcepts(
     console.warn(`[entity-linker] routeQueryConcepts failed: ${message}`);
     return empty;
   }
+}
+
+/**
+ * Phase B T016: Given a list of canonical concept names, reverse-lookup the
+ * alias table to collect related search terms for query expansion.
+ *
+ * For each canonical name, finds all aliases that map to it (excluding the
+ * original query tokens to avoid redundancy). Returns unique expansion terms.
+ *
+ * @param concepts - Canonical concept names (from routeQueryConcepts).
+ * @param originalTokens - Query tokens to exclude from expansion (avoid echo).
+ * @param maxTerms - Maximum expansion terms to return (default 5).
+ * @returns Array of expansion terms derived from concept aliases.
+ */
+export function getConceptExpansionTerms(
+  concepts: string[],
+  originalTokens: string[],
+  maxTerms: number = 5,
+): string[] {
+  const excludeSet = new Set(originalTokens.map((t) => t.toLowerCase()));
+  const terms: string[] = [];
+  const seen = new Set<string>();
+
+  for (const concept of concepts) {
+    // Collect all aliases that map to this canonical concept
+    for (const [alias, canonical] of Object.entries(BUILTIN_CONCEPT_ALIASES)) {
+      if (canonical !== concept) continue;
+      if (excludeSet.has(alias)) continue;
+      if (seen.has(alias)) continue;
+      seen.add(alias);
+      terms.push(alias);
+      if (terms.length >= maxTerms) return terms;
+    }
+  }
+
+  return terms;
 }
 
 // ───────────────────────────────────────────────────────────────

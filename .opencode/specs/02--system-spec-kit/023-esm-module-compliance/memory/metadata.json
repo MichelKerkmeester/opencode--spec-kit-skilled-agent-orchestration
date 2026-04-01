@@ -1,7 +1,7 @@
 {
-  "timestamp": "30-03-26 10-55",
+  "timestamp": "01-04-26 11-04",
   "messageCount": 1,
-  "decisionCount": 4,
+  "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 40,
+    "qualityScore": 30,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-30T09:55:15.802Z",
+        "timestamp": "2026-04-01T10:04:49.848Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-30T09:55:15.766Z",
+      "timestamp": "2026-04-01T10:04:49.803Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:33"
+        "processed_fields:11"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-30T09:55:15.802Z",
+      "timestamp": "2026-04-01T10:04:49.848Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-30T09:55:15.825Z",
+      "timestamp": "2026-04-01T10:04:49.884Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,8 +191,8 @@
       ],
       "passedThrough": [
         "current_spec:023-esm-module-compliance",
-        "trigger_phrases:29",
-        "key_topics:12",
+        "trigger_phrases:13",
+        "key_topics:9",
         "captured_file_count:0",
         "filesystem_file_count:0"
       ]
@@ -205,8 +205,8 @@
     "decisions": 0,
     "messageStats": {
       "intent": 0,
-      "plan": 0,
-      "implementation": 1,
+      "plan": 1,
+      "implementation": 0,
       "result": 0,
       "decision": 0,
       "total": 1
@@ -225,12 +225,12 @@
     "sessionUpdated": 0
   },
   "embedding": {
-    "status": "indexed",
+    "status": "skipped_index_policy",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 49,
-    "updatedAt": "2026-03-30T09:55:17.702Z",
-    "generatedAt": "2026-03-30T09:55:17.702Z",
-    "reason": "Indexed after all write and semantic-index gates passed."
+    "memoryId": null,
+    "updatedAt": "2026-04-01T10:04:49.924Z",
+    "lastAttemptedAt": "2026-04-01T10:04:49.924Z",
+    "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

@@ -270,7 +270,7 @@ async function extractDecisions(
           : [{
             OPTION_NUMBER: 1,
             LABEL: 'Chosen Approach',
-            DESCRIPTION: title.length > 200 ? title.substring(0, 197) + '...' : title,
+            DESCRIPTION: !manualObj ? '' : (title.length > 200 ? title.substring(0, 197) + '...' : title),
             HAS_PROS_CONS: false,
             PROS: [],
             CONS: []
@@ -335,7 +335,7 @@ async function extractDecisions(
         return {
           INDEX: index + 1,
           TITLE: title,
-          CONTEXT: contextText,
+          CONTEXT: !manualObj && !rationaleFromInput ? '' : contextText,
           TIMESTAMP: formatTimestamp(),
           OPTIONS,
           CHOSEN: chosenLabel,

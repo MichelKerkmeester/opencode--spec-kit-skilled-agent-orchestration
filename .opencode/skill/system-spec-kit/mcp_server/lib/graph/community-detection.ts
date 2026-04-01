@@ -1,515 +1,651 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Community Detection
 // ───────────────────────────────────────────────────────────────
-// Active runtime feature — default ON via SPECKIT_COMMUNITY_DETECTION (set false to disable)
-// ───────────────────────────────────────────────────────────────
-// 1. IMPORTS
 
-// ───────────────────────────────────────────────────────────────
-import type Database from "better-sqlite3";
+import type Database from 'better-sqlite3';
 
-// Feature catalog: Community detection
+import { isCommunitySummariesEnabled } from '../search/search-flags.js';
+import { getCommunities, storeCommunities } from './community-storage.js';
 
-
-// ───────────────────────────────────────────────────────────────
-// 2. TYPES
-
-// ───────────────────────────────────────────────────────────────
-/** Adjacency list: node ID (string) -> set of neighbor node IDs */
-type AdjacencyList = Map<string, Set<string>>;
-
-// ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
-
-// ───────────────────────────────────────────────────────────────
-/**
- * Community co-retrieval boost factor — 0.3 balances surfacing
- * related community members without overwhelming the primary result set.
- * Lower values (e.g. 0.1) make community neighbours nearly invisible;
- * higher values (e.g. 0.5+) risk promoting loosely-related memories above
- * stronger direct matches.  0.3 was chosen empirically during N2c
- * development as the sweet-spot that keeps community signals additive
- * rather than dominant.  (A4-P2-3)
- */
-const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
-
-// ───────────────────────────────────────────────────────────────
-// 4. MODULE-LEVEL DEBOUNCE STATE
-
-// ───────────────────────────────────────────────────────────────
-let lastDebounceHash: string = '';
-let computedThisSession: boolean = false;
-
-/**
- * Reset module-level debounce state. Exported for testing only.
- */
-export function resetCommunityDetectionState(): void {
-  lastDebounceHash = '';
-  computedThisSession = false;
+export interface CommunityResult {
+  communityId: number;
+  memberIds: number[];
+  size: number;
+  density: number;
 }
 
-// ───────────────────────────────────────────────────────────────
-// 5. INTERNAL HELPERS
+type WeightedAdjacencyList = Map<number, Map<number, number>>;
+type LegacyAdjacencyList = Map<string, Set<string>>;
 
-// ───────────────────────────────────────────────────────────────
-/**
- * Build an undirected adjacency list from the `causal_edges` table.
- * Each edge (source_id, target_id) produces links in both directions.
- */
-function buildAdjacencyList(db: Database.Database): AdjacencyList {
-  const adj: AdjacencyList = new Map();
+type AssignmentInput = Map<string, number> | CommunityResult[];
+
+const COMMUNITY_BOOST_FACTOR = 0.3;
+const MIN_COMMUNITY_SIZE = 3;
+const MAX_PROPAGATION_ITERATIONS = 20;
+const SCORE_EPSILON = 1e-9;
+
+let lastFingerprint = '';
+let cachedCommunities: CommunityResult[] = [];
+
+export function resetCommunityDetectionState(): void {
+  lastFingerprint = '';
+  cachedCommunities = [];
+}
+
+function tableExists(db: Database.Database, tableName: string): boolean {
+  const row = db.prepare(`
+    SELECT name
+    FROM sqlite_master
+    WHERE type = 'table' AND name = ?
+  `).get(tableName) as { name?: string } | undefined;
+
+  return row?.name === tableName;
+}
+
+function cloneCommunities(communities: CommunityResult[]): CommunityResult[] {
+  return communities.map((community) => ({
+    communityId: community.communityId,
+    memberIds: [...community.memberIds],
+    size: community.size,
+    density: community.density,
+  }));
+}
+
+function buildAdjacencyList(db: Database.Database): WeightedAdjacencyList {
+  const adjacency: WeightedAdjacencyList = new Map();
 
   try {
-    const rows = db
-      .prepare("SELECT source_id, target_id FROM causal_edges")
-      .all() as Array<{ source_id: string; target_id: string }>;
+    const rows = db.prepare(`
+      SELECT source_id, target_id, COALESCE(strength, 1.0) AS strength
+      FROM causal_edges
+    `).all() as Array<{
+      source_id: string;
+      target_id: string;
+      strength: number | null;
+    }>;
 
     for (const row of rows) {
-      const sourceNode = String(row.source_id);
-      const targetNode = String(row.target_id);
+      const sourceId = Number.parseInt(String(row.source_id), 10);
+      const targetId = Number.parseInt(String(row.target_id), 10);
+      const weight = typeof row.strength === 'number' && Number.isFinite(row.strength)
+        ? Math.max(0.1, row.strength)
+        : 1.0;
 
-      if (!adj.has(sourceNode)) adj.set(sourceNode, new Set());
-      if (!adj.has(targetNode)) adj.set(targetNode, new Set());
-      const sourceNeighbors = adj.get(sourceNode);
-      const targetNeighbors = adj.get(targetNode);
-      if (!sourceNeighbors || !targetNeighbors) continue;
+      if (!Number.isFinite(sourceId) || !Number.isFinite(targetId)) {
+        continue;
+      }
 
-      sourceNeighbors.add(targetNode);
-      targetNeighbors.add(sourceNode);
+      if (!adjacency.has(sourceId)) adjacency.set(sourceId, new Map());
+      if (!adjacency.has(targetId)) adjacency.set(targetId, new Map());
+      if (sourceId === targetId) {
+        continue;
+      }
+
+      const sourceNeighbors = adjacency.get(sourceId);
+      const targetNeighbors = adjacency.get(targetId);
+      if (!sourceNeighbors || !targetNeighbors) {
+        continue;
+      }
+
+      sourceNeighbors.set(targetId, (sourceNeighbors.get(targetId) ?? 0) + weight);
+      targetNeighbors.set(sourceId, (targetNeighbors.get(sourceId) ?? 0) + weight);
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[community-detection] Failed to build adjacency list: ${message}`);
   }
 
-  return adj;
+  return adjacency;
 }
 
-// ───────────────────────────────────────────────────────────────
-// 6. BFS CONNECTED COMPONENTS
+function buildLegacyAdjacency(adjacency: WeightedAdjacencyList): LegacyAdjacencyList {
+  const legacy: LegacyAdjacencyList = new Map();
 
-// ───────────────────────────────────────────────────────────────
-/**
- * Detect communities using BFS connected-component labelling.
- * Returns a map of nodeId -> communityId (0-indexed).
- *
- * Uses index-based queue traversal instead of queue.shift() to avoid
- * O(n) per-dequeue cost, keeping BFS at O(V+E).
- */
-export function detectCommunitiesBFS(
-  db: Database.Database,
-): Map<string, number> {
-  const adj = buildAdjacencyList(db);
-  const visited = new Set<string>();
-  const assignments = new Map<string, number>();
-  let communityId = 0;
+  for (const [nodeId, neighbors] of adjacency) {
+    const nodeKey = String(nodeId);
+    if (!legacy.has(nodeKey)) {
+      legacy.set(nodeKey, new Set());
+    }
 
-  for (const node of adj.keys()) {
-    if (visited.has(node)) continue;
+    const nodeNeighbors = legacy.get(nodeKey);
+    if (!nodeNeighbors) continue;
 
-    // BFS from this unvisited node — index-based to avoid O(n) shift()
-    const queue: string[] = [node];
-    let queueIdx = 0;
-    visited.add(node);
+    for (const neighborId of neighbors.keys()) {
+      nodeNeighbors.add(String(neighborId));
+    }
+  }
 
-    while (queueIdx < queue.length) {
-      const current = queue[queueIdx++];
-      assignments.set(current, communityId);
+  return legacy;
+}
 
-      const neighbors = adj.get(current);
-      if (neighbors) {
-        for (const neighbor of neighbors) {
-          if (!visited.has(neighbor)) {
-            visited.add(neighbor);
-            queue.push(neighbor);
-          }
+function buildFingerprint(db: Database.Database): string {
+  try {
+    const row = db.prepare(`
+      SELECT
+        COUNT(*) AS edge_count,
+        COALESCE(SUM(CAST(source_id AS INTEGER)), 0) AS source_sum,
+        COALESCE(SUM(CAST(target_id AS INTEGER)), 0) AS target_sum,
+        COALESCE(SUM(CAST(COALESCE(strength, 1.0) * 1000 AS INTEGER)), 0) AS strength_sum
+      FROM causal_edges
+    `).get() as {
+      edge_count: number;
+      source_sum: number;
+      target_sum: number;
+      strength_sum: number;
+    } | undefined;
+
+    return [
+      row?.edge_count ?? 0,
+      row?.source_sum ?? 0,
+      row?.target_sum ?? 0,
+      row?.strength_sum ?? 0,
+    ].join(':');
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[community-detection] Failed to build graph fingerprint: ${message}`);
+    return '';
+  }
+}
+
+function runLabelPropagation(adjacency: WeightedAdjacencyList): Map<number, number> {
+  const nodes = Array.from(adjacency.keys()).sort((left, right) => left - right);
+  const labels = new Map<number, number>();
+
+  for (const nodeId of nodes) {
+    labels.set(nodeId, nodeId);
+  }
+
+  for (let iteration = 0; iteration < MAX_PROPAGATION_ITERATIONS; iteration++) {
+    let changed = false;
+
+    for (const nodeId of nodes) {
+      const neighbors = adjacency.get(nodeId);
+      if (!neighbors || neighbors.size === 0) {
+        continue;
+      }
+
+      const labelWeights = new Map<number, number>();
+      for (const [neighborId, weight] of neighbors) {
+        const label = labels.get(neighborId) ?? neighborId;
+        labelWeights.set(label, (labelWeights.get(label) ?? 0) + weight);
+      }
+
+      const currentLabel = labels.get(nodeId) ?? nodeId;
+      let bestLabel = currentLabel;
+      let bestWeight = labelWeights.get(currentLabel) ?? 0;
+
+      for (const [candidateLabel, candidateWeight] of labelWeights) {
+        const isBetter = candidateWeight > bestWeight + SCORE_EPSILON;
+        const isTieBreak = Math.abs(candidateWeight - bestWeight) <= SCORE_EPSILON
+          && candidateLabel < bestLabel;
+
+        if (isBetter || isTieBreak) {
+          bestLabel = candidateLabel;
+          bestWeight = candidateWeight;
         }
+      }
+
+      if (bestLabel !== currentLabel) {
+        labels.set(nodeId, bestLabel);
+        changed = true;
       }
     }
 
-    communityId++;
+    if (!changed) {
+      break;
+    }
+  }
+
+  return labels;
+}
+
+function groupMembers<T>(labels: Map<number, T>): Map<T, number[]> {
+  const groups = new Map<T, number[]>();
+
+  for (const [nodeId, label] of labels) {
+    const members = groups.get(label) ?? [];
+    members.push(nodeId);
+    groups.set(label, members);
+  }
+
+  for (const members of groups.values()) {
+    members.sort((left, right) => left - right);
+  }
+
+  return groups;
+}
+
+function mergeSmallCommunities(
+  groups: Map<number, number[]>,
+  adjacency: WeightedAdjacencyList,
+): Map<number, number[]> {
+  const normalizedGroups = new Map<number, number[]>();
+  const nodeToCommunity = new Map<number, number>();
+
+  for (const [communityId, memberIds] of groups) {
+    const uniqueMemberIds = Array.from(new Set(memberIds)).sort((left, right) => left - right);
+    normalizedGroups.set(communityId, uniqueMemberIds);
+    for (const memberId of uniqueMemberIds) {
+      nodeToCommunity.set(memberId, communityId);
+    }
+  }
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    const communitiesBySize = Array.from(normalizedGroups.entries())
+      .sort((left, right) => {
+        if (left[1].length !== right[1].length) {
+          return left[1].length - right[1].length;
+        }
+        return left[0] - right[0];
+      });
+
+    for (const [communityId, originalMembers] of communitiesBySize) {
+      const memberIds = normalizedGroups.get(communityId);
+      if (!memberIds || memberIds.length >= MIN_COMMUNITY_SIZE) {
+        continue;
+      }
+
+      const candidateWeights = new Map<number, number>();
+      for (const memberId of originalMembers) {
+        const neighbors = adjacency.get(memberId);
+        if (!neighbors) continue;
+
+        for (const [neighborId, weight] of neighbors) {
+          const targetCommunity = nodeToCommunity.get(neighborId);
+          if (targetCommunity === undefined || targetCommunity === communityId) {
+            continue;
+          }
+          candidateWeights.set(targetCommunity, (candidateWeights.get(targetCommunity) ?? 0) + weight);
+        }
+      }
+
+      let bestTarget: number | null = null;
+      let bestWeight = -1;
+      let bestTargetSize = -1;
+      for (const [candidateId, candidateWeight] of candidateWeights) {
+        const candidateSize = normalizedGroups.get(candidateId)?.length ?? 0;
+        const isBetter = candidateWeight > bestWeight + SCORE_EPSILON;
+        const isSameWeight = Math.abs(candidateWeight - bestWeight) <= SCORE_EPSILON;
+        const isLargerTarget = isSameWeight && candidateSize > bestTargetSize;
+        const isLowerId = isSameWeight && candidateSize === bestTargetSize
+          && bestTarget !== null
+          && candidateId < bestTarget;
+
+        if (isBetter || isLargerTarget || isLowerId || bestTarget === null) {
+          bestTarget = candidateId;
+          bestWeight = candidateWeight;
+          bestTargetSize = candidateSize;
+        }
+      }
+
+      if (bestTarget === null) {
+        continue;
+      }
+
+      const targetMembers = normalizedGroups.get(bestTarget) ?? [];
+      const mergedMembers = Array.from(new Set([...targetMembers, ...memberIds]))
+        .sort((left, right) => left - right);
+
+      normalizedGroups.set(bestTarget, mergedMembers);
+      normalizedGroups.delete(communityId);
+      for (const memberId of memberIds) {
+        nodeToCommunity.set(memberId, bestTarget);
+      }
+      changed = true;
+    }
+  }
+
+  const rebuilt = new Map<number, number[]>();
+  for (const [memberId, communityId] of nodeToCommunity) {
+    const members = rebuilt.get(communityId) ?? [];
+    members.push(memberId);
+    rebuilt.set(communityId, members);
+  }
+
+  for (const members of rebuilt.values()) {
+    members.sort((left, right) => left - right);
+  }
+
+  return rebuilt;
+}
+
+function computeDensity(memberIds: number[], adjacency: WeightedAdjacencyList): number {
+  if (memberIds.length < 2) {
+    return 0;
+  }
+
+  const memberSet = new Set(memberIds);
+  let internalEdges = 0;
+
+  for (const memberId of memberIds) {
+    const neighbors = adjacency.get(memberId);
+    if (!neighbors) continue;
+
+    for (const neighborId of neighbors.keys()) {
+      if (neighborId <= memberId) continue;
+      if (memberSet.has(neighborId)) {
+        internalEdges += 1;
+      }
+    }
+  }
+
+  const possibleEdges = (memberIds.length * (memberIds.length - 1)) / 2;
+  if (possibleEdges === 0) {
+    return 0;
+  }
+
+  return Number((internalEdges / possibleEdges).toFixed(4));
+}
+
+function buildCommunityResults(
+  groups: Map<number, number[]>,
+  adjacency: WeightedAdjacencyList,
+  minimumSize: number,
+): CommunityResult[] {
+  return Array.from(groups.values())
+    .map((memberIds) => Array.from(new Set(memberIds)).sort((left, right) => left - right))
+    .filter((memberIds) => memberIds.length >= minimumSize)
+    .sort((left, right) => {
+      if (left[0] !== right[0]) {
+        return left[0] - right[0];
+      }
+      return left.length - right.length;
+    })
+    .map((memberIds, index) => ({
+      communityId: index + 1,
+      memberIds,
+      size: memberIds.length,
+      density: computeDensity(memberIds, adjacency),
+    }));
+}
+
+function buildAssignmentsFromCommunities(communities: CommunityResult[]): Map<string, number> {
+  const assignments = new Map<string, number>();
+
+  for (const community of communities) {
+    for (const memberId of community.memberIds) {
+      assignments.set(String(memberId), community.communityId);
+    }
   }
 
   return assignments;
 }
 
-// ───────────────────────────────────────────────────────────────
-// 7. ESCALATION CHECK
+function buildCommunitiesFromAssignments(
+  db: Database.Database,
+  assignments: Map<string, number>,
+): CommunityResult[] {
+  const adjacency = buildAdjacencyList(db);
+  const groups = new Map<number, number[]>();
 
-// ───────────────────────────────────────────────────────────────
-/**
- * Check whether the largest connected component contains >50% of all nodes.
- * If true, the graph is poorly partitioned and Louvain should be attempted.
- */
-export function shouldEscalateToLouvain(
-  components: Map<string, number>,
-): boolean {
-  if (components.size === 0) return false;
+  for (const [nodeId, communityId] of assignments) {
+    const numericId = Number.parseInt(nodeId, 10);
+    if (!Number.isFinite(numericId)) {
+      continue;
+    }
 
-  const counts = new Map<number, number>();
-  for (const cid of components.values()) {
-    counts.set(cid, (counts.get(cid) ?? 0) + 1);
+    const members = groups.get(communityId) ?? [];
+    members.push(numericId);
+    groups.set(communityId, members);
   }
 
-  let maxSize = 0;
-  for (const size of counts.values()) {
-    if (size > maxSize) maxSize = size;
-  }
-
-  return maxSize > components.size * 0.5;
+  return buildCommunityResults(groups, adjacency, 1);
 }
 
-// 8. SIMPLIFIED LOUVAIN (single-level, no hierarchical passes)
-/**
- * Pure-TypeScript single-level Louvain modularity optimisation.
- *
- * Algorithm:
- *  1. Each node starts in its own community.
- *  2. For each node, evaluate the modularity gain of moving it to each
- *     neighbour's community.
- *  3. Move to the community with the best positive gain.
- *  4. Repeat until no improvement (or max 10 iterations).
- *
- * Modularity:
- *   Q = Σ_c [ (edges_within_c / m) - (degree_sum_c / (2m))^2 ]
- *   where m = total edges.
- *
- * Gain of moving node i from community A to community B:
- *   ΔQ = [ (e_B_with_i / m) - ( (Σ_B + k_i) / (2m) )^2 ]
- *       - [ (e_B / m) - (Σ_B / (2m))^2 ]
- *       - [ (e_A_without_i / m) - ( (Σ_A - k_i) / (2m) )^2 ]
- *       + [ (e_A / m) - (Σ_A / (2m))^2 ]
- *   simplified to the standard Louvain ΔQ formula.
- */
-export function detectCommunitiesLouvain(
-  adjacency: AdjacencyList,
-): Map<string, number> {
-  const nodes = Array.from(adjacency.keys());
-  if (nodes.length === 0) return new Map();
-
-  // Community assignment: node -> communityId
-  const community = new Map<string, number>();
-  nodes.forEach((node, index) => community.set(node, index));
-
-  // Total number of edges (each undirected edge counted once)
-  let totalEdges = 0;
-  for (const neighbors of adjacency.values()) {
-    totalEdges += neighbors.size;
-  }
-  totalEdges = totalEdges / 2; // undirected: halve the sum of degrees
-
-  if (totalEdges === 0) return community;
-
-  const edgeCount = totalEdges;
-  const doubleEdgeCount = 2 * edgeCount;
-
-  // Degree of each node (number of edges)
-  const degree = new Map<string, number>();
-  for (const [node, neighbors] of adjacency) {
-    degree.set(node, neighbors.size);
+function loadLegacyAssignments(db: Database.Database): Map<string, number> {
+  const assignments = new Map<string, number>();
+  if (!tableExists(db, 'community_assignments')) {
+    return assignments;
   }
 
-  // Sum of degrees per community (Σ_tot)
-  const sigmaTot = new Map<number, number>();
-  for (const node of nodes) {
-    const cid = community.get(node);
-    const nodeDegree = degree.get(node);
-    if (cid === undefined || nodeDegree === undefined) continue;
+  try {
+    const rows = db.prepare(`
+      SELECT memory_id, community_id
+      FROM community_assignments
+    `).all() as Array<{ memory_id: number; community_id: number }>;
 
-    sigmaTot.set(cid, (sigmaTot.get(cid) ?? 0) + nodeDegree);
+    for (const row of rows) {
+      assignments.set(String(row.memory_id), row.community_id);
+    }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[community-detection] Failed to load legacy community assignments: ${message}`);
   }
 
-  // Iterate
-  const MAX_ITERATIONS = 10;
-  for (let iter = 0; iter < MAX_ITERATIONS; iter++) {
-    let moved = false;
+  return assignments;
+}
 
-    for (const node of nodes) {
-      const currentCommunity = community.get(node);
-      const nodeDegree = degree.get(node);
-      if (currentCommunity === undefined || nodeDegree === undefined) continue;
+export function detectCommunitiesBFS(db: Database.Database): Map<string, number> {
+  const adjacency = buildLegacyAdjacency(buildAdjacencyList(db));
+  const visited = new Set<string>();
+  const assignments = new Map<string, number>();
+  let communityId = 0;
 
-      const neighbors = adjacency.get(node);
-      if (!neighbors || neighbors.size === 0) continue;
+  for (const nodeId of adjacency.keys()) {
+    if (visited.has(nodeId)) {
+      continue;
+    }
 
-      // Count edges from node to each neighbouring community
-      const edgesToCommunity = new Map<number, number>();
-      for (const neighbor of neighbors) {
-        const nc = community.get(neighbor);
-        if (nc === undefined) continue;
-        edgesToCommunity.set(nc, (edgesToCommunity.get(nc) ?? 0) + 1);
+    const queue = [nodeId];
+    let index = 0;
+    visited.add(nodeId);
+
+    while (index < queue.length) {
+      const currentNodeId = queue[index++];
+      assignments.set(currentNodeId, communityId);
+
+      const neighbors = adjacency.get(currentNodeId);
+      if (!neighbors) continue;
+
+      for (const neighborId of neighbors) {
+        if (visited.has(neighborId)) continue;
+        visited.add(neighborId);
+        queue.push(neighborId);
+      }
+    }
+
+    communityId += 1;
+  }
+
+  return assignments;
+}
+
+export function shouldEscalateToLouvain(components: Map<string, number>): boolean {
+  if (components.size === 0) {
+    return false;
+  }
+
+  const counts = new Map<number, number>();
+  for (const communityId of components.values()) {
+    counts.set(communityId, (counts.get(communityId) ?? 0) + 1);
+  }
+
+  let largest = 0;
+  for (const size of counts.values()) {
+    if (size > largest) {
+      largest = size;
+    }
+  }
+
+  return largest > components.size * 0.5;
+}
+
+export function detectCommunitiesLouvain(adjacency: LegacyAdjacencyList): Map<string, number> {
+  const nodes = Array.from(adjacency.keys()).sort();
+  const labels = new Map<string, string>();
+
+  for (const nodeId of nodes) {
+    labels.set(nodeId, nodeId);
+  }
+
+  for (let iteration = 0; iteration < MAX_PROPAGATION_ITERATIONS; iteration++) {
+    let changed = false;
+
+    for (const nodeId of nodes) {
+      const neighbors = adjacency.get(nodeId);
+      if (!neighbors || neighbors.size === 0) {
+        continue;
       }
 
-      // Edges from node to its own community (for removal gain)
-      const edgesToOwn = edgesToCommunity.get(currentCommunity) ?? 0;
+      const labelCounts = new Map<string, number>();
+      for (const neighborId of neighbors) {
+        const label = labels.get(neighborId) ?? neighborId;
+        labelCounts.set(label, (labelCounts.get(label) ?? 0) + 1);
+      }
 
-      // Gain of removing node from its current community
-      const sigmaOld = sigmaTot.get(currentCommunity) ?? 0;
-      const removeGain =
-        -edgesToOwn / edgeCount
-        + ((sigmaOld - nodeDegree) / doubleEdgeCount) ** 2
-        - (sigmaOld / doubleEdgeCount) ** 2;
+      const currentLabel = labels.get(nodeId) ?? nodeId;
+      let bestLabel = currentLabel;
+      let bestCount = labelCounts.get(currentLabel) ?? 0;
 
-      let bestGain = 0;
-      let bestCommunity = currentCommunity;
+      for (const [candidateLabel, candidateCount] of labelCounts) {
+        const isBetter = candidateCount > bestCount;
+        const isTieBreak = candidateCount === bestCount && candidateLabel < bestLabel;
 
-      for (const [targetCommunity, edgesIn] of edgesToCommunity) {
-        if (targetCommunity === currentCommunity) continue;
-
-        const sigmaTarget = sigmaTot.get(targetCommunity) ?? 0;
-
-        // Gain of inserting node into target community
-        const insertGain =
-          edgesIn / edgeCount -
-          ((sigmaTarget + nodeDegree) / doubleEdgeCount) ** 2 +
-          (sigmaTarget / doubleEdgeCount) ** 2;
-
-        const totalGain = removeGain + insertGain;
-
-        if (totalGain > bestGain) {
-          bestGain = totalGain;
-          bestCommunity = targetCommunity;
+        if (isBetter || isTieBreak) {
+          bestLabel = candidateLabel;
+          bestCount = candidateCount;
         }
       }
 
-      if (bestCommunity !== currentCommunity && bestGain > 1e-10) {
-        // Move node
-        community.set(node, bestCommunity);
-
-        // Update sigma totals
-        sigmaTot.set(
-          currentCommunity,
-          (sigmaTot.get(currentCommunity) ?? 0) - nodeDegree,
-        );
-        sigmaTot.set(
-          bestCommunity,
-          (sigmaTot.get(bestCommunity) ?? 0) + nodeDegree,
-        );
-
-        moved = true;
+      if (bestLabel !== currentLabel) {
+        labels.set(nodeId, bestLabel);
+        changed = true;
       }
     }
 
-    if (!moved) break;
+    if (!changed) {
+      break;
+    }
   }
 
-  // Re-label communities to contiguous 0-based IDs
-  const labelMap = new Map<number, number>();
-  let nextLabel = 0;
   const result = new Map<string, number>();
+  const labelToCommunityId = new Map<string, number>();
+  let nextCommunityId = 0;
 
-  for (const [node, cid] of community) {
-    if (!labelMap.has(cid)) {
-      labelMap.set(cid, nextLabel++);
+  for (const nodeId of nodes) {
+    const label = labels.get(nodeId) ?? nodeId;
+    if (!labelToCommunityId.has(label)) {
+      labelToCommunityId.set(label, nextCommunityId++);
     }
-    result.set(node, labelMap.get(cid)!);
+    result.set(nodeId, labelToCommunityId.get(label) ?? 0);
   }
 
   return result;
 }
 
-// ───────────────────────────────────────────────────────────────
-// 8. ORCHESTRATOR
+export function detectCommunities(db: Database.Database): CommunityResult[] {
+  if (!isCommunitySummariesEnabled()) {
+    return [];
+  }
 
-// ───────────────────────────────────────────────────────────────
-/**
- * Top-level community detection orchestrator.
- *
- * 1. BFS connected components first (fast, O(V+E)).
- * 2. If the largest component holds >50 % of nodes, escalate to Louvain
- *    for finer-grained sub-community detection.
- * 3. Debounced: skips re-computation if edge count is unchanged or
- *    already computed this session.
- */
-export function detectCommunities(db: Database.Database): Map<string, number> {
   try {
-    // Replace edge-count-only debounce
-    // With count:maxId hash. Edge count alone can't detect deletions followed by
-    // Insertions that maintain the same count.
-    const edgeStatsRow = db
-      .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId, MIN(id) AS minId FROM causal_edges")
-      .get() as { cnt: number; maxId: number | null; minId: number | null } | undefined;
-    const currentEdgeCount = edgeStatsRow?.cnt ?? 0;
-    // Fix F22 — include SUM of source/target IDs for update-sensitive fingerprint.
-    const edgeChecksumRow = db
-      .prepare("SELECT COALESCE(SUM(CAST(source_id AS INTEGER) + CAST(target_id AS INTEGER)), 0) AS cksum FROM causal_edges")
-      .get() as { cksum: number } | undefined;
-    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}:${edgeStatsRow?.minId ?? 0}:${edgeChecksumRow?.cksum ?? 0}`;
-
-    if (
-      computedThisSession &&
-      currentDebounceHash === lastDebounceHash
-    ) {
-      // Graph unchanged and already computed — return stored assignments
-      return loadStoredAssignments(db);
+    const fingerprint = buildFingerprint(db);
+    if (fingerprint !== '' && fingerprint === lastFingerprint) {
+      return cloneCommunities(cachedCommunities);
     }
 
-    // --- Step 1: BFS -------------------------------------------------------
-    // Build adjacency list once and reuse for both BFS and potential Louvain
-    const adj = buildAdjacencyList(db);
-    const bfsResult = detectCommunitiesBFSFromAdj(adj);
-
-    let finalResult: Map<string, number>;
-
-    // --- Step 2: Escalate? --------------------------------------------------
-    if (shouldEscalateToLouvain(bfsResult)) {
-      // Reuse the adjacency list already built — no second DB query needed
-      finalResult = detectCommunitiesLouvain(adj);
-    } else {
-      finalResult = bfsResult;
+    const adjacency = buildAdjacencyList(db);
+    if (adjacency.size === 0) {
+      lastFingerprint = fingerprint;
+      cachedCommunities = [];
+      return [];
     }
 
-    // --- Update debounce state -----------------------------------------------
-    lastDebounceHash = currentDebounceHash;
-    computedThisSession = true;
+    const labels = runLabelPropagation(adjacency);
+    const groupedCommunities = groupMembers(labels);
+    const mergedCommunities = mergeSmallCommunities(groupedCommunities, adjacency);
+    const communities = buildCommunityResults(mergedCommunities, adjacency, MIN_COMMUNITY_SIZE);
 
-    return finalResult;
+    lastFingerprint = fingerprint;
+    cachedCommunities = cloneCommunities(communities);
+    return cloneCommunities(communities);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[community-detection] detectCommunities failed: ${message}`);
-    return new Map();
+    return [];
   }
 }
 
-/**
- * BFS connected-component labelling from a pre-built adjacency list.
- * Used by the orchestrator to avoid rebuilding the adjacency list when
- * escalation to Louvain is needed.
- *
- * Uses index-based queue traversal instead of queue.shift() to avoid
- * O(n) per-dequeue cost, keeping BFS at O(V+E).
- */
-function detectCommunitiesBFSFromAdj(
-  adj: AdjacencyList,
-): Map<string, number> {
-  const visited = new Set<string>();
-  const assignments = new Map<string, number>();
-  let communityId = 0;
-
-  for (const node of adj.keys()) {
-    if (visited.has(node)) continue;
-
-    const queue: string[] = [node];
-    let queueIdx = 0;
-    visited.add(node);
-
-    while (queueIdx < queue.length) {
-      const current = queue[queueIdx++];
-      assignments.set(current, communityId);
-
-      const neighbors = adj.get(current);
-      if (neighbors) {
-        for (const neighbor of neighbors) {
-          if (!visited.has(neighbor)) {
-            visited.add(neighbor);
-            queue.push(neighbor);
-          }
-        }
-      }
-    }
-
-    communityId++;
-  }
-
-  return assignments;
-}
-
-// ───────────────────────────────────────────────────────────────
-// 9. PERSISTENCE HELPERS
-
-// ───────────────────────────────────────────────────────────────
-/**
- * Load previously stored community assignments from the database.
- */
-function loadStoredAssignments(db: Database.Database): Map<string, number> {
-  const result = new Map<string, number>();
-  try {
-    const rows = db
-      .prepare("SELECT memory_id, community_id FROM community_assignments")
-      .all() as Array<{ memory_id: number; community_id: number }>;
-
-    for (const row of rows) {
-      result.set(String(row.memory_id), row.community_id);
-    }
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.warn(`[community-detection] Failed to load stored assignments: ${message}`);
-  }
-  return result;
-}
-
-/**
- * Persist community assignments into the `community_assignments` table.
- * Uses INSERT OR REPLACE to handle existing rows (memory_id is UNIQUE).
- */
 export function storeCommunityAssignments(
   db: Database.Database,
-  assignments: Map<string, number>,
-  algorithm: string = "bfs",
+  assignmentsOrCommunities: AssignmentInput,
 ): { stored: number } {
-  let stored = 0;
-
   try {
-    // P1-014: Clean up stale assignments for deleted memories
-    db.prepare(
-      "DELETE FROM community_assignments WHERE memory_id NOT IN (SELECT id FROM memory_index)",
-    ).run();
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS community_assignments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        memory_id INTEGER NOT NULL UNIQUE,
+        community_id INTEGER NOT NULL,
+        algorithm TEXT NOT NULL DEFAULT 'label_propagation',
+        computed_at TEXT NOT NULL DEFAULT (datetime('now'))
+      )
+    `);
 
-    const insert = db.prepare(
-      `INSERT OR REPLACE INTO community_assignments
-         (memory_id, community_id, algorithm, computed_at)
-       VALUES (?, ?, ?, ?)`,
-    );
+    const assignments = Array.isArray(assignmentsOrCommunities)
+      ? buildAssignmentsFromCommunities(assignmentsOrCommunities)
+      : assignmentsOrCommunities;
 
-    const now = new Date().toISOString();
+    const communities = Array.isArray(assignmentsOrCommunities)
+      ? assignmentsOrCommunities
+      : buildCommunitiesFromAssignments(db, assignmentsOrCommunities);
 
-    const runAll = db.transaction(() => {
+    const persist = db.transaction(() => {
+      db.prepare('DELETE FROM community_assignments').run();
+      const insert = db.prepare(`
+        INSERT INTO community_assignments (memory_id, community_id, algorithm, computed_at)
+        VALUES (?, ?, ?, ?)
+      `);
+      const timestamp = new Date().toISOString();
+      let stored = 0;
+
       for (const [nodeId, communityId] of assignments) {
-        const numId = Number(nodeId);
-        if (!Number.isFinite(numId)) continue;
-        insert.run(numId, communityId, algorithm, now);
-        stored++;
+        const memoryId = Number.parseInt(nodeId, 10);
+        if (!Number.isFinite(memoryId)) {
+          continue;
+        }
+
+        insert.run(memoryId, communityId, 'label_propagation', timestamp);
+        stored += 1;
       }
+
+      storeCommunities(db, communities);
+      return stored;
     });
 
-    runAll();
+    return { stored: persist() };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-    console.warn(`[community-detection] Failed to store assignments: ${message}`);
+    console.warn(`[community-detection] Failed to store community assignments: ${message}`);
+    return { stored: 0 };
   }
-
-  return { stored };
 }
 
-// ───────────────────────────────────────────────────────────────
-// 10. QUERY HELPERS
-
-// ───────────────────────────────────────────────────────────────
-/**
- * Return the memory IDs that share the same community as `memoryId`.
- * Excludes the queried memory itself from the result.
- */
-export function getCommunityMembers(
-  db: Database.Database,
-  memoryId: number,
-): number[] {
+export function getCommunityMembers(db: Database.Database, memoryId: number): number[] {
   try {
-    const row = db
-      .prepare(
-        "SELECT community_id FROM community_assignments WHERE memory_id = ?",
-      )
-      .get(memoryId) as { community_id: number } | undefined;
+    const storedCommunities = getCommunities(db);
+    for (const community of storedCommunities) {
+      if (!community.memberIds.includes(memoryId)) {
+        continue;
+      }
 
-    if (!row) return [];
+      return community.memberIds
+        .filter((memberId) => memberId !== memoryId)
+        .sort((left, right) => left - right);
+    }
 
-    const members = db
-      .prepare(
-        `SELECT memory_id FROM community_assignments
-         WHERE community_id = ? AND memory_id != ?`,
-      )
-      .all(row.community_id, memoryId) as Array<{ memory_id: number }>;
+    const legacyAssignments = loadLegacyAssignments(db);
+    const legacyCommunityId = legacyAssignments.get(String(memoryId));
+    if (legacyCommunityId === undefined) {
+      return [];
+    }
 
-    return members.map((m) => m.memory_id);
+    return Array.from(legacyAssignments.entries())
+      .filter(([nodeId, communityId]) => communityId === legacyCommunityId && Number.parseInt(nodeId, 10) !== memoryId)
+      .map(([nodeId]) => Number.parseInt(nodeId, 10))
+      .filter((nodeId) => Number.isFinite(nodeId))
+      .sort((left, right) => left - right);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[community-detection] getCommunityMembers failed: ${message}`);
@@ -517,55 +653,48 @@ export function getCommunityMembers(
   }
 }
 
-/**
- * Inject community co-members into a result set with a co-retrieval bonus.
- *
- * For each row in `rows`, find community co-members that are not already
- * present. Inject them with `score = 0.3 * originalRow.score`.
- * Maximum 3 injected co-members total across all rows.
- */
 export function applyCommunityBoost(
   rows: Array<{ id: number; score?: number; [key: string]: unknown }>,
   db: Database.Database,
 ): Array<{ id: number; score?: number; [key: string]: unknown }> {
   try {
-    const existingIds = new Set(rows.map((r) => r.id));
-    const injected: Array<{ id: number; score?: number; [key: string]: unknown }> = [];
-    const MAX_INJECTED = 3;
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return rows;
+    }
+
+    const existingIds = new Set(rows.map((row) => row.id));
+    const injectedRows: Array<{ id: number; score?: number; [key: string]: unknown }> = [];
+    const maxInjectedRows = 3;
 
     for (const row of rows) {
-      if (injected.length >= MAX_INJECTED) break;
-
-      const coMembers = getCommunityMembers(db, row.id);
-      const stateByMemberId = new Map<number, string | null>();
-      if (coMembers.length > 0) {
-        const placeholders = coMembers.map(() => '?').join(', ');
-        const stateRows = db.prepare(
-          `SELECT id, memory_state FROM memory_index WHERE id IN (${placeholders})`
-        ).all(...coMembers) as Array<{ id: number; memory_state: string | null }>;
-        for (const stateRow of stateRows) {
-          stateByMemberId.set(stateRow.id, stateRow.memory_state);
-        }
+      if (injectedRows.length >= maxInjectedRows) {
+        break;
       }
-      const rawScore = row.score !== undefined ? row.score : 1.0;
-      const baseScore = Number.isFinite(rawScore) ? rawScore : 1.0;
-      const boostScore = COMMUNITY_EDGE_WEIGHT_THRESHOLD * baseScore;
 
-      for (const memberId of coMembers) {
-        if (injected.length >= MAX_INJECTED) break;
-        if (existingIds.has(memberId)) continue;
+      const communityMembers = getCommunityMembers(db, row.id);
+      const baseScore = typeof row.score === 'number' && Number.isFinite(row.score)
+        ? row.score
+        : 1.0;
+      const injectedScore = COMMUNITY_BOOST_FACTOR * baseScore;
+
+      for (const memberId of communityMembers) {
+        if (existingIds.has(memberId)) {
+          continue;
+        }
+        if (injectedRows.length >= maxInjectedRows) {
+          break;
+        }
 
         existingIds.add(memberId);
-        injected.push({
+        injectedRows.push({
           id: memberId,
-          score: boostScore,
-          memoryState: stateByMemberId.get(memberId) ?? undefined,
+          score: injectedScore,
           _communityBoosted: true,
         });
       }
     }
 
-    return [...rows, ...injected];
+    return [...rows, ...injectedRows];
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[community-detection] applyCommunityBoost failed: ${message}`);
@@ -573,16 +702,9 @@ export function applyCommunityBoost(
   }
 }
 
-// ───────────────────────────────────────────────────────────────
-// 11. TEST-ONLY EXPORTS
-
-// ───────────────────────────────────────────────────────────────
-/**
- * Defines the __testables constant.
- */
 export const __testables = {
   buildAdjacencyList,
-  loadStoredAssignments,
+  buildCommunitiesFromAssignments,
+  computeDensity,
+  mergeSmallCommunities,
 };
-
-// Self-governance: Opus-C agent, TCB=10, 3 findings addressed (A4-P2-2, A4-P2-1, A4-P2-3)

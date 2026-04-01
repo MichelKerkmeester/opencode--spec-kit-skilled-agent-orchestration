@@ -52,20 +52,27 @@ SessionStart(source=compact):
   4. Clean up cache after injection
 
 SessionStart(source=startup):
-  1. Call primeCompactionContext() with empty session context
-  2. Surface constitutional memories + recent spec folder overview
-  3. Optionally query CocoIndex for code related to detected spec folder or recent work
-  4. Output concise context (~2000 tokens)
+  1. Output tool availability guidance (Spec Kit Memory tools, CocoIndex status, Code Graph tools)
+  2. Check for stale code graph index (>24h) and warn if stale
+  3. Output concise guidance (~2000 tokens)
 
 SessionStart(source=resume):
-  1. Call memory_context({ mode: "resume", profile: "resume" })
-  2. Surface prior work, last spec folder, recent decisions
-  3. Output resume brief (~2000 tokens)
+  1. Load lastSpecFolder from hook state
+  2. Output resume instructions (tells AI to call memory_context with resume profile)
+  3. Output concise guidance (~2000 tokens)
 
 SessionStart(source=clear):
-  1. Minimal output — just constitutional memories
+  1. Output minimal guidance — tool availability reminder
   2. User explicitly cleared, don't over-inject
 ```
+
+## Design Decision: Guidance-Emitter Pattern
+
+The `startup`, `resume`, and `clear` handlers emit guidance text rather than performing active retrieval. That guidance lists tool availability, points to recommended commands, and tells the AI what to call next.
+
+This is intentional. Hooks run as CLI commands with stdout capture, so they cannot call MCP tools directly during injection. Instead, the hook prints concise instructions into the session context, and the AI reads those instructions and acts on them. For example, the resume path tells the AI to call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` itself.
+
+The one exception is `source=compact`, which reads a pre-cached payload produced in Phase 1 and injects that cached recovery context directly.
 
 ### Hook Registration
 ```json
@@ -86,30 +93,29 @@ No matcher filter — script handles all sources internally with source-aware ro
 
 ## Design Principles (iteration 013)
 
-1. **One retrieval contract across all runtimes** — hooks call the same `memory_context()` and `memory_match_triggers()` that manual flows use
+1. **One retrieval contract across all runtimes** — hooks point the AI at the same `memory_context()` and `memory_match_triggers()` flows that manual work uses
 2. **Hooks are transport reliability, not business logic** — they improve reliability of the same workflow, not replace Gate 1/2/3
-3. **`/spec_kit:resume` remains canonical** — the hybrid design keeps that contract and uses `memory_context({ mode: "resume" })` as the internal primitive
+3. **`/spec_kit:resume` remains canonical** — the hybrid design keeps that contract and directs the AI to use `memory_context({ mode: "resume", profile: "resume" })` when a resume brief is needed
 
 ## Acceptance Criteria
 - [ ] SessionStart hook fires on all sources (startup, resume, clear, compact)
 - [ ] Source-aware routing produces appropriate context for each
 - [ ] `profile: "resume"` passed for compact brief format (fixes gap from iter 012)
-- [ ] Output includes constitutional memories
+- [ ] startup/resume/clear output emits source-appropriate guidance text instead of active retrieval content
 - [ ] Output ≤ 2000 tokens (startup/resume) or ≤ 4000 tokens (compact)
 
 ## SessionStart Budget Profile (Iteration 049)
 
-For `source=startup` and `source=resume`, the 2000-token budget should include all 3 sources in a slimmer profile:
+For `source=startup` and `source=resume`, the 2000-token budget applies to concise guidance text, not loaded memory content. The hook should summarize available tools and next actions within that budget:
 
-| Source | Floor | Notes |
+| Guidance Block | Floor | Notes |
 |---|---:|---|
-| Constitutional Memory | 500 | Durable rules |
-| Code Graph | 700 | Structural context for current work |
-| CocoIndex | 400 | Semantic code neighbors |
-| Triggered Memory | 200 | Session-relevant |
-| Overflow Pool | 200 | From empty sources |
+| Tool availability | 700 | Spec Kit Memory tools, CocoIndex status, Code Graph tools |
+| Resume instructions | 700 | Tell the AI which `memory_context(..., profile: "resume")` call to make |
+| Staleness / recovery notes | 400 | Warn when code graph index is stale or recovery is needed |
+| Overflow Pool | 200 | Spare budget for short source-specific guidance |
 
-For `source=clear`: constitutional only (current behavior).
+For `source=clear`: minimal guidance only, mainly a tool-availability reminder after explicit user clear.
 For `source=compact`: use full 4000-token compaction profile from Phase 001.
 
 - [ ] Script completes in < 3 seconds

@@ -1,5 +1,6 @@
 ---
 title: "Completed [02--system-spec-kit/024-compact-code-graph/31-03-26_11-57__completed-segment-6-20-deep-research-iterations]"
+description: "Completed segment 6 of deep research iterations (20 iterations) for spec 024 compact code graph. Improvements include automatic system enhancements."
 trigger_phrases:
   - "completed segment"
   - "segment deep"
@@ -11,9 +12,6 @@ trigger_phrases:
   - "compact code"
   - "code graph"
   - "kit/024"
-  - "compact"
-  - "code"
-  - "graph"
 importance_tier: "normal"
 contextType: "general"
 _sourceSessionCreated: 0

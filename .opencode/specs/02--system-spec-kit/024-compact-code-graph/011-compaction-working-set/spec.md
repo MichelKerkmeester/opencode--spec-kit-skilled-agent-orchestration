@@ -149,6 +149,8 @@ interface AllocationResult {
 
 ### 3. `compact-merger.ts`
 
+**Status:** Partial
+
 3-source merge logic:
 - Receive shaped results from all 3 sources
 - Deduplicate at file level

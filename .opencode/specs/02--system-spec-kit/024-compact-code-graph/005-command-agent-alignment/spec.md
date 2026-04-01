@@ -30,7 +30,7 @@ Update commands and agent definitions across all runtimes to work with the new h
 ### 1. Memory Commands (`.opencode/command/memory/`)
 
 Audit all commands for compaction references:
-- `/memory:save` — Must detect if Stop hook has already saved session context (avoid double-save). Check `session_token_snapshots` table or temp state file for recent auto-save.
+- `/memory:save` — Must detect if Stop hook has already saved session context (avoid double-save). Check hook state in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`, specifically recent `pendingStopSave.cachedAt`, before prompting merge/skip behavior.
 - `/memory:search`, `/memory:manage` — Likely no changes needed, but verify no compaction-specific assumptions.
 
 ### 2. Spec Kit Commands (`.opencode/command/spec_kit/`)
@@ -47,7 +47,7 @@ Audit and update agent files that reference compaction recovery across all runti
 |---------|----------------|---------------|
 | Claude | `.claude/agents/` | All agent `.md` files referencing compaction |
 | OpenCode (Copilot) | `.opencode/agent/` | All agent `.md` files referencing compaction |
-| Codex | `.codex/agents/` | All agent `.md` files referencing compaction |
+| Codex | `.codex/agents/` | All agent `.toml` files referencing compaction |
 | Gemini | `.gemini/agents/` | All agent `.md` files referencing compaction |
 
 Updates needed:
@@ -90,11 +90,12 @@ Agents should be aware of the session working set when available:
 - [ ] No regression in command behavior for non-hook runtimes (Codex, Copilot, Gemini)
 
 ## Files Modified
-- EDIT: `.opencode/command/spec_kit/resume.md` (add `profile: "resume"`)
+- EDIT: `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` (add `profile: "resume"` to `memory_context()` parameters)
+- EDIT: `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` (add `profile: "resume"` to `memory_context()` parameters)
 - EDIT: `.opencode/command/memory/save.md` (add Stop hook double-save check)
 - EDIT: `.claude/agents/*.md` (compaction-aware agents)
 - EDIT: `.opencode/agent/*.md` (compaction-aware agents)
-- EDIT: `.codex/agents/*.md` (compaction-aware agents)
+- EDIT: `.codex/agents/*.toml` (compaction-aware agents)
 - EDIT: `.gemini/agents/*.md` (compaction-aware agents)
 
 ## LOC Estimate

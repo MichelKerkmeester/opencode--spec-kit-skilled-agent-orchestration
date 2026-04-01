@@ -21,6 +21,8 @@ import {
   type ScopeContext,
 } from '../governance/scope-governance.js';
 import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection.js';
+import { generateCommunitySummaries } from '../graph/community-summaries.js';
+import { storeCommunities } from '../graph/community-storage.js';
 import { snapshotDegrees } from '../graph/graph-signals.js';
 import { deleteEdgesForMemory } from './causal-edges.js';
 import { runLineageBackfill } from './lineage-state.js';
@@ -91,6 +93,8 @@ const CHECKPOINT_MANIFEST = Object.freeze({
     'entity_catalog',
     'degree_snapshots',
     'community_assignments',
+    'graph_communities',
+    'community_summaries',
     'memory_fts',
   ],
   skip: [
@@ -1201,9 +1205,14 @@ function runPostRestoreRebuilds(
       run: () => snapshotDegrees(database),
     },
     {
-      name: 'community-assignments',
+      name: 'community-artifacts',
       deps: ['degree-snapshots'],
-      run: () => storeCommunityAssignments(database, detectCommunities(database)),
+      run: () => {
+        const communities = detectCommunities(database);
+        storeCommunities(database, communities);
+        storeCommunityAssignments(database, communities);
+        generateCommunitySummaries(database, communities);
+      },
     },
     {
       name: 'fts-rebuild',

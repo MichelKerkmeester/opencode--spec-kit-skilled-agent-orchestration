@@ -124,6 +124,19 @@ function hasMeaningfulObservationTitle(title?: string): boolean {
  * Prefer `scoreMemoryQuality` from `extractors/quality-scorer.ts` which accepts
  * a single `QualityInputs` object and uses validation-rule-based scoring (V1-V12).
  */
+// Rec 6 floor thresholds — minimum dimension scores for JSON quality floor activation
+const JSON_FLOOR_THRESHOLDS = {
+  triggerPhrases: 10,    // >= 4 trigger phrases extracted
+  keyTopics: 5,          // >= 1 key topic present
+  fileDescriptions: 10,  // Files with descriptions present
+  contentLength: 8,      // >= 20 lines with specific title
+  noLeakedTags: 10,      // No major HTML leaks
+  observationDedup: 5,   // Some observations present
+} as const;
+const JSON_FLOOR_MIN_DIMENSIONS = 4;  // At least 4/6 must pass
+const JSON_FLOOR_DAMPING = 0.85;      // Per DR-004
+const JSON_FLOOR_CAP = 0.70;          // Hard maximum
+
 export function scoreMemoryQuality(
   content: string,
   triggerPhrases: string[],
@@ -256,6 +269,29 @@ export function scoreMemoryQuality(
   }
 
   let score01 = clamp01(Object.values(breakdown).reduce((sum, v) => sum + v, 0) / 100);
+
+  // Rec 6: JSON-mode quality floor — when all scoring dimensions contribute something,
+  // the input likely has substantive content. Apply a floor to prevent thin-but-valid
+  // JSON saves from scoring artificially low due to transcript-optimized heuristics.
+  const allDimensionsContribute = Object.values(breakdown).every((v) => v > 0);
+  const jsonFloorDimensions = {
+    hasTriggers: breakdown.triggerPhrases >= JSON_FLOOR_THRESHOLDS.triggerPhrases,
+    hasTopics: breakdown.keyTopics >= JSON_FLOOR_THRESHOLDS.keyTopics,
+    hasFiles: breakdown.fileDescriptions >= JSON_FLOOR_THRESHOLDS.fileDescriptions,
+    hasContent: breakdown.contentLength >= JSON_FLOOR_THRESHOLDS.contentLength,
+    htmlClean: breakdown.noLeakedTags >= JSON_FLOOR_THRESHOLDS.noLeakedTags,
+    hasObservations: breakdown.observationDedup >= JSON_FLOOR_THRESHOLDS.observationDedup,
+  };
+  const jsonFloorScore = Object.values(jsonFloorDimensions).filter(Boolean).length;
+  if (allDimensionsContribute && jsonFloorScore >= JSON_FLOOR_MIN_DIMENSIONS) {
+    const rawFloor = (jsonFloorScore / 6) * JSON_FLOOR_DAMPING;
+    const cappedFloor = Math.min(rawFloor, JSON_FLOOR_CAP);
+    if (score01 < cappedFloor) {
+      score01 = cappedFloor;
+      warnings.push(`JSON quality floor applied: ${Math.round(cappedFloor * 100)}/100 (${jsonFloorScore}/6 dimensions passed)`);
+    }
+  }
+
   let scoreCap: number | null = null;
   const effectiveSeverity: ContaminationSeverity = contaminationSeverity || 'medium';
 

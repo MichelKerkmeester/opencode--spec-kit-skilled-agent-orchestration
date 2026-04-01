@@ -87,11 +87,10 @@ Build or refresh the structural index.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `workspaceRoot` | string | No | Root directory to scan (defaults to project root) |
-| `pathGlobs` | string[] | No | File patterns to include (default: `["**/*.js","**/*.ts","**/*.py","**/*.sh"]`) |
-| `languages` | string[] | No | Filter by language |
+| `rootDir` | string | No | Root directory to scan (defaults to workspace root) |
+| `includeGlobs` | string[] | No | Glob patterns for files to include |
+| `excludeGlobs` | string[] | No | Additional glob patterns to exclude |
 | `incremental` | boolean | No | Skip unchanged files (default: true) |
-| `force` | boolean | No | Re-index all files regardless of hash |
 
 Returns: scan summary with file count, node count, edge count, parse errors, duration.
 
@@ -102,8 +101,8 @@ Deterministic structural queries against the graph.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `operation` | string | Yes | One of: `outline`, `calls_from`, `calls_to`, `imports_from`, `imports_to` |
-| `subject` | object | Yes | Target: `{ filePath?, symbolId?, fqName? }` |
-| `maxResults` | number | No | Limit results (default: 50) |
+| `subject` | string | Yes | File path, symbol name, or symbolId to query |
+| `limit` | number | No | Limit results (default: 50) |
 | `includeTransitive` | boolean | No | Follow edges transitively (default: false) |
 
 Returns: array of nodes with their edge relationships.
@@ -112,11 +111,9 @@ Returns: array of nodes with their edge relationships.
 
 Report index health and freshness.
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `workspaceRoot` | string | No | Root directory |
+No input parameters.
 
-Returns: total files, indexed files, stale files, node/edge counts, last scan time, parser health summary, DB size.
+Returns: `totalFiles`, `totalNodes`, `totalEdges`, `freshness`, `lastScanAt`, `lastGitHead`, `dbFileSize`, `schemaVersion`, `nodesByKind`, `edgesByType`, and `parseHealth`.
 
 ## Architecture
 

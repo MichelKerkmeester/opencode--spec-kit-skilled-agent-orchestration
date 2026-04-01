@@ -60,7 +60,8 @@ export function resolveTreeThinningContent(file: FileChange, specFolderPath: str
 
 export function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PATH: string }> {
   const collected: string[] = [];
-  const ignoredDirs = new Set(['memory', 'scratch', '.git', 'node_modules']);
+  // Rec 4: Exclude iteration directories that inflate key_files without adding retrieval value
+  const ignoredDirs = new Set(['memory', 'scratch', '.git', 'node_modules', 'iterations']);
 
   const visit = (currentDir: string, relativeDir: string): void => {
     const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
@@ -91,8 +92,11 @@ export function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PAT
     return [];
   }
 
+  // Rec 4: Cap filesystem enumeration at 20 files sorted by name
   return collected
+    .filter((f) => !f.includes('research/iterations/') && !f.includes('review/iterations/'))
     .sort((a, b) => a.localeCompare(b))
+    .slice(0, 20)
     .map((filePath) => ({ FILE_PATH: filePath }));
 }
 

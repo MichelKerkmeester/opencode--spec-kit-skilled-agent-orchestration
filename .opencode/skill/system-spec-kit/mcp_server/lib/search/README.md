@@ -319,6 +319,7 @@ vector-index-impl.ts     (14 LOC)
 | `progressive-disclosure.ts` | -     | TypeScript | Supports progressive-disclosure result paging and response shaping |
 | `query-decomposer.ts`      | -      | TypeScript | Decomposes complex queries into smaller retrieval units |
 | `query-surrogates.ts`      | -      | TypeScript | Builds surrogate query forms for alternate retrieval passes |
+| `community-search.ts`      | -      | TypeScript | Community-level search fallback — keyword-matches community summaries, returns member IDs |
 | `recovery-payload.ts`      | -      | TypeScript | Builds structured recovery payloads for weak or empty results |
 | `result-explainability.ts` | -      | TypeScript | Attaches explainability metadata to result ranking signals |
 | `search-utils.ts`          | -      | TypeScript | Shared utility helpers used across search modules |

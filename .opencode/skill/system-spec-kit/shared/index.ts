@@ -76,6 +76,15 @@ export {
   partialDbRowToMemory,
 } from './types.js';
 
+// Context type definitions (single source of truth)
+export type { CanonicalContextType, ContextType } from './context-types.js';
+export {
+  CANONICAL_CONTEXT_TYPES,
+  LEGACY_CONTEXT_TYPE_ALIASES,
+  resolveCanonicalContextType,
+  isLegacyContextType,
+} from './context-types.js';
+
 // ---------------------------------------------------------------
 // 2. EMBEDDINGS MODULE
 // ---------------------------------------------------------------

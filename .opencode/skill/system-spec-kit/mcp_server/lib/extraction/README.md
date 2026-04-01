@@ -35,7 +35,7 @@ The extraction module provides the post-tool extraction pipeline for automated m
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 4 | `extraction-adapter.ts`, `redaction-gate.ts`, `entity-extractor.ts`, `entity-denylist.ts` |
+| Modules | 5 | `extraction-adapter.ts`, `redaction-gate.ts`, `entity-extractor.ts`, `entity-denylist.ts`, `ontology-hooks.ts` |
 
 ### Key Features
 
@@ -48,6 +48,7 @@ The extraction module provides the post-tool extraction pipeline for automated m
 | **Redaction Gate** | Hard gate: content flagged by pattern detection is blocked from insert |
 | **Auto Entity Extraction (R10)** | Rule-based extraction of proper nouns, technology names, key phrases, headings, and quoted strings from memory content |
 | **Entity Denylist** | Filters common nouns, technology stop words, and generic modifiers from entity extraction results |
+| **Ontology Hooks** | Schema-guided extraction validation: loads OntologySchema (entity types + relation types) and validates entity/relation pairs against allowed lists. Gated by `SPECKIT_ONTOLOGY_HOOKS` |
 
 <!-- /ANCHOR:overview -->
 
@@ -62,17 +63,19 @@ extraction/
  redaction-gate.ts        # PII/secret redaction gate before memory insert
  entity-extractor.ts      # Rule-based entity extraction from memory content (R10)
  entity-denylist.ts       # Common noun and stop word filtering for entity extraction (R10)
+ ontology-hooks.ts        # Schema-guided extraction validation (SPECKIT_ONTOLOGY_HOOKS)
  README.md                # This file
 ```
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `extraction-adapter.ts` | Resolves memory IDs with deterministic fallback; orchestrates post-tool extraction pipeline |
-| `redaction-gate.ts` | Scans content for PII and secrets using pattern-based detection; blocks flagged content from insert |
-| `entity-extractor.ts` | Pure-TS rule-based entity extraction: proper nouns, technology names, key phrases, headings, quoted strings (R10) |
-| `entity-denylist.ts` | Denylist of common nouns, technology stop words, and generic modifiers filtered from extraction results (R10) |
+| File | Purpose | Flag |
+|------|---------|------|
+| `extraction-adapter.ts` | Resolves memory IDs with deterministic fallback; orchestrates post-tool extraction pipeline | — |
+| `redaction-gate.ts` | Scans content for PII and secrets using pattern-based detection; blocks flagged content from insert | — |
+| `entity-extractor.ts` | Pure-TS rule-based entity extraction: proper nouns, technology names, key phrases, headings, quoted strings (R10) | — |
+| `entity-denylist.ts` | Denylist of common nouns, technology stop words, and generic modifiers filtered from extraction results (R10) | — |
+| `ontology-hooks.ts` | Loads `OntologySchema` (entity types + relation types), validates entity/relation pairs against schema. Default schema provides 6 canonical relations and 10 entity types. | `SPECKIT_ONTOLOGY_HOOKS` |
 
 <!-- /ANCHOR:structure -->
 

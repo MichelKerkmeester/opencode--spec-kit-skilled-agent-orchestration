@@ -61,15 +61,15 @@ All paths relative to `.opencode/skill/system-spec-kit/`.
 - [x] Verification queries defined
 
 ### Definition of Done
-- [ ] RC3-A: Explicit intent forwarded to all 4 strategy functions
-- [ ] RC1-A: Auto-retry without folder filter when discovery yields 0 results
-- [ ] RC2-B: Adaptive content truncation preserves 5+ of 20 results
-- [ ] RC1-B: Folder discovery records boost metadata and the narrow-folder retry clears `specFolder` when the first pass returns 0 results
-- [ ] RC2-A: Two-tier response returns metadata for all, content for top N
-- [ ] RC3-B: Intent confidence floor at 0.25, fallback to "understand"
-- [ ] All verification queries pass (VER-001 through VER-004)
-- [ ] TypeScript compiles without errors
-- [ ] MCP server restarts cleanly
+- [x] RC3-A: Explicit intent forwarded to all 4 strategy functions
+- [x] RC1-A: Auto-retry without folder filter when discovery yields 0 results
+- [x] RC2-B: Adaptive content truncation preserves 5+ of 20 results
+- [x] RC1-B: Folder discovery records boost metadata and the narrow-folder retry clears `specFolder` when the first pass returns 0 results
+- [x] RC2-A: Two-tier response returns metadata for all, content for top N
+- [x] RC3-B: Intent confidence floor at 0.25, fallback to "understand"
+- [x] All verification queries pass (VER-001 through VER-004)
+- [x] TypeScript compiles without errors
+- [x] MCP server restarts cleanly
 <!-- /ANCHOR:quality-gates -->
 
 ---

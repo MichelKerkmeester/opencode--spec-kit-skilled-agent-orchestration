@@ -1,5 +1,6 @@
 ---
-title: "Completed [02--system-spec-kit/023-esm-module-compliance/30-03-26_10-55__completed-10-iteration-deep-review-of-spec-023]"
+title: "Completed 10-Iteration Deep Review of Spec 023 [023-esm-module-compliance]"
+description: "10-iteration deep review of spec 023 ESM module compliance. Found security findings (fail-open v-rule, CWD-steerable paths, unproven transport assumption), traceability drift, and administrative packet staleness."
 trigger_phrases:
   - "self check"
   - "fail open"
@@ -27,9 +28,6 @@ trigger_phrases:
   - "packet docs"
   - "docs stale"
   - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance"
 importance_tier: "important"
 contextType: "planning"
 _sourceSessionCreated: 0

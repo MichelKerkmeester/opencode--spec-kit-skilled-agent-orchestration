@@ -502,6 +502,7 @@ export function extract_snippet(content: unknown, max_length = 200): string {
  */
 export function extract_tags(content: unknown): string[] {
   if (!content || typeof content !== 'string') {
+    console.warn('[vector-index] extract_tags: invalid content type, expected string');
     return [];
   }
 
@@ -620,11 +621,13 @@ export function keyword_search(
   const { limit = 20, specFolder = null, includeArchived = false } = options;
 
   if (!query || typeof query !== 'string') {
+    console.warn('[vector-index] keyword_search: invalid query, expected non-empty string');
     return [];
   }
 
   const search_terms = query.toLowerCase().trim().split(/\s+/).filter(t => t.length >= 2);
   if (search_terms.length === 0) {
+    console.warn('[vector-index] keyword_search: no valid search terms after tokenization');
     return [];
   }
 
@@ -869,7 +872,10 @@ export async function multi_concept_keyword_search(
 ): Promise<EnrichedSearchResult[]> {
   const { specFolder = null } = options;
 
-  if (!concepts.length) return [];
+  if (!concepts.length) {
+    console.warn('[vector-index] multi_concept_keyword_search: empty concepts array');
+    return [];
+  }
 
   const concept_results = concepts.map((concept: string) =>
     keyword_search(concept, { limit: 100, specFolder })
@@ -936,6 +942,7 @@ export async function multi_concept_keyword_search(
  */
 export function parse_quoted_terms(query: string): string[] {
   if (!query || typeof query !== 'string') {
+    console.warn('[vector-index] parse_quoted_terms: invalid query, expected non-empty string');
     return [];
   }
 
@@ -1293,7 +1300,10 @@ export function verify_integrity(
   const sqlite_vec = get_sqlite_vec_available();
 
   const find_orphaned_vector_ids = () => {
-    if (!sqlite_vec) return [];
+    if (!sqlite_vec) {
+      console.warn('[vector-index] find_orphaned_vector_ids: sqlite-vec not available');
+      return [];
+    }
     try {
       return (database.prepare(`
         SELECT v.rowid FROM vec_memories v

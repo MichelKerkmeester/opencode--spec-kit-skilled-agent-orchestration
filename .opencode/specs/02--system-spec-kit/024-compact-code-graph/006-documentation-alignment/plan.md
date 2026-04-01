@@ -15,9 +15,10 @@ contextType: "planning"
 ## Steps
 
 1. **Create feature catalog entries:**
-   - Create entries for: PreCompact hook, SessionStart priming, Stop token tracking, cross-runtime fallback, runtime detection
-   - Follow existing feature catalog format and conventions
-   - Include usage examples, configuration, and integration points
+    - Create entries for: PreCompact hook, SessionStart priming, Stop token tracking, cross-runtime fallback, runtime detection
+    - Follow existing feature catalog format and conventions
+    - Include usage examples, configuration, and integration points
+    - Use current implementation names: `session-stop.ts`, `pendingStopSave`, JSON hook-state files, and Gemini capability detection from `.gemini/settings.json`
 2. **Create manual testing playbook scenarios:**
    - Write test scenarios for each hook (PreCompact, SessionStart, Stop)
    - Write cross-runtime fallback test scenarios
@@ -28,21 +29,23 @@ contextType: "planning"
    - Document hook script locations and build process
    - Explain design principle: hooks = transport, not business logic
 4. **Update ARCHITECTURE.md with hook architecture:**
-   - Add hook lifecycle diagram (ASCII flowchart)
-   - Document hook state management (temp files, session mapping)
-   - Document runtime adapter pattern
-   - Document token tracking data flow
+    - Add hook lifecycle diagram (ASCII flowchart)
+    - Document hook state management (JSON hook-state files, session mapping, `pendingStopSave`)
+    - Document runtime adapter pattern if delivered; otherwise record it as a follow-up documentation gap
+    - Document token tracking data flow from `session-stop.ts`
 5. **Update README files:**
-   - Root `README.md` — mention new context preservation capabilities
-   - `.opencode/skill/system-spec-kit/README.md` — list hook features
-   - `.opencode/skill/README.md` — update system-spec-kit description
+    - Root `README.md` — mention new context preservation capabilities if updated in this phase; otherwise document the omission as a follow-up gap
+    - `.opencode/skill/system-spec-kit/README.md` — list hook features
+    - `.opencode/skill/README.md` — update system-spec-kit description
 6. **Update AGENTS.md if needed:**
    - Check if Phase 5 agent changes require AGENTS.md updates
    - Update agent capability descriptions
 7. **Verify documentation quality:**
-   - Run sk-doc quality checks on all updated files
-   - Ensure consistent terminology (hooks, context injection, runtime detection)
-   - Verify no stale references to pre-hook compaction approach
+    - Run sk-doc quality checks on all updated files
+    - Ensure consistent terminology (hooks, context injection, runtime detection)
+    - Verify no stale references to pre-hook compaction approach
+    - Remove or clearly mark any absent follow-up reference or prompt-template documents as not created when they are missing
+    - Record undelivered items as future gaps: dedicated cross-runtime consistency playbook, ARCHITECTURE.md runtime adapter docs, root README context preservation mention
 
 <!-- ANCHOR:dependencies -->
 ## Dependencies

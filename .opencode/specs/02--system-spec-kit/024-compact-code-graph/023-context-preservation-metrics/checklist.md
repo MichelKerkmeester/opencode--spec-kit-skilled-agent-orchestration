@@ -18,4 +18,6 @@ description: "10 items across P1/P2 for phase 023."
 - [x] context-server.ts instrumented at 4 lifecycle points — recordMetricEvent call sites at lines 690-699
 - [x] Quality factors include recency, recovery, graphFreshness, continuity — 4-factor formula
 - [ ] F058: Metrics persisted to SQLite periodically — DEFERRED (in-memory only)
+- [ ] F065: Weight rationale for quality factors documented — DEFERRED (P2)
 - [ ] F066: graphFreshness threshold tuned for auto-trigger cadence — DEFERRED (24h may be too generous)
+- [ ] Phase D: Drift detection with rule-based alerts — DEFERRED (not implemented)

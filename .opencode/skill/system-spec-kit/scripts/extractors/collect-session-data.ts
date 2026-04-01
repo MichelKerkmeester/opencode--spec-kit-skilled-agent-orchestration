@@ -867,10 +867,13 @@ async function collectSessionData(
     .filter(Boolean);
   const observationFallback = nonFollowupObservationTitles.join('; ')
     || observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
-  const SUMMARY: string = (!isErrorContent && learningIsTopical && rawLearning.length > 0)
-    ? rawLearning
-    : observationFallback
-    || 'Session focused on implementing and testing features.';
+  // Rec 3: Prefer explicit sessionSummary from JSON over transcript-derived learning
+  const SUMMARY: string = (typeof data.sessionSummary === 'string' && data.sessionSummary.length > 20)
+    ? data.sessionSummary.substring(0, 500)
+    : (!isErrorContent && learningIsTopical && rawLearning.length > 0)
+      ? rawLearning
+      : observationFallback
+      || 'Session focused on implementing and testing features.';
 
   const explicitImportanceTier = typeof data.importanceTier === 'string'
     ? data.importanceTier
@@ -1014,7 +1017,17 @@ async function collectSessionData(
   });
 
   return {
-    TITLE: path.basename(folderName).replace(/^\d{3}-/, '').replace(/-/g, ' '),
+    // Rec 3: Derive title from sessionSummary when available (up to 80 chars, sentence boundary)
+    TITLE: (() => {
+      const summary = typeof data.sessionSummary === 'string' ? data.sessionSummary : '';
+      if (summary.length > 10) {
+        // Find first sentence or clause boundary within 80 chars
+        const truncated = summary.substring(0, 80);
+        const boundary = truncated.match(/^(.{20,}?)[.!?,;:\n]/);
+        return boundary ? boundary[1].trim() : truncated.replace(/\s+\S*$/, '').trim();
+      }
+      return path.basename(folderName).replace(/^\d{3}-/, '').replace(/-/g, ' ');
+    })(),
     DATE: dateOnly,
     TIME: timeOnly,
     SPEC_FOLDER: folderName,
