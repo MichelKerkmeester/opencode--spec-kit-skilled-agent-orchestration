@@ -1,0 +1,20 @@
+{
+  "topic": "Determine what actually needs to change to make @spec-kit/mcp-server ESM-compliant without breaking @spec-kit/scripts",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.08,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 240,
+  "progressiveSynthesis": true,
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance",
+  "createdAt": "2026-03-28T08:30:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated"
+  }
+}
