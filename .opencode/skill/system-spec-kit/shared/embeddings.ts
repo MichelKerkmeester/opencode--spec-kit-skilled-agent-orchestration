@@ -36,6 +36,69 @@ export interface WeightedDocumentSections {
 }
 
 // ---------------------------------------------------------------
+// EMBEDDING CIRCUIT BREAKER
+// ---------------------------------------------------------------
+// Mirrors the cross-encoder circuit breaker pattern (cross-encoder.ts).
+// After EMBEDDING_CB_THRESHOLD consecutive failures the circuit opens
+// and embedding calls return null immediately for EMBEDDING_CB_COOLDOWN_MS,
+// letting the search pipeline fall back to keyword/BM25 channels.
+
+/** Master kill-switch: set SPECKIT_EMBEDDING_CIRCUIT_BREAKER=false to disable. */
+function isEmbeddingCircuitBreakerEnabled(): boolean {
+  const v = process.env.SPECKIT_EMBEDDING_CIRCUIT_BREAKER?.toLowerCase().trim();
+  if (v === 'false' || v === '0') return false;
+  return true; // default ON
+}
+
+const EMBEDDING_CB_THRESHOLD: number =
+  Math.max(1, parseInt(process.env.SPECKIT_EMBEDDING_CB_THRESHOLD || '', 10) || 3);
+
+const EMBEDDING_CB_COOLDOWN_MS: number =
+  Math.max(1000, parseInt(process.env.SPECKIT_EMBEDDING_CB_COOLDOWN_MS || '', 10) || 60_000);
+
+interface EmbeddingCircuitState {
+  failures: number;
+  openedAt: number | null;
+}
+
+const embeddingCircuit: EmbeddingCircuitState = { failures: 0, openedAt: null };
+
+function isEmbeddingCircuitOpen(): boolean {
+  if (!isEmbeddingCircuitBreakerEnabled()) return false;
+  if (embeddingCircuit.openedAt === null) return false;
+  if (Date.now() - embeddingCircuit.openedAt >= EMBEDDING_CB_COOLDOWN_MS) {
+    // Cooldown elapsed — half-open: allow one attempt
+    console.warn(
+      `[embeddings] Circuit breaker HALF-OPEN — cooldown elapsed (${EMBEDDING_CB_COOLDOWN_MS}ms). Allowing probe request.`
+    );
+    embeddingCircuit.openedAt = null;
+    embeddingCircuit.failures = 0;
+    return false;
+  }
+  return true;
+}
+
+function recordEmbeddingSuccess(): void {
+  if (embeddingCircuit.failures > 0 || embeddingCircuit.openedAt !== null) {
+    console.warn('[embeddings] Circuit breaker CLOSED — embedding call succeeded.');
+  }
+  embeddingCircuit.failures = 0;
+  embeddingCircuit.openedAt = null;
+}
+
+function recordEmbeddingFailure(): void {
+  if (!isEmbeddingCircuitBreakerEnabled()) return;
+  embeddingCircuit.failures++;
+  if (embeddingCircuit.failures >= EMBEDDING_CB_THRESHOLD && embeddingCircuit.openedAt === null) {
+    embeddingCircuit.openedAt = Date.now();
+    console.warn(
+      `[embeddings] Circuit breaker OPEN after ${embeddingCircuit.failures} consecutive failures. ` +
+      `Cooldown: ${EMBEDDING_CB_COOLDOWN_MS}ms. Embedding calls will return null (keyword/BM25 fallback).`
+    );
+  }
+}
+
+// ---------------------------------------------------------------
 // 1. EMBEDDING CACHE
 // ---------------------------------------------------------------
 
@@ -388,6 +451,7 @@ function getLazyLoadingStats(): LazyLoadingStats {
 /**
  * Generate embedding for text (low-level function).
  * T017: First call triggers lazy model initialization.
+ * Circuit breaker: returns null immediately when the provider is failing.
  */
 async function generateEmbedding(text: string): Promise<Float32Array | null> {
   if (!text || typeof text !== 'string') {
@@ -406,29 +470,42 @@ async function generateEmbedding(text: string): Promise<Float32Array | null> {
     return cached;
   }
 
+  // Circuit breaker: skip provider call when open
+  if (isEmbeddingCircuitOpen()) {
+    return null;
+  }
+
   // T017: Track first embedding time for lazy loading diagnostics
   const isFirstEmbedding = !firstEmbeddingTime && !isProviderInitialized();
 
-  const provider = await getProvider();
+  try {
+    const provider = await getProvider();
 
-  // Record first embedding timestamp after provider init
-  if (isFirstEmbedding && !firstEmbeddingTime) {
-    firstEmbeddingTime = Date.now();
+    // Record first embedding timestamp after provider init
+    if (isFirstEmbedding && !firstEmbeddingTime) {
+      firstEmbeddingTime = Date.now();
+    }
+
+    const maxLength = MAX_TEXT_LENGTH;
+    let inputText = trimmedText;
+    if (inputText.length > maxLength) {
+      inputText = semanticChunk(trimmedText, maxLength);
+    }
+
+    const embedding = await provider.generateEmbedding(inputText);
+
+    if (embedding) {
+      recordEmbeddingSuccess();
+      cacheEmbedding(trimmedText, embedding);
+    }
+
+    return embedding;
+  } catch (error: unknown) {
+    recordEmbeddingFailure();
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[embeddings] generateEmbedding failed: ${msg}`);
+    return null;
   }
-
-  const maxLength = MAX_TEXT_LENGTH;
-  let inputText = trimmedText;
-  if (inputText.length > maxLength) {
-    inputText = semanticChunk(trimmedText, maxLength);
-  }
-
-  const embedding = await provider.generateEmbedding(inputText);
-
-  if (embedding) {
-    cacheEmbedding(trimmedText, embedding);
-  }
-
-  return embedding;
 }
 
 /** Generate embedding with timeout protection (default: 30s) */
@@ -547,7 +624,8 @@ async function generateBatchEmbeddings(
 // 4. TASK-SPECIFIC FUNCTIONS
 // ---------------------------------------------------------------
 
-/** Generate embedding for a document (for indexing/storage) */
+/** Generate embedding for a document (for indexing/storage).
+ * Circuit breaker: returns null immediately when the provider is failing. */
 async function generateDocumentEmbedding(text: string): Promise<Float32Array | null> {
   if (!text || typeof text !== 'string' || text.trim().length === 0) {
     console.warn('[embeddings] Empty document text');
@@ -561,25 +639,39 @@ async function generateDocumentEmbedding(text: string): Promise<Float32Array | n
     return cached;
   }
 
-  const provider = await getProvider();
-
-  const maxLength = MAX_TEXT_LENGTH;
-  let inputText = trimmedText;
-  if (inputText.length > maxLength) {
-    inputText = semanticChunk(trimmedText, maxLength);
+  // Circuit breaker: skip provider call when open
+  if (isEmbeddingCircuitOpen()) {
+    return null;
   }
 
-  const embedding = await provider.embedDocument(inputText);
+  try {
+    const provider = await getProvider();
 
-  if (embedding) {
-    cacheEmbedding(cacheText, embedding);
+    const maxLength = MAX_TEXT_LENGTH;
+    let inputText = trimmedText;
+    if (inputText.length > maxLength) {
+      inputText = semanticChunk(trimmedText, maxLength);
+    }
+
+    const embedding = await provider.embedDocument(inputText);
+
+    if (embedding) {
+      recordEmbeddingSuccess();
+      cacheEmbedding(cacheText, embedding);
+    }
+
+    return embedding;
+  } catch (error: unknown) {
+    recordEmbeddingFailure();
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[embeddings] generateDocumentEmbedding failed: ${msg}`);
+    return null;
   }
-
-  return embedding;
 }
 
 /**
  * Generate embedding for a search query.
+ * Circuit breaker: returns null immediately when the provider is failing.
  *
  * Note: Query embeddings ARE cached, but with lower priority than documents:
  * 1. Cache is checked first to avoid redundant API calls for repeated queries
@@ -603,15 +695,32 @@ async function generateQueryEmbedding(query: string): Promise<Float32Array | nul
     return cached;
   }
 
-  const provider = await getProvider();
-  const embedding = await provider.embedQuery(trimmed);
-
-  // Cache query embeddings with lower priority (only if space available)
-  if (embedding && embeddingCache.size < EMBEDDING_CACHE_MAX_SIZE * 0.9) {
-    cacheEmbedding(cacheKey, embedding);
+  // Circuit breaker: skip provider call when open
+  if (isEmbeddingCircuitOpen()) {
+    return null;
   }
 
-  return embedding;
+  try {
+    const provider = await getProvider();
+    const embedding = await provider.embedQuery(trimmed);
+
+    // Reset circuit breaker unconditionally on success (even if cache is full)
+    if (embedding) {
+      recordEmbeddingSuccess();
+    }
+
+    // Cache query embeddings with lower priority (only if space available)
+    if (embedding && embeddingCache.size < EMBEDDING_CACHE_MAX_SIZE * 0.9) {
+      cacheEmbedding(cacheKey, embedding);
+    }
+
+    return embedding;
+  } catch (error: unknown) {
+    recordEmbeddingFailure();
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[embeddings] generateQueryEmbedding failed: ${msg}`);
+    return null;
+  }
 }
 
 /** Generate embedding for clustering task */
@@ -813,4 +922,18 @@ export {
   RESERVED_OVERVIEW,
   RESERVED_OUTCOME,
   MIN_SECTION_LENGTH,
+};
+
+/**
+ * Internal embedding circuit breaker functions exposed for unit testing.
+ * Not intended for production use outside the test harness.
+ */
+export const __embeddingCircuitTestables = {
+  embeddingCircuit,
+  isEmbeddingCircuitOpen,
+  isEmbeddingCircuitBreakerEnabled,
+  recordEmbeddingSuccess,
+  recordEmbeddingFailure,
+  EMBEDDING_CB_THRESHOLD,
+  EMBEDDING_CB_COOLDOWN_MS,
 };

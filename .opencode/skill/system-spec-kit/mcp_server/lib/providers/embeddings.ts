@@ -45,4 +45,5 @@ export {
   RESERVED_OVERVIEW,
   RESERVED_OUTCOME,
   MIN_SECTION_LENGTH,
+  __embeddingCircuitTestables,
 } from '@spec-kit/shared/embeddings';
