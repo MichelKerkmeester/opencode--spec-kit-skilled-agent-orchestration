@@ -150,6 +150,18 @@ Three changes to how agent workflows handle priming.
 
 ---
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **session_resume(minimal) telemetry guard** -- skips recordBootstrapEvent when minimal=true
+- **session_bootstrap tracking restored** -- removed from recordToolCall exclusion (only session_health excluded)
+- **Minimal response includes sessionQuality** -- added computeQualityScore().level
+- **Gemini null guard** -- explicit null check before typeof === 'object' in runtime-detection
+- **currentTask from metrics** -- session-snapshot reads from metrics instead of hardcoding null
+- **Deduplicated bootstrap telemetry** -- session_bootstrap is sole recorder
+
 ## Upgrade
 
 No migration required. The new `session_bootstrap` tool is additive. Existing `session_resume` calls continue to work unchanged -- the `minimal` parameter defaults to `false`. Agent file updates are backward-compatible.

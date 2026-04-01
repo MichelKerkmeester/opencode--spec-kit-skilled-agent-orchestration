@@ -296,6 +296,25 @@ Verification and validation of the implemented system.
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+Applied after GPT 5.4 deep review across all 25 phases. 24 code fixes + doc alignment across all phase spec folders.
+
+### Code Fixes
+- **Symlink boundary bypass** (security) -- workspace guard now uses realpathSync for canonical path validation
+- **Deleted files purged from DB** -- incremental scans now remove files no longer on disk
+- **Streaming transcript parser** -- replaced blocking readFileSync with readline streaming
+- **Session-scoped priming** -- replaced process-global boolean with per-session Set
+- **Compact payload race** -- clear only after stdout write confirmed
+- **Tree-sitter isReady** -- checks ALL grammars loaded, not just one
+- **Incremental scan skip** -- mtime check before parse, unchanged files skipped
+- **Tool routing enforcement** -- 5-layer active routing (Phase 025)
+
+### Doc Alignment
+All 25 phase spec folders updated: spec.md, implementation-summary.md, tasks.md, checklist.md aligned to actual code state. Eliminated spec/code drift across all phases.
+
+---
+
 <details>
 <summary>Files Changed (17 total)</summary>
 

@@ -94,6 +94,21 @@ This phase lays the foundation for tree-sitter WASM parsing -- a proper code par
 
 </details>
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **JS/TS method detection restricted** -- regex now requires visibility modifier or class-body indentation; bare function calls like `baz()` no longer misclassified as methods
+- **Python nested helpers fixed** -- indentation tracking distinguishes class methods (one level deep) from nested helper functions (deeper)
+- **includeGlobs aligned** -- added .jsx, .cjs, .mts, .cts, .tsx, .bash to match all detectLanguage extensions
+
+### Doc Fixes
+- Phase 017 work separated: items marked "completed in Phase 017" not claimed by Phase 015
+- Regex "removed" corrected to "demoted to fallback (~430 lines still present)"
+- SPECKIT_PARSER=treesitter documented as auto-fallback (not throws)
+- Additional SymbolKinds correctly remain deferred
+
+---
+
 ## Upgrade
 
 No migration required.

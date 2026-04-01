@@ -108,6 +108,16 @@ When you use Claude Code, a set of automated hooks handle session startup, conte
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- @context-prime documented as using session_resume + session_health (not spec'd trio)
+- Claude-hook wording gap in non-Claude files documented
+- AGENTS.md vs orchestrate.md delegation clarified
+- F059 marked as DONE with evidence
+
 ## Upgrade
 
 No migration required. The new trigger tables are passive documentation -- they guide AI behavior but do not change any runtime code or configuration. The `@context-prime` agent is additive and does not affect existing workflows.

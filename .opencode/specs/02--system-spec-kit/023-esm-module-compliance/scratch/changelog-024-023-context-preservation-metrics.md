@@ -87,6 +87,20 @@ We claimed different runtimes had different levels of context preservation -- Cl
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **Graph freshness threshold aligned** -- `computeQualityScore()` changed from 1-hour to 24-hour threshold, matching `session-snapshot.ts`
+
+### Doc Fixes
+- Quality score documented as not driving session_health status (legacy heuristics still primary)
+- Incomplete metrics documented (aggregate counters only, toolName dropped, in-memory)
+- Response envelope documented as not implemented
+- Dashboard integration documented as deferred (Phase C)
+- Spec Folder metadata path corrected
+
 ## Upgrade
 
 No migration required.

@@ -124,6 +124,19 @@ Each edge carries a confidence score between 0 and 1, reflecting how reliable th
 
 </details>
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **Incremental scan skips unchanged files** -- added `isFileStale()` mtime check before `readFileSync` + `parseFile`, making incremental mode proportional to changed files only
+
+### Doc Fixes
+- Resolved three-way inconsistency: spec, docs, and code now all reflect tree-sitter as default parser with regex fallback
+- Removed `incremental-index.ts` reference (logic lives in structural-indexer.ts)
+- Clarified .scm query files not needed (tree-sitter uses programmatic AST traversal)
+- Updated deferred tasks that were completed by Phase 017
+
+---
+
 ## Upgrade
 
 No migration required.

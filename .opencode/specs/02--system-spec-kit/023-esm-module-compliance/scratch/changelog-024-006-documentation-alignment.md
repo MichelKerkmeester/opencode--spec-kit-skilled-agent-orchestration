@@ -128,6 +128,18 @@ Phases 1 through 5 built a hook-based context preservation system -- a mechanism
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- Stop hook references corrected: `claude-transcript.ts` → `session-stop.ts`, `pendingCompactPrime` → `pendingStopSave`
+- Gemini capability updated from hardcoded tool-fallback-only to dynamically detected
+- `session_token_snapshots` SQLite references replaced with JSON hook-state
+- Missing files (search_patterns.md, prompt_templates.md) marked as not created
+- Checklist count corrected from 16 to 17
+- Future gaps noted: playbook scenario, ARCHITECTURE.md sections, README mention
+
+---
+
 ## Upgrade
 
 No migration required.

@@ -77,6 +77,19 @@ Commands and agent definitions across all four runtimes (Claude Code, Codex, Cop
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Save dedup checks correct field** -- double-save detection now reads `pendingStopSave.cachedAt` using SHA-256 hashed filenames (was checking wrong field `updatedAt` with raw session ID)
+- **@context agent now hook-aware** -- added hook-first/tool-fallback section to all 4 runtime copies (.opencode, .claude, .codex, .agents)
+
+### Doc Fixes
+- Resume fix reference corrected to YAML assets (not top-level command file)
+- Standardized dedup mechanism naming to `pendingStopSave.cachedAt`
+- Fixed Codex agents reference from .md to .toml format
+
 ## Upgrade
 
 No migration required.

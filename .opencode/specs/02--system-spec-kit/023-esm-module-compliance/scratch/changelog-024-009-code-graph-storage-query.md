@@ -105,6 +105,20 @@ The Phase 008 indexer could extract structural information from source code (fun
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Symlink boundary bypass fixed** (security) -- `scan.ts` now uses `realpathSync()` for canonical path validation, preventing symlinks from bypassing workspace guard
+- **Deleted files purged from DB** -- `ensure-ready.ts` and `scan.ts` now diff tracked DB paths against disk and call `removeFile()` for missing entries during incremental scans
+
+### Doc Fixes
+- Schema parameter names aligned to code (rootDir, includeGlobs, excludeGlobs, limit)
+- Subject resolution chain corrected to symbolId→fqName→name
+- Index count and status handler return fields corrected
+- Incremental mode documented as mtime-based (not content hash)
+
 ## Upgrade
 
 No migration required.

@@ -86,6 +86,20 @@ When a Claude Code session ends, the system now automatically captures how many 
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Streaming transcript parser** -- replaced `readFileSync(...).split('\n')` with `createReadStream` + `readline.createInterface` for memory-safe processing of large transcripts
+- **Tail-read spec folder detection** -- `detectSpecFolder()` now reads only the last 50KB of the transcript instead of the entire file
+- **Dead code removed** -- `pendingStopSave` flag write, `AUTO_SAVE_TOKEN_THRESHOLD`, and `RECENT_SAVE_WINDOW_MS` constants removed (auto-save feature documented as deferred)
+
+### Doc Fixes
+- Updated spec to note JSON hook-state files used instead of SQLite `session_token_snapshots` table
+- Fixed `lib/shared.ts` path to `hooks/claude/shared.ts` in implementation-summary
+- Documented auto-save as partial, cost estimation as input/output only
+
 ## Upgrade
 
 No migration required.

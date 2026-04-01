@@ -137,6 +137,21 @@ The hook system built across Phases 1-6 had no automated way to verify it actual
 
 </details>
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Runtime routing test uses real imports** -- replaced local `routeQuery()` stub with import from actual `query-intent-classifier.ts`
+- **Token test labels corrected** -- "SQLite" descriptions changed to "JSON hook-state" to match what's tested
+- **Placeholder tests converted** -- `expect(true).toBe(true)` replaced with descriptive `it.todo()` markers
+
+### Doc Fixes
+- Test matrix count updated from 7 to 13
+- Gemini fixture aligned to `unavailable`
+- "All tests pass" corrected to "9089/9147 (51 pre-existing)"
+- Deferred task aligned between tasks.md and checklist.md
+
+---
+
 ## Upgrade
 
 No migration required.

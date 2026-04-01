@@ -146,6 +146,19 @@ Four updates to instruction files and agent definitions that serve as the final 
 
 ---
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **PrimePackage graph routing conditional** -- `buildPrimePackage()` now suppresses "structural queries → code_graph_query" when `codeGraphStatus === 'empty'`
+
+### Doc Fixes
+- Checklist items checked (28/30 verified)
+- implementation-summary.md filled with actual implementation details
+- Spec paths corrected (.gemini/GEMINI.md → GEMINI.md)
+- routingRules contract aligned to structured object (graphRetrieval, communitySearch, toolRouting)
+
 ## Upgrade
 
 No migration required. All changes are additive enforcement layers. Existing tool behavior is unchanged -- the enforcement only guides the AI's tool selection, it does not block or modify any tool calls.

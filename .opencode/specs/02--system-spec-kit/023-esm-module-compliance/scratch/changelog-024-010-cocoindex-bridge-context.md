@@ -113,6 +113,19 @@ The code graph system (Phase 009) could answer structural questions -- "what doe
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **includeTrace added to schema** -- `code_graph_context` tool schema now includes `includeTrace` as optional boolean, unblocking the debug feature that was accepted in code but rejected by `additionalProperties: false`
+
+### Doc Fixes
+- Seed API aligned to code: CocoIndex uses `range`, Manual uses `symbolName`
+- Resolution chain updated: exact→near_exact→enclosing→file_anchor
+- Output contract matched to actual handler response shape
+- context-formatter documented as inlined (not separate file)
+
 ## Upgrade
 
 No migration required.

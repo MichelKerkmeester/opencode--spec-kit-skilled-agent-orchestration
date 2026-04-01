@@ -96,6 +96,20 @@ Gemini CLI has supported hooks since v0.33.1, but we never configured any -- mea
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Gemini workspace path corrected** -- `.gemini/settings.json` cwd updated from stale path to current workspace
+- **Nested spec folder detection** -- regex updated to capture 3+ path segments, preventing truncation of deep phase paths
+
+### Doc Fixes
+- SessionEnd hook documented (was incorrectly AfterAgent+AfterModel)
+- Token tracking marked as partial (Gemini transcript not parsed)
+- compact-cache.ts unbounded readFileSync documented as known limitation
+- Status aligned with F056 still open
+
 ## Upgrade
 
 No migration required. Gemini CLI users automatically benefit from the new hooks after updating. No changes needed for Claude Code, Codex, or Copilot users.

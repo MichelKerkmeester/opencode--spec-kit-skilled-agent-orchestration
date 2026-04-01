@@ -119,6 +119,18 @@ When an AI session runs long and the context window fills up, Claude compacts th
 
 ---
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- 3-source merge documented as partial (code graph and CocoIndex sources are placeholder text, not real retrieval)
+- Working-set tracker documented as built but not wired into compact-inject
+- Budget allocator bypass documented (memory/constitutional sections skip allocator)
+- Timeout coverage documented (1800ms only covers stdin parsing)
+- Constitutional trim possibility documented (allocator CAN trim despite "never dropped" claim)
+- Spec status changed to "Partial"
+
 ## Upgrade
 
 No migration required. The new pipeline is backward-compatible -- if Code Graph and CocoIndex are not configured, the system falls back to Memory-only behavior automatically.

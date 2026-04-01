@@ -152,6 +152,18 @@ Three items were deferred to future phases:
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **Tree-sitter isReady checks ALL grammars** -- `isReady()` changed from `grammarCache.size > 0` to `SUPPORTED_LANGUAGES.every(lang => grammarCache.has(lang))`, preventing false-ready states after partial grammar loads
+
+### Doc Fixes
+- F039/F042/F044 marked DONE with code evidence (were stale as "deferred")
+- ParserAdapter duplication noted as tech debt
+- Test file gap documented (lacks parser-selection coverage)
+
+---
+
 ## Upgrade
 
 No migration required.

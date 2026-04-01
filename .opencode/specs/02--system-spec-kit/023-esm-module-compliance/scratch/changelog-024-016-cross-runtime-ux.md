@@ -109,6 +109,16 @@ The code graph and memory system worked well on Claude Code (which has full hook
 
 </details>
 
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- Phase status aligned to "Partial (11/14 items)" with 3 deferred items clearly separated
+- Intent classifier documented as metadata annotation only (not backend routing)
+- query-intent-classifier.ts added to implementation-summary Files Changed table
+- Deferred items explicitly separated in tasks and checklist
+
+---
+
 ## Upgrade
 
 No migration required.

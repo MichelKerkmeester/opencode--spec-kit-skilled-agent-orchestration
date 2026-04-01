@@ -80,6 +80,18 @@ Every time you open a Claude Code session, the AI starts with a blank slate -- i
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- Aligned all docs to "guidance-emitter" pattern -- handlers output instructions for the AI to act on, not active retrieval
+- handleStartup: documented as tool availability guidance (not constitutional memory loading)
+- handleResume: documented as recovery instructions (not direct memory_context call)
+- handleClear: documented as minimal guidance (not constitutional loading)
+- workingSet marked as NOT IMPLEMENTED / deferred in checklist
+- Acceptance criteria updated to match guidance-emitter behavior
+
+---
+
 ## Upgrade
 
 No migration required.

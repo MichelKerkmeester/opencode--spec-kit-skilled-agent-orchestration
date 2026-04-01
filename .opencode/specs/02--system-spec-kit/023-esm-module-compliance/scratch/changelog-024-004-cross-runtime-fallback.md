@@ -90,6 +90,18 @@ The system now works across all four AI runtimes (Claude Code, Codex CLI, Copilo
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **Runtime detection wired into startup** -- `detectRuntime()` now called during MCP server initialization, result stored and logged. Previously existed only in test files.
+
+### Doc Fixes
+- Gemini hook policy standardized to `unavailable` (was `disabled_by_scope`)
+- `getRecoveryApproach()` return value aligned to `hooks` (was `hook_based`)
+- Implementation-summary notes detectRuntime() is now wired into startup
+
 ## Upgrade
 
 No migration required.

@@ -69,6 +69,15 @@ The code graph required a manual `code_graph_scan` command before any query woul
 
 </details>
 
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- Added 8-item Known Limitations section covering: 5-min freshness age check missing, debounce not keyed by rootDir, new files invisible, deleted files persist, selective reindex degrades, auto-index errors swallowed, runtime docs overstate, spec overstates completion
+- Phase status aligned with F048/F049 deferred
+- All overclaims corrected to "best-effort" language
+
+---
+
 ## Upgrade
 
 No migration required.

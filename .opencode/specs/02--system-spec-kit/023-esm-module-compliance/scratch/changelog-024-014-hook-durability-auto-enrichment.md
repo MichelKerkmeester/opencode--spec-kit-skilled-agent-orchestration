@@ -200,6 +200,22 @@ All existing vitest tests continue to pass (226 out of 226). New tests added in 
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **Compact payload race fixed** -- `readAndClearCompactPrime()` split into `readCompactPrime()` + `clearCompactPrime()`. Clear only happens after stdout write confirmed.
+- **Session-scoped priming** -- replaced module-level `sessionPrimed` boolean with `primedSessionIds: Set<string>`. Each session tracked independently.
+
+### Doc Fixes
+- readAndClearCompactPrime documented as partial fix (clear still before stdout in some paths)
+- saveState() error propagation documented as warning-only
+- pendingStopSave claims removed (field was deleted in Phase 003 fixes)
+- Priming documented as process-global limitation → now session-scoped
+- Stale-on-read documented as flat threshold (not spec's 3-tier model)
+- Verification count progression clarified (142→213→226)
+
+---
+
 ## Upgrade
 
 No migration required. The code graph schema v2 migration (adding `file_mtime_ms` column) runs automatically on first access. Existing hook state temp files from before SHA-256 hashing become inaccessible, which is acceptable since they are ephemeral and regenerated each session.

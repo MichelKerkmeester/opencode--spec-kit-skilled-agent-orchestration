@@ -139,6 +139,21 @@ CocoIndex Code is a powerful semantic code search tool that understands 28+ prog
 
 ---
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Code Fixes
+- **ccc-status checks correct path** -- changed from `.opencode/skill/mcp-coco-index/mcp_server/.coco_index` to `.cocoindex_code/` at repo root
+- **ccc-reindex uses execFileSync** -- replaced `execSync` with `execFileSync` to prevent shell splitting on paths with spaces
+
+### Doc Fixes
+- SessionStart documented as status-only (no ensure_ready.sh, no readiness guarantee)
+- PreCompact semantic neighbors documented as hint text (not real queries)
+- ccc_status return fields corrected to actual values
+- ccc_feedback documented as local JSONL (not CocoIndex DB)
+- Background re-index checklist contradiction fixed
+
 ## Upgrade
 
 No migration required. The new MCP tools and routing changes are additive. If CocoIndex is not running, all hooks and tools degrade gracefully -- they skip CocoIndex sections and return informative errors without blocking other functionality.

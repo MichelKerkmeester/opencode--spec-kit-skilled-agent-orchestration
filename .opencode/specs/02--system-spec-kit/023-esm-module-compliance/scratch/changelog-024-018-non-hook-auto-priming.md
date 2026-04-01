@@ -67,6 +67,21 @@ Claude Code sessions start with full context automatically -- your last spec fol
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **session_health excluded from recordToolCall** -- diagnostic tools no longer reset the idle-gap timer, fixing self-referential timestamp reset
+
+### Doc Fixes
+- Phase status aligned to "Partial" with deferred items
+- session_health timer reset documented as known limitation
+- Spec-folder-change warning documented as not implemented
+- Gate doc parity attributed to Phase 021
+- F045/F046 updated from deferred to done
+- Dual lastToolCallAt documented as tech debt
+
+---
+
 ## Upgrade
 
 No migration required. Auto-priming activates automatically on the next MCP server restart. The `session_health` tool is immediately available to all connected runtimes.

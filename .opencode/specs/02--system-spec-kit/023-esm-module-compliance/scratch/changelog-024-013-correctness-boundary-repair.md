@@ -139,6 +139,17 @@ This phase fixed 15 correctness bugs (2 critical, 11 must-fix, 2 improvements) f
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- ccc_feedback length validation marked as NOT IMPLEMENTED in checklist/tasks
+- Tool arg validation documented as getMissingRequiredStringArgs (not unified validateToolArgs)
+- Checklist count corrected from 20 to 25
+- includeTrace boundary clarified (code-graph schema only)
+- Decision record updated for includeTrace scope
+
+---
+
 ## Upgrade
 
 No migration required. The database schema version advances to v3 automatically on first use. All 226 existing tests pass without changes.

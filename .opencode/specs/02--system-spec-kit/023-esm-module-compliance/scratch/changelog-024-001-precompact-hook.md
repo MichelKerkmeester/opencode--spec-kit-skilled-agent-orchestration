@@ -102,6 +102,18 @@ When Claude Code runs out of context and auto-compacts, the AI previously lost t
 
 ---
 
+## Deep Review Fixes (2026-04-01)
+
+### Code Fix
+- **Triggered memories now rendered in compact payload** -- `autoSurfaceAtCompaction()` returns both constitutional and triggered memories. Previously only constitutional were rendered; triggered were silently discarded. New `renderTriggeredMemories()` function renders them as a "Relevant Memories" section (+32 lines).
+
+### Doc Fixes
+- Updated spec.md file paths from `scripts/hooks/` to `hooks/claude/`
+- Added `session-prime.ts` to implementation-summary Files Changed table
+- Fixed consolidated file structure documentation (2 scripts → 1)
+
+---
+
 ## Upgrade
 
 No migration required.

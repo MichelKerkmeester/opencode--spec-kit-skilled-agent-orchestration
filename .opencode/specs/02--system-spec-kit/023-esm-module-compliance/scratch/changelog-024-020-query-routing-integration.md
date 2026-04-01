@@ -107,6 +107,18 @@ When a user asked a question about their codebase, they had to know which tool t
 
 </details>
 
+---
+
+## Deep Review Fixes (2026-04-01)
+
+### Doc Fixes
+- memory_context routing documented as additive (not selective backend routing)
+- Routing metadata contract aligned: confidence + matchedKeywords (removed stale fallbackApplied)
+- session_resume documented as slim (no ccc_status, just isCocoIndexAvailable)
+- Part 3 passive enrichment resolved: IS wired, no longer marked deferred
+- code-graph-enricher documented as inlined into passive-enrichment.ts
+- session_resume schema claims corrected
+
 ## Upgrade
 
 No migration required.
